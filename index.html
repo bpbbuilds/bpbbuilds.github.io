@@ -62,7 +62,15 @@
       color: var(--ink);
       font-weight: 600;
     }
-    .links {
+    .billing-banner {
+      margin: 0 0 1.25rem;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 236, 220, 0.85);
+      border: 1px solid rgba(60, 38, 29, 0.35);
+      border-radius: 0.35rem;
+      font-size: 0.95rem;
+    }
+    .billing-banner[hidden] { display: none; }
       display: flex;
       flex-wrap: wrap;
       gap: 0.75rem 1.25rem;
@@ -73,6 +81,7 @@
 </head>
 <body>
   <main>
+    <p id="billing-banner" class="billing-banner" hidden role="status"></p>
     <h1>BPB Builds</h1>
     <p class="tag">Unofficial Backpack Battles fan site</p>
     <p>
@@ -90,5 +99,20 @@
       developers and publishers. Trademarks and game assets belong to their respective owners.
     </p>
   </main>
+  <script>
+    (function () {
+      const q = new URLSearchParams(location.search);
+      const el = document.getElementById('billing-banner');
+      if (!(el instanceof HTMLElement)) return;
+      if (q.get('billing') === 'success') {
+        el.hidden = false;
+        el.textContent =
+          'Thanks for subscribing to Premium. Your account should unlock within a minute — sign in on the full site when it launches.';
+      } else if (q.get('billing') === 'cancel') {
+        el.hidden = false;
+        el.textContent = 'Checkout canceled. You can upgrade anytime from the site.';
+      }
+    })();
+  </script>
 </body>
 </html>
