@@ -16,6 +16,9 @@ Related: [`launch-phase-1.md`](launch-phase-1.md) · [`sim-product.md`](sim-prod
 
 **Progress snapshot:** ~**25%** — schema + gates + offer UI; no live Checkout yet.
 
+**Public business URL (Stripe account / landing):** https://bpbbuilds.github.io  
+(Full app stays in private [`bpbbuilds/website`](https://github.com/bpbbuilds/website) until launch. Pages site repo: [`bpbbuilds/bpbbuilds.github.io`](https://github.com/bpbbuilds/bpbbuilds.github.io).)
+
 ---
 
 ## 0% — Prerequisites (before Stripe Dashboard work)
