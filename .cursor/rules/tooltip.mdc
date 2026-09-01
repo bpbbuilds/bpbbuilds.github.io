@@ -1,0 +1,39 @@
+---
+description: Item tooltip module conventions and item data shape
+globs: js/shared/tooltip.*,**/blood-goobert-tooltip-test.html,**/*tooltip*
+alwaysApply: false
+---
+
+# BPB Website — tooltip module
+
+## API
+
+- `ItemTooltip.render(item)` → element
+- `ItemTooltip.mount(container, item)` → mounts into a node/selector
+- Keep renderer in `js/shared/tooltip.js` + `tooltip.css`
+- Floating hover/focus: `createTooltipHover()` from `js/shared/tooltip-hover.js` (load classic `tooltip.js` before page modules)
+
+## Item shape (frontend)
+
+```js
+{
+  id, name, rarity, type, class,
+  extraTypes, // array
+  cost,
+  effect,     // tagged plain text, NOT HTML
+  image, shape // optional
+}
+```
+
+## Effect text
+
+- Use tags like `<Vampirism>`, `<Star>`, `<Effect>` for icons
+- Blank line between ability blocks
+- Numbers / `+n` / `n%` are styled by the renderer
+- Do not store pre-built HTML in `effect`
+
+## Rules
+
+- One shared tooltip for all items — data changes, not new tooltip HTML files
+- Rarity drives frame art; keep crop/divider behavior centralized in CSS/JS
+- When loading from Supabase, map `extra_types` → `extraTypes` first

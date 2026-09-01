@@ -1,0 +1,6655 @@
+{
+  "classifiedAt": "2026-08-06T04:53:25.772Z",
+  "summary": {
+    "trivial": 4,
+    "pattern": 7,
+    "complex": 330,
+    "missingGd": 0,
+    "byBand": {
+      "K": {
+        "trivial": 0,
+        "pattern": 2,
+        "complex": 89
+      },
+      "N": {
+        "trivial": 1,
+        "pattern": 0,
+        "complex": 16
+      },
+      "J": {
+        "trivial": 0,
+        "pattern": 0,
+        "complex": 72
+      },
+      "M": {
+        "trivial": 0,
+        "pattern": 4,
+        "complex": 40
+      },
+      "O": {
+        "trivial": 1,
+        "pattern": 0,
+        "complex": 39
+      },
+      "I": {
+        "trivial": 2,
+        "pattern": 0,
+        "complex": 13
+      },
+      "L": {
+        "trivial": 0,
+        "pattern": 1,
+        "complex": 61
+      }
+    },
+    "total": 341,
+    "complexCount": 330,
+    "autoReviewCount": 11
+  },
+  "autoReviewIds": [
+    "banana",
+    "falcon_blade",
+    "healing_herbs",
+    "hero_longsword",
+    "hero_sword",
+    "lucky_bow",
+    "mananana",
+    "phoenix",
+    "rainbow_goobert_engineer",
+    "shepherds_crook",
+    "wooden_sword"
+  ],
+  "complexIds": [
+    "amethyst",
+    "amethyst_egg",
+    "amethyst_whelp",
+    "amulet_of_agility",
+    "amulet_of_alchemy",
+    "amulet_of_fortune",
+    "amulet_of_life",
+    "amulet_of_steel",
+    "amulet_of_the_wild",
+    "angel_crystal",
+    "anvil",
+    "armored_wisdom_puppy",
+    "automanaton",
+    "axe",
+    "badger_spirit",
+    "battery",
+    "bazooka",
+    "bewitchment",
+    "big_bloodthorne",
+    "bionic_armor",
+    "blood_amulet",
+    "blood_goobert",
+    "blood_manipulation",
+    "bloodthorne",
+    "bloody_dagger",
+    "blueberries",
+    "bomb",
+    "book_of_basics",
+    "book_of_darkness",
+    "book_of_ice",
+    "book_of_light",
+    "book_of_nature",
+    "boomerang",
+    "bowl_of_treats",
+    "brass_knuckles",
+    "broccoli",
+    "broccoli_goobert",
+    "broccotree",
+    "broom",
+    "burning_banner",
+    "burning_blade",
+    "burning_coal",
+    "burning_spikes",
+    "burning_sword",
+    "burning_torch",
+    "cap_of_brilliance",
+    "carrot",
+    "carrot_goobert",
+    "cat_spirit",
+    "cauldron",
+    "chain_whip",
+    "chainsaw",
+    "charge_splitter",
+    "cheese",
+    "cheese_goobert",
+    "chess_board",
+    "chili_goobert",
+    "chili_pepper",
+    "claws_of_attack",
+    "cog",
+    "cog_badge",
+    "corrupted_armor",
+    "corrupted_crystal",
+    "courage_puppy",
+    "critwood_staff",
+    "crossblades",
+    "crow",
+    "crown",
+    "cthulhu",
+    "cubert",
+    "cupcake",
+    "cupcake_dragon",
+    "cupcake_goobert",
+    "cupcake_staff",
+    "cursed_dagger",
+    "cursed_hair_comb",
+    "daggerang",
+    "dancing_dragon",
+    "dark_lantern",
+    "dark_ritual",
+    "darksaber",
+    "death_lotus",
+    "deck_of_cards",
+    "deer_totem",
+    "devouring_sphere",
+    "dig_deeper",
+    "djinn_lamp",
+    "doom_cap",
+    "double_axe",
+    "double_rainbow",
+    "draconic_orb",
+    "dragon_knight",
+    "dragon_nest",
+    "dragon_set",
+    "echoing_battlecry",
+    "eggscalibur",
+    "electric_torch",
+    "emerald",
+    "emerald_egg",
+    "emerald_whelp",
+    "enchanted_weapons",
+    "energy_conversion",
+    "everburning",
+    "evil_cap",
+    "evil_hat",
+    "extra_angy",
+    "false_life",
+    "fancy_fencing_rapier",
+    "fanfare",
+    "fanny_pack",
+    "fedora",
+    "fire_pit",
+    "fire_shelly",
+    "flame",
+    "flame_badge",
+    "flame_whip",
+    "flute",
+    "fly_agaric",
+    "forest_dragon",
+    "fortunas_kiss",
+    "friendly_fire",
+    "frostbite",
+    "frozen_flame",
+    "full_body_protection",
+    "garlic",
+    "generator",
+    "ghost",
+    "gigawatz",
+    "gingerbread_man",
+    "girl_power",
+    "gloves_of_haste",
+    "gold_armor",
+    "goobert",
+    "halberd",
+    "hammer",
+    "hardwood",
+    "hawk_rune",
+    "heart_container",
+    "heart_of_darkness",
+    "heavy_drinking",
+    "hedgehog",
+    "hero_shield",
+    "hogus_bogus",
+    "holdall",
+    "holy_armor",
+    "holy_spear",
+    "hungry_blade",
+    "hyper_hedgehog",
+    "ice_armor",
+    "ice_dragon",
+    "inner_power",
+    "just_stats",
+    "jynx_staff",
+    "jynx_torquilla",
+    "katana",
+    "king_crown",
+    "king_goobert",
+    "knife_to_meet_you",
+    "laboratory",
+    "leaf_badge",
+    "leather_armor",
+    "leather_helm",
+    "level_up",
+    "light_flower",
+    "light_goobert",
+    "lightning_potion",
+    "lightning_staff",
+    "little_mimic",
+    "long_spear",
+    "lucky_clover",
+    "lucky_piggy",
+    "lucky_shortbow",
+    "lump_of_coal",
+    "mage_hat",
+    "magic_badge",
+    "magic_mirror",
+    "magic_ring",
+    "magic_staff",
+    "magic_torch",
+    "magitecc_armor",
+    "mana_crystal",
+    "mana_mastery",
+    "manathirst",
+    "mecha_bat",
+    "mercury_elemental",
+    "miss_fortune",
+    "molten_dagger",
+    "molten_greatsword",
+    "molten_spear",
+    "molten_spear2",
+    "moon_armor",
+    "more_stats",
+    "mr_struggles",
+    "mrs_struggles",
+    "mushroom_farm",
+    "no_rush_please",
+    "null_blade",
+    "oil_lamp",
+    "onion_cutter",
+    "owl_spirit",
+    "pan",
+    "paradise_birb",
+    "perpetuum_mobile",
+    "piggy_of_riches",
+    "piggybank",
+    "pineapple",
+    "plastic_cube",
+    "platin_customer_card",
+    "pocket_sand",
+    "poison_bow",
+    "poison_dagger",
+    "poison_frog",
+    "poison_goobert",
+    "poison_grenade",
+    "poison_shortbow",
+    "poison_spear",
+    "portable_altar",
+    "pot",
+    "power_of_the_moon",
+    "power_puppy",
+    "present",
+    "prismatic_sword",
+    "prismatic_wand",
+    "protective_purse",
+    "pumpkin",
+    "puzzle_badge",
+    "puzzlebag_l",
+    "puzzlebox",
+    "rainbow_badge",
+    "rainbow_goobert",
+    "rainbow_goobert_adventurer",
+    "rainbow_goobert_berserker",
+    "rainbow_goobert_mage",
+    "rainbow_goobert_pyromancer",
+    "rainbow_goobert_ranger",
+    "rainbow_orb",
+    "rainbow_potion",
+    "rat",
+    "rat_chef",
+    "recombobulator",
+    "relic_case",
+    "repeater",
+    "rib_saw_blade",
+    "robodog",
+    "ruby",
+    "ruby_chonk",
+    "ruby_egg",
+    "ruby_whelp",
+    "sandbag",
+    "sapphire",
+    "sapphire_egg",
+    "sapphire_whelp",
+    "scale",
+    "scholar_bag",
+    "scissorswords",
+    "seal_the_deal",
+    "serpent_staff",
+    "shaman_mask",
+    "shell_totem",
+    "shelly",
+    "shiny_mantle",
+    "shiny_shell",
+    "shovel",
+    "skull_badge",
+    "slice_of_bread",
+    "slice_of_toast",
+    "slime_time",
+    "sloth",
+    "smithing_for_dummies",
+    "snake",
+    "snow_stick",
+    "snowball",
+    "snowcake",
+    "snowmaster",
+    "speak_with_animals",
+    "spear",
+    "spectral_dagger",
+    "spell_scroll_dark",
+    "spell_scroll_frostbolt",
+    "spell_scroll_light",
+    "spiked_staff",
+    "spin_to_win",
+    "spirit_bells",
+    "spring_loader",
+    "squirrel",
+    "squirrel_archer",
+    "staff_of_fire",
+    "staff_of_unhealing",
+    "steel_dragon",
+    "steel_goobert",
+    "stone",
+    "stone_armor",
+    "stone_badge",
+    "stone_gloves",
+    "stone_golem",
+    "stone_helm",
+    "sun_armor",
+    "tesla_coil",
+    "thorn_bow",
+    "thorn_elemental",
+    "thorn_shortbow",
+    "thorn_whip",
+    "thornbloom",
+    "thornburst",
+    "thors_hammer",
+    "thunder_drake",
+    "time_dilator",
+    "time_melting",
+    "toad",
+    "toast_goobert",
+    "toolbox",
+    "torch",
+    "turtle",
+    "ukulele",
+    "ultima",
+    "vampiric_armor",
+    "vampiric_gloves",
+    "villain_sword",
+    "walrus_tusk",
+    "wand",
+    "wand_of_dissonance",
+    "war_scythe",
+    "water_elemental",
+    "whetstone",
+    "wisdom_puppy",
+    "wisp",
+    "wolf_emblem",
+    "wolpertinger",
+    "wrench",
+    "yggdrasil_leaf"
+  ],
+  "byId": {
+    "banana": {
+      "id": "banana",
+      "band": "K",
+      "file": "Banana.gd",
+      "family": "custom_cd",
+      "kind": "pattern",
+      "template": "banana",
+      "reasons": [
+        "food heal+stamina"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "blood_amulet": {
+      "id": "blood_amulet",
+      "band": "N",
+      "file": "BloodAmulet.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "blood_goobert": {
+      "id": "blood_goobert",
+      "band": "N",
+      "file": "BloodGoobert.gd",
+      "family": "pet_like",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 1,
+      "startLines": 2
+    },
+    "bloodthorne": {
+      "id": "bloodthorne",
+      "band": "J",
+      "file": "Bloodthorne.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "bloody_dagger": {
+      "id": "bloody_dagger",
+      "band": "J",
+      "file": "BloodyDagger.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "blueberries": {
+      "id": "blueberries",
+      "band": "K",
+      "file": "Blueberries.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "broom": {
+      "id": "broom",
+      "band": "J",
+      "file": "Broom.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "burning_coal": {
+      "id": "burning_coal",
+      "band": "K",
+      "file": "BurningCoal.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "burning_torch": {
+      "id": "burning_torch",
+      "band": "M",
+      "file": "BurningTorch.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "carrot": {
+      "id": "carrot",
+      "band": "K",
+      "file": "Carrot.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "carrot_goobert": {
+      "id": "carrot_goobert",
+      "band": "K",
+      "file": "CarrotGoobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 7,
+      "startLines": 0
+    },
+    "claws_of_attack": {
+      "id": "claws_of_attack",
+      "band": "J",
+      "file": "ClawsofAttack.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "corrupted_armor": {
+      "id": "corrupted_armor",
+      "band": "O",
+      "file": "CorruptedArmor.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 7,
+      "startLines": 4
+    },
+    "critwood_staff": {
+      "id": "critwood_staff",
+      "band": "J",
+      "file": "CritwoodStaff.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "crossblades": {
+      "id": "crossblades",
+      "band": "M",
+      "file": "Crossblades.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 5
+    },
+    "crown": {
+      "id": "crown",
+      "band": "K",
+      "file": "Crown.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "cursed_dagger": {
+      "id": "cursed_dagger",
+      "band": "J",
+      "file": "CursedDagger.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "cursed_hair_comb": {
+      "id": "cursed_hair_comb",
+      "band": "M",
+      "file": "CursedHairComb.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "dancing_dragon": {
+      "id": "dancing_dragon",
+      "band": "I",
+      "file": "DancingDragon.gd",
+      "family": "weapon_base",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 4
+    },
+    "darksaber": {
+      "id": "darksaber",
+      "band": "J",
+      "file": "Darksaber.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "deck_of_cards": {
+      "id": "deck_of_cards",
+      "band": "M",
+      "file": "DeckofCards.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 7
+    },
+    "djinn_lamp": {
+      "id": "djinn_lamp",
+      "band": "K",
+      "file": "DjinnLamp.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 14,
+      "startLines": 0
+    },
+    "eggscalibur": {
+      "id": "eggscalibur",
+      "band": "J",
+      "file": "Eggscalibur.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "evil_cap": {
+      "id": "evil_cap",
+      "band": "N",
+      "file": "EvilCap.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 7
+    },
+    "amethyst_egg": {
+      "id": "amethyst_egg",
+      "band": "O",
+      "file": "Exclusive/AmethystEgg.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 1
+    },
+    "amethyst_whelp": {
+      "id": "amethyst_whelp",
+      "band": "J",
+      "file": "Exclusive/AmethystWhelp.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "amulet_of_agility": {
+      "id": "amulet_of_agility",
+      "band": "M",
+      "file": "Exclusive/AmuletofAgility.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 4
+    },
+    "amulet_of_alchemy": {
+      "id": "amulet_of_alchemy",
+      "band": "M",
+      "file": "Exclusive/AmuletofAlchemy.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "amulet_of_fortune": {
+      "id": "amulet_of_fortune",
+      "band": "K",
+      "file": "Exclusive/AmuletofFortune.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "amulet_of_life": {
+      "id": "amulet_of_life",
+      "band": "N",
+      "file": "Exclusive/AmuletofLife.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "amulet_of_steel": {
+      "id": "amulet_of_steel",
+      "band": "M",
+      "file": "Exclusive/AmuletofSteel.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "amulet_of_the_wild": {
+      "id": "amulet_of_the_wild",
+      "band": "K",
+      "file": "Exclusive/AmuletoftheWild.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "angel_crystal": {
+      "id": "angel_crystal",
+      "band": "M",
+      "file": "Exclusive/AngelCrystal.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 2
+    },
+    "anvil": {
+      "id": "anvil",
+      "band": "O",
+      "file": "Exclusive/Anvil.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "armored_wisdom_puppy": {
+      "id": "armored_wisdom_puppy",
+      "band": "K",
+      "file": "Exclusive/ArmoredWisdomPuppy.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "automanaton": {
+      "id": "automanaton",
+      "band": "J",
+      "file": "Exclusive/Automanaton.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "axe": {
+      "id": "axe",
+      "band": "J",
+      "file": "Exclusive/Axe.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "badger_spirit": {
+      "id": "badger_spirit",
+      "band": "K",
+      "file": "Exclusive/BadgerSpirit.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "battery": {
+      "id": "battery",
+      "band": "O",
+      "file": "Exclusive/Battery.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "bazooka": {
+      "id": "bazooka",
+      "band": "J",
+      "file": "Exclusive/Bazooka.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "bewitchment": {
+      "id": "bewitchment",
+      "band": "K",
+      "file": "Exclusive/Bewitchment.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "blind",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 13,
+      "startLines": 0
+    },
+    "big_bloodthorne": {
+      "id": "big_bloodthorne",
+      "band": "J",
+      "file": "Exclusive/BigBloodthorne.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "bionic_armor": {
+      "id": "bionic_armor",
+      "band": "M",
+      "file": "Exclusive/BionicArmor.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 6,
+      "startLines": 2
+    },
+    "blood_manipulation": {
+      "id": "blood_manipulation",
+      "band": "K",
+      "file": "Exclusive/BloodManipulation.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "bomb": {
+      "id": "bomb",
+      "band": "I",
+      "file": "Exclusive/Bomb.gd",
+      "family": "basic_weapon",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 14,
+      "startLines": 0
+    },
+    "book_of_basics": {
+      "id": "book_of_basics",
+      "band": "K",
+      "file": "Exclusive/BookofBasics.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "book_of_darkness": {
+      "id": "book_of_darkness",
+      "band": "K",
+      "file": "Exclusive/BookofDarkness.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "book_of_ice": {
+      "id": "book_of_ice",
+      "band": "K",
+      "file": "Exclusive/BookofIce.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "book_of_light": {
+      "id": "book_of_light",
+      "band": "K",
+      "file": "Exclusive/BookofLight.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "book_of_nature": {
+      "id": "book_of_nature",
+      "band": "K",
+      "file": "Exclusive/BookofNature.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "boomerang": {
+      "id": "boomerang",
+      "band": "J",
+      "file": "Exclusive/Boomerang.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "bowl_of_treats": {
+      "id": "bowl_of_treats",
+      "band": "K",
+      "file": "Exclusive/BowlofTreats.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 7,
+      "startLines": 0
+    },
+    "brass_knuckles": {
+      "id": "brass_knuckles",
+      "band": "J",
+      "file": "Exclusive/BrassKnuckles.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "broccoli": {
+      "id": "broccoli",
+      "band": "K",
+      "file": "Exclusive/Broccoli.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "broccoli_goobert": {
+      "id": "broccoli_goobert",
+      "band": "K",
+      "file": "Exclusive/BroccoliGoobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "broccotree": {
+      "id": "broccotree",
+      "band": "K",
+      "file": "Exclusive/Broccotree.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "burning_banner": {
+      "id": "burning_banner",
+      "band": "K",
+      "file": "Exclusive/BurningBanner.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "burning_blade": {
+      "id": "burning_blade",
+      "band": "J",
+      "file": "Exclusive/BurningBlade.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "onhit"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "burning_spikes": {
+      "id": "burning_spikes",
+      "band": "M",
+      "file": "Exclusive/BurningSpikes.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "burning_sword": {
+      "id": "burning_sword",
+      "band": "J",
+      "file": "Exclusive/BurningSword.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "cap_of_brilliance": {
+      "id": "cap_of_brilliance",
+      "band": "M",
+      "file": "Exclusive/CapofBrilliance.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "cat_spirit": {
+      "id": "cat_spirit",
+      "band": "K",
+      "file": "Exclusive/CatSpirit.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "cauldron": {
+      "id": "cauldron",
+      "band": "K",
+      "file": "Exclusive/Cauldron.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 14,
+      "startLines": 0
+    },
+    "chainsaw": {
+      "id": "chainsaw",
+      "band": "J",
+      "file": "Exclusive/Chainsaw.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "chain_whip": {
+      "id": "chain_whip",
+      "band": "J",
+      "file": "Exclusive/ChainWhip.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "charge_splitter": {
+      "id": "charge_splitter",
+      "band": "K",
+      "file": "Exclusive/ChargeSplitter.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "cheese": {
+      "id": "cheese",
+      "band": "K",
+      "file": "Exclusive/Cheese.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "cheese_goobert": {
+      "id": "cheese_goobert",
+      "band": "K",
+      "file": "Exclusive/CheeseGoobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "chess_board": {
+      "id": "chess_board",
+      "band": "K",
+      "file": "Exclusive/ChessBoard.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 13,
+      "startLines": 0
+    },
+    "chili_goobert": {
+      "id": "chili_goobert",
+      "band": "K",
+      "file": "Exclusive/ChiliGoobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "chili_pepper": {
+      "id": "chili_pepper",
+      "band": "K",
+      "file": "Exclusive/ChiliPepper.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "cog": {
+      "id": "cog",
+      "band": "O",
+      "file": "Exclusive/Cog.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "other"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 4
+    },
+    "cog_badge": {
+      "id": "cog_badge",
+      "band": "K",
+      "file": "Exclusive/CogBadge.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "courage_puppy": {
+      "id": "courage_puppy",
+      "band": "O",
+      "file": "Exclusive/CouragePuppy.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart"
+      ],
+      "dealCount": 1,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "crow": {
+      "id": "crow",
+      "band": "K",
+      "file": "Exclusive/Crow.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 10,
+      "startLines": 0
+    },
+    "cthulhu": {
+      "id": "cthulhu",
+      "band": "K",
+      "file": "Exclusive/Cthulhu.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "cubert": {
+      "id": "cubert",
+      "band": "K",
+      "file": "Exclusive/Cubert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "cupcake": {
+      "id": "cupcake",
+      "band": "K",
+      "file": "Exclusive/Cupcake.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "cupcake_dragon": {
+      "id": "cupcake_dragon",
+      "band": "J",
+      "file": "Exclusive/CupcakeDragon.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "cupcake_goobert": {
+      "id": "cupcake_goobert",
+      "band": "K",
+      "file": "Exclusive/CupcakeGoobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "cupcake_staff": {
+      "id": "cupcake_staff",
+      "band": "J",
+      "file": "Exclusive/CupcakeStaff.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "daggerang": {
+      "id": "daggerang",
+      "band": "J",
+      "file": "Exclusive/Daggerang.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "dark_lantern": {
+      "id": "dark_lantern",
+      "band": "N",
+      "file": "Exclusive/DarkLantern.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "dark_ritual": {
+      "id": "dark_ritual",
+      "band": "K",
+      "file": "Exclusive/DarkRitual.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "death_lotus": {
+      "id": "death_lotus",
+      "band": "K",
+      "file": "Exclusive/DeathLotus.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 6,
+      "startLines": 0
+    },
+    "deer_totem": {
+      "id": "deer_totem",
+      "band": "K",
+      "file": "Exclusive/DeerTotem.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "devouring_sphere": {
+      "id": "devouring_sphere",
+      "band": "K",
+      "file": "Exclusive/DevouringSphere.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "dig_deeper": {
+      "id": "dig_deeper",
+      "band": "O",
+      "file": "Exclusive/DigDeeper.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 1
+    },
+    "doom_cap": {
+      "id": "doom_cap",
+      "band": "K",
+      "file": "Exclusive/DoomCap.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "double_axe": {
+      "id": "double_axe",
+      "band": "J",
+      "file": "Exclusive/DoubleAxe.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "double_rainbow": {
+      "id": "double_rainbow",
+      "band": "K",
+      "file": "Exclusive/DoubleRainbow.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "draconic_orb": {
+      "id": "draconic_orb",
+      "band": "K",
+      "file": "Exclusive/DraconicOrb.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "dragon_knight": {
+      "id": "dragon_knight",
+      "band": "J",
+      "file": "Exclusive/DragonKnight.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "dragon_nest": {
+      "id": "dragon_nest",
+      "band": "M",
+      "file": "Exclusive/DragonNest.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 5
+    },
+    "dragon_set": {
+      "id": "dragon_set",
+      "band": "K",
+      "file": "Exclusive/DragonSet.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "echoing_battlecry": {
+      "id": "echoing_battlecry",
+      "band": "K",
+      "file": "Exclusive/EchoingBattlecry.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 9,
+      "startLines": 0
+    },
+    "electric_torch": {
+      "id": "electric_torch",
+      "band": "K",
+      "file": "Exclusive/ElectricTorch.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "emerald_egg": {
+      "id": "emerald_egg",
+      "band": "O",
+      "file": "Exclusive/EmeraldEgg.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 1
+    },
+    "emerald_whelp": {
+      "id": "emerald_whelp",
+      "band": "J",
+      "file": "Exclusive/EmeraldWhelp.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "enchanted_weapons": {
+      "id": "enchanted_weapons",
+      "band": "K",
+      "file": "Exclusive/EnchantedWeapons.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "energy_conversion": {
+      "id": "energy_conversion",
+      "band": "I",
+      "file": "Exclusive/EnergyConversion.gd",
+      "family": "basic_weapon",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 6,
+      "startLines": 0
+    },
+    "everburning": {
+      "id": "everburning",
+      "band": "K",
+      "file": "Exclusive/Everburning.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "evil_hat": {
+      "id": "evil_hat",
+      "band": "K",
+      "file": "Exclusive/EvilHat.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "extra_angy": {
+      "id": "extra_angy",
+      "band": "K",
+      "file": "Exclusive/ExtraAngy.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "other"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "false_life": {
+      "id": "false_life",
+      "band": "K",
+      "file": "Exclusive/FalseLife.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "fedora": {
+      "id": "fedora",
+      "band": "M",
+      "file": "Exclusive/Fedora.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 6,
+      "startLines": 9
+    },
+    "fire_pit": {
+      "id": "fire_pit",
+      "band": "O",
+      "file": "Exclusive/FirePit.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "pre_combat"
+      ],
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "fire_shelly": {
+      "id": "fire_shelly",
+      "band": "K",
+      "file": "Exclusive/FireShelly.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "flame": {
+      "id": "flame",
+      "band": "O",
+      "file": "Exclusive/Flame.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "flame_badge": {
+      "id": "flame_badge",
+      "band": "O",
+      "file": "Exclusive/FlameBadge.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "flame_whip": {
+      "id": "flame_whip",
+      "band": "J",
+      "file": "Exclusive/FlameWhip.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "forest_dragon": {
+      "id": "forest_dragon",
+      "band": "J",
+      "file": "Exclusive/ForestDragon.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "fortunas_kiss": {
+      "id": "fortunas_kiss",
+      "band": "K",
+      "file": "Exclusive/FortunasKiss.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "friendly_fire": {
+      "id": "friendly_fire",
+      "band": "K",
+      "file": "Exclusive/FriendlyFire.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "frostbite": {
+      "id": "frostbite",
+      "band": "J",
+      "file": "Exclusive/Frostbite.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "frozen_flame": {
+      "id": "frozen_flame",
+      "band": "O",
+      "file": "Exclusive/FrozenFlame.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 4
+    },
+    "full_body_protection": {
+      "id": "full_body_protection",
+      "band": "K",
+      "file": "Exclusive/FullBodyProtection.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "generator": {
+      "id": "generator",
+      "band": "O",
+      "file": "Exclusive/Generator.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 2
+    },
+    "ghost": {
+      "id": "ghost",
+      "band": "K",
+      "file": "Exclusive/Ghost.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "gigawatz": {
+      "id": "gigawatz",
+      "band": "K",
+      "file": "Exclusive/Gigawatz.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "girl_power": {
+      "id": "girl_power",
+      "band": "K",
+      "file": "Exclusive/GirlPower.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 12,
+      "startLines": 0
+    },
+    "gold_armor": {
+      "id": "gold_armor",
+      "band": "N",
+      "file": "Exclusive/GoldArmor.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 3
+    },
+    "halberd": {
+      "id": "halberd",
+      "band": "J",
+      "file": "Exclusive/Halberd.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "hardwood": {
+      "id": "hardwood",
+      "band": "M",
+      "file": "Exclusive/Hardwood.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "hawk_rune": {
+      "id": "hawk_rune",
+      "band": "K",
+      "file": "Exclusive/HawkRune.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "heavy_drinking": {
+      "id": "heavy_drinking",
+      "band": "K",
+      "file": "Exclusive/HeavyDrinking.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 7,
+      "startLines": 0
+    },
+    "hedgehog": {
+      "id": "hedgehog",
+      "band": "K",
+      "file": "Exclusive/Hedgehog.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "hero_shield": {
+      "id": "hero_shield",
+      "band": "M",
+      "file": "Exclusive/HeroShield.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 4
+    },
+    "hogus_bogus": {
+      "id": "hogus_bogus",
+      "band": "O",
+      "file": "Exclusive/HogusBogus.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "trigger"
+      ],
+      "dealCount": 0,
+      "cdLines": 17,
+      "startLines": 0
+    },
+    "holdall": {
+      "id": "holdall",
+      "band": "O",
+      "file": "Exclusive/Holdall.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "other"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 4
+    },
+    "hyper_hedgehog": {
+      "id": "hyper_hedgehog",
+      "band": "K",
+      "file": "Exclusive/HyperHedgehog.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "ice_armor": {
+      "id": "ice_armor",
+      "band": "O",
+      "file": "Exclusive/IceArmor.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 3
+    },
+    "ice_dragon": {
+      "id": "ice_dragon",
+      "band": "J",
+      "file": "Exclusive/IceDragon.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "inner_power": {
+      "id": "inner_power",
+      "band": "M",
+      "file": "Exclusive/InnerPower.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "just_stats": {
+      "id": "just_stats",
+      "band": "N",
+      "file": "Exclusive/JustStats.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "jynx_staff": {
+      "id": "jynx_staff",
+      "band": "J",
+      "file": "Exclusive/JynxStaff.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "katana": {
+      "id": "katana",
+      "band": "J",
+      "file": "Exclusive/Katana.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "king_crown": {
+      "id": "king_crown",
+      "band": "K",
+      "file": "Exclusive/KingCrown.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "king_goobert": {
+      "id": "king_goobert",
+      "band": "K",
+      "file": "Exclusive/KingGoobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 10,
+      "startLines": 0
+    },
+    "knife_to_meet_you": {
+      "id": "knife_to_meet_you",
+      "band": "K",
+      "file": "Exclusive/KnifetoMeetYou.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "laboratory": {
+      "id": "laboratory",
+      "band": "O",
+      "file": "Exclusive/Laboratory.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "aura",
+        "pre_combat"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart",
+        "trigger"
+      ],
+      "dealCount": 0,
+      "cdLines": 32,
+      "startLines": 0
+    },
+    "leaf_badge": {
+      "id": "leaf_badge",
+      "band": "K",
+      "file": "Exclusive/LeafBadge.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "level_up": {
+      "id": "level_up",
+      "band": "K",
+      "file": "Exclusive/LevelUp.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "light_flower": {
+      "id": "light_flower",
+      "band": "K",
+      "file": "Exclusive/LightFlower.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 7,
+      "startLines": 0
+    },
+    "lightning_potion": {
+      "id": "lightning_potion",
+      "band": "K",
+      "file": "Exclusive/LightningPotion.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "lightning_staff": {
+      "id": "lightning_staff",
+      "band": "J",
+      "file": "Exclusive/LightningStaff.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "little_mimic": {
+      "id": "little_mimic",
+      "band": "K",
+      "file": "Exclusive/LittleMimic.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "long_spear": {
+      "id": "long_spear",
+      "band": "J",
+      "file": "Exclusive/LongSpear.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "lucky_shortbow": {
+      "id": "lucky_shortbow",
+      "band": "J",
+      "file": "Exclusive/LuckyShortbow.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "mage_hat": {
+      "id": "mage_hat",
+      "band": "O",
+      "file": "Exclusive/MageHat.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 10
+    },
+    "magic_badge": {
+      "id": "magic_badge",
+      "band": "M",
+      "file": "Exclusive/MagicBadge.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "magic_mirror": {
+      "id": "magic_mirror",
+      "band": "K",
+      "file": "Exclusive/MagicMirror.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "magic_ring": {
+      "id": "magic_ring",
+      "band": "M",
+      "file": "Exclusive/MagicRing.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "blind",
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 2
+    },
+    "magitecc_armor": {
+      "id": "magitecc_armor",
+      "band": "O",
+      "file": "Exclusive/MagiteccArmor.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 2
+    },
+    "mana_crystal": {
+      "id": "mana_crystal",
+      "band": "K",
+      "file": "Exclusive/ManaCrystal.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "mana_mastery": {
+      "id": "mana_mastery",
+      "band": "O",
+      "file": "Exclusive/ManaMastery.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "mananana": {
+      "id": "mananana",
+      "band": "K",
+      "file": "Exclusive/Mananana.gd",
+      "family": "custom_cd",
+      "kind": "pattern",
+      "template": "banana",
+      "reasons": [
+        "food heal+stamina"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "mecha_bat": {
+      "id": "mecha_bat",
+      "band": "I",
+      "file": "Exclusive/MechaBat.gd",
+      "family": "basic_weapon",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 9,
+      "startLines": 0
+    },
+    "mercury_elemental": {
+      "id": "mercury_elemental",
+      "band": "K",
+      "file": "Exclusive/MercuryElemental.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "stamina",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "miss_fortune": {
+      "id": "miss_fortune",
+      "band": "K",
+      "file": "Exclusive/MissFortune.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "molten_dagger": {
+      "id": "molten_dagger",
+      "band": "J",
+      "file": "Exclusive/MoltenDagger.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "molten_greatsword": {
+      "id": "molten_greatsword",
+      "band": "J",
+      "file": "Exclusive/MoltenGreatsword.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "molten_spear": {
+      "id": "molten_spear",
+      "band": "J",
+      "file": "Exclusive/MoltenSpear.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "molten_spear2": {
+      "id": "molten_spear2",
+      "band": "J",
+      "file": "Exclusive/MoltenSpear2.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "heat",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "moon_armor": {
+      "id": "moon_armor",
+      "band": "O",
+      "file": "Exclusive/MoonArmor.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 2
+    },
+    "more_stats": {
+      "id": "more_stats",
+      "band": "M",
+      "file": "Exclusive/MoreStats.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 5
+    },
+    "mrs_struggles": {
+      "id": "mrs_struggles",
+      "band": "K",
+      "file": "Exclusive/MrsStruggles.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "mushroom_farm": {
+      "id": "mushroom_farm",
+      "band": "M",
+      "file": "Exclusive/MushroomFarm.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "no_rush_please": {
+      "id": "no_rush_please",
+      "band": "O",
+      "file": "Exclusive/NoRushPlease.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "null_blade": {
+      "id": "null_blade",
+      "band": "J",
+      "file": "Exclusive/NullBlade.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "oil_lamp": {
+      "id": "oil_lamp",
+      "band": "M",
+      "file": "Exclusive/OilLamp.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 2
+    },
+    "onion_cutter": {
+      "id": "onion_cutter",
+      "band": "J",
+      "file": "Exclusive/OnionCutter.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "owl_spirit": {
+      "id": "owl_spirit",
+      "band": "L",
+      "file": "Exclusive/OwlSpirit.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 7,
+      "startLines": 0
+    },
+    "paradise_birb": {
+      "id": "paradise_birb",
+      "band": "L",
+      "file": "Exclusive/ParadiseBirb.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 11,
+      "startLines": 0
+    },
+    "perpetuum_mobile": {
+      "id": "perpetuum_mobile",
+      "band": "O",
+      "file": "Exclusive/PerpetuumMobile.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 8,
+      "startLines": 2
+    },
+    "phoenix": {
+      "id": "phoenix",
+      "band": "I",
+      "file": "Exclusive/Phoenix.gd",
+      "family": "basic_weapon",
+      "kind": "trivial",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina→dealDamage"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 1,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "piggy_of_riches": {
+      "id": "piggy_of_riches",
+      "band": "N",
+      "file": "Exclusive/PiggyofRiches.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "other"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "plastic_cube": {
+      "id": "plastic_cube",
+      "band": "L",
+      "file": "Exclusive/PlasticCube.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 10,
+      "startLines": 0
+    },
+    "poison_frog": {
+      "id": "poison_frog",
+      "band": "L",
+      "file": "Exclusive/PoisonFrog.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "poison_grenade": {
+      "id": "poison_grenade",
+      "band": "L",
+      "file": "Exclusive/PoisonGrenade.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "poison_shortbow": {
+      "id": "poison_shortbow",
+      "band": "J",
+      "file": "Exclusive/PoisonShortbow.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "poison_spear": {
+      "id": "poison_spear",
+      "band": "I",
+      "file": "Exclusive/PoisonSpear.gd",
+      "family": "weapon_base",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_late"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "portable_altar": {
+      "id": "portable_altar",
+      "band": "M",
+      "file": "Exclusive/PortableAltar.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "pot": {
+      "id": "pot",
+      "band": "L",
+      "file": "Exclusive/Pot.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "power_of_the_moon": {
+      "id": "power_of_the_moon",
+      "band": "O",
+      "file": "Exclusive/PoweroftheMoon.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onPostCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "power_puppy": {
+      "id": "power_puppy",
+      "band": "L",
+      "file": "Exclusive/PowerPuppy.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 10,
+      "startLines": 0
+    },
+    "prismatic_sword": {
+      "id": "prismatic_sword",
+      "band": "J",
+      "file": "Exclusive/PrismaticSword.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "prismatic_wand": {
+      "id": "prismatic_wand",
+      "band": "L",
+      "file": "Exclusive/PrismaticWand.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 10,
+      "startLines": 0
+    },
+    "puzzle_badge": {
+      "id": "puzzle_badge",
+      "band": "L",
+      "file": "Exclusive/PuzzleBadge.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "puzzlebag_l": {
+      "id": "puzzlebag_l",
+      "band": "M",
+      "file": "Exclusive/PuzzlebagL.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "puzzlebox": {
+      "id": "puzzlebox",
+      "band": "L",
+      "file": "Exclusive/Puzzlebox.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "rainbow_badge": {
+      "id": "rainbow_badge",
+      "band": "L",
+      "file": "Exclusive/RainbowBadge.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "other"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "rainbow_goobert_adventurer": {
+      "id": "rainbow_goobert_adventurer",
+      "band": "L",
+      "file": "Exclusive/RainbowGoobertAdventurer.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 8,
+      "startLines": 0
+    },
+    "rainbow_goobert_berserker": {
+      "id": "rainbow_goobert_berserker",
+      "band": "L",
+      "file": "Exclusive/RainbowGoobertBerserker.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 8,
+      "startLines": 0
+    },
+    "rainbow_goobert_engineer": {
+      "id": "rainbow_goobert_engineer",
+      "band": "L",
+      "file": "Exclusive/RainbowGoobertEngineer.gd",
+      "family": "custom_cd",
+      "kind": "pattern",
+      "template": "banana",
+      "reasons": [
+        "food heal+stamina"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 9,
+      "startLines": 0
+    },
+    "rainbow_goobert_mage": {
+      "id": "rainbow_goobert_mage",
+      "band": "L",
+      "file": "Exclusive/RainbowGoobertMage.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 8,
+      "startLines": 0
+    },
+    "rainbow_goobert_pyromancer": {
+      "id": "rainbow_goobert_pyromancer",
+      "band": "L",
+      "file": "Exclusive/RainbowGoobertPyromancer.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "heat",
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 8,
+      "startLines": 0
+    },
+    "rainbow_orb": {
+      "id": "rainbow_orb",
+      "band": "M",
+      "file": "Exclusive/RainbowOrb.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 10
+    },
+    "rainbow_potion": {
+      "id": "rainbow_potion",
+      "band": "N",
+      "file": "Exclusive/RainbowPotion.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 8
+    },
+    "rat": {
+      "id": "rat",
+      "band": "L",
+      "file": "Exclusive/Rat.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "blind",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 7,
+      "startLines": 0
+    },
+    "rat_chef": {
+      "id": "rat_chef",
+      "band": "M",
+      "file": "Exclusive/RatChef.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 5
+    },
+    "recombobulator": {
+      "id": "recombobulator",
+      "band": "L",
+      "file": "Exclusive/Recombobulator.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "relic_case": {
+      "id": "relic_case",
+      "band": "L",
+      "file": "Exclusive/RelicCase.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "repeater": {
+      "id": "repeater",
+      "band": "L",
+      "file": "Exclusive/Repeater.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "robodog": {
+      "id": "robodog",
+      "band": "L",
+      "file": "Exclusive/Robodog.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "sandbag": {
+      "id": "sandbag",
+      "band": "O",
+      "file": "Exclusive/Sandbag.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "sapphire_egg": {
+      "id": "sapphire_egg",
+      "band": "O",
+      "file": "Exclusive/SapphireEgg.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 1
+    },
+    "sapphire_whelp": {
+      "id": "sapphire_whelp",
+      "band": "J",
+      "file": "Exclusive/SapphireWhelp.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "scale": {
+      "id": "scale",
+      "band": "L",
+      "file": "Exclusive/Scale.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 12,
+      "startLines": 0
+    },
+    "scholar_bag": {
+      "id": "scholar_bag",
+      "band": "M",
+      "file": "Exclusive/ScholarBag.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "scissorswords": {
+      "id": "scissorswords",
+      "band": "J",
+      "file": "Exclusive/Scissorswords.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "seal_the_deal": {
+      "id": "seal_the_deal",
+      "band": "L",
+      "file": "Exclusive/SealtheDeal.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 10,
+      "startLines": 0
+    },
+    "serpent_staff": {
+      "id": "serpent_staff",
+      "band": "J",
+      "file": "Exclusive/SerpentStaff.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage",
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "shaman_mask": {
+      "id": "shaman_mask",
+      "band": "O",
+      "file": "Exclusive/ShamanMask.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 1
+    },
+    "shell_totem": {
+      "id": "shell_totem",
+      "band": "I",
+      "file": "Exclusive/ShellTotem.gd",
+      "family": "basic_weapon",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 6,
+      "startLines": 0
+    },
+    "shelly": {
+      "id": "shelly",
+      "band": "L",
+      "file": "Exclusive/Shelly.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "shepherds_crook": {
+      "id": "shepherds_crook",
+      "band": "M",
+      "file": "Exclusive/ShepherdsCrook.gd",
+      "family": "synergy_aura",
+      "kind": "pattern",
+      "template": "hero_longsword",
+      "reasons": [
+        "damage aura"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "shiny_mantle": {
+      "id": "shiny_mantle",
+      "band": "L",
+      "file": "Exclusive/ShinyMantle.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 13,
+      "startLines": 0
+    },
+    "shiny_shell": {
+      "id": "shiny_shell",
+      "band": "L",
+      "file": "Exclusive/ShinyShell.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "skull_badge": {
+      "id": "skull_badge",
+      "band": "L",
+      "file": "Exclusive/SkullBadge.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "other"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "slice_of_bread": {
+      "id": "slice_of_bread",
+      "band": "L",
+      "file": "Exclusive/SliceofBread.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "slice_of_toast": {
+      "id": "slice_of_toast",
+      "band": "L",
+      "file": "Exclusive/SliceofToast.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 5,
+      "startLines": 0
+    },
+    "slime_time": {
+      "id": "slime_time",
+      "band": "L",
+      "file": "Exclusive/SlimeTime.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "other"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "sloth": {
+      "id": "sloth",
+      "band": "M",
+      "file": "Exclusive/Sloth.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "trigger"
+      ],
+      "dealCount": 0,
+      "cdLines": 10,
+      "startLines": 5
+    },
+    "smithing_for_dummies": {
+      "id": "smithing_for_dummies",
+      "band": "M",
+      "file": "Exclusive/SmithingForDummies.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 5
+    },
+    "snake": {
+      "id": "snake",
+      "band": "N",
+      "file": "Exclusive/Snake.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 4
+    },
+    "snowball": {
+      "id": "snowball",
+      "band": "N",
+      "file": "Exclusive/Snowball.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "snowcake": {
+      "id": "snowcake",
+      "band": "L",
+      "file": "Exclusive/Snowcake.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 6,
+      "startLines": 0
+    },
+    "snowmaster": {
+      "id": "snowmaster",
+      "band": "L",
+      "file": "Exclusive/Snowmaster.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 6,
+      "startLines": 0
+    },
+    "snow_stick": {
+      "id": "snow_stick",
+      "band": "J",
+      "file": "Exclusive/SnowStick.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "speak_with_animals": {
+      "id": "speak_with_animals",
+      "band": "L",
+      "file": "Exclusive/SpeakwithAnimals.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "spell_scroll_dark": {
+      "id": "spell_scroll_dark",
+      "band": "L",
+      "file": "Exclusive/SpellScrollDark.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 8,
+      "startLines": 0
+    },
+    "spell_scroll_frostbolt": {
+      "id": "spell_scroll_frostbolt",
+      "band": "L",
+      "file": "Exclusive/SpellScrollFrostbolt.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 10,
+      "startLines": 0
+    },
+    "spell_scroll_light": {
+      "id": "spell_scroll_light",
+      "band": "L",
+      "file": "Exclusive/SpellScrollLight.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "spiked_staff": {
+      "id": "spiked_staff",
+      "band": "J",
+      "file": "Exclusive/SpikedStaff.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "spin_to_win": {
+      "id": "spin_to_win",
+      "band": "L",
+      "file": "Exclusive/SpintoWin.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 10,
+      "startLines": 0
+    },
+    "spirit_bells": {
+      "id": "spirit_bells",
+      "band": "L",
+      "file": "Exclusive/SpiritBells.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "spring_loader": {
+      "id": "spring_loader",
+      "band": "M",
+      "file": "Exclusive/SpringLoader.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 6,
+      "startLines": 2
+    },
+    "squirrel": {
+      "id": "squirrel",
+      "band": "L",
+      "file": "Exclusive/Squirrel.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "other"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "squirrel_archer": {
+      "id": "squirrel_archer",
+      "band": "J",
+      "file": "Exclusive/SquirrelArcher.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 1,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "staff_of_fire": {
+      "id": "staff_of_fire",
+      "band": "J",
+      "file": "Exclusive/StaffofFire.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "steel_dragon": {
+      "id": "steel_dragon",
+      "band": "M",
+      "file": "Exclusive/SteelDragon.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "stone_armor": {
+      "id": "stone_armor",
+      "band": "M",
+      "file": "Exclusive/StoneArmor.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 2
+    },
+    "stone_badge": {
+      "id": "stone_badge",
+      "band": "L",
+      "file": "Exclusive/StoneBadge.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "stone_gloves": {
+      "id": "stone_gloves",
+      "band": "M",
+      "file": "Exclusive/StoneGloves.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 4
+    },
+    "stone_golem": {
+      "id": "stone_golem",
+      "band": "J",
+      "file": "Exclusive/StoneGolem.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onPreCombatStart",
+        "onDealtDamage",
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "sun_armor": {
+      "id": "sun_armor",
+      "band": "N",
+      "file": "Exclusive/SunArmor.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 6,
+      "startLines": 3
+    },
+    "tesla_coil": {
+      "id": "tesla_coil",
+      "band": "L",
+      "file": "Exclusive/TeslaCoil.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 8,
+      "startLines": 0
+    },
+    "thornbloom": {
+      "id": "thornbloom",
+      "band": "J",
+      "file": "Exclusive/Thornbloom.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "thornburst": {
+      "id": "thornburst",
+      "band": "L",
+      "file": "Exclusive/Thornburst.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 7,
+      "startLines": 0
+    },
+    "thorn_elemental": {
+      "id": "thorn_elemental",
+      "band": "L",
+      "file": "Exclusive/ThornElemental.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "thorn_shortbow": {
+      "id": "thorn_shortbow",
+      "band": "J",
+      "file": "Exclusive/ThornShortbow.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "thors_hammer": {
+      "id": "thors_hammer",
+      "band": "J",
+      "file": "Exclusive/ThorsHammer.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "thunder_drake": {
+      "id": "thunder_drake",
+      "band": "J",
+      "file": "Exclusive/ThunderDrake.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "time_dilator": {
+      "id": "time_dilator",
+      "band": "L",
+      "file": "Exclusive/TimeDilator.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 15,
+      "startLines": 0
+    },
+    "time_melting": {
+      "id": "time_melting",
+      "band": "M",
+      "file": "Exclusive/TimeMelting.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "toad": {
+      "id": "toad",
+      "band": "L",
+      "file": "Exclusive/Toad.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "toast_goobert": {
+      "id": "toast_goobert",
+      "band": "L",
+      "file": "Exclusive/ToastGoobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "toolbox": {
+      "id": "toolbox",
+      "band": "M",
+      "file": "Exclusive/Toolbox.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 4
+    },
+    "turtle": {
+      "id": "turtle",
+      "band": "O",
+      "file": "Exclusive/Turtle.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "ukulele": {
+      "id": "ukulele",
+      "band": "L",
+      "file": "Exclusive/Ukulele.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 14,
+      "startLines": 0
+    },
+    "ultima": {
+      "id": "ultima",
+      "band": "L",
+      "file": "Exclusive/Ultima.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 11,
+      "startLines": 0
+    },
+    "wand": {
+      "id": "wand",
+      "band": "L",
+      "file": "Exclusive/Wand.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 10,
+      "startLines": 0
+    },
+    "wand_of_dissonance": {
+      "id": "wand_of_dissonance",
+      "band": "L",
+      "file": "Exclusive/WandofDissonance.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 9,
+      "startLines": 0
+    },
+    "war_scythe": {
+      "id": "war_scythe",
+      "band": "J",
+      "file": "Exclusive/WarScythe.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "water_elemental": {
+      "id": "water_elemental",
+      "band": "J",
+      "file": "Exclusive/WaterElemental.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "wisdom_puppy": {
+      "id": "wisdom_puppy",
+      "band": "L",
+      "file": "Exclusive/WisdomPuppy.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "wisp": {
+      "id": "wisp",
+      "band": "L",
+      "file": "Exclusive/Wisp.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 12,
+      "startLines": 0
+    },
+    "wolf_emblem": {
+      "id": "wolf_emblem",
+      "band": "L",
+      "file": "Exclusive/WolfEmblem.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 6,
+      "startLines": 0
+    },
+    "wrench": {
+      "id": "wrench",
+      "band": "J",
+      "file": "Exclusive/Wrench.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "falcon_blade": {
+      "id": "falcon_blade",
+      "band": "M",
+      "file": "FalconBlade.gd",
+      "family": "synergy_aura",
+      "kind": "pattern",
+      "template": "falcon_blade",
+      "reasons": [
+        "haste aura + multi hit"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 2,
+      "cdLines": 18,
+      "startLines": 3
+    },
+    "fancy_fencing_rapier": {
+      "id": "fancy_fencing_rapier",
+      "band": "J",
+      "file": "FancyFencingRapier.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "fanfare": {
+      "id": "fanfare",
+      "band": "K",
+      "file": "Fanfare.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 14,
+      "startLines": 0
+    },
+    "fanny_pack": {
+      "id": "fanny_pack",
+      "band": "O",
+      "file": "FannyPack.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 10
+    },
+    "flute": {
+      "id": "flute",
+      "band": "K",
+      "file": "Flute.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 14,
+      "startLines": 0
+    },
+    "fly_agaric": {
+      "id": "fly_agaric",
+      "band": "K",
+      "file": "FlyAgaric.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "garlic": {
+      "id": "garlic",
+      "band": "K",
+      "file": "Garlic.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 0
+    },
+    "amethyst": {
+      "id": "amethyst",
+      "band": "K",
+      "file": "Gems/Amethyst.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "corrupted_crystal": {
+      "id": "corrupted_crystal",
+      "band": "K",
+      "file": "Gems/CorruptedCrystal.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "emerald": {
+      "id": "emerald",
+      "band": "K",
+      "file": "Gems/Emerald.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "lump_of_coal": {
+      "id": "lump_of_coal",
+      "band": "K",
+      "file": "Gems/LumpofCoal.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "ruby": {
+      "id": "ruby",
+      "band": "L",
+      "file": "Gems/Ruby.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "sapphire": {
+      "id": "sapphire",
+      "band": "L",
+      "file": "Gems/Sapphire.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "gingerbread_man": {
+      "id": "gingerbread_man",
+      "band": "M",
+      "file": "GingerbreadMan.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 14,
+      "startLines": 2
+    },
+    "gloves_of_haste": {
+      "id": "gloves_of_haste",
+      "band": "M",
+      "file": "GlovesofHaste.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "goobert": {
+      "id": "goobert",
+      "band": "K",
+      "file": "Goobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 1,
+      "startLines": 0
+    },
+    "hammer": {
+      "id": "hammer",
+      "band": "J",
+      "file": "Hammer.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "healing_herbs": {
+      "id": "healing_herbs",
+      "band": "N",
+      "file": "HealingHerbs.gd",
+      "family": "start_buff",
+      "kind": "trivial",
+      "template": "start_regen",
+      "reasons": [
+        "regen+consume"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "heart_container": {
+      "id": "heart_container",
+      "band": "K",
+      "file": "HeartContainer.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "heart_of_darkness": {
+      "id": "heart_of_darkness",
+      "band": "K",
+      "file": "HeartofDarkness.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "hero_longsword": {
+      "id": "hero_longsword",
+      "band": "M",
+      "file": "HeroLongsword.gd",
+      "family": "synergy_aura",
+      "kind": "pattern",
+      "template": "hero_longsword",
+      "reasons": [
+        "damage aura"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "hero_sword": {
+      "id": "hero_sword",
+      "band": "M",
+      "file": "HeroSword.gd",
+      "family": "synergy_aura",
+      "kind": "pattern",
+      "template": "hero_longsword",
+      "reasons": [
+        "damage aura"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "holy_armor": {
+      "id": "holy_armor",
+      "band": "N",
+      "file": "HolyArmor.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 5
+    },
+    "holy_spear": {
+      "id": "holy_spear",
+      "band": "I",
+      "file": "HolySpear.gd",
+      "family": "weapon_base",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_late"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "hungry_blade": {
+      "id": "hungry_blade",
+      "band": "N",
+      "file": "HungryBlade.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "jynx_torquilla": {
+      "id": "jynx_torquilla",
+      "band": "K",
+      "file": "Jynxtorquilla.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 8,
+      "startLines": 0
+    },
+    "leather_armor": {
+      "id": "leather_armor",
+      "band": "O",
+      "file": "LeatherArmor.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "leather_helm": {
+      "id": "leather_helm",
+      "band": "O",
+      "file": "LeatherHelm.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 1
+    },
+    "light_goobert": {
+      "id": "light_goobert",
+      "band": "K",
+      "file": "LightGoobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 8,
+      "startLines": 0
+    },
+    "lucky_bow": {
+      "id": "lucky_bow",
+      "band": "O",
+      "file": "LuckyBow.gd",
+      "family": "unique",
+      "kind": "trivial",
+      "template": "double_strike",
+      "reasons": [
+        "double dealDamage"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 2,
+      "cdLines": 7,
+      "startLines": 2
+    },
+    "lucky_clover": {
+      "id": "lucky_clover",
+      "band": "O",
+      "file": "LuckyClover.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "lucky_piggy": {
+      "id": "lucky_piggy",
+      "band": "M",
+      "file": "LuckyPiggy.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "magic_staff": {
+      "id": "magic_staff",
+      "band": "J",
+      "file": "MagicStaff.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "magic_torch": {
+      "id": "magic_torch",
+      "band": "J",
+      "file": "MagicTorch.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "manathirst": {
+      "id": "manathirst",
+      "band": "J",
+      "file": "Manathirst.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "mr_struggles": {
+      "id": "mr_struggles",
+      "band": "K",
+      "file": "MrStruggles.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "pan": {
+      "id": "pan",
+      "band": "I",
+      "file": "Pan.gd",
+      "family": "weapon_base",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "piggybank": {
+      "id": "piggybank",
+      "band": "N",
+      "file": "Piggybank.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "pineapple": {
+      "id": "pineapple",
+      "band": "L",
+      "file": "Pineapple.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "platin_customer_card": {
+      "id": "platin_customer_card",
+      "band": "O",
+      "file": "PlatinCustomerCard.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 1
+    },
+    "pocket_sand": {
+      "id": "pocket_sand",
+      "band": "O",
+      "file": "PocketSand.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "poison_bow": {
+      "id": "poison_bow",
+      "band": "I",
+      "file": "PoisonBow.gd",
+      "family": "basic_weapon",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 1,
+      "cdLines": 7,
+      "startLines": 0
+    },
+    "poison_dagger": {
+      "id": "poison_dagger",
+      "band": "J",
+      "file": "PoisonDagger.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "poison_goobert": {
+      "id": "poison_goobert",
+      "band": "L",
+      "file": "PoisonGoobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "present": {
+      "id": "present",
+      "band": "O",
+      "file": "Present.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "protective_purse": {
+      "id": "protective_purse",
+      "band": "O",
+      "file": "ProtectivePurse.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 5
+    },
+    "pumpkin": {
+      "id": "pumpkin",
+      "band": "J",
+      "file": "Pumpkin.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage"
+      ],
+      "dealCount": 1,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "rainbow_goobert": {
+      "id": "rainbow_goobert",
+      "band": "L",
+      "file": "RainbowGoobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "poison",
+        "blind",
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 8,
+      "startLines": 0
+    },
+    "rainbow_goobert_ranger": {
+      "id": "rainbow_goobert_ranger",
+      "band": "L",
+      "file": "RainbowGoobertRanger.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 8,
+      "startLines": 0
+    },
+    "rib_saw_blade": {
+      "id": "rib_saw_blade",
+      "band": "J",
+      "file": "RibSawBlade.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "ruby_chonk": {
+      "id": "ruby_chonk",
+      "band": "J",
+      "file": "RubyChonk.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage"
+      ],
+      "dealCount": 1,
+      "cdLines": 16,
+      "startLines": 0
+    },
+    "ruby_egg": {
+      "id": "ruby_egg",
+      "band": "O",
+      "file": "RubyEgg.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 4,
+      "startLines": 1
+    },
+    "ruby_whelp": {
+      "id": "ruby_whelp",
+      "band": "I",
+      "file": "RubyWhelp.gd",
+      "family": "weapon_base",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heat",
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "shovel": {
+      "id": "shovel",
+      "band": "J",
+      "file": "Shovel.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "blind",
+        "onhit"
+      ],
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "spear": {
+      "id": "spear",
+      "band": "I",
+      "file": "Spear.gd",
+      "family": "weapon_base",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_late"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "spectral_dagger": {
+      "id": "spectral_dagger",
+      "band": "J",
+      "file": "SpectralDagger.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "staff_of_unhealing": {
+      "id": "staff_of_unhealing",
+      "band": "I",
+      "file": "StaffofUnhealing.gd",
+      "family": "basic_weapon",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 13,
+      "startLines": 0
+    },
+    "steel_goobert": {
+      "id": "steel_goobert",
+      "band": "L",
+      "file": "SteelGoobert.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "stone": {
+      "id": "stone",
+      "band": "J",
+      "file": "Stone.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage",
+        "onPreDealDamage_late"
+      ],
+      "dealCount": 1,
+      "cdLines": 8,
+      "startLines": 0
+    },
+    "stone_helm": {
+      "id": "stone_helm",
+      "band": "O",
+      "file": "StoneHelm.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "other"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "thorn_bow": {
+      "id": "thorn_bow",
+      "band": "M",
+      "file": "ThornBow.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 1,
+      "cdLines": 7,
+      "startLines": 2
+    },
+    "thorn_whip": {
+      "id": "thorn_whip",
+      "band": "J",
+      "file": "ThornWhip.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "torch": {
+      "id": "torch",
+      "band": "J",
+      "file": "Torch.gd",
+      "family": "on_hit",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "onhit",
+        "params"
+      ],
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "vampiric_armor": {
+      "id": "vampiric_armor",
+      "band": "N",
+      "file": "VampiricArmor.gd",
+      "family": "start_buff",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 3
+    },
+    "vampiric_gloves": {
+      "id": "vampiric_gloves",
+      "band": "L",
+      "file": "VampiricGloves.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 6,
+      "startLines": 0
+    },
+    "villain_sword": {
+      "id": "villain_sword",
+      "band": "I",
+      "file": "VillainSword.gd",
+      "family": "weapon_base",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params",
+        "pre_combat"
+      ],
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 0
+    },
+    "walrus_tusk": {
+      "id": "walrus_tusk",
+      "band": "O",
+      "file": "WalrusTusk.gd",
+      "family": "unique",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 2
+    },
+    "whetstone": {
+      "id": "whetstone",
+      "band": "M",
+      "file": "Whetstone.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    },
+    "wolpertinger": {
+      "id": "wolpertinger",
+      "band": "L",
+      "file": "Wolpertinger.gd",
+      "family": "custom_cd",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 0,
+      "cdLines": 2,
+      "startLines": 0
+    },
+    "wooden_sword": {
+      "id": "wooden_sword",
+      "band": "I",
+      "file": "WoodenSword.gd",
+      "family": "basic_weapon",
+      "kind": "trivial",
+      "template": "basic_cd",
+      "reasons": [
+        "stamina→dealDamage"
+      ],
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "dealCount": 1,
+      "cdLines": 3,
+      "startLines": 0
+    },
+    "yggdrasil_leaf": {
+      "id": "yggdrasil_leaf",
+      "band": "M",
+      "file": "YggdrasilLeaf.gd",
+      "family": "synergy_aura",
+      "kind": "complex",
+      "template": "basic_cd",
+      "reasons": [
+        "heal",
+        "aura",
+        "params"
+      ],
+      "overrides": [
+        "onCombatStart"
+      ],
+      "dealCount": 0,
+      "cdLines": 0,
+      "startLines": 3
+    }
+  }
+}

@@ -1,0 +1,121 @@
+---
+description: Audit pasted sim debug reports against game extract, not sim UI labels
+alwaysApply: true
+---
+
+# Sim debug reports vs the game
+
+When the user pastes `kind: "bpb-sim-debug"` JSON (or a screenshot of BPB’s combat log / damage-meter), **audit against the game** before treating the sim as correct.
+
+## Sources of truth
+
+Look in `tools/game-extract-full/` first:
+
+- Item script (`Items/**/*.gd`) — `getP("name")`, `onCombatStart`, `canAffect`
+- `Core/Character.gd` — damage, heal, vampirism, regen ticks
+- `Core/CombatLog.gd` + `Sheets/CSV/Interface.csv` — log line wording
+- `Core/CombatStatLogger.gd` + `Interface/DamageMeter/DamageMeter.gd` — Heal/Damage **tabs**
+- Catalog params in `scripts/_cache/game-items.json` (named keys + `p1`/`p2`)
+
+Do **not** assume sim event labels or our JSON grouping match in-game UI.
+
+## Heal tab (easy to get wrong)
+
+Game `heal(amount, origin)`:
+
+- **Vampirism** — `applyVampirism` → `heal(..., EventType.Vampirism)`. Meter row is **Vampirism**, not Torch/Broom.
+- **Regeneration** — tick `heal(..., EventType.Regeneration)`.
+- **Item heals** (Lovers lifesteal, potions, …) — `origin is Item` → that item’s name.
+- **Piggybank / max HP** — `giveMaxHealth` → TemporaryMaxHealth (“Gained maximum health”), **not** a Heal-tab regen row.
+
+Sim may still log `Torch: vampirism +N` for debugging. In a vs-game Heal-tab audit, compare **Vampirism total** (plus Regeneration / item heals), not per-weapon heal rows. Debug JSON may keep `byItem` under the Vampirism source.
+
+## Activations tab (easy to miss consume items)
+
+Game `Item.consume()` always calls `activate()` → `ItemMetrics.Activations` (bags skipped). Combat-start consume items (**Piggybank**, **Pocket Sand**, potions that `consume()`, …) **do** appear on the Activations tab with 1.
+
+Sim debug JSON:
+
+- `status.activations.player.sources` — per-item activate counts
+- `paramChecks` with `stack: "activations"` — consumed at start with **0** `type:"activate"` events (the meter bug we already hit)
+
+If those items are on the board and missing from `status.activations`, treat it as a sim bug, not “they don’t activate.”
+
+## CD-then-consume (easy to treat “After Xs” as every CD)
+
+Game `Item.onAfterEffectFinished()` **`deactivateCooldown()` + `consume()`** (default). `AmuletofFortune.gd` / backpack `Ruby.gd` do this after **one** `doCooldownEffect`. Tooltip `$t[After $cds:]` is the same string weapons use — **not** proof of a repeating bar.
+
+Live Activations tab = **1**. Sim looping the CD (Fortune 5–6 ticks) is a sim bug. CSV “After” does not decide this; the `.gd` call does.
+
+Debug JSON: `paramChecks` `expectedKey: "cd_then_consume"` if that item has **>1** `activate` or buff/heal ticks. List: `assets/data/sim-cd-then-consume.json` (from `npm run sim-inventory`). Do **not** treat grant size matching `buffs=2` as OK if it granted five times.
+
+## Stone ammo (easy to miss extra throws)
+
+Game `Items/Stone.gd`: `ammunition = 1` per fight. `doCooldownEffect` only throws if ammo ≥ 1, then decrements; last shot `consume()`s. `BagofStones.gd` `onPrepare` calls `setBagOfStones()` (`ammunition = 9000`) on **Tag.Stone** items in cells from `getCellsInLine(rotatedCells, Vector2.UP, 1)` — the cell **immediately above** the bag (yellow star overlay). Beside / bag-on-top does not count. Catalog bag shape has no `2` stars; do not use `basic_cd` as “scripted = correct.”
+
+Debug JSON: `paramChecks` with `expectedKey: "ammunition"` if Stone (or artifact stones) activate **more than once** without that bag star. `status.activations` 10 throws with no bag on the board is a sim bug.
+
+## Hungry Blade regen convert (easy to apply vamp too late)
+
+Game `Items/HungryBlade.gd` `onPreDealDamage_early`: on **hit**, spend regen and `giveVampirism` **before** damage is rolled and **before** `Character.applyVampirism`. Catalog Vampiric only grants the start stack.
+
+If the sim converts in `onDealtDamage` (after lifesteal), Hungry Blade heals `min(old stacks, dmg)` while the log already shows the new stack (timestamps). Heal tab and Unhealing then both drift.
+
+## Vampirism vs ranged (easy to miss Magic Staff)
+
+Game `Character.applyVampirism`: ranged sources still have `CanTriggerVampirism`, but heal is `min(stacks, round(damage * vampLimit))` with **`rangedVampirismLimit = 0`** (melee limit 1.0). `round(dmg * 0) = 0` → **no lifesteal**. Magic Staff is catalog **Ranged Weapon**; mana spend only adds damage. Same limit pattern for spikes (`rangedSpikesLimit = 0`).
+
+Debug JSON: `paramChecks` `expectedKey: "rangedVampirismLimit"` if a Ranged item logs `vampirism +N` heals. Those heals then Unheal — a false Unhealing trail.
+
+## Effect damage ≠ weapon vamp (easy to blame Holo Fire Lizard)
+
+Game `Item.dealEffectDamage` → `opponent.takeDamage` only (no `Character.dealDamage` → `applyVampirism`). `DamageSource.effectFlags` also omit `CanTriggerVampirism` / `CanTriggerSpikes`. Cards like **Holo Fire Lizard** must use the effect path (sim: `dealEffectDamage`), not `dealHit`. A logged `*: vampirism +N` on an effect card is a sim bug.
+
+## Same-DT fire order (easy to blame vamp math)
+
+Sim DT is **0.05s**. Interpolated `fireT` stamps can put Mecha Bat at 13.55 and Bloodthorne at 13.57 in the **same step**. Activations must run in **fireT order** (not board-list order). If a later weapon heals before an earlier pet’s `giveVampirism`, Heal-tab vamp looks “short” vs the log’s stack trail (`meleeVampirismLimit` false positive). Engine: `simulate.js` step queue sorts by `fireT`.
+
+## Vampirism cap vs stacks (easy to miss Hungry Blade)
+
+Game `Character.applyVampirism`: **`min(getVampirism(), round(damage * vampLimit))`**. Melee limit is **1.0**, so **1 stack + 3 damage → 1 heal**, not 3. Being catalog **Vampiric** only means the item *grants* stacks (Hungry Blade `onCombatStart`); it is not extra lifesteal on the hit.
+
+Do **not** treat Heal-tab “Vampirism 3.0” or `Hungry Blade: vampirism +3` as OK just because the weapon is Vampiric. `paramChecks` used to only flag **ranged** vamp heals and catalog **grant** amounts (`p1` = 1 stack at start) — heal-vs-live-stacks was untested. `ui.mismatches` only compared end buffs vs log, not heal size.
+
+Debug JSON: `paramChecks` / `ui.mismatches` `expectedKey: "meleeVampirismLimit"` if a vamp heal ≠ that min (after healing efficiency). Inflated vamp heals also inflate Unhealing.
+
+## Unhealing rounding (easy to treat ceil as a mistake)
+
+Game `Character.heal`: logged heal is `round(...)` first, then  
+`unhealing = ceil(amount * getUnhealing() * (1 + typedDamageFactors[Unhealing]))`.  
+**15% of 3 is 0.45 → ceil 1. 15% of 1 is 0.15 → ceil 1.** The game does not deal 0.45 or 0. Sim must `Math.ceil` per heal tick.
+
+Debug JSON: `unhealingMath` always has samples (`heal × rate = exact → ceil`). `paramChecks` stack `unhealing` flags if sim total ≠ that ceil (too high **or** too low). Do not “fix” Unhealing by using floor or the raw float.
+
+## Combat Log + Damage Meter (easy to miss)
+
+The in-page **Combat Log** and **Damage Meter** (stack tabs: Heat, Luck, Mana, …) only see **events**, not raw actor stacks.
+
+- `grantStacks` / `giveHeat` that never `events.push` a `buff`/`debuff` with `meta.stack` → end `summary.player.stacks.heat` can be 6 while the Heat tab says “No Heat gained” and the log has no “Gained Heat”.
+- **Combat HUD stat icons** (the % column: Unhealing, Healing, Effect damage, …) come from `summary.player.combatStats` / last snapshot — **not** stacks. Holo Fire Lizard `changeEffectDamageFactor` must bump `effectDmgFactor` and emit a `stat` event. Writing `effectDamageFactor` leaves the Effect-damage icon missing while vampirism/heal icons still show.
+- New debug JSON includes `ui.combatLog`, `ui.damageMeter`, `ui.hud`, `ui.mismatches`. **Read those first.** A HUD mismatch is a sim bug even if damage numbers look fine.
+- Heat is a **buff** in the game (meter Heat tab). Holo Fire Lizard (`HoloFireLizard.gd` `giveHeat(heat)` / named param `heat`, not JS `getP2()` which is `damfactor`).
+- `status.*` rollups keyed by catalog `itemId` still merge copies; meter keys by placement.
+
+## Block strip vs Damage Dealt (easy to miss Stone)
+
+Game `Item.removeBlock` (Stone `onPreDealDamage_late` → `removeBlock(getP1())`, p1 **blockremoval = 4**):
+
+- Extra strip runs **late in pre-deal**, **before** HP is reduced.
+- `loseStacks` amount is **negative**; `countDamage(-getAmount())` **adds** stripped block to the **Damage** metric.
+- The hit then uses remaining block as normal absorb. Labels / `dealtDamage` use full `damageRes.damage`, not `healthDamage`. Absorb on the hit does **not** go through `removeBlock`, so it is **not** extra meter.
+- Training dummy starts at **0 block**, so strip is a no-op and the extra Damage Dealt never shows. Use `?dummyBlock=8` (or similar) to test.
+
+Debug JSON: `paramChecks` `expectedKey: "blockremoval"` if Stone activated with dummy block 0 (untested) or dummy had block but no `meta.kind: "block_strip"` damage events.
+
+## What to do in the reply
+
+1. Compare `ui.mismatches` + Combat Log sample + each Damage Meter tab **and `ui.hud.player.icons`** vs GD (`giveHeat`, `changeEffectDamageFactor`, `giveMana`, …).
+2. Compare report numbers to GD + catalog params (`paramChecks`, `catalog[].params`).
+3. Call out sim-only presentation (weapon-attributed vamp heals, `start_max_hp` floors, wrong `getPName`).
+4. Prefer a dedicated port matching the `.gd` file over a generic handler.
+5. **Do not** empty `paramChecks` / `ui.mismatches` in report code to hide a miss — see [`docs/sim-debug-protocol.md`](docs/sim-debug-protocol.md) (Phase 259).

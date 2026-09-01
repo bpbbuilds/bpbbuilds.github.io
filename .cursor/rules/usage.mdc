@@ -1,0 +1,25 @@
+---
+description: Cut AI token waste without lowering work quality
+alwaysApply: true
+---
+
+# Usage (keep quality, cut waste)
+
+## Process
+
+- Prefer Agent for small, decision-locked tasks; Plan only for multi-file trade-offs or unclear scope
+- If an attached plan’s todos are already done in the repo, say so in 1–2 lines and stop — do not re-implement
+- Do not recreate todos that already exist; do not edit plan files unless asked
+- Search/read the few known files first; avoid broad explore agents for needle lookups
+- Reuse `js/shared/` modules (auth, premium, nav, skeleton) — do not invent parallel systems
+
+## Replies
+
+- Lead with the answer or status; no task restatement or process narration
+- Keep user-facing text short; expand only when asked or when trade-offs need a decision
+- Skip “what we didn’t do” and long test-plan essays unless the user needs them
+
+## Quality (do not weaken)
+
+- Still read before edit; match existing patterns; finish the requested work
+- Still follow purpose / design / supabase / project rules for real product decisions

@@ -1,0 +1,50 @@
+{
+  "phase": 267,
+  "note": "Shop/wearable noops match GD (shop/drop only). Chess pieces have no own CD; board AI is deferred. Puzzlebags were false noops and are ported.",
+  "shopNoCombat": [
+    { "id": "coins", "gd": null, "why": "currency; no Item combat script in extract" },
+    { "id": "customer_card", "gd": "Items/CustomerCard.gd", "why": "onCalcTradeChance only" },
+    { "id": "lootbox", "gd": "Items/Exclusive/Lootbox.gd", "why": "onDropped generateItems (shop)" },
+    { "id": "amulet_unidentified", "gd": null, "why": "shop unidentified; no combat overrides in inventory" },
+    { "id": "box_of_riches", "gd": "Items/BoxofRiches.gd", "why": "onShopEntered gems" },
+    { "id": "unidentified_skill", "gd": null, "why": "shop skill; no combat overrides in inventory" },
+    { "id": "leather_bag", "gd": null, "why": "generic bag container; no combat script" },
+    { "id": "box_of_prosperity", "gd": "Items/Exclusive/BoxofProsperity.gd", "why": "onShopEntered gem if godlies inside" },
+    { "id": "engineer_bag_2", "gd": null, "why": "shop bag; no combat overrides in inventory" },
+    { "id": "random_loadout_bag", "gd": null, "why": "shop bag; no combat overrides in inventory" }
+  ],
+  "wearablesShopOnly": [
+    { "id": "hypercube", "gd": "Items/Exclusive/Hypercube.gd", "why": "onDropped → cubes" },
+    { "id": "snowman", "gd": "Items/Exclusive/Snowman.gd", "why": "onDropped → snowballs" },
+    { "id": "furcifer_prime", "gd": "Items/Exclusive/FurciferPrime.gd", "why": "shop sales / gated roll; onSwitchToCombat clears active" },
+    { "id": "employee_uniform", "gd": "Items/Exclusive/EmployeeUniform.gd", "why": "onCalcTradeChance only" }
+  ],
+  "chessPieces": [
+    "black_bishop",
+    "black_king",
+    "black_knight",
+    "black_pawn",
+    "black_queen",
+    "black_rook",
+    "white_bishop",
+    "white_king",
+    "white_knight",
+    "white_pawn",
+    "white_queen",
+    "white_rook"
+  ],
+  "chessBoard": {
+    "id": "chess_board",
+    "gd": "Items/Exclusive/ChessBoard.gd",
+    "gameCombat": true,
+    "sim": "deferred_ai",
+    "why": "doCooldownEffect captures/moves ChessPiece; dummy sim does not run that AI"
+  },
+  "portedFalseNoops": [
+    { "id": "puzzlebag_s", "gd": "Items/Exclusive/PuzzlebagS.gd" },
+    { "id": "puzzlebag_z", "gd": "Items/Exclusive/PuzzlebagZ.gd" },
+    { "id": "puzzlebag_t", "gd": "Items/Exclusive/PuzzlebagT.gd" },
+    { "id": "puzzlebag_j", "gd": "Items/Exclusive/PuzzlebagJ.gd" },
+    { "id": "bag_of_stones", "gd": "Items/BagofStones.gd" }
+  ]
+}

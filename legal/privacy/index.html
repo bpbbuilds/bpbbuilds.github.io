@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — Smojo Builds</title>
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/shared.css" />
+  <link rel="stylesheet" href="../../js/pages/legal/legal.css" />
+</head>
+<body class="page-legal" data-root="../../">
+  <div id="site-nav"></div>
+
+  <main id="main" class="legal-main" aria-label="Privacy Policy">
+    <article class="legal-card">
+      <h1>Privacy Policy</h1>
+      <p class="legal-note">
+        Stub privacy notice for a fan site. Not legal advice. We may update this page as auth, ads,
+        or paid features land.
+      </p>
+      <p class="legal-meta">Last updated: August 2026</p>
+
+      <h2>What this site stores</h2>
+      <p>
+        Core game catalog and published builds live in our Supabase project (database + related
+        storage). We do not run third-party ads on these pages. Accounts use <strong>Discord
+        OAuth</strong> via Supabase Auth (no email/password signup on this site).
+      </p>
+      <ul>
+        <li><strong>Builds</strong> — title, tags, board placements, route notes, optional video link, moderation flags, author link</li>
+        <li><strong>Profiles</strong> — Discord user id, display name, avatar URL, optional bound vote key, owner flag (for site admins)</li>
+        <li><strong>Votes</strong> — anonymous <code>voter_key</code> in local storage + server vote rows; bound to your profile after Discord sign-in when possible</li>
+        <li><strong>Local drafts</strong> — create-page drafts may stay in your browser (localStorage) until you submit or clear them</li>
+        <li><strong>Combat sandbox</strong> — dummy fights on <code>/sim/</code> run in your browser. We do not store fight results on the server. The page may keep a mode preference in localStorage (<code>bpb-sim-mode</code>)</li>
+      </ul>
+
+      <h2>Discord accounts</h2>
+      <p>
+        Signing in with Discord creates a Supabase session and a public profile page at
+        <code>/u/{discord_id}/</code>. We store the Discord snowflake, display name, and avatar URL
+        so we can credit builds and show your persona. Submitting a build requires a signed-in
+        Discord session. You can sign out from the site nav. Deletion requests for a profile or
+        published builds: contact us via Discord or YouTube (see Contact).
+      </p>
+
+      <h2>Steam history.db uploads</h2>
+      <p>
+        If you attach a Steam <code>history.db</code> run in the creator, we may store run metadata
+        needed to show a Real build and round scrubber — for example board layouts per round,
+        win/loss markers, class/league display fields, and related item placements. We use this to
+        power the site experience, not to sell your history.
+      </p>
+      <ul>
+        <li><strong>Retention</strong> — kept with the draft/build while the history remains attached</li>
+        <li><strong>Clear / unlock</strong> — clearing run history on create removes the attached history from that draft (Real → Feasible)</li>
+        <li><strong>Deletion requests</strong> — contact us via Discord or YouTube to request removal of a published build, attached history, or account profile data</li>
+      </ul>
+
+      <h2>Votes</h2>
+      <p>
+        Likes/dislikes use a key in your browser plus server-side vote records. Before sign-in the
+        key is anonymous (<code>bpb-voter-id</code>). After Discord sign-in we bind that key to your
+        profile when possible so votes follow your account across devices. Clearing site data before
+        binding can create a new key.
+      </p>
+
+      <h2>Hosting &amp; logs</h2>
+      <p>
+        The static site is hosted on GitHub Pages (and may sit behind a CDN). Standard hosting and
+        database provider logs may exist for security and reliability.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions:
+        <a href="https://discord.gg/WgR5kSJNF7" target="_blank" rel="noopener noreferrer">Discord</a>
+        or
+        <a href="https://www.youtube.com/@SmojoWasTaken" target="_blank" rel="noopener noreferrer">YouTube</a>.
+      </p>
+      <p class="legal-meta">
+        Related: <a href="../about/">About</a> · <a href="../terms/">Terms</a>
+      </p>
+    </article>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script type="module" src="../../js/pages/legal/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+---
+description: BPB Website core stack, folder layout, and JS conventions
+alwaysApply: true
+---
+
+# BPB Website — project
+
+## Stack
+
+- Static site on **GitHub Pages**
+- **Supabase** for database + item image Storage
+- Vanilla HTML/JS + **Tailwind** (page-specific) + shared/theme CSS
+- Shared UI in `js/shared/`; page scripts in `js/pages/<page>/`
+
+## Folder layout
+
+```text
+BPBWebsite/
+  index.html
+  builds/<slug>/index.html
+  js/
+    shared/
+      nav.js                 # site nav — imported by every page entry
+      footer.js              # site footer — imported by every page entry
+      tooltip.js
+      skeleton.js            # parchment loading bars/blocks
+      …
+    pages/<page>/index.js    # + section modules
+  css/
+    theme.css                # how the site looks (tokens, atmosphere)
+    shared.css               # optional shared layout helpers (not nav/footer markup)
+  assets/fonts/
+  assets/icons/
+  docs/
+  .env
+```
+
+Page-specific look: **Tailwind in the HTML** (or small page helpers).  
+Global look: `theme.css` (+ optional `shared.css`).  
+**Nav + footer:** `js/shared/nav.js` and `js/shared/footer.js` — each page `index.js` imports and mounts them.  
+Complex widgets (tooltip): module CSS next to the JS.
+
+## JavaScript rules
+
+- **Max ~500 lines per `.js` file** — split earlier if a file is doing multiple jobs
+- Each file = **one page section or one feature** (not a dumping ground)
+- Related modules live in a **folder** together (don’t leave `mod1.js`/`mod2.js` loose at repo root)
+- Every page has **`js/pages/<page>/index.js`** as the home/entry file that imports and starts the other modules for that page
+- The HTML page loads **only that `index.js`** (module script), not every section file individually
+- Shared code stays in `js/shared/` — including **`nav.js`** and **`footer.js`**; every page entry imports and mounts them
+- Pages import from shared — never copy-paste nav/footer markup into each HTML file
+
+Example:
+
+```html
+<script type="module" src="/js/pages/home/index.js"></script>
+```
+
+```js
+// js/pages/home/index.js
+import { initNav } from '../../shared/nav.js';
+import { initFooter } from '../../shared/footer.js';
+import { initFeaturedOp } from './featured-op.js';
+
+initNav();
+initFooter();
+initFeaturedOp();
+```
+
+Detail also in `docs/file-structure.md`.
+
+## Architecture rules
+
+- **Data-driven UI**: store item/build facts in Supabase; render with shared components
+- **Never** ship one HTML file per item
+- **Never** store finished tooltip HTML in the database
+- Schema source of truth: `docs/db/tables.md` and `docs/db/tables/*`
+- Table create order: `items` → combinations → `builds` → `build_placements` → `profiles`
+
+## Do not
+
+- Commit `.env` or secrets
+- Recreate throwaway `_poc-assets` research dumps in the repo
+- Duplicate item stats onto builds/placements/recipes
+- Put page-specific logic in `js/shared/`

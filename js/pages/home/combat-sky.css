@@ -1,0 +1,192 @@
+/* Fixed combat day→night backdrop — scrubbed by scroll (homepage only) */
+
+.combat-sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #000533;
+}
+
+.combat-sky[hidden] {
+  display: none !important;
+}
+
+.combat-sky__stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  transform: translate(-50%, -50%) scale(var(--combat-sky-scale, 1));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Sky: grayscale banding × modulate color */
+.combat-sky__sky {
+  position: absolute;
+  left: 0;
+  top: -35px;
+  width: 1920px;
+  height: 1667px;
+  background-color: var(--sky-mod, #2ca4ff);
+  transform: translateY(var(--sky-y, -400px));
+  will-change: transform, background-color;
+}
+
+.combat-sky__sky::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(80, 80, 80, 0.35) 21%,
+    rgba(255, 255, 255, 0.55) 42%,
+    rgba(90, 90, 90, 0.3) 65%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* Centered sprite layers (Godot Sprite origin) */
+.combat-sky__spr {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: var(--h);
+  transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(var(--sx, 1), var(--sy, 1));
+  transform-origin: center center;
+  background-color: var(--mod, #fff);
+  /* mask-image set inline (document-relative URL); size/mode here */
+  -webkit-mask-source-type: alpha;
+  mask-mode: alpha;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  opacity: var(--a, 1);
+  will-change: left, top, opacity, background-color;
+}
+
+/* Sun / moon / stars keep painted color — use img, not mask tint */
+.combat-sky__celestial {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: var(--h);
+  transform: translate(-50%, -50%) scale(var(--sx, 1), var(--sy, 1));
+  transform-origin: center center;
+  opacity: var(--a, 1);
+  will-change: left, top, opacity;
+  pointer-events: none;
+}
+
+.combat-sky__celestial img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.combat-sky__star img {
+  filter: sepia(0.35) saturate(1.4) brightness(1.05);
+}
+
+/* Windmill: tower + pivoting blades */
+.combat-sky__windmill {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: var(--h);
+  transform: translate(-50%, -50%) scale(var(--sx, 1), var(--sy, 1));
+  transform-origin: center center;
+}
+
+.combat-sky__windmill-tower {
+  position: absolute;
+  inset: 0;
+  background-color: var(--mod, #c98b3e);
+  /* mask-image set inline */
+  -webkit-mask-source-type: alpha;
+  mask-mode: alpha;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.combat-sky__blade-pivot {
+  position: absolute;
+  left: calc(50% - 3px);
+  top: calc(50% - 55px);
+  width: 0;
+  height: 0;
+  transform: rotate(21.2deg) scale(0.89, 1);
+  transform-origin: 0 0;
+}
+
+.combat-sky__blades {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 137px;
+  height: 131px;
+  margin-left: -68.5px;
+  margin-top: -65.5px;
+  background-color: var(--blade-mod, #edd696);
+  /* mask-image set inline */
+  -webkit-mask-source-type: alpha;
+  mask-mode: alpha;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation: combat-sky-spin 16.67s linear infinite;
+  will-change: transform, background-color;
+}
+
+@keyframes combat-sky-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.combat-sky__speckles {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  transform: translate(-50%, -50%);
+  /* background-image set inline (document-relative) */
+  background-size: cover;
+  background-position: center;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .combat-sky__blades {
+    animation: none;
+  }
+}
+
+/* Content above fixed sky — do NOT restyle #site-nav (must stay position:fixed) */
+body.page-home #main,
+body.page-home #site-footer {
+  position: relative;
+  z-index: 1;
+}

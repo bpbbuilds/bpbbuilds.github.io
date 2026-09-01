@@ -1,0 +1,216 @@
+{
+  "name": "history-3704",
+  "slug": "history-3704",
+  "source": "author_history",
+  "seed": 42,
+  "durationSec": 30,
+  "placements": [
+    {
+      "id": "puzzlebox",
+      "key": "6:0:403:3:3:0",
+      "x": 3,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "6:1:11:3:2:0",
+      "x": 3,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "6:2:11:5:5:3",
+      "x": 5,
+      "y": 5,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "puzzlebag_l",
+      "key": "6:3:404:5:2:3",
+      "x": 5,
+      "y": 2,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "arcane_intellect",
+      "key": "6:4:414:4:3:0",
+      "x": 4,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "6:5:11:7:4:0",
+      "x": 7,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "puzzlebag_l",
+      "key": "6:6:404:3:0:0",
+      "x": 3,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "battery",
+      "key": "6:7:442:3:1:2",
+      "x": 3,
+      "y": 1,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "resistor",
+      "key": "6:8:443:3:2:0",
+      "x": 3,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "piggybank",
+      "key": "6:9:9:7:4:3",
+      "x": 7,
+      "y": 4,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "cog_badge",
+      "key": "6:10:515:5:2:3",
+      "x": 5,
+      "y": 2,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "blueberries",
+      "key": "6:11:22:5:3:0",
+      "x": 5,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "cog",
+      "key": "6:12:444:4:6:0",
+      "x": 4,
+      "y": 6,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "piggybank",
+      "key": "6:13:9:8:4:1",
+      "x": 8,
+      "y": 4,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "cog",
+      "key": "6:14:444:6:2:0",
+      "x": 6,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "book_of_darkness",
+      "key": "6:15:330:4:4:0",
+      "x": 4,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "book_of_darkness",
+      "key": "6:16:330:5:4:0",
+      "x": 5,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "wand",
+      "key": "6:17:422:6:3:0",
+      "x": 6,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "wand",
+      "key": "6:18:422:4:1:0",
+      "x": 4,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "fanny_pack",
+      "key": "6:19:26:2:5:0",
+      "x": 2,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "fanny_pack",
+      "key": "6:20:26:2:6:2",
+      "x": 2,
+      "y": 6,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "serpent_staff",
+      "key": "6:21:258:3:3:0",
+      "x": 3,
+      "y": 3,
+      "r": 0,
+      "gems": [
+        "chipped_amethyst"
+      ]
+    }
+  ],
+  "expect": {
+    "playerEndHpMin": null,
+    "playerEndHpMax": null,
+    "dummyEndHpMin": null,
+    "dummyEndHpMax": null
+  },
+  "live": {
+    "playerEndHp": null,
+    "dummyEndHp": null,
+    "playerStamina": null,
+    "stacks": null,
+    "capturedAt": null,
+    "notes": null,
+    "playerMaxHp": null,
+    "fightDurationSec": null,
+    "opponentClass": null,
+    "playerEndHpMin": null,
+    "playerEndHpMax": null,
+    "opponentHpComparable": false
+  },
+  "meta": {
+    "focusItemIds": [
+      "wand",
+      "book_of_darkness",
+      "puzzlebox"
+    ],
+    "heroClass": "Mage",
+    "runId": 3704
+  }
+}

@@ -1,0 +1,754 @@
+/* Shared backpack grid — Itemiary parchment look */
+
+.bpb-bg {
+  --bpb-bg-cell: 34px;
+  --bpb-bg-cols: 16;
+  --bpb-bg-rows: 8;
+  --bpb-bg-line: rgba(70, 48, 30, 0.28);
+  /* Match BPB Builds scrollbar palette */
+  --bpb-bg-scroll-thumb: #eac914;
+  --bpb-bg-scroll-track: #816230;
+  --bpb-bg-scroll-frame: #472a24;
+  /* Gap between board and scrollbar (padding on the scroller is eaten by the bar) */
+  --bpb-bg-scroll-gap: 14px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Keep clientWidth stable when overflow appears — otherwise fillWidth cellPx
+   * shifts and the whole Itemiary grid jumps after AppearInLibrary. */
+  scrollbar-gutter: stable;
+  border-radius: 0;
+  font-size: var(--bpb-bg-cell);
+  line-height: 0;
+  background: none;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  /*
+   * Critical: leave standard scrollbar-* as auto (same as BPB Builds).
+   * Setting scrollbar-color on Chrome/Windows keeps classic OS arrows and
+   * paints them with the thumb color — that's the yellow triangle we saw.
+   */
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+
+/* Itemiary: always take the scrollbar lane so filter/pack height changes
+ * cannot resize the cell grid mid/post AppearInLibrary. */
+.bpb-bg--itemiary {
+  overflow-y: scroll;
+  overflow-anchor: none;
+}
+
+/* Catalog only — kill press-and-hold blue selection / native image drag. */
+.bpb-bg--itemiary,
+.bpb-bg--itemiary .bpb-bg__item,
+.bpb-bg--itemiary .bpb-bg__hit,
+.bpb-bg--itemiary .bpb-bg__sprite {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.bpb-bg--itemiary .bpb-bg__sprite {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+.bpb-bg--itemiary .bpb-bg__item,
+.bpb-bg--itemiary .bpb-bg__under-item {
+  overflow-anchor: none;
+}
+
+/*
+ * BPB Builds pattern (webkit only): custom track/thumb, no button rules.
+ * Styling ::-webkit-scrollbar switches Chromium off the classic arrow chrome.
+ */
+.bpb-bg::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.bpb-bg::-webkit-scrollbar-track {
+  border: 3px solid var(--bpb-bg-scroll-frame);
+  border-radius: 16px;
+  background: var(--bpb-bg-scroll-track);
+}
+
+.bpb-bg::-webkit-scrollbar-thumb {
+  border: 2px solid var(--bpb-bg-scroll-frame);
+  border-radius: 20px;
+  background-color: var(--bpb-bg-scroll-thumb);
+}
+
+.bpb-bg__board {
+  position: relative;
+  margin: 0 var(--bpb-bg-scroll-gap) 0 0;
+  max-width: calc(100% - var(--bpb-bg-scroll-gap));
+  box-sizing: border-box;
+  background: none;
+  box-shadow: none;
+  border: 0;
+  outline: none;
+}
+
+.bpb-bg__lines {
+  display: none;
+}
+
+/* Rarity footprint tiles — board layer under every sprite (bags included). */
+.bpb-bg__under {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* Per-item rarity group — moved with the item; children use relative em cells. */
+.bpb-bg__under-item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* width/height set inline from body AABB (needed for appear scale origin) */
+  overflow: visible;
+  pointer-events: none;
+}
+
+.bpb-bg__item--parked,
+.bpb-bg__under-item--parked {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.bpb-bg__item--parked .bpb-bg__hit {
+  pointer-events: none;
+}
+
+.bpb-bg__items {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: visible;
+}
+
+/*
+ * Soft bag fabric (FilledSlot) — build/placed boards only.
+ * Above bag Icons so overhanging pouch art cannot stamp hard outlines over
+ * neighbor seams; below gear (z ≥ 10000). Itemiary uses per-bag .bpb-bg__bag-slots.
+ */
+.bpb-bg__fabric {
+  position: absolute;
+  inset: 0;
+  z-index: 5000;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.bpb-bg__board,
+.bpb-bg__items,
+.bpb-bg__item,
+.bpb-bg__hit {
+  overflow: visible;
+}
+
+.bpb-bg__item {
+  position: absolute;
+  /* AABB is layout-only — hits go through holes to neighbors (Phoenix/Cupcake) */
+  pointer-events: none;
+  /* No content-visibility: stars/diamonds sit outside the body AABB and get clipped */
+}
+
+/* Unrotated local layout; spun to FaceDirection (Godot Item.rotation) */
+.bpb-bg__spin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  pointer-events: none;
+  overflow: visible;
+  /* Face spin is JS-timed (Item.rotateTo 0.15s) — never CSS-ease on top */
+  transition: none;
+}
+
+/* BuildViewer shadow layer — world-space SE offset (see item-pieces.js). Hidden in Itemiary. */
+.bpb-bg__spin--shadow {
+  z-index: 0;
+  display: none;
+}
+
+body.page-build .bpb-bg__item:not(.bpb-bg__item--parked) .bpb-bg__spin--shadow,
+body.page-create .bpb-bg__item:not(.bpb-bg__item--parked) .bpb-bg__spin--shadow,
+body.page-builds .bpb-bg__item:not(.bpb-bg__item--parked) .bpb-bg__spin--shadow {
+  display: block;
+}
+
+.bpb-bg__sprite--shadow {
+  opacity: 0.5;
+  filter: brightness(0);
+}
+
+/*
+ * Bags cast the same BuildViewer silhouette shadow as items (Item.initBuildViewer).
+ * Soft SE fringe under the upper bag is the main contact cue between overlapping pouches.
+ */
+body.page-build .bpb-bg__item--bag .bpb-bg__sprite--shadow,
+body.page-create .bpb-bg__item--bag .bpb-bg__sprite--shadow,
+body.page-builds .bpb-bg__item--bag .bpb-bg__sprite--shadow {
+  opacity: 0.45;
+  filter: brightness(0) blur(0.75px);
+}
+
+.bpb-bg__spin .bpb-bg__hit,
+.bpb-bg__spin .bpb-bg__bag-slots,
+.bpb-bg__spin .bpb-bg__markers {
+  position: absolute;
+  inset: 0;
+}
+
+/*
+ * Raise the whole item on hover — stars/diamonds sit outside the body AABB, so
+ * bumping only .bpb-bg__markers still leaves them under neighboring sprites.
+ * Bags must NOT rise: they sit under contents (hit z < 10000); lifting the bag
+ * (or its FilledSlot layer) puts pouch art over items inside.
+ * Gem hover: host still rises for stacking, but markers/brightness stay off
+ * (:has(.bpb-bg__mark--gem:hover) — gem acts as its own item).
+ */
+.bpb-bg__item:not(.bpb-bg__item--bag):hover,
+.bpb-bg__item:not(.bpb-bg__item--bag):focus-within {
+  /* Beat inline stack z from createItemEl / setItemZ */
+  z-index: 50000 !important;
+}
+
+.bpb-bg__item:not(.bpb-bg__item--bag):hover:not(:has(.bpb-bg__mark--gem:hover)) .bpb-bg__hit,
+.bpb-bg__item:not(.bpb-bg__item--bag):focus-within:not(:has(.bpb-bg__mark--gem:focus-visible)) .bpb-bg__hit,
+.bpb-bg__item:hover:not(:has(.bpb-bg__mark--gem:hover)) .bpb-bg__markers,
+.bpb-bg__item:focus-within:not(:has(.bpb-bg__mark--gem:focus-visible)) .bpb-bg__markers {
+  z-index: 30000 !important;
+}
+
+/* Game library hover: body outlines + star/diamond affect tiles (not sockets) */
+.bpb-bg__markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  /* Above this item's sprite even before the parent z bump applies */
+  z-index: 4;
+}
+
+.bpb-bg__item:hover:not(:has(.bpb-bg__mark--gem:hover)) .bpb-bg__markers,
+.bpb-bg__item:focus-within:not(:has(.bpb-bg__mark--gem:focus-visible)) .bpb-bg__markers {
+  opacity: 1;
+}
+
+/* Dragging: only the held-item affect preview should show stars */
+body.is-bpb-dragging .bpb-bg__item .bpb-bg__markers {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Create board: no :hover lift/bright while a float is held (stops flicker) */
+body.is-bpb-dragging .bpb-bg--placed .bpb-bg__item {
+  pointer-events: none !important;
+}
+
+.bpb-bg__mark {
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+}
+
+/* Rarity footprint under the sprite — game SlotPreview ring on hover (not a CSS box) */
+.bpb-bg__cell--rarity {
+  box-sizing: border-box;
+}
+
+.bpb-bg__cell--rarity.is-lit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Path relative to this CSS file (url() in custom props resolves against the stylesheet) */
+  background: url("../../../assets/icons/grid/SlotPreview.png") center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+.bpb-bg__mark--star,
+.bpb-bg__mark--diamond,
+.bpb-bg__mark--extension,
+.bpb-bg__mark--tertiary,
+.bpb-bg__mark--lightning {
+  opacity: 1;
+  z-index: 2;
+  /* Affect tiles often sit outside the body AABB — still 1×1 cell */
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.45));
+  /* Marks live under .bpb-bg__spin; Godot paints Above tiles axis-aligned — undo face rotate */
+  transform-origin: center center;
+}
+
+.bpb-bg__item[data-face="1"] .bpb-bg__mark--star,
+.bpb-bg__item[data-face="1"] .bpb-bg__mark--diamond,
+.bpb-bg__item[data-face="1"] .bpb-bg__mark--extension,
+.bpb-bg__item[data-face="1"] .bpb-bg__mark--tertiary,
+.bpb-bg__item[data-face="1"] .bpb-bg__mark--lightning {
+  rotate: -90deg;
+}
+
+.bpb-bg__item[data-face="2"] .bpb-bg__mark--star,
+.bpb-bg__item[data-face="2"] .bpb-bg__mark--diamond,
+.bpb-bg__item[data-face="2"] .bpb-bg__mark--extension,
+.bpb-bg__item[data-face="2"] .bpb-bg__mark--tertiary,
+.bpb-bg__item[data-face="2"] .bpb-bg__mark--lightning {
+  rotate: -180deg;
+}
+
+.bpb-bg__item[data-face="3"] .bpb-bg__mark--star,
+.bpb-bg__item[data-face="3"] .bpb-bg__mark--diamond,
+.bpb-bg__item[data-face="3"] .bpb-bg__mark--extension,
+.bpb-bg__item[data-face="3"] .bpb-bg__mark--tertiary,
+.bpb-bg__item[data-face="3"] .bpb-bg__mark--lightning {
+  rotate: -270deg;
+}
+
+/* Game Inventory Above: *_noEffect → CanAffect tile per color */
+.bpb-bg__mark--star.is-active,
+.bpb-bg__mark--extension.is-promoted.is-active {
+  background-image: url("../../../assets/icons/grid/AffectedTile.png") !important;
+}
+
+.bpb-bg__mark--diamond.is-active {
+  background-image: url("../../../assets/icons/grid/AffectedTile_secondary.png") !important;
+}
+
+.bpb-bg__mark--tertiary.is-active {
+  background-image: url("../../../assets/icons/grid/AffectedTile_tertiary.png") !important;
+}
+
+.bpb-bg__mark--lightning.is-active {
+  background-image: url("../../../assets/icons/grid/AffectedTile_lightning.png") !important;
+}
+
+/* Always-visible socketed gems (not gated by .bpb-bg__markers hover opacity) */
+.bpb-bg__gems {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: visible;
+}
+
+/* Hover lifts .bpb-bg__hit (sprite) to 30000 — keep gems above it */
+.bpb-bg__item:hover .bpb-bg__gems,
+.bpb-bg__item:focus-within .bpb-bg__gems {
+  z-index: 30002 !important;
+}
+
+/* Socket chrome — game Game.showSockets (all items) while a gem is hovered */
+.bpb-bg__sockets {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  overflow: visible;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.bpb-bg--show-sockets .bpb-bg__sockets {
+  opacity: 1;
+}
+
+.bpb-bg--show-sockets .bpb-bg__sockets .bpb-bg__mark--socket {
+  z-index: 30001;
+}
+
+/* GemSocket.onHoverWithGem — gold tint + slight scale */
+.bpb-bg--show-sockets .bpb-bg__mark--socket.is-socket-target {
+  filter: brightness(1.35) sepia(0.55) saturate(2.2) hue-rotate(-10deg)
+    drop-shadow(0 0 2px rgba(255, 200, 80, 0.85));
+  scale: 1.15;
+}
+
+.bpb-bg__mark--socket {
+  z-index: 3;
+  /* Game: Socket.png 100px × Sprite.scale 0.372 ≈ 0.465 cells */
+  width: 0.46em;
+  height: 0.46em;
+  /* left/top are socket centers (AABB-relative), not cell top-left */
+  translate: -50% -50%;
+  background-size: 100% 100%;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.45));
+}
+
+/* Socketed gems — size from sprite-display via inline width/height (tall crystals, etc.) */
+.bpb-bg__mark--socket.bpb-bg__mark--gem {
+  width: 0.72em;
+  height: 0.72em;
+  z-index: 4;
+  object-fit: contain;
+  background: none;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.55));
+  /* Hit target for gem tooltips (parent .bpb-bg__gems stays pointer-events: none) */
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.bpb-bg__mark--socket.bpb-bg__mark--gem:hover,
+.bpb-bg__mark--socket.bpb-bg__mark--gem:focus-visible {
+  filter: brightness(1.3) drop-shadow(0 0 2px rgba(0, 0, 0, 0.55));
+}
+
+.bpb-bg__cell {
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.92;
+}
+
+/* Game ItemLibrary TileMap: modulate Color(1.3, 1.3, 1.3, 0.23) */
+.bpb-bg__cell.bpb-bg__cell--rarity {
+  opacity: 0.23;
+  filter: brightness(1.3);
+}
+
+.bpb-bg__cell.bpb-bg__cell--rarity.is-lit {
+  opacity: 0.45;
+  filter: brightness(1.3);
+}
+
+/*
+ * Bag Icon/TileMap (FilledSlot) — frayed edges form soft inventory seams.
+ * Itemiary keeps per-bag slots; placed boards use .bpb-bg__fabric instead.
+ */
+.bpb-bg__bag-slots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* Build visibility toggles: items vs bags */
+.bpb-bg--hide-items .bpb-bg__item:not(.bpb-bg__item--bag),
+.bpb-bg--hide-items .bpb-bg__under {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.bpb-bg--hide-bags .bpb-bg__item--bag,
+.bpb-bg--hide-bags .bpb-bg__fabric {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Build boards: shared fabric layer; hide per-bag slots.
+ * Itemiary library layout also uses --placed for coords, but keeps per-bag slots. */
+.bpb-bg--placed:not(.bpb-bg--itemiary) .bpb-bg__item .bpb-bg__bag-slots {
+  display: none;
+}
+
+/* Mid Item.rotateTo — bagTilemap rides the spin (game insideRotationNode) */
+.bpb-bg--placed:not(.bpb-bg--itemiary) .bpb-bg__item.is-face-spinning .bpb-bg__bag-slots {
+  display: block;
+}
+
+.bpb-bg__cell--bag {
+  /* Game: TileMap modulate ≈ 0.5 */
+  opacity: 0.5;
+  width: 1em;
+  height: 1em;
+  margin: 0;
+  background-size: 100% 100%;
+}
+
+/* Build fabric: slightly stronger so seams read between overlapping pouches */
+.bpb-bg--placed:not(.bpb-bg--itemiary) .bpb-bg__cell--bag,
+.bpb-bg__fabric .bpb-bg__cell--bag {
+  opacity: 0.62;
+}
+
+/* Pop in with bag AppearInLibrary wave */
+@keyframes bpb-bg-appear-fabric {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+    opacity: 0.62;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.62;
+  }
+}
+
+/* Hidden until stagger delays are applied — prevents pre-wave flash */
+.bpb-bg__cell--bag.bpb-bg__cell--appear-pending {
+  opacity: 0 !important;
+  transform: scale(0);
+}
+
+.bpb-bg__cell--bag.bpb-bg__cell--appear {
+  transform-origin: center center;
+  animation: bpb-bg-appear-fabric 0.5s ease-in-out both;
+  animation-delay: var(--bpb-appear-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpb-bg__cell--bag.bpb-bg__cell--appear,
+  .bpb-bg__cell--bag.bpb-bg__cell--appear-pending {
+    animation: none;
+    transform: none;
+    opacity: 0.62;
+  }
+}
+
+.bpb-bg__hit {
+  position: absolute;
+  inset: 0;
+  /* Inline z-index from render.js (bag vs non-bag + library order) */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  /* Pads re-enable hits on body cells only */
+  pointer-events: none;
+  cursor: pointer;
+  /* Prevent UA button font (~13px) from breaking any leftover em sizes */
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+}
+
+.bpb-bg__hit-pad {
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  pointer-events: auto;
+}
+
+/*
+ * Bags sit under items (low z). Occupied cells are item hit-pads; leather /
+ * strap art that hangs outside those cells never received hover. Enable the
+ * bag sprite so overhang pixels (still under item pads) can open the tooltip.
+ */
+.bpb-bg__item--bag .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  pointer-events: auto;
+}
+
+.bpb-bg__hit:focus-visible {
+  outline: 2px solid rgba(232, 200, 74, 0.85);
+  outline-offset: -2px;
+}
+
+/* Game setBright: modulate Color(1.3, 1.3, 1.3) — not while hovering a socketed gem */
+.bpb-bg__item:hover:not(:has(.bpb-bg__mark--gem:hover)) .bpb-bg__hit,
+.bpb-bg__item:focus-within:not(:has(.bpb-bg__mark--gem:focus-visible)) .bpb-bg__hit {
+  filter: brightness(1.3);
+}
+
+/*
+ * Items that affect the hovered focus — game Item._process sprite.modulate
+ * (canAffectDraggedItem): Girl Power lights up when you hover Dragon Nest.
+ *   primary   Color(1.3, 1.3, 0.8)  yellow
+ *   secondary Color(1.0, 1.3, 0.9)  cyan
+ *   tertiary  Color(1.3, 0.9, 1.3)  magenta
+ *   lightning Color(1.35, 1.25, 1.0) warm
+ *   multi     Color(1.3, 1.3, 1.3)  white
+ */
+.bpb-bg__item--affected .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  filter: brightness(1.3);
+}
+
+.bpb-bg__item--affected-primary .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  /* ≈ Color(1.3, 1.3, 0.8) */
+  filter: brightness(1.35) sepia(0.45) saturate(1.85) hue-rotate(-8deg);
+}
+
+.bpb-bg__item--affected-secondary .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  /* ≈ Color(1.0, 1.3, 0.9) */
+  filter: brightness(1.3) sepia(0.25) saturate(1.6) hue-rotate(85deg);
+}
+
+.bpb-bg__item--affected-tertiary .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  /* ≈ Color(1.3, 0.9, 1.3) */
+  filter: brightness(1.3) sepia(0.3) saturate(1.7) hue-rotate(250deg);
+}
+
+.bpb-bg__item--affected-lightning .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  /* ≈ Color(1.35, 1.25, 1.0) */
+  filter: brightness(1.35) sepia(0.35) saturate(1.5) hue-rotate(5deg);
+}
+
+.bpb-bg__item--affected-multi .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  filter: brightness(1.35);
+}
+
+/* ItemHoverSparks — rarity-tinted one-shot dots */
+.bpb-bg__sparks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30001;
+  overflow: visible;
+}
+
+.bpb-bg__spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.35em;
+  height: 0.35em;
+  margin: -0.175em 0 0 -0.175em;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: screen;
+  opacity: 0;
+  animation: bpb-bg-spark 0.4s ease-out var(--bpb-spark-delay, 0ms) forwards;
+}
+
+@keyframes bpb-bg-spark {
+  0% {
+    opacity: 0.95;
+    transform: translate(0, 0) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--bpb-spark-x, 0), var(--bpb-spark-y, 0)) scale(1.15);
+  }
+}
+
+/*
+ * Item.appearInLibrary — AppearInLibrary / AppearInLibrarySmall (0.5s).
+ * Keys: 0 → 1.1 @ 0.3s → 1.0 (bags → 0.9). Godot transition -2 ≈ ease-in-out.
+ */
+@keyframes bpb-bg-appear-library {
+  0% {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bpb-bg-appear-library-bag {
+  0% {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}
+
+.bpb-bg__item--appear,
+.bpb-bg__item--appear-bag,
+.bpb-bg__under-item--appear,
+.bpb-bg__under-item--appear-bag {
+  transform-origin: center center;
+}
+
+/* Hide rarity footprints until the appear wave starts (build boards). */
+.bpb-bg__under-item--appear-pending {
+  opacity: 0 !important;
+  transform: scale(0);
+  visibility: hidden;
+}
+
+/* Itemiary: hide until deferred sprite src is attached + decoded. */
+.bpb-bg__item--sprite-pending {
+  opacity: 0 !important;
+  transform: scale(0) !important;
+  visibility: hidden !important;
+}
+
+.bpb-bg__item--appear,
+.bpb-bg__under-item--appear {
+  /* both: stay at scale(0) during stagger delay, then hold end scale */
+  animation: bpb-bg-appear-library 0.5s ease-in-out both;
+  animation-delay: var(--bpb-appear-delay, 0ms);
+}
+
+.bpb-bg__item--appear-bag,
+.bpb-bg__under-item--appear-bag {
+  animation: bpb-bg-appear-library-bag 0.5s ease-in-out both;
+  animation-delay: var(--bpb-appear-delay, 0ms);
+}
+
+/*
+ * Itemiary bags rest at 0.9 (AppearInLibrarySmall) when not mid-wave.
+ * Non-bags: no resting transform — Itemiary keeps --appear after the wave so
+ * fill-mode holds the end scale (touching delay/class was restarting the anim).
+ */
+.bpb-bg--itemiary .bpb-bg__item--bag:not(.bpb-bg__item--parked):not(.bpb-bg__item--appear):not(.bpb-bg__item--appear-bag) {
+  transform: scale(0.9);
+  transform-origin: center center;
+}
+
+/* Loading preview: footprints only (sprite layer hidden until real data) */
+.bpb-bg--preview .bpb-bg__items {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpb-bg__item--appear,
+  .bpb-bg__item--appear-bag,
+  .bpb-bg__under-item--appear,
+  .bpb-bg__under-item--appear-bag {
+    animation: none;
+  }
+}
+
+/* Size comes from inline style (shape × cell); center + allow spill like BPB Builds */
+.bpb-bg__sprite {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  display: block;
+  max-width: none;
+  object-fit: contain;
+  pointer-events: none;
+  /* Itemiary: avoid per-sprite drop-shadow while scrolling (~500 nodes).
+   * Build viewer uses a separate silhouette layer (.bpb-bg__spin--shadow). */
+}
+
+.bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+.bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  filter: drop-shadow(0 1px 1px rgba(20, 10, 5, 0.28));
+}
+
+body.page-build .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-build .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-create .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-create .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-builds .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-builds .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  /* Keep game silhouette shadow; skip the light hover drop-shadow on builds */
+  filter: none;
+}
+
+.bpb-bg__sprite--empty {
+  width: 40%;
+  height: 40%;
+  border-radius: 0.1em;
+  background: rgba(60, 40, 25, 0.35);
+  filter: none;
+}

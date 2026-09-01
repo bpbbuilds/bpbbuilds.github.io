@@ -1,0 +1,1798 @@
+/* Create page — board left, items catalog (identical to /items/) on the right */
+
+.page-create {
+  --create-ink: #3c261d;
+  --create-cream: #ffecdc;
+  /* Keep Filter|Build rail above the fixed Sellbox (chest) */
+  --create-sellbin-clearance: 14.5rem;
+  /* Build-info essentials tokens (same as .page-build) */
+  --build-ink: #3c261d;
+  --build-cream: #ffecdc;
+  --build-shade: rgba(14, 15, 16, 0.09);
+  --build-ui-stroke: 0.1em;
+  --build-ui-track: -0.03em;
+  --build-ui-ring:
+    0.1em 0 0 var(--build-ink),
+    0.092em 0.038em 0 var(--build-ink),
+    0.071em 0.071em 0 var(--build-ink),
+    0.038em 0.092em 0 var(--build-ink),
+    0 0.1em 0 var(--build-ink),
+    -0.038em 0.092em 0 var(--build-ink),
+    -0.071em 0.071em 0 var(--build-ink),
+    -0.092em 0.038em 0 var(--build-ink),
+    -0.1em 0 0 var(--build-ink),
+    -0.092em -0.038em 0 var(--build-ink),
+    -0.071em -0.071em 0 var(--build-ink),
+    -0.038em -0.092em 0 var(--build-ink),
+    0 -0.1em 0 var(--build-ink),
+    0.038em -0.092em 0 var(--build-ink),
+    0.071em -0.071em 0 var(--build-ink),
+    0.092em -0.038em 0 var(--build-ink);
+  color: var(--bpb-ink, var(--create-ink));
+}
+
+.page-create .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.create-main {
+  /* Match Item Library — lower filter row (buffs) must not clip */
+  --items-filters-width: 32rem;
+  --items-side-gap: 1rem;
+  /* Leave more room for the create board; catalog shares the rest */
+  --items-catalog-width: min(
+    36rem,
+    calc(100vw - var(--items-filters-width) - 40rem - 4 * var(--items-side-gap))
+  );
+  width: 100%;
+  margin: 0 auto;
+  padding: 0.5rem var(--items-side-gap) 0.75rem;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.create-layout {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--items-side-gap);
+  align-items: stretch;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.create-layout--skel {
+  min-height: 28rem;
+}
+
+.create-skel-panel {
+  min-height: 24rem;
+  width: 100%;
+}
+
+.create-skel-board {
+  margin-top: 0.75rem;
+  min-height: 18rem;
+  width: 100%;
+  aspect-ratio: 9 / 7;
+}
+
+.create-col--board {
+  --build-catalog-width: min(
+    56rem,
+    calc(100vw - var(--items-filters-width) - 22rem - 4 * var(--items-side-gap))
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+  width: var(--build-catalog-width);
+  max-width: 100%;
+  padding: 0.5rem 0.25rem;
+  /* Let bag sprites spill past the board AABB (game Icon overhang); no column scroll */
+  overflow: visible;
+}
+
+.create-col--catalog {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Nest the items catalog layout: bag | filters (no outer 1fr gutters).
+   Same scroll model as /items/: constrain height so .bpb-bg overflows. */
+.page-create .create-col--catalog .items-shell {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.page-create .create-col--catalog .items-layout {
+  grid-template-columns: minmax(0, 1fr) auto;
+  /* Critical: default row min is min-content, which blocks bag scroll */
+  grid-template-rows: minmax(0, 1fr);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  align-items: stretch;
+}
+
+.page-create .create-col--catalog .items-bag {
+  grid-column: 1;
+  width: min(var(--items-catalog-width), 100%);
+  justify-self: stretch;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.page-create .create-col--catalog .items-bag__stage {
+  min-height: 0;
+}
+
+.page-create .create-col--catalog .items-bag__stage > .bpb-bg {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.page-create .create-col--catalog .items-filters {
+  grid-column: 2;
+  justify-self: start;
+  align-self: stretch;
+  position: sticky;
+  top: var(--items-filters-top, 0.75rem);
+}
+
+/*
+ * Filter | Build rail: same bottom cut-off (above Sellbox), tabs fixed,
+ * panels scroll with item-picker (bpb-bg) scrollbar chrome.
+ */
+.page-create .create-col--catalog .items-filters.create-rail {
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  top: 0;
+  /* End above the chest — same floor for Filter and Build */
+  height: calc(100% - var(--create-sellbin-clearance));
+  max-height: calc(100% - var(--create-sellbin-clearance));
+  overflow: hidden;
+  box-sizing: border-box;
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-tabs,
+.page-create .create-col--catalog .items-filters.create-rail .cr-rule {
+  flex-shrink: 0;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  --bpb-bg-scroll-thumb: #eac914;
+  --bpb-bg-scroll-track: #816230;
+  --bpb-bg-scroll-frame: #472a24;
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+
+/* Filter fits — no scrollbar lane */
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters {
+  overflow-y: auto;
+  scrollbar-gutter: auto;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Build is taller — show item-picker scrollbar when needed */
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--build {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  /*
+   * Extra scroll room past Essentials so Needs/Wants/Good-to-have can sit
+   * above the fixed Sell chest (avoids accidental trash drops).
+   */
+  padding-bottom: max(10rem, var(--create-sellbin-clearance));
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--build::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--build::-webkit-scrollbar-track {
+  border: 3px solid var(--bpb-bg-scroll-frame);
+  border-radius: 16px;
+  background: var(--bpb-bg-scroll-track);
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--build::-webkit-scrollbar-thumb {
+  border: 2px solid var(--bpb-bg-scroll-frame);
+  border-radius: 20px;
+  background-color: var(--bpb-bg-scroll-thumb);
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters,
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--build {
+  padding-top: 0.35rem;
+  /* Horizontal pad lives on .items-filters — extra here clipped buff icons */
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters {
+  padding-bottom: 0.5rem;
+}
+
+/* Create essentials — reuse build-info cells; selection + assign chrome */
+.page-create .build-info__ess {
+  margin-bottom: 0.65rem;
+}
+
+.page-create .build-info__ess .cr-hint {
+  margin-bottom: 0.4rem;
+}
+
+.page-create .build-info__ess-grid > .build-info__tier {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  font: inherit;
+  color: inherit;
+  cursor: default;
+  width: 100%;
+}
+
+.page-create .build-info__ess-grid > .build-info__tier:focus,
+.page-create .build-info__ess-grid > .build-info__tier:focus-visible {
+  outline: none;
+}
+
+.page-create .build-info__ess-grid > .build-info__tier.is-armed {
+  cursor: pointer;
+}
+
+/* Outline + tint on the Patch3 shade (::before), not the parchment cell rect */
+.page-create .build-info__ess-grid > .build-info__tier.is-drop-valid {
+  outline: 2px dashed color-mix(in srgb, var(--build-cream, #ffecdc) 45%, #eac914);
+  outline-offset: -0.4rem;
+  background: transparent;
+}
+
+.page-create .build-info__ess-grid > .build-info__tier.is-drop-valid::before {
+  background: color-mix(in srgb, var(--build-shade) 70%, #eac914 18%);
+}
+
+.page-create .build-info__ess-grid > .build-info__tier.is-drop-hover {
+  outline: 2px solid color-mix(in srgb, var(--build-cream, #ffecdc) 55%, #eac914);
+  outline-offset: -0.4rem;
+  background: transparent;
+}
+
+.page-create .build-info__ess-grid > .build-info__tier.is-drop-hover::before {
+  background: color-mix(in srgb, var(--build-shade) 55%, #eac914 28%);
+}
+
+.page-create .build-info__ess-grid > .build-info__tier.is-drop-reject {
+  outline: 2px solid color-mix(in srgb, #a33 70%, var(--build-ink, #3c261d));
+  outline-offset: -0.4rem;
+  background: transparent;
+}
+
+.page-create .build-info__ess-grid > .build-info__tier.is-drop-reject::before {
+  background: color-mix(in srgb, var(--build-shade) 75%, #a33 20%);
+}
+
+.page-create .build-info__list-item {
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+
+/* Bigger than build-page info rail so create essentials read clearly */
+.page-create .build-info__list-item img {
+  width: 4rem;
+  height: 4rem;
+}
+
+.page-create .build-info__tier--wide .build-info__list-item img {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.page-create .build-info__list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem 0.35rem;
+}
+
+.page-create .build-info__tier--wide .build-info__list {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.create-status {
+  margin: 2rem auto;
+  text-align: center;
+  font-family: var(--bpb-font-body);
+}
+
+/* —— Board (same mount + chrome as build viewer) —— */
+.create-board {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* Confirm before clearing attached run history — stage (bag) only */
+.create-history-lock {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 1rem;
+  box-sizing: border-box;
+  pointer-events: none;
+  /* Soft dissolve at stage edges (no hard cut box) */
+  -webkit-mask-image: radial-gradient(
+    ellipse 92% 88% at 50% 48%,
+    #000 42%,
+    rgba(0, 0, 0, 0.85) 62%,
+    rgba(0, 0, 0, 0.35) 78%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 92% 88% at 50% 48%,
+    #000 42%,
+    rgba(0, 0, 0, 0.85) 62%,
+    rgba(0, 0, 0, 0.35) 78%,
+    transparent 100%
+  );
+}
+
+.create-history-lock[hidden] {
+  display: none !important;
+}
+
+.create-history-lock__backdrop {
+  position: absolute;
+  inset: -8%;
+  cursor: pointer;
+  pointer-events: auto;
+  background:
+    radial-gradient(
+      ellipse 78% 72% at 50% 48%,
+      color-mix(in srgb, #1a100c 72%, transparent) 0%,
+      color-mix(in srgb, #2a160f 48%, transparent) 45%,
+      color-mix(in srgb, #3c261d 18%, transparent) 72%,
+      transparent 100%
+    );
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.create-history-lock__panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 21rem);
+  padding: 1.15rem 1.25rem 1.05rem;
+  box-sizing: border-box;
+  pointer-events: auto;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--bpb-label-fill, #fffaf0);
+  --build-shade: rgba(14, 15, 16, 0.42);
+}
+
+.create-history-lock__panel::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--build-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.create-history-lock__title {
+  margin: 0 0 0.55rem;
+  font-family: var(--bpb-font-display);
+  font-size: 1.45rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+
+.create-history-lock__body {
+  margin: 0 0 1rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--create-cream, #ffecdc);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+}
+
+.create-history-lock__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.create-history-lock__btn {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  padding: 0.35rem 0.9rem 0.3rem;
+  border: 2px solid var(--il-ink, #3c261d);
+  border-radius: 0.35rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--il-cream, #ffecdc);
+  cursor: pointer;
+  background: color-mix(in srgb, var(--il-ink, #3c261d) 38%, #8a6a4a);
+  transition: filter 0.12s ease, background 0.12s ease;
+}
+
+.create-history-lock__btn:hover {
+  filter: brightness(1.1);
+}
+
+.create-history-lock__btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--il-gold, #eac914) 80%, transparent);
+  outline-offset: 2px;
+}
+
+.create-history-lock__btn--confirm {
+  font-family: var(--bpb-font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  -webkit-text-stroke: 0.08em var(--il-ink, #3c261d);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring, 0 1px 0 rgba(0, 0, 0, 0.35));
+  border-color: color-mix(in srgb, var(--il-gold, #eac914) 40%, var(--il-ink, #3c261d));
+  background: color-mix(in srgb, var(--il-ink, #3c261d) 32%, #9a7040);
+}
+
+/* Locked board cue — gold ring on the bag only (no dark veil). */
+.create-board.is-history-locked .create-board__bag {
+  outline: 3px solid var(--il-gold, #eac914);
+  outline-offset: 5px;
+  border-radius: 0.2rem;
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--il-ink, #3c261d) 55%, transparent),
+    0 0 0 8px color-mix(in srgb, var(--il-gold, #eac914) 35%, transparent);
+}
+
+.create-board.is-history-locked .create-history-lock {
+  z-index: 60;
+}
+
+/* Unlock = open-lock icon; same toggle chrome as layer buttons */
+.create-board__unlock.create-board__toggle {
+  margin: 0;
+}
+
+.create-board__unlock[hidden] {
+  display: none !important;
+}
+
+.create-board__unlock-icon {
+  width: 1.85rem;
+  height: 1.85rem;
+  display: block;
+  flex: 0 0 auto;
+  transition: filter 0.12s ease;
+}
+
+.create-board__unlock:hover .create-board__unlock-icon {
+  filter: brightness(1.3);
+}
+
+/* Inventory PotentialSpace grid — only while dragging a bag (Inventory.gd) */
+.page-create .create-board__bag.build-bag .bpb-bg__lines {
+  display: none;
+  opacity: 0.35;
+}
+
+.page-create .is-dragging-bag .create-board__bag.build-bag .bpb-bg__lines {
+  display: block;
+}
+
+.create-board__toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  column-gap: 0.75rem;
+  row-gap: 0.45rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 0.15rem;
+  overflow: visible;
+}
+
+.create-board__toolbar-spacer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.create-board__toolbar-center {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  justify-self: center;
+  /* Let dice-style sparkles / glow paint outside the orb */
+  overflow: visible;
+}
+
+.create-board__play[hidden] {
+  display: none !important;
+}
+
+.create-board__toolbar-center .create-board__play {
+  margin-inline: 0.15rem;
+  overflow: visible;
+}
+
+.create-board__modes {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-right: 0.15rem;
+}
+
+.create-board__economy {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  justify-self: end;
+  min-width: 0;
+}
+
+.create-board__econ {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--bpb-font-body);
+  color: var(--bpb-ink, #3c261d);
+  line-height: 1;
+  user-select: none;
+}
+
+.create-board__econ-num {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.create-board__econ-sep {
+  margin: 0 0.12em;
+  opacity: 0.85;
+}
+
+.create-board__econ-icon {
+  width: 1.55rem;
+  height: 1.55rem;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+}
+
+.create-board__econ-icon--usage {
+  width: 2.1rem;
+  height: 2.1rem;
+}
+
+.create-board__econ-label {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--stam-tier-color, rgb(170, 255, 117));
+  white-space: nowrap;
+}
+
+.create-board__econ--stam-pool.is-over .create-board__econ-num {
+  color: #ffb4a0;
+}
+
+@media (max-width: 720px) {
+  .create-board__toolbar {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .create-board__toolbar-spacer {
+    display: none;
+  }
+
+  .create-board.is-history-locked .create-board__toolbar-spacer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    order: -1;
+  }
+
+  .create-board__economy {
+    justify-self: center;
+    justify-content: center;
+  }
+}
+
+/* Game setEditMode(false) — opposite layer ~0.6 alpha, shadow ~0.3.
+ * Hit pads use pointer-events:auto — must kill * children or dimmed
+ * items still receive hover/tooltips. */
+.create-board .bpb-bg__item.is-layer-dim {
+  opacity: 0.6;
+  pointer-events: none !important;
+}
+
+.create-board .bpb-bg__item.is-layer-dim *,
+.create-board .bpb-bg__item.is-layer-dim .bpb-bg__hit,
+.create-board .bpb-bg__item.is-layer-dim .bpb-bg__hit-pad {
+  pointer-events: none !important;
+}
+
+.create-board .bpb-bg__item.is-layer-dim .bpb-bg__sprite--shadow,
+.create-board .bpb-bg__item.is-layer-dim .bpb-bg__spin--shadow {
+  opacity: 0.3;
+}
+
+/* Layer toolbar — reuse build-round toggle chrome */
+.create-board__toolbar .build-round__toggles {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.create-board__toggle--clear {
+  margin-left: 0.35rem;
+}
+
+.create-board__toggle--clear img {
+  width: 1.75rem;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+}
+
+.create-board__toggle--clear:hover img {
+  filter: brightness(1.2) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+}
+
+/* Fabric ≈ game TileMap modulate 0.5 */
+.page-create .create-board .bpb-bg__fabric .bpb-bg__cell--bag {
+  opacity: 0.5;
+}
+
+.create-board__stage {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+}
+
+/* Attached run history — same scrubber chrome as build page (previewMode) */
+.create-board__round {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 0.35rem;
+}
+
+.create-board__round[hidden] {
+  display: none !important;
+}
+
+.create-board.is-history-attached .create-board__round {
+  margin-bottom: 0.25rem;
+}
+
+.create-board__stage.is-import-hover::after {
+  content: '';
+  position: absolute;
+  inset: 0.35rem;
+  z-index: 40;
+  pointer-events: none;
+  border: 2px dashed color-mix(in srgb, var(--bpb-ink, #3c261d) 55%, transparent);
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--bpb-parchment, #e8d4b8) 55%, transparent);
+}
+
+/* Empty-board onboarding — fixed over .create-board (body-mounted).
+ * Geometry (top/left/width/height) + panel absolute center set in board-onboard.js. */
+.create-onboard {
+  position: fixed;
+  z-index: 200000;
+  display: block;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  pointer-events: auto;
+  overflow: visible;
+}
+
+.create-onboard[hidden] {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.create-onboard__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: max-content;
+  max-width: min(100%, 28rem);
+  margin: 0;
+  text-align: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.4rem;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+/* Separate from class / history / media — pinned to stage right in JS */
+.create-onboard__catalog-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: 14rem;
+  padding: 0.25rem;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.create-onboard__catalog-hint-img {
+  width: 12rem;
+  height: auto;
+  max-height: 8.5rem;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.2));
+}
+
+.create-onboard__title {
+  margin: 0 0 0.85rem;
+  font-family: var(--bpb-font-display);
+  font-size: 1.55rem;
+  font-weight: 400;
+  line-height: 1.15;
+  width: 100%;
+  text-align: center;
+}
+
+.create-onboard__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.4rem;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 0.75rem;
+  width: 100%;
+}
+
+.create-onboard__grid--classes {
+  max-width: calc(4 * 4.5rem + 3 * 0.4rem);
+}
+
+.create-onboard__grid--bags {
+  max-width: calc(2 * 7rem + 0.4rem);
+}
+
+/* Step visibility is toggled via inline display in board-onboard.js */
+
+.create-onboard__icon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0.35rem 0.25rem;
+  border: none;
+  border-radius: 0.3rem;
+  background: transparent;
+  cursor: pointer;
+  color: var(--bpb-ink, #3c261d);
+  font-family: var(--bpb-font-body);
+}
+
+.create-onboard__icon-btn img {
+  width: 3.25rem;
+  height: 3.25rem;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.3));
+}
+
+.create-onboard__icon-btn--bag img {
+  width: 4rem;
+  height: 4rem;
+}
+
+.create-onboard__icon-btn:hover {
+  background: transparent;
+  filter: brightness(1.12);
+}
+
+.create-onboard__icon-btn:focus-visible {
+  outline: 2px solid var(--bpb-ink, #3c261d);
+  outline-offset: 2px;
+}
+
+.create-onboard__icon-label {
+  font-size: 0.72rem;
+  line-height: 1.1;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.create-onboard__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.15rem;
+}
+
+.create-onboard__btn {
+  margin: 0;
+  padding: 0.4rem 0.75rem;
+  border: 2px solid var(--bpb-ink, #3c261d);
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--bpb-ink, #3c261d);
+  font-family: var(--bpb-font-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.create-onboard__btn:hover {
+  filter: brightness(1.08);
+}
+
+.create-onboard__btn--dashed {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--bpb-ink, #3c261d) 55%, transparent);
+}
+
+/* Full width of pick-class block */
+.create-onboard__btn--history {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.75rem 0.5rem;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.create-onboard__history-label {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.create-onboard__history-path {
+  display: block;
+  margin: 0;
+  max-width: 100%;
+  padding: 0.1em 0.2em;
+  overflow-wrap: anywhere;
+  font-size: 0.68rem;
+  line-height: 1.3;
+  color: var(--bpb-ink-muted, #5c4636);
+  background: transparent;
+}
+
+.create-onboard__path-copy {
+  align-self: center;
+  margin: 0;
+  padding: 0.15rem 0.5rem;
+  border: none;
+  border-radius: 0.2rem;
+  background: transparent;
+  color: var(--bpb-ink-muted, #5c4636);
+  font-family: var(--bpb-font-body);
+  font-size: 0.72rem;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.create-onboard__path-copy:hover {
+  color: var(--bpb-ink, #3c261d);
+  filter: none;
+}
+
+.create-onboard__path-copy:focus-visible {
+  outline: 2px solid var(--bpb-ink, #3c261d);
+  outline-offset: 2px;
+}
+
+/* Same width as history; taller than a thin bar */
+.create-onboard__btn--media {
+  box-sizing: border-box;
+  width: 100%;
+  height: 5.5rem;
+  margin-top: 0.15rem;
+  padding: 0.55rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.15;
+  font-size: 1rem;
+  flex: 0 0 auto;
+}
+
+.create-onboard__btn:focus-visible {
+  outline: 2px solid var(--bpb-ink, #3c261d);
+  outline-offset: 2px;
+}
+
+.create-import-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  z-index: 1200;
+  transform: translateX(-50%);
+  max-width: min(92vw, 26rem);
+  padding: 0.65rem 1rem;
+  border-radius: 0.3rem;
+  background: color-mix(in srgb, #2a1a12 92%, #000);
+  color: #ffecdc;
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  line-height: 1.3;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.create-import-toast[hidden] {
+  display: none !important;
+}
+
+/* History overlay styles: history-panel.css (linked from create/index.html).
+ * z-index 200010 sits above onboard (200000) and catalog-hint.
+ * Geometry: board minus park (toolbar + stage); park stays uncovered. */
+
+.create-board.is-history-open .create-board__toolbar {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.create-board__bag.build-bag {
+  width: 100%;
+}
+
+/* Exact 9×7 board — never scroll the inventory grid (catalog bag scrolls separately) */
+.page-create .create-board__bag .bpb-bg {
+  overflow: visible;
+  height: auto;
+  max-height: none;
+}
+
+.create-board__ghost {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  display: none; /* replaced by inv-preview tiles */
+}
+
+/* Inventory hover tiles — inside .bpb-bg__items, above fabric (5000), under gear (≥10000) */
+.create-board__inv-preview {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 7500;
+}
+
+.create-board__inv-preview[hidden] {
+  display: none;
+}
+
+.create-board__inv-tile {
+  position: absolute;
+  box-sizing: border-box;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+/* Match .bpb-bg__cell--bag / create fabric TileMap modulate */
+.create-board__inv-tile.is-potential {
+  opacity: 0.5;
+}
+
+.create-board__affect {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.create-board__affect[hidden] {
+  display: none;
+}
+
+.create-board__affect-tile {
+  position: absolute;
+  box-sizing: border-box;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.45));
+}
+
+.create-board__ghost-cell {
+  display: none;
+}
+
+.create-board__ghost.is-valid .create-board__ghost-cell,
+.create-board__ghost.is-invalid .create-board__ghost-cell {
+  display: none;
+}
+
+/* Item sprite that follows the pointer while dragging (shop lift) */
+.create-board__cursor {
+  position: fixed;
+  z-index: 2000;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  /* Position via translate3d in JS — avoids layout thrash on left/top */
+  transform: translate3d(0, 0, 0) translate(-50%, -50%);
+  line-height: 0;
+  overflow: visible;
+  /* Silhouette shadow img — no live drop-shadow filter while moving */
+  filter: none;
+  will-change: transform;
+  contain: layout style;
+  transition: none;
+}
+
+.create-board__cursor[hidden] {
+  display: none;
+}
+
+.create-board__cursor-shadow {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.5;
+  /* Board .bpb-bg__sprite--shadow */
+  filter: brightness(0);
+}
+
+.create-board__cursor.is-bag .create-board__cursor-shadow {
+  opacity: 0.45;
+  filter: brightness(0) blur(0.75px);
+}
+
+.create-board__cursor img.create-board__cursor-sprite {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Game setBright — brightness on sprite only (not the moving root filter) */
+.create-board__cursor.is-held .create-board__cursor-sprite {
+  filter: brightness(1.3);
+}
+
+/* Bag.gd bagTilemap — over the Icon while dragged */
+.create-board__cursor-slots {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.create-board__cursor-slots[hidden] {
+  display: none;
+}
+
+.create-board__cursor-slot {
+  position: absolute;
+  box-sizing: border-box;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  /* Match placed fabric ≈0.5 — CanAddBag reads louder than FilledSlot at full alpha */
+  opacity: 0.5;
+}
+
+.create-board__cursor-slots.is-valid .create-board__cursor-slot {
+  filter: none;
+}
+
+.create-board__cursor-slots.is-invalid .create-board__cursor-slot {
+  filter: none;
+}
+
+/* Items riding inside a dragged bag (over bag art + slots) */
+.create-board__cursor-cargoes {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.create-board__cursor-cargoes[hidden] {
+  display: none;
+}
+
+.create-board__cursor-cargo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* Isolate so bag-slot z-index cannot cover sibling cargo (armor, etc.) */
+  z-index: 0;
+  transform-origin: center center;
+  line-height: 0;
+}
+
+.create-board__cursor-cargo-slots {
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* Over this bag’s leather only (Icon/TileMap); wrap isolation keeps items above */
+  z-index: 2;
+  pointer-events: none;
+}
+
+.create-board__cursor-cargo > img {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(1.3);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Socketed gems on cargo items (multi / bag insides) — above sprite */
+.create-board__cursor-cargo-gems {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.create-board__cursor-cargo-gems .create-board__cursor-gem {
+  filter: brightness(1.3);
+}
+
+/* Marquee / multi-select: show per-bag TileMap cells (normally fabric-only on board) */
+.page-create .create-board .bpb-bg--placed .bpb-bg__item.is-multi-selected:not(.is-drag-source) .bpb-bg__bag-slots {
+  display: block;
+}
+
+/* Socketed gems on the held host */
+.create-board__cursor-gems {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  overflow: visible;
+  transform: translate(-50%, -50%);
+}
+
+.create-board__cursor-gems[hidden] {
+  display: none;
+}
+
+.create-board__cursor-gem {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Item.spawnRotationSparks — lightweight CSS burst */
+.create-board__rotate-sparks {
+  position: fixed;
+  z-index: 2100;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  --spark-color: #ffecdc;
+}
+
+.create-board__rotate-spark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  margin: -2px 0 0 -2px;
+  border-radius: 1px;
+  background: var(--spark-color);
+  opacity: 0.95;
+  animation: create-rotate-spark 0.38s ease-out forwards;
+}
+
+.create-board__rotate-sparks.is-ccw .create-board__rotate-spark {
+  animation-name: create-rotate-spark-ccw;
+}
+
+@keyframes create-rotate-spark {
+  from {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translate(var(--sx), var(--sy)) scale(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes create-rotate-spark-ccw {
+  from {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translate(calc(var(--sx) * -1), var(--sy)) scale(0.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .create-board__rotate-sparks {
+    display: none;
+  }
+}
+
+/* Lifted item + rarity under (avoids faint footprint left behind) */
+.page-create .bpb-bg__item.is-drag-source,
+.page-create .bpb-bg__under-item.is-drag-source,
+.page-create .bpb-bg__fabric .bpb-bg__cell--bag.is-drag-source,
+.page-create .bpb-bg__mark--gem.is-drag-source {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* While dragging: suppress board-item hover stars (only held-item affect preview).
+ * page-create is on <body>, not a descendant. */
+body.page-create.is-bpb-dragging .create-board .bpb-bg__markers {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+body.page-create.is-bpb-dragging .create-board .bpb-bg__mark--star,
+body.page-create.is-bpb-dragging .create-board .bpb-bg__mark--diamond,
+body.page-create.is-bpb-dragging .create-board .bpb-bg__mark--extension,
+body.page-create.is-bpb-dragging .create-board .bpb-bg__mark--tertiary,
+body.page-create.is-bpb-dragging .create-board .bpb-bg__mark--lightning {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+body.page-create.is-bpb-dragging .create-board .bpb-bg__cell--rarity.is-lit::after {
+  display: none !important;
+}
+
+/* Kill :hover while dragging — stops z/brightness flicker under the float */
+body.page-create.is-bpb-dragging .create-board .bpb-bg__item {
+  pointer-events: none !important;
+}
+
+body.page-create.is-bpb-dragging .create-board .bpb-bg__item:hover .bpb-bg__hit,
+body.page-create.is-bpb-dragging .create-board .bpb-bg__item:focus-within .bpb-bg__hit,
+body.page-create.is-bpb-dragging .create-board .bpb-bg__item--affected .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  filter: none !important;
+}
+
+/* Suppress item tooltips while dragging or marqueeing */
+body.is-bpb-dragging .bpb-tooltip-float,
+body.is-bpb-selecting .bpb-tooltip-float {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Block native webpage selection on the board (and while dragging / boxing) */
+.page-create .create-board,
+.page-create .create-board * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+body.is-bpb-dragging,
+body.is-bpb-dragging *,
+body.is-bpb-selecting,
+body.is-bpb-selecting * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* InputBlocker.Source.ItemDragging — catalog must not steal free-follow / drops.
+ * Children often set pointer-events:auto; without * + !important they still hit. */
+body.page-create.is-bpb-dragging .create-col--catalog,
+body.page-create.is-bpb-dragging .create-col--catalog *,
+body.page-create.is-bpb-selecting .create-col--catalog,
+body.page-create.is-bpb-selecting .create-col--catalog * {
+  pointer-events: none !important;
+}
+
+/* SelectionBox.gd — rubber-band multi-select */
+.create-board__selection-box {
+  position: absolute;
+  z-index: 40;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: 2px solid color-mix(in srgb, var(--create-ink, #3c261d) 88%, #c4a574);
+  background: color-mix(in srgb, var(--create-cream, #ffecdc) 28%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--create-cream, #ffecdc) 55%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--create-ink, #3c261d) 35%, transparent);
+}
+
+.create-board__selection-box[hidden] {
+  display: none;
+}
+
+/* Game setBright — selected for multi / marquee (~1.3, no stacked sprite multiply) */
+.page-create .create-board .bpb-bg__item.is-multi-selected:not(.is-drag-source) {
+  filter: brightness(1.3);
+}
+
+.page-create .create-board .bpb-bg__item.is-multi-selected:not(.is-drag-source) .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  filter: none;
+}
+
+/* Soft park strip — Patch3 shade like filter / Build panel sections */
+.create-board__park {
+  position: relative;
+  z-index: 0;
+  /* Full board column width — 9 chips × 3 rows = 27, no scroll */
+  width: 100%;
+  max-width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.55rem 0.65rem 0.5rem;
+  box-sizing: border-box;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  /* Match essentials / filter recessed bands */
+  --build-shade: rgba(14, 15, 16, 0.14);
+  --park-cols: 9;
+  --park-rows: 3;
+  --park-gap: 0.35rem;
+  --park-chip: 4.25rem;
+}
+
+.create-board__park::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--build-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.create-board__park[hidden] {
+  display: none !important;
+}
+
+/* Drop chrome on the shade, not the parchment around it */
+.create-board__park.is-drop-valid,
+.create-board__park.is-drop-hover {
+  outline: 2px dashed color-mix(in srgb, var(--create-cream, #ffecdc) 45%, #eac914);
+  outline-offset: -0.4rem;
+  background: transparent;
+  filter: none;
+  box-shadow: none;
+}
+
+.create-board__park.is-drop-valid::before {
+  background: color-mix(in srgb, var(--build-shade) 70%, #eac914 18%);
+}
+
+.create-board__park.is-drop-hover {
+  outline-color: color-mix(in srgb, var(--create-cream, #ffecdc) 55%, #eac914);
+  outline-style: solid;
+}
+
+.create-board__park.is-drop-hover::before {
+  background: color-mix(in srgb, var(--build-shade) 55%, #eac914 28%);
+}
+
+.create-board__park-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+}
+
+.create-board__park-label {
+  margin: 0;
+  font-family: var(--bpb-font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--bpb-label-fill, #fffaf0);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+.create-board__park-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.create-board__park-count {
+  font-family: var(--bpb-font-body);
+  font-size: 1rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--bpb-label-fill, #fffaf0);
+  text-shadow: var(--bpb-label-stroke);
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.create-board__park-clear {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0.1rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+}
+
+.create-board__park-clear img {
+  display: block;
+  width: 1.65rem;
+  height: 1.65rem;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.create-board__park-clear:hover {
+  filter: brightness(1.15) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+}
+
+.create-board__park-clear:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--bpb-gold, #e8c84a) 80%, transparent);
+  outline-offset: 2px;
+}
+
+.create-board__park-clear:disabled {
+  opacity: 0.4;
+  cursor: default;
+  filter: grayscale(0.25) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.25));
+}
+
+.create-board__park-clear:disabled:hover {
+  filter: grayscale(0.25) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.25));
+}
+
+.create-board__park.is-full .create-board__park-count {
+  color: color-mix(in srgb, var(--create-cream, #ffecdc) 70%, #eac914);
+}
+
+.create-board__park-tray {
+  display: grid;
+  grid-template-columns: repeat(var(--park-cols), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--park-rows), var(--park-chip));
+  gap: var(--park-gap);
+  align-content: start;
+  height: calc(
+    var(--park-rows) * var(--park-chip) + (var(--park-rows) - 1) * var(--park-gap)
+  );
+  overflow: hidden;
+}
+
+.create-board__park-empty {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  align-self: center;
+  justify-self: center;
+  margin: 0;
+  padding: 0.4rem 0.25rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--bpb-label-fill, #fffaf0);
+  text-shadow: var(--bpb-label-stroke);
+  text-align: center;
+  opacity: 0.85;
+}
+
+.create-board__park.is-drop-reject {
+  outline: 2px solid color-mix(in srgb, #a33 70%, var(--create-ink, #3c261d));
+  outline-offset: -0.4rem;
+}
+
+.create-board__park.is-drop-reject::before {
+  background: color-mix(in srgb, var(--build-shade) 75%, #a33 20%);
+}
+
+/* Bare sprite chips — no leather/parchment cell behind */
+.create-board__park-chip {
+  position: relative;
+  appearance: none;
+  border: 0;
+  cursor: grab;
+  padding: 0;
+  width: 100%;
+  height: var(--park-chip);
+  max-width: var(--park-chip);
+  justify-self: center;
+  box-sizing: border-box;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.create-board__park-chip:hover {
+  filter: brightness(1.12);
+}
+
+.create-board__park-chip:active {
+  cursor: grabbing;
+  filter: brightness(0.96);
+}
+
+.create-board__park-chip:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--bpb-gold, #e8c84a) 80%, transparent);
+  outline-offset: 2px;
+}
+
+.create-board__park-chip img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 0 rgba(30, 18, 10, 0.45));
+}
+
+.create-board__park-badge {
+  position: absolute;
+  right: -0.15rem;
+  bottom: -0.15rem;
+  min-width: 1.15rem;
+  padding: 0.08rem 0.28rem;
+  border-radius: 0.2rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--bpb-label-fill, #fffaf0);
+  text-shadow: var(--bpb-label-stroke);
+  background: color-mix(in srgb, var(--bpb-ink, #3d2b1f) 88%, #000);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bpb-frame, #4a3428) 80%, transparent);
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Game Sellbox (Chestnut) — fixed bottom-right delete */
+.create-sellbin {
+  position: fixed;
+  right: max(0.35rem, env(safe-area-inset-right, 0px));
+  bottom: max(0.35rem, env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  /* Padding enlarges the JS hit rect without moving the sprite */
+  padding: 1.25rem;
+  width: calc(12.5rem + 2.5rem);
+  box-sizing: border-box;
+  pointer-events: none; /* hit-test via JS rect; avoid blocking catalog scroll */
+  user-select: none;
+}
+
+.create-sellbin__chest {
+  position: relative;
+  width: 12.5rem;
+  aspect-ratio: 478 / 360;
+  /* Headroom so an open lid isn’t clipped by the page edge */
+  margin-top: 3.25rem;
+  filter: drop-shadow(0 4px 10px rgba(20, 12, 8, 0.5));
+  transition: filter 0.12s ease, transform 0.12s ease;
+}
+
+.create-sellbin__bottom,
+.create-sellbin__top {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  display: block;
+  pointer-events: none;
+  image-rendering: auto;
+}
+
+.create-sellbin__bottom {
+  inset: 0;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  z-index: 1;
+}
+
+/* Lid sits on the mouth; hinge on the right so the left side lifts open */
+.create-sellbin__top {
+  bottom: 72%;
+  height: auto;
+  z-index: 2;
+  transform-origin: 92% 95%;
+  transition: transform 0.2s cubic-bezier(0.22, 0.8, 0.28, 1);
+  will-change: transform;
+}
+
+.create-sellbin.is-drop-hover .create-sellbin__top {
+  transform: rotate(58deg);
+}
+
+.create-sellbin.is-drop-hover .create-sellbin__chest {
+  filter:
+    drop-shadow(0 4px 10px rgba(20, 12, 8, 0.5))
+    brightness(1.12);
+  transform: translateY(-3px);
+}
+
+body.page-create.is-bpb-dragging .create-sellbin {
+  pointer-events: auto;
+}
+
+/* Catalog items are drag sources onto the board */
+.page-create .create-col--catalog .bpb-bg__item:not(.bpb-bg__item--parked) {
+  cursor: grab;
+}
+
+.page-create .create-col--catalog .bpb-bg__item:not(.bpb-bg__item--parked):active {
+  cursor: grabbing;
+}
+
+@media (max-width: 1100px) {
+  .create-main {
+    overflow: auto;
+    --items-catalog-width: min(
+      96rem,
+      calc(100vw - var(--items-filters-width) - 3 * var(--items-side-gap))
+    );
+  }
+
+  .create-layout {
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+
+  .create-col--catalog {
+    overflow: visible;
+    max-height: none;
+  }
+
+  .page-create .create-col--catalog .items-layout {
+    grid-template-columns: 1fr auto auto 1fr;
+  }
+
+  .page-create .create-col--catalog .items-bag {
+    grid-column: 2;
+  }
+
+  .page-create .create-col--catalog .items-filters {
+    grid-column: 3;
+    /* Stacked create: column height is content-sized — cap to viewport */
+    max-height: calc(100dvh - 4rem - var(--create-sellbin-clearance));
+  }
+
+  .page-create .create-col--catalog .items-filters.create-rail {
+    height: calc(100dvh - 4rem - var(--create-sellbin-clearance));
+    max-height: calc(100dvh - 4rem - var(--create-sellbin-clearance));
+  }
+
+  .create-board__stage {
+    width: 100%;
+  }
+}

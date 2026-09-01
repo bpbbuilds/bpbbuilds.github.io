@@ -1,0 +1,115 @@
+{
+  "name": "poison-garden-ranger",
+  "slug": "poison-garden-ranger",
+  "source": "demo_layout",
+  "seed": 42,
+  "durationSec": 30,
+  "placements": [
+    {
+      "id": "ranger_bag",
+      "key": "poison-garden-ranger:0:ranger_bag",
+      "x": 2,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "poison-garden-ranger:1:leather_bag",
+      "x": 5,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "vineweave_basket",
+      "key": "poison-garden-ranger:2:vineweave_basket",
+      "x": 0,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "poison_goobert",
+      "key": "poison-garden-ranger:3:poison_goobert",
+      "x": 2,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "poison_frog",
+      "key": "poison-garden-ranger:4:poison_frog",
+      "x": 5,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "snake",
+      "key": "poison-garden-ranger:5:snake",
+      "x": 0,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "poison_ivy",
+      "key": "poison-garden-ranger:6:poison_ivy",
+      "x": 4,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "healing_herbs",
+      "key": "poison-garden-ranger:7:healing_herbs",
+      "x": 7,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leaf_badge",
+      "key": "poison-garden-ranger:8:leaf_badge",
+      "x": 7,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    }
+  ],
+  "expect": {
+    "playerEndHpMin": 0,
+    "playerEndHpMax": 30,
+    "dummyEndHpMin": 606,
+    "dummyEndHpMax": 786
+  },
+  "live": {
+    "playerEndHp": null,
+    "dummyEndHp": null,
+    "playerStamina": null,
+    "stacks": null,
+    "capturedAt": null,
+    "notes": null,
+    "playerMaxHp": null,
+    "fightDurationSec": null,
+    "opponentClass": null,
+    "playerEndHpMin": null,
+    "playerEndHpMax": null,
+    "opponentHpComparable": false
+  },
+  "meta": {
+    "focusItemIds": [
+      "poison_goobert",
+      "healing_herbs"
+    ],
+    "simBaseline": {
+      "playerEndHp": 12.100000000000048,
+      "dummyEndHp": 696,
+      "seed": 42,
+      "durationSec": 30,
+      "measuredAt": "2026-08-22T05:23:25.803Z",
+      "toleranceFrac": 0.15
+    }
+  }
+}

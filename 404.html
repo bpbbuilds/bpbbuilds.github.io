@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smojo Builds</title>
+  <script>
+    (function () {
+      var path = location.pathname || '';
+      var m = path.match(/\/u\/([^/]+)\/?$/);
+      if (m && m[1]) {
+        var parts = path.split('/').filter(Boolean);
+        var uIdx = parts.indexOf('u');
+        var baseParts = uIdx > 0 ? parts.slice(0, uIdx) : [];
+        var base = baseParts.length ? '/' + baseParts.join('/') + '/' : '/';
+        location.replace(base + 'u/?d=' + encodeURIComponent(m[1]));
+        return;
+      }
+      var segs = path.split('/').filter(Boolean);
+      var root = segs.length ? '/' + segs[0] + '/' : '/';
+      // Project site fallback — adjust if not under a repo subpath
+      if (segs[0] && segs[0] !== 'u') {
+        location.replace('/' + segs[0] + '/');
+      } else {
+        location.replace('/');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <p>Redirecting…</p>
+</body>
+</html>

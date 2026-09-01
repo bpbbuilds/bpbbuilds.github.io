@@ -1,0 +1,637 @@
+/* Item Library filter rail — game-like chrome */
+
+.items-filters.il-filter {
+  /* Game OptionsFont outline_color ≈ #3c261d; 3px @ 26px ≈ 0.115em */
+  --il-ink: #3c261d;
+  --il-cream: #ffecdc;
+  --il-sticker: #f7efc2;
+  --il-menu-bg: #d4b48a;
+  --il-gold: #eac914;
+  /* Game Filter NinePatchRect: Patch3 × modulate(~#0e0f10) + blend SUB */
+  --il-shade-pad-y: 0.4rem;
+  --il-shade-pad-x: 0.55rem;
+  /* Game SUB of ~0.056 modulate — keep soft, not a dark slab */
+  --il-shade: rgba(14, 15, 16, 0.09);
+  --il-ui-stroke: 0.1em;
+  --il-ui-track: -0.03em;
+  --il-ui-ring:
+    0.1em 0 0 var(--il-ink),
+    0.092em 0.038em 0 var(--il-ink),
+    0.071em 0.071em 0 var(--il-ink),
+    0.038em 0.092em 0 var(--il-ink),
+    0 0.1em 0 var(--il-ink),
+    -0.038em 0.092em 0 var(--il-ink),
+    -0.071em 0.071em 0 var(--il-ink),
+    -0.092em 0.038em 0 var(--il-ink),
+    -0.1em 0 0 var(--il-ink),
+    -0.092em -0.038em 0 var(--il-ink),
+    -0.071em -0.071em 0 var(--il-ink),
+    -0.038em -0.092em 0 var(--il-ink),
+    0 -0.1em 0 var(--il-ink),
+    0.038em -0.092em 0 var(--il-ink),
+    0.071em -0.071em 0 var(--il-ink),
+    0.092em -0.038em 0 var(--il-ink);
+  width: var(--items-filters-width, 32rem);
+  max-width: 100%;
+  padding: 0.25rem 0.45rem 0.75rem;
+  box-sizing: border-box;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  font-family: var(--bpb-font-body);
+  color: var(--il-ink);
+}
+
+/* Loading: same parchment shimmer (bpb-skel) laid out like the real rail.
+   min-height ≈ OptionsFont stack so skel → real does not grow the column (CLS). */
+.items-filters--skel {
+  pointer-events: none;
+  user-select: none;
+  min-height: 36rem;
+}
+
+.il-filter-skel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.il-filter-skel__group {
+  margin-bottom: 0.65rem;
+}
+
+.il-filter-skel__classes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.2rem;
+  margin-bottom: 0.85rem;
+}
+
+.il-filter-skel__orb {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 2.75rem;
+  aspect-ratio: 1;
+  height: auto !important;
+  width: auto !important;
+}
+
+.il-filter-skel__rarities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.il-filter-skel__check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.il-filter-skel__box {
+  flex-shrink: 0;
+}
+
+.il-filter-skel__types {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.65rem;
+}
+
+.il-filter-skel__conditions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.il-filter-skel__buffs,
+.il-filter-skel__debuffs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.il-filter-skel__search {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/*
+ * Soft recessed bands — same recipe as ItemLibrary Filter NinePatchRects:
+ *   texture Patch3 (white plate, soft black feather)
+ *   modulate ≈ rgb(0.056–0.082)  →  #0e0f10 / #151618
+ *   material SubtractiveCanvasItem (blend SUB: parchment − shade)
+ * Web: use Patch3 as a nine-patch *mask*, fill with translucent black.
+ */
+.il-filter__shade {
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+  padding: var(--il-shade-pad-y) var(--il-shade-pad-x);
+}
+
+.il-filter__shade::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--il-shade);
+  pointer-events: none;
+  /* Game patch_margin L8 T8 R7 B9 */
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.il-filter__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+  margin-bottom: 0.5rem;
+}
+
+.il-filter__count {
+  margin: 0;
+  font-family: var(--bpb-font-body);
+  font-weight: 700;
+  font-size: 1.625rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.15;
+  color: var(--il-cream);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+}
+
+.il-filter__reset {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.il-filter__reset img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.il-filter__reset:hover {
+  filter: brightness(1.08);
+}
+
+.il-filter__grouping {
+  margin-bottom: 0.75rem;
+  z-index: 6;
+}
+
+.il-filter__group-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.15rem 0.2rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.il-filter__group-arrow {
+  width: 1rem;
+  height: 1rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.il-filter__sticker {
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.625rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.1;
+  color: var(--il-sticker);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+}
+
+.il-filter__group-menu {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.2rem);
+  min-width: 13.5rem;
+  padding: 0.2rem 0;
+  border: 2px solid var(--il-ink);
+  background: var(--il-menu-bg);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.il-filter__group-menu[hidden] {
+  display: none;
+}
+
+.il-filter__group-option {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0.38rem 0.55rem;
+  border: 2px solid transparent;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.5rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.15;
+  color: var(--il-sticker);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+}
+
+.il-filter__group-option + .il-filter__group-option {
+  border-top: 1px solid rgba(42, 26, 16, 0.22);
+}
+
+.il-filter__group-option.is-active,
+.il-filter__group-option:hover {
+  border-color: var(--il-gold);
+  background: color-mix(in srgb, var(--il-cream) 55%, var(--il-menu-bg));
+}
+
+.il-filter__classes {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  /* Game HBox separation = -3; icons ~61px in a ~493px row */
+  gap: -0.1rem;
+  /* Game: classes bottom 298 → Common top 315 ≈ 17px */
+  margin-bottom: 0.85rem;
+}
+
+.il-filter__icon-btn {
+  width: 2.55rem;
+  height: 2.55rem;
+  margin: 0;
+  padding: 0.14rem;
+  border: 2px solid transparent;
+  border-radius: 0.4rem;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.il-filter__icon-btn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: grayscale(0.15) brightness(0.92);
+  transition: filter 0.12s ease;
+}
+
+/* Stacks: game swaps Buffs → Icon_* (yellow silhouette) — no square chrome */
+.il-filter__icon-btn--stack img {
+  filter: none;
+}
+
+.il-filter__icon-btn--stack:hover img {
+  filter: brightness(1.3);
+}
+
+/* Class icons: larger step so Common ends between Reaper & Pyro (game ~3.3 icons) */
+.il-filter__classes .il-filter__icon-btn {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  height: 3.1rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.il-filter__classes .il-filter__icon-btn img {
+  filter: grayscale(1) brightness(0.85);
+}
+
+.il-filter__classes .il-filter__icon-btn.is-on img {
+  /* Tight soft rim glow — matches game TitleScreen icons */
+  filter: drop-shadow(0 0 1.5px rgba(255, 220, 90, 0.95))
+    drop-shadow(0 0 3px rgba(234, 201, 20, 0.55));
+}
+
+.il-filter__classes .il-filter__icon-btn:hover img {
+  filter: grayscale(0.35) brightness(1.05);
+}
+
+.il-filter__classes .il-filter__icon-btn.is-on:hover img {
+  filter: drop-shadow(0 0 2px rgba(255, 230, 120, 1))
+    drop-shadow(0 0 4px rgba(234, 201, 20, 0.65));
+}
+
+.il-filter__rarities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.il-filter__rarity-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.il-filter__check {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.15rem 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.il-filter__box {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 1.7rem;
+  height: 1.7rem;
+  background: url('../../../assets/icons/filters/Unchecked.png') center / contain no-repeat;
+}
+
+.il-filter__check.is-on .il-filter__box {
+  background-image: url('../../../assets/icons/filters/Checked2.png');
+}
+
+/* Game: Patch2.png behind checkbox + label.
+   Left ~201px (scale.y≈1.0); right ~235px (≈1.18). End ~3.3 class-icon steps. */
+.il-filter__check--swiped {
+  --swipe-len: 8.6rem;
+  --swipe-left: 4.35rem;
+  isolation: isolate;
+  min-width: 8.75rem;
+}
+
+.il-filter__rarity-col:last-child .il-filter__check--swiped {
+  --swipe-len: 10.15rem;
+  --swipe-left: 5.1rem;
+  min-width: 10.5rem;
+}
+
+.il-filter__check--swiped::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: var(--swipe-left);
+  top: 50%;
+  /* Patch2 is 94×199 vertical; -90° → horizontal swipe.
+     width = thickness; height = swipe length. */
+  width: 1.85rem;
+  height: var(--swipe-len);
+  transform: translate(-50%, -50%) rotate(-90deg);
+  background-color: var(--paint);
+  opacity: var(--paint-a, 0.48);
+  -webkit-mask-image: url('../../../assets/icons/filters/Patch2.png');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-image: url('../../../assets/icons/filters/Patch2.png');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  pointer-events: none;
+}
+
+.il-filter__check-label {
+  position: relative;
+  z-index: 1;
+  display: block;
+  /* OptionsFont: Regular 26 + 3px outline. Thick stroke closes gaps like Godot. */
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.625rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.15;
+  white-space: nowrap;
+  color: var(--il-cream);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+}
+
+/* Godot ItemLibrary Patch2–Patch8 modulate colors */
+.il-filter__paint--common {
+  --paint: #b7eef3;
+  --paint-a: 0.5;
+}
+.il-filter__paint--rare {
+  --paint: #6a94f7;
+  --paint-a: 0.55;
+}
+.il-filter__paint--epic {
+  --paint: #ad6bff;
+  --paint-a: 0.5;
+}
+.il-filter__paint--legendary {
+  --paint: #ffca4e;
+  --paint-a: 0.42;
+}
+.il-filter__paint--godly {
+  --paint: #fffbbd;
+  --paint-a: 0.42;
+}
+.il-filter__paint--class-items {
+  --paint: #88ffbb;
+  --paint-a: 0.42;
+}
+.il-filter__paint--treasure {
+  --paint: #88ffbb;
+  --paint-a: 0.42;
+}
+
+/* Game Patch8: flip_h */
+.il-filter__paint--treasure::before {
+  transform: translate(-50%, -50%) rotate(-90deg) scaleX(-1);
+}
+
+.il-filter__treasure-icon {
+  position: relative;
+  z-index: 1;
+  width: 1.25rem;
+  height: 1.25rem;
+  object-fit: contain;
+  margin-right: -0.15rem;
+}
+
+/* Game Types GridContainer: 37×37 icons, hseparation 6, 10px spacer after Effect */
+.il-filter__types {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+  overflow: visible;
+}
+
+.il-filter__icon-btn--type {
+  position: relative;
+  isolation: isolate;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: 37px;
+  height: 37px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Game TypeButton $Pressed — gold plate behind icon */
+.il-filter__icon-btn--type.is-on {
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.il-filter__icon-btn--type.is-on::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -0.2rem -0.2rem -0.25rem;
+  background: #ffd817;
+  border-radius: 0.75rem;
+  pointer-events: none;
+}
+
+.il-filter__icon-btn--type.is-on img {
+  filter: none;
+}
+
+.il-filter__icon-btn--type:hover img {
+  filter: brightness(1.3);
+}
+
+.il-filter__icon-btn--type.is-on:hover img {
+  filter: brightness(1.15);
+}
+
+/* Game 10px spacer Control after Effect (on top of the 6px flex gap) */
+.il-filter__icon-btn--break {
+  margin-right: 4px;
+}
+
+.il-filter__lower {
+  display: grid;
+  /* Game: Shop column 268px + ~48px gap + Buffs 174px (+ shade pads) */
+  grid-template-columns: minmax(16.75rem, 1fr) auto;
+  column-gap: 2.25rem;
+  align-items: start;
+  /* Game: Buffs bottom 815 → Debuffs/Search top 848 ≈ 33px */
+  margin-bottom: 33px;
+  min-width: 0;
+}
+
+.il-filter__conditions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+  min-width: 0;
+}
+
+/* Same OptionsFont as rarity rows — English fits at 26px (game maxSize 268) */
+
+.il-filter__buffs {
+  /* Game StackFilterButton 50×50, GridContainer pitch 58 → 8px gap */
+  display: grid;
+  grid-template-columns: repeat(3, 50px);
+  gap: 8px;
+  justify-content: center;
+  align-content: center;
+}
+
+.il-filter__debuffs {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.il-filter__icon-btn--stack {
+  box-sizing: border-box;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Game: Searchbar under Shop/Crafted, Debuffs under Buffs (same row) */
+.il-filter__search-row {
+  display: grid;
+  grid-template-columns: minmax(16.75rem, 1fr) auto;
+  column-gap: 2.25rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.il-filter__search {
+  display: block;
+  min-width: 0;
+  /* Game Searchbar width 290px (+ shade pad) */
+  max-width: calc(18.125rem + 2 * var(--il-shade-pad-x));
+}
+
+.il-filter__search.il-filter__shade {
+  /* Search field already has its own chrome — tighter shade padding */
+  padding: 0.2rem;
+}
+
+.il-filter__input {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.3rem;
+  border: 2px solid var(--il-ink);
+  background: rgba(55, 36, 22, 0.28);
+  box-shadow: inset 0 2px 4px rgba(20, 10, 5, 0.28);
+  font-family: var(--bpb-font-body);
+  font-size: 1rem;
+  color: var(--il-cream);
+}
+
+.il-filter__input::placeholder {
+  color: color-mix(in srgb, var(--il-cream) 55%, transparent);
+}
+
+.il-filter__input:focus {
+  outline: 2px solid color-mix(in srgb, var(--il-gold) 70%, transparent);
+  outline-offset: 1px;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create — Smojo Builds</title>
+  <link rel="preload" href="../assets/fonts/milonga.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../assets/fonts/libre-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/shared.css" />
+  <link rel="stylesheet" href="../js/shared/tooltip.css" />
+  <link rel="stylesheet" href="../js/shared/backpack-grid/backpack-grid.css" />
+  <link rel="stylesheet" href="../js/pages/items/catalog.css" />
+  <link rel="stylesheet" href="../js/pages/items/filters.css" />
+  <link rel="stylesheet" href="../js/pages/build/build.css" />
+  <link rel="stylesheet" href="../js/pages/create/create.css" />
+  <link rel="stylesheet" href="../js/pages/create/history-panel.css" />
+  <link rel="stylesheet" href="../js/pages/create/rail-chrome.css" />
+  <script src="../js/shared/tooltip.js"></script>
+</head>
+<body class="page-create" data-root="../">
+  <div id="site-nav">
+    <div class="site-nav-skel-wrap bpb-skel-region" role="status" aria-busy="true" aria-label="Loading navigation">
+      <div class="site-nav-shell">
+        <header class="site-nav site-nav--skel">
+          <div class="site-nav__rail site-nav__rail--left">
+            <div class="site-nav__skel-banners">
+              <span class="bpb-skel bpb-skel--bar site-nav__skel-banner" style="height:2.1rem;border-radius:0.25rem" aria-hidden="true"></span>
+              <span class="bpb-skel bpb-skel--bar site-nav__skel-banner" style="height:2.1rem;border-radius:0.25rem" aria-hidden="true"></span>
+            </div>
+            <div class="site-nav__skel-shelf">
+              <span class="bpb-skel bpb-skel--bar site-nav__skel-shelf-bar" style="height:0.85rem;border-radius:0.2rem" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="site-nav__brand site-nav__brand--skel">
+            <span class="bpb-skel bpb-skel--block site-nav__skel-logo" style="border-radius:0.4rem" aria-hidden="true"></span>
+            <span class="bpb-skel bpb-skel--bar site-nav__skel-builds" style="height:1.35rem;border-radius:0.25rem" aria-hidden="true"></span>
+          </div>
+          <div class="site-nav__rail site-nav__rail--right">
+            <div class="site-nav__skel-banners site-nav__skel-banners--right">
+              <span class="bpb-skel bpb-skel--bar site-nav__skel-banner" style="height:2.1rem;border-radius:0.25rem" aria-hidden="true"></span>
+              <div class="site-nav__skel-socials">
+                <span class="bpb-skel bpb-skel--block site-nav__skel-social" style="border-radius:0.35rem" aria-hidden="true"></span>
+                <span class="bpb-skel bpb-skel--block site-nav__skel-social" style="border-radius:0.35rem" aria-hidden="true"></span>
+              </div>
+            </div>
+            <div class="site-nav__skel-shelf">
+              <span class="bpb-skel bpb-skel--bar site-nav__skel-shelf-bar" style="height:0.85rem;border-radius:0.2rem" aria-hidden="true"></span>
+            </div>
+          </div>
+        </header>
+      </div>
+    </div>
+  </div>
+
+  <main id="main" class="create-main" aria-label="Build creator">
+    <div class="create-layout">
+      <section class="create-col create-col--board" aria-label="Board editor" data-create-board>
+        <span class="bpb-skel bpb-skel--bar" style="width:50%;height:1.25rem;border-radius:0.25rem" aria-hidden="true"></span>
+        <span class="bpb-skel bpb-skel--block create-skel-board" style="border-radius:0.35rem" aria-hidden="true"></span>
+      </section>
+      <section class="create-col create-col--catalog items-main" aria-label="Item catalog" data-create-catalog></section>
+    </div>
+  </main>
+
+  <script type="module" src="../js/pages/create/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,529 @@
+/* Item Library click spotlight — full-page dim (incl. header) + FLIP focus piece */
+
+.il-spotlight {
+  position: fixed;
+  inset: 0;
+  /* Above site nav (z-index 50); below locked tooltip (140) */
+  z-index: 60;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.il-spotlight.is-open,
+.il-spotlight.is-closing {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.il-spotlight__dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 6, 4, 0.52);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  cursor: default;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.il-spotlight.is-open .il-spotlight__dim {
+  opacity: 1;
+}
+
+.il-spotlight.is-closing .il-spotlight__dim {
+  opacity: 0;
+  transition-duration: 0.4s;
+}
+
+.il-spotlight__stage {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.il-spotlight.is-open .il-spotlight__stage,
+.il-spotlight.is-closing .il-spotlight__stage {
+  pointer-events: auto;
+}
+
+/* Mini backpack piece — rarity cells + sprite + stars/sockets/bag slots */
+.il-spotlight__piece {
+  position: relative;
+  /* width/height set in JS from item AABB (em) */
+  overflow: visible !important;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.45));
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.il-spotlight__under,
+.il-spotlight__items {
+  position: absolute;
+  inset: 0;
+  overflow: visible !important;
+}
+
+.il-spotlight__under {
+  z-index: 1;
+}
+
+.il-spotlight__items {
+  z-index: 2;
+}
+
+.il-spotlight__item.bpb-bg__item,
+.il-spotlight__under-item.bpb-bg__under-item {
+  position: absolute;
+  left: 0 !important;
+  top: 0 !important;
+  visibility: visible;
+  pointer-events: none;
+  overflow: visible !important;
+}
+
+/*
+ * Always show marks (no hover). Raise z-index like bag :hover — otherwise
+ * the hit/sprite layer paints over gem sockets.
+ */
+.il-spotlight.is-open .il-spotlight__item .bpb-bg__markers,
+.il-spotlight.is-open .il-spotlight__item .bpb-bg__markers.is-visible,
+.il-spotlight.is-closing .il-spotlight__item .bpb-bg__markers,
+.il-spotlight.is-closing .il-spotlight__item .bpb-bg__markers.is-visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 30000 !important;
+}
+
+.il-spotlight.is-open .il-spotlight__item .bpb-bg__bag-slots,
+.il-spotlight.is-closing .il-spotlight__item .bpb-bg__bag-slots {
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 30001 !important;
+}
+
+.il-spotlight.is-open .il-spotlight__item .bpb-bg__mark--socket,
+.il-spotlight.is-closing .il-spotlight__item .bpb-bg__mark--socket {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.il-spotlight__item .bpb-bg__hit {
+  pointer-events: none;
+  overflow: visible !important;
+}
+
+/* Footprint a bit clearer on the dim */
+.il-spotlight__under-item .bpb-bg__cell--rarity.is-lit {
+  opacity: 0.4;
+}
+
+/* Source item in the bag while spotlight is open */
+.bpb-bg__item--spotlight-source {
+  opacity: 0.28;
+}
+
+/*
+ * Right-side recipes — catalog-scale icons, fixed panel width,
+ * vertically centered on the spotlight stage.
+ */
+.il-spotlight-recipes {
+  /* Same chrome as Itemiary / create rail (.bpb-bg) */
+  --bpb-bg-scroll-thumb: #eac914;
+  --bpb-bg-scroll-track: #816230;
+  --bpb-bg-scroll-frame: #472a24;
+  --recipe-equals-w: 1.35rem;
+  position: fixed;
+  z-index: 70;
+  left: 0;
+  top: 0;
+  width: max-content;
+  max-width: calc(100vw - 1rem);
+  max-height: min(70vh, 36rem);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.il-spotlight-recipes:not([hidden]) {
+  pointer-events: auto;
+}
+
+.il-spotlight-recipes__panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0.1rem 0 0.15rem;
+  background: transparent;
+  border: 0;
+  color: #ffecdc;
+}
+
+/* Title stays put; only the recipe rows scroll */
+.il-spotlight-recipes__heading {
+  flex: 0 0 auto;
+  margin: 0 0.45rem 0.35rem 0.25rem;
+  text-align: center;
+  font-family: var(--bpb-font-display, Milonga, serif);
+  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: #ffecdc;
+  text-shadow:
+    0 2px 0 #3c261d,
+    1px 0 0 #3c261d,
+    -1px 0 0 #3c261d,
+    0 1px 0 #3c261d,
+    0 -1px 0 #3c261d,
+    1px 1px 0 #3c261d,
+    -1px 1px 0 #3c261d,
+    1px -1px 0 #3c261d,
+    -1px -1px 0 #3c261d;
+}
+
+.il-spotlight-recipes__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 0.55rem 0.25rem 0.35rem;
+  scrollbar-gutter: stable;
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+
+.il-spotlight-recipes__scroll::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.il-spotlight-recipes__scroll::-webkit-scrollbar-track {
+  border: 3px solid var(--bpb-bg-scroll-frame);
+  border-radius: 16px;
+  background: var(--bpb-bg-scroll-track);
+}
+
+.il-spotlight-recipes__scroll::-webkit-scrollbar-thumb {
+  border: 2px solid var(--bpb-bg-scroll-frame);
+  border-radius: 20px;
+  background-color: var(--bpb-bg-scroll-thumb);
+}
+
+.il-spotlight-recipes__list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.il-spotlight-recipes__row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem 0.7rem;
+  min-height: 2.5rem;
+  padding: 0.2rem 0;
+  overflow: visible;
+}
+
+.il-spotlight-recipes__divider {
+  display: flex;
+  justify-content: center;
+  margin: 0.1rem 0;
+  opacity: 0.9;
+}
+
+.il-spotlight-recipes__divider img {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  height: 5px;
+  object-fit: fill;
+  image-rendering: pixelated;
+}
+
+.il-spotlight-recipes__equals {
+  flex: 0 0 auto;
+  width: var(--recipe-equals-w);
+  height: auto;
+  image-rendering: pixelated;
+  user-select: none;
+  filter: drop-shadow(0 1px 0 #3c261d);
+}
+
+.il-spotlight-recipes__ings {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.45rem 0.55rem;
+  flex: 0 0 auto;
+  min-width: min-content;
+}
+
+.il-spotlight-recipes__item {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0.2rem;
+  line-height: 0;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4));
+}
+
+.il-spotlight-recipes__item:hover,
+.il-spotlight-recipes__item:focus-visible {
+  outline: 2px solid #c9a227;
+  outline-offset: 3px;
+}
+
+.il-spotlight-recipes__sprite {
+  display: block;
+  /* width/height set per item (game scaleToFit) */
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.il-spotlight-recipes__sprite--empty {
+  background: rgba(255, 236, 220, 0.12);
+  border-radius: 0.15rem;
+}
+
+@media (max-width: 720px) {
+  .il-spotlight-recipes {
+    max-width: calc(100vw - 0.75rem);
+  }
+
+  .il-spotlight-recipes__heading {
+    font-size: 1.25rem;
+  }
+
+  .il-spotlight-recipes__scroll::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/*
+ * Bottom builds strip — public builds that place the focused item.
+ * Recipes stay on the right; this strip stays under the stage.
+ */
+.il-spotlight-builds {
+  --bpb-bg-scroll-thumb: #eac914;
+  --bpb-bg-scroll-track: #816230;
+  --bpb-bg-scroll-frame: #472a24;
+  --il-spotlight-builds-cell: 16px;
+  position: fixed;
+  z-index: 70;
+  left: 50%;
+  bottom: 0.65rem;
+  transform: translateX(-50%);
+  width: min(92vw, 52rem);
+  max-width: calc(100vw - 1rem);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.il-spotlight-builds:not([hidden]) {
+  pointer-events: auto;
+}
+
+.il-spotlight-builds__panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.45rem 0.55rem 0.5rem;
+  border-radius: 0.35rem;
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, #2a1a12 78%, transparent),
+      color-mix(in srgb, #1a100c 88%, transparent)
+    );
+  border: 2px solid color-mix(in srgb, #3c261d 70%, #8a5a2b);
+  box-shadow:
+    0 6px 22px rgba(10, 6, 4, 0.45),
+    inset 0 1px 0 color-mix(in srgb, #ffecdc 12%, transparent);
+}
+
+.il-spotlight-builds__heading {
+  margin: 0;
+  text-align: center;
+  font-family: var(--bpb-font-display, Milonga, serif);
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  color: var(--bpb-label-fill, #ffecdc);
+  text-shadow: var(--bpb-label-stroke, 0 0 0.12em #3c261d);
+}
+
+.il-spotlight-builds__scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--bpb-bg-scroll-thumb) var(--bpb-bg-scroll-track);
+  padding-bottom: 0.15rem;
+}
+
+.il-spotlight-builds__scroll::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.il-spotlight-builds__scroll::-webkit-scrollbar-track {
+  border: 2px solid var(--bpb-bg-scroll-frame);
+  border-radius: 12px;
+  background: var(--bpb-bg-scroll-track);
+}
+
+.il-spotlight-builds__scroll::-webkit-scrollbar-thumb {
+  border: 2px solid var(--bpb-bg-scroll-frame);
+  border-radius: 12px;
+  background-color: var(--bpb-bg-scroll-thumb);
+}
+
+.il-spotlight-builds__list {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0.15rem 0.1rem 0.25rem;
+  list-style: none;
+}
+
+.il-spotlight-builds__card {
+  flex: 0 0 auto;
+}
+
+.il-spotlight-builds__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.28rem;
+  width: calc(9 * var(--il-spotlight-builds-cell) + 0.4rem);
+  text-decoration: none;
+  color: inherit;
+  border-radius: 0.25rem;
+  padding: 0.2rem;
+  outline: none;
+}
+
+.il-spotlight-builds__link:hover,
+.il-spotlight-builds__link:focus-visible {
+  background: color-mix(in srgb, #ffecdc 10%, transparent);
+  outline: 2px solid #c9a227;
+  outline-offset: 1px;
+}
+
+.il-spotlight-builds__board {
+  display: block;
+  width: calc(9 * var(--il-spotlight-builds-cell));
+  height: calc(7 * var(--il-spotlight-builds-cell));
+  overflow: visible;
+}
+
+.il-spotlight-builds__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--bpb-font-body);
+  font-size: 0.8rem;
+  color: color-mix(in srgb, #ffecdc 70%, transparent);
+}
+
+.il-spotlight-builds__meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.il-spotlight-builds__class {
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.il-spotlight-builds__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: var(--bp-ui-track, -0.03em);
+  line-height: 1.15;
+  color: var(--bp-ui-cream, #ffecdc);
+  -webkit-text-stroke: 0.08em #3c261d;
+  paint-order: stroke fill;
+  text-shadow: var(--bp-ui-ring, 0 0 0.1em #3c261d);
+}
+
+.il-spotlight-builds__status {
+  margin: 0.15rem 0.35rem 0.25rem;
+  text-align: center;
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  color: color-mix(in srgb, #ffecdc 78%, transparent);
+}
+
+.il-spotlight-builds__skel {
+  display: flex;
+  flex-direction: row;
+  gap: 0.65rem;
+  padding: 0.15rem 0.1rem 0.25rem;
+}
+
+.il-spotlight-builds__skel-card {
+  flex: 0 0 auto;
+  width: calc(9 * var(--il-spotlight-builds-cell));
+  height: calc(7 * var(--il-spotlight-builds-cell) + 1.4rem);
+  border-radius: 0.25rem;
+}
+
+@media (max-width: 720px) {
+  .il-spotlight-builds {
+    --il-spotlight-builds-cell: 13px;
+    bottom: 0.4rem;
+    width: min(96vw, 52rem);
+  }
+
+  .il-spotlight-builds__heading {
+    font-size: 1.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .il-spotlight__dim {
+    transition-duration: 0.01ms !important;
+  }
+
+  .il-spotlight__piece {
+    transition: none !important;
+  }
+}

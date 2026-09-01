@@ -1,0 +1,552 @@
+/* Dark stepped “Explore items” band — VH Skills: left copy, right orbit */
+
+.home-items {
+  --home-items-bg: #121010;
+  --home-items-bg-mid: #1c1816;
+  --home-items-ink: #f4efe8;
+  --home-items-muted: #9a9086;
+  --home-items-tab-ink: #cfc4b8;
+  --home-items-accent: #e8912a;
+  --home-items-tile: #231e1b;
+  --home-items-tile-edge: #3a322c;
+  --home-items-shade: rgba(14, 15, 16, 0.14);
+  /* Shared left inset so shade panels, tabs, and CTA share one edge */
+  --home-items-copy-pad: 1rem;
+  --orbit-duration: 100s;
+
+  /* Same geometry as vaulthunters.gg ._section / home-promo */
+  --step-height: 24px;
+  --step-top-left: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 24'><path fill='white' d='M0,0 L264,0 C292,0 292,24 320,24 L320,28 L0,28 Z'/></svg>");
+  --step-top-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 24'><path fill='white' d='M320,0 L56,0 C28,0 28,24 0,24 L0,28 L320,28 Z'/></svg>");
+  --step-bottom-left: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 24'><path fill='white' d='M0,28 L264,28 C292,28 292,4 320,4 L320,0 L0,0 Z' transform='translate(0,-4)'/></svg>");
+  --step-bottom-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 24'><path fill='white' d='M320,28 L56,28 C28,28 28,4 0,4 L0,0 L320,0 Z' transform='translate(0,-4)'/></svg>");
+  --step-mask-size: 320px var(--step-height);
+  --mask-with-step-both: linear-gradient(
+    transparent 0,
+    transparent var(--step-height),
+    black var(--step-height),
+    black calc(100% - var(--step-height)),
+    transparent calc(100% - var(--step-height))
+  );
+
+  position: relative;
+  /* Bleed past #main frame padding so band meets the screen-frame borders */
+  width: calc(100% + 2 * var(--bpb-frame-edge-x));
+  margin: calc(-1 * var(--step-height)) calc(-1 * var(--bpb-frame-edge-x)) 0;
+  z-index: 4;
+}
+
+.home-items__band {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 40rem;
+  padding: 5.5rem 0 5rem;
+  background:
+    radial-gradient(ellipse 70% 80% at 55% 50%, var(--home-items-bg-mid) 0%, transparent 65%),
+    linear-gradient(180deg, var(--home-items-bg), #0c0a09);
+
+  -webkit-mask-image:
+    var(--step-top-left),
+    var(--step-top-right),
+    var(--mask-with-step-both),
+    var(--step-bottom-left),
+    var(--step-bottom-right);
+  mask-image:
+    var(--step-top-left),
+    var(--step-top-right),
+    var(--mask-with-step-both),
+    var(--step-bottom-left),
+    var(--step-bottom-right);
+  -webkit-mask-size:
+    var(--step-mask-size),
+    var(--step-mask-size),
+    100% 100%,
+    var(--step-mask-size),
+    var(--step-mask-size);
+  mask-size:
+    var(--step-mask-size),
+    var(--step-mask-size),
+    100% 100%,
+    var(--step-mask-size),
+    var(--step-mask-size);
+  -webkit-mask-position: top left, top right, top left, bottom left, bottom right;
+  mask-position: top left, top right, top left, bottom left, bottom right;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.home-items__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(18rem, 34rem) minmax(18rem, 1fr);
+  align-items: center;
+  gap: 2rem 3.5rem;
+  width: min(92rem, 100%);
+  /* Keep copy/orbit inside the frame edges while the band bleeds full width */
+  padding-left: var(--bpb-frame-edge-x);
+  padding-right: var(--bpb-frame-edge-x);
+  box-sizing: border-box;
+}
+
+.home-items__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-width: 0;
+  text-align: left;
+}
+
+/* Patch3 shade — same wash as class showcase / promo gold·rank */
+.home-items__shade {
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+}
+
+.home-items__shade::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--home-items-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.home-items__title {
+  margin: 0;
+  padding: 0.55rem var(--home-items-copy-pad) 0.6rem;
+  font-family: var(--bpb-font-display);
+  font-size: clamp(2rem, 3.6vw, 2.9rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: 0.02em;
+  color: var(--bpb-label-fill);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+.home-items__lede {
+  margin: 0;
+  max-width: 28rem;
+  padding: 0.55rem var(--home-items-copy-pad) 0.65rem;
+  font-family: var(--bpb-font-body);
+  font-size: clamp(0.92rem, 1.25vw, 1.05rem);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--bpb-label-fill);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+.home-items__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 1.25rem;
+  width: 100%;
+  margin-top: 0.35rem;
+  padding-left: var(--home-items-copy-pad);
+  box-sizing: border-box;
+}
+
+.home-items__tab {
+  margin: 0;
+  padding: 0.15rem 0;
+  border: 0;
+  border-radius: 0;
+  font-family: var(--bpb-font-body);
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  line-height: 1.2;
+  /* Tooltip keyword / damage yellow */
+  color: rgb(255, 226, 56);
+  text-shadow: var(--bpb-label-stroke);
+  background: transparent;
+  cursor: pointer;
+  transition: filter 0.12s ease, opacity 0.12s ease;
+}
+
+.home-items__tab:hover {
+  filter: brightness(1.12);
+}
+
+.home-items__tab:not(.is-active) {
+  opacity: 0.72;
+}
+
+.home-items__tab.is-active {
+  opacity: 1;
+  filter: brightness(1.05);
+}
+
+.home-items__tab:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--bpb-gold) 85%, transparent);
+  outline-offset: 3px;
+}
+
+.home-items__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 0.15rem;
+}
+
+.home-items__blurb {
+  margin: 0;
+  max-width: 28rem;
+  padding: 0.55rem var(--home-items-copy-pad) 0.65rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--bpb-label-fill);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+/* Steel banner CTA — same family as Watch / View build */
+.home-items__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-width: 11.5rem;
+  height: 2.85rem;
+  margin: 0;
+  margin-left: var(--home-items-copy-pad);
+  padding: 0 1.1rem;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  font-family: var(--bpb-font-display);
+  font-size: 1.15rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-decoration: none;
+  color: var(--bpb-label-fill);
+  text-shadow: var(--bpb-label-stroke);
+  background-color: transparent;
+  background-image: url('../../../assets/theme/ui/ui-btn-steel.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: none;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.home-items__cta-icon {
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.home-items__cta:hover {
+  filter: brightness(1.1);
+  color: #fff;
+}
+
+.home-items__cta:active {
+  transform: translateY(1px);
+  filter: brightness(0.96);
+}
+
+.home-items__cta:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--bpb-gold) 85%, transparent);
+  outline-offset: 4px;
+}
+
+/* ——— Right: orbiting item cloud ——— */
+
+.home-items__visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 22rem;
+  justify-self: center;
+}
+
+/* Sized stage; all category orbits stay mounted so spin time never resets */
+.home-items__orbit-stage {
+  position: relative;
+  width: min(32rem, 90vw);
+  min-width: 18rem;
+  min-height: 18rem;
+  aspect-ratio: 1;
+}
+
+.home-items__orbit-set {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.home-items__orbit-set.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.home-items__orbit-ring {
+  position: absolute;
+  inset: 0;
+  /* Let hits pass through empty ring area so outer sprites aren’t blocked by inner */
+  pointer-events: none;
+  animation: home-items-orbit-cw var(--orbit-duration) linear infinite;
+}
+
+.home-items__orbit-ring--outer {
+  animation-name: home-items-orbit-ccw;
+  z-index: 1;
+}
+
+.home-items__orbit-ring--inner {
+  animation-name: home-items-orbit-cw;
+  z-index: 2;
+}
+
+.home-items__orbit-slot {
+  position: absolute;
+  /* left/top set in JS as % of this ring (circle layout) */
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.home-items__sprite {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.85rem;
+  height: 3.85rem;
+  margin: -1.925rem;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  pointer-events: auto;
+  /* Counter-rotate so sprites stay upright while their ring spins */
+  animation: home-items-orbit-ccw var(--orbit-duration) linear infinite;
+  transition: filter 0.18s ease;
+}
+
+.home-items__orbit-ring--outer .home-items__sprite {
+  animation-name: home-items-orbit-cw;
+}
+
+.home-items__orbit-ring--inner .home-items__sprite {
+  animation-name: home-items-orbit-ccw;
+}
+
+/* Pause only the ring that owns the hovered / focused sprite */
+.home-items__orbit-ring:has(.home-items__sprite:hover),
+.home-items__orbit-ring:has(.home-items__sprite:focus-visible),
+.home-items__orbit-ring:has(.home-items__sprite:hover) .home-items__sprite,
+.home-items__orbit-ring:has(.home-items__sprite:focus-visible) .home-items__sprite {
+  animation-play-state: paused;
+}
+
+/* Rest of the cloud dims + blurs; hovered item stays sharp */
+.home-items__orbit-set.is-active:has(.home-items__sprite:hover) .home-items__sprite:not(:hover),
+.home-items__orbit-set.is-active:has(.home-items__sprite:focus-visible) .home-items__sprite:not(:focus-visible):not(:hover) {
+  filter: brightness(0.35) blur(2.5px);
+}
+
+.home-items__sprite:hover,
+.home-items__sprite:focus-visible {
+  z-index: 6;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--home-items-accent) 45%, transparent));
+}
+
+.home-items__sprite:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--home-items-accent) 85%, transparent);
+  outline-offset: 3px;
+}
+
+.home-items__sprite-face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+}
+
+/* Itemiary AppearInLibrary — scale pop / depart on tab change (face only; spin keeps going) */
+.home-items__sprite-face--appear {
+  animation: home-items-appear-library 0.5s ease-in-out both;
+  animation-delay: var(--home-items-appear-delay, 0ms);
+}
+
+.home-items__sprite-face--depart {
+  animation: home-items-depart-library 0.4s ease-in-out both;
+  animation-delay: var(--home-items-appear-delay, 0ms);
+}
+
+@keyframes home-items-appear-library {
+  0% {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes home-items-depart-library {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+.home-items__sprite img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  transform-origin: center center;
+  transition: transform 0.18s ease;
+}
+
+/* Grow on the image so it doesn’t fight the tile’s counter-rotate animation */
+.home-items__sprite:hover img,
+.home-items__sprite:focus-visible img {
+  transform: scale(2);
+}
+
+.home-items__sprite-skel {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.35rem;
+}
+
+@keyframes home-items-orbit-ccw {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes home-items-orbit-cw {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 960px) {
+  .home-items__inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    justify-items: center;
+  }
+
+  .home-items__copy {
+    align-items: center;
+    text-align: center;
+  }
+
+  .home-items__tabs,
+  .home-items__panel {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .home-items__blurb,
+  .home-items__lede {
+    max-width: 36rem;
+  }
+
+  .home-items__orbit-stage {
+    width: min(22rem, 88vw);
+    min-width: 14rem;
+    min-height: 14rem;
+  }
+
+  .home-items__sprite {
+    width: 3.35rem;
+    height: 3.35rem;
+    margin: -1.675rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-items {
+    --step-top-left: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 25'><path fill='white' d='M0,0 L40,0 C70,0 70,25 100,25 L120,25 L120,30 L0,30 Z'/></svg>");
+    --step-top-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 25'><path fill='white' d='M120,0 L80,0 C50,0 50,25 20,25 L0,25 L0,30 L220,30 Z' transform='translate(-20,0)'/></svg>");
+    --step-bottom-left: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 25'><path fill='white' d='M0,30 L40,30 C70,30 70,5 100,5 L120,5 L120,0 L0,0 Z' transform='translate(0,-5)'/></svg>");
+    --step-bottom-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 25'><path fill='white' d='M220,30 L80,30 C50,30 50,5 20,5 L0,5 L0,0 L220,0 Z' transform='translate(-20,-5)'/></svg>");
+    --step-mask-size: 100px 25px;
+    --step-height: 25px;
+  }
+
+  .home-items__band {
+    min-height: 0;
+    padding: 4.25rem 0 4rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .home-items {
+    margin: 0 0 2.25rem;
+  }
+
+  .home-items__band {
+    -webkit-mask-image: none;
+    mask-image: none;
+    padding: 3rem 0;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-items__orbit-ring,
+  .home-items__sprite,
+  .home-items__sprite-face--appear,
+  .home-items__sprite-face--depart {
+    animation: none;
+  }
+
+  .home-items__tab,
+  .home-items__cta,
+  .home-items__sprite,
+  .home-items__sprite img {
+    transition: none;
+  }
+
+  .home-items__sprite:hover img,
+  .home-items__sprite:focus-visible img {
+    transform: scale(1.35);
+  }
+}

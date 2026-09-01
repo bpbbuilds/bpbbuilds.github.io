@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Item Tooltip Module Demo</title>
+  <link rel="stylesheet" href="./js/shared/tooltip.css" />
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      gap: 20px;
+      padding: 24px;
+      background: #1a1210;
+      color: #ccc;
+      font: 14px/1.4 system-ui, sans-serif;
+    }
+    .demo-note { text-align: center; max-width: 36rem; }
+    .demo-note code {
+      color: #ffe238;
+      font-size: 0.92em;
+    }
+    #tooltip-root { min-height: 420px; }
+  </style>
+</head>
+<body>
+  <p class="demo-note">
+    Modular tooltip demo — no database yet.<br />
+    Data is a plain JS object. Later: load the same shape from Supabase.
+  </p>
+
+  <div id="tooltip-root"></div>
+
+  <script src="./js/shared/tooltip.js"></script>
+  <script>
+    // Sample item record (this is what a DB row would look like later)
+    const samples = [
+      {
+        id: "blood_goobert",
+        name: "Blood Goobert",
+        rarity: "Legendary",
+        type: "Pet",
+        class: "Neutral",
+        extraTypes: ["Vampiric"],
+        cost: 14,
+        effect:
+          "Start of battle: Gain 5 <Vampirism>.\n\n" +
+          "6 <Star> item activations: Deal 10 <Effect> with 100% lifesteal. Deal +1 for each <Vampirism>.",
+      },
+      {
+        id: "wooden_sword",
+        name: "Wooden Sword",
+        rarity: "Common",
+        type: "Melee Weapon",
+        class: "Neutral",
+        cost: 3,
+        damageMin: 1,
+        damageMax: 3,
+        cooldown: 1.4,
+        staminaCost: 1,
+        accuracy: 90,
+        effect: "",
+      },
+    ];
+
+    const root = document.getElementById("tooltip-root");
+    root.style.display = "flex";
+    root.style.flexWrap = "wrap";
+    root.style.gap = "24px";
+    root.style.justifyContent = "center";
+    samples.forEach((item) => root.appendChild(ItemTooltip.render(item)));
+  </script>
+</body>
+</html>

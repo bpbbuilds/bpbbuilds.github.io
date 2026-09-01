@@ -1,0 +1,26 @@
+{
+  "builtAt": "2026-08-25T22:00:23.738Z",
+  "dumps": [
+    {
+      "board": "loose_gems",
+      "paramCheckCount": 0,
+      "mismatchCount": 0,
+      "dummyEndHp": 1195,
+      "eventCount": 50
+    },
+    {
+      "board": "port_o_charger_battery",
+      "paramCheckCount": 0,
+      "mismatchCount": 0,
+      "dummyEndHp": 1200,
+      "eventCount": 27
+    },
+    {
+      "board": "charger_battery_ruby",
+      "paramCheckCount": 0,
+      "mismatchCount": 0,
+      "dummyEndHp": 1196,
+      "eventCount": 33
+    }
+  ]
+}

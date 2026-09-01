@@ -1,0 +1,395 @@
+{
+  "name": "history-3705",
+  "slug": "history-3705",
+  "source": "author_history",
+  "heroClass": "Adventurer",
+  "seed": 42,
+  "durationSec": 30,
+  "placements": [
+    {
+      "id": "leather_bag",
+      "key": "17:0:11:2:5:2",
+      "x": 2,
+      "y": 5,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "17:1:11:0:5:2",
+      "x": 0,
+      "y": 5,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "17:2:66:4:6:0",
+      "x": 4,
+      "y": 6,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "17:3:11:1:3:0",
+      "x": 1,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "fanny_pack",
+      "key": "17:4:26:4:4:1",
+      "x": 4,
+      "y": 4,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "potion_belt",
+      "key": "17:5:85:3:1:2",
+      "x": 3,
+      "y": 1,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "fanny_pack",
+      "key": "17:6:26:4:3:2",
+      "x": 4,
+      "y": 3,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "mercury_elemental",
+      "key": "17:7:377:1:3:1",
+      "x": 1,
+      "y": 3,
+      "r": 1,
+      "gems": [
+        "elephant_rune"
+      ]
+    },
+    {
+      "id": "emerald_whelp",
+      "key": "17:8:197:3:3:0",
+      "x": 3,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "potion_belt",
+      "key": "17:9:85:0:1:2",
+      "x": 0,
+      "y": 1,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "17:10:66:0:0:2",
+      "x": 0,
+      "y": 0,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "death_scythe",
+      "key": "17:11:44:0:4:3",
+      "x": 0,
+      "y": 4,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "poison_spear",
+      "key": "17:12:373:1:5:1",
+      "x": 1,
+      "y": 5,
+      "r": 1,
+      "gems": [
+        "hawk_rune"
+      ]
+    },
+    {
+      "id": "fanny_pack",
+      "key": "17:13:26:5:5:2",
+      "x": 5,
+      "y": 5,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "fanny_pack",
+      "key": "17:14:26:5:4:2",
+      "x": 5,
+      "y": 4,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "falcon_blade",
+      "key": "17:15:83:5:3:0",
+      "x": 5,
+      "y": 3,
+      "r": 0,
+      "gems": [
+        "perfect_emerald",
+        "chipped_emerald"
+      ]
+    },
+    {
+      "id": "bag_of_giving",
+      "key": "17:16:368:1:0:3",
+      "x": 1,
+      "y": 0,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "stamina_sack",
+      "key": "17:17:42:4:0:0",
+      "x": 4,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "17:18:66:6:3:0",
+      "x": 6,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "courage_puppy",
+      "key": "17:19:149:2:2:2",
+      "x": 2,
+      "y": 2,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "potion_belt",
+      "key": "17:20:85:7:2:0",
+      "x": 7,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "death_lotus",
+      "key": "17:21:335:6:4:0",
+      "x": 6,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "claws_of_attack",
+      "key": "17:22:118:0:2:1",
+      "x": 0,
+      "y": 2,
+      "r": 1,
+      "gems": [
+        "regular_amethyst"
+      ]
+    },
+    {
+      "id": "speak_with_animals",
+      "key": "17:23:493:4:0:1",
+      "x": 4,
+      "y": 0,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "squirrel_archer",
+      "key": "17:24:310:3:1:3",
+      "x": 3,
+      "y": 1,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "full_body_protection",
+      "key": "17:25:389:1:2:0",
+      "x": 1,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "blueberries",
+      "key": "17:26:22:6:1:0",
+      "x": 6,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "potion_belt",
+      "key": "17:27:85:8:2:0",
+      "x": 8,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "17:28:66:8:6:0",
+      "x": 8,
+      "y": 6,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "17:29:11:7:0:0",
+      "x": 7,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "frog_prince",
+      "key": "17:30:498:6:2:1",
+      "x": 6,
+      "y": 2,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "stamina_sack",
+      "key": "17:31:42:5:6:3",
+      "x": 5,
+      "y": 6,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "leather_helm",
+      "key": "17:32:127:5:6:1",
+      "x": 5,
+      "y": 6,
+      "r": 1,
+      "gems": [
+        "corrupted_crystal"
+      ]
+    },
+    {
+      "id": "jynx_torquilla",
+      "key": "17:33:81:7:0:2",
+      "x": 7,
+      "y": 0,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "heart_container",
+      "key": "17:34:232:1:0:0",
+      "x": 1,
+      "y": 0,
+      "r": 0,
+      "gems": [
+        "flawed_emerald"
+      ]
+    },
+    {
+      "id": "demonic_flask",
+      "key": "17:35:65:8:1:0",
+      "x": 8,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "piggybank",
+      "key": "17:36:9:7:6:2",
+      "x": 7,
+      "y": 6,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "wisp",
+      "key": "17:37:495:8:4:0",
+      "x": 8,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "star_of_courage",
+      "key": "17:38:282:8:5:0",
+      "x": 8,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "stamina_sack",
+      "key": "17:39:42:6:0:2",
+      "x": 6,
+      "y": 0,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "17:40:66:5:2:0",
+      "x": 5,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "17:41:66:5:1:0",
+      "x": 5,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "hyper_hedgehog",
+      "key": "17:42:423:5:1:2",
+      "x": 5,
+      "y": 1,
+      "r": 2,
+      "gems": []
+    }
+  ],
+  "expect": {
+    "playerEndHpMin": null,
+    "playerEndHpMax": null,
+    "dummyEndHpMin": null,
+    "dummyEndHpMax": null
+  },
+  "live": {
+    "playerEndHp": null,
+    "dummyEndHp": null,
+    "playerStamina": null,
+    "stacks": null,
+    "capturedAt": null,
+    "notes": null,
+    "playerMaxHp": null,
+    "fightDurationSec": null,
+    "opponentClass": null,
+    "playerEndHpMin": null,
+    "playerEndHpMax": null,
+    "opponentHpComparable": false
+  },
+  "meta": {
+    "focusItemIds": [
+      "bag_of_giving",
+      "falcon_blade",
+      "death_lotus"
+    ],
+    "phase": 260
+  }
+}

@@ -1,0 +1,516 @@
+/* Centered VH “Vault Gear” section — badge, title, grid, dual CTAs */
+
+/* Stretch vault to fill leftover #main height so sky covers to footer */
+body.page-home #main {
+  display: flex;
+  flex-direction: column;
+}
+
+body.page-home #home-builds-vault {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-vault {
+  --home-vault-ink: #f3f5f7;
+  --home-vault-muted: #9aa3ad;
+  --home-vault-badge-top: #f0c56a;
+  --home-vault-badge-bot: #e8912a;
+  --home-vault-cell: #1c2128;
+  --home-vault-shade: rgba(14, 15, 16, 0.14);
+  --vault-marquee-duration: 16s;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  margin: 0;
+  z-index: 3;
+}
+
+.home-vault__band {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 48rem;
+  /* Top pad under items step; bottom clear — site footer sits on body below vault */
+  padding: calc(5.75rem + 24px) 1.5rem 2.75rem;
+  /* Transparent — fixed combat sky shows through */
+  background: transparent;
+}
+
+.home-vault__band > .home-vault__inner {
+  flex: 0 0 auto;
+  width: min(92rem, 100%);
+}
+
+/*
+ * Homepage footer: host is a body child (not nested in #main).
+ * Paint the leather wash edge-to-edge under the screen frame; inset only the copy.
+ */
+body.page-home #site-footer {
+  flex: 0 0 auto;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body.page-home #site-footer > .site-footer {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 1.75rem var(--bpb-frame-edge-x) var(--bpb-frame-edge-y);
+  border-top: 2px solid rgba(60, 38, 29, 0.55);
+}
+
+.home-vault__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  width: min(92rem, 100%);
+  text-align: center;
+}
+
+/* Patch3 shade — same wash as Choose your hero / items explore */
+.home-vault__shade {
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+}
+
+.home-vault__shade::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--home-vault-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.home-vault__title {
+  margin: 0;
+  max-width: 18ch;
+  padding: 0.55rem 1.15rem 0.6rem;
+  font-family: var(--bpb-font-display);
+  font-size: clamp(1.85rem, 4.2vw, 3rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: 0.02em;
+  color: var(--bpb-label-fill);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+.home-vault__lede {
+  margin: 0 auto 0.75rem;
+  max-width: 40rem;
+  padding: 0.55rem 1rem 0.65rem;
+  font-family: var(--bpb-font-body);
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--bpb-label-fill);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+/* ——— Sliding rows (items-orbit hover language) ——— */
+
+.home-vault__marquee {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  width: 100vw;
+  max-width: 100vw;
+  margin: 1.35rem 0 0.65rem;
+  margin-left: calc(50% - 50vw);
+  padding: 1rem 0;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 4%,
+    #000 96%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 4%,
+    #000 96%,
+    transparent 100%
+  );
+}
+
+.home-vault__row {
+  overflow: visible;
+  width: 100%;
+}
+
+.home-vault__track {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0;
+  width: max-content;
+  will-change: transform;
+}
+
+/* Each group owns its trailing gap so -50% lands exactly on a loop point */
+.home-vault__group {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 3.25rem;
+  padding-right: 3.25rem;
+}
+
+.home-vault__row--left .home-vault__track {
+  animation: home-vault-slide-left var(--vault-marquee-duration) linear infinite;
+}
+
+.home-vault__row--right .home-vault__track {
+  animation: home-vault-slide-right var(--vault-marquee-duration) linear infinite;
+}
+
+/* Pause only the row that owns the hovered / focused card */
+.home-vault__row:has(.home-vault__cell:hover) .home-vault__track,
+.home-vault__row:has(.home-vault__cell:focus-visible) .home-vault__track {
+  animation-play-state: paused;
+}
+
+/* Rest of the cloud dims + blurs; hovered board stays sharp */
+.home-vault__marquee:has(.home-vault__cell:hover) .home-vault__cell:not(:hover),
+.home-vault__marquee:has(.home-vault__cell:focus-visible)
+  .home-vault__cell:not(:focus-visible):not(:hover) {
+  filter: brightness(0.35) blur(2.5px);
+}
+
+.home-vault__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 0 0 auto;
+  width: 16.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: filter 0.18s ease;
+}
+
+.home-vault__cell:hover,
+.home-vault__cell:focus-visible {
+  z-index: 6;
+  filter: drop-shadow(
+    0 0 12px color-mix(in srgb, var(--home-vault-badge-bot) 45%, transparent)
+  );
+}
+
+.home-vault__cell:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--home-vault-badge-bot) 85%, transparent);
+  outline-offset: 4px;
+}
+
+.home-vault__cell-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16.5rem;
+  height: 12.9rem;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.home-vault__board {
+  display: block;
+  line-height: 0;
+  transform-origin: center center;
+  pointer-events: none;
+}
+
+.home-vault__board .bpb-bg,
+.home-vault__board .bpb-bg__hit {
+  pointer-events: none;
+}
+
+.home-vault__board .bpb-bg {
+  margin: 0 auto;
+}
+
+.home-vault__board-empty {
+  font-family: var(--bpb-font-body);
+  font-size: 0.7rem;
+  color: var(--home-vault-muted);
+}
+
+.home-vault__cell-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  max-width: 16rem;
+  margin: 0;
+  font-family: var(--bpb-font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.home-vault__cell-class {
+  flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+
+.home-vault__cell-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-vault__cell-author {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  max-width: 16rem;
+  margin: 0;
+  font-family: var(--bpb-font-body);
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--bpb-label-fill) 88%, transparent);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+.home-vault__cell-avatar,
+.home-vault__cell-avatar--initials {
+  flex: 0 0 auto;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+img.home-vault__cell-avatar {
+  display: block;
+  object-fit: cover;
+}
+
+.home-vault__cell-avatar--initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #1a1410;
+  background: linear-gradient(180deg, var(--home-vault-badge-top), var(--home-vault-badge-bot));
+}
+
+.home-vault__cell-author-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes home-vault-slide-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes home-vault-slide-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.home-vault__cell-label--rose {
+  color: #f2a0c4;
+}
+.home-vault__cell-label--gold {
+  color: #e8d48a;
+}
+.home-vault__cell-label--mist {
+  color: #c5ccd4;
+}
+.home-vault__cell-label--lime {
+  color: #b7e07a;
+}
+.home-vault__cell-label--mint {
+  color: #7fd6b0;
+}
+.home-vault__cell-label--sky {
+  color: #8ec8f0;
+}
+.home-vault__cell-label--amber {
+  color: #f0c56a;
+}
+.home-vault__cell-label--lilac {
+  color: #c4b0f0;
+}
+
+.home-vault__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+/* Crimson / steel banners — same family as Watch / View build / View items */
+.home-vault__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  box-sizing: border-box;
+  min-width: 12.5rem;
+  height: 2.85rem;
+  margin: 0;
+  padding: 0 1.1rem;
+  border: 0;
+  border-radius: 0;
+  font-family: var(--bpb-font-display);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: none;
+  color: var(--bpb-label-fill);
+  text-shadow: var(--bpb-label-stroke);
+  background-color: transparent;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: none;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.home-vault__cta--op {
+  background-image: url('../../../assets/theme/ui/ui-btn-crimson.png');
+}
+
+.home-vault__cta--catalog {
+  background-image: url('../../../assets/theme/ui/ui-btn-steel.png');
+}
+
+.home-vault__cta-icon {
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex: 0 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
+}
+
+.home-vault__cta:hover {
+  filter: brightness(1.1);
+  color: #fff;
+}
+
+.home-vault__cta:active {
+  transform: translateY(1px);
+  filter: brightness(0.96);
+}
+
+.home-vault__cta:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--bpb-gold) 85%, transparent);
+  outline-offset: 4px;
+}
+
+.home-vault__footnote {
+  margin: 0.35rem 0 0;
+  font-family: var(--bpb-font-body);
+  font-size: 0.85rem;
+  color: var(--home-vault-muted);
+}
+
+.home-vault__cell--skel {
+  pointer-events: none;
+  gap: 0.55rem;
+}
+
+.home-vault__skel-media {
+  width: 16.5rem;
+  height: 12.9rem;
+}
+
+.home-vault__skel-label {
+  width: 6rem;
+  height: 0.7rem;
+}
+
+@media (max-width: 720px) {
+  .home-vault__band {
+    min-height: 0;
+    padding: calc(4.5rem + 24px) 1rem 2rem;
+  }
+
+  .home-vault__cell,
+  .home-vault__cell-media {
+    width: 14rem;
+  }
+
+  .home-vault__cell-media {
+    height: 11rem;
+  }
+
+  .home-vault__group {
+    gap: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .home-vault__actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 20rem;
+  }
+
+  .home-vault__cta {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-vault__row--left .home-vault__track,
+  .home-vault__row--right .home-vault__track {
+    animation: none;
+    transform: none;
+  }
+
+  .home-vault__cell,
+  .home-vault__cta {
+    transition: none;
+  }
+}

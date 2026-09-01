@@ -1,0 +1,486 @@
+{
+  "name": "history-3708",
+  "slug": "history-3708",
+  "source": "author_history",
+  "seed": 42,
+  "durationSec": 30,
+  "placements": [
+    {
+      "id": "fanny_pack",
+      "key": "18:0:26:0:1:1",
+      "x": 0,
+      "y": 1,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "vineweave_basket",
+      "key": "18:1:252:5:1:0",
+      "x": 5,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "18:2:11:3:3:0",
+      "x": 3,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "18:3:11:3:1:0",
+      "x": 3,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "stamina_sack",
+      "key": "18:4:42:1:6:1",
+      "x": 1,
+      "y": 6,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "fanny_pack",
+      "key": "18:5:26:2:1:3",
+      "x": 2,
+      "y": 1,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "fanny_pack",
+      "key": "18:6:26:1:1:1",
+      "x": 1,
+      "y": 1,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "stamina_sack",
+      "key": "18:7:42:0:4:0",
+      "x": 0,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "stamina_sack",
+      "key": "18:8:42:0:0:1",
+      "x": 0,
+      "y": 0,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "stamina_sack",
+      "key": "18:9:42:3:0:1",
+      "x": 3,
+      "y": 0,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "robodog",
+      "key": "18:10:449:0:0:2",
+      "x": 0,
+      "y": 0,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "bloodthorne",
+      "key": "18:11:47:0:2:1",
+      "x": 0,
+      "y": 2,
+      "r": 1,
+      "gems": [
+        "wisp",
+        "wisp"
+      ]
+    },
+    {
+      "id": "rat_chef",
+      "key": "18:12:311:6:3:0",
+      "x": 6,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "carrot",
+      "key": "18:13:124:7:3:1",
+      "x": 7,
+      "y": 3,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "carrot",
+      "key": "18:14:124:5:0:3",
+      "x": 5,
+      "y": 0,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "blueberries",
+      "key": "18:15:22:6:1:0",
+      "x": 6,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "blueberries",
+      "key": "18:16:22:7:1:0",
+      "x": 7,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "carrot",
+      "key": "18:17:124:5:2:3",
+      "x": 5,
+      "y": 2,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "bowl_of_treats",
+      "key": "18:18:162:6:2:0",
+      "x": 6,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "inner_power",
+      "key": "18:19:485:4:3:0",
+      "x": 4,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "blood_goobert",
+      "key": "18:20:54:3:1:0",
+      "x": 3,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "generator",
+      "key": "18:21:472:1:5:0",
+      "x": 1,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "charge_splitter",
+      "key": "18:22:446:0:4:2",
+      "x": 0,
+      "y": 4,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "fanny_pack",
+      "key": "18:23:26:1:3:0",
+      "x": 1,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "18:24:66:0:3:0",
+      "x": 0,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "mecha_bat",
+      "key": "18:25:450:0:3:0",
+      "x": 0,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "blueberries",
+      "key": "18:26:22:4:0:0",
+      "x": 4,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "fanny_pack",
+      "key": "18:27:26:8:1:3",
+      "x": 8,
+      "y": 1,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "stamina_sack",
+      "key": "18:28:42:6:0:1",
+      "x": 6,
+      "y": 0,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "blueberries",
+      "key": "18:29:22:8:1:0",
+      "x": 8,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "blood_amulet",
+      "key": "18:30:48:6:0:0",
+      "x": 6,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "mecha_bat",
+      "key": "18:31:450:2:3:2",
+      "x": 2,
+      "y": 3,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "holy_collar",
+      "key": "18:32:431:4:4:0",
+      "x": 4,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "stamina_sack",
+      "key": "18:33:42:1:5:1",
+      "x": 1,
+      "y": 5,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "18:34:66:2:4:0",
+      "x": 2,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "18:35:66:1:4:0",
+      "x": 1,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "cog_badge",
+      "key": "18:36:515:3:4:0",
+      "x": 3,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "charge_splitter",
+      "key": "18:37:446:1:4:2",
+      "x": 1,
+      "y": 4,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "leather_helm",
+      "key": "18:38:127:0:5:2",
+      "x": 0,
+      "y": 5,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "vampiric_collar",
+      "key": "18:39:429:2:4:0",
+      "x": 2,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "amulet_of_the_wild",
+      "key": "18:40:269:3:0:2",
+      "x": 3,
+      "y": 0,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "vampiric_collar",
+      "key": "18:41:429:1:0:0",
+      "x": 1,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "acorn_ace",
+      "key": "18:42:286:7:0:0",
+      "x": 7,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "stamina_sack",
+      "key": "18:43:42:5:4:1",
+      "x": 5,
+      "y": 4,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "stamina_sack",
+      "key": "18:44:42:5:5:1",
+      "x": 5,
+      "y": 5,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "healing_herbs",
+      "key": "18:45:7:6:5:1",
+      "x": 6,
+      "y": 5,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "18:46:66:8:3:0",
+      "x": 8,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "18:47:66:8:4:0",
+      "x": 8,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "lucky_piggy",
+      "key": "18:48:119:8:2:3",
+      "x": 8,
+      "y": 2,
+      "r": 3,
+      "gems": []
+    },
+    {
+      "id": "amulet_of_life",
+      "key": "18:49:264:7:5:0",
+      "x": 7,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "protective_purse",
+      "key": "18:50:66:8:5:0",
+      "x": 8,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "rat_chef",
+      "key": "18:51:311:5:4:0",
+      "x": 5,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "crown",
+      "key": "18:52:217:2:5:2",
+      "x": 2,
+      "y": 5,
+      "r": 2,
+      "gems": []
+    },
+    {
+      "id": "leather_helm",
+      "key": "18:53:127:2:6:1",
+      "x": 2,
+      "y": 6,
+      "r": 1,
+      "gems": []
+    },
+    {
+      "id": "star_of_courage",
+      "key": "18:54:282:8:0:0",
+      "x": 8,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    }
+  ],
+  "expect": {
+    "playerEndHpMin": 223,
+    "playerEndHpMax": 257,
+    "dummyEndHpMin": 0,
+    "dummyEndHpMax": 90
+  },
+  "live": {
+    "playerEndHp": null,
+    "dummyEndHp": null,
+    "playerStamina": null,
+    "stacks": null,
+    "capturedAt": null,
+    "notes": null,
+    "playerMaxHp": null,
+    "fightDurationSec": null,
+    "opponentClass": null,
+    "playerEndHpMin": null,
+    "playerEndHpMax": null,
+    "opponentHpComparable": false
+  },
+  "meta": {
+    "focusItemIds": [
+      "bloodthorne",
+      "blood_goobert"
+    ],
+    "simBaseline": {
+      "playerEndHp": 240,
+      "dummyEndHp": 0,
+      "seed": 42,
+      "durationSec": 30,
+      "measuredAt": "2026-08-22T05:23:25.775Z",
+      "toleranceFrac": 0.15
+    }
+  }
+}

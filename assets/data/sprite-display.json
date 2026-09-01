@@ -1,0 +1,8868 @@
+{
+  "extractedAt": "2026-07-16T23:58:30.988Z",
+  "cellSize": 80,
+  "defaultIconScale": [
+    2,
+    2
+  ],
+  "count": 521,
+  "byImage": {
+    "AceofSpades.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "AceofSpades.tscn",
+      "texW": 150,
+      "texH": 252,
+      "w": 0.75,
+      "h": 1.26,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AceofSpades"
+    },
+    "AcornCollar.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AcornCollar.tscn",
+      "texW": 118,
+      "texH": 125,
+      "w": 0.738,
+      "h": 0.781,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AcornCollar"
+    },
+    "ArtifactStoneCold.png": {
+      "iconScale": [
+        0.6,
+        0.6
+      ],
+      "scaleFrom": "ArtifactStoneCold.tscn",
+      "texW": 100,
+      "texH": 113,
+      "w": 0.75,
+      "h": 0.847,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "ArtifactStoneCold"
+    },
+    "ArtifactStoneHeat.png": {
+      "iconScale": [
+        0.6,
+        0.6
+      ],
+      "scaleFrom": "ArtifactStoneHeat.tscn",
+      "texW": 98,
+      "texH": 114,
+      "w": 0.735,
+      "h": 0.855,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "ArtifactStoneHeat"
+    },
+    "BagofStones.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BagofStones.tscn",
+      "texW": 320,
+      "texH": 160,
+      "w": 2,
+      "h": 1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BagofStones"
+    },
+    "Banana.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "Banana.tscn",
+      "texW": 293,
+      "texH": 293,
+      "w": 1.648,
+      "h": 1.648,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Banana"
+    },
+    "BloodAmulet.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BloodAmulet.tscn",
+      "texW": 160,
+      "texH": 175,
+      "w": 1,
+      "h": 1.094,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BloodAmulet"
+    },
+    "BloodGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BloodGoobert.tscn",
+      "texW": 302,
+      "texH": 310,
+      "w": 1.888,
+      "h": 1.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.013,
+      "fileStem": "BloodGoobert"
+    },
+    "Bloodthorne.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Bloodthorne.tscn",
+      "texW": 161,
+      "texH": 481,
+      "w": 1.006,
+      "h": 3.006,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.013,
+      "fileStem": "Bloodthorne"
+    },
+    "BloodyDagger.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BloodyDagger.tscn",
+      "texW": 123,
+      "texH": 314,
+      "w": 0.769,
+      "h": 1.963,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.034,
+      "anchorY": -0.018,
+      "fileStem": "BloodyDagger"
+    },
+    "Blueberries.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Blueberries.tscn",
+      "texW": 160,
+      "texH": 160,
+      "w": 1,
+      "h": 1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Blueberries"
+    },
+    "BowandArrow.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BowandArrow.tscn",
+      "texW": 484,
+      "texH": 454,
+      "w": 3.025,
+      "h": 2.838,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BowandArrow"
+    },
+    "BoxofRiches.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BoxofRiches.tscn",
+      "texW": 292,
+      "texH": 175,
+      "w": 1.825,
+      "h": 1.094,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.125,
+      "anchorY": 0,
+      "fileStem": "BoxofRiches"
+    },
+    "Broom.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Broom.tscn",
+      "texW": 141,
+      "texH": 617,
+      "w": 0.881,
+      "h": 3.856,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Broom"
+    },
+    "BurningTorch.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BurningTorch.tscn",
+      "texW": 138,
+      "texH": 353,
+      "w": 0.863,
+      "h": 2.206,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.087,
+      "fileStem": "BurningTorch"
+    },
+    "Carrot.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Carrot.tscn",
+      "texW": 327,
+      "texH": 105,
+      "w": 2.044,
+      "h": 0.656,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.05,
+      "anchorY": 0,
+      "fileStem": "Carrot"
+    },
+    "CarrotGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CarrotGoobert.tscn",
+      "texW": 305,
+      "texH": 335,
+      "w": 1.906,
+      "h": 2.094,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": -0.075,
+      "fileStem": "CarrotGoobert"
+    },
+    "ClawsofAttack.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ClawsofAttack.tscn",
+      "texW": 332,
+      "texH": 181,
+      "w": 2.075,
+      "h": 1.131,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": 0,
+      "fileStem": "ClawsofAttack"
+    },
+    "Coins.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Coins.tscn",
+      "texW": 142,
+      "texH": 145,
+      "w": 0.888,
+      "h": 0.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Coins"
+    },
+    "CorruptedArmor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CorruptedArmor.tscn",
+      "texW": 367,
+      "texH": 497,
+      "w": 2.294,
+      "h": 3.106,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "CorruptedArmor"
+    },
+    "CritwoodStaff.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CritwoodStaff.tscn",
+      "texW": 168,
+      "texH": 640,
+      "w": 1.05,
+      "h": 4,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "CritwoodStaff"
+    },
+    "Crossblades.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Crossblades.tscn",
+      "texW": 497,
+      "texH": 486,
+      "w": 3.106,
+      "h": 3.038,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Crossblades"
+    },
+    "Crown.png": {
+      "iconScale": [
+        0.5,
+        0.55
+      ],
+      "scaleFrom": "Crown.tscn",
+      "texW": 292,
+      "texH": 151,
+      "w": 1.825,
+      "h": 1.038,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.025,
+      "fileStem": "Crown"
+    },
+    "CursedDagger.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CursedDagger.tscn",
+      "texW": 124,
+      "texH": 320,
+      "w": 0.775,
+      "h": 2,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "CursedDagger"
+    },
+    "CursedHairComb.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CursedHairComb.tscn",
+      "texW": 177,
+      "texH": 145,
+      "w": 1.106,
+      "h": 0.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "CursedHairComb"
+    },
+    "CustomerCard.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CustomerCard.tscn",
+      "texW": 158,
+      "texH": 117,
+      "w": 0.988,
+      "h": 0.731,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "CustomerCard"
+    },
+    "Dagger.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Dagger.tscn",
+      "texW": 123,
+      "texH": 312,
+      "w": 0.769,
+      "h": 1.95,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.022,
+      "anchorY": -0.03,
+      "fileStem": "Dagger"
+    },
+    "DancingDragon.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DancingDragon.tscn",
+      "texW": 664,
+      "texH": 373,
+      "w": 4.15,
+      "h": 2.331,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.087,
+      "anchorY": -0.062,
+      "fileStem": "DancingDragon"
+    },
+    "DarkestLotus.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "DarkestLotus.tscn",
+      "texW": 151,
+      "texH": 253,
+      "w": 0.755,
+      "h": 1.265,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "DarkestLotus"
+    },
+    "Darksaber.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Darksaber.tscn",
+      "texW": 149,
+      "texH": 633,
+      "w": 0.931,
+      "h": 3.956,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.025,
+      "anchorY": 0,
+      "fileStem": "Darksaber"
+    },
+    "DeathScythe.png": {
+      "iconScale": [
+        0.53,
+        0.53
+      ],
+      "scaleFrom": "DeathScythe.tscn",
+      "texW": 480,
+      "texH": 640,
+      "w": 3.18,
+      "h": 4.24,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.025,
+      "anchorY": -0.012,
+      "fileStem": "DeathScythe"
+    },
+    "DeckofCards.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "DeckofCards.tscn",
+      "texW": 177,
+      "texH": 293,
+      "w": 0.996,
+      "h": 1.648,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.022,
+      "anchorY": -0.018,
+      "fileStem": "DeckofCards"
+    },
+    "DemonicFlask.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DemonicFlask.tscn",
+      "texW": 160,
+      "texH": 320,
+      "w": 1,
+      "h": 2,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0,
+      "fileStem": "DemonicFlask"
+    },
+    "DjinnLamp.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DjinnLamp.tscn",
+      "texW": 322,
+      "texH": 160,
+      "w": 2.013,
+      "h": 1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "DjinnLamp"
+    },
+    "Eggscalibur.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Eggscalibur.tscn",
+      "texW": 448,
+      "texH": 317,
+      "w": 2.8,
+      "h": 1.981,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.025,
+      "anchorY": 0,
+      "fileStem": "Eggscalibur"
+    },
+    "EvilCap.png": {
+      "iconScale": [
+        0.45,
+        0.47
+      ],
+      "scaleFrom": "EvilCap.tscn",
+      "texW": 178,
+      "texH": 309,
+      "w": 1.001,
+      "h": 1.815,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.025,
+      "fileStem": "EvilCap"
+    },
+    "AcornAce.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AcornAce.tscn",
+      "texW": 116,
+      "texH": 147,
+      "w": 0.725,
+      "h": 0.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "AcornAce"
+    },
+    "AmethystEgg.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmethystEgg.tscn",
+      "texW": 233,
+      "texH": 291,
+      "w": 1.456,
+      "h": 1.819,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0,
+      "fileStem": "AmethystEgg"
+    },
+    "AmethystWhelp.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmethystWhelp.tscn",
+      "texW": 304,
+      "texH": 312,
+      "w": 1.9,
+      "h": 1.95,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmethystWhelp"
+    },
+    "AmuletofAgility.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmuletofAgility.tscn",
+      "texW": 164,
+      "texH": 174,
+      "w": 1.025,
+      "h": 1.088,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmuletofAgility"
+    },
+    "AmuletofAlchemy.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmuletofAlchemy.tscn",
+      "texW": 166,
+      "texH": 172,
+      "w": 1.038,
+      "h": 1.075,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmuletofAlchemy"
+    },
+    "AmuletofDarkness.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmuletofDarkness.tscn",
+      "texW": 164,
+      "texH": 169,
+      "w": 1.025,
+      "h": 1.056,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmuletofDarkness"
+    },
+    "AmuletofFeasting.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmuletofFeasting.tscn",
+      "texW": 164,
+      "texH": 174,
+      "w": 1.025,
+      "h": 1.088,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmuletofFeasting"
+    },
+    "AmuletofFortune.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmuletofFortune.tscn",
+      "texW": 165,
+      "texH": 170,
+      "w": 1.031,
+      "h": 1.063,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmuletofFortune"
+    },
+    "AmuletofLife.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmuletofLife.tscn",
+      "texW": 164,
+      "texH": 174,
+      "w": 1.025,
+      "h": 1.088,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmuletofLife"
+    },
+    "AmuletofLight.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmuletofLight.tscn",
+      "texW": 164,
+      "texH": 170,
+      "w": 1.025,
+      "h": 1.063,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmuletofLight"
+    },
+    "AmuletofSteel.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmuletofSteel.tscn",
+      "texW": 164,
+      "texH": 174,
+      "w": 1.025,
+      "h": 1.088,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmuletofSteel"
+    },
+    "AmuletoftheWild.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmuletoftheWild.tscn",
+      "texW": 164,
+      "texH": 174,
+      "w": 1.025,
+      "h": 1.088,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmuletoftheWild"
+    },
+    "AmuletUnidentified.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmuletUnidentified.tscn",
+      "texW": 171,
+      "texH": 171,
+      "w": 1.069,
+      "h": 1.069,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmuletUnidentified"
+    },
+    "AngelCrystal.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AngelCrystal.tscn",
+      "texW": 154,
+      "texH": 308,
+      "w": 0.963,
+      "h": 1.925,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.037,
+      "anchorY": 0.063,
+      "fileStem": "AngelCrystal"
+    },
+    "Anvil.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Anvil.tscn",
+      "texW": 326,
+      "texH": 167,
+      "w": 2.038,
+      "h": 1.044,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Anvil"
+    },
+    "ArcaneBoots.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "ArcaneBoots.tscn",
+      "texW": 180,
+      "texH": 301,
+      "w": 1.013,
+      "h": 1.693,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.038,
+      "anchorY": 0.038,
+      "fileStem": "ArcaneBoots"
+    },
+    "ArcaneIntellect.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ArcaneIntellect.tscn",
+      "texW": 149,
+      "texH": 146,
+      "w": 0.931,
+      "h": 0.913,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ArcaneIntellect"
+    },
+    "ArmoredCouragePuppy.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ArmoredCouragePuppy.tscn",
+      "texW": 326,
+      "texH": 192,
+      "w": 2.038,
+      "h": 1.2,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": -0.037,
+      "fileStem": "ArmoredCouragePuppy"
+    },
+    "ArmoredPowerPuppy.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ArmoredPowerPuppy.tscn",
+      "texW": 328,
+      "texH": 169,
+      "w": 2.05,
+      "h": 1.056,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": 0,
+      "fileStem": "ArmoredPowerPuppy"
+    },
+    "ArmoredWisdomPuppy.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ArmoredWisdomPuppy.tscn",
+      "texW": 165,
+      "texH": 319,
+      "w": 1.031,
+      "h": 1.994,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ArmoredWisdomPuppy"
+    },
+    "ArtifactStoneDeath.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ArtifactStoneDeath.tscn",
+      "texW": 117,
+      "texH": 141,
+      "w": 0.731,
+      "h": 0.881,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "ArtifactStoneDeath"
+    },
+    "Automanaton.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "Automanaton.tscn",
+      "texW": 432,
+      "texH": 677,
+      "w": 2.592,
+      "h": 4.062,
+      "bag": false,
+      "layered": true,
+      "texSource": "site-composite",
+      "anchorX": -0.5,
+      "anchorY": 0,
+      "fileStem": "Automanaton"
+    },
+    "Axe.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Axe.tscn",
+      "texW": 264,
+      "texH": 486,
+      "w": 1.65,
+      "h": 3.038,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.175,
+      "anchorY": 0,
+      "fileStem": "Axe"
+    },
+    "BadgerRune.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "BadgerRune.tscn",
+      "texW": 111,
+      "texH": 124,
+      "w": 0.624,
+      "h": 0.698,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BadgerRune"
+    },
+    "BadgerSpirit.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "BadgerSpirit.tscn",
+      "texW": 378,
+      "texH": 177,
+      "w": 1.89,
+      "h": 0.885,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BadgerSpirit"
+    },
+    "BagofGiving.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BagofGiving.tscn",
+      "texW": 558,
+      "texH": 398,
+      "w": 3.488,
+      "h": 2.488,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BagofGiving"
+    },
+    "Bagtacular.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Bagtacular.tscn",
+      "texW": 135,
+      "texH": 138,
+      "w": 0.844,
+      "h": 0.863,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "Bagtacular"
+    },
+    "Battery.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Battery.tscn",
+      "texW": 94,
+      "texH": 149,
+      "w": 0.588,
+      "h": 0.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Battery"
+    },
+    "Bazooka.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Bazooka.tscn",
+      "texW": 483,
+      "texH": 172,
+      "w": 3.019,
+      "h": 1.075,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "Bazooka"
+    },
+    "BerserkerBag.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "BerserkerBag.tscn",
+      "texW": 610,
+      "texH": 441,
+      "w": 3.431,
+      "h": 2.481,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.05,
+      "anchorY": 0,
+      "fileStem": "BerserkerBag"
+    },
+    "Bewitchment.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "Bewitchment.tscn",
+      "texW": 162,
+      "texH": 158,
+      "w": 0.972,
+      "h": 0.948,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.025,
+      "anchorY": -0.002,
+      "fileStem": "Bewitchment"
+    },
+    "BigBloodthorne.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BigBloodthorne.tscn",
+      "texW": 293,
+      "texH": 646,
+      "w": 1.831,
+      "h": 4.037,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.037,
+      "anchorY": -0.037,
+      "fileStem": "BigBloodthorne"
+    },
+    "BionicArmor.png": {
+      "iconScale": [
+        0.53,
+        0.53
+      ],
+      "scaleFrom": "BionicArmor.tscn",
+      "texW": 328,
+      "texH": 458,
+      "w": 2.173,
+      "h": 3.034,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BionicArmor"
+    },
+    "BismuthCube.png": {
+      "iconScale": [
+        0.447368,
+        0.447368
+      ],
+      "scaleFrom": "BismuthCube.tscn",
+      "texW": 158,
+      "texH": 176,
+      "w": 0.884,
+      "h": 0.984,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BismuthCube"
+    },
+    "BloodManipulation.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BloodManipulation.tscn",
+      "texW": 132,
+      "texH": 149,
+      "w": 0.825,
+      "h": 0.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "BloodManipulation"
+    },
+    "Bomb.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Bomb.tscn",
+      "texW": 267,
+      "texH": 283,
+      "w": 1.669,
+      "h": 1.769,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Bomb"
+    },
+    "BookofBasics.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "BookofBasics.tscn",
+      "texW": 162,
+      "texH": 299,
+      "w": 0.911,
+      "h": 1.682,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BookofBasics"
+    },
+    "BookofDarkness.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "BookofDarkness.tscn",
+      "texW": 171,
+      "texH": 318,
+      "w": 0.962,
+      "h": 1.789,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BookofDarkness"
+    },
+    "BookofIce.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BookofIce.tscn",
+      "texW": 159,
+      "texH": 281,
+      "w": 0.994,
+      "h": 1.756,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.009,
+      "anchorY": -0.005,
+      "fileStem": "BookofIce"
+    },
+    "BookofIceNew.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BookofIceNew.tscn",
+      "texW": 159,
+      "texH": 281,
+      "w": 0.994,
+      "h": 1.756,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.009,
+      "anchorY": -0.005,
+      "fileStem": "BookofIceNew"
+    },
+    "BookofLight.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BookofLight.tscn",
+      "texW": 166,
+      "texH": 300,
+      "w": 1.038,
+      "h": 1.875,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.022,
+      "anchorY": 0.12,
+      "fileStem": "BookofLight"
+    },
+    "BookofNature.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BookofNature.tscn",
+      "texW": 154,
+      "texH": 292,
+      "w": 0.963,
+      "h": 1.825,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BookofNature"
+    },
+    "Boomerang.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Boomerang.tscn",
+      "texW": 260,
+      "texH": 298,
+      "w": 1.625,
+      "h": 1.863,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.05,
+      "anchorY": 0,
+      "fileStem": "Boomerang"
+    },
+    "BowlofTreats.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BowlofTreats.tscn",
+      "texW": 270,
+      "texH": 193,
+      "w": 1.688,
+      "h": 1.206,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.025,
+      "fileStem": "BowlofTreats"
+    },
+    "BoxofProsperity.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BoxofProsperity.tscn",
+      "texW": 358,
+      "texH": 360,
+      "w": 2.238,
+      "h": 2.25,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BoxofProsperity"
+    },
+    "BrassKnuckles.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BrassKnuckles.tscn",
+      "texW": 166,
+      "texH": 133,
+      "w": 1.038,
+      "h": 0.831,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BrassKnuckles"
+    },
+    "Broccoli.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Broccoli.tscn",
+      "texW": 180,
+      "texH": 269,
+      "w": 1.125,
+      "h": 1.681,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Broccoli"
+    },
+    "BroccoliGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BroccoliGoobert.tscn",
+      "texW": 298,
+      "texH": 318,
+      "w": 1.863,
+      "h": 1.988,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.037,
+      "fileStem": "BroccoliGoobert"
+    },
+    "Broccotree.png": {
+      "iconScale": [
+        0.5,
+        0.492
+      ],
+      "scaleFrom": "Broccotree.tscn",
+      "texW": 304,
+      "texH": 458,
+      "w": 1.9,
+      "h": 2.817,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Broccotree"
+    },
+    "BurningBanner.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BurningBanner.tscn",
+      "texW": 172,
+      "texH": 319,
+      "w": 1.075,
+      "h": 1.994,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BurningBanner"
+    },
+    "BurningBlade.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BurningBlade.tscn",
+      "texW": 136,
+      "texH": 470,
+      "w": 0.85,
+      "h": 2.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BurningBlade"
+    },
+    "BurningSpikes.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BurningSpikes.tscn",
+      "texW": 150,
+      "texH": 174,
+      "w": 0.938,
+      "h": 1.088,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.064,
+      "fileStem": "BurningSpikes"
+    },
+    "BurningSword.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BurningSword.tscn",
+      "texW": 141,
+      "texH": 332,
+      "w": 0.881,
+      "h": 2.075,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.025,
+      "anchorY": 0,
+      "fileStem": "BurningSword"
+    },
+    "BustedBlade.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BustedBlade.tscn",
+      "texW": 288,
+      "texH": 792,
+      "w": 1.8,
+      "h": 4.95,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": -0.05,
+      "fileStem": "BustedBlade"
+    },
+    "BuytheHolyLight.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "BuytheHolyLight.tscn",
+      "texW": 142,
+      "texH": 147,
+      "w": 0.888,
+      "h": 0.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.014,
+      "fileStem": "BuytheHolyLight"
+    },
+    "CapofBrilliance.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "CapofBrilliance.tscn",
+      "texW": 164,
+      "texH": 294,
+      "w": 0.984,
+      "h": 1.764,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "CapofBrilliance"
+    },
+    "CatSpirit.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CatSpirit.tscn",
+      "texW": 285,
+      "texH": 470,
+      "w": 1.781,
+      "h": 2.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "CatSpirit"
+    },
+    "Cauldron.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Cauldron.tscn",
+      "texW": 349,
+      "texH": 305,
+      "w": 2.181,
+      "h": 1.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Cauldron"
+    },
+    "Chainsaw.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Chainsaw.tscn",
+      "texW": 174,
+      "texH": 609,
+      "w": 1.088,
+      "h": 3.806,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.025,
+      "anchorY": 0,
+      "fileStem": "Chainsaw"
+    },
+    "ChainWhip.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ChainWhip.tscn",
+      "texW": 467,
+      "texH": 476,
+      "w": 2.919,
+      "h": 2.975,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ChainWhip"
+    },
+    "ChargeSplitter.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "ChargeSplitter.tscn",
+      "texW": 170,
+      "texH": 176,
+      "w": 0.956,
+      "h": 0.99,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "ChargeSplitter"
+    },
+    "Cheese.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "Cheese.tscn",
+      "texW": 279,
+      "texH": 171,
+      "w": 1.569,
+      "h": 0.962,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.013,
+      "fileStem": "Cheese"
+    },
+    "CheeseGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CheeseGoobert.tscn",
+      "texW": 302,
+      "texH": 310,
+      "w": 1.888,
+      "h": 1.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "CheeseGoobert"
+    },
+    "BlackBishop.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "BlackBishop.tscn",
+      "texW": 84,
+      "texH": 169,
+      "w": 0.473,
+      "h": 0.951,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.012,
+      "fileStem": "BlackBishop"
+    },
+    "BlackKing.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "BlackKing.tscn",
+      "texW": 82,
+      "texH": 193,
+      "w": 0.461,
+      "h": 1.086,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.087,
+      "fileStem": "BlackKing"
+    },
+    "BlackKnight.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "BlackKnight.tscn",
+      "texW": 113,
+      "texH": 157,
+      "w": 0.636,
+      "h": 0.883,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": -0.012,
+      "fileStem": "BlackKnight"
+    },
+    "BlackPawn.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "BlackPawn.tscn",
+      "texW": 80,
+      "texH": 132,
+      "w": 0.4,
+      "h": 0.66,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.013,
+      "fileStem": "BlackPawn"
+    },
+    "BlackQueen.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "BlackQueen.tscn",
+      "texW": 85,
+      "texH": 174,
+      "w": 0.478,
+      "h": 0.979,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.037,
+      "fileStem": "BlackQueen"
+    },
+    "BlackRook.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "BlackRook.tscn",
+      "texW": 95,
+      "texH": 143,
+      "w": 0.534,
+      "h": 0.804,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.012,
+      "fileStem": "BlackRook"
+    },
+    "WhiteBishop.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "WhiteBishop.tscn",
+      "texW": 78,
+      "texH": 163,
+      "w": 0.439,
+      "h": 0.917,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.025,
+      "fileStem": "WhiteBishop"
+    },
+    "WhiteKing.png": {
+      "iconScale": [
+        0.43,
+        0.43
+      ],
+      "scaleFrom": "WhiteKing.tscn",
+      "texW": 83,
+      "texH": 195,
+      "w": 0.446,
+      "h": 1.048,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.062,
+      "fileStem": "WhiteKing"
+    },
+    "WhiteKnight.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "WhiteKnight.tscn",
+      "texW": 106,
+      "texH": 157,
+      "w": 0.596,
+      "h": 0.883,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": -0.012,
+      "fileStem": "WhiteKnight"
+    },
+    "WhitePawn.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "WhitePawn.tscn",
+      "texW": 82,
+      "texH": 133,
+      "w": 0.41,
+      "h": 0.665,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.013,
+      "fileStem": "WhitePawn"
+    },
+    "WhiteQueen.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "WhiteQueen.tscn",
+      "texW": 81,
+      "texH": 170,
+      "w": 0.456,
+      "h": 0.956,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.025,
+      "fileStem": "WhiteQueen"
+    },
+    "WhiteRook.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "WhiteRook.tscn",
+      "texW": 95,
+      "texH": 135,
+      "w": 0.534,
+      "h": 0.759,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "WhiteRook"
+    },
+    "ChessBoard.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ChessBoard.tscn",
+      "texW": 165,
+      "texH": 171,
+      "w": 1.031,
+      "h": 1.069,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "ChessBoard"
+    },
+    "ChessMaster.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ChessMaster.tscn",
+      "texW": 155,
+      "texH": 123,
+      "w": 0.969,
+      "h": 0.769,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ChessMaster"
+    },
+    "ChiliGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ChiliGoobert.tscn",
+      "texW": 302,
+      "texH": 309,
+      "w": 1.888,
+      "h": 1.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ChiliGoobert"
+    },
+    "ChiliPepper.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ChiliPepper.tscn",
+      "texW": 91,
+      "texH": 307,
+      "w": 0.569,
+      "h": 1.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": 0,
+      "fileStem": "ChiliPepper"
+    },
+    "ChromeCube.png": {
+      "iconScale": [
+        0.447368,
+        0.447368
+      ],
+      "scaleFrom": "ChromeCube.tscn",
+      "texW": 147,
+      "texH": 168,
+      "w": 0.822,
+      "h": 0.939,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ChromeCube"
+    },
+    "Cog.png": {
+      "iconScale": [
+        0.447368,
+        0.447368
+      ],
+      "scaleFrom": "Cog.tscn",
+      "texW": 152,
+      "texH": 152,
+      "w": 0.85,
+      "h": 0.85,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Cog"
+    },
+    "CogBadge.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CogBadge.tscn",
+      "texW": 145,
+      "texH": 145,
+      "w": 0.906,
+      "h": 0.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "CogBadge"
+    },
+    "Coil.png": {
+      "iconScale": [
+        0.379387,
+        0.379387
+      ],
+      "scaleFrom": "Coil.tscn",
+      "texW": 180,
+      "texH": 158,
+      "w": 0.854,
+      "h": 0.749,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0,
+      "fileStem": "Coil"
+    },
+    "Con-Trap-Tron.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "Con-Trap-Tron.tscn",
+      "texW": 321,
+      "texH": 327,
+      "w": 1.926,
+      "h": 1.962,
+      "bag": false,
+      "layered": true,
+      "texSource": "site-composite",
+      "anchorX": -0.487,
+      "anchorY": 0.275,
+      "fileStem": "Con-Trap-Tron"
+    },
+    "CouragePuppy.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CouragePuppy.tscn",
+      "texW": 326,
+      "texH": 181,
+      "w": 2.038,
+      "h": 1.131,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": 0,
+      "fileStem": "CouragePuppy"
+    },
+    "CriticalPoison.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CriticalPoison.tscn",
+      "texW": 138,
+      "texH": 139,
+      "w": 0.863,
+      "h": 0.869,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.025,
+      "anchorY": -0.002,
+      "fileStem": "CriticalPoison"
+    },
+    "Crow.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "Crow.tscn",
+      "texW": 351,
+      "texH": 276,
+      "w": 1.974,
+      "h": 1.553,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.163,
+      "fileStem": "Crow"
+    },
+    "Cthulhu.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Cthulhu.tscn",
+      "texW": 442,
+      "texH": 303,
+      "w": 2.763,
+      "h": 1.894,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Cthulhu"
+    },
+    "Cubert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Cubert.tscn",
+      "texW": 288,
+      "texH": 290,
+      "w": 1.8,
+      "h": 1.813,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Cubert"
+    },
+    "Cupcake.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Cupcake.tscn",
+      "texW": 101,
+      "texH": 156,
+      "w": 0.631,
+      "h": 0.975,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.05,
+      "fileStem": "Cupcake"
+    },
+    "CupcakeDragon.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CupcakeDragon.tscn",
+      "texW": 478,
+      "texH": 484,
+      "w": 2.988,
+      "h": 3.025,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "CupcakeDragon"
+    },
+    "CupcakeGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CupcakeGoobert.tscn",
+      "texW": 293,
+      "texH": 307,
+      "w": 1.831,
+      "h": 1.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.062,
+      "fileStem": "CupcakeGoobert"
+    },
+    "CupcakeStaff.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "CupcakeStaff.tscn",
+      "texW": 166,
+      "texH": 627,
+      "w": 1.038,
+      "h": 3.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "CupcakeStaff"
+    },
+    "Daggerang.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Daggerang.tscn",
+      "texW": 301,
+      "texH": 299,
+      "w": 1.881,
+      "h": 1.869,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.087,
+      "anchorY": 0.013,
+      "fileStem": "Daggerang"
+    },
+    "DarkLantern.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DarkLantern.tscn",
+      "texW": 162,
+      "texH": 322,
+      "w": 1.013,
+      "h": 2.013,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.012,
+      "fileStem": "DarkLantern"
+    },
+    "DarkRitual.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DarkRitual.tscn",
+      "texW": 162,
+      "texH": 153,
+      "w": 1.013,
+      "h": 0.956,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.023,
+      "fileStem": "DarkRitual"
+    },
+    "DeathLotus.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DeathLotus.tscn",
+      "texW": 313,
+      "texH": 290,
+      "w": 1.956,
+      "h": 1.813,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0,
+      "fileStem": "DeathLotus"
+    },
+    "DeerTotem.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DeerTotem.tscn",
+      "texW": 163,
+      "texH": 330,
+      "w": 1.019,
+      "h": 2.063,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.062,
+      "fileStem": "DeerTotem"
+    },
+    "DevouringSphere.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DevouringSphere.tscn",
+      "texW": 149,
+      "texH": 149,
+      "w": 0.931,
+      "h": 0.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "DevouringSphere"
+    },
+    "DigDeeper.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DigDeeper.tscn",
+      "texW": 156,
+      "texH": 129,
+      "w": 0.975,
+      "h": 0.806,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "DigDeeper"
+    },
+    "DivinePotion.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DivinePotion.tscn",
+      "texW": 144,
+      "texH": 305,
+      "w": 0.9,
+      "h": 1.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.012,
+      "fileStem": "DivinePotion"
+    },
+    "DoomCap.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DoomCap.tscn",
+      "texW": 444,
+      "texH": 307,
+      "w": 2.775,
+      "h": 1.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": -0.014,
+      "fileStem": "DoomCap"
+    },
+    "DoubleAxe.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DoubleAxe.tscn",
+      "texW": 401,
+      "texH": 641,
+      "w": 2.506,
+      "h": 4.006,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.05,
+      "fileStem": "DoubleAxe"
+    },
+    "DoubleRainbow.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "DoubleRainbow.tscn",
+      "texW": 166,
+      "texH": 133,
+      "w": 0.934,
+      "h": 0.748,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "DoubleRainbow"
+    },
+    "DraconicOrb.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DraconicOrb.tscn",
+      "texW": 142,
+      "texH": 172,
+      "w": 0.888,
+      "h": 1.075,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "DraconicOrb"
+    },
+    "DragonClaws.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DragonClaws.tscn",
+      "texW": 280,
+      "texH": 154,
+      "w": 1.75,
+      "h": 0.963,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "DragonClaws"
+    },
+    "DragonKnight.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DragonKnight.tscn",
+      "texW": 335,
+      "texH": 478,
+      "w": 2.094,
+      "h": 2.988,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "DragonKnight"
+    },
+    "DragonNest.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DragonNest.tscn",
+      "texW": 318,
+      "texH": 313,
+      "w": 1.988,
+      "h": 1.956,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "DragonNest"
+    },
+    "DragonscaleArmor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DragonscaleArmor.tscn",
+      "texW": 375,
+      "texH": 487,
+      "w": 2.344,
+      "h": 3.044,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "DragonscaleArmor"
+    },
+    "DragonSet.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DragonSet.tscn",
+      "texW": 159,
+      "texH": 151,
+      "w": 0.994,
+      "h": 0.944,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": 0.023,
+      "fileStem": "DragonSet"
+    },
+    "DragonskinBoots.png": {
+      "iconScale": [
+        0.45,
+        0.5
+      ],
+      "scaleFrom": "DragonskinBoots.tscn",
+      "texW": 184,
+      "texH": 318,
+      "w": 1.035,
+      "h": 1.988,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.038,
+      "anchorY": -0.012,
+      "fileStem": "DragonskinBoots"
+    },
+    "DualWielding.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "DualWielding.tscn",
+      "texW": 119,
+      "texH": 147,
+      "w": 0.744,
+      "h": 0.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "DualWielding"
+    },
+    "Eat-o-matic.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "Eat-o-matic.tscn",
+      "texW": 298,
+      "texH": 336,
+      "w": 1.788,
+      "h": 2.016,
+      "bag": false,
+      "layered": true,
+      "texSource": "site-composite",
+      "anchorX": -0.45,
+      "anchorY": -0.012,
+      "fileStem": "Eat-o-matic"
+    },
+    "EchoingBattlecry.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "EchoingBattlecry.tscn",
+      "texW": 158,
+      "texH": 166,
+      "w": 0.889,
+      "h": 0.934,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "EchoingBattlecry"
+    },
+    "ElectricTorch.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "ElectricTorch.tscn",
+      "texW": 153,
+      "texH": 265,
+      "w": 0.861,
+      "h": 1.491,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ElectricTorch"
+    },
+    "ElephantRune.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "ElephantRune.tscn",
+      "texW": 131,
+      "texH": 120,
+      "w": 0.655,
+      "h": 0.6,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ElephantRune"
+    },
+    "EmeraldEgg.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "EmeraldEgg.tscn",
+      "texW": 226,
+      "texH": 296,
+      "w": 1.413,
+      "h": 1.85,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "EmeraldEgg"
+    },
+    "EmeraldWhelp.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "EmeraldWhelp.tscn",
+      "texW": 302,
+      "texH": 299,
+      "w": 1.888,
+      "h": 1.869,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "EmeraldWhelp"
+    },
+    "EmployeeUniform.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "EmployeeUniform.tscn",
+      "texW": 355,
+      "texH": 449,
+      "w": 2.219,
+      "h": 2.806,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "EmployeeUniform"
+    },
+    "EnchantedWeapons.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "EnchantedWeapons.tscn",
+      "texW": 156,
+      "texH": 157,
+      "w": 0.975,
+      "h": 0.981,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "EnchantedWeapons"
+    },
+    "EnergyConversion.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "EnergyConversion.tscn",
+      "texW": 126,
+      "texH": 146,
+      "w": 0.788,
+      "h": 0.913,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "EnergyConversion"
+    },
+    "EngineerBag2.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "EngineerBag2.tscn",
+      "texW": 670,
+      "texH": 507,
+      "w": 4.188,
+      "h": 3.169,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "EngineerBag2"
+    },
+    "EngineerBox.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "EngineerBox.tscn",
+      "texW": 394,
+      "texH": 535,
+      "w": 2.463,
+      "h": 3.344,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.062,
+      "anchorY": 0,
+      "fileStem": "EngineerBox"
+    },
+    "Everburning.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Everburning.tscn",
+      "texW": 139,
+      "texH": 146,
+      "w": 0.869,
+      "h": 0.913,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "Everburning"
+    },
+    "EvilHat.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "EvilHat.tscn",
+      "texW": 484,
+      "texH": 311,
+      "w": 2.904,
+      "h": 1.866,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.038,
+      "anchorY": 0.05,
+      "fileStem": "EvilHat"
+    },
+    "ExtraAngy.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ExtraAngy.tscn",
+      "texW": 158,
+      "texH": 144,
+      "w": 0.988,
+      "h": 0.9,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.038,
+      "anchorY": -0.002,
+      "fileStem": "ExtraAngy"
+    },
+    "ExtraBags.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ExtraBags.tscn",
+      "texW": 136,
+      "texH": 151,
+      "w": 0.85,
+      "h": 0.944,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "ExtraBags"
+    },
+    "FalseLife.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FalseLife.tscn",
+      "texW": 153,
+      "texH": 133,
+      "w": 0.956,
+      "h": 0.831,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "FalseLife"
+    },
+    "Fedora.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "Fedora.tscn",
+      "texW": 443,
+      "texH": 301,
+      "w": 2.658,
+      "h": 1.806,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.038,
+      "anchorY": 0.05,
+      "fileStem": "Fedora"
+    },
+    "FirePit.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FirePit.tscn",
+      "texW": 538,
+      "texH": 549,
+      "w": 3.363,
+      "h": 3.431,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FirePit"
+    },
+    "FireShelly.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FireShelly.tscn",
+      "texW": 315,
+      "texH": 170,
+      "w": 1.969,
+      "h": 1.063,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": 0,
+      "fileStem": "FireShelly"
+    },
+    "Flame.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Flame.tscn",
+      "texW": 141,
+      "texH": 175,
+      "w": 0.881,
+      "h": 1.094,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.05,
+      "fileStem": "Flame"
+    },
+    "FlameBadge.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FlameBadge.tscn",
+      "texW": 118,
+      "texH": 150,
+      "w": 0.738,
+      "h": 0.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0,
+      "fileStem": "FlameBadge"
+    },
+    "FlameWhip.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "FlameWhip.tscn",
+      "texW": 479,
+      "texH": 463,
+      "w": 2.694,
+      "h": 2.604,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.063,
+      "anchorY": -0.075,
+      "fileStem": "FlameWhip"
+    },
+    "ForestDragon.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "ForestDragon.tscn",
+      "texW": 468,
+      "texH": 490,
+      "w": 2.808,
+      "h": 2.94,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ForestDragon"
+    },
+    "ForgingHammer.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ForgingHammer.tscn",
+      "texW": 153,
+      "texH": 289,
+      "w": 0.956,
+      "h": 1.806,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.025,
+      "fileStem": "ForgingHammer"
+    },
+    "FortunasKiss.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FortunasKiss.tscn",
+      "texW": 137,
+      "texH": 158,
+      "w": 0.856,
+      "h": 0.988,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.012,
+      "fileStem": "FortunasKiss"
+    },
+    "FriendlyFire.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FriendlyFire.tscn",
+      "texW": 163,
+      "texH": 322,
+      "w": 1.019,
+      "h": 2.013,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": -0.062,
+      "fileStem": "FriendlyFire"
+    },
+    "FrogPrince.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FrogPrince.tscn",
+      "texW": 335,
+      "texH": 359,
+      "w": 2.094,
+      "h": 2.244,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.075,
+      "anchorY": -0.05,
+      "fileStem": "FrogPrince"
+    },
+    "Frostbite.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Frostbite.tscn",
+      "texW": 152,
+      "texH": 497,
+      "w": 0.95,
+      "h": 3.106,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Frostbite"
+    },
+    "FrozenBuckler.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FrozenBuckler.tscn",
+      "texW": 305,
+      "texH": 314,
+      "w": 1.906,
+      "h": 1.963,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FrozenBuckler"
+    },
+    "FrozenFlame.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FrozenFlame.tscn",
+      "texW": 157,
+      "texH": 309,
+      "w": 0.981,
+      "h": 1.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.062,
+      "fileStem": "FrozenFlame"
+    },
+    "FullBodyProtection.png": {
+      "iconScale": [
+        0.47695,
+        0.47695
+      ],
+      "scaleFrom": "FullBodyProtection.tscn",
+      "texW": 141,
+      "texH": 150,
+      "w": 0.841,
+      "h": 0.894,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.02,
+      "anchorY": 0.022,
+      "fileStem": "FullBodyProtection"
+    },
+    "FurciferPrime.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "FurciferPrime.tscn",
+      "texW": 168,
+      "texH": 168,
+      "w": 1.008,
+      "h": 1.008,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FurciferPrime"
+    },
+    "Generator.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "Generator.tscn",
+      "texW": 155,
+      "texH": 313,
+      "w": 0.93,
+      "h": 1.878,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.025,
+      "fileStem": "Generator"
+    },
+    "Ghost.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Ghost.tscn",
+      "texW": 159,
+      "texH": 291,
+      "w": 0.994,
+      "h": 1.819,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.037,
+      "fileStem": "Ghost"
+    },
+    "Gigawatz.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Gigawatz.tscn",
+      "texW": 154,
+      "texH": 176,
+      "w": 0.963,
+      "h": 1.1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": -0.075,
+      "fileStem": "Gigawatz"
+    },
+    "GirlPower.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "GirlPower.tscn",
+      "texW": 133,
+      "texH": 147,
+      "w": 0.831,
+      "h": 0.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "GirlPower"
+    },
+    "GoldArmor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "GoldArmor.tscn",
+      "texW": 350,
+      "texH": 482,
+      "w": 2.188,
+      "h": 3.013,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "GoldArmor"
+    },
+    "GoldCube.png": {
+      "iconScale": [
+        0.447368,
+        0.447368
+      ],
+      "scaleFrom": "GoldCube.tscn",
+      "texW": 151,
+      "texH": 174,
+      "w": 0.844,
+      "h": 0.973,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "GoldCube"
+    },
+    "Goobling.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Goobling.tscn",
+      "texW": 153,
+      "texH": 145,
+      "w": 0.956,
+      "h": 0.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "Goobling"
+    },
+    "Halberd.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Halberd.tscn",
+      "texW": 318,
+      "texH": 632,
+      "w": 1.988,
+      "h": 3.95,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.025,
+      "anchorY": 0.038,
+      "fileStem": "Halberd"
+    },
+    "Hardwood.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Hardwood.tscn",
+      "texW": 113,
+      "texH": 165,
+      "w": 0.706,
+      "h": 1.031,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "Hardwood"
+    },
+    "HawkRune.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "HawkRune.tscn",
+      "texW": 109,
+      "texH": 120,
+      "w": 0.613,
+      "h": 0.675,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HawkRune"
+    },
+    "HeartoftheCards.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HeartoftheCards.tscn",
+      "texW": 120,
+      "texH": 144,
+      "w": 0.75,
+      "h": 0.9,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": -0.012,
+      "fileStem": "HeartoftheCards"
+    },
+    "HeartShield.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HeartShield.tscn",
+      "texW": 306,
+      "texH": 427,
+      "w": 1.913,
+      "h": 2.669,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HeartShield"
+    },
+    "HeavyDrinking.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HeavyDrinking.tscn",
+      "texW": 155,
+      "texH": 131,
+      "w": 0.969,
+      "h": 0.819,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "HeavyDrinking"
+    },
+    "Hedgehog.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Hedgehog.tscn",
+      "texW": 183,
+      "texH": 270,
+      "w": 1.144,
+      "h": 1.688,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.022,
+      "anchorY": -0.005,
+      "fileStem": "Hedgehog"
+    },
+    "HeroShield.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HeroShield.tscn",
+      "texW": 292,
+      "texH": 315,
+      "w": 1.825,
+      "h": 1.969,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HeroShield"
+    },
+    "HogusBogus.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HogusBogus.tscn",
+      "texW": 155,
+      "texH": 155,
+      "w": 0.969,
+      "h": 0.969,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HogusBogus"
+    },
+    "Holdall.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Holdall.tscn",
+      "texW": 533,
+      "texH": 385,
+      "w": 3.331,
+      "h": 2.406,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Holdall"
+    },
+    "HolyCollar.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HolyCollar.tscn",
+      "texW": 166,
+      "texH": 149,
+      "w": 1.038,
+      "h": 0.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HolyCollar"
+    },
+    "Hypercube.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "Hypercube.tscn",
+      "texW": 348,
+      "texH": 345,
+      "w": 1.958,
+      "h": 1.941,
+      "bag": false,
+      "layered": true,
+      "texSource": "site-composite",
+      "anchorX": 0,
+      "anchorY": 0.1,
+      "fileStem": "Hypercube"
+    },
+    "HyperHedgehog.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HyperHedgehog.tscn",
+      "texW": 179,
+      "texH": 311,
+      "w": 1.119,
+      "h": 1.944,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.022,
+      "anchorY": -0.005,
+      "fileStem": "HyperHedgehog"
+    },
+    "IceArmor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "IceArmor.tscn",
+      "texW": 369,
+      "texH": 499,
+      "w": 2.306,
+      "h": 3.119,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.062,
+      "anchorY": 0,
+      "fileStem": "IceArmor"
+    },
+    "IceDragon.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "IceDragon.tscn",
+      "texW": 336,
+      "texH": 478,
+      "w": 2.1,
+      "h": 2.988,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "IceDragon"
+    },
+    "IceFlower.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "IceFlower.tscn",
+      "texW": 142,
+      "texH": 296,
+      "w": 0.888,
+      "h": 1.85,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": -0.019,
+      "fileStem": "IceFlower"
+    },
+    "InnerPower.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "InnerPower.tscn",
+      "texW": 163,
+      "texH": 176,
+      "w": 0.978,
+      "h": 1.056,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.025,
+      "fileStem": "InnerPower"
+    },
+    "InvestmentOpportunity.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "InvestmentOpportunity.tscn",
+      "texW": 144,
+      "texH": 143,
+      "w": 0.9,
+      "h": 0.894,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "InvestmentOpportunity"
+    },
+    "Joker.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "Joker.tscn",
+      "texW": 151,
+      "texH": 253,
+      "w": 0.755,
+      "h": 1.265,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Joker"
+    },
+    "JustStats.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "JustStats.tscn",
+      "texW": 156,
+      "texH": 154,
+      "w": 0.975,
+      "h": 0.963,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "JustStats"
+    },
+    "JynxStaff.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "JynxStaff.tscn",
+      "texW": 190,
+      "texH": 811,
+      "w": 1.188,
+      "h": 5.069,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "JynxStaff"
+    },
+    "Katana.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Katana.tscn",
+      "texW": 91,
+      "texH": 647,
+      "w": 0.569,
+      "h": 4.044,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Katana"
+    },
+    "KingCrown.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "KingCrown.tscn",
+      "texW": 321,
+      "texH": 334,
+      "w": 1.806,
+      "h": 1.879,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "KingCrown"
+    },
+    "KingGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "KingGoobert.tscn",
+      "texW": 323,
+      "texH": 484,
+      "w": 2.019,
+      "h": 3.025,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "KingGoobert"
+    },
+    "KingoftheBling.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "KingoftheBling.tscn",
+      "texW": 170,
+      "texH": 182,
+      "w": 0.956,
+      "h": 1.024,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.025,
+      "anchorY": -0.012,
+      "fileStem": "KingoftheBling"
+    },
+    "KnifetoMeetYou.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "KnifetoMeetYou.tscn",
+      "texW": 130,
+      "texH": 153,
+      "w": 0.813,
+      "h": 0.956,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "KnifetoMeetYou"
+    },
+    "Laboratory.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "Laboratory.tscn",
+      "texW": 313,
+      "texH": 300,
+      "w": 1.761,
+      "h": 1.688,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.087,
+      "anchorY": 0.138,
+      "fileStem": "Laboratory"
+    },
+    "LeafBadge.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LeafBadge.tscn",
+      "texW": 132,
+      "texH": 132,
+      "w": 0.825,
+      "h": 0.825,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "LeafBadge"
+    },
+    "LeafEmblem.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "LeafEmblem.tscn",
+      "texW": 132,
+      "texH": 132,
+      "w": 0.742,
+      "h": 0.742,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "LeafEmblem"
+    },
+    "LevelUp.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LevelUp.tscn",
+      "texW": 128,
+      "texH": 166,
+      "w": 0.8,
+      "h": 1.038,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.012,
+      "fileStem": "LevelUp"
+    },
+    "LightFlower.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LightFlower.tscn",
+      "texW": 147,
+      "texH": 284,
+      "w": 0.919,
+      "h": 1.775,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": -0.006,
+      "fileStem": "LightFlower"
+    },
+    "LightningPotion.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "LightningPotion.tscn",
+      "texW": 137,
+      "texH": 321,
+      "w": 0.771,
+      "h": 1.806,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "LightningPotion"
+    },
+    "LightningStaff.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LightningStaff.tscn",
+      "texW": 172,
+      "texH": 637,
+      "w": 1.075,
+      "h": 3.981,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": -0.037,
+      "fileStem": "LightningStaff"
+    },
+    "LittleMimic.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LittleMimic.tscn",
+      "texW": 320,
+      "texH": 332,
+      "w": 2,
+      "h": 2.075,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.038,
+      "fileStem": "LittleMimic"
+    },
+    "LongSpear.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LongSpear.tscn",
+      "texW": 153,
+      "texH": 945,
+      "w": 0.956,
+      "h": 5.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "LongSpear"
+    },
+    "Lootbox.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Lootbox.tscn",
+      "texW": 303,
+      "texH": 296,
+      "w": 1.894,
+      "h": 1.85,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Lootbox"
+    },
+    "LuckyCat.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "LuckyCat.tscn",
+      "texW": 199,
+      "texH": 318,
+      "w": 1.119,
+      "h": 1.789,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "LuckyCat"
+    },
+    "LuckyShortbow.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LuckyShortbow.tscn",
+      "texW": 156,
+      "texH": 336,
+      "w": 0.975,
+      "h": 2.1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.037,
+      "anchorY": 0,
+      "fileStem": "LuckyShortbow"
+    },
+    "MageHat.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "MageHat.tscn",
+      "texW": 502,
+      "texH": 347,
+      "w": 3.012,
+      "h": 2.082,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.038,
+      "anchorY": 0.05,
+      "fileStem": "MageHat"
+    },
+    "MagicBadge.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MagicBadge.tscn",
+      "texW": 149,
+      "texH": 131,
+      "w": 0.931,
+      "h": 0.819,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.016,
+      "anchorY": 0,
+      "fileStem": "MagicBadge"
+    },
+    "MagicCollar.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MagicCollar.tscn",
+      "texW": 168,
+      "texH": 109,
+      "w": 1.05,
+      "h": 0.681,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "MagicCollar"
+    },
+    "MagicMirror.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MagicMirror.tscn",
+      "texW": 150,
+      "texH": 326,
+      "w": 0.938,
+      "h": 2.038,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": -0.019,
+      "fileStem": "MagicMirror"
+    },
+    "MagicRing.png": {
+      "iconScale": [
+        0.6,
+        0.6
+      ],
+      "scaleFrom": "MagicRing.tscn",
+      "texW": 110,
+      "texH": 121,
+      "w": 0.825,
+      "h": 0.908,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "MagicRing"
+    },
+    "MagiteccArmor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MagiteccArmor.tscn",
+      "texW": 353,
+      "texH": 476,
+      "w": 2.206,
+      "h": 2.975,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "MagiteccArmor"
+    },
+    "ManaCrystal.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "ManaCrystal.tscn",
+      "texW": 225,
+      "texH": 201,
+      "w": 1.125,
+      "h": 1.005,
+      "bag": false,
+      "layered": true,
+      "texSource": "site-composite",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ManaCrystal"
+    },
+    "ManaMastery.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ManaMastery.tscn",
+      "texW": 142,
+      "texH": 142,
+      "w": 0.888,
+      "h": 0.888,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.013,
+      "fileStem": "ManaMastery"
+    },
+    "Mananana.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "Mananana.tscn",
+      "texW": 288,
+      "texH": 286,
+      "w": 1.62,
+      "h": 1.609,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Mananana"
+    },
+    "Markswoman.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Markswoman.tscn",
+      "texW": 173,
+      "texH": 133,
+      "w": 1.081,
+      "h": 0.831,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.038,
+      "anchorY": -0.002,
+      "fileStem": "Markswoman"
+    },
+    "MechaBat.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "MechaBat.tscn",
+      "texW": 316,
+      "texH": 166,
+      "w": 1.778,
+      "h": 0.934,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "MechaBat"
+    },
+    "MegaClover.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MegaClover.tscn",
+      "texW": 312,
+      "texH": 314,
+      "w": 1.95,
+      "h": 1.963,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "MegaClover"
+    },
+    "MercuryElemental.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MercuryElemental.tscn",
+      "texW": 308,
+      "texH": 325,
+      "w": 1.925,
+      "h": 2.031,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "MercuryElemental"
+    },
+    "MissFortune.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MissFortune.tscn",
+      "texW": 166,
+      "texH": 322,
+      "w": 1.038,
+      "h": 2.013,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.022,
+      "anchorY": -0.018,
+      "fileStem": "MissFortune"
+    },
+    "MoltenDagger.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MoltenDagger.tscn",
+      "texW": 123,
+      "texH": 312,
+      "w": 0.769,
+      "h": 1.95,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.022,
+      "anchorY": -0.03,
+      "fileStem": "MoltenDagger"
+    },
+    "MoltenGreatsword.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MoltenGreatsword.tscn",
+      "texW": 282,
+      "texH": 639,
+      "w": 1.763,
+      "h": 3.994,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": -0.037,
+      "fileStem": "MoltenGreatsword"
+    },
+    "MoltenSpear.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MoltenSpear.tscn",
+      "texW": 137,
+      "texH": 624,
+      "w": 0.856,
+      "h": 3.9,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.063,
+      "anchorY": 0,
+      "fileStem": "MoltenSpear"
+    },
+    "MoltenSpear2.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MoltenSpear2.tscn",
+      "texW": 139,
+      "texH": 631,
+      "w": 0.869,
+      "h": 3.944,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.063,
+      "anchorY": 0,
+      "fileStem": "MoltenSpear2"
+    },
+    "MoonArmor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MoonArmor.tscn",
+      "texW": 369,
+      "texH": 489,
+      "w": 2.306,
+      "h": 3.056,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "MoonArmor"
+    },
+    "MoreStats.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MoreStats.tscn",
+      "texW": 173,
+      "texH": 175,
+      "w": 1.081,
+      "h": 1.094,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "MoreStats"
+    },
+    "MrsStruggles.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MrsStruggles.tscn",
+      "texW": 180,
+      "texH": 305,
+      "w": 1.125,
+      "h": 1.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "MrsStruggles"
+    },
+    "MushroomFarm.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MushroomFarm.tscn",
+      "texW": 141,
+      "texH": 148,
+      "w": 0.881,
+      "h": 0.925,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "MushroomFarm"
+    },
+    "NoRushPlease.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "NoRushPlease.tscn",
+      "texW": 141,
+      "texH": 148,
+      "w": 0.881,
+      "h": 0.925,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "NoRushPlease"
+    },
+    "NullBlade.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "NullBlade.tscn",
+      "texW": 151,
+      "texH": 480,
+      "w": 0.944,
+      "h": 3,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "NullBlade"
+    },
+    "ObsidianDragon.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ObsidianDragon.tscn",
+      "texW": 337,
+      "texH": 479,
+      "w": 2.106,
+      "h": 2.994,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ObsidianDragon"
+    },
+    "OilLamp.png": {
+      "iconScale": [
+        0.47,
+        0.47
+      ],
+      "scaleFrom": "OilLamp.tscn",
+      "texW": 155,
+      "texH": 314,
+      "w": 0.911,
+      "h": 1.845,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.003,
+      "anchorY": -0.005,
+      "fileStem": "OilLamp"
+    },
+    "OnionCutter.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "OnionCutter.tscn",
+      "texW": 140,
+      "texH": 334,
+      "w": 0.788,
+      "h": 1.879,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.025,
+      "fileStem": "OnionCutter"
+    },
+    "OwlSpirit.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "OwlSpirit.tscn",
+      "texW": 184,
+      "texH": 343,
+      "w": 0.92,
+      "h": 1.715,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": -0.019,
+      "fileStem": "OwlSpirit"
+    },
+    "ParadiseBirb.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "ParadiseBirb.tscn",
+      "texW": 331,
+      "texH": 489,
+      "w": 1.862,
+      "h": 2.751,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ParadiseBirb"
+    },
+    "AmethystHatchParticles.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmethystHatchParticles.tscn",
+      "texW": 255,
+      "texH": 298,
+      "w": 1.594,
+      "h": 1.863,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "AmethystHatchParticles"
+    },
+    "EmeraldHatchParticles.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "EmeraldHatchParticles.tscn",
+      "texW": 255,
+      "texH": 298,
+      "w": 1.594,
+      "h": 1.863,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "EmeraldHatchParticles"
+    },
+    "PerpetuumMobile.png": {
+      "iconScale": [
+        0.414557,
+        0.414557
+      ],
+      "scaleFrom": "PerpetuumMobile.tscn",
+      "texW": 158,
+      "texH": 158,
+      "w": 0.819,
+      "h": 0.819,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PerpetuumMobile"
+    },
+    "Phoenix.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Phoenix.tscn",
+      "texW": 451,
+      "texH": 474,
+      "w": 2.819,
+      "h": 2.963,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.062,
+      "fileStem": "Phoenix"
+    },
+    "Phoenix2.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Phoenix2.tscn",
+      "texW": 479,
+      "texH": 482,
+      "w": 2.994,
+      "h": 3.013,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Phoenix2"
+    },
+    "PiggyofRiches.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PiggyofRiches.tscn",
+      "texW": 283,
+      "texH": 160,
+      "w": 1.769,
+      "h": 1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PiggyofRiches"
+    },
+    "PiggyPinata.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PiggyPinata.tscn",
+      "texW": 125,
+      "texH": 147,
+      "w": 0.781,
+      "h": 0.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "PiggyPinata"
+    },
+    "PineProtector.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PineProtector.tscn",
+      "texW": 338,
+      "texH": 328,
+      "w": 2.113,
+      "h": 2.05,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0,
+      "fileStem": "PineProtector"
+    },
+    "PlasticCube.png": {
+      "iconScale": [
+        0.447368,
+        0.447368
+      ],
+      "scaleFrom": "PlasticCube.tscn",
+      "texW": 149,
+      "texH": 167,
+      "w": 0.833,
+      "h": 0.934,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PlasticCube"
+    },
+    "PoisonFrog.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "PoisonFrog.tscn",
+      "texW": 195,
+      "texH": 196,
+      "w": 0.975,
+      "h": 0.98,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.025,
+      "anchorY": 0.013,
+      "fileStem": "PoisonFrog"
+    },
+    "PoisonGrenade.png": {
+      "iconScale": [
+        0.423393,
+        0.423393
+      ],
+      "scaleFrom": "PoisonGrenade.tscn",
+      "texW": 169,
+      "texH": 168,
+      "w": 0.894,
+      "h": 0.889,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PoisonGrenade"
+    },
+    "PoisonShortbow.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PoisonShortbow.tscn",
+      "texW": 173,
+      "texH": 353,
+      "w": 1.081,
+      "h": 2.206,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.087,
+      "anchorY": -0.05,
+      "fileStem": "PoisonShortbow"
+    },
+    "PoisonSpear.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PoisonSpear.tscn",
+      "texW": 125,
+      "texH": 615,
+      "w": 0.781,
+      "h": 3.844,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PoisonSpear"
+    },
+    "Pop.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Pop.tscn",
+      "texW": 303,
+      "texH": 297,
+      "w": 1.894,
+      "h": 1.856,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.038,
+      "fileStem": "Pop"
+    },
+    "PortableAltar.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PortableAltar.tscn",
+      "texW": 401,
+      "texH": 401,
+      "w": 2.506,
+      "h": 2.506,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PortableAltar"
+    },
+    "Pot.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Pot.tscn",
+      "texW": 315,
+      "texH": 283,
+      "w": 1.969,
+      "h": 1.769,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0,
+      "fileStem": "Pot"
+    },
+    "PoweroftheMoon.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PoweroftheMoon.tscn",
+      "texW": 141,
+      "texH": 142,
+      "w": 0.881,
+      "h": 0.888,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.038,
+      "anchorY": -0.002,
+      "fileStem": "PoweroftheMoon"
+    },
+    "PowerPuppy.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PowerPuppy.tscn",
+      "texW": 328,
+      "texH": 169,
+      "w": 2.05,
+      "h": 1.056,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": 0,
+      "fileStem": "PowerPuppy"
+    },
+    "PrismaticSword.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "PrismaticSword.tscn",
+      "texW": 181,
+      "texH": 497,
+      "w": 1.018,
+      "h": 2.796,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PrismaticSword"
+    },
+    "PrismaticWand.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PrismaticWand.tscn",
+      "texW": 148,
+      "texH": 294,
+      "w": 0.925,
+      "h": 1.838,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PrismaticWand"
+    },
+    "PuzzleBadge.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PuzzleBadge.tscn",
+      "texW": 145,
+      "texH": 148,
+      "w": 0.906,
+      "h": 0.925,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0,
+      "fileStem": "PuzzleBadge"
+    },
+    "PuzzlebagJ.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PuzzlebagJ.tscn",
+      "texW": 518,
+      "texH": 362,
+      "w": 3.238,
+      "h": 2.263,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PuzzlebagJ"
+    },
+    "PuzzlebagL.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PuzzlebagL.tscn",
+      "texW": 497,
+      "texH": 363,
+      "w": 3.106,
+      "h": 2.269,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PuzzlebagL"
+    },
+    "PuzzlebagS.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PuzzlebagS.tscn",
+      "texW": 516,
+      "texH": 354,
+      "w": 3.225,
+      "h": 2.213,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PuzzlebagS"
+    },
+    "PuzzlebagT.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PuzzlebagT.tscn",
+      "texW": 527,
+      "texH": 370,
+      "w": 3.294,
+      "h": 2.313,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PuzzlebagT"
+    },
+    "PuzzlebagZ.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PuzzlebagZ.tscn",
+      "texW": 519,
+      "texH": 366,
+      "w": 3.244,
+      "h": 2.288,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PuzzlebagZ"
+    },
+    "Puzzlebox.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Puzzlebox.tscn",
+      "texW": 505,
+      "texH": 666,
+      "w": 3.156,
+      "h": 4.163,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Puzzlebox"
+    },
+    "RainbowBadge.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "RainbowBadge.tscn",
+      "texW": 153,
+      "texH": 121,
+      "w": 0.861,
+      "h": 0.681,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RainbowBadge"
+    },
+    "RainbowGoobertAdventurer.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RainbowGoobertAdventurer.tscn",
+      "texW": 303,
+      "texH": 309,
+      "w": 1.894,
+      "h": 1.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.012,
+      "fileStem": "RainbowGoobertAdventurer"
+    },
+    "RainbowGoobertBerserker.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RainbowGoobertBerserker.tscn",
+      "texW": 302,
+      "texH": 309,
+      "w": 1.888,
+      "h": 1.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RainbowGoobertBerserker"
+    },
+    "RainbowGoobertEngineer.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RainbowGoobertEngineer.tscn",
+      "texW": 300,
+      "texH": 310,
+      "w": 1.875,
+      "h": 1.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RainbowGoobertEngineer"
+    },
+    "RainbowGoobertMage.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RainbowGoobertMage.tscn",
+      "texW": 291,
+      "texH": 305,
+      "w": 1.819,
+      "h": 1.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.062,
+      "fileStem": "RainbowGoobertMage"
+    },
+    "RainbowGoobertPyromancer.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RainbowGoobertPyromancer.tscn",
+      "texW": 302,
+      "texH": 309,
+      "w": 1.888,
+      "h": 1.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RainbowGoobertPyromancer"
+    },
+    "RainbowOrb.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "RainbowOrb.tscn",
+      "texW": 153,
+      "texH": 153,
+      "w": 0.861,
+      "h": 0.861,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RainbowOrb"
+    },
+    "RainbowPotion.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "RainbowPotion.tscn",
+      "texW": 293,
+      "texH": 161,
+      "w": 1.648,
+      "h": 0.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RainbowPotion"
+    },
+    "RandomLoadoutBag.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RandomLoadoutBag.tscn",
+      "texW": 345,
+      "texH": 344,
+      "w": 2.156,
+      "h": 2.15,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RandomLoadoutBag"
+    },
+    "Rat.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Rat.tscn",
+      "texW": 324,
+      "texH": 136,
+      "w": 2.025,
+      "h": 0.85,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.05,
+      "anchorY": 0,
+      "fileStem": "Rat"
+    },
+    "RatChef.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RatChef.tscn",
+      "texW": 163,
+      "texH": 323,
+      "w": 1.019,
+      "h": 2.019,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": -0.019,
+      "fileStem": "RatChef"
+    },
+    "RelicCase.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RelicCase.tscn",
+      "texW": 233,
+      "texH": 683,
+      "w": 1.456,
+      "h": 4.269,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RelicCase"
+    },
+    "Repeater.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Repeater.tscn",
+      "texW": 142,
+      "texH": 148,
+      "w": 0.888,
+      "h": 0.925,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Repeater"
+    },
+    "Resistor.png": {
+      "iconScale": [
+        0.423469,
+        0.423469
+      ],
+      "scaleFrom": "Resistor.tscn",
+      "texW": 162,
+      "texH": 98,
+      "w": 0.858,
+      "h": 0.519,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.025,
+      "fileStem": "Resistor"
+    },
+    "Reverse.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "Reverse.tscn",
+      "texW": 151,
+      "texH": 253,
+      "w": 0.755,
+      "h": 1.265,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Reverse"
+    },
+    "Robodog.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Robodog.tscn",
+      "texW": 483,
+      "texH": 323,
+      "w": 3.019,
+      "h": 2.019,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Robodog"
+    },
+    "Rope.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Rope.tscn",
+      "texW": 329,
+      "texH": 153,
+      "w": 2.056,
+      "h": 0.956,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.038,
+      "fileStem": "Rope"
+    },
+    "Sandbag.png": {
+      "iconScale": [
+        0.410377,
+        0.450637
+      ],
+      "scaleFrom": "Sandbag.tscn",
+      "texW": 168,
+      "texH": 305,
+      "w": 0.862,
+      "h": 1.718,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0,
+      "fileStem": "Sandbag"
+    },
+    "SapphireEgg.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SapphireEgg.tscn",
+      "texW": 228,
+      "texH": 290,
+      "w": 1.425,
+      "h": 1.813,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SapphireEgg"
+    },
+    "SapphireWhelp.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SapphireWhelp.tscn",
+      "texW": 301,
+      "texH": 319,
+      "w": 1.881,
+      "h": 1.994,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SapphireWhelp"
+    },
+    "Scale.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Scale.tscn",
+      "texW": 306,
+      "texH": 315,
+      "w": 1.913,
+      "h": 1.969,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.037,
+      "fileStem": "Scale"
+    },
+    "ScholarBag.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ScholarBag.tscn",
+      "texW": 536,
+      "texH": 364,
+      "w": 3.35,
+      "h": 2.275,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ScholarBag"
+    },
+    "Scissorswords.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Scissorswords.tscn",
+      "texW": 628,
+      "texH": 502,
+      "w": 3.925,
+      "h": 3.138,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Scissorswords"
+    },
+    "SealtheDeal.png": {
+      "iconScale": [
+        0.48,
+        0.5
+      ],
+      "scaleFrom": "SealtheDeal.tscn",
+      "texW": 167,
+      "texH": 140,
+      "w": 1.002,
+      "h": 0.875,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SealtheDeal"
+    },
+    "SerpentStaff.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SerpentStaff.tscn",
+      "texW": 194,
+      "texH": 647,
+      "w": 1.213,
+      "h": 4.044,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0.025,
+      "fileStem": "SerpentStaff"
+    },
+    "SewingCase.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SewingCase.tscn",
+      "texW": 682,
+      "texH": 354,
+      "w": 4.263,
+      "h": 2.213,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SewingCase"
+    },
+    "ShamanMask.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ShamanMask.tscn",
+      "texW": 160,
+      "texH": 296,
+      "w": 1,
+      "h": 1.85,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ShamanMask"
+    },
+    "ShellTotem.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ShellTotem.tscn",
+      "texW": 160,
+      "texH": 314,
+      "w": 1,
+      "h": 1.963,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0,
+      "fileStem": "ShellTotem"
+    },
+    "Shelly.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Shelly.tscn",
+      "texW": 303,
+      "texH": 170,
+      "w": 1.894,
+      "h": 1.063,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": 0,
+      "fileStem": "Shelly"
+    },
+    "ShepherdsCrook.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ShepherdsCrook.tscn",
+      "texW": 284,
+      "texH": 619,
+      "w": 1.775,
+      "h": 3.869,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.038,
+      "fileStem": "ShepherdsCrook"
+    },
+    "Shielded.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Shielded.tscn",
+      "texW": 132,
+      "texH": 135,
+      "w": 0.825,
+      "h": 0.844,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.025,
+      "fileStem": "Shielded"
+    },
+    "ShinyMantle.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ShinyMantle.tscn",
+      "texW": 319,
+      "texH": 463,
+      "w": 1.994,
+      "h": 2.894,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ShinyMantle"
+    },
+    "ShinyShell.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "ShinyShell.tscn",
+      "texW": 186,
+      "texH": 165,
+      "w": 0.93,
+      "h": 0.825,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.013,
+      "fileStem": "ShinyShell"
+    },
+    "Shortbow.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Shortbow.tscn",
+      "texW": 146,
+      "texH": 335,
+      "w": 0.913,
+      "h": 2.094,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Shortbow"
+    },
+    "SkullBadge.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SkullBadge.tscn",
+      "texW": 115,
+      "texH": 145,
+      "w": 0.719,
+      "h": 0.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SkullBadge"
+    },
+    "SliceofBread.png": {
+      "iconScale": [
+        0.431208,
+        0.431208
+      ],
+      "scaleFrom": "SliceofBread.tscn",
+      "texW": 162,
+      "texH": 154,
+      "w": 0.873,
+      "h": 0.83,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SliceofBread"
+    },
+    "SliceofToast.png": {
+      "iconScale": [
+        0.431208,
+        0.431208
+      ],
+      "scaleFrom": "SliceofToast.tscn",
+      "texW": 162,
+      "texH": 154,
+      "w": 0.873,
+      "h": 0.83,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SliceofToast"
+    },
+    "SlimeTime.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SlimeTime.tscn",
+      "texW": 147,
+      "texH": 130,
+      "w": 0.919,
+      "h": 0.813,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0.011,
+      "fileStem": "SlimeTime"
+    },
+    "Sloth.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Sloth.tscn",
+      "texW": 302,
+      "texH": 299,
+      "w": 1.888,
+      "h": 1.869,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Sloth"
+    },
+    "SmellyBarrier.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SmellyBarrier.tscn",
+      "texW": 131,
+      "texH": 148,
+      "w": 0.819,
+      "h": 0.925,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SmellyBarrier"
+    },
+    "SmithingForDummies.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SmithingForDummies.tscn",
+      "texW": 163,
+      "texH": 140,
+      "w": 1.019,
+      "h": 0.875,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "SmithingForDummies"
+    },
+    "Snake.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "Snake.tscn",
+      "texW": 297,
+      "texH": 450,
+      "w": 1.671,
+      "h": 2.531,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Snake"
+    },
+    "Snowball.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Snowball.tscn",
+      "texW": 139,
+      "texH": 137,
+      "w": 0.869,
+      "h": 0.856,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Snowball"
+    },
+    "Snowcake.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Snowcake.tscn",
+      "texW": 305,
+      "texH": 318,
+      "w": 1.906,
+      "h": 1.988,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.038,
+      "fileStem": "Snowcake"
+    },
+    "Snowman.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Snowman.tscn",
+      "texW": 158,
+      "texH": 275,
+      "w": 0.988,
+      "h": 1.719,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.063,
+      "fileStem": "Snowman"
+    },
+    "Snowmaster.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Snowmaster.tscn",
+      "texW": 144,
+      "texH": 311,
+      "w": 0.9,
+      "h": 1.944,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.014,
+      "anchorY": 0.006,
+      "fileStem": "Snowmaster"
+    },
+    "SnowStick.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SnowStick.tscn",
+      "texW": 162,
+      "texH": 630,
+      "w": 1.013,
+      "h": 3.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SnowStick"
+    },
+    "Solaris.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Solaris.tscn",
+      "texW": 141,
+      "texH": 140,
+      "w": 0.881,
+      "h": 0.875,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.011,
+      "fileStem": "Solaris"
+    },
+    "SpeakwithAnimals.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpeakwithAnimals.tscn",
+      "texW": 160,
+      "texH": 136,
+      "w": 1,
+      "h": 0.85,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.047,
+      "anchorY": 0.003,
+      "fileStem": "SpeakwithAnimals"
+    },
+    "SpellScrollDark.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpellScrollDark.tscn",
+      "texW": 291,
+      "texH": 173,
+      "w": 1.819,
+      "h": 1.081,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0,
+      "fileStem": "SpellScrollDark"
+    },
+    "SpellScrollFrostbolt.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpellScrollFrostbolt.tscn",
+      "texW": 296,
+      "texH": 176,
+      "w": 1.85,
+      "h": 1.1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SpellScrollFrostbolt"
+    },
+    "SpellScrollIce.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpellScrollIce.tscn",
+      "texW": 293,
+      "texH": 174,
+      "w": 1.831,
+      "h": 1.088,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SpellScrollIce"
+    },
+    "SpellScrollLight.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpellScrollLight.tscn",
+      "texW": 293,
+      "texH": 174,
+      "w": 1.831,
+      "h": 1.088,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SpellScrollLight"
+    },
+    "SpellScrollNature.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpellScrollNature.tscn",
+      "texW": 292,
+      "texH": 171,
+      "w": 1.825,
+      "h": 1.069,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SpellScrollNature"
+    },
+    "SpicyBanana.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpicyBanana.tscn",
+      "texW": 151,
+      "texH": 140,
+      "w": 0.944,
+      "h": 0.875,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "SpicyBanana"
+    },
+    "SpikedCollar.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpikedCollar.tscn",
+      "texW": 184,
+      "texH": 137,
+      "w": 1.15,
+      "h": 0.856,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SpikedCollar"
+    },
+    "SpikedStaff.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpikedStaff.tscn",
+      "texW": 194,
+      "texH": 657,
+      "w": 1.213,
+      "h": 4.106,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.063,
+      "anchorY": 0,
+      "fileStem": "SpikedStaff"
+    },
+    "SpikedWall.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpikedWall.tscn",
+      "texW": 471,
+      "texH": 347,
+      "w": 2.944,
+      "h": 2.169,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SpikedWall"
+    },
+    "SpintoWin.png": {
+      "iconScale": [
+        0.35,
+        0.35
+      ],
+      "scaleFrom": "SpintoWin.tscn",
+      "texW": 202,
+      "texH": 202,
+      "w": 0.884,
+      "h": 0.884,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SpintoWin"
+    },
+    "SpiritBells.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpiritBells.tscn",
+      "texW": 161,
+      "texH": 323,
+      "w": 1.006,
+      "h": 2.019,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.069,
+      "fileStem": "SpiritBells"
+    },
+    "SpringLoader.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpringLoader.tscn",
+      "texW": 300,
+      "texH": 278,
+      "w": 1.875,
+      "h": 1.738,
+      "bag": false,
+      "layered": true,
+      "texSource": "site-composite",
+      "anchorX": 0,
+      "anchorY": -0.187,
+      "fileStem": "SpringLoader"
+    },
+    "Squirrel.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "Squirrel.tscn",
+      "texW": 311,
+      "texH": 335,
+      "w": 1.749,
+      "h": 1.884,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Squirrel"
+    },
+    "SquirrelArcher.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "SquirrelArcher.tscn",
+      "texW": 329,
+      "texH": 321,
+      "w": 1.851,
+      "h": 1.806,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": 0.025,
+      "fileStem": "SquirrelArcher"
+    },
+    "StableRecombobulator.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "StableRecombobulator.tscn",
+      "texW": 132,
+      "texH": 124,
+      "w": 0.825,
+      "h": 0.775,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "StableRecombobulator"
+    },
+    "StaffofFire.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "StaffofFire.tscn",
+      "texW": 185,
+      "texH": 645,
+      "w": 1.156,
+      "h": 4.031,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "StaffofFire"
+    },
+    "StarofCourage.png": {
+      "iconScale": [
+        0.65,
+        0.65
+      ],
+      "scaleFrom": "StarofCourage.tscn",
+      "texW": 104,
+      "texH": 99,
+      "w": 0.845,
+      "h": 0.804,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "StarofCourage"
+    },
+    "SteelDragon.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SteelDragon.tscn",
+      "texW": 466,
+      "texH": 480,
+      "w": 2.913,
+      "h": 3,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": -0.037,
+      "fileStem": "SteelDragon"
+    },
+    "StoneArmor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "StoneArmor.tscn",
+      "texW": 339,
+      "texH": 450,
+      "w": 2.119,
+      "h": 2.813,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "StoneArmor"
+    },
+    "StoneBadge.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "StoneBadge.tscn",
+      "texW": 132,
+      "texH": 133,
+      "w": 0.825,
+      "h": 0.831,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "StoneBadge"
+    },
+    "Stoned.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Stoned.tscn",
+      "texW": 145,
+      "texH": 145,
+      "w": 0.906,
+      "h": 0.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.025,
+      "anchorY": -0.002,
+      "fileStem": "Stoned"
+    },
+    "StoneGloves.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "StoneGloves.tscn",
+      "texW": 329,
+      "texH": 153,
+      "w": 2.056,
+      "h": 0.956,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": 0,
+      "fileStem": "StoneGloves"
+    },
+    "StoneGolem.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "StoneGolem.tscn",
+      "texW": 288,
+      "texH": 302,
+      "w": 1.8,
+      "h": 1.888,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "StoneGolem"
+    },
+    "StoneShoes.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "StoneShoes.tscn",
+      "texW": 168,
+      "texH": 291,
+      "w": 0.945,
+      "h": 1.637,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.038,
+      "anchorY": 0.013,
+      "fileStem": "StoneShoes"
+    },
+    "StrongDivinePotion.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "StrongDivinePotion.tscn",
+      "texW": 159,
+      "texH": 311,
+      "w": 0.994,
+      "h": 1.944,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.012,
+      "fileStem": "StrongDivinePotion"
+    },
+    "StrongManaPotion.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "StrongManaPotion.tscn",
+      "texW": 151,
+      "texH": 320,
+      "w": 0.849,
+      "h": 1.8,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0,
+      "fileStem": "StrongManaPotion"
+    },
+    "StrongVampiricPotion.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "StrongVampiricPotion.tscn",
+      "texW": 155,
+      "texH": 330,
+      "w": 0.872,
+      "h": 1.856,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0,
+      "fileStem": "StrongVampiricPotion"
+    },
+    "SunArmor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SunArmor.tscn",
+      "texW": 365,
+      "texH": 484,
+      "w": 2.281,
+      "h": 3.025,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SunArmor"
+    },
+    "SunShield.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SunShield.tscn",
+      "texW": 295,
+      "texH": 461,
+      "w": 1.844,
+      "h": 2.881,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "SunShield"
+    },
+    "SuperiorRing.png": {
+      "iconScale": [
+        0.6,
+        0.6
+      ],
+      "scaleFrom": "SuperiorRing.tscn",
+      "texW": 110,
+      "texH": 123,
+      "w": 0.825,
+      "h": 0.923,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "SuperiorRing"
+    },
+    "TeslaCoil.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "TeslaCoil.tscn",
+      "texW": 164,
+      "texH": 472,
+      "w": 0.923,
+      "h": 2.655,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.075,
+      "fileStem": "TeslaCoil"
+    },
+    "Thornbloom.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "Thornbloom.tscn",
+      "texW": 464,
+      "texH": 477,
+      "w": 2.784,
+      "h": 2.862,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.025,
+      "anchorY": 0.013,
+      "fileStem": "Thornbloom"
+    },
+    "Thornburst.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Thornburst.tscn",
+      "texW": 169,
+      "texH": 145,
+      "w": 1.056,
+      "h": 0.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "Thornburst"
+    },
+    "ThornElemental.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ThornElemental.tscn",
+      "texW": 341,
+      "texH": 323,
+      "w": 2.131,
+      "h": 2.019,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ThornElemental"
+    },
+    "ThornShortbow.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ThornShortbow.tscn",
+      "texW": 154,
+      "texH": 335,
+      "w": 0.963,
+      "h": 2.094,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ThornShortbow"
+    },
+    "ThorsHammer.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ThorsHammer.tscn",
+      "texW": 424,
+      "texH": 467,
+      "w": 2.65,
+      "h": 2.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.025,
+      "anchorY": 0.013,
+      "fileStem": "ThorsHammer"
+    },
+    "ThunderDrake.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ThunderDrake.tscn",
+      "texW": 468,
+      "texH": 452,
+      "w": 2.925,
+      "h": 2.825,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.025,
+      "anchorY": 0,
+      "fileStem": "ThunderDrake"
+    },
+    "TigerRune.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "TigerRune.tscn",
+      "texW": 138,
+      "texH": 122,
+      "w": 0.69,
+      "h": 0.61,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0,
+      "fileStem": "TigerRune"
+    },
+    "TimeDilator.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "TimeDilator.tscn",
+      "texW": 116,
+      "texH": 151,
+      "w": 0.725,
+      "h": 0.944,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.002,
+      "fileStem": "TimeDilator"
+    },
+    "TimeMelting.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "TimeMelting.tscn",
+      "texW": 151,
+      "texH": 143,
+      "w": 0.944,
+      "h": 0.894,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.023,
+      "fileStem": "TimeMelting"
+    },
+    "Toad.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "Toad.tscn",
+      "texW": 177,
+      "texH": 176,
+      "w": 0.885,
+      "h": 0.88,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.025,
+      "anchorY": 0.013,
+      "fileStem": "Toad"
+    },
+    "ToastGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ToastGoobert.tscn",
+      "texW": 300,
+      "texH": 309,
+      "w": 1.875,
+      "h": 1.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ToastGoobert"
+    },
+    "Toolbox.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Toolbox.tscn",
+      "texW": 521,
+      "texH": 540,
+      "w": 3.256,
+      "h": 3.375,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.1,
+      "fileStem": "Toolbox"
+    },
+    "Turtle.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Turtle.tscn",
+      "texW": 311,
+      "texH": 162,
+      "w": 1.944,
+      "h": 1.013,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.025,
+      "fileStem": "Turtle"
+    },
+    "Twine.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Twine.tscn",
+      "texW": 140,
+      "texH": 147,
+      "w": 0.875,
+      "h": 0.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.05,
+      "fileStem": "Twine"
+    },
+    "TwineBadge.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "TwineBadge.tscn",
+      "texW": 126,
+      "texH": 141,
+      "w": 0.788,
+      "h": 0.881,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.038,
+      "anchorY": 0.013,
+      "fileStem": "TwineBadge"
+    },
+    "Ukulele.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Ukulele.tscn",
+      "texW": 162,
+      "texH": 470,
+      "w": 1.013,
+      "h": 2.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Ukulele"
+    },
+    "Ultima.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Ultima.tscn",
+      "texW": 147,
+      "texH": 146,
+      "w": 0.919,
+      "h": 0.913,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Ultima"
+    },
+    "UnidentifiedSkill.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "UnidentifiedSkill.tscn",
+      "texW": 149,
+      "texH": 152,
+      "w": 0.931,
+      "h": 0.95,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "UnidentifiedSkill"
+    },
+    "UniquelyUnique.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "UniquelyUnique.tscn",
+      "texW": 133,
+      "texH": 141,
+      "w": 0.831,
+      "h": 0.881,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "UniquelyUnique"
+    },
+    "UnstableRecombobulator.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "UnstableRecombobulator.tscn",
+      "texW": 159,
+      "texH": 133,
+      "w": 0.994,
+      "h": 0.831,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "UnstableRecombobulator"
+    },
+    "VampiricCollar.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "VampiricCollar.tscn",
+      "texW": 150,
+      "texH": 141,
+      "w": 0.938,
+      "h": 0.881,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "VampiricCollar"
+    },
+    "VampiricPotion.png": {
+      "iconScale": [
+        0.5,
+        0.47
+      ],
+      "scaleFrom": "VampiricPotion.tscn",
+      "texW": 114,
+      "texH": 329,
+      "w": 0.713,
+      "h": 1.933,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "VampiricPotion"
+    },
+    "VineweaveBasket.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "VineweaveBasket.tscn",
+      "texW": 544,
+      "texH": 555,
+      "w": 3.4,
+      "h": 3.469,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "VineweaveBasket"
+    },
+    "Wand.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Wand.tscn",
+      "texW": 152,
+      "texH": 292,
+      "w": 0.95,
+      "h": 1.825,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Wand"
+    },
+    "WandofDissonance.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "WandofDissonance.tscn",
+      "texW": 164,
+      "texH": 298,
+      "w": 1.025,
+      "h": 1.863,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "WandofDissonance"
+    },
+    "WarScythe.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "WarScythe.tscn",
+      "texW": 487,
+      "texH": 668,
+      "w": 3.044,
+      "h": 4.175,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.069,
+      "anchorY": 0,
+      "fileStem": "WarScythe"
+    },
+    "WaterElemental.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "WaterElemental.tscn",
+      "texW": 300,
+      "texH": 329,
+      "w": 1.875,
+      "h": 2.056,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.062,
+      "fileStem": "WaterElemental"
+    },
+    "Whetstone2.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Whetstone2.tscn",
+      "texW": 132,
+      "texH": 142,
+      "w": 0.825,
+      "h": 0.888,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.013,
+      "fileStem": "Whetstone2"
+    },
+    "Whetstone3.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Whetstone3.tscn",
+      "texW": 144,
+      "texH": 145,
+      "w": 0.9,
+      "h": 0.906,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Whetstone3"
+    },
+    "WingedBoots.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "WingedBoots.tscn",
+      "texW": 305,
+      "texH": 333,
+      "w": 1.716,
+      "h": 1.873,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.113,
+      "anchorY": -0.012,
+      "fileStem": "WingedBoots"
+    },
+    "WisdomPuppy.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "WisdomPuppy.tscn",
+      "texW": 164,
+      "texH": 318,
+      "w": 1.025,
+      "h": 1.988,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "WisdomPuppy"
+    },
+    "Wisp.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Gem.tscn",
+      "texW": 91,
+      "texH": 89,
+      "w": 0.569,
+      "h": 0.556,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.513,
+      "anchorY": 0.513,
+      "fileStem": "Wisp"
+    },
+    "WolfBadge.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "WolfBadge.tscn",
+      "texW": 155,
+      "texH": 148,
+      "w": 0.969,
+      "h": 0.925,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0,
+      "fileStem": "WolfBadge"
+    },
+    "WolfEmblem.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "WolfEmblem.tscn",
+      "texW": 153,
+      "texH": 189,
+      "w": 0.861,
+      "h": 1.063,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "WolfEmblem"
+    },
+    "Wrench.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "Wrench.tscn",
+      "texW": 98,
+      "texH": 313,
+      "w": 0.551,
+      "h": 1.761,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Wrench"
+    },
+    "FalconBlade.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FalconBlade.tscn",
+      "texW": 152,
+      "texH": 498,
+      "w": 0.95,
+      "h": 3.113,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FalconBlade"
+    },
+    "FancyFencingRapier.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FancyFencingRapier.tscn",
+      "texW": 149,
+      "texH": 629,
+      "w": 0.931,
+      "h": 3.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.025,
+      "anchorY": 0,
+      "fileStem": "FancyFencingRapier"
+    },
+    "Fanfare.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Fanfare.tscn",
+      "texW": 480,
+      "texH": 160,
+      "w": 3,
+      "h": 1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Fanfare"
+    },
+    "FannyPack.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "FannyPack.tscn",
+      "texW": 459,
+      "texH": 291,
+      "w": 2.582,
+      "h": 1.637,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.025,
+      "anchorY": 0,
+      "fileStem": "FannyPack"
+    },
+    "Flute.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Flute.tscn",
+      "texW": 448,
+      "texH": 49,
+      "w": 2.8,
+      "h": 0.306,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Flute"
+    },
+    "FlyAgaric.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "FlyAgaric.tscn",
+      "texW": 160,
+      "texH": 293,
+      "w": 1,
+      "h": 1.831,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.022,
+      "anchorY": -0.005,
+      "fileStem": "FlyAgaric"
+    },
+    "Garlic.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Garlic.tscn",
+      "texW": 142,
+      "texH": 311,
+      "w": 0.888,
+      "h": 1.944,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.022,
+      "anchorY": -0.005,
+      "fileStem": "Garlic"
+    },
+    "BurningCoal.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Gem.tscn",
+      "texW": 74,
+      "texH": 86,
+      "w": 0.463,
+      "h": 0.538,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "BurningCoal"
+    },
+    "ChippedAmethyst.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Gem.tscn",
+      "texW": 86,
+      "texH": 62,
+      "w": 0.538,
+      "h": 0.388,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ChippedAmethyst"
+    },
+    "ChippedEmerald.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Gem.tscn",
+      "texW": 87,
+      "texH": 62,
+      "w": 0.544,
+      "h": 0.388,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ChippedEmerald"
+    },
+    "ChippedRuby.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Gem.tscn",
+      "texW": 88,
+      "texH": 62,
+      "w": 0.55,
+      "h": 0.388,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ChippedRuby"
+    },
+    "ChippedSapphire.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Gem.tscn",
+      "texW": 86,
+      "texH": 62,
+      "w": 0.538,
+      "h": 0.388,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ChippedSapphire"
+    },
+    "ChippedTopaz.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Gem.tscn",
+      "texW": 86,
+      "texH": 61,
+      "w": 0.538,
+      "h": 0.381,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ChippedTopaz"
+    },
+    "CorruptedCrystal.png": {
+      "iconScale": [
+        0.7,
+        0.7
+      ],
+      "scaleFrom": "CorruptedCrystal.tscn",
+      "texW": 67,
+      "texH": 108,
+      "w": 0.586,
+      "h": 0.945,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.125,
+      "fileStem": "CorruptedCrystal"
+    },
+    "FlawedAmethyst.png": {
+      "iconScale": [
+        0.55,
+        0.55
+      ],
+      "scaleFrom": "FlawedAmethyst.tscn",
+      "texW": 70,
+      "texH": 67,
+      "w": 0.481,
+      "h": 0.461,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FlawedAmethyst"
+    },
+    "FlawedEmerald.png": {
+      "iconScale": [
+        0.55,
+        0.55
+      ],
+      "scaleFrom": "FlawedEmerald.tscn",
+      "texW": 71,
+      "texH": 66,
+      "w": 0.488,
+      "h": 0.454,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FlawedEmerald"
+    },
+    "FlawedRuby.png": {
+      "iconScale": [
+        0.55,
+        0.55
+      ],
+      "scaleFrom": "FlawedRuby.tscn",
+      "texW": 71,
+      "texH": 66,
+      "w": 0.488,
+      "h": 0.454,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FlawedRuby"
+    },
+    "FlawedSapphire.png": {
+      "iconScale": [
+        0.55,
+        0.55
+      ],
+      "scaleFrom": "FlawedSapphire.tscn",
+      "texW": 71,
+      "texH": 66,
+      "w": 0.488,
+      "h": 0.454,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FlawedSapphire"
+    },
+    "FlawedTopaz.png": {
+      "iconScale": [
+        0.55,
+        0.55
+      ],
+      "scaleFrom": "FlawedTopaz.tscn",
+      "texW": 71,
+      "texH": 66,
+      "w": 0.488,
+      "h": 0.454,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FlawedTopaz"
+    },
+    "FlawlessAmethyst.png": {
+      "iconScale": [
+        0.65,
+        0.65
+      ],
+      "scaleFrom": "FlawlessAmethyst.tscn",
+      "texW": 70,
+      "texH": 76,
+      "w": 0.569,
+      "h": 0.617,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FlawlessAmethyst"
+    },
+    "FlawlessEmerald.png": {
+      "iconScale": [
+        0.65,
+        0.65
+      ],
+      "scaleFrom": "FlawlessEmerald.tscn",
+      "texW": 70,
+      "texH": 77,
+      "w": 0.569,
+      "h": 0.626,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FlawlessEmerald"
+    },
+    "FlawlessRuby.png": {
+      "iconScale": [
+        0.65,
+        0.65
+      ],
+      "scaleFrom": "FlawlessRuby.tscn",
+      "texW": 70,
+      "texH": 76,
+      "w": 0.569,
+      "h": 0.617,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FlawlessRuby"
+    },
+    "FlawlessSapphire.png": {
+      "iconScale": [
+        0.65,
+        0.65
+      ],
+      "scaleFrom": "FlawlessSapphire.tscn",
+      "texW": 70,
+      "texH": 76,
+      "w": 0.569,
+      "h": 0.617,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FlawlessSapphire"
+    },
+    "FlawlessTopaz.png": {
+      "iconScale": [
+        0.65,
+        0.65
+      ],
+      "scaleFrom": "FlawlessTopaz.tscn",
+      "texW": 70,
+      "texH": 77,
+      "w": 0.569,
+      "h": 0.626,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "FlawlessTopaz"
+    },
+    "LumpofCoal.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Gem.tscn",
+      "texW": 73,
+      "texH": 80,
+      "w": 0.456,
+      "h": 0.5,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "LumpofCoal"
+    },
+    "PerfectAmethyst.png": {
+      "iconScale": [
+        0.7,
+        0.7
+      ],
+      "scaleFrom": "PerfectAmethyst.tscn",
+      "texW": 65,
+      "texH": 93,
+      "w": 0.569,
+      "h": 0.814,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PerfectAmethyst"
+    },
+    "PerfectEmerald.png": {
+      "iconScale": [
+        0.7,
+        0.7
+      ],
+      "scaleFrom": "PerfectEmerald.tscn",
+      "texW": 65,
+      "texH": 93,
+      "w": 0.569,
+      "h": 0.814,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PerfectEmerald"
+    },
+    "PerfectRuby.png": {
+      "iconScale": [
+        0.7,
+        0.7
+      ],
+      "scaleFrom": "PerfectRuby.tscn",
+      "texW": 65,
+      "texH": 93,
+      "w": 0.569,
+      "h": 0.814,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PerfectRuby"
+    },
+    "PerfectSapphire.png": {
+      "iconScale": [
+        0.7,
+        0.7
+      ],
+      "scaleFrom": "PerfectSapphire.tscn",
+      "texW": 65,
+      "texH": 93,
+      "w": 0.569,
+      "h": 0.814,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PerfectSapphire"
+    },
+    "PerfectTopaz.png": {
+      "iconScale": [
+        0.7,
+        0.7
+      ],
+      "scaleFrom": "PerfectTopaz.tscn",
+      "texW": 65,
+      "texH": 93,
+      "w": 0.569,
+      "h": 0.814,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PerfectTopaz"
+    },
+    "RegularAmethyst.png": {
+      "iconScale": [
+        0.6,
+        0.6
+      ],
+      "scaleFrom": "RegularAmethyst.tscn",
+      "texW": 63,
+      "texH": 64,
+      "w": 0.473,
+      "h": 0.48,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RegularAmethyst"
+    },
+    "RegularEmerald.png": {
+      "iconScale": [
+        0.6,
+        0.6
+      ],
+      "scaleFrom": "RegularEmerald.tscn",
+      "texW": 63,
+      "texH": 64,
+      "w": 0.473,
+      "h": 0.48,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RegularEmerald"
+    },
+    "RegularRuby.png": {
+      "iconScale": [
+        0.6,
+        0.6
+      ],
+      "scaleFrom": "RegularRuby.tscn",
+      "texW": 63,
+      "texH": 64,
+      "w": 0.473,
+      "h": 0.48,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RegularRuby"
+    },
+    "RegularSapphire.png": {
+      "iconScale": [
+        0.6,
+        0.6
+      ],
+      "scaleFrom": "RegularSapphire.tscn",
+      "texW": 63,
+      "texH": 64,
+      "w": 0.473,
+      "h": 0.48,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RegularSapphire"
+    },
+    "RegularTopaz.png": {
+      "iconScale": [
+        0.6,
+        0.6
+      ],
+      "scaleFrom": "RegularTopaz.tscn",
+      "texW": 63,
+      "texH": 64,
+      "w": 0.473,
+      "h": 0.48,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RegularTopaz"
+    },
+    "Skull.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Gem.tscn",
+      "texW": 88,
+      "texH": 116,
+      "w": 0.55,
+      "h": 0.725,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Skull"
+    },
+    "GingerbreadMan.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "GingerbreadMan.tscn",
+      "texW": 166,
+      "texH": 303,
+      "w": 1.038,
+      "h": 1.894,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0,
+      "fileStem": "GingerbreadMan"
+    },
+    "GlovesofHaste.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "GlovesofHaste.tscn",
+      "texW": 320,
+      "texH": 160,
+      "w": 2,
+      "h": 1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": 0,
+      "fileStem": "GlovesofHaste"
+    },
+    "Goobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Goobert.tscn",
+      "texW": 302,
+      "texH": 310,
+      "w": 1.888,
+      "h": 1.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Goobert"
+    },
+    "Greatsword.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Greatsword.tscn",
+      "texW": 290,
+      "texH": 648,
+      "w": 1.813,
+      "h": 4.05,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": -0.037,
+      "fileStem": "Greatsword"
+    },
+    "Hammer.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Hammer.tscn",
+      "texW": 347,
+      "texH": 422,
+      "w": 2.169,
+      "h": 2.638,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.087,
+      "fileStem": "Hammer"
+    },
+    "HealingHerbs.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HealingHerbs.tscn",
+      "texW": 160,
+      "texH": 160,
+      "w": 1,
+      "h": 1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.038,
+      "anchorY": 0,
+      "fileStem": "HealingHerbs"
+    },
+    "HealthPotion.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "HealthPotion.tscn",
+      "texW": 160,
+      "texH": 333,
+      "w": 0.9,
+      "h": 1.873,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.003,
+      "anchorY": -0.005,
+      "fileStem": "HealthPotion"
+    },
+    "HeartContainer.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HeartContainer.tscn",
+      "texW": 291,
+      "texH": 298,
+      "w": 1.819,
+      "h": 1.863,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HeartContainer"
+    },
+    "HeartofDarkness.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HeartofDarkness.tscn",
+      "texW": 295,
+      "texH": 289,
+      "w": 1.844,
+      "h": 1.806,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HeartofDarkness"
+    },
+    "HeroicPotion.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HeroicPotion.tscn",
+      "texW": 161,
+      "texH": 320,
+      "w": 1.006,
+      "h": 2,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HeroicPotion"
+    },
+    "HeroLongsword.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HeroLongsword.tscn",
+      "texW": 153,
+      "texH": 487,
+      "w": 0.956,
+      "h": 3.044,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HeroLongsword"
+    },
+    "HeroSword.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HeroSword.tscn",
+      "texW": 161,
+      "texH": 321,
+      "w": 1.006,
+      "h": 2.006,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.025,
+      "anchorY": 0,
+      "fileStem": "HeroSword"
+    },
+    "HoloFireLizard.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "HoloFireLizard.tscn",
+      "texW": 151,
+      "texH": 253,
+      "w": 0.755,
+      "h": 1.265,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HoloFireLizard"
+    },
+    "HolyArmor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HolyArmor.tscn",
+      "texW": 360,
+      "texH": 484,
+      "w": 2.25,
+      "h": 3.025,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HolyArmor"
+    },
+    "HolySpear.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HolySpear.tscn",
+      "texW": 132,
+      "texH": 641,
+      "w": 0.825,
+      "h": 4.006,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HolySpear"
+    },
+    "HungryBlade.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "HungryBlade.tscn",
+      "texW": 160,
+      "texH": 480,
+      "w": 1,
+      "h": 3,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "HungryBlade"
+    },
+    "Jynxtorquilla.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "Jynxtorquilla.tscn",
+      "texW": 313,
+      "texH": 258,
+      "w": 1.761,
+      "h": 1.451,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.175,
+      "fileStem": "Jynxtorquilla"
+    },
+    "LeatherArmor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LeatherArmor.tscn",
+      "texW": 378,
+      "texH": 464,
+      "w": 2.363,
+      "h": 2.9,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "LeatherArmor"
+    },
+    "LeatherBag.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "LeatherBag.tscn",
+      "texW": 490,
+      "texH": 458,
+      "w": 2.45,
+      "h": 2.29,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.05,
+      "anchorY": 0,
+      "fileStem": "LeatherBag"
+    },
+    "LeatherBoots.png": {
+      "iconScale": [
+        0.5,
+        0.55
+      ],
+      "scaleFrom": "LeatherBoots.tscn",
+      "texW": 175,
+      "texH": 253,
+      "w": 1.094,
+      "h": 1.739,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.088,
+      "anchorY": 0.013,
+      "fileStem": "LeatherBoots"
+    },
+    "LeatherHelm.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "LeatherHelm.tscn",
+      "texW": 166,
+      "texH": 295,
+      "w": 0.996,
+      "h": 1.77,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "LeatherHelm"
+    },
+    "LightGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LightGoobert.tscn",
+      "texW": 302,
+      "texH": 310,
+      "w": 1.888,
+      "h": 1.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.013,
+      "fileStem": "LightGoobert"
+    },
+    "Lightsaber.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Lightsaber.tscn",
+      "texW": 148,
+      "texH": 621,
+      "w": 0.925,
+      "h": 3.881,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Lightsaber"
+    },
+    "LuckyBow.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LuckyBow.tscn",
+      "texW": 451,
+      "texH": 454,
+      "w": 2.819,
+      "h": 2.838,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.025,
+      "anchorY": 0,
+      "fileStem": "LuckyBow"
+    },
+    "LuckyClover.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LuckyClover.tscn",
+      "texW": 160,
+      "texH": 160,
+      "w": 1,
+      "h": 1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "LuckyClover"
+    },
+    "LuckyPiggy.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "LuckyPiggy.tscn",
+      "texW": 291,
+      "texH": 165,
+      "w": 1.819,
+      "h": 1.031,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0,
+      "fileStem": "LuckyPiggy"
+    },
+    "MagicStaff.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MagicStaff.tscn",
+      "texW": 161,
+      "texH": 633,
+      "w": 1.006,
+      "h": 3.956,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "MagicStaff"
+    },
+    "MagicTorch.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MagicTorch.tscn",
+      "texW": 140,
+      "texH": 324,
+      "w": 0.875,
+      "h": 2.025,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": -0.012,
+      "fileStem": "MagicTorch"
+    },
+    "ManaOrb.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ManaOrb.tscn",
+      "texW": 131,
+      "texH": 131,
+      "w": 0.819,
+      "h": 0.819,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ManaOrb"
+    },
+    "ManaPotion.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "ManaPotion.tscn",
+      "texW": 153,
+      "texH": 320,
+      "w": 0.861,
+      "h": 1.8,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0,
+      "fileStem": "ManaPotion"
+    },
+    "Manathirst.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Manathirst.tscn",
+      "texW": 161,
+      "texH": 475,
+      "w": 1.006,
+      "h": 2.969,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Manathirst"
+    },
+    "MoonShield.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MoonShield.tscn",
+      "texW": 296,
+      "texH": 447,
+      "w": 1.85,
+      "h": 2.794,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "MoonShield"
+    },
+    "MrStruggles.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "MrStruggles.tscn",
+      "texW": 169,
+      "texH": 291,
+      "w": 1.056,
+      "h": 1.819,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.022,
+      "anchorY": -0.005,
+      "fileStem": "MrStruggles"
+    },
+    "Pan.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Pan.tscn",
+      "texW": 286,
+      "texH": 232,
+      "w": 1.788,
+      "h": 1.45,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.113,
+      "anchorY": 0.088,
+      "fileStem": "Pan"
+    },
+    "Pandamonium.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Pandamonium.tscn",
+      "texW": 479,
+      "texH": 169,
+      "w": 2.994,
+      "h": 1.056,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.05,
+      "anchorY": 0,
+      "fileStem": "Pandamonium"
+    },
+    "PestilenceFlask.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PestilenceFlask.tscn",
+      "texW": 154,
+      "texH": 274,
+      "w": 0.963,
+      "h": 1.713,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PestilenceFlask"
+    },
+    "PiercingArrow.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PiercingArrow.tscn",
+      "texW": 355,
+      "texH": 146,
+      "w": 2.219,
+      "h": 0.913,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PiercingArrow"
+    },
+    "Piggybank.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Piggybank.tscn",
+      "texW": 320,
+      "texH": 160,
+      "w": 2,
+      "h": 1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Piggybank"
+    },
+    "Pineapple.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Pineapple.tscn",
+      "texW": 180,
+      "texH": 462,
+      "w": 1.125,
+      "h": 2.888,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.037,
+      "fileStem": "Pineapple"
+    },
+    "PlatinCustomerCard.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PlatinCustomerCard.tscn",
+      "texW": 156,
+      "texH": 109,
+      "w": 0.975,
+      "h": 0.681,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PlatinCustomerCard"
+    },
+    "PocketSand.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PocketSand.tscn",
+      "texW": 160,
+      "texH": 160,
+      "w": 1,
+      "h": 1,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.05,
+      "fileStem": "PocketSand"
+    },
+    "PoisonBow.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PoisonBow.tscn",
+      "texW": 491,
+      "texH": 493,
+      "w": 3.069,
+      "h": 3.081,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PoisonBow"
+    },
+    "PoisonDagger.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PoisonDagger.tscn",
+      "texW": 123,
+      "texH": 313,
+      "w": 0.769,
+      "h": 1.956,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.034,
+      "anchorY": -0.018,
+      "fileStem": "PoisonDagger"
+    },
+    "PoisonGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PoisonGoobert.tscn",
+      "texW": 302,
+      "texH": 310,
+      "w": 1.888,
+      "h": 1.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.013,
+      "fileStem": "PoisonGoobert"
+    },
+    "PoisonIvy.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PoisonIvy.tscn",
+      "texW": 184,
+      "texH": 158,
+      "w": 1.15,
+      "h": 0.988,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.025,
+      "fileStem": "PoisonIvy"
+    },
+    "PotionBelt.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "PotionBelt.tscn",
+      "texW": 240,
+      "texH": 698,
+      "w": 1.5,
+      "h": 4.363,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "PotionBelt"
+    },
+    "Present.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Present.tscn",
+      "texW": 305,
+      "texH": 314,
+      "w": 1.906,
+      "h": 1.963,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Present"
+    },
+    "ProtectivePurse.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ProtectivePurse.tscn",
+      "texW": 245,
+      "texH": 251,
+      "w": 1.531,
+      "h": 1.569,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ProtectivePurse"
+    },
+    "Pumpkin.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Pumpkin.tscn",
+      "texW": 334,
+      "texH": 318,
+      "w": 2.088,
+      "h": 1.988,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Pumpkin"
+    },
+    "RainbowGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RainbowGoobert.tscn",
+      "texW": 302,
+      "texH": 310,
+      "w": 1.888,
+      "h": 1.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RainbowGoobert"
+    },
+    "RainbowGoobertRanger.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RainbowGoobertRanger.tscn",
+      "texW": 302,
+      "texH": 310,
+      "w": 1.888,
+      "h": 1.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RainbowGoobertRanger"
+    },
+    "RangerBag.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RangerBag.tscn",
+      "texW": 497,
+      "texH": 558,
+      "w": 3.106,
+      "h": 3.488,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RangerBag"
+    },
+    "RibSawBlade.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RibSawBlade.tscn",
+      "texW": 173,
+      "texH": 633,
+      "w": 1.081,
+      "h": 3.956,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RibSawBlade"
+    },
+    "RubyChonk.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RubyChonk.tscn",
+      "texW": 322,
+      "texH": 476,
+      "w": 2.013,
+      "h": 2.975,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RubyChonk"
+    },
+    "RubyEgg.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RubyEgg.tscn",
+      "texW": 255,
+      "texH": 298,
+      "w": 1.594,
+      "h": 1.863,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RubyEgg"
+    },
+    "RubyWhelp.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "RubyWhelp.tscn",
+      "texW": 316,
+      "texH": 333,
+      "w": 1.975,
+      "h": 2.081,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "RubyWhelp"
+    },
+    "ShieldofValor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ShieldofValor.tscn",
+      "texW": 278,
+      "texH": 448,
+      "w": 1.738,
+      "h": 2.8,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "ShieldofValor"
+    },
+    "Shovel.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Shovel.tscn",
+      "texW": 148,
+      "texH": 628,
+      "w": 0.925,
+      "h": 3.925,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.038,
+      "fileStem": "Shovel"
+    },
+    "Spear.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Spear.tscn",
+      "texW": 160,
+      "texH": 640,
+      "w": 1,
+      "h": 4,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Spear"
+    },
+    "SpectralDagger.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpectralDagger.tscn",
+      "texW": 116,
+      "texH": 309,
+      "w": 0.725,
+      "h": 1.931,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.022,
+      "anchorY": -0.03,
+      "fileStem": "SpectralDagger"
+    },
+    "SpikedShield.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SpikedShield.tscn",
+      "texW": 320,
+      "texH": 320,
+      "w": 2,
+      "h": 2,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.012,
+      "anchorY": 0,
+      "fileStem": "SpikedShield"
+    },
+    "StaffofUnhealing.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "StaffofUnhealing.tscn",
+      "texW": 154,
+      "texH": 630,
+      "w": 0.963,
+      "h": 3.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "StaffofUnhealing"
+    },
+    "StaminaSack.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "StaminaSack.tscn",
+      "texW": 281,
+      "texH": 626,
+      "w": 1.405,
+      "h": 3.13,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.037,
+      "anchorY": -0.025,
+      "fileStem": "StaminaSack"
+    },
+    "SteelGoobert.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "SteelGoobert.tscn",
+      "texW": 302,
+      "texH": 310,
+      "w": 1.888,
+      "h": 1.938,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0.013,
+      "fileStem": "SteelGoobert"
+    },
+    "Stone.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Stone.tscn",
+      "texW": 133,
+      "texH": 139,
+      "w": 0.831,
+      "h": 0.869,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Stone"
+    },
+    "StoneHelm.png": {
+      "iconScale": [
+        0.48,
+        0.48
+      ],
+      "scaleFrom": "StoneHelm.tscn",
+      "texW": 172,
+      "texH": 297,
+      "w": 1.032,
+      "h": 1.782,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "StoneHelm"
+    },
+    "StoneSkinPotion.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "StoneSkinPotion.tscn",
+      "texW": 160,
+      "texH": 307,
+      "w": 1,
+      "h": 1.919,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "StoneSkinPotion"
+    },
+    "StorageCoffin.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "StorageCoffin.tscn",
+      "texW": 512,
+      "texH": 804,
+      "w": 2.88,
+      "h": 4.523,
+      "bag": true,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.037,
+      "anchorY": 0,
+      "fileStem": "StorageCoffin"
+    },
+    "StrongDemonicFlask.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "StrongDemonicFlask.tscn",
+      "texW": 162,
+      "texH": 326,
+      "w": 0.911,
+      "h": 1.834,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0,
+      "fileStem": "StrongDemonicFlask"
+    },
+    "StrongHealthPotion.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "StrongHealthPotion.tscn",
+      "texW": 160,
+      "texH": 333,
+      "w": 0.9,
+      "h": 1.873,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.003,
+      "anchorY": -0.005,
+      "fileStem": "StrongHealthPotion"
+    },
+    "StrongHeroicPotion.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "StrongHeroicPotion.tscn",
+      "texW": 237,
+      "texH": 327,
+      "w": 1.185,
+      "h": 1.635,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "StrongHeroicPotion"
+    },
+    "StrongPestilenceFlask.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "StrongPestilenceFlask.tscn",
+      "texW": 160,
+      "texH": 317,
+      "w": 0.9,
+      "h": 1.783,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.013,
+      "anchorY": 0,
+      "fileStem": "StrongPestilenceFlask"
+    },
+    "StrongStoneSkinPotion.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "StrongStoneSkinPotion.tscn",
+      "texW": 160,
+      "texH": 294,
+      "w": 1,
+      "h": 1.838,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "StrongStoneSkinPotion"
+    },
+    "TheFool.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "TheFool.tscn",
+      "texW": 151,
+      "texH": 253,
+      "w": 0.755,
+      "h": 1.265,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "TheFool"
+    },
+    "TheLovers.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "TheLovers.tscn",
+      "texW": 151,
+      "texH": 252,
+      "w": 0.755,
+      "h": 1.26,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "TheLovers"
+    },
+    "ThornBow.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "ThornBow.tscn",
+      "texW": 477,
+      "texH": 466,
+      "w": 2.981,
+      "h": 2.913,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": -0.037,
+      "fileStem": "ThornBow"
+    },
+    "ThornWhip.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "ThornWhip.tscn",
+      "texW": 480,
+      "texH": 480,
+      "w": 2.7,
+      "h": 2.7,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.05,
+      "anchorY": -0.062,
+      "fileStem": "ThornWhip"
+    },
+    "Torch.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Torch.tscn",
+      "texW": 136,
+      "texH": 292,
+      "w": 0.85,
+      "h": 1.825,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0.113,
+      "fileStem": "Torch"
+    },
+    "VampiricArmor.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "VampiricArmor.tscn",
+      "texW": 388,
+      "texH": 480,
+      "w": 2.425,
+      "h": 3,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "VampiricArmor"
+    },
+    "VampiricGloves.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "VampiricGloves.tscn",
+      "texW": 318,
+      "texH": 144,
+      "w": 1.988,
+      "h": 0.9,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "VampiricGloves"
+    },
+    "VampiricScythe.png": {
+      "iconScale": [
+        0.535736,
+        0.476309
+      ],
+      "scaleFrom": "VampiricScythe.tscn",
+      "texW": 421,
+      "texH": 649,
+      "w": 2.819,
+      "h": 3.864,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": -0.11,
+      "anchorY": 0.007,
+      "fileStem": "VampiricScythe"
+    },
+    "VillainSword.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "VillainSword.tscn",
+      "texW": 163,
+      "texH": 315,
+      "w": 1.019,
+      "h": 1.969,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.025,
+      "anchorY": 0,
+      "fileStem": "VillainSword"
+    },
+    "WalrusTusk.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "WalrusTusk.tscn",
+      "texW": 81,
+      "texH": 306,
+      "w": 0.506,
+      "h": 1.913,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.003,
+      "anchorY": -0.005,
+      "fileStem": "WalrusTusk"
+    },
+    "Whetstone.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Whetstone.tscn",
+      "texW": 131,
+      "texH": 118,
+      "w": 0.819,
+      "h": 0.738,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "Whetstone"
+    },
+    "White-EyesBlueDragon.png": {
+      "iconScale": [
+        0.4,
+        0.4
+      ],
+      "scaleFrom": "White-EyesBlueDragon.tscn",
+      "texW": 151,
+      "texH": 253,
+      "w": 0.755,
+      "h": 1.265,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "White-EyesBlueDragon"
+    },
+    "Wolpertinger.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "Wolpertinger.tscn",
+      "texW": 350,
+      "texH": 344,
+      "w": 2.188,
+      "h": 2.15,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.05,
+      "anchorY": -0.05,
+      "fileStem": "Wolpertinger"
+    },
+    "WoodenBuckler.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "WoodenBuckler.tscn",
+      "texW": 278,
+      "texH": 282,
+      "w": 1.738,
+      "h": 1.763,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "WoodenBuckler"
+    },
+    "WoodenSword.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "WoodenSword.tscn",
+      "texW": 160,
+      "texH": 320,
+      "w": 1,
+      "h": 2,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "WoodenSword"
+    },
+    "YggdrasilLeaf.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "YggdrasilLeaf.tscn",
+      "texW": 170,
+      "texH": 175,
+      "w": 1.063,
+      "h": 1.094,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "YggdrasilLeaf"
+    }
+  }
+}

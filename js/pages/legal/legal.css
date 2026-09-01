@@ -1,0 +1,85 @@
+/* Legal prose pages — parchment reading column */
+
+body.page-legal {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bpb-parchment-deep, #b8956e);
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(212, 184, 150, 0.55) 0%,
+      rgba(90, 69, 53, 0.45) 100%
+    ),
+    var(--bpb-bg-shop, none);
+  background-position: center top;
+  background-size: cover;
+  background-attachment: fixed;
+  color: var(--bpb-ink, #3d2b1f);
+}
+
+.legal-main {
+  flex: 1 1 auto;
+  width: min(42rem, calc(100vw - 2rem));
+  margin: 0 auto;
+  padding: 1.5rem 0 2.5rem;
+}
+
+.legal-card {
+  padding: 1.5rem 1.35rem 1.75rem;
+  background: rgba(255, 236, 220, 0.88);
+  border: 2px solid rgba(60, 38, 29, 0.45);
+  border-radius: 0.35rem;
+  box-shadow: 0 0.35rem 0 rgba(60, 38, 29, 0.2);
+  font-family: var(--bpb-font-body);
+  line-height: 1.55;
+}
+
+.legal-card h1 {
+  margin: 0 0 0.75rem;
+  font-family: var(--bpb-font-display);
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 400;
+  color: var(--bpb-ink, #3d2b1f);
+}
+
+.legal-card h2 {
+  margin: 1.35rem 0 0.45rem;
+  font-family: var(--bpb-font-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.legal-card p,
+.legal-card li {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+}
+
+.legal-card ul {
+  margin: 0 0 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.legal-card a {
+  color: #6b3d1f;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.legal-note {
+  margin: 0 0 1.1rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--bpb-ink-muted, #5c4636);
+  background: rgba(232, 200, 74, 0.18);
+  border: 1px solid rgba(60, 38, 29, 0.28);
+  border-radius: 0.25rem;
+}
+
+.legal-meta {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  color: var(--bpb-ink-muted, #5c4636);
+}

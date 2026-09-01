@@ -1,0 +1,2104 @@
+{
+  "builtAt": "2026-08-25T16:42:04.615Z",
+  "totals": {
+    "count": 524
+  },
+  "byId": {
+    "acorn_collar": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "artifact_stone_cold": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "artifact_stone_heat": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bag_of_stones": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "banana": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "blood_amulet": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "blood_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bloodthorne": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bloody_dagger": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "blueberries": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bow_and_arrow": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "broom": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "burning_coal": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "burning_torch": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "carrot": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "carrot_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "claws_of_attack": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "corrupted_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "critwood_staff": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "crossblades": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "crown": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cursed_dagger": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cursed_hair_comb": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dagger": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dancing_dragon": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "darksaber": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "death_scythe": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "deck_of_cards": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "demonic_flask": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "djinn_lamp": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "eggscalibur": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "evil_cap": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "acorn_ace": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amethyst_egg": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amethyst_whelp": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amulet_of_agility": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amulet_of_alchemy": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amulet_of_darkness": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amulet_of_feasting": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amulet_of_fortune": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amulet_of_life": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amulet_of_light": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amulet_of_steel": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amulet_of_the_wild": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "angel_crystal": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "anvil": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "arcane_boots": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "arcane_intellect": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "armored_power_puppy": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "armored_wisdom_puppy": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "artifact_stone_death": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "automanaton": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "axe": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "badger_spirit": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bag_of_giving": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "battery": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bazooka": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "berserker_bag": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bewitchment": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "big_bloodthorne": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bionic_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bismuth_cube": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "blood_manipulation": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bomb": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "book_of_basics": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "book_of_darkness": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "book_of_ice": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "book_of_light": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "book_of_nature": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "boomerang": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bowl_of_treats": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "brass_knuckles": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "broccoli": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "broccoli_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "broccotree": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "burning_banner": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "burning_blade": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "burning_spikes": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "burning_sword": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "busted_blade": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "buy_the_holy_light": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cap_of_brilliance": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cat_spirit": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cauldron": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chainsaw": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chain_whip": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "charge_splitter": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cheese": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cheese_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chess_board": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chess_master": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chili_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chili_pepper": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chrome_cube": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cog": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cog_badge": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "coil": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "con_trap_tron": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "courage_puppy": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "critical_poison": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "crow": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cthulhu": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cubert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cupcake": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cupcake_dragon": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cupcake_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "cupcake_staff": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "daggerang": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dark_lantern": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dark_ritual": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "death_lotus": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "deer_totem": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "devouring_sphere": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dig_deeper": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "divine_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "doom_cap": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "double_axe": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "double_rainbow": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "draconic_orb": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dragon_claws": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dragon_knight": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dragon_nest": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dragonscale_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dragon_set": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dragonskin_boots": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "dual_wielding": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "eat_o_matic": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "echoing_battlecry": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "electric_torch": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "emerald_egg": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "emerald_whelp": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "enchanted_weapons": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "energy_conversion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "engineer_box": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "everburning": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "evil_hat": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "extra_angy": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "extra_bags": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "false_life": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "fedora": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "fire_pit": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "fire_shelly": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flame": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flame_badge": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flame_whip": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "forest_dragon": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "forging_hammer": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "fortunas_kiss": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "friendly_fire": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "frog_prince": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "frostbite": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "frozen_buckler": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "frozen_flame": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "full_body_protection": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "generator": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ghost": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "gigawatz": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "girl_power": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "gold_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "gold_cube": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "halberd": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "hardwood": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "hawk_rune": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "heart_of_the_cards": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "heart_shield": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "heavy_drinking": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "hedgehog": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "hero_shield": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "hogus_bogus": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "holdall": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "holy_collar": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "hyper_hedgehog": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ice_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ice_dragon": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ice_flower": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "inner_power": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "investment_opportunity": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "just_stats": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "jynx_staff": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "katana": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "king_crown": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "king_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "king_of_the_bling": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "knife_to_meet_you": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "laboratory": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "leaf_badge": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "level_up": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "light_flower": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "lightning_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "lightning_staff": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "little_mimic": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "long_spear": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "lucky_cat": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "lucky_shortbow": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mage_hat": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "magic_badge": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "magic_collar": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "magic_mirror": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "magic_ring": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "magitecc_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mana_crystal": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mana_mastery": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mananana": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "markswoman": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mecha_bat": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mega_clover": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mercury_elemental": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "miss_fortune": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "molten_dagger": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "molten_greatsword": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "molten_spear": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "molten_spear2": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "moon_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "more_stats": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mrs_struggles": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mushroom_farm": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "no_rush_please": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "null_blade": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "obsidian_dragon": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "oil_lamp": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "onion_cutter": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "owl_spirit": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "paradise_birb": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "perpetuum_mobile": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "phoenix": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "phoenix2": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "piggy_of_riches": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "piggy_pinata": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "pine_protector": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "plastic_cube": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "poison_frog": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "poison_grenade": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "poison_shortbow": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "poison_spear": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "pop": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "portable_altar": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "pot": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "power_of_the_moon": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "power_puppy": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "prismatic_sword": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "prismatic_wand": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "puzzle_badge": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "puzzlebag_j": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "puzzlebag_l": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "puzzlebag_s": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "puzzlebag_t": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "puzzlebag_z": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "puzzlebox": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rainbow_badge": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rainbow_goobert_adventurer": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rainbow_goobert_berserker": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rainbow_goobert_engineer": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rainbow_goobert_mage": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rainbow_goobert_pyromancer": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rainbow_orb": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rainbow_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rat": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rat_chef": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "recombobulator": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "relic_case": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "repeater": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "robodog": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rope": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "sandbag": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "sapphire_egg": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "sapphire_whelp": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "scale": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "scholar_bag": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "scissorswords": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "seal_the_deal": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "serpent_staff": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "sewing_case": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "shaman_mask": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "shell_totem": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "shelly": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "shepherds_crook": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "shielded": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "shiny_mantle": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "shiny_shell": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "skull_badge": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "slice_of_bread": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "slice_of_toast": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "slime_time": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "sloth": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "smelly_barrier": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "smithing_for_dummies": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "snake": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "snowball": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "snowcake": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "snowmaster": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "snow_stick": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "solaris": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "speak_with_animals": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spell_scroll_dark": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spell_scroll_frostbolt": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spell_scroll_ice": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spell_scroll_light": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spell_scroll_nature": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spicy_banana": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spiked_collar": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spiked_staff": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spiked_wall": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spin_to_win": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spirit_bells": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spring_loader": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "squirrel": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "squirrel_archer": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "staff_of_fire": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "star_of_courage": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "steel_dragon": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "stone_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "stone_badge": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "stoned": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "stone_gloves": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "stone_golem": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "stone_shoes": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "strong_divine_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "strong_vampiric_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "sun_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "sun_shield": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "tesla_coil": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "thornbloom": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "thornburst": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "thorn_elemental": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "thorn_shortbow": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "thors_hammer": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "thunder_drake": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "time_dilator": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "time_melting": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "toad": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "toast_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "toolbox": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "turtle": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "twine": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "twine_badge": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ukulele": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ultima": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "uniquely_unique": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "vampiric_collar": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "vampiric_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "vineweave_basket": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "wand": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "wand_of_dissonance": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "war_scythe": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "water_elemental": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "whetstone3": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "winged_boots": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "wisdom_puppy": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "wisp": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "wolf_badge": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "wolf_emblem": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "wrench": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "falcon_blade": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "fancy_fencing_rapier": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "fanfare": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "fanny_pack": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flute": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "fly_agaric": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "garlic": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amethyst": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "corrupted_crystal": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "emerald": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "lump_of_coal": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ruby": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "sapphire": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "gingerbread_man": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "gloves_of_haste": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "greatsword": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "hammer": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "healing_herbs": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "health_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "heart_container": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "heart_of_darkness": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "heroic_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "hero_longsword": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "hero_sword": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "holy_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "holy_spear": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "hungry_blade": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "jynx_torquilla": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "leather_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "leather_boots": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "leather_helm": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "light_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "lightsaber": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "lucky_bow": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "lucky_clover": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "lucky_piggy": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "magic_staff": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "magic_torch": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mana_orb": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mana_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "manathirst": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "moon_shield": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "mr_struggles": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "pan": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "pandamonium": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "pestilence_flask": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "piercing_arrow": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "piggybank": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "pineapple": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "platin_customer_card": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "pocket_sand": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "poison_bow": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "poison_dagger": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "poison_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "poison_ivy": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "potion_belt": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "present": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "protective_purse": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "pumpkin": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rainbow_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rainbow_goobert_ranger": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ranger_bag": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "rib_saw_blade": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ruby_chonk": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ruby_egg": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ruby_whelp": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "shield_of_valor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "shovel": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spear": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spectral_dagger": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "spiked_shield": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "staff_of_unhealing": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "stamina_sack": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "steel_goobert": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "stone": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "stone_helm": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "stone_skin_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "storage_coffin": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "strong_demonic_flask": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "strong_health_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "strong_pestilence_flask": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "strong_stone_skin_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "thorn_bow": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "thorn_whip": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "torch": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "vampiric_armor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "vampiric_gloves": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "vampiric_scythe": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "villain_sword": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "walrus_tusk": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "whetstone": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "wolpertinger": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "wooden_buckler": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "wooden_sword": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "yggdrasil_leaf": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "ace_of_spades": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "amulet_unidentified": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "armored_courage_puppy": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "badger_rune": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "bagtacular": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "black_bishop": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "black_king": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "black_knight": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "black_pawn": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "black_queen": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "black_rook": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "book_of_ice_new": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "box_of_prosperity": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "box_of_riches": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chipped_amethyst": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chipped_emerald": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chipped_ruby": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chipped_sapphire": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "chipped_topaz": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "coins": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "customer_card": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "darkest_lotus": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "elephant_rune": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "employee_uniform": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "engineer_bag_2": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flawed_amethyst": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flawed_emerald": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flawed_ruby": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flawed_sapphire": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flawed_topaz": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flawless_amethyst": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flawless_emerald": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flawless_ruby": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flawless_sapphire": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "flawless_topaz": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "furcifer_prime": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "goobling": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "holo_fire_lizard": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "hypercube": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "joker": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "leather_bag": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "lootbox": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "perfect_amethyst": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "perfect_emerald": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "perfect_ruby": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "perfect_sapphire": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "perfect_topaz": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "random_loadout_bag": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "regular_amethyst": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "regular_emerald": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "regular_ruby": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "regular_sapphire": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "regular_topaz": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "resistor": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "reverse": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "shortbow": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "skull": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "snowman": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "stable_recombobulator": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "strong_heroic_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "strong_mana_potion": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "superior_ring": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "the_fool": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "the_lovers": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "tiger_rune": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "topaz": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "unidentified_skill": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "unstable_recombobulator": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "whetstone2": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "white_bishop": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "white_eyes_blue_dragon": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "white_king": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "white_knight": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "white_pawn": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "white_queen": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "white_rook": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    }
+  }
+}

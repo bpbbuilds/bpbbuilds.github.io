@@ -1,0 +1,1757 @@
+{
+  "kind": "bpb-sim-debug",
+  "v": 5,
+  "slug": "reaper-harvest",
+  "seed": 42,
+  "durationSec": 30,
+  "dummyEndHp": 858,
+  "playerEndHp": 170,
+  "eventCount": 236,
+  "catalog": [
+    {
+      "id": "storage_coffin",
+      "name": "Storage Coffin",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": 22
+    },
+    {
+      "id": "holdall",
+      "name": "Holdall",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "blood_goobert",
+      "name": "Blood Goobert",
+      "type": "Pet",
+      "extraTypes": [
+        "Vampiric"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "activations": 6,
+        "p1": 6,
+        "dam": 10,
+        "p2": 10,
+        "vampirism": 5,
+        "p3": 5,
+        "lifesteal": 100,
+        "p4": 100
+      }
+    },
+    {
+      "id": "ghost",
+      "name": "Ghost",
+      "type": "Pet",
+      "extraTypes": [
+        "Dark"
+      ],
+      "cooldown": 3,
+      "chance": null,
+      "params": {
+        "unhealing": 30,
+        "p1": 30,
+        "heal": 12,
+        "p2": 12
+      }
+    },
+    {
+      "id": "heart_of_darkness",
+      "name": "Heart of Darkness",
+      "type": "Accessory",
+      "extraTypes": [
+        "Dark"
+      ],
+      "cooldown": 4,
+      "chance": null,
+      "params": {
+        "regent": 7,
+        "p1": 7,
+        "healreduction": 40,
+        "p2": 40,
+        "empower": 4,
+        "p3": 4,
+        "maxhealth": 100,
+        "p4": 100,
+        "buffsteal": 2,
+        "p5": 2,
+        "darkspeed": 20,
+        "p6": 20
+      }
+    },
+    {
+      "id": "skull_badge",
+      "name": "Skull Badge",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": 1.5,
+      "chance": null
+    },
+    {
+      "id": "blood_amulet",
+      "name": "Blood Amulet",
+      "type": "Accessory",
+      "extraTypes": [
+        "Vampiric"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "vampirism": 2,
+        "p1": 2,
+        "maxhealth": 20,
+        "p2": 20
+      }
+    }
+  ],
+  "paramChecks": [],
+  "unhealingMath": {
+    "rate": 0.3,
+    "healLogged": 214,
+    "healGrants": 17,
+    "exactFloat": 64.2,
+    "expectedCeil": 71,
+    "actual": 71,
+    "actualGrants": 17,
+    "samples": [
+      {
+        "heal": 17,
+        "exact": 5.1,
+        "ceil": 6
+      },
+      {
+        "heal": 12,
+        "exact": 3.5999999999999996,
+        "ceil": 4
+      },
+      {
+        "heal": 16,
+        "exact": 4.8,
+        "ceil": 5
+      },
+      {
+        "heal": 12,
+        "exact": 3.5999999999999996,
+        "ceil": 4
+      },
+      {
+        "heal": 15,
+        "exact": 4.5,
+        "ceil": 5
+      },
+      {
+        "heal": 12,
+        "exact": 3.5999999999999996,
+        "ceil": 4
+      },
+      {
+        "heal": 14,
+        "exact": 4.2,
+        "ceil": 5
+      },
+      {
+        "heal": 12,
+        "exact": 3.5999999999999996,
+        "ceil": 4
+      }
+    ],
+    "note": "game: ceil(each logged heal × 0.3) — e.g. 15% of 3 is 0.45 → 1; 15% of 1 is 0.15 → 1 (never 0)"
+  },
+  "status": {
+    "buffs": {
+      "vampirism": {
+        "player": {
+          "end": 0,
+          "sources": [
+            {
+              "gained": 5,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 5
+                }
+              ],
+              "id": "blood_goobert",
+              "itemId": "blood_goobert",
+              "name": "Blood Goobert",
+              "handler": "blood_goobert",
+              "systemOrigin": null
+            },
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 2
+                }
+              ],
+              "id": "blood_amulet",
+              "itemId": "blood_amulet",
+              "name": "Blood Amulet",
+              "handler": "blood_amulet",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 7
+        }
+      },
+      "block": {
+        "player": {
+          "end": 0,
+          "sources": [
+            {
+              "gained": 8,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 8
+                }
+              ],
+              "id": "holdall",
+              "itemId": "holdall",
+              "name": "Holdall",
+              "handler": "holdall",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 8
+        }
+      }
+    },
+    "debuffs": {
+      "poison": {
+        "player": {
+          "end": 0,
+          "sources": [
+            {
+              "gained": 74,
+              "lost": 0,
+              "grants": 13,
+              "firstT": 4.5,
+              "lastT": 28.5,
+              "samples": [
+                {
+                  "t": 4.5,
+                  "amount": 1
+                },
+                {
+                  "t": 6.5,
+                  "amount": 1
+                },
+                {
+                  "t": 8.5,
+                  "amount": 3
+                },
+                {
+                  "t": 10.5,
+                  "amount": 4
+                },
+                {
+                  "t": 12.5,
+                  "amount": 5
+                },
+                {
+                  "t": 14.5,
+                  "amount": 5
+                },
+                {
+                  "t": 16.5,
+                  "amount": 6
+                },
+                {
+                  "t": 18.5,
+                  "amount": 7
+                }
+              ],
+              "id": "Poison",
+              "itemId": null,
+              "name": "Poison",
+              "handler": null,
+              "systemOrigin": "Poison"
+            }
+          ],
+          "gained": 74
+        },
+        "dummy": {
+          "end": 9,
+          "sources": [
+            {
+              "gained": 9,
+              "lost": 0,
+              "grants": 9,
+              "firstT": 4,
+              "lastT": 24.9,
+              "samples": [
+                {
+                  "t": 4,
+                  "amount": 1
+                },
+                {
+                  "t": 7,
+                  "amount": 1
+                },
+                {
+                  "t": 8.5,
+                  "amount": 1
+                },
+                {
+                  "t": 10,
+                  "amount": 1
+                },
+                {
+                  "t": 11.5,
+                  "amount": 1
+                },
+                {
+                  "t": 15.95,
+                  "amount": 1
+                },
+                {
+                  "t": 17.5,
+                  "amount": 1
+                },
+                {
+                  "t": 20.5,
+                  "amount": 1
+                }
+              ],
+              "id": "skull_badge",
+              "itemId": "skull_badge",
+              "name": "Skull Badge",
+              "handler": "skull_badge",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 9
+        }
+      },
+      "cold": {
+        "dummy": {
+          "end": 4,
+          "sources": [
+            {
+              "gained": 4,
+              "lost": 0,
+              "grants": 4,
+              "firstT": 5.5,
+              "lastT": 23.45,
+              "samples": [
+                {
+                  "t": 5.5,
+                  "amount": 1
+                },
+                {
+                  "t": 13.05,
+                  "amount": 1
+                },
+                {
+                  "t": 18.95,
+                  "amount": 1
+                },
+                {
+                  "t": 23.45,
+                  "amount": 1
+                }
+              ],
+              "id": "skull_badge",
+              "itemId": "skull_badge",
+              "name": "Skull Badge",
+              "handler": "skull_badge",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 4
+        }
+      },
+      "blind": {
+        "dummy": {
+          "end": 5,
+          "sources": [
+            {
+              "gained": 5,
+              "lost": 0,
+              "grants": 5,
+              "firstT": 14.5,
+              "lastT": 29.5,
+              "samples": [
+                {
+                  "t": 14.5,
+                  "amount": 1
+                },
+                {
+                  "t": 21.95,
+                  "amount": 1
+                },
+                {
+                  "t": 26.4,
+                  "amount": 1
+                },
+                {
+                  "t": 27.95,
+                  "amount": 1
+                },
+                {
+                  "t": 29.5,
+                  "amount": 1
+                }
+              ],
+              "id": "skull_badge",
+              "itemId": "skull_badge",
+              "name": "Skull Badge",
+              "handler": "skull_badge",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 5
+        }
+      }
+    },
+    "itemBuffs": {
+      "player": [],
+      "dummy": []
+    },
+    "heals": {
+      "player": {
+        "total": 150,
+        "byKind": {
+          "heal": {
+            "total": 101,
+            "grants": 12
+          },
+          "vampirism": {
+            "total": 49,
+            "grants": 5
+          },
+          "maxHp": {
+            "total": 20,
+            "grants": 1
+          }
+        },
+        "sources": [
+          {
+            "gained": 77,
+            "lost": 0,
+            "grants": 10,
+            "firstT": 5.056,
+            "lastT": 27.756,
+            "samples": [
+              {
+                "t": 5.056,
+                "amount": 5
+              },
+              {
+                "t": 7.606,
+                "amount": 13
+              },
+              {
+                "t": 10.156,
+                "amount": 13
+              },
+              {
+                "t": 12.556,
+                "amount": 1
+              },
+              {
+                "t": 15.056,
+                "amount": 1
+              },
+              {
+                "t": 17.556,
+                "amount": 1
+              },
+              {
+                "t": 19.956,
+                "amount": 12
+              },
+              {
+                "t": 22.556,
+                "amount": 11
+              }
+            ],
+            "id": "blood_goobert",
+            "itemId": "blood_goobert",
+            "name": "Blood Goobert",
+            "handler": "blood_goobert",
+            "kind": "heal",
+            "label": "Blood Goobert: +5 HP",
+            "byItem": {}
+          },
+          {
+            "gained": 49,
+            "lost": 0,
+            "grants": 5,
+            "firstT": 11.503,
+            "lastT": 23.403,
+            "samples": [
+              {
+                "t": 11.503,
+                "amount": 12
+              },
+              {
+                "t": 14.353,
+                "amount": 12
+              },
+              {
+                "t": 17.353,
+                "amount": 12
+              },
+              {
+                "t": 20.303,
+                "amount": 2
+              },
+              {
+                "t": 23.403,
+                "amount": 11
+              }
+            ],
+            "id": "Vampirism",
+            "itemId": null,
+            "name": "Vampirism",
+            "handler": null,
+            "systemOrigin": "Vampirism",
+            "kind": "vampirism",
+            "label": "Ghost: heal +12 (spent vampirism)",
+            "byItem": {
+              "ghost": 49
+            }
+          },
+          {
+            "gained": 24,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 5.55,
+            "lastT": 8.65,
+            "samples": [
+              {
+                "t": 5.55,
+                "amount": 12
+              },
+              {
+                "t": 8.65,
+                "amount": 12
+              }
+            ],
+            "id": "unknown",
+            "itemId": null,
+            "name": "unknown",
+            "handler": null,
+            "kind": "heal",
+            "label": "Heal +12",
+            "byItem": {}
+          },
+          {
+            "gained": 20,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 20
+              }
+            ],
+            "id": "blood_amulet",
+            "itemId": "blood_amulet",
+            "name": "Blood Amulet (max HP — not Heal tab)",
+            "handler": "blood_amulet",
+            "kind": "maxHp",
+            "label": "Blood Amulet: +20 max HP",
+            "byItem": {}
+          }
+        ]
+      }
+    },
+    "damage": {
+      "toDummy": {
+        "total": 268,
+        "byKind": {
+          "item": {
+            "total": 130,
+            "grants": 10
+          },
+          "unhealing": {
+            "total": 71,
+            "grants": 17
+          },
+          "fatigue": {
+            "total": 67,
+            "grants": 11
+          }
+        },
+        "sources": [
+          {
+            "gained": 130,
+            "lost": 0,
+            "grants": 10,
+            "firstT": 5.054,
+            "lastT": 27.754,
+            "samples": [
+              {
+                "t": 5.054,
+                "amount": 17
+              },
+              {
+                "t": 7.604,
+                "amount": 16
+              },
+              {
+                "t": 10.154,
+                "amount": 15
+              },
+              {
+                "t": 12.554,
+                "amount": 14
+              },
+              {
+                "t": 15.054,
+                "amount": 13
+              },
+              {
+                "t": 17.554,
+                "amount": 12
+              },
+              {
+                "t": 19.954,
+                "amount": 12
+              },
+              {
+                "t": 22.554,
+                "amount": 11
+              }
+            ],
+            "id": "blood_goobert",
+            "itemId": "blood_goobert",
+            "name": "Blood Goobert",
+            "handler": "blood_goobert",
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 71,
+            "lost": 0,
+            "grants": 17,
+            "firstT": 5.05,
+            "lastT": 27.751,
+            "samples": [
+              {
+                "t": 5.05,
+                "amount": 6
+              },
+              {
+                "t": 5.55,
+                "amount": 4
+              },
+              {
+                "t": 7.6,
+                "amount": 5
+              },
+              {
+                "t": 8.65,
+                "amount": 4
+              },
+              {
+                "t": 10.151,
+                "amount": 5
+              },
+              {
+                "t": 11.501,
+                "amount": 4
+              },
+              {
+                "t": 12.551,
+                "amount": 5
+              },
+              {
+                "t": 14.351,
+                "amount": 4
+              }
+            ],
+            "id": "Unhealing",
+            "itemId": null,
+            "name": "Unhealing",
+            "handler": null,
+            "kind": "unhealing",
+            "crits": 0
+          },
+          {
+            "gained": 67,
+            "lost": 0,
+            "grants": 11,
+            "firstT": 19.5,
+            "lastT": 29.5,
+            "samples": [
+              {
+                "t": 19.5,
+                "amount": 1
+              },
+              {
+                "t": 20.5,
+                "amount": 2
+              },
+              {
+                "t": 21.5,
+                "amount": 3
+              },
+              {
+                "t": 22.5,
+                "amount": 4
+              },
+              {
+                "t": 23.5,
+                "amount": 5
+              },
+              {
+                "t": 24.5,
+                "amount": 6
+              },
+              {
+                "t": 25.5,
+                "amount": 7
+              },
+              {
+                "t": 26.5,
+                "amount": 8
+              }
+            ],
+            "id": "Fatigue",
+            "itemId": null,
+            "name": "Fatigue",
+            "handler": null,
+            "kind": "fatigue",
+            "crits": 0
+          }
+        ]
+      },
+      "toPlayer": {
+        "total": 176,
+        "byKind": {
+          "dummy": {
+            "total": 109,
+            "grants": 9
+          },
+          "fatigue": {
+            "total": 67,
+            "grants": 11
+          }
+        },
+        "sources": [
+          {
+            "gained": 109,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 4.652,
+            "lastT": 24.002,
+            "samples": [
+              {
+                "t": 4.652,
+                "amount": 5
+              },
+              {
+                "t": 6.802,
+                "amount": 13
+              },
+              {
+                "t": 8.952,
+                "amount": 13
+              },
+              {
+                "t": 11.102,
+                "amount": 13
+              },
+              {
+                "t": 13.252,
+                "amount": 13
+              },
+              {
+                "t": 15.402,
+                "amount": 13
+              },
+              {
+                "t": 17.552,
+                "amount": 13
+              },
+              {
+                "t": 21.852,
+                "amount": 13
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null,
+            "kind": "dummy",
+            "crits": 0
+          },
+          {
+            "gained": 67,
+            "lost": 0,
+            "grants": 11,
+            "firstT": 19.5,
+            "lastT": 29.5,
+            "samples": [
+              {
+                "t": 19.5,
+                "amount": 1
+              },
+              {
+                "t": 20.5,
+                "amount": 2
+              },
+              {
+                "t": 21.5,
+                "amount": 3
+              },
+              {
+                "t": 22.5,
+                "amount": 4
+              },
+              {
+                "t": 23.5,
+                "amount": 5
+              },
+              {
+                "t": 24.5,
+                "amount": 6
+              },
+              {
+                "t": 25.5,
+                "amount": 7
+              },
+              {
+                "t": 26.5,
+                "amount": 8
+              }
+            ],
+            "id": "Fatigue",
+            "itemId": null,
+            "name": "Fatigue",
+            "handler": null,
+            "kind": "fatigue",
+            "crits": 0
+          }
+        ]
+      }
+    },
+    "misses": {
+      "player": 0,
+      "dummy": 3
+    },
+    "activations": {
+      "player": {
+        "total": 48,
+        "sources": [
+          {
+            "gained": 18,
+            "lost": 0,
+            "grants": 18,
+            "firstT": 4,
+            "lastT": 29.5,
+            "samples": [
+              {
+                "t": 4,
+                "amount": 1
+              },
+              {
+                "t": 5.5,
+                "amount": 1
+              },
+              {
+                "t": 7,
+                "amount": 1
+              },
+              {
+                "t": 8.5,
+                "amount": 1
+              },
+              {
+                "t": 10,
+                "amount": 1
+              },
+              {
+                "t": 11.5,
+                "amount": 1
+              },
+              {
+                "t": 13.05,
+                "amount": 1
+              },
+              {
+                "t": 14.5,
+                "amount": 1
+              }
+            ],
+            "id": "skull_badge",
+            "itemId": "skull_badge",
+            "name": "Skull Badge",
+            "handler": "skull_badge"
+          },
+          {
+            "gained": 11,
+            "lost": 0,
+            "grants": 11,
+            "firstT": 2.5,
+            "lastT": 27.75,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 5.05,
+                "amount": 1
+              },
+              {
+                "t": 7.6,
+                "amount": 1
+              },
+              {
+                "t": 10.15,
+                "amount": 1
+              },
+              {
+                "t": 12.55,
+                "amount": 1
+              },
+              {
+                "t": 15.05,
+                "amount": 1
+              },
+              {
+                "t": 17.55,
+                "amount": 1
+              },
+              {
+                "t": 19.95,
+                "amount": 1
+              }
+            ],
+            "id": "blood_goobert",
+            "itemId": "blood_goobert",
+            "name": "Blood Goobert",
+            "handler": "blood_goobert"
+          },
+          {
+            "gained": 9,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 5.55,
+            "lastT": 29.45,
+            "samples": [
+              {
+                "t": 5.55,
+                "amount": 1
+              },
+              {
+                "t": 8.65,
+                "amount": 1
+              },
+              {
+                "t": 11.5,
+                "amount": 1
+              },
+              {
+                "t": 14.35,
+                "amount": 1
+              },
+              {
+                "t": 17.35,
+                "amount": 1
+              },
+              {
+                "t": 20.3,
+                "amount": 1
+              },
+              {
+                "t": 23.4,
+                "amount": 1
+              },
+              {
+                "t": 26.5,
+                "amount": 1
+              }
+            ],
+            "id": "ghost",
+            "itemId": "ghost",
+            "name": "Ghost",
+            "handler": "ghost"
+          },
+          {
+            "gained": 9,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 5.5,
+            "lastT": 28.15,
+            "samples": [
+              {
+                "t": 5.5,
+                "amount": 1
+              },
+              {
+                "t": 8.25,
+                "amount": 1
+              },
+              {
+                "t": 11.15,
+                "amount": 1
+              },
+              {
+                "t": 14.1,
+                "amount": 1
+              },
+              {
+                "t": 16.8,
+                "amount": 1
+              },
+              {
+                "t": 19.8,
+                "amount": 1
+              },
+              {
+                "t": 22.5,
+                "amount": 1
+              },
+              {
+                "t": 25.4,
+                "amount": 1
+              }
+            ],
+            "id": "heart_of_darkness",
+            "itemId": "heart_of_darkness",
+            "name": "Heart of Darkness",
+            "handler": "heart_of_darkness"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "blood_amulet",
+            "itemId": "blood_amulet",
+            "name": "Blood Amulet",
+            "handler": "blood_amulet"
+          }
+        ]
+      },
+      "dummy": {
+        "total": 12,
+        "sources": [
+          {
+            "gained": 12,
+            "lost": 0,
+            "grants": 12,
+            "firstT": 4.65,
+            "lastT": 28.3,
+            "samples": [
+              {
+                "t": 4.65,
+                "amount": 1
+              },
+              {
+                "t": 6.8,
+                "amount": 1
+              },
+              {
+                "t": 8.95,
+                "amount": 1
+              },
+              {
+                "t": 11.1,
+                "amount": 1
+              },
+              {
+                "t": 13.25,
+                "amount": 1
+              },
+              {
+                "t": 15.4,
+                "amount": 1
+              },
+              {
+                "t": 17.55,
+                "amount": 1
+              },
+              {
+                "t": 19.7,
+                "amount": 1
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null
+          }
+        ]
+      }
+    },
+    "end": {
+      "player": {
+        "hp": 170,
+        "maxHp": 220,
+        "stacks": {},
+        "healAmp": 0,
+        "unhealing": 0.3
+      },
+      "dummy": {
+        "hp": 858,
+        "maxHp": 1200,
+        "stacks": {
+          "blind": 5,
+          "poison": 9,
+          "cold": 4
+        }
+      }
+    }
+  },
+  "ui": {
+    "combatLog": {
+      "lineCount": 175,
+      "byType": {
+        "activate": 60,
+        "buff": 3,
+        "heal": 18,
+        "debuff": 31,
+        "damage": 58,
+        "info": 1,
+        "miss": 3,
+        "fight_end": 1
+      },
+      "stackGained": {
+        "vampirism": 7,
+        "block": 8,
+        "poison": 83,
+        "cold": 4,
+        "blind": 5
+      },
+      "sample": [
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "blood_amulet",
+          "amount": null,
+          "label": "Accessory: Blood Amulet"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "blood_goobert",
+          "amount": null,
+          "label": "Pet: Blood Goobert"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "vampirism",
+          "itemId": "blood_amulet",
+          "amount": 2,
+          "label": "+2 vampirism"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "vampirism",
+          "itemId": "blood_goobert",
+          "amount": 5,
+          "label": "+5 vampirism"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "holdall",
+          "amount": 8,
+          "label": "Holdall: +8 Block (1 inside)"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": "blood_amulet",
+          "amount": 20,
+          "label": "Blood Amulet: +20 max HP"
+        },
+        {
+          "t": 4,
+          "type": "activate",
+          "stack": null,
+          "itemId": "skull_badge",
+          "amount": null,
+          "label": "Badge: Skull Badge"
+        },
+        {
+          "t": 4,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "skull_badge",
+          "amount": 1,
+          "label": "+1 poison"
+        },
+        {
+          "t": 4.5,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": null,
+          "amount": 1,
+          "label": "Poison: 1 damage"
+        },
+        {
+          "t": 4.65,
+          "type": "activate",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Training Dummy: swing"
+        },
+        {
+          "t": 4.652,
+          "type": "damage",
+          "stack": "block",
+          "itemId": null,
+          "amount": 5,
+          "label": "Training Dummy: hit 13 (DR/block) → 5"
+        },
+        {
+          "t": 5.05,
+          "type": "activate",
+          "stack": null,
+          "itemId": "blood_goobert",
+          "amount": null,
+          "label": "Pet: Blood Goobert"
+        },
+        {
+          "t": 5.05,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 6,
+          "label": "Unhealing 6"
+        },
+        {
+          "t": 5.054,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 17,
+          "label": "Blood Goobert: 17 lifesteal"
+        },
+        {
+          "t": 5.056,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 5,
+          "label": "Blood Goobert: +5 HP"
+        },
+        {
+          "t": 5.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "skull_badge",
+          "amount": null,
+          "label": "Badge: Skull Badge"
+        },
+        {
+          "t": 5.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "heart_of_darkness",
+          "amount": null,
+          "label": "Accessory: Heart of Darkness"
+        },
+        {
+          "t": 5.5,
+          "type": "debuff",
+          "stack": "cold",
+          "itemId": "skull_badge",
+          "amount": 1,
+          "label": "+1 cold"
+        },
+        {
+          "t": 5.55,
+          "type": "activate",
+          "stack": null,
+          "itemId": "ghost",
+          "amount": null,
+          "label": "Accessory: Ghost"
+        },
+        {
+          "t": 5.55,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 12,
+          "label": "Heal +12"
+        },
+        {
+          "t": 5.55,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 4,
+          "label": "Unhealing 4"
+        },
+        {
+          "t": 6.5,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": null,
+          "amount": 1,
+          "label": "Poison: 1 damage"
+        },
+        {
+          "t": 6.8,
+          "type": "activate",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Training Dummy: swing"
+        },
+        {
+          "t": 6.802,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
+        },
+        {
+          "t": 7,
+          "type": "activate",
+          "stack": null,
+          "itemId": "skull_badge",
+          "amount": null,
+          "label": "Badge: Skull Badge"
+        },
+        {
+          "t": 7,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "skull_badge",
+          "amount": 1,
+          "label": "+1 poison"
+        },
+        {
+          "t": 7.6,
+          "type": "activate",
+          "stack": null,
+          "itemId": "blood_goobert",
+          "amount": null,
+          "label": "Pet: Blood Goobert"
+        },
+        {
+          "t": 7.6,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 5,
+          "label": "Unhealing 5"
+        },
+        {
+          "t": 7.604,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 16,
+          "label": "Blood Goobert: 16 lifesteal"
+        },
+        {
+          "t": 7.606,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 13,
+          "label": "Blood Goobert: +13 HP"
+        },
+        {
+          "t": 8.25,
+          "type": "activate",
+          "stack": null,
+          "itemId": "heart_of_darkness",
+          "amount": null,
+          "label": "Accessory: Heart of Darkness"
+        },
+        {
+          "t": 8.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "skull_badge",
+          "amount": null,
+          "label": "Badge: Skull Badge"
+        },
+        {
+          "t": 8.5,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "skull_badge",
+          "amount": 1,
+          "label": "+1 poison"
+        },
+        {
+          "t": 8.5,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": null,
+          "amount": 3,
+          "label": "Poison: 3 damage"
+        },
+        {
+          "t": 8.65,
+          "type": "activate",
+          "stack": null,
+          "itemId": "ghost",
+          "amount": null,
+          "label": "Accessory: Ghost"
+        },
+        {
+          "t": 8.65,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 12,
+          "label": "Heal +12"
+        },
+        {
+          "t": 8.65,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 4,
+          "label": "Unhealing 4"
+        },
+        {
+          "t": 8.95,
+          "type": "activate",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Training Dummy: swing"
+        },
+        {
+          "t": 8.952,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
+        },
+        {
+          "t": 10,
+          "type": "activate",
+          "stack": null,
+          "itemId": "skull_badge",
+          "amount": null,
+          "label": "Badge: Skull Badge"
+        }
+      ]
+    },
+    "damageMeter": {
+      "stackTabs": {
+        "block": {
+          "gained": 8,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "holdall",
+              "name": "Holdall",
+              "amount": 8
+            }
+          ]
+        },
+        "lucky": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "regeneration": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "vampirism": {
+          "gained": 7,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "blood_amulet",
+              "name": "+2 vampirism",
+              "amount": 2
+            },
+            {
+              "itemId": "blood_goobert",
+              "name": "+5 vampirism",
+              "amount": 5
+            }
+          ]
+        },
+        "spikes": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "mana": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "empower": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "heat": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "poison": {
+          "gained": 83,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "skull_badge",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 1
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 3
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 4
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 5
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 5
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 6
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 7
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 8
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 8
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 8
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 9
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 9
+            }
+          ]
+        },
+        "blind": {
+          "gained": 5,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "skull_badge",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 blind",
+              "amount": 1
+            }
+          ]
+        },
+        "cold": {
+          "gained": 4,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "skull_badge",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "skull_badge",
+              "name": "+1 cold",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    "hud": {
+      "player": {
+        "icons": [
+          {
+            "key": "unhealing",
+            "value": 30
+          }
+        ],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 0,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 30,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "dummy": {
+        "icons": [],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 0,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "expected": []
+    },
+    "mismatches": []
+  }
+}

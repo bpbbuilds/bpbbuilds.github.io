@@ -1,0 +1,117 @@
+{
+  "builtAt": "2026-08-25T22:00:26.239Z",
+  "dumps": [
+    {
+      "wave": 244,
+      "theme": "cd_lucky",
+      "id": "leaf_badge",
+      "handlerId": "leaf_badge",
+      "dummyEndHp": 1200,
+      "playerEndHp": 161,
+      "eventCount": 23,
+      "eventHandlers": [
+        "leaf_badge"
+      ],
+      "mismatchCount": 0,
+      "paramCheckCount": 0
+    },
+    {
+      "wave": 245,
+      "theme": "cd_mana_regen",
+      "id": "heart_container",
+      "handlerId": "heart_container",
+      "dummyEndHp": 1200,
+      "playerEndHp": 153,
+      "eventCount": 26,
+      "eventHandlers": [
+        "heart_container"
+      ],
+      "mismatchCount": 0,
+      "paramCheckCount": 0
+    },
+    {
+      "wave": 246,
+      "theme": "cd_heat_cold_poison",
+      "id": "chili_pepper",
+      "handlerId": "chili_pepper",
+      "dummyEndHp": 1200,
+      "playerEndHp": 171,
+      "eventCount": 19,
+      "eventHandlers": [
+        "chili_pepper"
+      ],
+      "mismatchCount": 0,
+      "paramCheckCount": 0
+    },
+    {
+      "wave": 247,
+      "theme": "basic_cd_uniques",
+      "id": "pumpkin",
+      "handlerId": "pumpkin",
+      "dummyEndHp": 1188,
+      "playerEndHp": 148,
+      "eventCount": 14,
+      "eventHandlers": [
+        "pumpkin"
+      ],
+      "mismatchCount": 0,
+      "paramCheckCount": 0
+    },
+    {
+      "wave": 248,
+      "theme": "start_stacks",
+      "id": "lucky_clover",
+      "handlerId": "lucky_clover",
+      "dummyEndHp": 1200,
+      "playerEndHp": 148,
+      "eventCount": 13,
+      "eventHandlers": [
+        "lucky_clover"
+      ],
+      "mismatchCount": 0,
+      "paramCheckCount": 0
+    },
+    {
+      "wave": 249,
+      "theme": "onhit_perm",
+      "id": "torch",
+      "handlerId": "torch",
+      "dummyEndHp": 1185,
+      "playerEndHp": 161,
+      "eventCount": 35,
+      "eventHandlers": [
+        "torch"
+      ],
+      "mismatchCount": 0,
+      "paramCheckCount": 0
+    },
+    {
+      "wave": 250,
+      "theme": "aura_food_link",
+      "id": "hero_sword",
+      "handlerId": "hero_sword",
+      "dummyEndHp": 1182,
+      "playerEndHp": 161,
+      "eventCount": 36,
+      "eventHandlers": [
+        "hero_sword"
+      ],
+      "mismatchCount": 0,
+      "paramCheckCount": 0
+    },
+    {
+      "wave": 252,
+      "theme": "weapon_cd_port",
+      "id": "wooden_sword",
+      "handlerId": "wooden_sword",
+      "dummyEndHp": 1187,
+      "playerEndHp": 161,
+      "eventCount": 35,
+      "eventHandlers": [
+        "wooden_sword"
+      ],
+      "mismatchCount": 0,
+      "paramCheckCount": 0
+    }
+  ]
+}

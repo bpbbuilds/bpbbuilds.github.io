@@ -1,0 +1,43 @@
+# sharedassets1.assets (28)
+2x Common Items	512x512
+Attack_Item	512x512
+Cast_Item	512x512
+Common Attack Item	512x512
+Common Attack Speed Item	512x512
+Common Crit Item	512x512
+Common Defense Item	512x512
+Common HP Item	512x512
+Common Magic Item	512x512
+Common Mana Regen Item	512x512
+Get 2 Rare Items	512x512
+Hit_Item	512x512
+Item_Item	512x512
+Items	8192x8192
+Random Relic	512x512
+Rare Attack Speed Item	512x512
+Rare Crit Item	512x512
+Rare_Attack Item	512x512
+Rare_Defense Item	512x512
+Rare_HP Item	512x512
+Rare_Magic Item	512x512
+Rare_Mana Regen Item	512x512
+Relics	8192x8192
+Relics-01	1024x2048
+Reroll_Item	512x512
+Shard_Item	512x512
+Specific Relic	512x512
+Survive_Item	512x512
+
+# sharedassets3.assets (6)
+IconAtlas	512x512
+IconAtlas_TMP	512x512
+Relic	512x512
+Relic_101	512x512
+Relic_140	512x512
+UI_ItemFrame	256x256
+
+# resources.assets (1)
+StatsIconAtlas	2048x2048
+
+# sharedassets2.assets (1)
+ItemRelicFrames	1024x2048

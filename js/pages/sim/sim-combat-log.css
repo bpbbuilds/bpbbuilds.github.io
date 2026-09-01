@@ -1,0 +1,810 @@
+/* Band Q — Combat Log + Damage Dealt (game-matched chrome) */
+
+/* Dock: only the Open Log book until the report is opened */
+.sim-results--dock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.15rem;
+}
+
+.sim-results__open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inside the floating logbook: meters + log side by side */
+.sim-results--logbook {
+  display: grid;
+  grid-template-columns: minmax(11rem, 0.9fr) minmax(16rem, 1.3fr) minmax(11rem, 0.9fr);
+  gap: 0.65rem;
+  margin: 0;
+  align-items: stretch;
+  min-height: 0;
+  flex: 1;
+}
+
+@media (max-width: 1100px) {
+  .sim-results--logbook {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sim-results--logbook .sim-results__log {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .sim-results--logbook {
+    grid-template-columns: 1fr;
+    overflow: auto;
+    max-height: min(78vh, 40rem);
+  }
+  .sim-results--logbook .sim-results__log {
+    grid-column: auto;
+    order: 0;
+  }
+}
+
+/* —— Open Log book (game CombatLogButton) —— */
+.sim-logbook-btn {
+  position: relative;
+  display: block;
+  width: 7.5rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  filter: drop-shadow(0 4px 10px rgba(40, 30, 20, 0.35));
+  transition: transform 0.12s ease;
+}
+
+.sim-logbook-btn:hover,
+.sim-logbook-btn:focus-visible {
+  transform: translateY(-2px) scale(1.03);
+  outline: none;
+}
+
+.sim-logbook-btn.is-open {
+  opacity: 0.72;
+}
+
+.sim-logbook-btn__art {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sim-logbook-btn__label {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  width: 4.4rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.15;
+  text-align: center;
+  color: #3c261d;
+  text-shadow:
+    0 1px 0 rgba(255, 236, 220, 0.35),
+    0 0 2px rgba(255, 236, 220, 0.5);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* —— Floating / draggable combat report —— */
+/* Above #site-nav (100) + screen frame (9990); below tooltips (~10020). */
+.sim-logbook {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.sim-logbook[hidden] {
+  display: none !important;
+}
+
+.sim-logbook__frame {
+  position: fixed;
+  left: 50%;
+  top: 12%;
+  transform: translateX(-50%);
+  width: min(72rem, calc(100vw - 1.25rem));
+  max-height: min(82vh, 44rem);
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  z-index: 1;
+  padding: 0.45rem 0.55rem 0.55rem;
+  background:
+    linear-gradient(180deg, rgba(72, 42, 32, 0.94), rgba(40, 24, 18, 0.97));
+  border: 3px solid #3c261d;
+  border-radius: 0.25rem;
+  box-shadow:
+    inset 0 0 0 1px rgba(234, 201, 20, 0.14),
+    0 18px 48px rgba(20, 14, 10, 0.5);
+}
+
+.sim-logbook__frame.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.sim-logbook__chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 2.2rem 0.45rem 0.35rem;
+  margin: 0 0 0.45rem;
+  border-bottom: 1px solid rgba(255, 236, 220, 0.14);
+  color: #ffecdc;
+  font-family: var(--bpb-font-display);
+  touch-action: none;
+}
+
+.sim-logbook__chrome-title {
+  font-size: 1.05rem;
+}
+
+.sim-logbook__chrome-hint {
+  margin-left: auto;
+  font-family: var(--bpb-font-body);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+.sim-logbook__close {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.45rem;
+  z-index: 2;
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 2px solid #3c261d;
+  border-radius: 0.2rem;
+  background: #ffecdc;
+  color: #3c261d;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  font-family: var(--bpb-font-body);
+}
+
+.sim-logbook__close:hover,
+.sim-logbook__close:focus-visible {
+  background: #eac914;
+  outline: none;
+}
+
+.sim-logbook__body {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sim-logbook__body .sim-clog,
+.sim-logbook__body .sim-dmg {
+  min-height: 16rem;
+  max-height: min(68vh, 36rem);
+  height: 100%;
+}
+
+.sim-logbook__body .sim-clog__list,
+.sim-logbook__body .sim-dmg__list {
+  max-height: none;
+}
+
+.sim-logbook__drag {
+  cursor: grab;
+}
+
+.sim-logbook__frame.is-dragging .sim-logbook__drag {
+  cursor: grabbing;
+}
+
+.sim-clog__drag-hint {
+  margin-left: auto;
+  font-size: 0.7rem;
+  opacity: 0.55;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.sim-dmg,
+.sim-clog {
+  --clog-ink: #ffecdc;
+  --clog-ink-dark: #3c261d;
+  --clog-you: #e8d4bc;
+  --clog-opp: #5a2a28;
+  --clog-frame: #3c261d;
+  --clog-gold: #eac914;
+  background:
+    linear-gradient(180deg, rgba(72, 42, 32, 0.92), rgba(48, 28, 22, 0.96)),
+    var(--bpb-parchment, #2a1a14);
+  border: 3px solid var(--clog-frame);
+  border-radius: 0.2rem;
+  box-shadow:
+    inset 0 0 0 1px rgba(234, 201, 20, 0.12),
+    0 4px 14px rgba(0, 0, 0, 0.35);
+  color: var(--clog-ink);
+  font-family: var(--bpb-font-body);
+  min-height: 16rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sim-dmg__head,
+.sim-clog__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  padding: 0.45rem 0.65rem;
+  border-bottom: 1px solid rgba(255, 236, 220, 0.12);
+}
+
+.sim-clog__title {
+  font-family: var(--bpb-font-display);
+  font-size: 1.15rem;
+  color: var(--clog-ink);
+  margin: 0;
+}
+
+.sim-dmg__metric-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.sim-dmg__side {
+  font-family: var(--bpb-font-body);
+  font-size: 0.72rem;
+  color: var(--clog-ink);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.sim-dmg__metric-btn {
+  appearance: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.5rem;
+  border: 2px solid #2a1810;
+  border-radius: 0.15rem;
+  background: linear-gradient(180deg, #6b4534, #4a2e22);
+  color: #e8c46a;
+  font-family: var(--bpb-font-display);
+  font-size: 1.05rem;
+  text-shadow: 0 1px 0 #1a0e08, 0 -1px 0 #1a0e08, 1px 0 0 #1a0e08, -1px 0 0 #1a0e08;
+  cursor: pointer;
+}
+
+.sim-dmg__metric-btn.is-open {
+  border-color: #eac914;
+}
+
+.sim-dmg__metric-label {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sim-dmg__chev,
+.sim-dmg__metric-caret {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  color: #ffecdc;
+  text-shadow: none;
+}
+
+.sim-dmg__metric-caret {
+  transform: rotate(0deg);
+  font-weight: 700;
+}
+
+.sim-dmg__collapse {
+  appearance: none;
+  border: none;
+  background: none;
+  color: rgba(255, 236, 220, 0.75);
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 0.2rem 0.35rem;
+}
+
+.sim-dmg__menu {
+  position: absolute;
+  z-index: 40;
+  left: 0;
+  right: 0;
+  top: calc(100% + 2px);
+  margin: 0;
+  padding: 0.15rem 0;
+  list-style: none;
+  max-height: 16rem;
+  overflow: auto;
+  background: #e8d4bc;
+  border: 2px solid #3c261d;
+  border-radius: 0.1rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  scrollbar-color: #eac914 #816230;
+}
+
+.sim-dmg__menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.55rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #3c261d;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(60, 38, 29, 0.18);
+}
+
+.sim-dmg__menu-item:last-child {
+  border-bottom: none;
+}
+
+.sim-dmg__menu-item:hover,
+.sim-dmg__menu-item.is-selected {
+  background: #f0e0a8;
+}
+
+.sim-dmg__micon {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+}
+
+.sim-dmg__body {
+  padding: 0.45rem 0.55rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.sim-dmg__section {
+  list-style: none;
+  margin: 0.35rem 0 0.1rem;
+  padding: 0.05rem 0.2rem 0;
+  font-family: var(--bpb-font-body);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--il-cream, #ffecdc);
+  opacity: 0.88;
+  cursor: default;
+  pointer-events: none;
+}
+
+.sim-dmg__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  max-height: 14rem;
+  overflow: auto;
+  scrollbar-color: #eac914 #472a24;
+}
+
+.sim-dmg__list::-webkit-scrollbar {
+  width: 10px;
+}
+.sim-dmg__list::-webkit-scrollbar-track {
+  background: #472a24;
+}
+.sim-dmg__list::-webkit-scrollbar-thumb {
+  background: #eac914;
+  border-radius: 2px;
+}
+
+.sim-dmg__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(4rem, 2.2fr) auto;
+  gap: 0.35rem;
+  align-items: center;
+  padding: 0.15rem 0.2rem;
+  border-radius: 0.15rem;
+  cursor: pointer;
+}
+
+.sim-dmg__row:hover,
+.sim-dmg__row.is-active {
+  background: rgba(234, 201, 20, 0.12);
+}
+
+.sim-dmg__row--total {
+  cursor: default;
+  margin-top: 0.2rem;
+  padding-top: 0.28rem;
+  border-top: 1px solid rgba(234, 201, 20, 0.35);
+  font-weight: 700;
+}
+
+.sim-dmg__row--total:hover,
+.sim-dmg__row--total.is-active {
+  background: transparent;
+}
+
+.sim-dmg__bar--total .sim-dmg__fill {
+  background: linear-gradient(90deg, #8a6a22, #eac914);
+}
+
+.sim-dmg__name {
+  font-size: 0.82rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sim-dmg__bar {
+  position: relative;
+  height: 0.85rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 236, 220, 0.2);
+  border-radius: 0.1rem;
+  overflow: hidden;
+}
+
+.sim-dmg__fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #c45a7a, #e8789a);
+}
+
+.sim-dmg__pct {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff8f0;
+  text-shadow: 0 1px 1px #3c261d;
+}
+
+.sim-dmg__total {
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.sim-dmg__rate {
+  opacity: 0.75;
+  font-size: 0.7rem;
+}
+
+.sim-dmg__empty {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  padding: 0.35rem;
+}
+
+.sim-dmg__plot-wrap {
+  position: relative;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 236, 220, 0.15);
+  border-radius: 0.15rem;
+  height: 9rem;
+}
+
+.sim-dmg__plot {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+}
+
+.sim-dmg__line {
+  stroke: #e07070;
+  stroke-width: 2;
+}
+
+.sim-dmg__dot {
+  fill: #c04040;
+  stroke: #ffecdc;
+  stroke-width: 0.8;
+  cursor: pointer;
+}
+
+.sim-dmg__vbar {
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.5;
+}
+
+.sim-dmg__ylab {
+  fill: rgba(255, 236, 220, 0.65);
+  font-size: 10px;
+  font-family: var(--bpb-font-body);
+}
+
+.sim-dmg__cursor {
+  position: absolute;
+  top: 0;
+  bottom: 1.1rem;
+  width: 0;
+  border-left: 1.5px solid rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+  left: 28px;
+}
+
+.sim-dmg__sync {
+  position: absolute;
+  right: -0.15rem;
+  color: #eac914;
+  font-size: 1.1rem;
+  text-shadow: 0 0 2px #3c261d;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.sim-dmg__axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  opacity: 0.75;
+  padding: 0 0.15rem;
+}
+
+/* —— Combat Log —— */
+
+.sim-clog__title {
+  margin-right: auto;
+}
+
+.sim-clog__sides {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.sim-clog__side {
+  appearance: none;
+  border: 1px solid rgba(255, 236, 220, 0.35);
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.8rem;
+  cursor: pointer;
+  opacity: 0.45;
+}
+
+.sim-clog__side--you {
+  background: #cfc0ae;
+  color: #3c261d;
+}
+
+.sim-clog__side--opp {
+  background: #6b2e2c;
+  color: #ffecdc;
+}
+
+.sim-clog__side.is-on {
+  opacity: 1;
+  box-shadow: 0 0 0 1px rgba(234, 201, 20, 0.45);
+}
+
+.sim-clog__act {
+  appearance: none;
+  border: none;
+  background: none;
+  color: rgba(255, 236, 220, 0.75);
+  font-family: var(--bpb-font-body);
+  font-size: 0.72rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0.15rem;
+}
+
+.sim-clog__act:hover {
+  color: #eac914;
+}
+
+.sim-clog__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.55rem;
+  border-bottom: 1px solid rgba(255, 236, 220, 0.1);
+}
+
+.sim-clog__search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 236, 220, 0.2);
+  border-radius: 0.2rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.sim-clog__search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--clog-ink);
+  font-family: var(--bpb-font-body);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.sim-clog__search input::placeholder {
+  color: rgba(255, 236, 220, 0.45);
+}
+
+.sim-clog__search-icon {
+  opacity: 0.6;
+}
+
+.sim-clog__replay {
+  display: inline-flex;
+  gap: 0.15rem;
+}
+
+.sim-clog__rbtn {
+  appearance: none;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 1px solid rgba(255, 236, 220, 0.35);
+  border-radius: 0.2rem;
+  background: rgba(255, 236, 220, 0.1);
+  color: var(--clog-ink);
+  cursor: pointer;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.sim-clog__rbtn:hover {
+  background: rgba(234, 201, 20, 0.2);
+}
+
+.sim-clog__list {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0;
+  flex: 1;
+  min-height: 12rem;
+  max-height: 22rem;
+  overflow: auto;
+  scrollbar-color: #eac914 #472a24;
+}
+
+.sim-clog__list::-webkit-scrollbar {
+  width: 10px;
+}
+.sim-clog__list::-webkit-scrollbar-track {
+  background: #472a24;
+  background-image: url('../../../assets/icons/scrollbar/track.png');
+  background-size: 100% 100%;
+}
+.sim-clog__list::-webkit-scrollbar-thumb {
+  background: #eac914;
+  background-image: url('../../../assets/icons/scrollbar/thumb.png');
+  background-size: 100% 100%;
+  border-radius: 1px;
+}
+
+.sim-clog__line {
+  padding: 0.28rem 0.65rem;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: var(--clog-ink-dark);
+  background: var(--clog-you);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.12s ease;
+}
+
+.sim-clog__line--opp {
+  background: var(--clog-opp);
+  color: var(--clog-ink);
+}
+
+.sim-clog__line--sub {
+  padding-top: 0.08rem;
+  padding-bottom: 0.08rem;
+  padding-left: 1.15rem;
+  font-size: 0.84rem;
+  opacity: 0.88;
+}
+
+.sim-clog__line--sub2 {
+  padding-left: 2.1rem;
+}
+
+.sim-clog__line[data-depth="3"] {
+  padding-left: 2.9rem;
+}
+
+.sim-clog__line--sub.is-past,
+.sim-clog__line--sub.is-active {
+  opacity: 1;
+}
+
+.sim-clog__line--activation {
+  opacity: 0.4;
+}
+
+.sim-clog__line.is-past {
+  opacity: 0.92;
+}
+
+.sim-clog__line.is-active {
+  opacity: 1;
+  outline: 1px solid #eac914;
+  outline-offset: -1px;
+  filter: brightness(1.08);
+}
+
+.sim-clog__line.is-hover:not(.is-minimized) {
+  filter: brightness(1.06);
+}
+
+.sim-clog__line.is-minimized {
+  height: 5px;
+  padding: 0;
+  overflow: hidden;
+  opacity: 0.35;
+  cursor: default;
+}
+
+.sim-clog__line.is-minimized .sim-clog__msg {
+  visibility: hidden;
+}
+
+.sim-clog__msg {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.sim-clog__icon {
+  display: inline-block;
+  width: 1.05rem;
+  height: 1.05rem;
+  vertical-align: -0.2rem;
+  margin: 0 0.08rem;
+}
+
+.sim-clog__icon--stat {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.sim-clog__crit {
+  color: #ff6b6b;
+  font-weight: 700;
+}
+
+.sim-clog__line--opp .sim-clog__crit {
+  color: #ffb0c8;
+}
+
+/* Board highlight from log/meter */
+.sim-bag .bpb-bg__item.sim-log-hi {
+  outline: 2px solid #eac914;
+  outline-offset: 1px;
+  filter: brightness(1.12);
+}

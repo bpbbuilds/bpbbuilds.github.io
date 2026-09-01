@@ -1,0 +1,40 @@
+---
+description: Keep About / Terms / Privacy (+ footer disclaimer) in sync when product behavior changes
+alwaysApply: true
+---
+
+# Legal pages stay current
+
+Fan-site stubs live at:
+
+| Page | Path |
+|---|---|
+| About + non-affiliation | `legal/about/index.html` |
+| Terms of Service | `legal/terms/index.html` |
+| Privacy (+ history.db) | `legal/privacy/index.html` |
+| Footer disclaimer / links | `js/shared/footer.js` (+ styles in `css/shared.css`) |
+
+These are **stubs, not lawyer-reviewed**. Still update them when the site’s real behavior changes so they don’t lie.
+
+## When you must update (if the change ships)
+
+Update the matching page(s) in the **same task** (or call it out if the user deferred legal copy):
+
+| Change | Touch |
+|---|---|
+| Auth / accounts / email / Steam–Discord login | Privacy (+ Terms conduct / accounts) |
+| Ads, analytics, affiliates, paid membership, Stripe | Privacy + Terms; leave Monetization/IP research honest |
+| Votes bound to profiles, captcha, rate limits | Privacy (votes) |
+| history.db: new fields stored, retention, delete UX, upload prompts | Privacy history section; Terms history blurb if needed |
+| UGC rules, OP approval, moderation, soft-hide, bans | Terms |
+| Public claims of affiliation, official status, or publisher partnership | About + footer disclaimer |
+| New public contact channel for privacy/deletion requests | Privacy + Terms contact |
+| Footer link set or disclaimer wording | `js/shared/footer.js` (full + slim variants) |
+
+## Habits
+
+- Prefer small, accurate stub edits over long new essays
+- Keep the “not legal advice / may change” note
+- Do **not** invent a specific publisher legal entity name — “developers and publishers of Backpack Battles” is enough
+- Do **not** mark Monetization + IP risk “done” just because stubs exist — that stays a separate research todo
+- Create/admin stay footer-less unless the user asks otherwise

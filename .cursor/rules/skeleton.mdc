@@ -1,0 +1,43 @@
+---
+description: Loading skeletons — shared parchment shimmer pattern for async UI
+alwaysApply: true
+---
+
+# BPB Website — skeletons
+
+## When to use
+
+- Any section that waits on Supabase (or other async) before showing real content
+- Prefer skeletons over a lone “Loading…” line when the final layout is known
+- Errors / empty states stay plain status text — do not leave a skeleton up after failure
+- **Nav:** `#site-nav` may ship with skeleton markup in HTML; `initNav()` keeps it until shelf/logo images load, then swaps in the real header (`navSkeletonHtml()` in `js/shared/nav.js`)
+
+## Shared primitives
+
+- JS: `js/shared/skeleton.js` — `skelBar()`, `skelBlock()`, `skelRegion()`
+- CSS: `js/shared/skeleton.css` (imported from `css/shared.css`)
+- Classes: `.bpb-skel`, `.bpb-skel--bar`, `.bpb-skel--block`, `.bpb-skel-region`
+
+Compose **page-specific** skeleton markup that mirrors the real section layout; do not invent a second generic “card skeleton” system unless several pages share the same shape.
+
+## Habits
+
+- Paint the skeleton **immediately** on init (before `await`)
+- Match real sizing (aspect-ratio, track padding, grid) so content does not jump
+- Parchment-tinted shimmer only — no gray SaaS bone UI, no purple pulse
+- Honor `prefers-reduced-motion` (already in shared CSS)
+- Mark busy: `skelRegion(..., { label: '…' })` → `aria-busy` + `role="status"`
+- Keep helpers in `js/shared/`; section-specific skeleton HTML stays in that page module
+
+## Example
+
+```js
+import { skelBar, skelBlock, skelRegion } from '../../shared/skeleton.js';
+
+host.innerHTML = skelRegion(
+  `<div class="my-card">${skelBlock()}${skelBar({ width: '70%' })}</div>`,
+  { label: 'Loading builds' },
+);
+// …await fetch…
+host.innerHTML = realHtml;
+```

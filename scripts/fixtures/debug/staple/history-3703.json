@@ -1,0 +1,2034 @@
+{
+  "kind": "bpb-sim-debug",
+  "v": 5,
+  "slug": "history-3703",
+  "seed": 42,
+  "durationSec": 8.199999999999983,
+  "dummyEndHp": 0,
+  "playerEndHp": 200,
+  "eventCount": 423,
+  "catalog": [
+    {
+      "id": "engineer_bag_2",
+      "name": "Engineer Bag 2",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "battery",
+      "name": "Battery",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "dur": 2,
+        "p1": 2,
+        "speed": 10,
+        "p2": 10,
+        "speed2": 5,
+        "p3": 5
+      }
+    },
+    {
+      "id": "resistor",
+      "name": "Resistor",
+      "type": "Accessory",
+      "extraTypes": [
+        "Fire"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "heatt": 20,
+        "p1": 20,
+        "heat": 3,
+        "p2": 3
+      }
+    },
+    {
+      "id": "tesla_coil",
+      "name": "Tesla Coil",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": 5.5,
+      "chance": null,
+      "params": {
+        "cdadvance": 3,
+        "p1": 3,
+        "sales": 80,
+        "p2": 80,
+        "weight": 1.5,
+        "p3": 1.5
+      }
+    },
+    {
+      "id": "fanny_pack",
+      "name": "Fanny Pack",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "p1": 10
+      }
+    },
+    {
+      "id": "fancy_fencing_rapier",
+      "name": "Fancy Fencing Rapier",
+      "type": "Melee Weapon",
+      "extraTypes": [],
+      "cooldown": 1.4,
+      "chance": null,
+      "params": {
+        "luckt": 3,
+        "p1": 3,
+        "dam": 3,
+        "p2": 3,
+        "luck": 3,
+        "p3": 3
+      }
+    },
+    {
+      "id": "charge_splitter",
+      "name": "Charge Splitter",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": 5,
+      "chance": 10,
+      "params": {
+        "heatt": 3,
+        "p1": 3,
+        "luck": 5,
+        "p2": 5,
+        "dur": 2,
+        "p3": 2
+      }
+    },
+    {
+      "id": "coil",
+      "name": "Coil",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "buffs": 2,
+        "p1": 2,
+        "max": 10,
+        "p2": 10
+      }
+    },
+    {
+      "id": "thunder_drake",
+      "name": "Thunder Drake",
+      "type": "Ranged Weapon",
+      "extraTypes": [
+        "Pet",
+        "Fire",
+        "Effect"
+      ],
+      "cooldown": 2.1,
+      "chance": null,
+      "params": {
+        "hits": 3,
+        "p1": 3,
+        "dur": 2,
+        "p2": 2,
+        "speed": 20,
+        "p3": 20
+      }
+    },
+    {
+      "id": "robodog",
+      "name": "Robodog",
+      "type": "Pet",
+      "extraTypes": [
+        "Fire"
+      ],
+      "cooldown": 1.9,
+      "chance": null,
+      "params": {
+        "luck": 1,
+        "p1": 1,
+        "heat": 1,
+        "p2": 1,
+        "cdincrease": 0.5,
+        "p3": 0.5,
+        "basecd": 1.9,
+        "p4": 1.9
+      }
+    },
+    {
+      "id": "stamina_sack",
+      "name": "Stamina Sack",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "protective_purse",
+      "name": "Protective Purse",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "gigawatz",
+      "name": "Gigawatz",
+      "type": "Skill",
+      "extraTypes": [],
+      "cooldown": 7.5,
+      "chance": null,
+      "params": {
+        "blind": 3,
+        "p1": 3,
+        "damincrease": 7,
+        "p2": 7,
+        "speed": 15,
+        "p3": 15,
+        "max": 10,
+        "p4": 10
+      }
+    },
+    {
+      "id": "amulet_of_darkness",
+      "name": "Amulet of Darkness",
+      "type": "Accessory",
+      "extraTypes": [
+        "Dark"
+      ],
+      "cooldown": null,
+      "chance": 30,
+      "params": {
+        "damt": 22,
+        "p1": 22
+      }
+    },
+    {
+      "id": "winged_boots",
+      "name": "Winged Boots",
+      "type": "Shoes",
+      "extraTypes": [
+        "Holy"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "healtht": 70,
+        "p1": 70,
+        "empower": 1,
+        "p2": 1,
+        "cleanse": 20,
+        "p3": 20,
+        "dodge": 3,
+        "p4": 3
+      }
+    },
+    {
+      "id": "star_of_courage",
+      "name": "Star of Courage",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "uniques": 5,
+        "p1": 5,
+        "stamina": 5,
+        "p2": 5
+      }
+    },
+    {
+      "id": "evil_cap",
+      "name": "Evil Cap",
+      "type": "Helmet",
+      "extraTypes": [
+        "Dark"
+      ],
+      "cooldown": null,
+      "chance": 15,
+      "params": {
+        "damagereduction": 25,
+        "p1": 25,
+        "dur": 5,
+        "p2": 5,
+        "healreduction": 30,
+        "p3": 30
+      }
+    },
+    {
+      "id": "spring_loader",
+      "name": "Spring Loader",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": 7.5,
+      "chance": null,
+      "params": {
+        "speed": 10,
+        "p1": 10,
+        "cdadvance": 2,
+        "p2": 2,
+        "speed2": 35,
+        "p3": 35
+      }
+    },
+    {
+      "id": "gloves_of_haste",
+      "name": "Gloves of Haste",
+      "type": "Gloves",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "p1": 20
+      }
+    },
+    {
+      "id": "lucky_cat",
+      "name": "Lucky Cat",
+      "type": "Accessory",
+      "extraTypes": [
+        "Holy"
+      ],
+      "cooldown": null,
+      "chance": 15,
+      "params": {
+        "sales": 3,
+        "p1": 3,
+        "gold1": 20,
+        "p2": 20,
+        "gold2": 40,
+        "p3": 40,
+        "speed": 15,
+        "p4": 15
+      }
+    },
+    {
+      "id": "corrupted_crystal",
+      "name": "Corrupted Crystal",
+      "type": "Gem",
+      "extraTypes": [
+        "Dark"
+      ],
+      "cooldown": 3.9,
+      "chance": null,
+      "params": {
+        "p1": 30,
+        "p2": 50,
+        "p3": 7,
+        "p4": 6
+      }
+    }
+  ],
+  "paramChecks": [],
+  "unhealingMath": {
+    "rate": 0,
+    "healLogged": 0,
+    "healGrants": 0,
+    "exactFloat": 0,
+    "expectedCeil": 0,
+    "actual": 0,
+    "actualGrants": 0,
+    "samples": [],
+    "note": "game: ceil(each logged heal × 0) — e.g. 15% of 3 is 0.45 → 1; 15% of 1 is 0.15 → 1 (never 0)"
+  },
+  "status": {
+    "buffs": {
+      "block": {
+        "player": {
+          "end": 120,
+          "sources": [
+            {
+              "gained": 120,
+              "lost": 0,
+              "grants": 8,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                }
+              ],
+              "id": "protective_purse",
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "handler": "protective_purse",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 120
+        }
+      },
+      "lucky": {
+        "player": {
+          "end": 0,
+          "sources": [
+            {
+              "gained": 27,
+              "lost": 0,
+              "grants": 9,
+              "firstT": 3.65,
+              "lastT": 8.2,
+              "samples": [
+                {
+                  "t": 3.65,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                }
+              ],
+              "id": "fancy_fencing_rapier",
+              "itemId": "fancy_fencing_rapier",
+              "name": "Fancy Fencing Rapier",
+              "handler": "fancy_fencing_rapier",
+              "systemOrigin": null
+            },
+            {
+              "gained": 6,
+              "lost": 0,
+              "grants": 6,
+              "firstT": 4.15,
+              "lastT": 7.8,
+              "samples": [
+                {
+                  "t": 4.15,
+                  "amount": 1
+                },
+                {
+                  "t": 4.15,
+                  "amount": 1
+                },
+                {
+                  "t": 6.05,
+                  "amount": 1
+                },
+                {
+                  "t": 6.05,
+                  "amount": 1
+                },
+                {
+                  "t": 7.8,
+                  "amount": 1
+                },
+                {
+                  "t": 7.8,
+                  "amount": 1
+                }
+              ],
+              "id": "robodog",
+              "itemId": "robodog",
+              "name": "Robodog",
+              "handler": "robodog",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 33
+        }
+      },
+      "heat": {
+        "player": {
+          "end": 3,
+          "sources": [
+            {
+              "gained": 3,
+              "lost": 0,
+              "grants": 3,
+              "firstT": 4.15,
+              "lastT": 7.8,
+              "samples": [
+                {
+                  "t": 4.15,
+                  "amount": 1
+                },
+                {
+                  "t": 6.05,
+                  "amount": 1
+                },
+                {
+                  "t": 7.8,
+                  "amount": 1
+                }
+              ],
+              "id": "robodog",
+              "itemId": "robodog",
+              "name": "Robodog",
+              "handler": "robodog",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 3
+        }
+      }
+    },
+    "debuffs": {
+      "blind": {
+        "dummy": {
+          "end": 62,
+          "sources": [
+            {
+              "gained": 51,
+              "lost": 0,
+              "grants": 17,
+              "firstT": 8.2,
+              "lastT": 8.2,
+              "samples": [
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                },
+                {
+                  "t": 8.2,
+                  "amount": 3
+                }
+              ],
+              "id": "gigawatz",
+              "itemId": "gigawatz",
+              "name": "Gigawatz",
+              "handler": "gigawatz",
+              "systemOrigin": null
+            },
+            {
+              "gained": 11,
+              "lost": 0,
+              "grants": 11,
+              "firstT": 3.65,
+              "lastT": 8.2,
+              "samples": [
+                {
+                  "t": 3.65,
+                  "amount": 1
+                },
+                {
+                  "t": 6.8,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_darkness",
+              "itemId": "amulet_of_darkness",
+              "name": "Amulet of Darkness",
+              "handler": "amulet_of_darkness",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 62
+        }
+      },
+      "poison": {
+        "player": {
+          "end": 0,
+          "sources": [
+            {
+              "gained": 1,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 6.5,
+              "lastT": 6.5,
+              "samples": [
+                {
+                  "t": 6.5,
+                  "amount": 1
+                }
+              ],
+              "id": "Poison",
+              "itemId": null,
+              "name": "Poison",
+              "handler": null,
+              "systemOrigin": "Poison"
+            }
+          ],
+          "gained": 1
+        },
+        "dummy": {
+          "end": 9,
+          "sources": [
+            {
+              "gained": 9,
+              "lost": 0,
+              "grants": 9,
+              "firstT": 4.75,
+              "lastT": 8.2,
+              "samples": [
+                {
+                  "t": 4.75,
+                  "amount": 1
+                },
+                {
+                  "t": 6.8,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_darkness",
+              "itemId": "amulet_of_darkness",
+              "name": "Amulet of Darkness",
+              "handler": "amulet_of_darkness",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 9
+        }
+      },
+      "cold": {
+        "dummy": {
+          "end": 7,
+          "sources": [
+            {
+              "gained": 7,
+              "lost": 0,
+              "grants": 7,
+              "firstT": 4.75,
+              "lastT": 8.2,
+              "samples": [
+                {
+                  "t": 4.75,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                },
+                {
+                  "t": 8.2,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_darkness",
+              "itemId": "amulet_of_darkness",
+              "name": "Amulet of Darkness",
+              "handler": "amulet_of_darkness",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 7
+        }
+      }
+    },
+    "itemBuffs": {
+      "player": [
+        {
+          "gained": 20,
+          "lost": 0,
+          "grants": 1,
+          "firstT": 2.5,
+          "lastT": 2.5,
+          "samples": [
+            {
+              "t": 2.5,
+              "amount": 20
+            }
+          ],
+          "id": "gloves_of_haste",
+          "itemId": "gloves_of_haste",
+          "name": "Gloves of Haste",
+          "handler": "falcon_blade",
+          "label": "Gloves of Haste: haste aura 20% (6 items)"
+        }
+      ],
+      "dummy": []
+    },
+    "heals": {
+      "player": {
+        "total": 0,
+        "byKind": {},
+        "sources": []
+      }
+    },
+    "damage": {
+      "toDummy": {
+        "total": 1219,
+        "byKind": {
+          "item": {
+            "total": 1219,
+            "grants": 53
+          }
+        },
+        "sources": [
+          {
+            "gained": 608,
+            "lost": 0,
+            "grants": 23,
+            "firstT": 4.757,
+            "lastT": 8.207,
+            "samples": [
+              {
+                "t": 4.757,
+                "amount": 10
+              },
+              {
+                "t": 5.807,
+                "amount": 18
+              },
+              {
+                "t": 6.807,
+                "amount": 17
+              },
+              {
+                "t": 7.907,
+                "amount": 17
+              },
+              {
+                "t": 8.207,
+                "amount": 18
+              },
+              {
+                "t": 8.207,
+                "amount": 19
+              },
+              {
+                "t": 8.207,
+                "amount": 25
+              },
+              {
+                "t": 8.207,
+                "amount": 23
+              }
+            ],
+            "id": "fancy_fencing_rapier",
+            "itemId": "fancy_fencing_rapier",
+            "name": "Fancy Fencing Rapier",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 594,
+            "lost": 0,
+            "grants": 27,
+            "firstT": 3.657,
+            "lastT": 8.207,
+            "samples": [
+              {
+                "t": 3.657,
+                "amount": 22
+              },
+              {
+                "t": 4.757,
+                "amount": 22
+              },
+              {
+                "t": 4.757,
+                "amount": 22
+              },
+              {
+                "t": 6.807,
+                "amount": 22
+              },
+              {
+                "t": 6.807,
+                "amount": 22
+              },
+              {
+                "t": 8.207,
+                "amount": 22
+              },
+              {
+                "t": 8.207,
+                "amount": 22
+              },
+              {
+                "t": 8.207,
+                "amount": 22
+              }
+            ],
+            "id": "amulet_of_darkness",
+            "itemId": "amulet_of_darkness",
+            "name": "Amulet of Darkness",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 17,
+            "lost": 0,
+            "grants": 3,
+            "firstT": 4.157,
+            "lastT": 7.407,
+            "samples": [
+              {
+                "t": 4.157,
+                "amount": 5
+              },
+              {
+                "t": 5.757,
+                "amount": 6
+              },
+              {
+                "t": 7.407,
+                "amount": 6
+              }
+            ],
+            "id": "thunder_drake",
+            "itemId": "thunder_drake",
+            "name": "Thunder Drake",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          }
+        ]
+      },
+      "toPlayer": {
+        "total": 0,
+        "byKind": {
+          "dummy": {
+            "total": 0,
+            "grants": 1
+          }
+        },
+        "sources": [
+          {
+            "gained": 0,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 4.652,
+            "lastT": 4.652,
+            "samples": [
+              {
+                "t": 4.652,
+                "amount": 0
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null,
+            "kind": "dummy",
+            "crits": 0
+          }
+        ]
+      }
+    },
+    "misses": {
+      "player": 28,
+      "dummy": 1
+    },
+    "activations": {
+      "player": {
+        "total": 68,
+        "sources": [
+          {
+            "gained": 32,
+            "lost": 0,
+            "grants": 32,
+            "firstT": 3.65,
+            "lastT": 8.2,
+            "samples": [
+              {
+                "t": 3.65,
+                "amount": 1
+              },
+              {
+                "t": 4.75,
+                "amount": 1
+              },
+              {
+                "t": 5.8,
+                "amount": 1
+              },
+              {
+                "t": 6.8,
+                "amount": 1
+              },
+              {
+                "t": 7.9,
+                "amount": 1
+              },
+              {
+                "t": 8.2,
+                "amount": 1
+              },
+              {
+                "t": 8.2,
+                "amount": 1
+              },
+              {
+                "t": 8.2,
+                "amount": 1
+              }
+            ],
+            "id": "fancy_fencing_rapier",
+            "itemId": "fancy_fencing_rapier",
+            "name": "Fancy Fencing Rapier",
+            "handler": "fancy_fencing_rapier"
+          },
+          {
+            "gained": 17,
+            "lost": 0,
+            "grants": 17,
+            "firstT": 8.2,
+            "lastT": 8.2,
+            "samples": [
+              {
+                "t": 8.2,
+                "amount": 1
+              },
+              {
+                "t": 8.2,
+                "amount": 1
+              },
+              {
+                "t": 8.2,
+                "amount": 1
+              },
+              {
+                "t": 8.2,
+                "amount": 1
+              },
+              {
+                "t": 8.2,
+                "amount": 1
+              },
+              {
+                "t": 8.2,
+                "amount": 1
+              },
+              {
+                "t": 8.2,
+                "amount": 1
+              },
+              {
+                "t": 8.2,
+                "amount": 1
+              }
+            ],
+            "id": "gigawatz",
+            "itemId": "gigawatz",
+            "name": "Gigawatz",
+            "handler": "gigawatz"
+          },
+          {
+            "gained": 12,
+            "lost": 0,
+            "grants": 12,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "battery",
+            "itemId": "battery",
+            "name": "Battery",
+            "handler": "battery"
+          },
+          {
+            "gained": 3,
+            "lost": 0,
+            "grants": 3,
+            "firstT": 4.15,
+            "lastT": 7.4,
+            "samples": [
+              {
+                "t": 4.15,
+                "amount": 1
+              },
+              {
+                "t": 5.75,
+                "amount": 1
+              },
+              {
+                "t": 7.4,
+                "amount": 1
+              }
+            ],
+            "id": "thunder_drake",
+            "itemId": "thunder_drake",
+            "name": "Thunder Drake",
+            "handler": "thunder_drake"
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "evil_cap",
+            "itemId": "evil_cap",
+            "name": "Evil Cap",
+            "handler": "evil_cap"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 8.2,
+            "lastT": 8.2,
+            "samples": [
+              {
+                "t": 8.2,
+                "amount": 1
+              }
+            ],
+            "id": "spring_loader",
+            "itemId": "spring_loader",
+            "name": "Spring Loader",
+            "handler": "spring_loader"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 8.1,
+            "lastT": 8.1,
+            "samples": [
+              {
+                "t": 8.1,
+                "amount": 1
+              }
+            ],
+            "id": "tesla_coil",
+            "itemId": "tesla_coil",
+            "name": "Tesla Coil",
+            "handler": "tesla_coil"
+          }
+        ]
+      },
+      "dummy": {
+        "total": 2,
+        "sources": [
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 4.65,
+            "lastT": 6.8,
+            "samples": [
+              {
+                "t": 4.65,
+                "amount": 1
+              },
+              {
+                "t": 6.8,
+                "amount": 1
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null
+          }
+        ]
+      }
+    },
+    "end": {
+      "player": {
+        "hp": 200,
+        "maxHp": 200,
+        "stacks": {
+          "heat": 3,
+          "block": 120
+        },
+        "healAmp": 0,
+        "unhealing": 0
+      },
+      "dummy": {
+        "hp": 0,
+        "maxHp": 1200,
+        "stacks": {
+          "blind": 62,
+          "poison": 9,
+          "cold": 7
+        }
+      }
+    }
+  },
+  "ui": {
+    "combatLog": {
+      "lineCount": 245,
+      "byType": {
+        "info": 19,
+        "activate": 70,
+        "buff": 27,
+        "debuff": 45,
+        "miss": 29,
+        "damage": 54,
+        "fight_end": 1
+      },
+      "stackGained": {
+        "block": 120,
+        "lucky": 33,
+        "blind": 62,
+        "heat": 3,
+        "poison": 10,
+        "cold": 7
+      },
+      "sample": [
+        {
+          "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "tesla_coil",
+          "amount": null,
+          "label": "Tesla Coil: queue 8 item(s)"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "battery",
+          "amount": null,
+          "label": "Battery activated."
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "evil_cap",
+          "amount": null,
+          "label": "Accessory: Evil Cap"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "evil_cap",
+          "amount": null,
+          "label": "Accessory: Evil Cap"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": null,
+          "itemId": "gloves_of_haste",
+          "amount": 20,
+          "label": "Gloves of Haste: haste aura 20% (6 items)"
+        },
+        {
+          "t": 2.525,
+          "type": "info",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Armor DR 18"
+        },
+        {
+          "t": 3.65,
+          "type": "activate",
+          "stack": null,
+          "itemId": "fancy_fencing_rapier",
+          "amount": null,
+          "label": "Weapon: Fancy Fencing Rapier"
+        },
+        {
+          "t": 3.65,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "fancy_fencing_rapier",
+          "amount": 3,
+          "label": "+3 lucky"
+        },
+        {
+          "t": 3.65,
+          "type": "debuff",
+          "stack": "blind",
+          "itemId": "amulet_of_darkness",
+          "amount": 1,
+          "label": "+1 blind"
+        },
+        {
+          "t": 3.654,
+          "type": "miss",
+          "stack": null,
+          "itemId": "fancy_fencing_rapier",
+          "amount": null,
+          "label": "Fancy Fencing Rapier missed"
+        },
+        {
+          "t": 3.657,
+          "type": "damage",
+          "stack": null,
+          "itemId": "amulet_of_darkness",
+          "amount": 22,
+          "label": "Amulet of Darkness hit for 22"
+        },
+        {
+          "t": 4.15,
+          "type": "activate",
+          "stack": null,
+          "itemId": "thunder_drake",
+          "amount": null,
+          "label": "Weapon: Thunder Drake"
+        },
+        {
+          "t": 4.15,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "robodog",
+          "amount": 1,
+          "label": "+1 lucky"
+        },
+        {
+          "t": 4.15,
+          "type": "buff",
+          "stack": "heat",
+          "itemId": "robodog",
+          "amount": 1,
+          "label": "+1 heat"
+        },
+        {
+          "t": 4.15,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": null,
+          "amount": 1,
+          "label": "Robodog: +1 Lucky +1 Heat"
+        },
+        {
+          "t": 4.157,
+          "type": "damage",
+          "stack": null,
+          "itemId": "thunder_drake",
+          "amount": 5,
+          "label": "Thunder Drake hit for 5"
+        },
+        {
+          "t": 4.65,
+          "type": "activate",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Training Dummy: swing"
+        },
+        {
+          "t": 4.652,
+          "type": "damage",
+          "stack": "block",
+          "itemId": null,
+          "amount": 0,
+          "label": "Training Dummy: hit 13 (DR/block) → 0"
+        },
+        {
+          "t": 4.75,
+          "type": "activate",
+          "stack": null,
+          "itemId": "fancy_fencing_rapier",
+          "amount": null,
+          "label": "Weapon: Fancy Fencing Rapier"
+        },
+        {
+          "t": 4.75,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "amulet_of_darkness",
+          "amount": 1,
+          "label": "+1 poison"
+        },
+        {
+          "t": 4.75,
+          "type": "debuff",
+          "stack": "cold",
+          "itemId": "amulet_of_darkness",
+          "amount": 1,
+          "label": "+1 cold"
+        }
+      ]
+    },
+    "damageMeter": {
+      "stackTabs": {
+        "block": {
+          "gained": 120,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            }
+          ]
+        },
+        "lucky": {
+          "gained": 33,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "fancy_fencing_rapier",
+              "name": "+3 lucky",
+              "amount": 3
+            },
+            {
+              "itemId": "robodog",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Robodog",
+              "amount": 1
+            },
+            {
+              "itemId": "robodog",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Robodog",
+              "amount": 1
+            },
+            {
+              "itemId": "robodog",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Robodog",
+              "amount": 1
+            },
+            {
+              "itemId": "fancy_fencing_rapier",
+              "name": "+3 lucky",
+              "amount": 3
+            },
+            {
+              "itemId": "fancy_fencing_rapier",
+              "name": "+3 lucky",
+              "amount": 3
+            },
+            {
+              "itemId": "fancy_fencing_rapier",
+              "name": "+3 lucky",
+              "amount": 3
+            },
+            {
+              "itemId": "fancy_fencing_rapier",
+              "name": "+3 lucky",
+              "amount": 3
+            },
+            {
+              "itemId": "fancy_fencing_rapier",
+              "name": "+3 lucky",
+              "amount": 3
+            },
+            {
+              "itemId": "fancy_fencing_rapier",
+              "name": "+3 lucky",
+              "amount": 3
+            },
+            {
+              "itemId": "fancy_fencing_rapier",
+              "name": "+3 lucky",
+              "amount": 3
+            },
+            {
+              "itemId": "fancy_fencing_rapier",
+              "name": "+3 lucky",
+              "amount": 3
+            }
+          ]
+        },
+        "regeneration": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "vampirism": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "spikes": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "mana": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "empower": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "heat": {
+          "gained": 3,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "robodog",
+              "name": "+1 heat",
+              "amount": 1
+            },
+            {
+              "itemId": "robodog",
+              "name": "+1 heat",
+              "amount": 1
+            },
+            {
+              "itemId": "robodog",
+              "name": "+1 heat",
+              "amount": 1
+            }
+          ]
+        },
+        "poison": {
+          "gained": 10,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            }
+          ]
+        },
+        "blind": {
+          "gained": 62,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "gigawatz",
+              "name": "+3 blind",
+              "amount": 3
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            }
+          ]
+        },
+        "cold": {
+          "gained": 7,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 cold",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    "hud": {
+      "player": {
+        "icons": [],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 0,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "dummy": {
+        "icons": [
+          {
+            "key": "unhealing",
+            "value": 60
+          }
+        ],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 0,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 60,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "expected": []
+    },
+    "mismatches": []
+  }
+}

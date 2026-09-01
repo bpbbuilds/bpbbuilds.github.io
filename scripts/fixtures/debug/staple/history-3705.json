@@ -1,0 +1,4479 @@
+{
+  "kind": "bpb-sim-debug",
+  "v": 5,
+  "slug": "history-3705",
+  "seed": 42,
+  "durationSec": 15.350000000000085,
+  "dummyEndHp": 0,
+  "playerEndHp": 113,
+  "eventCount": 574,
+  "catalog": [
+    {
+      "id": "leather_bag",
+      "name": "Leather Bag",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "protective_purse",
+      "name": "Protective Purse",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "fanny_pack",
+      "name": "Fanny Pack",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "p1": 10
+      }
+    },
+    {
+      "id": "potion_belt",
+      "name": "Potion Belt",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "cleanse": 10,
+        "p1": 10
+      }
+    },
+    {
+      "id": "mercury_elemental",
+      "name": "Mercury Elemental",
+      "type": "Pet",
+      "extraTypes": [],
+      "cooldown": 5,
+      "chance": null,
+      "params": {
+        "stamina": 1,
+        "p1": 1,
+        "staminat": 1,
+        "p2": 1,
+        "poison": 2,
+        "p3": 2,
+        "poison2": 2,
+        "p4": 2
+      }
+    },
+    {
+      "id": "emerald_whelp",
+      "name": "Emerald Whelp",
+      "type": "Ranged Weapon",
+      "extraTypes": [
+        "Pet",
+        "Effect"
+      ],
+      "cooldown": 2.1,
+      "chance": null,
+      "params": {
+        "p1": 3,
+        "p2": 3
+      }
+    },
+    {
+      "id": "death_scythe",
+      "name": "Death Scythe",
+      "type": "Melee Weapon",
+      "extraTypes": [
+        "Dark"
+      ],
+      "cooldown": 1.4,
+      "chance": 65,
+      "params": {
+        "poisont": 25,
+        "p1": 25
+      }
+    },
+    {
+      "id": "poison_spear",
+      "name": "Poison Spear",
+      "type": "Melee Weapon",
+      "extraTypes": [],
+      "cooldown": 1.5,
+      "chance": null,
+      "params": {
+        "blockremoval": 6,
+        "p1": 6,
+        "poison": 3,
+        "p2": 3,
+        "poison2": 2,
+        "p3": 2
+      }
+    },
+    {
+      "id": "falcon_blade",
+      "name": "Falcon Blade",
+      "type": "Melee Weapon",
+      "extraTypes": [],
+      "cooldown": 1.7,
+      "chance": null,
+      "params": {
+        "speed": 40,
+        "p1": 40
+      }
+    },
+    {
+      "id": "bag_of_giving",
+      "name": "Bag of Giving",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "stamina": 0.1,
+        "p1": 0.1,
+        "value": 1.32,
+        "p2": 1.32
+      }
+    },
+    {
+      "id": "stamina_sack",
+      "name": "Stamina Sack",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "courage_puppy",
+      "name": "Courage Puppy",
+      "type": "Melee Weapon",
+      "extraTypes": [
+        "Pet",
+        "Nature",
+        "Effect"
+      ],
+      "cooldown": 3.5,
+      "chance": null,
+      "params": {
+        "p1": 2
+      }
+    },
+    {
+      "id": "death_lotus",
+      "name": "Death Lotus",
+      "type": "Spell",
+      "extraTypes": [
+        "Dark",
+        "Nature",
+        "Magic"
+      ],
+      "cooldown": 3,
+      "chance": null,
+      "params": {
+        "mana": 4,
+        "p1": 4,
+        "buffs": 3,
+        "p2": 3,
+        "luckt": 1,
+        "p3": 1,
+        "speed": 10,
+        "p4": 10,
+        "stamina": 1.5,
+        "p5": 1.5
+      }
+    },
+    {
+      "id": "claws_of_attack",
+      "name": "Claws of Attack",
+      "type": "Melee Weapon",
+      "extraTypes": [],
+      "cooldown": 1.6,
+      "chance": null,
+      "params": {
+        "speedperspike": 5,
+        "p1": 5,
+        "maxspeed": 1000,
+        "p2": 1000,
+        "attackst": 4,
+        "p3": 4
+      }
+    },
+    {
+      "id": "speak_with_animals",
+      "name": "Speak with Animals",
+      "type": "Skill",
+      "extraTypes": [],
+      "cooldown": 3,
+      "chance": 10,
+      "params": {
+        "sale": 25,
+        "p1": 25
+      }
+    },
+    {
+      "id": "squirrel_archer",
+      "name": "Squirrel Archer",
+      "type": "Ranged Weapon",
+      "extraTypes": [
+        "Pet",
+        "Nature",
+        "Effect"
+      ],
+      "cooldown": 3.2,
+      "chance": null,
+      "params": {
+        "petspeed": 15,
+        "p1": 15
+      }
+    },
+    {
+      "id": "full_body_protection",
+      "name": "Full Body Protection",
+      "type": "Skill",
+      "extraTypes": [],
+      "cooldown": 4,
+      "chance": null,
+      "params": {
+        "damreduction": 8,
+        "p1": 8,
+        "block": 35,
+        "p2": 35
+      }
+    },
+    {
+      "id": "blueberries",
+      "name": "Blueberries",
+      "type": "Food",
+      "extraTypes": [
+        "Nature",
+        "Magic"
+      ],
+      "cooldown": 3.5,
+      "chance": null,
+      "params": {
+        "mana": 1,
+        "p1": 1,
+        "manat": 10,
+        "p2": 10,
+        "luck": 1,
+        "p3": 1
+      }
+    },
+    {
+      "id": "frog_prince",
+      "name": "Frog Prince",
+      "type": "Pet",
+      "extraTypes": [
+        "Holy",
+        "Magic",
+        "Nature"
+      ],
+      "cooldown": 2.6,
+      "chance": null,
+      "params": {
+        "gained": 10,
+        "p1": 10,
+        "blind": 1,
+        "p2": 1,
+        "heal": 20,
+        "p3": 20,
+        "used": 30,
+        "p4": 30,
+        "luck": 5,
+        "p5": 5,
+        "mana": 5,
+        "p6": 5,
+        "dur_1": 2.5,
+        "p7": 2.5,
+        "luck2": 1,
+        "p8": 1,
+        "mana2": 1,
+        "p9": 1
+      }
+    },
+    {
+      "id": "leather_helm",
+      "name": "Leather Helm",
+      "type": "Helmet",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": 15,
+      "params": {
+        "damagereduction": 25,
+        "p1": 25,
+        "dur": 3,
+        "p2": 3
+      }
+    },
+    {
+      "id": "jynx_torquilla",
+      "name": "Jynx torquilla",
+      "type": "Pet",
+      "extraTypes": [
+        "Nature",
+        "Musical"
+      ],
+      "cooldown": 3,
+      "chance": null,
+      "params": {
+        "speed": 5,
+        "p1": 5,
+        "max": 10,
+        "p2": 10,
+        "luck": 1,
+        "p3": 1
+      }
+    },
+    {
+      "id": "heart_container",
+      "name": "Heart Container",
+      "type": "Accessory",
+      "extraTypes": [
+        "Holy"
+      ],
+      "cooldown": 3,
+      "chance": null,
+      "params": {
+        "regen": 1,
+        "p1": 1,
+        "regent": 7,
+        "p2": 7,
+        "maxhealth": 100,
+        "p3": 100,
+        "empower": 2,
+        "p4": 2,
+        "healamp": 15,
+        "p5": 15
+      }
+    },
+    {
+      "id": "demonic_flask",
+      "name": "Demonic Flask",
+      "type": "Potion",
+      "extraTypes": [
+        "Dark"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "p1": 50,
+        "dam": 0.3,
+        "p2": 0.3
+      }
+    },
+    {
+      "id": "piggybank",
+      "name": "Piggybank",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "p1": 1,
+        "maxhealth": 2,
+        "p2": 2
+      }
+    },
+    {
+      "id": "wisp",
+      "name": "Wisp",
+      "type": "Gem",
+      "extraTypes": [
+        "Nature"
+      ],
+      "cooldown": 12,
+      "chance": null,
+      "params": {
+        "luck": 10,
+        "p1": 10,
+        "regen": 10,
+        "p2": 10,
+        "speed": 10,
+        "p3": 10,
+        "maxhealth": 35,
+        "p4": 35,
+        "dam": 30,
+        "p5": 30,
+        "spikes": 1,
+        "p6": 1
+      }
+    },
+    {
+      "id": "star_of_courage",
+      "name": "Star of Courage",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "uniques": 5,
+        "p1": 5,
+        "stamina": 5,
+        "p2": 5
+      }
+    },
+    {
+      "id": "hyper_hedgehog",
+      "name": "Hyper Hedgehog",
+      "type": "Pet",
+      "extraTypes": [
+        "Holy",
+        "Nature"
+      ],
+      "cooldown": 5,
+      "chance": null,
+      "params": {
+        "petspeed": 15,
+        "p1": 15,
+        "dam_spikes": 0.5,
+        "p2": 0.5,
+        "healtht": 70,
+        "p3": 70,
+        "spikes": 4,
+        "p4": 4,
+        "dam_empower": 1,
+        "p5": 1,
+        "empower": 3,
+        "p6": 3
+      }
+    },
+    {
+      "id": "elephant_rune",
+      "name": "Elephant Rune",
+      "type": "Gem",
+      "extraTypes": [],
+      "cooldown": 3,
+      "chance": 25,
+      "params": {
+        "dur_stun": 0.5,
+        "p1": 0.5,
+        "dur_resist": 4,
+        "p2": 4,
+        "maxhealth": 50,
+        "p3": 50
+      }
+    },
+    {
+      "id": "hawk_rune",
+      "name": "Hawk Rune",
+      "type": "Gem",
+      "extraTypes": [],
+      "cooldown": 2.4,
+      "chance": 40,
+      "params": {
+        "critchance": 12,
+        "p1": 12,
+        "critdam": 15,
+        "p2": 15
+      }
+    },
+    {
+      "id": "perfect_emerald",
+      "name": "Perfect Emerald",
+      "type": "Gem",
+      "extraTypes": [],
+      "cooldown": 3,
+      "chance": 80,
+      "params": {
+        "poisononhit": 4,
+        "p1": 4,
+        "resist": 40,
+        "p2": 40,
+        "regen": 7,
+        "p3": 7
+      }
+    },
+    {
+      "id": "chipped_emerald",
+      "name": "Chipped Emerald",
+      "type": "Gem",
+      "extraTypes": [],
+      "cooldown": 3,
+      "chance": 35,
+      "params": {
+        "poisononhit": 1,
+        "p1": 1,
+        "resist": 10,
+        "p2": 10,
+        "regen": 1,
+        "p3": 1
+      }
+    },
+    {
+      "id": "regular_amethyst",
+      "name": "Regular Amethyst",
+      "type": "Gem",
+      "extraTypes": [],
+      "cooldown": 2,
+      "chance": 50,
+      "params": {
+        "p1": 25,
+        "buffs": 1,
+        "p2": 1
+      }
+    },
+    {
+      "id": "corrupted_crystal",
+      "name": "Corrupted Crystal",
+      "type": "Gem",
+      "extraTypes": [
+        "Dark"
+      ],
+      "cooldown": 3.9,
+      "chance": null,
+      "params": {
+        "p1": 30,
+        "p2": 50,
+        "p3": 7,
+        "p4": 6
+      }
+    },
+    {
+      "id": "flawed_emerald",
+      "name": "Flawed Emerald",
+      "type": "Gem",
+      "extraTypes": [],
+      "cooldown": 4,
+      "chance": 50,
+      "params": {
+        "poisononhit": 1,
+        "p1": 1,
+        "resist": 15,
+        "p2": 15,
+        "regen": 2,
+        "p3": 2
+      }
+    }
+  ],
+  "paramChecks": [
+    {
+      "itemId": "chipped_emerald",
+      "name": "Chipped Emerald",
+      "stack": "poison",
+      "granted": 1,
+      "grants": 6,
+      "expected": null,
+      "expectedKey": "poison",
+      "alsoMatches": [
+        {
+          "key": "poisononhit",
+          "value": 1,
+          "how": "exact"
+        },
+        {
+          "key": "regen",
+          "value": 1,
+          "how": "exact"
+        }
+      ],
+      "note": "no catalog key for poison; grant 1 equals poisononhit=1, regen=1"
+    },
+    {
+      "itemId": "perfect_emerald",
+      "name": "Perfect Emerald",
+      "stack": "poison",
+      "granted": 4,
+      "grants": 12,
+      "expected": null,
+      "expectedKey": "poison",
+      "alsoMatches": [
+        {
+          "key": "poisononhit",
+          "value": 4,
+          "how": "exact"
+        }
+      ],
+      "note": "no catalog key for poison; grant 4 equals poisononhit=4"
+    },
+    {
+      "itemId": "frog_prince",
+      "name": "Frog Prince",
+      "stack": "lucky",
+      "granted": 1,
+      "grants": 5,
+      "expected": 5,
+      "expectedKey": "luck",
+      "alsoMatches": [
+        {
+          "key": "blind",
+          "value": 1,
+          "how": "exact"
+        },
+        {
+          "key": "luck2",
+          "value": 1,
+          "how": "exact"
+        },
+        {
+          "key": "mana2",
+          "value": 1,
+          "how": "exact"
+        }
+      ],
+      "note": "grant 1 is catalog blind=1, not luck=5"
+    },
+    {
+      "itemId": "frog_prince",
+      "name": "Frog Prince",
+      "stack": "mana",
+      "granted": 1,
+      "grants": 5,
+      "expected": 5,
+      "expectedKey": "mana",
+      "alsoMatches": [
+        {
+          "key": "blind",
+          "value": 1,
+          "how": "exact"
+        },
+        {
+          "key": "luck2",
+          "value": 1,
+          "how": "exact"
+        },
+        {
+          "key": "mana2",
+          "value": 1,
+          "how": "exact"
+        }
+      ],
+      "note": "grant 1 is catalog blind=1, not mana=5"
+    }
+  ],
+  "unhealingMath": {
+    "rate": 0,
+    "healLogged": 89,
+    "healGrants": 17,
+    "exactFloat": 0,
+    "expectedCeil": 0,
+    "actual": 0,
+    "actualGrants": 0,
+    "samples": [
+      {
+        "heal": 1,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 2,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 20,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 3,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 3,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 3,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 3,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 7,
+        "exact": 0,
+        "ceil": 0
+      }
+    ],
+    "note": "game: ceil(each logged heal × 0) — e.g. 15% of 3 is 0.45 → 1; 15% of 1 is 0.15 → 1 (never 0)"
+  },
+  "status": {
+    "buffs": {
+      "lucky": {
+        "player": {
+          "end": 15,
+          "sources": [
+            {
+              "gained": 10,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 12.902,
+              "lastT": 12.902,
+              "samples": [
+                {
+                  "t": 12.902,
+                  "amount": 10
+                }
+              ],
+              "id": "wisp",
+              "itemId": "wisp",
+              "name": "Wisp",
+              "handler": "wisp",
+              "systemOrigin": null
+            },
+            {
+              "gained": 5,
+              "lost": 0,
+              "grants": 5,
+              "firstT": 5.05,
+              "lastT": 14.6,
+              "samples": [
+                {
+                  "t": 5.05,
+                  "amount": 1
+                },
+                {
+                  "t": 7.6,
+                  "amount": 1
+                },
+                {
+                  "t": 9.95,
+                  "amount": 1
+                },
+                {
+                  "t": 12.35,
+                  "amount": 1
+                },
+                {
+                  "t": 14.6,
+                  "amount": 1
+                }
+              ],
+              "id": "frog_prince",
+              "itemId": "frog_prince",
+              "name": "Frog Prince",
+              "handler": "frog_prince",
+              "systemOrigin": null
+            },
+            {
+              "gained": 3,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 3
+                }
+              ],
+              "id": "emerald_whelp",
+              "itemId": "emerald_whelp",
+              "name": "Emerald Whelp",
+              "handler": "emerald_whelp",
+              "systemOrigin": null
+            },
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 2,
+              "firstT": 9.754,
+              "lastT": 13.304,
+              "samples": [
+                {
+                  "t": 9.754,
+                  "amount": 1
+                },
+                {
+                  "t": 13.304,
+                  "amount": 1
+                }
+              ],
+              "id": "blueberries",
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "handler": "blueberries",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 20
+        }
+      },
+      "block": {
+        "player": {
+          "end": 441,
+          "sources": [
+            {
+              "gained": 357,
+              "lost": 0,
+              "grants": 61,
+              "firstT": 3.85,
+              "lastT": 15.35,
+              "samples": [
+                {
+                  "t": 3.85,
+                  "amount": 3
+                },
+                {
+                  "t": 3.85,
+                  "amount": 3
+                },
+                {
+                  "t": 3.9,
+                  "amount": 9
+                },
+                {
+                  "t": 3.9,
+                  "amount": 4
+                },
+                {
+                  "t": 4.1,
+                  "amount": 3
+                },
+                {
+                  "t": 4.3,
+                  "amount": 5
+                },
+                {
+                  "t": 4.75,
+                  "amount": 1
+                },
+                {
+                  "t": 5.1,
+                  "amount": 3
+                }
+              ],
+              "id": "mercury_elemental",
+              "itemId": "mercury_elemental",
+              "name": "Mercury Elemental",
+              "handler": "mercury_elemental",
+              "systemOrigin": null
+            },
+            {
+              "gained": 90,
+              "lost": 0,
+              "grants": 6,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                }
+              ],
+              "id": "protective_purse",
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "handler": "protective_purse",
+              "systemOrigin": null
+            },
+            {
+              "gained": 30,
+              "lost": 0,
+              "grants": 3,
+              "firstT": 6.55,
+              "lastT": 14.55,
+              "samples": [
+                {
+                  "t": 6.55,
+                  "amount": 10
+                },
+                {
+                  "t": 10.7,
+                  "amount": 10
+                },
+                {
+                  "t": 14.55,
+                  "amount": 10
+                }
+              ],
+              "id": "full_body_protection",
+              "itemId": "full_body_protection",
+              "name": "Full Body Protection",
+              "handler": "full_body_protection",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 477
+        }
+      },
+      "mana": {
+        "player": {
+          "end": 26,
+          "sources": [
+            {
+              "gained": 20,
+              "lost": 0,
+              "grants": 5,
+              "firstT": 5.05,
+              "lastT": 15.1,
+              "samples": [
+                {
+                  "t": 5.05,
+                  "amount": 4
+                },
+                {
+                  "t": 7.6,
+                  "amount": 4
+                },
+                {
+                  "t": 10.05,
+                  "amount": 4
+                },
+                {
+                  "t": 12.65,
+                  "amount": 4
+                },
+                {
+                  "t": 15.1,
+                  "amount": 4
+                }
+              ],
+              "id": "death_lotus",
+              "itemId": "death_lotus",
+              "name": "Death Lotus",
+              "handler": "death_lotus",
+              "systemOrigin": null
+            },
+            {
+              "gained": 5,
+              "lost": 0,
+              "grants": 5,
+              "firstT": 5.05,
+              "lastT": 14.6,
+              "samples": [
+                {
+                  "t": 5.05,
+                  "amount": 1
+                },
+                {
+                  "t": 7.6,
+                  "amount": 1
+                },
+                {
+                  "t": 9.95,
+                  "amount": 1
+                },
+                {
+                  "t": 12.35,
+                  "amount": 1
+                },
+                {
+                  "t": 14.6,
+                  "amount": 1
+                }
+              ],
+              "id": "frog_prince",
+              "itemId": "frog_prince",
+              "name": "Frog Prince",
+              "handler": "frog_prince",
+              "systemOrigin": null
+            },
+            {
+              "gained": 1,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 6.102,
+              "lastT": 6.102,
+              "samples": [
+                {
+                  "t": 6.102,
+                  "amount": 1
+                }
+              ],
+              "id": "blueberries",
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "handler": "blueberries",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 26
+        }
+      },
+      "regeneration": {
+        "player": {
+          "end": 7,
+          "sources": [
+            {
+              "gained": 10,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 12.9,
+              "lastT": 12.9,
+              "samples": [
+                {
+                  "t": 12.9,
+                  "amount": 10
+                }
+              ],
+              "id": "wisp",
+              "itemId": "wisp",
+              "name": "Wisp",
+              "handler": "wisp",
+              "systemOrigin": null
+            },
+            {
+              "gained": 4,
+              "lost": 0,
+              "grants": 4,
+              "firstT": 5.55,
+              "lastT": 14.45,
+              "samples": [
+                {
+                  "t": 5.55,
+                  "amount": 1
+                },
+                {
+                  "t": 8.55,
+                  "amount": 1
+                },
+                {
+                  "t": 11.45,
+                  "amount": 1
+                },
+                {
+                  "t": 14.45,
+                  "amount": 1
+                }
+              ],
+              "id": "heart_container",
+              "itemId": "heart_container",
+              "name": "Heart Container",
+              "handler": "heart_container",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 14
+        }
+      },
+      "empower": {
+        "player": {
+          "end": 4,
+          "sources": [
+            {
+              "gained": 4,
+              "lost": 0,
+              "grants": 4,
+              "firstT": 8.9,
+              "lastT": 15.158,
+              "samples": [
+                {
+                  "t": 8.9,
+                  "amount": 1
+                },
+                {
+                  "t": 8.908,
+                  "amount": 1
+                },
+                {
+                  "t": 15.15,
+                  "amount": 1
+                },
+                {
+                  "t": 15.158,
+                  "amount": 1
+                }
+              ],
+              "id": "claws_of_attack",
+              "itemId": "claws_of_attack",
+              "name": "Claws of Attack",
+              "handler": "claws_of_attack",
+              "systemOrigin": null
+            },
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 12.9,
+              "lastT": 12.9,
+              "samples": [
+                {
+                  "t": 12.9,
+                  "amount": 2
+                }
+              ],
+              "id": "heart_container",
+              "itemId": "heart_container",
+              "name": "Heart Container",
+              "handler": "heart_container",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 6
+        }
+      },
+      "spikes": {
+        "player": {
+          "end": 1,
+          "sources": [
+            {
+              "gained": 1,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 12.45,
+              "lastT": 12.45,
+              "samples": [
+                {
+                  "t": 12.45,
+                  "amount": 1
+                }
+              ],
+              "id": "potion_belt",
+              "itemId": "potion_belt",
+              "name": "Potion Belt",
+              "handler": "potion_belt",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 1
+        }
+      },
+      "vampirism": {
+        "player": {
+          "end": 3,
+          "sources": [
+            {
+              "gained": 3,
+              "lost": 0,
+              "grants": 3,
+              "firstT": 12.45,
+              "lastT": 12.45,
+              "samples": [
+                {
+                  "t": 12.45,
+                  "amount": 1
+                },
+                {
+                  "t": 12.45,
+                  "amount": 1
+                },
+                {
+                  "t": 12.45,
+                  "amount": 1
+                }
+              ],
+              "id": "potion_belt",
+              "itemId": "potion_belt",
+              "name": "Potion Belt",
+              "handler": "potion_belt",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 3
+        }
+      }
+    },
+    "debuffs": {
+      "poison": {
+        "player": {
+          "end": 90,
+          "sources": [
+            {
+              "gained": 550,
+              "lost": 0,
+              "grants": 6,
+              "firstT": 4.5,
+              "lastT": 14.5,
+              "samples": [
+                {
+                  "t": 4.5,
+                  "amount": 20
+                },
+                {
+                  "t": 6.5,
+                  "amount": 51
+                },
+                {
+                  "t": 8.5,
+                  "amount": 75
+                },
+                {
+                  "t": 10.5,
+                  "amount": 104
+                },
+                {
+                  "t": 12.5,
+                  "amount": 133
+                },
+                {
+                  "t": 14.5,
+                  "amount": 167
+                }
+              ],
+              "id": "Poison",
+              "itemId": null,
+              "name": "Poison",
+              "handler": null,
+              "systemOrigin": "Poison"
+            },
+            {
+              "gained": 72,
+              "lost": 0,
+              "grants": 36,
+              "firstT": 3.85,
+              "lastT": 15.15,
+              "samples": [
+                {
+                  "t": 3.85,
+                  "amount": 2
+                },
+                {
+                  "t": 3.9,
+                  "amount": 2
+                },
+                {
+                  "t": 3.9,
+                  "amount": 2
+                },
+                {
+                  "t": 4.1,
+                  "amount": 2
+                },
+                {
+                  "t": 5.1,
+                  "amount": 2
+                },
+                {
+                  "t": 5.25,
+                  "amount": 2
+                },
+                {
+                  "t": 5.3,
+                  "amount": 2
+                },
+                {
+                  "t": 5.6,
+                  "amount": 2
+                }
+              ],
+              "id": "mercury_elemental",
+              "itemId": "mercury_elemental",
+              "name": "Mercury Elemental",
+              "handler": "mercury_elemental",
+              "systemOrigin": null
+            },
+            {
+              "gained": 18,
+              "lost": 0,
+              "grants": 9,
+              "firstT": 3.9,
+              "lastT": 14.7,
+              "samples": [
+                {
+                  "t": 3.9,
+                  "amount": 2
+                },
+                {
+                  "t": 5.25,
+                  "amount": 2
+                },
+                {
+                  "t": 6.6,
+                  "amount": 2
+                },
+                {
+                  "t": 7.95,
+                  "amount": 2
+                },
+                {
+                  "t": 9.25,
+                  "amount": 2
+                },
+                {
+                  "t": 10.6,
+                  "amount": 2
+                },
+                {
+                  "t": 12,
+                  "amount": 2
+                },
+                {
+                  "t": 13.3,
+                  "amount": 2
+                }
+              ],
+              "id": "poison_spear",
+              "itemId": "poison_spear",
+              "name": "Poison Spear",
+              "handler": "poison_spear",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 640
+        },
+        "dummy": {
+          "end": 174,
+          "sources": [
+            {
+              "gained": 278,
+              "lost": 0,
+              "grants": 6,
+              "firstT": 4.5,
+              "lastT": 14.5,
+              "samples": [
+                {
+                  "t": 4.5,
+                  "amount": 8
+                },
+                {
+                  "t": 6.5,
+                  "amount": 24
+                },
+                {
+                  "t": 8.5,
+                  "amount": 38
+                },
+                {
+                  "t": 10.5,
+                  "amount": 54
+                },
+                {
+                  "t": 12.5,
+                  "amount": 70
+                },
+                {
+                  "t": 14.5,
+                  "amount": 84
+                }
+              ],
+              "id": "Poison",
+              "itemId": null,
+              "name": "Poison",
+              "handler": null,
+              "systemOrigin": "Poison"
+            },
+            {
+              "gained": 72,
+              "lost": 0,
+              "grants": 36,
+              "firstT": 3.85,
+              "lastT": 15.15,
+              "samples": [
+                {
+                  "t": 3.85,
+                  "amount": 2
+                },
+                {
+                  "t": 3.9,
+                  "amount": 2
+                },
+                {
+                  "t": 3.9,
+                  "amount": 2
+                },
+                {
+                  "t": 4.1,
+                  "amount": 2
+                },
+                {
+                  "t": 5.1,
+                  "amount": 2
+                },
+                {
+                  "t": 5.25,
+                  "amount": 2
+                },
+                {
+                  "t": 5.3,
+                  "amount": 2
+                },
+                {
+                  "t": 5.6,
+                  "amount": 2
+                }
+              ],
+              "id": "mercury_elemental",
+              "itemId": "mercury_elemental",
+              "name": "Mercury Elemental",
+              "handler": "mercury_elemental",
+              "systemOrigin": null
+            },
+            {
+              "gained": 54,
+              "lost": 0,
+              "grants": 18,
+              "firstT": 3.9,
+              "lastT": 14.708,
+              "samples": [
+                {
+                  "t": 3.9,
+                  "amount": 3
+                },
+                {
+                  "t": 3.908,
+                  "amount": 3
+                },
+                {
+                  "t": 5.25,
+                  "amount": 3
+                },
+                {
+                  "t": 5.258,
+                  "amount": 3
+                },
+                {
+                  "t": 6.6,
+                  "amount": 3
+                },
+                {
+                  "t": 6.608,
+                  "amount": 3
+                },
+                {
+                  "t": 7.95,
+                  "amount": 3
+                },
+                {
+                  "t": 7.958,
+                  "amount": 3
+                }
+              ],
+              "id": "poison_spear",
+              "itemId": "poison_spear",
+              "name": "Poison Spear",
+              "handler": "poison_spear",
+              "systemOrigin": null
+            },
+            {
+              "gained": 48,
+              "lost": 0,
+              "grants": 12,
+              "firstT": 3.85,
+              "lastT": 14.35,
+              "samples": [
+                {
+                  "t": 3.85,
+                  "amount": 4
+                },
+                {
+                  "t": 5.1,
+                  "amount": 4
+                },
+                {
+                  "t": 5.1,
+                  "amount": 4
+                },
+                {
+                  "t": 6.5,
+                  "amount": 4
+                },
+                {
+                  "t": 7.85,
+                  "amount": 4
+                },
+                {
+                  "t": 9.15,
+                  "amount": 4
+                },
+                {
+                  "t": 10.45,
+                  "amount": 4
+                },
+                {
+                  "t": 11.7,
+                  "amount": 4
+                }
+              ],
+              "id": "perfect_emerald",
+              "itemId": "perfect_emerald",
+              "name": "Perfect Emerald",
+              "handler": "perfect_emerald",
+              "systemOrigin": null
+            },
+            {
+              "gained": 21,
+              "lost": 0,
+              "grants": 7,
+              "firstT": 4.3,
+              "lastT": 14.2,
+              "samples": [
+                {
+                  "t": 4.3,
+                  "amount": 3
+                },
+                {
+                  "t": 6.05,
+                  "amount": 3
+                },
+                {
+                  "t": 7.75,
+                  "amount": 3
+                },
+                {
+                  "t": 9.4,
+                  "amount": 3
+                },
+                {
+                  "t": 11.05,
+                  "amount": 3
+                },
+                {
+                  "t": 12.6,
+                  "amount": 3
+                },
+                {
+                  "t": 14.2,
+                  "amount": 3
+                }
+              ],
+              "id": "emerald_whelp",
+              "itemId": "emerald_whelp",
+              "name": "Emerald Whelp",
+              "handler": "emerald_whelp",
+              "systemOrigin": null
+            },
+            {
+              "gained": 6,
+              "lost": 0,
+              "grants": 6,
+              "firstT": 3.85,
+              "lastT": 13.1,
+              "samples": [
+                {
+                  "t": 3.85,
+                  "amount": 1
+                },
+                {
+                  "t": 3.85,
+                  "amount": 1
+                },
+                {
+                  "t": 5.1,
+                  "amount": 1
+                },
+                {
+                  "t": 7.85,
+                  "amount": 1
+                },
+                {
+                  "t": 9.15,
+                  "amount": 1
+                },
+                {
+                  "t": 13.1,
+                  "amount": 1
+                }
+              ],
+              "id": "chipped_emerald",
+              "itemId": "chipped_emerald",
+              "name": "Chipped Emerald",
+              "handler": "chipped_emerald",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 479
+        }
+      }
+    },
+    "itemBuffs": {
+      "player": [
+        {
+          "gained": 40,
+          "lost": 0,
+          "grants": 1,
+          "firstT": 2.5,
+          "lastT": 2.5,
+          "samples": [
+            {
+              "t": 2.5,
+              "amount": 40
+            }
+          ],
+          "id": "falcon_blade",
+          "itemId": "falcon_blade",
+          "name": "Falcon Blade",
+          "handler": "falcon_blade",
+          "label": "Falcon Blade: haste aura 40% (6 items)"
+        }
+      ],
+      "dummy": []
+    },
+    "heals": {
+      "player": {
+        "total": 89,
+        "byKind": {
+          "heal": {
+            "total": 43,
+            "grants": 2
+          },
+          "vampirism": {
+            "total": 33,
+            "grants": 11
+          },
+          "regeneration": {
+            "total": 13,
+            "grants": 4
+          },
+          "maxHp": {
+            "total": 2,
+            "grants": 1
+          }
+        },
+        "sources": [
+          {
+            "gained": 43,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 10.05,
+            "lastT": 15.1,
+            "samples": [
+              {
+                "t": 10.05,
+                "amount": 20
+              },
+              {
+                "t": 15.1,
+                "amount": 23
+              }
+            ],
+            "id": "unknown",
+            "itemId": null,
+            "name": "unknown",
+            "handler": null,
+            "kind": "heal",
+            "label": "Heal +20",
+            "byItem": {}
+          },
+          {
+            "gained": 33,
+            "lost": 0,
+            "grants": 11,
+            "firstT": 13.118,
+            "lastT": 15.358,
+            "samples": [
+              {
+                "t": 13.118,
+                "amount": 3
+              },
+              {
+                "t": 13.128,
+                "amount": 3
+              },
+              {
+                "t": 13.308,
+                "amount": 3
+              },
+              {
+                "t": 13.608,
+                "amount": 3
+              },
+              {
+                "t": 13.608,
+                "amount": 3
+              },
+              {
+                "t": 14.368,
+                "amount": 3
+              },
+              {
+                "t": 14.378,
+                "amount": 3
+              },
+              {
+                "t": 14.708,
+                "amount": 3
+              }
+            ],
+            "id": "Vampirism",
+            "itemId": null,
+            "name": "Vampirism",
+            "handler": null,
+            "systemOrigin": "Vampirism",
+            "kind": "vampirism",
+            "label": "Falcon Blade: vampirism +3",
+            "byItem": {
+              "falcon_blade": 12,
+              "poison_spear": 6,
+              "death_scythe": 6,
+              "claws_of_attack": 6,
+              "courage_puppy": 3
+            }
+          },
+          {
+            "gained": 13,
+            "lost": 0,
+            "grants": 4,
+            "firstT": 7.5,
+            "lastT": 13.5,
+            "samples": [
+              {
+                "t": 7.5,
+                "amount": 1
+              },
+              {
+                "t": 9.5,
+                "amount": 2
+              },
+              {
+                "t": 11.5,
+                "amount": 3
+              },
+              {
+                "t": 13.5,
+                "amount": 7
+              }
+            ],
+            "id": "Regeneration",
+            "itemId": null,
+            "name": "Regeneration",
+            "handler": null,
+            "systemOrigin": "Regeneration",
+            "kind": "regeneration",
+            "label": "Regeneration: +1 health",
+            "byItem": {}
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 2
+              }
+            ],
+            "id": "piggybank",
+            "itemId": "piggybank",
+            "name": "Piggybank (max HP — not Heal tab)",
+            "handler": "piggybank",
+            "kind": "maxHp",
+            "label": "Piggybank: +2 max HP (2×1 start-of-battle)",
+            "byItem": {}
+          }
+        ]
+      }
+    },
+    "damage": {
+      "toDummy": {
+        "total": 528,
+        "byKind": {
+          "item": {
+            "total": 528,
+            "grants": 61
+          }
+        },
+        "sources": [
+          {
+            "gained": 140,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 3.907,
+            "lastT": 14.957,
+            "samples": [
+              {
+                "t": 3.907,
+                "amount": 6
+              },
+              {
+                "t": 5.307,
+                "amount": 12
+              },
+              {
+                "t": 6.607,
+                "amount": 18
+              },
+              {
+                "t": 8.057,
+                "amount": 18
+              },
+              {
+                "t": 9.457,
+                "amount": 16
+              },
+              {
+                "t": 10.807,
+                "amount": 14
+              },
+              {
+                "t": 12.257,
+                "amount": 10
+              },
+              {
+                "t": 13.607,
+                "amount": 22
+              }
+            ],
+            "id": "death_scythe",
+            "itemId": "death_scythe",
+            "name": "Death Scythe",
+            "handler": null,
+            "kind": "item",
+            "crits": 7
+          },
+          {
+            "gained": 117,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 3.907,
+            "lastT": 14.707,
+            "samples": [
+              {
+                "t": 3.907,
+                "amount": 13
+              },
+              {
+                "t": 5.257,
+                "amount": 14
+              },
+              {
+                "t": 6.607,
+                "amount": 12
+              },
+              {
+                "t": 7.957,
+                "amount": 10
+              },
+              {
+                "t": 9.257,
+                "amount": 11
+              },
+              {
+                "t": 10.607,
+                "amount": 15
+              },
+              {
+                "t": 12.007,
+                "amount": 11
+              },
+              {
+                "t": 13.307,
+                "amount": 15
+              }
+            ],
+            "id": "poison_spear",
+            "itemId": "poison_spear",
+            "name": "Poison Spear",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 97,
+            "lost": 0,
+            "grants": 18,
+            "firstT": 3.867,
+            "lastT": 14.377,
+            "samples": [
+              {
+                "t": 3.867,
+                "amount": 5
+              },
+              {
+                "t": 3.877,
+                "amount": 4
+              },
+              {
+                "t": 5.117,
+                "amount": 5
+              },
+              {
+                "t": 5.127,
+                "amount": 4
+              },
+              {
+                "t": 6.517,
+                "amount": 4
+              },
+              {
+                "t": 6.527,
+                "amount": 5
+              },
+              {
+                "t": 7.867,
+                "amount": 4
+              },
+              {
+                "t": 7.877,
+                "amount": 4
+              }
+            ],
+            "id": "falcon_blade",
+            "itemId": "falcon_blade",
+            "name": "Falcon Blade",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 55,
+            "lost": 0,
+            "grants": 4,
+            "firstT": 6.107,
+            "lastT": 15.357,
+            "samples": [
+              {
+                "t": 6.107,
+                "amount": 13
+              },
+              {
+                "t": 9.407,
+                "amount": 12
+              },
+              {
+                "t": 12.457,
+                "amount": 13
+              },
+              {
+                "t": 15.357,
+                "amount": 17
+              }
+            ],
+            "id": "courage_puppy",
+            "itemId": "courage_puppy",
+            "name": "Courage Puppy",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 53,
+            "lost": 0,
+            "grants": 7,
+            "firstT": 4.307,
+            "lastT": 14.207,
+            "samples": [
+              {
+                "t": 4.307,
+                "amount": 8
+              },
+              {
+                "t": 6.057,
+                "amount": 6
+              },
+              {
+                "t": 7.757,
+                "amount": 6
+              },
+              {
+                "t": 9.407,
+                "amount": 7
+              },
+              {
+                "t": 11.057,
+                "amount": 9
+              },
+              {
+                "t": 12.607,
+                "amount": 9
+              },
+              {
+                "t": 14.207,
+                "amount": 8
+              }
+            ],
+            "id": "emerald_whelp",
+            "itemId": "emerald_whelp",
+            "name": "Emerald Whelp",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 42,
+            "lost": 0,
+            "grants": 8,
+            "firstT": 4.107,
+            "lastT": 15.157,
+            "samples": [
+              {
+                "t": 4.107,
+                "amount": 4
+              },
+              {
+                "t": 5.607,
+                "amount": 4
+              },
+              {
+                "t": 7.257,
+                "amount": 4
+              },
+              {
+                "t": 8.907,
+                "amount": 5
+              },
+              {
+                "t": 10.457,
+                "amount": 6
+              },
+              {
+                "t": 12.057,
+                "amount": 5
+              },
+              {
+                "t": 13.607,
+                "amount": 7
+              },
+              {
+                "t": 15.157,
+                "amount": 7
+              }
+            ],
+            "id": "claws_of_attack",
+            "itemId": "claws_of_attack",
+            "name": "Claws of Attack",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 24,
+            "lost": 0,
+            "grants": 6,
+            "firstT": 4.757,
+            "lastT": 14.907,
+            "samples": [
+              {
+                "t": 4.757,
+                "amount": 2
+              },
+              {
+                "t": 6.907,
+                "amount": 3
+              },
+              {
+                "t": 8.957,
+                "amount": 3
+              },
+              {
+                "t": 10.957,
+                "amount": 4
+              },
+              {
+                "t": 13.007,
+                "amount": 6
+              },
+              {
+                "t": 14.907,
+                "amount": 6
+              }
+            ],
+            "id": "squirrel_archer",
+            "itemId": "squirrel_archer",
+            "name": "Squirrel Archer",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          }
+        ]
+      },
+      "toPlayer": {
+        "total": 0,
+        "byKind": {
+          "dummy": {
+            "total": 0,
+            "grants": 3
+          }
+        },
+        "sources": [
+          {
+            "gained": 0,
+            "lost": 0,
+            "grants": 3,
+            "firstT": 4.652,
+            "lastT": 11.102,
+            "samples": [
+              {
+                "t": 4.652,
+                "amount": 0
+              },
+              {
+                "t": 8.952,
+                "amount": 0
+              },
+              {
+                "t": 11.102,
+                "amount": 0
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null,
+            "kind": "dummy",
+            "crits": 0
+          }
+        ]
+      }
+    },
+    "misses": {
+      "player": 2,
+      "dummy": 2
+    },
+    "activations": {
+      "player": {
+        "total": 89,
+        "sources": [
+          {
+            "gained": 9,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 3.9,
+            "lastT": 14.95,
+            "samples": [
+              {
+                "t": 3.9,
+                "amount": 1
+              },
+              {
+                "t": 5.3,
+                "amount": 1
+              },
+              {
+                "t": 6.6,
+                "amount": 1
+              },
+              {
+                "t": 8.05,
+                "amount": 1
+              },
+              {
+                "t": 9.45,
+                "amount": 1
+              },
+              {
+                "t": 10.8,
+                "amount": 1
+              },
+              {
+                "t": 12.25,
+                "amount": 1
+              },
+              {
+                "t": 13.6,
+                "amount": 1
+              }
+            ],
+            "id": "death_scythe",
+            "itemId": "death_scythe",
+            "name": "Death Scythe",
+            "handler": "death_scythe"
+          },
+          {
+            "gained": 9,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 3.85,
+            "lastT": 14.35,
+            "samples": [
+              {
+                "t": 3.85,
+                "amount": 1
+              },
+              {
+                "t": 5.1,
+                "amount": 1
+              },
+              {
+                "t": 6.5,
+                "amount": 1
+              },
+              {
+                "t": 7.85,
+                "amount": 1
+              },
+              {
+                "t": 9.15,
+                "amount": 1
+              },
+              {
+                "t": 10.45,
+                "amount": 1
+              },
+              {
+                "t": 11.7,
+                "amount": 1
+              },
+              {
+                "t": 13.1,
+                "amount": 1
+              }
+            ],
+            "id": "falcon_blade",
+            "itemId": "falcon_blade",
+            "name": "Falcon Blade",
+            "handler": "double_strike"
+          },
+          {
+            "gained": 9,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 3.9,
+            "lastT": 14.7,
+            "samples": [
+              {
+                "t": 3.9,
+                "amount": 1
+              },
+              {
+                "t": 5.25,
+                "amount": 1
+              },
+              {
+                "t": 6.6,
+                "amount": 1
+              },
+              {
+                "t": 7.95,
+                "amount": 1
+              },
+              {
+                "t": 9.25,
+                "amount": 1
+              },
+              {
+                "t": 10.6,
+                "amount": 1
+              },
+              {
+                "t": 12,
+                "amount": 1
+              },
+              {
+                "t": 13.3,
+                "amount": 1
+              }
+            ],
+            "id": "poison_spear",
+            "itemId": "poison_spear",
+            "name": "Poison Spear",
+            "handler": "poison_spear"
+          },
+          {
+            "gained": 8,
+            "lost": 0,
+            "grants": 8,
+            "firstT": 4.1,
+            "lastT": 15.15,
+            "samples": [
+              {
+                "t": 4.1,
+                "amount": 1
+              },
+              {
+                "t": 5.6,
+                "amount": 1
+              },
+              {
+                "t": 7.25,
+                "amount": 1
+              },
+              {
+                "t": 8.9,
+                "amount": 1
+              },
+              {
+                "t": 10.45,
+                "amount": 1
+              },
+              {
+                "t": 12.05,
+                "amount": 1
+              },
+              {
+                "t": 13.6,
+                "amount": 1
+              },
+              {
+                "t": 15.15,
+                "amount": 1
+              }
+            ],
+            "id": "claws_of_attack",
+            "itemId": "claws_of_attack",
+            "name": "Claws of Attack",
+            "handler": "claws_of_attack"
+          },
+          {
+            "gained": 8,
+            "lost": 0,
+            "grants": 8,
+            "firstT": 2.5,
+            "lastT": 14.2,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 4.3,
+                "amount": 1
+              },
+              {
+                "t": 6.05,
+                "amount": 1
+              },
+              {
+                "t": 7.75,
+                "amount": 1
+              },
+              {
+                "t": 9.4,
+                "amount": 1
+              },
+              {
+                "t": 11.05,
+                "amount": 1
+              },
+              {
+                "t": 12.6,
+                "amount": 1
+              },
+              {
+                "t": 14.2,
+                "amount": 1
+              }
+            ],
+            "id": "emerald_whelp",
+            "itemId": "emerald_whelp",
+            "name": "Emerald Whelp",
+            "handler": "emerald_whelp"
+          },
+          {
+            "gained": 6,
+            "lost": 0,
+            "grants": 6,
+            "firstT": 4.75,
+            "lastT": 14.9,
+            "samples": [
+              {
+                "t": 4.75,
+                "amount": 1
+              },
+              {
+                "t": 6.9,
+                "amount": 1
+              },
+              {
+                "t": 8.95,
+                "amount": 1
+              },
+              {
+                "t": 10.95,
+                "amount": 1
+              },
+              {
+                "t": 13,
+                "amount": 1
+              },
+              {
+                "t": 14.9,
+                "amount": 1
+              }
+            ],
+            "id": "squirrel_archer",
+            "itemId": "squirrel_archer",
+            "name": "Squirrel Archer",
+            "handler": "squirrel_archer"
+          },
+          {
+            "gained": 5,
+            "lost": 0,
+            "grants": 5,
+            "firstT": 5.05,
+            "lastT": 15.1,
+            "samples": [
+              {
+                "t": 5.05,
+                "amount": 1
+              },
+              {
+                "t": 7.6,
+                "amount": 1
+              },
+              {
+                "t": 10.05,
+                "amount": 1
+              },
+              {
+                "t": 12.65,
+                "amount": 1
+              },
+              {
+                "t": 15.1,
+                "amount": 1
+              }
+            ],
+            "id": "death_lotus",
+            "itemId": "death_lotus",
+            "name": "Death Lotus",
+            "handler": "death_lotus"
+          },
+          {
+            "gained": 5,
+            "lost": 0,
+            "grants": 5,
+            "firstT": 5.05,
+            "lastT": 14.6,
+            "samples": [
+              {
+                "t": 5.05,
+                "amount": 1
+              },
+              {
+                "t": 7.6,
+                "amount": 1
+              },
+              {
+                "t": 9.95,
+                "amount": 1
+              },
+              {
+                "t": 12.35,
+                "amount": 1
+              },
+              {
+                "t": 14.6,
+                "amount": 1
+              }
+            ],
+            "id": "frog_prince",
+            "itemId": "frog_prince",
+            "name": "Frog Prince",
+            "handler": "frog_prince"
+          },
+          {
+            "gained": 4,
+            "lost": 0,
+            "grants": 4,
+            "firstT": 6.1,
+            "lastT": 15.35,
+            "samples": [
+              {
+                "t": 6.1,
+                "amount": 1
+              },
+              {
+                "t": 9.4,
+                "amount": 1
+              },
+              {
+                "t": 12.45,
+                "amount": 1
+              },
+              {
+                "t": 15.35,
+                "amount": 1
+              }
+            ],
+            "id": "courage_puppy",
+            "itemId": "courage_puppy",
+            "name": "Courage Puppy",
+            "handler": "courage_puppy"
+          },
+          {
+            "gained": 4,
+            "lost": 0,
+            "grants": 4,
+            "firstT": 5.55,
+            "lastT": 14.45,
+            "samples": [
+              {
+                "t": 5.55,
+                "amount": 1
+              },
+              {
+                "t": 8.55,
+                "amount": 1
+              },
+              {
+                "t": 11.45,
+                "amount": 1
+              },
+              {
+                "t": 14.45,
+                "amount": 1
+              }
+            ],
+            "id": "heart_container",
+            "itemId": "heart_container",
+            "name": "Heart Container",
+            "handler": "heart_container"
+          },
+          {
+            "gained": 4,
+            "lost": 0,
+            "grants": 4,
+            "firstT": 5.45,
+            "lastT": 14.45,
+            "samples": [
+              {
+                "t": 5.45,
+                "amount": 1
+              },
+              {
+                "t": 8.45,
+                "amount": 1
+              },
+              {
+                "t": 11.4,
+                "amount": 1
+              },
+              {
+                "t": 14.45,
+                "amount": 1
+              }
+            ],
+            "id": "jynx_torquilla",
+            "itemId": "jynx_torquilla",
+            "name": "Jynx torquilla",
+            "handler": "jynx_torquilla"
+          },
+          {
+            "gained": 4,
+            "lost": 0,
+            "grants": 4,
+            "firstT": 5.6,
+            "lastT": 13.75,
+            "samples": [
+              {
+                "t": 5.6,
+                "amount": 1
+              },
+              {
+                "t": 8.5,
+                "amount": 1
+              },
+              {
+                "t": 11.1,
+                "amount": 1
+              },
+              {
+                "t": 13.75,
+                "amount": 1
+              }
+            ],
+            "id": "speak_with_animals",
+            "itemId": "speak_with_animals",
+            "name": "Speak with Animals",
+            "handler": "speak_with_animals"
+          },
+          {
+            "gained": 3,
+            "lost": 0,
+            "grants": 3,
+            "firstT": 6.1,
+            "lastT": 13.3,
+            "samples": [
+              {
+                "t": 6.1,
+                "amount": 1
+              },
+              {
+                "t": 9.75,
+                "amount": 1
+              },
+              {
+                "t": 13.3,
+                "amount": 1
+              }
+            ],
+            "id": "blueberries",
+            "itemId": "blueberries",
+            "name": "Blueberries",
+            "handler": "blueberries"
+          },
+          {
+            "gained": 3,
+            "lost": 0,
+            "grants": 3,
+            "firstT": 6.55,
+            "lastT": 14.55,
+            "samples": [
+              {
+                "t": 6.55,
+                "amount": 1
+              },
+              {
+                "t": 10.7,
+                "amount": 1
+              },
+              {
+                "t": 14.55,
+                "amount": 1
+              }
+            ],
+            "id": "full_body_protection",
+            "itemId": "full_body_protection",
+            "name": "Full Body Protection",
+            "handler": "full_body_protection"
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 7.35,
+            "lastT": 11.85,
+            "samples": [
+              {
+                "t": 7.35,
+                "amount": 1
+              },
+              {
+                "t": 11.85,
+                "amount": 1
+              }
+            ],
+            "id": "hyper_hedgehog",
+            "itemId": "hyper_hedgehog",
+            "name": "Hyper Hedgehog",
+            "handler": "hyper_hedgehog"
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 7.5,
+            "lastT": 12.6,
+            "samples": [
+              {
+                "t": 7.5,
+                "amount": 1
+              },
+              {
+                "t": 12.6,
+                "amount": 1
+              }
+            ],
+            "id": "mercury_elemental",
+            "itemId": "mercury_elemental",
+            "name": "Mercury Elemental",
+            "handler": "mercury_elemental"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "demonic_flask",
+            "itemId": "demonic_flask",
+            "name": "Demonic Flask",
+            "handler": "demonic_flask"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "leather_helm",
+            "itemId": "leather_helm",
+            "name": "Leather Helm",
+            "handler": "leather_helm"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "piggybank",
+            "itemId": "piggybank",
+            "name": "Piggybank",
+            "handler": "piggybank"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 12.9,
+            "lastT": 12.9,
+            "samples": [
+              {
+                "t": 12.9,
+                "amount": 1
+              }
+            ],
+            "id": "wisp",
+            "itemId": "wisp",
+            "name": "Wisp",
+            "handler": "wisp"
+          }
+        ]
+      },
+      "dummy": {
+        "total": 5,
+        "sources": [
+          {
+            "gained": 5,
+            "lost": 0,
+            "grants": 5,
+            "firstT": 4.65,
+            "lastT": 13.25,
+            "samples": [
+              {
+                "t": 4.65,
+                "amount": 1
+              },
+              {
+                "t": 6.8,
+                "amount": 1
+              },
+              {
+                "t": 8.95,
+                "amount": 1
+              },
+              {
+                "t": 11.1,
+                "amount": 1
+              },
+              {
+                "t": 13.25,
+                "amount": 1
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null
+          }
+        ]
+      }
+    },
+    "stats": [
+      {
+        "t": 2.502,
+        "itemId": "heart_container",
+        "name": "Heart Container",
+        "label": "Healing increased by 15%",
+        "amount": 15,
+        "stat": "heal_efficiency",
+        "total": 15
+      }
+    ],
+    "end": {
+      "player": {
+        "hp": 113,
+        "maxHp": 302,
+        "stacks": {
+          "lucky": 15,
+          "regeneration": 7,
+          "vampirism": 3,
+          "poison": 90,
+          "spikes": 1,
+          "empower": 4,
+          "block": 441,
+          "mana": 26
+        },
+        "healAmp": 0.15,
+        "unhealing": 0
+      },
+      "dummy": {
+        "hp": 0,
+        "maxHp": 1200,
+        "stacks": {
+          "poison": 174
+        }
+      }
+    }
+  },
+  "ui": {
+    "combatLog": {
+      "lineCount": 425,
+      "byType": {
+        "activate": 94,
+        "buff": 105,
+        "heal": 18,
+        "stat": 1,
+        "debuff": 136,
+        "damage": 64,
+        "miss": 4,
+        "stamina": 2,
+        "fight_end": 1
+      },
+      "stackGained": {
+        "lucky": 20,
+        "block": 477,
+        "poison": 1119,
+        "mana": 26,
+        "regeneration": 14,
+        "empower": 6,
+        "spikes": 1,
+        "vampirism": 3
+      },
+      "sample": [
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "emerald_whelp",
+          "amount": null,
+          "label": "Weapon: Emerald Whelp"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "leather_helm",
+          "amount": null,
+          "label": "Armor: Leather Helm"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "piggybank",
+          "amount": null,
+          "label": "Accessory: Piggybank"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "demonic_flask",
+          "amount": null,
+          "label": "Demonic Flask consumed"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "emerald_whelp",
+          "amount": 3,
+          "label": "+3 lucky"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": null,
+          "itemId": "falcon_blade",
+          "amount": 40,
+          "label": "Falcon Blade: haste aura 40% (6 items)"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": "piggybank",
+          "amount": 2,
+          "label": "Piggybank: +2 max HP (2×1 start-of-battle)"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "heart_container",
+          "amount": 15,
+          "label": "Healing increased by 15%"
+        },
+        {
+          "t": 3.85,
+          "type": "activate",
+          "stack": null,
+          "itemId": "falcon_blade",
+          "amount": null,
+          "label": "Script: Falcon Blade (×2)"
+        },
+        {
+          "t": 3.85,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "mercury_elemental",
+          "amount": 3,
+          "label": "+3 block"
+        },
+        {
+          "t": 3.85,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "mercury_elemental",
+          "amount": 3,
+          "label": "+3 block"
+        },
+        {
+          "t": 3.85,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "chipped_emerald",
+          "amount": 1,
+          "label": "+1 poison"
+        },
+        {
+          "t": 3.85,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "mercury_elemental",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 3.85,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "mercury_elemental",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 3.85,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "perfect_emerald",
+          "amount": 4,
+          "label": "+4 poison"
+        },
+        {
+          "t": 3.85,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "chipped_emerald",
+          "amount": 1,
+          "label": "+1 poison"
+        },
+        {
+          "t": 3.867,
+          "type": "damage",
+          "stack": null,
+          "itemId": "falcon_blade",
+          "amount": 5,
+          "label": "Falcon Blade hit A"
+        },
+        {
+          "t": 3.877,
+          "type": "damage",
+          "stack": null,
+          "itemId": "falcon_blade",
+          "amount": 4,
+          "label": "Falcon Blade hit B"
+        },
+        {
+          "t": 3.9,
+          "type": "activate",
+          "stack": "poison",
+          "itemId": "poison_spear",
+          "amount": null,
+          "label": "Weapon: Poison Spear"
+        },
+        {
+          "t": 3.9,
+          "type": "activate",
+          "stack": null,
+          "itemId": "death_scythe",
+          "amount": null,
+          "label": "Weapon: Death Scythe"
+        },
+        {
+          "t": 3.9,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "mercury_elemental",
+          "amount": 9,
+          "label": "+9 block"
+        },
+        {
+          "t": 3.9,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "mercury_elemental",
+          "amount": 4,
+          "label": "+4 block"
+        },
+        {
+          "t": 3.9,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "poison_spear",
+          "amount": 3,
+          "label": "+3 poison"
+        },
+        {
+          "t": 3.9,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "poison_spear",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 3.9,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "mercury_elemental",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 3.9,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "mercury_elemental",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 3.9,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "mercury_elemental",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 3.9,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "mercury_elemental",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 3.907,
+          "type": "damage",
+          "stack": "poison",
+          "itemId": "poison_spear",
+          "amount": 13,
+          "label": "Poison Spear hit for 13"
+        },
+        {
+          "t": 3.907,
+          "type": "damage",
+          "stack": null,
+          "itemId": "death_scythe",
+          "amount": 6,
+          "label": "Death Scythe hit for 6"
+        },
+        {
+          "t": 3.908,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": null,
+          "amount": 3,
+          "label": "Poison Spear: +3 Poison"
+        },
+        {
+          "t": 4.1,
+          "type": "activate",
+          "stack": null,
+          "itemId": "claws_of_attack",
+          "amount": null,
+          "label": "Weapon: Claws of Attack"
+        },
+        {
+          "t": 4.1,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "mercury_elemental",
+          "amount": 3,
+          "label": "+3 block"
+        },
+        {
+          "t": 4.1,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "mercury_elemental",
+          "amount": 2,
+          "label": "+2 poison"
+        }
+      ]
+    },
+    "damageMeter": {
+      "stackTabs": {
+        "block": {
+          "gained": 477,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+9 block",
+              "amount": 9
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+4 block",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+5 block",
+              "amount": 5
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+1 block",
+              "amount": 1
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+8 block",
+              "amount": 8
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+4 block",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+9 block",
+              "amount": 9
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "full_body_protection",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+8 block",
+              "amount": 8
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+12 block",
+              "amount": 12
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 block",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+4 block",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+7 block",
+              "amount": 7
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+12 block",
+              "amount": 12
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 block",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+4 block",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+7 block",
+              "amount": 7
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+5 block",
+              "amount": 5
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+8 block",
+              "amount": 8
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+11 block",
+              "amount": 11
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+4 block",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": "full_body_protection",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+6 block",
+              "amount": 6
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+4 block",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+4 block",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+7 block",
+              "amount": 7
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+3 block",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+7 block",
+              "amount": 7
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+9 block",
+              "amount": 9
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+6 block",
+              "amount": 6
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+4 block",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+5 block",
+              "amount": 5
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+5 block",
+              "amount": 5
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+15 block",
+              "amount": 15
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+5 block",
+              "amount": 5
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+5 block",
+              "amount": 5
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+5 block",
+              "amount": 5
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+5 block",
+              "amount": 5
+            },
+            {
+              "itemId": "full_body_protection",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+11 block",
+              "amount": 11
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+4 block",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+16 block",
+              "amount": 16
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+5 block",
+              "amount": 5
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+12 block",
+              "amount": 12
+            }
+          ]
+        },
+        "lucky": {
+          "gained": 20,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 lucky",
+              "amount": 3
+            },
+            {
+              "itemId": "frog_prince",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "frog_prince",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": "frog_prince",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "frog_prince",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "wisp",
+              "name": "Wisp",
+              "amount": 10
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": "frog_prince",
+              "name": "+1 lucky",
+              "amount": 1
+            }
+          ]
+        },
+        "regeneration": {
+          "gained": 14,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "wisp",
+              "name": "+10 regeneration",
+              "amount": 10
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            }
+          ]
+        },
+        "vampirism": {
+          "gained": 3,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "potion_belt",
+              "name": "+1 vampirism",
+              "amount": 1
+            },
+            {
+              "itemId": "potion_belt",
+              "name": "+1 vampirism",
+              "amount": 1
+            },
+            {
+              "itemId": "potion_belt",
+              "name": "+1 vampirism",
+              "amount": 1
+            }
+          ]
+        },
+        "spikes": {
+          "gained": 1,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "potion_belt",
+              "name": "+1 spikes",
+              "amount": 1
+            }
+          ]
+        },
+        "mana": {
+          "gained": 26,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "death_lotus",
+              "name": "+4 mana",
+              "amount": 4
+            },
+            {
+              "itemId": "frog_prince",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": "death_lotus",
+              "name": "+4 mana",
+              "amount": 4
+            },
+            {
+              "itemId": "frog_prince",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "frog_prince",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "death_lotus",
+              "name": "+4 mana",
+              "amount": 4
+            },
+            {
+              "itemId": "frog_prince",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "death_lotus",
+              "name": "+4 mana",
+              "amount": 4
+            },
+            {
+              "itemId": "frog_prince",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "death_lotus",
+              "name": "+4 mana",
+              "amount": 4
+            }
+          ]
+        },
+        "empower": {
+          "gained": 6,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "claws_of_attack",
+              "name": "+1 empower",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Claws of Attack",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+2 empower",
+              "amount": 2
+            },
+            {
+              "itemId": "claws_of_attack",
+              "name": "+1 empower",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Claws of Attack",
+              "amount": 1
+            }
+          ]
+        },
+        "heat": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "poison": {
+          "gained": 1119,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "chipped_emerald",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": "chipped_emerald",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison Spear",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 8
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 20
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": "chipped_emerald",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison Spear",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 24
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 51
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison Spear",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "chipped_emerald",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison Spear",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 38
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 75
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "chipped_emerald",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison Spear",
+              "amount": 3
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 54
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 104
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison Spear",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison Spear",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 70
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 133
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "chipped_emerald",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison Spear",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "perfect_emerald",
+              "name": "+4 poison",
+              "amount": 4
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 84
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 167
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "poison_spear",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison Spear",
+              "amount": 3
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "mercury_elemental",
+              "name": "+2 poison",
+              "amount": 2
+            }
+          ]
+        },
+        "blind": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "cold": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        }
+      }
+    },
+    "hud": {
+      "player": {
+        "icons": [
+          {
+            "key": "crit_resistance",
+            "value": 15
+          },
+          {
+            "key": "stun_resistance",
+            "value": 15
+          },
+          {
+            "key": "heal_efficiency",
+            "value": 15
+          }
+        ],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 15,
+          "stun_resistance": 15,
+          "heal_efficiency": 15,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "dummy": {
+        "icons": [],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 0,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "expected": []
+    },
+    "mismatches": []
+  }
+}

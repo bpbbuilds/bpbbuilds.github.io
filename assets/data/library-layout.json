@@ -1,0 +1,8801 @@
+{
+  "generatedAt": "2026-07-16T21:30:57.195Z",
+  "source": "ItemLibrary sim (Grouping.None, Compact, 20 cols)",
+  "cols": 20,
+  "rows": 71,
+  "count": 517,
+  "excluded": 1,
+  "order": [
+    {
+      "id": "wooden_sword",
+      "gid": 1,
+      "name": "Wooden Sword",
+      "index": 0,
+      "x": 0,
+      "y": 0,
+      "score": -1.9998069498069497,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "pan",
+      "gid": 2,
+      "name": "Pan",
+      "index": 1,
+      "x": 1,
+      "y": 0,
+      "score": -1.9996138996138997,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "broom",
+      "gid": 3,
+      "name": "Broom",
+      "index": 2,
+      "x": 3,
+      "y": 0,
+      "score": -1.9994208494208494,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "stone",
+      "gid": 0,
+      "name": "Stone",
+      "index": 3,
+      "x": 1,
+      "y": 0,
+      "score": -1,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "wooden_buckler",
+      "gid": 4,
+      "name": "Wooden Buckler",
+      "index": 4,
+      "x": 4,
+      "y": 0,
+      "score": 1.0007722007722009,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "banana",
+      "gid": 5,
+      "name": "Banana",
+      "index": 5,
+      "x": 6,
+      "y": 0,
+      "score": 3.000965250965251,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "garlic",
+      "gid": 6,
+      "name": "Garlic",
+      "index": 6,
+      "x": 8,
+      "y": 0,
+      "score": 3.001158301158301,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "lump_of_coal",
+      "gid": 191,
+      "name": "Lump of Coal",
+      "index": 7,
+      "x": 7,
+      "y": 0,
+      "score": 3.0368725868725868,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "healing_herbs",
+      "gid": 7,
+      "name": "Healing Herbs",
+      "index": 8,
+      "x": 9,
+      "y": 0,
+      "score": 4.001351351351351,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "walrus_tusk",
+      "gid": 8,
+      "name": "Walrus Tusk",
+      "index": 9,
+      "x": 10,
+      "y": 0,
+      "score": 4.001544401544401,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "piggybank",
+      "gid": 9,
+      "name": "Piggybank",
+      "index": 10,
+      "x": 11,
+      "y": 0,
+      "score": 4.001737451737451,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "whetstone",
+      "gid": 10,
+      "name": "Whetstone",
+      "index": 11,
+      "x": 13,
+      "y": 0,
+      "score": 4.001930501930502,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "pocket_sand",
+      "gid": 20,
+      "name": "Pocket Sand",
+      "index": 12,
+      "x": 14,
+      "y": 0,
+      "score": 4.003861003861004,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "shiny_shell",
+      "gid": 275,
+      "name": "Shiny Shell",
+      "index": 13,
+      "x": 15,
+      "y": 0,
+      "score": 4.053088803088803,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "chipped_ruby",
+      "gid": 86,
+      "name": "Chipped Ruby",
+      "index": 14,
+      "x": 16,
+      "y": 0,
+      "score": 93.01660231660232,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "chipped_sapphire",
+      "gid": 91,
+      "name": "Chipped Sapphire",
+      "index": 15,
+      "x": 17,
+      "y": 0,
+      "score": 93.01756756756757,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "chipped_topaz",
+      "gid": 96,
+      "name": "Chipped Topaz",
+      "index": 16,
+      "x": 18,
+      "y": 0,
+      "score": 93.01853281853282,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "chipped_emerald",
+      "gid": 101,
+      "name": "Chipped Emerald",
+      "index": 17,
+      "x": 19,
+      "y": 0,
+      "score": 93.01949806949807,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "chipped_amethyst",
+      "gid": 106,
+      "name": "Chipped Amethyst",
+      "index": 18,
+      "x": 9,
+      "y": 1,
+      "score": 93.02046332046332,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "goobling",
+      "gid": 296,
+      "name": "Goobling",
+      "index": 19,
+      "x": 11,
+      "y": 1,
+      "score": 93.05714285714286,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "shortbow",
+      "gid": 182,
+      "name": "Shortbow",
+      "index": 20,
+      "x": 12,
+      "y": 1,
+      "score": 999.0351351351351,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "rat",
+      "gid": 163,
+      "name": "Rat",
+      "index": 21,
+      "x": 13,
+      "y": 1,
+      "score": 1093.0314671814672,
+      "classes": 1,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "the_lovers",
+      "gid": 77,
+      "name": "The Lovers",
+      "index": 22,
+      "x": 15,
+      "y": 1,
+      "score": 2093.0148648648646,
+      "classes": 2,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "flame",
+      "gid": 114,
+      "name": "Flame",
+      "index": 23,
+      "x": 16,
+      "y": 1,
+      "score": 8004.022007722007,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "book_of_basics",
+      "gid": 435,
+      "name": "Magic For Dummies",
+      "index": 24,
+      "x": 17,
+      "y": 1,
+      "score": 16003.083976833977,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "wand",
+      "gid": 422,
+      "name": "Wand of Equilibrium",
+      "index": 25,
+      "x": 18,
+      "y": 1,
+      "score": 16004.081467181468,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "white_pawn",
+      "gid": 313,
+      "name": "White Pawn",
+      "index": 26,
+      "x": 19,
+      "y": 1,
+      "score": 16093.060424710424,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "black_pawn",
+      "gid": 314,
+      "name": "Black Pawn",
+      "index": 27,
+      "x": 0,
+      "y": 2,
+      "score": 16093.060617760617,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "leather_bag",
+      "gid": 11,
+      "name": "Leather Bag",
+      "index": 28,
+      "x": 1,
+      "y": 2,
+      "score": 20003.002123552124,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "twine",
+      "gid": 380,
+      "name": "Twine",
+      "index": 29,
+      "x": 4,
+      "y": 2,
+      "score": 32004.073359073358,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "puzzlebag_l",
+      "gid": 404,
+      "name": "Puzzlebag of Love",
+      "index": 30,
+      "x": 4,
+      "y": 2,
+      "score": 36093.07799227799,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "battery",
+      "gid": 442,
+      "name": "Battery",
+      "index": 31,
+      "x": 5,
+      "y": 2,
+      "score": 64004.08532818533,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "hammer",
+      "gid": 12,
+      "name": "Hammer",
+      "index": 32,
+      "x": 7,
+      "y": 2,
+      "score": 99998.00231660232,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "spear",
+      "gid": 14,
+      "name": "Spear",
+      "index": 33,
+      "x": 10,
+      "y": 2,
+      "score": 99998.00270270271,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "dagger",
+      "gid": 15,
+      "name": "Dagger",
+      "index": 34,
+      "x": 11,
+      "y": 2,
+      "score": 99998.0028957529,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "leather_armor",
+      "gid": 17,
+      "name": "Leather Armor",
+      "index": 35,
+      "x": 13,
+      "y": 2,
+      "score": 100002.00328185328,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "gloves_of_haste",
+      "gid": 18,
+      "name": "Gloves of Haste",
+      "index": 36,
+      "x": 15,
+      "y": 3,
+      "score": 100003.00347490348,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "health_potion",
+      "gid": 19,
+      "name": "Health Potion",
+      "index": 37,
+      "x": 19,
+      "y": 2,
+      "score": 100003.00366795367,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "blueberries",
+      "gid": 22,
+      "name": "Blueberries",
+      "index": 38,
+      "x": 16,
+      "y": 2,
+      "score": 100003.00424710425,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "bag_of_stones",
+      "gid": 13,
+      "name": "Bag of Stones",
+      "index": 39,
+      "x": 17,
+      "y": 3,
+      "score": 100004.0025096525,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "customer_card",
+      "gid": 25,
+      "name": "Customer Card",
+      "index": 40,
+      "x": 0,
+      "y": 3,
+      "score": 100004.00482625482,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "box_of_riches",
+      "gid": 112,
+      "name": "Box of Riches",
+      "index": 41,
+      "x": 0,
+      "y": 4,
+      "score": 100004.02162162162,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "amulet_unidentified",
+      "gid": 263,
+      "name": "Unidentified Amulet",
+      "index": 42,
+      "x": 7,
+      "y": 3,
+      "score": 100004.05077220078,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "amulet_of_life",
+      "gid": 264,
+      "name": "Amulet of Life",
+      "index": 43,
+      "x": 9,
+      "y": 3,
+      "score": 100094.05096525096,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "amulet_of_steel",
+      "gid": 265,
+      "name": "Amulet of Steel",
+      "index": 44,
+      "x": 12,
+      "y": 3,
+      "score": 100094.05115830115,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "amulet_of_feasting",
+      "gid": 266,
+      "name": "Amulet of Feasting",
+      "index": 45,
+      "x": 2,
+      "y": 4,
+      "score": 100094.05135135136,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "amulet_of_darkness",
+      "gid": 267,
+      "name": "Amulet of Darkness",
+      "index": 46,
+      "x": 3,
+      "y": 4,
+      "score": 100094.05154440155,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "amulet_of_agility",
+      "gid": 268,
+      "name": "Amulet of Energy",
+      "index": 47,
+      "x": 4,
+      "y": 4,
+      "score": 100094.05173745174,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "amulet_of_the_wild",
+      "gid": 269,
+      "name": "Amulet of the Wild",
+      "index": 48,
+      "x": 5,
+      "y": 4,
+      "score": 100094.05193050193,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "amulet_of_alchemy",
+      "gid": 270,
+      "name": "Amulet of Alchemy",
+      "index": 49,
+      "x": 6,
+      "y": 4,
+      "score": 100094.05212355213,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "amulet_of_fortune",
+      "gid": 437,
+      "name": "Amulet of Fortune",
+      "index": 50,
+      "x": 7,
+      "y": 4,
+      "score": 100094.08436293436,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "amulet_of_light",
+      "gid": 510,
+      "name": "Amulet of Light",
+      "index": 51,
+      "x": 9,
+      "y": 4,
+      "score": 100094.09845559846,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "shovel",
+      "gid": 183,
+      "name": "Shovel",
+      "index": 52,
+      "x": 11,
+      "y": 4,
+      "score": 100098.03532818533,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "torch",
+      "gid": 208,
+      "name": "Torch",
+      "index": 53,
+      "x": 12,
+      "y": 4,
+      "score": 100098.04015444015,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "spiked_shield",
+      "gid": 16,
+      "name": "Spiked Shield",
+      "index": 54,
+      "x": 15,
+      "y": 4,
+      "score": 100101.00308880309,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "goobert",
+      "gid": 23,
+      "name": "Goobert",
+      "index": 55,
+      "x": 17,
+      "y": 4,
+      "score": 100103.00444015444,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "burning_coal",
+      "gid": 207,
+      "name": "Burning Coal",
+      "index": 56,
+      "x": 19,
+      "y": 4,
+      "score": 100103.03996138996,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "shell_totem",
+      "gid": 276,
+      "name": "Shell Totem",
+      "index": 57,
+      "x": 0,
+      "y": 5,
+      "score": 100103.05328185328,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "shelly",
+      "gid": 374,
+      "name": "Shelly",
+      "index": 58,
+      "x": 1,
+      "y": 5,
+      "score": 100103.0722007722,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "coins",
+      "gid": 126,
+      "name": "Bunch of Coins",
+      "index": 59,
+      "x": 3,
+      "y": 5,
+      "score": 100104.02432432433,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "shepherds_crook",
+      "gid": 351,
+      "name": "Shepherd’s Crook",
+      "index": 60,
+      "x": 4,
+      "y": 5,
+      "score": 100104.06776061776,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "pot",
+      "gid": 514,
+      "name": "Boiling Pot",
+      "index": 61,
+      "x": 6,
+      "y": 5,
+      "score": 100104.09922779923,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "flawed_ruby",
+      "gid": 87,
+      "name": "Flawed Ruby",
+      "index": 62,
+      "x": 8,
+      "y": 5,
+      "score": 100193.0167953668,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "flawed_sapphire",
+      "gid": 92,
+      "name": "Flawed Sapphire",
+      "index": 63,
+      "x": 9,
+      "y": 5,
+      "score": 100193.01776061776,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "flawed_topaz",
+      "gid": 97,
+      "name": "Flawed Topaz",
+      "index": 64,
+      "x": 13,
+      "y": 5,
+      "score": 100193.01872586872,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "flawed_emerald",
+      "gid": 102,
+      "name": "Flawed Emerald",
+      "index": 65,
+      "x": 14,
+      "y": 5,
+      "score": 100193.0196911197,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "flawed_amethyst",
+      "gid": 107,
+      "name": "Flawed Amethyst",
+      "index": 66,
+      "x": 19,
+      "y": 5,
+      "score": 100193.02065637066,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "carrot",
+      "gid": 124,
+      "name": "Carrot",
+      "index": 67,
+      "x": 1,
+      "y": 6,
+      "score": 101003.02393822394,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "lucky_clover",
+      "gid": 24,
+      "name": "Lucky Clover",
+      "index": 68,
+      "x": 3,
+      "y": 6,
+      "score": 101004.00463320463,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "squirrel",
+      "gid": 164,
+      "name": "Squirrel",
+      "index": 69,
+      "x": 5,
+      "y": 6,
+      "score": 101093.03166023166,
+      "classes": 1,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "thorn_shortbow",
+      "gid": 233,
+      "name": "Tusk Poker",
+      "index": 70,
+      "x": 8,
+      "y": 6,
+      "score": 101099.04498069498,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "rat_chef",
+      "gid": 311,
+      "name": "Rat Chef",
+      "index": 71,
+      "x": 9,
+      "y": 6,
+      "score": 101103.06003861004,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "fly_agaric",
+      "gid": 21,
+      "name": "Fly Agaric",
+      "index": 72,
+      "x": 10,
+      "y": 6,
+      "score": 102003.00405405405,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "deck_of_cards",
+      "gid": 75,
+      "name": "Deck of Cards",
+      "index": 73,
+      "x": 12,
+      "y": 6,
+      "score": 102004.01447876448,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "ace_of_spades",
+      "gid": 76,
+      "name": "Ace of Spades",
+      "index": 74,
+      "x": 13,
+      "y": 6,
+      "score": 102093.01467181467,
+      "classes": 2,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "reverse",
+      "gid": 241,
+      "name": "Reverse!",
+      "index": 75,
+      "x": 14,
+      "y": 6,
+      "score": 102093.04652509652,
+      "classes": 2,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "axe",
+      "gid": 132,
+      "name": "Axe",
+      "index": 76,
+      "x": 15,
+      "y": 6,
+      "score": 103998.02548262548,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "whetstone2",
+      "gid": 501,
+      "name": "Improved Whetstone",
+      "index": 77,
+      "x": 17,
+      "y": 6,
+      "score": 104104.09671814671,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "chili_pepper",
+      "gid": 117,
+      "name": "Chili Pepper",
+      "index": 78,
+      "x": 18,
+      "y": 6,
+      "score": 108003.02258687258,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "spell_scroll_frostbolt",
+      "gid": 178,
+      "name": "Spell Scroll: Frostbolt",
+      "index": 79,
+      "x": 0,
+      "y": 7,
+      "score": 108093.03436293437,
+      "classes": 8,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "spell_scroll_nature",
+      "gid": 326,
+      "name": "Spell Scroll: Regrowth",
+      "index": 80,
+      "x": 2,
+      "y": 7,
+      "score": 116003.06293436294,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "chess_board",
+      "gid": 312,
+      "name": "Chess Board",
+      "index": 81,
+      "x": 19,
+      "y": 6,
+      "score": 116004.06023166023,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "book_of_ice",
+      "gid": 179,
+      "name": "Frieren’s Guide to Ice",
+      "index": 82,
+      "x": 7,
+      "y": 7,
+      "score": 116093.03455598456,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "white_knight",
+      "gid": 315,
+      "name": "White Knight",
+      "index": 83,
+      "x": 16,
+      "y": 7,
+      "score": 116093.06081081081,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "black_knight",
+      "gid": 316,
+      "name": "Black Knight",
+      "index": 84,
+      "x": 17,
+      "y": 7,
+      "score": 116093.061003861,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "white_bishop",
+      "gid": 317,
+      "name": "White Bishop",
+      "index": 85,
+      "x": 19,
+      "y": 7,
+      "score": 116093.06119691119,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "black_bishop",
+      "gid": 318,
+      "name": "Black Bishop",
+      "index": 86,
+      "x": 0,
+      "y": 8,
+      "score": 116093.0613899614,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "fanny_pack",
+      "gid": 26,
+      "name": "Fanny Pack",
+      "index": 87,
+      "x": 1,
+      "y": 8,
+      "score": 120003.00501930503,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "broccoli",
+      "gid": 399,
+      "name": "Broccoli",
+      "index": 88,
+      "x": 3,
+      "y": 8,
+      "score": 132003.07702702703,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "boomerang",
+      "gid": 395,
+      "name": "Boomerang",
+      "index": 89,
+      "x": 4,
+      "y": 8,
+      "score": 132099.07625482624,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "hero_shield",
+      "gid": 434,
+      "name": "Hero Shield",
+      "index": 90,
+      "x": 8,
+      "y": 8,
+      "score": 132101.08378378378,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "rope",
+      "gid": 381,
+      "name": "Rope",
+      "index": 91,
+      "x": 10,
+      "y": 8,
+      "score": 132104.07355212356,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "puzzlebag_s",
+      "gid": 405,
+      "name": "Puzzlebag of Improvement",
+      "index": 92,
+      "x": 11,
+      "y": 8,
+      "score": 136093.0781853282,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "slice_of_bread",
+      "gid": 466,
+      "name": "Slice of Bread",
+      "index": 93,
+      "x": 6,
+      "y": 8,
+      "score": 164003.08996138995,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "resistor",
+      "gid": 443,
+      "name": "Resistor",
+      "index": 94,
+      "x": 14,
+      "y": 8,
+      "score": 164004.0855212355,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "cog",
+      "gid": 444,
+      "name": "Cog",
+      "index": 95,
+      "x": 16,
+      "y": 8,
+      "score": 164004.08571428573,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "mananana",
+      "gid": 465,
+      "name": "Mananana",
+      "index": 96,
+      "x": 17,
+      "y": 8,
+      "score": 164103.08976833976,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "generator",
+      "gid": 472,
+      "name": "Generator",
+      "index": 97,
+      "x": 19,
+      "y": 8,
+      "score": 164104.09111969112,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "thorn_whip",
+      "gid": 27,
+      "name": "Thorn Whip",
+      "index": 98,
+      "x": 0,
+      "y": 9,
+      "score": 199998.0052123552,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "hungry_blade",
+      "gid": 28,
+      "name": "Hungry Blade",
+      "index": 99,
+      "x": 6,
+      "y": 9,
+      "score": 199998.00540540542,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "leather_boots",
+      "gid": 34,
+      "name": "Leather Boots",
+      "index": 100,
+      "x": 2,
+      "y": 9,
+      "score": 200003.00656370656,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "pestilence_flask",
+      "gid": 36,
+      "name": "Pestilence Flask",
+      "index": 101,
+      "x": 7,
+      "y": 9,
+      "score": 200003.00694980696,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "stone_skin_potion",
+      "gid": 37,
+      "name": "Stone Skin Potion",
+      "index": 102,
+      "x": 10,
+      "y": 9,
+      "score": 200003.00714285715,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "leather_helm",
+      "gid": 127,
+      "name": "Cap of Resilience",
+      "index": 103,
+      "x": 13,
+      "y": 9,
+      "score": 200003.02451737452,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "corrupted_crystal",
+      "gid": 160,
+      "name": "Corrupted Crystal",
+      "index": 104,
+      "x": 18,
+      "y": 8,
+      "score": 200003.0308880309,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "flute",
+      "gid": 40,
+      "name": "Flute",
+      "index": 105,
+      "x": 14,
+      "y": 9,
+      "score": 200004.00772200772,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "mana_orb",
+      "gid": 41,
+      "name": "Mana Orb",
+      "index": 106,
+      "x": 0,
+      "y": 10,
+      "score": 200004.0079150579,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "oil_lamp",
+      "gid": 277,
+      "name": "Oil Lamp",
+      "index": 107,
+      "x": 3,
+      "y": 10,
+      "score": 200004.05347490349,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "unstable_recombobulator",
+      "gid": 280,
+      "name": "Unstable Recombobulator",
+      "index": 108,
+      "x": 4,
+      "y": 10,
+      "score": 200004.05405405405,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "snowman",
+      "gid": 353,
+      "name": "Wonky Snowman",
+      "index": 109,
+      "x": 5,
+      "y": 10,
+      "score": 200004.06814671814,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "snowball",
+      "gid": 352,
+      "name": "Snowball",
+      "index": 110,
+      "x": 8,
+      "y": 10,
+      "score": 200094.06795366795,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "hero_sword",
+      "gid": 29,
+      "name": "Hero Sword",
+      "index": 111,
+      "x": 9,
+      "y": 10,
+      "score": 200098.0055984556,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "poison_dagger",
+      "gid": 30,
+      "name": "Poison Dagger",
+      "index": 112,
+      "x": 11,
+      "y": 10,
+      "score": 200098.0057915058,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "claws_of_attack",
+      "gid": 118,
+      "name": "Claws of Attack",
+      "index": 113,
+      "x": 14,
+      "y": 10,
+      "score": 200098.0227799228,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "burning_torch",
+      "gid": 209,
+      "name": "Burning Torch",
+      "index": 114,
+      "x": 12,
+      "y": 10,
+      "score": 200098.04034749034,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "magic_staff",
+      "gid": 32,
+      "name": "Magic Staff",
+      "index": 115,
+      "x": 16,
+      "y": 10,
+      "score": 200099.00617760618,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "strong_health_potion",
+      "gid": 35,
+      "name": "Strong Health Potion",
+      "index": 116,
+      "x": 17,
+      "y": 10,
+      "score": 200103.00675675675,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "mana_potion",
+      "gid": 172,
+      "name": "Mana Potion",
+      "index": 117,
+      "x": 18,
+      "y": 10,
+      "score": 200103.03320463322,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "platin_customer_card",
+      "gid": 216,
+      "name": "Platinum Customer Card",
+      "index": 118,
+      "x": 19,
+      "y": 10,
+      "score": 200104.0416988417,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "sandbag",
+      "gid": 391,
+      "name": "Sir Sand",
+      "index": 119,
+      "x": 0,
+      "y": 11,
+      "score": 200104.07548262549,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "frozen_buckler",
+      "gid": 181,
+      "name": "Frozen Buckler",
+      "index": 120,
+      "x": 7,
+      "y": 11,
+      "score": 200191.03494208495,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "ice_armor",
+      "gid": 180,
+      "name": "Ice Armor",
+      "index": 121,
+      "x": 13,
+      "y": 11,
+      "score": 200192.03474903476,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "regular_ruby",
+      "gid": 88,
+      "name": "Regular Ruby",
+      "index": 122,
+      "x": 4,
+      "y": 11,
+      "score": 200193.016988417,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "regular_sapphire",
+      "gid": 93,
+      "name": "Regular Sapphire",
+      "index": 123,
+      "x": 10,
+      "y": 11,
+      "score": 200193.01795366796,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "regular_topaz",
+      "gid": 98,
+      "name": "Regular Topaz",
+      "index": 124,
+      "x": 15,
+      "y": 11,
+      "score": 200193.0189189189,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "regular_emerald",
+      "gid": 103,
+      "name": "Regular Emerald",
+      "index": 125,
+      "x": 19,
+      "y": 11,
+      "score": 200193.0198841699,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "regular_amethyst",
+      "gid": 108,
+      "name": "Regular Amethyst",
+      "index": 126,
+      "x": 1,
+      "y": 12,
+      "score": 200193.02084942086,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "bow_and_arrow",
+      "gid": 31,
+      "name": "Bow and Arrow",
+      "index": 127,
+      "x": 1,
+      "y": 12,
+      "score": 200999.005984556,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "acorn_collar",
+      "gid": 39,
+      "name": "Acorn Collar",
+      "index": 128,
+      "x": 3,
+      "y": 12,
+      "score": 201004.00752895753,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "hedgehog",
+      "gid": 165,
+      "name": "Hedgehog",
+      "index": 129,
+      "x": 4,
+      "y": 12,
+      "score": 201093.03185328186,
+      "classes": 1,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "lucky_shortbow",
+      "gid": 234,
+      "name": "Fortuna's Hope",
+      "index": 130,
+      "x": 5,
+      "y": 12,
+      "score": 201099.04517374517,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "squirrel_archer",
+      "gid": 310,
+      "name": "Squirrel Archer",
+      "index": 131,
+      "x": 8,
+      "y": 12,
+      "score": 201099.05984555985,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "carrot_goobert",
+      "gid": 168,
+      "name": "Carrot Goobert",
+      "index": 132,
+      "x": 10,
+      "y": 12,
+      "score": 201103.03243243243,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "lucky_piggy",
+      "gid": 119,
+      "name": "Lucky Piggy",
+      "index": 133,
+      "x": 17,
+      "y": 12,
+      "score": 201104.02297297298,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "toad",
+      "gid": 274,
+      "name": "Toad",
+      "index": 134,
+      "x": 6,
+      "y": 12,
+      "score": 202003.0528957529,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "white_eyes_blue_dragon",
+      "gid": 78,
+      "name": "White-Eyes Blue Dragon",
+      "index": 135,
+      "x": 12,
+      "y": 12,
+      "score": 202093.01505791506,
+      "classes": 2,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "the_fool",
+      "gid": 240,
+      "name": "The Fool",
+      "index": 136,
+      "x": 15,
+      "y": 12,
+      "score": 202093.04633204633,
+      "classes": 2,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "miss_fortune",
+      "gid": 243,
+      "name": "Miss Fortune",
+      "index": 137,
+      "x": 19,
+      "y": 12,
+      "score": 202094.0469111969,
+      "classes": 2,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "poison_goobert",
+      "gid": 38,
+      "name": "Poison Goobert",
+      "index": 138,
+      "x": 6,
+      "y": 13,
+      "score": 202103.00733590734,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "double_axe",
+      "gid": 133,
+      "name": "Double Axe",
+      "index": 139,
+      "x": 3,
+      "y": 14,
+      "score": 204098.0256756757,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "dragonscale_armor",
+      "gid": 135,
+      "name": "Dragonscale Armor",
+      "index": 140,
+      "x": 17,
+      "y": 13,
+      "score": 204102.02606177607,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "dragon_claws",
+      "gid": 136,
+      "name": "Dragon Claws",
+      "index": 141,
+      "x": 0,
+      "y": 14,
+      "score": 204103.02625482625,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "dragonskin_boots",
+      "gid": 153,
+      "name": "Dragonskin Boots",
+      "index": 142,
+      "x": 8,
+      "y": 14,
+      "score": 204103.02953667953,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "whetstone3",
+      "gid": 502,
+      "name": "Essence of Steel",
+      "index": 143,
+      "x": 0,
+      "y": 13,
+      "score": 204104.09691119692,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "draconic_orb",
+      "gid": 120,
+      "name": "Draconic Orb",
+      "index": 144,
+      "x": 9,
+      "y": 14,
+      "score": 208004.02316602317,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "molten_dagger",
+      "gid": 211,
+      "name": "Molten Dagger",
+      "index": 145,
+      "x": 10,
+      "y": 14,
+      "score": 208098.04073359072,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "molten_spear",
+      "gid": 212,
+      "name": "Molten Spear",
+      "index": 146,
+      "x": 11,
+      "y": 14,
+      "score": 208098.04092664094,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "burning_sword",
+      "gid": 228,
+      "name": "Burning Sword",
+      "index": 147,
+      "x": 12,
+      "y": 14,
+      "score": 208098.04401544403,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "chili_goobert",
+      "gid": 205,
+      "name": "Chili Goobert",
+      "index": 148,
+      "x": 13,
+      "y": 14,
+      "score": 208103.0395752896,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "fire_shelly",
+      "gid": 426,
+      "name": "Turbo-Shelly",
+      "index": 149,
+      "x": 15,
+      "y": 14,
+      "score": 208103.08223938223,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "spell_scroll_light",
+      "gid": 327,
+      "name": "Spell Scroll: Blessing of Purity",
+      "index": 150,
+      "x": 0,
+      "y": 15,
+      "score": 216003.06312741313,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "book_of_nature",
+      "gid": 329,
+      "name": "Nature Chronicles: Trees",
+      "index": 151,
+      "x": 19,
+      "y": 14,
+      "score": 216003.0635135135,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "mage_hat",
+      "gid": 341,
+      "name": "Mage Hat",
+      "index": 152,
+      "x": 1,
+      "y": 15,
+      "score": 216003.06583011584,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "white_rook",
+      "gid": 319,
+      "name": "White Rook",
+      "index": 153,
+      "x": 6,
+      "y": 15,
+      "score": 216093.0615830116,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "black_rook",
+      "gid": 320,
+      "name": "Black Rook",
+      "index": 154,
+      "x": 7,
+      "y": 15,
+      "score": 216093.06177606178,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "stamina_sack",
+      "gid": 42,
+      "name": "Stamina Sack",
+      "index": 155,
+      "x": 9,
+      "y": 15,
+      "score": 220003.0081081081,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "box_of_prosperity",
+      "gid": 278,
+      "name": "Box of Prosperity",
+      "index": 156,
+      "x": 15,
+      "y": 15,
+      "score": 220103.05366795367,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "holdall",
+      "gid": 372,
+      "name": "Holdall",
+      "index": 157,
+      "x": 5,
+      "y": 16,
+      "score": 220103.07181467183,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "lootbox",
+      "gid": 432,
+      "name": "Treasure Chest",
+      "index": 158,
+      "x": 12,
+      "y": 16,
+      "score": 232004.0833976834,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "long_spear",
+      "gid": 417,
+      "name": "Very Long Spear",
+      "index": 159,
+      "x": 0,
+      "y": 16,
+      "score": 232098.0805019305,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "daggerang",
+      "gid": 418,
+      "name": "Daggerang",
+      "index": 160,
+      "x": 16,
+      "y": 16,
+      "score": 232099.0806949807,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "employee_uniform",
+      "gid": 433,
+      "name": "Employee Uniform",
+      "index": 161,
+      "x": 18,
+      "y": 16,
+      "score": 232102.0835907336,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "broccoli_goobert",
+      "gid": 400,
+      "name": "Broccoli Goobert",
+      "index": 162,
+      "x": 1,
+      "y": 17,
+      "score": 232103.07722007722,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "piggy_of_riches",
+      "gid": 396,
+      "name": "Piggy of Riches",
+      "index": 163,
+      "x": 14,
+      "y": 17,
+      "score": 232104.07644787646,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "puzzlebag_z",
+      "gid": 406,
+      "name": "Puzzlebag of Ruin",
+      "index": 164,
+      "x": 3,
+      "y": 18,
+      "score": 236093.07837837838,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "coil",
+      "gid": 445,
+      "name": "Coil",
+      "index": 165,
+      "x": 8,
+      "y": 16,
+      "score": 264004.0859073359,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "charge_splitter",
+      "gid": 446,
+      "name": "Charge Splitter",
+      "index": 166,
+      "x": 10,
+      "y": 16,
+      "score": 264004.0861003861,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "wrench",
+      "gid": 447,
+      "name": "Wrench",
+      "index": 167,
+      "x": 8,
+      "y": 17,
+      "score": 264098.0862934363,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "thors_hammer",
+      "gid": 463,
+      "name": "Thor’s Hammer",
+      "index": 168,
+      "x": 5,
+      "y": 18,
+      "score": 264098.0893822394,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "slice_of_toast",
+      "gid": 467,
+      "name": "Slice of Toast",
+      "index": 169,
+      "x": 14,
+      "y": 16,
+      "score": 264103.09015444014,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "electric_torch",
+      "gid": 448,
+      "name": "Electric Torch",
+      "index": 170,
+      "x": 10,
+      "y": 17,
+      "score": 264104.0864864865,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "rib_saw_blade",
+      "gid": 43,
+      "name": "Ripsaw Blade",
+      "index": 171,
+      "x": 9,
+      "y": 18,
+      "score": 299998.0083011583,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "shield_of_valor",
+      "gid": 51,
+      "name": "Shield of Valor",
+      "index": 172,
+      "x": 11,
+      "y": 18,
+      "score": 300001.00984555983,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "holy_armor",
+      "gid": 58,
+      "name": "Holy Armor",
+      "index": 173,
+      "x": 13,
+      "y": 18,
+      "score": 300002.0111969112,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "heroic_potion",
+      "gid": 59,
+      "name": "Heroic Potion",
+      "index": 174,
+      "x": 15,
+      "y": 18,
+      "score": 300003.0113899614,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "pineapple",
+      "gid": 60,
+      "name": "Pineapple",
+      "index": 175,
+      "x": 16,
+      "y": 18,
+      "score": 300003.0115830116,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "ruby_egg",
+      "gid": 62,
+      "name": "Ruby Egg",
+      "index": 176,
+      "x": 1,
+      "y": 19,
+      "score": 300003.011969112,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "jynx_torquilla",
+      "gid": 81,
+      "name": "Jynx torquilla",
+      "index": 177,
+      "x": 7,
+      "y": 19,
+      "score": 300003.01563706563,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "blood_amulet",
+      "gid": 48,
+      "name": "Blood Amulet",
+      "index": 178,
+      "x": 3,
+      "y": 17,
+      "score": 300004.00926640927,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "lucky_cat",
+      "gid": 273,
+      "name": "Maneki-neko",
+      "index": 179,
+      "x": 17,
+      "y": 18,
+      "score": 300004.0527027027,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "bloody_dagger",
+      "gid": 45,
+      "name": "Bloody Dagger",
+      "index": 180,
+      "x": 3,
+      "y": 19,
+      "score": 300098.0086872587,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "manathirst",
+      "gid": 69,
+      "name": "Manathirst",
+      "index": 181,
+      "x": 10,
+      "y": 19,
+      "score": 300098.0133204633,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "spectral_dagger",
+      "gid": 70,
+      "name": "Spectral Dagger",
+      "index": 182,
+      "x": 18,
+      "y": 19,
+      "score": 300098.0135135135,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "hero_longsword",
+      "gid": 82,
+      "name": "Hero Longsword",
+      "index": 183,
+      "x": 19,
+      "y": 19,
+      "score": 300098.0158301158,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "falcon_blade",
+      "gid": 83,
+      "name": "Falcon Blade",
+      "index": 184,
+      "x": 4,
+      "y": 20,
+      "score": 300098.016023166,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "eggscalibur",
+      "gid": 125,
+      "name": "Eggscalibur",
+      "index": 185,
+      "x": 0,
+      "y": 21,
+      "score": 300098.02413127414,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "pandamonium",
+      "gid": 161,
+      "name": "Pandamonium",
+      "index": 186,
+      "x": 5,
+      "y": 21,
+      "score": 300098.0310810811,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "magic_torch",
+      "gid": 215,
+      "name": "Magic Torch",
+      "index": 187,
+      "x": 15,
+      "y": 20,
+      "score": 300098.0415057915,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "snow_stick",
+      "gid": 366,
+      "name": "Snow Stick",
+      "index": 188,
+      "x": 17,
+      "y": 20,
+      "score": 300098.07065637066,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "poison_spear",
+      "gid": 373,
+      "name": "Poison Spear",
+      "index": 189,
+      "x": 3,
+      "y": 21,
+      "score": 300098.072007722,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "onion_cutter",
+      "gid": 513,
+      "name": "Stankus’ Toothpick",
+      "index": 190,
+      "x": 8,
+      "y": 21,
+      "score": 300098.09903474903,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "serpent_staff",
+      "gid": 258,
+      "name": "Serpent Staff",
+      "index": 191,
+      "x": 11,
+      "y": 21,
+      "score": 300099.0498069498,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "vampiric_armor",
+      "gid": 50,
+      "name": "Vampiric Armor",
+      "index": 192,
+      "x": 12,
+      "y": 21,
+      "score": 300102.00965250965,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "stone_armor",
+      "gid": 237,
+      "name": "Stone Armor",
+      "index": 193,
+      "x": 5,
+      "y": 22,
+      "score": 300102.04575289576,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "strong_stone_skin_potion",
+      "gid": 46,
+      "name": "Strong Stone Skin Potion",
+      "index": 194,
+      "x": 14,
+      "y": 21,
+      "score": 300103.0088803089,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "steel_goobert",
+      "gid": 52,
+      "name": "Steel Goobert",
+      "index": 195,
+      "x": 9,
+      "y": 22,
+      "score": 300103.01003861,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "blood_goobert",
+      "gid": 54,
+      "name": "Blood Goobert",
+      "index": 196,
+      "x": 15,
+      "y": 22,
+      "score": 300103.0104247104,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "strong_heroic_potion",
+      "gid": 55,
+      "name": "Strong Heroic Potion",
+      "index": 197,
+      "x": 18,
+      "y": 21,
+      "score": 300103.0106177606,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "vampiric_potion",
+      "gid": 174,
+      "name": "Vampiric Potion",
+      "index": 198,
+      "x": 2,
+      "y": 22,
+      "score": 300103.0335907336,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "evil_cap",
+      "gid": 206,
+      "name": "Cap of Discomfort",
+      "index": 199,
+      "x": 7,
+      "y": 22,
+      "score": 300103.0397683398,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "stone_helm",
+      "gid": 238,
+      "name": "Stone Helm",
+      "index": 200,
+      "x": 19,
+      "y": 22,
+      "score": 300103.04594594595,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "stone_gloves",
+      "gid": 239,
+      "name": "Gloves of Power",
+      "index": 201,
+      "x": 0,
+      "y": 23,
+      "score": 300103.04613899614,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "stone_shoes",
+      "gid": 354,
+      "name": "Stone Shoes",
+      "index": 202,
+      "x": 4,
+      "y": 23,
+      "score": 300103.06833976833,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "frostbite",
+      "gid": 184,
+      "name": "Frostbite",
+      "index": 203,
+      "x": 8,
+      "y": 23,
+      "score": 300188.03552123555,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "flawless_ruby",
+      "gid": 89,
+      "name": "Flawless Ruby",
+      "index": 204,
+      "x": 7,
+      "y": 19,
+      "score": 300193.0171814672,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "flawless_sapphire",
+      "gid": 94,
+      "name": "Flawless Sapphire",
+      "index": 205,
+      "x": 5,
+      "y": 20,
+      "score": 300193.01814671815,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "flawless_topaz",
+      "gid": 99,
+      "name": "Flawless Topaz",
+      "index": 206,
+      "x": 16,
+      "y": 21,
+      "score": 300193.0191119691,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "flawless_emerald",
+      "gid": 104,
+      "name": "Flawless Emerald",
+      "index": 207,
+      "x": 14,
+      "y": 23,
+      "score": 300193.0200772201,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "flawless_amethyst",
+      "gid": 109,
+      "name": "Flawless Amethyst",
+      "index": 208,
+      "x": 18,
+      "y": 23,
+      "score": 300193.02104247105,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "critwood_staff",
+      "gid": 33,
+      "name": "Critwood Staff",
+      "index": 209,
+      "x": 0,
+      "y": 24,
+      "score": 301099.00637065637,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "thorn_bow",
+      "gid": 192,
+      "name": "Tusk Piercer",
+      "index": 210,
+      "x": 1,
+      "y": 24,
+      "score": 301099.03706563707,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "lucky_bow",
+      "gid": 193,
+      "name": "Fortuna's Grace",
+      "index": 211,
+      "x": 9,
+      "y": 24,
+      "score": 301099.03725868725,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "poison_bow",
+      "gid": 194,
+      "name": "Belladonna's Whisper",
+      "index": 212,
+      "x": 12,
+      "y": 24,
+      "score": 301099.03745173744,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "poison_shortbow",
+      "gid": 235,
+      "name": "Belladonna's Shade",
+      "index": 213,
+      "x": 7,
+      "y": 24,
+      "score": 301099.0453667954,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "vampiric_collar",
+      "gid": 429,
+      "name": "Red Orchid Collar",
+      "index": 214,
+      "x": 1,
+      "y": 24,
+      "score": 301104.0828185328,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "magic_collar",
+      "gid": 430,
+      "name": "Blue Sage Collar",
+      "index": 215,
+      "x": 9,
+      "y": 24,
+      "score": 301104.083011583,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "holy_collar",
+      "gid": 431,
+      "name": "White Lily Collar",
+      "index": 216,
+      "x": 12,
+      "y": 24,
+      "score": 301104.0832046332,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "snowmaster",
+      "gid": 424,
+      "name": "Snowmaster",
+      "index": 217,
+      "x": 15,
+      "y": 24,
+      "score": 301193.0818532819,
+      "classes": 1,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "death_scythe",
+      "gid": 44,
+      "name": "Death Scythe",
+      "index": 218,
+      "x": 16,
+      "y": 24,
+      "score": 301998.0084942085,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "holo_fire_lizard",
+      "gid": 79,
+      "name": "Holo Fire Lizard",
+      "index": 219,
+      "x": 19,
+      "y": 24,
+      "score": 302093.01525096525,
+      "classes": 2,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "mrs_struggles",
+      "gid": 242,
+      "name": "Mrs. Struggles",
+      "index": 220,
+      "x": 4,
+      "y": 25,
+      "score": 302094.0467181467,
+      "classes": 2,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "strong_pestilence_flask",
+      "gid": 170,
+      "name": "Strong Pestilence Flask",
+      "index": 221,
+      "x": 5,
+      "y": 25,
+      "score": 302103.03281853284,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "strong_mana_potion",
+      "gid": 173,
+      "name": "Strong Mana Potion",
+      "index": 222,
+      "x": 6,
+      "y": 25,
+      "score": 302103.0333976834,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "poison_frog",
+      "gid": 427,
+      "name": "Poison Frog",
+      "index": 223,
+      "x": 14,
+      "y": 24,
+      "score": 302103.08243243245,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "cheese",
+      "gid": 203,
+      "name": "Cheese",
+      "index": 224,
+      "x": 17,
+      "y": 25,
+      "score": 304003.0391891892,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "spiked_collar",
+      "gid": 131,
+      "name": "Spiked Collar",
+      "index": 225,
+      "x": 1,
+      "y": 26,
+      "score": 304004.0252895753,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "courage_puppy",
+      "gid": 149,
+      "name": "Courage Puppy",
+      "index": 226,
+      "x": 7,
+      "y": 26,
+      "score": 304088.02876447875,
+      "classes": 4,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "wisdom_puppy",
+      "gid": 150,
+      "name": "Wisdom Puppy",
+      "index": 227,
+      "x": 3,
+      "y": 26,
+      "score": 304093.02895752894,
+      "classes": 4,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "power_puppy",
+      "gid": 151,
+      "name": "Power Puppy",
+      "index": 228,
+      "x": 11,
+      "y": 26,
+      "score": 304093.0291505791,
+      "classes": 4,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "badger_rune",
+      "gid": 187,
+      "name": "Badger Rune",
+      "index": 229,
+      "x": 9,
+      "y": 26,
+      "score": 304093.0361003861,
+      "classes": 4,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "elephant_rune",
+      "gid": 188,
+      "name": "Elephant Rune",
+      "index": 230,
+      "x": 14,
+      "y": 26,
+      "score": 304093.0362934363,
+      "classes": 4,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "hawk_rune",
+      "gid": 189,
+      "name": "Hawk Rune",
+      "index": 231,
+      "x": 15,
+      "y": 26,
+      "score": 304093.0364864865,
+      "classes": 4,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "tiger_rune",
+      "gid": 190,
+      "name": "Tiger Rune",
+      "index": 232,
+      "x": 17,
+      "y": 26,
+      "score": 304093.0366795367,
+      "classes": 4,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "chain_whip",
+      "gid": 134,
+      "name": "Chain Whip",
+      "index": 233,
+      "x": 1,
+      "y": 27,
+      "score": 304098.02586872585,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "spiked_staff",
+      "gid": 259,
+      "name": "Spiked Staff",
+      "index": 234,
+      "x": 18,
+      "y": 26,
+      "score": 304098.05,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "halberd",
+      "gid": 504,
+      "name": "Halberd",
+      "index": 235,
+      "x": 4,
+      "y": 27,
+      "score": 304098.0972972973,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "phoenix",
+      "gid": 115,
+      "name": "Phoenix",
+      "index": 236,
+      "x": 6,
+      "y": 27,
+      "score": 307999.0222007722,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "emerald_egg",
+      "gid": 196,
+      "name": "Emerald Egg",
+      "index": 237,
+      "x": 9,
+      "y": 27,
+      "score": 308093.0378378378,
+      "classes": 8,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "sapphire_egg",
+      "gid": 198,
+      "name": "Sapphire Egg",
+      "index": 238,
+      "x": 11,
+      "y": 27,
+      "score": 308093.0382239382,
+      "classes": 8,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "amethyst_egg",
+      "gid": 200,
+      "name": "Amethyst Egg",
+      "index": 239,
+      "x": 13,
+      "y": 27,
+      "score": 308093.03861003864,
+      "classes": 8,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "burning_blade",
+      "gid": 116,
+      "name": "Burning Blade",
+      "index": 240,
+      "x": 19,
+      "y": 26,
+      "score": 308098.0223938224,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "flame_whip",
+      "gid": 122,
+      "name": "Flame Whip",
+      "index": 241,
+      "x": 15,
+      "y": 28,
+      "score": 308098.0235521236,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "molten_spear2",
+      "gid": 499,
+      "name": "Blazing Spear",
+      "index": 242,
+      "x": 0,
+      "y": 28,
+      "score": 308098.0963320463,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "staff_of_fire",
+      "gid": 121,
+      "name": "Staff of Fire",
+      "index": 243,
+      "x": 1,
+      "y": 28,
+      "score": 308099.0233590734,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "book_of_darkness",
+      "gid": 330,
+      "name": "Encyclopspedia of Darkness",
+      "index": 244,
+      "x": 5,
+      "y": 29,
+      "score": 316003.0637065637,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "cat_spirit",
+      "gid": 336,
+      "name": "Cat Spirit Companion",
+      "index": 245,
+      "x": 7,
+      "y": 29,
+      "score": 316003.06486486486,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "owl_spirit",
+      "gid": 337,
+      "name": "Owl Spirit Companion",
+      "index": 246,
+      "x": 6,
+      "y": 29,
+      "score": 316003.06505791505,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "badger_spirit",
+      "gid": 338,
+      "name": "Badger Spirit Companion",
+      "index": 247,
+      "x": 9,
+      "y": 29,
+      "score": 316003.06525096524,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "cupcake",
+      "gid": 339,
+      "name": "Cupcake",
+      "index": 248,
+      "x": 7,
+      "y": 27,
+      "score": 316003.06544401543,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "white_queen",
+      "gid": 321,
+      "name": "White Queen",
+      "index": 249,
+      "x": 15,
+      "y": 27,
+      "score": 316093.06196911196,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "black_queen",
+      "gid": 322,
+      "name": "Black Queen",
+      "index": 250,
+      "x": 17,
+      "y": 27,
+      "score": 316093.06216216215,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "spell_scroll_ice",
+      "gid": 325,
+      "name": "Spell Scroll: Ice Block ",
+      "index": 251,
+      "x": 11,
+      "y": 29,
+      "score": 316093.0627413127,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "cupcake_staff",
+      "gid": 349,
+      "name": "Cupcake Staff",
+      "index": 252,
+      "x": 13,
+      "y": 29,
+      "score": 316099.0673745174,
+      "classes": 16,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "light_flower",
+      "gid": 334,
+      "name": "Lantern Berry",
+      "index": 253,
+      "x": 14,
+      "y": 29,
+      "score": 316103.0644787645,
+      "classes": 16,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "cupcake_goobert",
+      "gid": 340,
+      "name": "Cupcake Goobert",
+      "index": 254,
+      "x": 15,
+      "y": 29,
+      "score": 316103.0656370656,
+      "classes": 16,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "potion_belt",
+      "gid": 85,
+      "name": "Potion Belt",
+      "index": 255,
+      "x": 19,
+      "y": 29,
+      "score": 320003.0164092664,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "magic_ring",
+      "gid": 505,
+      "name": "Magic Ring",
+      "index": 256,
+      "x": 3,
+      "y": 28,
+      "score": 332004.0974903475,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "puzzlebag_t",
+      "gid": 407,
+      "name": "Puzzlebag of Energy",
+      "index": 257,
+      "x": 2,
+      "y": 30,
+      "score": 336093.07857142854,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "chainsaw",
+      "gid": 473,
+      "name": "Chainsaw",
+      "index": 258,
+      "x": 9,
+      "y": 30,
+      "score": 364098.09131274134,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "lightning_staff",
+      "gid": 471,
+      "name": "Lightning Staff",
+      "index": 259,
+      "x": 10,
+      "y": 30,
+      "score": 364099.0909266409,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "robodog",
+      "gid": 449,
+      "name": "Shovel-B01 3000",
+      "index": 260,
+      "x": 14,
+      "y": 31,
+      "score": 364103.0866795367,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "mecha_bat",
+      "gid": 450,
+      "name": "Mecha Bat",
+      "index": 261,
+      "x": 11,
+      "y": 30,
+      "score": 364103.08687258686,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "cap_of_brilliance",
+      "gid": 460,
+      "name": "Cap of Brilliance",
+      "index": 262,
+      "x": 18,
+      "y": 30,
+      "score": 364103.0888030888,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "arcane_boots",
+      "gid": 462,
+      "name": "Arcane Boots",
+      "index": 263,
+      "x": 5,
+      "y": 31,
+      "score": 364103.0891891892,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "toast_goobert",
+      "gid": 468,
+      "name": "Toast Goobert",
+      "index": 264,
+      "x": 11,
+      "y": 31,
+      "score": 364103.09034749033,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "poison_grenade",
+      "gid": 474,
+      "name": "Poison Grenade",
+      "index": 265,
+      "x": 2,
+      "y": 30,
+      "score": 364104.0915057915,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "spring_loader",
+      "gid": 476,
+      "name": "Spring Loader",
+      "index": 266,
+      "x": 0,
+      "y": 32,
+      "score": 364104.0918918919,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "lightsaber",
+      "gid": 63,
+      "name": "Lightsaber",
+      "index": 267,
+      "x": 6,
+      "y": 31,
+      "score": 399998.01216216217,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "fancy_fencing_rapier",
+      "gid": 71,
+      "name": "Fancy Fencing Rapier",
+      "index": 268,
+      "x": 8,
+      "y": 31,
+      "score": 399998.0137065637,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "greatsword",
+      "gid": 128,
+      "name": "Impractically Large Greatsword",
+      "index": 269,
+      "x": 2,
+      "y": 32,
+      "score": 399998.0247104247,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "divine_potion",
+      "gid": 176,
+      "name": "Divine Potion",
+      "index": 270,
+      "x": 17,
+      "y": 31,
+      "score": 400003.033976834,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "crown",
+      "gid": 217,
+      "name": "Glowing Crown",
+      "index": 271,
+      "x": 4,
+      "y": 33,
+      "score": 400003.0418918919,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "wolpertinger",
+      "gid": 231,
+      "name": "Wolpertinger",
+      "index": 272,
+      "x": 11,
+      "y": 33,
+      "score": 400003.04459459457,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "fanfare",
+      "gid": 61,
+      "name": "Fanfare",
+      "index": 273,
+      "x": 13,
+      "y": 33,
+      "score": 400004.0117760618,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "djinn_lamp",
+      "gid": 73,
+      "name": "Djinn Lamp",
+      "index": 274,
+      "x": 16,
+      "y": 33,
+      "score": 400004.0140926641,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "heart_container",
+      "gid": 232,
+      "name": "Heart Container",
+      "index": 275,
+      "x": 18,
+      "y": 33,
+      "score": 400004.0447876448,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "rainbow_orb",
+      "gid": 272,
+      "name": "Prismatic Orb",
+      "index": 276,
+      "x": 4,
+      "y": 32,
+      "score": 400004.0525096525,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "ruby_whelp",
+      "gid": 64,
+      "name": "Ruby Whelp",
+      "index": 277,
+      "x": 0,
+      "y": 34,
+      "score": 400089.01235521236,
+      "classes": 127,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "bloodthorne",
+      "gid": 47,
+      "name": "Bloodthorne",
+      "index": 278,
+      "x": 7,
+      "y": 32,
+      "score": 400098.0090733591,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "darksaber",
+      "gid": 72,
+      "name": "Darksaber",
+      "index": 279,
+      "x": 4,
+      "y": 34,
+      "score": 400098.0138996139,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "crossblades",
+      "gid": 84,
+      "name": "Crossblades",
+      "index": 280,
+      "x": 8,
+      "y": 34,
+      "score": 400098.0162162162,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "holy_spear",
+      "gid": 218,
+      "name": "Holy Spear",
+      "index": 281,
+      "x": 5,
+      "y": 34,
+      "score": 400098.0420849421,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "prismatic_sword",
+      "gid": 257,
+      "name": "Prismatic Sword",
+      "index": 282,
+      "x": 13,
+      "y": 34,
+      "score": 400098.0496138996,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "thornbloom",
+      "gid": 260,
+      "name": "Thornbloom",
+      "index": 283,
+      "x": 14,
+      "y": 34,
+      "score": 400098.0501930502,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "katana",
+      "gid": 355,
+      "name": "Katana",
+      "index": 284,
+      "x": 17,
+      "y": 34,
+      "score": 400098.0685328185,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "stone_golem",
+      "gid": 271,
+      "name": "Stone Golem",
+      "index": 285,
+      "x": 6,
+      "y": 35,
+      "score": 400099.0523166023,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "moon_shield",
+      "gid": 227,
+      "name": "Moon Shield",
+      "index": 286,
+      "x": 11,
+      "y": 35,
+      "score": 400101.0438223938,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "pine_protector",
+      "gid": 512,
+      "name": "Pine Protector",
+      "index": 287,
+      "x": 18,
+      "y": 35,
+      "score": 400101.09884169884,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "moon_armor",
+      "gid": 226,
+      "name": "Moon Armor",
+      "index": 288,
+      "x": 0,
+      "y": 36,
+      "score": 400102.0436293436,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "corrupted_armor",
+      "gid": 229,
+      "name": "Corrupted Armor",
+      "index": 289,
+      "x": 2,
+      "y": 36,
+      "score": 400102.0442084942,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "gold_armor",
+      "gid": 511,
+      "name": "Gold Armor",
+      "index": 290,
+      "x": 6,
+      "y": 37,
+      "score": 400102.09864864865,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "vampiric_gloves",
+      "gid": 49,
+      "name": "Vampiric Gloves",
+      "index": 291,
+      "x": 8,
+      "y": 37,
+      "score": 400103.00945945946,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "light_goobert",
+      "gid": 53,
+      "name": "Light Goobert",
+      "index": 292,
+      "x": 13,
+      "y": 37,
+      "score": 400103.0102316602,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "king_crown",
+      "gid": 261,
+      "name": "King Crown",
+      "index": 293,
+      "x": 15,
+      "y": 37,
+      "score": 400103.05038610037,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "king_goobert",
+      "gid": 262,
+      "name": "King Goobert",
+      "index": 294,
+      "x": 18,
+      "y": 37,
+      "score": 400103.05057915056,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "winged_boots",
+      "gid": 384,
+      "name": "Winged Boots",
+      "index": 295,
+      "x": 4,
+      "y": 38,
+      "score": 400103.07413127413,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "paradise_birb",
+      "gid": 392,
+      "name": "Paradise Birb",
+      "index": 296,
+      "x": 9,
+      "y": 37,
+      "score": 400103.0756756757,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "heart_of_darkness",
+      "gid": 244,
+      "name": "Heart of Darkness",
+      "index": 297,
+      "x": 11,
+      "y": 38,
+      "score": 400104.0471042471,
+      "classes": 127,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "perfect_ruby",
+      "gid": 90,
+      "name": "Perfect Ruby",
+      "index": 298,
+      "x": 15,
+      "y": 32,
+      "score": 400193.0173745174,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "perfect_sapphire",
+      "gid": 95,
+      "name": "Perfect Sapphire",
+      "index": 299,
+      "x": 18,
+      "y": 32,
+      "score": 400193.01833976834,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "perfect_topaz",
+      "gid": 100,
+      "name": "Perfect Topaz",
+      "index": 300,
+      "x": 10,
+      "y": 34,
+      "score": 400193.0193050193,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "perfect_emerald",
+      "gid": 105,
+      "name": "Perfect Emerald",
+      "index": 301,
+      "x": 16,
+      "y": 34,
+      "score": 400193.0202702703,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "perfect_amethyst",
+      "gid": 110,
+      "name": "Perfect Amethyst",
+      "index": 302,
+      "x": 3,
+      "y": 35,
+      "score": 400193.02123552124,
+      "classes": 127,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "wisp",
+      "gid": 495,
+      "name": "Wisp",
+      "index": 303,
+      "x": 16,
+      "y": 35,
+      "score": 401003.09555984556,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "forest_dragon",
+      "gid": 496,
+      "name": "Forest Dragon",
+      "index": 304,
+      "x": 0,
+      "y": 39,
+      "score": 401099.09575289575,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "rainbow_goobert_ranger",
+      "gid": 169,
+      "name": "Rainbow Goobert Megasludge Alphapuddle",
+      "index": 305,
+      "x": 3,
+      "y": 39,
+      "score": 401103.03262548265,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "hyper_hedgehog",
+      "gid": 423,
+      "name": "Hyper Hedgehog",
+      "index": 306,
+      "x": 8,
+      "y": 38,
+      "score": 401103.08166023163,
+      "classes": 1,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "demonic_flask",
+      "gid": 65,
+      "name": "Demonic Flask",
+      "index": 307,
+      "x": 17,
+      "y": 38,
+      "score": 402003.01254826254,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "darkest_lotus",
+      "gid": 80,
+      "name": "Darkest Lotus",
+      "index": 308,
+      "x": 0,
+      "y": 39,
+      "score": 402093.01544401544,
+      "classes": 2,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "joker",
+      "gid": 245,
+      "name": "Jimbo",
+      "index": 309,
+      "x": 10,
+      "y": 39,
+      "score": 402093.0472972973,
+      "classes": 2,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "war_scythe",
+      "gid": 497,
+      "name": "War Scythe",
+      "index": 310,
+      "x": 13,
+      "y": 39,
+      "score": 402098.09594594594,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "ruby_chonk",
+      "gid": 111,
+      "name": "Ruby Chonk",
+      "index": 311,
+      "x": 5,
+      "y": 40,
+      "score": 402099.02142857143,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "staff_of_unhealing",
+      "gid": 56,
+      "name": "Staff of Unhealing",
+      "index": 312,
+      "x": 16,
+      "y": 39,
+      "score": 402103.01081081084,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "rainbow_goobert",
+      "gid": 74,
+      "name": "Rainbow Goobert Omegaooze Primeslime",
+      "index": 313,
+      "x": 7,
+      "y": 40,
+      "score": 402103.0142857143,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "strong_demonic_flask",
+      "gid": 171,
+      "name": "Strong Demonic Flask",
+      "index": 314,
+      "x": 9,
+      "y": 40,
+      "score": 402103.03301158303,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "strong_vampiric_potion",
+      "gid": 175,
+      "name": "Strong Vampiric Potion",
+      "index": 315,
+      "x": 11,
+      "y": 40,
+      "score": 402103.0337837838,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "strong_divine_potion",
+      "gid": 177,
+      "name": "Strong Divine Potion",
+      "index": 316,
+      "x": 12,
+      "y": 40,
+      "score": 402103.03416988417,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "doom_cap",
+      "gid": 295,
+      "name": "Doom Cap",
+      "index": 317,
+      "x": 17,
+      "y": 40,
+      "score": 402103.0569498069,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "crow",
+      "gid": 421,
+      "name": "Crow",
+      "index": 318,
+      "x": 14,
+      "y": 40,
+      "score": 402103.08127413125,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "frog_prince",
+      "gid": 498,
+      "name": "Frog Prince",
+      "index": 319,
+      "x": 2,
+      "y": 41,
+      "score": 402103.09613899613,
+      "classes": 2,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "ice_dragon",
+      "gid": 236,
+      "name": "Ice Dragon",
+      "index": 320,
+      "x": 0,
+      "y": 42,
+      "score": 402189.0455598456,
+      "classes": 2,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "busted_blade",
+      "gid": 152,
+      "name": "Busted Blade",
+      "index": 321,
+      "x": 7,
+      "y": 42,
+      "score": 404098.0293436294,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "armored_courage_puppy",
+      "gid": 221,
+      "name": "Armored Courage Puppy",
+      "index": 322,
+      "x": 9,
+      "y": 42,
+      "score": 404098.0426640927,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "steel_dragon",
+      "gid": 503,
+      "name": "Panzer Dragon",
+      "index": 323,
+      "x": 17,
+      "y": 41,
+      "score": 404099.0971042471,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "spiked_wall",
+      "gid": 428,
+      "name": "Spiked Wall",
+      "index": 324,
+      "x": 2,
+      "y": 43,
+      "score": 404101.08262548264,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "cheese_goobert",
+      "gid": 204,
+      "name": "Cheese Goobert",
+      "index": 325,
+      "x": 11,
+      "y": 42,
+      "score": 404103.0393822394,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "rainbow_goobert_berserker",
+      "gid": 220,
+      "name": "Rainbow Goobert Deathslushy Mansquisher",
+      "index": 326,
+      "x": 14,
+      "y": 42,
+      "score": 404103.0424710425,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "armored_wisdom_puppy",
+      "gid": 222,
+      "name": "Armored Wisdom Puppy",
+      "index": 327,
+      "x": 4,
+      "y": 41,
+      "score": 404103.04285714286,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "armored_power_puppy",
+      "gid": 223,
+      "name": "Armored Power Puppy",
+      "index": 328,
+      "x": 5,
+      "y": 43,
+      "score": 404103.04305019305,
+      "classes": 4,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "emerald_whelp",
+      "gid": 197,
+      "name": "Emerald Whelp",
+      "index": 329,
+      "x": 9,
+      "y": 43,
+      "score": 408089.038030888,
+      "classes": 8,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "sapphire_whelp",
+      "gid": 199,
+      "name": "Sapphire Whelp",
+      "index": 330,
+      "x": 5,
+      "y": 44,
+      "score": 408089.0384169884,
+      "classes": 8,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "amethyst_whelp",
+      "gid": 201,
+      "name": "Amethyst Whelp",
+      "index": 331,
+      "x": 11,
+      "y": 44,
+      "score": 408089.0388030888,
+      "classes": 8,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "molten_greatsword",
+      "gid": 425,
+      "name": "Molten Greatsword",
+      "index": 332,
+      "x": 13,
+      "y": 44,
+      "score": 408098.08204633207,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "obsidian_dragon",
+      "gid": 123,
+      "name": "Obsidian Dragon",
+      "index": 333,
+      "x": 15,
+      "y": 44,
+      "score": 408099.02374517376,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "phoenix2",
+      "gid": 500,
+      "name": "Enraged Phoenix",
+      "index": 334,
+      "x": 17,
+      "y": 44,
+      "score": 408099.0965250965,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "sun_shield",
+      "gid": 225,
+      "name": "Sun Shield",
+      "index": 335,
+      "x": 0,
+      "y": 45,
+      "score": 408101.04343629343,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "sun_armor",
+      "gid": 224,
+      "name": "Sun Armor",
+      "index": 336,
+      "x": 2,
+      "y": 45,
+      "score": 408102.04324324324,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "rainbow_goobert_pyromancer",
+      "gid": 219,
+      "name": "Rainbow Goobert Epicglob Uberviscous",
+      "index": 337,
+      "x": 9,
+      "y": 45,
+      "score": 408103.0422779923,
+      "classes": 8,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "book_of_light",
+      "gid": 57,
+      "name": "Scripture of Light ",
+      "index": 338,
+      "x": 19,
+      "y": 43,
+      "score": 416003.01100386103,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "spell_scroll_dark",
+      "gid": 328,
+      "name": "Spell Scroll: Dark Frenzy",
+      "index": 339,
+      "x": 4,
+      "y": 46,
+      "score": 416003.06332046335,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "white_king",
+      "gid": 323,
+      "name": "White King",
+      "index": 340,
+      "x": 8,
+      "y": 36,
+      "score": 416093.06235521234,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "black_king",
+      "gid": 324,
+      "name": "Black King",
+      "index": 341,
+      "x": 10,
+      "y": 36,
+      "score": 416093.06254826253,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "null_blade",
+      "gid": 348,
+      "name": "Null Blade",
+      "index": 342,
+      "x": 6,
+      "y": 46,
+      "score": 416098.0671814672,
+      "classes": 16,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "cupcake_dragon",
+      "gid": 508,
+      "name": "Cupdrake",
+      "index": 343,
+      "x": 7,
+      "y": 46,
+      "score": 416099.0980694981,
+      "classes": 16,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "rainbow_goobert_mage",
+      "gid": 416,
+      "name": "Rainbow Goobert Omnicolor Sugargoo ",
+      "index": 344,
+      "x": 11,
+      "y": 46,
+      "score": 416103.0803088803,
+      "classes": 16,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "prismatic_wand",
+      "gid": 436,
+      "name": "Prismatic Wand",
+      "index": 345,
+      "x": 17,
+      "y": 46,
+      "score": 416104.08416988415,
+      "classes": 16,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "wand_of_dissonance",
+      "gid": 509,
+      "name": "Wand of Dissonance",
+      "index": 346,
+      "x": 4,
+      "y": 47,
+      "score": 416104.0982625483,
+      "classes": 16,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "magic_mirror",
+      "gid": 332,
+      "name": "Cold Mirror",
+      "index": 347,
+      "x": 5,
+      "y": 47,
+      "score": 416193.0640926641,
+      "classes": 16,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "ice_flower",
+      "gid": 333,
+      "name": "Ice Flower",
+      "index": 348,
+      "x": 10,
+      "y": 47,
+      "score": 416193.0642857143,
+      "classes": 16,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "devouring_sphere",
+      "gid": 420,
+      "name": "Devouring Sphere",
+      "index": 349,
+      "x": 14,
+      "y": 36,
+      "score": 416193.08108108107,
+      "classes": 16,
+      "crafted": true,
+      "gated": true
+    },
+    {
+      "id": "death_lotus",
+      "gid": 335,
+      "name": "Death Lotus",
+      "index": 350,
+      "x": 14,
+      "y": 47,
+      "score": 418103.0646718147,
+      "classes": 18,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "protective_purse",
+      "gid": 66,
+      "name": "Protective Purse",
+      "index": 351,
+      "x": 14,
+      "y": 40,
+      "score": 420003.01274131273,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "big_bloodthorne",
+      "gid": 394,
+      "name": "Impractically Large Bloodthorne",
+      "index": 352,
+      "x": 18,
+      "y": 47,
+      "score": 432098.0760617761,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "scissorswords",
+      "gid": 402,
+      "name": "Scissorswords",
+      "index": 353,
+      "x": 0,
+      "y": 48,
+      "score": 432098.0776061776,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "dragon_knight",
+      "gid": 398,
+      "name": "Dragon Knight",
+      "index": 354,
+      "x": 11,
+      "y": 48,
+      "score": 432099.07683397684,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "jynx_staff",
+      "gid": 419,
+      "name": "Jynx Staff",
+      "index": 355,
+      "x": 16,
+      "y": 47,
+      "score": 432099.0808880309,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "heart_shield",
+      "gid": 397,
+      "name": "Heart Shield",
+      "index": 356,
+      "x": 4,
+      "y": 49,
+      "score": 432101.07664092665,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "rainbow_goobert_adventurer",
+      "gid": 401,
+      "name": "Rainbow Goobert Gigabrocolomega ",
+      "index": 357,
+      "x": 6,
+      "y": 49,
+      "score": 432103.0774131274,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "broccotree",
+      "gid": 507,
+      "name": "Broccotree",
+      "index": 358,
+      "x": 8,
+      "y": 49,
+      "score": 432103.0978764479,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "superior_ring",
+      "gid": 506,
+      "name": "Superior Ring",
+      "index": 359,
+      "x": 10,
+      "y": 41,
+      "score": 432104.0976833977,
+      "classes": 32,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "puzzlebag_j",
+      "gid": 408,
+      "name": "Puzzlebag of Endurance",
+      "index": 360,
+      "x": 13,
+      "y": 48,
+      "score": 436093.0787644788,
+      "classes": 16,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "automanaton",
+      "gid": 464,
+      "name": "Automanaton",
+      "index": 361,
+      "x": 13,
+      "y": 50,
+      "score": 464098.0895752896,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "bazooka",
+      "gid": 470,
+      "name": "Stuff-Throwinator",
+      "index": 362,
+      "x": 0,
+      "y": 51,
+      "score": 464099.0907335907,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "thunder_drake",
+      "gid": 516,
+      "name": "Thunder Drake",
+      "index": 363,
+      "x": 2,
+      "y": 51,
+      "score": 464099.0996138996,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "magitecc_armor",
+      "gid": 461,
+      "name": "Magitecc Armor",
+      "index": 364,
+      "x": 6,
+      "y": 51,
+      "score": 464102.088996139,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "rainbow_goobert_engineer",
+      "gid": 469,
+      "name": "Rainbow Goobert Fluffyloaf Prismacrust",
+      "index": 365,
+      "x": 10,
+      "y": 51,
+      "score": 464103.0905405405,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "con_trap_tron",
+      "gid": 475,
+      "name": "Con-Trap-Tron",
+      "index": 366,
+      "x": 17,
+      "y": 51,
+      "score": 464104.0916988417,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "eat_o_matic",
+      "gid": 477,
+      "name": "Eat-o-matic",
+      "index": 367,
+      "x": 0,
+      "y": 52,
+      "score": 464104.0920849421,
+      "classes": 64,
+      "crafted": true,
+      "gated": false
+    },
+    {
+      "id": "spicy_banana",
+      "gid": 287,
+      "name": "Spicy Banana",
+      "index": 368,
+      "x": 19,
+      "y": 41,
+      "score": 499997.0554054054,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "smelly_barrier",
+      "gid": 288,
+      "name": "Smelly Wall",
+      "index": 369,
+      "x": 13,
+      "y": 43,
+      "score": 499997.0555984556,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "piggy_pinata",
+      "gid": 290,
+      "name": "Piggy Piñata",
+      "index": 370,
+      "x": 16,
+      "y": 43,
+      "score": 499997.055984556,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "investment_opportunity",
+      "gid": 291,
+      "name": "Investment Opportunity",
+      "index": 371,
+      "x": 18,
+      "y": 44,
+      "score": 499997.05617760617,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "extra_bags",
+      "gid": 292,
+      "name": "Superspacious",
+      "index": 372,
+      "x": 4,
+      "y": 45,
+      "score": 499997.05637065636,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "slime_time",
+      "gid": 297,
+      "name": "It’s Slime Time!",
+      "index": 373,
+      "x": 0,
+      "y": 48,
+      "score": 499997.05733590736,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "smithing_for_dummies",
+      "gid": 307,
+      "name": "Smithing For Dummies",
+      "index": 374,
+      "x": 1,
+      "y": 48,
+      "score": 499997.05926640925,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "markswoman",
+      "gid": 294,
+      "name": "Markswoman",
+      "index": 375,
+      "x": 3,
+      "y": 48,
+      "score": 499997.06675675674,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "just_stats",
+      "gid": 362,
+      "name": "Just Stats",
+      "index": 376,
+      "x": 9,
+      "y": 48,
+      "score": 499997.0698841699,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "uniquely_unique",
+      "gid": 364,
+      "name": "Uniquely Unique",
+      "index": 377,
+      "x": 17,
+      "y": 48,
+      "score": 499997.0702702703,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "dig_deeper",
+      "gid": 369,
+      "name": "Dig Deeper",
+      "index": 378,
+      "x": 10,
+      "y": 49,
+      "score": 499997.07123552123,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "knife_to_meet_you",
+      "gid": 370,
+      "name": "Knife to Meet You",
+      "index": 379,
+      "x": 17,
+      "y": 49,
+      "score": 499997.0714285714,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "mushroom_farm",
+      "gid": 289,
+      "name": "Mushroom Farm",
+      "index": 380,
+      "x": 0,
+      "y": 50,
+      "score": 499997.0757915058,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "speak_with_animals",
+      "gid": 493,
+      "name": "Speak with Animals",
+      "index": 381,
+      "x": 2,
+      "y": 50,
+      "score": 499997.0951737452,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "seal_the_deal",
+      "gid": 494,
+      "name": "Seal the Deal",
+      "index": 382,
+      "x": 3,
+      "y": 50,
+      "score": 499997.0953667954,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "extra_angy",
+      "gid": 293,
+      "name": "Extra Angy",
+      "index": 383,
+      "x": 10,
+      "y": 50,
+      "score": 499997.0965637065,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "king_of_the_bling",
+      "gid": 517,
+      "name": "King of the Bling",
+      "index": 384,
+      "x": 15,
+      "y": 50,
+      "score": 499997.0998069498,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "critical_poison",
+      "gid": 480,
+      "name": "Critical Poison",
+      "index": 385,
+      "x": 17,
+      "y": 50,
+      "score": 499997.1226640927,
+      "classes": 3,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "everburning",
+      "gid": 298,
+      "name": "Everburning",
+      "index": 386,
+      "x": 12,
+      "y": 51,
+      "score": 499997.13752895757,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "inner_power",
+      "gid": 485,
+      "name": "Inner Power",
+      "index": 387,
+      "x": 19,
+      "y": 51,
+      "score": 499997.1436293436,
+      "classes": 5,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "burning_spikes",
+      "gid": 481,
+      "name": "Thermal Thorns",
+      "index": 388,
+      "x": 5,
+      "y": 52,
+      "score": 499997.21285714285,
+      "classes": 12,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "arcane_intellect",
+      "gid": 414,
+      "name": "Arcane Vision",
+      "index": 389,
+      "x": 8,
+      "y": 52,
+      "score": 499997.2399227799,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "chess_master",
+      "gid": 492,
+      "name": "Chess Master",
+      "index": 390,
+      "x": 9,
+      "y": 52,
+      "score": 499997.25498069497,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "bewitchment",
+      "gid": 486,
+      "name": "Bewitchment",
+      "index": 391,
+      "x": 12,
+      "y": 52,
+      "score": 499997.2738223938,
+      "classes": 18,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "level_up",
+      "gid": 412,
+      "name": "Level Up",
+      "index": 392,
+      "x": 15,
+      "y": 52,
+      "score": 499997.39953667956,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "hogus_bogus",
+      "gid": 482,
+      "name": "Hogus Bogus",
+      "index": 393,
+      "x": 16,
+      "y": 52,
+      "score": 499997.573050193,
+      "classes": 48,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "gigawatz",
+      "gid": 478,
+      "name": "Gigawatz",
+      "index": 394,
+      "x": 18,
+      "y": 52,
+      "score": 499997.7322779923,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "energy_conversion",
+      "gid": 484,
+      "name": "Energy Conversion",
+      "index": 395,
+      "x": 19,
+      "y": 52,
+      "score": 499997.8134362934,
+      "classes": 72,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "vampiric_scythe",
+      "gid": 139,
+      "name": "Blood Harvester",
+      "index": 396,
+      "x": 8,
+      "y": 53,
+      "score": 499998.02683397685,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "villain_sword",
+      "gid": 140,
+      "name": "Villain Sword",
+      "index": 397,
+      "x": 1,
+      "y": 53,
+      "score": 499998.02702702704,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "spin_to_win",
+      "gid": 483,
+      "name": "Spin to Win",
+      "index": 398,
+      "x": 2,
+      "y": 53,
+      "score": 499998.05324324325,
+      "classes": 96,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "shielded",
+      "gid": 299,
+      "name": "Shielded",
+      "index": 399,
+      "x": 4,
+      "y": 53,
+      "score": 499998.05772200774,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "stoned",
+      "gid": 300,
+      "name": "Stoned",
+      "index": 400,
+      "x": 5,
+      "y": 53,
+      "score": 499998.0579150579,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "mana_mastery",
+      "gid": 305,
+      "name": "Mana Mastery",
+      "index": 401,
+      "x": 11,
+      "y": 53,
+      "score": 499998.0588803089,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "power_of_the_moon",
+      "gid": 306,
+      "name": "Power of the Moon",
+      "index": 402,
+      "x": 12,
+      "y": 53,
+      "score": 499998.05907335907,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "heavy_drinking",
+      "gid": 356,
+      "name": "Heavy Drinking",
+      "index": 403,
+      "x": 15,
+      "y": 53,
+      "score": 499998.0687258687,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "girl_power",
+      "gid": 359,
+      "name": "Girl Power",
+      "index": 404,
+      "x": 16,
+      "y": 53,
+      "score": 499998.0693050193,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "blood_manipulation",
+      "gid": 360,
+      "name": "Blood Manipulation",
+      "index": 405,
+      "x": 17,
+      "y": 53,
+      "score": 499998.0694980695,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "thornburst",
+      "gid": 365,
+      "name": "Thornburst",
+      "index": 406,
+      "x": 18,
+      "y": 53,
+      "score": 499998.0704633205,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "echoing_battlecry",
+      "gid": 383,
+      "name": "Echoing Battlecry",
+      "index": 407,
+      "x": 19,
+      "y": 53,
+      "score": 499998.07393822394,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "enchanted_weapons",
+      "gid": 385,
+      "name": "Enchanted Weapons",
+      "index": 408,
+      "x": 0,
+      "y": 54,
+      "score": 499998.0743243243,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "no_rush_please",
+      "gid": 386,
+      "name": "No Rush Please",
+      "index": 409,
+      "x": 2,
+      "y": 54,
+      "score": 499998.0745173745,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "double_rainbow",
+      "gid": 388,
+      "name": "Double Rainbow",
+      "index": 410,
+      "x": 3,
+      "y": 54,
+      "score": 499998.0749034749,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "false_life",
+      "gid": 390,
+      "name": "False Life",
+      "index": 411,
+      "x": 4,
+      "y": 54,
+      "score": 499998.07528957527,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "fortunas_kiss",
+      "gid": 438,
+      "name": "Fortuna’s Kiss",
+      "index": 412,
+      "x": 5,
+      "y": 54,
+      "score": 499998.08455598453,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "unidentified_skill",
+      "gid": 439,
+      "name": "Unidentified Skill",
+      "index": 413,
+      "x": 6,
+      "y": 54,
+      "score": 499998.0847490347,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "heart_of_the_cards",
+      "gid": 358,
+      "name": "Heart of the Cards",
+      "index": 414,
+      "x": 7,
+      "y": 54,
+      "score": 499998.0891119691,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "artifact_stone_cold",
+      "gid": 138,
+      "name": "Artifact Stone: Cold",
+      "index": 415,
+      "x": 9,
+      "y": 54,
+      "score": 499999.02664092666,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "pumpkin",
+      "gid": 157,
+      "name": "Pumpkin",
+      "index": 416,
+      "x": 10,
+      "y": 54,
+      "score": 499999.0303088803,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "artifact_stone_heat",
+      "gid": 210,
+      "name": "Artifact Stone: Heat",
+      "index": 417,
+      "x": 12,
+      "y": 54,
+      "score": 499999.04054054053,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "dancing_dragon",
+      "gid": 230,
+      "name": "Dancing Dragon",
+      "index": 418,
+      "x": 12,
+      "y": 54,
+      "score": 499999.0444015444,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "artifact_stone_death",
+      "gid": 283,
+      "name": "Artifact Stone: Death",
+      "index": 419,
+      "x": 16,
+      "y": 54,
+      "score": 499999.05463320465,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "hardwood",
+      "gid": 301,
+      "name": "Hardwood",
+      "index": 420,
+      "x": 17,
+      "y": 54,
+      "score": 499999.0581081081,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "pop",
+      "gid": 308,
+      "name": "Pop",
+      "index": 421,
+      "x": 18,
+      "y": 54,
+      "score": 499999.05945945944,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "acorn_ace",
+      "gid": 286,
+      "name": "Acorn Ace",
+      "index": 422,
+      "x": 0,
+      "y": 55,
+      "score": 499999.0652123552,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "buy_the_holy_light",
+      "gid": 357,
+      "name": "Buy the Holy Light",
+      "index": 423,
+      "x": 1,
+      "y": 55,
+      "score": 499999.0689189189,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "bagtacular",
+      "gid": 361,
+      "name": "Bagtacular",
+      "index": 424,
+      "x": 2,
+      "y": 55,
+      "score": 499999.0696911197,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "more_stats",
+      "gid": 363,
+      "name": "More Stats",
+      "index": 425,
+      "x": 3,
+      "y": 55,
+      "score": 499999.0700772201,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "time_melting",
+      "gid": 382,
+      "name": "Time Melting",
+      "index": 426,
+      "x": 4,
+      "y": 55,
+      "score": 499999.07374517375,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "full_body_protection",
+      "gid": 389,
+      "name": "Full Body Protection",
+      "index": 427,
+      "x": 5,
+      "y": 55,
+      "score": 499999.0750965251,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "dark_ritual",
+      "gid": 304,
+      "name": "Dark Ritual",
+      "index": 428,
+      "x": 6,
+      "y": 55,
+      "score": 499999.0786872587,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "dragon_set",
+      "gid": 303,
+      "name": "Dragon Set",
+      "index": 429,
+      "x": 7,
+      "y": 55,
+      "score": 499999.0984942085,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "solaris",
+      "gid": 302,
+      "name": "Solaris",
+      "index": 430,
+      "x": 9,
+      "y": 55,
+      "score": 499999.1383011583,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "ultima",
+      "gid": 415,
+      "name": "Ultima Ascension",
+      "index": 431,
+      "x": 15,
+      "y": 55,
+      "score": 499999.2401158301,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "dual_wielding",
+      "gid": 413,
+      "name": "Dual Wielding",
+      "index": 432,
+      "x": 16,
+      "y": 55,
+      "score": 499999.39972972975,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "perpetuum_mobile",
+      "gid": 479,
+      "name": "Perpetuum Mobile",
+      "index": 433,
+      "x": 17,
+      "y": 55,
+      "score": 499999.7324710425,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "skull",
+      "gid": 156,
+      "name": "Tim",
+      "index": 434,
+      "x": 0,
+      "y": 56,
+      "score": 500003.03011583013,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "gingerbread_man",
+      "gid": 214,
+      "name": "Gingerbread Jerry",
+      "index": 435,
+      "x": 1,
+      "y": 56,
+      "score": 500003.0413127413,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "cubert",
+      "gid": 256,
+      "name": "Cubert",
+      "index": 436,
+      "x": 2,
+      "y": 56,
+      "score": 500003.0494208494,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "ghost",
+      "gid": 284,
+      "name": "Unsettling Presence",
+      "index": 437,
+      "x": 4,
+      "y": 56,
+      "score": 500003.05482625484,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "cthulhu",
+      "gid": 309,
+      "name": "Cthulhu",
+      "index": 438,
+      "x": 5,
+      "y": 56,
+      "score": 500003.05965250963,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "snowcake",
+      "gid": 367,
+      "name": "Snowcake",
+      "index": 439,
+      "x": 9,
+      "y": 56,
+      "score": 500003.07084942085,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "little_mimic",
+      "gid": 371,
+      "name": "Lil Chestnut",
+      "index": 440,
+      "x": 11,
+      "y": 56,
+      "score": 500003.0716216216,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "thorn_elemental",
+      "gid": 489,
+      "name": "Thorn Elemental",
+      "index": 441,
+      "x": 13,
+      "y": 56,
+      "score": 500003.0944015444,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "lightning_potion",
+      "gid": 490,
+      "name": "Lightning in a Bottle",
+      "index": 442,
+      "x": 15,
+      "y": 56,
+      "score": 500003.0945945946,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "sloth",
+      "gid": 491,
+      "name": "Sloth",
+      "index": 443,
+      "x": 16,
+      "y": 56,
+      "score": 500003.0947876448,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "present",
+      "gid": 213,
+      "name": "Present",
+      "index": 444,
+      "x": 18,
+      "y": 56,
+      "score": 500004.0411196911,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "leaf_badge",
+      "gid": 246,
+      "name": "Leaf Badge",
+      "index": 445,
+      "x": 0,
+      "y": 57,
+      "score": 500004.04749034747,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "skull_badge",
+      "gid": 247,
+      "name": "Skull Badge",
+      "index": 446,
+      "x": 8,
+      "y": 57,
+      "score": 500004.04768339766,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "wolf_badge",
+      "gid": 248,
+      "name": "Wolf Badge",
+      "index": 447,
+      "x": 0,
+      "y": 58,
+      "score": 500004.0478764479,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "flame_badge",
+      "gid": 249,
+      "name": "Flame Badge",
+      "index": 448,
+      "x": 1,
+      "y": 58,
+      "score": 500004.0480694981,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "rainbow_badge",
+      "gid": 250,
+      "name": "Rainbow Badge",
+      "index": 449,
+      "x": 2,
+      "y": 58,
+      "score": 500004.0482625483,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "stone_badge",
+      "gid": 251,
+      "name": "Stone Badge",
+      "index": 450,
+      "x": 3,
+      "y": 58,
+      "score": 500004.0484555985,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "stable_recombobulator",
+      "gid": 279,
+      "name": "Stable Recombobulator",
+      "index": 451,
+      "x": 4,
+      "y": 58,
+      "score": 500004.05386100383,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "star_of_courage",
+      "gid": 282,
+      "name": "Star of Courage",
+      "index": 452,
+      "x": 5,
+      "y": 58,
+      "score": 500004.05444015446,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "time_dilator",
+      "gid": 285,
+      "name": "Time Dilator",
+      "index": 453,
+      "x": 6,
+      "y": 58,
+      "score": 500004.05501930503,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "magic_badge",
+      "gid": 350,
+      "name": "Magic Badge",
+      "index": 454,
+      "x": 7,
+      "y": 58,
+      "score": 500004.0675675676,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "bomb",
+      "gid": 387,
+      "name": "Happy Bomb",
+      "index": 455,
+      "x": 8,
+      "y": 58,
+      "score": 500004.0747104247,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "repeater",
+      "gid": 393,
+      "name": "Repeater",
+      "index": 456,
+      "x": 10,
+      "y": 58,
+      "score": 500004.0758687259,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "puzzle_badge",
+      "gid": 409,
+      "name": "Puzzle Badge",
+      "index": 457,
+      "x": 11,
+      "y": 58,
+      "score": 500004.078957529,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "twine_badge",
+      "gid": 411,
+      "name": "Twine Badge",
+      "index": 458,
+      "x": 12,
+      "y": 58,
+      "score": 500004.07934362936,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "furcifer_prime",
+      "gid": 487,
+      "name": "Furcifer Prime Subscription",
+      "index": 459,
+      "x": 13,
+      "y": 58,
+      "score": 500004.094015444,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "angel_crystal",
+      "gid": 488,
+      "name": "Angel Crystal",
+      "index": 460,
+      "x": 14,
+      "y": 58,
+      "score": 500004.09420849424,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "cog_badge",
+      "gid": 515,
+      "name": "Cog Badge",
+      "index": 461,
+      "x": 15,
+      "y": 58,
+      "score": 500004.0994208494,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "bowl_of_treats",
+      "gid": 162,
+      "name": "Big Bowl of Treats",
+      "index": 462,
+      "x": 16,
+      "y": 58,
+      "score": 501003.03127413127,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "piercing_arrow",
+      "gid": 141,
+      "name": "Piercing Arrow",
+      "index": 463,
+      "x": 18,
+      "y": 58,
+      "score": 501004.02722007723,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "yggdrasil_leaf",
+      "gid": 142,
+      "name": "Yggdrasil Leaf",
+      "index": 464,
+      "x": 0,
+      "y": 59,
+      "score": 501004.0274131274,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "poison_ivy",
+      "gid": 145,
+      "name": "Poison Ivy",
+      "index": 465,
+      "x": 1,
+      "y": 59,
+      "score": 501004.027992278,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "mega_clover",
+      "gid": 159,
+      "name": "Mega Clover",
+      "index": 466,
+      "x": 2,
+      "y": 59,
+      "score": 501004.0306949807,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "cursed_dagger",
+      "gid": 146,
+      "name": "Cursed Dagger",
+      "index": 467,
+      "x": 4,
+      "y": 59,
+      "score": 501998.0281853282,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "snake",
+      "gid": 166,
+      "name": "Snake",
+      "index": 468,
+      "x": 5,
+      "y": 59,
+      "score": 502003.032046332,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "cursed_hair_comb",
+      "gid": 143,
+      "name": "Nocturnal Lock Lifter",
+      "index": 469,
+      "x": 5,
+      "y": 59,
+      "score": 502004.0276061776,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "mr_struggles",
+      "gid": 144,
+      "name": "Mr. Struggles",
+      "index": 470,
+      "x": 7,
+      "y": 59,
+      "score": 502004.0277992278,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "cauldron",
+      "gid": 167,
+      "name": "Cauldron",
+      "index": 471,
+      "x": 10,
+      "y": 59,
+      "score": 502004.0322393822,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "forging_hammer",
+      "gid": 130,
+      "name": "Forging Hammer",
+      "index": 472,
+      "x": 12,
+      "y": 59,
+      "score": 503998.0250965251,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "brass_knuckles",
+      "gid": 202,
+      "name": "Brass Knuckles",
+      "index": 473,
+      "x": 13,
+      "y": 59,
+      "score": 503998.038996139,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "wolf_emblem",
+      "gid": 137,
+      "name": "Wolf Emblem",
+      "index": 474,
+      "x": 15,
+      "y": 59,
+      "score": 504004.0264478765,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "anvil",
+      "gid": 147,
+      "name": "Anvil",
+      "index": 475,
+      "x": 16,
+      "y": 59,
+      "score": 504004.02837837837,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "deer_totem",
+      "gid": 148,
+      "name": "Deerwood Guardian",
+      "index": 476,
+      "x": 18,
+      "y": 59,
+      "score": 504004.02857142856,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "shaman_mask",
+      "gid": 186,
+      "name": "Shaman Mask",
+      "index": 477,
+      "x": 19,
+      "y": 59,
+      "score": 504004.0359073359,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "friendly_fire",
+      "gid": 154,
+      "name": "Friendly Fire",
+      "index": 478,
+      "x": 0,
+      "y": 60,
+      "score": 508003.02972972975,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "burning_banner",
+      "gid": 155,
+      "name": "Burning Banner",
+      "index": 479,
+      "x": 1,
+      "y": 60,
+      "score": 508004.02992277994,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "dark_lantern",
+      "gid": 158,
+      "name": "Dark Lantern",
+      "index": 480,
+      "x": 8,
+      "y": 60,
+      "score": 508004.0305019305,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "frozen_flame",
+      "gid": 185,
+      "name": "Frozen Flame",
+      "index": 481,
+      "x": 9,
+      "y": 60,
+      "score": 508004.03571428574,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "dragon_nest",
+      "gid": 195,
+      "name": "Dragon Nest",
+      "index": 482,
+      "x": 13,
+      "y": 60,
+      "score": 508004.03764478763,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "water_elemental",
+      "gid": 344,
+      "name": "Water Elemental",
+      "index": 483,
+      "x": 15,
+      "y": 60,
+      "score": 515999.06640926644,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "shiny_mantle",
+      "gid": 342,
+      "name": "Shiny Mantle",
+      "index": 484,
+      "x": 2,
+      "y": 61,
+      "score": 516002.066023166,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "evil_hat",
+      "gid": 345,
+      "name": "Harold, the Hateful Hat",
+      "index": 485,
+      "x": 5,
+      "y": 61,
+      "score": 516003.0666023166,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "rainbow_potion",
+      "gid": 346,
+      "name": "Rainbow Potion",
+      "index": 486,
+      "x": 10,
+      "y": 61,
+      "score": 516003.0667953668,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "spirit_bells",
+      "gid": 343,
+      "name": "Spirit Bells",
+      "index": 487,
+      "x": 17,
+      "y": 60,
+      "score": 516004.0662162162,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "random_loadout_bag",
+      "gid": 281,
+      "name": "Sack of Surprises",
+      "index": 488,
+      "x": 18,
+      "y": 61,
+      "score": 520003.0542471043,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "ranger_bag",
+      "gid": 67,
+      "name": "Ranger Bag",
+      "index": 489,
+      "x": 0,
+      "y": 62,
+      "score": 521003.0129343629,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "vineweave_basket",
+      "gid": 252,
+      "name": "Vineweave Basket",
+      "index": 490,
+      "x": 8,
+      "y": 62,
+      "score": 521003.04864864866,
+      "classes": 1,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "storage_coffin",
+      "gid": 68,
+      "name": "Storage Coffin",
+      "index": 491,
+      "x": 11,
+      "y": 62,
+      "score": 522003.0131274131,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "relic_case",
+      "gid": 253,
+      "name": "Relic Case",
+      "index": 492,
+      "x": 4,
+      "y": 61,
+      "score": 522003.04884169885,
+      "classes": 2,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "berserker_bag",
+      "gid": 129,
+      "name": "Duffle Bag",
+      "index": 493,
+      "x": 13,
+      "y": 62,
+      "score": 524003.0249034749,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "toolbox",
+      "gid": 255,
+      "name": "Utility Pouch",
+      "index": 494,
+      "x": 5,
+      "y": 63,
+      "score": 524003.04922779923,
+      "classes": 4,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "fire_pit",
+      "gid": 113,
+      "name": "Fire Pit",
+      "index": 495,
+      "x": 16,
+      "y": 63,
+      "score": 528003.0218146718,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "portable_altar",
+      "gid": 254,
+      "name": "Offering Bowl",
+      "index": 496,
+      "x": 2,
+      "y": 64,
+      "score": 528003.049034749,
+      "classes": 8,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "fedora",
+      "gid": 375,
+      "name": "Fedora",
+      "index": 497,
+      "x": 13,
+      "y": 64,
+      "score": 532003.0723938224,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "mercury_elemental",
+      "gid": 377,
+      "name": "Mercury Elemental",
+      "index": 498,
+      "x": 0,
+      "y": 65,
+      "score": 532003.0727799227,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "turtle",
+      "gid": 378,
+      "name": "Turtle",
+      "index": 499,
+      "x": 16,
+      "y": 62,
+      "score": 532003.072972973,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "scale",
+      "gid": 376,
+      "name": "Scale",
+      "index": 500,
+      "x": 8,
+      "y": 65,
+      "score": 532004.0725868726,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "ukulele",
+      "gid": 379,
+      "name": "Ukulele",
+      "index": 501,
+      "x": 19,
+      "y": 63,
+      "score": 532004.0731660231,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "scholar_bag",
+      "gid": 347,
+      "name": "Scholar Bag",
+      "index": 502,
+      "x": 2,
+      "y": 66,
+      "score": 536003.066988417,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "puzzlebox",
+      "gid": 403,
+      "name": "Puzzlebox",
+      "index": 503,
+      "x": 5,
+      "y": 66,
+      "score": 536003.0777992278,
+      "classes": 16,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "bag_of_giving",
+      "gid": 368,
+      "name": "Bag of Giving",
+      "index": 504,
+      "x": 10,
+      "y": 66,
+      "score": 552003.0710424711,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "sewing_case",
+      "gid": 410,
+      "name": "Sewing Case",
+      "index": 505,
+      "x": 13,
+      "y": 66,
+      "score": 552003.0791505792,
+      "classes": 32,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "bionic_armor",
+      "gid": 453,
+      "name": "Mecha Armor",
+      "index": 506,
+      "x": 17,
+      "y": 66,
+      "score": 564002.0874517375,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "tesla_coil",
+      "gid": 451,
+      "name": "Tesla Coil",
+      "index": 507,
+      "x": 19,
+      "y": 66,
+      "score": 564004.0870656371,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "mana_crystal",
+      "gid": 452,
+      "name": "Mana Crystal",
+      "index": 508,
+      "x": 7,
+      "y": 61,
+      "score": 564004.0872586872,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "laboratory",
+      "gid": 454,
+      "name": "Laboratory",
+      "index": 509,
+      "x": 0,
+      "y": 67,
+      "score": 564004.0876447876,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "hypercube",
+      "gid": 455,
+      "name": "Hypercube",
+      "index": 510,
+      "x": 8,
+      "y": 67,
+      "score": 564004.0878378379,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "gold_cube",
+      "gid": 456,
+      "name": "Gold Cube",
+      "index": 511,
+      "x": 12,
+      "y": 61,
+      "score": 564094.088030888,
+      "classes": 64,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "bismuth_cube",
+      "gid": 457,
+      "name": "Bismuth Cube",
+      "index": 512,
+      "x": 13,
+      "y": 64,
+      "score": 564094.0882239382,
+      "classes": 64,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "chrome_cube",
+      "gid": 458,
+      "name": "Chromium Cube",
+      "index": 513,
+      "x": 15,
+      "y": 64,
+      "score": 564094.0884169884,
+      "classes": 64,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "plastic_cube",
+      "gid": 459,
+      "name": "Plastic Cube",
+      "index": 514,
+      "x": 4,
+      "y": 65,
+      "score": 564094.0886100386,
+      "classes": 64,
+      "crafted": false,
+      "gated": true
+    },
+    {
+      "id": "engineer_box",
+      "gid": 440,
+      "name": "Port-O-Charger",
+      "index": 515,
+      "x": 2,
+      "y": 68,
+      "score": 584003.084942085,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "engineer_bag_2",
+      "gid": 441,
+      "name": "Box of Cogs",
+      "index": 516,
+      "x": 9,
+      "y": 68,
+      "score": 584003.0851351351,
+      "classes": 64,
+      "crafted": false,
+      "gated": false
+    }
+  ],
+  "placements": [
+    {
+      "id": "wooden_sword",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "pan",
+      "x": 1,
+      "y": 0
+    },
+    {
+      "id": "broom",
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": "stone",
+      "x": 1,
+      "y": 0
+    },
+    {
+      "id": "wooden_buckler",
+      "x": 4,
+      "y": 0
+    },
+    {
+      "id": "banana",
+      "x": 6,
+      "y": 0
+    },
+    {
+      "id": "garlic",
+      "x": 8,
+      "y": 0
+    },
+    {
+      "id": "lump_of_coal",
+      "x": 7,
+      "y": 0
+    },
+    {
+      "id": "healing_herbs",
+      "x": 9,
+      "y": 0
+    },
+    {
+      "id": "walrus_tusk",
+      "x": 10,
+      "y": 0
+    },
+    {
+      "id": "piggybank",
+      "x": 11,
+      "y": 0
+    },
+    {
+      "id": "whetstone",
+      "x": 13,
+      "y": 0
+    },
+    {
+      "id": "pocket_sand",
+      "x": 14,
+      "y": 0
+    },
+    {
+      "id": "shiny_shell",
+      "x": 15,
+      "y": 0
+    },
+    {
+      "id": "chipped_ruby",
+      "x": 16,
+      "y": 0
+    },
+    {
+      "id": "chipped_sapphire",
+      "x": 17,
+      "y": 0
+    },
+    {
+      "id": "chipped_topaz",
+      "x": 18,
+      "y": 0
+    },
+    {
+      "id": "chipped_emerald",
+      "x": 19,
+      "y": 0
+    },
+    {
+      "id": "chipped_amethyst",
+      "x": 9,
+      "y": 1
+    },
+    {
+      "id": "goobling",
+      "x": 11,
+      "y": 1
+    },
+    {
+      "id": "shortbow",
+      "x": 12,
+      "y": 1
+    },
+    {
+      "id": "rat",
+      "x": 13,
+      "y": 1
+    },
+    {
+      "id": "the_lovers",
+      "x": 15,
+      "y": 1
+    },
+    {
+      "id": "flame",
+      "x": 16,
+      "y": 1
+    },
+    {
+      "id": "book_of_basics",
+      "x": 17,
+      "y": 1
+    },
+    {
+      "id": "wand",
+      "x": 18,
+      "y": 1
+    },
+    {
+      "id": "white_pawn",
+      "x": 19,
+      "y": 1
+    },
+    {
+      "id": "black_pawn",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "id": "leather_bag",
+      "x": 1,
+      "y": 2
+    },
+    {
+      "id": "twine",
+      "x": 4,
+      "y": 2
+    },
+    {
+      "id": "puzzlebag_l",
+      "x": 4,
+      "y": 2
+    },
+    {
+      "id": "battery",
+      "x": 5,
+      "y": 2
+    },
+    {
+      "id": "hammer",
+      "x": 7,
+      "y": 2
+    },
+    {
+      "id": "spear",
+      "x": 10,
+      "y": 2
+    },
+    {
+      "id": "dagger",
+      "x": 11,
+      "y": 2
+    },
+    {
+      "id": "leather_armor",
+      "x": 13,
+      "y": 2
+    },
+    {
+      "id": "gloves_of_haste",
+      "x": 15,
+      "y": 3
+    },
+    {
+      "id": "health_potion",
+      "x": 19,
+      "y": 2
+    },
+    {
+      "id": "blueberries",
+      "x": 16,
+      "y": 2
+    },
+    {
+      "id": "bag_of_stones",
+      "x": 17,
+      "y": 3
+    },
+    {
+      "id": "customer_card",
+      "x": 0,
+      "y": 3
+    },
+    {
+      "id": "box_of_riches",
+      "x": 0,
+      "y": 4
+    },
+    {
+      "id": "amulet_unidentified",
+      "x": 7,
+      "y": 3
+    },
+    {
+      "id": "amulet_of_life",
+      "x": 9,
+      "y": 3
+    },
+    {
+      "id": "amulet_of_steel",
+      "x": 12,
+      "y": 3
+    },
+    {
+      "id": "amulet_of_feasting",
+      "x": 2,
+      "y": 4
+    },
+    {
+      "id": "amulet_of_darkness",
+      "x": 3,
+      "y": 4
+    },
+    {
+      "id": "amulet_of_agility",
+      "x": 4,
+      "y": 4
+    },
+    {
+      "id": "amulet_of_the_wild",
+      "x": 5,
+      "y": 4
+    },
+    {
+      "id": "amulet_of_alchemy",
+      "x": 6,
+      "y": 4
+    },
+    {
+      "id": "amulet_of_fortune",
+      "x": 7,
+      "y": 4
+    },
+    {
+      "id": "amulet_of_light",
+      "x": 9,
+      "y": 4
+    },
+    {
+      "id": "shovel",
+      "x": 11,
+      "y": 4
+    },
+    {
+      "id": "torch",
+      "x": 12,
+      "y": 4
+    },
+    {
+      "id": "spiked_shield",
+      "x": 15,
+      "y": 4
+    },
+    {
+      "id": "goobert",
+      "x": 17,
+      "y": 4
+    },
+    {
+      "id": "burning_coal",
+      "x": 19,
+      "y": 4
+    },
+    {
+      "id": "shell_totem",
+      "x": 0,
+      "y": 5
+    },
+    {
+      "id": "shelly",
+      "x": 1,
+      "y": 5
+    },
+    {
+      "id": "coins",
+      "x": 3,
+      "y": 5
+    },
+    {
+      "id": "shepherds_crook",
+      "x": 4,
+      "y": 5
+    },
+    {
+      "id": "pot",
+      "x": 6,
+      "y": 5
+    },
+    {
+      "id": "flawed_ruby",
+      "x": 8,
+      "y": 5
+    },
+    {
+      "id": "flawed_sapphire",
+      "x": 9,
+      "y": 5
+    },
+    {
+      "id": "flawed_topaz",
+      "x": 13,
+      "y": 5
+    },
+    {
+      "id": "flawed_emerald",
+      "x": 14,
+      "y": 5
+    },
+    {
+      "id": "flawed_amethyst",
+      "x": 19,
+      "y": 5
+    },
+    {
+      "id": "carrot",
+      "x": 1,
+      "y": 6
+    },
+    {
+      "id": "lucky_clover",
+      "x": 3,
+      "y": 6
+    },
+    {
+      "id": "squirrel",
+      "x": 5,
+      "y": 6
+    },
+    {
+      "id": "thorn_shortbow",
+      "x": 8,
+      "y": 6
+    },
+    {
+      "id": "rat_chef",
+      "x": 9,
+      "y": 6
+    },
+    {
+      "id": "fly_agaric",
+      "x": 10,
+      "y": 6
+    },
+    {
+      "id": "deck_of_cards",
+      "x": 12,
+      "y": 6
+    },
+    {
+      "id": "ace_of_spades",
+      "x": 13,
+      "y": 6
+    },
+    {
+      "id": "reverse",
+      "x": 14,
+      "y": 6
+    },
+    {
+      "id": "axe",
+      "x": 15,
+      "y": 6
+    },
+    {
+      "id": "whetstone2",
+      "x": 17,
+      "y": 6
+    },
+    {
+      "id": "chili_pepper",
+      "x": 18,
+      "y": 6
+    },
+    {
+      "id": "spell_scroll_frostbolt",
+      "x": 0,
+      "y": 7
+    },
+    {
+      "id": "spell_scroll_nature",
+      "x": 2,
+      "y": 7
+    },
+    {
+      "id": "chess_board",
+      "x": 19,
+      "y": 6
+    },
+    {
+      "id": "book_of_ice",
+      "x": 7,
+      "y": 7
+    },
+    {
+      "id": "white_knight",
+      "x": 16,
+      "y": 7
+    },
+    {
+      "id": "black_knight",
+      "x": 17,
+      "y": 7
+    },
+    {
+      "id": "white_bishop",
+      "x": 19,
+      "y": 7
+    },
+    {
+      "id": "black_bishop",
+      "x": 0,
+      "y": 8
+    },
+    {
+      "id": "fanny_pack",
+      "x": 1,
+      "y": 8
+    },
+    {
+      "id": "broccoli",
+      "x": 3,
+      "y": 8
+    },
+    {
+      "id": "boomerang",
+      "x": 4,
+      "y": 8
+    },
+    {
+      "id": "hero_shield",
+      "x": 8,
+      "y": 8
+    },
+    {
+      "id": "rope",
+      "x": 10,
+      "y": 8
+    },
+    {
+      "id": "puzzlebag_s",
+      "x": 11,
+      "y": 8
+    },
+    {
+      "id": "slice_of_bread",
+      "x": 6,
+      "y": 8
+    },
+    {
+      "id": "resistor",
+      "x": 14,
+      "y": 8
+    },
+    {
+      "id": "cog",
+      "x": 16,
+      "y": 8
+    },
+    {
+      "id": "mananana",
+      "x": 17,
+      "y": 8
+    },
+    {
+      "id": "generator",
+      "x": 19,
+      "y": 8
+    },
+    {
+      "id": "thorn_whip",
+      "x": 0,
+      "y": 9
+    },
+    {
+      "id": "hungry_blade",
+      "x": 6,
+      "y": 9
+    },
+    {
+      "id": "leather_boots",
+      "x": 2,
+      "y": 9
+    },
+    {
+      "id": "pestilence_flask",
+      "x": 7,
+      "y": 9
+    },
+    {
+      "id": "stone_skin_potion",
+      "x": 10,
+      "y": 9
+    },
+    {
+      "id": "leather_helm",
+      "x": 13,
+      "y": 9
+    },
+    {
+      "id": "corrupted_crystal",
+      "x": 18,
+      "y": 8
+    },
+    {
+      "id": "flute",
+      "x": 14,
+      "y": 9
+    },
+    {
+      "id": "mana_orb",
+      "x": 0,
+      "y": 10
+    },
+    {
+      "id": "oil_lamp",
+      "x": 3,
+      "y": 10
+    },
+    {
+      "id": "unstable_recombobulator",
+      "x": 4,
+      "y": 10
+    },
+    {
+      "id": "snowman",
+      "x": 5,
+      "y": 10
+    },
+    {
+      "id": "snowball",
+      "x": 8,
+      "y": 10
+    },
+    {
+      "id": "hero_sword",
+      "x": 9,
+      "y": 10
+    },
+    {
+      "id": "poison_dagger",
+      "x": 11,
+      "y": 10
+    },
+    {
+      "id": "claws_of_attack",
+      "x": 14,
+      "y": 10
+    },
+    {
+      "id": "burning_torch",
+      "x": 12,
+      "y": 10
+    },
+    {
+      "id": "magic_staff",
+      "x": 16,
+      "y": 10
+    },
+    {
+      "id": "strong_health_potion",
+      "x": 17,
+      "y": 10
+    },
+    {
+      "id": "mana_potion",
+      "x": 18,
+      "y": 10
+    },
+    {
+      "id": "platin_customer_card",
+      "x": 19,
+      "y": 10
+    },
+    {
+      "id": "sandbag",
+      "x": 0,
+      "y": 11
+    },
+    {
+      "id": "frozen_buckler",
+      "x": 7,
+      "y": 11
+    },
+    {
+      "id": "ice_armor",
+      "x": 13,
+      "y": 11
+    },
+    {
+      "id": "regular_ruby",
+      "x": 4,
+      "y": 11
+    },
+    {
+      "id": "regular_sapphire",
+      "x": 10,
+      "y": 11
+    },
+    {
+      "id": "regular_topaz",
+      "x": 15,
+      "y": 11
+    },
+    {
+      "id": "regular_emerald",
+      "x": 19,
+      "y": 11
+    },
+    {
+      "id": "regular_amethyst",
+      "x": 1,
+      "y": 12
+    },
+    {
+      "id": "bow_and_arrow",
+      "x": 1,
+      "y": 12
+    },
+    {
+      "id": "acorn_collar",
+      "x": 3,
+      "y": 12
+    },
+    {
+      "id": "hedgehog",
+      "x": 4,
+      "y": 12
+    },
+    {
+      "id": "lucky_shortbow",
+      "x": 5,
+      "y": 12
+    },
+    {
+      "id": "squirrel_archer",
+      "x": 8,
+      "y": 12
+    },
+    {
+      "id": "carrot_goobert",
+      "x": 10,
+      "y": 12
+    },
+    {
+      "id": "lucky_piggy",
+      "x": 17,
+      "y": 12
+    },
+    {
+      "id": "toad",
+      "x": 6,
+      "y": 12
+    },
+    {
+      "id": "white_eyes_blue_dragon",
+      "x": 12,
+      "y": 12
+    },
+    {
+      "id": "the_fool",
+      "x": 15,
+      "y": 12
+    },
+    {
+      "id": "miss_fortune",
+      "x": 19,
+      "y": 12
+    },
+    {
+      "id": "poison_goobert",
+      "x": 6,
+      "y": 13
+    },
+    {
+      "id": "double_axe",
+      "x": 3,
+      "y": 14
+    },
+    {
+      "id": "dragonscale_armor",
+      "x": 17,
+      "y": 13
+    },
+    {
+      "id": "dragon_claws",
+      "x": 0,
+      "y": 14
+    },
+    {
+      "id": "dragonskin_boots",
+      "x": 8,
+      "y": 14
+    },
+    {
+      "id": "whetstone3",
+      "x": 0,
+      "y": 13
+    },
+    {
+      "id": "draconic_orb",
+      "x": 9,
+      "y": 14
+    },
+    {
+      "id": "molten_dagger",
+      "x": 10,
+      "y": 14
+    },
+    {
+      "id": "molten_spear",
+      "x": 11,
+      "y": 14
+    },
+    {
+      "id": "burning_sword",
+      "x": 12,
+      "y": 14
+    },
+    {
+      "id": "chili_goobert",
+      "x": 13,
+      "y": 14
+    },
+    {
+      "id": "fire_shelly",
+      "x": 15,
+      "y": 14
+    },
+    {
+      "id": "spell_scroll_light",
+      "x": 0,
+      "y": 15
+    },
+    {
+      "id": "book_of_nature",
+      "x": 19,
+      "y": 14
+    },
+    {
+      "id": "mage_hat",
+      "x": 1,
+      "y": 15
+    },
+    {
+      "id": "white_rook",
+      "x": 6,
+      "y": 15
+    },
+    {
+      "id": "black_rook",
+      "x": 7,
+      "y": 15
+    },
+    {
+      "id": "stamina_sack",
+      "x": 9,
+      "y": 15
+    },
+    {
+      "id": "box_of_prosperity",
+      "x": 15,
+      "y": 15
+    },
+    {
+      "id": "holdall",
+      "x": 5,
+      "y": 16
+    },
+    {
+      "id": "lootbox",
+      "x": 12,
+      "y": 16
+    },
+    {
+      "id": "long_spear",
+      "x": 0,
+      "y": 16
+    },
+    {
+      "id": "daggerang",
+      "x": 16,
+      "y": 16
+    },
+    {
+      "id": "employee_uniform",
+      "x": 18,
+      "y": 16
+    },
+    {
+      "id": "broccoli_goobert",
+      "x": 1,
+      "y": 17
+    },
+    {
+      "id": "piggy_of_riches",
+      "x": 14,
+      "y": 17
+    },
+    {
+      "id": "puzzlebag_z",
+      "x": 3,
+      "y": 18
+    },
+    {
+      "id": "coil",
+      "x": 8,
+      "y": 16
+    },
+    {
+      "id": "charge_splitter",
+      "x": 10,
+      "y": 16
+    },
+    {
+      "id": "wrench",
+      "x": 8,
+      "y": 17
+    },
+    {
+      "id": "thors_hammer",
+      "x": 5,
+      "y": 18
+    },
+    {
+      "id": "slice_of_toast",
+      "x": 14,
+      "y": 16
+    },
+    {
+      "id": "electric_torch",
+      "x": 10,
+      "y": 17
+    },
+    {
+      "id": "rib_saw_blade",
+      "x": 9,
+      "y": 18
+    },
+    {
+      "id": "shield_of_valor",
+      "x": 11,
+      "y": 18
+    },
+    {
+      "id": "holy_armor",
+      "x": 13,
+      "y": 18
+    },
+    {
+      "id": "heroic_potion",
+      "x": 15,
+      "y": 18
+    },
+    {
+      "id": "pineapple",
+      "x": 16,
+      "y": 18
+    },
+    {
+      "id": "ruby_egg",
+      "x": 1,
+      "y": 19
+    },
+    {
+      "id": "jynx_torquilla",
+      "x": 7,
+      "y": 19
+    },
+    {
+      "id": "blood_amulet",
+      "x": 3,
+      "y": 17
+    },
+    {
+      "id": "lucky_cat",
+      "x": 17,
+      "y": 18
+    },
+    {
+      "id": "bloody_dagger",
+      "x": 3,
+      "y": 19
+    },
+    {
+      "id": "manathirst",
+      "x": 10,
+      "y": 19
+    },
+    {
+      "id": "spectral_dagger",
+      "x": 18,
+      "y": 19
+    },
+    {
+      "id": "hero_longsword",
+      "x": 19,
+      "y": 19
+    },
+    {
+      "id": "falcon_blade",
+      "x": 4,
+      "y": 20
+    },
+    {
+      "id": "eggscalibur",
+      "x": 0,
+      "y": 21
+    },
+    {
+      "id": "pandamonium",
+      "x": 5,
+      "y": 21
+    },
+    {
+      "id": "magic_torch",
+      "x": 15,
+      "y": 20
+    },
+    {
+      "id": "snow_stick",
+      "x": 17,
+      "y": 20
+    },
+    {
+      "id": "poison_spear",
+      "x": 3,
+      "y": 21
+    },
+    {
+      "id": "onion_cutter",
+      "x": 8,
+      "y": 21
+    },
+    {
+      "id": "serpent_staff",
+      "x": 11,
+      "y": 21
+    },
+    {
+      "id": "vampiric_armor",
+      "x": 12,
+      "y": 21
+    },
+    {
+      "id": "stone_armor",
+      "x": 5,
+      "y": 22
+    },
+    {
+      "id": "strong_stone_skin_potion",
+      "x": 14,
+      "y": 21
+    },
+    {
+      "id": "steel_goobert",
+      "x": 9,
+      "y": 22
+    },
+    {
+      "id": "blood_goobert",
+      "x": 15,
+      "y": 22
+    },
+    {
+      "id": "strong_heroic_potion",
+      "x": 18,
+      "y": 21
+    },
+    {
+      "id": "vampiric_potion",
+      "x": 2,
+      "y": 22
+    },
+    {
+      "id": "evil_cap",
+      "x": 7,
+      "y": 22
+    },
+    {
+      "id": "stone_helm",
+      "x": 19,
+      "y": 22
+    },
+    {
+      "id": "stone_gloves",
+      "x": 0,
+      "y": 23
+    },
+    {
+      "id": "stone_shoes",
+      "x": 4,
+      "y": 23
+    },
+    {
+      "id": "frostbite",
+      "x": 8,
+      "y": 23
+    },
+    {
+      "id": "flawless_ruby",
+      "x": 7,
+      "y": 19
+    },
+    {
+      "id": "flawless_sapphire",
+      "x": 5,
+      "y": 20
+    },
+    {
+      "id": "flawless_topaz",
+      "x": 16,
+      "y": 21
+    },
+    {
+      "id": "flawless_emerald",
+      "x": 14,
+      "y": 23
+    },
+    {
+      "id": "flawless_amethyst",
+      "x": 18,
+      "y": 23
+    },
+    {
+      "id": "critwood_staff",
+      "x": 0,
+      "y": 24
+    },
+    {
+      "id": "thorn_bow",
+      "x": 1,
+      "y": 24
+    },
+    {
+      "id": "lucky_bow",
+      "x": 9,
+      "y": 24
+    },
+    {
+      "id": "poison_bow",
+      "x": 12,
+      "y": 24
+    },
+    {
+      "id": "poison_shortbow",
+      "x": 7,
+      "y": 24
+    },
+    {
+      "id": "vampiric_collar",
+      "x": 1,
+      "y": 24
+    },
+    {
+      "id": "magic_collar",
+      "x": 9,
+      "y": 24
+    },
+    {
+      "id": "holy_collar",
+      "x": 12,
+      "y": 24
+    },
+    {
+      "id": "snowmaster",
+      "x": 15,
+      "y": 24
+    },
+    {
+      "id": "death_scythe",
+      "x": 16,
+      "y": 24
+    },
+    {
+      "id": "holo_fire_lizard",
+      "x": 19,
+      "y": 24
+    },
+    {
+      "id": "mrs_struggles",
+      "x": 4,
+      "y": 25
+    },
+    {
+      "id": "strong_pestilence_flask",
+      "x": 5,
+      "y": 25
+    },
+    {
+      "id": "strong_mana_potion",
+      "x": 6,
+      "y": 25
+    },
+    {
+      "id": "poison_frog",
+      "x": 14,
+      "y": 24
+    },
+    {
+      "id": "cheese",
+      "x": 17,
+      "y": 25
+    },
+    {
+      "id": "spiked_collar",
+      "x": 1,
+      "y": 26
+    },
+    {
+      "id": "courage_puppy",
+      "x": 7,
+      "y": 26
+    },
+    {
+      "id": "wisdom_puppy",
+      "x": 3,
+      "y": 26
+    },
+    {
+      "id": "power_puppy",
+      "x": 11,
+      "y": 26
+    },
+    {
+      "id": "badger_rune",
+      "x": 9,
+      "y": 26
+    },
+    {
+      "id": "elephant_rune",
+      "x": 14,
+      "y": 26
+    },
+    {
+      "id": "hawk_rune",
+      "x": 15,
+      "y": 26
+    },
+    {
+      "id": "tiger_rune",
+      "x": 17,
+      "y": 26
+    },
+    {
+      "id": "chain_whip",
+      "x": 1,
+      "y": 27
+    },
+    {
+      "id": "spiked_staff",
+      "x": 18,
+      "y": 26
+    },
+    {
+      "id": "halberd",
+      "x": 4,
+      "y": 27
+    },
+    {
+      "id": "phoenix",
+      "x": 6,
+      "y": 27
+    },
+    {
+      "id": "emerald_egg",
+      "x": 9,
+      "y": 27
+    },
+    {
+      "id": "sapphire_egg",
+      "x": 11,
+      "y": 27
+    },
+    {
+      "id": "amethyst_egg",
+      "x": 13,
+      "y": 27
+    },
+    {
+      "id": "burning_blade",
+      "x": 19,
+      "y": 26
+    },
+    {
+      "id": "flame_whip",
+      "x": 15,
+      "y": 28
+    },
+    {
+      "id": "molten_spear2",
+      "x": 0,
+      "y": 28
+    },
+    {
+      "id": "staff_of_fire",
+      "x": 1,
+      "y": 28
+    },
+    {
+      "id": "book_of_darkness",
+      "x": 5,
+      "y": 29
+    },
+    {
+      "id": "cat_spirit",
+      "x": 7,
+      "y": 29
+    },
+    {
+      "id": "owl_spirit",
+      "x": 6,
+      "y": 29
+    },
+    {
+      "id": "badger_spirit",
+      "x": 9,
+      "y": 29
+    },
+    {
+      "id": "cupcake",
+      "x": 7,
+      "y": 27
+    },
+    {
+      "id": "white_queen",
+      "x": 15,
+      "y": 27
+    },
+    {
+      "id": "black_queen",
+      "x": 17,
+      "y": 27
+    },
+    {
+      "id": "spell_scroll_ice",
+      "x": 11,
+      "y": 29
+    },
+    {
+      "id": "cupcake_staff",
+      "x": 13,
+      "y": 29
+    },
+    {
+      "id": "light_flower",
+      "x": 14,
+      "y": 29
+    },
+    {
+      "id": "cupcake_goobert",
+      "x": 15,
+      "y": 29
+    },
+    {
+      "id": "potion_belt",
+      "x": 19,
+      "y": 29
+    },
+    {
+      "id": "magic_ring",
+      "x": 3,
+      "y": 28
+    },
+    {
+      "id": "puzzlebag_t",
+      "x": 2,
+      "y": 30
+    },
+    {
+      "id": "chainsaw",
+      "x": 9,
+      "y": 30
+    },
+    {
+      "id": "lightning_staff",
+      "x": 10,
+      "y": 30
+    },
+    {
+      "id": "robodog",
+      "x": 14,
+      "y": 31
+    },
+    {
+      "id": "mecha_bat",
+      "x": 11,
+      "y": 30
+    },
+    {
+      "id": "cap_of_brilliance",
+      "x": 18,
+      "y": 30
+    },
+    {
+      "id": "arcane_boots",
+      "x": 5,
+      "y": 31
+    },
+    {
+      "id": "toast_goobert",
+      "x": 11,
+      "y": 31
+    },
+    {
+      "id": "poison_grenade",
+      "x": 2,
+      "y": 30
+    },
+    {
+      "id": "spring_loader",
+      "x": 0,
+      "y": 32
+    },
+    {
+      "id": "lightsaber",
+      "x": 6,
+      "y": 31
+    },
+    {
+      "id": "fancy_fencing_rapier",
+      "x": 8,
+      "y": 31
+    },
+    {
+      "id": "greatsword",
+      "x": 2,
+      "y": 32
+    },
+    {
+      "id": "divine_potion",
+      "x": 17,
+      "y": 31
+    },
+    {
+      "id": "crown",
+      "x": 4,
+      "y": 33
+    },
+    {
+      "id": "wolpertinger",
+      "x": 11,
+      "y": 33
+    },
+    {
+      "id": "fanfare",
+      "x": 13,
+      "y": 33
+    },
+    {
+      "id": "djinn_lamp",
+      "x": 16,
+      "y": 33
+    },
+    {
+      "id": "heart_container",
+      "x": 18,
+      "y": 33
+    },
+    {
+      "id": "rainbow_orb",
+      "x": 4,
+      "y": 32
+    },
+    {
+      "id": "ruby_whelp",
+      "x": 0,
+      "y": 34
+    },
+    {
+      "id": "bloodthorne",
+      "x": 7,
+      "y": 32
+    },
+    {
+      "id": "darksaber",
+      "x": 4,
+      "y": 34
+    },
+    {
+      "id": "crossblades",
+      "x": 8,
+      "y": 34
+    },
+    {
+      "id": "holy_spear",
+      "x": 5,
+      "y": 34
+    },
+    {
+      "id": "prismatic_sword",
+      "x": 13,
+      "y": 34
+    },
+    {
+      "id": "thornbloom",
+      "x": 14,
+      "y": 34
+    },
+    {
+      "id": "katana",
+      "x": 17,
+      "y": 34
+    },
+    {
+      "id": "stone_golem",
+      "x": 6,
+      "y": 35
+    },
+    {
+      "id": "moon_shield",
+      "x": 11,
+      "y": 35
+    },
+    {
+      "id": "pine_protector",
+      "x": 18,
+      "y": 35
+    },
+    {
+      "id": "moon_armor",
+      "x": 0,
+      "y": 36
+    },
+    {
+      "id": "corrupted_armor",
+      "x": 2,
+      "y": 36
+    },
+    {
+      "id": "gold_armor",
+      "x": 6,
+      "y": 37
+    },
+    {
+      "id": "vampiric_gloves",
+      "x": 8,
+      "y": 37
+    },
+    {
+      "id": "light_goobert",
+      "x": 13,
+      "y": 37
+    },
+    {
+      "id": "king_crown",
+      "x": 15,
+      "y": 37
+    },
+    {
+      "id": "king_goobert",
+      "x": 18,
+      "y": 37
+    },
+    {
+      "id": "winged_boots",
+      "x": 4,
+      "y": 38
+    },
+    {
+      "id": "paradise_birb",
+      "x": 9,
+      "y": 37
+    },
+    {
+      "id": "heart_of_darkness",
+      "x": 11,
+      "y": 38
+    },
+    {
+      "id": "perfect_ruby",
+      "x": 15,
+      "y": 32
+    },
+    {
+      "id": "perfect_sapphire",
+      "x": 18,
+      "y": 32
+    },
+    {
+      "id": "perfect_topaz",
+      "x": 10,
+      "y": 34
+    },
+    {
+      "id": "perfect_emerald",
+      "x": 16,
+      "y": 34
+    },
+    {
+      "id": "perfect_amethyst",
+      "x": 3,
+      "y": 35
+    },
+    {
+      "id": "wisp",
+      "x": 16,
+      "y": 35
+    },
+    {
+      "id": "forest_dragon",
+      "x": 0,
+      "y": 39
+    },
+    {
+      "id": "rainbow_goobert_ranger",
+      "x": 3,
+      "y": 39
+    },
+    {
+      "id": "hyper_hedgehog",
+      "x": 8,
+      "y": 38
+    },
+    {
+      "id": "demonic_flask",
+      "x": 17,
+      "y": 38
+    },
+    {
+      "id": "darkest_lotus",
+      "x": 0,
+      "y": 39
+    },
+    {
+      "id": "joker",
+      "x": 10,
+      "y": 39
+    },
+    {
+      "id": "war_scythe",
+      "x": 13,
+      "y": 39
+    },
+    {
+      "id": "ruby_chonk",
+      "x": 5,
+      "y": 40
+    },
+    {
+      "id": "staff_of_unhealing",
+      "x": 16,
+      "y": 39
+    },
+    {
+      "id": "rainbow_goobert",
+      "x": 7,
+      "y": 40
+    },
+    {
+      "id": "strong_demonic_flask",
+      "x": 9,
+      "y": 40
+    },
+    {
+      "id": "strong_vampiric_potion",
+      "x": 11,
+      "y": 40
+    },
+    {
+      "id": "strong_divine_potion",
+      "x": 12,
+      "y": 40
+    },
+    {
+      "id": "doom_cap",
+      "x": 17,
+      "y": 40
+    },
+    {
+      "id": "crow",
+      "x": 14,
+      "y": 40
+    },
+    {
+      "id": "frog_prince",
+      "x": 2,
+      "y": 41
+    },
+    {
+      "id": "ice_dragon",
+      "x": 0,
+      "y": 42
+    },
+    {
+      "id": "busted_blade",
+      "x": 7,
+      "y": 42
+    },
+    {
+      "id": "armored_courage_puppy",
+      "x": 9,
+      "y": 42
+    },
+    {
+      "id": "steel_dragon",
+      "x": 17,
+      "y": 41
+    },
+    {
+      "id": "spiked_wall",
+      "x": 2,
+      "y": 43
+    },
+    {
+      "id": "cheese_goobert",
+      "x": 11,
+      "y": 42
+    },
+    {
+      "id": "rainbow_goobert_berserker",
+      "x": 14,
+      "y": 42
+    },
+    {
+      "id": "armored_wisdom_puppy",
+      "x": 4,
+      "y": 41
+    },
+    {
+      "id": "armored_power_puppy",
+      "x": 5,
+      "y": 43
+    },
+    {
+      "id": "emerald_whelp",
+      "x": 9,
+      "y": 43
+    },
+    {
+      "id": "sapphire_whelp",
+      "x": 5,
+      "y": 44
+    },
+    {
+      "id": "amethyst_whelp",
+      "x": 11,
+      "y": 44
+    },
+    {
+      "id": "molten_greatsword",
+      "x": 13,
+      "y": 44
+    },
+    {
+      "id": "obsidian_dragon",
+      "x": 15,
+      "y": 44
+    },
+    {
+      "id": "phoenix2",
+      "x": 17,
+      "y": 44
+    },
+    {
+      "id": "sun_shield",
+      "x": 0,
+      "y": 45
+    },
+    {
+      "id": "sun_armor",
+      "x": 2,
+      "y": 45
+    },
+    {
+      "id": "rainbow_goobert_pyromancer",
+      "x": 9,
+      "y": 45
+    },
+    {
+      "id": "book_of_light",
+      "x": 19,
+      "y": 43
+    },
+    {
+      "id": "spell_scroll_dark",
+      "x": 4,
+      "y": 46
+    },
+    {
+      "id": "white_king",
+      "x": 8,
+      "y": 36
+    },
+    {
+      "id": "black_king",
+      "x": 10,
+      "y": 36
+    },
+    {
+      "id": "null_blade",
+      "x": 6,
+      "y": 46
+    },
+    {
+      "id": "cupcake_dragon",
+      "x": 7,
+      "y": 46
+    },
+    {
+      "id": "rainbow_goobert_mage",
+      "x": 11,
+      "y": 46
+    },
+    {
+      "id": "prismatic_wand",
+      "x": 17,
+      "y": 46
+    },
+    {
+      "id": "wand_of_dissonance",
+      "x": 4,
+      "y": 47
+    },
+    {
+      "id": "magic_mirror",
+      "x": 5,
+      "y": 47
+    },
+    {
+      "id": "ice_flower",
+      "x": 10,
+      "y": 47
+    },
+    {
+      "id": "devouring_sphere",
+      "x": 14,
+      "y": 36
+    },
+    {
+      "id": "death_lotus",
+      "x": 14,
+      "y": 47
+    },
+    {
+      "id": "protective_purse",
+      "x": 14,
+      "y": 40
+    },
+    {
+      "id": "big_bloodthorne",
+      "x": 18,
+      "y": 47
+    },
+    {
+      "id": "scissorswords",
+      "x": 0,
+      "y": 48
+    },
+    {
+      "id": "dragon_knight",
+      "x": 11,
+      "y": 48
+    },
+    {
+      "id": "jynx_staff",
+      "x": 16,
+      "y": 47
+    },
+    {
+      "id": "heart_shield",
+      "x": 4,
+      "y": 49
+    },
+    {
+      "id": "rainbow_goobert_adventurer",
+      "x": 6,
+      "y": 49
+    },
+    {
+      "id": "broccotree",
+      "x": 8,
+      "y": 49
+    },
+    {
+      "id": "superior_ring",
+      "x": 10,
+      "y": 41
+    },
+    {
+      "id": "puzzlebag_j",
+      "x": 13,
+      "y": 48
+    },
+    {
+      "id": "automanaton",
+      "x": 13,
+      "y": 50
+    },
+    {
+      "id": "bazooka",
+      "x": 0,
+      "y": 51
+    },
+    {
+      "id": "thunder_drake",
+      "x": 2,
+      "y": 51
+    },
+    {
+      "id": "magitecc_armor",
+      "x": 6,
+      "y": 51
+    },
+    {
+      "id": "rainbow_goobert_engineer",
+      "x": 10,
+      "y": 51
+    },
+    {
+      "id": "con_trap_tron",
+      "x": 17,
+      "y": 51
+    },
+    {
+      "id": "eat_o_matic",
+      "x": 0,
+      "y": 52
+    },
+    {
+      "id": "spicy_banana",
+      "x": 19,
+      "y": 41
+    },
+    {
+      "id": "smelly_barrier",
+      "x": 13,
+      "y": 43
+    },
+    {
+      "id": "piggy_pinata",
+      "x": 16,
+      "y": 43
+    },
+    {
+      "id": "investment_opportunity",
+      "x": 18,
+      "y": 44
+    },
+    {
+      "id": "extra_bags",
+      "x": 4,
+      "y": 45
+    },
+    {
+      "id": "slime_time",
+      "x": 0,
+      "y": 48
+    },
+    {
+      "id": "smithing_for_dummies",
+      "x": 1,
+      "y": 48
+    },
+    {
+      "id": "markswoman",
+      "x": 3,
+      "y": 48
+    },
+    {
+      "id": "just_stats",
+      "x": 9,
+      "y": 48
+    },
+    {
+      "id": "uniquely_unique",
+      "x": 17,
+      "y": 48
+    },
+    {
+      "id": "dig_deeper",
+      "x": 10,
+      "y": 49
+    },
+    {
+      "id": "knife_to_meet_you",
+      "x": 17,
+      "y": 49
+    },
+    {
+      "id": "mushroom_farm",
+      "x": 0,
+      "y": 50
+    },
+    {
+      "id": "speak_with_animals",
+      "x": 2,
+      "y": 50
+    },
+    {
+      "id": "seal_the_deal",
+      "x": 3,
+      "y": 50
+    },
+    {
+      "id": "extra_angy",
+      "x": 10,
+      "y": 50
+    },
+    {
+      "id": "king_of_the_bling",
+      "x": 15,
+      "y": 50
+    },
+    {
+      "id": "critical_poison",
+      "x": 17,
+      "y": 50
+    },
+    {
+      "id": "everburning",
+      "x": 12,
+      "y": 51
+    },
+    {
+      "id": "inner_power",
+      "x": 19,
+      "y": 51
+    },
+    {
+      "id": "burning_spikes",
+      "x": 5,
+      "y": 52
+    },
+    {
+      "id": "arcane_intellect",
+      "x": 8,
+      "y": 52
+    },
+    {
+      "id": "chess_master",
+      "x": 9,
+      "y": 52
+    },
+    {
+      "id": "bewitchment",
+      "x": 12,
+      "y": 52
+    },
+    {
+      "id": "level_up",
+      "x": 15,
+      "y": 52
+    },
+    {
+      "id": "hogus_bogus",
+      "x": 16,
+      "y": 52
+    },
+    {
+      "id": "gigawatz",
+      "x": 18,
+      "y": 52
+    },
+    {
+      "id": "energy_conversion",
+      "x": 19,
+      "y": 52
+    },
+    {
+      "id": "vampiric_scythe",
+      "x": 8,
+      "y": 53
+    },
+    {
+      "id": "villain_sword",
+      "x": 1,
+      "y": 53
+    },
+    {
+      "id": "spin_to_win",
+      "x": 2,
+      "y": 53
+    },
+    {
+      "id": "shielded",
+      "x": 4,
+      "y": 53
+    },
+    {
+      "id": "stoned",
+      "x": 5,
+      "y": 53
+    },
+    {
+      "id": "mana_mastery",
+      "x": 11,
+      "y": 53
+    },
+    {
+      "id": "power_of_the_moon",
+      "x": 12,
+      "y": 53
+    },
+    {
+      "id": "heavy_drinking",
+      "x": 15,
+      "y": 53
+    },
+    {
+      "id": "girl_power",
+      "x": 16,
+      "y": 53
+    },
+    {
+      "id": "blood_manipulation",
+      "x": 17,
+      "y": 53
+    },
+    {
+      "id": "thornburst",
+      "x": 18,
+      "y": 53
+    },
+    {
+      "id": "echoing_battlecry",
+      "x": 19,
+      "y": 53
+    },
+    {
+      "id": "enchanted_weapons",
+      "x": 0,
+      "y": 54
+    },
+    {
+      "id": "no_rush_please",
+      "x": 2,
+      "y": 54
+    },
+    {
+      "id": "double_rainbow",
+      "x": 3,
+      "y": 54
+    },
+    {
+      "id": "false_life",
+      "x": 4,
+      "y": 54
+    },
+    {
+      "id": "fortunas_kiss",
+      "x": 5,
+      "y": 54
+    },
+    {
+      "id": "unidentified_skill",
+      "x": 6,
+      "y": 54
+    },
+    {
+      "id": "heart_of_the_cards",
+      "x": 7,
+      "y": 54
+    },
+    {
+      "id": "artifact_stone_cold",
+      "x": 9,
+      "y": 54
+    },
+    {
+      "id": "pumpkin",
+      "x": 10,
+      "y": 54
+    },
+    {
+      "id": "artifact_stone_heat",
+      "x": 12,
+      "y": 54
+    },
+    {
+      "id": "dancing_dragon",
+      "x": 12,
+      "y": 54
+    },
+    {
+      "id": "artifact_stone_death",
+      "x": 16,
+      "y": 54
+    },
+    {
+      "id": "hardwood",
+      "x": 17,
+      "y": 54
+    },
+    {
+      "id": "pop",
+      "x": 18,
+      "y": 54
+    },
+    {
+      "id": "acorn_ace",
+      "x": 0,
+      "y": 55
+    },
+    {
+      "id": "buy_the_holy_light",
+      "x": 1,
+      "y": 55
+    },
+    {
+      "id": "bagtacular",
+      "x": 2,
+      "y": 55
+    },
+    {
+      "id": "more_stats",
+      "x": 3,
+      "y": 55
+    },
+    {
+      "id": "time_melting",
+      "x": 4,
+      "y": 55
+    },
+    {
+      "id": "full_body_protection",
+      "x": 5,
+      "y": 55
+    },
+    {
+      "id": "dark_ritual",
+      "x": 6,
+      "y": 55
+    },
+    {
+      "id": "dragon_set",
+      "x": 7,
+      "y": 55
+    },
+    {
+      "id": "solaris",
+      "x": 9,
+      "y": 55
+    },
+    {
+      "id": "ultima",
+      "x": 15,
+      "y": 55
+    },
+    {
+      "id": "dual_wielding",
+      "x": 16,
+      "y": 55
+    },
+    {
+      "id": "perpetuum_mobile",
+      "x": 17,
+      "y": 55
+    },
+    {
+      "id": "skull",
+      "x": 0,
+      "y": 56
+    },
+    {
+      "id": "gingerbread_man",
+      "x": 1,
+      "y": 56
+    },
+    {
+      "id": "cubert",
+      "x": 2,
+      "y": 56
+    },
+    {
+      "id": "ghost",
+      "x": 4,
+      "y": 56
+    },
+    {
+      "id": "cthulhu",
+      "x": 5,
+      "y": 56
+    },
+    {
+      "id": "snowcake",
+      "x": 9,
+      "y": 56
+    },
+    {
+      "id": "little_mimic",
+      "x": 11,
+      "y": 56
+    },
+    {
+      "id": "thorn_elemental",
+      "x": 13,
+      "y": 56
+    },
+    {
+      "id": "lightning_potion",
+      "x": 15,
+      "y": 56
+    },
+    {
+      "id": "sloth",
+      "x": 16,
+      "y": 56
+    },
+    {
+      "id": "present",
+      "x": 18,
+      "y": 56
+    },
+    {
+      "id": "leaf_badge",
+      "x": 0,
+      "y": 57
+    },
+    {
+      "id": "skull_badge",
+      "x": 8,
+      "y": 57
+    },
+    {
+      "id": "wolf_badge",
+      "x": 0,
+      "y": 58
+    },
+    {
+      "id": "flame_badge",
+      "x": 1,
+      "y": 58
+    },
+    {
+      "id": "rainbow_badge",
+      "x": 2,
+      "y": 58
+    },
+    {
+      "id": "stone_badge",
+      "x": 3,
+      "y": 58
+    },
+    {
+      "id": "stable_recombobulator",
+      "x": 4,
+      "y": 58
+    },
+    {
+      "id": "star_of_courage",
+      "x": 5,
+      "y": 58
+    },
+    {
+      "id": "time_dilator",
+      "x": 6,
+      "y": 58
+    },
+    {
+      "id": "magic_badge",
+      "x": 7,
+      "y": 58
+    },
+    {
+      "id": "bomb",
+      "x": 8,
+      "y": 58
+    },
+    {
+      "id": "repeater",
+      "x": 10,
+      "y": 58
+    },
+    {
+      "id": "puzzle_badge",
+      "x": 11,
+      "y": 58
+    },
+    {
+      "id": "twine_badge",
+      "x": 12,
+      "y": 58
+    },
+    {
+      "id": "furcifer_prime",
+      "x": 13,
+      "y": 58
+    },
+    {
+      "id": "angel_crystal",
+      "x": 14,
+      "y": 58
+    },
+    {
+      "id": "cog_badge",
+      "x": 15,
+      "y": 58
+    },
+    {
+      "id": "bowl_of_treats",
+      "x": 16,
+      "y": 58
+    },
+    {
+      "id": "piercing_arrow",
+      "x": 18,
+      "y": 58
+    },
+    {
+      "id": "yggdrasil_leaf",
+      "x": 0,
+      "y": 59
+    },
+    {
+      "id": "poison_ivy",
+      "x": 1,
+      "y": 59
+    },
+    {
+      "id": "mega_clover",
+      "x": 2,
+      "y": 59
+    },
+    {
+      "id": "cursed_dagger",
+      "x": 4,
+      "y": 59
+    },
+    {
+      "id": "snake",
+      "x": 5,
+      "y": 59
+    },
+    {
+      "id": "cursed_hair_comb",
+      "x": 5,
+      "y": 59
+    },
+    {
+      "id": "mr_struggles",
+      "x": 7,
+      "y": 59
+    },
+    {
+      "id": "cauldron",
+      "x": 10,
+      "y": 59
+    },
+    {
+      "id": "forging_hammer",
+      "x": 12,
+      "y": 59
+    },
+    {
+      "id": "brass_knuckles",
+      "x": 13,
+      "y": 59
+    },
+    {
+      "id": "wolf_emblem",
+      "x": 15,
+      "y": 59
+    },
+    {
+      "id": "anvil",
+      "x": 16,
+      "y": 59
+    },
+    {
+      "id": "deer_totem",
+      "x": 18,
+      "y": 59
+    },
+    {
+      "id": "shaman_mask",
+      "x": 19,
+      "y": 59
+    },
+    {
+      "id": "friendly_fire",
+      "x": 0,
+      "y": 60
+    },
+    {
+      "id": "burning_banner",
+      "x": 1,
+      "y": 60
+    },
+    {
+      "id": "dark_lantern",
+      "x": 8,
+      "y": 60
+    },
+    {
+      "id": "frozen_flame",
+      "x": 9,
+      "y": 60
+    },
+    {
+      "id": "dragon_nest",
+      "x": 13,
+      "y": 60
+    },
+    {
+      "id": "water_elemental",
+      "x": 15,
+      "y": 60
+    },
+    {
+      "id": "shiny_mantle",
+      "x": 2,
+      "y": 61
+    },
+    {
+      "id": "evil_hat",
+      "x": 5,
+      "y": 61
+    },
+    {
+      "id": "rainbow_potion",
+      "x": 10,
+      "y": 61
+    },
+    {
+      "id": "spirit_bells",
+      "x": 17,
+      "y": 60
+    },
+    {
+      "id": "random_loadout_bag",
+      "x": 18,
+      "y": 61
+    },
+    {
+      "id": "ranger_bag",
+      "x": 0,
+      "y": 62
+    },
+    {
+      "id": "vineweave_basket",
+      "x": 8,
+      "y": 62
+    },
+    {
+      "id": "storage_coffin",
+      "x": 11,
+      "y": 62
+    },
+    {
+      "id": "relic_case",
+      "x": 4,
+      "y": 61
+    },
+    {
+      "id": "berserker_bag",
+      "x": 13,
+      "y": 62
+    },
+    {
+      "id": "toolbox",
+      "x": 5,
+      "y": 63
+    },
+    {
+      "id": "fire_pit",
+      "x": 16,
+      "y": 63
+    },
+    {
+      "id": "portable_altar",
+      "x": 2,
+      "y": 64
+    },
+    {
+      "id": "fedora",
+      "x": 13,
+      "y": 64
+    },
+    {
+      "id": "mercury_elemental",
+      "x": 0,
+      "y": 65
+    },
+    {
+      "id": "turtle",
+      "x": 16,
+      "y": 62
+    },
+    {
+      "id": "scale",
+      "x": 8,
+      "y": 65
+    },
+    {
+      "id": "ukulele",
+      "x": 19,
+      "y": 63
+    },
+    {
+      "id": "scholar_bag",
+      "x": 2,
+      "y": 66
+    },
+    {
+      "id": "puzzlebox",
+      "x": 5,
+      "y": 66
+    },
+    {
+      "id": "bag_of_giving",
+      "x": 10,
+      "y": 66
+    },
+    {
+      "id": "sewing_case",
+      "x": 13,
+      "y": 66
+    },
+    {
+      "id": "bionic_armor",
+      "x": 17,
+      "y": 66
+    },
+    {
+      "id": "tesla_coil",
+      "x": 19,
+      "y": 66
+    },
+    {
+      "id": "mana_crystal",
+      "x": 7,
+      "y": 61
+    },
+    {
+      "id": "laboratory",
+      "x": 0,
+      "y": 67
+    },
+    {
+      "id": "hypercube",
+      "x": 8,
+      "y": 67
+    },
+    {
+      "id": "gold_cube",
+      "x": 12,
+      "y": 61
+    },
+    {
+      "id": "bismuth_cube",
+      "x": 13,
+      "y": 64
+    },
+    {
+      "id": "chrome_cube",
+      "x": 15,
+      "y": 64
+    },
+    {
+      "id": "plastic_cube",
+      "x": 4,
+      "y": 65
+    },
+    {
+      "id": "engineer_box",
+      "x": 2,
+      "y": 68
+    },
+    {
+      "id": "engineer_bag_2",
+      "x": 9,
+      "y": 68
+    }
+  ]
+}

@@ -1,0 +1,844 @@
+/* Shared BPB-style item tooltip visuals.
+   Frames are game NinePatch assets (border-image); data from tooltip.js.
+   Fonts: copies of game Assets/Fonts used by ItemTooltip / Description.tscn. */
+
+@font-face {
+  font-family: "BPB Tooltip Milonga";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../../assets/fonts/milonga-tooltip.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "BPB Tooltip Baskerville";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../../assets/fonts/libre-baskerville-tooltip.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "BPB Tooltip Baskerville";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../../assets/fonts/libre-baskerville-tooltip-bold.ttf") format("truetype");
+}
+
+:root {
+  /* Base ItemTooltip.tscn; rarity frames override (Godly/Common = 609, etc.) */
+  --bpb-tooltip-w: 584px;
+  --bpb-cdn: https://awerc.github.io/bpb-cdn;
+  --bpb-gold: rgb(255, 226, 56);
+  --bpb-cream: rgb(255, 236, 212);
+  --bpb-label: rgb(238, 199, 147);
+  --bpb-text-stroke:
+    calc(1em / 12 * 1) calc(1em / 12 * 0) 0 #442f1d,
+    calc(1em / 12 * 0.9239) calc(1em / 12 * 0.3827) 0 #442f1d,
+    calc(1em / 12 * 0.7071) calc(1em / 12 * 0.7071) 0 #442f1d,
+    calc(1em / 12 * 0.3827) calc(1em / 12 * 0.9239) 0 #442f1d,
+    calc(1em / 12 * 0) calc(1em / 12 * 1) 0 #442f1d,
+    calc(1em / 12 * -0.3827) calc(1em / 12 * 0.9239) 0 #442f1d,
+    calc(1em / 12 * -0.7071) calc(1em / 12 * 0.7071) 0 #442f1d,
+    calc(1em / 12 * -0.9239) calc(1em / 12 * 0.3827) 0 #442f1d,
+    calc(1em / 12 * -1) calc(1em / 12 * 0) 0 #442f1d,
+    calc(1em / 12 * -0.9239) calc(1em / 12 * -0.3827) 0 #442f1d,
+    calc(1em / 12 * -0.7071) calc(1em / 12 * -0.7071) 0 #442f1d,
+    calc(1em / 12 * -0.3827) calc(1em / 12 * -0.9239) 0 #442f1d,
+    calc(1em / 12 * 0) calc(1em / 12 * -1) 0 #442f1d,
+    calc(1em / 12 * 0.3827) calc(1em / 12 * -0.9239) 0 #442f1d,
+    calc(1em / 12 * 0.7071) calc(1em / 12 * -0.7071) 0 #442f1d,
+    calc(1em / 12 * 0.9239) calc(1em / 12 * -0.3827) 0 #442f1d;
+}
+
+.bpb-tooltip {
+  /* Defaults = LegendaryTooltip.tscn */
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Legendary.png");
+  --patch-t: 161;
+  --patch-r: 48;
+  --patch-b: 186;
+  --patch-l: 29;
+  --inset-t: 129;
+  /* Game: space under VBox ≈ Y_BORDER − inset_t (not full patch-b). */
+  --inset-b: 71;
+  --inset-x: 60;
+  /* VBox left edge in game scene coords (content column still 470px) */
+  --content-x: 64;
+  --content-w: 470px;
+  --rarity-color: #fed69d;
+
+  position: relative;
+  box-sizing: border-box;
+  width: var(--bpb-tooltip-w);
+  max-width: var(--bpb-tooltip-w);
+  overflow: visible;
+  border-style: solid;
+  border-color: transparent;
+  border-width:
+    calc(var(--patch-t) * 1px)
+    calc(var(--patch-r) * 1px)
+    calc(var(--patch-b) * 1px)
+    calc(var(--patch-l) * 1px);
+  border-image-source: var(--frame);
+  border-image-slice: var(--patch-t) var(--patch-r) var(--patch-b) var(--patch-l) fill;
+  border-image-width:
+    calc(var(--patch-t) * 1px)
+    calc(var(--patch-r) * 1px)
+    calc(var(--patch-b) * 1px)
+    calc(var(--patch-l) * 1px);
+  border-image-repeat: stretch;
+  /* Main effect / props: ItemTooltip Description SubResource size 25 */
+  font-family: "BPB Tooltip Baskerville", "Libre Baskerville", Georgia, serif;
+  font-size: 25px;
+  text-shadow: var(--bpb-text-stroke);
+  pointer-events: none;
+}
+
+.bpb-tooltip__inner {
+  box-sizing: border-box;
+  /* Game VBox is always 470px; frame width varies by rarity (Godly 609, etc.). */
+  width: var(--content-w);
+  /* Pull content into nine-patch chrome like Godot (VBox over the frame fill). */
+  margin-top: calc((var(--inset-t) - var(--patch-t)) * 1px);
+  margin-bottom: calc((var(--inset-b) - var(--patch-b)) * 1px);
+  margin-left: calc(var(--content-x) * 1px - var(--patch-l) * 1px);
+  padding: 0;
+  color: var(--bpb-cream);
+  line-height: 1.15;
+}
+
+/* Rarity / class frames — width + patch + VBox x from game *Tooltip.tscn */
+.bpb-tooltip[data-frame="Common"] {
+  --bpb-tooltip-w: 609px;
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Common.png");
+  --patch-t: 85; --patch-r: 40; --patch-b: 98; --patch-l: 27;
+  --inset-t: 60; --inset-b: 75; /* Y_BORDER 135 − 60 */
+  --inset-x: 56;
+  --content-x: 64;
+}
+.bpb-tooltip[data-frame="Rare"] {
+  --bpb-tooltip-w: 605px;
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Rare.png");
+  --patch-t: 87; --patch-r: 49; --patch-b: 110; --patch-l: 32;
+  --inset-t: 70; --inset-b: 70; /* Y_BORDER 140 − 70 */
+  --inset-x: 61;
+  --content-x: 61;
+}
+.bpb-tooltip[data-frame="Epic"] {
+  --bpb-tooltip-w: 588px;
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Epic.png");
+  --patch-t: 161; --patch-r: 41; --patch-b: 105; --patch-l: 32;
+  --inset-t: 126; --inset-b: 59; /* Y_BORDER 185 − 126 */
+  --inset-x: 53;
+  --content-x: 53;
+}
+.bpb-tooltip[data-frame="Legendary"] {
+  --bpb-tooltip-w: 606px;
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Legendary.png");
+  --patch-t: 161; --patch-r: 48; --patch-b: 186; --patch-l: 29;
+  --inset-t: 129; --inset-b: 71; /* Y_BORDER 200 − 129 */
+  --inset-x: 60;
+  --content-x: 60;
+}
+.bpb-tooltip[data-frame="Godly"] {
+  --bpb-tooltip-w: 609px;
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Godly.png");
+  /* Game patch L/R = 0; keep slices so the glow doesn’t stretch flat */
+  --patch-t: 183; --patch-r: 52; --patch-b: 153; --patch-l: 52;
+  --inset-t: 115; --inset-b: 65; /* Y_BORDER 180 − 115 */
+  --inset-x: 59;
+  --content-x: 59;
+}
+.bpb-tooltip[data-frame="Unique"],
+.bpb-tooltip[data-frame="Skill"],
+.bpb-tooltip[data-frame="Adventurer"],
+.bpb-tooltip[data-frame="Berserker"],
+.bpb-tooltip[data-frame="Mage"],
+.bpb-tooltip[data-frame="Ranger"],
+.bpb-tooltip[data-frame="Reaper"],
+.bpb-tooltip[data-frame="Pyromancer"],
+.bpb-tooltip[data-frame="Engineer"] {
+  --bpb-tooltip-w: 609px;
+  --patch-t: 104; --patch-r: 39; --patch-b: 136; --patch-l: 22;
+  --inset-t: 63; --inset-b: 77; /* Y_BORDER 140 − 63 */
+  --inset-x: 56;
+  --content-x: 64;
+}
+.bpb-tooltip[data-frame="Unique"] {
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Unique.png");
+}
+.bpb-tooltip[data-frame="Skill"] {
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Skill.png");
+}
+.bpb-tooltip[data-frame="Adventurer"] {
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Adventurer.png");
+}
+.bpb-tooltip[data-frame="Berserker"] {
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Berserker.png");
+}
+.bpb-tooltip[data-frame="Mage"] {
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Mage.png");
+}
+.bpb-tooltip[data-frame="Ranger"] {
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Ranger.png");
+}
+.bpb-tooltip[data-frame="Reaper"] {
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Reaper.png");
+}
+.bpb-tooltip[data-frame="Pyromancer"] {
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Pyromancer.png");
+}
+.bpb-tooltip[data-frame="Engineer"] {
+  --frame: url("../../assets/tooltips/frames/TooltipBase_Engineer.png");
+}
+
+/* Game rarityColors.lightened(0.6) */
+.bpb-tooltip[data-rarity="Common"] { --rarity-color: #e4edee; }
+.bpb-tooltip[data-rarity="Rare"] { --rarity-color: #b0d1ff; }
+.bpb-tooltip[data-rarity="Epic"] { --rarity-color: #e79cf5; }
+.bpb-tooltip[data-rarity="Legendary"] { --rarity-color: #fed69d; }
+.bpb-tooltip[data-rarity="Godly"] { --rarity-color: #fffcce; }
+.bpb-tooltip[data-rarity="Unique"] { --rarity-color: #cff8d9; }
+
+.bpb-tooltip__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bpb-tooltip__title {
+  margin: 0 0 0.1em;
+  min-height: 1.35em;
+  /* Game Name: Milonga 40, outline 2, shadow 4,3 */
+  font-family: "BPB Tooltip Milonga", Milonga, serif;
+  font-size: 40px;
+  line-height: 1.1;
+  text-align: center;
+  font-weight: 400;
+  color: rgb(255, 236, 212); /* Game SOFTWHITE */
+  -webkit-text-stroke: 1.5px #3c261d;
+  paint-order: stroke fill;
+  text-shadow: 4px 3px 0 #3c261d;
+}
+
+.bpb-tooltip__sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.bpb-tooltip__block {
+  font-size: 1em; /* 25px — main effect */
+}
+
+/* Keyword glossary: Description.tscn DynamicFont size 22 (not 25) */
+.bpb-tooltip__block--small {
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.bpb-tooltip__cost {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2em 0.35em;
+  font-size: 1em;
+  line-height: 1.35;
+}
+
+.bpb-tooltip__cost-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  white-space: nowrap;
+}
+
+.bpb-tooltip__gold {
+  width: 1.15em;
+  height: 1.15em;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Inline icons: game Util.iconSizes (~23–28px); size set per-img in JS.
+   Must beat Tailwind preflight `img { display: block }` or icons wrap alone. */
+.bpb-tooltip__effect img.bpb-tooltip__ico,
+.bpb-tooltip__ico {
+  display: inline-block;
+  object-fit: contain;
+  vertical-align: text-bottom;
+  flex-shrink: 0;
+}
+
+.bpb-tooltip__label { color: var(--bpb-label); }
+.bpb-tooltip__n,
+.bpb-tooltip__kw { color: var(--bpb-gold); }
+
+/* Game $red[…] / $green[…] text wraps (self-harm / buffs) */
+.bpb-tooltip__red {
+  color: rgb(255, 110, 110);
+}
+.bpb-tooltip__green {
+  color: rgb(130, 220, 130);
+}
+.bpb-tooltip__blue {
+  color: rgb(130, 180, 255);
+}
+.bpb-tooltip__red .bpb-tooltip__n,
+.bpb-tooltip__green .bpb-tooltip__n,
+.bpb-tooltip__blue .bpb-tooltip__n {
+  color: inherit;
+  filter: brightness(1.15);
+}
+
+/* Combat property rows (game TooltipProperty) */
+.bpb-tooltip__props {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  margin: 0.1em 0 0;
+}
+
+.bpb-tooltip__prop {
+  display: grid;
+  /* Fixed label column (game Name ≈ 230px) so icons share one vertical line */
+  grid-template-columns: 230px 1.5em auto;
+  align-items: center;
+  column-gap: 0.55em;
+  min-height: 1.35em;
+  padding: 0.12em 0;
+  /* TooltipPropertyFont.tres: Baskerville Bold 25 */
+  font-family: "BPB Tooltip Baskerville", "Libre Baskerville", Georgia, serif;
+  font-weight: 700;
+  font-size: 25px;
+}
+
+.bpb-tooltip__prop-name {
+  color: var(--bpb-cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bpb-tooltip__prop-icon {
+  width: 1.25em;
+  height: auto;
+  max-height: 1.35em;
+  object-fit: contain;
+  justify-self: start;
+}
+
+.bpb-tooltip__prop-vals {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25em 0.35em;
+  min-width: 2ch;
+}
+
+.bpb-tooltip__prop-value {
+  color: var(--bpb-gold);
+  white-space: nowrap;
+  min-width: 2ch;
+}
+
+.bpb-tooltip__prop-ps {
+  color: var(--bpb-gold);
+}
+
+/* Game Util.statColors: gold / mint (buffed) / orange (nerfed) */
+.bpb-tooltip__stat--up {
+  color: rgb(139, 255, 144);
+}
+
+.bpb-tooltip__stat--down {
+  color: rgb(255, 180, 88);
+}
+
+.bpb-tooltip__mods {
+  width: 100%;
+  margin: 0.15em 0 0.1em;
+  font-family: "BPB Tooltip Baskerville", "Libre Baskerville", Georgia, serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: var(--bpb-cream);
+  min-height: 0;
+}
+
+.bpb-tooltip__mods-title {
+  font-family: "BPB Tooltip Milonga", Milonga, serif;
+  font-size: 20px;
+  color: var(--bpb-label);
+  margin-bottom: 0.25em;
+  flex: 0 0 auto;
+}
+
+.bpb-tooltip__mods-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  max-height: var(--bpb-tooltip-mods-max-h, 280px);
+  padding-right: 0.15em;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(234, 201, 20, 0.55) rgba(60, 38, 29, 0.35);
+}
+
+.bpb-tooltip__mods-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.bpb-tooltip__mods-scroll::-webkit-scrollbar-thumb {
+  background: rgba(234, 201, 20, 0.55);
+  border-radius: 4px;
+}
+
+.bpb-tooltip__mods-scroll::-webkit-scrollbar-track {
+  background: rgba(60, 38, 29, 0.35);
+  border-radius: 4px;
+}
+
+.bpb-tooltip__mods-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+}
+
+.bpb-tooltip__mods-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35em 0.65em;
+  align-items: start;
+}
+
+.bpb-tooltip__mod-cell {
+  min-width: 0;
+}
+
+.bpb-tooltip__mod-stat {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--bpb-cream);
+  margin-bottom: 0.08em;
+}
+
+.bpb-tooltip__mod-via {
+  margin: 0.1em 0 0.22em;
+}
+
+.bpb-tooltip__mod-via--static {
+  margin-bottom: 0.18em;
+}
+
+.bpb-tooltip__mod-cause {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3em 0.4em;
+  padding: 0.04em 0.15em;
+  list-style: none;
+  cursor: pointer;
+}
+
+.bpb-tooltip__mod-via--static .bpb-tooltip__mod-cause,
+.bpb-tooltip__mod-cause--static {
+  cursor: default;
+}
+
+.bpb-tooltip__mod-via > summary.bpb-tooltip__mod-cause {
+  list-style: none;
+}
+
+.bpb-tooltip__mod-via > summary.bpb-tooltip__mod-cause::-webkit-details-marker {
+  display: none;
+}
+
+.bpb-tooltip__mod-chevron {
+  display: inline-block;
+  width: 0.65em;
+  flex: 0 0 auto;
+  color: var(--bpb-label);
+  font-size: 0.85em;
+  line-height: 1;
+  transition: transform 0.12s ease;
+}
+
+.bpb-tooltip__mod-chevron::before {
+  content: "▸";
+}
+
+.bpb-tooltip__mod-via[open] > summary .bpb-tooltip__mod-chevron {
+  transform: rotate(90deg);
+}
+
+.bpb-tooltip__mod-cause-label {
+  color: var(--bpb-cream);
+  font-weight: 700;
+}
+
+.bpb-tooltip__mod-stack-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  image-rendering: pixelated;
+}
+
+.bpb-tooltip__mod-breakdown {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(72px, 1fr));
+  align-items: end;
+  justify-content: start;
+  gap: 0.4em 0.55em;
+  margin: 0.12em 0 0.05em 1.05em;
+  padding: 0 0 0.08em;
+}
+
+@media (max-width: 420px) {
+  .bpb-tooltip__mod-breakdown {
+    grid-template-columns: repeat(2, minmax(72px, 1fr));
+  }
+}
+
+.bpb-tooltip__mod-chip {
+  display: inline-flex;
+  flex: 0 0 auto;
+  padding: 0.04em 0.1em;
+}
+
+.bpb-tooltip__mod-chip-stack {
+  position: relative;
+  display: inline-flex;
+  width: 80px;
+  height: 96px;
+  flex: 0 0 auto;
+}
+
+.bpb-tooltip__mod-chip-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.bpb-tooltip__mod-chip-icon img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center bottom;
+  image-rendering: pixelated;
+}
+
+.bpb-tooltip__mod-chip-count {
+  position: absolute;
+  right: -0.12rem;
+  bottom: -0.14rem;
+  min-width: 1.35rem;
+  padding: 0 0.22rem;
+  border-radius: 0.22rem;
+  background: #3c261d;
+  color: #ffecdc;
+  font-family: "BPB Tooltip Baskerville", "Libre Baskerville", Georgia, serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  pointer-events: none;
+}
+
+.bpb-tooltip__mod-chip-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  opacity: 0.65;
+  font-size: 36px;
+}
+
+.bpb-tooltip__mod {
+  display: grid;
+  grid-template-columns: 4.5em 1fr;
+  column-gap: 0.6em;
+  align-items: baseline;
+  padding: 0.04em 0 0.04em 0.2em;
+}
+
+.bpb-tooltip__mod-amt {
+  color: var(--bpb-gold);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bpb-tooltip__chance-debug {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 0.6em;
+  align-items: baseline;
+  margin: 0.35em 0 0.1em;
+  padding: 0.04em 0 0.04em 0.2em;
+  font-size: 17px;
+}
+
+.bpb-tooltip__chance-debug-label {
+  color: var(--bpb-cream);
+  opacity: 0.92;
+}
+
+.bpb-tooltip__chance-debug-val {
+  color: var(--bpb-gold);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bpb-tooltip__mod-from {
+  color: var(--bpb-cream);
+  opacity: 0.92;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bpb-tooltip__divider {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0.2em 0;
+  object-fit: contain;
+}
+
+.bpb-tooltip__divider--prop {
+  margin: 0.05em 0 0.15em;
+}
+
+.bpb-tooltip__footer {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1em; /* game footer labels use 25px body font */
+  margin-top: 0.15em;
+  gap: 0.5rem;
+}
+
+.bpb-tooltip__rarity {
+  display: flex;
+  align-items: center;
+  gap: 0.15em;
+  color: var(--rarity-color);
+}
+
+.bpb-tooltip__rarity img {
+  width: 36px;
+  height: 36px;
+  margin: -2px;
+}
+
+.bpb-tooltip__type {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--bpb-cream);
+}
+
+.bpb-tooltip__type img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* Game ExtraTypes label — own row under footer (ItemTooltip.tscn ExtraTypes) */
+.bpb-tooltip__extra-types {
+  width: 100%;
+  text-align: center;
+  color: var(--bpb-cream);
+  font-size: 0.85em;
+  line-height: 1.2;
+  margin-top: 0.1em;
+}
+
+/* Floating host (tooltip-hover.js) */
+.bpb-tooltip-float {
+  --bpb-tooltip-scale: 1;
+  position: fixed;
+  /* Above sticky filter rail, bag chrome, and site screen frame */
+  z-index: 10020;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 4px, 0) scale(var(--bpb-tooltip-scale));
+  transform-origin: top left;
+  transition: opacity 0.12s ease, transform 0.12s ease, visibility 0.12s;
+}
+
+.bpb-tooltip-float.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0) scale(var(--bpb-tooltip-scale));
+}
+
+/* Spotlight locks the card on the left; stay above dim + stage */
+.bpb-tooltip-float.is-locked {
+  z-index: 10040;
+  pointer-events: none;
+}
+
+/* Sim: Alt-pin — interact with scroll + expand rows */
+.bpb-tooltip-float.is-pinned {
+  z-index: 10035;
+  pointer-events: auto;
+}
+
+.bpb-tooltip-float.is-pinned .bpb-tooltip,
+.bpb-tooltip-float.is-pinned .bpb-tooltip-sidecar {
+  pointer-events: auto;
+}
+
+.bpb-tooltip-float.is-visible:not(:has(.bpb-tooltip-cluster)) .bpb-tooltip,
+.bpb-tooltip-float.is-pinned:not(:has(.bpb-tooltip-cluster)) .bpb-tooltip {
+  max-height: var(--bpb-tooltip-max-h, none);
+  display: flex;
+  flex-direction: column;
+}
+
+.bpb-tooltip-float.is-visible:has(.bpb-tooltip-cluster) .bpb-tooltip,
+.bpb-tooltip-float.is-pinned:has(.bpb-tooltip-cluster) .bpb-tooltip {
+  max-height: none;
+  display: block;
+}
+
+.bpb-tooltip-float.is-visible .bpb-tooltip__inner,
+.bpb-tooltip-float.is-pinned .bpb-tooltip__inner {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.bpb-tooltip-float.is-visible .bpb-tooltip__stack,
+.bpb-tooltip-float.is-pinned .bpb-tooltip__stack {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.bpb-tooltip-float.is-visible .bpb-tooltip__sections,
+.bpb-tooltip-float.is-pinned .bpb-tooltip__sections {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.bpb-tooltip-float.is-visible .bpb-tooltip__mods,
+.bpb-tooltip-float.is-pinned .bpb-tooltip__mods {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.bpb-tooltip-float:not(.is-pinned) .bpb-tooltip__mod-via > summary {
+  cursor: default;
+}
+
+.bpb-tooltip-float.is-pinned .bpb-tooltip__mod-via > summary {
+  cursor: pointer;
+}
+
+/* Sim Advanced: Changed by sidecar (attached panel, not inside game frame) */
+.bpb-tooltip-cluster {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+}
+
+.bpb-tooltip-cluster--flip {
+  flex-direction: row-reverse;
+}
+
+.bpb-tooltip-cluster:not(.bpb-tooltip-cluster--flip) .bpb-tooltip-sidecar {
+  margin-left: calc(-1 * var(--bpb-sidecar-overlap, 48px));
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left-width: 0;
+  z-index: 3;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 236, 212, 0.08),
+    inset 3px 0 6px rgba(20, 10, 5, 0.25),
+    0 10px 22px rgba(20, 10, 5, 0.45);
+}
+
+.bpb-tooltip-cluster--flip .bpb-tooltip-sidecar {
+  margin-right: calc(-1 * var(--bpb-sidecar-overlap, 48px));
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right-width: 0;
+  z-index: 3;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 236, 212, 0.08),
+    inset -3px 0 6px rgba(20, 10, 5, 0.25),
+    0 10px 22px rgba(20, 10, 5, 0.45);
+}
+
+.bpb-tooltip-cluster .bpb-tooltip {
+  position: relative;
+  z-index: 1;
+}
+
+.bpb-tooltip-sidecar {
+  --bpb-sidecar-w: 520px;
+  box-sizing: border-box;
+  width: var(--bpb-sidecar-w);
+  max-width: var(--bpb-sidecar-w);
+  max-height: var(--bpb-sidecar-max-h, calc(100vh - 16px));
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0.55em 0.65em 0.65em;
+  font-family: "BPB Tooltip Baskerville", "Libre Baskerville", Georgia, serif;
+  font-size: 18px;
+  color: var(--bpb-cream);
+  background:
+    linear-gradient(180deg, rgba(72, 48, 36, 0.92) 0%, rgba(48, 32, 24, 0.96) 100%);
+  border: 2px solid #3c261d;
+  border-radius: 6px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 236, 212, 0.08),
+    0 10px 22px rgba(20, 10, 5, 0.45);
+  filter: drop-shadow(0 6px 14px rgba(20, 10, 5, 0.35));
+  overflow: hidden;
+}
+
+.bpb-tooltip-sidecar .bpb-tooltip__mods {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  width: 100%;
+}
+
+.bpb-tooltip-sidecar .bpb-tooltip__mods-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+}
+
+.bpb-tooltip-float .bpb-tooltip {
+  /* Per-rarity game frame width (e.g. Godly 609). Scale host on narrow viewports. */
+  width: var(--bpb-tooltip-w);
+  max-width: var(--bpb-tooltip-w);
+  font-size: 25px;
+  filter: drop-shadow(0 10px 22px rgba(20, 10, 5, 0.45));
+}

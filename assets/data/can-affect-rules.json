@@ -1,0 +1,7674 @@
+{
+  "extractedAt": "2026-07-21T06:42:54.376Z",
+  "count": 318,
+  "parsed": 265,
+  "unsupportedApprox": 0,
+  "inheritedFields": 104,
+  "hasAttackEffectCount": 81,
+  "hasAttackEffectIds": [
+    "amethyst_whelp",
+    "artifact_stone_cold",
+    "artifact_stone_death",
+    "artifact_stone_heat",
+    "automanaton",
+    "axe",
+    "bazooka",
+    "big_bloodthorne",
+    "bloodthorne",
+    "bloody_dagger",
+    "boomerang",
+    "brass_knuckles",
+    "broom",
+    "burning_blade",
+    "burning_sword",
+    "burning_torch",
+    "chain_whip",
+    "chainsaw",
+    "claws_of_attack",
+    "critwood_staff",
+    "crossblades",
+    "cupcake_dragon",
+    "cupcake_staff",
+    "cursed_dagger",
+    "daggerang",
+    "darksaber",
+    "double_axe",
+    "dragon_knight",
+    "eggscalibur",
+    "emerald_whelp",
+    "fancy_fencing_rapier",
+    "flame_whip",
+    "forest_dragon",
+    "frostbite",
+    "halberd",
+    "hammer",
+    "holy_spear",
+    "hungry_blade",
+    "ice_dragon",
+    "jynx_staff",
+    "katana",
+    "lightning_staff",
+    "long_spear",
+    "lucky_shortbow",
+    "magic_staff",
+    "magic_torch",
+    "manathirst",
+    "molten_dagger",
+    "molten_greatsword",
+    "molten_spear",
+    "molten_spear2",
+    "null_blade",
+    "onion_cutter",
+    "poison_dagger",
+    "poison_shortbow",
+    "poison_spear",
+    "prismatic_sword",
+    "pumpkin",
+    "rib_saw_blade",
+    "ruby_chonk",
+    "sapphire_whelp",
+    "scissorswords",
+    "serpent_staff",
+    "shovel",
+    "snow_stick",
+    "spear",
+    "spectral_dagger",
+    "spiked_staff",
+    "squirrel_archer",
+    "staff_of_fire",
+    "stone",
+    "stone_golem",
+    "thorn_shortbow",
+    "thorn_whip",
+    "thornbloom",
+    "thors_hammer",
+    "thunder_drake",
+    "torch",
+    "war_scythe",
+    "water_elemental",
+    "wrench"
+  ],
+  "reactsToChargesCount": 11,
+  "reactsToChargesIds": [
+    "chainsaw",
+    "charge_splitter",
+    "coil",
+    "eat_o_matic",
+    "electric_torch",
+    "gigawatz",
+    "mecha_bat",
+    "poison_grenade",
+    "resistor",
+    "robodog",
+    "tesla_coil"
+  ],
+  "gainsBuffsCount": 237,
+  "gainsBuffsIds": [
+    "ace_of_spades",
+    "amulet_of_agility",
+    "amulet_of_alchemy",
+    "amulet_of_fortune",
+    "amulet_of_light",
+    "amulet_of_steel",
+    "amulet_of_the_wild",
+    "angel_crystal",
+    "arcane_boots",
+    "armored_power_puppy",
+    "artifact_stone_heat",
+    "bazooka",
+    "big_bloodthorne",
+    "bionic_armor",
+    "bismuth_cube",
+    "black_knight",
+    "black_pawn",
+    "black_queen",
+    "black_rook",
+    "blood_amulet",
+    "blood_goobert",
+    "blood_manipulation",
+    "bloodthorne",
+    "bloody_dagger",
+    "blueberries",
+    "book_of_darkness",
+    "book_of_light",
+    "book_of_nature",
+    "boomerang",
+    "bowl_of_treats",
+    "broccoli",
+    "broccoli_goobert",
+    "broccotree",
+    "burning_banner",
+    "burning_blade",
+    "burning_coal",
+    "burning_spikes",
+    "burning_sword",
+    "burning_torch",
+    "cap_of_brilliance",
+    "carrot",
+    "carrot_goobert",
+    "cat_spirit",
+    "cauldron",
+    "chainsaw",
+    "charge_splitter",
+    "cheese",
+    "cheese_goobert",
+    "chili_goobert",
+    "chili_pepper",
+    "chipped_emerald",
+    "claws_of_attack",
+    "coil",
+    "crow",
+    "cubert",
+    "cupcake",
+    "cupcake_dragon",
+    "cupcake_goobert",
+    "cupcake_staff",
+    "cursed_hair_comb",
+    "daggerang",
+    "dancing_dragon",
+    "dark_ritual",
+    "darkest_lotus",
+    "death_lotus",
+    "deck_of_cards",
+    "deer_totem",
+    "devouring_sphere",
+    "djinn_lamp",
+    "double_rainbow",
+    "draconic_orb",
+    "dragon_knight",
+    "dragon_nest",
+    "dragon_set",
+    "dragonskin_boots",
+    "emerald_egg",
+    "emerald_whelp",
+    "enchanted_weapons",
+    "energy_conversion",
+    "everburning",
+    "evil_hat",
+    "fancy_fencing_rapier",
+    "fanfare",
+    "fedora",
+    "fire_shelly",
+    "flame",
+    "flame_badge",
+    "flame_whip",
+    "flawed_emerald",
+    "flawless_emerald",
+    "flute",
+    "forest_dragon",
+    "fortunas_kiss",
+    "friendly_fire",
+    "frog_prince",
+    "frostbite",
+    "gingerbread_man",
+    "girl_power",
+    "gold_armor",
+    "healing_herbs",
+    "heart_container",
+    "heart_of_darkness",
+    "heart_of_the_cards",
+    "heart_shield",
+    "hedgehog",
+    "heroic_potion",
+    "hogus_bogus",
+    "holo_fire_lizard",
+    "holy_armor",
+    "holy_collar",
+    "hungry_blade",
+    "hyper_hedgehog",
+    "ice_flower",
+    "inner_power",
+    "joker",
+    "laboratory",
+    "leaf_badge",
+    "leather_boots",
+    "level_up",
+    "light_flower",
+    "little_mimic",
+    "lucky_bow",
+    "lucky_clover",
+    "lucky_piggy",
+    "lucky_shortbow",
+    "lump_of_coal",
+    "mage_hat",
+    "magic_badge",
+    "magic_collar",
+    "magic_mirror",
+    "mana_crystal",
+    "mana_mastery",
+    "mana_orb",
+    "mana_potion",
+    "manathirst",
+    "mecha_bat",
+    "mega_clover",
+    "miss_fortune",
+    "molten_greatsword",
+    "moon_armor",
+    "moon_shield",
+    "oil_lamp",
+    "owl_spirit",
+    "perfect_emerald",
+    "perpetuum_mobile",
+    "piercing_arrow",
+    "pine_protector",
+    "pineapple",
+    "plastic_cube",
+    "poison_frog",
+    "pot",
+    "potion_belt",
+    "power_puppy",
+    "present",
+    "prismatic_wand",
+    "pumpkin",
+    "puzzlebag_t",
+    "rainbow_badge",
+    "rainbow_goobert",
+    "rainbow_goobert_adventurer",
+    "rainbow_goobert_berserker",
+    "rainbow_goobert_engineer",
+    "rainbow_goobert_mage",
+    "rainbow_goobert_pyromancer",
+    "rainbow_goobert_ranger",
+    "rainbow_orb",
+    "rainbow_potion",
+    "rat_chef",
+    "regular_emerald",
+    "resistor",
+    "reverse",
+    "robodog",
+    "ruby_chonk",
+    "ruby_egg",
+    "ruby_whelp",
+    "sapphire_egg",
+    "sapphire_whelp",
+    "scale",
+    "scholar_bag",
+    "scissorswords",
+    "seal_the_deal",
+    "shaman_mask",
+    "shell_totem",
+    "skull",
+    "slice_of_toast",
+    "sloth",
+    "snake",
+    "snowmaster",
+    "solaris",
+    "spicy_banana",
+    "spiked_collar",
+    "spiked_shield",
+    "spiked_staff",
+    "spiked_wall",
+    "spin_to_win",
+    "spirit_bells",
+    "squirrel",
+    "squirrel_archer",
+    "stable_recombobulator",
+    "stone_golem",
+    "stone_shoes",
+    "strong_divine_potion",
+    "strong_health_potion",
+    "strong_heroic_potion",
+    "strong_mana_potion",
+    "strong_stone_skin_potion",
+    "strong_vampiric_potion",
+    "sun_armor",
+    "the_fool",
+    "the_lovers",
+    "thorn_bow",
+    "thorn_elemental",
+    "thorn_shortbow",
+    "thorn_whip",
+    "thornbloom",
+    "thornburst",
+    "time_melting",
+    "toad",
+    "toast_goobert",
+    "ukulele",
+    "ultima",
+    "unstable_recombobulator",
+    "vampiric_armor",
+    "vampiric_gloves",
+    "vampiric_potion",
+    "walrus_tusk",
+    "wand",
+    "wand_of_dissonance",
+    "water_elemental",
+    "white_king",
+    "white_pawn",
+    "white_queen",
+    "winged_boots",
+    "wisp",
+    "wolf_emblem",
+    "wolpertinger",
+    "yggdrasil_leaf"
+  ],
+  "usesBuffsCount": 75,
+  "usesBuffsIds": [
+    "arcane_boots",
+    "automanaton",
+    "badger_spirit",
+    "bazooka",
+    "bewitchment",
+    "big_bloodthorne",
+    "bloodthorne",
+    "bomb",
+    "book_of_basics",
+    "book_of_ice",
+    "book_of_ice_new",
+    "book_of_light",
+    "book_of_nature",
+    "cat_spirit",
+    "charge_splitter",
+    "critwood_staff",
+    "crown",
+    "cubert",
+    "cupcake_staff",
+    "darksaber",
+    "death_lotus",
+    "djinn_lamp",
+    "eggscalibur",
+    "fancy_fencing_rapier",
+    "fedora",
+    "flame_whip",
+    "friendly_fire",
+    "ghost",
+    "gingerbread_man",
+    "heart_container",
+    "heart_of_darkness",
+    "heart_shield",
+    "holy_spear",
+    "hungry_blade",
+    "ice_armor",
+    "ice_flower",
+    "jynx_staff",
+    "king_crown",
+    "king_goobert",
+    "laboratory",
+    "light_flower",
+    "lightning_staff",
+    "lightsaber",
+    "magic_staff",
+    "magic_torch",
+    "magitecc_armor",
+    "mana_orb",
+    "mananana",
+    "mecha_bat",
+    "miss_fortune",
+    "molten_dagger",
+    "molten_greatsword",
+    "molten_spear",
+    "molten_spear2",
+    "null_blade",
+    "owl_spirit",
+    "phoenix",
+    "phoenix2",
+    "prismatic_wand",
+    "sapphire_whelp",
+    "scissorswords",
+    "seal_the_deal",
+    "serpent_staff",
+    "shaman_mask",
+    "shiny_mantle",
+    "spectral_dagger",
+    "spell_scroll_nature",
+    "spiked_staff",
+    "staff_of_fire",
+    "staff_of_unhealing",
+    "stone_golem",
+    "sun_armor",
+    "thorn_bow",
+    "thors_hammer",
+    "wand"
+  ],
+  "gainedStacksById": {
+    "broom": [
+      "Blind"
+    ],
+    "healing_herbs": [
+      "Regeneration"
+    ],
+    "walrus_tusk": [
+      "Spikes"
+    ],
+    "pocket_sand": [
+      "Blind"
+    ],
+    "lump_of_coal": [
+      "Buff",
+      "Debuff"
+    ],
+    "spiked_shield": [
+      "Spikes"
+    ],
+    "blueberries": [
+      "Mana",
+      "Lucky"
+    ],
+    "amulet_of_steel": [
+      "Empower"
+    ],
+    "amulet_of_darkness": [
+      "Debuff"
+    ],
+    "amulet_of_agility": [
+      "Buff"
+    ],
+    "amulet_of_the_wild": [
+      "Spikes"
+    ],
+    "amulet_of_alchemy": [
+      "Buff"
+    ],
+    "amulet_of_fortune": [
+      "Buff"
+    ],
+    "shovel": [
+      "Blind"
+    ],
+    "burning_coal": [
+      "Heat"
+    ],
+    "shell_totem": [
+      "Empower"
+    ],
+    "thorn_whip": [
+      "Spikes"
+    ],
+    "hungry_blade": [
+      "Vampirism"
+    ],
+    "leather_boots": [
+      "Empower",
+      "Lucky"
+    ],
+    "pestilence_flask": [
+      "Poison"
+    ],
+    "flute": [
+      "Lucky"
+    ],
+    "mana_orb": [
+      "Buff"
+    ],
+    "oil_lamp": [
+      "Heat"
+    ],
+    "unstable_recombobulator": [
+      "Buff"
+    ],
+    "snowball": [
+      "Cold"
+    ],
+    "strong_health_potion": [
+      "Regeneration"
+    ],
+    "poison_dagger": [
+      "Poison"
+    ],
+    "claws_of_attack": [
+      "Empower"
+    ],
+    "burning_torch": [
+      "Heat"
+    ],
+    "mana_potion": [
+      "Mana"
+    ],
+    "sandbag": [
+      "Blind"
+    ],
+    "holy_armor": [
+      "Regeneration"
+    ],
+    "heroic_potion": [
+      "Empower"
+    ],
+    "pineapple": [
+      "Spikes"
+    ],
+    "blood_amulet": [
+      "Vampirism"
+    ],
+    "ruby_egg": [
+      "Heat"
+    ],
+    "vampiric_potion": [
+      "Vampirism"
+    ],
+    "potion_belt": [
+      "Buff"
+    ],
+    "bloody_dagger": [
+      "Vampirism"
+    ],
+    "strong_heroic_potion": [
+      "Empower"
+    ],
+    "strong_stone_skin_potion": [
+      "Spikes"
+    ],
+    "vampiric_armor": [
+      "Vampirism"
+    ],
+    "blood_goobert": [
+      "Vampirism"
+    ],
+    "manathirst": [
+      "Mana"
+    ],
+    "pandamonium": [
+      "Poison"
+    ],
+    "strong_mana_potion": [
+      "Mana"
+    ],
+    "serpent_staff": [
+      "Poison"
+    ],
+    "stone_shoes": [
+      "Empower",
+      "Lucky"
+    ],
+    "poison_spear": [
+      "Poison"
+    ],
+    "snow_stick": [
+      "Cold"
+    ],
+    "fanfare": [
+      "Mana",
+      "Empower"
+    ],
+    "lightsaber": [
+      "Blind"
+    ],
+    "fancy_fencing_rapier": [
+      "Lucky"
+    ],
+    "djinn_lamp": [
+      "Lucky",
+      "Spikes",
+      "Mana"
+    ],
+    "wolpertinger": [
+      "Buff"
+    ],
+    "heart_container": [
+      "Regeneration",
+      "Empower"
+    ],
+    "rainbow_orb": [
+      "Buff",
+      "Debuff"
+    ],
+    "bloodthorne": [
+      "Vampirism",
+      "Spikes"
+    ],
+    "ruby_whelp": [
+      "Heat"
+    ],
+    "vampiric_gloves": [
+      "Vampirism"
+    ],
+    "darksaber": [
+      "Blind"
+    ],
+    "light_goobert": [
+      "Blind"
+    ],
+    "moon_shield": [
+      "Mana"
+    ],
+    "corrupted_armor": [
+      "Debuff"
+    ],
+    "moon_armor": [
+      "Mana"
+    ],
+    "heart_of_darkness": [
+      "Buff"
+    ],
+    "thornbloom": [
+      "Empower",
+      "Spikes"
+    ],
+    "stone_golem": [
+      "Empower"
+    ],
+    "prismatic_sword": [
+      "Debuff"
+    ],
+    "winged_boots": [
+      "Empower"
+    ],
+    "rainbow_badge": [
+      "Buff"
+    ],
+    "leaf_badge": [
+      "Lucky"
+    ],
+    "skull_badge": [
+      "Debuff"
+    ],
+    "flame_badge": [
+      "Heat"
+    ],
+    "magic_badge": [
+      "Mana"
+    ],
+    "artifact_stone_cold": [
+      "Cold"
+    ],
+    "skull": [
+      "Empower"
+    ],
+    "artifact_stone_heat": [
+      "Heat"
+    ],
+    "present": [
+      "Buff"
+    ],
+    "gingerbread_man": [
+      "Empower",
+      "Regeneration"
+    ],
+    "pumpkin": [
+      "Heat"
+    ],
+    "dancing_dragon": [
+      "Heat",
+      "Lucky"
+    ],
+    "cubert": [
+      "Empower",
+      "Regeneration"
+    ],
+    "stable_recombobulator": [
+      "Buff"
+    ],
+    "snowcake": [
+      "Cold"
+    ],
+    "little_mimic": [
+      "Buff"
+    ],
+    "chipped_sapphire": [
+      "Cold"
+    ],
+    "flawed_sapphire": [
+      "Cold"
+    ],
+    "regular_sapphire": [
+      "Cold"
+    ],
+    "flawless_sapphire": [
+      "Cold"
+    ],
+    "perfect_sapphire": [
+      "Cold"
+    ],
+    "chipped_emerald": [
+      "Regeneration"
+    ],
+    "flawed_emerald": [
+      "Regeneration"
+    ],
+    "regular_emerald": [
+      "Regeneration"
+    ],
+    "flawless_emerald": [
+      "Regeneration"
+    ],
+    "perfect_emerald": [
+      "Regeneration"
+    ],
+    "lucky_clover": [
+      "Lucky"
+    ],
+    "carrot": [
+      "Empower"
+    ],
+    "thorn_shortbow": [
+      "Spikes"
+    ],
+    "lucky_shortbow": [
+      "Lucky"
+    ],
+    "poison_shortbow": [
+      "Debuff"
+    ],
+    "lucky_piggy": [
+      "Lucky"
+    ],
+    "carrot_goobert": [
+      "Empower"
+    ],
+    "thorn_bow": [
+      "Spikes"
+    ],
+    "lucky_bow": [
+      "Lucky"
+    ],
+    "poison_bow": [
+      "Poison"
+    ],
+    "snowmaster": [
+      "Cold",
+      "Empower"
+    ],
+    "magic_collar": [
+      "Mana"
+    ],
+    "holy_collar": [
+      "Lucky",
+      "Regeneration"
+    ],
+    "rainbow_goobert_ranger": [
+      "Empower",
+      "Vampirism",
+      "Blind"
+    ],
+    "piercing_arrow": [
+      "Lucky"
+    ],
+    "yggdrasil_leaf": [
+      "Mana",
+      "Regeneration"
+    ],
+    "poison_ivy": [
+      "Poison"
+    ],
+    "mega_clover": [
+      "BuffNoLuck"
+    ],
+    "bowl_of_treats": [
+      "Buff"
+    ],
+    "rat": [
+      "Poison"
+    ],
+    "squirrel": [
+      "Buff"
+    ],
+    "hedgehog": [
+      "Spikes"
+    ],
+    "squirrel_archer": [
+      "Buff"
+    ],
+    "rat_chef": [
+      "Empower",
+      "Regeneration"
+    ],
+    "hyper_hedgehog": [
+      "Spikes",
+      "Empower"
+    ],
+    "storage_coffin": [
+      "Poison"
+    ],
+    "fly_agaric": [
+      "Poison"
+    ],
+    "deck_of_cards": [
+      "Lucky"
+    ],
+    "the_lovers": [
+      "Regeneration"
+    ],
+    "ace_of_spades": [
+      "Spikes",
+      "Lucky"
+    ],
+    "reverse": [
+      "Buff"
+    ],
+    "white_eyes_blue_dragon": [
+      "Cold"
+    ],
+    "the_fool": [
+      "Empower"
+    ],
+    "holo_fire_lizard": [
+      "Heat"
+    ],
+    "joker": [
+      "Buff"
+    ],
+    "darkest_lotus": [
+      "Mana"
+    ],
+    "toad": [
+      "Mana",
+      "Lucky"
+    ],
+    "poison_goobert": [
+      "Poison"
+    ],
+    "strong_pestilence_flask": [
+      "Poison"
+    ],
+    "ruby_chonk": [
+      "Heat"
+    ],
+    "doom_cap": [
+      "Poison"
+    ],
+    "crow": [
+      "Lucky"
+    ],
+    "poison_frog": [
+      "Poison",
+      "Mana"
+    ],
+    "rainbow_goobert": [
+      "Poison",
+      "Vampirism",
+      "Blind"
+    ],
+    "cursed_hair_comb": [
+      "Vampirism"
+    ],
+    "mr_struggles": [
+      "Debuff"
+    ],
+    "cursed_dagger": [
+      "Debuff"
+    ],
+    "snake": [
+      "Poison",
+      "Lucky"
+    ],
+    "cauldron": [
+      "Mana",
+      "Heat"
+    ],
+    "miss_fortune": [
+      "Buff"
+    ],
+    "strong_vampiric_potion": [
+      "Vampirism"
+    ],
+    "strong_divine_potion": [
+      "Buff"
+    ],
+    "flame": [
+      "Heat"
+    ],
+    "chili_pepper": [
+      "Heat"
+    ],
+    "draconic_orb": [
+      "Heat"
+    ],
+    "burning_sword": [
+      "Heat"
+    ],
+    "burning_blade": [
+      "Heat"
+    ],
+    "sun_armor": [
+      "Heat"
+    ],
+    "flame_whip": [
+      "Heat"
+    ],
+    "chili_goobert": [
+      "Heat"
+    ],
+    "molten_greatsword": [
+      "Empower"
+    ],
+    "fire_shelly": [
+      "Heat"
+    ],
+    "rainbow_goobert_pyromancer": [
+      "Vampirism",
+      "Blind",
+      "Heat"
+    ],
+    "friendly_fire": [
+      "Heat",
+      "Regeneration",
+      "Lucky"
+    ],
+    "burning_banner": [
+      "Regeneration",
+      "Blind"
+    ],
+    "dark_lantern": [
+      "Debuff"
+    ],
+    "frozen_flame": [
+      "Cold"
+    ],
+    "dragon_nest": [
+      "Lucky",
+      "Regeneration",
+      "Mana",
+      "Heat"
+    ],
+    "spell_scroll_frostbolt": [
+      "Cold"
+    ],
+    "ice_armor": [
+      "Cold"
+    ],
+    "frozen_buckler": [
+      "Cold"
+    ],
+    "frostbite": [
+      "Vampirism",
+      "Cold"
+    ],
+    "ice_dragon": [
+      "Cold"
+    ],
+    "emerald_egg": [
+      "Lucky"
+    ],
+    "emerald_whelp": [
+      "Lucky",
+      "Poison"
+    ],
+    "sapphire_egg": [
+      "Mana"
+    ],
+    "sapphire_whelp": [
+      "Buff"
+    ],
+    "amethyst_egg": [
+      "Debuff"
+    ],
+    "amethyst_whelp": [
+      "Debuff"
+    ],
+    "spiked_collar": [
+      "Spikes"
+    ],
+    "cheese": [
+      "Buff"
+    ],
+    "dragonskin_boots": [
+      "Empower"
+    ],
+    "spiked_staff": [
+      "Empower",
+      "Spikes"
+    ],
+    "cheese_goobert": [
+      "Buff"
+    ],
+    "spiked_wall": [
+      "Spikes"
+    ],
+    "rainbow_goobert_berserker": [
+      "Buff"
+    ],
+    "deer_totem": [
+      "Mana"
+    ],
+    "wolf_emblem": [
+      "Empower"
+    ],
+    "shaman_mask": [
+      "Buff"
+    ],
+    "power_puppy": [
+      "Lucky",
+      "Regeneration",
+      "Empower"
+    ],
+    "armored_power_puppy": [
+      "Lucky",
+      "Regeneration",
+      "Empower"
+    ],
+    "hawk_rune": [
+      "Blind"
+    ],
+    "spicy_banana": [
+      "Heat"
+    ],
+    "smelly_barrier": [
+      "Poison"
+    ],
+    "dig_deeper": [
+      "Blind"
+    ],
+    "thornburst": [
+      "Spikes"
+    ],
+    "mana_mastery": [
+      "Mana"
+    ],
+    "power_of_the_moon": [
+      "Blind"
+    ],
+    "girl_power": [
+      "Empower",
+      "Regeneration"
+    ],
+    "blood_manipulation": [
+      "Vampirism"
+    ],
+    "enchanted_weapons": [
+      "Buff"
+    ],
+    "no_rush_please": [
+      "Cold"
+    ],
+    "double_rainbow": [
+      "Buff"
+    ],
+    "fortunas_kiss": [
+      "Buff"
+    ],
+    "time_melting": [
+      "Heat"
+    ],
+    "heart_of_the_cards": [
+      "Mana",
+      "Regeneration"
+    ],
+    "dark_ritual": [
+      "Vampirism",
+      "Debuff"
+    ],
+    "dragon_set": [
+      "Heat"
+    ],
+    "everburning": [
+      "Heat"
+    ],
+    "solaris": [
+      "Heat"
+    ],
+    "ultima": [
+      "Buff",
+      "Cold"
+    ],
+    "level_up": [
+      "Mana",
+      "Lucky"
+    ],
+    "scholar_bag": [
+      "Mana"
+    ],
+    "white_pawn": [
+      "Regeneration",
+      "Lucky"
+    ],
+    "black_pawn": [
+      "Mana",
+      "Poison"
+    ],
+    "black_knight": [
+      "Vampirism"
+    ],
+    "black_bishop": [
+      "Debuff"
+    ],
+    "black_rook": [
+      "Spikes"
+    ],
+    "white_queen": [
+      "Heat"
+    ],
+    "black_queen": [
+      "Buff"
+    ],
+    "white_king": [
+      "Buff"
+    ],
+    "wand": [
+      "Lucky",
+      "Mana",
+      "Regeneration",
+      "Empower"
+    ],
+    "cupcake": [
+      "Buff"
+    ],
+    "spell_scroll_ice": [
+      "Cold"
+    ],
+    "spell_scroll_dark": [
+      "Blind"
+    ],
+    "book_of_nature": [
+      "Spikes",
+      "Lucky"
+    ],
+    "book_of_darkness": [
+      "Mana",
+      "Blind"
+    ],
+    "book_of_light": [
+      "Regeneration"
+    ],
+    "book_of_ice": [
+      "Cold"
+    ],
+    "book_of_ice_new": [
+      "Cold"
+    ],
+    "magic_mirror": [
+      "Buff"
+    ],
+    "ice_flower": [
+      "Mana",
+      "Cold"
+    ],
+    "light_flower": [
+      "Lucky",
+      "Regeneration"
+    ],
+    "death_lotus": [
+      "Mana"
+    ],
+    "devouring_sphere": [
+      "Vampirism"
+    ],
+    "cat_spirit": [
+      "Empower",
+      "Lucky"
+    ],
+    "owl_spirit": [
+      "Mana"
+    ],
+    "prismatic_wand": [
+      "Buff"
+    ],
+    "cupcake_goobert": [
+      "Buff"
+    ],
+    "rainbow_goobert_mage": [
+      "Buff",
+      "Blind"
+    ],
+    "cupcake_staff": [
+      "Buff"
+    ],
+    "mage_hat": [
+      "Mana"
+    ],
+    "puzzlebag_t": [
+      "Buff"
+    ],
+    "shiny_mantle": [
+      "Blind"
+    ],
+    "spirit_bells": [
+      "Buff"
+    ],
+    "water_elemental": [
+      "Cold",
+      "Mana"
+    ],
+    "evil_hat": [
+      "Buff"
+    ],
+    "rainbow_potion": [
+      "Buff"
+    ],
+    "boomerang": [
+      "Buff"
+    ],
+    "big_bloodthorne": [
+      "Vampirism",
+      "Spikes"
+    ],
+    "heart_shield": [
+      "Regeneration"
+    ],
+    "dragon_knight": [
+      "Heat"
+    ],
+    "broccoli": [
+      "Lucky",
+      "Regeneration"
+    ],
+    "broccoli_goobert": [
+      "Lucky",
+      "Regeneration"
+    ],
+    "rainbow_goobert_adventurer": [
+      "Regeneration",
+      "Vampirism",
+      "Blind"
+    ],
+    "scissorswords": [
+      "Lucky",
+      "Regeneration",
+      "Blind"
+    ],
+    "daggerang": [
+      "Buff"
+    ],
+    "fedora": [
+      "Buff"
+    ],
+    "scale": [
+      "Mana",
+      "Regeneration"
+    ],
+    "mercury_elemental": [
+      "Poison"
+    ],
+    "ukulele": [
+      "Buff",
+      "Cold"
+    ],
+    "resistor": [
+      "Heat"
+    ],
+    "coil": [
+      "Buff"
+    ],
+    "charge_splitter": [
+      "Lucky"
+    ],
+    "slice_of_toast": [
+      "Regeneration"
+    ],
+    "toast_goobert": [
+      "Regeneration"
+    ],
+    "rainbow_goobert_engineer": [
+      "Regeneration",
+      "Vampirism",
+      "Blind"
+    ],
+    "electric_torch": [
+      "Blind"
+    ],
+    "robodog": [
+      "Lucky",
+      "Heat"
+    ],
+    "mecha_bat": [
+      "Vampirism"
+    ],
+    "bazooka": [
+      "Lucky"
+    ],
+    "chainsaw": [
+      "Buff"
+    ],
+    "poison_grenade": [
+      "Poison"
+    ],
+    "mana_crystal": [
+      "Mana"
+    ],
+    "bionic_armor": [
+      "Empower"
+    ],
+    "laboratory": [
+      "Heat",
+      "Spikes",
+      "Regeneration",
+      "Vampirism",
+      "Empower"
+    ],
+    "bismuth_cube": [
+      "Buff"
+    ],
+    "plastic_cube": [
+      "Spikes"
+    ],
+    "cap_of_brilliance": [
+      "Mana"
+    ],
+    "arcane_boots": [
+      "Lucky",
+      "Empower"
+    ],
+    "thors_hammer": [
+      "Blind"
+    ],
+    "automanaton": [
+      "Blind"
+    ],
+    "gigawatz": [
+      "Blind"
+    ],
+    "perpetuum_mobile": [
+      "Buff"
+    ],
+    "critical_poison": [
+      "Poison"
+    ],
+    "burning_spikes": [
+      "Heat",
+      "Spikes"
+    ],
+    "hogus_bogus": [
+      "Buff"
+    ],
+    "spin_to_win": [
+      "Lucky",
+      "Heat",
+      "Mana",
+      "Regeneration"
+    ],
+    "energy_conversion": [
+      "Buff"
+    ],
+    "inner_power": [
+      "Lucky",
+      "Empower"
+    ],
+    "bewitchment": [
+      "Debuff"
+    ],
+    "seal_the_deal": [
+      "Spikes",
+      "Vampirism",
+      "Empower"
+    ],
+    "wisp": [
+      "Regeneration",
+      "Lucky"
+    ],
+    "forest_dragon": [
+      "Regeneration",
+      "Lucky"
+    ],
+    "frog_prince": [
+      "Mana",
+      "Lucky"
+    ],
+    "molten_spear2": [
+      "Blind"
+    ],
+    "broccotree": [
+      "Regeneration",
+      "Lucky"
+    ],
+    "cupcake_dragon": [
+      "Buff"
+    ],
+    "wand_of_dissonance": [
+      "Regeneration",
+      "Lucky",
+      "Mana"
+    ],
+    "amulet_of_light": [
+      "Regeneration"
+    ],
+    "gold_armor": [
+      "Regeneration"
+    ],
+    "pine_protector": [
+      "Spikes"
+    ],
+    "pot": [
+      "Heat",
+      "Regeneration"
+    ],
+    "angel_crystal": [
+      "Regeneration",
+      "Empower"
+    ],
+    "thorn_elemental": [
+      "Spikes"
+    ],
+    "lightning_potion": [
+      "Blind"
+    ],
+    "sloth": [
+      "Buff"
+    ]
+  },
+  "usedStacksById": {
+    "hungry_blade": [
+      "Regeneration"
+    ],
+    "mana_orb": [
+      "Mana"
+    ],
+    "magic_staff": [
+      "Mana"
+    ],
+    "eggscalibur": [
+      "Mana"
+    ],
+    "spectral_dagger": [
+      "Mana"
+    ],
+    "magic_torch": [
+      "Mana"
+    ],
+    "serpent_staff": [
+      "Mana"
+    ],
+    "lightsaber": [
+      "Regeneration",
+      "Spikes"
+    ],
+    "fancy_fencing_rapier": [
+      "Lucky"
+    ],
+    "djinn_lamp": [
+      "Lucky",
+      "Spikes",
+      "Mana",
+      "Block"
+    ],
+    "crown": [
+      "Mana"
+    ],
+    "heart_container": [
+      "Regeneration"
+    ],
+    "bloodthorne": [
+      "Regeneration"
+    ],
+    "darksaber": [
+      "Mana"
+    ],
+    "holy_spear": [
+      "Mana"
+    ],
+    "heart_of_darkness": [
+      "Regeneration"
+    ],
+    "king_crown": [
+      "Mana"
+    ],
+    "king_goobert": [
+      "Mana"
+    ],
+    "stone_golem": [
+      "Regeneration"
+    ],
+    "gingerbread_man": [
+      "Lucky",
+      "Heat",
+      "Mana"
+    ],
+    "cubert": [
+      "Regeneration"
+    ],
+    "ghost": [
+      "Buff"
+    ],
+    "bomb": [
+      "Buff"
+    ],
+    "thorn_bow": [
+      "Spikes"
+    ],
+    "critwood_staff": [
+      "Mana"
+    ],
+    "staff_of_unhealing": [
+      "Mana"
+    ],
+    "miss_fortune": [
+      "Lucky"
+    ],
+    "phoenix": [
+      "Heat"
+    ],
+    "sun_armor": [
+      "Heat"
+    ],
+    "molten_dagger": [
+      "Heat"
+    ],
+    "molten_spear": [
+      "Heat"
+    ],
+    "staff_of_fire": [
+      "Mana",
+      "Heat"
+    ],
+    "flame_whip": [
+      "Spikes"
+    ],
+    "molten_greatsword": [
+      "Heat"
+    ],
+    "friendly_fire": [
+      "Mana"
+    ],
+    "ice_armor": [
+      "Heat"
+    ],
+    "sapphire_whelp": [
+      "Mana"
+    ],
+    "spiked_staff": [
+      "Mana"
+    ],
+    "shaman_mask": [
+      "Lucky"
+    ],
+    "wand": [
+      "Lucky",
+      "Mana",
+      "Regeneration"
+    ],
+    "book_of_basics": [
+      "Mana"
+    ],
+    "spell_scroll_nature": [
+      "Mana"
+    ],
+    "book_of_nature": [
+      "Regeneration"
+    ],
+    "book_of_light": [
+      "Mana"
+    ],
+    "book_of_ice": [
+      "Mana"
+    ],
+    "book_of_ice_new": [
+      "Mana"
+    ],
+    "ice_flower": [
+      "Mana"
+    ],
+    "light_flower": [
+      "Mana"
+    ],
+    "death_lotus": [
+      "Lucky"
+    ],
+    "null_blade": [
+      "Lucky",
+      "Regeneration"
+    ],
+    "cat_spirit": [
+      "Mana"
+    ],
+    "owl_spirit": [
+      "Mana"
+    ],
+    "badger_spirit": [
+      "Mana"
+    ],
+    "prismatic_wand": [
+      "Lucky",
+      "Mana",
+      "Regeneration"
+    ],
+    "cupcake_staff": [
+      "Mana"
+    ],
+    "shiny_mantle": [
+      "Mana"
+    ],
+    "big_bloodthorne": [
+      "Regeneration"
+    ],
+    "heart_shield": [
+      "Regeneration"
+    ],
+    "scissorswords": [
+      "Lucky",
+      "Regeneration"
+    ],
+    "jynx_staff": [
+      "Mana"
+    ],
+    "fedora": [
+      "Lucky"
+    ],
+    "charge_splitter": [
+      "Heat"
+    ],
+    "mecha_bat": [
+      "Lucky"
+    ],
+    "bazooka": [
+      "Heat"
+    ],
+    "lightning_staff": [
+      "Mana"
+    ],
+    "laboratory": [
+      "Heat",
+      "Spikes",
+      "Regeneration",
+      "Vampirism",
+      "Lucky"
+    ],
+    "magitecc_armor": [
+      "Mana"
+    ],
+    "arcane_boots": [
+      "Mana"
+    ],
+    "thors_hammer": [
+      "Mana"
+    ],
+    "automanaton": [
+      "Mana"
+    ],
+    "mananana": [
+      "Mana"
+    ],
+    "bewitchment": [
+      "Mana"
+    ],
+    "seal_the_deal": [
+      "Regeneration",
+      "Lucky",
+      "Mana"
+    ],
+    "molten_spear2": [
+      "Heat"
+    ],
+    "phoenix2": [
+      "Heat"
+    ]
+  },
+  "craftedCount": 199,
+  "craftedIds": [
+    "arcane_boots",
+    "armored_courage_puppy",
+    "armored_power_puppy",
+    "armored_wisdom_puppy",
+    "automanaton",
+    "bazooka",
+    "big_bloodthorne",
+    "blood_goobert",
+    "bloodthorne",
+    "bloody_dagger",
+    "boomerang",
+    "box_of_prosperity",
+    "broccoli_goobert",
+    "broccotree",
+    "burning_blade",
+    "burning_coal",
+    "burning_sword",
+    "burning_torch",
+    "busted_blade",
+    "cap_of_brilliance",
+    "carrot_goobert",
+    "chain_whip",
+    "chainsaw",
+    "cheese_goobert",
+    "chili_goobert",
+    "claws_of_attack",
+    "coins",
+    "con_trap_tron",
+    "corrupted_armor",
+    "critwood_staff",
+    "crossblades",
+    "crow",
+    "cupcake_dragon",
+    "cupcake_goobert",
+    "cupcake_staff",
+    "daggerang",
+    "darksaber",
+    "death_lotus",
+    "devouring_sphere",
+    "doom_cap",
+    "double_axe",
+    "dragon_claws",
+    "dragon_knight",
+    "dragonscale_armor",
+    "dragonskin_boots",
+    "eat_o_matic",
+    "eggscalibur",
+    "electric_torch",
+    "employee_uniform",
+    "evil_cap",
+    "falcon_blade",
+    "fire_shelly",
+    "flame_whip",
+    "flawed_amethyst",
+    "flawed_emerald",
+    "flawed_ruby",
+    "flawed_sapphire",
+    "flawed_topaz",
+    "flawless_amethyst",
+    "flawless_emerald",
+    "flawless_ruby",
+    "flawless_sapphire",
+    "flawless_topaz",
+    "forest_dragon",
+    "frog_prince",
+    "frostbite",
+    "frozen_buckler",
+    "generator",
+    "gold_armor",
+    "goobert",
+    "halberd",
+    "heart_of_darkness",
+    "heart_shield",
+    "hero_longsword",
+    "hero_shield",
+    "hero_sword",
+    "holdall",
+    "holy_collar",
+    "holy_spear",
+    "hyper_hedgehog",
+    "ice_armor",
+    "ice_dragon",
+    "ice_flower",
+    "jynx_staff",
+    "katana",
+    "king_crown",
+    "king_goobert",
+    "light_flower",
+    "light_goobert",
+    "lightning_staff",
+    "long_spear",
+    "lucky_bow",
+    "lucky_piggy",
+    "lucky_shortbow",
+    "magic_collar",
+    "magic_mirror",
+    "magic_staff",
+    "magic_torch",
+    "magitecc_armor",
+    "mana_potion",
+    "mananana",
+    "manathirst",
+    "mecha_bat",
+    "molten_dagger",
+    "molten_greatsword",
+    "molten_spear",
+    "molten_spear2",
+    "moon_armor",
+    "moon_shield",
+    "null_blade",
+    "obsidian_dragon",
+    "onion_cutter",
+    "pandamonium",
+    "paradise_birb",
+    "perfect_amethyst",
+    "perfect_emerald",
+    "perfect_ruby",
+    "perfect_sapphire",
+    "perfect_topaz",
+    "phoenix2",
+    "piggy_of_riches",
+    "pine_protector",
+    "platin_customer_card",
+    "poison_bow",
+    "poison_dagger",
+    "poison_frog",
+    "poison_goobert",
+    "poison_grenade",
+    "poison_shortbow",
+    "poison_spear",
+    "pot",
+    "prismatic_sword",
+    "prismatic_wand",
+    "rainbow_goobert",
+    "rainbow_goobert_adventurer",
+    "rainbow_goobert_berserker",
+    "rainbow_goobert_engineer",
+    "rainbow_goobert_mage",
+    "rainbow_goobert_pyromancer",
+    "rainbow_goobert_ranger",
+    "rat_chef",
+    "regular_amethyst",
+    "regular_emerald",
+    "regular_ruby",
+    "regular_sapphire",
+    "regular_topaz",
+    "robodog",
+    "rope",
+    "ruby_chonk",
+    "sandbag",
+    "scissorswords",
+    "serpent_staff",
+    "shell_totem",
+    "shelly",
+    "shepherds_crook",
+    "shovel",
+    "slice_of_toast",
+    "snow_stick",
+    "snowmaster",
+    "spectral_dagger",
+    "spiked_shield",
+    "spiked_staff",
+    "spiked_wall",
+    "spring_loader",
+    "squirrel_archer",
+    "staff_of_fire",
+    "staff_of_unhealing",
+    "steel_dragon",
+    "steel_goobert",
+    "stone_armor",
+    "stone_gloves",
+    "stone_golem",
+    "stone_helm",
+    "stone_shoes",
+    "strong_demonic_flask",
+    "strong_health_potion",
+    "strong_heroic_potion",
+    "strong_pestilence_flask",
+    "strong_stone_skin_potion",
+    "sun_armor",
+    "sun_shield",
+    "superior_ring",
+    "thorn_bow",
+    "thorn_shortbow",
+    "thornbloom",
+    "thors_hammer",
+    "thunder_drake",
+    "toast_goobert",
+    "torch",
+    "vampiric_armor",
+    "vampiric_collar",
+    "vampiric_gloves",
+    "vampiric_potion",
+    "wand_of_dissonance",
+    "war_scythe",
+    "whetstone2",
+    "whetstone3",
+    "winged_boots",
+    "wrench"
+  ],
+  "parentById": {
+    "ace_of_spades": "card",
+    "acorn_collar": "rangercollar",
+    "artifact_stone_cold": "stone",
+    "artifact_stone_heat": "stone",
+    "banana": "food",
+    "blood_goobert": "goobert",
+    "bloodthorne": "weapon",
+    "bloody_dagger": "dagger",
+    "blueberries": "food",
+    "bow": "weapon",
+    "bow_and_arrow": "bow",
+    "broom": "weapon",
+    "burning_coal": "gem",
+    "burning_torch": "weapon",
+    "carrot": "food",
+    "carrot_goobert": "goobert",
+    "claws_of_attack": "weapon",
+    "critwood_staff": "weapon",
+    "crossblades": "weapon",
+    "cursed_dagger": "dagger",
+    "dagger": "weapon",
+    "dancing_dragon": "weapon",
+    "darkest_lotus": "card",
+    "darksaber": "weapon",
+    "death_scythe": "weapon",
+    "demonic_flask": "potion",
+    "eggscalibur": "pan",
+    "amethyst_egg": "dragonegg",
+    "amethyst_whelp": "weapon",
+    "armored_courage_puppy": "courage_puppy",
+    "armored_power_puppy": "power_puppy",
+    "armored_wisdom_puppy": "wisdom_puppy",
+    "artifact_stone_death": "stone",
+    "automanaton": "weapon",
+    "axe": "weapon",
+    "badger_rune": "gem",
+    "badger_spirit": "spiritcompanion",
+    "bag_of_giving": "bag",
+    "bazooka": "weapon",
+    "berserker_bag": "bag",
+    "big_bloodthorne": "greatsword",
+    "bismuth_cube": "cube",
+    "boomerang": "weapon",
+    "bowl_of_treats": "food",
+    "box_of_prosperity": "bag",
+    "brass_knuckles": "weapon",
+    "broccoli": "food",
+    "broccoli_goobert": "goobert",
+    "broccotree": "food",
+    "burning_blade": "burning_sword",
+    "burning_sword": "weapon",
+    "busted_blade": "greatsword",
+    "cap_of_brilliance": "leather_helm",
+    "cat_spirit": "spiritcompanion",
+    "chainsaw": "weapon",
+    "chain_whip": "weapon",
+    "cheese": "food",
+    "cheese_goobert": "goobert",
+    "black_bishop": "chesspiece",
+    "black_king": "chesspiece",
+    "black_knight": "chesspiece",
+    "black_pawn": "chesspiece",
+    "black_queen": "chesspiece",
+    "black_rook": "chesspiece",
+    "white_bishop": "chesspiece",
+    "white_king": "chesspiece",
+    "white_knight": "chesspiece",
+    "white_pawn": "chesspiece",
+    "white_queen": "chesspiece",
+    "white_rook": "chesspiece",
+    "chili_goobert": "goobert",
+    "chili_pepper": "food",
+    "chrome_cube": "cube",
+    "con_trap_tron": "con_trap_tron",
+    "cupcake": "food",
+    "cupcake_dragon": "weapon",
+    "cupcake_goobert": "goobert",
+    "cupcake_staff": "weapon",
+    "daggerang": "dagger",
+    "divine_potion": "potion",
+    "doom_cap": "food",
+    "double_axe": "weapon",
+    "dragon_knight": "ruby_whelp",
+    "elephant_rune": "gem",
+    "emerald_egg": "dragonegg",
+    "emerald_whelp": "weapon",
+    "employee_uniform": "leather_armor",
+    "engineer_bag_2": "bag",
+    "engineer_box": "bag",
+    "fire_pit": "bag",
+    "fire_shelly": "shelly",
+    "flame_whip": "weapon",
+    "forest_dragon": "weapon",
+    "forging_hammer": "weapon",
+    "frog_prince": "toad",
+    "frostbite": "weapon",
+    "frozen_buckler": "shield",
+    "gold_cube": "cube",
+    "halberd": "weapon",
+    "hawk_rune": "gem",
+    "heart_shield": "shield",
+    "hedgehog": "forestfriend",
+    "hero_shield": "wooden_buckler",
+    "holdall": "bag",
+    "holy_collar": "rangercollar",
+    "hyper_hedgehog": "hedgehog",
+    "ice_dragon": "weapon",
+    "joker": "card",
+    "jynx_staff": "weapon",
+    "katana": "rib_saw_blade",
+    "king_crown": "crown",
+    "king_goobert": "goobert",
+    "light_flower": "food",
+    "lightning_potion": "potion",
+    "lightning_staff": "weapon",
+    "long_spear": "weapon",
+    "lucky_shortbow": "weapon",
+    "magic_collar": "rangercollar",
+    "mananana": "food",
+    "molten_dagger": "dagger",
+    "molten_greatsword": "greatsword",
+    "molten_spear": "weapon",
+    "molten_spear2": "weapon",
+    "no_rush_please": "leather_helm",
+    "null_blade": "weapon",
+    "obsidian_dragon": "weapon",
+    "onion_cutter": "weapon",
+    "owl_spirit": "spiritcompanion",
+    "phoenix": "weapon",
+    "phoenix2": "phoenix",
+    "piggy_of_riches": "box_of_riches",
+    "pine_protector": "spiked_shield",
+    "plastic_cube": "cube",
+    "poison_shortbow": "weapon",
+    "poison_spear": "weapon",
+    "pop": "weapon",
+    "portable_altar": "bag",
+    "prismatic_sword": "weapon",
+    "puzzlebag_j": "bag",
+    "puzzlebag_l": "bag",
+    "puzzlebag_s": "bag",
+    "puzzlebag_t": "bag",
+    "puzzlebag_z": "bag",
+    "puzzlebox": "bag",
+    "rainbow_goobert_adventurer": "goobert",
+    "rainbow_goobert_berserker": "goobert",
+    "rainbow_goobert_engineer": "goobert",
+    "rainbow_goobert_mage": "goobert",
+    "rainbow_goobert_pyromancer": "goobert",
+    "rainbow_potion": "potion",
+    "random_loadout_bag": "bag",
+    "rat": "forestfriend",
+    "rat_chef": "rat",
+    "relic_case": "bag",
+    "reverse": "card",
+    "sandbag": "leather_helm",
+    "sapphire_egg": "dragonegg",
+    "sapphire_whelp": "weapon",
+    "scholar_bag": "bag",
+    "scissorswords": "lightsaber",
+    "serpent_staff": "weapon",
+    "sewing_case": "bag",
+    "slice_of_bread": "food",
+    "slice_of_toast": "food",
+    "snowcake": "food",
+    "snow_stick": "weapon",
+    "spiked_staff": "weapon",
+    "spiked_wall": "spiked_shield",
+    "spirit_bells": "leather_helm",
+    "squirrel": "forestfriend",
+    "squirrel_archer": "squirrel",
+    "staff_of_fire": "weapon",
+    "steel_dragon": "weapon",
+    "stone_golem": "weapon",
+    "strong_divine_potion": "divine_potion",
+    "strong_vampiric_potion": "vampiric_potion",
+    "sun_shield": "shield",
+    "thornbloom": "weapon",
+    "thorn_shortbow": "weapon",
+    "thors_hammer": "weapon",
+    "thunder_drake": "weapon",
+    "tiger_rune": "gem",
+    "toast_goobert": "goobert",
+    "toolbox": "bag",
+    "turtle": "leather_helm",
+    "vampiric_collar": "rangercollar",
+    "vampiric_potion": "potion",
+    "vineweave_basket": "bag",
+    "war_scythe": "weapon",
+    "water_elemental": "weapon",
+    "whetstone3": "whetstone",
+    "wisp": "gem",
+    "wrench": "weapon",
+    "falcon_blade": "weapon",
+    "fancy_fencing_rapier": "weapon",
+    "fanny_pack": "bag",
+    "fly_agaric": "food",
+    "garlic": "food",
+    "amethyst": "gem",
+    "corrupted_crystal": "gem",
+    "emerald": "gem",
+    "lump_of_coal": "gem",
+    "ruby": "gem",
+    "sapphire": "gem",
+    "skull": "gem",
+    "topaz": "gem",
+    "gingerbread_man": "food",
+    "greatsword": "weapon",
+    "hammer": "weapon",
+    "health_potion": "potion",
+    "heroic_potion": "potion",
+    "hero_longsword": "weapon",
+    "hero_sword": "weapon",
+    "holo_fire_lizard": "card",
+    "holy_spear": "weapon",
+    "hungry_blade": "weapon",
+    "light_goobert": "goobert",
+    "lightsaber": "weapon",
+    "lucky_bow": "bow",
+    "lucky_piggy": "piggybank",
+    "magic_staff": "weapon",
+    "magic_torch": "weapon",
+    "mana_potion": "potion",
+    "manathirst": "weapon",
+    "moon_shield": "shield",
+    "pan": "weapon",
+    "pandamonium": "weapon",
+    "pestilence_flask": "potion",
+    "pineapple": "food",
+    "poison_bow": "bow",
+    "poison_dagger": "dagger",
+    "poison_goobert": "goobert",
+    "potion_belt": "bag",
+    "protective_purse": "bag",
+    "pumpkin": "food",
+    "rainbow_goobert": "goobert",
+    "rainbow_goobert_ranger": "goobert",
+    "ranger_bag": "bag",
+    "rib_saw_blade": "weapon",
+    "ruby_chonk": "weapon",
+    "ruby_egg": "dragonegg",
+    "ruby_whelp": "weapon",
+    "shield_of_valor": "shield",
+    "shovel": "weapon",
+    "spear": "weapon",
+    "spectral_dagger": "dagger",
+    "spiked_shield": "shield",
+    "stamina_sack": "bag",
+    "steel_goobert": "goobert",
+    "stone_helm": "leather_helm",
+    "stone_skin_potion": "potion",
+    "storage_coffin": "bag",
+    "strong_demonic_flask": "potion",
+    "strong_health_potion": "health_potion",
+    "strong_pestilence_flask": "pestilence_flask",
+    "strong_stone_skin_potion": "stone_skin_potion",
+    "the_fool": "card",
+    "the_lovers": "card",
+    "thorn_bow": "bow",
+    "thorn_whip": "weapon",
+    "torch": "weapon",
+    "vampiric_scythe": "weapon",
+    "villain_sword": "weapon",
+    "white_eyes_blue_dragon": "card",
+    "wooden_buckler": "shield",
+    "book_of_ice_new": "book_of_ice",
+    "goobling": "goobert",
+    "shortbow": "weapon",
+    "stable_recombobulator": "recombobulator",
+    "strong_mana_potion": "mana_potion",
+    "superior_ring": "magic_ring",
+    "unstable_recombobulator": "recombobulator",
+    "whetstone2": "whetstone",
+    "chipped_amethyst": "amethyst",
+    "chipped_emerald": "emerald",
+    "chipped_ruby": "ruby",
+    "chipped_sapphire": "sapphire",
+    "chipped_topaz": "topaz",
+    "flawed_amethyst": "amethyst",
+    "flawed_emerald": "emerald",
+    "flawed_ruby": "ruby",
+    "flawed_sapphire": "sapphire",
+    "flawed_topaz": "topaz",
+    "flawless_amethyst": "amethyst",
+    "flawless_emerald": "emerald",
+    "flawless_ruby": "ruby",
+    "flawless_sapphire": "sapphire",
+    "flawless_topaz": "topaz",
+    "perfect_amethyst": "amethyst",
+    "perfect_emerald": "emerald",
+    "perfect_ruby": "ruby",
+    "perfect_sapphire": "sapphire",
+    "perfect_topaz": "topaz",
+    "regular_amethyst": "amethyst",
+    "regular_emerald": "emerald",
+    "regular_ruby": "ruby",
+    "regular_sapphire": "sapphire",
+    "regular_topaz": "topaz",
+    "leather_bag": "bag",
+    "strong_heroic_potion": "heroic_potion"
+  },
+  "scriptFamilies": {
+    "AceofSpades": [
+      "ace_of_spades"
+    ],
+    "Card": [
+      "ace_of_spades",
+      "darkest_lotus",
+      "holo_fire_lizard",
+      "joker",
+      "reverse",
+      "the_fool",
+      "the_lovers",
+      "white_eyes_blue_dragon"
+    ],
+    "AcornCollar": [
+      "acorn_collar"
+    ],
+    "RangerCollar": [
+      "acorn_collar",
+      "holy_collar",
+      "magic_collar",
+      "vampiric_collar"
+    ],
+    "ArtifactStoneCold": [
+      "artifact_stone_cold"
+    ],
+    "Stone": [
+      "artifact_stone_cold",
+      "artifact_stone_death",
+      "artifact_stone_heat",
+      "stone"
+    ],
+    "ArtifactStoneHeat": [
+      "artifact_stone_heat"
+    ],
+    "BagofStones": [
+      "bag_of_stones"
+    ],
+    "Banana": [
+      "banana"
+    ],
+    "Food": [
+      "banana",
+      "blueberries",
+      "bowl_of_treats",
+      "broccoli",
+      "broccotree",
+      "carrot",
+      "cheese",
+      "chili_pepper",
+      "cupcake",
+      "doom_cap",
+      "fly_agaric",
+      "garlic",
+      "gingerbread_man",
+      "light_flower",
+      "mananana",
+      "pineapple",
+      "pumpkin",
+      "slice_of_bread",
+      "slice_of_toast",
+      "snowcake"
+    ],
+    "BloodAmulet": [
+      "blood_amulet"
+    ],
+    "BloodGoobert": [
+      "blood_goobert"
+    ],
+    "Goobert": [
+      "blood_goobert",
+      "broccoli_goobert",
+      "carrot_goobert",
+      "cheese_goobert",
+      "chili_goobert",
+      "cupcake_goobert",
+      "goobert",
+      "goobling",
+      "king_goobert",
+      "light_goobert",
+      "poison_goobert",
+      "rainbow_goobert",
+      "rainbow_goobert_adventurer",
+      "rainbow_goobert_berserker",
+      "rainbow_goobert_engineer",
+      "rainbow_goobert_mage",
+      "rainbow_goobert_pyromancer",
+      "rainbow_goobert_ranger",
+      "steel_goobert",
+      "toast_goobert"
+    ],
+    "Bloodthorne": [
+      "bloodthorne"
+    ],
+    "Weapon": [
+      "amethyst_whelp",
+      "automanaton",
+      "axe",
+      "bazooka",
+      "big_bloodthorne",
+      "bloodthorne",
+      "bloody_dagger",
+      "boomerang",
+      "bow_and_arrow",
+      "brass_knuckles",
+      "broom",
+      "burning_blade",
+      "burning_sword",
+      "burning_torch",
+      "busted_blade",
+      "chain_whip",
+      "chainsaw",
+      "claws_of_attack",
+      "critwood_staff",
+      "crossblades",
+      "cupcake_dragon",
+      "cupcake_staff",
+      "cursed_dagger",
+      "dagger",
+      "daggerang",
+      "dancing_dragon",
+      "darksaber",
+      "death_scythe",
+      "double_axe",
+      "dragon_knight",
+      "eggscalibur",
+      "emerald_whelp",
+      "falcon_blade",
+      "fancy_fencing_rapier",
+      "flame_whip",
+      "forest_dragon",
+      "forging_hammer",
+      "frostbite",
+      "greatsword",
+      "halberd",
+      "hammer",
+      "hero_longsword",
+      "hero_sword",
+      "holy_spear",
+      "hungry_blade",
+      "ice_dragon",
+      "jynx_staff",
+      "katana",
+      "lightning_staff",
+      "lightsaber",
+      "long_spear",
+      "lucky_bow",
+      "lucky_shortbow",
+      "magic_staff",
+      "magic_torch",
+      "manathirst",
+      "molten_dagger",
+      "molten_greatsword",
+      "molten_spear",
+      "molten_spear2",
+      "null_blade",
+      "obsidian_dragon",
+      "onion_cutter",
+      "pan",
+      "pandamonium",
+      "phoenix",
+      "phoenix2",
+      "poison_bow",
+      "poison_dagger",
+      "poison_shortbow",
+      "poison_spear",
+      "pop",
+      "prismatic_sword",
+      "rib_saw_blade",
+      "ruby_chonk",
+      "ruby_whelp",
+      "sapphire_whelp",
+      "scissorswords",
+      "serpent_staff",
+      "shortbow",
+      "shovel",
+      "snow_stick",
+      "spear",
+      "spectral_dagger",
+      "spiked_staff",
+      "staff_of_fire",
+      "steel_dragon",
+      "stone_golem",
+      "thorn_bow",
+      "thorn_shortbow",
+      "thorn_whip",
+      "thornbloom",
+      "thors_hammer",
+      "thunder_drake",
+      "torch",
+      "vampiric_scythe",
+      "villain_sword",
+      "war_scythe",
+      "water_elemental",
+      "wrench"
+    ],
+    "BloodyDagger": [
+      "bloody_dagger"
+    ],
+    "Dagger": [
+      "bloody_dagger",
+      "cursed_dagger",
+      "dagger",
+      "daggerang",
+      "molten_dagger",
+      "poison_dagger",
+      "spectral_dagger"
+    ],
+    "Blueberries": [
+      "blueberries"
+    ],
+    "BowandArrow": [
+      "bow_and_arrow"
+    ],
+    "Bow": [
+      "bow_and_arrow",
+      "lucky_bow",
+      "poison_bow",
+      "thorn_bow"
+    ],
+    "BoxofRiches": [
+      "box_of_riches",
+      "piggy_of_riches"
+    ],
+    "Broom": [
+      "broom"
+    ],
+    "BurningCoal": [
+      "burning_coal"
+    ],
+    "Gem": [
+      "badger_rune",
+      "burning_coal",
+      "chipped_amethyst",
+      "chipped_emerald",
+      "chipped_ruby",
+      "chipped_sapphire",
+      "chipped_topaz",
+      "corrupted_crystal",
+      "elephant_rune",
+      "flawed_amethyst",
+      "flawed_emerald",
+      "flawed_ruby",
+      "flawed_sapphire",
+      "flawed_topaz",
+      "flawless_amethyst",
+      "flawless_emerald",
+      "flawless_ruby",
+      "flawless_sapphire",
+      "flawless_topaz",
+      "hawk_rune",
+      "lump_of_coal",
+      "perfect_amethyst",
+      "perfect_emerald",
+      "perfect_ruby",
+      "perfect_sapphire",
+      "perfect_topaz",
+      "regular_amethyst",
+      "regular_emerald",
+      "regular_ruby",
+      "regular_sapphire",
+      "regular_topaz",
+      "skull",
+      "tiger_rune",
+      "wisp"
+    ],
+    "BurningTorch": [
+      "burning_torch"
+    ],
+    "Carrot": [
+      "carrot"
+    ],
+    "CarrotGoobert": [
+      "carrot_goobert"
+    ],
+    "ClawsofAttack": [
+      "claws_of_attack"
+    ],
+    "CorruptedArmor": [
+      "corrupted_armor"
+    ],
+    "CritwoodStaff": [
+      "critwood_staff"
+    ],
+    "Crossblades": [
+      "crossblades"
+    ],
+    "Crown": [
+      "crown",
+      "king_crown"
+    ],
+    "CursedDagger": [
+      "cursed_dagger"
+    ],
+    "CursedHairComb": [
+      "cursed_hair_comb"
+    ],
+    "CustomerCard": [
+      "customer_card"
+    ],
+    "DancingDragon": [
+      "dancing_dragon"
+    ],
+    "DarkestLotus": [
+      "darkest_lotus"
+    ],
+    "Darksaber": [
+      "darksaber"
+    ],
+    "DeathScythe": [
+      "death_scythe"
+    ],
+    "DeckofCards": [
+      "deck_of_cards"
+    ],
+    "DemonicFlask": [
+      "demonic_flask"
+    ],
+    "Potion": [
+      "demonic_flask",
+      "divine_potion",
+      "health_potion",
+      "heroic_potion",
+      "lightning_potion",
+      "mana_potion",
+      "pestilence_flask",
+      "rainbow_potion",
+      "stone_skin_potion",
+      "strong_demonic_flask",
+      "strong_divine_potion",
+      "strong_health_potion",
+      "strong_heroic_potion",
+      "strong_mana_potion",
+      "strong_pestilence_flask",
+      "strong_stone_skin_potion",
+      "strong_vampiric_potion",
+      "vampiric_potion"
+    ],
+    "DjinnLamp": [
+      "djinn_lamp"
+    ],
+    "Eggscalibur": [
+      "eggscalibur"
+    ],
+    "Pan": [
+      "eggscalibur",
+      "pan"
+    ],
+    "EvilCap": [
+      "evil_cap"
+    ],
+    "AcornAce": [
+      "acorn_ace"
+    ],
+    "AmethystEgg": [
+      "amethyst_egg"
+    ],
+    "DragonEgg": [
+      "amethyst_egg",
+      "emerald_egg",
+      "ruby_egg",
+      "sapphire_egg"
+    ],
+    "AmethystWhelp": [
+      "amethyst_whelp"
+    ],
+    "AmuletofAgility": [
+      "amulet_of_agility"
+    ],
+    "AmuletofAlchemy": [
+      "amulet_of_alchemy"
+    ],
+    "AmuletofDarkness": [
+      "amulet_of_darkness"
+    ],
+    "AmuletofFeasting": [
+      "amulet_of_feasting"
+    ],
+    "AmuletofFortune": [
+      "amulet_of_fortune"
+    ],
+    "AmuletofLife": [
+      "amulet_of_life"
+    ],
+    "AmuletofLight": [
+      "amulet_of_light"
+    ],
+    "AmuletofSteel": [
+      "amulet_of_steel"
+    ],
+    "AmuletoftheWild": [
+      "amulet_of_the_wild"
+    ],
+    "AmuletUnidentified": [
+      "amulet_unidentified"
+    ],
+    "AngelCrystal": [
+      "angel_crystal"
+    ],
+    "Anvil": [
+      "anvil"
+    ],
+    "ArcaneBoots": [
+      "arcane_boots"
+    ],
+    "ArcaneIntellect": [
+      "arcane_intellect"
+    ],
+    "ArmoredCouragePuppy": [
+      "armored_courage_puppy"
+    ],
+    "CouragePuppy": [
+      "armored_courage_puppy",
+      "courage_puppy"
+    ],
+    "ArmoredPowerPuppy": [
+      "armored_power_puppy"
+    ],
+    "PowerPuppy": [
+      "armored_power_puppy",
+      "power_puppy"
+    ],
+    "ArmoredWisdomPuppy": [
+      "armored_wisdom_puppy"
+    ],
+    "WisdomPuppy": [
+      "armored_wisdom_puppy",
+      "wisdom_puppy"
+    ],
+    "ArtifactStoneDeath": [
+      "artifact_stone_death"
+    ],
+    "Automanaton": [
+      "automanaton"
+    ],
+    "Axe": [
+      "axe"
+    ],
+    "BadgerRune": [
+      "badger_rune"
+    ],
+    "BadgerSpirit": [
+      "badger_spirit"
+    ],
+    "SpiritCompanion": [
+      "badger_spirit",
+      "cat_spirit",
+      "owl_spirit"
+    ],
+    "BagofGiving": [
+      "bag_of_giving"
+    ],
+    "Bag": [
+      "bag_of_giving",
+      "berserker_bag",
+      "box_of_prosperity",
+      "engineer_bag_2",
+      "engineer_box",
+      "fanny_pack",
+      "fire_pit",
+      "holdall",
+      "leather_bag",
+      "portable_altar",
+      "potion_belt",
+      "protective_purse",
+      "puzzlebag_j",
+      "puzzlebag_l",
+      "puzzlebag_s",
+      "puzzlebag_t",
+      "puzzlebag_z",
+      "puzzlebox",
+      "random_loadout_bag",
+      "ranger_bag",
+      "relic_case",
+      "scholar_bag",
+      "sewing_case",
+      "stamina_sack",
+      "storage_coffin",
+      "toolbox",
+      "vineweave_basket"
+    ],
+    "Bagtacular": [
+      "bagtacular"
+    ],
+    "Battery": [
+      "battery"
+    ],
+    "Bazooka": [
+      "bazooka"
+    ],
+    "BerserkerBag": [
+      "berserker_bag"
+    ],
+    "Bewitchment": [
+      "bewitchment"
+    ],
+    "BigBloodthorne": [
+      "big_bloodthorne"
+    ],
+    "Greatsword": [
+      "big_bloodthorne",
+      "busted_blade",
+      "greatsword",
+      "molten_greatsword"
+    ],
+    "BionicArmor": [
+      "bionic_armor"
+    ],
+    "BismuthCube": [
+      "bismuth_cube"
+    ],
+    "Cube": [
+      "bismuth_cube",
+      "chrome_cube",
+      "gold_cube",
+      "plastic_cube"
+    ],
+    "BloodManipulation": [
+      "blood_manipulation"
+    ],
+    "Bomb": [
+      "bomb"
+    ],
+    "BookofBasics": [
+      "book_of_basics"
+    ],
+    "BookofDarkness": [
+      "book_of_darkness"
+    ],
+    "BookofIce": [
+      "book_of_ice",
+      "book_of_ice_new"
+    ],
+    "BookofLight": [
+      "book_of_light"
+    ],
+    "BookofNature": [
+      "book_of_nature"
+    ],
+    "Boomerang": [
+      "boomerang"
+    ],
+    "BowlofTreats": [
+      "bowl_of_treats"
+    ],
+    "BoxofProsperity": [
+      "box_of_prosperity"
+    ],
+    "BrassKnuckles": [
+      "brass_knuckles"
+    ],
+    "Broccoli": [
+      "broccoli"
+    ],
+    "BroccoliGoobert": [
+      "broccoli_goobert"
+    ],
+    "Broccotree": [
+      "broccotree"
+    ],
+    "BurningBanner": [
+      "burning_banner"
+    ],
+    "BurningBlade": [
+      "burning_blade"
+    ],
+    "BurningSword": [
+      "burning_blade",
+      "burning_sword"
+    ],
+    "BurningSpikes": [
+      "burning_spikes"
+    ],
+    "BustedBlade": [
+      "busted_blade"
+    ],
+    "BuytheHolyLight": [
+      "buy_the_holy_light"
+    ],
+    "CapofBrilliance": [
+      "cap_of_brilliance"
+    ],
+    "LeatherHelm": [
+      "cap_of_brilliance",
+      "leather_helm",
+      "no_rush_please",
+      "sandbag",
+      "spirit_bells",
+      "stone_helm",
+      "turtle"
+    ],
+    "CatSpirit": [
+      "cat_spirit"
+    ],
+    "Cauldron": [
+      "cauldron"
+    ],
+    "Chainsaw": [
+      "chainsaw"
+    ],
+    "ChainWhip": [
+      "chain_whip"
+    ],
+    "ChargeSplitter": [
+      "charge_splitter"
+    ],
+    "Cheese": [
+      "cheese"
+    ],
+    "CheeseGoobert": [
+      "cheese_goobert"
+    ],
+    "BlackBishop": [
+      "black_bishop"
+    ],
+    "ChessPiece": [
+      "black_bishop",
+      "black_king",
+      "black_knight",
+      "black_pawn",
+      "black_queen",
+      "black_rook",
+      "white_bishop",
+      "white_king",
+      "white_knight",
+      "white_pawn",
+      "white_queen",
+      "white_rook"
+    ],
+    "BlackKing": [
+      "black_king"
+    ],
+    "BlackKnight": [
+      "black_knight"
+    ],
+    "BlackPawn": [
+      "black_pawn"
+    ],
+    "BlackQueen": [
+      "black_queen"
+    ],
+    "BlackRook": [
+      "black_rook"
+    ],
+    "WhiteBishop": [
+      "white_bishop"
+    ],
+    "WhiteKing": [
+      "white_king"
+    ],
+    "WhiteKnight": [
+      "white_knight"
+    ],
+    "WhitePawn": [
+      "white_pawn"
+    ],
+    "WhiteQueen": [
+      "white_queen"
+    ],
+    "WhiteRook": [
+      "white_rook"
+    ],
+    "ChessBoard": [
+      "chess_board"
+    ],
+    "ChessMaster": [
+      "chess_master"
+    ],
+    "ChiliGoobert": [
+      "chili_goobert"
+    ],
+    "ChiliPepper": [
+      "chili_pepper"
+    ],
+    "ChromeCube": [
+      "chrome_cube"
+    ],
+    "Cog": [
+      "cog"
+    ],
+    "CogBadge": [
+      "cog_badge"
+    ],
+    "Coil": [
+      "coil"
+    ],
+    "ConTrapTron": [
+      "con_trap_tron"
+    ],
+    "CriticalPoison": [
+      "critical_poison"
+    ],
+    "Crow": [
+      "crow"
+    ],
+    "Cthulhu": [
+      "cthulhu"
+    ],
+    "Cubert": [
+      "cubert"
+    ],
+    "Cupcake": [
+      "cupcake"
+    ],
+    "CupcakeDragon": [
+      "cupcake_dragon"
+    ],
+    "CupcakeGoobert": [
+      "cupcake_goobert"
+    ],
+    "CupcakeStaff": [
+      "cupcake_staff"
+    ],
+    "Daggerang": [
+      "daggerang"
+    ],
+    "DarkLantern": [
+      "dark_lantern"
+    ],
+    "DarkRitual": [
+      "dark_ritual"
+    ],
+    "DeathLotus": [
+      "death_lotus"
+    ],
+    "DeerTotem": [
+      "deer_totem"
+    ],
+    "DevouringSphere": [
+      "devouring_sphere"
+    ],
+    "DigDeeper": [
+      "dig_deeper"
+    ],
+    "DivinePotion": [
+      "divine_potion",
+      "strong_divine_potion"
+    ],
+    "DoomCap": [
+      "doom_cap"
+    ],
+    "DoubleAxe": [
+      "double_axe"
+    ],
+    "DoubleRainbow": [
+      "double_rainbow"
+    ],
+    "DraconicOrb": [
+      "draconic_orb"
+    ],
+    "DragonClaws": [
+      "dragon_claws"
+    ],
+    "DragonKnight": [
+      "dragon_knight"
+    ],
+    "RubyWhelp": [
+      "dragon_knight",
+      "ruby_whelp"
+    ],
+    "DragonNest": [
+      "dragon_nest"
+    ],
+    "DragonscaleArmor": [
+      "dragonscale_armor"
+    ],
+    "DragonSet": [
+      "dragon_set"
+    ],
+    "DragonskinBoots": [
+      "dragonskin_boots"
+    ],
+    "DualWielding": [
+      "dual_wielding"
+    ],
+    "Eat-o-matic": [
+      "eat_o_matic"
+    ],
+    "EchoingBattlecry": [
+      "echoing_battlecry"
+    ],
+    "ElectricTorch": [
+      "electric_torch"
+    ],
+    "ElephantRune": [
+      "elephant_rune"
+    ],
+    "EmeraldEgg": [
+      "emerald_egg"
+    ],
+    "EmeraldWhelp": [
+      "emerald_whelp"
+    ],
+    "EmployeeUniform": [
+      "employee_uniform"
+    ],
+    "LeatherArmor": [
+      "employee_uniform",
+      "leather_armor"
+    ],
+    "EnchantedWeapons": [
+      "enchanted_weapons"
+    ],
+    "EnergyConversion": [
+      "energy_conversion"
+    ],
+    "EngineerBag2": [
+      "engineer_bag_2"
+    ],
+    "EngineerBox": [
+      "engineer_box"
+    ],
+    "Everburning": [
+      "everburning"
+    ],
+    "EvilHat": [
+      "evil_hat"
+    ],
+    "ExtraAngy": [
+      "extra_angy"
+    ],
+    "ExtraBags": [
+      "extra_bags"
+    ],
+    "FalseLife": [
+      "false_life"
+    ],
+    "Fedora": [
+      "fedora"
+    ],
+    "FirePit": [
+      "fire_pit"
+    ],
+    "FireShelly": [
+      "fire_shelly"
+    ],
+    "Shelly": [
+      "fire_shelly",
+      "shelly"
+    ],
+    "Flame": [
+      "flame"
+    ],
+    "FlameBadge": [
+      "flame_badge"
+    ],
+    "FlameWhip": [
+      "flame_whip"
+    ],
+    "ForestDragon": [
+      "forest_dragon"
+    ],
+    "ForgingHammer": [
+      "forging_hammer"
+    ],
+    "FortunasKiss": [
+      "fortunas_kiss"
+    ],
+    "FriendlyFire": [
+      "friendly_fire"
+    ],
+    "FrogPrince": [
+      "frog_prince"
+    ],
+    "Toad": [
+      "frog_prince",
+      "toad"
+    ],
+    "Frostbite": [
+      "frostbite"
+    ],
+    "FrozenBuckler": [
+      "frozen_buckler"
+    ],
+    "Shield": [
+      "frozen_buckler",
+      "heart_shield",
+      "hero_shield",
+      "moon_shield",
+      "pine_protector",
+      "shield_of_valor",
+      "spiked_shield",
+      "spiked_wall",
+      "sun_shield",
+      "wooden_buckler"
+    ],
+    "FrozenFlame": [
+      "frozen_flame"
+    ],
+    "FullBodyProtection": [
+      "full_body_protection"
+    ],
+    "FurciferPrime": [
+      "furcifer_prime"
+    ],
+    "Generator": [
+      "generator"
+    ],
+    "Ghost": [
+      "ghost"
+    ],
+    "Gigawatz": [
+      "gigawatz"
+    ],
+    "GirlPower": [
+      "girl_power"
+    ],
+    "GoldArmor": [
+      "gold_armor"
+    ],
+    "GoldCube": [
+      "gold_cube"
+    ],
+    "Halberd": [
+      "halberd"
+    ],
+    "Hardwood": [
+      "hardwood"
+    ],
+    "HawkRune": [
+      "hawk_rune"
+    ],
+    "HeartoftheCards": [
+      "heart_of_the_cards"
+    ],
+    "HeartShield": [
+      "heart_shield"
+    ],
+    "HeavyDrinking": [
+      "heavy_drinking"
+    ],
+    "Hedgehog": [
+      "hedgehog",
+      "hyper_hedgehog"
+    ],
+    "ForestFriend": [
+      "hedgehog",
+      "hyper_hedgehog",
+      "rat",
+      "rat_chef",
+      "squirrel",
+      "squirrel_archer"
+    ],
+    "HeroShield": [
+      "hero_shield"
+    ],
+    "WoodenBuckler": [
+      "hero_shield",
+      "wooden_buckler"
+    ],
+    "HogusBogus": [
+      "hogus_bogus"
+    ],
+    "Holdall": [
+      "holdall"
+    ],
+    "HolyCollar": [
+      "holy_collar"
+    ],
+    "Hypercube": [
+      "hypercube"
+    ],
+    "HyperHedgehog": [
+      "hyper_hedgehog"
+    ],
+    "IceArmor": [
+      "ice_armor"
+    ],
+    "IceDragon": [
+      "ice_dragon"
+    ],
+    "IceFlower": [
+      "ice_flower"
+    ],
+    "InnerPower": [
+      "inner_power"
+    ],
+    "InvestmentOpportunity": [
+      "investment_opportunity"
+    ],
+    "Joker": [
+      "joker"
+    ],
+    "JustStats": [
+      "just_stats"
+    ],
+    "JynxStaff": [
+      "jynx_staff"
+    ],
+    "Katana": [
+      "katana"
+    ],
+    "RibSawBlade": [
+      "katana",
+      "rib_saw_blade"
+    ],
+    "KingCrown": [
+      "king_crown"
+    ],
+    "KingGoobert": [
+      "king_goobert"
+    ],
+    "KingoftheBling": [
+      "king_of_the_bling"
+    ],
+    "KnifetoMeetYou": [
+      "knife_to_meet_you"
+    ],
+    "Laboratory": [
+      "laboratory"
+    ],
+    "LeafBadge": [
+      "leaf_badge"
+    ],
+    "LevelUp": [
+      "level_up"
+    ],
+    "LightFlower": [
+      "light_flower"
+    ],
+    "LightningPotion": [
+      "lightning_potion"
+    ],
+    "LightningStaff": [
+      "lightning_staff"
+    ],
+    "LittleMimic": [
+      "little_mimic"
+    ],
+    "LongSpear": [
+      "long_spear"
+    ],
+    "Lootbox": [
+      "lootbox"
+    ],
+    "LuckyCat": [
+      "lucky_cat"
+    ],
+    "LuckyShortbow": [
+      "lucky_shortbow"
+    ],
+    "MageHat": [
+      "mage_hat"
+    ],
+    "MagicBadge": [
+      "magic_badge"
+    ],
+    "MagicCollar": [
+      "magic_collar"
+    ],
+    "MagicMirror": [
+      "magic_mirror"
+    ],
+    "MagicRing": [
+      "magic_ring",
+      "superior_ring"
+    ],
+    "MagiteccArmor": [
+      "magitecc_armor"
+    ],
+    "ManaCrystal": [
+      "mana_crystal"
+    ],
+    "ManaMastery": [
+      "mana_mastery"
+    ],
+    "Mananana": [
+      "mananana"
+    ],
+    "Markswoman": [
+      "markswoman"
+    ],
+    "MechaBat": [
+      "mecha_bat"
+    ],
+    "MegaClover": [
+      "mega_clover"
+    ],
+    "MercuryElemental": [
+      "mercury_elemental"
+    ],
+    "MissFortune": [
+      "miss_fortune"
+    ],
+    "MoltenDagger": [
+      "molten_dagger"
+    ],
+    "MoltenGreatsword": [
+      "molten_greatsword"
+    ],
+    "MoltenSpear": [
+      "molten_spear"
+    ],
+    "MoltenSpear2": [
+      "molten_spear2"
+    ],
+    "MoonArmor": [
+      "moon_armor"
+    ],
+    "MoreStats": [
+      "more_stats"
+    ],
+    "MrsStruggles": [
+      "mrs_struggles"
+    ],
+    "MushroomFarm": [
+      "mushroom_farm"
+    ],
+    "NoRushPlease": [
+      "no_rush_please"
+    ],
+    "NullBlade": [
+      "null_blade"
+    ],
+    "ObsidianDragon": [
+      "obsidian_dragon"
+    ],
+    "OilLamp": [
+      "oil_lamp"
+    ],
+    "OnionCutter": [
+      "onion_cutter"
+    ],
+    "OwlSpirit": [
+      "owl_spirit"
+    ],
+    "ParadiseBirb": [
+      "paradise_birb"
+    ],
+    "PerpetuumMobile": [
+      "perpetuum_mobile"
+    ],
+    "Phoenix": [
+      "phoenix",
+      "phoenix2"
+    ],
+    "Phoenix2": [
+      "phoenix2"
+    ],
+    "PiggyofRiches": [
+      "piggy_of_riches"
+    ],
+    "PiggyPinata": [
+      "piggy_pinata"
+    ],
+    "PineProtector": [
+      "pine_protector"
+    ],
+    "SpikedShield": [
+      "pine_protector",
+      "spiked_shield",
+      "spiked_wall"
+    ],
+    "PlasticCube": [
+      "plastic_cube"
+    ],
+    "PoisonFrog": [
+      "poison_frog"
+    ],
+    "PoisonGrenade": [
+      "poison_grenade"
+    ],
+    "PoisonShortbow": [
+      "poison_shortbow"
+    ],
+    "PoisonSpear": [
+      "poison_spear"
+    ],
+    "Pop": [
+      "pop"
+    ],
+    "PortableAltar": [
+      "portable_altar"
+    ],
+    "Pot": [
+      "pot"
+    ],
+    "PoweroftheMoon": [
+      "power_of_the_moon"
+    ],
+    "PrismaticSword": [
+      "prismatic_sword"
+    ],
+    "PrismaticWand": [
+      "prismatic_wand"
+    ],
+    "PuzzleBadge": [
+      "puzzle_badge"
+    ],
+    "PuzzlebagJ": [
+      "puzzlebag_j"
+    ],
+    "PuzzlebagL": [
+      "puzzlebag_l"
+    ],
+    "PuzzlebagS": [
+      "puzzlebag_s"
+    ],
+    "PuzzlebagT": [
+      "puzzlebag_t"
+    ],
+    "PuzzlebagZ": [
+      "puzzlebag_z"
+    ],
+    "Puzzlebox": [
+      "puzzlebox"
+    ],
+    "RainbowBadge": [
+      "rainbow_badge"
+    ],
+    "RainbowGoobertAdventurer": [
+      "rainbow_goobert_adventurer"
+    ],
+    "RainbowGoobertBerserker": [
+      "rainbow_goobert_berserker"
+    ],
+    "RainbowGoobertEngineer": [
+      "rainbow_goobert_engineer"
+    ],
+    "RainbowGoobertMage": [
+      "rainbow_goobert_mage"
+    ],
+    "RainbowGoobertPyromancer": [
+      "rainbow_goobert_pyromancer"
+    ],
+    "RainbowOrb": [
+      "rainbow_orb"
+    ],
+    "RainbowPotion": [
+      "rainbow_potion"
+    ],
+    "RandomLoadoutBag": [
+      "random_loadout_bag"
+    ],
+    "Rat": [
+      "rat",
+      "rat_chef"
+    ],
+    "RatChef": [
+      "rat_chef"
+    ],
+    "RelicCase": [
+      "relic_case"
+    ],
+    "Repeater": [
+      "repeater"
+    ],
+    "Resistor": [
+      "resistor"
+    ],
+    "Reverse": [
+      "reverse"
+    ],
+    "Robodog": [
+      "robodog"
+    ],
+    "Rope": [
+      "rope"
+    ],
+    "Sandbag": [
+      "sandbag"
+    ],
+    "SapphireEgg": [
+      "sapphire_egg"
+    ],
+    "SapphireWhelp": [
+      "sapphire_whelp"
+    ],
+    "Scale": [
+      "scale"
+    ],
+    "ScholarBag": [
+      "scholar_bag"
+    ],
+    "Scissorswords": [
+      "scissorswords"
+    ],
+    "Lightsaber": [
+      "lightsaber",
+      "scissorswords"
+    ],
+    "SealtheDeal": [
+      "seal_the_deal"
+    ],
+    "SerpentStaff": [
+      "serpent_staff"
+    ],
+    "SewingCase": [
+      "sewing_case"
+    ],
+    "ShamanMask": [
+      "shaman_mask"
+    ],
+    "ShellTotem": [
+      "shell_totem"
+    ],
+    "ShepherdsCrook": [
+      "shepherds_crook"
+    ],
+    "Shielded": [
+      "shielded"
+    ],
+    "ShinyMantle": [
+      "shiny_mantle"
+    ],
+    "ShinyShell": [
+      "shiny_shell"
+    ],
+    "SkullBadge": [
+      "skull_badge"
+    ],
+    "SliceofBread": [
+      "slice_of_bread"
+    ],
+    "SliceofToast": [
+      "slice_of_toast"
+    ],
+    "SlimeTime": [
+      "slime_time"
+    ],
+    "Sloth": [
+      "sloth"
+    ],
+    "SmellyBarrier": [
+      "smelly_barrier"
+    ],
+    "SmithingForDummies": [
+      "smithing_for_dummies"
+    ],
+    "Snake": [
+      "snake"
+    ],
+    "Snowball": [
+      "snowball"
+    ],
+    "Snowcake": [
+      "snowcake"
+    ],
+    "Snowman": [
+      "snowman"
+    ],
+    "Snowmaster": [
+      "snowmaster"
+    ],
+    "SnowStick": [
+      "snow_stick"
+    ],
+    "Solaris": [
+      "solaris"
+    ],
+    "SpeakwithAnimals": [
+      "speak_with_animals"
+    ],
+    "SpellScrollDark": [
+      "spell_scroll_dark"
+    ],
+    "SpellScrollFrostbolt": [
+      "spell_scroll_frostbolt"
+    ],
+    "SpellScrollIce": [
+      "spell_scroll_ice"
+    ],
+    "SpellScrollLight": [
+      "spell_scroll_light"
+    ],
+    "SpellScrollNature": [
+      "spell_scroll_nature"
+    ],
+    "SpicyBanana": [
+      "spicy_banana"
+    ],
+    "SpikedCollar": [
+      "spiked_collar"
+    ],
+    "SpikedStaff": [
+      "spiked_staff"
+    ],
+    "SpikedWall": [
+      "spiked_wall"
+    ],
+    "SpintoWin": [
+      "spin_to_win"
+    ],
+    "SpiritBells": [
+      "spirit_bells"
+    ],
+    "SpringLoader": [
+      "spring_loader"
+    ],
+    "Squirrel": [
+      "squirrel",
+      "squirrel_archer"
+    ],
+    "SquirrelArcher": [
+      "squirrel_archer"
+    ],
+    "StaffofFire": [
+      "staff_of_fire"
+    ],
+    "StarofCourage": [
+      "star_of_courage"
+    ],
+    "SteelDragon": [
+      "steel_dragon"
+    ],
+    "StoneArmor": [
+      "stone_armor"
+    ],
+    "StoneBadge": [
+      "stone_badge"
+    ],
+    "Stoned": [
+      "stoned"
+    ],
+    "StoneGloves": [
+      "stone_gloves"
+    ],
+    "StoneGolem": [
+      "stone_golem"
+    ],
+    "StoneShoes": [
+      "stone_shoes"
+    ],
+    "StrongDivinePotion": [
+      "strong_divine_potion"
+    ],
+    "StrongVampiricPotion": [
+      "strong_vampiric_potion"
+    ],
+    "VampiricPotion": [
+      "strong_vampiric_potion",
+      "vampiric_potion"
+    ],
+    "SunArmor": [
+      "sun_armor"
+    ],
+    "SunShield": [
+      "sun_shield"
+    ],
+    "TeslaCoil": [
+      "tesla_coil"
+    ],
+    "Thornbloom": [
+      "thornbloom"
+    ],
+    "Thornburst": [
+      "thornburst"
+    ],
+    "ThornElemental": [
+      "thorn_elemental"
+    ],
+    "ThornShortbow": [
+      "thorn_shortbow"
+    ],
+    "ThorsHammer": [
+      "thors_hammer"
+    ],
+    "ThunderDrake": [
+      "thunder_drake"
+    ],
+    "TigerRune": [
+      "tiger_rune"
+    ],
+    "TimeDilator": [
+      "time_dilator"
+    ],
+    "TimeMelting": [
+      "time_melting"
+    ],
+    "ToastGoobert": [
+      "toast_goobert"
+    ],
+    "Toolbox": [
+      "toolbox"
+    ],
+    "Turtle": [
+      "turtle"
+    ],
+    "Twine": [
+      "twine"
+    ],
+    "TwineBadge": [
+      "twine_badge"
+    ],
+    "Ukulele": [
+      "ukulele"
+    ],
+    "Ultima": [
+      "ultima"
+    ],
+    "UnidentifiedSkill": [
+      "unidentified_skill"
+    ],
+    "UniquelyUnique": [
+      "uniquely_unique"
+    ],
+    "VampiricCollar": [
+      "vampiric_collar"
+    ],
+    "VineweaveBasket": [
+      "vineweave_basket"
+    ],
+    "Wand": [
+      "wand"
+    ],
+    "WandofDissonance": [
+      "wand_of_dissonance"
+    ],
+    "WarScythe": [
+      "war_scythe"
+    ],
+    "WaterElemental": [
+      "water_elemental"
+    ],
+    "Whetstone3": [
+      "whetstone3"
+    ],
+    "Whetstone": [
+      "whetstone",
+      "whetstone2",
+      "whetstone3"
+    ],
+    "WingedBoots": [
+      "winged_boots"
+    ],
+    "Wisp": [
+      "wisp"
+    ],
+    "WolfBadge": [
+      "wolf_badge"
+    ],
+    "WolfEmblem": [
+      "wolf_emblem"
+    ],
+    "Wrench": [
+      "wrench"
+    ],
+    "FalconBlade": [
+      "falcon_blade"
+    ],
+    "FancyFencingRapier": [
+      "fancy_fencing_rapier"
+    ],
+    "Fanfare": [
+      "fanfare"
+    ],
+    "FannyPack": [
+      "fanny_pack"
+    ],
+    "Flute": [
+      "flute"
+    ],
+    "FlyAgaric": [
+      "fly_agaric"
+    ],
+    "Garlic": [
+      "garlic"
+    ],
+    "CorruptedCrystal": [
+      "corrupted_crystal"
+    ],
+    "LumpofCoal": [
+      "lump_of_coal"
+    ],
+    "Skull": [
+      "skull"
+    ],
+    "GingerbreadMan": [
+      "gingerbread_man"
+    ],
+    "GlovesofHaste": [
+      "gloves_of_haste"
+    ],
+    "Hammer": [
+      "hammer"
+    ],
+    "HealingHerbs": [
+      "healing_herbs"
+    ],
+    "HealthPotion": [
+      "health_potion",
+      "strong_health_potion"
+    ],
+    "HeartContainer": [
+      "heart_container"
+    ],
+    "HeartofDarkness": [
+      "heart_of_darkness"
+    ],
+    "HeroicPotion": [
+      "heroic_potion",
+      "strong_heroic_potion"
+    ],
+    "HeroLongsword": [
+      "hero_longsword"
+    ],
+    "HeroSword": [
+      "hero_sword"
+    ],
+    "HoloFireLizard": [
+      "holo_fire_lizard"
+    ],
+    "HolyArmor": [
+      "holy_armor"
+    ],
+    "HolySpear": [
+      "holy_spear"
+    ],
+    "HungryBlade": [
+      "hungry_blade"
+    ],
+    "Jynxtorquilla": [
+      "jynx_torquilla"
+    ],
+    "LeatherBoots": [
+      "leather_boots"
+    ],
+    "LightGoobert": [
+      "light_goobert"
+    ],
+    "LuckyBow": [
+      "lucky_bow"
+    ],
+    "LuckyClover": [
+      "lucky_clover"
+    ],
+    "LuckyPiggy": [
+      "lucky_piggy"
+    ],
+    "Piggybank": [
+      "lucky_piggy",
+      "piggybank"
+    ],
+    "MagicStaff": [
+      "magic_staff"
+    ],
+    "MagicTorch": [
+      "magic_torch"
+    ],
+    "ManaOrb": [
+      "mana_orb"
+    ],
+    "ManaPotion": [
+      "mana_potion",
+      "strong_mana_potion"
+    ],
+    "Manathirst": [
+      "manathirst"
+    ],
+    "MoonShield": [
+      "moon_shield"
+    ],
+    "MrStruggles": [
+      "mr_struggles"
+    ],
+    "Pandamonium": [
+      "pandamonium"
+    ],
+    "PestilenceFlask": [
+      "pestilence_flask",
+      "strong_pestilence_flask"
+    ],
+    "PiercingArrow": [
+      "piercing_arrow"
+    ],
+    "Pineapple": [
+      "pineapple"
+    ],
+    "PlatinCustomerCard": [
+      "platin_customer_card"
+    ],
+    "PocketSand": [
+      "pocket_sand"
+    ],
+    "PoisonBow": [
+      "poison_bow"
+    ],
+    "PoisonDagger": [
+      "poison_dagger"
+    ],
+    "PoisonGoobert": [
+      "poison_goobert"
+    ],
+    "PoisonIvy": [
+      "poison_ivy"
+    ],
+    "PotionBelt": [
+      "potion_belt"
+    ],
+    "Present": [
+      "present"
+    ],
+    "ProtectivePurse": [
+      "protective_purse"
+    ],
+    "Pumpkin": [
+      "pumpkin"
+    ],
+    "RainbowGoobert": [
+      "rainbow_goobert"
+    ],
+    "RainbowGoobertRanger": [
+      "rainbow_goobert_ranger"
+    ],
+    "RangerBag": [
+      "ranger_bag"
+    ],
+    "RubyChonk": [
+      "ruby_chonk"
+    ],
+    "RubyEgg": [
+      "ruby_egg"
+    ],
+    "ShieldofValor": [
+      "shield_of_valor"
+    ],
+    "Shovel": [
+      "shovel"
+    ],
+    "Spear": [
+      "spear"
+    ],
+    "SpectralDagger": [
+      "spectral_dagger"
+    ],
+    "StaffofUnhealing": [
+      "staff_of_unhealing"
+    ],
+    "StaminaSack": [
+      "stamina_sack"
+    ],
+    "SteelGoobert": [
+      "steel_goobert"
+    ],
+    "StoneHelm": [
+      "stone_helm"
+    ],
+    "StoneSkinPotion": [
+      "stone_skin_potion",
+      "strong_stone_skin_potion"
+    ],
+    "StorageCoffin": [
+      "storage_coffin"
+    ],
+    "StrongDemonicFlask": [
+      "strong_demonic_flask"
+    ],
+    "StrongHealthPotion": [
+      "strong_health_potion"
+    ],
+    "StrongPestilenceFlask": [
+      "strong_pestilence_flask"
+    ],
+    "StrongStoneSkinPotion": [
+      "strong_stone_skin_potion"
+    ],
+    "TheFool": [
+      "the_fool"
+    ],
+    "TheLovers": [
+      "the_lovers"
+    ],
+    "ThornBow": [
+      "thorn_bow"
+    ],
+    "ThornWhip": [
+      "thorn_whip"
+    ],
+    "Torch": [
+      "torch"
+    ],
+    "VampiricArmor": [
+      "vampiric_armor"
+    ],
+    "VampiricGloves": [
+      "vampiric_gloves"
+    ],
+    "VampiricScythe": [
+      "vampiric_scythe"
+    ],
+    "VillainSword": [
+      "villain_sword"
+    ],
+    "WalrusTusk": [
+      "walrus_tusk"
+    ],
+    "White-EyesBlueDragon": [
+      "white_eyes_blue_dragon"
+    ],
+    "Wolpertinger": [
+      "wolpertinger"
+    ],
+    "WoodenSword": [
+      "wooden_sword"
+    ],
+    "YggdrasilLeaf": [
+      "yggdrasil_leaf"
+    ],
+    "BookofIceNew.tscn": [
+      "book_of_ice_new"
+    ],
+    "Goobling.tscn": [
+      "goobling"
+    ],
+    "Shortbow.tscn": [
+      "shortbow"
+    ],
+    "Recombobulator": [
+      "stable_recombobulator",
+      "unstable_recombobulator"
+    ],
+    "StableRecombobulator.tscn": [
+      "stable_recombobulator"
+    ],
+    "StrongManaPotion.tscn": [
+      "strong_mana_potion"
+    ],
+    "SuperiorRing.tscn": [
+      "superior_ring"
+    ],
+    "UnstableRecombobulator.tscn": [
+      "unstable_recombobulator"
+    ],
+    "Whetstone2.tscn": [
+      "whetstone2"
+    ],
+    "Amethyst": [
+      "chipped_amethyst",
+      "flawed_amethyst",
+      "flawless_amethyst",
+      "perfect_amethyst",
+      "regular_amethyst"
+    ],
+    "ChippedAmethyst.tscn": [
+      "chipped_amethyst"
+    ],
+    "Emerald": [
+      "chipped_emerald",
+      "flawed_emerald",
+      "flawless_emerald",
+      "perfect_emerald",
+      "regular_emerald"
+    ],
+    "ChippedEmerald.tscn": [
+      "chipped_emerald"
+    ],
+    "Ruby": [
+      "chipped_ruby",
+      "flawed_ruby",
+      "flawless_ruby",
+      "perfect_ruby",
+      "regular_ruby"
+    ],
+    "ChippedRuby.tscn": [
+      "chipped_ruby"
+    ],
+    "Sapphire": [
+      "chipped_sapphire",
+      "flawed_sapphire",
+      "flawless_sapphire",
+      "perfect_sapphire",
+      "regular_sapphire"
+    ],
+    "ChippedSapphire.tscn": [
+      "chipped_sapphire"
+    ],
+    "Topaz": [
+      "chipped_topaz",
+      "flawed_topaz",
+      "flawless_topaz",
+      "perfect_topaz",
+      "regular_topaz"
+    ],
+    "ChippedTopaz.tscn": [
+      "chipped_topaz"
+    ],
+    "FlawedAmethyst.tscn": [
+      "flawed_amethyst"
+    ],
+    "FlawedEmerald.tscn": [
+      "flawed_emerald"
+    ],
+    "FlawedRuby.tscn": [
+      "flawed_ruby"
+    ],
+    "FlawedSapphire.tscn": [
+      "flawed_sapphire"
+    ],
+    "FlawedTopaz.tscn": [
+      "flawed_topaz"
+    ],
+    "FlawlessAmethyst.tscn": [
+      "flawless_amethyst"
+    ],
+    "FlawlessEmerald.tscn": [
+      "flawless_emerald"
+    ],
+    "FlawlessRuby.tscn": [
+      "flawless_ruby"
+    ],
+    "FlawlessSapphire.tscn": [
+      "flawless_sapphire"
+    ],
+    "FlawlessTopaz.tscn": [
+      "flawless_topaz"
+    ],
+    "PerfectAmethyst.tscn": [
+      "perfect_amethyst"
+    ],
+    "PerfectEmerald.tscn": [
+      "perfect_emerald"
+    ],
+    "PerfectRuby.tscn": [
+      "perfect_ruby"
+    ],
+    "PerfectSapphire.tscn": [
+      "perfect_sapphire"
+    ],
+    "PerfectTopaz.tscn": [
+      "perfect_topaz"
+    ],
+    "RegularAmethyst.tscn": [
+      "regular_amethyst"
+    ],
+    "RegularEmerald.tscn": [
+      "regular_emerald"
+    ],
+    "RegularRuby.tscn": [
+      "regular_ruby"
+    ],
+    "RegularSapphire.tscn": [
+      "regular_sapphire"
+    ],
+    "RegularTopaz.tscn": [
+      "regular_topaz"
+    ],
+    "LeatherBag.tscn": [
+      "leather_bag"
+    ],
+    "StrongHeroicPotion.tscn": [
+      "strong_heroic_potion"
+    ]
+  },
+  "bookDescriptors": {
+    "boxOfRiches": "box_of_riches",
+    "deckOfCards": "deck_of_cards",
+    "crossblades": "crossblades",
+    "platinCard": "platin_customer_card",
+    "customerCard": "customer_card",
+    "staminaSack": "stamina_sack",
+    "present": "present",
+    "flame": "flame",
+    "forgingHammer": "forging_hammer",
+    "amulet": "amulet_unidentified",
+    "amuletOfFeasting": "amulet_of_feasting",
+    "starOfCourage": "star_of_courage",
+    "toolbox": "toolbox",
+    "stableRecombobulator": "stable_recombobulator",
+    "unstableRecombobulator": "unstable_recombobulator",
+    "extraBags": "extra_bags",
+    "rainbowBadge": "rainbow_badge",
+    "stoneBadge": "stone_badge",
+    "spiritBells": "spirit_bells",
+    "bagOfGiving": "bag_of_giving",
+    "chessboard": "chess_board",
+    "snowman": "snowman",
+    "uniquelyUnique": "uniquely_unique",
+    "bagtacular": "bagtacular",
+    "justStats": "just_stats",
+    "moreStats": "more_stats",
+    "unidentifiedSkill": "unidentified_skill",
+    "digDeeper": "dig_deeper",
+    "puzzlebox": "puzzlebox",
+    "puzzleBadge": "puzzle_badge",
+    "sewingCase": "sewing_case",
+    "twine": "twine",
+    "arcaneIntellect": "arcane_intellect",
+    "fedora": "fedora",
+    "piggyOfRiches": "piggy_of_riches",
+    "battery": "battery",
+    "coil": "coil",
+    "chargeSplitter": "charge_splitter",
+    "manaCrystal": "mana_crystal",
+    "lightningStaff": "lightning_staff",
+    "boxofCogs": "engineer_bag_2",
+    "cog": "cog",
+    "generator": "generator",
+    "cogBadge": "cog_badge",
+    "contraptron": "con_trap_tron",
+    "bloodAmulet": "blood_amulet",
+    "magicRing": "magic_ring",
+    "superiorRing": "superior_ring",
+    "hyperCube": "hypercube",
+    "cauldron": "cauldron",
+    "furciferPrime": "furcifer_prime"
+  },
+  "rarityRank": {
+    "Common": 0,
+    "Rare": 1,
+    "Epic": 2,
+    "Legendary": 3,
+    "Godly": 4,
+    "Unique": 5
+  },
+  "byId": {
+    "ace_of_spades": {
+      "id": "ace_of_spades",
+      "file": "AceofSpades.gd",
+      "primary": {
+        "op": "cardAffect"
+      }
+    },
+    "acorn_collar": {
+      "id": "acorn_collar",
+      "file": "AcornCollar.gd",
+      "primary": {
+        "op": "canDamage"
+      }
+    },
+    "artifact_stone_cold": {
+      "id": "artifact_stone_cold",
+      "file": "ArtifactStoneCold.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "artifact_stone_heat": {
+      "id": "artifact_stone_heat",
+      "file": "ArtifactStoneHeat.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "bag_of_stones": {
+      "id": "bag_of_stones",
+      "file": "BagofStones.gd",
+      "primary": {
+        "op": "hasTag",
+        "tag": "Stone"
+      }
+    },
+    "banana": {
+      "id": "banana",
+      "file": "Banana.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "blood_goobert": {
+      "id": "blood_goobert",
+      "file": "BloodGoobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "bloody_dagger": {
+      "id": "bloody_dagger",
+      "file": "BloodyDagger.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Vampiric"
+      }
+    },
+    "blueberries": {
+      "id": "blueberries",
+      "file": "Blueberries.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "bow": {
+      "id": "bow",
+      "file": "Bow.gd",
+      "primary": {
+        "op": "isWeapon"
+      }
+    },
+    "bow_and_arrow": {
+      "id": "bow_and_arrow",
+      "file": "BowandArrow.gd",
+      "primary": {
+        "op": "isWeapon"
+      }
+    },
+    "card": {
+      "id": "card",
+      "file": "Card.gd",
+      "primary": {
+        "op": "cardAffect"
+      }
+    },
+    "carrot": {
+      "id": "carrot",
+      "file": "Carrot.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "carrot_goobert": {
+      "id": "carrot_goobert",
+      "file": "CarrotGoobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "corrupted_armor": {
+      "id": "corrupted_armor",
+      "file": "CorruptedArmor.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Dark"
+          },
+          {
+            "op": "hasType",
+            "type": "Holy"
+          }
+        ]
+      }
+    },
+    "crossblades": {
+      "id": "crossblades",
+      "file": "Crossblades.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      },
+      "secondary": {
+        "op": "hasCooldown"
+      }
+    },
+    "cursed_dagger": {
+      "id": "cursed_dagger",
+      "file": "CursedDagger.gd",
+      "primary": {
+        "op": "canDamage"
+      }
+    },
+    "cursed_hair_comb": {
+      "id": "cursed_hair_comb",
+      "file": "CursedHairComb.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      },
+      "secondary": {
+        "op": "hasType",
+        "type": "Vampiric"
+      }
+    },
+    "dancing_dragon": {
+      "id": "dancing_dragon",
+      "file": "DancingDragon.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Magic"
+      }
+    },
+    "darkest_lotus": {
+      "id": "darkest_lotus",
+      "file": "DarkestLotus.gd",
+      "primary": {
+        "op": "cardAffect"
+      }
+    },
+    "death_scythe": {
+      "id": "death_scythe",
+      "file": "DeathScythe.gd",
+      "primary": {
+        "op": "gainsStack",
+        "stack": "Poison"
+      }
+    },
+    "deck_of_cards": {
+      "id": "deck_of_cards",
+      "file": "DeckofCards.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Card"
+      }
+    },
+    "demonic_flask": {
+      "id": "demonic_flask",
+      "file": "DemonicFlask.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "djinn_lamp": {
+      "id": "djinn_lamp",
+      "file": "DjinnLamp.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "eggscalibur": {
+      "id": "eggscalibur",
+      "file": "Eggscalibur.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Food"
+      }
+    },
+    "amulet_of_agility": {
+      "id": "amulet_of_agility",
+      "file": "Exclusive/AmuletofAgility.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "amulet_of_alchemy": {
+      "id": "amulet_of_alchemy",
+      "file": "Exclusive/AmuletofAlchemy.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "amulet_of_darkness": {
+      "id": "amulet_of_darkness",
+      "file": "Exclusive/AmuletofDarkness.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "amulet_of_feasting": {
+      "id": "amulet_of_feasting",
+      "file": "Exclusive/AmuletofFeasting.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Food"
+      }
+    },
+    "amulet_of_fortune": {
+      "id": "amulet_of_fortune",
+      "file": "Exclusive/AmuletofFortune.gd",
+      "primary": {
+        "op": "canModifyChance"
+      }
+    },
+    "amulet_of_light": {
+      "id": "amulet_of_light",
+      "file": "Exclusive/AmuletofLight.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "amulet_of_steel": {
+      "id": "amulet_of_steel",
+      "file": "Exclusive/AmuletofSteel.gd",
+      "primary": {
+        "op": "canBlock"
+      }
+    },
+    "amulet_of_the_wild": {
+      "id": "amulet_of_the_wild",
+      "file": "Exclusive/AmuletoftheWild.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Pet"
+      }
+    },
+    "angel_crystal": {
+      "id": "angel_crystal",
+      "file": "Exclusive/AngelCrystal.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Holy"
+      }
+    },
+    "anvil": {
+      "id": "anvil",
+      "file": "Exclusive/Anvil.gd",
+      "primary": {
+        "op": "isCrafted"
+      },
+      "secondary": {
+        "op": "isWeapon"
+      }
+    },
+    "arcane_boots": {
+      "id": "arcane_boots",
+      "file": "Exclusive/ArcaneBoots.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "arcane_intellect": {
+      "id": "arcane_intellect",
+      "file": "Exclusive/ArcaneIntellect.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Magic"
+          },
+          {
+            "op": "hasCooldown"
+          }
+        ]
+      }
+    },
+    "armored_courage_puppy": {
+      "id": "armored_courage_puppy",
+      "file": "Exclusive/ArmoredCouragePuppy.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Pet"
+      }
+    },
+    "armored_power_puppy": {
+      "id": "armored_power_puppy",
+      "file": "Exclusive/ArmoredPowerPuppy.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "hasType",
+            "type": "Pet"
+          }
+        ]
+      }
+    },
+    "armored_wisdom_puppy": {
+      "id": "armored_wisdom_puppy",
+      "file": "Exclusive/ArmoredWisdomPuppy.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Pet"
+      }
+    },
+    "artifact_stone_death": {
+      "id": "artifact_stone_death",
+      "file": "Exclusive/ArtifactStoneDeath.gd",
+      "primary": {
+        "op": "canDamage"
+      }
+    },
+    "automanaton": {
+      "id": "automanaton",
+      "file": "Exclusive/Automanaton.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasCooldown"
+          },
+          {
+            "op": "gainsStack",
+            "stack": "Mana"
+          }
+        ]
+      }
+    },
+    "badger_spirit": {
+      "id": "badger_spirit",
+      "file": "Exclusive/BadgerSpirit.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Nature"
+      }
+    },
+    "battery": {
+      "id": "battery",
+      "file": "Exclusive/Battery.gd",
+      "lightning": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasCooldown"
+          },
+          {
+            "op": "reactsToCharges"
+          }
+        ]
+      }
+    },
+    "bewitchment": {
+      "id": "bewitchment",
+      "file": "Exclusive/Bewitchment.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Nature"
+          },
+          {
+            "op": "hasType",
+            "type": "Dark"
+          },
+          {
+            "op": "hasType",
+            "type": "Ice"
+          }
+        ]
+      }
+    },
+    "bismuth_cube": {
+      "id": "bismuth_cube",
+      "file": "Exclusive/BismuthCube.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "blood_manipulation": {
+      "id": "blood_manipulation",
+      "file": "Exclusive/BloodManipulation.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Vampiric"
+      }
+    },
+    "book_of_basics": {
+      "id": "book_of_basics",
+      "file": "Exclusive/BookofBasics.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Spell"
+      }
+    },
+    "book_of_darkness": {
+      "id": "book_of_darkness",
+      "file": "Exclusive/BookofDarkness.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Spell"
+      }
+    },
+    "book_of_ice": {
+      "id": "book_of_ice",
+      "file": "Exclusive/BookofIce.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Spell"
+      }
+    },
+    "book_of_light": {
+      "id": "book_of_light",
+      "file": "Exclusive/BookofLight.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Spell"
+      }
+    },
+    "book_of_nature": {
+      "id": "book_of_nature",
+      "file": "Exclusive/BookofNature.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Spell"
+      }
+    },
+    "bowl_of_treats": {
+      "id": "bowl_of_treats",
+      "file": "Exclusive/BowlofTreats.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "brass_knuckles": {
+      "id": "brass_knuckles",
+      "file": "Exclusive/BrassKnuckles.gd",
+      "primary": {
+        "op": "canDamage"
+      }
+    },
+    "broccoli": {
+      "id": "broccoli",
+      "file": "Exclusive/Broccoli.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "broccoli_goobert": {
+      "id": "broccoli_goobert",
+      "file": "Exclusive/BroccoliGoobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "broccotree": {
+      "id": "broccotree",
+      "file": "Exclusive/Broccotree.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "burning_banner": {
+      "id": "burning_banner",
+      "file": "Exclusive/BurningBanner.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Holy"
+          },
+          {
+            "op": "canActivate"
+          }
+        ]
+      }
+    },
+    "burning_blade": {
+      "id": "burning_blade",
+      "file": "Exclusive/BurningBlade.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "burning_spikes": {
+      "id": "burning_spikes",
+      "file": "Exclusive/BurningSpikes.gd",
+      "primary": {
+        "op": "gainsStack",
+        "stack": "Spikes"
+      }
+    },
+    "burning_sword": {
+      "id": "burning_sword",
+      "file": "Exclusive/BurningSword.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "buy_the_holy_light": {
+      "id": "buy_the_holy_light",
+      "file": "Exclusive/BuytheHolyLight.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "and",
+            "args": [
+              {
+                "op": "hasType",
+                "type": "Holy"
+              },
+              {
+                "op": "hasCooldown"
+              }
+            ]
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "isA",
+                "itemId": "oil_lamp"
+              },
+              {
+                "op": "isA",
+                "itemId": "djinn_lamp"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "cap_of_brilliance": {
+      "id": "cap_of_brilliance",
+      "file": "Exclusive/CapofBrilliance.gd",
+      "primary": {
+        "op": "gainsStack",
+        "stack": "Mana"
+      }
+    },
+    "cat_spirit": {
+      "id": "cat_spirit",
+      "file": "Exclusive/CatSpirit.gd",
+      "primary": {
+        "op": "canDamage"
+      }
+    },
+    "cauldron": {
+      "id": "cauldron",
+      "file": "Exclusive/Cauldron.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "hasType",
+            "type": "Potion"
+          }
+        ]
+      }
+    },
+    "charge_splitter": {
+      "id": "charge_splitter",
+      "file": "Exclusive/ChargeSplitter.gd",
+      "lightning": {
+        "op": "or",
+        "args": [
+          {
+            "op": "gainsBuffs"
+          },
+          {
+            "op": "reactsToCharges"
+          }
+        ]
+      }
+    },
+    "cheese": {
+      "id": "cheese",
+      "file": "Exclusive/Cheese.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "cheese_goobert": {
+      "id": "cheese_goobert",
+      "file": "Exclusive/CheeseGoobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "black_bishop": {
+      "id": "black_bishop",
+      "file": "Exclusive/Chess/BlackBishop.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "black_king": {
+      "id": "black_king",
+      "file": "Exclusive/Chess/BlackKing.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "black_knight": {
+      "id": "black_knight",
+      "file": "Exclusive/Chess/BlackKnight.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "black_pawn": {
+      "id": "black_pawn",
+      "file": "Exclusive/Chess/BlackPawn.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "black_queen": {
+      "id": "black_queen",
+      "file": "Exclusive/Chess/BlackQueen.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "black_rook": {
+      "id": "black_rook",
+      "file": "Exclusive/Chess/BlackRook.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "chesspiece": {
+      "id": "chesspiece",
+      "file": "Exclusive/Chess/ChessPiece.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "white_bishop": {
+      "id": "white_bishop",
+      "file": "Exclusive/Chess/WhiteBishop.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "white_king": {
+      "id": "white_king",
+      "file": "Exclusive/Chess/WhiteKing.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "white_knight": {
+      "id": "white_knight",
+      "file": "Exclusive/Chess/WhiteKnight.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "white_pawn": {
+      "id": "white_pawn",
+      "file": "Exclusive/Chess/WhitePawn.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "white_queen": {
+      "id": "white_queen",
+      "file": "Exclusive/Chess/WhiteQueen.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "white_rook": {
+      "id": "white_rook",
+      "file": "Exclusive/Chess/WhiteRook.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "ChessPiece"
+          },
+          {
+            "op": "otherPieceColor"
+          }
+        ]
+      },
+      "affectsEmpty": {
+        "op": "true"
+      }
+    },
+    "chili_goobert": {
+      "id": "chili_goobert",
+      "file": "Exclusive/ChiliGoobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "chili_pepper": {
+      "id": "chili_pepper",
+      "file": "Exclusive/ChiliPepper.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "chrome_cube": {
+      "id": "chrome_cube",
+      "file": "Exclusive/ChromeCube.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "cog": {
+      "id": "cog",
+      "file": "Exclusive/Cog.gd",
+      "primary": {
+        "op": "isCrafted"
+      }
+    },
+    "cog_badge": {
+      "id": "cog_badge",
+      "file": "Exclusive/CogBadge.gd",
+      "lightning": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasCooldown"
+          },
+          {
+            "op": "reactsToCharges"
+          }
+        ]
+      }
+    },
+    "con_trap_tron": {
+      "id": "con_trap_tron",
+      "file": "Exclusive/ConTrapTron.gd",
+      "primary": {
+        "op": "hasCooldown"
+      },
+      "lightning": {
+        "op": "or",
+        "args": [
+          {
+            "op": "gainsBuffs"
+          },
+          {
+            "op": "reactsToCharges"
+          }
+        ]
+      }
+    },
+    "courage_puppy": {
+      "id": "courage_puppy",
+      "file": "Exclusive/CouragePuppy.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Pet"
+      }
+    },
+    "critical_poison": {
+      "id": "critical_poison",
+      "file": "Exclusive/CriticalPoison.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "crow": {
+      "id": "crow",
+      "file": "Exclusive/Crow.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasCooldown"
+          },
+          {
+            "op": "inflictsDebuffs"
+          }
+        ]
+      }
+    },
+    "cthulhu": {
+      "id": "cthulhu",
+      "file": "Exclusive/Cthulhu.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "hasType",
+            "type": "Dark"
+          }
+        ]
+      }
+    },
+    "cubert": {
+      "id": "cubert",
+      "file": "Exclusive/Cubert.gd",
+      "primary": {
+        "op": "canActivate"
+      },
+      "secondary": {
+        "op": "canActivate"
+      }
+    },
+    "cupcake": {
+      "id": "cupcake",
+      "file": "Exclusive/Cupcake.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "cupcake_dragon": {
+      "id": "cupcake_dragon",
+      "file": "Exclusive/CupcakeDragon.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Food"
+      }
+    },
+    "cupcake_goobert": {
+      "id": "cupcake_goobert",
+      "file": "Exclusive/CupcakeGoobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "dark_lantern": {
+      "id": "dark_lantern",
+      "file": "Exclusive/DarkLantern.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Fire"
+      },
+      "secondary": {
+        "op": "hasType",
+        "type": "Dark"
+      }
+    },
+    "dark_ritual": {
+      "id": "dark_ritual",
+      "file": "Exclusive/DarkRitual.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Dark"
+      }
+    },
+    "death_lotus": {
+      "id": "death_lotus",
+      "file": "Exclusive/DeathLotus.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Dark"
+      }
+    },
+    "deer_totem": {
+      "id": "deer_totem",
+      "file": "Exclusive/DeerTotem.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Nature"
+      }
+    },
+    "divine_potion": {
+      "id": "divine_potion",
+      "file": "Exclusive/DivinePotion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "doom_cap": {
+      "id": "doom_cap",
+      "file": "Exclusive/DoomCap.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "double_rainbow": {
+      "id": "double_rainbow",
+      "file": "Exclusive/DoubleRainbow.gd",
+      "primary": {
+        "op": "gainsBuffs"
+      },
+      "secondary": {
+        "op": "hasType",
+        "type": "Holy"
+      }
+    },
+    "dragon_claws": {
+      "id": "dragon_claws",
+      "file": "Exclusive/DragonClaws.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "dragon_knight": {
+      "id": "dragon_knight",
+      "file": "Exclusive/DragonKnight.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "dragon_nest": {
+      "id": "dragon_nest",
+      "file": "Exclusive/DragonNest.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "extendsScript",
+            "script": "DragonEgg"
+          },
+          {
+            "op": "hasTag",
+            "tag": "Dragon"
+          }
+        ]
+      }
+    },
+    "eat_o_matic": {
+      "id": "eat_o_matic",
+      "file": "Exclusive/Eat-o-matic.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Food"
+      }
+    },
+    "echoing_battlecry": {
+      "id": "echoing_battlecry",
+      "file": "Exclusive/EchoingBattlecry.gd",
+      "primary": {
+        "op": "hasStartofBattle"
+      }
+    },
+    "electric_torch": {
+      "id": "electric_torch",
+      "file": "Exclusive/ElectricTorch.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "enchanted_weapons": {
+      "id": "enchanted_weapons",
+      "file": "Exclusive/EnchantedWeapons.gd",
+      "primary": {
+        "op": "hasAttackEffect"
+      }
+    },
+    "energy_conversion": {
+      "id": "energy_conversion",
+      "file": "Exclusive/EnergyConversion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Food"
+      }
+    },
+    "evil_hat": {
+      "id": "evil_hat",
+      "file": "Exclusive/EvilHat.gd",
+      "primary": {
+        "op": "canDamage"
+      },
+      "secondary": {
+        "op": "hasType",
+        "type": "Dark"
+      }
+    },
+    "extra_bags": {
+      "id": "extra_bags",
+      "file": "Exclusive/ExtraBags.gd",
+      "primary": {
+        "op": "hasCooldown"
+      },
+      "affectsEmpty": {
+        "op": "colorIs",
+        "color": "secondary"
+      },
+      "secondary": {
+        "op": "false"
+      }
+    },
+    "false_life": {
+      "id": "false_life",
+      "file": "Exclusive/FalseLife.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Dark"
+      }
+    },
+    "fedora": {
+      "id": "fedora",
+      "file": "Exclusive/Fedora.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "isTreasure"
+          },
+          {
+            "op": "hasType",
+            "type": "Nature"
+          }
+        ]
+      },
+      "secondary": {
+        "op": "canModifyChance"
+      }
+    },
+    "fire_shelly": {
+      "id": "fire_shelly",
+      "file": "Exclusive/FireShelly.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "forest_dragon": {
+      "id": "forest_dragon",
+      "file": "Exclusive/ForestDragon.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Nature"
+      }
+    },
+    "forestfriend": {
+      "id": "forestfriend",
+      "file": "Exclusive/ForestFriend.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Pet"
+          },
+          {
+            "op": "hasType",
+            "type": "Food"
+          }
+        ]
+      }
+    },
+    "fortunas_kiss": {
+      "id": "fortunas_kiss",
+      "file": "Exclusive/FortunasKiss.gd",
+      "primary": {
+        "op": "canModifyChance"
+      }
+    },
+    "friendly_fire": {
+      "id": "friendly_fire",
+      "file": "Exclusive/FriendlyFire.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Fire"
+      }
+    },
+    "frog_prince": {
+      "id": "frog_prince",
+      "file": "Exclusive/FrogPrince.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "gainsBuffs"
+          },
+          {
+            "op": "usesBuffs"
+          }
+        ]
+      }
+    },
+    "frozen_flame": {
+      "id": "frozen_flame",
+      "file": "Exclusive/FrozenFlame.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Ice"
+      },
+      "secondary": {
+        "op": "canDamage"
+      }
+    },
+    "full_body_protection": {
+      "id": "full_body_protection",
+      "file": "Exclusive/FullBodyProtection.gd",
+      "primary": {
+        "op": "canBlock"
+      }
+    },
+    "generator": {
+      "id": "generator",
+      "file": "Exclusive/Generator.gd",
+      "lightning": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasCooldown"
+          },
+          {
+            "op": "reactsToCharges"
+          }
+        ]
+      }
+    },
+    "girl_power": {
+      "id": "girl_power",
+      "file": "Exclusive/GirlPower.gd",
+      "distinct": {
+        "op": "colorIs",
+        "color": "primary"
+      },
+      "primary": {
+        "op": "isClassItem"
+      }
+    },
+    "gold_armor": {
+      "id": "gold_armor",
+      "file": "Exclusive/GoldArmor.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Holy"
+      }
+    },
+    "gold_cube": {
+      "id": "gold_cube",
+      "file": "Exclusive/GoldCube.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "halberd": {
+      "id": "halberd",
+      "file": "Exclusive/Halberd.gd",
+      "affectsEmpty": {
+        "op": "true"
+      },
+      "primary": {
+        "op": "canBlock"
+      }
+    },
+    "hardwood": {
+      "id": "hardwood",
+      "file": "Exclusive/Hardwood.gd",
+      "primary": {
+        "op": "rarityEq",
+        "rarity": "Common"
+      }
+    },
+    "heart_shield": {
+      "id": "heart_shield",
+      "file": "Exclusive/HeartShield.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "canBlock"
+          },
+          {
+            "op": "canHealOrLifesteal"
+          },
+          {
+            "op": "gainsStack",
+            "stack": "Regeneration"
+          }
+        ]
+      }
+    },
+    "heavy_drinking": {
+      "id": "heavy_drinking",
+      "file": "Exclusive/HeavyDrinking.gd",
+      "distinct": {
+        "op": "colorIs",
+        "color": "primary"
+      },
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "hedgehog": {
+      "id": "hedgehog",
+      "file": "Exclusive/Hedgehog.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Pet"
+          },
+          {
+            "op": "hasType",
+            "type": "Food"
+          }
+        ]
+      }
+    },
+    "hero_shield": {
+      "id": "hero_shield",
+      "file": "Exclusive/HeroShield.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "holy_collar": {
+      "id": "holy_collar",
+      "file": "Exclusive/HolyCollar.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "hyper_hedgehog": {
+      "id": "hyper_hedgehog",
+      "file": "Exclusive/HyperHedgehog.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Pet"
+          },
+          {
+            "op": "hasType",
+            "type": "Food"
+          }
+        ]
+      }
+    },
+    "ice_flower": {
+      "id": "ice_flower",
+      "file": "Exclusive/IceFlower.gd",
+      "primary": {
+        "op": "isWeapon"
+      },
+      "secondary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Shield"
+          },
+          {
+            "op": "and",
+            "args": [
+              {
+                "op": "hasType",
+                "type": "Armor"
+              },
+              {
+                "op": "canActivate"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "inner_power": {
+      "id": "inner_power",
+      "file": "Exclusive/InnerPower.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasCooldown"
+          },
+          {
+            "op": "canHealOrLifesteal"
+          }
+        ]
+      }
+    },
+    "investment_opportunity": {
+      "id": "investment_opportunity",
+      "file": "Exclusive/InvestmentOpportunity.gd",
+      "primary": {
+        "op": "usesBuffs"
+      }
+    },
+    "joker": {
+      "id": "joker",
+      "file": "Exclusive/Joker.gd",
+      "primary": {
+        "op": "cardAffect"
+      }
+    },
+    "jynx_staff": {
+      "id": "jynx_staff",
+      "file": "Exclusive/JynxStaff.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "king_goobert": {
+      "id": "king_goobert",
+      "file": "Exclusive/KingGoobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "king_of_the_bling": {
+      "id": "king_of_the_bling",
+      "file": "Exclusive/KingoftheBling.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "isA",
+            "itemId": "magic_ring"
+          },
+          {
+            "op": "isA",
+            "itemId": "superior_ring"
+          }
+        ]
+      }
+    },
+    "knife_to_meet_you": {
+      "id": "knife_to_meet_you",
+      "file": "Exclusive/KnifetoMeetYou.gd",
+      "primary": {
+        "op": "extendsScript",
+        "script": "Dagger"
+      }
+    },
+    "laboratory": {
+      "id": "laboratory",
+      "file": "Exclusive/Laboratory.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Fire"
+          },
+          {
+            "op": "hasType",
+            "type": "Nature"
+          },
+          {
+            "op": "hasType",
+            "type": "Holy"
+          },
+          {
+            "op": "hasType",
+            "type": "Vampiric"
+          },
+          {
+            "op": "isClassItem",
+            "className": "Engineer"
+          }
+        ]
+      }
+    },
+    "leaf_badge": {
+      "id": "leaf_badge",
+      "file": "Exclusive/LeafBadge.gd",
+      "primary": {
+        "op": "canDamage"
+      }
+    },
+    "light_flower": {
+      "id": "light_flower",
+      "file": "Exclusive/LightFlower.gd",
+      "secondary": {
+        "op": "hasType",
+        "type": "Holy"
+      },
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "lightning_potion": {
+      "id": "lightning_potion",
+      "file": "Exclusive/LightningPotion.gd",
+      "secondary": {
+        "op": "hasType",
+        "type": "Holy"
+      },
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "lightning_staff": {
+      "id": "lightning_staff",
+      "file": "Exclusive/LightningStaff.gd",
+      "lightning": {
+        "op": "or",
+        "args": [
+          {
+            "op": "canBeEmpowered"
+          },
+          {
+            "op": "reactsToCharges"
+          }
+        ]
+      }
+    },
+    "little_mimic": {
+      "id": "little_mimic",
+      "file": "Exclusive/LittleMimic.gd",
+      "primary": {
+        "op": "true"
+      }
+    },
+    "long_spear": {
+      "id": "long_spear",
+      "file": "Exclusive/LongSpear.gd",
+      "affectsEmpty": {
+        "op": "true"
+      },
+      "primary": {
+        "op": "false"
+      }
+    },
+    "lucky_cat": {
+      "id": "lucky_cat",
+      "file": "Exclusive/LuckyCat.gd",
+      "primary": {
+        "op": "true"
+      }
+    },
+    "mage_hat": {
+      "id": "mage_hat",
+      "file": "Exclusive/MageHat.gd",
+      "primary": {
+        "op": "rarityEq",
+        "rarity": "Common"
+      },
+      "secondary": {
+        "op": "rarityEq",
+        "rarity": "Rare"
+      },
+      "tertiary": {
+        "op": "rarityEq",
+        "rarity": "Epic"
+      }
+    },
+    "magic_badge": {
+      "id": "magic_badge",
+      "file": "Exclusive/MagicBadge.gd",
+      "primary": {
+        "op": "gainsStack",
+        "stack": "Mana"
+      }
+    },
+    "magic_collar": {
+      "id": "magic_collar",
+      "file": "Exclusive/MagicCollar.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "magic_mirror": {
+      "id": "magic_mirror",
+      "file": "Exclusive/MagicMirror.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Holy"
+      }
+    },
+    "magitecc_armor": {
+      "id": "magitecc_armor",
+      "file": "Exclusive/MagiteccArmor.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Holy"
+          },
+          {
+            "op": "hasType",
+            "type": "Magic"
+          }
+        ]
+      }
+    },
+    "mana_crystal": {
+      "id": "mana_crystal",
+      "file": "Exclusive/ManaCrystal.gd",
+      "lightning": {
+        "op": "true"
+      }
+    },
+    "mana_mastery": {
+      "id": "mana_mastery",
+      "file": "Exclusive/ManaMastery.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Magic"
+      }
+    },
+    "mananana": {
+      "id": "mananana",
+      "file": "Exclusive/Mananana.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "markswoman": {
+      "id": "markswoman",
+      "file": "Exclusive/Markswoman.gd",
+      "primary": {
+        "op": "isRangedWeapon"
+      }
+    },
+    "mecha_bat": {
+      "id": "mecha_bat",
+      "file": "Exclusive/MechaBat.gd",
+      "primary": {
+        "op": "canDamage"
+      }
+    },
+    "mercury_elemental": {
+      "id": "mercury_elemental",
+      "file": "Exclusive/MercuryElemental.gd",
+      "distinct": {
+        "op": "colorIs",
+        "color": "primary"
+      },
+      "primary": {
+        "op": "isMeleeWeapon"
+      }
+    },
+    "molten_spear": {
+      "id": "molten_spear",
+      "file": "Exclusive/MoltenSpear.gd",
+      "affectsEmpty": {
+        "op": "true"
+      },
+      "primary": {
+        "op": "hasType",
+        "type": "Fire"
+      }
+    },
+    "molten_spear2": {
+      "id": "molten_spear2",
+      "file": "Exclusive/MoltenSpear2.gd",
+      "affectsEmpty": {
+        "op": "true"
+      },
+      "primary": {
+        "op": "hasType",
+        "type": "Fire"
+      }
+    },
+    "moon_armor": {
+      "id": "moon_armor",
+      "file": "Exclusive/MoonArmor.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Magic"
+      }
+    },
+    "mrs_struggles": {
+      "id": "mrs_struggles",
+      "file": "Exclusive/MrsStruggles.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Dark"
+      }
+    },
+    "mushroom_farm": {
+      "id": "mushroom_farm",
+      "file": "Exclusive/MushroomFarm.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "isA",
+            "itemId": "fly_agaric"
+          },
+          {
+            "op": "isA",
+            "itemId": "doom_cap"
+          }
+        ]
+      }
+    },
+    "obsidian_dragon": {
+      "id": "obsidian_dragon",
+      "file": "Exclusive/ObsidianDragon.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "oil_lamp": {
+      "id": "oil_lamp",
+      "file": "Exclusive/OilLamp.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "onion_cutter": {
+      "id": "onion_cutter",
+      "file": "Exclusive/OnionCutter.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Food"
+      }
+    },
+    "owl_spirit": {
+      "id": "owl_spirit",
+      "file": "Exclusive/OwlSpirit.gd",
+      "primary": {
+        "op": "gainsBuffs"
+      }
+    },
+    "paradise_birb": {
+      "id": "paradise_birb",
+      "file": "Exclusive/ParadiseBirb.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasCooldown"
+          },
+          {
+            "op": "gainsBuffs"
+          },
+          {
+            "op": "canHealOrLifesteal"
+          }
+        ]
+      }
+    },
+    "perpetuum_mobile": {
+      "id": "perpetuum_mobile",
+      "file": "Exclusive/PerpetuumMobile.gd",
+      "primary": {
+        "op": "isClassItem",
+        "className": "Engineer"
+      }
+    },
+    "phoenix2": {
+      "id": "phoenix2",
+      "file": "Exclusive/Phoenix2.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Fire"
+      }
+    },
+    "piggy_pinata": {
+      "id": "piggy_pinata",
+      "file": "Exclusive/PiggyPinata.gd",
+      "primary": {
+        "op": "canDamage"
+      }
+    },
+    "pine_protector": {
+      "id": "pine_protector",
+      "file": "Exclusive/PineProtector.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Food"
+      }
+    },
+    "plastic_cube": {
+      "id": "plastic_cube",
+      "file": "Exclusive/PlasticCube.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "poison_frog": {
+      "id": "poison_frog",
+      "file": "Exclusive/PoisonFrog.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "gainsBuffs"
+          },
+          {
+            "op": "usesBuffs"
+          }
+        ]
+      }
+    },
+    "poison_spear": {
+      "id": "poison_spear",
+      "file": "Exclusive/PoisonSpear.gd",
+      "affectsEmpty": {
+        "op": "true"
+      },
+      "primary": {
+        "op": "hasType",
+        "type": "Nature"
+      }
+    },
+    "pot": {
+      "id": "pot",
+      "file": "Exclusive/Pot.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      },
+      "secondary": {
+        "op": "hasType",
+        "type": "Food"
+      }
+    },
+    "power_of_the_moon": {
+      "id": "power_of_the_moon",
+      "file": "Exclusive/PoweroftheMoon.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "isA",
+            "itemId": "moon_armor"
+          },
+          {
+            "op": "isA",
+            "itemId": "moon_shield"
+          }
+        ]
+      }
+    },
+    "power_puppy": {
+      "id": "power_puppy",
+      "file": "Exclusive/PowerPuppy.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Pet"
+      }
+    },
+    "prismatic_sword": {
+      "id": "prismatic_sword",
+      "file": "Exclusive/PrismaticSword.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Vampiric"
+          },
+          {
+            "op": "hasType",
+            "type": "Magic"
+          },
+          {
+            "op": "hasType",
+            "type": "Holy"
+          },
+          {
+            "op": "hasType",
+            "type": "Dark"
+          }
+        ]
+      }
+    },
+    "puzzle_badge": {
+      "id": "puzzle_badge",
+      "file": "Exclusive/PuzzleBadge.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "rainbow_goobert_adventurer": {
+      "id": "rainbow_goobert_adventurer",
+      "file": "Exclusive/RainbowGoobertAdventurer.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "rainbow_goobert_berserker": {
+      "id": "rainbow_goobert_berserker",
+      "file": "Exclusive/RainbowGoobertBerserker.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "rainbow_goobert_engineer": {
+      "id": "rainbow_goobert_engineer",
+      "file": "Exclusive/RainbowGoobertEngineer.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "rainbow_goobert_mage": {
+      "id": "rainbow_goobert_mage",
+      "file": "Exclusive/RainbowGoobertMage.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "rainbow_goobert_pyromancer": {
+      "id": "rainbow_goobert_pyromancer",
+      "file": "Exclusive/RainbowGoobertPyromancer.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "rainbow_orb": {
+      "id": "rainbow_orb",
+      "file": "Exclusive/RainbowOrb.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Vampiric"
+          },
+          {
+            "op": "hasType",
+            "type": "Magic"
+          },
+          {
+            "op": "hasType",
+            "type": "Holy"
+          },
+          {
+            "op": "hasType",
+            "type": "Dark"
+          }
+        ]
+      }
+    },
+    "rainbow_potion": {
+      "id": "rainbow_potion",
+      "file": "Exclusive/RainbowPotion.gd",
+      "distinct": {
+        "op": "or",
+        "args": [
+          {
+            "op": "colorIs",
+            "color": "secondary"
+          },
+          {
+            "op": "colorIs",
+            "color": "tertiary"
+          }
+        ]
+      },
+      "secondary": {
+        "op": "hasType",
+        "type": "Book"
+      },
+      "tertiary": {
+        "op": "hasTag",
+        "tag": "Staff"
+      },
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "rat": {
+      "id": "rat",
+      "file": "Exclusive/Rat.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Pet"
+          },
+          {
+            "op": "hasType",
+            "type": "Food"
+          }
+        ]
+      }
+    },
+    "rat_chef": {
+      "id": "rat_chef",
+      "file": "Exclusive/RatChef.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Pet"
+          },
+          {
+            "op": "hasType",
+            "type": "Food"
+          }
+        ]
+      }
+    },
+    "recombobulator": {
+      "id": "recombobulator",
+      "file": "Exclusive/Recombobulator.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "not",
+            "arg": {
+              "op": "isBag"
+            }
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "canStartNewRecipe"
+              },
+              {
+                "op": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "repeater": {
+      "id": "repeater",
+      "file": "Exclusive/Repeater.gd",
+      "primary": {
+        "op": "hasStartofBattle"
+      }
+    },
+    "reverse": {
+      "id": "reverse",
+      "file": "Exclusive/Reverse.gd",
+      "primary": {
+        "op": "cardAffect"
+      }
+    },
+    "rope": {
+      "id": "rope",
+      "file": "Exclusive/Rope.gd",
+      "primary": {
+        "op": "canActivate"
+      },
+      "secondary": {
+        "op": "hasCooldown"
+      }
+    },
+    "scale": {
+      "id": "scale",
+      "file": "Exclusive/Scale.gd",
+      "primary": {
+        "op": "true"
+      },
+      "secondary": {
+        "op": "true"
+      }
+    },
+    "shell_totem": {
+      "id": "shell_totem",
+      "file": "Exclusive/ShellTotem.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Holy"
+      }
+    },
+    "shelly": {
+      "id": "shelly",
+      "file": "Exclusive/Shelly.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "shepherds_crook": {
+      "id": "shepherds_crook",
+      "file": "Exclusive/ShepherdsCrook.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "shielded": {
+      "id": "shielded",
+      "file": "Exclusive/Shielded.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Shield"
+          },
+          {
+            "op": "and",
+            "args": [
+              {
+                "op": "hasType",
+                "type": "Armor"
+              },
+              {
+                "op": "hasCooldown"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "shiny_mantle": {
+      "id": "shiny_mantle",
+      "file": "Exclusive/ShinyMantle.gd",
+      "primary": {
+        "op": "not",
+        "arg": {
+          "op": "isBag"
+        }
+      }
+    },
+    "shiny_shell": {
+      "id": "shiny_shell",
+      "file": "Exclusive/ShinyShell.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Holy"
+      }
+    },
+    "slice_of_bread": {
+      "id": "slice_of_bread",
+      "file": "Exclusive/SliceofBread.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "slice_of_toast": {
+      "id": "slice_of_toast",
+      "file": "Exclusive/SliceofToast.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "sloth": {
+      "id": "sloth",
+      "file": "Exclusive/Sloth.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "smelly_barrier": {
+      "id": "smelly_barrier",
+      "file": "Exclusive/SmellyBarrier.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "isA",
+            "itemId": "garlic"
+          },
+          {
+            "op": "canBlock"
+          }
+        ]
+      }
+    },
+    "smithing_for_dummies": {
+      "id": "smithing_for_dummies",
+      "file": "Exclusive/SmithingForDummies.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "isWeapon"
+          },
+          {
+            "op": "isCrafted"
+          }
+        ]
+      }
+    },
+    "snake": {
+      "id": "snake",
+      "file": "Exclusive/Snake.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Pet"
+      }
+    },
+    "snowcake": {
+      "id": "snowcake",
+      "file": "Exclusive/Snowcake.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "snowmaster": {
+      "id": "snowmaster",
+      "file": "Exclusive/Snowmaster.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Ice"
+      }
+    },
+    "solaris": {
+      "id": "solaris",
+      "file": "Exclusive/Solaris.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "isA",
+            "itemId": "sun_shield"
+          },
+          {
+            "op": "isA",
+            "itemId": "sun_armor"
+          }
+        ]
+      }
+    },
+    "speak_with_animals": {
+      "id": "speak_with_animals",
+      "file": "Exclusive/SpeakwithAnimals.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Pet"
+      }
+    },
+    "spell_scroll_dark": {
+      "id": "spell_scroll_dark",
+      "file": "Exclusive/SpellScrollDark.gd",
+      "primary": {
+        "op": "hasCooldown"
+      },
+      "secondary": {
+        "op": "hasType",
+        "type": "Dark"
+      }
+    },
+    "spell_scroll_frostbolt": {
+      "id": "spell_scroll_frostbolt",
+      "file": "Exclusive/SpellScrollFrostbolt.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Ice"
+          },
+          {
+            "op": "not",
+            "arg": {
+              "op": "isSelf"
+            }
+          }
+        ]
+      }
+    },
+    "spell_scroll_ice": {
+      "id": "spell_scroll_ice",
+      "file": "Exclusive/SpellScrollIce.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Shield"
+          },
+          {
+            "op": "and",
+            "args": [
+              {
+                "op": "hasType",
+                "type": "Armor"
+              },
+              {
+                "op": "canActivate"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "spell_scroll_light": {
+      "id": "spell_scroll_light",
+      "file": "Exclusive/SpellScrollLight.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Holy"
+      }
+    },
+    "spell_scroll_nature": {
+      "id": "spell_scroll_nature",
+      "file": "Exclusive/SpellScrollNature.gd",
+      "primary": {
+        "op": "canUseStamina"
+      }
+    },
+    "spicy_banana": {
+      "id": "spicy_banana",
+      "file": "Exclusive/SpicyBanana.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "isA",
+            "itemId": "banana"
+          },
+          {
+            "op": "isA",
+            "itemId": "mananana"
+          }
+        ]
+      }
+    },
+    "spirit_bells": {
+      "id": "spirit_bells",
+      "file": "Exclusive/SpiritBells.gd",
+      "distinct": {
+        "op": "colorIs",
+        "color": "primary"
+      },
+      "primary": {
+        "op": "hasType",
+        "type": "Pet"
+      }
+    },
+    "spring_loader": {
+      "id": "spring_loader",
+      "file": "Exclusive/SpringLoader.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "squirrel": {
+      "id": "squirrel",
+      "file": "Exclusive/Squirrel.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Pet"
+          },
+          {
+            "op": "hasType",
+            "type": "Food"
+          }
+        ]
+      }
+    },
+    "squirrel_archer": {
+      "id": "squirrel_archer",
+      "file": "Exclusive/SquirrelArcher.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Pet"
+          },
+          {
+            "op": "hasType",
+            "type": "Food"
+          }
+        ]
+      }
+    },
+    "steel_dragon": {
+      "id": "steel_dragon",
+      "file": "Exclusive/SteelDragon.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "canBeEmpowered"
+          },
+          {
+            "op": "canBlock"
+          }
+        ]
+      }
+    },
+    "stone_gloves": {
+      "id": "stone_gloves",
+      "file": "Exclusive/StoneGloves.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "stone_golem": {
+      "id": "stone_golem",
+      "file": "Exclusive/StoneGolem.gd",
+      "primary": {
+        "op": "isA",
+        "itemId": "bag_of_stones"
+      }
+    },
+    "strong_divine_potion": {
+      "id": "strong_divine_potion",
+      "file": "Exclusive/StrongDivinePotion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "strong_vampiric_potion": {
+      "id": "strong_vampiric_potion",
+      "file": "Exclusive/StrongVampiricPotion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "sun_armor": {
+      "id": "sun_armor",
+      "file": "Exclusive/SunArmor.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Fire"
+          },
+          {
+            "op": "hasType",
+            "type": "Holy"
+          }
+        ]
+      }
+    },
+    "sun_shield": {
+      "id": "sun_shield",
+      "file": "Exclusive/SunShield.gd",
+      "primary": {
+        "op": "canBlock"
+      }
+    },
+    "tesla_coil": {
+      "id": "tesla_coil",
+      "file": "Exclusive/TeslaCoil.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "thorn_elemental": {
+      "id": "thorn_elemental",
+      "file": "Exclusive/ThornElemental.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Nature"
+      }
+    },
+    "thunder_drake": {
+      "id": "thunder_drake",
+      "file": "Exclusive/ThunderDrake.gd",
+      "lightning": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasCooldown"
+          },
+          {
+            "op": "reactsToCharges"
+          }
+        ]
+      }
+    },
+    "time_melting": {
+      "id": "time_melting",
+      "file": "Exclusive/TimeMelting.gd",
+      "primary": {
+        "op": "hasInventoryDuration"
+      }
+    },
+    "toad": {
+      "id": "toad",
+      "file": "Exclusive/Toad.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "gainsBuffs"
+          },
+          {
+            "op": "usesBuffs"
+          }
+        ]
+      }
+    },
+    "toast_goobert": {
+      "id": "toast_goobert",
+      "file": "Exclusive/ToastGoobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "turtle": {
+      "id": "turtle",
+      "file": "Exclusive/Turtle.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Shield"
+      }
+    },
+    "twine": {
+      "id": "twine",
+      "file": "Exclusive/Twine.gd",
+      "primary": {
+        "op": "canActivate"
+      },
+      "secondary": {
+        "op": "isNeutral"
+      }
+    },
+    "twine_badge": {
+      "id": "twine_badge",
+      "file": "Exclusive/TwineBadge.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "isCrafted"
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "hasCooldown"
+              },
+              {
+                "op": "gainsBuffs"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "ukulele": {
+      "id": "ukulele",
+      "file": "Exclusive/Ukulele.gd",
+      "primary": {
+        "op": "true"
+      },
+      "secondary": {
+        "op": "hasType",
+        "type": "Musical"
+      }
+    },
+    "ultima": {
+      "id": "ultima",
+      "file": "Exclusive/Ultima.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Nature"
+          },
+          {
+            "op": "hasType",
+            "type": "Ice"
+          },
+          {
+            "op": "hasType",
+            "type": "Holy"
+          },
+          {
+            "op": "hasType",
+            "type": "Dark"
+          },
+          {
+            "op": "hasType",
+            "type": "Spell"
+          }
+        ]
+      }
+    },
+    "uniquely_unique": {
+      "id": "uniquely_unique",
+      "file": "Exclusive/UniquelyUnique.gd",
+      "primary": {
+        "op": "hasCooldown"
+      },
+      "secondary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "rarityEq",
+            "rarity": "Unique"
+          },
+          {
+            "op": "isA",
+            "itemId": "platin_customer_card"
+          },
+          {
+            "op": "isA",
+            "itemId": "customer_card"
+          }
+        ]
+      }
+    },
+    "vampiric_collar": {
+      "id": "vampiric_collar",
+      "file": "Exclusive/VampiricCollar.gd",
+      "primary": {
+        "op": "canDamage"
+      }
+    },
+    "vampiric_potion": {
+      "id": "vampiric_potion",
+      "file": "Exclusive/VampiricPotion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "wand_of_dissonance": {
+      "id": "wand_of_dissonance",
+      "file": "Exclusive/WandofDissonance.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Dark"
+      }
+    },
+    "war_scythe": {
+      "id": "war_scythe",
+      "file": "Exclusive/WarScythe.gd",
+      "primary": {
+        "op": "gainsStack",
+        "stack": "Poison"
+      }
+    },
+    "water_elemental": {
+      "id": "water_elemental",
+      "file": "Exclusive/WaterElemental.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Nature"
+      },
+      "secondary": {
+        "op": "hasType",
+        "type": "Ice"
+      }
+    },
+    "whetstone3": {
+      "id": "whetstone3",
+      "file": "Exclusive/Whetstone3.gd",
+      "primary": {
+        "op": "or",
+        "args": [
+          {
+            "op": "canBlock"
+          },
+          {
+            "op": "parentCanAffect"
+          }
+        ]
+      }
+    },
+    "wisdom_puppy": {
+      "id": "wisdom_puppy",
+      "file": "Exclusive/WisdomPuppy.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Pet"
+      }
+    },
+    "wisp": {
+      "id": "wisp",
+      "file": "Exclusive/Wisp.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Nature"
+      }
+    },
+    "wolf_badge": {
+      "id": "wolf_badge",
+      "file": "Exclusive/WolfBadge.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "wolf_emblem": {
+      "id": "wolf_emblem",
+      "file": "Exclusive/WolfEmblem.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      },
+      "secondary": {
+        "op": "hasType",
+        "type": "Pet"
+      }
+    },
+    "wrench": {
+      "id": "wrench",
+      "file": "Exclusive/Wrench.gd",
+      "primary": {
+        "op": "gainsBuffs"
+      },
+      "secondary": {
+        "op": "canDamage"
+      }
+    },
+    "falcon_blade": {
+      "id": "falcon_blade",
+      "file": "FalconBlade.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "fanfare": {
+      "id": "fanfare",
+      "file": "Fanfare.gd",
+      "primary": {
+        "op": "true"
+      }
+    },
+    "flute": {
+      "id": "flute",
+      "file": "Flute.gd",
+      "primary": {
+        "op": "true"
+      }
+    },
+    "fly_agaric": {
+      "id": "fly_agaric",
+      "file": "FlyAgaric.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "food": {
+      "id": "food",
+      "file": "Food.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "garlic": {
+      "id": "garlic",
+      "file": "Garlic.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "gingerbread_man": {
+      "id": "gingerbread_man",
+      "file": "GingerbreadMan.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "gloves_of_haste": {
+      "id": "gloves_of_haste",
+      "file": "GlovesofHaste.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "goobert": {
+      "id": "goobert",
+      "file": "Goobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "health_potion": {
+      "id": "health_potion",
+      "file": "HealthPotion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "heart_of_darkness": {
+      "id": "heart_of_darkness",
+      "file": "HeartofDarkness.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Dark"
+      }
+    },
+    "heroic_potion": {
+      "id": "heroic_potion",
+      "file": "HeroicPotion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "hero_longsword": {
+      "id": "hero_longsword",
+      "file": "HeroLongsword.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "hero_sword": {
+      "id": "hero_sword",
+      "file": "HeroSword.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "holo_fire_lizard": {
+      "id": "holo_fire_lizard",
+      "file": "HoloFireLizard.gd",
+      "primary": {
+        "op": "cardAffect"
+      }
+    },
+    "holy_armor": {
+      "id": "holy_armor",
+      "file": "HolyArmor.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Holy"
+      }
+    },
+    "holy_spear": {
+      "id": "holy_spear",
+      "file": "HolySpear.gd",
+      "affectsEmpty": {
+        "op": "true"
+      },
+      "primary": {
+        "op": "hasType",
+        "type": "Holy"
+      }
+    },
+    "jynx_torquilla": {
+      "id": "jynx_torquilla",
+      "file": "Jynxtorquilla.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "light_goobert": {
+      "id": "light_goobert",
+      "file": "LightGoobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "lucky_bow": {
+      "id": "lucky_bow",
+      "file": "LuckyBow.gd",
+      "primary": {
+        "op": "isWeapon"
+      }
+    },
+    "lucky_piggy": {
+      "id": "lucky_piggy",
+      "file": "LuckyPiggy.gd",
+      "primary": {
+        "op": "canModifyChance"
+      }
+    },
+    "magic_torch": {
+      "id": "magic_torch",
+      "file": "MagicTorch.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "mana_orb": {
+      "id": "mana_orb",
+      "file": "ManaOrb.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "mana_potion": {
+      "id": "mana_potion",
+      "file": "ManaPotion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "moon_shield": {
+      "id": "moon_shield",
+      "file": "MoonShield.gd",
+      "primary": {
+        "op": "canBlock"
+      }
+    },
+    "mr_struggles": {
+      "id": "mr_struggles",
+      "file": "MrStruggles.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "pan": {
+      "id": "pan",
+      "file": "Pan.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Food"
+      }
+    },
+    "pandamonium": {
+      "id": "pandamonium",
+      "file": "Pandamonium.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Food"
+      }
+    },
+    "pestilence_flask": {
+      "id": "pestilence_flask",
+      "file": "PestilenceFlask.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "piercing_arrow": {
+      "id": "piercing_arrow",
+      "file": "PiercingArrow.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      },
+      "secondary": {
+        "op": "canActivate"
+      }
+    },
+    "piggybank": {
+      "id": "piggybank",
+      "file": "Piggybank.gd",
+      "primary": {
+        "op": "hasStartofBattle"
+      }
+    },
+    "pineapple": {
+      "id": "pineapple",
+      "file": "Pineapple.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "platin_customer_card": {
+      "id": "platin_customer_card",
+      "file": "PlatinCustomerCard.gd",
+      "primary": {
+        "op": "rarityGte",
+        "rarity": "Legendary"
+      }
+    },
+    "poison_bow": {
+      "id": "poison_bow",
+      "file": "PoisonBow.gd",
+      "primary": {
+        "op": "isWeapon"
+      }
+    },
+    "poison_goobert": {
+      "id": "poison_goobert",
+      "file": "PoisonGoobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "poison_ivy": {
+      "id": "poison_ivy",
+      "file": "PoisonIvy.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Nature"
+      }
+    },
+    "potion": {
+      "id": "potion",
+      "file": "Potion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "pumpkin": {
+      "id": "pumpkin",
+      "file": "Pumpkin.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "hasType",
+            "type": "Food"
+          },
+          {
+            "op": "notSelf"
+          }
+        ]
+      }
+    },
+    "rainbow_goobert": {
+      "id": "rainbow_goobert",
+      "file": "RainbowGoobert.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "rainbow_goobert_ranger": {
+      "id": "rainbow_goobert_ranger",
+      "file": "RainbowGoobertRanger.gd",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "shield_of_valor": {
+      "id": "shield_of_valor",
+      "file": "ShieldofValor.gd",
+      "primary": {
+        "op": "canBlock"
+      }
+    },
+    "spear": {
+      "id": "spear",
+      "file": "Spear.gd",
+      "affectsEmpty": {
+        "op": "true"
+      },
+      "primary": {
+        "op": "false"
+      }
+    },
+    "steel_goobert": {
+      "id": "steel_goobert",
+      "file": "SteelGoobert.gd",
+      "secondary": {
+        "op": "canBeEmpowered"
+      },
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "stone_skin_potion": {
+      "id": "stone_skin_potion",
+      "file": "StoneSkinPotion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "strong_demonic_flask": {
+      "id": "strong_demonic_flask",
+      "file": "StrongDemonicFlask.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "strong_health_potion": {
+      "id": "strong_health_potion",
+      "file": "StrongHealthPotion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "strong_pestilence_flask": {
+      "id": "strong_pestilence_flask",
+      "file": "StrongPestilenceFlask.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "strong_stone_skin_potion": {
+      "id": "strong_stone_skin_potion",
+      "file": "StrongStoneSkinPotion.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "the_fool": {
+      "id": "the_fool",
+      "file": "TheFool.gd",
+      "primary": {
+        "op": "cardAffect"
+      }
+    },
+    "the_lovers": {
+      "id": "the_lovers",
+      "file": "TheLovers.gd",
+      "primary": {
+        "op": "cardAffect"
+      }
+    },
+    "thorn_bow": {
+      "id": "thorn_bow",
+      "file": "ThornBow.gd",
+      "primary": {
+        "op": "isWeapon"
+      }
+    },
+    "vampiric_gloves": {
+      "id": "vampiric_gloves",
+      "file": "VampiricGloves.gd",
+      "primary": {
+        "op": "hasCooldown"
+      }
+    },
+    "vampiric_scythe": {
+      "id": "vampiric_scythe",
+      "file": "VampiricScythe.gd",
+      "primary": {
+        "op": "gainsStack",
+        "stack": "Vampirism"
+      }
+    },
+    "villain_sword": {
+      "id": "villain_sword",
+      "file": "VillainSword.gd",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "canBeEmpowered"
+          },
+          {
+            "op": "isMeleeWeapon"
+          }
+        ]
+      }
+    },
+    "whetstone": {
+      "id": "whetstone",
+      "file": "Whetstone.gd",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "white_eyes_blue_dragon": {
+      "id": "white_eyes_blue_dragon",
+      "file": "White-EyesBlueDragon.gd",
+      "primary": {
+        "op": "cardAffect"
+      }
+    },
+    "wolpertinger": {
+      "id": "wolpertinger",
+      "file": "Wolpertinger.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Pet"
+      }
+    },
+    "yggdrasil_leaf": {
+      "id": "yggdrasil_leaf",
+      "file": "YggdrasilLeaf.gd",
+      "primary": {
+        "op": "hasType",
+        "type": "Nature"
+      }
+    },
+    "book_of_ice_new": {
+      "id": "book_of_ice_new",
+      "file": "Exclusive/BookofIceNew.tscn",
+      "primary": {
+        "op": "hasType",
+        "type": "Spell"
+      }
+    },
+    "goobling": {
+      "id": "goobling",
+      "file": "Exclusive/Goobling.tscn",
+      "primary": {
+        "op": "canActivate"
+      }
+    },
+    "stable_recombobulator": {
+      "id": "stable_recombobulator",
+      "file": "Exclusive/StableRecombobulator.tscn",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "not",
+            "arg": {
+              "op": "isBag"
+            }
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "canStartNewRecipe"
+              },
+              {
+                "op": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "strong_mana_potion": {
+      "id": "strong_mana_potion",
+      "file": "Exclusive/StrongManaPotion.tscn",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    },
+    "unstable_recombobulator": {
+      "id": "unstable_recombobulator",
+      "file": "Exclusive/UnstableRecombobulator.tscn",
+      "primary": {
+        "op": "and",
+        "args": [
+          {
+            "op": "not",
+            "arg": {
+              "op": "isBag"
+            }
+          },
+          {
+            "op": "or",
+            "args": [
+              {
+                "op": "canStartNewRecipe"
+              },
+              {
+                "op": "false"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "whetstone2": {
+      "id": "whetstone2",
+      "file": "Exclusive/Whetstone2.tscn",
+      "primary": {
+        "op": "canBeEmpowered"
+      }
+    },
+    "strong_heroic_potion": {
+      "id": "strong_heroic_potion",
+      "file": "StrongHeroicPotion.tscn",
+      "primary": {
+        "op": "hasType",
+        "type": "Potion"
+      }
+    }
+  }
+}

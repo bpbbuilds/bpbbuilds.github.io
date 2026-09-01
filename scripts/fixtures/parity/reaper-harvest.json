@@ -1,0 +1,99 @@
+{
+  "name": "reaper-harvest",
+  "slug": "reaper-harvest",
+  "source": "demo_layout",
+  "seed": 42,
+  "durationSec": 30,
+  "placements": [
+    {
+      "id": "storage_coffin",
+      "key": "reaper-harvest:0:storage_coffin",
+      "x": 2,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "holdall",
+      "key": "reaper-harvest:1:holdall",
+      "x": 5,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "blood_goobert",
+      "key": "reaper-harvest:2:blood_goobert",
+      "x": 2,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "ghost",
+      "key": "reaper-harvest:3:ghost",
+      "x": 5,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "heart_of_darkness",
+      "key": "reaper-harvest:4:heart_of_darkness",
+      "x": 5,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "skull_badge",
+      "key": "reaper-harvest:5:skull_badge",
+      "x": 0,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "blood_amulet",
+      "key": "reaper-harvest:6:blood_amulet",
+      "x": 0,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    }
+  ],
+  "expect": {
+    "playerEndHpMin": 140,
+    "playerEndHpMax": 170,
+    "dummyEndHpMin": 823,
+    "dummyEndHpMax": 1003
+  },
+  "live": {
+    "playerEndHp": null,
+    "dummyEndHp": null,
+    "playerStamina": null,
+    "stacks": null,
+    "capturedAt": null,
+    "notes": null,
+    "playerMaxHp": null,
+    "fightDurationSec": null,
+    "opponentClass": null,
+    "playerEndHpMin": null,
+    "playerEndHpMax": null,
+    "opponentHpComparable": false
+  },
+  "meta": {
+    "focusItemIds": [
+      "blood_goobert",
+      "ghost"
+    ],
+    "simBaseline": {
+      "playerEndHp": 170,
+      "dummyEndHp": 913,
+      "seed": 42,
+      "durationSec": 30,
+      "measuredAt": "2026-08-22T05:23:25.808Z",
+      "toleranceFrac": 0.15
+    }
+  }
+}

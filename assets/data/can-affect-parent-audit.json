@@ -1,0 +1,97 @@
+{
+  "auditedAt": "2026-07-21T04:56:05.458Z",
+  "catalogItems": 518,
+  "scriptsWithAffectFns": 225,
+  "parentScriptsWithChildren": 6,
+  "inheritedFieldsOk": 85,
+  "gaps": 0,
+  "unsupportedExprs": 0,
+  "missingEntirelyFromRules": 0,
+  "gapDetails": [],
+  "missingDetails": [],
+  "unsupportedDetails": [],
+  "families": {
+    "bow": {
+      "file": "Bow.gd",
+      "localFns": [
+        "canAffect"
+      ],
+      "childCount": 4,
+      "childrenMissingRule": []
+    },
+    "card": {
+      "file": "Card.gd",
+      "localFns": [
+        "canAffect"
+      ],
+      "childCount": 8,
+      "childrenMissingRule": []
+    },
+    "chesspiece": {
+      "file": "Exclusive/Chess/ChessPiece.gd",
+      "localFns": [
+        "canAffect",
+        "affectsEmpty"
+      ],
+      "childCount": 12,
+      "childrenMissingRule": []
+    },
+    "food": {
+      "file": "Food.gd",
+      "localFns": [
+        "canAffect"
+      ],
+      "childCount": 20,
+      "childrenMissingRule": []
+    },
+    "goobert": {
+      "file": "Goobert.gd",
+      "localFns": [
+        "canAffect"
+      ],
+      "childCount": 18,
+      "childrenMissingRule": []
+    },
+    "potion": {
+      "file": "Potion.gd",
+      "localFns": [
+        "canAffect"
+      ],
+      "childCount": 11,
+      "childrenMissingRule": []
+    }
+  },
+  "samples": {
+    "light_goobert": {
+      "chain": [
+        "goobert"
+      ],
+      "effective": {
+        "primary": {
+          "source": "goobert",
+          "local": false
+        }
+      },
+      "extracted": {
+        "id": "light_goobert",
+        "file": "LightGoobert.gd",
+        "primary": {
+          "op": "canActivate"
+        }
+      }
+    },
+    "goobert": {
+      "localFns": [
+        "canAffect"
+      ],
+      "childCount": 18,
+      "extracted": {
+        "id": "goobert",
+        "file": "Goobert.gd",
+        "primary": {
+          "op": "canActivate"
+        }
+      }
+    }
+  }
+}

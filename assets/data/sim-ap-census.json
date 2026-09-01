@@ -1,0 +1,249 @@
+{
+  "builtAt": "2026-08-25T16:44:18.575Z",
+  "mapSize": 524,
+  "handListSize": 524,
+  "portIdMentions": 524,
+  "genericCdCount": 0,
+  "genericOtherCount": 0,
+  "handPortMissingCount": 0,
+  "cdThenConsumeCount": 39,
+  "genericByPattern": {},
+  "handPortMissing": [],
+  "cdThenConsume": [
+    {
+      "id": "amulet_of_fortune",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "angel_crystal",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "burning_coal",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "charge_splitter",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "chipped_emerald",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "chipped_ruby",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "chipped_sapphire",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "cog_badge",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "dark_ritual",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "electric_torch",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "emerald",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "everburning",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "flawed_emerald",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "flawed_ruby",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "flawed_sapphire",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "flawless_emerald",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "flawless_ruby",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "flawless_sapphire",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "knife_to_meet_you",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "lightning_potion",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "lump_of_coal",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "perfect_emerald",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "perfect_ruby",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "perfect_sapphire",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "poison_grenade",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "pot",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "puzzle_badge",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "puzzlebox",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "rainbow_badge",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "regular_emerald",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "regular_ruby",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "regular_sapphire",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "ruby",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "sapphire",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "spirit_bells",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "spring_loader",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "ultima",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "vampiric_gloves",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    },
+    {
+      "id": "wisp",
+      "pattern": "hand_port",
+      "hasWinningPort": true,
+      "genericAuto": false
+    }
+  ],
+  "trueWeaponCdTwins": []
+}

@@ -1,0 +1,2792 @@
+{
+  "kind": "bpb-sim-debug",
+  "v": 5,
+  "slug": "history-3709",
+  "seed": 42,
+  "durationSec": 15.800000000000091,
+  "dummyEndHp": 0,
+  "playerEndHp": 323,
+  "eventCount": 475,
+  "catalog": [
+    {
+      "id": "fanny_pack",
+      "name": "Fanny Pack",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "p1": 10
+      }
+    },
+    {
+      "id": "leather_bag",
+      "name": "Leather Bag",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "twine",
+      "name": "Twine",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": 20,
+      "params": {
+        "health": 2,
+        "p1": 2
+      }
+    },
+    {
+      "id": "stamina_sack",
+      "name": "Stamina Sack",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "puzzlebag_z",
+      "name": "Puzzlebag Z",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": 25
+    },
+    {
+      "id": "amulet_of_darkness",
+      "name": "Amulet of Darkness",
+      "type": "Accessory",
+      "extraTypes": [
+        "Dark"
+      ],
+      "cooldown": null,
+      "chance": 30,
+      "params": {
+        "damt": 22,
+        "p1": 22
+      }
+    },
+    {
+      "id": "protective_purse",
+      "name": "Protective Purse",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "amulet_of_light",
+      "name": "Amulet of Light",
+      "type": "Accessory",
+      "extraTypes": [
+        "Holy"
+      ],
+      "cooldown": null,
+      "chance": 10,
+      "params": {
+        "maxhealth": 3,
+        "p1": 3,
+        "regen": 1,
+        "p2": 1
+      }
+    },
+    {
+      "id": "girl_power",
+      "name": "Girl Power",
+      "type": "Skill",
+      "extraTypes": [],
+      "cooldown": 7,
+      "chance": null,
+      "params": {
+        "regen": 2,
+        "p1": 2,
+        "empower": 2,
+        "p2": 2,
+        "speed": 35,
+        "p3": 35
+      }
+    },
+    {
+      "id": "puzzle_badge",
+      "name": "Puzzle Badge",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": 5,
+      "chance": null,
+      "params": {
+        "speed": 20,
+        "p1": 20,
+        "speed2": 50,
+        "p2": 50
+      }
+    },
+    {
+      "id": "enchanted_weapons",
+      "name": "Enchanted Weapons",
+      "type": "Skill",
+      "extraTypes": [],
+      "cooldown": 5.2,
+      "chance": 25,
+      "params": {
+        "buffs": 1,
+        "p1": 1
+      }
+    },
+    {
+      "id": "dragon_knight",
+      "name": "Dragon Knight",
+      "type": "Ranged Weapon",
+      "extraTypes": [
+        "Fire",
+        "Pet",
+        "Effect"
+      ],
+      "cooldown": 2.1,
+      "chance": null,
+      "params": {
+        "heat": 5,
+        "p1": 5,
+        "reflect": 4,
+        "p2": 4,
+        "heal": 8,
+        "p3": 8,
+        "advance": 15,
+        "p4": 15
+      }
+    },
+    {
+      "id": "shield_of_valor",
+      "name": "Shield of Valor",
+      "type": "Shield",
+      "extraTypes": [
+        "Holy"
+      ],
+      "cooldown": null,
+      "chance": 30,
+      "params": {
+        "damblock": 14,
+        "p1": 14,
+        "stamina": 0.7,
+        "p2": 0.7,
+        "block": 30,
+        "p3": 30
+      }
+    },
+    {
+      "id": "flame",
+      "name": "Flame",
+      "type": "Accessory",
+      "extraTypes": [
+        "Fire"
+      ],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "amulet_of_the_wild",
+      "name": "Amulet of the Wild",
+      "type": "Accessory",
+      "extraTypes": [
+        "Nature"
+      ],
+      "cooldown": 5,
+      "chance": null,
+      "params": {
+        "spikes": 4,
+        "p1": 4,
+        "spikedam": 50,
+        "p2": 50
+      }
+    },
+    {
+      "id": "amethyst_whelp",
+      "name": "Amethyst Whelp",
+      "type": "Ranged Weapon",
+      "extraTypes": [
+        "Pet",
+        "Dark",
+        "Effect"
+      ],
+      "cooldown": 2.1,
+      "chance": null,
+      "params": {
+        "p1": 4
+      }
+    },
+    {
+      "id": "bag_of_stones",
+      "name": "Bag of Stones",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "light_goobert",
+      "name": "Light Goobert",
+      "type": "Pet",
+      "extraTypes": [
+        "Holy"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "activations": 6,
+        "p1": 6,
+        "heal": 25,
+        "p2": 25,
+        "blind": 7,
+        "p3": 7,
+        "dur_blind": 3,
+        "p4": 3
+      }
+    },
+    {
+      "id": "dragon_nest",
+      "name": "Dragon Nest",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "heal": 8,
+        "p1": 8,
+        "luck": 4,
+        "p2": 4,
+        "regen": 4,
+        "p3": 4,
+        "mana": 8,
+        "p4": 8,
+        "heat": 4,
+        "p5": 4
+      }
+    },
+    {
+      "id": "twine_badge",
+      "name": "Twine Badge",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": 20,
+      "params": {
+        "speed": 20,
+        "p1": 20
+      }
+    },
+    {
+      "id": "emerald_whelp",
+      "name": "Emerald Whelp",
+      "type": "Ranged Weapon",
+      "extraTypes": [
+        "Pet",
+        "Effect"
+      ],
+      "cooldown": 2.1,
+      "chance": null,
+      "params": {
+        "p1": 3,
+        "p2": 3
+      }
+    },
+    {
+      "id": "oil_lamp",
+      "name": "Oil Lamp",
+      "type": "Accessory",
+      "extraTypes": [
+        "Fire"
+      ],
+      "cooldown": 3.4,
+      "chance": null,
+      "params": {
+        "heat": 2,
+        "p1": 2,
+        "dam": 1,
+        "p2": 1,
+        "accuracy": 5,
+        "p3": 5
+      }
+    },
+    {
+      "id": "corrupted_crystal",
+      "name": "Corrupted Crystal",
+      "type": "Gem",
+      "extraTypes": [
+        "Dark"
+      ],
+      "cooldown": 3.9,
+      "chance": null,
+      "params": {
+        "p1": 30,
+        "p2": 50,
+        "p3": 7,
+        "p4": 6
+      }
+    }
+  ],
+  "paramChecks": [
+    {
+      "itemId": "amulet_of_darkness",
+      "name": "Amulet of Darkness",
+      "stack": "vampirism",
+      "granted": 9,
+      "grants": 6,
+      "expected": null,
+      "expectedKey": "meleeVampirismLimit",
+      "alsoMatches": [],
+      "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=8.71s Amulet of Darkness heal 1 with 2 vamp stack(s), hit 28 → game min(stacks, round(dmg×1)) then heal amp → 2. Sim logged 9 over 6 vamp heal(s)."
+    },
+    {
+      "itemId": "enchanted_weapons",
+      "name": "Enchanted Weapons",
+      "stack": "vampirism",
+      "granted": 1,
+      "grants": 3,
+      "expected": null,
+      "expectedKey": "vampirism",
+      "alsoMatches": [
+        {
+          "key": "buffs",
+          "value": 1,
+          "how": "exact"
+        }
+      ],
+      "note": "no catalog key for vampirism; grant 1 equals buffs=1"
+    }
+  ],
+  "unhealingMath": {
+    "rate": 0,
+    "healLogged": 169,
+    "healGrants": 28,
+    "exactFloat": 0,
+    "expectedCeil": 0,
+    "actual": 0,
+    "actualGrants": 0,
+    "samples": [
+      {
+        "heal": 4,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 8,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 1,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 5,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 8,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 8,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 5,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 8,
+        "exact": 0,
+        "ceil": 0
+      }
+    ],
+    "note": "game: ceil(each logged heal × 0) — e.g. 15% of 3 is 0.45 → 1; 15% of 1 is 0.15 → 1 (never 0)"
+  },
+  "status": {
+    "buffs": {
+      "lucky": {
+        "player": {
+          "end": 7,
+          "sources": [
+            {
+              "gained": 4,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 4
+                }
+              ],
+              "id": "dragon_nest",
+              "itemId": "dragon_nest",
+              "name": "Dragon Nest",
+              "handler": "dragon_nest",
+              "systemOrigin": null
+            },
+            {
+              "gained": 3,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 3
+                }
+              ],
+              "id": "emerald_whelp",
+              "itemId": "emerald_whelp",
+              "name": "Emerald Whelp",
+              "handler": "emerald_whelp",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 7
+        }
+      },
+      "regeneration": {
+        "player": {
+          "end": 15,
+          "sources": [
+            {
+              "gained": 6,
+              "lost": 0,
+              "grants": 3,
+              "firstT": 7.6,
+              "lastT": 13.95,
+              "samples": [
+                {
+                  "t": 7.6,
+                  "amount": 2
+                },
+                {
+                  "t": 11.45,
+                  "amount": 2
+                },
+                {
+                  "t": 13.95,
+                  "amount": 2
+                }
+              ],
+              "id": "grantStacks",
+              "itemId": null,
+              "name": "grantStacks",
+              "handler": "grantStacks",
+              "systemOrigin": null
+            },
+            {
+              "gained": 5,
+              "lost": 0,
+              "grants": 5,
+              "firstT": 4.711,
+              "lastT": 14.711,
+              "samples": [
+                {
+                  "t": 4.711,
+                  "amount": 1
+                },
+                {
+                  "t": 9.311,
+                  "amount": 1
+                },
+                {
+                  "t": 12.111,
+                  "amount": 1
+                },
+                {
+                  "t": 14.511,
+                  "amount": 1
+                },
+                {
+                  "t": 14.711,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_light",
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "handler": "amulet_of_light",
+              "systemOrigin": null
+            },
+            {
+              "gained": 4,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 4
+                }
+              ],
+              "id": "dragon_nest",
+              "itemId": "dragon_nest",
+              "name": "Dragon Nest",
+              "handler": "dragon_nest",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 15
+        }
+      },
+      "mana": {
+        "player": {
+          "end": 8,
+          "sources": [
+            {
+              "gained": 8,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 8
+                }
+              ],
+              "id": "dragon_nest",
+              "itemId": "dragon_nest",
+              "name": "Dragon Nest",
+              "handler": "dragon_nest",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 8
+        }
+      },
+      "heat": {
+        "player": {
+          "end": 7,
+          "sources": [
+            {
+              "gained": 4,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 4
+                }
+              ],
+              "id": "dragon_nest",
+              "itemId": "dragon_nest",
+              "name": "Dragon Nest",
+              "handler": "dragon_nest",
+              "systemOrigin": null
+            },
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 2
+                }
+              ],
+              "id": "oil_lamp",
+              "itemId": "oil_lamp",
+              "name": "Oil Lamp",
+              "handler": "oil_lamp",
+              "systemOrigin": null
+            },
+            {
+              "gained": 1,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 1
+                }
+              ],
+              "id": "flame",
+              "itemId": "flame",
+              "name": "Flame",
+              "handler": "flame",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 7
+        }
+      },
+      "block": {
+        "player": {
+          "end": 105,
+          "sources": [
+            {
+              "gained": 105,
+              "lost": 0,
+              "grants": 7,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                }
+              ],
+              "id": "protective_purse",
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "handler": "protective_purse",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 105
+        }
+      },
+      "empower": {
+        "player": {
+          "end": 14,
+          "sources": [
+            {
+              "gained": 14,
+              "lost": 0,
+              "grants": 7,
+              "firstT": 3.85,
+              "lastT": 15.25,
+              "samples": [
+                {
+                  "t": 3.85,
+                  "amount": 2
+                },
+                {
+                  "t": 5.05,
+                  "amount": 2
+                },
+                {
+                  "t": 6.35,
+                  "amount": 2
+                },
+                {
+                  "t": 8.85,
+                  "amount": 2
+                },
+                {
+                  "t": 10.15,
+                  "amount": 2
+                },
+                {
+                  "t": 12.7,
+                  "amount": 2
+                },
+                {
+                  "t": 15.25,
+                  "amount": 2
+                }
+              ],
+              "id": "grantStacks",
+              "itemId": null,
+              "name": "grantStacks",
+              "handler": "grantStacks",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 14
+        }
+      },
+      "spikes": {
+        "player": {
+          "end": 8,
+          "sources": [
+            {
+              "gained": 16,
+              "lost": 0,
+              "grants": 4,
+              "firstT": 5.9,
+              "lastT": 6.652,
+              "samples": [
+                {
+                  "t": 5.9,
+                  "amount": 4
+                },
+                {
+                  "t": 5.902,
+                  "amount": 4
+                },
+                {
+                  "t": 6.65,
+                  "amount": 4
+                },
+                {
+                  "t": 6.652,
+                  "amount": 4
+                }
+              ],
+              "id": "amulet_of_the_wild",
+              "itemId": "amulet_of_the_wild",
+              "name": "Amulet of the Wild",
+              "handler": "amulet_of_the_wild",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 16
+        }
+      },
+      "vampirism": {
+        "player": {
+          "end": 2,
+          "sources": [
+            {
+              "gained": 3,
+              "lost": 0,
+              "grants": 3,
+              "firstT": 7.15,
+              "lastT": 11.652,
+              "samples": [
+                {
+                  "t": 7.15,
+                  "amount": 1
+                },
+                {
+                  "t": 7.152,
+                  "amount": 1
+                },
+                {
+                  "t": 11.652,
+                  "amount": 1
+                }
+              ],
+              "id": "enchanted_weapons",
+              "itemId": "enchanted_weapons",
+              "name": "Enchanted Weapons",
+              "handler": "enchanted_weapons",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 3
+        }
+      }
+    },
+    "debuffs": {
+      "blind": {
+        "dummy": {
+          "end": 20,
+          "sources": [
+            {
+              "gained": 7,
+              "lost": 0,
+              "grants": 7,
+              "firstT": 7,
+              "lastT": 15.55,
+              "samples": [
+                {
+                  "t": 7,
+                  "amount": 1
+                },
+                {
+                  "t": 8.7,
+                  "amount": 1
+                },
+                {
+                  "t": 8.7,
+                  "amount": 1
+                },
+                {
+                  "t": 9.55,
+                  "amount": 1
+                },
+                {
+                  "t": 14.7,
+                  "amount": 1
+                },
+                {
+                  "t": 15.55,
+                  "amount": 1
+                },
+                {
+                  "t": 15.55,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_darkness",
+              "itemId": "amulet_of_darkness",
+              "name": "Amulet of Darkness",
+              "handler": "amulet_of_darkness",
+              "systemOrigin": null
+            },
+            {
+              "gained": 6,
+              "lost": 0,
+              "grants": 4,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 2
+                },
+                {
+                  "t": 2.5,
+                  "amount": 2
+                },
+                {
+                  "t": 2.5,
+                  "amount": 1
+                },
+                {
+                  "t": 2.5,
+                  "amount": 1
+                }
+              ],
+              "id": "amethyst_whelp",
+              "itemId": "amethyst_whelp",
+              "name": "Amethyst Whelp",
+              "handler": "amethyst_whelp",
+              "systemOrigin": null
+            },
+            {
+              "gained": 0,
+              "lost": 7,
+              "grants": 1,
+              "firstT": 11.7,
+              "lastT": 11.7,
+              "samples": [
+                {
+                  "t": 11.7,
+                  "amount": -7
+                }
+              ],
+              "id": "unknown",
+              "itemId": null,
+              "name": "unknown",
+              "handler": null,
+              "systemOrigin": null
+            }
+          ],
+          "gained": 13
+        }
+      },
+      "cold": {
+        "dummy": {
+          "end": 6,
+          "sources": [
+            {
+              "gained": 5,
+              "lost": 0,
+              "grants": 3,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 2
+                },
+                {
+                  "t": 2.5,
+                  "amount": 2
+                },
+                {
+                  "t": 2.5,
+                  "amount": 1
+                }
+              ],
+              "id": "amethyst_whelp",
+              "itemId": "amethyst_whelp",
+              "name": "Amethyst Whelp",
+              "handler": "amethyst_whelp",
+              "systemOrigin": null
+            },
+            {
+              "gained": 1,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 14.7,
+              "lastT": 14.7,
+              "samples": [
+                {
+                  "t": 14.7,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_darkness",
+              "itemId": "amulet_of_darkness",
+              "name": "Amulet of Darkness",
+              "handler": "amulet_of_darkness",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 6
+        }
+      },
+      "poison": {
+        "player": {
+          "end": 0,
+          "sources": [
+            {
+              "gained": 108,
+              "lost": 0,
+              "grants": 6,
+              "firstT": 4.5,
+              "lastT": 14.5,
+              "samples": [
+                {
+                  "t": 4.5,
+                  "amount": 6
+                },
+                {
+                  "t": 6.5,
+                  "amount": 9
+                },
+                {
+                  "t": 8.5,
+                  "amount": 15
+                },
+                {
+                  "t": 10.5,
+                  "amount": 18
+                },
+                {
+                  "t": 12.5,
+                  "amount": 27
+                },
+                {
+                  "t": 14.5,
+                  "amount": 33
+                }
+              ],
+              "id": "Poison",
+              "itemId": null,
+              "name": "Poison",
+              "handler": null,
+              "systemOrigin": "Poison"
+            }
+          ],
+          "gained": 108
+        },
+        "dummy": {
+          "end": 37,
+          "sources": [
+            {
+              "gained": 30,
+              "lost": 0,
+              "grants": 10,
+              "firstT": 4.7,
+              "lastT": 15.8,
+              "samples": [
+                {
+                  "t": 4.7,
+                  "amount": 3
+                },
+                {
+                  "t": 6.75,
+                  "amount": 3
+                },
+                {
+                  "t": 8.1,
+                  "amount": 3
+                },
+                {
+                  "t": 9.3,
+                  "amount": 3
+                },
+                {
+                  "t": 10.55,
+                  "amount": 3
+                },
+                {
+                  "t": 11.85,
+                  "amount": 3
+                },
+                {
+                  "t": 11.85,
+                  "amount": 3
+                },
+                {
+                  "t": 13.15,
+                  "amount": 3
+                }
+              ],
+              "id": "emerald_whelp",
+              "itemId": "emerald_whelp",
+              "name": "Emerald Whelp",
+              "handler": "emerald_whelp",
+              "systemOrigin": null
+            },
+            {
+              "gained": 5,
+              "lost": 0,
+              "grants": 3,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 2
+                },
+                {
+                  "t": 2.5,
+                  "amount": 1
+                },
+                {
+                  "t": 2.5,
+                  "amount": 2
+                }
+              ],
+              "id": "amethyst_whelp",
+              "itemId": "amethyst_whelp",
+              "name": "Amethyst Whelp",
+              "handler": "amethyst_whelp",
+              "systemOrigin": null
+            },
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 2,
+              "firstT": 3.7,
+              "lastT": 15.55,
+              "samples": [
+                {
+                  "t": 3.7,
+                  "amount": 1
+                },
+                {
+                  "t": 15.55,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_darkness",
+              "itemId": "amulet_of_darkness",
+              "name": "Amulet of Darkness",
+              "handler": "amulet_of_darkness",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 37
+        }
+      }
+    },
+    "itemBuffs": {
+      "player": [
+        {
+          "gained": 20,
+          "lost": 0,
+          "grants": 1,
+          "firstT": 2.5,
+          "lastT": 2.5,
+          "samples": [
+            {
+              "t": 2.5,
+              "amount": 20
+            }
+          ],
+          "id": "dragon_nest",
+          "itemId": "dragon_nest",
+          "name": "Dragon Nest",
+          "handler": "dragon_nest",
+          "label": "Dragon Nest: start buffs"
+        }
+      ],
+      "dummy": [
+        {
+          "gained": 16,
+          "lost": 0,
+          "grants": 4,
+          "firstT": 2.5,
+          "lastT": 2.5,
+          "samples": [
+            {
+              "t": 2.5,
+              "amount": 4
+            },
+            {
+              "t": 2.5,
+              "amount": 4
+            },
+            {
+              "t": 2.5,
+              "amount": 4
+            },
+            {
+              "t": 2.5,
+              "amount": 4
+            }
+          ],
+          "id": "amethyst_whelp",
+          "itemId": "amethyst_whelp",
+          "name": "Amethyst Whelp",
+          "handler": "amethyst_whelp",
+          "label": "Amethyst Whelp: random debuffs ×4"
+        }
+      ]
+    },
+    "heals": {
+      "player": {
+        "total": 164,
+        "byKind": {
+          "heal": {
+            "total": 97,
+            "grants": 10
+          },
+          "regeneration": {
+            "total": 58,
+            "grants": 7
+          },
+          "vampirism": {
+            "total": 9,
+            "grants": 6
+          }
+        },
+        "sources": [
+          {
+            "gained": 97,
+            "lost": 0,
+            "grants": 10,
+            "firstT": 4.05,
+            "lastT": 15.6,
+            "samples": [
+              {
+                "t": 4.05,
+                "amount": 8
+              },
+              {
+                "t": 5.55,
+                "amount": 8
+              },
+              {
+                "t": 6.95,
+                "amount": 8
+              },
+              {
+                "t": 8.5,
+                "amount": 8
+              },
+              {
+                "t": 9.9,
+                "amount": 8
+              },
+              {
+                "t": 11.35,
+                "amount": 8
+              },
+              {
+                "t": 12.75,
+                "amount": 8
+              },
+              {
+                "t": 13.85,
+                "amount": 25
+              }
+            ],
+            "id": "unknown",
+            "itemId": null,
+            "name": "unknown",
+            "handler": null,
+            "kind": "heal",
+            "label": "Heal +8",
+            "byItem": {}
+          },
+          {
+            "gained": 58,
+            "lost": 0,
+            "grants": 7,
+            "firstT": 3.5,
+            "lastT": 15.5,
+            "samples": [
+              {
+                "t": 3.5,
+                "amount": 4
+              },
+              {
+                "t": 5.5,
+                "amount": 5
+              },
+              {
+                "t": 7.5,
+                "amount": 5
+              },
+              {
+                "t": 9.5,
+                "amount": 8
+              },
+              {
+                "t": 11.5,
+                "amount": 10
+              },
+              {
+                "t": 13.5,
+                "amount": 11
+              },
+              {
+                "t": 15.5,
+                "amount": 15
+              }
+            ],
+            "id": "Regeneration",
+            "itemId": null,
+            "name": "Regeneration",
+            "handler": null,
+            "systemOrigin": "Regeneration",
+            "kind": "regeneration",
+            "label": "Regeneration: +4 health",
+            "byItem": {}
+          },
+          {
+            "gained": 9,
+            "lost": 0,
+            "grants": 6,
+            "firstT": 8.707,
+            "lastT": 15.558,
+            "samples": [
+              {
+                "t": 8.707,
+                "amount": 1
+              },
+              {
+                "t": 8.707,
+                "amount": 1
+              },
+              {
+                "t": 9.558,
+                "amount": 1
+              },
+              {
+                "t": 14.708,
+                "amount": 2
+              },
+              {
+                "t": 15.558,
+                "amount": 2
+              },
+              {
+                "t": 15.558,
+                "amount": 2
+              }
+            ],
+            "id": "Vampirism",
+            "itemId": null,
+            "name": "Vampirism",
+            "handler": null,
+            "systemOrigin": "Vampirism",
+            "kind": "vampirism",
+            "label": "Amulet of Darkness: vampirism +1",
+            "byItem": {
+              "amulet_of_darkness": 9
+            }
+          }
+        ]
+      }
+    },
+    "damage": {
+      "toDummy": {
+        "total": 1097,
+        "byKind": {
+          "item": {
+            "total": 1097,
+            "grants": 57
+          }
+        },
+        "sources": [
+          {
+            "gained": 703,
+            "lost": 0,
+            "grants": 40,
+            "firstT": 3.857,
+            "lastT": 15.707,
+            "samples": [
+              {
+                "t": 3.857,
+                "amount": 10
+              },
+              {
+                "t": 4.057,
+                "amount": 8
+              },
+              {
+                "t": 4.407,
+                "amount": 10
+              },
+              {
+                "t": 4.757,
+                "amount": 7
+              },
+              {
+                "t": 5.207,
+                "amount": 12
+              },
+              {
+                "t": 5.557,
+                "amount": 14
+              },
+              {
+                "t": 5.907,
+                "amount": 12
+              },
+              {
+                "t": 6.157,
+                "amount": 13
+              }
+            ],
+            "id": "amethyst_whelp",
+            "itemId": "amethyst_whelp",
+            "name": "Amethyst Whelp",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 242,
+            "lost": 0,
+            "grants": 8,
+            "firstT": 3.707,
+            "lastT": 15.557,
+            "samples": [
+              {
+                "t": 3.707,
+                "amount": 22
+              },
+              {
+                "t": 7.007,
+                "amount": 28
+              },
+              {
+                "t": 8.707,
+                "amount": 28
+              },
+              {
+                "t": 8.707,
+                "amount": 28
+              },
+              {
+                "t": 9.557,
+                "amount": 30
+              },
+              {
+                "t": 14.707,
+                "amount": 34
+              },
+              {
+                "t": 15.557,
+                "amount": 36
+              },
+              {
+                "t": 15.557,
+                "amount": 36
+              }
+            ],
+            "id": "amulet_of_darkness",
+            "itemId": "amulet_of_darkness",
+            "name": "Amulet of Darkness",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 152,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 4.707,
+            "lastT": 15.807,
+            "samples": [
+              {
+                "t": 4.707,
+                "amount": 11
+              },
+              {
+                "t": 6.757,
+                "amount": 12
+              },
+              {
+                "t": 8.107,
+                "amount": 12
+              },
+              {
+                "t": 9.307,
+                "amount": 18
+              },
+              {
+                "t": 10.557,
+                "amount": 19
+              },
+              {
+                "t": 11.857,
+                "amount": 20
+              },
+              {
+                "t": 13.157,
+                "amount": 21
+              },
+              {
+                "t": 14.507,
+                "amount": 20
+              }
+            ],
+            "id": "emerald_whelp",
+            "itemId": "emerald_whelp",
+            "name": "Emerald Whelp",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          }
+        ]
+      },
+      "toPlayer": {
+        "total": 0,
+        "byKind": {
+          "dummy": {
+            "total": 0,
+            "grants": 2
+          }
+        },
+        "sources": [
+          {
+            "gained": 0,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 4.652,
+            "lastT": 6.802,
+            "samples": [
+              {
+                "t": 4.652,
+                "amount": 0
+              },
+              {
+                "t": 6.802,
+                "amount": 0
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null,
+            "kind": "dummy",
+            "crits": 0
+          }
+        ]
+      }
+    },
+    "misses": {
+      "player": 0,
+      "dummy": 4
+    },
+    "activations": {
+      "player": {
+        "total": 143,
+        "sources": [
+          {
+            "gained": 54,
+            "lost": 0,
+            "grants": 54,
+            "firstT": 3.7,
+            "lastT": 15.65,
+            "samples": [
+              {
+                "t": 3.7,
+                "amount": 1
+              },
+              {
+                "t": 3.7,
+                "amount": 1
+              },
+              {
+                "t": 3.7,
+                "amount": 1
+              },
+              {
+                "t": 3.85,
+                "amount": 1
+              },
+              {
+                "t": 4.85,
+                "amount": 1
+              },
+              {
+                "t": 4.85,
+                "amount": 1
+              },
+              {
+                "t": 4.85,
+                "amount": 1
+              },
+              {
+                "t": 5.2,
+                "amount": 1
+              }
+            ],
+            "id": "twine",
+            "itemId": "twine",
+            "name": "Twine",
+            "handler": "twine"
+          },
+          {
+            "gained": 40,
+            "lost": 0,
+            "grants": 40,
+            "firstT": 3.85,
+            "lastT": 15.7,
+            "samples": [
+              {
+                "t": 3.85,
+                "amount": 1
+              },
+              {
+                "t": 4.05,
+                "amount": 1
+              },
+              {
+                "t": 4.4,
+                "amount": 1
+              },
+              {
+                "t": 4.75,
+                "amount": 1
+              },
+              {
+                "t": 5.2,
+                "amount": 1
+              },
+              {
+                "t": 5.55,
+                "amount": 1
+              },
+              {
+                "t": 5.9,
+                "amount": 1
+              },
+              {
+                "t": 6.15,
+                "amount": 1
+              }
+            ],
+            "id": "amethyst_whelp",
+            "itemId": "amethyst_whelp",
+            "name": "Amethyst Whelp",
+            "handler": "amethyst_whelp"
+          },
+          {
+            "gained": 14,
+            "lost": 0,
+            "grants": 14,
+            "firstT": 3.7,
+            "lastT": 15.55,
+            "samples": [
+              {
+                "t": 3.7,
+                "amount": 1
+              },
+              {
+                "t": 4.85,
+                "amount": 1
+              },
+              {
+                "t": 6,
+                "amount": 1
+              },
+              {
+                "t": 7,
+                "amount": 1
+              },
+              {
+                "t": 7.85,
+                "amount": 1
+              },
+              {
+                "t": 8.7,
+                "amount": 1
+              },
+              {
+                "t": 9.55,
+                "amount": 1
+              },
+              {
+                "t": 10.45,
+                "amount": 1
+              }
+            ],
+            "id": "dragon_knight",
+            "itemId": "dragon_knight",
+            "name": "Dragon Knight",
+            "handler": "dragon_knight"
+          },
+          {
+            "gained": 10,
+            "lost": 0,
+            "grants": 10,
+            "firstT": 2.5,
+            "lastT": 15.8,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 4.7,
+                "amount": 1
+              },
+              {
+                "t": 6.75,
+                "amount": 1
+              },
+              {
+                "t": 8.1,
+                "amount": 1
+              },
+              {
+                "t": 9.3,
+                "amount": 1
+              },
+              {
+                "t": 10.55,
+                "amount": 1
+              },
+              {
+                "t": 11.85,
+                "amount": 1
+              },
+              {
+                "t": 13.15,
+                "amount": 1
+              }
+            ],
+            "id": "emerald_whelp",
+            "itemId": "emerald_whelp",
+            "name": "Emerald Whelp",
+            "handler": "emerald_whelp"
+          },
+          {
+            "gained": 10,
+            "lost": 0,
+            "grants": 10,
+            "firstT": 3.85,
+            "lastT": 15.25,
+            "samples": [
+              {
+                "t": 3.85,
+                "amount": 1
+              },
+              {
+                "t": 5.05,
+                "amount": 1
+              },
+              {
+                "t": 6.35,
+                "amount": 1
+              },
+              {
+                "t": 7.6,
+                "amount": 1
+              },
+              {
+                "t": 8.85,
+                "amount": 1
+              },
+              {
+                "t": 10.15,
+                "amount": 1
+              },
+              {
+                "t": 11.45,
+                "amount": 1
+              },
+              {
+                "t": 12.7,
+                "amount": 1
+              }
+            ],
+            "id": "girl_power",
+            "itemId": "girl_power",
+            "name": "Girl Power",
+            "handler": "girl_power"
+          },
+          {
+            "gained": 5,
+            "lost": 0,
+            "grants": 5,
+            "firstT": 2.51,
+            "lastT": 13.85,
+            "samples": [
+              {
+                "t": 2.51,
+                "amount": 1
+              },
+              {
+                "t": 5.4,
+                "amount": 1
+              },
+              {
+                "t": 8.4,
+                "amount": 1
+              },
+              {
+                "t": 11.2,
+                "amount": 1
+              },
+              {
+                "t": 13.85,
+                "amount": 1
+              }
+            ],
+            "id": "oil_lamp",
+            "itemId": "oil_lamp",
+            "name": "Oil Lamp",
+            "handler": "oil_lamp"
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 5.9,
+            "lastT": 6.65,
+            "samples": [
+              {
+                "t": 5.9,
+                "amount": 1
+              },
+              {
+                "t": 6.65,
+                "amount": 1
+              }
+            ],
+            "id": "amulet_of_the_wild",
+            "itemId": "amulet_of_the_wild",
+            "name": "Amulet of the Wild",
+            "handler": "amulet_of_the_wild"
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 7.15,
+            "lastT": 11.65,
+            "samples": [
+              {
+                "t": 7.15,
+                "amount": 1
+              },
+              {
+                "t": 11.65,
+                "amount": 1
+              }
+            ],
+            "id": "enchanted_weapons",
+            "itemId": "enchanted_weapons",
+            "name": "Enchanted Weapons",
+            "handler": "enchanted_weapons"
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 8.7,
+            "lastT": 13.85,
+            "samples": [
+              {
+                "t": 8.7,
+                "amount": 1
+              },
+              {
+                "t": 13.85,
+                "amount": 1
+              }
+            ],
+            "id": "light_goobert",
+            "itemId": "light_goobert",
+            "name": "Light Goobert",
+            "handler": "light_goobert"
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "shield_of_valor",
+            "itemId": "shield_of_valor",
+            "name": "Shield of Valor",
+            "handler": "shield_of_valor"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "flame",
+            "itemId": "flame",
+            "name": "Flame",
+            "handler": "flame"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 6.35,
+            "lastT": 6.35,
+            "samples": [
+              {
+                "t": 6.35,
+                "amount": 1
+              }
+            ],
+            "id": "puzzle_badge",
+            "itemId": "puzzle_badge",
+            "name": "Puzzle Badge",
+            "handler": "puzzle_badge"
+          }
+        ]
+      },
+      "dummy": {
+        "total": 6,
+        "sources": [
+          {
+            "gained": 6,
+            "lost": 0,
+            "grants": 6,
+            "firstT": 4.65,
+            "lastT": 15.4,
+            "samples": [
+              {
+                "t": 4.65,
+                "amount": 1
+              },
+              {
+                "t": 6.8,
+                "amount": 1
+              },
+              {
+                "t": 8.95,
+                "amount": 1
+              },
+              {
+                "t": 11.1,
+                "amount": 1
+              },
+              {
+                "t": 13.25,
+                "amount": 1
+              },
+              {
+                "t": 15.4,
+                "amount": 1
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null
+          }
+        ]
+      }
+    },
+    "end": {
+      "player": {
+        "hp": 323,
+        "maxHp": 323,
+        "stacks": {
+          "lucky": 7,
+          "regeneration": 15,
+          "vampirism": 2,
+          "heat": 7,
+          "spikes": 8,
+          "empower": 14,
+          "block": 105,
+          "mana": 8
+        },
+        "healAmp": 0,
+        "unhealing": 0
+      },
+      "dummy": {
+        "hp": 0,
+        "maxHp": 1200,
+        "stacks": {
+          "blind": 20,
+          "poison": 37,
+          "cold": 6
+        }
+      }
+    }
+  },
+  "ui": {
+    "combatLog": {
+      "lineCount": 318,
+      "byType": {
+        "info": 4,
+        "activate": 149,
+        "buff": 38,
+        "debuff": 40,
+        "heal": 23,
+        "damage": 59,
+        "miss": 4,
+        "fight_end": 1
+      },
+      "stackGained": {
+        "lucky": 7,
+        "regeneration": 15,
+        "mana": 8,
+        "heat": 7,
+        "block": 105,
+        "blind": 13,
+        "cold": 6,
+        "poison": 145,
+        "empower": 14,
+        "spikes": 16,
+        "vampirism": 3
+      },
+      "sample": [
+        {
+          "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "enchanted_weapons",
+          "amount": null,
+          "label": "Enchanted Weapons: enchanted 3 weapon(s)"
+        },
+        {
+          "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "amulet_of_light",
+          "amount": null,
+          "label": "Amulet of Light: listening for activations"
+        },
+        {
+          "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "amulet_of_light",
+          "amount": null,
+          "label": "Amulet of Light: listening for activations"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "emerald_whelp",
+          "amount": null,
+          "label": "Weapon: Emerald Whelp"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "flame",
+          "amount": null,
+          "label": "Flame"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "shield_of_valor",
+          "amount": null,
+          "label": "Shield: Shield of Valor"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "shield_of_valor",
+          "amount": null,
+          "label": "Shield: Shield of Valor"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "dragon_nest",
+          "amount": 4,
+          "label": "+4 lucky"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "regeneration",
+          "itemId": "dragon_nest",
+          "amount": 4,
+          "label": "+4 regeneration"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "mana",
+          "itemId": "dragon_nest",
+          "amount": 8,
+          "label": "+8 mana"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "heat",
+          "itemId": "dragon_nest",
+          "amount": 4,
+          "label": "+4 heat"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": null,
+          "itemId": null,
+          "amount": 20,
+          "label": "Dragon Nest: start buffs"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "emerald_whelp",
+          "amount": 3,
+          "label": "+3 lucky"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "heat",
+          "itemId": "oil_lamp",
+          "amount": 2,
+          "label": "Oil Lamp: +2 Heat"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "heat",
+          "itemId": "flame",
+          "amount": 1,
+          "label": "+1 heat"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": "blind",
+          "itemId": "amethyst_whelp",
+          "amount": 2,
+          "label": "+2 blind"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": "cold",
+          "itemId": "amethyst_whelp",
+          "amount": 2,
+          "label": "+2 cold"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": null,
+          "itemId": null,
+          "amount": 4,
+          "label": "Amethyst Whelp: random debuffs ×4"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "amethyst_whelp",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": "blind",
+          "itemId": "amethyst_whelp",
+          "amount": 2,
+          "label": "+2 blind"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": null,
+          "itemId": null,
+          "amount": 4,
+          "label": "Amethyst Whelp: random debuffs ×4"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": "cold",
+          "itemId": "amethyst_whelp",
+          "amount": 2,
+          "label": "+2 cold"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": "blind",
+          "itemId": "amethyst_whelp",
+          "amount": 1,
+          "label": "+1 blind"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "amethyst_whelp",
+          "amount": 1,
+          "label": "+1 poison"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": null,
+          "itemId": null,
+          "amount": 4,
+          "label": "Amethyst Whelp: random debuffs ×4"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": "cold",
+          "itemId": "amethyst_whelp",
+          "amount": 1,
+          "label": "+1 cold"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "amethyst_whelp",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": "blind",
+          "itemId": "amethyst_whelp",
+          "amount": 1,
+          "label": "+1 blind"
+        },
+        {
+          "t": 2.5,
+          "type": "debuff",
+          "stack": null,
+          "itemId": null,
+          "amount": 4,
+          "label": "Amethyst Whelp: random debuffs ×4"
+        },
+        {
+          "t": 2.51,
+          "type": "activate",
+          "stack": null,
+          "itemId": "oil_lamp",
+          "amount": null,
+          "label": "Accessory: Oil Lamp"
+        },
+        {
+          "t": 2.515,
+          "type": "info",
+          "stack": null,
+          "itemId": "shield_of_valor",
+          "amount": null,
+          "label": "Shield of Valor gems: Corrupted Crystal"
+        },
+        {
+          "t": 3.5,
+          "type": "heal",
+          "stack": "regeneration",
+          "itemId": null,
+          "amount": 4,
+          "label": "Regeneration: +4 health"
+        },
+        {
+          "t": 3.7,
+          "type": "activate",
+          "stack": null,
+          "itemId": "dragon_knight",
+          "amount": null,
+          "label": "Skill: Dragon Knight"
+        }
+      ]
+    },
+    "damageMeter": {
+      "stackTabs": {
+        "block": {
+          "gained": 105,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            }
+          ]
+        },
+        "lucky": {
+          "gained": 7,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "dragon_nest",
+              "name": "+4 lucky",
+              "amount": 4
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 lucky",
+              "amount": 3
+            }
+          ]
+        },
+        "regeneration": {
+          "gained": 15,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "dragon_nest",
+              "name": "+4 regeneration",
+              "amount": 4
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "+2 regeneration",
+              "amount": 2
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "+2 regeneration",
+              "amount": 2
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "+2 regeneration",
+              "amount": 2
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            }
+          ]
+        },
+        "vampirism": {
+          "gained": 3,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "enchanted_weapons",
+              "name": "+1 vampirism",
+              "amount": 1
+            },
+            {
+              "itemId": "enchanted_weapons",
+              "name": "Enchanted Weapons",
+              "amount": 1
+            },
+            {
+              "itemId": "enchanted_weapons",
+              "name": "Enchanted Weapons",
+              "amount": 1
+            }
+          ]
+        },
+        "spikes": {
+          "gained": 16,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "amulet_of_the_wild",
+              "name": "+4 spikes",
+              "amount": 4
+            },
+            {
+              "itemId": null,
+              "name": "Amulet of the Wild",
+              "amount": 4
+            },
+            {
+              "itemId": "amulet_of_the_wild",
+              "name": "+4 spikes",
+              "amount": 4
+            },
+            {
+              "itemId": null,
+              "name": "Amulet of the Wild",
+              "amount": 4
+            }
+          ]
+        },
+        "mana": {
+          "gained": 8,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "dragon_nest",
+              "name": "+8 mana",
+              "amount": 8
+            }
+          ]
+        },
+        "empower": {
+          "gained": 14,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": null,
+              "name": "+2 empower",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "+2 empower",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "+2 empower",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "+2 empower",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "+2 empower",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "+2 empower",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "+2 empower",
+              "amount": 2
+            }
+          ]
+        },
+        "heat": {
+          "gained": 7,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "dragon_nest",
+              "name": "+4 heat",
+              "amount": 4
+            },
+            {
+              "itemId": "oil_lamp",
+              "name": "Oil Lamp",
+              "amount": 2
+            },
+            {
+              "itemId": "flame",
+              "name": "+1 heat",
+              "amount": 1
+            }
+          ]
+        },
+        "poison": {
+          "gained": 145,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "amethyst_whelp",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "amethyst_whelp",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amethyst_whelp",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 6
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 9
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 15
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 18
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 27
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 33
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "emerald_whelp",
+              "name": "+3 poison",
+              "amount": 3
+            }
+          ]
+        },
+        "blind": {
+          "gained": 13,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "amethyst_whelp",
+              "name": "+2 blind",
+              "amount": 2
+            },
+            {
+              "itemId": "amethyst_whelp",
+              "name": "+2 blind",
+              "amount": 2
+            },
+            {
+              "itemId": "amethyst_whelp",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amethyst_whelp",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            }
+          ]
+        },
+        "cold": {
+          "gained": 6,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "amethyst_whelp",
+              "name": "+2 cold",
+              "amount": 2
+            },
+            {
+              "itemId": "amethyst_whelp",
+              "name": "+2 cold",
+              "amount": 2
+            },
+            {
+              "itemId": "amethyst_whelp",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 cold",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    "hud": {
+      "player": {
+        "icons": [],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 0,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "dummy": {
+        "icons": [],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 0,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "expected": []
+    },
+    "mismatches": [
+      {
+        "surfaces": [
+          "combatLog",
+          "healMeter"
+        ],
+        "stack": "vampirism",
+        "itemId": "amulet_of_darkness",
+        "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=8.71s Amulet of Darkness heal 1 with 2 vamp stack(s), hit 28 → game min(stacks, round(dmg×1)) then heal amp → 2. Sim logged 9 over 6 vamp heal(s)."
+      }
+    ]
+  }
+}

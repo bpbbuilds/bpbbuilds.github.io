@@ -1,0 +1,6676 @@
+{
+  "generatedAt": "2026-08-25T16:42:04.668Z",
+  "inventoryExtractedAt": "2026-08-25T05:20:50.817Z",
+  "goal": "Every placeable combat item has a dedicated handlerId (not a family catch-all). Raise fidelity stub → reviewed → parity.",
+  "skipIds": [
+    "weapon",
+    "item",
+    "bow",
+    "food",
+    "pet",
+    "card",
+    "gem"
+  ],
+  "reviewedIds": [
+    "ace_of_spades",
+    "acorn_ace",
+    "acorn_collar",
+    "amethyst",
+    "amethyst_egg",
+    "amethyst_whelp",
+    "amulet_of_agility",
+    "amulet_of_alchemy",
+    "amulet_of_darkness",
+    "amulet_of_feasting",
+    "amulet_of_fortune",
+    "amulet_of_life",
+    "amulet_of_light",
+    "amulet_of_steel",
+    "amulet_of_the_wild",
+    "amulet_unidentified",
+    "angel_crystal",
+    "anvil",
+    "arcane_boots",
+    "arcane_intellect",
+    "armored_courage_puppy",
+    "armored_power_puppy",
+    "armored_wisdom_puppy",
+    "artifact_stone_cold",
+    "artifact_stone_death",
+    "artifact_stone_heat",
+    "automanaton",
+    "axe",
+    "badger_rune",
+    "badger_spirit",
+    "bag_of_giving",
+    "bag_of_stones",
+    "bagtacular",
+    "banana",
+    "battery",
+    "bazooka",
+    "berserker_bag",
+    "bewitchment",
+    "big_bloodthorne",
+    "bionic_armor",
+    "bismuth_cube",
+    "black_bishop",
+    "black_king",
+    "black_knight",
+    "black_pawn",
+    "black_queen",
+    "black_rook",
+    "blood_amulet",
+    "blood_goobert",
+    "blood_manipulation",
+    "bloodthorne",
+    "bloody_dagger",
+    "blueberries",
+    "bomb",
+    "book_of_basics",
+    "book_of_darkness",
+    "book_of_ice",
+    "book_of_ice_new",
+    "book_of_light",
+    "book_of_nature",
+    "boomerang",
+    "bow_and_arrow",
+    "bowl_of_treats",
+    "box_of_prosperity",
+    "box_of_riches",
+    "brass_knuckles",
+    "broccoli",
+    "broccoli_goobert",
+    "broccotree",
+    "broom",
+    "burning_banner",
+    "burning_blade",
+    "burning_coal",
+    "burning_spikes",
+    "burning_sword",
+    "burning_torch",
+    "busted_blade",
+    "buy_the_holy_light",
+    "cap_of_brilliance",
+    "carrot",
+    "carrot_goobert",
+    "cat_spirit",
+    "cauldron",
+    "chain_whip",
+    "chainsaw",
+    "charge_splitter",
+    "cheese",
+    "cheese_goobert",
+    "chess_board",
+    "chess_master",
+    "chili_goobert",
+    "chili_pepper",
+    "chipped_amethyst",
+    "chipped_emerald",
+    "chipped_ruby",
+    "chipped_sapphire",
+    "chipped_topaz",
+    "chrome_cube",
+    "claws_of_attack",
+    "cog",
+    "cog_badge",
+    "coil",
+    "coins",
+    "con_trap_tron",
+    "corrupted_armor",
+    "corrupted_crystal",
+    "courage_puppy",
+    "critical_poison",
+    "critwood_staff",
+    "crossblades",
+    "crow",
+    "crown",
+    "cthulhu",
+    "cubert",
+    "cupcake",
+    "cupcake_dragon",
+    "cupcake_goobert",
+    "cupcake_staff",
+    "cursed_dagger",
+    "cursed_hair_comb",
+    "customer_card",
+    "dagger",
+    "daggerang",
+    "dancing_dragon",
+    "dark_lantern",
+    "dark_ritual",
+    "darkest_lotus",
+    "darksaber",
+    "death_lotus",
+    "death_scythe",
+    "deck_of_cards",
+    "deer_totem",
+    "demonic_flask",
+    "devouring_sphere",
+    "dig_deeper",
+    "divine_potion",
+    "djinn_lamp",
+    "doom_cap",
+    "double_axe",
+    "double_rainbow",
+    "draconic_orb",
+    "dragon_claws",
+    "dragon_knight",
+    "dragon_nest",
+    "dragon_set",
+    "dragonscale_armor",
+    "dragonskin_boots",
+    "dual_wielding",
+    "eat_o_matic",
+    "echoing_battlecry",
+    "eggscalibur",
+    "electric_torch",
+    "elephant_rune",
+    "emerald",
+    "emerald_egg",
+    "emerald_whelp",
+    "employee_uniform",
+    "enchanted_weapons",
+    "energy_conversion",
+    "engineer_bag_2",
+    "engineer_box",
+    "everburning",
+    "evil_cap",
+    "evil_hat",
+    "extra_angy",
+    "extra_bags",
+    "falcon_blade",
+    "false_life",
+    "fancy_fencing_rapier",
+    "fanfare",
+    "fanny_pack",
+    "fedora",
+    "fire_pit",
+    "fire_shelly",
+    "flame",
+    "flame_badge",
+    "flame_whip",
+    "flawed_amethyst",
+    "flawed_emerald",
+    "flawed_ruby",
+    "flawed_sapphire",
+    "flawed_topaz",
+    "flawless_amethyst",
+    "flawless_emerald",
+    "flawless_ruby",
+    "flawless_sapphire",
+    "flawless_topaz",
+    "flute",
+    "fly_agaric",
+    "forest_dragon",
+    "forging_hammer",
+    "fortunas_kiss",
+    "friendly_fire",
+    "frog_prince",
+    "frostbite",
+    "frozen_buckler",
+    "frozen_flame",
+    "full_body_protection",
+    "furcifer_prime",
+    "garlic",
+    "generator",
+    "ghost",
+    "gigawatz",
+    "gingerbread_man",
+    "girl_power",
+    "gloves_of_haste",
+    "gold_armor",
+    "gold_cube",
+    "goobert",
+    "goobling",
+    "greatsword",
+    "halberd",
+    "hammer",
+    "hardwood",
+    "hawk_rune",
+    "healing_herbs",
+    "health_potion",
+    "heart_container",
+    "heart_of_darkness",
+    "heart_of_the_cards",
+    "heart_shield",
+    "heavy_drinking",
+    "hedgehog",
+    "hero_longsword",
+    "hero_shield",
+    "hero_sword",
+    "heroic_potion",
+    "hogus_bogus",
+    "holdall",
+    "holo_fire_lizard",
+    "holy_armor",
+    "holy_collar",
+    "holy_spear",
+    "hungry_blade",
+    "hyper_hedgehog",
+    "hypercube",
+    "ice_armor",
+    "ice_dragon",
+    "ice_flower",
+    "inner_power",
+    "investment_opportunity",
+    "joker",
+    "just_stats",
+    "jynx_staff",
+    "jynx_torquilla",
+    "katana",
+    "king_crown",
+    "king_goobert",
+    "king_of_the_bling",
+    "knife_to_meet_you",
+    "laboratory",
+    "leaf_badge",
+    "leather_armor",
+    "leather_bag",
+    "leather_boots",
+    "leather_helm",
+    "level_up",
+    "light_flower",
+    "light_goobert",
+    "lightning_potion",
+    "lightning_staff",
+    "lightsaber",
+    "little_mimic",
+    "long_spear",
+    "lootbox",
+    "lucky_bow",
+    "lucky_cat",
+    "lucky_clover",
+    "lucky_piggy",
+    "lucky_shortbow",
+    "lump_of_coal",
+    "mage_hat",
+    "magic_badge",
+    "magic_collar",
+    "magic_mirror",
+    "magic_ring",
+    "magic_staff",
+    "magic_torch",
+    "magitecc_armor",
+    "mana_crystal",
+    "mana_mastery",
+    "mana_orb",
+    "mana_potion",
+    "mananana",
+    "manathirst",
+    "markswoman",
+    "mecha_bat",
+    "mega_clover",
+    "mercury_elemental",
+    "miss_fortune",
+    "molten_dagger",
+    "molten_greatsword",
+    "molten_spear",
+    "molten_spear2",
+    "moon_armor",
+    "moon_shield",
+    "more_stats",
+    "mr_struggles",
+    "mrs_struggles",
+    "mushroom_farm",
+    "no_rush_please",
+    "null_blade",
+    "obsidian_dragon",
+    "oil_lamp",
+    "onion_cutter",
+    "owl_spirit",
+    "pan",
+    "pandamonium",
+    "paradise_birb",
+    "perfect_amethyst",
+    "perfect_emerald",
+    "perfect_ruby",
+    "perfect_sapphire",
+    "perfect_topaz",
+    "perpetuum_mobile",
+    "pestilence_flask",
+    "phoenix",
+    "phoenix2",
+    "piercing_arrow",
+    "piggy_of_riches",
+    "piggy_pinata",
+    "piggybank",
+    "pine_protector",
+    "pineapple",
+    "plastic_cube",
+    "platin_customer_card",
+    "pocket_sand",
+    "poison_bow",
+    "poison_dagger",
+    "poison_frog",
+    "poison_goobert",
+    "poison_grenade",
+    "poison_ivy",
+    "poison_shortbow",
+    "poison_spear",
+    "pop",
+    "portable_altar",
+    "pot",
+    "potion_belt",
+    "power_of_the_moon",
+    "power_puppy",
+    "present",
+    "prismatic_sword",
+    "prismatic_wand",
+    "protective_purse",
+    "pumpkin",
+    "puzzle_badge",
+    "puzzlebag_j",
+    "puzzlebag_l",
+    "puzzlebag_s",
+    "puzzlebag_t",
+    "puzzlebag_z",
+    "puzzlebox",
+    "rainbow_badge",
+    "rainbow_goobert",
+    "rainbow_goobert_adventurer",
+    "rainbow_goobert_berserker",
+    "rainbow_goobert_engineer",
+    "rainbow_goobert_mage",
+    "rainbow_goobert_pyromancer",
+    "rainbow_goobert_ranger",
+    "rainbow_orb",
+    "rainbow_potion",
+    "random_loadout_bag",
+    "ranger_bag",
+    "rat",
+    "rat_chef",
+    "recombobulator",
+    "regular_amethyst",
+    "regular_emerald",
+    "regular_ruby",
+    "regular_sapphire",
+    "regular_topaz",
+    "relic_case",
+    "repeater",
+    "resistor",
+    "reverse",
+    "rib_saw_blade",
+    "robodog",
+    "rope",
+    "ruby",
+    "ruby_chonk",
+    "ruby_egg",
+    "ruby_whelp",
+    "sandbag",
+    "sapphire",
+    "sapphire_egg",
+    "sapphire_whelp",
+    "scale",
+    "scholar_bag",
+    "scissorswords",
+    "seal_the_deal",
+    "serpent_staff",
+    "sewing_case",
+    "shaman_mask",
+    "shell_totem",
+    "shelly",
+    "shepherds_crook",
+    "shield_of_valor",
+    "shielded",
+    "shiny_mantle",
+    "shiny_shell",
+    "shortbow",
+    "shovel",
+    "skull",
+    "skull_badge",
+    "slice_of_bread",
+    "slice_of_toast",
+    "slime_time",
+    "sloth",
+    "smelly_barrier",
+    "smithing_for_dummies",
+    "snake",
+    "snow_stick",
+    "snowball",
+    "snowcake",
+    "snowman",
+    "snowmaster",
+    "solaris",
+    "speak_with_animals",
+    "spear",
+    "spectral_dagger",
+    "spell_scroll_dark",
+    "spell_scroll_frostbolt",
+    "spell_scroll_ice",
+    "spell_scroll_light",
+    "spell_scroll_nature",
+    "spicy_banana",
+    "spiked_collar",
+    "spiked_shield",
+    "spiked_staff",
+    "spiked_wall",
+    "spin_to_win",
+    "spirit_bells",
+    "spring_loader",
+    "squirrel",
+    "squirrel_archer",
+    "stable_recombobulator",
+    "staff_of_fire",
+    "staff_of_unhealing",
+    "stamina_sack",
+    "star_of_courage",
+    "steel_dragon",
+    "steel_goobert",
+    "stone",
+    "stone_armor",
+    "stone_badge",
+    "stone_gloves",
+    "stone_golem",
+    "stone_helm",
+    "stone_shoes",
+    "stone_skin_potion",
+    "stoned",
+    "storage_coffin",
+    "strong_demonic_flask",
+    "strong_divine_potion",
+    "strong_health_potion",
+    "strong_heroic_potion",
+    "strong_mana_potion",
+    "strong_pestilence_flask",
+    "strong_stone_skin_potion",
+    "strong_vampiric_potion",
+    "sun_armor",
+    "sun_shield",
+    "superior_ring",
+    "tesla_coil",
+    "the_fool",
+    "the_lovers",
+    "thorn_bow",
+    "thorn_elemental",
+    "thorn_shortbow",
+    "thorn_whip",
+    "thornbloom",
+    "thornburst",
+    "thors_hammer",
+    "thunder_drake",
+    "tiger_rune",
+    "time_dilator",
+    "time_melting",
+    "toad",
+    "toast_goobert",
+    "toolbox",
+    "topaz",
+    "torch",
+    "turtle",
+    "twine",
+    "twine_badge",
+    "ukulele",
+    "ultima",
+    "unidentified_skill",
+    "uniquely_unique",
+    "unstable_recombobulator",
+    "vampiric_armor",
+    "vampiric_collar",
+    "vampiric_gloves",
+    "vampiric_potion",
+    "vampiric_scythe",
+    "villain_sword",
+    "vineweave_basket",
+    "walrus_tusk",
+    "wand",
+    "wand_of_dissonance",
+    "war_scythe",
+    "water_elemental",
+    "whetstone",
+    "whetstone2",
+    "whetstone3",
+    "white_bishop",
+    "white_eyes_blue_dragon",
+    "white_king",
+    "white_knight",
+    "white_pawn",
+    "white_queen",
+    "white_rook",
+    "winged_boots",
+    "wisdom_puppy",
+    "wisp",
+    "wolf_badge",
+    "wolf_emblem",
+    "wolpertinger",
+    "wooden_buckler",
+    "wooden_sword",
+    "wrench",
+    "yggdrasil_leaf"
+  ],
+  "bands": {
+    "I": {
+      "title": "Core weapons",
+      "file": "band-i-weapons.js",
+      "desc": "basic_weapon + weapon_base"
+    },
+    "J": {
+      "title": "On-hit weapons",
+      "file": "band-j-onhit.js",
+      "desc": "on_hit family"
+    },
+    "K": {
+      "title": "Custom CD A–M",
+      "file": "band-k-custom-am.js",
+      "desc": "custom_cd id < n"
+    },
+    "L": {
+      "title": "Custom CD N–Z",
+      "file": "band-l-custom-nz.js",
+      "desc": "custom_cd id >= n"
+    },
+    "M": {
+      "title": "Synergy auras",
+      "file": "band-m-auras.js",
+      "desc": "synergy_aura"
+    },
+    "N": {
+      "title": "Start buffs / pets / food",
+      "file": "band-n-start-pets.js",
+      "desc": "start_buff, pet_like, food"
+    },
+    "O": {
+      "title": "Uniques / outliers",
+      "file": "band-o-uniques.js",
+      "desc": "unique + leftovers"
+    }
+  },
+  "totals": {
+    "entries": 448,
+    "stub": 0,
+    "reviewed": 448,
+    "byBand": {
+      "I": 19,
+      "J": 72,
+      "K": 30,
+      "L": 33,
+      "M": 44,
+      "N": 43,
+      "O": 207
+    }
+  },
+  "byId": {
+    "acorn_collar": {
+      "id": "acorn_collar",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "AcornCollar",
+      "file": "AcornCollar.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "acorn_collar",
+      "fidelity": "reviewed"
+    },
+    "artifact_stone_cold": {
+      "id": "artifact_stone_cold",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ArtifactStoneCold",
+      "file": "ArtifactStoneCold.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "artifact_stone_cold",
+      "fidelity": "reviewed"
+    },
+    "artifact_stone_heat": {
+      "id": "artifact_stone_heat",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ArtifactStoneHeat",
+      "file": "ArtifactStoneHeat.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "artifact_stone_heat",
+      "fidelity": "reviewed"
+    },
+    "bag_of_stones": {
+      "id": "bag_of_stones",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BagofStones",
+      "file": "BagofStones.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "bag_of_stones",
+      "fidelity": "reviewed"
+    },
+    "banana": {
+      "id": "banana",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Banana",
+      "file": "Banana.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "banana",
+      "fidelity": "reviewed"
+    },
+    "blood_amulet": {
+      "id": "blood_amulet",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "BloodAmulet",
+      "file": "BloodAmulet.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "blood_amulet",
+      "fidelity": "reviewed"
+    },
+    "blood_goobert": {
+      "id": "blood_goobert",
+      "band": "N",
+      "family": "pet_like",
+      "scriptStem": "BloodGoobert",
+      "file": "BloodGoobert.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "pet_strike",
+      "handlerId": "blood_goobert",
+      "fidelity": "reviewed"
+    },
+    "bloodthorne": {
+      "id": "bloodthorne",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Bloodthorne",
+      "file": "Bloodthorne.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "poison_weapon",
+      "handlerId": "bloodthorne",
+      "fidelity": "reviewed"
+    },
+    "bloody_dagger": {
+      "id": "bloody_dagger",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "BloodyDagger",
+      "file": "BloodyDagger.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "poison_weapon",
+      "handlerId": "bloody_dagger",
+      "fidelity": "reviewed"
+    },
+    "blueberries": {
+      "id": "blueberries",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Blueberries",
+      "file": "Blueberries.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "blueberries",
+      "fidelity": "reviewed"
+    },
+    "bow_and_arrow": {
+      "id": "bow_and_arrow",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BowandArrow",
+      "file": "BowandArrow.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "bow_and_arrow",
+      "fidelity": "reviewed"
+    },
+    "broom": {
+      "id": "broom",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Broom",
+      "file": "Broom.gd",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "broom",
+      "fidelity": "reviewed"
+    },
+    "burning_coal": {
+      "id": "burning_coal",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "BurningCoal",
+      "file": "BurningCoal.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "burning_coal",
+      "fidelity": "reviewed"
+    },
+    "burning_torch": {
+      "id": "burning_torch",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "BurningTorch",
+      "file": "BurningTorch.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "template": "empower_aura",
+      "handlerId": "burning_torch",
+      "fidelity": "reviewed"
+    },
+    "carrot": {
+      "id": "carrot",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Carrot",
+      "file": "Carrot.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "carrot",
+      "fidelity": "reviewed"
+    },
+    "carrot_goobert": {
+      "id": "carrot_goobert",
+      "band": "N",
+      "family": "pet_like",
+      "scriptStem": "CarrotGoobert",
+      "file": "CarrotGoobert.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "pet_strike",
+      "handlerId": "carrot_goobert",
+      "fidelity": "reviewed"
+    },
+    "claws_of_attack": {
+      "id": "claws_of_attack",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "ClawsofAttack",
+      "file": "ClawsofAttack.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "claws_of_attack",
+      "fidelity": "reviewed"
+    },
+    "corrupted_armor": {
+      "id": "corrupted_armor",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "CorruptedArmor",
+      "file": "CorruptedArmor.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "corrupted_armor",
+      "fidelity": "reviewed"
+    },
+    "critwood_staff": {
+      "id": "critwood_staff",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "CritwoodStaff",
+      "file": "CritwoodStaff.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "critwood_staff",
+      "fidelity": "reviewed"
+    },
+    "crossblades": {
+      "id": "crossblades",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "Crossblades",
+      "file": "Crossblades.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "template": "empower_aura",
+      "handlerId": "crossblades",
+      "fidelity": "reviewed"
+    },
+    "crown": {
+      "id": "crown",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Crown",
+      "file": "Crown.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "crown",
+      "fidelity": "reviewed"
+    },
+    "cursed_dagger": {
+      "id": "cursed_dagger",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "CursedDagger",
+      "file": "CursedDagger.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "poison_weapon",
+      "handlerId": "cursed_dagger",
+      "fidelity": "reviewed"
+    },
+    "cursed_hair_comb": {
+      "id": "cursed_hair_comb",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "CursedHairComb",
+      "file": "CursedHairComb.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "cursed_hair_comb",
+      "fidelity": "reviewed"
+    },
+    "dagger": {
+      "id": "dagger",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "Dagger",
+      "file": "Dagger.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "dagger",
+      "fidelity": "reviewed"
+    },
+    "dancing_dragon": {
+      "id": "dancing_dragon",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "DancingDragon",
+      "file": "DancingDragon.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "dancing_dragon",
+      "fidelity": "reviewed"
+    },
+    "darksaber": {
+      "id": "darksaber",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Darksaber",
+      "file": "Darksaber.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "darksaber",
+      "fidelity": "reviewed"
+    },
+    "death_scythe": {
+      "id": "death_scythe",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "DeathScythe",
+      "file": "DeathScythe.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "death_scythe",
+      "fidelity": "reviewed"
+    },
+    "deck_of_cards": {
+      "id": "deck_of_cards",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "DeckofCards",
+      "file": "DeckofCards.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "deck_of_cards",
+      "fidelity": "reviewed"
+    },
+    "demonic_flask": {
+      "id": "demonic_flask",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "DemonicFlask",
+      "file": "DemonicFlask.gd",
+      "overrides": [
+        "onTriggerPotion",
+        "onDamaged"
+      ],
+      "template": "start_regen",
+      "handlerId": "demonic_flask",
+      "fidelity": "reviewed"
+    },
+    "djinn_lamp": {
+      "id": "djinn_lamp",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "DjinnLamp",
+      "file": "DjinnLamp.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "djinn_lamp",
+      "fidelity": "reviewed"
+    },
+    "eggscalibur": {
+      "id": "eggscalibur",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Eggscalibur",
+      "file": "Eggscalibur.gd",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "template": "basic_cd",
+      "handlerId": "eggscalibur",
+      "fidelity": "reviewed"
+    },
+    "evil_cap": {
+      "id": "evil_cap",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "EvilCap",
+      "file": "EvilCap.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "evil_cap",
+      "fidelity": "reviewed"
+    },
+    "acorn_ace": {
+      "id": "acorn_ace",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "AcornAce",
+      "file": "Exclusive/AcornAce.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "acorn_ace",
+      "fidelity": "reviewed"
+    },
+    "amethyst_egg": {
+      "id": "amethyst_egg",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "AmethystEgg",
+      "file": "Exclusive/AmethystEgg.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "amethyst_egg",
+      "fidelity": "reviewed"
+    },
+    "amethyst_whelp": {
+      "id": "amethyst_whelp",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "AmethystWhelp",
+      "file": "Exclusive/AmethystWhelp.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "template": "start_regen",
+      "handlerId": "amethyst_whelp",
+      "fidelity": "reviewed"
+    },
+    "amulet_of_agility": {
+      "id": "amulet_of_agility",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "AmuletofAgility",
+      "file": "Exclusive/AmuletofAgility.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "amulet_of_agility",
+      "fidelity": "reviewed"
+    },
+    "amulet_of_alchemy": {
+      "id": "amulet_of_alchemy",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "AmuletofAlchemy",
+      "file": "Exclusive/AmuletofAlchemy.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "amulet_of_alchemy",
+      "fidelity": "reviewed"
+    },
+    "amulet_of_darkness": {
+      "id": "amulet_of_darkness",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "AmuletofDarkness",
+      "file": "Exclusive/AmuletofDarkness.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "amulet_of_darkness",
+      "fidelity": "reviewed"
+    },
+    "amulet_of_feasting": {
+      "id": "amulet_of_feasting",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "AmuletofFeasting",
+      "file": "Exclusive/AmuletofFeasting.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "amulet_of_feasting",
+      "fidelity": "reviewed"
+    },
+    "amulet_of_fortune": {
+      "id": "amulet_of_fortune",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "AmuletofFortune",
+      "file": "Exclusive/AmuletofFortune.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "amulet_of_fortune",
+      "fidelity": "reviewed"
+    },
+    "amulet_of_life": {
+      "id": "amulet_of_life",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "AmuletofLife",
+      "file": "Exclusive/AmuletofLife.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "amulet_of_life",
+      "fidelity": "reviewed"
+    },
+    "amulet_of_light": {
+      "id": "amulet_of_light",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "AmuletofLight",
+      "file": "Exclusive/AmuletofLight.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "amulet_of_light",
+      "fidelity": "reviewed"
+    },
+    "amulet_of_steel": {
+      "id": "amulet_of_steel",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "AmuletofSteel",
+      "file": "Exclusive/AmuletofSteel.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "amulet_of_steel",
+      "fidelity": "reviewed"
+    },
+    "amulet_of_the_wild": {
+      "id": "amulet_of_the_wild",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "AmuletoftheWild",
+      "file": "Exclusive/AmuletoftheWild.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "amulet_of_the_wild",
+      "fidelity": "reviewed"
+    },
+    "angel_crystal": {
+      "id": "angel_crystal",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "AngelCrystal",
+      "file": "Exclusive/AngelCrystal.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "angel_crystal",
+      "fidelity": "reviewed"
+    },
+    "anvil": {
+      "id": "anvil",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Anvil",
+      "file": "Exclusive/Anvil.gd",
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "anvil",
+      "fidelity": "reviewed"
+    },
+    "arcane_boots": {
+      "id": "arcane_boots",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ArcaneBoots",
+      "file": "Exclusive/ArcaneBoots.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "arcane_boots",
+      "fidelity": "reviewed"
+    },
+    "arcane_intellect": {
+      "id": "arcane_intellect",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ArcaneIntellect",
+      "file": "Exclusive/ArcaneIntellect.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "arcane_intellect",
+      "fidelity": "reviewed"
+    },
+    "armored_power_puppy": {
+      "id": "armored_power_puppy",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ArmoredPowerPuppy",
+      "file": "Exclusive/ArmoredPowerPuppy.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "armored_power_puppy",
+      "fidelity": "reviewed"
+    },
+    "armored_wisdom_puppy": {
+      "id": "armored_wisdom_puppy",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ArmoredWisdomPuppy",
+      "file": "Exclusive/ArmoredWisdomPuppy.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "armored_wisdom_puppy",
+      "fidelity": "reviewed"
+    },
+    "artifact_stone_death": {
+      "id": "artifact_stone_death",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ArtifactStoneDeath",
+      "file": "Exclusive/ArtifactStoneDeath.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "artifact_stone_death",
+      "fidelity": "reviewed"
+    },
+    "automanaton": {
+      "id": "automanaton",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Automanaton",
+      "file": "Exclusive/Automanaton.gd",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "automanaton",
+      "fidelity": "reviewed"
+    },
+    "axe": {
+      "id": "axe",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Axe",
+      "file": "Exclusive/Axe.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "axe",
+      "fidelity": "reviewed"
+    },
+    "badger_spirit": {
+      "id": "badger_spirit",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BadgerSpirit",
+      "file": "Exclusive/BadgerSpirit.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "badger_spirit",
+      "fidelity": "reviewed"
+    },
+    "bag_of_giving": {
+      "id": "bag_of_giving",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BagofGiving",
+      "file": "Exclusive/BagofGiving.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "bag_of_giving",
+      "fidelity": "reviewed"
+    },
+    "battery": {
+      "id": "battery",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Battery",
+      "file": "Exclusive/Battery.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "battery",
+      "fidelity": "reviewed"
+    },
+    "bazooka": {
+      "id": "bazooka",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Bazooka",
+      "file": "Exclusive/Bazooka.gd",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "bazooka",
+      "fidelity": "reviewed"
+    },
+    "berserker_bag": {
+      "id": "berserker_bag",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BerserkerBag",
+      "file": "Exclusive/BerserkerBag.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "berserker_bag",
+      "fidelity": "reviewed"
+    },
+    "bewitchment": {
+      "id": "bewitchment",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Bewitchment",
+      "file": "Exclusive/Bewitchment.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "bewitchment",
+      "fidelity": "reviewed"
+    },
+    "big_bloodthorne": {
+      "id": "big_bloodthorne",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "BigBloodthorne",
+      "file": "Exclusive/BigBloodthorne.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "poison_weapon",
+      "handlerId": "big_bloodthorne",
+      "fidelity": "reviewed"
+    },
+    "bionic_armor": {
+      "id": "bionic_armor",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "BionicArmor",
+      "file": "Exclusive/BionicArmor.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "bionic_armor",
+      "fidelity": "reviewed"
+    },
+    "bismuth_cube": {
+      "id": "bismuth_cube",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BismuthCube",
+      "file": "Exclusive/BismuthCube.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "bismuth_cube",
+      "fidelity": "reviewed"
+    },
+    "blood_manipulation": {
+      "id": "blood_manipulation",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BloodManipulation",
+      "file": "Exclusive/BloodManipulation.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "blood_manipulation",
+      "fidelity": "reviewed"
+    },
+    "bomb": {
+      "id": "bomb",
+      "band": "I",
+      "family": "basic_weapon",
+      "scriptStem": "Bomb",
+      "file": "Exclusive/Bomb.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "bomb",
+      "fidelity": "reviewed"
+    },
+    "book_of_basics": {
+      "id": "book_of_basics",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BookofBasics",
+      "file": "Exclusive/BookofBasics.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "book_of_basics",
+      "fidelity": "reviewed"
+    },
+    "book_of_darkness": {
+      "id": "book_of_darkness",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BookofDarkness",
+      "file": "Exclusive/BookofDarkness.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "book_of_darkness",
+      "fidelity": "reviewed"
+    },
+    "book_of_ice": {
+      "id": "book_of_ice",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BookofIce",
+      "file": "Exclusive/BookofIce.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "book_of_ice",
+      "fidelity": "reviewed"
+    },
+    "book_of_light": {
+      "id": "book_of_light",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BookofLight",
+      "file": "Exclusive/BookofLight.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "book_of_light",
+      "fidelity": "reviewed"
+    },
+    "book_of_nature": {
+      "id": "book_of_nature",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BookofNature",
+      "file": "Exclusive/BookofNature.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "book_of_nature",
+      "fidelity": "reviewed"
+    },
+    "boomerang": {
+      "id": "boomerang",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Boomerang",
+      "file": "Exclusive/Boomerang.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "boomerang",
+      "fidelity": "reviewed"
+    },
+    "bowl_of_treats": {
+      "id": "bowl_of_treats",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "BowlofTreats",
+      "file": "Exclusive/BowlofTreats.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "bowl_of_treats",
+      "fidelity": "reviewed"
+    },
+    "brass_knuckles": {
+      "id": "brass_knuckles",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "BrassKnuckles",
+      "file": "Exclusive/BrassKnuckles.gd",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "brass_knuckles",
+      "fidelity": "reviewed"
+    },
+    "broccoli": {
+      "id": "broccoli",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Broccoli",
+      "file": "Exclusive/Broccoli.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "broccoli",
+      "fidelity": "reviewed"
+    },
+    "broccoli_goobert": {
+      "id": "broccoli_goobert",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "BroccoliGoobert",
+      "file": "Exclusive/BroccoliGoobert.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "broccoli_goobert",
+      "fidelity": "reviewed"
+    },
+    "broccotree": {
+      "id": "broccotree",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Broccotree",
+      "file": "Exclusive/Broccotree.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "broccotree",
+      "fidelity": "reviewed"
+    },
+    "burning_banner": {
+      "id": "burning_banner",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BurningBanner",
+      "file": "Exclusive/BurningBanner.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "burning_banner",
+      "fidelity": "reviewed"
+    },
+    "burning_blade": {
+      "id": "burning_blade",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "BurningBlade",
+      "file": "Exclusive/BurningBlade.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "burning_blade",
+      "fidelity": "reviewed"
+    },
+    "burning_spikes": {
+      "id": "burning_spikes",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "BurningSpikes",
+      "file": "Exclusive/BurningSpikes.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "burning_spikes",
+      "fidelity": "reviewed"
+    },
+    "burning_sword": {
+      "id": "burning_sword",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "BurningSword",
+      "file": "Exclusive/BurningSword.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "burning_sword",
+      "fidelity": "reviewed"
+    },
+    "busted_blade": {
+      "id": "busted_blade",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BustedBlade",
+      "file": "Exclusive/BustedBlade.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "busted_blade",
+      "fidelity": "reviewed"
+    },
+    "buy_the_holy_light": {
+      "id": "buy_the_holy_light",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "BuytheHolyLight",
+      "file": "Exclusive/BuytheHolyLight.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "buy_the_holy_light",
+      "fidelity": "reviewed"
+    },
+    "cap_of_brilliance": {
+      "id": "cap_of_brilliance",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "CapofBrilliance",
+      "file": "Exclusive/CapofBrilliance.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "cap_of_brilliance",
+      "fidelity": "reviewed"
+    },
+    "cat_spirit": {
+      "id": "cat_spirit",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "CatSpirit",
+      "file": "Exclusive/CatSpirit.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "cat_spirit",
+      "fidelity": "reviewed"
+    },
+    "cauldron": {
+      "id": "cauldron",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Cauldron",
+      "file": "Exclusive/Cauldron.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "cauldron",
+      "fidelity": "reviewed"
+    },
+    "chainsaw": {
+      "id": "chainsaw",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Chainsaw",
+      "file": "Exclusive/Chainsaw.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "chainsaw",
+      "fidelity": "reviewed"
+    },
+    "chain_whip": {
+      "id": "chain_whip",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "ChainWhip",
+      "file": "Exclusive/ChainWhip.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "chain_whip",
+      "fidelity": "reviewed"
+    },
+    "charge_splitter": {
+      "id": "charge_splitter",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ChargeSplitter",
+      "file": "Exclusive/ChargeSplitter.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "charge_splitter",
+      "fidelity": "reviewed"
+    },
+    "cheese": {
+      "id": "cheese",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Cheese",
+      "file": "Exclusive/Cheese.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "cheese",
+      "fidelity": "reviewed"
+    },
+    "cheese_goobert": {
+      "id": "cheese_goobert",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "CheeseGoobert",
+      "file": "Exclusive/CheeseGoobert.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "cheese_goobert",
+      "fidelity": "reviewed"
+    },
+    "chess_board": {
+      "id": "chess_board",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ChessBoard",
+      "file": "Exclusive/ChessBoard.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "chess_board",
+      "fidelity": "reviewed"
+    },
+    "chess_master": {
+      "id": "chess_master",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ChessMaster",
+      "file": "Exclusive/ChessMaster.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "chess_master",
+      "fidelity": "reviewed"
+    },
+    "chili_goobert": {
+      "id": "chili_goobert",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "ChiliGoobert",
+      "file": "Exclusive/ChiliGoobert.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "chili_goobert",
+      "fidelity": "reviewed"
+    },
+    "chili_pepper": {
+      "id": "chili_pepper",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "ChiliPepper",
+      "file": "Exclusive/ChiliPepper.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "chili_pepper",
+      "fidelity": "reviewed"
+    },
+    "chrome_cube": {
+      "id": "chrome_cube",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ChromeCube",
+      "file": "Exclusive/ChromeCube.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "chrome_cube",
+      "fidelity": "reviewed"
+    },
+    "cog": {
+      "id": "cog",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Cog",
+      "file": "Exclusive/Cog.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "cog",
+      "fidelity": "reviewed"
+    },
+    "cog_badge": {
+      "id": "cog_badge",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "CogBadge",
+      "file": "Exclusive/CogBadge.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "cog_badge",
+      "fidelity": "reviewed"
+    },
+    "coil": {
+      "id": "coil",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Coil",
+      "file": "Exclusive/Coil.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "coil",
+      "fidelity": "reviewed"
+    },
+    "con_trap_tron": {
+      "id": "con_trap_tron",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ConTrapTron",
+      "file": "Exclusive/ConTrapTron.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "con_trap_tron",
+      "fidelity": "reviewed"
+    },
+    "courage_puppy": {
+      "id": "courage_puppy",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "CouragePuppy",
+      "file": "Exclusive/CouragePuppy.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "courage_puppy",
+      "fidelity": "reviewed"
+    },
+    "critical_poison": {
+      "id": "critical_poison",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "CriticalPoison",
+      "file": "Exclusive/CriticalPoison.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "critical_poison",
+      "fidelity": "reviewed"
+    },
+    "crow": {
+      "id": "crow",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Crow",
+      "file": "Exclusive/Crow.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "crow",
+      "fidelity": "reviewed"
+    },
+    "cthulhu": {
+      "id": "cthulhu",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Cthulhu",
+      "file": "Exclusive/Cthulhu.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "cthulhu",
+      "fidelity": "reviewed"
+    },
+    "cubert": {
+      "id": "cubert",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Cubert",
+      "file": "Exclusive/Cubert.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "cubert",
+      "fidelity": "reviewed"
+    },
+    "cupcake": {
+      "id": "cupcake",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Cupcake",
+      "file": "Exclusive/Cupcake.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "cupcake",
+      "fidelity": "reviewed"
+    },
+    "cupcake_dragon": {
+      "id": "cupcake_dragon",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "CupcakeDragon",
+      "file": "Exclusive/CupcakeDragon.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "cupcake_dragon",
+      "fidelity": "reviewed"
+    },
+    "cupcake_goobert": {
+      "id": "cupcake_goobert",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "CupcakeGoobert",
+      "file": "Exclusive/CupcakeGoobert.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "cupcake_goobert",
+      "fidelity": "reviewed"
+    },
+    "cupcake_staff": {
+      "id": "cupcake_staff",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "CupcakeStaff",
+      "file": "Exclusive/CupcakeStaff.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "cupcake_staff",
+      "fidelity": "reviewed"
+    },
+    "daggerang": {
+      "id": "daggerang",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Daggerang",
+      "file": "Exclusive/Daggerang.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "poison_weapon",
+      "handlerId": "daggerang",
+      "fidelity": "reviewed"
+    },
+    "dark_lantern": {
+      "id": "dark_lantern",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "DarkLantern",
+      "file": "Exclusive/DarkLantern.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "dark_lantern",
+      "fidelity": "reviewed"
+    },
+    "dark_ritual": {
+      "id": "dark_ritual",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "DarkRitual",
+      "file": "Exclusive/DarkRitual.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "dark_ritual",
+      "fidelity": "reviewed"
+    },
+    "death_lotus": {
+      "id": "death_lotus",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "DeathLotus",
+      "file": "Exclusive/DeathLotus.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "death_lotus",
+      "fidelity": "reviewed"
+    },
+    "deer_totem": {
+      "id": "deer_totem",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "DeerTotem",
+      "file": "Exclusive/DeerTotem.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "deer_totem",
+      "fidelity": "reviewed"
+    },
+    "devouring_sphere": {
+      "id": "devouring_sphere",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "DevouringSphere",
+      "file": "Exclusive/DevouringSphere.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "devouring_sphere",
+      "fidelity": "reviewed"
+    },
+    "dig_deeper": {
+      "id": "dig_deeper",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "DigDeeper",
+      "file": "Exclusive/DigDeeper.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "dig_deeper",
+      "fidelity": "reviewed"
+    },
+    "divine_potion": {
+      "id": "divine_potion",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "DivinePotion",
+      "file": "Exclusive/DivinePotion.gd",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "divine_potion",
+      "fidelity": "reviewed"
+    },
+    "doom_cap": {
+      "id": "doom_cap",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "DoomCap",
+      "file": "Exclusive/DoomCap.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "doom_cap",
+      "fidelity": "reviewed"
+    },
+    "double_axe": {
+      "id": "double_axe",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "DoubleAxe",
+      "file": "Exclusive/DoubleAxe.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "double_axe",
+      "fidelity": "reviewed"
+    },
+    "double_rainbow": {
+      "id": "double_rainbow",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "DoubleRainbow",
+      "file": "Exclusive/DoubleRainbow.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "double_rainbow",
+      "fidelity": "reviewed"
+    },
+    "draconic_orb": {
+      "id": "draconic_orb",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "DraconicOrb",
+      "file": "Exclusive/DraconicOrb.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "draconic_orb",
+      "fidelity": "reviewed"
+    },
+    "dragon_claws": {
+      "id": "dragon_claws",
+      "band": "N",
+      "family": "pet_like",
+      "scriptStem": "DragonClaws",
+      "file": "Exclusive/DragonClaws.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "pet_strike",
+      "handlerId": "dragon_claws",
+      "fidelity": "reviewed"
+    },
+    "dragon_knight": {
+      "id": "dragon_knight",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "DragonKnight",
+      "file": "Exclusive/DragonKnight.gd",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "dragon_knight",
+      "fidelity": "reviewed"
+    },
+    "dragon_nest": {
+      "id": "dragon_nest",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "DragonNest",
+      "file": "Exclusive/DragonNest.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "dragon_nest",
+      "fidelity": "reviewed"
+    },
+    "dragonscale_armor": {
+      "id": "dragonscale_armor",
+      "band": "N",
+      "family": "pet_like",
+      "scriptStem": "DragonscaleArmor",
+      "file": "Exclusive/DragonscaleArmor.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "pet_strike",
+      "handlerId": "dragonscale_armor",
+      "fidelity": "reviewed"
+    },
+    "dragon_set": {
+      "id": "dragon_set",
+      "band": "N",
+      "family": "pet_like",
+      "scriptStem": "DragonSet",
+      "file": "Exclusive/DragonSet.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "pet_strike",
+      "handlerId": "dragon_set",
+      "fidelity": "reviewed"
+    },
+    "dragonskin_boots": {
+      "id": "dragonskin_boots",
+      "band": "N",
+      "family": "pet_like",
+      "scriptStem": "DragonskinBoots",
+      "file": "Exclusive/DragonskinBoots.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "pet_strike",
+      "handlerId": "dragonskin_boots",
+      "fidelity": "reviewed"
+    },
+    "dual_wielding": {
+      "id": "dual_wielding",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "DualWielding",
+      "file": "Exclusive/DualWielding.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "dual_wielding",
+      "fidelity": "reviewed"
+    },
+    "eat_o_matic": {
+      "id": "eat_o_matic",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Eat-o-matic",
+      "file": "Exclusive/Eat-o-matic.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "eat_o_matic",
+      "fidelity": "reviewed"
+    },
+    "echoing_battlecry": {
+      "id": "echoing_battlecry",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "EchoingBattlecry",
+      "file": "Exclusive/EchoingBattlecry.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "echoing_battlecry",
+      "fidelity": "reviewed"
+    },
+    "electric_torch": {
+      "id": "electric_torch",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ElectricTorch",
+      "file": "Exclusive/ElectricTorch.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "electric_torch",
+      "fidelity": "reviewed"
+    },
+    "emerald_egg": {
+      "id": "emerald_egg",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "EmeraldEgg",
+      "file": "Exclusive/EmeraldEgg.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "emerald_egg",
+      "fidelity": "reviewed"
+    },
+    "emerald_whelp": {
+      "id": "emerald_whelp",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "EmeraldWhelp",
+      "file": "Exclusive/EmeraldWhelp.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "template": "start_regen",
+      "handlerId": "emerald_whelp",
+      "fidelity": "reviewed"
+    },
+    "enchanted_weapons": {
+      "id": "enchanted_weapons",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "EnchantedWeapons",
+      "file": "Exclusive/EnchantedWeapons.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "enchanted_weapons",
+      "fidelity": "reviewed"
+    },
+    "energy_conversion": {
+      "id": "energy_conversion",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "EnergyConversion",
+      "file": "Exclusive/EnergyConversion.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "energy_conversion",
+      "fidelity": "reviewed"
+    },
+    "engineer_box": {
+      "id": "engineer_box",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "EngineerBox",
+      "file": "Exclusive/EngineerBox.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "engineer_box",
+      "fidelity": "reviewed"
+    },
+    "everburning": {
+      "id": "everburning",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Everburning",
+      "file": "Exclusive/Everburning.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "everburning",
+      "fidelity": "reviewed"
+    },
+    "evil_hat": {
+      "id": "evil_hat",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "EvilHat",
+      "file": "Exclusive/EvilHat.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "evil_hat",
+      "fidelity": "reviewed"
+    },
+    "extra_angy": {
+      "id": "extra_angy",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ExtraAngy",
+      "file": "Exclusive/ExtraAngy.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "extra_angy",
+      "fidelity": "reviewed"
+    },
+    "extra_bags": {
+      "id": "extra_bags",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ExtraBags",
+      "file": "Exclusive/ExtraBags.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "extra_bags",
+      "fidelity": "reviewed"
+    },
+    "false_life": {
+      "id": "false_life",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "FalseLife",
+      "file": "Exclusive/FalseLife.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "false_life",
+      "fidelity": "reviewed"
+    },
+    "fedora": {
+      "id": "fedora",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "Fedora",
+      "file": "Exclusive/Fedora.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "fedora",
+      "fidelity": "reviewed"
+    },
+    "fire_pit": {
+      "id": "fire_pit",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "FirePit",
+      "file": "Exclusive/FirePit.gd",
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "fire_pit",
+      "fidelity": "reviewed"
+    },
+    "fire_shelly": {
+      "id": "fire_shelly",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "FireShelly",
+      "file": "Exclusive/FireShelly.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "fire_shelly",
+      "fidelity": "reviewed"
+    },
+    "flame": {
+      "id": "flame",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Flame",
+      "file": "Exclusive/Flame.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "flame",
+      "fidelity": "reviewed"
+    },
+    "flame_badge": {
+      "id": "flame_badge",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "FlameBadge",
+      "file": "Exclusive/FlameBadge.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "flame_badge",
+      "fidelity": "reviewed"
+    },
+    "flame_whip": {
+      "id": "flame_whip",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "FlameWhip",
+      "file": "Exclusive/FlameWhip.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "flame_whip",
+      "fidelity": "reviewed"
+    },
+    "forest_dragon": {
+      "id": "forest_dragon",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "ForestDragon",
+      "file": "Exclusive/ForestDragon.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "forest_dragon",
+      "fidelity": "reviewed"
+    },
+    "forging_hammer": {
+      "id": "forging_hammer",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "ForgingHammer",
+      "file": "Exclusive/ForgingHammer.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "forging_hammer",
+      "fidelity": "reviewed"
+    },
+    "fortunas_kiss": {
+      "id": "fortunas_kiss",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "FortunasKiss",
+      "file": "Exclusive/FortunasKiss.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "fortunas_kiss",
+      "fidelity": "reviewed"
+    },
+    "friendly_fire": {
+      "id": "friendly_fire",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "FriendlyFire",
+      "file": "Exclusive/FriendlyFire.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "friendly_fire",
+      "fidelity": "reviewed"
+    },
+    "frog_prince": {
+      "id": "frog_prince",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "FrogPrince",
+      "file": "Exclusive/FrogPrince.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "frog_prince",
+      "fidelity": "reviewed"
+    },
+    "frostbite": {
+      "id": "frostbite",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Frostbite",
+      "file": "Exclusive/Frostbite.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "frostbite",
+      "fidelity": "reviewed"
+    },
+    "frozen_buckler": {
+      "id": "frozen_buckler",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "FrozenBuckler",
+      "file": "Exclusive/FrozenBuckler.gd",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "template": "basic_cd",
+      "handlerId": "frozen_buckler",
+      "fidelity": "reviewed"
+    },
+    "frozen_flame": {
+      "id": "frozen_flame",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "FrozenFlame",
+      "file": "Exclusive/FrozenFlame.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "frozen_flame",
+      "fidelity": "reviewed"
+    },
+    "full_body_protection": {
+      "id": "full_body_protection",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "FullBodyProtection",
+      "file": "Exclusive/FullBodyProtection.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "full_body_protection",
+      "fidelity": "reviewed"
+    },
+    "generator": {
+      "id": "generator",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Generator",
+      "file": "Exclusive/Generator.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "generator",
+      "fidelity": "reviewed"
+    },
+    "ghost": {
+      "id": "ghost",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Ghost",
+      "file": "Exclusive/Ghost.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "ghost",
+      "fidelity": "reviewed"
+    },
+    "gigawatz": {
+      "id": "gigawatz",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Gigawatz",
+      "file": "Exclusive/Gigawatz.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "gigawatz",
+      "fidelity": "reviewed"
+    },
+    "girl_power": {
+      "id": "girl_power",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "GirlPower",
+      "file": "Exclusive/GirlPower.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "girl_power",
+      "fidelity": "reviewed"
+    },
+    "gold_armor": {
+      "id": "gold_armor",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "GoldArmor",
+      "file": "Exclusive/GoldArmor.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "gold_armor",
+      "fidelity": "reviewed"
+    },
+    "gold_cube": {
+      "id": "gold_cube",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "GoldCube",
+      "file": "Exclusive/GoldCube.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "gold_cube",
+      "fidelity": "reviewed"
+    },
+    "halberd": {
+      "id": "halberd",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Halberd",
+      "file": "Exclusive/Halberd.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "halberd",
+      "fidelity": "reviewed"
+    },
+    "hardwood": {
+      "id": "hardwood",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "Hardwood",
+      "file": "Exclusive/Hardwood.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "hardwood",
+      "fidelity": "reviewed"
+    },
+    "hawk_rune": {
+      "id": "hawk_rune",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "HawkRune",
+      "file": "Exclusive/HawkRune.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "hawk_rune",
+      "fidelity": "reviewed"
+    },
+    "heart_of_the_cards": {
+      "id": "heart_of_the_cards",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "HeartoftheCards",
+      "file": "Exclusive/HeartoftheCards.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "heart_of_the_cards",
+      "fidelity": "reviewed"
+    },
+    "heart_shield": {
+      "id": "heart_shield",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "HeartShield",
+      "file": "Exclusive/HeartShield.gd",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "template": "basic_cd",
+      "handlerId": "heart_shield",
+      "fidelity": "reviewed"
+    },
+    "heavy_drinking": {
+      "id": "heavy_drinking",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "HeavyDrinking",
+      "file": "Exclusive/HeavyDrinking.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "heavy_drinking",
+      "fidelity": "reviewed"
+    },
+    "hedgehog": {
+      "id": "hedgehog",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Hedgehog",
+      "file": "Exclusive/Hedgehog.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "hedgehog",
+      "fidelity": "reviewed"
+    },
+    "hero_shield": {
+      "id": "hero_shield",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "HeroShield",
+      "file": "Exclusive/HeroShield.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "hero_shield",
+      "fidelity": "reviewed"
+    },
+    "hogus_bogus": {
+      "id": "hogus_bogus",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "HogusBogus",
+      "file": "Exclusive/HogusBogus.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "trigger",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "hogus_bogus",
+      "fidelity": "reviewed"
+    },
+    "holdall": {
+      "id": "holdall",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Holdall",
+      "file": "Exclusive/Holdall.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "holdall",
+      "fidelity": "reviewed"
+    },
+    "holy_collar": {
+      "id": "holy_collar",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "HolyCollar",
+      "file": "Exclusive/HolyCollar.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "holy_collar",
+      "fidelity": "reviewed"
+    },
+    "hyper_hedgehog": {
+      "id": "hyper_hedgehog",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "HyperHedgehog",
+      "file": "Exclusive/HyperHedgehog.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "hyper_hedgehog",
+      "fidelity": "reviewed"
+    },
+    "ice_armor": {
+      "id": "ice_armor",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "IceArmor",
+      "file": "Exclusive/IceArmor.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "ice_armor",
+      "fidelity": "reviewed"
+    },
+    "ice_dragon": {
+      "id": "ice_dragon",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "IceDragon",
+      "file": "Exclusive/IceDragon.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "ice_dragon",
+      "fidelity": "reviewed"
+    },
+    "ice_flower": {
+      "id": "ice_flower",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "IceFlower",
+      "file": "Exclusive/IceFlower.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "ice_flower",
+      "fidelity": "reviewed"
+    },
+    "inner_power": {
+      "id": "inner_power",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "InnerPower",
+      "file": "Exclusive/InnerPower.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "inner_power",
+      "fidelity": "reviewed"
+    },
+    "investment_opportunity": {
+      "id": "investment_opportunity",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "InvestmentOpportunity",
+      "file": "Exclusive/InvestmentOpportunity.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "investment_opportunity",
+      "fidelity": "reviewed"
+    },
+    "just_stats": {
+      "id": "just_stats",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "JustStats",
+      "file": "Exclusive/JustStats.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "just_stats",
+      "fidelity": "reviewed"
+    },
+    "jynx_staff": {
+      "id": "jynx_staff",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "JynxStaff",
+      "file": "Exclusive/JynxStaff.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "jynx_staff",
+      "fidelity": "reviewed"
+    },
+    "katana": {
+      "id": "katana",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Katana",
+      "file": "Exclusive/Katana.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "katana",
+      "fidelity": "reviewed"
+    },
+    "king_crown": {
+      "id": "king_crown",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "KingCrown",
+      "file": "Exclusive/KingCrown.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "king_crown",
+      "fidelity": "reviewed"
+    },
+    "king_goobert": {
+      "id": "king_goobert",
+      "band": "N",
+      "family": "pet_like",
+      "scriptStem": "KingGoobert",
+      "file": "Exclusive/KingGoobert.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "pet_strike",
+      "handlerId": "king_goobert",
+      "fidelity": "reviewed"
+    },
+    "king_of_the_bling": {
+      "id": "king_of_the_bling",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "KingoftheBling",
+      "file": "Exclusive/KingoftheBling.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "king_of_the_bling",
+      "fidelity": "reviewed"
+    },
+    "knife_to_meet_you": {
+      "id": "knife_to_meet_you",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "KnifetoMeetYou",
+      "file": "Exclusive/KnifetoMeetYou.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "knife_to_meet_you",
+      "fidelity": "reviewed"
+    },
+    "laboratory": {
+      "id": "laboratory",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Laboratory",
+      "file": "Exclusive/Laboratory.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart",
+        "trigger"
+      ],
+      "template": "basic_cd",
+      "handlerId": "laboratory",
+      "fidelity": "reviewed"
+    },
+    "leaf_badge": {
+      "id": "leaf_badge",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "LeafBadge",
+      "file": "Exclusive/LeafBadge.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "leaf_badge",
+      "fidelity": "reviewed"
+    },
+    "level_up": {
+      "id": "level_up",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "LevelUp",
+      "file": "Exclusive/LevelUp.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "level_up",
+      "fidelity": "reviewed"
+    },
+    "light_flower": {
+      "id": "light_flower",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "LightFlower",
+      "file": "Exclusive/LightFlower.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "light_flower",
+      "fidelity": "reviewed"
+    },
+    "lightning_potion": {
+      "id": "lightning_potion",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "LightningPotion",
+      "file": "Exclusive/LightningPotion.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "lightning_potion",
+      "fidelity": "reviewed"
+    },
+    "lightning_staff": {
+      "id": "lightning_staff",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "LightningStaff",
+      "file": "Exclusive/LightningStaff.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "lightning_staff",
+      "fidelity": "reviewed"
+    },
+    "little_mimic": {
+      "id": "little_mimic",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "LittleMimic",
+      "file": "Exclusive/LittleMimic.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "little_mimic",
+      "fidelity": "reviewed"
+    },
+    "long_spear": {
+      "id": "long_spear",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "LongSpear",
+      "file": "Exclusive/LongSpear.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "long_spear",
+      "fidelity": "reviewed"
+    },
+    "lucky_cat": {
+      "id": "lucky_cat",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "LuckyCat",
+      "file": "Exclusive/LuckyCat.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "lucky_cat",
+      "fidelity": "reviewed"
+    },
+    "lucky_shortbow": {
+      "id": "lucky_shortbow",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "LuckyShortbow",
+      "file": "Exclusive/LuckyShortbow.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "poison_weapon",
+      "handlerId": "lucky_shortbow",
+      "fidelity": "reviewed"
+    },
+    "mage_hat": {
+      "id": "mage_hat",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "MageHat",
+      "file": "Exclusive/MageHat.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "mage_hat",
+      "fidelity": "reviewed"
+    },
+    "magic_badge": {
+      "id": "magic_badge",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "MagicBadge",
+      "file": "Exclusive/MagicBadge.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "magic_badge",
+      "fidelity": "reviewed"
+    },
+    "magic_collar": {
+      "id": "magic_collar",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "MagicCollar",
+      "file": "Exclusive/MagicCollar.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "magic_collar",
+      "fidelity": "reviewed"
+    },
+    "magic_mirror": {
+      "id": "magic_mirror",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "MagicMirror",
+      "file": "Exclusive/MagicMirror.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "magic_mirror",
+      "fidelity": "reviewed"
+    },
+    "magic_ring": {
+      "id": "magic_ring",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "MagicRing",
+      "file": "Exclusive/MagicRing.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "magic_ring",
+      "fidelity": "reviewed"
+    },
+    "magitecc_armor": {
+      "id": "magitecc_armor",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "MagiteccArmor",
+      "file": "Exclusive/MagiteccArmor.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "magitecc_armor",
+      "fidelity": "reviewed"
+    },
+    "mana_crystal": {
+      "id": "mana_crystal",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "ManaCrystal",
+      "file": "Exclusive/ManaCrystal.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "mana_crystal",
+      "fidelity": "reviewed"
+    },
+    "mana_mastery": {
+      "id": "mana_mastery",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ManaMastery",
+      "file": "Exclusive/ManaMastery.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "mana_mastery",
+      "fidelity": "reviewed"
+    },
+    "mananana": {
+      "id": "mananana",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Mananana",
+      "file": "Exclusive/Mananana.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "mananana",
+      "fidelity": "reviewed"
+    },
+    "markswoman": {
+      "id": "markswoman",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Markswoman",
+      "file": "Exclusive/Markswoman.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "markswoman",
+      "fidelity": "reviewed"
+    },
+    "mecha_bat": {
+      "id": "mecha_bat",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "MechaBat",
+      "file": "Exclusive/MechaBat.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "mecha_bat",
+      "fidelity": "reviewed"
+    },
+    "mega_clover": {
+      "id": "mega_clover",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "MegaClover",
+      "file": "Exclusive/MegaClover.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "mega_clover",
+      "fidelity": "reviewed"
+    },
+    "mercury_elemental": {
+      "id": "mercury_elemental",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "MercuryElemental",
+      "file": "Exclusive/MercuryElemental.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "mercury_elemental",
+      "fidelity": "reviewed"
+    },
+    "miss_fortune": {
+      "id": "miss_fortune",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "MissFortune",
+      "file": "Exclusive/MissFortune.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "miss_fortune",
+      "fidelity": "reviewed"
+    },
+    "molten_dagger": {
+      "id": "molten_dagger",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "MoltenDagger",
+      "file": "Exclusive/MoltenDagger.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "poison_weapon",
+      "handlerId": "molten_dagger",
+      "fidelity": "reviewed"
+    },
+    "molten_greatsword": {
+      "id": "molten_greatsword",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "MoltenGreatsword",
+      "file": "Exclusive/MoltenGreatsword.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "molten_greatsword",
+      "fidelity": "reviewed"
+    },
+    "molten_spear": {
+      "id": "molten_spear",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "MoltenSpear",
+      "file": "Exclusive/MoltenSpear.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "molten_spear",
+      "fidelity": "reviewed"
+    },
+    "molten_spear2": {
+      "id": "molten_spear2",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "MoltenSpear2",
+      "file": "Exclusive/MoltenSpear2.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "molten_spear2",
+      "fidelity": "reviewed"
+    },
+    "moon_armor": {
+      "id": "moon_armor",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "MoonArmor",
+      "file": "Exclusive/MoonArmor.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "moon_armor",
+      "fidelity": "reviewed"
+    },
+    "more_stats": {
+      "id": "more_stats",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "MoreStats",
+      "file": "Exclusive/MoreStats.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "more_stats",
+      "fidelity": "reviewed"
+    },
+    "mrs_struggles": {
+      "id": "mrs_struggles",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "MrsStruggles",
+      "file": "Exclusive/MrsStruggles.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "mrs_struggles",
+      "fidelity": "reviewed"
+    },
+    "mushroom_farm": {
+      "id": "mushroom_farm",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "MushroomFarm",
+      "file": "Exclusive/MushroomFarm.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "mushroom_farm",
+      "fidelity": "reviewed"
+    },
+    "no_rush_please": {
+      "id": "no_rush_please",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "NoRushPlease",
+      "file": "Exclusive/NoRushPlease.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart",
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "no_rush_please",
+      "fidelity": "reviewed"
+    },
+    "null_blade": {
+      "id": "null_blade",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "NullBlade",
+      "file": "Exclusive/NullBlade.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "null_blade",
+      "fidelity": "reviewed"
+    },
+    "obsidian_dragon": {
+      "id": "obsidian_dragon",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "ObsidianDragon",
+      "file": "Exclusive/ObsidianDragon.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "obsidian_dragon",
+      "fidelity": "reviewed"
+    },
+    "oil_lamp": {
+      "id": "oil_lamp",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "OilLamp",
+      "file": "Exclusive/OilLamp.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "oil_lamp",
+      "fidelity": "reviewed"
+    },
+    "onion_cutter": {
+      "id": "onion_cutter",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "OnionCutter",
+      "file": "Exclusive/OnionCutter.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "onion_cutter",
+      "fidelity": "reviewed"
+    },
+    "owl_spirit": {
+      "id": "owl_spirit",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "OwlSpirit",
+      "file": "Exclusive/OwlSpirit.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "owl_spirit",
+      "fidelity": "reviewed"
+    },
+    "paradise_birb": {
+      "id": "paradise_birb",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ParadiseBirb",
+      "file": "Exclusive/ParadiseBirb.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "paradise_birb",
+      "fidelity": "reviewed"
+    },
+    "perpetuum_mobile": {
+      "id": "perpetuum_mobile",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PerpetuumMobile",
+      "file": "Exclusive/PerpetuumMobile.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "perpetuum_mobile",
+      "fidelity": "reviewed"
+    },
+    "phoenix": {
+      "id": "phoenix",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "Phoenix",
+      "file": "Exclusive/Phoenix.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "phoenix",
+      "fidelity": "reviewed"
+    },
+    "phoenix2": {
+      "id": "phoenix2",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Phoenix2",
+      "file": "Exclusive/Phoenix2.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "phoenix2",
+      "fidelity": "reviewed"
+    },
+    "piggy_of_riches": {
+      "id": "piggy_of_riches",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "PiggyofRiches",
+      "file": "Exclusive/PiggyofRiches.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "piggy_of_riches",
+      "fidelity": "reviewed"
+    },
+    "piggy_pinata": {
+      "id": "piggy_pinata",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PiggyPinata",
+      "file": "Exclusive/PiggyPinata.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "piggy_pinata",
+      "fidelity": "reviewed"
+    },
+    "pine_protector": {
+      "id": "pine_protector",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PineProtector",
+      "file": "Exclusive/PineProtector.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "pine_protector",
+      "fidelity": "reviewed"
+    },
+    "plastic_cube": {
+      "id": "plastic_cube",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "PlasticCube",
+      "file": "Exclusive/PlasticCube.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "plastic_cube",
+      "fidelity": "reviewed"
+    },
+    "poison_frog": {
+      "id": "poison_frog",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PoisonFrog",
+      "file": "Exclusive/PoisonFrog.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "poison_frog",
+      "fidelity": "reviewed"
+    },
+    "poison_grenade": {
+      "id": "poison_grenade",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PoisonGrenade",
+      "file": "Exclusive/PoisonGrenade.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "poison_grenade",
+      "fidelity": "reviewed"
+    },
+    "poison_shortbow": {
+      "id": "poison_shortbow",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "PoisonShortbow",
+      "file": "Exclusive/PoisonShortbow.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "poison_weapon",
+      "handlerId": "poison_shortbow",
+      "fidelity": "reviewed"
+    },
+    "poison_spear": {
+      "id": "poison_spear",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "PoisonSpear",
+      "file": "Exclusive/PoisonSpear.gd",
+      "overrides": [
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "poison_spear",
+      "fidelity": "reviewed"
+    },
+    "pop": {
+      "id": "pop",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "Pop",
+      "file": "Exclusive/Pop.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "pop",
+      "fidelity": "reviewed"
+    },
+    "portable_altar": {
+      "id": "portable_altar",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "PortableAltar",
+      "file": "Exclusive/PortableAltar.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "portable_altar",
+      "fidelity": "reviewed"
+    },
+    "pot": {
+      "id": "pot",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Pot",
+      "file": "Exclusive/Pot.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "pot",
+      "fidelity": "reviewed"
+    },
+    "power_of_the_moon": {
+      "id": "power_of_the_moon",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PoweroftheMoon",
+      "file": "Exclusive/PoweroftheMoon.gd",
+      "overrides": [
+        "onPostCombatStart",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "power_of_the_moon",
+      "fidelity": "reviewed"
+    },
+    "power_puppy": {
+      "id": "power_puppy",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PowerPuppy",
+      "file": "Exclusive/PowerPuppy.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "power_puppy",
+      "fidelity": "reviewed"
+    },
+    "prismatic_sword": {
+      "id": "prismatic_sword",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "PrismaticSword",
+      "file": "Exclusive/PrismaticSword.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "prismatic_sword",
+      "fidelity": "reviewed"
+    },
+    "prismatic_wand": {
+      "id": "prismatic_wand",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "PrismaticWand",
+      "file": "Exclusive/PrismaticWand.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "prismatic_wand",
+      "fidelity": "reviewed"
+    },
+    "puzzle_badge": {
+      "id": "puzzle_badge",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PuzzleBadge",
+      "file": "Exclusive/PuzzleBadge.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "puzzle_badge",
+      "fidelity": "reviewed"
+    },
+    "puzzlebag_j": {
+      "id": "puzzlebag_j",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PuzzlebagJ",
+      "file": "Exclusive/PuzzlebagJ.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "puzzlebag_j",
+      "fidelity": "reviewed"
+    },
+    "puzzlebag_l": {
+      "id": "puzzlebag_l",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "PuzzlebagL",
+      "file": "Exclusive/PuzzlebagL.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "puzzlebag_l",
+      "fidelity": "reviewed"
+    },
+    "puzzlebag_s": {
+      "id": "puzzlebag_s",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PuzzlebagS",
+      "file": "Exclusive/PuzzlebagS.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "puzzlebag_s",
+      "fidelity": "reviewed"
+    },
+    "puzzlebag_t": {
+      "id": "puzzlebag_t",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PuzzlebagT",
+      "file": "Exclusive/PuzzlebagT.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "puzzlebag_t",
+      "fidelity": "reviewed"
+    },
+    "puzzlebag_z": {
+      "id": "puzzlebag_z",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PuzzlebagZ",
+      "file": "Exclusive/PuzzlebagZ.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "puzzlebag_z",
+      "fidelity": "reviewed"
+    },
+    "puzzlebox": {
+      "id": "puzzlebox",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Puzzlebox",
+      "file": "Exclusive/Puzzlebox.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "puzzlebox",
+      "fidelity": "reviewed"
+    },
+    "rainbow_badge": {
+      "id": "rainbow_badge",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "RainbowBadge",
+      "file": "Exclusive/RainbowBadge.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "rainbow_badge",
+      "fidelity": "reviewed"
+    },
+    "rainbow_goobert_adventurer": {
+      "id": "rainbow_goobert_adventurer",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "RainbowGoobertAdventurer",
+      "file": "Exclusive/RainbowGoobertAdventurer.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "rainbow_goobert_adventurer",
+      "fidelity": "reviewed"
+    },
+    "rainbow_goobert_berserker": {
+      "id": "rainbow_goobert_berserker",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "RainbowGoobertBerserker",
+      "file": "Exclusive/RainbowGoobertBerserker.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "rainbow_goobert_berserker",
+      "fidelity": "reviewed"
+    },
+    "rainbow_goobert_engineer": {
+      "id": "rainbow_goobert_engineer",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "RainbowGoobertEngineer",
+      "file": "Exclusive/RainbowGoobertEngineer.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "rainbow_goobert_engineer",
+      "fidelity": "reviewed"
+    },
+    "rainbow_goobert_mage": {
+      "id": "rainbow_goobert_mage",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "RainbowGoobertMage",
+      "file": "Exclusive/RainbowGoobertMage.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "rainbow_goobert_mage",
+      "fidelity": "reviewed"
+    },
+    "rainbow_goobert_pyromancer": {
+      "id": "rainbow_goobert_pyromancer",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "RainbowGoobertPyromancer",
+      "file": "Exclusive/RainbowGoobertPyromancer.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "rainbow_goobert_pyromancer",
+      "fidelity": "reviewed"
+    },
+    "rainbow_orb": {
+      "id": "rainbow_orb",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "RainbowOrb",
+      "file": "Exclusive/RainbowOrb.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "rainbow_orb",
+      "fidelity": "reviewed"
+    },
+    "rainbow_potion": {
+      "id": "rainbow_potion",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "RainbowPotion",
+      "file": "Exclusive/RainbowPotion.gd",
+      "overrides": [
+        "onCombatStart",
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "rainbow_potion",
+      "fidelity": "reviewed"
+    },
+    "rat": {
+      "id": "rat",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "Rat",
+      "file": "Exclusive/Rat.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "rat",
+      "fidelity": "reviewed"
+    },
+    "rat_chef": {
+      "id": "rat_chef",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "RatChef",
+      "file": "Exclusive/RatChef.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "rat_chef",
+      "fidelity": "reviewed"
+    },
+    "recombobulator": {
+      "id": "recombobulator",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "Recombobulator",
+      "file": "Exclusive/Recombobulator.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "recombobulator",
+      "fidelity": "reviewed"
+    },
+    "relic_case": {
+      "id": "relic_case",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "RelicCase",
+      "file": "Exclusive/RelicCase.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "relic_case",
+      "fidelity": "reviewed"
+    },
+    "repeater": {
+      "id": "repeater",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "Repeater",
+      "file": "Exclusive/Repeater.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "repeater",
+      "fidelity": "reviewed"
+    },
+    "robodog": {
+      "id": "robodog",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Robodog",
+      "file": "Exclusive/Robodog.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "robodog",
+      "fidelity": "reviewed"
+    },
+    "rope": {
+      "id": "rope",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Rope",
+      "file": "Exclusive/Rope.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "rope",
+      "fidelity": "reviewed"
+    },
+    "sandbag": {
+      "id": "sandbag",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Sandbag",
+      "file": "Exclusive/Sandbag.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart",
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "sandbag",
+      "fidelity": "reviewed"
+    },
+    "sapphire_egg": {
+      "id": "sapphire_egg",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SapphireEgg",
+      "file": "Exclusive/SapphireEgg.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "sapphire_egg",
+      "fidelity": "reviewed"
+    },
+    "sapphire_whelp": {
+      "id": "sapphire_whelp",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "SapphireWhelp",
+      "file": "Exclusive/SapphireWhelp.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "template": "start_regen",
+      "handlerId": "sapphire_whelp",
+      "fidelity": "reviewed"
+    },
+    "scale": {
+      "id": "scale",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Scale",
+      "file": "Exclusive/Scale.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "scale",
+      "fidelity": "reviewed"
+    },
+    "scholar_bag": {
+      "id": "scholar_bag",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "ScholarBag",
+      "file": "Exclusive/ScholarBag.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "scholar_bag",
+      "fidelity": "reviewed"
+    },
+    "scissorswords": {
+      "id": "scissorswords",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Scissorswords",
+      "file": "Exclusive/Scissorswords.gd",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "template": "basic_cd",
+      "handlerId": "scissorswords",
+      "fidelity": "reviewed"
+    },
+    "seal_the_deal": {
+      "id": "seal_the_deal",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "SealtheDeal",
+      "file": "Exclusive/SealtheDeal.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "seal_the_deal",
+      "fidelity": "reviewed"
+    },
+    "serpent_staff": {
+      "id": "serpent_staff",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "SerpentStaff",
+      "file": "Exclusive/SerpentStaff.gd",
+      "overrides": [
+        "onDealtDamage",
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "serpent_staff",
+      "fidelity": "reviewed"
+    },
+    "sewing_case": {
+      "id": "sewing_case",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SewingCase",
+      "file": "Exclusive/SewingCase.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "sewing_case",
+      "fidelity": "reviewed"
+    },
+    "shaman_mask": {
+      "id": "shaman_mask",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ShamanMask",
+      "file": "Exclusive/ShamanMask.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "shaman_mask",
+      "fidelity": "reviewed"
+    },
+    "shell_totem": {
+      "id": "shell_totem",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ShellTotem",
+      "file": "Exclusive/ShellTotem.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "shell_totem",
+      "fidelity": "reviewed"
+    },
+    "shelly": {
+      "id": "shelly",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Shelly",
+      "file": "Exclusive/Shelly.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "shelly",
+      "fidelity": "reviewed"
+    },
+    "shepherds_crook": {
+      "id": "shepherds_crook",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "ShepherdsCrook",
+      "file": "Exclusive/ShepherdsCrook.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "shepherds_crook",
+      "fidelity": "reviewed"
+    },
+    "shielded": {
+      "id": "shielded",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Shielded",
+      "file": "Exclusive/Shielded.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "shielded",
+      "fidelity": "reviewed"
+    },
+    "shiny_mantle": {
+      "id": "shiny_mantle",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ShinyMantle",
+      "file": "Exclusive/ShinyMantle.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "shiny_mantle",
+      "fidelity": "reviewed"
+    },
+    "shiny_shell": {
+      "id": "shiny_shell",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "ShinyShell",
+      "file": "Exclusive/ShinyShell.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "shiny_shell",
+      "fidelity": "reviewed"
+    },
+    "skull_badge": {
+      "id": "skull_badge",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "SkullBadge",
+      "file": "Exclusive/SkullBadge.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "skull_badge",
+      "fidelity": "reviewed"
+    },
+    "slice_of_bread": {
+      "id": "slice_of_bread",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "SliceofBread",
+      "file": "Exclusive/SliceofBread.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "slice_of_bread",
+      "fidelity": "reviewed"
+    },
+    "slice_of_toast": {
+      "id": "slice_of_toast",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "SliceofToast",
+      "file": "Exclusive/SliceofToast.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "slice_of_toast",
+      "fidelity": "reviewed"
+    },
+    "slime_time": {
+      "id": "slime_time",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "SlimeTime",
+      "file": "Exclusive/SlimeTime.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "slime_time",
+      "fidelity": "reviewed"
+    },
+    "sloth": {
+      "id": "sloth",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "Sloth",
+      "file": "Exclusive/Sloth.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "trigger",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "sloth",
+      "fidelity": "reviewed"
+    },
+    "smelly_barrier": {
+      "id": "smelly_barrier",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SmellyBarrier",
+      "file": "Exclusive/SmellyBarrier.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "smelly_barrier",
+      "fidelity": "reviewed"
+    },
+    "smithing_for_dummies": {
+      "id": "smithing_for_dummies",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "SmithingForDummies",
+      "file": "Exclusive/SmithingForDummies.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "smithing_for_dummies",
+      "fidelity": "reviewed"
+    },
+    "snake": {
+      "id": "snake",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "Snake",
+      "file": "Exclusive/Snake.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "snake",
+      "fidelity": "reviewed"
+    },
+    "snowball": {
+      "id": "snowball",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "Snowball",
+      "file": "Exclusive/Snowball.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "snowball",
+      "fidelity": "reviewed"
+    },
+    "snowcake": {
+      "id": "snowcake",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "Snowcake",
+      "file": "Exclusive/Snowcake.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "snowcake",
+      "fidelity": "reviewed"
+    },
+    "snowmaster": {
+      "id": "snowmaster",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Snowmaster",
+      "file": "Exclusive/Snowmaster.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "snowmaster",
+      "fidelity": "reviewed"
+    },
+    "snow_stick": {
+      "id": "snow_stick",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "SnowStick",
+      "file": "Exclusive/SnowStick.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "snow_stick",
+      "fidelity": "reviewed"
+    },
+    "solaris": {
+      "id": "solaris",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Solaris",
+      "file": "Exclusive/Solaris.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "solaris",
+      "fidelity": "reviewed"
+    },
+    "speak_with_animals": {
+      "id": "speak_with_animals",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "SpeakwithAnimals",
+      "file": "Exclusive/SpeakwithAnimals.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "speak_with_animals",
+      "fidelity": "reviewed"
+    },
+    "spell_scroll_dark": {
+      "id": "spell_scroll_dark",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SpellScrollDark",
+      "file": "Exclusive/SpellScrollDark.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spell_scroll_dark",
+      "fidelity": "reviewed"
+    },
+    "spell_scroll_frostbolt": {
+      "id": "spell_scroll_frostbolt",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SpellScrollFrostbolt",
+      "file": "Exclusive/SpellScrollFrostbolt.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spell_scroll_frostbolt",
+      "fidelity": "reviewed"
+    },
+    "spell_scroll_ice": {
+      "id": "spell_scroll_ice",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SpellScrollIce",
+      "file": "Exclusive/SpellScrollIce.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spell_scroll_ice",
+      "fidelity": "reviewed"
+    },
+    "spell_scroll_light": {
+      "id": "spell_scroll_light",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SpellScrollLight",
+      "file": "Exclusive/SpellScrollLight.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spell_scroll_light",
+      "fidelity": "reviewed"
+    },
+    "spell_scroll_nature": {
+      "id": "spell_scroll_nature",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SpellScrollNature",
+      "file": "Exclusive/SpellScrollNature.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spell_scroll_nature",
+      "fidelity": "reviewed"
+    },
+    "spicy_banana": {
+      "id": "spicy_banana",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "SpicyBanana",
+      "file": "Exclusive/SpicyBanana.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "spicy_banana",
+      "fidelity": "reviewed"
+    },
+    "spiked_collar": {
+      "id": "spiked_collar",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SpikedCollar",
+      "file": "Exclusive/SpikedCollar.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spiked_collar",
+      "fidelity": "reviewed"
+    },
+    "spiked_staff": {
+      "id": "spiked_staff",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "SpikedStaff",
+      "file": "Exclusive/SpikedStaff.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spiked_staff",
+      "fidelity": "reviewed"
+    },
+    "spiked_wall": {
+      "id": "spiked_wall",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SpikedWall",
+      "file": "Exclusive/SpikedWall.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spiked_wall",
+      "fidelity": "reviewed"
+    },
+    "spin_to_win": {
+      "id": "spin_to_win",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "SpintoWin",
+      "file": "Exclusive/SpintoWin.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spin_to_win",
+      "fidelity": "reviewed"
+    },
+    "spirit_bells": {
+      "id": "spirit_bells",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "SpiritBells",
+      "file": "Exclusive/SpiritBells.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spirit_bells",
+      "fidelity": "reviewed"
+    },
+    "spring_loader": {
+      "id": "spring_loader",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "SpringLoader",
+      "file": "Exclusive/SpringLoader.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "spring_loader",
+      "fidelity": "reviewed"
+    },
+    "squirrel": {
+      "id": "squirrel",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "Squirrel",
+      "file": "Exclusive/Squirrel.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "squirrel",
+      "fidelity": "reviewed"
+    },
+    "squirrel_archer": {
+      "id": "squirrel_archer",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "SquirrelArcher",
+      "file": "Exclusive/SquirrelArcher.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "squirrel_archer",
+      "fidelity": "reviewed"
+    },
+    "staff_of_fire": {
+      "id": "staff_of_fire",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "StaffofFire",
+      "file": "Exclusive/StaffofFire.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "staff_of_fire",
+      "fidelity": "reviewed"
+    },
+    "star_of_courage": {
+      "id": "star_of_courage",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "StarofCourage",
+      "file": "Exclusive/StarofCourage.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "star_of_courage",
+      "fidelity": "reviewed"
+    },
+    "steel_dragon": {
+      "id": "steel_dragon",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "SteelDragon",
+      "file": "Exclusive/SteelDragon.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "steel_dragon",
+      "fidelity": "reviewed"
+    },
+    "stone_armor": {
+      "id": "stone_armor",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "StoneArmor",
+      "file": "Exclusive/StoneArmor.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "stone_armor",
+      "fidelity": "reviewed"
+    },
+    "stone_badge": {
+      "id": "stone_badge",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "StoneBadge",
+      "file": "Exclusive/StoneBadge.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "stone_badge",
+      "fidelity": "reviewed"
+    },
+    "stoned": {
+      "id": "stoned",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Stoned",
+      "file": "Exclusive/Stoned.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "stoned",
+      "fidelity": "reviewed"
+    },
+    "stone_gloves": {
+      "id": "stone_gloves",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "StoneGloves",
+      "file": "Exclusive/StoneGloves.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "stone_gloves",
+      "fidelity": "reviewed"
+    },
+    "stone_golem": {
+      "id": "stone_golem",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "StoneGolem",
+      "file": "Exclusive/StoneGolem.gd",
+      "overrides": [
+        "onPreCombatStart",
+        "onDealtDamage",
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "stone_golem",
+      "fidelity": "reviewed"
+    },
+    "stone_shoes": {
+      "id": "stone_shoes",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "StoneShoes",
+      "file": "Exclusive/StoneShoes.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "stone_shoes",
+      "fidelity": "reviewed"
+    },
+    "strong_divine_potion": {
+      "id": "strong_divine_potion",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "StrongDivinePotion",
+      "file": "Exclusive/StrongDivinePotion.gd",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "strong_divine_potion",
+      "fidelity": "reviewed"
+    },
+    "strong_vampiric_potion": {
+      "id": "strong_vampiric_potion",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "StrongVampiricPotion",
+      "file": "Exclusive/StrongVampiricPotion.gd",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "strong_vampiric_potion",
+      "fidelity": "reviewed"
+    },
+    "sun_armor": {
+      "id": "sun_armor",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "SunArmor",
+      "file": "Exclusive/SunArmor.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "sun_armor",
+      "fidelity": "reviewed"
+    },
+    "sun_shield": {
+      "id": "sun_shield",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SunShield",
+      "file": "Exclusive/SunShield.gd",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "template": "basic_cd",
+      "handlerId": "sun_shield",
+      "fidelity": "reviewed"
+    },
+    "tesla_coil": {
+      "id": "tesla_coil",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "TeslaCoil",
+      "file": "Exclusive/TeslaCoil.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "tesla_coil",
+      "fidelity": "reviewed"
+    },
+    "thornbloom": {
+      "id": "thornbloom",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Thornbloom",
+      "file": "Exclusive/Thornbloom.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "thornbloom",
+      "fidelity": "reviewed"
+    },
+    "thornburst": {
+      "id": "thornburst",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Thornburst",
+      "file": "Exclusive/Thornburst.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "thornburst",
+      "fidelity": "reviewed"
+    },
+    "thorn_elemental": {
+      "id": "thorn_elemental",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ThornElemental",
+      "file": "Exclusive/ThornElemental.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "thorn_elemental",
+      "fidelity": "reviewed"
+    },
+    "thorn_shortbow": {
+      "id": "thorn_shortbow",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "ThornShortbow",
+      "file": "Exclusive/ThornShortbow.gd",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "template": "poison_weapon",
+      "handlerId": "thorn_shortbow",
+      "fidelity": "reviewed"
+    },
+    "thors_hammer": {
+      "id": "thors_hammer",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "ThorsHammer",
+      "file": "Exclusive/ThorsHammer.gd",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "template": "basic_cd",
+      "handlerId": "thors_hammer",
+      "fidelity": "reviewed"
+    },
+    "thunder_drake": {
+      "id": "thunder_drake",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "ThunderDrake",
+      "file": "Exclusive/ThunderDrake.gd",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "thunder_drake",
+      "fidelity": "reviewed"
+    },
+    "time_dilator": {
+      "id": "time_dilator",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "TimeDilator",
+      "file": "Exclusive/TimeDilator.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "time_dilator",
+      "fidelity": "reviewed"
+    },
+    "time_melting": {
+      "id": "time_melting",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "TimeMelting",
+      "file": "Exclusive/TimeMelting.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "time_melting",
+      "fidelity": "reviewed"
+    },
+    "toad": {
+      "id": "toad",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Toad",
+      "file": "Exclusive/Toad.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "toad",
+      "fidelity": "reviewed"
+    },
+    "toast_goobert": {
+      "id": "toast_goobert",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "ToastGoobert",
+      "file": "Exclusive/ToastGoobert.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "toast_goobert",
+      "fidelity": "reviewed"
+    },
+    "toolbox": {
+      "id": "toolbox",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "Toolbox",
+      "file": "Exclusive/Toolbox.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "toolbox",
+      "fidelity": "reviewed"
+    },
+    "turtle": {
+      "id": "turtle",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Turtle",
+      "file": "Exclusive/Turtle.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "turtle",
+      "fidelity": "reviewed"
+    },
+    "twine": {
+      "id": "twine",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Twine",
+      "file": "Exclusive/Twine.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "twine",
+      "fidelity": "reviewed"
+    },
+    "twine_badge": {
+      "id": "twine_badge",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "TwineBadge",
+      "file": "Exclusive/TwineBadge.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "twine_badge",
+      "fidelity": "reviewed"
+    },
+    "ukulele": {
+      "id": "ukulele",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Ukulele",
+      "file": "Exclusive/Ukulele.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "ukulele",
+      "fidelity": "reviewed"
+    },
+    "ultima": {
+      "id": "ultima",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Ultima",
+      "file": "Exclusive/Ultima.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "ultima",
+      "fidelity": "reviewed"
+    },
+    "uniquely_unique": {
+      "id": "uniquely_unique",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "UniquelyUnique",
+      "file": "Exclusive/UniquelyUnique.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "uniquely_unique",
+      "fidelity": "reviewed"
+    },
+    "vampiric_collar": {
+      "id": "vampiric_collar",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "VampiricCollar",
+      "file": "Exclusive/VampiricCollar.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "vampiric_collar",
+      "fidelity": "reviewed"
+    },
+    "vampiric_potion": {
+      "id": "vampiric_potion",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "VampiricPotion",
+      "file": "Exclusive/VampiricPotion.gd",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "vampiric_potion",
+      "fidelity": "reviewed"
+    },
+    "vineweave_basket": {
+      "id": "vineweave_basket",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "VineweaveBasket",
+      "file": "Exclusive/VineweaveBasket.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "vineweave_basket",
+      "fidelity": "reviewed"
+    },
+    "wand": {
+      "id": "wand",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "Wand",
+      "file": "Exclusive/Wand.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "wand",
+      "fidelity": "reviewed"
+    },
+    "wand_of_dissonance": {
+      "id": "wand_of_dissonance",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "WandofDissonance",
+      "file": "Exclusive/WandofDissonance.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "wand_of_dissonance",
+      "fidelity": "reviewed"
+    },
+    "war_scythe": {
+      "id": "war_scythe",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "WarScythe",
+      "file": "Exclusive/WarScythe.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "war_scythe",
+      "fidelity": "reviewed"
+    },
+    "water_elemental": {
+      "id": "water_elemental",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "WaterElemental",
+      "file": "Exclusive/WaterElemental.gd",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "water_elemental",
+      "fidelity": "reviewed"
+    },
+    "whetstone3": {
+      "id": "whetstone3",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Whetstone3",
+      "file": "Exclusive/Whetstone3.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "whetstone3",
+      "fidelity": "reviewed"
+    },
+    "winged_boots": {
+      "id": "winged_boots",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "WingedBoots",
+      "file": "Exclusive/WingedBoots.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "winged_boots",
+      "fidelity": "reviewed"
+    },
+    "wisdom_puppy": {
+      "id": "wisdom_puppy",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "WisdomPuppy",
+      "file": "Exclusive/WisdomPuppy.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "wisdom_puppy",
+      "fidelity": "reviewed"
+    },
+    "wisp": {
+      "id": "wisp",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "Wisp",
+      "file": "Exclusive/Wisp.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "wisp",
+      "fidelity": "reviewed"
+    },
+    "wolf_badge": {
+      "id": "wolf_badge",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "WolfBadge",
+      "file": "Exclusive/WolfBadge.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "wolf_badge",
+      "fidelity": "reviewed"
+    },
+    "wolf_emblem": {
+      "id": "wolf_emblem",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "WolfEmblem",
+      "file": "Exclusive/WolfEmblem.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "wolf_emblem",
+      "fidelity": "reviewed"
+    },
+    "wrench": {
+      "id": "wrench",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Wrench",
+      "file": "Exclusive/Wrench.gd",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "template": "basic_cd",
+      "handlerId": "wrench",
+      "fidelity": "reviewed"
+    },
+    "falcon_blade": {
+      "id": "falcon_blade",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "FalconBlade",
+      "file": "FalconBlade.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "falcon_blade",
+      "fidelity": "reviewed"
+    },
+    "fancy_fencing_rapier": {
+      "id": "fancy_fencing_rapier",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "FancyFencingRapier",
+      "file": "FancyFencingRapier.gd",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "template": "basic_cd",
+      "handlerId": "fancy_fencing_rapier",
+      "fidelity": "reviewed"
+    },
+    "fanfare": {
+      "id": "fanfare",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Fanfare",
+      "file": "Fanfare.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "fanfare",
+      "fidelity": "reviewed"
+    },
+    "fanny_pack": {
+      "id": "fanny_pack",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "FannyPack",
+      "file": "FannyPack.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "fanny_pack",
+      "fidelity": "reviewed"
+    },
+    "flute": {
+      "id": "flute",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Flute",
+      "file": "Flute.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "flute",
+      "fidelity": "reviewed"
+    },
+    "fly_agaric": {
+      "id": "fly_agaric",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "FlyAgaric",
+      "file": "FlyAgaric.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "fly_agaric",
+      "fidelity": "reviewed"
+    },
+    "garlic": {
+      "id": "garlic",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Garlic",
+      "file": "Garlic.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "garlic",
+      "fidelity": "reviewed"
+    },
+    "amethyst": {
+      "id": "amethyst",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Amethyst",
+      "file": "Gems/Amethyst.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "amethyst",
+      "fidelity": "reviewed"
+    },
+    "corrupted_crystal": {
+      "id": "corrupted_crystal",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "CorruptedCrystal",
+      "file": "Gems/CorruptedCrystal.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "corrupted_crystal",
+      "fidelity": "reviewed"
+    },
+    "emerald": {
+      "id": "emerald",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "Emerald",
+      "file": "Gems/Emerald.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "emerald",
+      "fidelity": "reviewed"
+    },
+    "lump_of_coal": {
+      "id": "lump_of_coal",
+      "band": "K",
+      "family": "custom_cd",
+      "scriptStem": "LumpofCoal",
+      "file": "Gems/LumpofCoal.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "lump_of_coal",
+      "fidelity": "reviewed"
+    },
+    "ruby": {
+      "id": "ruby",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "Ruby",
+      "file": "Gems/Ruby.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "ruby",
+      "fidelity": "reviewed"
+    },
+    "sapphire": {
+      "id": "sapphire",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "Sapphire",
+      "file": "Gems/Sapphire.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "sapphire",
+      "fidelity": "reviewed"
+    },
+    "gingerbread_man": {
+      "id": "gingerbread_man",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "GingerbreadMan",
+      "file": "GingerbreadMan.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "gingerbread_man",
+      "fidelity": "reviewed"
+    },
+    "gloves_of_haste": {
+      "id": "gloves_of_haste",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "GlovesofHaste",
+      "file": "GlovesofHaste.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "gloves_of_haste",
+      "fidelity": "reviewed"
+    },
+    "goobert": {
+      "id": "goobert",
+      "band": "N",
+      "family": "pet_like",
+      "scriptStem": "Goobert",
+      "file": "Goobert.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "pet_strike",
+      "handlerId": "goobert",
+      "fidelity": "reviewed"
+    },
+    "greatsword": {
+      "id": "greatsword",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "Greatsword",
+      "file": "Greatsword.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "greatsword",
+      "fidelity": "reviewed"
+    },
+    "hammer": {
+      "id": "hammer",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Hammer",
+      "file": "Hammer.gd",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "template": "basic_cd",
+      "handlerId": "hammer",
+      "fidelity": "reviewed"
+    },
+    "healing_herbs": {
+      "id": "healing_herbs",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "HealingHerbs",
+      "file": "HealingHerbs.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "healing_herbs",
+      "fidelity": "reviewed"
+    },
+    "health_potion": {
+      "id": "health_potion",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "HealthPotion",
+      "file": "HealthPotion.gd",
+      "overrides": [
+        "onTriggerPotion",
+        "onDamaged"
+      ],
+      "template": "start_regen",
+      "handlerId": "health_potion",
+      "fidelity": "reviewed"
+    },
+    "heart_container": {
+      "id": "heart_container",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "HeartContainer",
+      "file": "HeartContainer.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "heart_container",
+      "fidelity": "reviewed"
+    },
+    "heart_of_darkness": {
+      "id": "heart_of_darkness",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "HeartofDarkness",
+      "file": "HeartofDarkness.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "heart_of_darkness",
+      "fidelity": "reviewed"
+    },
+    "heroic_potion": {
+      "id": "heroic_potion",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "HeroicPotion",
+      "file": "HeroicPotion.gd",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "heroic_potion",
+      "fidelity": "reviewed"
+    },
+    "hero_longsword": {
+      "id": "hero_longsword",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "HeroLongsword",
+      "file": "HeroLongsword.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "hero_longsword",
+      "fidelity": "reviewed"
+    },
+    "hero_sword": {
+      "id": "hero_sword",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "HeroSword",
+      "file": "HeroSword.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "hero_sword",
+      "fidelity": "reviewed"
+    },
+    "holy_armor": {
+      "id": "holy_armor",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "HolyArmor",
+      "file": "HolyArmor.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "holy_armor",
+      "fidelity": "reviewed"
+    },
+    "holy_spear": {
+      "id": "holy_spear",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "HolySpear",
+      "file": "HolySpear.gd",
+      "overrides": [
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "holy_spear",
+      "fidelity": "reviewed"
+    },
+    "hungry_blade": {
+      "id": "hungry_blade",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "HungryBlade",
+      "file": "HungryBlade.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "hungry_blade",
+      "fidelity": "reviewed"
+    },
+    "jynx_torquilla": {
+      "id": "jynx_torquilla",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Jynxtorquilla",
+      "file": "Jynxtorquilla.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "jynx_torquilla",
+      "fidelity": "reviewed"
+    },
+    "leather_armor": {
+      "id": "leather_armor",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "LeatherArmor",
+      "file": "LeatherArmor.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "leather_armor",
+      "fidelity": "reviewed"
+    },
+    "leather_boots": {
+      "id": "leather_boots",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "LeatherBoots",
+      "file": "LeatherBoots.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "leather_boots",
+      "fidelity": "reviewed"
+    },
+    "leather_helm": {
+      "id": "leather_helm",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "LeatherHelm",
+      "file": "LeatherHelm.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "leather_helm",
+      "fidelity": "reviewed"
+    },
+    "light_goobert": {
+      "id": "light_goobert",
+      "band": "N",
+      "family": "pet_like",
+      "scriptStem": "LightGoobert",
+      "file": "LightGoobert.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "pet_strike",
+      "handlerId": "light_goobert",
+      "fidelity": "reviewed"
+    },
+    "lightsaber": {
+      "id": "lightsaber",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "Lightsaber",
+      "file": "Lightsaber.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "lightsaber",
+      "fidelity": "reviewed"
+    },
+    "lucky_bow": {
+      "id": "lucky_bow",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "LuckyBow",
+      "file": "LuckyBow.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "lucky_bow",
+      "fidelity": "reviewed"
+    },
+    "lucky_clover": {
+      "id": "lucky_clover",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "LuckyClover",
+      "file": "LuckyClover.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "lucky_clover",
+      "fidelity": "reviewed"
+    },
+    "lucky_piggy": {
+      "id": "lucky_piggy",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "LuckyPiggy",
+      "file": "LuckyPiggy.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "lucky_piggy",
+      "fidelity": "reviewed"
+    },
+    "magic_staff": {
+      "id": "magic_staff",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "MagicStaff",
+      "file": "MagicStaff.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "magic_staff",
+      "fidelity": "reviewed"
+    },
+    "magic_torch": {
+      "id": "magic_torch",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "MagicTorch",
+      "file": "MagicTorch.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "magic_torch",
+      "fidelity": "reviewed"
+    },
+    "mana_orb": {
+      "id": "mana_orb",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ManaOrb",
+      "file": "ManaOrb.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "mana_orb",
+      "fidelity": "reviewed"
+    },
+    "mana_potion": {
+      "id": "mana_potion",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "ManaPotion",
+      "file": "ManaPotion.gd",
+      "overrides": [
+        "onTriggerPotion",
+        "onDamaged"
+      ],
+      "template": "start_regen",
+      "handlerId": "mana_potion",
+      "fidelity": "reviewed"
+    },
+    "manathirst": {
+      "id": "manathirst",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Manathirst",
+      "file": "Manathirst.gd",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "manathirst",
+      "fidelity": "reviewed"
+    },
+    "moon_shield": {
+      "id": "moon_shield",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "MoonShield",
+      "file": "MoonShield.gd",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "template": "basic_cd",
+      "handlerId": "moon_shield",
+      "fidelity": "reviewed"
+    },
+    "mr_struggles": {
+      "id": "mr_struggles",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "MrStruggles",
+      "file": "MrStruggles.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "mr_struggles",
+      "fidelity": "reviewed"
+    },
+    "pan": {
+      "id": "pan",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "Pan",
+      "file": "Pan.gd",
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "pan",
+      "fidelity": "reviewed"
+    },
+    "pandamonium": {
+      "id": "pandamonium",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "Pandamonium",
+      "file": "Pandamonium.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "pandamonium",
+      "fidelity": "reviewed"
+    },
+    "pestilence_flask": {
+      "id": "pestilence_flask",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "PestilenceFlask",
+      "file": "PestilenceFlask.gd",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "pestilence_flask",
+      "fidelity": "reviewed"
+    },
+    "piercing_arrow": {
+      "id": "piercing_arrow",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PiercingArrow",
+      "file": "PiercingArrow.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "piercing_arrow",
+      "fidelity": "reviewed"
+    },
+    "piggybank": {
+      "id": "piggybank",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "Piggybank",
+      "file": "Piggybank.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "piggybank",
+      "fidelity": "reviewed"
+    },
+    "pineapple": {
+      "id": "pineapple",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "Pineapple",
+      "file": "Pineapple.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "pineapple",
+      "fidelity": "reviewed"
+    },
+    "platin_customer_card": {
+      "id": "platin_customer_card",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PlatinCustomerCard",
+      "file": "PlatinCustomerCard.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "platin_customer_card",
+      "fidelity": "reviewed"
+    },
+    "pocket_sand": {
+      "id": "pocket_sand",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PocketSand",
+      "file": "PocketSand.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "pocket_sand",
+      "fidelity": "reviewed"
+    },
+    "poison_bow": {
+      "id": "poison_bow",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PoisonBow",
+      "file": "PoisonBow.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "poison_bow",
+      "fidelity": "reviewed"
+    },
+    "poison_dagger": {
+      "id": "poison_dagger",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "PoisonDagger",
+      "file": "PoisonDagger.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "poison_weapon",
+      "handlerId": "poison_dagger",
+      "fidelity": "reviewed"
+    },
+    "poison_goobert": {
+      "id": "poison_goobert",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "PoisonGoobert",
+      "file": "PoisonGoobert.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "poison_goobert",
+      "fidelity": "reviewed"
+    },
+    "poison_ivy": {
+      "id": "poison_ivy",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "PoisonIvy",
+      "file": "PoisonIvy.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "poison_ivy",
+      "fidelity": "reviewed"
+    },
+    "potion_belt": {
+      "id": "potion_belt",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "PotionBelt",
+      "file": "PotionBelt.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "start_regen",
+      "handlerId": "potion_belt",
+      "fidelity": "reviewed"
+    },
+    "present": {
+      "id": "present",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Present",
+      "file": "Present.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "present",
+      "fidelity": "reviewed"
+    },
+    "protective_purse": {
+      "id": "protective_purse",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ProtectivePurse",
+      "file": "ProtectivePurse.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "protective_purse",
+      "fidelity": "reviewed"
+    },
+    "pumpkin": {
+      "id": "pumpkin",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Pumpkin",
+      "file": "Pumpkin.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "pumpkin",
+      "fidelity": "reviewed"
+    },
+    "rainbow_goobert": {
+      "id": "rainbow_goobert",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "RainbowGoobert",
+      "file": "RainbowGoobert.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "rainbow_goobert",
+      "fidelity": "reviewed"
+    },
+    "rainbow_goobert_ranger": {
+      "id": "rainbow_goobert_ranger",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "RainbowGoobertRanger",
+      "file": "RainbowGoobertRanger.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "rainbow_goobert_ranger",
+      "fidelity": "reviewed"
+    },
+    "ranger_bag": {
+      "id": "ranger_bag",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "RangerBag",
+      "file": "RangerBag.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "ranger_bag",
+      "fidelity": "reviewed"
+    },
+    "rib_saw_blade": {
+      "id": "rib_saw_blade",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "RibSawBlade",
+      "file": "RibSawBlade.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "rib_saw_blade",
+      "fidelity": "reviewed"
+    },
+    "ruby_chonk": {
+      "id": "ruby_chonk",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "RubyChonk",
+      "file": "RubyChonk.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "ruby_chonk",
+      "fidelity": "reviewed"
+    },
+    "ruby_egg": {
+      "id": "ruby_egg",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "RubyEgg",
+      "file": "RubyEgg.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "ruby_egg",
+      "fidelity": "reviewed"
+    },
+    "ruby_whelp": {
+      "id": "ruby_whelp",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "RubyWhelp",
+      "file": "RubyWhelp.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "ruby_whelp",
+      "fidelity": "reviewed"
+    },
+    "shield_of_valor": {
+      "id": "shield_of_valor",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "ShieldofValor",
+      "file": "ShieldofValor.gd",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "template": "basic_cd",
+      "handlerId": "shield_of_valor",
+      "fidelity": "reviewed"
+    },
+    "shovel": {
+      "id": "shovel",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Shovel",
+      "file": "Shovel.gd",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "template": "basic_cd",
+      "handlerId": "shovel",
+      "fidelity": "reviewed"
+    },
+    "spear": {
+      "id": "spear",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "Spear",
+      "file": "Spear.gd",
+      "overrides": [
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spear",
+      "fidelity": "reviewed"
+    },
+    "spectral_dagger": {
+      "id": "spectral_dagger",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "SpectralDagger",
+      "file": "SpectralDagger.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "poison_weapon",
+      "handlerId": "spectral_dagger",
+      "fidelity": "reviewed"
+    },
+    "spiked_shield": {
+      "id": "spiked_shield",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "SpikedShield",
+      "file": "SpikedShield.gd",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "template": "basic_cd",
+      "handlerId": "spiked_shield",
+      "fidelity": "reviewed"
+    },
+    "staff_of_unhealing": {
+      "id": "staff_of_unhealing",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "StaffofUnhealing",
+      "file": "StaffofUnhealing.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "staff_of_unhealing",
+      "fidelity": "reviewed"
+    },
+    "stamina_sack": {
+      "id": "stamina_sack",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "StaminaSack",
+      "file": "StaminaSack.gd",
+      "overrides": [
+        "onPrepare",
+        "addToInventory"
+      ],
+      "template": "basic_cd",
+      "handlerId": "stamina_sack",
+      "fidelity": "reviewed"
+    },
+    "steel_goobert": {
+      "id": "steel_goobert",
+      "band": "N",
+      "family": "pet_like",
+      "scriptStem": "SteelGoobert",
+      "file": "SteelGoobert.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "pet_strike",
+      "handlerId": "steel_goobert",
+      "fidelity": "reviewed"
+    },
+    "stone": {
+      "id": "stone",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Stone",
+      "file": "Stone.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage",
+        "onPreDealDamage_late"
+      ],
+      "template": "basic_cd",
+      "handlerId": "stone",
+      "fidelity": "reviewed"
+    },
+    "stone_helm": {
+      "id": "stone_helm",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "StoneHelm",
+      "file": "StoneHelm.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "stone_helm",
+      "fidelity": "reviewed"
+    },
+    "stone_skin_potion": {
+      "id": "stone_skin_potion",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "StoneSkinPotion",
+      "file": "StoneSkinPotion.gd",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "stone_skin_potion",
+      "fidelity": "reviewed"
+    },
+    "storage_coffin": {
+      "id": "storage_coffin",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "StorageCoffin",
+      "file": "StorageCoffin.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "storage_coffin",
+      "fidelity": "reviewed"
+    },
+    "strong_demonic_flask": {
+      "id": "strong_demonic_flask",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "StrongDemonicFlask",
+      "file": "StrongDemonicFlask.gd",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "strong_demonic_flask",
+      "fidelity": "reviewed"
+    },
+    "strong_health_potion": {
+      "id": "strong_health_potion",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "StrongHealthPotion",
+      "file": "StrongHealthPotion.gd",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "strong_health_potion",
+      "fidelity": "reviewed"
+    },
+    "strong_pestilence_flask": {
+      "id": "strong_pestilence_flask",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "StrongPestilenceFlask",
+      "file": "StrongPestilenceFlask.gd",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "strong_pestilence_flask",
+      "fidelity": "reviewed"
+    },
+    "strong_stone_skin_potion": {
+      "id": "strong_stone_skin_potion",
+      "band": "N",
+      "family": "food",
+      "scriptStem": "StrongStoneSkinPotion",
+      "file": "StrongStoneSkinPotion.gd",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "template": "start_regen",
+      "handlerId": "strong_stone_skin_potion",
+      "fidelity": "reviewed"
+    },
+    "thorn_bow": {
+      "id": "thorn_bow",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "ThornBow",
+      "file": "ThornBow.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "thorn_bow",
+      "fidelity": "reviewed"
+    },
+    "thorn_whip": {
+      "id": "thorn_whip",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "ThornWhip",
+      "file": "ThornWhip.gd",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "thorn_whip",
+      "fidelity": "reviewed"
+    },
+    "torch": {
+      "id": "torch",
+      "band": "J",
+      "family": "on_hit",
+      "scriptStem": "Torch",
+      "file": "Torch.gd",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "template": "basic_cd",
+      "handlerId": "torch",
+      "fidelity": "reviewed"
+    },
+    "vampiric_armor": {
+      "id": "vampiric_armor",
+      "band": "N",
+      "family": "start_buff",
+      "scriptStem": "VampiricArmor",
+      "file": "VampiricArmor.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "vampiric_armor",
+      "fidelity": "reviewed"
+    },
+    "vampiric_gloves": {
+      "id": "vampiric_gloves",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "VampiricGloves",
+      "file": "VampiricGloves.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "vampiric_gloves",
+      "fidelity": "reviewed"
+    },
+    "vampiric_scythe": {
+      "id": "vampiric_scythe",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "VampiricScythe",
+      "file": "VampiricScythe.gd",
+      "overrides": [
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "vampiric_scythe",
+      "fidelity": "reviewed"
+    },
+    "villain_sword": {
+      "id": "villain_sword",
+      "band": "I",
+      "family": "weapon_base",
+      "scriptStem": "VillainSword",
+      "file": "VillainSword.gd",
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "template": "basic_cd",
+      "handlerId": "villain_sword",
+      "fidelity": "reviewed"
+    },
+    "walrus_tusk": {
+      "id": "walrus_tusk",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "WalrusTusk",
+      "file": "WalrusTusk.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "start_regen",
+      "handlerId": "walrus_tusk",
+      "fidelity": "reviewed"
+    },
+    "whetstone": {
+      "id": "whetstone",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "Whetstone",
+      "file": "Whetstone.gd",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "template": "empower_aura",
+      "handlerId": "whetstone",
+      "fidelity": "reviewed"
+    },
+    "wolpertinger": {
+      "id": "wolpertinger",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "Wolpertinger",
+      "file": "Wolpertinger.gd",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "template": "basic_cd",
+      "handlerId": "wolpertinger",
+      "fidelity": "reviewed"
+    },
+    "wooden_buckler": {
+      "id": "wooden_buckler",
+      "band": "O",
+      "family": "unique",
+      "scriptStem": "WoodenBuckler",
+      "file": "WoodenBuckler.gd",
+      "overrides": [
+        "afterBlock"
+      ],
+      "template": "basic_cd",
+      "handlerId": "wooden_buckler",
+      "fidelity": "reviewed"
+    },
+    "wooden_sword": {
+      "id": "wooden_sword",
+      "band": "I",
+      "family": "basic_weapon",
+      "scriptStem": "WoodenSword",
+      "file": "WoodenSword.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "wooden_sword",
+      "fidelity": "reviewed"
+    },
+    "yggdrasil_leaf": {
+      "id": "yggdrasil_leaf",
+      "band": "M",
+      "family": "synergy_aura",
+      "scriptStem": "YggdrasilLeaf",
+      "file": "YggdrasilLeaf.gd",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "template": "empower_aura",
+      "handlerId": "yggdrasil_leaf",
+      "fidelity": "reviewed"
+    }
+  }
+}

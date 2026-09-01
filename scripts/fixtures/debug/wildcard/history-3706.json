@@ -1,0 +1,2712 @@
+{
+  "kind": "bpb-sim-debug",
+  "v": 5,
+  "slug": "history-3706",
+  "seed": 42,
+  "durationSec": 22.90000000000019,
+  "dummyEndHp": 0,
+  "playerEndHp": 232,
+  "eventCount": 501,
+  "catalog": [
+    {
+      "id": "fanny_pack",
+      "name": "Fanny Pack",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "p1": 10
+      }
+    },
+    {
+      "id": "toolbox",
+      "name": "Toolbox",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": 5,
+      "chance": null,
+      "params": {
+        "dambonus": 30,
+        "p1": 30,
+        "speedreduction": 30,
+        "p2": 30,
+        "dur_rage": 5.5,
+        "p3": 5.5,
+        "lifesteal": 35,
+        "p4": 35
+      }
+    },
+    {
+      "id": "stamina_sack",
+      "name": "Stamina Sack",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "leather_bag",
+      "name": "Leather Bag",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "speak_with_animals",
+      "name": "Speak with Animals",
+      "type": "Skill",
+      "extraTypes": [],
+      "cooldown": 3,
+      "chance": 10,
+      "params": {
+        "sale": 25,
+        "p1": 25
+      }
+    },
+    {
+      "id": "amulet_of_steel",
+      "name": "Amulet of Steel",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "blockt": 40,
+        "p1": 40,
+        "empower": 1,
+        "p2": 1
+      }
+    },
+    {
+      "id": "jynx_torquilla",
+      "name": "Jynx torquilla",
+      "type": "Pet",
+      "extraTypes": [
+        "Nature",
+        "Musical"
+      ],
+      "cooldown": 3,
+      "chance": null,
+      "params": {
+        "speed": 5,
+        "p1": 5,
+        "max": 10,
+        "p2": 10,
+        "luck": 1,
+        "p3": 1
+      }
+    },
+    {
+      "id": "wolf_emblem",
+      "name": "Wolf Emblem",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": 2.3,
+      "chance": 10,
+      "params": {
+        "empower": 1,
+        "p1": 1,
+        "blockt": 10,
+        "p2": 10
+      }
+    },
+    {
+      "id": "armored_courage_puppy",
+      "name": "Armored Courage Puppy",
+      "type": "Melee Weapon",
+      "extraTypes": [
+        "Pet",
+        "Nature",
+        "Effect"
+      ],
+      "cooldown": 3.5,
+      "chance": null,
+      "params": {
+        "p1": 2
+      }
+    },
+    {
+      "id": "amulet_of_light",
+      "name": "Amulet of Light",
+      "type": "Accessory",
+      "extraTypes": [
+        "Holy"
+      ],
+      "cooldown": null,
+      "chance": 10,
+      "params": {
+        "maxhealth": 3,
+        "p1": 3,
+        "regen": 1,
+        "p2": 1
+      }
+    },
+    {
+      "id": "winged_boots",
+      "name": "Winged Boots",
+      "type": "Shoes",
+      "extraTypes": [
+        "Holy"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "healtht": 70,
+        "p1": 70,
+        "empower": 1,
+        "p2": 1,
+        "cleanse": 20,
+        "p3": 20,
+        "dodge": 3,
+        "p4": 3
+      }
+    },
+    {
+      "id": "amulet_of_darkness",
+      "name": "Amulet of Darkness",
+      "type": "Accessory",
+      "extraTypes": [
+        "Dark"
+      ],
+      "cooldown": null,
+      "chance": 30,
+      "params": {
+        "damt": 22,
+        "p1": 22
+      }
+    },
+    {
+      "id": "wisdom_puppy",
+      "name": "Wisdom Puppy",
+      "type": "Pet",
+      "extraTypes": [
+        "Nature"
+      ],
+      "cooldown": 4,
+      "chance": null,
+      "params": {
+        "p1": 1,
+        "p2": 15
+      }
+    },
+    {
+      "id": "amulet_of_fortune",
+      "name": "Amulet of Fortune",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": 5,
+      "chance": null,
+      "params": {
+        "chance": 15,
+        "p1": 15,
+        "buffs": 2,
+        "p2": 2
+      }
+    },
+    {
+      "id": "goobling",
+      "name": "Goobling",
+      "type": "Pet",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "activations": 3,
+        "p1": 3,
+        "heal": 4,
+        "p2": 4
+      }
+    },
+    {
+      "id": "armored_wisdom_puppy",
+      "name": "Armored Wisdom Puppy",
+      "type": "Pet",
+      "extraTypes": [
+        "Nature"
+      ],
+      "cooldown": 4,
+      "chance": null,
+      "params": {
+        "p1": 1,
+        "p2": 15,
+        "p3": 1
+      }
+    },
+    {
+      "id": "protective_purse",
+      "name": "Protective Purse",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "full_body_protection",
+      "name": "Full Body Protection",
+      "type": "Skill",
+      "extraTypes": [],
+      "cooldown": 4,
+      "chance": null,
+      "params": {
+        "damreduction": 8,
+        "p1": 8,
+        "block": 35,
+        "p2": 35
+      }
+    },
+    {
+      "id": "halberd",
+      "name": "Halberd",
+      "type": "Melee Weapon",
+      "extraTypes": [],
+      "cooldown": 2,
+      "chance": null,
+      "params": {
+        "dam": 1,
+        "p1": 1,
+        "blockremoval": 4,
+        "p2": 4,
+        "blockfactor": 35,
+        "p3": 35
+      }
+    },
+    {
+      "id": "oil_lamp",
+      "name": "Oil Lamp",
+      "type": "Accessory",
+      "extraTypes": [
+        "Fire"
+      ],
+      "cooldown": 3.4,
+      "chance": null,
+      "params": {
+        "heat": 2,
+        "p1": 2,
+        "dam": 1,
+        "p2": 1,
+        "accuracy": 5,
+        "p3": 5
+      }
+    },
+    {
+      "id": "regular_amethyst",
+      "name": "Regular Amethyst",
+      "type": "Gem",
+      "extraTypes": [],
+      "cooldown": 2,
+      "chance": 50,
+      "params": {
+        "p1": 25,
+        "buffs": 1,
+        "p2": 1
+      }
+    },
+    {
+      "id": "flawless_topaz",
+      "name": "Flawless Topaz",
+      "type": "Gem",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": 30,
+      "params": {
+        "p1": 25,
+        "p2": 30
+      }
+    },
+    {
+      "id": "perfect_topaz",
+      "name": "Perfect Topaz",
+      "type": "Gem",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": 50,
+      "params": {
+        "p1": 40,
+        "p2": 50
+      }
+    },
+    {
+      "id": "regular_topaz",
+      "name": "Regular Topaz",
+      "type": "Gem",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": 20,
+      "params": {
+        "p1": 20,
+        "p2": 20
+      }
+    }
+  ],
+  "paramChecks": [
+    {
+      "itemId": "amulet_of_fortune",
+      "name": "Amulet of Fortune",
+      "stack": "regeneration",
+      "granted": 2,
+      "grants": 2,
+      "expected": null,
+      "expectedKey": "regeneration",
+      "alsoMatches": [
+        {
+          "key": "buffs",
+          "value": 2,
+          "how": "exact"
+        }
+      ],
+      "note": "no catalog key for regeneration; grant 2 equals buffs=2"
+    }
+  ],
+  "unhealingMath": {
+    "rate": 0,
+    "healLogged": 222,
+    "healGrants": 45,
+    "exactFloat": 0,
+    "expectedCeil": 0,
+    "actual": 0,
+    "actualGrants": 0,
+    "samples": [
+      {
+        "heal": 6,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 5,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 5,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 8,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 6,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 8,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 4,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 6,
+        "exact": 0,
+        "ceil": 0
+      }
+    ],
+    "note": "game: ceil(each logged heal × 0) — e.g. 15% of 3 is 0.45 → 1; 15% of 1 is 0.15 → 1 (never 0)"
+  },
+  "status": {
+    "buffs": {
+      "block": {
+        "player": {
+          "end": 1555,
+          "sources": [
+            {
+              "gained": 631,
+              "lost": 0,
+              "grants": 25,
+              "firstT": 4.903,
+              "lastT": 22.603,
+              "samples": [
+                {
+                  "t": 4.903,
+                  "amount": 26
+                },
+                {
+                  "t": 5.003,
+                  "amount": 19
+                },
+                {
+                  "t": 5.303,
+                  "amount": 19
+                },
+                {
+                  "t": 7.253,
+                  "amount": 27
+                },
+                {
+                  "t": 7.353,
+                  "amount": 20
+                },
+                {
+                  "t": 8.103,
+                  "amount": 20
+                },
+                {
+                  "t": 9.553,
+                  "amount": 28
+                },
+                {
+                  "t": 9.703,
+                  "amount": 21
+                }
+              ],
+              "id": "armored_wisdom_puppy",
+              "itemId": "armored_wisdom_puppy",
+              "name": "Armored Wisdom Puppy",
+              "handler": "armored_wisdom_puppy",
+              "systemOrigin": null
+            },
+            {
+              "gained": 110,
+              "lost": 0,
+              "grants": 2,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 55
+                },
+                {
+                  "t": 2.5,
+                  "amount": 55
+                }
+              ],
+              "id": "amulet_of_steel",
+              "itemId": "amulet_of_steel",
+              "name": "Amulet of Steel",
+              "handler": "amulet_of_steel",
+              "systemOrigin": null
+            },
+            {
+              "gained": 90,
+              "lost": 0,
+              "grants": 6,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                },
+                {
+                  "t": 2.5,
+                  "amount": 15
+                }
+              ],
+              "id": "protective_purse",
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "handler": "protective_purse",
+              "systemOrigin": null
+            },
+            {
+              "gained": 70,
+              "lost": 0,
+              "grants": 5,
+              "firstT": 6.503,
+              "lastT": 20.653,
+              "samples": [
+                {
+                  "t": 6.503,
+                  "amount": 14
+                },
+                {
+                  "t": 10.353,
+                  "amount": 14
+                },
+                {
+                  "t": 14.003,
+                  "amount": 14
+                },
+                {
+                  "t": 17.503,
+                  "amount": 14
+                },
+                {
+                  "t": 20.653,
+                  "amount": 14
+                }
+              ],
+              "id": "wisdom_puppy",
+              "itemId": "wisdom_puppy",
+              "name": "Wisdom Puppy",
+              "handler": "wisdom_puppy",
+              "systemOrigin": null
+            },
+            {
+              "gained": 50,
+              "lost": 0,
+              "grants": 5,
+              "firstT": 6.4,
+              "lastT": 20.15,
+              "samples": [
+                {
+                  "t": 6.4,
+                  "amount": 10
+                },
+                {
+                  "t": 10.1,
+                  "amount": 10
+                },
+                {
+                  "t": 13.6,
+                  "amount": 10
+                },
+                {
+                  "t": 16.95,
+                  "amount": 10
+                },
+                {
+                  "t": 20.15,
+                  "amount": 10
+                }
+              ],
+              "id": "full_body_protection",
+              "itemId": "full_body_protection",
+              "name": "Full Body Protection",
+              "handler": "full_body_protection",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 951
+        }
+      },
+      "heat": {
+        "player": {
+          "end": 2,
+          "sources": [
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 2
+                }
+              ],
+              "id": "oil_lamp",
+              "itemId": "oil_lamp",
+              "name": "Oil Lamp",
+              "handler": "oil_lamp",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 2
+        }
+      },
+      "empower": {
+        "player": {
+          "end": 1,
+          "sources": [
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 2,
+              "firstT": 2.5,
+              "lastT": 16.95,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 1
+                },
+                {
+                  "t": 16.95,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_steel",
+              "itemId": "amulet_of_steel",
+              "name": "Amulet of Steel",
+              "handler": "amulet_of_steel",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 2
+        }
+      },
+      "regeneration": {
+        "player": {
+          "end": 14,
+          "sources": [
+            {
+              "gained": 12,
+              "lost": 0,
+              "grants": 12,
+              "firstT": 4.911,
+              "lastT": 20.761,
+              "samples": [
+                {
+                  "t": 4.911,
+                  "amount": 1
+                },
+                {
+                  "t": 5.261,
+                  "amount": 1
+                },
+                {
+                  "t": 5.411,
+                  "amount": 1
+                },
+                {
+                  "t": 9.561,
+                  "amount": 1
+                },
+                {
+                  "t": 10.911,
+                  "amount": 1
+                },
+                {
+                  "t": 11.861,
+                  "amount": 1
+                },
+                {
+                  "t": 13.611,
+                  "amount": 1
+                },
+                {
+                  "t": 16.411,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_light",
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "handler": "amulet_of_light",
+              "systemOrigin": null
+            },
+            {
+              "gained": 4,
+              "lost": 0,
+              "grants": 2,
+              "firstT": 7.35,
+              "lastT": 7.352,
+              "samples": [
+                {
+                  "t": 7.35,
+                  "amount": 2
+                },
+                {
+                  "t": 7.352,
+                  "amount": 2
+                }
+              ],
+              "id": "amulet_of_fortune",
+              "itemId": "amulet_of_fortune",
+              "name": "Amulet of Fortune",
+              "handler": "amulet_of_fortune",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 16
+        }
+      }
+    },
+    "debuffs": {
+      "blind": {
+        "dummy": {
+          "end": 6,
+          "sources": [
+            {
+              "gained": 6,
+              "lost": 0,
+              "grants": 6,
+              "firstT": 3.45,
+              "lastT": 18.45,
+              "samples": [
+                {
+                  "t": 3.45,
+                  "amount": 1
+                },
+                {
+                  "t": 8.15,
+                  "amount": 1
+                },
+                {
+                  "t": 9.55,
+                  "amount": 1
+                },
+                {
+                  "t": 10,
+                  "amount": 1
+                },
+                {
+                  "t": 17.1,
+                  "amount": 1
+                },
+                {
+                  "t": 18.45,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_darkness",
+              "itemId": "amulet_of_darkness",
+              "name": "Amulet of Darkness",
+              "handler": "amulet_of_darkness",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 6
+        }
+      },
+      "poison": {
+        "player": {
+          "end": 0,
+          "sources": [
+            {
+              "gained": 31,
+              "lost": 0,
+              "grants": 10,
+              "firstT": 4.5,
+              "lastT": 22.5,
+              "samples": [
+                {
+                  "t": 4.5,
+                  "amount": 1
+                },
+                {
+                  "t": 6.5,
+                  "amount": 2
+                },
+                {
+                  "t": 8.5,
+                  "amount": 2
+                },
+                {
+                  "t": 10.5,
+                  "amount": 2
+                },
+                {
+                  "t": 12.5,
+                  "amount": 2
+                },
+                {
+                  "t": 14.5,
+                  "amount": 2
+                },
+                {
+                  "t": 16.5,
+                  "amount": 4
+                },
+                {
+                  "t": 18.5,
+                  "amount": 4
+                }
+              ],
+              "id": "Poison",
+              "itemId": null,
+              "name": "Poison",
+              "handler": null,
+              "systemOrigin": "Poison"
+            }
+          ],
+          "gained": 31
+        },
+        "dummy": {
+          "end": 7,
+          "sources": [
+            {
+              "gained": 7,
+              "lost": 0,
+              "grants": 7,
+              "firstT": 4.45,
+              "lastT": 22.15,
+              "samples": [
+                {
+                  "t": 4.45,
+                  "amount": 1
+                },
+                {
+                  "t": 5.35,
+                  "amount": 1
+                },
+                {
+                  "t": 15.4,
+                  "amount": 1
+                },
+                {
+                  "t": 16.25,
+                  "amount": 1
+                },
+                {
+                  "t": 20.15,
+                  "amount": 1
+                },
+                {
+                  "t": 20.55,
+                  "amount": 1
+                },
+                {
+                  "t": 22.15,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_darkness",
+              "itemId": "amulet_of_darkness",
+              "name": "Amulet of Darkness",
+              "handler": "amulet_of_darkness",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 7
+        }
+      },
+      "cold": {
+        "dummy": {
+          "end": 3,
+          "sources": [
+            {
+              "gained": 3,
+              "lost": 0,
+              "grants": 3,
+              "firstT": 6.3,
+              "lastT": 8.4,
+              "samples": [
+                {
+                  "t": 6.3,
+                  "amount": 1
+                },
+                {
+                  "t": 6.5,
+                  "amount": 1
+                },
+                {
+                  "t": 8.4,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_darkness",
+              "itemId": "amulet_of_darkness",
+              "name": "Amulet of Darkness",
+              "handler": "amulet_of_darkness",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 3
+        }
+      }
+    },
+    "itemBuffs": {
+      "player": [
+        {
+          "gained": 5.5,
+          "lost": 0,
+          "grants": 1,
+          "firstT": 7.504,
+          "lastT": 7.504,
+          "samples": [
+            {
+              "t": 7.504,
+              "amount": 5.5
+            }
+          ],
+          "id": "toolbox",
+          "itemId": "toolbox",
+          "name": "Toolbox",
+          "handler": "toolbox",
+          "label": "Toolbox: battle rage 5.5s"
+        }
+      ],
+      "dummy": []
+    },
+    "heals": {
+      "player": {
+        "total": 210,
+        "byKind": {
+          "lifesteal": {
+            "total": 114,
+            "grants": 18
+          },
+          "regeneration": {
+            "total": 72,
+            "grants": 9
+          },
+          "heal": {
+            "total": 24,
+            "grants": 6
+          }
+        },
+        "sources": [
+          {
+            "gained": 114,
+            "lost": 0,
+            "grants": 18,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 6
+              },
+              {
+                "t": 2.5,
+                "amount": 5
+              },
+              {
+                "t": 2.5,
+                "amount": 5
+              },
+              {
+                "t": 2.5,
+                "amount": 8
+              },
+              {
+                "t": 2.5,
+                "amount": 6
+              },
+              {
+                "t": 2.5,
+                "amount": 8
+              },
+              {
+                "t": 2.5,
+                "amount": 4
+              },
+              {
+                "t": 2.5,
+                "amount": 6
+              }
+            ],
+            "id": "toolbox",
+            "itemId": "toolbox",
+            "name": "Toolbox",
+            "handler": "toolbox",
+            "kind": "lifesteal",
+            "label": "Toolbox: rage lifesteal 6",
+            "byItem": {}
+          },
+          {
+            "gained": 72,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 5.5,
+            "lastT": 21.5,
+            "samples": [
+              {
+                "t": 5.5,
+                "amount": 3
+              },
+              {
+                "t": 7.5,
+                "amount": 5
+              },
+              {
+                "t": 9.5,
+                "amount": 5
+              },
+              {
+                "t": 11.5,
+                "amount": 7
+              },
+              {
+                "t": 13.5,
+                "amount": 8
+              },
+              {
+                "t": 15.5,
+                "amount": 9
+              },
+              {
+                "t": 17.5,
+                "amount": 10
+              },
+              {
+                "t": 19.5,
+                "amount": 11
+              }
+            ],
+            "id": "Regeneration",
+            "itemId": null,
+            "name": "Regeneration",
+            "handler": null,
+            "systemOrigin": "Regeneration",
+            "kind": "regeneration",
+            "label": "Regeneration: +3 health",
+            "byItem": {}
+          },
+          {
+            "gained": 24,
+            "lost": 0,
+            "grants": 6,
+            "firstT": 10.75,
+            "lastT": 18.4,
+            "samples": [
+              {
+                "t": 10.75,
+                "amount": 4
+              },
+              {
+                "t": 10.8,
+                "amount": 4
+              },
+              {
+                "t": 10.9,
+                "amount": 4
+              },
+              {
+                "t": 18.25,
+                "amount": 4
+              },
+              {
+                "t": 18.3,
+                "amount": 4
+              },
+              {
+                "t": 18.4,
+                "amount": 4
+              }
+            ],
+            "id": "unknown",
+            "itemId": null,
+            "name": "unknown",
+            "handler": null,
+            "kind": "heal",
+            "label": "Heal +4",
+            "byItem": {}
+          }
+        ]
+      }
+    },
+    "damage": {
+      "toDummy": {
+        "total": 1177,
+        "byKind": {
+          "item": {
+            "total": 1167,
+            "grants": 61
+          },
+          "fatigue": {
+            "total": 10,
+            "grants": 4
+          }
+        },
+        "sources": [
+          {
+            "gained": 438,
+            "lost": 0,
+            "grants": 19,
+            "firstT": 3.457,
+            "lastT": 22.157,
+            "samples": [
+              {
+                "t": 3.457,
+                "amount": 8
+              },
+              {
+                "t": 4.457,
+                "amount": 9
+              },
+              {
+                "t": 5.357,
+                "amount": 9
+              },
+              {
+                "t": 7.207,
+                "amount": 13
+              },
+              {
+                "t": 8.157,
+                "amount": 13
+              },
+              {
+                "t": 9.107,
+                "amount": 17
+              },
+              {
+                "t": 10.007,
+                "amount": 18
+              },
+              {
+                "t": 10.907,
+                "amount": 18
+              }
+            ],
+            "id": "halberd",
+            "itemId": "halberd",
+            "name": "Halberd",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 372,
+            "lost": 0,
+            "grants": 26,
+            "firstT": 5.257,
+            "lastT": 22.907,
+            "samples": [
+              {
+                "t": 5.257,
+                "amount": 14
+              },
+              {
+                "t": 5.307,
+                "amount": 14
+              },
+              {
+                "t": 5.407,
+                "amount": 17
+              },
+              {
+                "t": 5.607,
+                "amount": 11
+              },
+              {
+                "t": 8.057,
+                "amount": 15
+              },
+              {
+                "t": 8.107,
+                "amount": 13
+              },
+              {
+                "t": 8.207,
+                "amount": 15
+              },
+              {
+                "t": 8.757,
+                "amount": 9
+              }
+            ],
+            "id": "armored_courage_puppy",
+            "itemId": "armored_courage_puppy",
+            "name": "Armored Courage Puppy",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 357,
+            "lost": 0,
+            "grants": 16,
+            "firstT": 3.457,
+            "lastT": 22.157,
+            "samples": [
+              {
+                "t": 3.457,
+                "amount": 22
+              },
+              {
+                "t": 4.457,
+                "amount": 22
+              },
+              {
+                "t": 5.357,
+                "amount": 22
+              },
+              {
+                "t": 6.307,
+                "amount": 22
+              },
+              {
+                "t": 6.507,
+                "amount": 22
+              },
+              {
+                "t": 8.157,
+                "amount": 22
+              },
+              {
+                "t": 8.407,
+                "amount": 22
+              },
+              {
+                "t": 9.557,
+                "amount": 22
+              }
+            ],
+            "id": "amulet_of_darkness",
+            "itemId": "amulet_of_darkness",
+            "name": "Amulet of Darkness",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 10,
+            "lost": 0,
+            "grants": 4,
+            "firstT": 19.5,
+            "lastT": 22.5,
+            "samples": [
+              {
+                "t": 19.5,
+                "amount": 1
+              },
+              {
+                "t": 20.5,
+                "amount": 2
+              },
+              {
+                "t": 21.5,
+                "amount": 3
+              },
+              {
+                "t": 22.5,
+                "amount": 4
+              }
+            ],
+            "id": "Fatigue",
+            "itemId": null,
+            "name": "Fatigue",
+            "handler": null,
+            "kind": "fatigue",
+            "crits": 0
+          }
+        ]
+      },
+      "toPlayer": {
+        "total": 10,
+        "byKind": {
+          "fatigue": {
+            "total": 10,
+            "grants": 4
+          },
+          "dummy": {
+            "total": 0,
+            "grants": 5
+          }
+        },
+        "sources": [
+          {
+            "gained": 10,
+            "lost": 0,
+            "grants": 4,
+            "firstT": 19.5,
+            "lastT": 22.5,
+            "samples": [
+              {
+                "t": 19.5,
+                "amount": 1
+              },
+              {
+                "t": 20.5,
+                "amount": 2
+              },
+              {
+                "t": 21.5,
+                "amount": 3
+              },
+              {
+                "t": 22.5,
+                "amount": 4
+              }
+            ],
+            "id": "Fatigue",
+            "itemId": null,
+            "name": "Fatigue",
+            "handler": null,
+            "kind": "fatigue",
+            "crits": 0
+          },
+          {
+            "gained": 0,
+            "lost": 0,
+            "grants": 5,
+            "firstT": 4.652,
+            "lastT": 19.702,
+            "samples": [
+              {
+                "t": 4.652,
+                "amount": 0
+              },
+              {
+                "t": 8.952,
+                "amount": 0
+              },
+              {
+                "t": 11.102,
+                "amount": 0
+              },
+              {
+                "t": 17.552,
+                "amount": 0
+              },
+              {
+                "t": 19.702,
+                "amount": 0
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null,
+            "kind": "dummy",
+            "crits": 0
+          }
+        ]
+      }
+    },
+    "misses": {
+      "player": 5,
+      "dummy": 4
+    },
+    "activations": {
+      "player": {
+        "total": 93,
+        "sources": [
+          {
+            "gained": 25,
+            "lost": 0,
+            "grants": 25,
+            "firstT": 4.9,
+            "lastT": 22.6,
+            "samples": [
+              {
+                "t": 4.9,
+                "amount": 1
+              },
+              {
+                "t": 5,
+                "amount": 1
+              },
+              {
+                "t": 5.3,
+                "amount": 1
+              },
+              {
+                "t": 7.25,
+                "amount": 1
+              },
+              {
+                "t": 7.35,
+                "amount": 1
+              },
+              {
+                "t": 8.1,
+                "amount": 1
+              },
+              {
+                "t": 9.55,
+                "amount": 1
+              },
+              {
+                "t": 9.7,
+                "amount": 1
+              }
+            ],
+            "id": "armored_wisdom_puppy",
+            "itemId": "armored_wisdom_puppy",
+            "name": "Armored Wisdom Puppy",
+            "handler": "armored_wisdom_puppy"
+          },
+          {
+            "gained": 22,
+            "lost": 0,
+            "grants": 22,
+            "firstT": 3.45,
+            "lastT": 22.15,
+            "samples": [
+              {
+                "t": 3.45,
+                "amount": 1
+              },
+              {
+                "t": 4.45,
+                "amount": 1
+              },
+              {
+                "t": 5.35,
+                "amount": 1
+              },
+              {
+                "t": 6.3,
+                "amount": 1
+              },
+              {
+                "t": 7.2,
+                "amount": 1
+              },
+              {
+                "t": 8.15,
+                "amount": 1
+              },
+              {
+                "t": 9.1,
+                "amount": 1
+              },
+              {
+                "t": 10,
+                "amount": 1
+              }
+            ],
+            "id": "halberd",
+            "itemId": "halberd",
+            "name": "Halberd",
+            "handler": "halberd"
+          },
+          {
+            "gained": 13,
+            "lost": 0,
+            "grants": 13,
+            "firstT": 5.5,
+            "lastT": 22.65,
+            "samples": [
+              {
+                "t": 5.5,
+                "amount": 1
+              },
+              {
+                "t": 5.5,
+                "amount": 1
+              },
+              {
+                "t": 8.25,
+                "amount": 1
+              },
+              {
+                "t": 8.4,
+                "amount": 1
+              },
+              {
+                "t": 11.1,
+                "amount": 1
+              },
+              {
+                "t": 11.4,
+                "amount": 1
+              },
+              {
+                "t": 14,
+                "amount": 1
+              },
+              {
+                "t": 14.35,
+                "amount": 1
+              }
+            ],
+            "id": "jynx_torquilla",
+            "itemId": "jynx_torquilla",
+            "name": "Jynx torquilla",
+            "handler": "jynx_torquilla"
+          },
+          {
+            "gained": 7,
+            "lost": 0,
+            "grants": 7,
+            "firstT": 2.51,
+            "lastT": 20.8,
+            "samples": [
+              {
+                "t": 2.51,
+                "amount": 1
+              },
+              {
+                "t": 5.4,
+                "amount": 1
+              },
+              {
+                "t": 8.55,
+                "amount": 1
+              },
+              {
+                "t": 11.65,
+                "amount": 1
+              },
+              {
+                "t": 14.75,
+                "amount": 1
+              },
+              {
+                "t": 17.7,
+                "amount": 1
+              },
+              {
+                "t": 20.8,
+                "amount": 1
+              }
+            ],
+            "id": "oil_lamp",
+            "itemId": "oil_lamp",
+            "name": "Oil Lamp",
+            "handler": "oil_lamp"
+          },
+          {
+            "gained": 7,
+            "lost": 0,
+            "grants": 7,
+            "firstT": 5.15,
+            "lastT": 20.7,
+            "samples": [
+              {
+                "t": 5.15,
+                "amount": 1
+              },
+              {
+                "t": 7.75,
+                "amount": 1
+              },
+              {
+                "t": 10.25,
+                "amount": 1
+              },
+              {
+                "t": 12.85,
+                "amount": 1
+              },
+              {
+                "t": 15.6,
+                "amount": 1
+              },
+              {
+                "t": 18.15,
+                "amount": 1
+              },
+              {
+                "t": 20.7,
+                "amount": 1
+              }
+            ],
+            "id": "speak_with_animals",
+            "itemId": "speak_with_animals",
+            "name": "Speak with Animals",
+            "handler": "speak_with_animals"
+          },
+          {
+            "gained": 6,
+            "lost": 0,
+            "grants": 6,
+            "firstT": 10.75,
+            "lastT": 18.4,
+            "samples": [
+              {
+                "t": 10.75,
+                "amount": 1
+              },
+              {
+                "t": 10.8,
+                "amount": 1
+              },
+              {
+                "t": 10.9,
+                "amount": 1
+              },
+              {
+                "t": 18.25,
+                "amount": 1
+              },
+              {
+                "t": 18.3,
+                "amount": 1
+              },
+              {
+                "t": 18.4,
+                "amount": 1
+              }
+            ],
+            "id": "goobling",
+            "itemId": "goobling",
+            "name": "Goobling",
+            "handler": "goobert"
+          },
+          {
+            "gained": 5,
+            "lost": 0,
+            "grants": 5,
+            "firstT": 6.4,
+            "lastT": 20.15,
+            "samples": [
+              {
+                "t": 6.4,
+                "amount": 1
+              },
+              {
+                "t": 10.1,
+                "amount": 1
+              },
+              {
+                "t": 13.6,
+                "amount": 1
+              },
+              {
+                "t": 16.95,
+                "amount": 1
+              },
+              {
+                "t": 20.15,
+                "amount": 1
+              }
+            ],
+            "id": "full_body_protection",
+            "itemId": "full_body_protection",
+            "name": "Full Body Protection",
+            "handler": "full_body_protection"
+          },
+          {
+            "gained": 5,
+            "lost": 0,
+            "grants": 5,
+            "firstT": 6.5,
+            "lastT": 20.65,
+            "samples": [
+              {
+                "t": 6.5,
+                "amount": 1
+              },
+              {
+                "t": 10.35,
+                "amount": 1
+              },
+              {
+                "t": 14,
+                "amount": 1
+              },
+              {
+                "t": 17.5,
+                "amount": 1
+              },
+              {
+                "t": 20.65,
+                "amount": 1
+              }
+            ],
+            "id": "wisdom_puppy",
+            "itemId": "wisdom_puppy",
+            "name": "Wisdom Puppy",
+            "handler": "wisdom_puppy"
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 2.5,
+            "lastT": 7.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 7.5,
+                "amount": 1
+              }
+            ],
+            "id": "toolbox",
+            "itemId": "toolbox",
+            "name": "Toolbox",
+            "handler": "toolbox"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 7.35,
+            "lastT": 7.35,
+            "samples": [
+              {
+                "t": 7.35,
+                "amount": 1
+              }
+            ],
+            "id": "amulet_of_fortune",
+            "itemId": "amulet_of_fortune",
+            "name": "Amulet of Fortune",
+            "handler": "amulet_of_fortune"
+          }
+        ]
+      },
+      "dummy": {
+        "total": 9,
+        "sources": [
+          {
+            "gained": 9,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 4.65,
+            "lastT": 21.85,
+            "samples": [
+              {
+                "t": 4.65,
+                "amount": 1
+              },
+              {
+                "t": 6.8,
+                "amount": 1
+              },
+              {
+                "t": 8.95,
+                "amount": 1
+              },
+              {
+                "t": 11.1,
+                "amount": 1
+              },
+              {
+                "t": 13.25,
+                "amount": 1
+              },
+              {
+                "t": 15.4,
+                "amount": 1
+              },
+              {
+                "t": 17.55,
+                "amount": 1
+              },
+              {
+                "t": 19.7,
+                "amount": 1
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null
+          }
+        ]
+      }
+    },
+    "stats": [
+      {
+        "t": 2.502,
+        "itemId": "winged_boots",
+        "name": "Winged Boots",
+        "label": "Healing reduced by 25%",
+        "amount": -25,
+        "stat": "heal_efficiency",
+        "total": -25
+      }
+    ],
+    "end": {
+      "player": {
+        "hp": 232,
+        "maxHp": 236,
+        "stacks": {
+          "regeneration": 14,
+          "heat": 2,
+          "empower": 1,
+          "block": 1555
+        },
+        "healAmp": 0,
+        "unhealing": 0
+      },
+      "dummy": {
+        "hp": 0,
+        "maxHp": 1200,
+        "stacks": {
+          "blind": 6,
+          "poison": 7,
+          "cold": 3
+        }
+      }
+    }
+  },
+  "ui": {
+    "combatLog": {
+      "lineCount": 311,
+      "byType": {
+        "info": 4,
+        "activate": 102,
+        "buff": 61,
+        "heal": 33,
+        "stat": 1,
+        "debuff": 26,
+        "damage": 74,
+        "miss": 9,
+        "fight_end": 1
+      },
+      "stackGained": {
+        "block": 951,
+        "heat": 2,
+        "empower": 2,
+        "blind": 6,
+        "poison": 38,
+        "regeneration": 16,
+        "cold": 3
+      },
+      "sample": [
+        {
+          "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "amulet_of_light",
+          "amount": null,
+          "label": "Amulet of Light: listening for activations"
+        },
+        {
+          "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "amulet_of_light",
+          "amount": null,
+          "label": "Amulet of Light: listening for activations"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "toolbox",
+          "amount": null,
+          "label": "Bag: Toolbox"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "heat",
+          "itemId": "oil_lamp",
+          "amount": 2,
+          "label": "Oil Lamp: +2 Heat"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "amulet_of_steel",
+          "amount": 55,
+          "label": "+55 block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": null,
+          "amount": 55,
+          "label": "Amulet of Steel: +55 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "empower",
+          "itemId": null,
+          "amount": 1,
+          "label": "Amulet of Steel: +1 Empower"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 6,
+          "label": "Toolbox: rage lifesteal 6"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 5,
+          "label": "Toolbox: rage lifesteal 5"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 5,
+          "label": "Toolbox: rage lifesteal 5"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 8,
+          "label": "Toolbox: rage lifesteal 8"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 6,
+          "label": "Toolbox: rage lifesteal 6"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 8,
+          "label": "Toolbox: rage lifesteal 8"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 4,
+          "label": "Toolbox: rage lifesteal 4"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 6,
+          "label": "Toolbox: rage lifesteal 6"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 8,
+          "label": "Toolbox: rage lifesteal 8"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 7,
+          "label": "Toolbox: rage lifesteal 7"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 8,
+          "label": "Toolbox: rage lifesteal 8"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 5,
+          "label": "Toolbox: rage lifesteal 5"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 5,
+          "label": "Toolbox: rage lifesteal 5"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 6,
+          "label": "Toolbox: rage lifesteal 6"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 7,
+          "label": "Toolbox: rage lifesteal 7"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 4,
+          "label": "Toolbox: rage lifesteal 4"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 7,
+          "label": "Toolbox: rage lifesteal 7"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 9,
+          "label": "Toolbox: rage lifesteal 9"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "winged_boots",
+          "amount": -25,
+          "label": "Healing reduced by 25%"
+        },
+        {
+          "t": 2.51,
+          "type": "activate",
+          "stack": null,
+          "itemId": "oil_lamp",
+          "amount": null,
+          "label": "Accessory: Oil Lamp"
+        },
+        {
+          "t": 2.525,
+          "type": "info",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Armor DR 8"
+        },
+        {
+          "t": 3.45,
+          "type": "activate",
+          "stack": null,
+          "itemId": "halberd",
+          "amount": null,
+          "label": "Weapon: Halberd"
+        },
+        {
+          "t": 3.45,
+          "type": "debuff",
+          "stack": "blind",
+          "itemId": "amulet_of_darkness",
+          "amount": 1,
+          "label": "+1 blind"
+        },
+        {
+          "t": 3.457,
+          "type": "damage",
+          "stack": null,
+          "itemId": "halberd",
+          "amount": 8,
+          "label": "Halberd hit for 8"
+        },
+        {
+          "t": 3.457,
+          "type": "damage",
+          "stack": null,
+          "itemId": "amulet_of_darkness",
+          "amount": 22,
+          "label": "Amulet of Darkness hit for 22"
+        },
+        {
+          "t": 4.45,
+          "type": "activate",
+          "stack": null,
+          "itemId": "halberd",
+          "amount": null,
+          "label": "Weapon: Halberd"
+        },
+        {
+          "t": 4.45,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "amulet_of_darkness",
+          "amount": 1,
+          "label": "+1 poison"
+        }
+      ]
+    },
+    "damageMeter": {
+      "stackTabs": {
+        "block": {
+          "gained": 951,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "protective_purse",
+              "name": "Protective Purse",
+              "amount": 15
+            },
+            {
+              "itemId": "amulet_of_steel",
+              "name": "+55 block",
+              "amount": 55
+            },
+            {
+              "itemId": null,
+              "name": "Amulet of Steel",
+              "amount": 55
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 26
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 19
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 19
+            },
+            {
+              "itemId": "full_body_protection",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": null,
+              "name": "Wisdom Puppy",
+              "amount": 14
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 27
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 20
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 20
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 28
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 21
+            },
+            {
+              "itemId": "full_body_protection",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": null,
+              "name": "Wisdom Puppy",
+              "amount": 14
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 21
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 29
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 22
+            },
+            {
+              "itemId": "full_body_protection",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 22
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 23
+            },
+            {
+              "itemId": null,
+              "name": "Wisdom Puppy",
+              "amount": 14
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 30
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 24
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 31
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 23
+            },
+            {
+              "itemId": "full_body_protection",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": null,
+              "name": "Wisdom Puppy",
+              "amount": 14
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 25
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 32
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 24
+            },
+            {
+              "itemId": "full_body_protection",
+              "name": "+10 block",
+              "amount": 10
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 26
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 33
+            },
+            {
+              "itemId": null,
+              "name": "Wisdom Puppy",
+              "amount": 14
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 25
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 27
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 34
+            }
+          ]
+        },
+        "lucky": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "regeneration": {
+          "gained": 16,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_fortune",
+              "name": "+2 regeneration",
+              "amount": 2
+            },
+            {
+              "itemId": "amulet_of_fortune",
+              "name": "Amulet of Fortune",
+              "amount": 2
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_light",
+              "name": "Amulet of Light",
+              "amount": 1
+            }
+          ]
+        },
+        "vampirism": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "spikes": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "mana": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "empower": {
+          "gained": 2,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": null,
+              "name": "Amulet of Steel",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_steel",
+              "name": "+1 empower",
+              "amount": 1
+            }
+          ]
+        },
+        "heat": {
+          "gained": 2,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "oil_lamp",
+              "name": "Oil Lamp",
+              "amount": 2
+            }
+          ]
+        },
+        "poison": {
+          "gained": 38,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 2
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 4
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 4
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 5
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 7
+            }
+          ]
+        },
+        "blind": {
+          "gained": 6,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 blind",
+              "amount": 1
+            }
+          ]
+        },
+        "cold": {
+          "gained": 3,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "amulet_of_darkness",
+              "name": "+1 cold",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    "hud": {
+      "player": {
+        "icons": [],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 0,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "dummy": {
+        "icons": [
+          {
+            "key": "heal_efficiency",
+            "value": -25
+          }
+        ],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": -25,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "expected": []
+    },
+    "mismatches": []
+  }
+}

@@ -1,0 +1,2940 @@
+{
+  "kind": "bpb-sim-debug",
+  "v": 5,
+  "slug": "infinite-combo-machine",
+  "seed": 42,
+  "durationSec": 30,
+  "dummyEndHp": 95,
+  "playerEndHp": 300,
+  "eventCount": 590,
+  "catalog": [
+    {
+      "id": "berserker_bag",
+      "name": "Berserker Bag",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "healtht": 50,
+        "p1": 50,
+        "dur_rage": 5,
+        "p2": 5,
+        "speed_rage": 35,
+        "p3": 35,
+        "damresistance": 25,
+        "p4": 25
+      }
+    },
+    {
+      "id": "holdall",
+      "name": "Holdall",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "leather_bag",
+      "name": "Leather Bag",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "scholar_bag",
+      "name": "Scholar Bag",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": 30,
+      "params": {
+        "mana": 5,
+        "p1": 5
+      }
+    },
+    {
+      "id": "box_of_prosperity",
+      "name": "Box of Prosperity",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "insideitems": 2,
+        "p1": 2
+      }
+    },
+    {
+      "id": "puzzlebag_t",
+      "name": "Puzzlebag T",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "buff": 25,
+        "p1": 25
+      }
+    },
+    {
+      "id": "goobert",
+      "name": "Goobert",
+      "type": "Pet",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "p1": 5,
+        "heal": 9,
+        "p2": 9
+      }
+    },
+    {
+      "id": "blood_goobert",
+      "name": "Blood Goobert",
+      "type": "Pet",
+      "extraTypes": [
+        "Vampiric"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "activations": 6,
+        "p1": 6,
+        "dam": 10,
+        "p2": 10,
+        "vampirism": 5,
+        "p3": 5,
+        "lifesteal": 100,
+        "p4": 100
+      }
+    },
+    {
+      "id": "chili_goobert",
+      "name": "Chili Goobert",
+      "type": "Pet",
+      "extraTypes": [
+        "Nature"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "activations": 6,
+        "p1": 6,
+        "heal": 16,
+        "p2": 16,
+        "heat": 2,
+        "p3": 2
+      }
+    },
+    {
+      "id": "ice_dragon",
+      "name": "Ice Dragon",
+      "type": "Ranged Weapon",
+      "extraTypes": [
+        "Pet",
+        "Ice",
+        "Effect"
+      ],
+      "cooldown": 2.1,
+      "chance": null,
+      "params": {
+        "cold": 1,
+        "p1": 1,
+        "coldt": 10,
+        "p2": 10,
+        "damfactor": 20,
+        "p3": 20
+      }
+    },
+    {
+      "id": "steel_goobert",
+      "name": "Steel Goobert",
+      "type": "Pet",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "activations": 6,
+        "p1": 6,
+        "dam": 2,
+        "p2": 2
+      }
+    },
+    {
+      "id": "power_puppy",
+      "name": "Power Puppy",
+      "type": "Pet",
+      "extraTypes": [
+        "Nature"
+      ],
+      "cooldown": 3.2,
+      "chance": null,
+      "params": {
+        "p1": 1,
+        "p2": 1,
+        "p3": 1,
+        "p4": 10
+      }
+    },
+    {
+      "id": "obsidian_dragon",
+      "name": "Obsidian Dragon",
+      "type": "Ranged Weapon",
+      "extraTypes": [
+        "Pet",
+        "Fire",
+        "Effect"
+      ],
+      "cooldown": 2.1,
+      "chance": null,
+      "params": {
+        "heatt": 5,
+        "p1": 5,
+        "dambonus": 2,
+        "p2": 2
+      }
+    },
+    {
+      "id": "shelly",
+      "name": "Shelly",
+      "type": "Pet",
+      "extraTypes": [
+        "Holy",
+        "Nature"
+      ],
+      "cooldown": 13,
+      "chance": 25,
+      "params": {
+        "debuffs": 6,
+        "p1": 6,
+        "heal": 40,
+        "p2": 40,
+        "speed": 20,
+        "p3": 20
+      }
+    },
+    {
+      "id": "flame",
+      "name": "Flame",
+      "type": "Accessory",
+      "extraTypes": [
+        "Fire"
+      ],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "piggy_of_riches",
+      "name": "Piggy of Riches",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "maxhealth": 4,
+        "p1": 4
+      }
+    },
+    {
+      "id": "heart_container",
+      "name": "Heart Container",
+      "type": "Accessory",
+      "extraTypes": [
+        "Holy"
+      ],
+      "cooldown": 3,
+      "chance": null,
+      "params": {
+        "regen": 1,
+        "p1": 1,
+        "regent": 7,
+        "p2": 7,
+        "maxhealth": 100,
+        "p3": 100,
+        "empower": 2,
+        "p4": 2,
+        "healamp": 15,
+        "p5": 15
+      }
+    },
+    {
+      "id": "oil_lamp",
+      "name": "Oil Lamp",
+      "type": "Accessory",
+      "extraTypes": [
+        "Fire"
+      ],
+      "cooldown": 3.4,
+      "chance": null,
+      "params": {
+        "heat": 2,
+        "p1": 2,
+        "dam": 1,
+        "p2": 1,
+        "accuracy": 5,
+        "p3": 5
+      }
+    },
+    {
+      "id": "rope",
+      "name": "Rope",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "speed": 10,
+        "p1": 10,
+        "dur": 6,
+        "p2": 6,
+        "max": 50,
+        "p3": 50
+      }
+    },
+    {
+      "id": "lucky_clover",
+      "name": "Lucky Clover",
+      "type": "Accessory",
+      "extraTypes": [
+        "Nature"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "p1": 1
+      }
+    },
+    {
+      "id": "whetstone",
+      "name": "Whetstone",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "dam": 1,
+        "p1": 1
+      }
+    },
+    {
+      "id": "wooden_sword",
+      "name": "Wooden Sword",
+      "type": "Melee Weapon",
+      "extraTypes": [],
+      "cooldown": 1.4,
+      "chance": null
+    },
+    {
+      "id": "flame_badge",
+      "name": "Flame Badge",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "heat": 6,
+        "p1": 6
+      }
+    },
+    {
+      "id": "draconic_orb",
+      "name": "Draconic Orb",
+      "type": "Accessory",
+      "extraTypes": [
+        "Fire"
+      ],
+      "cooldown": 3.8,
+      "chance": null,
+      "params": {
+        "p1": 15,
+        "crits": 3,
+        "p2": 3,
+        "p3": 1,
+        "p4": 1
+      }
+    }
+  ],
+  "paramChecks": [],
+  "unhealingMath": {
+    "rate": 0,
+    "healLogged": 540,
+    "healGrants": 58,
+    "exactFloat": 0,
+    "expectedCeil": 0,
+    "actual": 0,
+    "actualGrants": 0,
+    "samples": [
+      {
+        "heal": 3,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 15,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 1,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 2,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 1,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 15,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 16,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 3,
+        "exact": 0,
+        "ceil": 0
+      }
+    ],
+    "note": "game: ceil(each logged heal × 0) — e.g. 15% of 3 is 0.45 → 1; 15% of 1 is 0.15 → 1 (never 0)"
+  },
+  "status": {
+    "buffs": {
+      "heat": {
+        "player": {
+          "end": 23,
+          "sources": [
+            {
+              "gained": 14,
+              "lost": 0,
+              "grants": 7,
+              "firstT": 7,
+              "lastT": 29.6,
+              "samples": [
+                {
+                  "t": 7,
+                  "amount": 2
+                },
+                {
+                  "t": 11.35,
+                  "amount": 2
+                },
+                {
+                  "t": 14.8,
+                  "amount": 2
+                },
+                {
+                  "t": 18.65,
+                  "amount": 2
+                },
+                {
+                  "t": 22.5,
+                  "amount": 2
+                },
+                {
+                  "t": 26.05,
+                  "amount": 2
+                },
+                {
+                  "t": 29.6,
+                  "amount": 2
+                }
+              ],
+              "id": "chili_goobert",
+              "itemId": "chili_goobert",
+              "name": "Chili Goobert",
+              "handler": "chili_goobert",
+              "systemOrigin": null
+            },
+            {
+              "gained": 6,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 6
+                }
+              ],
+              "id": "flame_badge",
+              "itemId": "flame_badge",
+              "name": "Flame Badge",
+              "handler": "flame_badge",
+              "systemOrigin": null
+            },
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 2
+                }
+              ],
+              "id": "oil_lamp",
+              "itemId": "oil_lamp",
+              "name": "Oil Lamp",
+              "handler": "oil_lamp",
+              "systemOrigin": null
+            },
+            {
+              "gained": 1,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 1
+                }
+              ],
+              "id": "flame",
+              "itemId": "flame",
+              "name": "Flame",
+              "handler": "flame",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 23
+        }
+      },
+      "mana": {
+        "player": {
+          "end": 5,
+          "sources": [
+            {
+              "gained": 10,
+              "lost": 0,
+              "grants": 2,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 5
+                },
+                {
+                  "t": 2.5,
+                  "amount": 5
+                }
+              ],
+              "id": "scholar_bag",
+              "itemId": "scholar_bag",
+              "name": "Scholar Bag",
+              "handler": "scholar_bag",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 10
+        }
+      },
+      "vampirism": {
+        "player": {
+          "end": 5,
+          "sources": [
+            {
+              "gained": 5,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 5
+                }
+              ],
+              "id": "blood_goobert",
+              "itemId": "blood_goobert",
+              "name": "Blood Goobert",
+              "handler": "blood_goobert",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 5
+        }
+      },
+      "block": {
+        "player": {
+          "end": 252,
+          "sources": [
+            {
+              "gained": 224,
+              "lost": 0,
+              "grants": 14,
+              "firstT": 4.654,
+              "lastT": 29.454,
+              "samples": [
+                {
+                  "t": 4.654,
+                  "amount": 16
+                },
+                {
+                  "t": 6.754,
+                  "amount": 16
+                },
+                {
+                  "t": 8.854,
+                  "amount": 16
+                },
+                {
+                  "t": 10.904,
+                  "amount": 16
+                },
+                {
+                  "t": 13.004,
+                  "amount": 16
+                },
+                {
+                  "t": 14.904,
+                  "amount": 16
+                },
+                {
+                  "t": 16.804,
+                  "amount": 16
+                },
+                {
+                  "t": 18.704,
+                  "amount": 16
+                }
+              ],
+              "id": "steel_goobert",
+              "itemId": "steel_goobert",
+              "name": "Steel Goobert",
+              "handler": "steel_goobert",
+              "systemOrigin": null
+            },
+            {
+              "gained": 90,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.508,
+              "lastT": 2.508,
+              "samples": [
+                {
+                  "t": 2.508,
+                  "amount": 90
+                }
+              ],
+              "id": "ice_dragon",
+              "itemId": "ice_dragon",
+              "name": "Ice Dragon",
+              "handler": "ice_dragon",
+              "systemOrigin": null
+            },
+            {
+              "gained": 16,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 16
+                }
+              ],
+              "id": "holdall",
+              "itemId": "holdall",
+              "name": "Holdall",
+              "handler": "holdall",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 330
+        }
+      },
+      "lucky": {
+        "player": {
+          "end": 7,
+          "sources": [
+            {
+              "gained": 6,
+              "lost": 0,
+              "grants": 6,
+              "firstT": 7,
+              "lastT": 28.05,
+              "samples": [
+                {
+                  "t": 7,
+                  "amount": 1
+                },
+                {
+                  "t": 11.5,
+                  "amount": 1
+                },
+                {
+                  "t": 15.85,
+                  "amount": 1
+                },
+                {
+                  "t": 20,
+                  "amount": 1
+                },
+                {
+                  "t": 24.2,
+                  "amount": 1
+                },
+                {
+                  "t": 28.05,
+                  "amount": 1
+                }
+              ],
+              "id": "power_puppy",
+              "itemId": "power_puppy",
+              "name": "Power Puppy",
+              "handler": "power_puppy",
+              "systemOrigin": null
+            },
+            {
+              "gained": 1,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 1
+                }
+              ],
+              "id": "lucky_clover",
+              "itemId": "lucky_clover",
+              "name": "Lucky Clover",
+              "handler": "lucky_clover",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 7
+        }
+      },
+      "regeneration": {
+        "player": {
+          "end": 8,
+          "sources": [
+            {
+              "gained": 11,
+              "lost": 0,
+              "grants": 11,
+              "firstT": 5.15,
+              "lastT": 28.5,
+              "samples": [
+                {
+                  "t": 5.15,
+                  "amount": 1
+                },
+                {
+                  "t": 7.75,
+                  "amount": 1
+                },
+                {
+                  "t": 10.15,
+                  "amount": 1
+                },
+                {
+                  "t": 12.55,
+                  "amount": 1
+                },
+                {
+                  "t": 15.05,
+                  "amount": 1
+                },
+                {
+                  "t": 17.3,
+                  "amount": 1
+                },
+                {
+                  "t": 19.55,
+                  "amount": 1
+                },
+                {
+                  "t": 21.8,
+                  "amount": 1
+                }
+              ],
+              "id": "heart_container",
+              "itemId": "heart_container",
+              "name": "Heart Container",
+              "handler": "heart_container",
+              "systemOrigin": null
+            },
+            {
+              "gained": 4,
+              "lost": 0,
+              "grants": 4,
+              "firstT": 4.75,
+              "lastT": 18,
+              "samples": [
+                {
+                  "t": 4.75,
+                  "amount": 1
+                },
+                {
+                  "t": 9.2,
+                  "amount": 1
+                },
+                {
+                  "t": 13.75,
+                  "amount": 1
+                },
+                {
+                  "t": 18,
+                  "amount": 1
+                }
+              ],
+              "id": "power_puppy",
+              "itemId": "power_puppy",
+              "name": "Power Puppy",
+              "handler": "power_puppy",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 15
+        }
+      },
+      "empower": {
+        "player": {
+          "end": 4,
+          "sources": [
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 13.75,
+              "lastT": 13.75,
+              "samples": [
+                {
+                  "t": 13.75,
+                  "amount": 2
+                }
+              ],
+              "id": "heart_container",
+              "itemId": "heart_container",
+              "name": "Heart Container",
+              "handler": "heart_container",
+              "systemOrigin": null
+            },
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 2,
+              "firstT": 22.15,
+              "lastT": 26.15,
+              "samples": [
+                {
+                  "t": 22.15,
+                  "amount": 1
+                },
+                {
+                  "t": 26.15,
+                  "amount": 1
+                }
+              ],
+              "id": "power_puppy",
+              "itemId": "power_puppy",
+              "name": "Power Puppy",
+              "handler": "power_puppy",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 4
+        }
+      }
+    },
+    "debuffs": {
+      "cold": {
+        "dummy": {
+          "end": 16,
+          "sources": [
+            {
+              "gained": 16,
+              "lost": 0,
+              "grants": 16,
+              "firstT": 4.3,
+              "lastT": 28.75,
+              "samples": [
+                {
+                  "t": 4.3,
+                  "amount": 1
+                },
+                {
+                  "t": 6.1,
+                  "amount": 1
+                },
+                {
+                  "t": 7.9,
+                  "amount": 1
+                },
+                {
+                  "t": 9.7,
+                  "amount": 1
+                },
+                {
+                  "t": 11.35,
+                  "amount": 1
+                },
+                {
+                  "t": 13,
+                  "amount": 1
+                },
+                {
+                  "t": 14.65,
+                  "amount": 1
+                },
+                {
+                  "t": 16.3,
+                  "amount": 1
+                }
+              ],
+              "id": "ice_dragon",
+              "itemId": "ice_dragon",
+              "name": "Ice Dragon",
+              "handler": "ice_dragon",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 16
+        }
+      }
+    },
+    "itemBuffs": {
+      "player": [],
+      "dummy": []
+    },
+    "heals": {
+      "player": {
+        "total": 517,
+        "byKind": {
+          "heal": {
+            "total": 354,
+            "grants": 20
+          },
+          "vampirism": {
+            "total": 103,
+            "grants": 25
+          },
+          "regeneration": {
+            "total": 60,
+            "grants": 13
+          }
+        },
+        "sources": [
+          {
+            "gained": 343,
+            "lost": 0,
+            "grants": 18,
+            "firstT": 4.7,
+            "lastT": 29.6,
+            "samples": [
+              {
+                "t": 4.7,
+                "amount": 15
+              },
+              {
+                "t": 6.7,
+                "amount": 15
+              },
+              {
+                "t": 7,
+                "amount": 16
+              },
+              {
+                "t": 8.85,
+                "amount": 15
+              },
+              {
+                "t": 10.9,
+                "amount": 15
+              },
+              {
+                "t": 11.35,
+                "amount": 16
+              },
+              {
+                "t": 12.9,
+                "amount": 9
+              },
+              {
+                "t": 13.95,
+                "amount": 46
+              }
+            ],
+            "id": "unknown",
+            "itemId": null,
+            "name": "unknown",
+            "handler": null,
+            "kind": "heal",
+            "label": "Heal +15",
+            "byItem": {}
+          },
+          {
+            "gained": 103,
+            "lost": 0,
+            "grants": 25,
+            "firstT": 3.707,
+            "lastT": 29.658,
+            "samples": [
+              {
+                "t": 3.707,
+                "amount": 3
+              },
+              {
+                "t": 4.907,
+                "amount": 1
+              },
+              {
+                "t": 6.057,
+                "amount": 1
+              },
+              {
+                "t": 7.257,
+                "amount": 3
+              },
+              {
+                "t": 8.407,
+                "amount": 2
+              },
+              {
+                "t": 9.608,
+                "amount": 1
+              },
+              {
+                "t": 10.758,
+                "amount": 2
+              },
+              {
+                "t": 11.958,
+                "amount": 3
+              }
+            ],
+            "id": "Vampirism",
+            "itemId": null,
+            "name": "Vampirism",
+            "handler": null,
+            "systemOrigin": "Vampirism",
+            "kind": "vampirism",
+            "label": "Wooden Sword: vampirism +3",
+            "byItem": {
+              "wooden_sword": 103
+            }
+          },
+          {
+            "gained": 60,
+            "lost": 0,
+            "grants": 13,
+            "firstT": 5.5,
+            "lastT": 29.5,
+            "samples": [
+              {
+                "t": 5.5,
+                "amount": 2
+              },
+              {
+                "t": 7.5,
+                "amount": 2
+              },
+              {
+                "t": 9.5,
+                "amount": 4
+              },
+              {
+                "t": 11.5,
+                "amount": 5
+              },
+              {
+                "t": 13.5,
+                "amount": 6
+              },
+              {
+                "t": 15.5,
+                "amount": 1
+              },
+              {
+                "t": 17.5,
+                "amount": 2
+              },
+              {
+                "t": 19.5,
+                "amount": 3
+              }
+            ],
+            "id": "Regeneration",
+            "itemId": null,
+            "name": "Regeneration",
+            "handler": null,
+            "systemOrigin": "Regeneration",
+            "kind": "regeneration",
+            "label": "Regeneration: +2 health",
+            "byItem": {}
+          },
+          {
+            "gained": 11,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 22.506,
+            "lastT": 29.606,
+            "samples": [
+              {
+                "t": 22.506,
+                "amount": 4
+              },
+              {
+                "t": 29.606,
+                "amount": 7
+              }
+            ],
+            "id": "blood_goobert",
+            "itemId": "blood_goobert",
+            "name": "Blood Goobert",
+            "handler": "blood_goobert",
+            "kind": "heal",
+            "label": "Blood Goobert: +4 HP",
+            "byItem": {}
+          }
+        ]
+      }
+    },
+    "damage": {
+      "toDummy": {
+        "total": 1105,
+        "byKind": {
+          "item": {
+            "total": 1038,
+            "grants": 77
+          },
+          "fatigue": {
+            "total": 67,
+            "grants": 11
+          }
+        },
+        "sources": [
+          {
+            "gained": 419,
+            "lost": 0,
+            "grants": 22,
+            "firstT": 4.357,
+            "lastT": 29.257,
+            "samples": [
+              {
+                "t": 4.357,
+                "amount": 15
+              },
+              {
+                "t": 5.957,
+                "amount": 17
+              },
+              {
+                "t": 7.357,
+                "amount": 15
+              },
+              {
+                "t": 8.557,
+                "amount": 14
+              },
+              {
+                "t": 9.757,
+                "amount": 17
+              },
+              {
+                "t": 11.007,
+                "amount": 16
+              },
+              {
+                "t": 12.257,
+                "amount": 18
+              },
+              {
+                "t": 13.407,
+                "amount": 15
+              }
+            ],
+            "id": "obsidian_dragon",
+            "itemId": "obsidian_dragon",
+            "name": "Obsidian Dragon",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 311,
+            "lost": 0,
+            "grants": 16,
+            "firstT": 4.307,
+            "lastT": 28.757,
+            "samples": [
+              {
+                "t": 4.307,
+                "amount": 16
+              },
+              {
+                "t": 6.107,
+                "amount": 15
+              },
+              {
+                "t": 7.907,
+                "amount": 19
+              },
+              {
+                "t": 9.707,
+                "amount": 18
+              },
+              {
+                "t": 11.357,
+                "amount": 17
+              },
+              {
+                "t": 13.007,
+                "amount": 19
+              },
+              {
+                "t": 14.657,
+                "amount": 22
+              },
+              {
+                "t": 16.307,
+                "amount": 21
+              }
+            ],
+            "id": "ice_dragon",
+            "itemId": "ice_dragon",
+            "name": "Ice Dragon",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 210,
+            "lost": 0,
+            "grants": 14,
+            "firstT": 4.704,
+            "lastT": 29.604,
+            "samples": [
+              {
+                "t": 4.704,
+                "amount": 15
+              },
+              {
+                "t": 6.704,
+                "amount": 15
+              },
+              {
+                "t": 8.854,
+                "amount": 15
+              },
+              {
+                "t": 10.904,
+                "amount": 15
+              },
+              {
+                "t": 12.904,
+                "amount": 15
+              },
+              {
+                "t": 14.804,
+                "amount": 15
+              },
+              {
+                "t": 16.804,
+                "amount": 15
+              },
+              {
+                "t": 18.654,
+                "amount": 15
+              }
+            ],
+            "id": "blood_goobert",
+            "itemId": "blood_goobert",
+            "name": "Blood Goobert",
+            "handler": "blood_goobert",
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 98,
+            "lost": 0,
+            "grants": 25,
+            "firstT": 3.707,
+            "lastT": 29.657,
+            "samples": [
+              {
+                "t": 3.707,
+                "amount": 3
+              },
+              {
+                "t": 4.907,
+                "amount": 1
+              },
+              {
+                "t": 6.057,
+                "amount": 1
+              },
+              {
+                "t": 7.257,
+                "amount": 3
+              },
+              {
+                "t": 8.407,
+                "amount": 2
+              },
+              {
+                "t": 9.607,
+                "amount": 1
+              },
+              {
+                "t": 10.757,
+                "amount": 2
+              },
+              {
+                "t": 11.957,
+                "amount": 3
+              }
+            ],
+            "id": "wooden_sword",
+            "itemId": "wooden_sword",
+            "name": "Wooden Sword",
+            "handler": null,
+            "kind": "item",
+            "crits": 0
+          },
+          {
+            "gained": 67,
+            "lost": 0,
+            "grants": 11,
+            "firstT": 19.5,
+            "lastT": 29.5,
+            "samples": [
+              {
+                "t": 19.5,
+                "amount": 1
+              },
+              {
+                "t": 20.5,
+                "amount": 2
+              },
+              {
+                "t": 21.5,
+                "amount": 3
+              },
+              {
+                "t": 22.5,
+                "amount": 4
+              },
+              {
+                "t": 23.5,
+                "amount": 5
+              },
+              {
+                "t": 24.5,
+                "amount": 6
+              },
+              {
+                "t": 25.5,
+                "amount": 7
+              },
+              {
+                "t": 26.5,
+                "amount": 8
+              }
+            ],
+            "id": "Fatigue",
+            "itemId": null,
+            "name": "Fatigue",
+            "handler": null,
+            "kind": "fatigue",
+            "crits": 0
+          }
+        ]
+      },
+      "toPlayer": {
+        "total": 67,
+        "byKind": {
+          "fatigue": {
+            "total": 67,
+            "grants": 11
+          },
+          "dummy": {
+            "total": 0,
+            "grants": 6
+          }
+        },
+        "sources": [
+          {
+            "gained": 67,
+            "lost": 0,
+            "grants": 11,
+            "firstT": 19.5,
+            "lastT": 29.5,
+            "samples": [
+              {
+                "t": 19.5,
+                "amount": 1
+              },
+              {
+                "t": 20.5,
+                "amount": 2
+              },
+              {
+                "t": 21.5,
+                "amount": 3
+              },
+              {
+                "t": 22.5,
+                "amount": 4
+              },
+              {
+                "t": 23.5,
+                "amount": 5
+              },
+              {
+                "t": 24.5,
+                "amount": 6
+              },
+              {
+                "t": 25.5,
+                "amount": 7
+              },
+              {
+                "t": 26.5,
+                "amount": 8
+              }
+            ],
+            "id": "Fatigue",
+            "itemId": null,
+            "name": "Fatigue",
+            "handler": null,
+            "kind": "fatigue",
+            "crits": 0
+          },
+          {
+            "gained": 0,
+            "lost": 0,
+            "grants": 6,
+            "firstT": 4.652,
+            "lastT": 24.002,
+            "samples": [
+              {
+                "t": 4.652,
+                "amount": 0
+              },
+              {
+                "t": 6.802,
+                "amount": 0
+              },
+              {
+                "t": 13.252,
+                "amount": 0
+              },
+              {
+                "t": 17.552,
+                "amount": 0
+              },
+              {
+                "t": 21.852,
+                "amount": 0
+              },
+              {
+                "t": 24.002,
+                "amount": 0
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null,
+            "kind": "dummy",
+            "crits": 0
+          }
+        ]
+      }
+    },
+    "misses": {
+      "player": 0,
+      "dummy": 6
+    },
+    "activations": {
+      "player": {
+        "total": 150,
+        "sources": [
+          {
+            "gained": 25,
+            "lost": 0,
+            "grants": 25,
+            "firstT": 3.7,
+            "lastT": 29.65,
+            "samples": [
+              {
+                "t": 3.7,
+                "amount": 1
+              },
+              {
+                "t": 4.9,
+                "amount": 1
+              },
+              {
+                "t": 6.05,
+                "amount": 1
+              },
+              {
+                "t": 7.25,
+                "amount": 1
+              },
+              {
+                "t": 8.4,
+                "amount": 1
+              },
+              {
+                "t": 9.6,
+                "amount": 1
+              },
+              {
+                "t": 10.75,
+                "amount": 1
+              },
+              {
+                "t": 11.95,
+                "amount": 1
+              }
+            ],
+            "id": "wooden_sword",
+            "itemId": "wooden_sword",
+            "name": "Wooden Sword",
+            "handler": "wooden_sword"
+          },
+          {
+            "gained": 22,
+            "lost": 0,
+            "grants": 22,
+            "firstT": 4.35,
+            "lastT": 29.25,
+            "samples": [
+              {
+                "t": 4.35,
+                "amount": 1
+              },
+              {
+                "t": 5.95,
+                "amount": 1
+              },
+              {
+                "t": 7.35,
+                "amount": 1
+              },
+              {
+                "t": 8.55,
+                "amount": 1
+              },
+              {
+                "t": 9.75,
+                "amount": 1
+              },
+              {
+                "t": 11,
+                "amount": 1
+              },
+              {
+                "t": 12.25,
+                "amount": 1
+              },
+              {
+                "t": 13.4,
+                "amount": 1
+              }
+            ],
+            "id": "obsidian_dragon",
+            "itemId": "obsidian_dragon",
+            "name": "Obsidian Dragon",
+            "handler": "obsidian_dragon"
+          },
+          {
+            "gained": 16,
+            "lost": 0,
+            "grants": 16,
+            "firstT": 4.3,
+            "lastT": 28.75,
+            "samples": [
+              {
+                "t": 4.3,
+                "amount": 1
+              },
+              {
+                "t": 6.1,
+                "amount": 1
+              },
+              {
+                "t": 7.9,
+                "amount": 1
+              },
+              {
+                "t": 9.7,
+                "amount": 1
+              },
+              {
+                "t": 11.35,
+                "amount": 1
+              },
+              {
+                "t": 13,
+                "amount": 1
+              },
+              {
+                "t": 14.65,
+                "amount": 1
+              },
+              {
+                "t": 16.3,
+                "amount": 1
+              }
+            ],
+            "id": "ice_dragon",
+            "itemId": "ice_dragon",
+            "name": "Ice Dragon",
+            "handler": "ice_dragon"
+          },
+          {
+            "gained": 15,
+            "lost": 0,
+            "grants": 15,
+            "firstT": 2.5,
+            "lastT": 29.6,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 4.7,
+                "amount": 1
+              },
+              {
+                "t": 6.7,
+                "amount": 1
+              },
+              {
+                "t": 8.85,
+                "amount": 1
+              },
+              {
+                "t": 10.9,
+                "amount": 1
+              },
+              {
+                "t": 12.9,
+                "amount": 1
+              },
+              {
+                "t": 14.8,
+                "amount": 1
+              },
+              {
+                "t": 16.8,
+                "amount": 1
+              }
+            ],
+            "id": "blood_goobert",
+            "itemId": "blood_goobert",
+            "name": "Blood Goobert",
+            "handler": "blood_goobert"
+          },
+          {
+            "gained": 14,
+            "lost": 0,
+            "grants": 14,
+            "firstT": 4.65,
+            "lastT": 29.45,
+            "samples": [
+              {
+                "t": 4.65,
+                "amount": 1
+              },
+              {
+                "t": 6.75,
+                "amount": 1
+              },
+              {
+                "t": 8.85,
+                "amount": 1
+              },
+              {
+                "t": 10.9,
+                "amount": 1
+              },
+              {
+                "t": 13,
+                "amount": 1
+              },
+              {
+                "t": 14.9,
+                "amount": 1
+              },
+              {
+                "t": 16.8,
+                "amount": 1
+              },
+              {
+                "t": 18.7,
+                "amount": 1
+              }
+            ],
+            "id": "steel_goobert",
+            "itemId": "steel_goobert",
+            "name": "Steel Goobert",
+            "handler": "steel_goobert"
+          },
+          {
+            "gained": 12,
+            "lost": 0,
+            "grants": 12,
+            "firstT": 4.75,
+            "lastT": 28.05,
+            "samples": [
+              {
+                "t": 4.75,
+                "amount": 1
+              },
+              {
+                "t": 7,
+                "amount": 1
+              },
+              {
+                "t": 9.2,
+                "amount": 1
+              },
+              {
+                "t": 11.5,
+                "amount": 1
+              },
+              {
+                "t": 13.75,
+                "amount": 1
+              },
+              {
+                "t": 15.85,
+                "amount": 1
+              },
+              {
+                "t": 18,
+                "amount": 1
+              },
+              {
+                "t": 20,
+                "amount": 1
+              }
+            ],
+            "id": "power_puppy",
+            "itemId": "power_puppy",
+            "name": "Power Puppy",
+            "handler": "power_puppy"
+          },
+          {
+            "gained": 11,
+            "lost": 0,
+            "grants": 11,
+            "firstT": 5.15,
+            "lastT": 28.5,
+            "samples": [
+              {
+                "t": 5.15,
+                "amount": 1
+              },
+              {
+                "t": 7.75,
+                "amount": 1
+              },
+              {
+                "t": 10.15,
+                "amount": 1
+              },
+              {
+                "t": 12.55,
+                "amount": 1
+              },
+              {
+                "t": 15.05,
+                "amount": 1
+              },
+              {
+                "t": 17.3,
+                "amount": 1
+              },
+              {
+                "t": 19.55,
+                "amount": 1
+              },
+              {
+                "t": 21.8,
+                "amount": 1
+              }
+            ],
+            "id": "heart_container",
+            "itemId": "heart_container",
+            "name": "Heart Container",
+            "handler": "heart_container"
+          },
+          {
+            "gained": 11,
+            "lost": 0,
+            "grants": 11,
+            "firstT": 2.51,
+            "lastT": 29.3,
+            "samples": [
+              {
+                "t": 2.51,
+                "amount": 1
+              },
+              {
+                "t": 5.45,
+                "amount": 1
+              },
+              {
+                "t": 8.35,
+                "amount": 1
+              },
+              {
+                "t": 11,
+                "amount": 1
+              },
+              {
+                "t": 13.85,
+                "amount": 1
+              },
+              {
+                "t": 16.65,
+                "amount": 1
+              },
+              {
+                "t": 19.35,
+                "amount": 1
+              },
+              {
+                "t": 22,
+                "amount": 1
+              }
+            ],
+            "id": "oil_lamp",
+            "itemId": "oil_lamp",
+            "name": "Oil Lamp",
+            "handler": "oil_lamp"
+          },
+          {
+            "gained": 9,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 5.65,
+            "lastT": 29,
+            "samples": [
+              {
+                "t": 5.65,
+                "amount": 1
+              },
+              {
+                "t": 8.75,
+                "amount": 1
+              },
+              {
+                "t": 11.8,
+                "amount": 1
+              },
+              {
+                "t": 14.75,
+                "amount": 1
+              },
+              {
+                "t": 17.85,
+                "amount": 1
+              },
+              {
+                "t": 20.7,
+                "amount": 1
+              },
+              {
+                "t": 23.65,
+                "amount": 1
+              },
+              {
+                "t": 26.3,
+                "amount": 1
+              }
+            ],
+            "id": "draconic_orb",
+            "itemId": "draconic_orb",
+            "name": "Draconic Orb",
+            "handler": "draconic_orb"
+          },
+          {
+            "gained": 7,
+            "lost": 0,
+            "grants": 7,
+            "firstT": 7,
+            "lastT": 29.6,
+            "samples": [
+              {
+                "t": 7,
+                "amount": 1
+              },
+              {
+                "t": 11.35,
+                "amount": 1
+              },
+              {
+                "t": 14.8,
+                "amount": 1
+              },
+              {
+                "t": 18.65,
+                "amount": 1
+              },
+              {
+                "t": 22.5,
+                "amount": 1
+              },
+              {
+                "t": 26.05,
+                "amount": 1
+              },
+              {
+                "t": 29.6,
+                "amount": 1
+              }
+            ],
+            "id": "chili_goobert",
+            "itemId": "chili_goobert",
+            "name": "Chili Goobert",
+            "handler": "chili_goobert"
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 12.9,
+            "lastT": 22.5,
+            "samples": [
+              {
+                "t": 12.9,
+                "amount": 1
+              },
+              {
+                "t": 22.5,
+                "amount": 1
+              }
+            ],
+            "id": "goobert",
+            "itemId": "goobert",
+            "name": "Goobert",
+            "handler": "goobert"
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 13.95,
+            "lastT": 24.15,
+            "samples": [
+              {
+                "t": 13.95,
+                "amount": 1
+              },
+              {
+                "t": 24.15,
+                "amount": 1
+              }
+            ],
+            "id": "shelly",
+            "itemId": "shelly",
+            "name": "Shelly",
+            "handler": "shelly"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "flame",
+            "itemId": "flame",
+            "name": "Flame",
+            "handler": "flame"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "flame_badge",
+            "itemId": "flame_badge",
+            "name": "Flame Badge",
+            "handler": "flame_badge"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "lucky_clover",
+            "itemId": "lucky_clover",
+            "name": "Lucky Clover",
+            "handler": "lucky_clover"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "piggy_of_riches",
+            "itemId": "piggy_of_riches",
+            "name": "Piggy of Riches",
+            "handler": "piggy_of_riches"
+          }
+        ]
+      },
+      "dummy": {
+        "total": 12,
+        "sources": [
+          {
+            "gained": 12,
+            "lost": 0,
+            "grants": 12,
+            "firstT": 4.65,
+            "lastT": 28.3,
+            "samples": [
+              {
+                "t": 4.65,
+                "amount": 1
+              },
+              {
+                "t": 6.8,
+                "amount": 1
+              },
+              {
+                "t": 8.95,
+                "amount": 1
+              },
+              {
+                "t": 11.1,
+                "amount": 1
+              },
+              {
+                "t": 13.25,
+                "amount": 1
+              },
+              {
+                "t": 15.4,
+                "amount": 1
+              },
+              {
+                "t": 17.55,
+                "amount": 1
+              },
+              {
+                "t": 19.7,
+                "amount": 1
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null
+          }
+        ]
+      }
+    },
+    "stats": [
+      {
+        "t": 2.502,
+        "itemId": "heart_container",
+        "name": "Heart Container",
+        "label": "Healing increased by 15%",
+        "amount": 15,
+        "stat": "heal_efficiency",
+        "total": 15
+      }
+    ],
+    "end": {
+      "player": {
+        "hp": 300,
+        "maxHp": 300,
+        "stacks": {
+          "lucky": 7,
+          "regeneration": 8,
+          "vampirism": 5,
+          "heat": 23,
+          "empower": 4,
+          "block": 252,
+          "mana": 5,
+          "buffprotect": 1
+        },
+        "healAmp": 0.15,
+        "unhealing": 0
+      },
+      "dummy": {
+        "hp": 95,
+        "maxHp": 1200,
+        "stacks": {
+          "cold": 16
+        }
+      }
+    }
+  },
+  "ui": {
+    "combatLog": {
+      "lineCount": 404,
+      "byType": {
+        "activate": 162,
+        "buff": 54,
+        "stat": 1,
+        "damage": 105,
+        "heal": 58,
+        "debuff": 16,
+        "miss": 6,
+        "info": 1,
+        "fight_end": 1
+      },
+      "stackGained": {
+        "heat": 23,
+        "mana": 10,
+        "vampirism": 5,
+        "block": 330,
+        "lucky": 7,
+        "cold": 16,
+        "regeneration": 15,
+        "empower": 4
+      },
+      "sample": [
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "flame_badge",
+          "amount": null,
+          "label": "Flame Badge"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "blood_goobert",
+          "amount": null,
+          "label": "Pet: Blood Goobert"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "piggy_of_riches",
+          "amount": null,
+          "label": "Piggy of Riches"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": "lucky",
+          "itemId": "lucky_clover",
+          "amount": null,
+          "label": "Lucky Clover"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "flame",
+          "amount": null,
+          "label": "Flame"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "heat",
+          "itemId": "flame_badge",
+          "amount": 6,
+          "label": "+6 heat"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "mana",
+          "itemId": "scholar_bag",
+          "amount": 5,
+          "label": "+5 mana"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "mana",
+          "itemId": null,
+          "amount": 5,
+          "label": "Scholar Bag: +5 Mana"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "vampirism",
+          "itemId": "blood_goobert",
+          "amount": 5,
+          "label": "+5 vampirism"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "holdall",
+          "amount": 16,
+          "label": "Holdall: +16 Block (2 inside)"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "heat",
+          "itemId": "oil_lamp",
+          "amount": 2,
+          "label": "Oil Lamp: +2 Heat"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "lucky_clover",
+          "amount": 1,
+          "label": "+1 lucky"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "heat",
+          "itemId": "flame",
+          "amount": 1,
+          "label": "+1 heat"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "heart_container",
+          "amount": 15,
+          "label": "Healing increased by 15%"
+        },
+        {
+          "t": 2.508,
+          "type": "buff",
+          "stack": "block",
+          "itemId": null,
+          "amount": 90,
+          "label": "Ice Dragon: +90 Block"
+        },
+        {
+          "t": 2.51,
+          "type": "activate",
+          "stack": null,
+          "itemId": "oil_lamp",
+          "amount": null,
+          "label": "Accessory: Oil Lamp"
+        },
+        {
+          "t": 3.7,
+          "type": "activate",
+          "stack": null,
+          "itemId": "wooden_sword",
+          "amount": null,
+          "label": "Weapon: Wooden Sword"
+        },
+        {
+          "t": 3.707,
+          "type": "damage",
+          "stack": null,
+          "itemId": "wooden_sword",
+          "amount": 3,
+          "label": "Wooden Sword hit for 3"
+        },
+        {
+          "t": 3.707,
+          "type": "heal",
+          "stack": "vampirism",
+          "itemId": "wooden_sword",
+          "amount": 3,
+          "label": "Wooden Sword: vampirism +3"
+        },
+        {
+          "t": 4.3,
+          "type": "activate",
+          "stack": null,
+          "itemId": "ice_dragon",
+          "amount": null,
+          "label": "Weapon: Ice Dragon"
+        },
+        {
+          "t": 4.3,
+          "type": "debuff",
+          "stack": "cold",
+          "itemId": "ice_dragon",
+          "amount": 1,
+          "label": "+1 cold"
+        },
+        {
+          "t": 4.307,
+          "type": "damage",
+          "stack": null,
+          "itemId": "ice_dragon",
+          "amount": 16,
+          "label": "Ice Dragon hit for 16"
+        },
+        {
+          "t": 4.35,
+          "type": "activate",
+          "stack": null,
+          "itemId": "obsidian_dragon",
+          "amount": null,
+          "label": "Weapon: Obsidian Dragon"
+        },
+        {
+          "t": 4.357,
+          "type": "damage",
+          "stack": null,
+          "itemId": "obsidian_dragon",
+          "amount": 15,
+          "label": "Obsidian Dragon hit for 15"
+        },
+        {
+          "t": 4.65,
+          "type": "activate",
+          "stack": null,
+          "itemId": "steel_goobert",
+          "amount": null,
+          "label": "Pet: Steel Goobert"
+        },
+        {
+          "t": 4.65,
+          "type": "activate",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Training Dummy: swing"
+        },
+        {
+          "t": 4.652,
+          "type": "damage",
+          "stack": "block",
+          "itemId": null,
+          "amount": 0,
+          "label": "Training Dummy: hit 13 (DR/block) → 0"
+        },
+        {
+          "t": 4.654,
+          "type": "buff",
+          "stack": "block",
+          "itemId": null,
+          "amount": 16,
+          "label": "Steel Goobert: +16 Block"
+        },
+        {
+          "t": 4.7,
+          "type": "activate",
+          "stack": null,
+          "itemId": "blood_goobert",
+          "amount": null,
+          "label": "Pet: Blood Goobert"
+        },
+        {
+          "t": 4.7,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 15,
+          "label": "Heal +15"
+        },
+        {
+          "t": 4.704,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 15,
+          "label": "Blood Goobert: 15 lifesteal"
+        },
+        {
+          "t": 4.75,
+          "type": "activate",
+          "stack": null,
+          "itemId": "power_puppy",
+          "amount": null,
+          "label": "Pet: Power Puppy"
+        },
+        {
+          "t": 4.75,
+          "type": "buff",
+          "stack": "regeneration",
+          "itemId": "power_puppy",
+          "amount": 1,
+          "label": "+1 regeneration"
+        },
+        {
+          "t": 4.9,
+          "type": "activate",
+          "stack": null,
+          "itemId": "wooden_sword",
+          "amount": null,
+          "label": "Weapon: Wooden Sword"
+        },
+        {
+          "t": 4.907,
+          "type": "damage",
+          "stack": null,
+          "itemId": "wooden_sword",
+          "amount": 1,
+          "label": "Wooden Sword hit for 1"
+        },
+        {
+          "t": 4.907,
+          "type": "heal",
+          "stack": "vampirism",
+          "itemId": "wooden_sword",
+          "amount": 1,
+          "label": "Wooden Sword: vampirism +1"
+        },
+        {
+          "t": 5.15,
+          "type": "activate",
+          "stack": null,
+          "itemId": "heart_container",
+          "amount": null,
+          "label": "Accessory: Heart Container"
+        },
+        {
+          "t": 5.15,
+          "type": "buff",
+          "stack": "regeneration",
+          "itemId": "heart_container",
+          "amount": 1,
+          "label": "+1 regeneration"
+        },
+        {
+          "t": 5.45,
+          "type": "activate",
+          "stack": null,
+          "itemId": "oil_lamp",
+          "amount": null,
+          "label": "Accessory: Oil Lamp"
+        },
+        {
+          "t": 5.5,
+          "type": "heal",
+          "stack": "regeneration",
+          "itemId": null,
+          "amount": 2,
+          "label": "Regeneration: +2 health"
+        }
+      ]
+    },
+    "damageMeter": {
+      "stackTabs": {
+        "block": {
+          "gained": 330,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "holdall",
+              "name": "Holdall",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Ice Dragon",
+              "amount": 90
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            },
+            {
+              "itemId": null,
+              "name": "Steel Goobert",
+              "amount": 16
+            }
+          ]
+        },
+        "lucky": {
+          "gained": 7,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "lucky_clover",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "power_puppy",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "power_puppy",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "power_puppy",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "power_puppy",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "power_puppy",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "power_puppy",
+              "name": "+1 lucky",
+              "amount": 1
+            }
+          ]
+        },
+        "regeneration": {
+          "gained": 15,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "power_puppy",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "power_puppy",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "power_puppy",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "power_puppy",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            },
+            {
+              "itemId": "heart_container",
+              "name": "+1 regeneration",
+              "amount": 1
+            }
+          ]
+        },
+        "vampirism": {
+          "gained": 5,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "blood_goobert",
+              "name": "+5 vampirism",
+              "amount": 5
+            }
+          ]
+        },
+        "spikes": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "mana": {
+          "gained": 10,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "scholar_bag",
+              "name": "+5 mana",
+              "amount": 5
+            },
+            {
+              "itemId": null,
+              "name": "Scholar Bag",
+              "amount": 5
+            }
+          ]
+        },
+        "empower": {
+          "gained": 4,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "heart_container",
+              "name": "+2 empower",
+              "amount": 2
+            },
+            {
+              "itemId": "power_puppy",
+              "name": "+1 empower",
+              "amount": 1
+            },
+            {
+              "itemId": "power_puppy",
+              "name": "+1 empower",
+              "amount": 1
+            }
+          ]
+        },
+        "heat": {
+          "gained": 23,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "flame_badge",
+              "name": "+6 heat",
+              "amount": 6
+            },
+            {
+              "itemId": "oil_lamp",
+              "name": "Oil Lamp",
+              "amount": 2
+            },
+            {
+              "itemId": "flame",
+              "name": "+1 heat",
+              "amount": 1
+            },
+            {
+              "itemId": "chili_goobert",
+              "name": "+2 heat",
+              "amount": 2
+            },
+            {
+              "itemId": "chili_goobert",
+              "name": "+2 heat",
+              "amount": 2
+            },
+            {
+              "itemId": "chili_goobert",
+              "name": "+2 heat",
+              "amount": 2
+            },
+            {
+              "itemId": "chili_goobert",
+              "name": "+2 heat",
+              "amount": 2
+            },
+            {
+              "itemId": "chili_goobert",
+              "name": "+2 heat",
+              "amount": 2
+            },
+            {
+              "itemId": "chili_goobert",
+              "name": "+2 heat",
+              "amount": 2
+            },
+            {
+              "itemId": "chili_goobert",
+              "name": "+2 heat",
+              "amount": 2
+            }
+          ]
+        },
+        "poison": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "blind": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "cold": {
+          "gained": 16,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            },
+            {
+              "itemId": "ice_dragon",
+              "name": "+1 cold",
+              "amount": 1
+            }
+          ]
+        }
+      }
+    },
+    "hud": {
+      "player": {
+        "icons": [
+          {
+            "key": "crit_stacks",
+            "value": 3
+          },
+          {
+            "key": "heal_efficiency",
+            "value": 15
+          }
+        ],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 3,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 15,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "dummy": {
+        "icons": [],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 0,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "expected": []
+    },
+    "mismatches": []
+  }
+}

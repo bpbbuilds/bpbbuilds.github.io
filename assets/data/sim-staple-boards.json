@@ -1,0 +1,103 @@
+{
+  "builtAt": "2026-08-25T22:00:23.085Z",
+  "note": "Phase 264: ui.mismatches required empty on these boards. Empty flags are not a live pass. paramChecks may remain.",
+  "dumps": [
+    {
+      "heroClass": "Ranger",
+      "slug": "poison-garden-ranger",
+      "dummyEndHp": 755,
+      "playerEndHp": 5,
+      "eventCount": 231,
+      "emptyFlagsAreNotALivePass": true,
+      "paramCheckCount": 0,
+      "mismatchCount": 0,
+      "paramChecks": [],
+      "mismatches": []
+    },
+    {
+      "heroClass": "Pyromancer",
+      "slug": "pyro-furnace",
+      "dummyEndHp": 1133,
+      "playerEndHp": 131,
+      "eventCount": 122,
+      "emptyFlagsAreNotALivePass": true,
+      "paramCheckCount": 0,
+      "mismatchCount": 0,
+      "paramChecks": [],
+      "mismatches": []
+    },
+    {
+      "heroClass": "Berserker",
+      "slug": "berserk-bloodline",
+      "dummyEndHp": 0,
+      "playerEndHp": 320,
+      "eventCount": 941,
+      "emptyFlagsAreNotALivePass": true,
+      "paramCheckCount": 0,
+      "mismatchCount": 0,
+      "paramChecks": [],
+      "mismatches": []
+    },
+    {
+      "heroClass": "Reaper",
+      "slug": "reaper-harvest",
+      "dummyEndHp": 858,
+      "playerEndHp": 170,
+      "eventCount": 236,
+      "emptyFlagsAreNotALivePass": true,
+      "paramCheckCount": 0,
+      "mismatchCount": 0,
+      "paramChecks": [],
+      "mismatches": []
+    },
+    {
+      "heroClass": "Adventurer",
+      "slug": "history-3705",
+      "dummyEndHp": 0,
+      "playerEndHp": 113,
+      "eventCount": 574,
+      "emptyFlagsAreNotALivePass": false,
+      "paramCheckCount": 4,
+      "mismatchCount": 0,
+      "paramChecks": [
+        {
+          "itemId": "chipped_emerald",
+          "expectedKey": "poison",
+          "stack": "poison",
+          "note": "no catalog key for poison; grant 1 equals poisononhit=1, regen=1"
+        },
+        {
+          "itemId": "perfect_emerald",
+          "expectedKey": "poison",
+          "stack": "poison",
+          "note": "no catalog key for poison; grant 4 equals poisononhit=4"
+        },
+        {
+          "itemId": "frog_prince",
+          "expectedKey": "luck",
+          "stack": "lucky",
+          "note": "grant 1 is catalog blind=1, not luck=5"
+        },
+        {
+          "itemId": "frog_prince",
+          "expectedKey": "mana",
+          "stack": "mana",
+          "note": "grant 1 is catalog blind=1, not mana=5"
+        }
+      ],
+      "mismatches": []
+    },
+    {
+      "heroClass": "Engineer",
+      "slug": "history-3703",
+      "dummyEndHp": 0,
+      "playerEndHp": 200,
+      "eventCount": 423,
+      "emptyFlagsAreNotALivePass": true,
+      "paramCheckCount": 0,
+      "mismatchCount": 0,
+      "paramChecks": [],
+      "mismatches": []
+    }
+  ]
+}

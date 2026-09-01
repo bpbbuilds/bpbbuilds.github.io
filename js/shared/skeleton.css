@@ -1,0 +1,48 @@
+/* Shared parchment loading skeletons — use across pages */
+
+.bpb-skel-region {
+  pointer-events: none;
+  user-select: none;
+}
+
+.bpb-skel {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    110deg,
+    rgba(184, 150, 110, 0.45) 0%,
+    rgba(226, 201, 168, 0.7) 45%,
+    rgba(184, 150, 110, 0.45) 90%
+  );
+  background-size: 200% 100%;
+  animation: bpb-skel-shimmer 1.35s ease-in-out infinite;
+}
+
+.bpb-skel--bar {
+  height: 0.85em;
+  width: 100%;
+  border-radius: 0.2rem;
+}
+
+.bpb-skel--block {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.35rem;
+}
+
+@keyframes bpb-skel-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpb-skel {
+    animation: none;
+    background: rgba(184, 150, 110, 0.5);
+  }
+}

@@ -1,0 +1,38 @@
+---
+description: Supabase data model, env vars, and Storage conventions
+alwaysApply: true
+---
+
+# BPB Website — Supabase
+
+## Env (`.env`)
+
+Use these names (do not invent aliases in new code):
+
+- `SUPABASE_PROJECT_URL`
+- `SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_DB_PASSWORD`
+- `SUPABASE_DB_URL`
+
+Never commit real values. Never echo secrets in docs or chat dumps.
+
+## Catalog vs user data
+
+| Kind | Tables | Public write |
+|---|---|---|
+| Game catalog | `items`, `combinations`, `combination_ingredients` | No |
+| User content | `builds`, `build_placements` | Auth later |
+| Accounts | `profiles` | Owner only |
+
+## Assets
+
+- **DB columns** store paths/filenames only (e.g. `items.image`)
+- **Item sprites** → Supabase Storage bucket (e.g. `item-sprites`)
+- **Fonts / site CSS/JS** → repo (`assets/`, `js/`, `css/`)
+- Shared tooltip frames/icons may use CDN for POC; prefer `assets/` or Storage when self-hosting
+
+## Implementation habits
+
+- Join placements/recipes to `items` — never copy `effect` / rarity / name into builds
+- Map DB `snake_case` → frontend camelCase (`extra_types` → `extraTypes`) before tooltips
+- Follow detail SQL in `docs/db/tables/*.md` when creating or changing schema

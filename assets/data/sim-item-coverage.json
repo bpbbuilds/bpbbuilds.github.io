@@ -1,0 +1,7523 @@
+{
+  "builtAt": "2026-08-25T16:42:04.720Z",
+  "inventoryExtractedAt": "2026-08-25T05:20:50.817Z",
+  "portRegistryGeneratedAt": "2026-08-25T16:42:04.668Z",
+  "totals": {
+    "entries": 528,
+    "dedicated": 525,
+    "dedicatedReviewed": 525,
+    "dedicatedApprox": 0,
+    "dedicatedSolid": 525,
+    "dedicatedParity": 472,
+    "dedicatedStub": 0,
+    "family": 0,
+    "catalogFallback": 0,
+    "scripted": 525,
+    "depthDeep": 409,
+    "depthShallow": 0,
+    "depthNoop": 32
+  },
+  "goal": {
+    "dedicatedPct": 100,
+    "reviewedPct": 100,
+    "solidPct": 100,
+    "parityPct": 90,
+    "target": "Solid 100% shipped (AC–AE). Climb reviewed → parity (Band AF–AH)."
+  },
+  "familyDefaults": {
+    "basic_weapon": "basic_cd",
+    "weapon_base": "basic_cd",
+    "custom_cd": "basic_cd",
+    "synergy_aura": "empower_aura",
+    "start_buff": "start_regen",
+    "on_hit": "basic_cd",
+    "pet_like": "pet_strike",
+    "food": "start_regen",
+    "unique": "basic_cd"
+  },
+  "byId": {
+    "acorn_collar": {
+      "id": "acorn_collar",
+      "family": "unique",
+      "handlerId": "acorn_collar",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "artifact_stone_cold": {
+      "id": "artifact_stone_cold",
+      "family": "unique",
+      "handlerId": "artifact_stone_cold",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "artifact_stone_heat": {
+      "id": "artifact_stone_heat",
+      "family": "unique",
+      "handlerId": "artifact_stone_heat",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "bag_of_stones": {
+      "id": "bag_of_stones",
+      "family": "unique",
+      "handlerId": "bag_of_stones",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "banana": {
+      "id": "banana",
+      "family": "custom_cd",
+      "handlerId": "banana",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "blood_amulet": {
+      "id": "blood_amulet",
+      "family": "start_buff",
+      "handlerId": "blood_amulet",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "blood_goobert": {
+      "id": "blood_goobert",
+      "family": "pet_like",
+      "handlerId": "blood_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "pet_strike",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "bloodthorne": {
+      "id": "bloodthorne",
+      "family": "on_hit",
+      "handlerId": "bloodthorne",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "poison_weapon",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "bloody_dagger": {
+      "id": "bloody_dagger",
+      "family": "on_hit",
+      "handlerId": "bloody_dagger",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "J",
+      "template": "poison_weapon",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "blueberries": {
+      "id": "blueberries",
+      "family": "custom_cd",
+      "handlerId": "blueberries",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "bow": {
+      "id": "bow",
+      "family": "weapon_base",
+      "handlerId": null,
+      "status": "skipped_base",
+      "fidelity": "n/a",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "bow_and_arrow": {
+      "id": "bow_and_arrow",
+      "family": "unique",
+      "handlerId": "bow_and_arrow",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "broom": {
+      "id": "broom",
+      "family": "on_hit",
+      "handlerId": "broom",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ]
+    },
+    "burning_coal": {
+      "id": "burning_coal",
+      "family": "custom_cd",
+      "handlerId": "burning_coal",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "burning_torch": {
+      "id": "burning_torch",
+      "family": "synergy_aura",
+      "handlerId": "burning_torch",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ]
+    },
+    "card": {
+      "id": "card",
+      "family": "unique",
+      "handlerId": null,
+      "status": "skipped_base",
+      "fidelity": "n/a",
+      "overrides": [
+        "trigger"
+      ]
+    },
+    "carrot": {
+      "id": "carrot",
+      "family": "custom_cd",
+      "handlerId": "carrot",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "carrot_goobert": {
+      "id": "carrot_goobert",
+      "family": "pet_like",
+      "handlerId": "carrot_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "pet_strike",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "claws_of_attack": {
+      "id": "claws_of_attack",
+      "family": "on_hit",
+      "handlerId": "claws_of_attack",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "corrupted_armor": {
+      "id": "corrupted_armor",
+      "family": "unique",
+      "handlerId": "corrupted_armor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "critwood_staff": {
+      "id": "critwood_staff",
+      "family": "on_hit",
+      "handlerId": "critwood_staff",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "crossblades": {
+      "id": "crossblades",
+      "family": "synergy_aura",
+      "handlerId": "crossblades",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ]
+    },
+    "crown": {
+      "id": "crown",
+      "family": "custom_cd",
+      "handlerId": "crown",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "cursed_dagger": {
+      "id": "cursed_dagger",
+      "family": "on_hit",
+      "handlerId": "cursed_dagger",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "poison_weapon",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "cursed_hair_comb": {
+      "id": "cursed_hair_comb",
+      "family": "synergy_aura",
+      "handlerId": "cursed_hair_comb",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "dagger": {
+      "id": "dagger",
+      "family": "weapon_base",
+      "handlerId": "dagger",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "dancing_dragon": {
+      "id": "dancing_dragon",
+      "family": "weapon_base",
+      "handlerId": "dancing_dragon",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "darksaber": {
+      "id": "darksaber",
+      "family": "on_hit",
+      "handlerId": "darksaber",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "death_scythe": {
+      "id": "death_scythe",
+      "family": "weapon_base",
+      "handlerId": "death_scythe",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "deck_of_cards": {
+      "id": "deck_of_cards",
+      "family": "synergy_aura",
+      "handlerId": "deck_of_cards",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "demonic_flask": {
+      "id": "demonic_flask",
+      "family": "food",
+      "handlerId": "demonic_flask",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion",
+        "onDamaged"
+      ]
+    },
+    "djinn_lamp": {
+      "id": "djinn_lamp",
+      "family": "unique",
+      "handlerId": "djinn_lamp",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "eggscalibur": {
+      "id": "eggscalibur",
+      "family": "on_hit",
+      "handlerId": "eggscalibur",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage"
+      ]
+    },
+    "evil_cap": {
+      "id": "evil_cap",
+      "family": "start_buff",
+      "handlerId": "evil_cap",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ]
+    },
+    "acorn_ace": {
+      "id": "acorn_ace",
+      "family": "unique",
+      "handlerId": "acorn_ace",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "amethyst_egg": {
+      "id": "amethyst_egg",
+      "family": "unique",
+      "handlerId": "amethyst_egg",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "amethyst_whelp": {
+      "id": "amethyst_whelp",
+      "family": "on_hit",
+      "handlerId": "amethyst_whelp",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ]
+    },
+    "amulet_of_agility": {
+      "id": "amulet_of_agility",
+      "family": "synergy_aura",
+      "handlerId": "amulet_of_agility",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "amulet_of_alchemy": {
+      "id": "amulet_of_alchemy",
+      "family": "synergy_aura",
+      "handlerId": "amulet_of_alchemy",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "amulet_of_darkness": {
+      "id": "amulet_of_darkness",
+      "family": "unique",
+      "handlerId": "amulet_of_darkness",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "amulet_of_feasting": {
+      "id": "amulet_of_feasting",
+      "family": "unique",
+      "handlerId": "amulet_of_feasting",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "amulet_of_fortune": {
+      "id": "amulet_of_fortune",
+      "family": "unique",
+      "handlerId": "amulet_of_fortune",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "amulet_of_life": {
+      "id": "amulet_of_life",
+      "family": "start_buff",
+      "handlerId": "amulet_of_life",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "amulet_of_light": {
+      "id": "amulet_of_light",
+      "family": "unique",
+      "handlerId": "amulet_of_light",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "amulet_of_steel": {
+      "id": "amulet_of_steel",
+      "family": "synergy_aura",
+      "handlerId": "amulet_of_steel",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "amulet_of_the_wild": {
+      "id": "amulet_of_the_wild",
+      "family": "unique",
+      "handlerId": "amulet_of_the_wild",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "angel_crystal": {
+      "id": "angel_crystal",
+      "family": "synergy_aura",
+      "handlerId": "angel_crystal",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "anvil": {
+      "id": "anvil",
+      "family": "unique",
+      "handlerId": "anvil",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreCombatStart"
+      ]
+    },
+    "arcane_boots": {
+      "id": "arcane_boots",
+      "family": "unique",
+      "handlerId": "arcane_boots",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "arcane_intellect": {
+      "id": "arcane_intellect",
+      "family": "unique",
+      "handlerId": "arcane_intellect",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "armored_power_puppy": {
+      "id": "armored_power_puppy",
+      "family": "unique",
+      "handlerId": "armored_power_puppy",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "armored_wisdom_puppy": {
+      "id": "armored_wisdom_puppy",
+      "family": "unique",
+      "handlerId": "armored_wisdom_puppy",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "artifact_stone_death": {
+      "id": "artifact_stone_death",
+      "family": "unique",
+      "handlerId": "artifact_stone_death",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "automanaton": {
+      "id": "automanaton",
+      "family": "on_hit",
+      "handlerId": "automanaton",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ]
+    },
+    "axe": {
+      "id": "axe",
+      "family": "on_hit",
+      "handlerId": "axe",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "badger_spirit": {
+      "id": "badger_spirit",
+      "family": "unique",
+      "handlerId": "badger_spirit",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "bag_of_giving": {
+      "id": "bag_of_giving",
+      "family": "unique",
+      "handlerId": "bag_of_giving",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "battery": {
+      "id": "battery",
+      "family": "unique",
+      "handlerId": "battery",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "bazooka": {
+      "id": "bazooka",
+      "family": "on_hit",
+      "handlerId": "bazooka",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ]
+    },
+    "berserker_bag": {
+      "id": "berserker_bag",
+      "family": "unique",
+      "handlerId": "berserker_bag",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "bewitchment": {
+      "id": "bewitchment",
+      "family": "unique",
+      "handlerId": "bewitchment",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "big_bloodthorne": {
+      "id": "big_bloodthorne",
+      "family": "on_hit",
+      "handlerId": "big_bloodthorne",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "poison_weapon",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "bionic_armor": {
+      "id": "bionic_armor",
+      "family": "synergy_aura",
+      "handlerId": "bionic_armor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "bismuth_cube": {
+      "id": "bismuth_cube",
+      "family": "unique",
+      "handlerId": "bismuth_cube",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "blood_manipulation": {
+      "id": "blood_manipulation",
+      "family": "unique",
+      "handlerId": "blood_manipulation",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "bomb": {
+      "id": "bomb",
+      "family": "basic_weapon",
+      "handlerId": "bomb",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "book_of_basics": {
+      "id": "book_of_basics",
+      "family": "unique",
+      "handlerId": "book_of_basics",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "book_of_darkness": {
+      "id": "book_of_darkness",
+      "family": "unique",
+      "handlerId": "book_of_darkness",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "book_of_ice": {
+      "id": "book_of_ice",
+      "family": "unique",
+      "handlerId": "book_of_ice",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "book_of_light": {
+      "id": "book_of_light",
+      "family": "unique",
+      "handlerId": "book_of_light",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "book_of_nature": {
+      "id": "book_of_nature",
+      "family": "unique",
+      "handlerId": "book_of_nature",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "boomerang": {
+      "id": "boomerang",
+      "family": "on_hit",
+      "handlerId": "boomerang",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "bowl_of_treats": {
+      "id": "bowl_of_treats",
+      "family": "custom_cd",
+      "handlerId": "bowl_of_treats",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "brass_knuckles": {
+      "id": "brass_knuckles",
+      "family": "on_hit",
+      "handlerId": "brass_knuckles",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ]
+    },
+    "broccoli": {
+      "id": "broccoli",
+      "family": "custom_cd",
+      "handlerId": "broccoli",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "broccoli_goobert": {
+      "id": "broccoli_goobert",
+      "family": "custom_cd",
+      "handlerId": "broccoli_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "broccotree": {
+      "id": "broccotree",
+      "family": "custom_cd",
+      "handlerId": "broccotree",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "burning_banner": {
+      "id": "burning_banner",
+      "family": "unique",
+      "handlerId": "burning_banner",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "burning_blade": {
+      "id": "burning_blade",
+      "family": "on_hit",
+      "handlerId": "burning_blade",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "burning_spikes": {
+      "id": "burning_spikes",
+      "family": "synergy_aura",
+      "handlerId": "burning_spikes",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "burning_sword": {
+      "id": "burning_sword",
+      "family": "on_hit",
+      "handlerId": "burning_sword",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "busted_blade": {
+      "id": "busted_blade",
+      "family": "unique",
+      "handlerId": "busted_blade",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "buy_the_holy_light": {
+      "id": "buy_the_holy_light",
+      "family": "unique",
+      "handlerId": "buy_the_holy_light",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "cap_of_brilliance": {
+      "id": "cap_of_brilliance",
+      "family": "synergy_aura",
+      "handlerId": "cap_of_brilliance",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "cat_spirit": {
+      "id": "cat_spirit",
+      "family": "unique",
+      "handlerId": "cat_spirit",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "cauldron": {
+      "id": "cauldron",
+      "family": "unique",
+      "handlerId": "cauldron",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "chainsaw": {
+      "id": "chainsaw",
+      "family": "on_hit",
+      "handlerId": "chainsaw",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "chain_whip": {
+      "id": "chain_whip",
+      "family": "on_hit",
+      "handlerId": "chain_whip",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "charge_splitter": {
+      "id": "charge_splitter",
+      "family": "unique",
+      "handlerId": "charge_splitter",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "cheese": {
+      "id": "cheese",
+      "family": "custom_cd",
+      "handlerId": "cheese",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "cheese_goobert": {
+      "id": "cheese_goobert",
+      "family": "custom_cd",
+      "handlerId": "cheese_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "chess_board": {
+      "id": "chess_board",
+      "family": "unique",
+      "handlerId": "chess_board",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": "noop",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "chess_master": {
+      "id": "chess_master",
+      "family": "unique",
+      "handlerId": "chess_master",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "chili_goobert": {
+      "id": "chili_goobert",
+      "family": "custom_cd",
+      "handlerId": "chili_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "chili_pepper": {
+      "id": "chili_pepper",
+      "family": "custom_cd",
+      "handlerId": "chili_pepper",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "chrome_cube": {
+      "id": "chrome_cube",
+      "family": "unique",
+      "handlerId": "chrome_cube",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "cog": {
+      "id": "cog",
+      "family": "unique",
+      "handlerId": "cog",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "cog_badge": {
+      "id": "cog_badge",
+      "family": "custom_cd",
+      "handlerId": "cog_badge",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "coil": {
+      "id": "coil",
+      "family": "unique",
+      "handlerId": "coil",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "con_trap_tron": {
+      "id": "con_trap_tron",
+      "family": "unique",
+      "handlerId": "con_trap_tron",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "courage_puppy": {
+      "id": "courage_puppy",
+      "family": "unique",
+      "handlerId": "courage_puppy",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart"
+      ]
+    },
+    "critical_poison": {
+      "id": "critical_poison",
+      "family": "unique",
+      "handlerId": "critical_poison",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "crow": {
+      "id": "crow",
+      "family": "unique",
+      "handlerId": "crow",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "cthulhu": {
+      "id": "cthulhu",
+      "family": "unique",
+      "handlerId": "cthulhu",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "cubert": {
+      "id": "cubert",
+      "family": "unique",
+      "handlerId": "cubert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "cupcake": {
+      "id": "cupcake",
+      "family": "custom_cd",
+      "handlerId": "cupcake",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "cupcake_dragon": {
+      "id": "cupcake_dragon",
+      "family": "on_hit",
+      "handlerId": "cupcake_dragon",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "cupcake_goobert": {
+      "id": "cupcake_goobert",
+      "family": "custom_cd",
+      "handlerId": "cupcake_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "cupcake_staff": {
+      "id": "cupcake_staff",
+      "family": "on_hit",
+      "handlerId": "cupcake_staff",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "daggerang": {
+      "id": "daggerang",
+      "family": "on_hit",
+      "handlerId": "daggerang",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "poison_weapon",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "dark_lantern": {
+      "id": "dark_lantern",
+      "family": "start_buff",
+      "handlerId": "dark_lantern",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "dark_ritual": {
+      "id": "dark_ritual",
+      "family": "unique",
+      "handlerId": "dark_ritual",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "death_lotus": {
+      "id": "death_lotus",
+      "family": "unique",
+      "handlerId": "death_lotus",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "deer_totem": {
+      "id": "deer_totem",
+      "family": "unique",
+      "handlerId": "deer_totem",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "devouring_sphere": {
+      "id": "devouring_sphere",
+      "family": "unique",
+      "handlerId": "devouring_sphere",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "dig_deeper": {
+      "id": "dig_deeper",
+      "family": "unique",
+      "handlerId": "dig_deeper",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "divine_potion": {
+      "id": "divine_potion",
+      "family": "food",
+      "handlerId": "divine_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion"
+      ]
+    },
+    "doom_cap": {
+      "id": "doom_cap",
+      "family": "custom_cd",
+      "handlerId": "doom_cap",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "double_axe": {
+      "id": "double_axe",
+      "family": "on_hit",
+      "handlerId": "double_axe",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "double_rainbow": {
+      "id": "double_rainbow",
+      "family": "unique",
+      "handlerId": "double_rainbow",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "draconic_orb": {
+      "id": "draconic_orb",
+      "family": "unique",
+      "handlerId": "draconic_orb",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "dragon_claws": {
+      "id": "dragon_claws",
+      "family": "pet_like",
+      "handlerId": "dragon_claws",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "pet_strike",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "dragon_knight": {
+      "id": "dragon_knight",
+      "family": "on_hit",
+      "handlerId": "dragon_knight",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ]
+    },
+    "dragon_nest": {
+      "id": "dragon_nest",
+      "family": "synergy_aura",
+      "handlerId": "dragon_nest",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "dragonscale_armor": {
+      "id": "dragonscale_armor",
+      "family": "pet_like",
+      "handlerId": "dragonscale_armor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "pet_strike",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "dragon_set": {
+      "id": "dragon_set",
+      "family": "pet_like",
+      "handlerId": "dragon_set",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "N",
+      "template": "pet_strike",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "dragonskin_boots": {
+      "id": "dragonskin_boots",
+      "family": "pet_like",
+      "handlerId": "dragonskin_boots",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "pet_strike",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "dual_wielding": {
+      "id": "dual_wielding",
+      "family": "unique",
+      "handlerId": "dual_wielding",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "eat_o_matic": {
+      "id": "eat_o_matic",
+      "family": "unique",
+      "handlerId": "eat_o_matic",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "echoing_battlecry": {
+      "id": "echoing_battlecry",
+      "family": "unique",
+      "handlerId": "echoing_battlecry",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "electric_torch": {
+      "id": "electric_torch",
+      "family": "unique",
+      "handlerId": "electric_torch",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "emerald_egg": {
+      "id": "emerald_egg",
+      "family": "unique",
+      "handlerId": "emerald_egg",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "emerald_whelp": {
+      "id": "emerald_whelp",
+      "family": "on_hit",
+      "handlerId": "emerald_whelp",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "J",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ]
+    },
+    "enchanted_weapons": {
+      "id": "enchanted_weapons",
+      "family": "unique",
+      "handlerId": "enchanted_weapons",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "energy_conversion": {
+      "id": "energy_conversion",
+      "family": "unique",
+      "handlerId": "energy_conversion",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "engineer_box": {
+      "id": "engineer_box",
+      "family": "unique",
+      "handlerId": "engineer_box",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "everburning": {
+      "id": "everburning",
+      "family": "unique",
+      "handlerId": "everburning",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "evil_hat": {
+      "id": "evil_hat",
+      "family": "unique",
+      "handlerId": "evil_hat",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "extra_angy": {
+      "id": "extra_angy",
+      "family": "unique",
+      "handlerId": "extra_angy",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "extra_bags": {
+      "id": "extra_bags",
+      "family": "unique",
+      "handlerId": "extra_bags",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "false_life": {
+      "id": "false_life",
+      "family": "unique",
+      "handlerId": "false_life",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "fedora": {
+      "id": "fedora",
+      "family": "synergy_aura",
+      "handlerId": "fedora",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "fire_pit": {
+      "id": "fire_pit",
+      "family": "unique",
+      "handlerId": "fire_pit",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreCombatStart"
+      ]
+    },
+    "fire_shelly": {
+      "id": "fire_shelly",
+      "family": "custom_cd",
+      "handlerId": "fire_shelly",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "flame": {
+      "id": "flame",
+      "family": "unique",
+      "handlerId": "flame",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "flame_badge": {
+      "id": "flame_badge",
+      "family": "unique",
+      "handlerId": "flame_badge",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "flame_whip": {
+      "id": "flame_whip",
+      "family": "on_hit",
+      "handlerId": "flame_whip",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "forest_dragon": {
+      "id": "forest_dragon",
+      "family": "on_hit",
+      "handlerId": "forest_dragon",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "forging_hammer": {
+      "id": "forging_hammer",
+      "family": "weapon_base",
+      "handlerId": "forging_hammer",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "fortunas_kiss": {
+      "id": "fortunas_kiss",
+      "family": "unique",
+      "handlerId": "fortunas_kiss",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "friendly_fire": {
+      "id": "friendly_fire",
+      "family": "unique",
+      "handlerId": "friendly_fire",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "frog_prince": {
+      "id": "frog_prince",
+      "family": "unique",
+      "handlerId": "frog_prince",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "frostbite": {
+      "id": "frostbite",
+      "family": "on_hit",
+      "handlerId": "frostbite",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "frozen_buckler": {
+      "id": "frozen_buckler",
+      "family": "unique",
+      "handlerId": "frozen_buckler",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ]
+    },
+    "frozen_flame": {
+      "id": "frozen_flame",
+      "family": "unique",
+      "handlerId": "frozen_flame",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "full_body_protection": {
+      "id": "full_body_protection",
+      "family": "unique",
+      "handlerId": "full_body_protection",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "generator": {
+      "id": "generator",
+      "family": "unique",
+      "handlerId": "generator",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "ghost": {
+      "id": "ghost",
+      "family": "unique",
+      "handlerId": "ghost",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "gigawatz": {
+      "id": "gigawatz",
+      "family": "unique",
+      "handlerId": "gigawatz",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "girl_power": {
+      "id": "girl_power",
+      "family": "unique",
+      "handlerId": "girl_power",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "gold_armor": {
+      "id": "gold_armor",
+      "family": "start_buff",
+      "handlerId": "gold_armor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "gold_cube": {
+      "id": "gold_cube",
+      "family": "unique",
+      "handlerId": "gold_cube",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "halberd": {
+      "id": "halberd",
+      "family": "on_hit",
+      "handlerId": "halberd",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ]
+    },
+    "hardwood": {
+      "id": "hardwood",
+      "family": "synergy_aura",
+      "handlerId": "hardwood",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "hawk_rune": {
+      "id": "hawk_rune",
+      "family": "custom_cd",
+      "handlerId": "hawk_rune",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "heart_of_the_cards": {
+      "id": "heart_of_the_cards",
+      "family": "unique",
+      "handlerId": "heart_of_the_cards",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "heart_shield": {
+      "id": "heart_shield",
+      "family": "unique",
+      "handlerId": "heart_shield",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ]
+    },
+    "heavy_drinking": {
+      "id": "heavy_drinking",
+      "family": "unique",
+      "handlerId": "heavy_drinking",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "hedgehog": {
+      "id": "hedgehog",
+      "family": "unique",
+      "handlerId": "hedgehog",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "hero_shield": {
+      "id": "hero_shield",
+      "family": "synergy_aura",
+      "handlerId": "hero_shield",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "hogus_bogus": {
+      "id": "hogus_bogus",
+      "family": "unique",
+      "handlerId": "hogus_bogus",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "trigger",
+        "onPrepare"
+      ]
+    },
+    "holdall": {
+      "id": "holdall",
+      "family": "unique",
+      "handlerId": "holdall",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "holy_collar": {
+      "id": "holy_collar",
+      "family": "unique",
+      "handlerId": "holy_collar",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "hyper_hedgehog": {
+      "id": "hyper_hedgehog",
+      "family": "custom_cd",
+      "handlerId": "hyper_hedgehog",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "ice_armor": {
+      "id": "ice_armor",
+      "family": "unique",
+      "handlerId": "ice_armor",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "ice_dragon": {
+      "id": "ice_dragon",
+      "family": "on_hit",
+      "handlerId": "ice_dragon",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "ice_flower": {
+      "id": "ice_flower",
+      "family": "unique",
+      "handlerId": "ice_flower",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "inner_power": {
+      "id": "inner_power",
+      "family": "synergy_aura",
+      "handlerId": "inner_power",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "investment_opportunity": {
+      "id": "investment_opportunity",
+      "family": "unique",
+      "handlerId": "investment_opportunity",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "just_stats": {
+      "id": "just_stats",
+      "family": "start_buff",
+      "handlerId": "just_stats",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "jynx_staff": {
+      "id": "jynx_staff",
+      "family": "on_hit",
+      "handlerId": "jynx_staff",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "katana": {
+      "id": "katana",
+      "family": "on_hit",
+      "handlerId": "katana",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "king_crown": {
+      "id": "king_crown",
+      "family": "custom_cd",
+      "handlerId": "king_crown",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "king_goobert": {
+      "id": "king_goobert",
+      "family": "pet_like",
+      "handlerId": "king_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "pet_strike",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "king_of_the_bling": {
+      "id": "king_of_the_bling",
+      "family": "unique",
+      "handlerId": "king_of_the_bling",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "knife_to_meet_you": {
+      "id": "knife_to_meet_you",
+      "family": "unique",
+      "handlerId": "knife_to_meet_you",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "laboratory": {
+      "id": "laboratory",
+      "family": "unique",
+      "handlerId": "laboratory",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart",
+        "trigger"
+      ]
+    },
+    "leaf_badge": {
+      "id": "leaf_badge",
+      "family": "unique",
+      "handlerId": "leaf_badge",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "level_up": {
+      "id": "level_up",
+      "family": "unique",
+      "handlerId": "level_up",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "light_flower": {
+      "id": "light_flower",
+      "family": "unique",
+      "handlerId": "light_flower",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "lightning_potion": {
+      "id": "lightning_potion",
+      "family": "food",
+      "handlerId": "lightning_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onTriggerPotion"
+      ]
+    },
+    "lightning_staff": {
+      "id": "lightning_staff",
+      "family": "on_hit",
+      "handlerId": "lightning_staff",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "little_mimic": {
+      "id": "little_mimic",
+      "family": "unique",
+      "handlerId": "little_mimic",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "long_spear": {
+      "id": "long_spear",
+      "family": "on_hit",
+      "handlerId": "long_spear",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "lucky_cat": {
+      "id": "lucky_cat",
+      "family": "unique",
+      "handlerId": "lucky_cat",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "lucky_shortbow": {
+      "id": "lucky_shortbow",
+      "family": "on_hit",
+      "handlerId": "lucky_shortbow",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "poison_weapon",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "mage_hat": {
+      "id": "mage_hat",
+      "family": "unique",
+      "handlerId": "mage_hat",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "magic_badge": {
+      "id": "magic_badge",
+      "family": "synergy_aura",
+      "handlerId": "magic_badge",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "magic_collar": {
+      "id": "magic_collar",
+      "family": "unique",
+      "handlerId": "magic_collar",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "magic_mirror": {
+      "id": "magic_mirror",
+      "family": "unique",
+      "handlerId": "magic_mirror",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "magic_ring": {
+      "id": "magic_ring",
+      "family": "synergy_aura",
+      "handlerId": "magic_ring",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "magitecc_armor": {
+      "id": "magitecc_armor",
+      "family": "unique",
+      "handlerId": "magitecc_armor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "mana_crystal": {
+      "id": "mana_crystal",
+      "family": "custom_cd",
+      "handlerId": "mana_crystal",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "mana_mastery": {
+      "id": "mana_mastery",
+      "family": "unique",
+      "handlerId": "mana_mastery",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart",
+        "onPrepare"
+      ]
+    },
+    "mananana": {
+      "id": "mananana",
+      "family": "custom_cd",
+      "handlerId": "mananana",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "markswoman": {
+      "id": "markswoman",
+      "family": "unique",
+      "handlerId": "markswoman",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "mecha_bat": {
+      "id": "mecha_bat",
+      "family": "unique",
+      "handlerId": "mecha_bat",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "mega_clover": {
+      "id": "mega_clover",
+      "family": "unique",
+      "handlerId": "mega_clover",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "mercury_elemental": {
+      "id": "mercury_elemental",
+      "family": "unique",
+      "handlerId": "mercury_elemental",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "miss_fortune": {
+      "id": "miss_fortune",
+      "family": "custom_cd",
+      "handlerId": "miss_fortune",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "molten_dagger": {
+      "id": "molten_dagger",
+      "family": "on_hit",
+      "handlerId": "molten_dagger",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "poison_weapon",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "molten_greatsword": {
+      "id": "molten_greatsword",
+      "family": "on_hit",
+      "handlerId": "molten_greatsword",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "molten_spear": {
+      "id": "molten_spear",
+      "family": "on_hit",
+      "handlerId": "molten_spear",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ]
+    },
+    "molten_spear2": {
+      "id": "molten_spear2",
+      "family": "on_hit",
+      "handlerId": "molten_spear2",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ]
+    },
+    "moon_armor": {
+      "id": "moon_armor",
+      "family": "unique",
+      "handlerId": "moon_armor",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "more_stats": {
+      "id": "more_stats",
+      "family": "synergy_aura",
+      "handlerId": "more_stats",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "mrs_struggles": {
+      "id": "mrs_struggles",
+      "family": "unique",
+      "handlerId": "mrs_struggles",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "mushroom_farm": {
+      "id": "mushroom_farm",
+      "family": "synergy_aura",
+      "handlerId": "mushroom_farm",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "no_rush_please": {
+      "id": "no_rush_please",
+      "family": "unique",
+      "handlerId": "no_rush_please",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart",
+        "onPrepare"
+      ]
+    },
+    "null_blade": {
+      "id": "null_blade",
+      "family": "on_hit",
+      "handlerId": "null_blade",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "obsidian_dragon": {
+      "id": "obsidian_dragon",
+      "family": "weapon_base",
+      "handlerId": "obsidian_dragon",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "oil_lamp": {
+      "id": "oil_lamp",
+      "family": "synergy_aura",
+      "handlerId": "oil_lamp",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "onion_cutter": {
+      "id": "onion_cutter",
+      "family": "on_hit",
+      "handlerId": "onion_cutter",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "owl_spirit": {
+      "id": "owl_spirit",
+      "family": "unique",
+      "handlerId": "owl_spirit",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "paradise_birb": {
+      "id": "paradise_birb",
+      "family": "unique",
+      "handlerId": "paradise_birb",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "perpetuum_mobile": {
+      "id": "perpetuum_mobile",
+      "family": "unique",
+      "handlerId": "perpetuum_mobile",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "phoenix": {
+      "id": "phoenix",
+      "family": "weapon_base",
+      "handlerId": "phoenix",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "phoenix2": {
+      "id": "phoenix2",
+      "family": "unique",
+      "handlerId": "phoenix2",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "piggy_of_riches": {
+      "id": "piggy_of_riches",
+      "family": "start_buff",
+      "handlerId": "piggy_of_riches",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "piggy_pinata": {
+      "id": "piggy_pinata",
+      "family": "unique",
+      "handlerId": "piggy_pinata",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "pine_protector": {
+      "id": "pine_protector",
+      "family": "unique",
+      "handlerId": "pine_protector",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "plastic_cube": {
+      "id": "plastic_cube",
+      "family": "custom_cd",
+      "handlerId": "plastic_cube",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "poison_frog": {
+      "id": "poison_frog",
+      "family": "unique",
+      "handlerId": "poison_frog",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "poison_grenade": {
+      "id": "poison_grenade",
+      "family": "unique",
+      "handlerId": "poison_grenade",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "poison_shortbow": {
+      "id": "poison_shortbow",
+      "family": "on_hit",
+      "handlerId": "poison_shortbow",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "poison_weapon",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "poison_spear": {
+      "id": "poison_spear",
+      "family": "weapon_base",
+      "handlerId": "poison_spear",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_late",
+        "onPrepare"
+      ]
+    },
+    "pop": {
+      "id": "pop",
+      "family": "weapon_base",
+      "handlerId": "pop",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "portable_altar": {
+      "id": "portable_altar",
+      "family": "synergy_aura",
+      "handlerId": "portable_altar",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "pot": {
+      "id": "pot",
+      "family": "unique",
+      "handlerId": "pot",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "power_of_the_moon": {
+      "id": "power_of_the_moon",
+      "family": "unique",
+      "handlerId": "power_of_the_moon",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPostCombatStart",
+        "onPrepare"
+      ]
+    },
+    "power_puppy": {
+      "id": "power_puppy",
+      "family": "unique",
+      "handlerId": "power_puppy",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "prismatic_sword": {
+      "id": "prismatic_sword",
+      "family": "on_hit",
+      "handlerId": "prismatic_sword",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ]
+    },
+    "prismatic_wand": {
+      "id": "prismatic_wand",
+      "family": "custom_cd",
+      "handlerId": "prismatic_wand",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "puzzle_badge": {
+      "id": "puzzle_badge",
+      "family": "unique",
+      "handlerId": "puzzle_badge",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "puzzlebag_j": {
+      "id": "puzzlebag_j",
+      "family": "unique",
+      "handlerId": "puzzlebag_j",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "puzzlebag_l": {
+      "id": "puzzlebag_l",
+      "family": "synergy_aura",
+      "handlerId": "puzzlebag_l",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "puzzlebag_s": {
+      "id": "puzzlebag_s",
+      "family": "unique",
+      "handlerId": "puzzlebag_s",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "puzzlebag_t": {
+      "id": "puzzlebag_t",
+      "family": "unique",
+      "handlerId": "puzzlebag_t",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "puzzlebag_z": {
+      "id": "puzzlebag_z",
+      "family": "unique",
+      "handlerId": "puzzlebag_z",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "puzzlebox": {
+      "id": "puzzlebox",
+      "family": "unique",
+      "handlerId": "puzzlebox",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "rainbow_badge": {
+      "id": "rainbow_badge",
+      "family": "custom_cd",
+      "handlerId": "rainbow_badge",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "rainbow_goobert_adventurer": {
+      "id": "rainbow_goobert_adventurer",
+      "family": "custom_cd",
+      "handlerId": "rainbow_goobert_adventurer",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "rainbow_goobert_berserker": {
+      "id": "rainbow_goobert_berserker",
+      "family": "custom_cd",
+      "handlerId": "rainbow_goobert_berserker",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "rainbow_goobert_engineer": {
+      "id": "rainbow_goobert_engineer",
+      "family": "custom_cd",
+      "handlerId": "rainbow_goobert_engineer",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "rainbow_goobert_mage": {
+      "id": "rainbow_goobert_mage",
+      "family": "custom_cd",
+      "handlerId": "rainbow_goobert_mage",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "rainbow_goobert_pyromancer": {
+      "id": "rainbow_goobert_pyromancer",
+      "family": "custom_cd",
+      "handlerId": "rainbow_goobert_pyromancer",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "rainbow_orb": {
+      "id": "rainbow_orb",
+      "family": "synergy_aura",
+      "handlerId": "rainbow_orb",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "rainbow_potion": {
+      "id": "rainbow_potion",
+      "family": "start_buff",
+      "handlerId": "rainbow_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onTriggerPotion"
+      ]
+    },
+    "rat": {
+      "id": "rat",
+      "family": "custom_cd",
+      "handlerId": "rat",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "rat_chef": {
+      "id": "rat_chef",
+      "family": "synergy_aura",
+      "handlerId": "rat_chef",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "recombobulator": {
+      "id": "recombobulator",
+      "family": "custom_cd",
+      "handlerId": "recombobulator",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "relic_case": {
+      "id": "relic_case",
+      "family": "custom_cd",
+      "handlerId": "relic_case",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "repeater": {
+      "id": "repeater",
+      "family": "custom_cd",
+      "handlerId": "repeater",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "robodog": {
+      "id": "robodog",
+      "family": "unique",
+      "handlerId": "robodog",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "rope": {
+      "id": "rope",
+      "family": "unique",
+      "handlerId": "rope",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "sandbag": {
+      "id": "sandbag",
+      "family": "unique",
+      "handlerId": "sandbag",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart",
+        "onPrepare"
+      ]
+    },
+    "sapphire_egg": {
+      "id": "sapphire_egg",
+      "family": "unique",
+      "handlerId": "sapphire_egg",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "sapphire_whelp": {
+      "id": "sapphire_whelp",
+      "family": "on_hit",
+      "handlerId": "sapphire_whelp",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ]
+    },
+    "scale": {
+      "id": "scale",
+      "family": "unique",
+      "handlerId": "scale",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "scholar_bag": {
+      "id": "scholar_bag",
+      "family": "synergy_aura",
+      "handlerId": "scholar_bag",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "scissorswords": {
+      "id": "scissorswords",
+      "family": "on_hit",
+      "handlerId": "scissorswords",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage"
+      ]
+    },
+    "seal_the_deal": {
+      "id": "seal_the_deal",
+      "family": "custom_cd",
+      "handlerId": "seal_the_deal",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "serpent_staff": {
+      "id": "serpent_staff",
+      "family": "on_hit",
+      "handlerId": "serpent_staff",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage",
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "sewing_case": {
+      "id": "sewing_case",
+      "family": "unique",
+      "handlerId": "sewing_case",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "shaman_mask": {
+      "id": "shaman_mask",
+      "family": "unique",
+      "handlerId": "shaman_mask",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "shell_totem": {
+      "id": "shell_totem",
+      "family": "unique",
+      "handlerId": "shell_totem",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "shelly": {
+      "id": "shelly",
+      "family": "unique",
+      "handlerId": "shelly",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "shepherds_crook": {
+      "id": "shepherds_crook",
+      "family": "synergy_aura",
+      "handlerId": "shepherds_crook",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "shielded": {
+      "id": "shielded",
+      "family": "unique",
+      "handlerId": "shielded",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "shiny_mantle": {
+      "id": "shiny_mantle",
+      "family": "unique",
+      "handlerId": "shiny_mantle",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "shiny_shell": {
+      "id": "shiny_shell",
+      "family": "custom_cd",
+      "handlerId": "shiny_shell",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "skull_badge": {
+      "id": "skull_badge",
+      "family": "custom_cd",
+      "handlerId": "skull_badge",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "slice_of_bread": {
+      "id": "slice_of_bread",
+      "family": "custom_cd",
+      "handlerId": "slice_of_bread",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "slice_of_toast": {
+      "id": "slice_of_toast",
+      "family": "custom_cd",
+      "handlerId": "slice_of_toast",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "slime_time": {
+      "id": "slime_time",
+      "family": "custom_cd",
+      "handlerId": "slime_time",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "sloth": {
+      "id": "sloth",
+      "family": "synergy_aura",
+      "handlerId": "sloth",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "trigger",
+        "onPrepare"
+      ]
+    },
+    "smelly_barrier": {
+      "id": "smelly_barrier",
+      "family": "unique",
+      "handlerId": "smelly_barrier",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "smithing_for_dummies": {
+      "id": "smithing_for_dummies",
+      "family": "synergy_aura",
+      "handlerId": "smithing_for_dummies",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "snake": {
+      "id": "snake",
+      "family": "start_buff",
+      "handlerId": "snake",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "snowball": {
+      "id": "snowball",
+      "family": "start_buff",
+      "handlerId": "snowball",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "snowcake": {
+      "id": "snowcake",
+      "family": "custom_cd",
+      "handlerId": "snowcake",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "snowmaster": {
+      "id": "snowmaster",
+      "family": "unique",
+      "handlerId": "snowmaster",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "snow_stick": {
+      "id": "snow_stick",
+      "family": "on_hit",
+      "handlerId": "snow_stick",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "solaris": {
+      "id": "solaris",
+      "family": "unique",
+      "handlerId": "solaris",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "speak_with_animals": {
+      "id": "speak_with_animals",
+      "family": "custom_cd",
+      "handlerId": "speak_with_animals",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "spell_scroll_dark": {
+      "id": "spell_scroll_dark",
+      "family": "unique",
+      "handlerId": "spell_scroll_dark",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "spell_scroll_frostbolt": {
+      "id": "spell_scroll_frostbolt",
+      "family": "unique",
+      "handlerId": "spell_scroll_frostbolt",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "spell_scroll_ice": {
+      "id": "spell_scroll_ice",
+      "family": "unique",
+      "handlerId": "spell_scroll_ice",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "spell_scroll_light": {
+      "id": "spell_scroll_light",
+      "family": "unique",
+      "handlerId": "spell_scroll_light",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "spell_scroll_nature": {
+      "id": "spell_scroll_nature",
+      "family": "unique",
+      "handlerId": "spell_scroll_nature",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "spicy_banana": {
+      "id": "spicy_banana",
+      "family": "food",
+      "handlerId": "spicy_banana",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "spiked_collar": {
+      "id": "spiked_collar",
+      "family": "unique",
+      "handlerId": "spiked_collar",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "spiked_staff": {
+      "id": "spiked_staff",
+      "family": "on_hit",
+      "handlerId": "spiked_staff",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "spiked_wall": {
+      "id": "spiked_wall",
+      "family": "unique",
+      "handlerId": "spiked_wall",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "spin_to_win": {
+      "id": "spin_to_win",
+      "family": "custom_cd",
+      "handlerId": "spin_to_win",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "spirit_bells": {
+      "id": "spirit_bells",
+      "family": "custom_cd",
+      "handlerId": "spirit_bells",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "spring_loader": {
+      "id": "spring_loader",
+      "family": "synergy_aura",
+      "handlerId": "spring_loader",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "squirrel": {
+      "id": "squirrel",
+      "family": "custom_cd",
+      "handlerId": "squirrel",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "squirrel_archer": {
+      "id": "squirrel_archer",
+      "family": "on_hit",
+      "handlerId": "squirrel_archer",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreDealDamage_early"
+      ]
+    },
+    "staff_of_fire": {
+      "id": "staff_of_fire",
+      "family": "on_hit",
+      "handlerId": "staff_of_fire",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "star_of_courage": {
+      "id": "star_of_courage",
+      "family": "unique",
+      "handlerId": "star_of_courage",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "steel_dragon": {
+      "id": "steel_dragon",
+      "family": "synergy_aura",
+      "handlerId": "steel_dragon",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart",
+        "onPrepare"
+      ]
+    },
+    "stone_armor": {
+      "id": "stone_armor",
+      "family": "synergy_aura",
+      "handlerId": "stone_armor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "stone_badge": {
+      "id": "stone_badge",
+      "family": "custom_cd",
+      "handlerId": "stone_badge",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "stoned": {
+      "id": "stoned",
+      "family": "unique",
+      "handlerId": "stoned",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "stone_gloves": {
+      "id": "stone_gloves",
+      "family": "synergy_aura",
+      "handlerId": "stone_gloves",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "stone_golem": {
+      "id": "stone_golem",
+      "family": "on_hit",
+      "handlerId": "stone_golem",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreCombatStart",
+        "onDealtDamage",
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "stone_shoes": {
+      "id": "stone_shoes",
+      "family": "unique",
+      "handlerId": "stone_shoes",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "strong_divine_potion": {
+      "id": "strong_divine_potion",
+      "family": "food",
+      "handlerId": "strong_divine_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion"
+      ]
+    },
+    "strong_vampiric_potion": {
+      "id": "strong_vampiric_potion",
+      "family": "food",
+      "handlerId": "strong_vampiric_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion"
+      ]
+    },
+    "sun_armor": {
+      "id": "sun_armor",
+      "family": "start_buff",
+      "handlerId": "sun_armor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "sun_shield": {
+      "id": "sun_shield",
+      "family": "unique",
+      "handlerId": "sun_shield",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ]
+    },
+    "tesla_coil": {
+      "id": "tesla_coil",
+      "family": "unique",
+      "handlerId": "tesla_coil",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "thornbloom": {
+      "id": "thornbloom",
+      "family": "on_hit",
+      "handlerId": "thornbloom",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "thornburst": {
+      "id": "thornburst",
+      "family": "unique",
+      "handlerId": "thornburst",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "thorn_elemental": {
+      "id": "thorn_elemental",
+      "family": "unique",
+      "handlerId": "thorn_elemental",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "thorn_shortbow": {
+      "id": "thorn_shortbow",
+      "family": "on_hit",
+      "handlerId": "thorn_shortbow",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "poison_weapon",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage"
+      ]
+    },
+    "thors_hammer": {
+      "id": "thors_hammer",
+      "family": "on_hit",
+      "handlerId": "thors_hammer",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage"
+      ]
+    },
+    "thunder_drake": {
+      "id": "thunder_drake",
+      "family": "on_hit",
+      "handlerId": "thunder_drake",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ]
+    },
+    "time_dilator": {
+      "id": "time_dilator",
+      "family": "unique",
+      "handlerId": "time_dilator",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "time_melting": {
+      "id": "time_melting",
+      "family": "synergy_aura",
+      "handlerId": "time_melting",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "toad": {
+      "id": "toad",
+      "family": "unique",
+      "handlerId": "toad",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "toast_goobert": {
+      "id": "toast_goobert",
+      "family": "custom_cd",
+      "handlerId": "toast_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "toolbox": {
+      "id": "toolbox",
+      "family": "synergy_aura",
+      "handlerId": "toolbox",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "turtle": {
+      "id": "turtle",
+      "family": "unique",
+      "handlerId": "turtle",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart",
+        "onPrepare"
+      ]
+    },
+    "twine": {
+      "id": "twine",
+      "family": "unique",
+      "handlerId": "twine",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "twine_badge": {
+      "id": "twine_badge",
+      "family": "unique",
+      "handlerId": "twine_badge",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "ukulele": {
+      "id": "ukulele",
+      "family": "unique",
+      "handlerId": "ukulele",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "ultima": {
+      "id": "ultima",
+      "family": "unique",
+      "handlerId": "ultima",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "uniquely_unique": {
+      "id": "uniquely_unique",
+      "family": "unique",
+      "handlerId": "uniquely_unique",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "vampiric_collar": {
+      "id": "vampiric_collar",
+      "family": "unique",
+      "handlerId": "vampiric_collar",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "vampiric_potion": {
+      "id": "vampiric_potion",
+      "family": "food",
+      "handlerId": "vampiric_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion"
+      ]
+    },
+    "vineweave_basket": {
+      "id": "vineweave_basket",
+      "family": "unique",
+      "handlerId": "vineweave_basket",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "wand": {
+      "id": "wand",
+      "family": "custom_cd",
+      "handlerId": "wand",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "wand_of_dissonance": {
+      "id": "wand_of_dissonance",
+      "family": "unique",
+      "handlerId": "wand_of_dissonance",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "war_scythe": {
+      "id": "war_scythe",
+      "family": "on_hit",
+      "handlerId": "war_scythe",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "water_elemental": {
+      "id": "water_elemental",
+      "family": "on_hit",
+      "handlerId": "water_elemental",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ]
+    },
+    "whetstone3": {
+      "id": "whetstone3",
+      "family": "unique",
+      "handlerId": "whetstone3",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "winged_boots": {
+      "id": "winged_boots",
+      "family": "unique",
+      "handlerId": "winged_boots",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "wisdom_puppy": {
+      "id": "wisdom_puppy",
+      "family": "unique",
+      "handlerId": "wisdom_puppy",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "wisp": {
+      "id": "wisp",
+      "family": "custom_cd",
+      "handlerId": "wisp",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "wolf_badge": {
+      "id": "wolf_badge",
+      "family": "unique",
+      "handlerId": "wolf_badge",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "wolf_emblem": {
+      "id": "wolf_emblem",
+      "family": "unique",
+      "handlerId": "wolf_emblem",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "wrench": {
+      "id": "wrench",
+      "family": "on_hit",
+      "handlerId": "wrench",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage"
+      ]
+    },
+    "falcon_blade": {
+      "id": "falcon_blade",
+      "family": "synergy_aura",
+      "handlerId": "falcon_blade",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "fancy_fencing_rapier": {
+      "id": "fancy_fencing_rapier",
+      "family": "on_hit",
+      "handlerId": "fancy_fencing_rapier",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage"
+      ]
+    },
+    "fanfare": {
+      "id": "fanfare",
+      "family": "unique",
+      "handlerId": "fanfare",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "fanny_pack": {
+      "id": "fanny_pack",
+      "family": "unique",
+      "handlerId": "fanny_pack",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "flute": {
+      "id": "flute",
+      "family": "unique",
+      "handlerId": "flute",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "fly_agaric": {
+      "id": "fly_agaric",
+      "family": "custom_cd",
+      "handlerId": "fly_agaric",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "garlic": {
+      "id": "garlic",
+      "family": "custom_cd",
+      "handlerId": "garlic",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "amethyst": {
+      "id": "amethyst",
+      "family": "custom_cd",
+      "handlerId": "amethyst",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "corrupted_crystal": {
+      "id": "corrupted_crystal",
+      "family": "custom_cd",
+      "handlerId": "corrupted_crystal",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "emerald": {
+      "id": "emerald",
+      "family": "custom_cd",
+      "handlerId": "emerald",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "lump_of_coal": {
+      "id": "lump_of_coal",
+      "family": "custom_cd",
+      "handlerId": "lump_of_coal",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "K",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "ruby": {
+      "id": "ruby",
+      "family": "custom_cd",
+      "handlerId": "ruby",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "sapphire": {
+      "id": "sapphire",
+      "family": "custom_cd",
+      "handlerId": "sapphire",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "gingerbread_man": {
+      "id": "gingerbread_man",
+      "family": "synergy_aura",
+      "handlerId": "gingerbread_man",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "gloves_of_haste": {
+      "id": "gloves_of_haste",
+      "family": "synergy_aura",
+      "handlerId": "gloves_of_haste",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "goobert": {
+      "id": "goobert",
+      "family": "pet_like",
+      "handlerId": "goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "pet_strike",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "greatsword": {
+      "id": "greatsword",
+      "family": "weapon_base",
+      "handlerId": "greatsword",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "hammer": {
+      "id": "hammer",
+      "family": "on_hit",
+      "handlerId": "hammer",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage"
+      ]
+    },
+    "healing_herbs": {
+      "id": "healing_herbs",
+      "family": "start_buff",
+      "handlerId": "healing_herbs",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "health_potion": {
+      "id": "health_potion",
+      "family": "food",
+      "handlerId": "health_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion",
+        "onDamaged"
+      ]
+    },
+    "heart_container": {
+      "id": "heart_container",
+      "family": "unique",
+      "handlerId": "heart_container",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "heart_of_darkness": {
+      "id": "heart_of_darkness",
+      "family": "unique",
+      "handlerId": "heart_of_darkness",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "heroic_potion": {
+      "id": "heroic_potion",
+      "family": "food",
+      "handlerId": "heroic_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion"
+      ]
+    },
+    "hero_longsword": {
+      "id": "hero_longsword",
+      "family": "synergy_aura",
+      "handlerId": "hero_longsword",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "hero_sword": {
+      "id": "hero_sword",
+      "family": "synergy_aura",
+      "handlerId": "hero_sword",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "holy_armor": {
+      "id": "holy_armor",
+      "family": "start_buff",
+      "handlerId": "holy_armor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "holy_spear": {
+      "id": "holy_spear",
+      "family": "weapon_base",
+      "handlerId": "holy_spear",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_late",
+        "onPrepare"
+      ]
+    },
+    "hungry_blade": {
+      "id": "hungry_blade",
+      "family": "start_buff",
+      "handlerId": "hungry_blade",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "jynx_torquilla": {
+      "id": "jynx_torquilla",
+      "family": "unique",
+      "handlerId": "jynx_torquilla",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "leather_armor": {
+      "id": "leather_armor",
+      "family": "unique",
+      "handlerId": "leather_armor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ]
+    },
+    "leather_boots": {
+      "id": "leather_boots",
+      "family": "unique",
+      "handlerId": "leather_boots",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "leather_helm": {
+      "id": "leather_helm",
+      "family": "unique",
+      "handlerId": "leather_helm",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ]
+    },
+    "light_goobert": {
+      "id": "light_goobert",
+      "family": "pet_like",
+      "handlerId": "light_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "pet_strike",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "lightsaber": {
+      "id": "lightsaber",
+      "family": "weapon_base",
+      "handlerId": "lightsaber",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "lucky_bow": {
+      "id": "lucky_bow",
+      "family": "unique",
+      "handlerId": "lucky_bow",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "lucky_clover": {
+      "id": "lucky_clover",
+      "family": "unique",
+      "handlerId": "lucky_clover",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": null,
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "lucky_piggy": {
+      "id": "lucky_piggy",
+      "family": "synergy_aura",
+      "handlerId": "lucky_piggy",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "magic_staff": {
+      "id": "magic_staff",
+      "family": "on_hit",
+      "handlerId": "magic_staff",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "magic_torch": {
+      "id": "magic_torch",
+      "family": "on_hit",
+      "handlerId": "magic_torch",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "mana_orb": {
+      "id": "mana_orb",
+      "family": "unique",
+      "handlerId": "mana_orb",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "mana_potion": {
+      "id": "mana_potion",
+      "family": "food",
+      "handlerId": "mana_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion",
+        "onDamaged"
+      ]
+    },
+    "manathirst": {
+      "id": "manathirst",
+      "family": "on_hit",
+      "handlerId": "manathirst",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ]
+    },
+    "moon_shield": {
+      "id": "moon_shield",
+      "family": "unique",
+      "handlerId": "moon_shield",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ]
+    },
+    "mr_struggles": {
+      "id": "mr_struggles",
+      "family": "unique",
+      "handlerId": "mr_struggles",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "pan": {
+      "id": "pan",
+      "family": "weapon_base",
+      "handlerId": "pan",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreCombatStart"
+      ]
+    },
+    "pandamonium": {
+      "id": "pandamonium",
+      "family": "weapon_base",
+      "handlerId": "pandamonium",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "pestilence_flask": {
+      "id": "pestilence_flask",
+      "family": "food",
+      "handlerId": "pestilence_flask",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion"
+      ]
+    },
+    "piercing_arrow": {
+      "id": "piercing_arrow",
+      "family": "unique",
+      "handlerId": "piercing_arrow",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "piggybank": {
+      "id": "piggybank",
+      "family": "start_buff",
+      "handlerId": "piggybank",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "pineapple": {
+      "id": "pineapple",
+      "family": "custom_cd",
+      "handlerId": "pineapple",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "platin_customer_card": {
+      "id": "platin_customer_card",
+      "family": "unique",
+      "handlerId": "platin_customer_card",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ]
+    },
+    "pocket_sand": {
+      "id": "pocket_sand",
+      "family": "unique",
+      "handlerId": "pocket_sand",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "poison_bow": {
+      "id": "poison_bow",
+      "family": "unique",
+      "handlerId": "poison_bow",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "poison_dagger": {
+      "id": "poison_dagger",
+      "family": "on_hit",
+      "handlerId": "poison_dagger",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "poison_weapon",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "poison_goobert": {
+      "id": "poison_goobert",
+      "family": "custom_cd",
+      "handlerId": "poison_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "poison_ivy": {
+      "id": "poison_ivy",
+      "family": "unique",
+      "handlerId": "poison_ivy",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "potion_belt": {
+      "id": "potion_belt",
+      "family": "food",
+      "handlerId": "potion_belt",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "present": {
+      "id": "present",
+      "family": "unique",
+      "handlerId": "present",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "protective_purse": {
+      "id": "protective_purse",
+      "family": "unique",
+      "handlerId": "protective_purse",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "pumpkin": {
+      "id": "pumpkin",
+      "family": "on_hit",
+      "handlerId": "pumpkin",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage",
+        "onPrepare"
+      ]
+    },
+    "rainbow_goobert": {
+      "id": "rainbow_goobert",
+      "family": "custom_cd",
+      "handlerId": "rainbow_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "rainbow_goobert_ranger": {
+      "id": "rainbow_goobert_ranger",
+      "family": "custom_cd",
+      "handlerId": "rainbow_goobert_ranger",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "L",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "ranger_bag": {
+      "id": "ranger_bag",
+      "family": "unique",
+      "handlerId": "ranger_bag",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "rib_saw_blade": {
+      "id": "rib_saw_blade",
+      "family": "on_hit",
+      "handlerId": "rib_saw_blade",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "ruby_chonk": {
+      "id": "ruby_chonk",
+      "family": "on_hit",
+      "handlerId": "ruby_chonk",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage",
+        "onPrepare"
+      ]
+    },
+    "ruby_egg": {
+      "id": "ruby_egg",
+      "family": "unique",
+      "handlerId": "ruby_egg",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPreCombatStart"
+      ]
+    },
+    "ruby_whelp": {
+      "id": "ruby_whelp",
+      "family": "weapon_base",
+      "handlerId": "ruby_whelp",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "I",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ]
+    },
+    "shield_of_valor": {
+      "id": "shield_of_valor",
+      "family": "unique",
+      "handlerId": "shield_of_valor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ]
+    },
+    "shovel": {
+      "id": "shovel",
+      "family": "on_hit",
+      "handlerId": "shovel",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onDealtDamage"
+      ]
+    },
+    "spear": {
+      "id": "spear",
+      "family": "weapon_base",
+      "handlerId": "spear",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_late",
+        "onPrepare"
+      ]
+    },
+    "spectral_dagger": {
+      "id": "spectral_dagger",
+      "family": "on_hit",
+      "handlerId": "spectral_dagger",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "poison_weapon",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "spiked_shield": {
+      "id": "spiked_shield",
+      "family": "unique",
+      "handlerId": "spiked_shield",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ]
+    },
+    "staff_of_unhealing": {
+      "id": "staff_of_unhealing",
+      "family": "unique",
+      "handlerId": "staff_of_unhealing",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "stamina_sack": {
+      "id": "stamina_sack",
+      "family": "unique",
+      "handlerId": "stamina_sack",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare",
+        "addToInventory"
+      ]
+    },
+    "steel_goobert": {
+      "id": "steel_goobert",
+      "family": "pet_like",
+      "handlerId": "steel_goobert",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "pet_strike",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "stone": {
+      "id": "stone",
+      "family": "on_hit",
+      "handlerId": "stone",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage",
+        "onPreDealDamage_late"
+      ]
+    },
+    "stone_helm": {
+      "id": "stone_helm",
+      "family": "unique",
+      "handlerId": "stone_helm",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "stone_skin_potion": {
+      "id": "stone_skin_potion",
+      "family": "food",
+      "handlerId": "stone_skin_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion"
+      ]
+    },
+    "storage_coffin": {
+      "id": "storage_coffin",
+      "family": "unique",
+      "handlerId": "storage_coffin",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "strong_demonic_flask": {
+      "id": "strong_demonic_flask",
+      "family": "food",
+      "handlerId": "strong_demonic_flask",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion"
+      ]
+    },
+    "strong_health_potion": {
+      "id": "strong_health_potion",
+      "family": "food",
+      "handlerId": "strong_health_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion"
+      ]
+    },
+    "strong_pestilence_flask": {
+      "id": "strong_pestilence_flask",
+      "family": "food",
+      "handlerId": "strong_pestilence_flask",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion"
+      ]
+    },
+    "strong_stone_skin_potion": {
+      "id": "strong_stone_skin_potion",
+      "family": "food",
+      "handlerId": "strong_stone_skin_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onTriggerPotion"
+      ]
+    },
+    "thorn_bow": {
+      "id": "thorn_bow",
+      "family": "synergy_aura",
+      "handlerId": "thorn_bow",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "thorn_whip": {
+      "id": "thorn_whip",
+      "family": "on_hit",
+      "handlerId": "thorn_whip",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ]
+    },
+    "torch": {
+      "id": "torch",
+      "family": "on_hit",
+      "handlerId": "torch",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "J",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreDealDamage_early"
+      ]
+    },
+    "vampiric_armor": {
+      "id": "vampiric_armor",
+      "family": "start_buff",
+      "handlerId": "vampiric_armor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "N",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ]
+    },
+    "vampiric_gloves": {
+      "id": "vampiric_gloves",
+      "family": "unique",
+      "handlerId": "vampiric_gloves",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "vampiric_scythe": {
+      "id": "vampiric_scythe",
+      "family": "weapon_base",
+      "handlerId": "vampiric_scythe",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "villain_sword": {
+      "id": "villain_sword",
+      "family": "weapon_base",
+      "handlerId": "villain_sword",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onPreCombatStart"
+      ]
+    },
+    "walrus_tusk": {
+      "id": "walrus_tusk",
+      "family": "unique",
+      "handlerId": "walrus_tusk",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "O",
+      "template": "start_regen",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "weapon": {
+      "id": "weapon",
+      "family": "basic_weapon",
+      "handlerId": null,
+      "status": "skipped_base",
+      "fidelity": "n/a",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "whetstone": {
+      "id": "whetstone",
+      "family": "synergy_aura",
+      "handlerId": "whetstone",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "wolpertinger": {
+      "id": "wolpertinger",
+      "family": "unique",
+      "handlerId": "wolpertinger",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "wooden_buckler": {
+      "id": "wooden_buckler",
+      "family": "unique",
+      "handlerId": "wooden_buckler",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "O",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "afterBlock"
+      ]
+    },
+    "wooden_sword": {
+      "id": "wooden_sword",
+      "family": "basic_weapon",
+      "handlerId": "wooden_sword",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "I",
+      "template": "basic_cd",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "yggdrasil_leaf": {
+      "id": "yggdrasil_leaf",
+      "family": "synergy_aura",
+      "handlerId": "yggdrasil_leaf",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "M",
+      "template": "empower_aura",
+      "notes": "ports.js / ports-*.js",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "boots_of_speed": {
+      "id": "boots_of_speed",
+      "family": "catalog",
+      "handlerId": "boots_of_speed",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "band": "P",
+      "template": "catalog_staple",
+      "overrides": []
+    },
+    "ace_of_spades": {
+      "id": "ace_of_spades",
+      "family": "catalog",
+      "handlerId": "ace_of_spades",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "amulet_unidentified": {
+      "id": "amulet_unidentified",
+      "family": "catalog",
+      "handlerId": "amulet_unidentified",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "armored_courage_puppy": {
+      "id": "armored_courage_puppy",
+      "family": "catalog",
+      "handlerId": "armored_courage_puppy",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "badger_rune": {
+      "id": "badger_rune",
+      "family": "catalog",
+      "handlerId": "badger_rune",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "bagtacular": {
+      "id": "bagtacular",
+      "family": "catalog",
+      "handlerId": "bagtacular",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "black_bishop": {
+      "id": "black_bishop",
+      "family": "catalog",
+      "handlerId": "black_bishop",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "black_king": {
+      "id": "black_king",
+      "family": "catalog",
+      "handlerId": "black_king",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "black_knight": {
+      "id": "black_knight",
+      "family": "catalog",
+      "handlerId": "black_knight",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "black_pawn": {
+      "id": "black_pawn",
+      "family": "catalog",
+      "handlerId": "black_pawn",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "black_queen": {
+      "id": "black_queen",
+      "family": "catalog",
+      "handlerId": "black_queen",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "black_rook": {
+      "id": "black_rook",
+      "family": "catalog",
+      "handlerId": "black_rook",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "book_of_ice_new": {
+      "id": "book_of_ice_new",
+      "family": "catalog",
+      "handlerId": "book_of_ice_new",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "box_of_prosperity": {
+      "id": "box_of_prosperity",
+      "family": "catalog",
+      "handlerId": "box_of_prosperity",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "box_of_riches": {
+      "id": "box_of_riches",
+      "family": "catalog",
+      "handlerId": "box_of_riches",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "chipped_amethyst": {
+      "id": "chipped_amethyst",
+      "family": "catalog",
+      "handlerId": "chipped_amethyst",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "chipped_emerald": {
+      "id": "chipped_emerald",
+      "family": "catalog",
+      "handlerId": "chipped_emerald",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "chipped_ruby": {
+      "id": "chipped_ruby",
+      "family": "catalog",
+      "handlerId": "chipped_ruby",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "chipped_sapphire": {
+      "id": "chipped_sapphire",
+      "family": "catalog",
+      "handlerId": "chipped_sapphire",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "chipped_topaz": {
+      "id": "chipped_topaz",
+      "family": "catalog",
+      "handlerId": "chipped_topaz",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "coins": {
+      "id": "coins",
+      "family": "catalog",
+      "handlerId": "coins",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "customer_card": {
+      "id": "customer_card",
+      "family": "catalog",
+      "handlerId": "customer_card",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "darkest_lotus": {
+      "id": "darkest_lotus",
+      "family": "catalog",
+      "handlerId": "darkest_lotus",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "elephant_rune": {
+      "id": "elephant_rune",
+      "family": "catalog",
+      "handlerId": "elephant_rune",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "employee_uniform": {
+      "id": "employee_uniform",
+      "family": "catalog",
+      "handlerId": "employee_uniform",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "engineer_bag_2": {
+      "id": "engineer_bag_2",
+      "family": "catalog",
+      "handlerId": "engineer_bag_2",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "flawed_amethyst": {
+      "id": "flawed_amethyst",
+      "family": "catalog",
+      "handlerId": "flawed_amethyst",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "flawed_emerald": {
+      "id": "flawed_emerald",
+      "family": "catalog",
+      "handlerId": "flawed_emerald",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "flawed_ruby": {
+      "id": "flawed_ruby",
+      "family": "catalog",
+      "handlerId": "flawed_ruby",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "flawed_sapphire": {
+      "id": "flawed_sapphire",
+      "family": "catalog",
+      "handlerId": "flawed_sapphire",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "flawed_topaz": {
+      "id": "flawed_topaz",
+      "family": "catalog",
+      "handlerId": "flawed_topaz",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "flawless_amethyst": {
+      "id": "flawless_amethyst",
+      "family": "catalog",
+      "handlerId": "flawless_amethyst",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "flawless_emerald": {
+      "id": "flawless_emerald",
+      "family": "catalog",
+      "handlerId": "flawless_emerald",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "flawless_ruby": {
+      "id": "flawless_ruby",
+      "family": "catalog",
+      "handlerId": "flawless_ruby",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "flawless_sapphire": {
+      "id": "flawless_sapphire",
+      "family": "catalog",
+      "handlerId": "flawless_sapphire",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "flawless_topaz": {
+      "id": "flawless_topaz",
+      "family": "catalog",
+      "handlerId": "flawless_topaz",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "furcifer_prime": {
+      "id": "furcifer_prime",
+      "family": "catalog",
+      "handlerId": "furcifer_prime",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "goobling": {
+      "id": "goobling",
+      "family": "catalog",
+      "handlerId": "goobling",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "holo_fire_lizard": {
+      "id": "holo_fire_lizard",
+      "family": "catalog",
+      "handlerId": "holo_fire_lizard",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "hypercube": {
+      "id": "hypercube",
+      "family": "catalog",
+      "handlerId": "hypercube",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "joker": {
+      "id": "joker",
+      "family": "catalog",
+      "handlerId": "joker",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "leather_bag": {
+      "id": "leather_bag",
+      "family": "catalog",
+      "handlerId": "leather_bag",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "lootbox": {
+      "id": "lootbox",
+      "family": "catalog",
+      "handlerId": "lootbox",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "perfect_amethyst": {
+      "id": "perfect_amethyst",
+      "family": "catalog",
+      "handlerId": "perfect_amethyst",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "perfect_emerald": {
+      "id": "perfect_emerald",
+      "family": "catalog",
+      "handlerId": "perfect_emerald",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "perfect_ruby": {
+      "id": "perfect_ruby",
+      "family": "catalog",
+      "handlerId": "perfect_ruby",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "perfect_sapphire": {
+      "id": "perfect_sapphire",
+      "family": "catalog",
+      "handlerId": "perfect_sapphire",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "perfect_topaz": {
+      "id": "perfect_topaz",
+      "family": "catalog",
+      "handlerId": "perfect_topaz",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "random_loadout_bag": {
+      "id": "random_loadout_bag",
+      "family": "catalog",
+      "handlerId": "random_loadout_bag",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "regular_amethyst": {
+      "id": "regular_amethyst",
+      "family": "catalog",
+      "handlerId": "regular_amethyst",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "regular_emerald": {
+      "id": "regular_emerald",
+      "family": "catalog",
+      "handlerId": "regular_emerald",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "regular_ruby": {
+      "id": "regular_ruby",
+      "family": "catalog",
+      "handlerId": "regular_ruby",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "regular_sapphire": {
+      "id": "regular_sapphire",
+      "family": "catalog",
+      "handlerId": "regular_sapphire",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "regular_topaz": {
+      "id": "regular_topaz",
+      "family": "catalog",
+      "handlerId": "regular_topaz",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "resistor": {
+      "id": "resistor",
+      "family": "catalog",
+      "handlerId": "resistor",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "reverse": {
+      "id": "reverse",
+      "family": "catalog",
+      "handlerId": "reverse",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "shortbow": {
+      "id": "shortbow",
+      "family": "catalog",
+      "handlerId": "shortbow",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "skull": {
+      "id": "skull",
+      "family": "catalog",
+      "handlerId": "skull",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "snowman": {
+      "id": "snowman",
+      "family": "catalog",
+      "handlerId": "snowman",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "stable_recombobulator": {
+      "id": "stable_recombobulator",
+      "family": "catalog",
+      "handlerId": "stable_recombobulator",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "strong_heroic_potion": {
+      "id": "strong_heroic_potion",
+      "family": "catalog",
+      "handlerId": "strong_heroic_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "strong_mana_potion": {
+      "id": "strong_mana_potion",
+      "family": "catalog",
+      "handlerId": "strong_mana_potion",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "superior_ring": {
+      "id": "superior_ring",
+      "family": "catalog",
+      "handlerId": "superior_ring",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "the_fool": {
+      "id": "the_fool",
+      "family": "catalog",
+      "handlerId": "the_fool",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "the_lovers": {
+      "id": "the_lovers",
+      "family": "catalog",
+      "handlerId": "the_lovers",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "tiger_rune": {
+      "id": "tiger_rune",
+      "family": "catalog",
+      "handlerId": "tiger_rune",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "topaz": {
+      "id": "topaz",
+      "family": "catalog",
+      "handlerId": "topaz",
+      "status": "dedicated",
+      "fidelity": "reviewed",
+      "depth": null,
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "unidentified_skill": {
+      "id": "unidentified_skill",
+      "family": "catalog",
+      "handlerId": "unidentified_skill",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "unstable_recombobulator": {
+      "id": "unstable_recombobulator",
+      "family": "catalog",
+      "handlerId": "unstable_recombobulator",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "whetstone2": {
+      "id": "whetstone2",
+      "family": "catalog",
+      "handlerId": "whetstone2",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "white_bishop": {
+      "id": "white_bishop",
+      "family": "catalog",
+      "handlerId": "white_bishop",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "white_eyes_blue_dragon": {
+      "id": "white_eyes_blue_dragon",
+      "family": "catalog",
+      "handlerId": "white_eyes_blue_dragon",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "deep",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "white_king": {
+      "id": "white_king",
+      "family": "catalog",
+      "handlerId": "white_king",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "white_knight": {
+      "id": "white_knight",
+      "family": "catalog",
+      "handlerId": "white_knight",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "white_pawn": {
+      "id": "white_pawn",
+      "family": "catalog",
+      "handlerId": "white_pawn",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "white_queen": {
+      "id": "white_queen",
+      "family": "catalog",
+      "handlerId": "white_queen",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    },
+    "white_rook": {
+      "id": "white_rook",
+      "family": "catalog",
+      "handlerId": "white_rook",
+      "status": "dedicated",
+      "fidelity": "parity",
+      "depth": "noop",
+      "band": "AK",
+      "template": "hand_port",
+      "notes": "ports.js / ports-*.js",
+      "overrides": []
+    }
+  }
+}

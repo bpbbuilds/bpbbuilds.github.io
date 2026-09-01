@@ -1,0 +1,5288 @@
+{
+  "extractedAt": "2026-08-25T05:20:50.817Z",
+  "source": "tools/game-extract-full/Items",
+  "scriptFileCount": 508,
+  "withCombatOverrides": 451,
+  "byMethod": {
+    "doCooldownEffect": 203,
+    "onCombatStart": 98,
+    "onPreCombatStart": 18,
+    "onPostCombatStart": 1,
+    "trigger": 4,
+    "dealDamage": 0,
+    "onDealtDamage": 21,
+    "onPreDealDamage_early": 56,
+    "onPreDealDamage_late": 8,
+    "onPrepare": 274,
+    "onTriggerPotion": 16,
+    "onDamaged": 3,
+    "afterBlock": 7,
+    "addToInventory": 1
+  },
+  "families": {
+    "unique": [
+      "acorn_ace",
+      "acorn_collar",
+      "amethyst_egg",
+      "amulet_of_darkness",
+      "amulet_of_feasting",
+      "amulet_of_fortune",
+      "amulet_of_light",
+      "amulet_of_the_wild",
+      "anvil",
+      "arcane_boots",
+      "arcane_intellect",
+      "armored_power_puppy",
+      "armored_wisdom_puppy",
+      "artifact_stone_cold",
+      "artifact_stone_death",
+      "artifact_stone_heat",
+      "badger_spirit",
+      "bag_of_giving",
+      "bag_of_stones",
+      "battery",
+      "berserker_bag",
+      "bewitchment",
+      "bismuth_cube",
+      "blood_manipulation",
+      "book_of_basics",
+      "book_of_darkness",
+      "book_of_ice",
+      "book_of_light",
+      "book_of_nature",
+      "bow_and_arrow",
+      "burning_banner",
+      "busted_blade",
+      "buy_the_holy_light",
+      "card",
+      "cat_spirit",
+      "cauldron",
+      "charge_splitter",
+      "chess_board",
+      "chess_master",
+      "chrome_cube",
+      "cog",
+      "coil",
+      "con_trap_tron",
+      "corrupted_armor",
+      "courage_puppy",
+      "critical_poison",
+      "crow",
+      "cthulhu",
+      "cubert",
+      "dark_ritual",
+      "death_lotus",
+      "deer_totem",
+      "devouring_sphere",
+      "dig_deeper",
+      "djinn_lamp",
+      "double_rainbow",
+      "draconic_orb",
+      "dual_wielding",
+      "eat_o_matic",
+      "echoing_battlecry",
+      "electric_torch",
+      "emerald_egg",
+      "enchanted_weapons",
+      "energy_conversion",
+      "engineer_box",
+      "everburning",
+      "evil_hat",
+      "extra_angy",
+      "extra_bags",
+      "false_life",
+      "fanfare",
+      "fanny_pack",
+      "fire_pit",
+      "flame",
+      "flame_badge",
+      "flute",
+      "fortunas_kiss",
+      "friendly_fire",
+      "frog_prince",
+      "frozen_buckler",
+      "frozen_flame",
+      "full_body_protection",
+      "generator",
+      "ghost",
+      "gigawatz",
+      "girl_power",
+      "gold_cube",
+      "heart_container",
+      "heart_of_darkness",
+      "heart_of_the_cards",
+      "heart_shield",
+      "heavy_drinking",
+      "hedgehog",
+      "hogus_bogus",
+      "holdall",
+      "holy_collar",
+      "ice_armor",
+      "ice_flower",
+      "investment_opportunity",
+      "jynx_torquilla",
+      "king_of_the_bling",
+      "knife_to_meet_you",
+      "laboratory",
+      "leaf_badge",
+      "leather_armor",
+      "leather_boots",
+      "leather_helm",
+      "level_up",
+      "light_flower",
+      "little_mimic",
+      "lucky_bow",
+      "lucky_cat",
+      "lucky_clover",
+      "mage_hat",
+      "magic_collar",
+      "magic_mirror",
+      "magitecc_armor",
+      "mana_mastery",
+      "mana_orb",
+      "markswoman",
+      "mecha_bat",
+      "mega_clover",
+      "mercury_elemental",
+      "moon_armor",
+      "moon_shield",
+      "mr_struggles",
+      "mrs_struggles",
+      "no_rush_please",
+      "owl_spirit",
+      "paradise_birb",
+      "perpetuum_mobile",
+      "phoenix2",
+      "piercing_arrow",
+      "piggy_pinata",
+      "pine_protector",
+      "platin_customer_card",
+      "pocket_sand",
+      "poison_bow",
+      "poison_frog",
+      "poison_grenade",
+      "poison_ivy",
+      "pot",
+      "power_of_the_moon",
+      "power_puppy",
+      "present",
+      "protective_purse",
+      "puzzle_badge",
+      "puzzlebag_j",
+      "puzzlebag_s",
+      "puzzlebag_t",
+      "puzzlebag_z",
+      "puzzlebox",
+      "ranger_bag",
+      "robodog",
+      "rope",
+      "ruby_egg",
+      "sandbag",
+      "sapphire_egg",
+      "scale",
+      "sewing_case",
+      "shaman_mask",
+      "shell_totem",
+      "shelly",
+      "shield_of_valor",
+      "shielded",
+      "shiny_mantle",
+      "smelly_barrier",
+      "snowmaster",
+      "solaris",
+      "spell_scroll_dark",
+      "spell_scroll_frostbolt",
+      "spell_scroll_ice",
+      "spell_scroll_light",
+      "spell_scroll_nature",
+      "spiked_collar",
+      "spiked_shield",
+      "spiked_wall",
+      "staff_of_unhealing",
+      "stamina_sack",
+      "star_of_courage",
+      "stone_helm",
+      "stone_shoes",
+      "stoned",
+      "storage_coffin",
+      "sun_shield",
+      "tesla_coil",
+      "thorn_elemental",
+      "thornburst",
+      "time_dilator",
+      "toad",
+      "turtle",
+      "twine",
+      "twine_badge",
+      "ukulele",
+      "ultima",
+      "uniquely_unique",
+      "vampiric_collar",
+      "vampiric_gloves",
+      "vineweave_basket",
+      "walrus_tusk",
+      "wand_of_dissonance",
+      "whetstone3",
+      "winged_boots",
+      "wisdom_puppy",
+      "wolf_badge",
+      "wolf_emblem",
+      "wolpertinger",
+      "wooden_buckler"
+    ],
+    "custom_cd": [
+      "amethyst",
+      "banana",
+      "blueberries",
+      "bowl_of_treats",
+      "broccoli",
+      "broccoli_goobert",
+      "broccotree",
+      "burning_coal",
+      "carrot",
+      "cheese",
+      "cheese_goobert",
+      "chili_goobert",
+      "chili_pepper",
+      "cog_badge",
+      "corrupted_crystal",
+      "crown",
+      "cupcake",
+      "cupcake_goobert",
+      "doom_cap",
+      "emerald",
+      "fire_shelly",
+      "fly_agaric",
+      "garlic",
+      "hawk_rune",
+      "hyper_hedgehog",
+      "king_crown",
+      "lump_of_coal",
+      "mana_crystal",
+      "mananana",
+      "miss_fortune",
+      "pineapple",
+      "plastic_cube",
+      "poison_goobert",
+      "prismatic_wand",
+      "rainbow_badge",
+      "rainbow_goobert",
+      "rainbow_goobert_adventurer",
+      "rainbow_goobert_berserker",
+      "rainbow_goobert_engineer",
+      "rainbow_goobert_mage",
+      "rainbow_goobert_pyromancer",
+      "rainbow_goobert_ranger",
+      "rat",
+      "recombobulator",
+      "relic_case",
+      "repeater",
+      "ruby",
+      "sapphire",
+      "seal_the_deal",
+      "shiny_shell",
+      "skull_badge",
+      "slice_of_bread",
+      "slice_of_toast",
+      "slime_time",
+      "snowcake",
+      "speak_with_animals",
+      "spin_to_win",
+      "spirit_bells",
+      "squirrel",
+      "stone_badge",
+      "toast_goobert",
+      "wand",
+      "wisp"
+    ],
+    "start_buff": [
+      "amulet_of_life",
+      "blood_amulet",
+      "dark_lantern",
+      "evil_cap",
+      "gold_armor",
+      "healing_herbs",
+      "holy_armor",
+      "hungry_blade",
+      "just_stats",
+      "piggy_of_riches",
+      "piggybank",
+      "rainbow_potion",
+      "snake",
+      "snowball",
+      "sun_armor",
+      "vampiric_armor"
+    ],
+    "pet_like": [
+      "blood_goobert",
+      "carrot_goobert",
+      "dragon_claws",
+      "dragon_set",
+      "dragonscale_armor",
+      "dragonskin_boots",
+      "goobert",
+      "king_goobert",
+      "light_goobert",
+      "steel_goobert"
+    ],
+    "on_hit": [
+      "amethyst_whelp",
+      "automanaton",
+      "axe",
+      "bazooka",
+      "big_bloodthorne",
+      "bloodthorne",
+      "bloody_dagger",
+      "boomerang",
+      "brass_knuckles",
+      "broom",
+      "burning_blade",
+      "burning_sword",
+      "chain_whip",
+      "chainsaw",
+      "claws_of_attack",
+      "critwood_staff",
+      "cupcake_dragon",
+      "cupcake_staff",
+      "cursed_dagger",
+      "daggerang",
+      "darksaber",
+      "double_axe",
+      "dragon_knight",
+      "eggscalibur",
+      "emerald_whelp",
+      "fancy_fencing_rapier",
+      "flame_whip",
+      "forest_dragon",
+      "frostbite",
+      "halberd",
+      "hammer",
+      "ice_dragon",
+      "jynx_staff",
+      "katana",
+      "lightning_staff",
+      "long_spear",
+      "lucky_shortbow",
+      "magic_staff",
+      "magic_torch",
+      "manathirst",
+      "molten_dagger",
+      "molten_greatsword",
+      "molten_spear",
+      "molten_spear2",
+      "null_blade",
+      "onion_cutter",
+      "poison_dagger",
+      "poison_shortbow",
+      "prismatic_sword",
+      "pumpkin",
+      "rib_saw_blade",
+      "ruby_chonk",
+      "sapphire_whelp",
+      "scissorswords",
+      "serpent_staff",
+      "shovel",
+      "snow_stick",
+      "spectral_dagger",
+      "spiked_staff",
+      "squirrel_archer",
+      "staff_of_fire",
+      "stone",
+      "stone_golem",
+      "thorn_shortbow",
+      "thorn_whip",
+      "thornbloom",
+      "thors_hammer",
+      "thunder_drake",
+      "torch",
+      "war_scythe",
+      "water_elemental",
+      "wrench"
+    ],
+    "weapon_base": [
+      "bow",
+      "dagger",
+      "dancing_dragon",
+      "death_scythe",
+      "forging_hammer",
+      "greatsword",
+      "holy_spear",
+      "lightsaber",
+      "obsidian_dragon",
+      "pan",
+      "pandamonium",
+      "phoenix",
+      "poison_spear",
+      "pop",
+      "ruby_whelp",
+      "spear",
+      "vampiric_scythe",
+      "villain_sword"
+    ],
+    "synergy_aura": [
+      "amulet_of_agility",
+      "amulet_of_alchemy",
+      "amulet_of_steel",
+      "angel_crystal",
+      "bionic_armor",
+      "burning_spikes",
+      "burning_torch",
+      "cap_of_brilliance",
+      "crossblades",
+      "cursed_hair_comb",
+      "deck_of_cards",
+      "dragon_nest",
+      "falcon_blade",
+      "fedora",
+      "gingerbread_man",
+      "gloves_of_haste",
+      "hardwood",
+      "hero_longsword",
+      "hero_shield",
+      "hero_sword",
+      "inner_power",
+      "lucky_piggy",
+      "magic_badge",
+      "magic_ring",
+      "more_stats",
+      "mushroom_farm",
+      "oil_lamp",
+      "portable_altar",
+      "puzzlebag_l",
+      "rainbow_orb",
+      "rat_chef",
+      "scholar_bag",
+      "shepherds_crook",
+      "sloth",
+      "smithing_for_dummies",
+      "spring_loader",
+      "steel_dragon",
+      "stone_armor",
+      "stone_gloves",
+      "thorn_bow",
+      "time_melting",
+      "toolbox",
+      "whetstone",
+      "yggdrasil_leaf"
+    ],
+    "food": [
+      "demonic_flask",
+      "divine_potion",
+      "health_potion",
+      "heroic_potion",
+      "lightning_potion",
+      "mana_potion",
+      "pestilence_flask",
+      "potion_belt",
+      "spicy_banana",
+      "stone_skin_potion",
+      "strong_demonic_flask",
+      "strong_divine_potion",
+      "strong_health_potion",
+      "strong_pestilence_flask",
+      "strong_stone_skin_potion",
+      "strong_vampiric_potion",
+      "vampiric_potion"
+    ],
+    "basic_weapon": [
+      "bomb",
+      "weapon",
+      "wooden_sword"
+    ]
+  },
+  "byId": {
+    "acorn_collar": {
+      "id": "acorn_collar",
+      "scriptStem": "AcornCollar",
+      "file": "AcornCollar.gd",
+      "extends": "RangerCollar",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "artifact_stone_cold": {
+      "id": "artifact_stone_cold",
+      "scriptStem": "ArtifactStoneCold",
+      "file": "ArtifactStoneCold.gd",
+      "extends": "Stone",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "artifact_stone_heat": {
+      "id": "artifact_stone_heat",
+      "scriptStem": "ArtifactStoneHeat",
+      "file": "ArtifactStoneHeat.gd",
+      "extends": "Stone",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "bag_of_stones": {
+      "id": "bag_of_stones",
+      "scriptStem": "BagofStones",
+      "file": "BagofStones.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "banana": {
+      "id": "banana",
+      "scriptStem": "Banana",
+      "file": "Banana.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "blood_amulet": {
+      "id": "blood_amulet",
+      "scriptStem": "BloodAmulet",
+      "file": "BloodAmulet.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "start_buff"
+    },
+    "blood_goobert": {
+      "id": "blood_goobert",
+      "scriptStem": "BloodGoobert",
+      "file": "BloodGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "pet_like"
+    },
+    "bloodthorne": {
+      "id": "bloodthorne",
+      "scriptStem": "Bloodthorne",
+      "file": "Bloodthorne.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "bloody_dagger": {
+      "id": "bloody_dagger",
+      "scriptStem": "BloodyDagger",
+      "file": "BloodyDagger.gd",
+      "extends": "Dagger",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "blueberries": {
+      "id": "blueberries",
+      "scriptStem": "Blueberries",
+      "file": "Blueberries.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "bow": {
+      "id": "bow",
+      "scriptStem": "Bow",
+      "file": "Bow.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "bow_and_arrow": {
+      "id": "bow_and_arrow",
+      "scriptStem": "BowandArrow",
+      "file": "BowandArrow.gd",
+      "extends": "Bow",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "broom": {
+      "id": "broom",
+      "scriptStem": "Broom",
+      "file": "Broom.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "burning_coal": {
+      "id": "burning_coal",
+      "scriptStem": "BurningCoal",
+      "file": "BurningCoal.gd",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "cdThenConsume": true
+    },
+    "burning_torch": {
+      "id": "burning_torch",
+      "scriptStem": "BurningTorch",
+      "file": "BurningTorch.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "family": "synergy_aura"
+    },
+    "card": {
+      "id": "card",
+      "scriptStem": "Card",
+      "file": "Card.gd",
+      "extends": "Item",
+      "overrides": [
+        "trigger"
+      ],
+      "family": "unique"
+    },
+    "carrot": {
+      "id": "carrot",
+      "scriptStem": "Carrot",
+      "file": "Carrot.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "carrot_goobert": {
+      "id": "carrot_goobert",
+      "scriptStem": "CarrotGoobert",
+      "file": "CarrotGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "pet_like"
+    },
+    "claws_of_attack": {
+      "id": "claws_of_attack",
+      "scriptStem": "ClawsofAttack",
+      "file": "ClawsofAttack.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "corrupted_armor": {
+      "id": "corrupted_armor",
+      "scriptStem": "CorruptedArmor",
+      "file": "CorruptedArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "critwood_staff": {
+      "id": "critwood_staff",
+      "scriptStem": "CritwoodStaff",
+      "file": "CritwoodStaff.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "crossblades": {
+      "id": "crossblades",
+      "scriptStem": "Crossblades",
+      "file": "Crossblades.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "family": "synergy_aura"
+    },
+    "crown": {
+      "id": "crown",
+      "scriptStem": "Crown",
+      "file": "Crown.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "cursed_dagger": {
+      "id": "cursed_dagger",
+      "scriptStem": "CursedDagger",
+      "file": "CursedDagger.gd",
+      "extends": "Dagger",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "cursed_hair_comb": {
+      "id": "cursed_hair_comb",
+      "scriptStem": "CursedHairComb",
+      "file": "CursedHairComb.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "dagger": {
+      "id": "dagger",
+      "scriptStem": "Dagger",
+      "file": "Dagger.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "dancing_dragon": {
+      "id": "dancing_dragon",
+      "scriptStem": "DancingDragon",
+      "file": "DancingDragon.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "darksaber": {
+      "id": "darksaber",
+      "scriptStem": "Darksaber",
+      "file": "Darksaber.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "death_scythe": {
+      "id": "death_scythe",
+      "scriptStem": "DeathScythe",
+      "file": "DeathScythe.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "deck_of_cards": {
+      "id": "deck_of_cards",
+      "scriptStem": "DeckofCards",
+      "file": "DeckofCards.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "demonic_flask": {
+      "id": "demonic_flask",
+      "scriptStem": "DemonicFlask",
+      "file": "DemonicFlask.gd",
+      "extends": "Potion",
+      "overrides": [
+        "onTriggerPotion",
+        "onDamaged"
+      ],
+      "family": "food"
+    },
+    "djinn_lamp": {
+      "id": "djinn_lamp",
+      "scriptStem": "DjinnLamp",
+      "file": "DjinnLamp.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "eggscalibur": {
+      "id": "eggscalibur",
+      "scriptStem": "Eggscalibur",
+      "file": "Eggscalibur.gd",
+      "extends": "Pan",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "family": "on_hit"
+    },
+    "evil_cap": {
+      "id": "evil_cap",
+      "scriptStem": "EvilCap",
+      "file": "EvilCap.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "family": "start_buff"
+    },
+    "acorn_ace": {
+      "id": "acorn_ace",
+      "scriptStem": "AcornAce",
+      "file": "Exclusive/AcornAce.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "amethyst_egg": {
+      "id": "amethyst_egg",
+      "scriptStem": "AmethystEgg",
+      "file": "Exclusive/AmethystEgg.gd",
+      "extends": "DragonEgg",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "amethyst_whelp": {
+      "id": "amethyst_whelp",
+      "scriptStem": "AmethystWhelp",
+      "file": "Exclusive/AmethystWhelp.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "amulet_of_agility": {
+      "id": "amulet_of_agility",
+      "scriptStem": "AmuletofAgility",
+      "file": "Exclusive/AmuletofAgility.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "amulet_of_alchemy": {
+      "id": "amulet_of_alchemy",
+      "scriptStem": "AmuletofAlchemy",
+      "file": "Exclusive/AmuletofAlchemy.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "amulet_of_darkness": {
+      "id": "amulet_of_darkness",
+      "scriptStem": "AmuletofDarkness",
+      "file": "Exclusive/AmuletofDarkness.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "amulet_of_feasting": {
+      "id": "amulet_of_feasting",
+      "scriptStem": "AmuletofFeasting",
+      "file": "Exclusive/AmuletofFeasting.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "amulet_of_fortune": {
+      "id": "amulet_of_fortune",
+      "scriptStem": "AmuletofFortune",
+      "file": "Exclusive/AmuletofFortune.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "amulet_of_life": {
+      "id": "amulet_of_life",
+      "scriptStem": "AmuletofLife",
+      "file": "Exclusive/AmuletofLife.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "start_buff"
+    },
+    "amulet_of_light": {
+      "id": "amulet_of_light",
+      "scriptStem": "AmuletofLight",
+      "file": "Exclusive/AmuletofLight.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "amulet_of_steel": {
+      "id": "amulet_of_steel",
+      "scriptStem": "AmuletofSteel",
+      "file": "Exclusive/AmuletofSteel.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "amulet_of_the_wild": {
+      "id": "amulet_of_the_wild",
+      "scriptStem": "AmuletoftheWild",
+      "file": "Exclusive/AmuletoftheWild.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "angel_crystal": {
+      "id": "angel_crystal",
+      "scriptStem": "AngelCrystal",
+      "file": "Exclusive/AngelCrystal.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura",
+      "cdThenConsume": true
+    },
+    "anvil": {
+      "id": "anvil",
+      "scriptStem": "Anvil",
+      "file": "Exclusive/Anvil.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "family": "unique"
+    },
+    "arcane_boots": {
+      "id": "arcane_boots",
+      "scriptStem": "ArcaneBoots",
+      "file": "Exclusive/ArcaneBoots.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "arcane_intellect": {
+      "id": "arcane_intellect",
+      "scriptStem": "ArcaneIntellect",
+      "file": "Exclusive/ArcaneIntellect.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "armored_power_puppy": {
+      "id": "armored_power_puppy",
+      "scriptStem": "ArmoredPowerPuppy",
+      "file": "Exclusive/ArmoredPowerPuppy.gd",
+      "extends": "PowerPuppy",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "armored_wisdom_puppy": {
+      "id": "armored_wisdom_puppy",
+      "scriptStem": "ArmoredWisdomPuppy",
+      "file": "Exclusive/ArmoredWisdomPuppy.gd",
+      "extends": "WisdomPuppy",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "artifact_stone_death": {
+      "id": "artifact_stone_death",
+      "scriptStem": "ArtifactStoneDeath",
+      "file": "Exclusive/ArtifactStoneDeath.gd",
+      "extends": "Stone",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "automanaton": {
+      "id": "automanaton",
+      "scriptStem": "Automanaton",
+      "file": "Exclusive/Automanaton.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "axe": {
+      "id": "axe",
+      "scriptStem": "Axe",
+      "file": "Exclusive/Axe.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "badger_spirit": {
+      "id": "badger_spirit",
+      "scriptStem": "BadgerSpirit",
+      "file": "Exclusive/BadgerSpirit.gd",
+      "extends": "SpiritCompanion",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "bag_of_giving": {
+      "id": "bag_of_giving",
+      "scriptStem": "BagofGiving",
+      "file": "Exclusive/BagofGiving.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "battery": {
+      "id": "battery",
+      "scriptStem": "Battery",
+      "file": "Exclusive/Battery.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "bazooka": {
+      "id": "bazooka",
+      "scriptStem": "Bazooka",
+      "file": "Exclusive/Bazooka.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "berserker_bag": {
+      "id": "berserker_bag",
+      "scriptStem": "BerserkerBag",
+      "file": "Exclusive/BerserkerBag.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "bewitchment": {
+      "id": "bewitchment",
+      "scriptStem": "Bewitchment",
+      "file": "Exclusive/Bewitchment.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "big_bloodthorne": {
+      "id": "big_bloodthorne",
+      "scriptStem": "BigBloodthorne",
+      "file": "Exclusive/BigBloodthorne.gd",
+      "extends": "Greatsword",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "bionic_armor": {
+      "id": "bionic_armor",
+      "scriptStem": "BionicArmor",
+      "file": "Exclusive/BionicArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "bismuth_cube": {
+      "id": "bismuth_cube",
+      "scriptStem": "BismuthCube",
+      "file": "Exclusive/BismuthCube.gd",
+      "extends": "Cube",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "blood_manipulation": {
+      "id": "blood_manipulation",
+      "scriptStem": "BloodManipulation",
+      "file": "Exclusive/BloodManipulation.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "bomb": {
+      "id": "bomb",
+      "scriptStem": "Bomb",
+      "file": "Exclusive/Bomb.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "basic_weapon"
+    },
+    "book_of_basics": {
+      "id": "book_of_basics",
+      "scriptStem": "BookofBasics",
+      "file": "Exclusive/BookofBasics.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "book_of_darkness": {
+      "id": "book_of_darkness",
+      "scriptStem": "BookofDarkness",
+      "file": "Exclusive/BookofDarkness.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "book_of_ice": {
+      "id": "book_of_ice",
+      "scriptStem": "BookofIce",
+      "file": "Exclusive/BookofIce.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "book_of_light": {
+      "id": "book_of_light",
+      "scriptStem": "BookofLight",
+      "file": "Exclusive/BookofLight.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "book_of_nature": {
+      "id": "book_of_nature",
+      "scriptStem": "BookofNature",
+      "file": "Exclusive/BookofNature.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "boomerang": {
+      "id": "boomerang",
+      "scriptStem": "Boomerang",
+      "file": "Exclusive/Boomerang.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "bowl_of_treats": {
+      "id": "bowl_of_treats",
+      "scriptStem": "BowlofTreats",
+      "file": "Exclusive/BowlofTreats.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "brass_knuckles": {
+      "id": "brass_knuckles",
+      "scriptStem": "BrassKnuckles",
+      "file": "Exclusive/BrassKnuckles.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "broccoli": {
+      "id": "broccoli",
+      "scriptStem": "Broccoli",
+      "file": "Exclusive/Broccoli.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "broccoli_goobert": {
+      "id": "broccoli_goobert",
+      "scriptStem": "BroccoliGoobert",
+      "file": "Exclusive/BroccoliGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "broccotree": {
+      "id": "broccotree",
+      "scriptStem": "Broccotree",
+      "file": "Exclusive/Broccotree.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "burning_banner": {
+      "id": "burning_banner",
+      "scriptStem": "BurningBanner",
+      "file": "Exclusive/BurningBanner.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "burning_blade": {
+      "id": "burning_blade",
+      "scriptStem": "BurningBlade",
+      "file": "Exclusive/BurningBlade.gd",
+      "extends": "BurningSword",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "burning_spikes": {
+      "id": "burning_spikes",
+      "scriptStem": "BurningSpikes",
+      "file": "Exclusive/BurningSpikes.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "burning_sword": {
+      "id": "burning_sword",
+      "scriptStem": "BurningSword",
+      "file": "Exclusive/BurningSword.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "busted_blade": {
+      "id": "busted_blade",
+      "scriptStem": "BustedBlade",
+      "file": "Exclusive/BustedBlade.gd",
+      "extends": "Greatsword",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "buy_the_holy_light": {
+      "id": "buy_the_holy_light",
+      "scriptStem": "BuytheHolyLight",
+      "file": "Exclusive/BuytheHolyLight.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "cap_of_brilliance": {
+      "id": "cap_of_brilliance",
+      "scriptStem": "CapofBrilliance",
+      "file": "Exclusive/CapofBrilliance.gd",
+      "extends": "LeatherHelm",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "cat_spirit": {
+      "id": "cat_spirit",
+      "scriptStem": "CatSpirit",
+      "file": "Exclusive/CatSpirit.gd",
+      "extends": "SpiritCompanion",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "cauldron": {
+      "id": "cauldron",
+      "scriptStem": "Cauldron",
+      "file": "Exclusive/Cauldron.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "chainsaw": {
+      "id": "chainsaw",
+      "scriptStem": "Chainsaw",
+      "file": "Exclusive/Chainsaw.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "chain_whip": {
+      "id": "chain_whip",
+      "scriptStem": "ChainWhip",
+      "file": "Exclusive/ChainWhip.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "charge_splitter": {
+      "id": "charge_splitter",
+      "scriptStem": "ChargeSplitter",
+      "file": "Exclusive/ChargeSplitter.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "cheese": {
+      "id": "cheese",
+      "scriptStem": "Cheese",
+      "file": "Exclusive/Cheese.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "cheese_goobert": {
+      "id": "cheese_goobert",
+      "scriptStem": "CheeseGoobert",
+      "file": "Exclusive/CheeseGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "chess_board": {
+      "id": "chess_board",
+      "scriptStem": "ChessBoard",
+      "file": "Exclusive/ChessBoard.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "chess_master": {
+      "id": "chess_master",
+      "scriptStem": "ChessMaster",
+      "file": "Exclusive/ChessMaster.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "chili_goobert": {
+      "id": "chili_goobert",
+      "scriptStem": "ChiliGoobert",
+      "file": "Exclusive/ChiliGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "chili_pepper": {
+      "id": "chili_pepper",
+      "scriptStem": "ChiliPepper",
+      "file": "Exclusive/ChiliPepper.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "chrome_cube": {
+      "id": "chrome_cube",
+      "scriptStem": "ChromeCube",
+      "file": "Exclusive/ChromeCube.gd",
+      "extends": "Cube",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "cog": {
+      "id": "cog",
+      "scriptStem": "Cog",
+      "file": "Exclusive/Cog.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "cog_badge": {
+      "id": "cog_badge",
+      "scriptStem": "CogBadge",
+      "file": "Exclusive/CogBadge.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "cdThenConsume": true
+    },
+    "coil": {
+      "id": "coil",
+      "scriptStem": "Coil",
+      "file": "Exclusive/Coil.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "con_trap_tron": {
+      "id": "con_trap_tron",
+      "scriptStem": "ConTrapTron",
+      "file": "Exclusive/ConTrapTron.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "courage_puppy": {
+      "id": "courage_puppy",
+      "scriptStem": "CouragePuppy",
+      "file": "Exclusive/CouragePuppy.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart"
+      ],
+      "family": "unique"
+    },
+    "critical_poison": {
+      "id": "critical_poison",
+      "scriptStem": "CriticalPoison",
+      "file": "Exclusive/CriticalPoison.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "crow": {
+      "id": "crow",
+      "scriptStem": "Crow",
+      "file": "Exclusive/Crow.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "cthulhu": {
+      "id": "cthulhu",
+      "scriptStem": "Cthulhu",
+      "file": "Exclusive/Cthulhu.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "cubert": {
+      "id": "cubert",
+      "scriptStem": "Cubert",
+      "file": "Exclusive/Cubert.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "cupcake": {
+      "id": "cupcake",
+      "scriptStem": "Cupcake",
+      "file": "Exclusive/Cupcake.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "cupcake_dragon": {
+      "id": "cupcake_dragon",
+      "scriptStem": "CupcakeDragon",
+      "file": "Exclusive/CupcakeDragon.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "cupcake_goobert": {
+      "id": "cupcake_goobert",
+      "scriptStem": "CupcakeGoobert",
+      "file": "Exclusive/CupcakeGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "cupcake_staff": {
+      "id": "cupcake_staff",
+      "scriptStem": "CupcakeStaff",
+      "file": "Exclusive/CupcakeStaff.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "daggerang": {
+      "id": "daggerang",
+      "scriptStem": "Daggerang",
+      "file": "Exclusive/Daggerang.gd",
+      "extends": "Dagger",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "dark_lantern": {
+      "id": "dark_lantern",
+      "scriptStem": "DarkLantern",
+      "file": "Exclusive/DarkLantern.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "start_buff"
+    },
+    "dark_ritual": {
+      "id": "dark_ritual",
+      "scriptStem": "DarkRitual",
+      "file": "Exclusive/DarkRitual.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "death_lotus": {
+      "id": "death_lotus",
+      "scriptStem": "DeathLotus",
+      "file": "Exclusive/DeathLotus.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "deer_totem": {
+      "id": "deer_totem",
+      "scriptStem": "DeerTotem",
+      "file": "Exclusive/DeerTotem.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "devouring_sphere": {
+      "id": "devouring_sphere",
+      "scriptStem": "DevouringSphere",
+      "file": "Exclusive/DevouringSphere.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "dig_deeper": {
+      "id": "dig_deeper",
+      "scriptStem": "DigDeeper",
+      "file": "Exclusive/DigDeeper.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "divine_potion": {
+      "id": "divine_potion",
+      "scriptStem": "DivinePotion",
+      "file": "Exclusive/DivinePotion.gd",
+      "extends": "Potion",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "family": "food"
+    },
+    "doom_cap": {
+      "id": "doom_cap",
+      "scriptStem": "DoomCap",
+      "file": "Exclusive/DoomCap.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "double_axe": {
+      "id": "double_axe",
+      "scriptStem": "DoubleAxe",
+      "file": "Exclusive/DoubleAxe.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "double_rainbow": {
+      "id": "double_rainbow",
+      "scriptStem": "DoubleRainbow",
+      "file": "Exclusive/DoubleRainbow.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "draconic_orb": {
+      "id": "draconic_orb",
+      "scriptStem": "DraconicOrb",
+      "file": "Exclusive/DraconicOrb.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "dragon_claws": {
+      "id": "dragon_claws",
+      "scriptStem": "DragonClaws",
+      "file": "Exclusive/DragonClaws.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "pet_like"
+    },
+    "dragon_knight": {
+      "id": "dragon_knight",
+      "scriptStem": "DragonKnight",
+      "file": "Exclusive/DragonKnight.gd",
+      "extends": "RubyWhelp",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "dragon_nest": {
+      "id": "dragon_nest",
+      "scriptStem": "DragonNest",
+      "file": "Exclusive/DragonNest.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "dragonscale_armor": {
+      "id": "dragonscale_armor",
+      "scriptStem": "DragonscaleArmor",
+      "file": "Exclusive/DragonscaleArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "pet_like"
+    },
+    "dragon_set": {
+      "id": "dragon_set",
+      "scriptStem": "DragonSet",
+      "file": "Exclusive/DragonSet.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "pet_like"
+    },
+    "dragonskin_boots": {
+      "id": "dragonskin_boots",
+      "scriptStem": "DragonskinBoots",
+      "file": "Exclusive/DragonskinBoots.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "pet_like"
+    },
+    "dual_wielding": {
+      "id": "dual_wielding",
+      "scriptStem": "DualWielding",
+      "file": "Exclusive/DualWielding.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "eat_o_matic": {
+      "id": "eat_o_matic",
+      "scriptStem": "Eat-o-matic",
+      "file": "Exclusive/Eat-o-matic.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "echoing_battlecry": {
+      "id": "echoing_battlecry",
+      "scriptStem": "EchoingBattlecry",
+      "file": "Exclusive/EchoingBattlecry.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "electric_torch": {
+      "id": "electric_torch",
+      "scriptStem": "ElectricTorch",
+      "file": "Exclusive/ElectricTorch.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "emerald_egg": {
+      "id": "emerald_egg",
+      "scriptStem": "EmeraldEgg",
+      "file": "Exclusive/EmeraldEgg.gd",
+      "extends": "DragonEgg",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "emerald_whelp": {
+      "id": "emerald_whelp",
+      "scriptStem": "EmeraldWhelp",
+      "file": "Exclusive/EmeraldWhelp.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "enchanted_weapons": {
+      "id": "enchanted_weapons",
+      "scriptStem": "EnchantedWeapons",
+      "file": "Exclusive/EnchantedWeapons.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "energy_conversion": {
+      "id": "energy_conversion",
+      "scriptStem": "EnergyConversion",
+      "file": "Exclusive/EnergyConversion.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "engineer_box": {
+      "id": "engineer_box",
+      "scriptStem": "EngineerBox",
+      "file": "Exclusive/EngineerBox.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "everburning": {
+      "id": "everburning",
+      "scriptStem": "Everburning",
+      "file": "Exclusive/Everburning.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "evil_hat": {
+      "id": "evil_hat",
+      "scriptStem": "EvilHat",
+      "file": "Exclusive/EvilHat.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "extra_angy": {
+      "id": "extra_angy",
+      "scriptStem": "ExtraAngy",
+      "file": "Exclusive/ExtraAngy.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "extra_bags": {
+      "id": "extra_bags",
+      "scriptStem": "ExtraBags",
+      "file": "Exclusive/ExtraBags.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "false_life": {
+      "id": "false_life",
+      "scriptStem": "FalseLife",
+      "file": "Exclusive/FalseLife.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "fedora": {
+      "id": "fedora",
+      "scriptStem": "Fedora",
+      "file": "Exclusive/Fedora.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "fire_pit": {
+      "id": "fire_pit",
+      "scriptStem": "FirePit",
+      "file": "Exclusive/FirePit.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "family": "unique"
+    },
+    "fire_shelly": {
+      "id": "fire_shelly",
+      "scriptStem": "FireShelly",
+      "file": "Exclusive/FireShelly.gd",
+      "extends": "Shelly",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "flame": {
+      "id": "flame",
+      "scriptStem": "Flame",
+      "file": "Exclusive/Flame.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "flame_badge": {
+      "id": "flame_badge",
+      "scriptStem": "FlameBadge",
+      "file": "Exclusive/FlameBadge.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "flame_whip": {
+      "id": "flame_whip",
+      "scriptStem": "FlameWhip",
+      "file": "Exclusive/FlameWhip.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "forest_dragon": {
+      "id": "forest_dragon",
+      "scriptStem": "ForestDragon",
+      "file": "Exclusive/ForestDragon.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "forging_hammer": {
+      "id": "forging_hammer",
+      "scriptStem": "ForgingHammer",
+      "file": "Exclusive/ForgingHammer.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "fortunas_kiss": {
+      "id": "fortunas_kiss",
+      "scriptStem": "FortunasKiss",
+      "file": "Exclusive/FortunasKiss.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "friendly_fire": {
+      "id": "friendly_fire",
+      "scriptStem": "FriendlyFire",
+      "file": "Exclusive/FriendlyFire.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "frog_prince": {
+      "id": "frog_prince",
+      "scriptStem": "FrogPrince",
+      "file": "Exclusive/FrogPrince.gd",
+      "extends": "Toad",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "frostbite": {
+      "id": "frostbite",
+      "scriptStem": "Frostbite",
+      "file": "Exclusive/Frostbite.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "frozen_buckler": {
+      "id": "frozen_buckler",
+      "scriptStem": "FrozenBuckler",
+      "file": "Exclusive/FrozenBuckler.gd",
+      "extends": "Shield",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "family": "unique"
+    },
+    "frozen_flame": {
+      "id": "frozen_flame",
+      "scriptStem": "FrozenFlame",
+      "file": "Exclusive/FrozenFlame.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "full_body_protection": {
+      "id": "full_body_protection",
+      "scriptStem": "FullBodyProtection",
+      "file": "Exclusive/FullBodyProtection.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "generator": {
+      "id": "generator",
+      "scriptStem": "Generator",
+      "file": "Exclusive/Generator.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "ghost": {
+      "id": "ghost",
+      "scriptStem": "Ghost",
+      "file": "Exclusive/Ghost.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "gigawatz": {
+      "id": "gigawatz",
+      "scriptStem": "Gigawatz",
+      "file": "Exclusive/Gigawatz.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "girl_power": {
+      "id": "girl_power",
+      "scriptStem": "GirlPower",
+      "file": "Exclusive/GirlPower.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "gold_armor": {
+      "id": "gold_armor",
+      "scriptStem": "GoldArmor",
+      "file": "Exclusive/GoldArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "start_buff"
+    },
+    "gold_cube": {
+      "id": "gold_cube",
+      "scriptStem": "GoldCube",
+      "file": "Exclusive/GoldCube.gd",
+      "extends": "Cube",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "halberd": {
+      "id": "halberd",
+      "scriptStem": "Halberd",
+      "file": "Exclusive/Halberd.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "hardwood": {
+      "id": "hardwood",
+      "scriptStem": "Hardwood",
+      "file": "Exclusive/Hardwood.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "hawk_rune": {
+      "id": "hawk_rune",
+      "scriptStem": "HawkRune",
+      "file": "Exclusive/HawkRune.gd",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "heart_of_the_cards": {
+      "id": "heart_of_the_cards",
+      "scriptStem": "HeartoftheCards",
+      "file": "Exclusive/HeartoftheCards.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "heart_shield": {
+      "id": "heart_shield",
+      "scriptStem": "HeartShield",
+      "file": "Exclusive/HeartShield.gd",
+      "extends": "Shield",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "family": "unique"
+    },
+    "heavy_drinking": {
+      "id": "heavy_drinking",
+      "scriptStem": "HeavyDrinking",
+      "file": "Exclusive/HeavyDrinking.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "hedgehog": {
+      "id": "hedgehog",
+      "scriptStem": "Hedgehog",
+      "file": "Exclusive/Hedgehog.gd",
+      "extends": "ForestFriend",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "hero_shield": {
+      "id": "hero_shield",
+      "scriptStem": "HeroShield",
+      "file": "Exclusive/HeroShield.gd",
+      "extends": "WoodenBuckler",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "hogus_bogus": {
+      "id": "hogus_bogus",
+      "scriptStem": "HogusBogus",
+      "file": "Exclusive/HogusBogus.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "trigger",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "holdall": {
+      "id": "holdall",
+      "scriptStem": "Holdall",
+      "file": "Exclusive/Holdall.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "holy_collar": {
+      "id": "holy_collar",
+      "scriptStem": "HolyCollar",
+      "file": "Exclusive/HolyCollar.gd",
+      "extends": "RangerCollar",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "hyper_hedgehog": {
+      "id": "hyper_hedgehog",
+      "scriptStem": "HyperHedgehog",
+      "file": "Exclusive/HyperHedgehog.gd",
+      "extends": "Hedgehog",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "ice_armor": {
+      "id": "ice_armor",
+      "scriptStem": "IceArmor",
+      "file": "Exclusive/IceArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "ice_dragon": {
+      "id": "ice_dragon",
+      "scriptStem": "IceDragon",
+      "file": "Exclusive/IceDragon.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "ice_flower": {
+      "id": "ice_flower",
+      "scriptStem": "IceFlower",
+      "file": "Exclusive/IceFlower.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "inner_power": {
+      "id": "inner_power",
+      "scriptStem": "InnerPower",
+      "file": "Exclusive/InnerPower.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "investment_opportunity": {
+      "id": "investment_opportunity",
+      "scriptStem": "InvestmentOpportunity",
+      "file": "Exclusive/InvestmentOpportunity.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "just_stats": {
+      "id": "just_stats",
+      "scriptStem": "JustStats",
+      "file": "Exclusive/JustStats.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "start_buff"
+    },
+    "jynx_staff": {
+      "id": "jynx_staff",
+      "scriptStem": "JynxStaff",
+      "file": "Exclusive/JynxStaff.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "katana": {
+      "id": "katana",
+      "scriptStem": "Katana",
+      "file": "Exclusive/Katana.gd",
+      "extends": "RibSawBlade",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "king_crown": {
+      "id": "king_crown",
+      "scriptStem": "KingCrown",
+      "file": "Exclusive/KingCrown.gd",
+      "extends": "Crown",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "king_goobert": {
+      "id": "king_goobert",
+      "scriptStem": "KingGoobert",
+      "file": "Exclusive/KingGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "pet_like"
+    },
+    "king_of_the_bling": {
+      "id": "king_of_the_bling",
+      "scriptStem": "KingoftheBling",
+      "file": "Exclusive/KingoftheBling.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "knife_to_meet_you": {
+      "id": "knife_to_meet_you",
+      "scriptStem": "KnifetoMeetYou",
+      "file": "Exclusive/KnifetoMeetYou.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "laboratory": {
+      "id": "laboratory",
+      "scriptStem": "Laboratory",
+      "file": "Exclusive/Laboratory.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart",
+        "trigger"
+      ],
+      "family": "unique"
+    },
+    "leaf_badge": {
+      "id": "leaf_badge",
+      "scriptStem": "LeafBadge",
+      "file": "Exclusive/LeafBadge.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "level_up": {
+      "id": "level_up",
+      "scriptStem": "LevelUp",
+      "file": "Exclusive/LevelUp.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "light_flower": {
+      "id": "light_flower",
+      "scriptStem": "LightFlower",
+      "file": "Exclusive/LightFlower.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "lightning_potion": {
+      "id": "lightning_potion",
+      "scriptStem": "LightningPotion",
+      "file": "Exclusive/LightningPotion.gd",
+      "extends": "Potion",
+      "overrides": [
+        "doCooldownEffect",
+        "onTriggerPotion"
+      ],
+      "family": "food",
+      "cdThenConsume": true
+    },
+    "lightning_staff": {
+      "id": "lightning_staff",
+      "scriptStem": "LightningStaff",
+      "file": "Exclusive/LightningStaff.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "little_mimic": {
+      "id": "little_mimic",
+      "scriptStem": "LittleMimic",
+      "file": "Exclusive/LittleMimic.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "long_spear": {
+      "id": "long_spear",
+      "scriptStem": "LongSpear",
+      "file": "Exclusive/LongSpear.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "lucky_cat": {
+      "id": "lucky_cat",
+      "scriptStem": "LuckyCat",
+      "file": "Exclusive/LuckyCat.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "lucky_shortbow": {
+      "id": "lucky_shortbow",
+      "scriptStem": "LuckyShortbow",
+      "file": "Exclusive/LuckyShortbow.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "mage_hat": {
+      "id": "mage_hat",
+      "scriptStem": "MageHat",
+      "file": "Exclusive/MageHat.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "magic_badge": {
+      "id": "magic_badge",
+      "scriptStem": "MagicBadge",
+      "file": "Exclusive/MagicBadge.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "magic_collar": {
+      "id": "magic_collar",
+      "scriptStem": "MagicCollar",
+      "file": "Exclusive/MagicCollar.gd",
+      "extends": "RangerCollar",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "magic_mirror": {
+      "id": "magic_mirror",
+      "scriptStem": "MagicMirror",
+      "file": "Exclusive/MagicMirror.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "magic_ring": {
+      "id": "magic_ring",
+      "scriptStem": "MagicRing",
+      "file": "Exclusive/MagicRing.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "magitecc_armor": {
+      "id": "magitecc_armor",
+      "scriptStem": "MagiteccArmor",
+      "file": "Exclusive/MagiteccArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "mana_crystal": {
+      "id": "mana_crystal",
+      "scriptStem": "ManaCrystal",
+      "file": "Exclusive/ManaCrystal.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "mana_mastery": {
+      "id": "mana_mastery",
+      "scriptStem": "ManaMastery",
+      "file": "Exclusive/ManaMastery.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "mananana": {
+      "id": "mananana",
+      "scriptStem": "Mananana",
+      "file": "Exclusive/Mananana.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "markswoman": {
+      "id": "markswoman",
+      "scriptStem": "Markswoman",
+      "file": "Exclusive/Markswoman.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "mecha_bat": {
+      "id": "mecha_bat",
+      "scriptStem": "MechaBat",
+      "file": "Exclusive/MechaBat.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "mega_clover": {
+      "id": "mega_clover",
+      "scriptStem": "MegaClover",
+      "file": "Exclusive/MegaClover.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "mercury_elemental": {
+      "id": "mercury_elemental",
+      "scriptStem": "MercuryElemental",
+      "file": "Exclusive/MercuryElemental.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "miss_fortune": {
+      "id": "miss_fortune",
+      "scriptStem": "MissFortune",
+      "file": "Exclusive/MissFortune.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "molten_dagger": {
+      "id": "molten_dagger",
+      "scriptStem": "MoltenDagger",
+      "file": "Exclusive/MoltenDagger.gd",
+      "extends": "Dagger",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "molten_greatsword": {
+      "id": "molten_greatsword",
+      "scriptStem": "MoltenGreatsword",
+      "file": "Exclusive/MoltenGreatsword.gd",
+      "extends": "Greatsword",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "molten_spear": {
+      "id": "molten_spear",
+      "scriptStem": "MoltenSpear",
+      "file": "Exclusive/MoltenSpear.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "molten_spear2": {
+      "id": "molten_spear2",
+      "scriptStem": "MoltenSpear2",
+      "file": "Exclusive/MoltenSpear2.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "moon_armor": {
+      "id": "moon_armor",
+      "scriptStem": "MoonArmor",
+      "file": "Exclusive/MoonArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "more_stats": {
+      "id": "more_stats",
+      "scriptStem": "MoreStats",
+      "file": "Exclusive/MoreStats.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "mrs_struggles": {
+      "id": "mrs_struggles",
+      "scriptStem": "MrsStruggles",
+      "file": "Exclusive/MrsStruggles.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "mushroom_farm": {
+      "id": "mushroom_farm",
+      "scriptStem": "MushroomFarm",
+      "file": "Exclusive/MushroomFarm.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "no_rush_please": {
+      "id": "no_rush_please",
+      "scriptStem": "NoRushPlease",
+      "file": "Exclusive/NoRushPlease.gd",
+      "extends": "LeatherHelm",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "null_blade": {
+      "id": "null_blade",
+      "scriptStem": "NullBlade",
+      "file": "Exclusive/NullBlade.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "obsidian_dragon": {
+      "id": "obsidian_dragon",
+      "scriptStem": "ObsidianDragon",
+      "file": "Exclusive/ObsidianDragon.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "oil_lamp": {
+      "id": "oil_lamp",
+      "scriptStem": "OilLamp",
+      "file": "Exclusive/OilLamp.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "onion_cutter": {
+      "id": "onion_cutter",
+      "scriptStem": "OnionCutter",
+      "file": "Exclusive/OnionCutter.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "owl_spirit": {
+      "id": "owl_spirit",
+      "scriptStem": "OwlSpirit",
+      "file": "Exclusive/OwlSpirit.gd",
+      "extends": "SpiritCompanion",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "paradise_birb": {
+      "id": "paradise_birb",
+      "scriptStem": "ParadiseBirb",
+      "file": "Exclusive/ParadiseBirb.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "perpetuum_mobile": {
+      "id": "perpetuum_mobile",
+      "scriptStem": "PerpetuumMobile",
+      "file": "Exclusive/PerpetuumMobile.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "phoenix": {
+      "id": "phoenix",
+      "scriptStem": "Phoenix",
+      "file": "Exclusive/Phoenix.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "phoenix2": {
+      "id": "phoenix2",
+      "scriptStem": "Phoenix2",
+      "file": "Exclusive/Phoenix2.gd",
+      "extends": "Phoenix",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "piggy_of_riches": {
+      "id": "piggy_of_riches",
+      "scriptStem": "PiggyofRiches",
+      "file": "Exclusive/PiggyofRiches.gd",
+      "extends": "BoxofRiches",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "start_buff"
+    },
+    "piggy_pinata": {
+      "id": "piggy_pinata",
+      "scriptStem": "PiggyPinata",
+      "file": "Exclusive/PiggyPinata.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "pine_protector": {
+      "id": "pine_protector",
+      "scriptStem": "PineProtector",
+      "file": "Exclusive/PineProtector.gd",
+      "extends": "SpikedShield",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "plastic_cube": {
+      "id": "plastic_cube",
+      "scriptStem": "PlasticCube",
+      "file": "Exclusive/PlasticCube.gd",
+      "extends": "Cube",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "poison_frog": {
+      "id": "poison_frog",
+      "scriptStem": "PoisonFrog",
+      "file": "Exclusive/PoisonFrog.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "poison_grenade": {
+      "id": "poison_grenade",
+      "scriptStem": "PoisonGrenade",
+      "file": "Exclusive/PoisonGrenade.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "poison_shortbow": {
+      "id": "poison_shortbow",
+      "scriptStem": "PoisonShortbow",
+      "file": "Exclusive/PoisonShortbow.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "poison_spear": {
+      "id": "poison_spear",
+      "scriptStem": "PoisonSpear",
+      "file": "Exclusive/PoisonSpear.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "pop": {
+      "id": "pop",
+      "scriptStem": "Pop",
+      "file": "Exclusive/Pop.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "portable_altar": {
+      "id": "portable_altar",
+      "scriptStem": "PortableAltar",
+      "file": "Exclusive/PortableAltar.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "pot": {
+      "id": "pot",
+      "scriptStem": "Pot",
+      "file": "Exclusive/Pot.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "power_of_the_moon": {
+      "id": "power_of_the_moon",
+      "scriptStem": "PoweroftheMoon",
+      "file": "Exclusive/PoweroftheMoon.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPostCombatStart",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "power_puppy": {
+      "id": "power_puppy",
+      "scriptStem": "PowerPuppy",
+      "file": "Exclusive/PowerPuppy.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "prismatic_sword": {
+      "id": "prismatic_sword",
+      "scriptStem": "PrismaticSword",
+      "file": "Exclusive/PrismaticSword.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "prismatic_wand": {
+      "id": "prismatic_wand",
+      "scriptStem": "PrismaticWand",
+      "file": "Exclusive/PrismaticWand.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "puzzle_badge": {
+      "id": "puzzle_badge",
+      "scriptStem": "PuzzleBadge",
+      "file": "Exclusive/PuzzleBadge.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "puzzlebag_j": {
+      "id": "puzzlebag_j",
+      "scriptStem": "PuzzlebagJ",
+      "file": "Exclusive/PuzzlebagJ.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "puzzlebag_l": {
+      "id": "puzzlebag_l",
+      "scriptStem": "PuzzlebagL",
+      "file": "Exclusive/PuzzlebagL.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "puzzlebag_s": {
+      "id": "puzzlebag_s",
+      "scriptStem": "PuzzlebagS",
+      "file": "Exclusive/PuzzlebagS.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "puzzlebag_t": {
+      "id": "puzzlebag_t",
+      "scriptStem": "PuzzlebagT",
+      "file": "Exclusive/PuzzlebagT.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "puzzlebag_z": {
+      "id": "puzzlebag_z",
+      "scriptStem": "PuzzlebagZ",
+      "file": "Exclusive/PuzzlebagZ.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "puzzlebox": {
+      "id": "puzzlebox",
+      "scriptStem": "Puzzlebox",
+      "file": "Exclusive/Puzzlebox.gd",
+      "extends": "Bag",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "rainbow_badge": {
+      "id": "rainbow_badge",
+      "scriptStem": "RainbowBadge",
+      "file": "Exclusive/RainbowBadge.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "cdThenConsume": true
+    },
+    "rainbow_goobert_adventurer": {
+      "id": "rainbow_goobert_adventurer",
+      "scriptStem": "RainbowGoobertAdventurer",
+      "file": "Exclusive/RainbowGoobertAdventurer.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "rainbow_goobert_berserker": {
+      "id": "rainbow_goobert_berserker",
+      "scriptStem": "RainbowGoobertBerserker",
+      "file": "Exclusive/RainbowGoobertBerserker.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "rainbow_goobert_engineer": {
+      "id": "rainbow_goobert_engineer",
+      "scriptStem": "RainbowGoobertEngineer",
+      "file": "Exclusive/RainbowGoobertEngineer.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "rainbow_goobert_mage": {
+      "id": "rainbow_goobert_mage",
+      "scriptStem": "RainbowGoobertMage",
+      "file": "Exclusive/RainbowGoobertMage.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "rainbow_goobert_pyromancer": {
+      "id": "rainbow_goobert_pyromancer",
+      "scriptStem": "RainbowGoobertPyromancer",
+      "file": "Exclusive/RainbowGoobertPyromancer.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "rainbow_orb": {
+      "id": "rainbow_orb",
+      "scriptStem": "RainbowOrb",
+      "file": "Exclusive/RainbowOrb.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "rainbow_potion": {
+      "id": "rainbow_potion",
+      "scriptStem": "RainbowPotion",
+      "file": "Exclusive/RainbowPotion.gd",
+      "extends": "Potion",
+      "overrides": [
+        "onCombatStart",
+        "onTriggerPotion"
+      ],
+      "family": "start_buff"
+    },
+    "rat": {
+      "id": "rat",
+      "scriptStem": "Rat",
+      "file": "Exclusive/Rat.gd",
+      "extends": "ForestFriend",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "rat_chef": {
+      "id": "rat_chef",
+      "scriptStem": "RatChef",
+      "file": "Exclusive/RatChef.gd",
+      "extends": "Rat",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "recombobulator": {
+      "id": "recombobulator",
+      "scriptStem": "Recombobulator",
+      "file": "Exclusive/Recombobulator.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "relic_case": {
+      "id": "relic_case",
+      "scriptStem": "RelicCase",
+      "file": "Exclusive/RelicCase.gd",
+      "extends": "Bag",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "repeater": {
+      "id": "repeater",
+      "scriptStem": "Repeater",
+      "file": "Exclusive/Repeater.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "robodog": {
+      "id": "robodog",
+      "scriptStem": "Robodog",
+      "file": "Exclusive/Robodog.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "rope": {
+      "id": "rope",
+      "scriptStem": "Rope",
+      "file": "Exclusive/Rope.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "sandbag": {
+      "id": "sandbag",
+      "scriptStem": "Sandbag",
+      "file": "Exclusive/Sandbag.gd",
+      "extends": "LeatherHelm",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "sapphire_egg": {
+      "id": "sapphire_egg",
+      "scriptStem": "SapphireEgg",
+      "file": "Exclusive/SapphireEgg.gd",
+      "extends": "DragonEgg",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "sapphire_whelp": {
+      "id": "sapphire_whelp",
+      "scriptStem": "SapphireWhelp",
+      "file": "Exclusive/SapphireWhelp.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "scale": {
+      "id": "scale",
+      "scriptStem": "Scale",
+      "file": "Exclusive/Scale.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "scholar_bag": {
+      "id": "scholar_bag",
+      "scriptStem": "ScholarBag",
+      "file": "Exclusive/ScholarBag.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "scissorswords": {
+      "id": "scissorswords",
+      "scriptStem": "Scissorswords",
+      "file": "Exclusive/Scissorswords.gd",
+      "extends": "Lightsaber",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "family": "on_hit"
+    },
+    "seal_the_deal": {
+      "id": "seal_the_deal",
+      "scriptStem": "SealtheDeal",
+      "file": "Exclusive/SealtheDeal.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "serpent_staff": {
+      "id": "serpent_staff",
+      "scriptStem": "SerpentStaff",
+      "file": "Exclusive/SerpentStaff.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage",
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "sewing_case": {
+      "id": "sewing_case",
+      "scriptStem": "SewingCase",
+      "file": "Exclusive/SewingCase.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "shaman_mask": {
+      "id": "shaman_mask",
+      "scriptStem": "ShamanMask",
+      "file": "Exclusive/ShamanMask.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "shell_totem": {
+      "id": "shell_totem",
+      "scriptStem": "ShellTotem",
+      "file": "Exclusive/ShellTotem.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "shelly": {
+      "id": "shelly",
+      "scriptStem": "Shelly",
+      "file": "Exclusive/Shelly.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "shepherds_crook": {
+      "id": "shepherds_crook",
+      "scriptStem": "ShepherdsCrook",
+      "file": "Exclusive/ShepherdsCrook.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "shielded": {
+      "id": "shielded",
+      "scriptStem": "Shielded",
+      "file": "Exclusive/Shielded.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "shiny_mantle": {
+      "id": "shiny_mantle",
+      "scriptStem": "ShinyMantle",
+      "file": "Exclusive/ShinyMantle.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "shiny_shell": {
+      "id": "shiny_shell",
+      "scriptStem": "ShinyShell",
+      "file": "Exclusive/ShinyShell.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "skull_badge": {
+      "id": "skull_badge",
+      "scriptStem": "SkullBadge",
+      "file": "Exclusive/SkullBadge.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "slice_of_bread": {
+      "id": "slice_of_bread",
+      "scriptStem": "SliceofBread",
+      "file": "Exclusive/SliceofBread.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "slice_of_toast": {
+      "id": "slice_of_toast",
+      "scriptStem": "SliceofToast",
+      "file": "Exclusive/SliceofToast.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "slime_time": {
+      "id": "slime_time",
+      "scriptStem": "SlimeTime",
+      "file": "Exclusive/SlimeTime.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "sloth": {
+      "id": "sloth",
+      "scriptStem": "Sloth",
+      "file": "Exclusive/Sloth.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "trigger",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "smelly_barrier": {
+      "id": "smelly_barrier",
+      "scriptStem": "SmellyBarrier",
+      "file": "Exclusive/SmellyBarrier.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "smithing_for_dummies": {
+      "id": "smithing_for_dummies",
+      "scriptStem": "SmithingForDummies",
+      "file": "Exclusive/SmithingForDummies.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "snake": {
+      "id": "snake",
+      "scriptStem": "Snake",
+      "file": "Exclusive/Snake.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "start_buff"
+    },
+    "snowball": {
+      "id": "snowball",
+      "scriptStem": "Snowball",
+      "file": "Exclusive/Snowball.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "start_buff"
+    },
+    "snowcake": {
+      "id": "snowcake",
+      "scriptStem": "Snowcake",
+      "file": "Exclusive/Snowcake.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "snowmaster": {
+      "id": "snowmaster",
+      "scriptStem": "Snowmaster",
+      "file": "Exclusive/Snowmaster.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "snow_stick": {
+      "id": "snow_stick",
+      "scriptStem": "SnowStick",
+      "file": "Exclusive/SnowStick.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "solaris": {
+      "id": "solaris",
+      "scriptStem": "Solaris",
+      "file": "Exclusive/Solaris.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "speak_with_animals": {
+      "id": "speak_with_animals",
+      "scriptStem": "SpeakwithAnimals",
+      "file": "Exclusive/SpeakwithAnimals.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "spell_scroll_dark": {
+      "id": "spell_scroll_dark",
+      "scriptStem": "SpellScrollDark",
+      "file": "Exclusive/SpellScrollDark.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "spell_scroll_frostbolt": {
+      "id": "spell_scroll_frostbolt",
+      "scriptStem": "SpellScrollFrostbolt",
+      "file": "Exclusive/SpellScrollFrostbolt.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "spell_scroll_ice": {
+      "id": "spell_scroll_ice",
+      "scriptStem": "SpellScrollIce",
+      "file": "Exclusive/SpellScrollIce.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "spell_scroll_light": {
+      "id": "spell_scroll_light",
+      "scriptStem": "SpellScrollLight",
+      "file": "Exclusive/SpellScrollLight.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "spell_scroll_nature": {
+      "id": "spell_scroll_nature",
+      "scriptStem": "SpellScrollNature",
+      "file": "Exclusive/SpellScrollNature.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "spicy_banana": {
+      "id": "spicy_banana",
+      "scriptStem": "SpicyBanana",
+      "file": "Exclusive/SpicyBanana.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "food"
+    },
+    "spiked_collar": {
+      "id": "spiked_collar",
+      "scriptStem": "SpikedCollar",
+      "file": "Exclusive/SpikedCollar.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "spiked_staff": {
+      "id": "spiked_staff",
+      "scriptStem": "SpikedStaff",
+      "file": "Exclusive/SpikedStaff.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "spiked_wall": {
+      "id": "spiked_wall",
+      "scriptStem": "SpikedWall",
+      "file": "Exclusive/SpikedWall.gd",
+      "extends": "SpikedShield",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "spin_to_win": {
+      "id": "spin_to_win",
+      "scriptStem": "SpintoWin",
+      "file": "Exclusive/SpintoWin.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "spirit_bells": {
+      "id": "spirit_bells",
+      "scriptStem": "SpiritBells",
+      "file": "Exclusive/SpiritBells.gd",
+      "extends": "LeatherHelm",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "cdThenConsume": true
+    },
+    "spring_loader": {
+      "id": "spring_loader",
+      "scriptStem": "SpringLoader",
+      "file": "Exclusive/SpringLoader.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "synergy_aura",
+      "cdThenConsume": true
+    },
+    "squirrel": {
+      "id": "squirrel",
+      "scriptStem": "Squirrel",
+      "file": "Exclusive/Squirrel.gd",
+      "extends": "ForestFriend",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "squirrel_archer": {
+      "id": "squirrel_archer",
+      "scriptStem": "SquirrelArcher",
+      "file": "Exclusive/SquirrelArcher.gd",
+      "extends": "Squirrel",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "staff_of_fire": {
+      "id": "staff_of_fire",
+      "scriptStem": "StaffofFire",
+      "file": "Exclusive/StaffofFire.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "star_of_courage": {
+      "id": "star_of_courage",
+      "scriptStem": "StarofCourage",
+      "file": "Exclusive/StarofCourage.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "steel_dragon": {
+      "id": "steel_dragon",
+      "scriptStem": "SteelDragon",
+      "file": "Exclusive/SteelDragon.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "stone_armor": {
+      "id": "stone_armor",
+      "scriptStem": "StoneArmor",
+      "file": "Exclusive/StoneArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "stone_badge": {
+      "id": "stone_badge",
+      "scriptStem": "StoneBadge",
+      "file": "Exclusive/StoneBadge.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "stoned": {
+      "id": "stoned",
+      "scriptStem": "Stoned",
+      "file": "Exclusive/Stoned.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "stone_gloves": {
+      "id": "stone_gloves",
+      "scriptStem": "StoneGloves",
+      "file": "Exclusive/StoneGloves.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "stone_golem": {
+      "id": "stone_golem",
+      "scriptStem": "StoneGolem",
+      "file": "Exclusive/StoneGolem.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreCombatStart",
+        "onDealtDamage",
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "stone_shoes": {
+      "id": "stone_shoes",
+      "scriptStem": "StoneShoes",
+      "file": "Exclusive/StoneShoes.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "strong_divine_potion": {
+      "id": "strong_divine_potion",
+      "scriptStem": "StrongDivinePotion",
+      "file": "Exclusive/StrongDivinePotion.gd",
+      "extends": "DivinePotion",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "family": "food"
+    },
+    "strong_vampiric_potion": {
+      "id": "strong_vampiric_potion",
+      "scriptStem": "StrongVampiricPotion",
+      "file": "Exclusive/StrongVampiricPotion.gd",
+      "extends": "VampiricPotion",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "family": "food"
+    },
+    "sun_armor": {
+      "id": "sun_armor",
+      "scriptStem": "SunArmor",
+      "file": "Exclusive/SunArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "start_buff"
+    },
+    "sun_shield": {
+      "id": "sun_shield",
+      "scriptStem": "SunShield",
+      "file": "Exclusive/SunShield.gd",
+      "extends": "Shield",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "family": "unique"
+    },
+    "tesla_coil": {
+      "id": "tesla_coil",
+      "scriptStem": "TeslaCoil",
+      "file": "Exclusive/TeslaCoil.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "thornbloom": {
+      "id": "thornbloom",
+      "scriptStem": "Thornbloom",
+      "file": "Exclusive/Thornbloom.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "thornburst": {
+      "id": "thornburst",
+      "scriptStem": "Thornburst",
+      "file": "Exclusive/Thornburst.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "thorn_elemental": {
+      "id": "thorn_elemental",
+      "scriptStem": "ThornElemental",
+      "file": "Exclusive/ThornElemental.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "thorn_shortbow": {
+      "id": "thorn_shortbow",
+      "scriptStem": "ThornShortbow",
+      "file": "Exclusive/ThornShortbow.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "family": "on_hit"
+    },
+    "thors_hammer": {
+      "id": "thors_hammer",
+      "scriptStem": "ThorsHammer",
+      "file": "Exclusive/ThorsHammer.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "family": "on_hit"
+    },
+    "thunder_drake": {
+      "id": "thunder_drake",
+      "scriptStem": "ThunderDrake",
+      "file": "Exclusive/ThunderDrake.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "time_dilator": {
+      "id": "time_dilator",
+      "scriptStem": "TimeDilator",
+      "file": "Exclusive/TimeDilator.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "time_melting": {
+      "id": "time_melting",
+      "scriptStem": "TimeMelting",
+      "file": "Exclusive/TimeMelting.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "toad": {
+      "id": "toad",
+      "scriptStem": "Toad",
+      "file": "Exclusive/Toad.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "toast_goobert": {
+      "id": "toast_goobert",
+      "scriptStem": "ToastGoobert",
+      "file": "Exclusive/ToastGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "toolbox": {
+      "id": "toolbox",
+      "scriptStem": "Toolbox",
+      "file": "Exclusive/Toolbox.gd",
+      "extends": "Bag",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "turtle": {
+      "id": "turtle",
+      "scriptStem": "Turtle",
+      "file": "Exclusive/Turtle.gd",
+      "extends": "LeatherHelm",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "twine": {
+      "id": "twine",
+      "scriptStem": "Twine",
+      "file": "Exclusive/Twine.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "twine_badge": {
+      "id": "twine_badge",
+      "scriptStem": "TwineBadge",
+      "file": "Exclusive/TwineBadge.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "ukulele": {
+      "id": "ukulele",
+      "scriptStem": "Ukulele",
+      "file": "Exclusive/Ukulele.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "ultima": {
+      "id": "ultima",
+      "scriptStem": "Ultima",
+      "file": "Exclusive/Ultima.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "uniquely_unique": {
+      "id": "uniquely_unique",
+      "scriptStem": "UniquelyUnique",
+      "file": "Exclusive/UniquelyUnique.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "vampiric_collar": {
+      "id": "vampiric_collar",
+      "scriptStem": "VampiricCollar",
+      "file": "Exclusive/VampiricCollar.gd",
+      "extends": "RangerCollar",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "vampiric_potion": {
+      "id": "vampiric_potion",
+      "scriptStem": "VampiricPotion",
+      "file": "Exclusive/VampiricPotion.gd",
+      "extends": "Potion",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "family": "food"
+    },
+    "vineweave_basket": {
+      "id": "vineweave_basket",
+      "scriptStem": "VineweaveBasket",
+      "file": "Exclusive/VineweaveBasket.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "wand": {
+      "id": "wand",
+      "scriptStem": "Wand",
+      "file": "Exclusive/Wand.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "wand_of_dissonance": {
+      "id": "wand_of_dissonance",
+      "scriptStem": "WandofDissonance",
+      "file": "Exclusive/WandofDissonance.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "war_scythe": {
+      "id": "war_scythe",
+      "scriptStem": "WarScythe",
+      "file": "Exclusive/WarScythe.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "water_elemental": {
+      "id": "water_elemental",
+      "scriptStem": "WaterElemental",
+      "file": "Exclusive/WaterElemental.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "whetstone3": {
+      "id": "whetstone3",
+      "scriptStem": "Whetstone3",
+      "file": "Exclusive/Whetstone3.gd",
+      "extends": "Whetstone",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "winged_boots": {
+      "id": "winged_boots",
+      "scriptStem": "WingedBoots",
+      "file": "Exclusive/WingedBoots.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "wisdom_puppy": {
+      "id": "wisdom_puppy",
+      "scriptStem": "WisdomPuppy",
+      "file": "Exclusive/WisdomPuppy.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "wisp": {
+      "id": "wisp",
+      "scriptStem": "Wisp",
+      "file": "Exclusive/Wisp.gd",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "cdThenConsume": true
+    },
+    "wolf_badge": {
+      "id": "wolf_badge",
+      "scriptStem": "WolfBadge",
+      "file": "Exclusive/WolfBadge.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "wolf_emblem": {
+      "id": "wolf_emblem",
+      "scriptStem": "WolfEmblem",
+      "file": "Exclusive/WolfEmblem.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "wrench": {
+      "id": "wrench",
+      "scriptStem": "Wrench",
+      "file": "Exclusive/Wrench.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "family": "on_hit"
+    },
+    "falcon_blade": {
+      "id": "falcon_blade",
+      "scriptStem": "FalconBlade",
+      "file": "FalconBlade.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "fancy_fencing_rapier": {
+      "id": "fancy_fencing_rapier",
+      "scriptStem": "FancyFencingRapier",
+      "file": "FancyFencingRapier.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "family": "on_hit"
+    },
+    "fanfare": {
+      "id": "fanfare",
+      "scriptStem": "Fanfare",
+      "file": "Fanfare.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "fanny_pack": {
+      "id": "fanny_pack",
+      "scriptStem": "FannyPack",
+      "file": "FannyPack.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "flute": {
+      "id": "flute",
+      "scriptStem": "Flute",
+      "file": "Flute.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "fly_agaric": {
+      "id": "fly_agaric",
+      "scriptStem": "FlyAgaric",
+      "file": "FlyAgaric.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "garlic": {
+      "id": "garlic",
+      "scriptStem": "Garlic",
+      "file": "Garlic.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "amethyst": {
+      "id": "amethyst",
+      "scriptStem": "Amethyst",
+      "file": "Gems/Amethyst.gd",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "corrupted_crystal": {
+      "id": "corrupted_crystal",
+      "scriptStem": "CorruptedCrystal",
+      "file": "Gems/CorruptedCrystal.gd",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "emerald": {
+      "id": "emerald",
+      "scriptStem": "Emerald",
+      "file": "Gems/Emerald.gd",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "cdThenConsume": true
+    },
+    "lump_of_coal": {
+      "id": "lump_of_coal",
+      "scriptStem": "LumpofCoal",
+      "file": "Gems/LumpofCoal.gd",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "cdThenConsume": true
+    },
+    "ruby": {
+      "id": "ruby",
+      "scriptStem": "Ruby",
+      "file": "Gems/Ruby.gd",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "cdThenConsume": true
+    },
+    "sapphire": {
+      "id": "sapphire",
+      "scriptStem": "Sapphire",
+      "file": "Gems/Sapphire.gd",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "cdThenConsume": true
+    },
+    "gingerbread_man": {
+      "id": "gingerbread_man",
+      "scriptStem": "GingerbreadMan",
+      "file": "GingerbreadMan.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "gloves_of_haste": {
+      "id": "gloves_of_haste",
+      "scriptStem": "GlovesofHaste",
+      "file": "GlovesofHaste.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "goobert": {
+      "id": "goobert",
+      "scriptStem": "Goobert",
+      "file": "Goobert.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "pet_like"
+    },
+    "greatsword": {
+      "id": "greatsword",
+      "scriptStem": "Greatsword",
+      "file": "Greatsword.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "hammer": {
+      "id": "hammer",
+      "scriptStem": "Hammer",
+      "file": "Hammer.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "family": "on_hit"
+    },
+    "healing_herbs": {
+      "id": "healing_herbs",
+      "scriptStem": "HealingHerbs",
+      "file": "HealingHerbs.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "start_buff"
+    },
+    "health_potion": {
+      "id": "health_potion",
+      "scriptStem": "HealthPotion",
+      "file": "HealthPotion.gd",
+      "extends": "Potion",
+      "overrides": [
+        "onTriggerPotion",
+        "onDamaged"
+      ],
+      "family": "food"
+    },
+    "heart_container": {
+      "id": "heart_container",
+      "scriptStem": "HeartContainer",
+      "file": "HeartContainer.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "heart_of_darkness": {
+      "id": "heart_of_darkness",
+      "scriptStem": "HeartofDarkness",
+      "file": "HeartofDarkness.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "heroic_potion": {
+      "id": "heroic_potion",
+      "scriptStem": "HeroicPotion",
+      "file": "HeroicPotion.gd",
+      "extends": "Potion",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "family": "food"
+    },
+    "hero_longsword": {
+      "id": "hero_longsword",
+      "scriptStem": "HeroLongsword",
+      "file": "HeroLongsword.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "hero_sword": {
+      "id": "hero_sword",
+      "scriptStem": "HeroSword",
+      "file": "HeroSword.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "holy_armor": {
+      "id": "holy_armor",
+      "scriptStem": "HolyArmor",
+      "file": "HolyArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "start_buff"
+    },
+    "holy_spear": {
+      "id": "holy_spear",
+      "scriptStem": "HolySpear",
+      "file": "HolySpear.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "hungry_blade": {
+      "id": "hungry_blade",
+      "scriptStem": "HungryBlade",
+      "file": "HungryBlade.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onCombatStart",
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "start_buff"
+    },
+    "jynx_torquilla": {
+      "id": "jynx_torquilla",
+      "scriptStem": "Jynxtorquilla",
+      "file": "Jynxtorquilla.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "leather_armor": {
+      "id": "leather_armor",
+      "scriptStem": "LeatherArmor",
+      "file": "LeatherArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "family": "unique"
+    },
+    "leather_boots": {
+      "id": "leather_boots",
+      "scriptStem": "LeatherBoots",
+      "file": "LeatherBoots.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "leather_helm": {
+      "id": "leather_helm",
+      "scriptStem": "LeatherHelm",
+      "file": "LeatherHelm.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "family": "unique"
+    },
+    "light_goobert": {
+      "id": "light_goobert",
+      "scriptStem": "LightGoobert",
+      "file": "LightGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "pet_like"
+    },
+    "lightsaber": {
+      "id": "lightsaber",
+      "scriptStem": "Lightsaber",
+      "file": "Lightsaber.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "lucky_bow": {
+      "id": "lucky_bow",
+      "scriptStem": "LuckyBow",
+      "file": "LuckyBow.gd",
+      "extends": "Bow",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "lucky_clover": {
+      "id": "lucky_clover",
+      "scriptStem": "LuckyClover",
+      "file": "LuckyClover.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "lucky_piggy": {
+      "id": "lucky_piggy",
+      "scriptStem": "LuckyPiggy",
+      "file": "LuckyPiggy.gd",
+      "extends": "Piggybank",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "magic_staff": {
+      "id": "magic_staff",
+      "scriptStem": "MagicStaff",
+      "file": "MagicStaff.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "magic_torch": {
+      "id": "magic_torch",
+      "scriptStem": "MagicTorch",
+      "file": "MagicTorch.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "mana_orb": {
+      "id": "mana_orb",
+      "scriptStem": "ManaOrb",
+      "file": "ManaOrb.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "mana_potion": {
+      "id": "mana_potion",
+      "scriptStem": "ManaPotion",
+      "file": "ManaPotion.gd",
+      "extends": "Potion",
+      "overrides": [
+        "onTriggerPotion",
+        "onDamaged"
+      ],
+      "family": "food"
+    },
+    "manathirst": {
+      "id": "manathirst",
+      "scriptStem": "Manathirst",
+      "file": "Manathirst.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "moon_shield": {
+      "id": "moon_shield",
+      "scriptStem": "MoonShield",
+      "file": "MoonShield.gd",
+      "extends": "Shield",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "family": "unique"
+    },
+    "mr_struggles": {
+      "id": "mr_struggles",
+      "scriptStem": "MrStruggles",
+      "file": "MrStruggles.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "pan": {
+      "id": "pan",
+      "scriptStem": "Pan",
+      "file": "Pan.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "family": "weapon_base"
+    },
+    "pandamonium": {
+      "id": "pandamonium",
+      "scriptStem": "Pandamonium",
+      "file": "Pandamonium.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "pestilence_flask": {
+      "id": "pestilence_flask",
+      "scriptStem": "PestilenceFlask",
+      "file": "PestilenceFlask.gd",
+      "extends": "Potion",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "family": "food"
+    },
+    "piercing_arrow": {
+      "id": "piercing_arrow",
+      "scriptStem": "PiercingArrow",
+      "file": "PiercingArrow.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "piggybank": {
+      "id": "piggybank",
+      "scriptStem": "Piggybank",
+      "file": "Piggybank.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "start_buff"
+    },
+    "pineapple": {
+      "id": "pineapple",
+      "scriptStem": "Pineapple",
+      "file": "Pineapple.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "platin_customer_card": {
+      "id": "platin_customer_card",
+      "scriptStem": "PlatinCustomerCard",
+      "file": "PlatinCustomerCard.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "family": "unique"
+    },
+    "pocket_sand": {
+      "id": "pocket_sand",
+      "scriptStem": "PocketSand",
+      "file": "PocketSand.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "poison_bow": {
+      "id": "poison_bow",
+      "scriptStem": "PoisonBow",
+      "file": "PoisonBow.gd",
+      "extends": "Bow",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "poison_dagger": {
+      "id": "poison_dagger",
+      "scriptStem": "PoisonDagger",
+      "file": "PoisonDagger.gd",
+      "extends": "Dagger",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "poison_goobert": {
+      "id": "poison_goobert",
+      "scriptStem": "PoisonGoobert",
+      "file": "PoisonGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "poison_ivy": {
+      "id": "poison_ivy",
+      "scriptStem": "PoisonIvy",
+      "file": "PoisonIvy.gd",
+      "extends": "Item",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "potion_belt": {
+      "id": "potion_belt",
+      "scriptStem": "PotionBelt",
+      "file": "PotionBelt.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "food"
+    },
+    "present": {
+      "id": "present",
+      "scriptStem": "Present",
+      "file": "Present.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "protective_purse": {
+      "id": "protective_purse",
+      "scriptStem": "ProtectivePurse",
+      "file": "ProtectivePurse.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "pumpkin": {
+      "id": "pumpkin",
+      "scriptStem": "Pumpkin",
+      "file": "Pumpkin.gd",
+      "extends": "Food",
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "rainbow_goobert": {
+      "id": "rainbow_goobert",
+      "scriptStem": "RainbowGoobert",
+      "file": "RainbowGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "rainbow_goobert_ranger": {
+      "id": "rainbow_goobert_ranger",
+      "scriptStem": "RainbowGoobertRanger",
+      "file": "RainbowGoobertRanger.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
+    },
+    "ranger_bag": {
+      "id": "ranger_bag",
+      "scriptStem": "RangerBag",
+      "file": "RangerBag.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "rib_saw_blade": {
+      "id": "rib_saw_blade",
+      "scriptStem": "RibSawBlade",
+      "file": "RibSawBlade.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "ruby_chonk": {
+      "id": "ruby_chonk",
+      "scriptStem": "RubyChonk",
+      "file": "RubyChonk.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "ruby_egg": {
+      "id": "ruby_egg",
+      "scriptStem": "RubyEgg",
+      "file": "RubyEgg.gd",
+      "extends": "DragonEgg",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "family": "unique"
+    },
+    "ruby_whelp": {
+      "id": "ruby_whelp",
+      "scriptStem": "RubyWhelp",
+      "file": "RubyWhelp.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onCombatStart",
+        "onPreCombatStart"
+      ],
+      "family": "weapon_base"
+    },
+    "shield_of_valor": {
+      "id": "shield_of_valor",
+      "scriptStem": "ShieldofValor",
+      "file": "ShieldofValor.gd",
+      "extends": "Shield",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "family": "unique"
+    },
+    "shovel": {
+      "id": "shovel",
+      "scriptStem": "Shovel",
+      "file": "Shovel.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onDealtDamage"
+      ],
+      "family": "on_hit"
+    },
+    "spear": {
+      "id": "spear",
+      "scriptStem": "Spear",
+      "file": "Spear.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_late",
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "spectral_dagger": {
+      "id": "spectral_dagger",
+      "scriptStem": "SpectralDagger",
+      "file": "SpectralDagger.gd",
+      "extends": "Dagger",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "spiked_shield": {
+      "id": "spiked_shield",
+      "scriptStem": "SpikedShield",
+      "file": "SpikedShield.gd",
+      "extends": "Shield",
+      "overrides": [
+        "onPrepare",
+        "afterBlock"
+      ],
+      "family": "unique"
+    },
+    "staff_of_unhealing": {
+      "id": "staff_of_unhealing",
+      "scriptStem": "StaffofUnhealing",
+      "file": "StaffofUnhealing.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "stamina_sack": {
+      "id": "stamina_sack",
+      "scriptStem": "StaminaSack",
+      "file": "StaminaSack.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare",
+        "addToInventory"
+      ],
+      "family": "unique"
+    },
+    "steel_goobert": {
+      "id": "steel_goobert",
+      "scriptStem": "SteelGoobert",
+      "file": "SteelGoobert.gd",
+      "extends": "Goobert",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "pet_like"
+    },
+    "stone": {
+      "id": "stone",
+      "scriptStem": "Stone",
+      "file": "Stone.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onDealtDamage",
+        "onPreDealDamage_late"
+      ],
+      "family": "on_hit"
+    },
+    "stone_helm": {
+      "id": "stone_helm",
+      "scriptStem": "StoneHelm",
+      "file": "StoneHelm.gd",
+      "extends": "LeatherHelm",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "stone_skin_potion": {
+      "id": "stone_skin_potion",
+      "scriptStem": "StoneSkinPotion",
+      "file": "StoneSkinPotion.gd",
+      "extends": "Potion",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "family": "food"
+    },
+    "storage_coffin": {
+      "id": "storage_coffin",
+      "scriptStem": "StorageCoffin",
+      "file": "StorageCoffin.gd",
+      "extends": "Bag",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "strong_demonic_flask": {
+      "id": "strong_demonic_flask",
+      "scriptStem": "StrongDemonicFlask",
+      "file": "StrongDemonicFlask.gd",
+      "extends": "Potion",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "family": "food"
+    },
+    "strong_health_potion": {
+      "id": "strong_health_potion",
+      "scriptStem": "StrongHealthPotion",
+      "file": "StrongHealthPotion.gd",
+      "extends": "HealthPotion",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "family": "food"
+    },
+    "strong_pestilence_flask": {
+      "id": "strong_pestilence_flask",
+      "scriptStem": "StrongPestilenceFlask",
+      "file": "StrongPestilenceFlask.gd",
+      "extends": "PestilenceFlask",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "family": "food"
+    },
+    "strong_stone_skin_potion": {
+      "id": "strong_stone_skin_potion",
+      "scriptStem": "StrongStoneSkinPotion",
+      "file": "StrongStoneSkinPotion.gd",
+      "extends": "StoneSkinPotion",
+      "overrides": [
+        "onTriggerPotion"
+      ],
+      "family": "food"
+    },
+    "thorn_bow": {
+      "id": "thorn_bow",
+      "scriptStem": "ThornBow",
+      "file": "ThornBow.gd",
+      "extends": "Bow",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    },
+    "thorn_whip": {
+      "id": "thorn_whip",
+      "scriptStem": "ThornWhip",
+      "file": "ThornWhip.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early",
+        "onPrepare"
+      ],
+      "family": "on_hit"
+    },
+    "torch": {
+      "id": "torch",
+      "scriptStem": "Torch",
+      "file": "Torch.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreDealDamage_early"
+      ],
+      "family": "on_hit"
+    },
+    "vampiric_armor": {
+      "id": "vampiric_armor",
+      "scriptStem": "VampiricArmor",
+      "file": "VampiricArmor.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "family": "start_buff"
+    },
+    "vampiric_gloves": {
+      "id": "vampiric_gloves",
+      "scriptStem": "VampiricGloves",
+      "file": "VampiricGloves.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "cdThenConsume": true
+    },
+    "vampiric_scythe": {
+      "id": "vampiric_scythe",
+      "scriptStem": "VampiricScythe",
+      "file": "VampiricScythe.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "weapon_base"
+    },
+    "villain_sword": {
+      "id": "villain_sword",
+      "scriptStem": "VillainSword",
+      "file": "VillainSword.gd",
+      "extends": "Weapon",
+      "overrides": [
+        "onPreCombatStart"
+      ],
+      "family": "weapon_base"
+    },
+    "walrus_tusk": {
+      "id": "walrus_tusk",
+      "scriptStem": "WalrusTusk",
+      "file": "WalrusTusk.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "unique"
+    },
+    "weapon": {
+      "id": "weapon",
+      "scriptStem": "Weapon",
+      "file": "Weapon.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "basic_weapon"
+    },
+    "whetstone": {
+      "id": "whetstone",
+      "scriptStem": "Whetstone",
+      "file": "Whetstone.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "synergy_aura"
+    },
+    "wolpertinger": {
+      "id": "wolpertinger",
+      "scriptStem": "Wolpertinger",
+      "file": "Wolpertinger.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "wooden_buckler": {
+      "id": "wooden_buckler",
+      "scriptStem": "WoodenBuckler",
+      "file": "WoodenBuckler.gd",
+      "extends": "Shield",
+      "overrides": [
+        "afterBlock"
+      ],
+      "family": "unique"
+    },
+    "wooden_sword": {
+      "id": "wooden_sword",
+      "scriptStem": "WoodenSword",
+      "file": "WoodenSword.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "basic_weapon"
+    },
+    "yggdrasil_leaf": {
+      "id": "yggdrasil_leaf",
+      "scriptStem": "YggdrasilLeaf",
+      "file": "YggdrasilLeaf.gd",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura"
+    }
+  }
+}

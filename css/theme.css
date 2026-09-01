@@ -1,0 +1,361 @@
+/* BPB Website — global theme tokens
+ * Derived from Backpack Battles UI (see docs/theme.md + assets/theme-refs/)
+ * Page-specific layout → Tailwind. Tooltip skin → js/shared/tooltip.css
+ */
+
+@font-face {
+  font-family: "Milonga";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/milonga.woff2") format("woff2"),
+       url("../assets/fonts/milonga.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Libre Baskerville";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/libre-400.woff2") format("woff2"),
+       url("../assets/fonts/libre-400.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Libre Baskerville";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/libre-700.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Libre Baskerville";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/libre-400-italic.ttf") format("truetype");
+}
+
+:root {
+  /* Parchment / leather */
+  --bpb-parchment: #d4b896;
+  --bpb-parchment-light: #e2c9a8;
+  --bpb-parchment-deep: #b8956e;
+  --bpb-leather: #8a6a4a;
+  --bpb-leather-cell: #9a7352;
+  --bpb-ink: #3d2b1f;
+  --bpb-ink-muted: #5c4636;
+  --bpb-frame: #4a3428;
+  --bpb-wood: #6b4a32;
+
+  /* Accents */
+  --bpb-gold: #e8c84a;
+  --bpb-banner-crimson: #8b2e2e;
+  --bpb-banner-steel: #3d5a7a;
+  --bpb-banner-forest: #3f6b4f;
+  --bpb-win: #5a9a5a;
+  --bpb-loss: #b05a5a;
+
+  /* Rarity paint-swipes */
+  --bpb-rarity-common: #7cbc6a;
+  --bpb-rarity-rare: #4a9fd8;
+  --bpb-rarity-epic: #9b6bc7;
+  --bpb-rarity-legendary: #e89a3c;
+  --bpb-rarity-godly: #f0c23a;
+  --bpb-rarity-unique: #d4a017;
+
+  /* Type */
+  --bpb-font-display: "Milonga", "Libre Baskerville", Georgia, serif;
+  --bpb-font-body: "Libre Baskerville", Georgia, serif;
+
+  /* Sticker / shop-label text (white fill, ink outline, hard shadow down-left) */
+  --bpb-label-fill: #fffaf0;
+  --bpb-label-ink: #442f1d;
+  --bpb-label-stroke:
+    calc(1em / 10 * 1) calc(1em / 10 * 0) 0 var(--bpb-label-ink),
+    calc(1em / 10 * 0.9239) calc(1em / 10 * 0.3827) 0 var(--bpb-label-ink),
+    calc(1em / 10 * 0.7071) calc(1em / 10 * 0.7071) 0 var(--bpb-label-ink),
+    calc(1em / 10 * 0.3827) calc(1em / 10 * 0.9239) 0 var(--bpb-label-ink),
+    calc(1em / 10 * 0) calc(1em / 10 * 1) 0 var(--bpb-label-ink),
+    calc(1em / 10 * -0.3827) calc(1em / 10 * 0.9239) 0 var(--bpb-label-ink),
+    calc(1em / 10 * -0.7071) calc(1em / 10 * 0.7071) 0 var(--bpb-label-ink),
+    calc(1em / 10 * -0.9239) calc(1em / 10 * 0.3827) 0 var(--bpb-label-ink),
+    calc(1em / 10 * -1) calc(1em / 10 * 0) 0 var(--bpb-label-ink),
+    calc(1em / 10 * -0.9239) calc(1em / 10 * -0.3827) 0 var(--bpb-label-ink),
+    calc(1em / 10 * -0.7071) calc(1em / 10 * -0.7071) 0 var(--bpb-label-ink),
+    calc(1em / 10 * -0.3827) calc(1em / 10 * -0.9239) 0 var(--bpb-label-ink),
+    calc(1em / 10 * 0) calc(1em / 10 * -1) 0 var(--bpb-label-ink),
+    calc(1em / 10 * 0.3827) calc(1em / 10 * -0.9239) 0 var(--bpb-label-ink),
+    calc(1em / 10 * 0.7071) calc(1em / 10 * -0.7071) 0 var(--bpb-label-ink),
+    calc(1em / 10 * 0.9239) calc(1em / 10 * -0.3827) 0 var(--bpb-label-ink),
+    -0.02em 0.035em 0 var(--bpb-label-ink),
+    -0.04em 0.07em 0 var(--bpb-label-ink),
+    -0.055em 0.1em 0 var(--bpb-label-ink),
+    -0.07em 0.13em 0 var(--bpb-label-ink);
+
+  /* Chrome */
+  --bpb-radius-panel: 10px;
+  --bpb-border: 2px solid var(--bpb-frame);
+  --bpb-shadow-paper: 0 4px 14px rgba(45, 30, 20, 0.18);
+
+  /* Game screen frame (Frame2 @ 1920×1080, ~40px rim) — scales with stretch */
+  --bpb-frame-edge-x: calc(100vw * 40 / 1920);
+  --bpb-frame-edge-y: calc(100vh * 40 / 1080);
+  --bpb-z-screen-frame: 9990;
+
+  /* Scene backgrounds */
+  --bpb-bg-town: url("../assets/theme/backgrounds/bg-town-square.jpg");
+  --bpb-bg-shop: url("../assets/theme/backgrounds/bg-shop-interior.jpg");
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--bpb-font-body);
+  color: var(--bpb-ink);
+  background-color: var(--bpb-parchment-deep);
+}
+
+/* Site-wide game screen chrome (pointer-events none; tooltips sit above) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: var(--bpb-z-screen-frame);
+  pointer-events: none;
+  background: url("../assets/theme/ui/ui-screen-frame.png") center / 100% 100% no-repeat;
+}
+
+#site-nav {
+  /* VH-style: fixed out of flow so logo shrink doesn’t change page height / scrollY */
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 100;
+  /* Sit closer to the screen-frame rim */
+  padding-top: calc(var(--bpb-frame-edge-y) * 0.35);
+  padding-left: var(--bpb-frame-edge-x);
+  padding-right: var(--bpb-frame-edge-x);
+}
+
+/* In-flow stand-in sized to the *expanded* nav — keeps layout stable while nav is fixed */
+#site-nav-space {
+  flex-shrink: 0;
+  height: var(--bpb-nav-space, 12rem);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+#main {
+  padding-left: var(--bpb-frame-edge-x);
+  padding-right: var(--bpb-frame-edge-x);
+}
+
+#site-footer {
+  padding-bottom: var(--bpb-frame-edge-y);
+  padding-left: var(--bpb-frame-edge-x);
+  padding-right: var(--bpb-frame-edge-x);
+}
+
+/* Homepage: combat day→night sky (js/pages/home/combat-sky.js) */
+body.page-home {
+  background-color: #000533;
+  background-image: none;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+}
+
+body.page-home #main {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Items catalog: shop interior — calm wall behind parchment UI */
+body.page-items {
+  background-color: #5a4535;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(212, 184, 150, 0.42) 0%,
+      rgba(70, 48, 32, 0.5) 100%
+    ),
+    var(--bpb-bg-shop);
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+body.page-items #site-nav-space {
+  flex-shrink: 0;
+}
+
+body.page-items #main {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.page-items #site-footer:empty {
+  display: none;
+}
+
+/* Create: same viewport shell as items so the catalog bag can scroll */
+body.page-create {
+  background-color: #5a4535;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(212, 184, 150, 0.4) 0%,
+      rgba(70, 48, 32, 0.5) 100%
+    ),
+    var(--bpb-bg-shop);
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+body.page-create #site-nav-space {
+  flex-shrink: 0;
+}
+
+body.page-create #main {
+  min-height: 0;
+}
+
+/* Build guide: shop interior — same tool-page family as items catalog */
+body.page-build {
+  background-color: #5a4535;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(212, 184, 150, 0.38) 0%,
+      rgba(70, 48, 32, 0.52) 100%
+    ),
+    var(--bpb-bg-shop);
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Builds catalog + profiles: town square — public browse (home family).
+ * Sim uses testing-grounds lab chrome in js/pages/sim/sim.css (see docs/sim-product.md). */
+body.page-builds,
+body.page-profile {
+  background-color: #6b5340;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(212, 184, 150, 0.4) 0%,
+      rgba(70, 48, 32, 0.5) 100%
+    ),
+    var(--bpb-bg-town);
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#main {
+  min-height: 100vh;
+}
+
+/* Build pages: nav is above #main — don't force main to full viewport height
+   (that alone made the document scroll when content fit). */
+body.page-build #main {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--bpb-font-display);
+  font-weight: 400;
+  color: var(--bpb-ink);
+}
+
+/* Outlined cream sticker treatment — face is Milonga for banner chrome.
+   Filter / Options UI labels should use --bpb-font-body instead (see docs/theme.md). */
+.bpb-label-text {
+  color: var(--bpb-label-fill);
+  font-family: var(--bpb-font-display);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: var(--bpb-label-stroke);
+}
+
+a {
+  color: var(--bpb-banner-steel);
+}
+
+a:hover {
+  color: var(--bpb-banner-crimson);
+}
+
+/* Reusable panel shell — Tailwind handles layout; this sets the material */
+.bpb-panel {
+  background-color: var(--bpb-parchment);
+  background-image: url("../assets/theme/backgrounds/bg-parchment-panel.png");
+  background-size: cover;
+  background-position: center;
+  border: var(--bpb-border);
+  border-radius: var(--bpb-radius-panel);
+  box-shadow: var(--bpb-shadow-paper);
+}
+
+.bpb-banner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.25rem;
+  color: #f5efe4;
+  font-family: var(--bpb-font-display);
+  text-decoration: none;
+  border: 2px solid rgba(30, 18, 10, 0.45);
+  box-shadow: var(--bpb-shadow-paper);
+}
+
+.bpb-banner--crimson {
+  background: linear-gradient(180deg, #a33a3a, var(--bpb-banner-crimson));
+}
+
+.bpb-banner--steel {
+  background: linear-gradient(180deg, #4d6f94, var(--bpb-banner-steel));
+}
+
+.bpb-banner--forest {
+  background: linear-gradient(180deg, #4f855f, var(--bpb-banner-forest));
+}

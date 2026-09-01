@@ -1,0 +1,86 @@
+---
+description: Frontend design, Tailwind usage, and theme preferences
+alwaysApply: true
+---
+
+# BPB Website — design
+
+## Direction
+
+- Theme after **Backpack Battles** UI: cozy **parchment + leather** fantasy journal — see `docs/theme.md` and `assets/theme-refs/`
+- Not a generic SaaS skin; not a pixel-clone of BPB Builds (same material family, closer to the real game + better UX)
+- Preserve **tooltip** skin in `js/shared/tooltip.css` (cream/gold frames); page chrome stays parchment/leather
+
+## Styling stack
+
+- **Rely heavily on Tailwind** for page-specific layout and components
+- Plain CSS is allowed for globals:
+  - `css/theme.css` — how the site **looks** (tokens, atmosphere) ← start here
+  - `css/shared.css` — optional shared layout helpers (not nav/footer markup)
+- **Nav and footer** are JS modules: `js/shared/nav.js`, `js/shared/footer.js` — mounted from each page’s `index.js`
+- Module CSS when needed (e.g. `js/shared/tooltip.css`, `js/shared/skeleton.css`)
+- Do **not** put one-off page layout in giant shared CSS — use Tailwind on that page instead
+- Do **not** re-implement the tooltip frame system in Tailwind utility soup
+- Do **not** duplicate nav/footer HTML in every page by hand — use the shared JS modules
+- Loading placeholders: shared parchment skeletons — see `.cursor/rules/skeleton.mdc` and `js/shared/skeleton.js`
+
+## Theme cues (from game screenshots)
+
+- Warm mottled parchment backgrounds; dark brown ink/frames
+- Leather pouch cells for backpack grids
+- Hanging fabric banners for strong CTAs (crimson / steel / forest)
+- Rarity as colored paint-swipe labels
+- Saturated item sprites as the colorful accent layer
+
+## Create / filter UI recipe (canonical)
+
+Prefer this chrome for create, Itemiary filters, recessed panels, and in-page dialogs — not generic bordered modals or flat gray overlays.
+
+**Reference surfaces**
+
+| Surface | Where |
+|---|---|
+| Filter \| Build rail | `js/pages/create/rail-chrome.css` (`.cr-tabs`, `.cr-panel`, `.cr-submit`) |
+| Patch3 shade bands | Parked, essentials tiers, history-lock panel — `::before` + `assets/icons/filters/Patch3.png` mask-border |
+| OptionsFont labels | Filter checkboxes / grouping — see `.cursor/rules/typography.mdc` |
+
+**Do**
+
+- Recessed sections: Patch3 mask-border shade (`--build-shade` / warm ink wash), not a hard `border + border-radius` card
+- Interactive outline/tint on the **shade** (`::before`), not a parchment cell rect
+- Dialogs / confirms over the board: scope to the relevant region (e.g. bag stage only); soft feathered / radial dim — no sharp full-bleed SaaS scrim
+- Primary actions: create-rail language (Milonga display CTA like `.cr-submit`, cream fill, ink stroke); secondary = Baskerville quiet button
+- Tokens: cream `#ffecdc` / `--il-cream`, ink `#3c261d` / `--il-ink`, gold `#eac914` / `--il-gold` for accents
+- Gold scrollbars and grouping-style dropdowns when matching filter / History list chrome
+
+**Don’t**
+
+- Invent a second modal system (prefer Patch3 panel + rail buttons over purple/gray dialog kits)
+- Hard-cut rectangular overlays that cover Parked / scrubber when only the bag needs attention
+- Flat gray “bone” panels with a brown border pretending to be filter UI
+- Default new create controls to Inter / system pills / `rounded-full` chip clusters
+
+## Typography & assets
+
+Match the game’s face roles (detail in `docs/theme.md` + `.cursor/rules/typography.mdc`):
+
+- **Libre Baskerville** (`--bpb-font-body`) — UI controls, filter labels (rarity / shop / crafted / gated), dropdowns, counts, body, meta
+- **Milonga** (`--bpb-font-display`) — headings, nav banner words, tooltip item names, display / CTA stickers
+- Filter / Options labels (`OptionsFont`): Baskerville **Regular** 26px, **3px** ink outline, cream fill, **no** letter-spacing tweak
+- Do **not** default outlined filter/UI labels to Milonga; do **not** shrink shop rows vs rarity
+- Avoid Inter/Roboto/Arial as the brand voice
+- Fonts in repo (`assets/fonts/`); item sprites in Supabase Storage; theme refs in `assets/theme-refs/`
+
+## Layout habits
+
+- One job per section; reduce clutter
+- Real game art as visual anchor when available
+- Cards only when they aid interaction
+- Desktop and mobile must both work
+
+## Avoid
+
+- Purple-on-white / purple-indigo “AI default” themes
+- Flat gray pages with a brown border pretending to be parchment
+- Copying BPB Builds’ web parchment 1:1
+- Ignoring `docs/theme.md` / theme-refs once set

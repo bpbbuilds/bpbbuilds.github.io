@@ -1,0 +1,13 @@
+# Minimal Supabase project config for Edge Functions.
+# Deploy: supabase functions deploy submit-build
+#         supabase functions deploy admin-builds
+# Secrets: supabase secrets set BPB_SUBMIT_SECRET=...
+
+[functions.submit-build]
+verify_jwt = false
+
+[functions.admin-builds]
+verify_jwt = false
+
+[functions.vote-build]
+verify_jwt = false

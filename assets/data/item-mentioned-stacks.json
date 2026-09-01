@@ -1,0 +1,1224 @@
+{
+  "source": "ItemBook.detectMentionedStacks via DESCR templates",
+  "extractedAt": "2026-07-19T05:33:54.608Z",
+  "byId": {
+    "stone": [
+      "Block"
+    ],
+    "broom": [
+      "Blind"
+    ],
+    "garlic": [
+      "Vampirism",
+      "Block"
+    ],
+    "healing_herbs": [
+      "Regeneration"
+    ],
+    "walrus_tusk": [
+      "Spikes"
+    ],
+    "pocket_sand": [
+      "Blind"
+    ],
+    "lump_of_coal": [
+      "Block"
+    ],
+    "spear": [
+      "Block"
+    ],
+    "spiked_shield": [
+      "Spikes"
+    ],
+    "leather_armor": [
+      "Block"
+    ],
+    "health_potion": [
+      "Poison"
+    ],
+    "blueberries": [
+      "Lucky",
+      "Mana"
+    ],
+    "amulet_of_steel": [
+      "Block",
+      "Empower"
+    ],
+    "amulet_of_the_wild": [
+      "Spikes"
+    ],
+    "shovel": [
+      "Blind"
+    ],
+    "burning_coal": [
+      "Block",
+      "Heat",
+      "Cold"
+    ],
+    "shell_totem": [
+      "Empower"
+    ],
+    "shepherds_crook": [
+      "Blind",
+      "Cold"
+    ],
+    "thorn_whip": [
+      "Spikes"
+    ],
+    "hungry_blade": [
+      "Vampirism",
+      "Regeneration"
+    ],
+    "leather_boots": [
+      "Block",
+      "Lucky",
+      "Empower"
+    ],
+    "pestilence_flask": [
+      "Poison"
+    ],
+    "stone_skin_potion": [
+      "Block"
+    ],
+    "flute": [
+      "Block",
+      "Lucky"
+    ],
+    "mana_orb": [
+      "Mana"
+    ],
+    "corrupted_crystal": [
+      "Block"
+    ],
+    "oil_lamp": [
+      "Heat"
+    ],
+    "snowball": [
+      "Cold"
+    ],
+    "magic_staff": [
+      "Mana"
+    ],
+    "strong_health_potion": [
+      "Poison",
+      "Regeneration"
+    ],
+    "poison_dagger": [
+      "Poison"
+    ],
+    "claws_of_attack": [
+      "Spikes",
+      "Empower"
+    ],
+    "burning_torch": [
+      "Heat"
+    ],
+    "mana_potion": [
+      "Mana"
+    ],
+    "sandbag": [
+      "Blind"
+    ],
+    "holdall": [
+      "Block"
+    ],
+    "holy_armor": [
+      "Poison",
+      "Regeneration",
+      "Block"
+    ],
+    "shield_of_valor": [
+      "Block"
+    ],
+    "heroic_potion": [
+      "Empower"
+    ],
+    "pineapple": [
+      "Spikes"
+    ],
+    "blood_amulet": [
+      "Vampirism"
+    ],
+    "ruby_egg": [
+      "Heat"
+    ],
+    "jynx_torquilla": [
+      "Lucky"
+    ],
+    "vampiric_potion": [
+      "Vampirism"
+    ],
+    "bloody_dagger": [
+      "Vampirism"
+    ],
+    "strong_heroic_potion": [
+      "Empower"
+    ],
+    "strong_stone_skin_potion": [
+      "Spikes",
+      "Block"
+    ],
+    "vampiric_armor": [
+      "Vampirism",
+      "Block"
+    ],
+    "blood_goobert": [
+      "Vampirism"
+    ],
+    "steel_goobert": [
+      "Block"
+    ],
+    "eggscalibur": [
+      "Mana"
+    ],
+    "manathirst": [
+      "Vampirism",
+      "Mana"
+    ],
+    "spectral_dagger": [
+      "Block",
+      "Mana"
+    ],
+    "pandamonium": [
+      "Poison"
+    ],
+    "magic_torch": [
+      "Mana"
+    ],
+    "strong_mana_potion": [
+      "Mana"
+    ],
+    "stone_armor": [
+      "Spikes",
+      "Block",
+      "Empower"
+    ],
+    "stone_helm": [
+      "Block"
+    ],
+    "stone_gloves": [
+      "Block"
+    ],
+    "serpent_staff": [
+      "Poison",
+      "Mana"
+    ],
+    "stone_shoes": [
+      "Block",
+      "Lucky",
+      "Empower"
+    ],
+    "poison_spear": [
+      "Poison",
+      "Block"
+    ],
+    "snow_stick": [
+      "Cold"
+    ],
+    "fanfare": [
+      "Mana",
+      "Empower"
+    ],
+    "lightsaber": [
+      "Regeneration",
+      "Blind"
+    ],
+    "protective_purse": [
+      "Block"
+    ],
+    "fancy_fencing_rapier": [
+      "Lucky"
+    ],
+    "djinn_lamp": [
+      "Spikes",
+      "Block",
+      "Lucky",
+      "Mana"
+    ],
+    "greatsword": [
+      "Empower"
+    ],
+    "crown": [
+      "Blind",
+      "Mana"
+    ],
+    "heart_container": [
+      "Regeneration",
+      "Empower"
+    ],
+    "rainbow_orb": [
+      "Vampirism",
+      "Mana"
+    ],
+    "bloodthorne": [
+      "Spikes",
+      "Vampirism",
+      "Regeneration"
+    ],
+    "ruby_whelp": [
+      "Heat"
+    ],
+    "vampiric_gloves": [
+      "Vampirism"
+    ],
+    "darksaber": [
+      "Blind",
+      "Mana"
+    ],
+    "light_goobert": [
+      "Blind"
+    ],
+    "holy_spear": [
+      "Block",
+      "Mana"
+    ],
+    "moon_shield": [
+      "Block",
+      "Mana"
+    ],
+    "corrupted_armor": [
+      "Block"
+    ],
+    "moon_armor": [
+      "Block",
+      "Mana"
+    ],
+    "heart_of_darkness": [
+      "Regeneration",
+      "Empower"
+    ],
+    "thornbloom": [
+      "Spikes",
+      "Empower"
+    ],
+    "king_crown": [
+      "Mana"
+    ],
+    "king_goobert": [
+      "Mana"
+    ],
+    "stone_golem": [
+      "Regeneration",
+      "Block",
+      "Empower"
+    ],
+    "winged_boots": [
+      "Empower"
+    ],
+    "stone_badge": [
+      "Block"
+    ],
+    "leaf_badge": [
+      "Lucky"
+    ],
+    "flame_badge": [
+      "Heat"
+    ],
+    "magic_badge": [
+      "Mana"
+    ],
+    "artifact_stone_cold": [
+      "Cold"
+    ],
+    "vampiric_scythe": [
+      "Vampirism"
+    ],
+    "skull": [
+      "Empower"
+    ],
+    "artifact_stone_heat": [
+      "Heat"
+    ],
+    "gingerbread_man": [
+      "Regeneration",
+      "Lucky",
+      "Mana",
+      "Heat",
+      "Empower"
+    ],
+    "pumpkin": [
+      "Heat"
+    ],
+    "dancing_dragon": [
+      "Lucky",
+      "Heat"
+    ],
+    "cubert": [
+      "Regeneration",
+      "Empower"
+    ],
+    "pop": [
+      "Mana"
+    ],
+    "snowcake": [
+      "Cold"
+    ],
+    "chipped_sapphire": [
+      "Block",
+      "Mana",
+      "Cold"
+    ],
+    "flawed_sapphire": [
+      "Block",
+      "Mana",
+      "Cold"
+    ],
+    "regular_sapphire": [
+      "Block",
+      "Mana",
+      "Cold"
+    ],
+    "flawless_sapphire": [
+      "Block",
+      "Mana",
+      "Cold"
+    ],
+    "perfect_sapphire": [
+      "Block",
+      "Mana",
+      "Cold"
+    ],
+    "chipped_emerald": [
+      "Poison",
+      "Regeneration"
+    ],
+    "flawed_emerald": [
+      "Poison",
+      "Regeneration"
+    ],
+    "regular_emerald": [
+      "Poison",
+      "Regeneration"
+    ],
+    "flawless_emerald": [
+      "Poison",
+      "Regeneration"
+    ],
+    "perfect_emerald": [
+      "Poison",
+      "Regeneration"
+    ],
+    "ranger_bag": [
+      "Lucky"
+    ],
+    "lucky_clover": [
+      "Lucky"
+    ],
+    "carrot": [
+      "Lucky",
+      "Empower"
+    ],
+    "acorn_collar": [
+      "Lucky"
+    ],
+    "thorn_shortbow": [
+      "Spikes"
+    ],
+    "lucky_shortbow": [
+      "Lucky"
+    ],
+    "poison_shortbow": [
+      "Poison"
+    ],
+    "lucky_piggy": [
+      "Lucky"
+    ],
+    "carrot_goobert": [
+      "Empower"
+    ],
+    "thorn_bow": [
+      "Spikes"
+    ],
+    "lucky_bow": [
+      "Lucky"
+    ],
+    "poison_bow": [
+      "Poison"
+    ],
+    "critwood_staff": [
+      "Mana"
+    ],
+    "snowmaster": [
+      "Cold",
+      "Empower"
+    ],
+    "vampiric_collar": [
+      "Vampirism",
+      "Lucky"
+    ],
+    "magic_collar": [
+      "Lucky",
+      "Mana"
+    ],
+    "holy_collar": [
+      "Regeneration",
+      "Lucky"
+    ],
+    "rainbow_goobert_ranger": [
+      "Vampirism",
+      "Block",
+      "Blind",
+      "Empower"
+    ],
+    "piercing_arrow": [
+      "Block",
+      "Lucky"
+    ],
+    "yggdrasil_leaf": [
+      "Regeneration",
+      "Mana"
+    ],
+    "poison_ivy": [
+      "Spikes",
+      "Poison"
+    ],
+    "mega_clover": [
+      "Lucky"
+    ],
+    "rat": [
+      "Poison",
+      "Blind"
+    ],
+    "hedgehog": [
+      "Spikes",
+      "Block"
+    ],
+    "rat_chef": [
+      "Regeneration",
+      "Empower"
+    ],
+    "hyper_hedgehog": [
+      "Spikes",
+      "Block",
+      "Empower"
+    ],
+    "storage_coffin": [
+      "Poison"
+    ],
+    "fly_agaric": [
+      "Poison"
+    ],
+    "deck_of_cards": [
+      "Lucky"
+    ],
+    "the_lovers": [
+      "Regeneration"
+    ],
+    "ace_of_spades": [
+      "Spikes",
+      "Lucky"
+    ],
+    "white_eyes_blue_dragon": [
+      "Block",
+      "Cold"
+    ],
+    "the_fool": [
+      "Empower"
+    ],
+    "holo_fire_lizard": [
+      "Heat"
+    ],
+    "darkest_lotus": [
+      "Mana"
+    ],
+    "toad": [
+      "Lucky",
+      "Mana"
+    ],
+    "death_scythe": [
+      "Poison"
+    ],
+    "poison_goobert": [
+      "Poison"
+    ],
+    "staff_of_unhealing": [
+      "Mana"
+    ],
+    "strong_pestilence_flask": [
+      "Poison"
+    ],
+    "ruby_chonk": [
+      "Heat"
+    ],
+    "doom_cap": [
+      "Poison"
+    ],
+    "crow": [
+      "Lucky"
+    ],
+    "poison_frog": [
+      "Poison",
+      "Mana"
+    ],
+    "rainbow_goobert": [
+      "Vampirism",
+      "Poison",
+      "Block",
+      "Blind"
+    ],
+    "cursed_hair_comb": [
+      "Vampirism"
+    ],
+    "snake": [
+      "Poison",
+      "Lucky"
+    ],
+    "cauldron": [
+      "Mana",
+      "Heat"
+    ],
+    "miss_fortune": [
+      "Lucky"
+    ],
+    "strong_vampiric_potion": [
+      "Vampirism"
+    ],
+    "portable_altar": [
+      "Empower"
+    ],
+    "flame": [
+      "Heat"
+    ],
+    "chili_pepper": [
+      "Heat"
+    ],
+    "draconic_orb": [
+      "Spikes",
+      "Heat"
+    ],
+    "phoenix": [
+      "Heat"
+    ],
+    "burning_sword": [
+      "Heat"
+    ],
+    "burning_blade": [
+      "Heat"
+    ],
+    "sun_armor": [
+      "Block",
+      "Heat"
+    ],
+    "sun_shield": [
+      "Block"
+    ],
+    "molten_dagger": [
+      "Heat"
+    ],
+    "molten_spear": [
+      "Block",
+      "Heat"
+    ],
+    "staff_of_fire": [
+      "Mana",
+      "Heat"
+    ],
+    "flame_whip": [
+      "Spikes",
+      "Heat"
+    ],
+    "chili_goobert": [
+      "Heat"
+    ],
+    "obsidian_dragon": [
+      "Heat"
+    ],
+    "molten_greatsword": [
+      "Heat",
+      "Empower"
+    ],
+    "fire_shelly": [
+      "Heat"
+    ],
+    "rainbow_goobert_pyromancer": [
+      "Vampirism",
+      "Block",
+      "Blind",
+      "Heat"
+    ],
+    "friendly_fire": [
+      "Regeneration",
+      "Lucky",
+      "Mana",
+      "Heat"
+    ],
+    "burning_banner": [
+      "Regeneration",
+      "Blind"
+    ],
+    "frozen_flame": [
+      "Block",
+      "Heat",
+      "Cold"
+    ],
+    "dragon_nest": [
+      "Regeneration",
+      "Lucky",
+      "Mana",
+      "Heat"
+    ],
+    "spell_scroll_frostbolt": [
+      "Cold"
+    ],
+    "ice_armor": [
+      "Block",
+      "Heat",
+      "Cold"
+    ],
+    "frozen_buckler": [
+      "Cold"
+    ],
+    "frostbite": [
+      "Vampirism",
+      "Cold"
+    ],
+    "ice_dragon": [
+      "Block",
+      "Cold"
+    ],
+    "emerald_egg": [
+      "Lucky"
+    ],
+    "emerald_whelp": [
+      "Poison",
+      "Lucky"
+    ],
+    "sapphire_egg": [
+      "Mana"
+    ],
+    "sapphire_whelp": [
+      "Block",
+      "Mana"
+    ],
+    "forging_hammer": [
+      "Empower"
+    ],
+    "spiked_collar": [
+      "Spikes"
+    ],
+    "dragonscale_armor": [
+      "Block"
+    ],
+    "dragon_claws": [
+      "Poison"
+    ],
+    "dragonskin_boots": [
+      "Block",
+      "Cold",
+      "Empower"
+    ],
+    "busted_blade": [
+      "Empower"
+    ],
+    "spiked_staff": [
+      "Spikes",
+      "Mana",
+      "Empower"
+    ],
+    "spiked_wall": [
+      "Spikes"
+    ],
+    "rainbow_goobert_berserker": [
+      "Vampirism",
+      "Block",
+      "Blind"
+    ],
+    "deer_totem": [
+      "Mana"
+    ],
+    "wolf_emblem": [
+      "Block",
+      "Empower"
+    ],
+    "shaman_mask": [
+      "Lucky"
+    ],
+    "wisdom_puppy": [
+      "Block",
+      "Cold"
+    ],
+    "power_puppy": [
+      "Regeneration",
+      "Lucky",
+      "Empower"
+    ],
+    "armored_courage_puppy": [
+      "Spikes"
+    ],
+    "armored_wisdom_puppy": [
+      "Block",
+      "Cold"
+    ],
+    "armored_power_puppy": [
+      "Regeneration",
+      "Lucky",
+      "Empower"
+    ],
+    "hawk_rune": [
+      "Blind"
+    ],
+    "tiger_rune": [
+      "Vampirism",
+      "Block"
+    ],
+    "spicy_banana": [
+      "Heat"
+    ],
+    "smelly_barrier": [
+      "Poison",
+      "Block"
+    ],
+    "dig_deeper": [
+      "Blind"
+    ],
+    "stoned": [
+      "Block"
+    ],
+    "thornburst": [
+      "Spikes"
+    ],
+    "mana_mastery": [
+      "Mana"
+    ],
+    "power_of_the_moon": [
+      "Blind"
+    ],
+    "girl_power": [
+      "Regeneration",
+      "Empower"
+    ],
+    "blood_manipulation": [
+      "Vampirism"
+    ],
+    "no_rush_please": [
+      "Cold"
+    ],
+    "fortunas_kiss": [
+      "Lucky"
+    ],
+    "bagtacular": [
+      "Block"
+    ],
+    "hardwood": [
+      "Block"
+    ],
+    "time_melting": [
+      "Heat"
+    ],
+    "full_body_protection": [
+      "Block"
+    ],
+    "heart_of_the_cards": [
+      "Regeneration",
+      "Mana"
+    ],
+    "dark_ritual": [
+      "Vampirism"
+    ],
+    "dragon_set": [
+      "Heat"
+    ],
+    "everburning": [
+      "Heat"
+    ],
+    "solaris": [
+      "Block",
+      "Heat"
+    ],
+    "ultima": [
+      "Spikes",
+      "Regeneration",
+      "Block",
+      "Lucky",
+      "Cold"
+    ],
+    "level_up": [
+      "Lucky",
+      "Mana"
+    ],
+    "scholar_bag": [
+      "Mana"
+    ],
+    "white_pawn": [
+      "Regeneration",
+      "Lucky"
+    ],
+    "black_pawn": [
+      "Poison",
+      "Mana"
+    ],
+    "black_knight": [
+      "Vampirism"
+    ],
+    "white_rook": [
+      "Block"
+    ],
+    "black_rook": [
+      "Spikes"
+    ],
+    "white_queen": [
+      "Heat"
+    ],
+    "white_king": [
+      "Empower"
+    ],
+    "wand": [
+      "Regeneration",
+      "Lucky",
+      "Mana",
+      "Empower"
+    ],
+    "book_of_basics": [
+      "Mana"
+    ],
+    "spell_scroll_ice": [
+      "Block",
+      "Cold"
+    ],
+    "spell_scroll_nature": [
+      "Mana"
+    ],
+    "spell_scroll_dark": [
+      "Blind"
+    ],
+    "book_of_nature": [
+      "Spikes",
+      "Regeneration",
+      "Lucky"
+    ],
+    "book_of_darkness": [
+      "Blind",
+      "Mana"
+    ],
+    "book_of_light": [
+      "Regeneration",
+      "Mana"
+    ],
+    "book_of_ice": [
+      "Mana",
+      "Cold"
+    ],
+    "ice_flower": [
+      "Block",
+      "Mana",
+      "Cold"
+    ],
+    "light_flower": [
+      "Regeneration",
+      "Lucky",
+      "Mana"
+    ],
+    "death_lotus": [
+      "Lucky",
+      "Mana"
+    ],
+    "null_blade": [
+      "Regeneration",
+      "Lucky"
+    ],
+    "devouring_sphere": [
+      "Vampirism",
+      "Blind",
+      "Cold"
+    ],
+    "cat_spirit": [
+      "Lucky",
+      "Mana",
+      "Empower"
+    ],
+    "owl_spirit": [
+      "Mana"
+    ],
+    "badger_spirit": [
+      "Mana"
+    ],
+    "prismatic_wand": [
+      "Regeneration",
+      "Lucky",
+      "Mana",
+      "Empower"
+    ],
+    "rainbow_goobert_mage": [
+      "Vampirism",
+      "Block",
+      "Blind"
+    ],
+    "cupcake_staff": [
+      "Mana"
+    ],
+    "mage_hat": [
+      "Block",
+      "Mana"
+    ],
+    "shiny_mantle": [
+      "Blind",
+      "Mana"
+    ],
+    "water_elemental": [
+      "Mana",
+      "Cold"
+    ],
+    "evil_hat": [
+      "Regeneration"
+    ],
+    "rainbow_potion": [
+      "Mana"
+    ],
+    "employee_uniform": [
+      "Block"
+    ],
+    "big_bloodthorne": [
+      "Spikes",
+      "Vampirism",
+      "Regeneration",
+      "Empower"
+    ],
+    "heart_shield": [
+      "Regeneration",
+      "Block"
+    ],
+    "dragon_knight": [
+      "Heat"
+    ],
+    "broccoli": [
+      "Regeneration",
+      "Lucky"
+    ],
+    "broccoli_goobert": [
+      "Regeneration",
+      "Lucky"
+    ],
+    "rainbow_goobert_adventurer": [
+      "Vampirism",
+      "Regeneration",
+      "Block",
+      "Blind"
+    ],
+    "scissorswords": [
+      "Regeneration",
+      "Lucky",
+      "Blind"
+    ],
+    "long_spear": [
+      "Block"
+    ],
+    "jynx_staff": [
+      "Lucky",
+      "Mana"
+    ],
+    "fedora": [
+      "Lucky"
+    ],
+    "scale": [
+      "Regeneration",
+      "Mana"
+    ],
+    "mercury_elemental": [
+      "Poison",
+      "Block"
+    ],
+    "turtle": [
+      "Block"
+    ],
+    "ukulele": [
+      "Cold"
+    ],
+    "resistor": [
+      "Heat"
+    ],
+    "cog": [
+      "Block"
+    ],
+    "charge_splitter": [
+      "Block",
+      "Lucky",
+      "Heat"
+    ],
+    "slice_of_toast": [
+      "Regeneration"
+    ],
+    "toast_goobert": [
+      "Regeneration"
+    ],
+    "rainbow_goobert_engineer": [
+      "Vampirism",
+      "Regeneration",
+      "Block",
+      "Blind"
+    ],
+    "electric_torch": [
+      "Blind"
+    ],
+    "robodog": [
+      "Lucky",
+      "Heat"
+    ],
+    "mecha_bat": [
+      "Vampirism",
+      "Lucky"
+    ],
+    "bazooka": [
+      "Block",
+      "Lucky",
+      "Heat"
+    ],
+    "lightning_staff": [
+      "Mana"
+    ],
+    "poison_grenade": [
+      "Poison",
+      "Lucky"
+    ],
+    "mana_crystal": [
+      "Mana"
+    ],
+    "bionic_armor": [
+      "Block",
+      "Empower"
+    ],
+    "laboratory": [
+      "Spikes",
+      "Vampirism",
+      "Regeneration",
+      "Lucky",
+      "Heat",
+      "Empower"
+    ],
+    "gold_cube": [
+      "Regeneration"
+    ],
+    "plastic_cube": [
+      "Spikes"
+    ],
+    "cap_of_brilliance": [
+      "Mana"
+    ],
+    "magitecc_armor": [
+      "Block",
+      "Mana"
+    ],
+    "arcane_boots": [
+      "Block",
+      "Lucky",
+      "Mana",
+      "Empower"
+    ],
+    "thors_hammer": [
+      "Blind",
+      "Mana"
+    ],
+    "automanaton": [
+      "Block",
+      "Blind",
+      "Mana"
+    ],
+    "mananana": [
+      "Mana"
+    ],
+    "gigawatz": [
+      "Blind"
+    ],
+    "critical_poison": [
+      "Poison",
+      "Lucky"
+    ],
+    "burning_spikes": [
+      "Spikes",
+      "Heat"
+    ],
+    "spin_to_win": [
+      "Regeneration",
+      "Lucky",
+      "Mana",
+      "Heat"
+    ],
+    "energy_conversion": [
+      "Heat"
+    ],
+    "inner_power": [
+      "Lucky",
+      "Empower"
+    ],
+    "bewitchment": [
+      "Poison",
+      "Blind",
+      "Mana",
+      "Cold"
+    ],
+    "seal_the_deal": [
+      "Spikes",
+      "Vampirism",
+      "Regeneration",
+      "Lucky",
+      "Mana",
+      "Empower"
+    ],
+    "wisp": [
+      "Spikes",
+      "Regeneration",
+      "Lucky"
+    ],
+    "forest_dragon": [
+      "Regeneration",
+      "Lucky"
+    ],
+    "war_scythe": [
+      "Poison"
+    ],
+    "frog_prince": [
+      "Lucky",
+      "Blind",
+      "Mana"
+    ],
+    "molten_spear2": [
+      "Block",
+      "Blind",
+      "Heat"
+    ],
+    "phoenix2": [
+      "Heat"
+    ],
+    "whetstone3": [
+      "Block"
+    ],
+    "steel_dragon": [
+      "Block"
+    ],
+    "halberd": [
+      "Block"
+    ],
+    "broccotree": [
+      "Regeneration",
+      "Lucky"
+    ],
+    "wand_of_dissonance": [
+      "Regeneration",
+      "Lucky",
+      "Mana"
+    ],
+    "amulet_of_light": [
+      "Regeneration"
+    ],
+    "gold_armor": [
+      "Regeneration",
+      "Block"
+    ],
+    "pine_protector": [
+      "Spikes"
+    ],
+    "pot": [
+      "Regeneration",
+      "Heat"
+    ],
+    "angel_crystal": [
+      "Regeneration",
+      "Empower"
+    ],
+    "thorn_elemental": [
+      "Spikes"
+    ],
+    "lightning_potion": [
+      "Blind"
+    ]
+  }
+}

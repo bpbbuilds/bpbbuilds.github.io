@@ -1,0 +1,11 @@
+---
+description: Product purpose north star — read docs/purpose.md
+alwaysApply: true
+---
+
+# Purpose
+
+- Product intent lives in `docs/purpose.md` — read it before proposing major pages or features
+- Prefer work that serves the ranked **Main jobs** in that file
+- Do not expand into items listed under **Out of scope** unless the user asks
+- If purpose is unclear or blank, ask the user to fill `docs/purpose.md` instead of inventing direction

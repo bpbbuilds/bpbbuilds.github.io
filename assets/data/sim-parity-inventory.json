@@ -1,0 +1,2109 @@
+{
+  "builtAt": "2026-08-25T18:51:24.198Z",
+  "note": "Band AO — skills / spells / books / leftover catalog",
+  "parityIds": [],
+  "totals": {
+    "hand": 553,
+    "deep": 414,
+    "shallow": 83,
+    "noop": 27
+  },
+  "byId": {
+    "broom": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "banana": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "poison_bow": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "hero_longsword": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "falcon_blade": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "healing_herbs": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "wooden_sword": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "katana": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "amulet_of_life": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "holy_armor": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "wooden_buckler": {
+      "depth": "deep",
+      "notes": "AJ deepen — HARD gap closed via engine hooks (.gd intent)"
+    },
+    "leather_boots": {
+      "depth": "deep",
+      "notes": "AJ deepen — HARD gap closed via engine hooks (.gd intent)"
+    },
+    "gloves_of_haste": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "leather_armor": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "battery": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "resistor": {
+      "depth": "deep",
+      "notes": "AJ deepen — HARD gap closed via engine hooks (.gd intent)"
+    },
+    "robodog": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "bloodthorne": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "mecha_bat": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "yggdrasil_leaf": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "cog": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "heroic_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "blueberries": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "amulet_of_light": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "enchanted_weapons": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "fanny_pack": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "miss_fortune": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "toad": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "oil_lamp": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "amulet_of_fortune": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "wolpertinger": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "wand": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "little_mimic": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "bowl_of_treats": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "cheese": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "cheese_goobert": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "present": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "double_rainbow": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "shaman_mask": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "tesla_coil": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "carrot": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "crow": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "fedora": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "seal_the_deal": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "jynx_torquilla": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "prismatic_wand": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "garlic": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "mana_crystal": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "eggscalibur": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "badger_spirit": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "book_of_basics": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "shiny_mantle": {
+      "depth": "deep",
+      "notes": "AJ deepen — HARD gap closed via engine hooks (.gd intent)"
+    },
+    "rainbow_orb": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "magitecc_armor": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "devouring_sphere": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "snowball": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "burning_blade": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "electric_torch": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "molten_greatsword": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "pocket_sand": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "lump_of_coal": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "knife_to_meet_you": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "scissorswords": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "toolbox": {
+      "depth": "deep",
+      "notes": "AJ deepen — HARD gap closed via engine hooks (.gd intent)"
+    },
+    "relic_case": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "steel_goobert": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "corrupted_crystal": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "rainbow_goobert_berserker": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "speak_with_animals": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "wolf_emblem": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "amulet_of_the_wild": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "angel_crystal": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "blood_manipulation": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "power_of_the_moon": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "sloth": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "bionic_armor": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "stone_armor": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "vampiric_armor": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "heart_of_darkness": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "squirrel": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "turtle": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "rat_chef": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "blood_goobert": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "carrot_goobert": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "spirit_bells": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "paradise_birb": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "mr_struggles": {
+      "depth": "deep",
+      "notes": "AJ deepen — HARD gap closed via engine hooks (.gd intent)"
+    },
+    "dark_ritual": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "spell_scroll_dark": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "dragon_knight": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "echoing_battlecry": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "cthulhu": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "dig_deeper": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "evil_cap": {
+      "depth": "deep",
+      "notes": "AJ deepen — HARD gap closed via engine hooks (.gd intent)"
+    },
+    "extra_angy": {
+      "depth": "deep",
+      "notes": "AJ deepen — HARD gap closed via engine hooks (.gd intent)"
+    },
+    "slice_of_bread": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "lightning_potion": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "heavy_drinking": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "no_rush_please": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "platin_customer_card": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "sandbag": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "evil_hat": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "cupcake": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "pineapple": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "flame": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "lucky_piggy": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "protective_purse": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "holdall": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "whetstone": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "hero_shield": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "smithing_for_dummies": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "stone_gloves": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "anvil": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "mushroom_farm": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "steel_dragon": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "villain_sword": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "dancing_dragon": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "ghost": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "false_life": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "shell_totem": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "shelly": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "shiny_shell": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "spell_scroll_light": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "staff_of_unhealing": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "sun_armor": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "magic_badge": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "scholar_bag": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "burning_spikes": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "stone_helm": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "fire_pit": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "hardwood": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "mage_hat": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "time_melting": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "cap_of_brilliance": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "dragon_nest": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "amulet_of_steel": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "wisdom_puppy": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "armored_wisdom_puppy": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "spell_scroll_frostbolt": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "owl_spirit": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "hedgehog": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "bomb": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "hammer": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "lucky_shortbow": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "thorn_shortbow": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "snow_stick": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "boomerang": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "daggerang": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "brass_knuckles": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "thors_hammer": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "amethyst_whelp": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "chain_whip": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "spear": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "long_spear": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "poison_spear": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "molten_spear": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "magic_staff": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "spectral_dagger": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "spiked_staff": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "staff_of_fire": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "critwood_staff": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "cupcake_staff": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "jynx_staff": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "manathirst": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "onion_cutter": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "thorn_whip": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "claws_of_attack": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "forest_dragon": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "ice_dragon": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "thornbloom": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "fancy_fencing_rapier": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "hungry_blade": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "war_scythe": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "frostbite": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "cursed_dagger": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "wrench": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "goobert": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "cupcake_goobert": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "light_goobert": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "king_goobert": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "rainbow_goobert_mage": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "rainbow_goobert_ranger": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "crown": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "king_crown": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "holy_spear": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "automanaton": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "bazooka": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "chainsaw": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "cupcake_dragon": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "prismatic_sword": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "stone_golem": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "water_elemental": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "lightning_staff": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "thunder_drake": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "amulet_of_agility": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "bewitchment": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "frozen_flame": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "gigawatz": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "hogus_bogus": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "hyper_hedgehog": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "inner_power": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "wand_of_dissonance": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "rainbow_potion": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "perpetuum_mobile": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "chess_board": {
+      "depth": "noop",
+      "notes": "game ChessBoard.gd has combat CD AI; sim defers piece move/capture (Phase 267)"
+    },
+    "magic_ring": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "magic_mirror": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "plastic_cube": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "repeater": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "slime_time": {
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "amethyst_egg": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "amulet_of_alchemy": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "portable_altar": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "hawk_rune": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "skull_badge": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "stone_badge": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "rainbow_badge": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "recombobulator": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "gold_armor": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "full_body_protection": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "mrs_struggles": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "mercury_elemental": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "vampiric_gloves": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "thorn_elemental": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "thornburst": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "leather_helm": {
+      "depth": "deep",
+      "notes": "AJ deepen — HARD gap closed via engine hooks (.gd intent)"
+    },
+    "spring_loader": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "puzzle_badge": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "puzzlebox": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "time_dilator": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "amethyst": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "ruby": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "topaz": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "big_bloodthorne": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "corrupted_armor": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "generator": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "cog_badge": {
+      "depth": "deep",
+      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+    },
+    "health_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "strong_health_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "mana_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "strong_mana_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "strong_heroic_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "divine_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "strong_divine_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "vampiric_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "strong_vampiric_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "stone_skin_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "strong_stone_skin_potion": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "pestilence_flask": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "strong_pestilence_flask": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "demonic_flask": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "strong_demonic_flask": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "stamina_sack": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "vineweave_basket": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "potion_belt": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "ranger_bag": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "berserker_bag": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "bag_of_giving": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "sewing_case": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "storage_coffin": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "engineer_box": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "coins": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "customer_card": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "lootbox": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "amulet_unidentified": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "bag_of_stones": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "box_of_riches": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "unidentified_skill": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "leather_bag": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "box_of_prosperity": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "engineer_bag_2": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "random_loadout_bag": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "puzzlebag_j": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "puzzlebag_s": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "puzzlebag_t": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "puzzlebag_z": {
+      "depth": "deep",
+      "notes": "AK bag/potion port from .gd"
+    },
+    "badger_rune": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "chipped_amethyst": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "chipped_emerald": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "chipped_ruby": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "chipped_sapphire": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "chipped_topaz": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "elephant_rune": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "flawed_amethyst": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "flawed_emerald": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "flawed_ruby": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "flawed_sapphire": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "flawed_topaz": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "flawless_amethyst": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "flawless_emerald": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "flawless_ruby": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "flawless_sapphire": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "flawless_topaz": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "perfect_amethyst": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "perfect_emerald": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "perfect_ruby": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "perfect_sapphire": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "perfect_topaz": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "regular_amethyst": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "regular_emerald": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "regular_ruby": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "regular_sapphire": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "regular_topaz": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "skull": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "tiger_rune": {
+      "depth": "deep",
+      "notes": "AN socket apply on host, not a board piece"
+    },
+    "black_bishop": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "black_king": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "black_knight": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "black_pawn": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "black_queen": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "black_rook": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "white_bishop": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "white_king": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "white_knight": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "white_pawn": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "white_queen": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "white_rook": {
+      "depth": "noop",
+      "notes": "AK noop — shop/chess (not fake deep)"
+    },
+    "shortbow": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "dagger": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "pandamonium": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "death_scythe": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "lightsaber": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "greatsword": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "busted_blade": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "armored_courage_puppy": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "vampiric_scythe": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "forging_hammer": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "bow_and_arrow": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "obsidian_dragon": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "phoenix2": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "pop": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "artifact_stone_cold": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "artifact_stone_heat": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "artifact_stone_death": {
+      "depth": "deep",
+      "notes": "AL weapon port from .gd (weaponStrike + hooks)"
+    },
+    "goobling": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "poison_goobert": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "chili_goobert": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "broccoli_goobert": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "toast_goobert": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "rainbow_goobert": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "rainbow_goobert_pyromancer": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "rainbow_goobert_adventurer": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "rainbow_goobert_engineer": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "power_puppy": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "armored_power_puppy": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "courage_puppy": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "frog_prince": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "cubert": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "snowmaster": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "rat": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "poison_frog": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "snake": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "fire_shelly": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "friendly_fire": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "cat_spirit": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "ruby_egg": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "emerald_egg": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "sapphire_egg": {
+      "depth": "deep",
+      "notes": "AM pet/goobert port from .gd"
+    },
+    "acorn_collar": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "amulet_of_darkness": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "amulet_of_feasting": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "bismuth_cube": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "chrome_cube": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "coil": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "con_trap_tron": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "eat_o_matic": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "gold_cube": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "holy_collar": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "lucky_cat": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "magic_collar": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "mana_orb": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "mega_clover": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "piercing_arrow": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "poison_ivy": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "rope": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "spiked_collar": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "stable_recombobulator": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "star_of_courage": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "superior_ring": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "twine": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "twine_badge": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "unstable_recombobulator": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "vampiric_collar": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "whetstone2": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "whetstone3": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "wolf_badge": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "dragonscale_armor": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "dragon_claws": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "arcane_boots": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "dragonskin_boots": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "stone_shoes": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "winged_boots": {
+      "depth": "deep",
+      "notes": "AN accessory/armor port from .gd"
+    },
+    "hypercube": {
+      "depth": "noop",
+      "notes": "AN shop-only combat noop"
+    },
+    "snowman": {
+      "depth": "noop",
+      "notes": "AN shop-only combat noop"
+    },
+    "furcifer_prime": {
+      "depth": "noop",
+      "notes": "AN shop-only combat noop"
+    },
+    "employee_uniform": {
+      "depth": "noop",
+      "notes": "AN shop-only combat noop"
+    },
+    "ace_of_spades": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "acorn_ace": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "arcane_intellect": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "bagtacular": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "buy_the_holy_light": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "chess_master": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "critical_poison": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "darkest_lotus": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "dual_wielding": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "extra_bags": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "heart_of_the_cards": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "investment_opportunity": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "king_of_the_bling": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "markswoman": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "piggy_pinata": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "reverse": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "spicy_banana": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "stoned": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "uniquely_unique": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "holo_fire_lizard": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "ice_flower": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "joker": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "solaris": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "the_fool": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "the_lovers": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "white_eyes_blue_dragon": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "frozen_buckler": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "heart_shield": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "moon_shield": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "pine_protector": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "shield_of_valor": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "shielded": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "smelly_barrier": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "spiked_shield": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "spiked_wall": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "sun_shield": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "spell_scroll_ice": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "spell_scroll_nature": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "book_of_ice_new": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "book_of_ice": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "book_of_darkness": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "book_of_light": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "book_of_nature": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "mana_mastery": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "deck_of_cards": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "girl_power": {
+      "depth": "deep",
+      "notes": "AO skill/card/shield/spell port from .gd"
+    },
+    "broccoli": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "broccotree": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "charge_splitter": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "flute": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "fortunas_kiss": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "leaf_badge": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "light_flower": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "ultima": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "wisp": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "cauldron": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "death_lotus": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "deer_totem": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "djinn_lamp": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "fanfare": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "level_up": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "moon_armor": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "scale": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "spin_to_win": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "burning_banner": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "emerald": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "gingerbread_man": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "heart_container": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "laboratory": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "pot": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "slice_of_toast": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "burning_coal": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "chili_pepper": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "draconic_orb": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "dragon_set": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "energy_conversion": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "everburning": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "ice_armor": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "sapphire": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "snowcake": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "ukulele": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "doom_cap": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "fly_agaric": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "poison_grenade": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "phoenix": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "pumpkin": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "ruby_chonk": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "squirrel_archer": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "thorn_bow": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "stone": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "blood_amulet": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "cursed_hair_comb": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "burning_torch": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "flame_badge": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "ruby_whelp": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "dark_lantern": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "just_stats": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "more_stats": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "piggy_of_riches": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "piggybank": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "puzzlebag_l": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "emerald_whelp": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "lucky_clover": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "sapphire_whelp": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "walrus_tusk": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "axe": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "double_axe": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "halberd": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "magic_torch": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "molten_dagger": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "null_blade": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "rib_saw_blade": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "torch": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "bloody_dagger": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "burning_sword": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "flame_whip": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "darksaber": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "molten_spear2": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "shovel": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "lucky_bow": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "poison_dagger": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "poison_shortbow": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "serpent_staff": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "hero_sword": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "crossblades": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "shepherds_crook": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "mananana": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    },
+    "pan": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+---
+description: Milonga vs Baskerville; outline is opt-in (sticker + OptionsFont)
+alwaysApply: true
+---
+
+# Typography (game-matched)
+
+## Faces
+
+| Face | CSS token | Role |
+|---|---|---|
+| Libre Baskerville | `--bpb-font-body` | UI controls, filter labels, dropdowns, counts, body, meta |
+| Milonga | `--bpb-font-display` | Headings, nav banner words, tooltip item names, display CTAs |
+
+## Outline is opt-in
+
+Plain CSS text stays **flat**. The game’s cream + ink look only appears when a surface applies a recipe — picking Milonga/Baskerville alone is not enough.
+
+Heft comes from the **outline**, not `font-weight: 700`. Prefer Regular + stroke.
+
+| Recipe | When | How on web |
+|---|---|---|
+| **Sticker / shop-label** | Nav hanging tabs, banner words, gold shop tags, strong display CTAs, featured build **title** | `color: var(--bpb-label-fill)` + `text-shadow: var(--bpb-label-stroke)` (or class `.bpb-label-text`). Face: Milonga for banners/titles |
+| **OptionsFont** | Item Library rarity / Class Items / Treasure / Shop / Crafted / Gated filters | Baskerville Regular 26px, cream fill, **~3px / 0.1em** ink outline (`#3c261d`) — see below |
+| **Plain body** | Blurbs, long reading copy, quiet meta | Baskerville, no sticker stroke (optional soft shadow only if needed for contrast) |
+
+Detail + tokens: `docs/theme.md` → Type. Tokens live in `css/theme.css` (`--bpb-label-*`).
+
+## OptionsFont recipe (Item Library filters)
+
+Source: `Interface/Options/OptionsFont.tres` — **same** for rarity and Shop / Crafted / Gated.
+
+- Face: Baskerville **Regular** (`font-weight: 400`) — not Bold
+- Size: **26px** (~`1.625rem`)
+- Outline: **3px** dark brown (`#3c261d`) ≈ **0.115em** at 26px; heft is from outline, not weight
+- Fill: soft cream (`Game.SOFTWHITE` ≈ `#ffecdc`)
+- Letter-spacing: game sets **no** `extra_spacing_char` — tightness is mostly overlapping outlines. On web use ~`0.1em` stroke + ring; a tiny `-0.03em` track nudge is OK to match Godot’s look
+- Row spacing: separate controls ~56px apart — use row `gap`, not a tall `line-height` on multi-line text
+
+## Do
+
+- Item Library rarity / Class Items / Treasure / Shop / Crafted / Gated → OptionsFont recipe above
+- Grouping dropdown + “Items found” count → Baskerville (count may be Bold 26 in-game)
+- Page `h1`–`h3`, nav hanging tabs, featured build **title**, banner buttons → **Milonga** + sticker stroke when they should read as game chrome
+- Featured class line → Baskerville **italic** + sticker stroke (`--bpb-label-stroke`) when on chrome panels (e.g. featured stage)
+- When adding new UI text that should look “like the game,” choose sticker vs OptionsFont vs plain — then apply it explicitly
+
+## Don’t
+
+- Assume face choice alone produces outlined game text
+- Put Milonga on filter checkbox labels by default
+- Make shop/crafted/gated smaller than rarity labels
+- Use a thin outline on filter labels (that’s why web text looks more spaced than the game)
+- Fake sticker heft with Bold / thin `-webkit-text-stroke` instead of `--bpb-label-stroke` or OptionsFont-weight outline
+- Introduce Inter / Roboto / Arial as brand UI

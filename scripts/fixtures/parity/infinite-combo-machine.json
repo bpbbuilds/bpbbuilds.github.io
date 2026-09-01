@@ -1,0 +1,236 @@
+{
+  "name": "infinite-combo-machine",
+  "slug": "infinite-combo-machine",
+  "source": "demo_layout",
+  "seed": 42,
+  "durationSec": 30,
+  "placements": [
+    {
+      "id": "berserker_bag",
+      "key": "infinite-combo-machine:0:berserker_bag",
+      "x": 0,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "holdall",
+      "key": "infinite-combo-machine:1:holdall",
+      "x": 3,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "infinite-combo-machine:2:leather_bag",
+      "x": 6,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "scholar_bag",
+      "key": "infinite-combo-machine:3:scholar_bag",
+      "x": 0,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "box_of_prosperity",
+      "key": "infinite-combo-machine:4:box_of_prosperity",
+      "x": 6,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "puzzlebag_t",
+      "key": "infinite-combo-machine:5:puzzlebag_t",
+      "x": 3,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "goobert",
+      "key": "infinite-combo-machine:6:goobert",
+      "x": 0,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "blood_goobert",
+      "key": "infinite-combo-machine:7:blood_goobert",
+      "x": 2,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "chili_goobert",
+      "key": "infinite-combo-machine:8:chili_goobert",
+      "x": 4,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "ice_dragon",
+      "key": "infinite-combo-machine:9:ice_dragon",
+      "x": 6,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "steel_goobert",
+      "key": "infinite-combo-machine:10:steel_goobert",
+      "x": 0,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "power_puppy",
+      "key": "infinite-combo-machine:11:power_puppy",
+      "x": 3,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "obsidian_dragon",
+      "key": "infinite-combo-machine:12:obsidian_dragon",
+      "x": 6,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "shelly",
+      "key": "infinite-combo-machine:13:shelly",
+      "x": 3,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "flame",
+      "key": "infinite-combo-machine:14:flame",
+      "x": 5,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "piggy_of_riches",
+      "key": "infinite-combo-machine:15:piggy_of_riches",
+      "x": 3,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "heart_container",
+      "key": "infinite-combo-machine:16:heart_container",
+      "x": 0,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "oil_lamp",
+      "key": "infinite-combo-machine:17:oil_lamp",
+      "x": 2,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "rope",
+      "key": "infinite-combo-machine:18:rope",
+      "x": 5,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "lucky_clover",
+      "key": "infinite-combo-machine:19:lucky_clover",
+      "x": 8,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "whetstone",
+      "key": "infinite-combo-machine:20:whetstone",
+      "x": 8,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "wooden_sword",
+      "key": "infinite-combo-machine:21:wooden_sword",
+      "x": 7,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "flame_badge",
+      "key": "infinite-combo-machine:22:flame_badge",
+      "x": 5,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "draconic_orb",
+      "key": "infinite-combo-machine:23:draconic_orb",
+      "x": 2,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    }
+  ],
+  "expect": {
+    "playerEndHpMin": 290,
+    "playerEndHpMax": 338,
+    "dummyEndHpMin": 0,
+    "dummyEndHpMax": 90
+  },
+  "live": {
+    "playerEndHp": null,
+    "dummyEndHp": null,
+    "playerStamina": null,
+    "stacks": null,
+    "capturedAt": null,
+    "notes": null,
+    "playerMaxHp": null,
+    "fightDurationSec": null,
+    "opponentClass": null,
+    "playerEndHpMin": null,
+    "playerEndHpMax": null,
+    "opponentHpComparable": false
+  },
+  "meta": {
+    "focusItemIds": [
+      "goobert",
+      "ice_dragon",
+      "oil_lamp"
+    ],
+    "simBaseline": {
+      "playerEndHp": 314,
+      "dummyEndHp": 0,
+      "seed": 42,
+      "durationSec": 30,
+      "measuredAt": "2026-08-22T05:23:25.799Z",
+      "toleranceFrac": 0.15
+    }
+  }
+}

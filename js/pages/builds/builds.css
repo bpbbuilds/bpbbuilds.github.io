@@ -1,0 +1,1172 @@
+/* Builds catalog — Reddit-inspired parchment feed */
+/* Scene background: body.page-builds in css/theme.css (town square) */
+
+body.page-builds {
+  overflow-x: clip;
+}
+
+body.page-builds #main {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.builds-main {
+  --builds-filters-width: 22rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: min(48rem + 9 * 60px + var(--builds-filters-width), 72rem);
+  margin: 0 auto;
+  /* Frame already insets #main — keep side pad light */
+  padding: 1.25rem 0.35rem 3.5rem;
+}
+
+.builds-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--builds-filters-width));
+  gap: 1.25rem 1.5rem;
+  align-items: start;
+  isolation: isolate;
+}
+
+.builds-feed-col {
+  min-width: 0;
+  max-width: 100%;
+  position: relative;
+  z-index: 0;
+  /* visible: overflow-x:clip forces overflow-y to clip too, shaving board sprites */
+  overflow: visible;
+}
+
+.builds-feed-filters.items-filters {
+  --items-filters-width: 100%;
+  /* Match feed card Patch3 shade */
+  --builds-post-body-shade: rgba(14, 15, 16, 0.22);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  position: sticky;
+  /* Sit below fixed nav (space synced by nav.js) */
+  top: calc(var(--bpb-nav-space, 4.75rem) + 0.35rem);
+  max-height: calc(
+    100vh - var(--bpb-nav-space, 4.75rem) - var(--bpb-frame-edge-y, 0px) - 1rem
+  );
+  z-index: 1;
+  isolation: isolate;
+  /* Don’t spill into the feed column; menus use fixed positioning */
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0.65rem 0.65rem 0.75rem;
+}
+
+/* Same Patch3 panel as .builds-post__body */
+.builds-feed-filters.items-filters::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--builds-post-body-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.builds-feed-filters.items-filters > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Sort / view menus must sit above Tags / classes / ranks (same parent stacking) */
+.builds-feed-filters.items-filters > .builds-feed-filters__menus {
+  z-index: 20;
+}
+
+/* One outer panel — skip stacked section shades on this rail */
+.builds-feed-filters .il-filter__shade {
+  background: none;
+}
+
+.builds-feed-filters .il-filter__shade::before {
+  content: none;
+  display: none;
+}
+
+.builds-feed-filters .il-filter__sticker {
+  display: block;
+  margin: 0 0 0.45rem;
+}
+
+.builds-feed-filters__menus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.35rem 1.1rem;
+}
+
+.builds-feed-filters__menus .il-filter__grouping {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0;
+}
+
+.builds-feed-filters__menus .il-filter__group-menu {
+  z-index: 30;
+}
+
+.builds-feed-filters__menus .il-filter__group-menu:not([hidden]) {
+  /* Escape overflow:hidden on the sticky rail; top/left set in JS */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+}
+
+.builds-feed-filters .il-filter__grouping .il-filter__sticker {
+  display: inline;
+  margin: 0;
+}
+
+.builds-feed-filters .il-filter__checks {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.builds-feed-filters .il-filter__check.is-disabled,
+.builds-feed-filters .il-filter__check:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(0.35);
+}
+
+.builds-feed-filters .il-filter__classes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* —— Post list —— */
+
+.builds-feed__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+
+.builds-post {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.85rem 0.35rem 0.85rem;
+  /* OptionsFont tokens — same recipe as Item Library filters */
+  --bp-ui-ink: #3c261d;
+  --bp-ui-cream: #ffecdc;
+  --bp-ui-sticker: #f7efc2;
+  --bp-ui-stroke: 0.1em;
+  --bp-ui-track: -0.03em;
+  --bp-ui-ring:
+    0.1em 0 0 var(--bp-ui-ink),
+    0.092em 0.038em 0 var(--bp-ui-ink),
+    0.071em 0.071em 0 var(--bp-ui-ink),
+    0.038em 0.092em 0 var(--bp-ui-ink),
+    0 0.1em 0 var(--bp-ui-ink),
+    -0.038em 0.092em 0 var(--bp-ui-ink),
+    -0.071em 0.071em 0 var(--bp-ui-ink),
+    -0.092em 0.038em 0 var(--bp-ui-ink),
+    -0.1em 0 0 var(--bp-ui-ink),
+    -0.092em -0.038em 0 var(--bp-ui-ink),
+    -0.071em -0.071em 0 var(--bp-ui-ink),
+    -0.038em -0.092em 0 var(--bp-ui-ink),
+    0 -0.1em 0 var(--bp-ui-ink),
+    0.038em -0.092em 0 var(--bp-ui-ink),
+    0.071em -0.071em 0 var(--bp-ui-ink),
+    0.092em -0.038em 0 var(--bp-ui-ink);
+  border-bottom: 1px solid color-mix(in srgb, #3c261d 22%, transparent);
+}
+
+/* Title + tags sit above the Patch3 shade */
+.builds-post__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  min-width: 0;
+}
+
+.builds-post__meta {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.builds-post__vote {
+  flex: 0 0 auto;
+  align-self: center;
+  margin-left: auto;
+}
+
+.builds-post__head {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 0.25rem;
+}
+
+.builds-post__head:hover .builds-post__title {
+  filter: brightness(1.06);
+}
+
+.builds-post__head:focus-visible {
+  outline: 2px solid color-mix(in srgb, #3c261d 50%, transparent);
+  outline-offset: 2px;
+}
+
+.builds-post__link {
+  display: block;
+  padding: 0;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.12s ease;
+  border-radius: 0.25rem;
+}
+
+.builds-post__link:hover {
+  /* Keep hover subtle so it doesn’t wash out the Patch3 shade */
+  filter: brightness(1.03);
+  background: transparent;
+}
+
+.builds-post__link:focus-visible {
+  outline: 2px solid color-mix(in srgb, #3c261d 50%, transparent);
+  outline-offset: 2px;
+}
+
+.builds-post__body {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+  box-sizing: border-box;
+  /* Same Patch3 shade family as Needs / Wants / Gold — a bit stronger so the card reads as one panel */
+  --builds-post-body-shade: rgba(14, 15, 16, 0.22);
+  padding: 0.65rem 0.65rem 0.45rem;
+}
+
+/* Shade layer (not z-index:-1 — that often paints under the page and disappears) */
+.builds-post__body::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--builds-post-body-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.builds-post__body > * {
+  position: relative;
+  z-index: 1;
+}
+
+.builds-post__byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.45rem;
+  min-width: 0;
+}
+
+.builds-post__avatar-link {
+  display: inline-flex;
+  flex-shrink: 0;
+  line-height: 0;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+}
+
+.builds-post__avatar {
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: color-mix(in srgb, #3c261d 14%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, #3c261d 28%, transparent);
+}
+
+.builds-post__avatar--initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--bpb-font-body);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #ffecdc;
+  background: color-mix(in srgb, #3c261d 72%, #8a5a2b);
+  box-shadow: none;
+}
+
+.builds-post__author {
+  font-family: var(--bpb-font-body);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: var(--bp-ui-track);
+  line-height: 1.15;
+  color: var(--bp-ui-cream);
+  -webkit-text-stroke: var(--bp-ui-stroke) var(--bp-ui-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--bp-ui-ring);
+  text-decoration: none;
+  position: relative;
+  z-index: 2;
+}
+
+a.builds-post__author:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.builds-post__dot {
+  font-family: var(--bpb-font-body);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--bp-ui-sticker);
+  -webkit-text-stroke: var(--bp-ui-stroke) var(--bp-ui-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--bp-ui-ring);
+}
+
+.builds-post__time {
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: var(--bp-ui-track);
+  line-height: 1.15;
+  color: var(--bp-ui-sticker);
+  -webkit-text-stroke: var(--bp-ui-stroke) var(--bp-ui-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--bp-ui-ring);
+}
+
+.builds-post__title {
+  display: block;
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.5rem;
+  letter-spacing: var(--bp-ui-track);
+  line-height: 1.2;
+  color: var(--bp-ui-cream);
+  -webkit-text-stroke: var(--bp-ui-stroke) var(--bp-ui-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--bp-ui-ring);
+}
+
+.builds-post__flairs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.45rem;
+  margin-top: 0.1rem;
+}
+
+.builds-post__flair {
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: var(--bp-ui-track);
+  line-height: 1.15;
+  padding: 0.18rem 0.5rem 0.16rem;
+  border-radius: 0.25rem;
+  color: var(--bp-ui-cream);
+  -webkit-text-stroke: var(--bp-ui-stroke) var(--bp-ui-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--bp-ui-ring);
+  background: color-mix(in srgb, #3c261d 72%, #8a5a2b);
+}
+
+.builds-post__flair--op {
+  background: color-mix(in srgb, #8b2e2e 72%, #3c261d);
+}
+
+.builds-post__flair--feasible {
+  background: color-mix(in srgb, #2f5d3a 70%, #3c261d);
+}
+
+.builds-post__flair--theory,
+.builds-post__flair--theorycraft {
+  background: color-mix(in srgb, #3a4a7a 70%, #3c261d);
+}
+
+.builds-post__flair--real {
+  background: color-mix(in srgb, #6a4a18 72%, #3c261d);
+}
+
+.builds-post__flair--featured {
+  background: color-mix(in srgb, #8a6a18 75%, #3c261d);
+}
+
+.builds-post__stage {
+  --builds-post-stage-gap: 0.85rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--builds-post-stage-gap);
+  /* Equal inset left of the pair is the board edge; right matches via padding */
+  padding-right: var(--builds-post-stage-gap);
+  align-items: center;
+  justify-content: start;
+  margin: 0.45rem 0 0.2rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.builds-post__board {
+  /* content-box + visible overflow: bags/items may extrude past the 9×7 grid */
+  --builds-feed-cell: 60px;
+  display: block;
+  box-sizing: content-box;
+  width: calc(9 * var(--builds-feed-cell));
+  height: calc(7 * var(--builds-feed-cell));
+  max-width: none;
+  margin: 0;
+  padding: 0.35rem;
+  line-height: 0;
+  border-radius: 0.4rem;
+  background: color-mix(in srgb, #3c261d 10%, transparent);
+  overflow: visible;
+  /* Allow hover for build tips (item hits stay inert via feed-thumb) */
+  pointer-events: auto;
+  user-select: none;
+  cursor: pointer;
+  justify-self: start;
+}
+
+.builds-post__board[data-feed-build-tip] .bpb-bg,
+.builds-post__board[data-feed-build-tip] .bpb-bg__hit {
+  pointer-events: none;
+}
+
+/* Build Info — sized to content and centered in the space beside the board */
+.builds-post__info {
+  --builds-post-shade: rgba(14, 15, 16, 0.09);
+  box-sizing: border-box;
+  width: max-content;
+  max-width: 100%;
+  min-width: 9.5rem;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.builds-post__info-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.builds-post__info-title {
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.35rem;
+  letter-spacing: var(--bp-ui-track);
+  line-height: 1.15;
+  color: var(--bp-ui-sticker);
+  -webkit-text-stroke: var(--bp-ui-stroke) var(--bp-ui-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--bp-ui-ring);
+}
+
+.builds-post__info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+  width: 100%;
+  align-content: start;
+  justify-items: stretch;
+}
+
+.builds-post__info-cell {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.25rem 0.45rem;
+  box-sizing: border-box;
+  min-height: 5.25rem;
+}
+
+.builds-post__info-cell::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: var(--builds-post-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.builds-post__info-label {
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.15rem;
+  letter-spacing: var(--bp-ui-track);
+  line-height: 1.15;
+  color: var(--bp-ui-cream);
+  -webkit-text-stroke: var(--bp-ui-stroke) var(--bp-ui-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--bp-ui-ring);
+}
+
+.builds-post__info-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  line-height: 0;
+}
+
+.builds-post__info-icon {
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+  display: block;
+}
+
+.builds-post__info-icon--rank {
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.builds-post__info-icon--empty {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.25rem;
+  background: rgba(60, 38, 29, 0.12);
+}
+
+.builds-post__info-cell--wide {
+  grid-column: 1 / -1;
+  min-height: 4.25rem;
+}
+
+.builds-post__gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  line-height: 1;
+}
+
+.builds-post__gold-num {
+  font-family: var(--bpb-font-body);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: var(--bp-ui-track);
+  line-height: 1.15;
+  color: var(--bp-ui-cream);
+  -webkit-text-stroke: var(--bp-ui-stroke) var(--bp-ui-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--bp-ui-ring);
+}
+
+.builds-post__gold-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: contain;
+  display: block;
+}
+
+.builds-post__info-empty {
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.15rem;
+  letter-spacing: var(--bp-ui-track);
+  line-height: 1.15;
+  color: var(--bp-ui-sticker);
+  -webkit-text-stroke: var(--bp-ui-stroke) var(--bp-ui-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--bp-ui-ring);
+}
+
+.builds-post__board.is-empty {
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.builds-post__board-empty {
+  font-family: var(--bpb-font-body);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  color: color-mix(in srgb, #3c261d 55%, transparent);
+}
+
+/* Feed thumbs: beat Itemiary .bpb-bg overflow-x/y so edge bags aren’t shaved */
+.builds-post__board > .bpb-bg {
+  --bpb-bg-scroll-gap: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+  max-height: none;
+  scrollbar-gutter: auto;
+  scrollbar-width: none;
+}
+
+.builds-post__board .bpb-bg__board {
+  margin: 0 !important;
+  max-width: none !important;
+}
+
+.builds-post__board .bpb-bg__board,
+.builds-post__board .bpb-bg__items,
+.builds-post__board .bpb-bg__under,
+.builds-post__board .bpb-bg__fabric,
+.builds-post__board .bpb-bg__item,
+.builds-post__board .bpb-bg__hit {
+  overflow: visible;
+}
+
+.builds-post__board > .bpb-bg::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.builds-post__board > .bpb-bg .bpb-bg__board {
+  margin: 0;
+  max-width: none;
+}
+
+/* —— Footer actions (comment / remix / share + Play) —— */
+
+.builds-post__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem 0.85rem;
+  padding: 0.35rem 0.15rem 0.35rem;
+}
+
+.builds-post__actions-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.85rem;
+  min-width: 0;
+}
+
+.builds-post__play {
+  flex: 0 0 auto;
+  margin-left: auto;
+  align-self: center;
+  --bpb-premium-h: 2.15rem;
+  --bpb-premium-w: 5.5rem;
+}
+
+.builds-post__body > .builds-post__actions {
+  padding: 0.45rem 0.15rem 0.25rem;
+}
+
+.builds-post__action {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  margin: 0;
+  padding: 0.15rem 0.1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  text-decoration: none;
+  font-family: var(--bpb-font-display);
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: #ffecdc;
+  text-shadow:
+    0.08em 0 0 #3c261d,
+    0.07em 0.03em 0 #3c261d,
+    0.05em 0.05em 0 #3c261d,
+    0.03em 0.07em 0 #3c261d,
+    0 0.08em 0 #3c261d,
+    -0.03em 0.07em 0 #3c261d,
+    -0.05em 0.05em 0 #3c261d,
+    -0.07em 0.03em 0 #3c261d,
+    -0.08em 0 0 #3c261d,
+    -0.07em -0.03em 0 #3c261d,
+    -0.05em -0.05em 0 #3c261d,
+    -0.03em -0.07em 0 #3c261d,
+    0 -0.08em 0 #3c261d,
+    0.03em -0.07em 0 #3c261d,
+    0.05em -0.05em 0 #3c261d,
+    0.07em -0.03em 0 #3c261d;
+  transition: transform 0.12s ease, filter 0.12s ease, opacity 0.12s ease;
+  opacity: 0.92;
+}
+
+.builds-post__action:hover {
+  opacity: 1;
+  transform: scale(1.05);
+  filter: brightness(1.06);
+}
+
+.builds-post__action:active {
+  transform: scale(0.96);
+}
+
+.builds-post__action:focus-visible {
+  outline: 2px solid color-mix(in srgb, #3c261d 55%, transparent);
+  outline-offset: 2px;
+  border-radius: 0.2rem;
+}
+
+.builds-post__action-icon,
+.builds-post__comment-icon,
+.builds-post__remix-icon,
+.builds-post__actions .build-round__share-icon {
+  display: block;
+  width: 2.15rem;
+  height: 2.15rem;
+  object-fit: contain;
+  background: transparent;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.28));
+}
+
+.builds-post__action-label {
+  display: inline-block;
+  font-size: 1.2rem;
+}
+
+.builds-post__vote .build-round__vote {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  user-select: none;
+}
+
+.builds-post__vote .build-round__vote-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  margin: 0;
+  padding: 0.15rem;
+  cursor: pointer;
+  line-height: 0;
+  opacity: 0.9;
+  transition: transform 0.12s ease, opacity 0.12s ease, filter 0.12s ease;
+}
+
+.builds-post__vote .build-round__vote-icon {
+  display: block;
+  width: 2.35rem;
+  height: 2.35rem;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.28));
+}
+
+.builds-post__vote .build-round__vote-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.builds-post__vote .build-round__vote-btn:active {
+  transform: scale(0.94);
+}
+
+.builds-post__vote .build-round__vote-btn:focus-visible {
+  outline: 2px solid #ffd817;
+  outline-offset: 2px;
+}
+
+.builds-post__vote .build-round__vote-btn.is-on {
+  opacity: 1;
+}
+
+.builds-post__vote .build-round__vote-btn--up.is-on .build-round__vote-icon {
+  filter: drop-shadow(0 0 2px rgba(255, 212, 90, 0.85))
+    drop-shadow(0 0 0.5px #ffd817)
+    brightness(1.12);
+}
+
+.builds-post__vote .build-round__vote-btn--down.is-on .build-round__vote-icon {
+  filter: drop-shadow(0 0 2px rgba(142, 180, 216, 0.75))
+    drop-shadow(0 0 0.5px #8eb4d8)
+    brightness(1.08);
+}
+
+.builds-post__vote .build-round__vote-score {
+  min-width: 1.85rem;
+  text-align: center;
+  font-family: var(--bpb-font-display);
+  font-size: 1.65rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: #ffecdc;
+  text-shadow:
+    0.08em 0 0 #3c261d,
+    0.07em 0.03em 0 #3c261d,
+    0.05em 0.05em 0 #3c261d,
+    0.03em 0.07em 0 #3c261d,
+    0 0.08em 0 #3c261d,
+    -0.03em 0.07em 0 #3c261d,
+    -0.05em 0.05em 0 #3c261d,
+    -0.07em 0.03em 0 #3c261d,
+    -0.08em 0 0 #3c261d,
+    -0.07em -0.03em 0 #3c261d,
+    -0.05em -0.05em 0 #3c261d,
+    -0.03em -0.07em 0 #3c261d,
+    0 -0.08em 0 #3c261d,
+    0.03em -0.07em 0 #3c261d,
+    0.05em -0.05em 0 #3c261d,
+    0.07em -0.03em 0 #3c261d;
+}
+
+.builds-post__vote .build-round__vote.is-up .build-round__vote-score {
+  color: #ffd45a;
+}
+
+.builds-post__vote .build-round__vote.is-down .build-round__vote-score {
+  color: #8eb4d8;
+}
+
+.builds-post__actions .build-round__share {
+  /* shares .builds-post__action look; keep icon sizing from build page */
+  font-size: 1.2rem;
+}
+
+.builds-post__actions .build-round__share-icon {
+  display: block;
+  width: 2.15rem;
+  height: 2.15rem;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(20, 10, 5, 0.35));
+}
+
+.builds-post__actions .build-round__share.is-copied {
+  filter: brightness(1.12);
+}
+
+/* —— Skeleton / status —— */
+
+.builds-feed__list--skel,
+.builds-post--skel {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.builds-post--skel {
+  padding: 0.85rem 0.35rem;
+  border-bottom: 1px solid color-mix(in srgb, #3c261d 14%, transparent);
+}
+
+.builds-post__skel-byline {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.builds-post__skel-body {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+  box-sizing: border-box;
+  --builds-post-body-shade: rgba(14, 15, 16, 0.22);
+  padding: 0.65rem;
+}
+
+.builds-post__skel-body::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--builds-post-body-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.builds-post__skel-body > * {
+  position: relative;
+  z-index: 1;
+}
+
+.builds-post__skel-board {
+  margin-top: 0;
+}
+
+.build-status {
+  font-family: var(--bpb-font-body);
+  color: color-mix(in srgb, var(--bpb-ink, #3c261d) 70%, transparent);
+  padding: 2.5rem 1rem;
+  text-align: center;
+}
+
+.builds-feed__empty {
+  padding-top: 1.5rem;
+}
+
+/* —— Compact view (board left · meta / title / actions right) —— */
+
+.builds-post__compact {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.55rem 0.75rem;
+  align-items: stretch;
+  padding: 0.55rem 0.25rem 0.5rem;
+}
+
+.builds-post__compact-thumb {
+  display: block;
+  line-height: 0;
+  border-radius: 0.4rem;
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+  /* Board host clips; keep thumb open so pad/overhang isn’t double-cropped */
+  overflow: visible;
+  transition: filter 0.12s ease;
+}
+
+.builds-post__compact-thumb:hover {
+  filter: brightness(1.04);
+}
+
+.builds-post__compact-thumb:focus-visible {
+  outline: 2px solid color-mix(in srgb, #3c261d 50%, transparent);
+  outline-offset: 2px;
+}
+
+.builds-feed__list--compact .builds-post__board {
+  --builds-feed-cell: 18px;
+  box-sizing: content-box;
+  width: calc(9 * var(--builds-feed-cell));
+  height: calc(7 * var(--builds-feed-cell));
+  max-width: none;
+  margin: 0;
+  padding: 0.25rem;
+  border-radius: 0.4rem;
+  background: color-mix(in srgb, #3c261d 10%, transparent);
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+  cursor: inherit;
+}
+
+.builds-post__compact-thumb[data-feed-build-tip] {
+  cursor: pointer;
+}
+
+.builds-post__compact-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+  min-height: 100%;
+}
+
+.builds-post__compact-side .builds-post__compact-text {
+  flex: 0 0 auto;
+}
+
+.builds-post__compact-side .builds-post__top {
+  flex: 0 0 auto;
+}
+
+.builds-post__compact-side .builds-post__actions {
+  margin-top: auto;
+}
+
+.builds-post__compact-text {
+  display: grid;
+  gap: 0.12rem;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 0.2rem;
+}
+
+.builds-post__compact-text:hover .builds-post__title {
+  filter: brightness(1.06);
+}
+
+.builds-post__compact-text:focus-visible {
+  outline: 2px solid color-mix(in srgb, #3c261d 50%, transparent);
+  outline-offset: 2px;
+}
+
+.builds-feed__list--compact .builds-post__byline {
+  gap: 0.3rem 0.35rem;
+}
+
+.builds-feed__list--compact .builds-post__avatar {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.builds-feed__list--compact .builds-post__avatar--initials {
+  font-size: 0.55rem;
+}
+
+.builds-feed__list--compact .builds-post__author,
+.builds-feed__list--compact .builds-post__time,
+.builds-feed__list--compact .builds-post__dot {
+  font-size: 0.88rem;
+}
+
+.builds-feed__list--compact .builds-post__title {
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.builds-feed__list--compact .builds-post__flairs {
+  gap: 0.2rem 0.3rem;
+  margin-top: 0.05rem;
+}
+
+.builds-feed__list--compact .builds-post__flair {
+  font-size: 0.85rem;
+  padding: 0.08rem 0.35rem 0.06rem;
+}
+
+.builds-feed__list--compact .builds-post__actions {
+  margin-top: auto;
+  margin-bottom: 0;
+  padding: 0;
+  gap: 0.25rem 0.45rem;
+}
+
+.builds-feed__list--compact .builds-post__actions-main {
+  gap: 0.15rem 0.4rem;
+}
+
+.builds-feed__list--compact .builds-post__play {
+  --bpb-premium-h: 1.85rem;
+  --bpb-premium-w: 4.75rem;
+}
+
+.builds-feed__list--compact .builds-post__action-icon,
+.builds-feed__list--compact .builds-post__comment-icon,
+.builds-feed__list--compact .builds-post__remix-icon,
+.builds-feed__list--compact .builds-post__actions .build-round__share-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.builds-feed__list--compact .builds-post__vote .build-round__vote-icon {
+  width: 1.85rem;
+  height: 1.85rem;
+}
+
+.builds-feed__list--compact .builds-post__vote .build-round__vote-score {
+  font-size: 1.25rem;
+  min-width: 1.5rem;
+}
+
+.builds-feed__list--compact .builds-post__action-label {
+  font-size: 0.9rem;
+}
+
+/*
+ * Screen-frame padding on #main shrank the side-by-side feed+rail.
+ * Step cell size down before they collide; stack earlier than pre-frame.
+ */
+@media (max-width: 1500px) and (min-width: 1241px) {
+  .builds-feed__list--card .builds-post__board {
+    --builds-feed-cell: 48px;
+  }
+}
+
+@media (max-width: 1360px) and (min-width: 1241px) {
+  .builds-feed__list--card .builds-post__board {
+    --builds-feed-cell: 42px;
+  }
+}
+
+/* Frame edges ≈ 2×(100vw×40/1920); stack before board+rail fight for width */
+@media (max-width: 1240px) {
+  .builds-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .builds-feed-filters.items-filters {
+    position: static;
+    max-height: none;
+    width: 100%;
+    order: -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .builds-post__stage {
+    grid-template-columns: 1fr;
+    padding-right: 0;
+    justify-items: center;
+  }
+
+  .builds-post__board {
+    justify-self: center;
+  }
+
+  .builds-post__info {
+    max-width: 18rem;
+    justify-self: center;
+  }
+}
+
+@media (max-width: 720px) {
+  .builds-feed__list--card .builds-post__board {
+    --builds-feed-cell: 36px;
+  }
+}
+
+@media (max-width: 560px) {
+  .builds-feed__list--card .builds-post__board {
+    --builds-feed-cell: 28px;
+  }
+
+  .builds-feed__list--compact .builds-post__board {
+    --builds-feed-cell: 14px;
+  }
+
+  .builds-post__actions {
+    gap: 0.25rem 0.55rem;
+  }
+
+  .builds-post__action-label {
+    font-size: 0.95rem;
+  }
+}

@@ -1,0 +1,243 @@
+/**
+ * Premium feature CTA.
+ * .bpb-premium-cta--orb — circular Play (create toolbar)
+ * .bpb-premium-cta--plaque — rectangular Play (build scrubber)
+ * Glow + GlowingDot sparkles behind the face (game dice FX).
+ */
+
+.bpb-premium-cta {
+  /* Rectangular plaque ~2.55:1 */
+  --bpb-premium-h: 2.85rem;
+  --bpb-premium-w: 7.25rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  line-height: 0;
+  cursor: pointer;
+  transition: transform 0.14s ease, filter 0.14s ease;
+}
+
+.bpb-premium-cta--orb {
+  --bpb-premium-h: 3.15rem;
+  --bpb-premium-w: 3.15rem;
+}
+
+.bpb-premium-cta--plaque {
+  --bpb-premium-h: 2.85rem;
+  --bpb-premium-w: 7.25rem;
+}
+
+.bpb-premium-cta--toolbar {
+  --bpb-premium-h: 2.25rem;
+  --bpb-premium-w: 5.75rem;
+}
+
+.bpb-premium-cta--orb.bpb-premium-cta--toolbar {
+  --bpb-premium-h: 2.15rem;
+  --bpb-premium-w: 2.15rem;
+}
+
+.bpb-premium-cta__face {
+  position: relative;
+  display: block;
+  width: var(--bpb-premium-w);
+  height: var(--bpb-premium-h);
+  overflow: visible;
+}
+
+.bpb-premium-cta__icon {
+  position: relative;
+  /* Above glow + sparks — game dice Particles use show_behind_parent */
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 2px 2px rgba(20, 10, 5, 0.35));
+  transition: filter 0.14s ease, transform 0.14s ease;
+  animation: bpb-orb-breathe 2.4s ease-in-out infinite;
+}
+
+.bpb-premium-cta--orb .bpb-premium-cta__icon,
+.bpb-premium-cta--plaque .bpb-premium-cta__icon {
+  filter:
+    drop-shadow(0 1px 1px rgba(20, 10, 5, 0.35))
+    drop-shadow(0 0 4px rgba(255, 180, 120, 0.45))
+    drop-shadow(0 0 7px rgba(120, 200, 255, 0.35));
+}
+
+/* Soft rainbow bloom — rotates ~like ShiftingOutline speed 0.27 (≈3.7s/turn) */
+.bpb-premium-cta__glow {
+  position: absolute;
+  z-index: 0;
+  background: conic-gradient(
+    from 0deg,
+    #fce871,
+    #ff9a3c,
+    #ff4d6a,
+    #c44dff,
+    #4d7cff,
+    #3ce8ff,
+    #5dff7a,
+    #fce871
+  );
+  filter: blur(7px);
+  opacity: 0.42;
+  animation: bpb-orb-spin 3.7s linear infinite;
+  pointer-events: none;
+}
+
+.bpb-premium-cta--orb .bpb-premium-cta__glow {
+  inset: -28%;
+  border-radius: 50%;
+}
+
+/* Plaque: bloom on the left play-circle notch */
+.bpb-premium-cta--plaque .bpb-premium-cta__glow {
+  left: -6%;
+  top: -32%;
+  width: 42%;
+  height: 164%;
+  border-radius: 50%;
+  filter: blur(8px);
+  opacity: 0.48;
+}
+
+.bpb-premium-cta__sparks {
+  position: absolute;
+  inset: -35%;
+  /* Behind the face (game: Particles2D show_behind_parent) */
+  z-index: 1;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.bpb-premium-cta--plaque .bpb-premium-cta__sparks {
+  /* Bias sparks around the left circle */
+  inset: -40% 35% -40% -28%;
+}
+
+.bpb-premium-cta__spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: -0.625rem 0 0 -0.625rem;
+  opacity: 0;
+  animation: bpb-orb-spark 0.95s ease-out infinite;
+  animation-delay: var(--spark-delay, 0s);
+  mix-blend-mode: plus-lighter;
+  filter:
+    brightness(1.6)
+    drop-shadow(0 0 2px rgba(255, 230, 140, 0.9))
+    drop-shadow(0 0 4px rgba(255, 120, 200, 0.55));
+  will-change: transform, opacity;
+}
+
+.bpb-premium-cta--orb.bpb-premium-cta--toolbar .bpb-premium-cta__spark {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: -0.525rem 0 0 -0.525rem;
+}
+
+.bpb-premium-cta--plaque .bpb-premium-cta__spark {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: -0.575rem 0 0 -0.575rem;
+}
+
+@supports not (mix-blend-mode: plus-lighter) {
+  .bpb-premium-cta__spark {
+    mix-blend-mode: screen;
+  }
+}
+
+.bpb-premium-cta:hover {
+  transform: scale(1.05);
+}
+
+.bpb-premium-cta:hover .bpb-premium-cta__glow {
+  opacity: 0.62;
+  filter: blur(8px) brightness(1.1);
+}
+
+.bpb-premium-cta--plaque:hover .bpb-premium-cta__glow {
+  filter: blur(9px) brightness(1.1);
+}
+
+.bpb-premium-cta:hover .bpb-premium-cta__icon {
+  filter:
+    drop-shadow(0 1px 1px rgba(20, 10, 5, 0.3))
+    drop-shadow(0 0 6px rgba(255, 170, 210, 0.55))
+    drop-shadow(0 0 8px rgba(120, 230, 180, 0.4))
+    brightness(1.08);
+}
+
+.bpb-premium-cta:active {
+  transform: scale(0.97);
+}
+
+.bpb-premium-cta:focus-visible {
+  outline: 2px solid #ffd817;
+  outline-offset: 4px;
+  border-radius: 0.45rem;
+}
+
+.bpb-premium-cta--orb:focus-visible {
+  border-radius: 50%;
+}
+
+@keyframes bpb-orb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bpb-orb-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+/* Emit outward like Main.tscn GlowingDot particles (life ~0.8s) */
+@keyframes bpb-orb-spark {
+  0% {
+    transform: rotate(var(--spark-angle, 0deg)) translateY(0.2rem) scale(0.4);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(var(--spark-angle, 0deg))
+      translateY(calc(-1 * var(--spark-dist, 1.1rem))) scale(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpb-premium-cta,
+  .bpb-premium-cta__icon {
+    transition: none;
+  }
+
+  .bpb-premium-cta__glow,
+  .bpb-premium-cta__icon,
+  .bpb-premium-cta__spark {
+    animation: none;
+  }
+
+  .bpb-premium-cta__glow {
+    opacity: 0.35;
+  }
+}

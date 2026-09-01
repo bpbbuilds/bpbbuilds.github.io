@@ -1,0 +1,1772 @@
+{
+  "kind": "bpb-sim-debug",
+  "v": 5,
+  "slug": "poison-garden-ranger",
+  "seed": 42,
+  "durationSec": 30,
+  "dummyEndHp": 755,
+  "playerEndHp": 5,
+  "eventCount": 231,
+  "catalog": [
+    {
+      "id": "ranger_bag",
+      "name": "Ranger Bag",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": 12
+    },
+    {
+      "id": "leather_bag",
+      "name": "Leather Bag",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null
+    },
+    {
+      "id": "vineweave_basket",
+      "name": "Vineweave Basket",
+      "type": "Bag",
+      "extraTypes": [],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "healamp": 12,
+        "p1": 12,
+        "ampbonus": 5,
+        "p2": 5,
+        "sales": 20,
+        "p3": 20,
+        "round1": 1,
+        "p4": 1,
+        "round2": 10,
+        "p5": 10
+      }
+    },
+    {
+      "id": "poison_goobert",
+      "name": "Poison Goobert",
+      "type": "Pet",
+      "extraTypes": [
+        "Nature"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "activations": 5,
+        "p1": 5,
+        "heal": 10,
+        "p2": 10,
+        "poison": 4,
+        "p3": 4
+      }
+    },
+    {
+      "id": "poison_frog",
+      "name": "Poison Frog",
+      "type": "Pet",
+      "extraTypes": [
+        "Magic",
+        "Nature"
+      ],
+      "cooldown": 2.1,
+      "chance": null,
+      "params": {
+        "gained": 10,
+        "p1": 10,
+        "mana": 1,
+        "p2": 1,
+        "poison": 2,
+        "p3": 2,
+        "mana2": 1,
+        "p4": 1,
+        "poison2": 2,
+        "p5": 2,
+        "used": 10,
+        "p6": 10,
+        "heal": 12,
+        "p7": 12
+      }
+    },
+    {
+      "id": "snake",
+      "name": "Snake",
+      "type": "Pet",
+      "extraTypes": [
+        "Nature"
+      ],
+      "cooldown": 2.2,
+      "chance": 4,
+      "params": {
+        "luck": 4,
+        "p1": 4,
+        "poison": 2,
+        "p2": 2,
+        "maxhealth": 40,
+        "p3": 40
+      }
+    },
+    {
+      "id": "poison_ivy",
+      "name": "Poison Ivy",
+      "type": "Accessory",
+      "extraTypes": [
+        "Nature"
+      ],
+      "cooldown": null,
+      "chance": 5,
+      "params": {
+        "poisont": 18,
+        "p1": 18,
+        "damfactor": 25,
+        "p2": 25,
+        "poisonperspike": 2,
+        "p4": 2
+      }
+    },
+    {
+      "id": "healing_herbs",
+      "name": "Healing Herbs",
+      "type": "Accessory",
+      "extraTypes": [
+        "Nature"
+      ],
+      "cooldown": null,
+      "chance": null,
+      "params": {
+        "p1": 2
+      }
+    },
+    {
+      "id": "leaf_badge",
+      "name": "Leaf Badge",
+      "type": "Accessory",
+      "extraTypes": [],
+      "cooldown": 2.2,
+      "chance": 2
+    }
+  ],
+  "paramChecks": [],
+  "unhealingMath": {
+    "rate": 0,
+    "healLogged": 30,
+    "healGrants": 15,
+    "exactFloat": 0,
+    "expectedCeil": 0,
+    "actual": 0,
+    "actualGrants": 0,
+    "samples": [
+      {
+        "heal": 2,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 2,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 2,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 2,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 2,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 2,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 2,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 2,
+        "exact": 0,
+        "ceil": 0
+      }
+    ],
+    "note": "game: ceil(each logged heal × 0) — e.g. 15% of 3 is 0.45 → 1; 15% of 1 is 0.15 → 1 (never 0)"
+  },
+  "status": {
+    "buffs": {
+      "lucky": {
+        "player": {
+          "end": 16,
+          "sources": [
+            {
+              "gained": 12,
+              "lost": 0,
+              "grants": 12,
+              "firstT": 4.75,
+              "lastT": 28.65,
+              "samples": [
+                {
+                  "t": 4.75,
+                  "amount": 1
+                },
+                {
+                  "t": 6.9,
+                  "amount": 1
+                },
+                {
+                  "t": 9.05,
+                  "amount": 1
+                },
+                {
+                  "t": 11.2,
+                  "amount": 1
+                },
+                {
+                  "t": 13.3,
+                  "amount": 1
+                },
+                {
+                  "t": 15.4,
+                  "amount": 1
+                },
+                {
+                  "t": 17.55,
+                  "amount": 1
+                },
+                {
+                  "t": 19.75,
+                  "amount": 1
+                }
+              ],
+              "id": "leaf_badge",
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "handler": "leaf_badge",
+              "systemOrigin": null
+            },
+            {
+              "gained": 4,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 4
+                }
+              ],
+              "id": "snake",
+              "itemId": "snake",
+              "name": "Snake",
+              "handler": "snake",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 16
+        }
+      },
+      "regeneration": {
+        "player": {
+          "end": 2,
+          "sources": [
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 2
+                }
+              ],
+              "id": "healing_herbs",
+              "itemId": "healing_herbs",
+              "name": "Healing Herbs",
+              "handler": "healing_herbs",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 2
+        }
+      },
+      "mana": {
+        "player": {
+          "end": 13,
+          "sources": [
+            {
+              "gained": 13,
+              "lost": 0,
+              "grants": 13,
+              "firstT": 4.7,
+              "lastT": 29.95,
+              "samples": [
+                {
+                  "t": 4.7,
+                  "amount": 1
+                },
+                {
+                  "t": 6.8,
+                  "amount": 1
+                },
+                {
+                  "t": 8.95,
+                  "amount": 1
+                },
+                {
+                  "t": 11.1,
+                  "amount": 1
+                },
+                {
+                  "t": 13.2,
+                  "amount": 1
+                },
+                {
+                  "t": 15.3,
+                  "amount": 1
+                },
+                {
+                  "t": 17.3,
+                  "amount": 1
+                },
+                {
+                  "t": 19.45,
+                  "amount": 1
+                }
+              ],
+              "id": "poison_frog",
+              "itemId": "poison_frog",
+              "name": "Poison Frog",
+              "handler": "poison_frog",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 13
+        }
+      }
+    },
+    "debuffs": {
+      "poison": {
+        "player": {
+          "end": 0,
+          "sources": [
+            {
+              "gained": 378,
+              "lost": 0,
+              "grants": 12,
+              "firstT": 6.5,
+              "lastT": 28.5,
+              "samples": [
+                {
+                  "t": 6.5,
+                  "amount": 4
+                },
+                {
+                  "t": 8.5,
+                  "amount": 8
+                },
+                {
+                  "t": 10.5,
+                  "amount": 12
+                },
+                {
+                  "t": 12.5,
+                  "amount": 16
+                },
+                {
+                  "t": 14.5,
+                  "amount": 25
+                },
+                {
+                  "t": 16.5,
+                  "amount": 30
+                },
+                {
+                  "t": 18.5,
+                  "amount": 35
+                },
+                {
+                  "t": 20.5,
+                  "amount": 40
+                }
+              ],
+              "id": "Poison",
+              "itemId": null,
+              "name": "Poison",
+              "handler": null,
+              "systemOrigin": "Poison"
+            }
+          ],
+          "gained": 378
+        },
+        "dummy": {
+          "end": 50,
+          "sources": [
+            {
+              "gained": 26,
+              "lost": 0,
+              "grants": 13,
+              "firstT": 4.7,
+              "lastT": 29.95,
+              "samples": [
+                {
+                  "t": 4.7,
+                  "amount": 2
+                },
+                {
+                  "t": 6.8,
+                  "amount": 2
+                },
+                {
+                  "t": 8.95,
+                  "amount": 2
+                },
+                {
+                  "t": 11.1,
+                  "amount": 2
+                },
+                {
+                  "t": 13.2,
+                  "amount": 2
+                },
+                {
+                  "t": 15.3,
+                  "amount": 2
+                },
+                {
+                  "t": 17.3,
+                  "amount": 2
+                },
+                {
+                  "t": 19.45,
+                  "amount": 2
+                }
+              ],
+              "id": "poison_frog",
+              "itemId": "poison_frog",
+              "name": "Poison Frog",
+              "handler": "poison_frog",
+              "systemOrigin": null
+            },
+            {
+              "gained": 24,
+              "lost": 0,
+              "grants": 12,
+              "firstT": 4.7,
+              "lastT": 28.6,
+              "samples": [
+                {
+                  "t": 4.7,
+                  "amount": 2
+                },
+                {
+                  "t": 6.85,
+                  "amount": 2
+                },
+                {
+                  "t": 9.05,
+                  "amount": 2
+                },
+                {
+                  "t": 11.15,
+                  "amount": 2
+                },
+                {
+                  "t": 13.4,
+                  "amount": 2
+                },
+                {
+                  "t": 15.6,
+                  "amount": 2
+                },
+                {
+                  "t": 17.75,
+                  "amount": 2
+                },
+                {
+                  "t": 19.85,
+                  "amount": 2
+                }
+              ],
+              "id": "snake",
+              "itemId": "snake",
+              "name": "Snake",
+              "handler": "snake",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 50
+        }
+      }
+    },
+    "itemBuffs": {
+      "player": [],
+      "dummy": []
+    },
+    "heals": {
+      "player": {
+        "total": 28,
+        "byKind": {
+          "regeneration": {
+            "total": 28,
+            "grants": 14
+          }
+        },
+        "sources": [
+          {
+            "gained": 28,
+            "lost": 0,
+            "grants": 14,
+            "firstT": 3.5,
+            "lastT": 29.5,
+            "samples": [
+              {
+                "t": 3.5,
+                "amount": 2
+              },
+              {
+                "t": 5.5,
+                "amount": 2
+              },
+              {
+                "t": 7.5,
+                "amount": 2
+              },
+              {
+                "t": 9.5,
+                "amount": 2
+              },
+              {
+                "t": 11.5,
+                "amount": 2
+              },
+              {
+                "t": 13.5,
+                "amount": 2
+              },
+              {
+                "t": 15.5,
+                "amount": 2
+              },
+              {
+                "t": 17.5,
+                "amount": 2
+              }
+            ],
+            "id": "Regeneration",
+            "itemId": null,
+            "name": "Regeneration",
+            "handler": null,
+            "systemOrigin": "Regeneration",
+            "kind": "regeneration",
+            "label": "Regeneration: +2 health",
+            "byItem": {}
+          }
+        ]
+      }
+    },
+    "damage": {
+      "toDummy": {
+        "total": 67,
+        "byKind": {
+          "fatigue": {
+            "total": 67,
+            "grants": 11
+          }
+        },
+        "sources": [
+          {
+            "gained": 67,
+            "lost": 0,
+            "grants": 11,
+            "firstT": 19.5,
+            "lastT": 29.5,
+            "samples": [
+              {
+                "t": 19.5,
+                "amount": 1
+              },
+              {
+                "t": 20.5,
+                "amount": 2
+              },
+              {
+                "t": 21.5,
+                "amount": 3
+              },
+              {
+                "t": 22.5,
+                "amount": 4
+              },
+              {
+                "t": 23.5,
+                "amount": 5
+              },
+              {
+                "t": 24.5,
+                "amount": 6
+              },
+              {
+                "t": 25.5,
+                "amount": 7
+              },
+              {
+                "t": 26.5,
+                "amount": 8
+              }
+            ],
+            "id": "Fatigue",
+            "itemId": null,
+            "name": "Fatigue",
+            "handler": null,
+            "kind": "fatigue",
+            "crits": 0
+          }
+        ]
+      },
+      "toPlayer": {
+        "total": 223,
+        "byKind": {
+          "dummy": {
+            "total": 156,
+            "grants": 12
+          },
+          "fatigue": {
+            "total": 67,
+            "grants": 11
+          }
+        },
+        "sources": [
+          {
+            "gained": 156,
+            "lost": 0,
+            "grants": 12,
+            "firstT": 4.652,
+            "lastT": 28.302,
+            "samples": [
+              {
+                "t": 4.652,
+                "amount": 13
+              },
+              {
+                "t": 6.802,
+                "amount": 13
+              },
+              {
+                "t": 8.952,
+                "amount": 13
+              },
+              {
+                "t": 11.102,
+                "amount": 13
+              },
+              {
+                "t": 13.252,
+                "amount": 13
+              },
+              {
+                "t": 15.402,
+                "amount": 13
+              },
+              {
+                "t": 17.552,
+                "amount": 13
+              },
+              {
+                "t": 19.702,
+                "amount": 13
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null,
+            "kind": "dummy",
+            "crits": 0
+          },
+          {
+            "gained": 67,
+            "lost": 0,
+            "grants": 11,
+            "firstT": 19.5,
+            "lastT": 29.5,
+            "samples": [
+              {
+                "t": 19.5,
+                "amount": 1
+              },
+              {
+                "t": 20.5,
+                "amount": 2
+              },
+              {
+                "t": 21.5,
+                "amount": 3
+              },
+              {
+                "t": 22.5,
+                "amount": 4
+              },
+              {
+                "t": 23.5,
+                "amount": 5
+              },
+              {
+                "t": 24.5,
+                "amount": 6
+              },
+              {
+                "t": 25.5,
+                "amount": 7
+              },
+              {
+                "t": 26.5,
+                "amount": 8
+              }
+            ],
+            "id": "Fatigue",
+            "itemId": null,
+            "name": "Fatigue",
+            "handler": null,
+            "kind": "fatigue",
+            "crits": 0
+          }
+        ]
+      }
+    },
+    "misses": {
+      "player": 0,
+      "dummy": 0
+    },
+    "activations": {
+      "player": {
+        "total": 39,
+        "sources": [
+          {
+            "gained": 13,
+            "lost": 0,
+            "grants": 13,
+            "firstT": 4.7,
+            "lastT": 29.95,
+            "samples": [
+              {
+                "t": 4.7,
+                "amount": 1
+              },
+              {
+                "t": 6.8,
+                "amount": 1
+              },
+              {
+                "t": 8.95,
+                "amount": 1
+              },
+              {
+                "t": 11.1,
+                "amount": 1
+              },
+              {
+                "t": 13.2,
+                "amount": 1
+              },
+              {
+                "t": 15.3,
+                "amount": 1
+              },
+              {
+                "t": 17.3,
+                "amount": 1
+              },
+              {
+                "t": 19.45,
+                "amount": 1
+              }
+            ],
+            "id": "poison_frog",
+            "itemId": "poison_frog",
+            "name": "Poison Frog",
+            "handler": "poison_frog"
+          },
+          {
+            "gained": 13,
+            "lost": 0,
+            "grants": 13,
+            "firstT": 2.5,
+            "lastT": 28.6,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 4.7,
+                "amount": 1
+              },
+              {
+                "t": 6.85,
+                "amount": 1
+              },
+              {
+                "t": 9.05,
+                "amount": 1
+              },
+              {
+                "t": 11.15,
+                "amount": 1
+              },
+              {
+                "t": 13.4,
+                "amount": 1
+              },
+              {
+                "t": 15.6,
+                "amount": 1
+              },
+              {
+                "t": 17.75,
+                "amount": 1
+              }
+            ],
+            "id": "snake",
+            "itemId": "snake",
+            "name": "Snake",
+            "handler": "snake"
+          },
+          {
+            "gained": 12,
+            "lost": 0,
+            "grants": 12,
+            "firstT": 4.75,
+            "lastT": 28.65,
+            "samples": [
+              {
+                "t": 4.75,
+                "amount": 1
+              },
+              {
+                "t": 6.9,
+                "amount": 1
+              },
+              {
+                "t": 9.05,
+                "amount": 1
+              },
+              {
+                "t": 11.2,
+                "amount": 1
+              },
+              {
+                "t": 13.3,
+                "amount": 1
+              },
+              {
+                "t": 15.4,
+                "amount": 1
+              },
+              {
+                "t": 17.55,
+                "amount": 1
+              },
+              {
+                "t": 19.75,
+                "amount": 1
+              }
+            ],
+            "id": "leaf_badge",
+            "itemId": "leaf_badge",
+            "name": "Leaf Badge",
+            "handler": "leaf_badge"
+          },
+          {
+            "gained": 1,
+            "lost": 0,
+            "grants": 1,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "healing_herbs",
+            "itemId": "healing_herbs",
+            "name": "Healing Herbs",
+            "handler": "healing_herbs"
+          }
+        ]
+      },
+      "dummy": {
+        "total": 12,
+        "sources": [
+          {
+            "gained": 12,
+            "lost": 0,
+            "grants": 12,
+            "firstT": 4.65,
+            "lastT": 28.3,
+            "samples": [
+              {
+                "t": 4.65,
+                "amount": 1
+              },
+              {
+                "t": 6.8,
+                "amount": 1
+              },
+              {
+                "t": 8.95,
+                "amount": 1
+              },
+              {
+                "t": 11.1,
+                "amount": 1
+              },
+              {
+                "t": 13.25,
+                "amount": 1
+              },
+              {
+                "t": 15.4,
+                "amount": 1
+              },
+              {
+                "t": 17.55,
+                "amount": 1
+              },
+              {
+                "t": 19.7,
+                "amount": 1
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null
+          }
+        ]
+      }
+    },
+    "stats": [
+      {
+        "t": 2.502,
+        "itemId": "vineweave_basket",
+        "name": "Vineweave Basket",
+        "label": "Healing increased by 17%",
+        "amount": 17,
+        "stat": "heal_efficiency",
+        "total": 17
+      }
+    ],
+    "end": {
+      "player": {
+        "hp": 5,
+        "maxHp": 240,
+        "stacks": {
+          "lucky": 16,
+          "regeneration": 2,
+          "mana": 13
+        },
+        "healAmp": 0.16999999999999998,
+        "unhealing": 0
+      },
+      "dummy": {
+        "hp": 755,
+        "maxHp": 1200,
+        "stacks": {
+          "poison": 50
+        }
+      }
+    }
+  },
+  "ui": {
+    "combatLog": {
+      "lineCount": 166,
+      "byType": {
+        "activate": 51,
+        "buff": 27,
+        "stat": 1,
+        "heal": 14,
+        "damage": 34,
+        "debuff": 37,
+        "info": 1,
+        "fight_end": 1
+      },
+      "stackGained": {
+        "lucky": 16,
+        "regeneration": 2,
+        "mana": 13,
+        "poison": 428
+      },
+      "sample": [
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "snake",
+          "amount": null,
+          "label": "Pet: Snake"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "healing_herbs",
+          "amount": null,
+          "label": "Food: Healing Herbs"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "snake",
+          "amount": 4,
+          "label": "+4 lucky"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "regeneration",
+          "itemId": "healing_herbs",
+          "amount": 2,
+          "label": "Healing Herbs: +2 Regeneration"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "vineweave_basket",
+          "amount": 17,
+          "label": "Healing increased by 17%"
+        },
+        {
+          "t": 3.5,
+          "type": "heal",
+          "stack": "regeneration",
+          "itemId": null,
+          "amount": 2,
+          "label": "Regeneration: +2 health"
+        },
+        {
+          "t": 4.65,
+          "type": "activate",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Training Dummy: swing"
+        },
+        {
+          "t": 4.652,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
+        },
+        {
+          "t": 4.7,
+          "type": "activate",
+          "stack": null,
+          "itemId": "snake",
+          "amount": null,
+          "label": "Pet: Snake"
+        },
+        {
+          "t": 4.7,
+          "type": "activate",
+          "stack": "poison",
+          "itemId": "poison_frog",
+          "amount": null,
+          "label": "Pet: Poison Frog"
+        },
+        {
+          "t": 4.7,
+          "type": "buff",
+          "stack": "mana",
+          "itemId": "poison_frog",
+          "amount": 1,
+          "label": "+1 mana"
+        },
+        {
+          "t": 4.7,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "snake",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 4.7,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "poison_frog",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 4.75,
+          "type": "activate",
+          "stack": null,
+          "itemId": "leaf_badge",
+          "amount": null,
+          "label": "Accessory: Leaf Badge"
+        },
+        {
+          "t": 4.75,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "leaf_badge",
+          "amount": 1,
+          "label": "Leaf Badge: +1 lucky"
+        },
+        {
+          "t": 5.5,
+          "type": "heal",
+          "stack": "regeneration",
+          "itemId": null,
+          "amount": 2,
+          "label": "Regeneration: +2 health"
+        },
+        {
+          "t": 6.5,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": null,
+          "amount": 4,
+          "label": "Poison: 4 damage"
+        },
+        {
+          "t": 6.8,
+          "type": "activate",
+          "stack": "poison",
+          "itemId": "poison_frog",
+          "amount": null,
+          "label": "Pet: Poison Frog"
+        },
+        {
+          "t": 6.8,
+          "type": "activate",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Training Dummy: swing"
+        },
+        {
+          "t": 6.8,
+          "type": "buff",
+          "stack": "mana",
+          "itemId": "poison_frog",
+          "amount": 1,
+          "label": "+1 mana"
+        },
+        {
+          "t": 6.8,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "poison_frog",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 6.802,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
+        },
+        {
+          "t": 6.85,
+          "type": "activate",
+          "stack": null,
+          "itemId": "snake",
+          "amount": null,
+          "label": "Pet: Snake"
+        },
+        {
+          "t": 6.85,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "snake",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 6.9,
+          "type": "activate",
+          "stack": null,
+          "itemId": "leaf_badge",
+          "amount": null,
+          "label": "Accessory: Leaf Badge"
+        },
+        {
+          "t": 6.9,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "leaf_badge",
+          "amount": 1,
+          "label": "Leaf Badge: +1 lucky"
+        },
+        {
+          "t": 7.5,
+          "type": "heal",
+          "stack": "regeneration",
+          "itemId": null,
+          "amount": 2,
+          "label": "Regeneration: +2 health"
+        },
+        {
+          "t": 8.5,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": null,
+          "amount": 8,
+          "label": "Poison: 8 damage"
+        },
+        {
+          "t": 8.95,
+          "type": "activate",
+          "stack": "poison",
+          "itemId": "poison_frog",
+          "amount": null,
+          "label": "Pet: Poison Frog"
+        },
+        {
+          "t": 8.95,
+          "type": "activate",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Training Dummy: swing"
+        },
+        {
+          "t": 8.95,
+          "type": "buff",
+          "stack": "mana",
+          "itemId": "poison_frog",
+          "amount": 1,
+          "label": "+1 mana"
+        },
+        {
+          "t": 8.95,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "poison_frog",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 8.952,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
+        },
+        {
+          "t": 9.05,
+          "type": "activate",
+          "stack": null,
+          "itemId": "leaf_badge",
+          "amount": null,
+          "label": "Accessory: Leaf Badge"
+        },
+        {
+          "t": 9.05,
+          "type": "activate",
+          "stack": null,
+          "itemId": "snake",
+          "amount": null,
+          "label": "Pet: Snake"
+        },
+        {
+          "t": 9.05,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "leaf_badge",
+          "amount": 1,
+          "label": "Leaf Badge: +1 lucky"
+        },
+        {
+          "t": 9.05,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "snake",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
+          "t": 9.5,
+          "type": "heal",
+          "stack": "regeneration",
+          "itemId": null,
+          "amount": 2,
+          "label": "Regeneration: +2 health"
+        },
+        {
+          "t": 10.5,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": null,
+          "amount": 12,
+          "label": "Poison: 12 damage"
+        },
+        {
+          "t": 11.1,
+          "type": "activate",
+          "stack": "poison",
+          "itemId": "poison_frog",
+          "amount": null,
+          "label": "Pet: Poison Frog"
+        }
+      ]
+    },
+    "damageMeter": {
+      "stackTabs": {
+        "block": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "lucky": {
+          "gained": 16,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "snake",
+              "name": "+4 lucky",
+              "amount": 4
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            },
+            {
+              "itemId": "leaf_badge",
+              "name": "Leaf Badge",
+              "amount": 1
+            }
+          ]
+        },
+        "regeneration": {
+          "gained": 2,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "healing_herbs",
+              "name": "Healing Herbs",
+              "amount": 2
+            }
+          ]
+        },
+        "vampirism": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "spikes": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "mana": {
+          "gained": 13,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+1 mana",
+              "amount": 1
+            }
+          ]
+        },
+        "empower": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "heat": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "poison": {
+          "gained": 428,
+          "empty": false,
+          "sources": [
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 4
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 8
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 12
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 16
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 25
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 30
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 35
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 40
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 45
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 50
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 55
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 58
+            },
+            {
+              "itemId": "snake",
+              "name": "+2 poison",
+              "amount": 2
+            },
+            {
+              "itemId": "poison_frog",
+              "name": "+2 poison",
+              "amount": 2
+            }
+          ]
+        },
+        "blind": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        },
+        "cold": {
+          "gained": 0,
+          "empty": true,
+          "sources": []
+        }
+      }
+    },
+    "hud": {
+      "player": {
+        "icons": [
+          {
+            "key": "heal_efficiency",
+            "value": 17
+          }
+        ],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 17,
+          "damage_resistance": 0,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "dummy": {
+        "icons": [
+          {
+            "key": "damage_resistance",
+            "value": -25
+          }
+        ],
+        "combatStats": {
+          "reflect_stacks": 0,
+          "debuff_resist_stacks": 0,
+          "crit_stacks": 0,
+          "dodge_stacks": 0,
+          "crit_resist_stacks": 0,
+          "crit_resistance": 0,
+          "stun_resistance": 0,
+          "heal_efficiency": 0,
+          "damage_resistance": -25,
+          "melee_dmg_factor": 0,
+          "ranged_dmg_factor": 0,
+          "effect_dmg_factor": 0,
+          "unhealing": 0,
+          "stamina_regen": 0,
+          "max_health_gain": 0
+        }
+      },
+      "expected": []
+    },
+    "mismatches": []
+  }
+}

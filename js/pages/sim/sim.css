@@ -1,0 +1,1795 @@
+/* Solo combat sandbox — /sim/
+ * Product shell: testing-grounds lab (docs/sim-product.md Phase 1).
+ * Grid is CSS — do not replace with a generated image.
+ */
+
+body.page-sim {
+  --sim-lab-paper: #f3f4f7;
+  --sim-lab-paper-hi: #fafbfc;
+  --sim-lab-paper-lo: #d6dae3;
+  --sim-lab-grid: rgba(70, 88, 120, 0.11);
+  --sim-lab-grid-strong: rgba(70, 88, 120, 0.2);
+  --sim-lab-ink-wash: rgba(45, 55, 75, 0.14);
+  --sim-footer-h: 2.75rem;
+  /* Pull combat HUD up over the gap (round strips added height under bags) */
+  --sim-hud-lift: 2.25rem;
+
+  /* Viewport shell — footer always on-screen; stage scrolls inside #main */
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--sim-lab-paper);
+  /* Math paper: fine cell grid + every-5th major line + vertical wash */
+  background-image:
+    linear-gradient(to right, var(--sim-lab-grid-strong) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--sim-lab-grid-strong) 1px, transparent 1px),
+    linear-gradient(to right, var(--sim-lab-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--sim-lab-grid) 1px, transparent 1px),
+    linear-gradient(
+      180deg,
+      var(--sim-lab-paper-hi) 0%,
+      var(--sim-lab-paper) 42%,
+      var(--sim-lab-paper-lo) 100%
+    );
+  background-size:
+    120px 120px,
+    120px 120px,
+    24px 24px,
+    24px 24px,
+    100% 100%;
+  background-position: center top;
+  background-repeat: repeat, repeat, repeat, repeat, no-repeat;
+  background-attachment: fixed;
+}
+
+/* Soft room depth: vignette + ceiling light + floor falloff */
+body.page-sim::before {
+  content: '';
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(
+      ellipse 90% 70% at 50% 18%,
+      rgba(255, 255, 255, 0.55) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 120% 100% at 50% 50%,
+      transparent 42%,
+      var(--sim-lab-ink-wash) 100%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 58%,
+      rgba(55, 65, 90, 0.16) 100%
+    );
+}
+
+/* Floor plane hint (test-chamber ground) */
+body.page-sim::after {
+  content: '';
+  pointer-events: none;
+  position: fixed;
+  left: -8%;
+  right: -8%;
+  bottom: -4%;
+  height: min(32vh, 18rem);
+  z-index: 0;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(90, 100, 125, 0.07) 28%,
+      rgba(70, 80, 105, 0.18) 100%
+    );
+  transform: perspective(48rem) rotateX(18deg);
+  transform-origin: 50% 100%;
+}
+
+@supports not (transform: perspective(1px) rotateX(1deg)) {
+  body.page-sim::after {
+    transform: none;
+    opacity: 0.65;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.page-sim::after {
+    transform: none;
+  }
+}
+
+body.page-sim #site-nav,
+body.page-sim #main,
+body.page-sim #site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fixed nav must not consume flex height (spacer handles clearance) */
+body.page-sim #site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 0;
+  overflow: visible;
+  flex: 0 0 0;
+  padding-top: 0.2rem;
+  background: linear-gradient(
+    180deg,
+    rgba(250, 251, 252, 0.94) 0%,
+    rgba(243, 244, 247, 0.72) 62%,
+    rgba(243, 244, 247, 0) 100%
+  );
+}
+
+/* Lab: tight under shelves — hang clearance overlaps the scrubber row */
+body.page-sim .site-nav-shell {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+body.page-sim .site-nav {
+  padding: 0.55rem 0.5rem 0.65rem;
+}
+
+/* Clearance for fixed shelves + hanging tabs (host is height:0 so JS measure is useless) */
+body.page-sim #site-nav-space {
+  flex: 0 0 12.75rem;
+  height: 12.75rem !important;
+  max-height: 12.75rem;
+  margin-bottom: 0 !important;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  body.page-sim .site-nav {
+    padding: 0.45rem 0.35rem 0.55rem;
+  }
+
+  body.page-sim #site-nav-space {
+    flex-basis: 10.5rem;
+    height: 10.5rem !important;
+    max-height: 10.5rem;
+  }
+}
+
+body.page-sim #site-footer {
+  position: relative;
+  z-index: 50;
+  flex: 0 0 auto;
+  margin-top: 0 !important;
+  padding: 0;
+  width: 100%;
+  box-shadow: none;
+}
+
+body.page-sim .site-footer {
+  margin-top: 0 !important;
+}
+
+body.page-sim .site-footer--slim {
+  margin: 0 !important;
+  padding: 0.4rem 1rem;
+  border-radius: 0;
+  border-top: 2px solid rgba(60, 38, 29, 0.45);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(55, 42, 32, 0.92) 0%,
+      rgba(40, 28, 20, 0.97) 100%
+    );
+  box-shadow: 0 -6px 18px rgba(40, 50, 70, 0.12);
+}
+
+/* Keep floor wash under the chamber, not over the footer */
+body.page-sim::after {
+  bottom: var(--sim-footer-h);
+  height: min(18vh, 10rem);
+}
+
+.page-sim .sim-main {
+  /* flex-basis 0 — basis:auto was sizing to content and overflowing the vh shell */
+  flex: 1 1 0;
+  min-height: 0 !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: min(100%, calc(100% - 0.5rem));
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Default chamber (empty / error). Fight uses .sim-shell--field */
+.sim-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0.95rem 1.1rem 1.2rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(248, 249, 252, 0.7) 100%);
+  border: 1px solid rgba(70, 88, 120, 0.18);
+  border-radius: 0.55rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(40, 50, 70, 0.04),
+    0 18px 42px rgba(40, 50, 70, 0.1);
+}
+
+/* Full fight field: bags in top corners (game-like), mid = HUD/controls */
+.sim-shell--field {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: 0;
+  padding: 0 0.35rem 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  position: relative;
+}
+
+.sim-field {
+  display: grid;
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  /* Bags share the top row with mid; scrub floats over the center gap */
+  grid-template-columns:
+    minmax(0, 1fr)
+    9rem
+    minmax(0, 1fr);
+  /* Row 2 is spare flex space; HUD is absolute (lifted) so strips do not push it down */
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'you mid opp'
+    'gap gap gap';
+  gap: 0.35rem 0.75rem;
+  align-items: start;
+  padding-top: 0;
+  padding-bottom: 2rem;
+}
+
+/* Subtle stage floor — bags row only; does not affect grid flow */
+.sim-field__stage-band {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  z-index: 0;
+  pointer-events: none;
+  margin: -0.2rem -0.35rem 0;
+  min-height: 6rem;
+  border-radius: 0.45rem;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.08) 72%,
+    transparent 100%
+  );
+  box-shadow: inset 0 0 0 1px rgba(70, 88, 120, 0.07);
+}
+
+/* Named product regions (see docs/sim-product.md Phase 1 layout) */
+.sim-region {
+  position: relative;
+  min-width: 0;
+}
+
+.sim-region__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sim-region--controls {
+  z-index: 5;
+}
+
+.sim-region--stage {
+  z-index: 2;
+}
+
+.sim-region--log {
+  z-index: 3;
+}
+
+.sim-region--hud {
+  z-index: 4;
+}
+
+.sim-region--lab {
+  z-index: 1;
+}
+
+.sim-field__scrub {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(22rem, calc(100% - 2rem));
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.55rem;
+  padding: 0;
+  pointer-events: none;
+}
+
+.sim-field__scrub > * {
+  pointer-events: auto;
+}
+
+.sim-field__scrub > [data-sim-scrub] {
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.sim-fidelity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem 0.45rem;
+  margin: 0 auto;
+  padding: 0.2rem 0.55rem;
+  max-width: 100%;
+  font-family: var(--bpb-font-body);
+  font-size: 0.72rem;
+  color: #5a4030;
+  background: rgba(255, 236, 220, 0.72);
+  border: 1px solid rgba(60, 38, 29, 0.22);
+  border-radius: 0.35rem;
+  box-shadow: none;
+}
+
+.sim-fidelity__label {
+  font-weight: 700;
+  color: #3c261d;
+  letter-spacing: 0.01em;
+}
+
+.sim-fidelity__pct {
+  font-family: var(--bpb-font-display);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #8f2a22;
+  min-width: 2.2rem;
+}
+
+.sim-fidelity__hint {
+  opacity: 0.78;
+  font-size: 0.7rem;
+}
+
+.sim-field__bag {
+  min-width: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.sim-field__bag--you {
+  grid-area: you;
+  justify-self: start;
+  align-self: start;
+  width: 100%;
+  max-width: 45rem;
+}
+
+.sim-field__bag--opp {
+  grid-area: opp;
+  justify-self: end;
+  align-self: start;
+  width: 100%;
+  max-width: 45rem;
+}
+
+.sim-field__bag--empty {
+  min-height: 0;
+  pointer-events: none;
+}
+
+.sim-bag-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  margin: 0 0 0.35rem;
+}
+
+.sim-bag-title {
+  margin: 0;
+  font-family: var(--bpb-font-display);
+  font-size: clamp(1.15rem, 1.6vw, 1.55rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--bpb-label-fill, #ffecdc);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+.sim-bag-class-icon {
+  width: 2.35rem;
+  height: 2.35rem;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 0 #3c261d) drop-shadow(0 2px 4px rgba(20, 10, 5, 0.35));
+}
+
+/* Mid: Open Log centered between bags (game combat) */
+.sim-field__mid {
+  grid-area: mid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  min-width: 0;
+  align-self: start;
+  /* Clear the floating scrubber + coverage chip; keep Open Log lower than bag tops */
+  padding: 9.25rem 0.25rem 0.35rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.sim-field__mid-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sim-field__logbook {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sim-field__logbook .sim-logbook-btn {
+  width: 8.75rem;
+}
+
+.sim-field__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  width: min(100%, 22rem);
+}
+
+.sim-field__hud {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.35rem;
+  z-index: 4;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  pointer-events: none;
+  transform: translateY(calc(-1 * var(--sim-hud-lift, 2.25rem)));
+}
+
+.sim-field__hud .sim-hud-row {
+  pointer-events: auto;
+}
+
+.sim-field__tools {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;
+  width: auto;
+  box-sizing: border-box;
+  padding: 0.15rem 5rem 0.35rem 1rem;
+  text-align: right;
+  pointer-events: none;
+}
+
+.sim-field__tools .sim-meta--tools,
+.sim-field__tools .sim-meta--warn,
+.sim-field__tools .sim-link-btn,
+.sim-field__tools a,
+.sim-field__tools code {
+  pointer-events: auto;
+}
+
+.sim-field__tools .sim-meta--tools {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #5a6578;
+  text-align: right;
+}
+
+.sim-field__bag .sim-bag-wrap {
+  width: 100%;
+}
+
+.sim-field__bag .sim-bag.build-bag {
+  width: 100%;
+  max-width: 100%;
+}
+
+.sim-field .sim-hud-row {
+  width: min(100%, calc(44rem * var(--hud-s, 1.5)));
+  max-width: none;
+  justify-content: center;
+  gap: calc(4.5rem * var(--hud-s, 1.5));
+}
+
+/* Keep legacy arena classnames harmless if anything still references them */
+.sim-arena {
+  display: contents;
+}
+
+.sim-arena__stage,
+.sim-arena__rail,
+.sim-arena__log {
+  display: contents;
+}
+
+.sim-layout,
+.sim-stage,
+.sim-side {
+  display: contents;
+}
+
+.sim-banner {
+  margin: 0;
+  padding: 0.55rem 0.85rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  color: #ffecdc;
+  background: rgba(60, 38, 29, 0.72);
+  border: 2px solid #3c261d;
+  border-radius: 0.3rem;
+  text-shadow:
+    -0.06em -0.06em 0 #3c261d,
+    0.06em -0.06em 0 #3c261d,
+    -0.06em 0.06em 0 #3c261d,
+    0.06em 0.06em 0 #3c261d;
+}
+
+.sim-banner strong {
+  font-weight: 700;
+  color: #ffd45a;
+}
+
+.sim-banner__cov {
+  display: inline-block;
+  margin-left: 0.35rem;
+  opacity: 0.9;
+  font-size: 0.88em;
+}
+
+.sim-mode {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin-top: 0;
+}
+
+.sim-mode__btn {
+  appearance: none;
+  border: 2px solid #3c261d;
+  border-radius: 0.25rem;
+  background: rgba(255, 236, 220, 0.75);
+  color: #3c261d;
+  font-family: var(--bpb-font-body);
+  font-size: 0.9rem;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
+
+.sim-mode__btn.is-active,
+.sim-mode__btn[aria-pressed='true'] {
+  background: #e8c46a;
+  box-shadow: inset 0 0 0 1px rgba(234, 201, 20, 0.5);
+}
+
+.sim-mode__btn:focus-visible {
+  outline: 2px solid #ffd817;
+  outline-offset: 2px;
+}
+
+/* In-game combat HUD (Health / Stamina / Buffs / Debuffs) */
+.sim-hud-row {
+  --hud-s: 1.5;
+  position: relative;
+  overflow: visible;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(4.5rem * var(--hud-s));
+  align-items: start;
+  justify-items: center;
+  width: 100%;
+}
+
+.sim-hud[data-hud='player'] {
+  justify-self: end;
+}
+
+.sim-hud[data-hud='dummy'] {
+  justify-self: start;
+}
+
+.sim-hud-vs {
+  position: absolute;
+  left: 50%;
+  top: calc(0.55rem * var(--hud-s, 1.5));
+  transform: translateX(-50%);
+  font-size: calc(1.35rem * var(--hud-s, 1.5));
+  color: #3c261d;
+  text-shadow: 0 1px 0 rgba(255, 236, 220, 0.5);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sim-hud {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  max-width: calc(15.5rem * var(--hud-s, 1.5));
+  justify-self: stretch;
+  /* Headroom for larger NameBanner overhang */
+  margin-top: calc(2.55rem * var(--hud-s, 1.5));
+  /* Extra space so Health clears the ribbon */
+  padding:
+    calc(2.15rem * var(--hud-s, 1.5))
+    calc(0.55rem * var(--hud-s, 1.5))
+    calc(0.7rem * var(--hud-s, 1.5));
+  background:
+    linear-gradient(180deg, rgba(255, 236, 220, 0.92) 0%, rgba(232, 208, 176, 0.88) 100%);
+  border: 2px solid #3c261d;
+  border-radius: 0.2rem;
+  box-shadow:
+    inset 0 0 0 1px rgba(234, 201, 20, 0.35),
+    0 2px 6px rgba(20, 10, 5, 0.25);
+  transition: box-shadow 0.15s ease;
+}
+
+.sim-hud--hit {
+  animation: sim-hud-hit 0.35s ease;
+}
+
+@keyframes sim-hud-hit {
+  0% {
+    box-shadow:
+      inset 0 0 0 1px rgba(234, 201, 20, 0.35),
+      0 0 0 2px rgba(200, 40, 30, 0.55);
+  }
+  100% {
+    box-shadow:
+      inset 0 0 0 1px rgba(234, 201, 20, 0.35),
+      0 2px 6px rgba(20, 10, 5, 0.25);
+  }
+}
+
+/*
+ * Game: NameBanner is a Sheet child sprite that overhangs the parchment —
+ * wider than the box, centered, mostly above the top edge with a small overlap.
+ */
+.sim-hud__banner {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -62%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Larger ribbon so leaf / scroll end read clearly */
+  width: calc(100% + calc(3.25rem * var(--hud-s, 1.5)));
+  max-width: calc(20.5rem * var(--hud-s, 1.5));
+  aspect-ratio: 505 / 125;
+  height: auto;
+  margin: 0;
+  /* Equal inset so the name sits in the ribbon body center */
+  padding: 0 16%;
+  background: none;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  pointer-events: none;
+  text-align: center;
+}
+
+.sim-hud__banner-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: center;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 2px rgba(20, 10, 5, 0.45));
+}
+
+.sim-hud__banner--player,
+.sim-hud__banner--opponent {
+  background: none;
+}
+
+/* Opponent Sheet mirrors left — flip art only so the name stays readable */
+.sim-hud__banner--opponent .sim-hud__banner-art {
+  transform: scaleX(-1);
+}
+
+.sim-hud__banner--opponent {
+  padding: 0 16%;
+}
+
+.sim-hud__name {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  pointer-events: auto;
+  font-family: var(--bpb-font-display);
+  font-size: calc(1.05rem * var(--hud-s, 1.5));
+  line-height: 1;
+  color: #ffecdc;
+  text-shadow:
+    -0.07em -0.07em 0 #3c261d,
+    0.07em -0.07em 0 #3c261d,
+    -0.07em 0.07em 0 #3c261d,
+    0.07em 0.07em 0 #3c261d,
+    0 0.08em 0 #3c261d;
+}
+
+.sim-hud__row {
+  display: grid;
+  grid-template-columns: calc(3.6rem * var(--hud-s, 1.5)) 1fr;
+  gap: calc(0.3rem * var(--hud-s, 1.5));
+  align-items: center;
+  margin-bottom: calc(0.3rem * var(--hud-s, 1.5));
+}
+
+.sim-hud__row--hp {
+  position: relative;
+  /* Block is absolute — don’t shrink the Health track */
+  grid-template-columns: calc(3.6rem * var(--hud-s, 1.5)) 1fr;
+}
+
+.sim-hud__block {
+  /* Overlay the right end of the Health bar (game CombatUI Block) */
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(42%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+.sim-hud__block[hidden] {
+  display: none;
+}
+
+.sim-hud__block .sim-hud__stack {
+  width: calc(1.85rem * var(--hud-s, 1.5));
+  height: calc(1.85rem * var(--hud-s, 1.5));
+}
+
+.sim-hud__row--hp .sim-hud__bar-text {
+  /* Keep HP numbers clear of the overlapping shield */
+  padding-right: calc(1.35rem * var(--hud-s, 1.5));
+}
+
+.sim-hud__label,
+.sim-hud__section-label {
+  font-family: var(--bpb-font-body);
+  font-size: calc(0.85rem * var(--hud-s, 1.5));
+  line-height: 1;
+  color: var(--bpb-label-fill, #ffecdc);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+.sim-hud__bar {
+  position: relative;
+  height: calc(1.2rem * var(--hud-s, 1.5));
+  overflow: hidden;
+  /* Sharp black trough + dark outline (not the pill Progressbar art) */
+  background: #0a0604;
+  border: 2px solid #3c261d;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+.sim-hud__trail,
+.sim-hud__fill {
+  display: block;
+  position: absolute;
+  inset: 0 auto 0 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+}
+
+.sim-hud__trail {
+  transition: width 0.45s ease-out;
+  z-index: 0;
+}
+
+.sim-hud__trail--hp {
+  background: linear-gradient(180deg, #e8a090 0%, #b06050 100%);
+  opacity: 0.85;
+}
+
+.sim-hud__fill {
+  z-index: 1;
+  transition: width 0.1s linear;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.sim-hud__fill--hp {
+  background-image: linear-gradient(180deg, #d94a3a 0%, #8f2a22 100%);
+}
+
+.sim-hud__fill--stam {
+  background-image: linear-gradient(180deg, #c8d84a 0%, #8a9a28 100%);
+}
+
+.sim-hud__bar-text {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: calc(0.35rem * var(--hud-s, 1.5));
+  font-family: var(--bpb-font-body);
+  font-size: calc(0.78rem * var(--hud-s, 1.5));
+  color: #ffecdc;
+  text-shadow:
+    -0.05em -0.05em 0 #3c261d,
+    0.05em -0.05em 0 #3c261d,
+    -0.05em 0.05em 0 #3c261d,
+    0.05em 0.05em 0 #3c261d;
+  pointer-events: none;
+}
+
+.sim-hud__section {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(0.35rem * var(--hud-s, 1.5));
+  margin-top: calc(0.45rem * var(--hud-s, 1.5));
+}
+
+.sim-hud__section-label {
+  flex: 0 0 calc(3.6rem * var(--hud-s, 1.5));
+  width: calc(3.6rem * var(--hud-s, 1.5));
+  height: calc(1.65rem * var(--hud-s, 1.5));
+  margin: 0;
+  display: flex;
+  align-items: center;
+  font-family: var(--bpb-font-body);
+  font-size: calc(0.85rem * var(--hud-s, 1.5));
+  line-height: 1;
+  color: var(--bpb-label-fill, #ffecdc);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+.sim-hud__stacks {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: calc(0.28rem * var(--hud-s, 1.5));
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+}
+
+.sim-hud__stacks-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: calc(0.4rem * var(--hud-s, 1.5));
+}
+
+.sim-hud__stacks-row--top {
+  min-height: calc(1.65rem * var(--hud-s, 1.5));
+}
+
+.sim-hud__stacks-row--bot {
+  min-height: calc(1.65rem * var(--hud-s, 1.5));
+}
+
+.sim-hud__stacks--buff,
+.sim-hud__stacks--debuff {
+  background: none;
+}
+
+.sim-hud__stack {
+  position: relative;
+  display: inline-flex;
+  width: calc(1.65rem * var(--hud-s, 1.5));
+  height: calc(1.65rem * var(--hud-s, 1.5));
+  flex: 0 0 auto;
+}
+
+.sim-hud__stack.is-empty {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.sim-hud__stack--temp {
+  outline: 1px solid rgba(234, 201, 20, 0.65);
+  outline-offset: 1px;
+  border-radius: 0.15rem;
+}
+
+.sim-hud__stack-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(20, 10, 5, 0.4));
+}
+
+.sim-hud__stack-count {
+  position: absolute;
+  right: calc(-0.15rem * var(--hud-s, 1.5));
+  bottom: calc(-0.2rem * var(--hud-s, 1.5));
+  min-width: calc(0.95rem * var(--hud-s, 1.5));
+  padding: 0 calc(0.15rem * var(--hud-s, 1.5));
+  border-radius: calc(0.2rem * var(--hud-s, 1.5));
+  background: #3c261d;
+  color: #ffecdc;
+  font-family: var(--bpb-font-body);
+  font-size: calc(0.65rem * var(--hud-s, 1.5));
+  line-height: 1.15;
+  text-align: center;
+}
+
+.sim-hud__stack-time {
+  position: absolute;
+  left: 50%;
+  top: calc(-0.55rem * var(--hud-s, 1.5));
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 0 calc(0.12rem * var(--hud-s, 1.5));
+  border-radius: calc(0.15rem * var(--hud-s, 1.5));
+  background: rgba(60, 38, 29, 0.92);
+  color: #ffecdc;
+  font-family: var(--bpb-font-body);
+  font-size: calc(0.55rem * var(--hud-s, 1.5));
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  pointer-events: none;
+}
+
+.sim-hud__stats {
+  position: absolute;
+  top: calc(2.55rem * var(--hud-s, 1.5));
+  display: flex;
+  flex-direction: column;
+  gap: calc(0.2rem * var(--hud-s, 1.5));
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.sim-hud[data-hud='player'] .sim-hud__stats {
+  left: calc(-2.85rem * var(--hud-s, 1.5));
+}
+
+.sim-hud[data-hud='dummy'] .sim-hud__stats {
+  right: calc(-2.85rem * var(--hud-s, 1.5));
+  left: auto;
+}
+
+.sim-hud__stat {
+  position: relative;
+  display: block;
+  width: calc(2.55rem * var(--hud-s, 1.5));
+  height: calc(2.55rem * var(--hud-s, 1.5));
+  cursor: help;
+}
+
+.sim-hud__stat-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(20, 10, 5, 0.45));
+}
+
+.sim-hud__stat-val {
+  position: absolute;
+  right: calc(-0.2rem * var(--hud-s, 1.5));
+  bottom: calc(-0.12rem * var(--hud-s, 1.5));
+  font-family: var(--bpb-font-body);
+  font-size: calc(0.72rem * var(--hud-s, 1.5));
+  font-weight: 400;
+  line-height: 1;
+  color: var(--bpb-label-fill, #ffecdc);
+  text-shadow: var(--bpb-label-stroke);
+  letter-spacing: -0.02em;
+}
+
+.sim-hud__floats {
+  position: absolute;
+  top: calc(2.4rem * var(--hud-s, 1.5));
+  right: calc(0.6rem * var(--hud-s, 1.5));
+  pointer-events: none;
+  min-height: 2rem;
+  min-width: 3rem;
+}
+
+.sim-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin: 0;
+  padding-bottom: 0.15rem;
+}
+
+.sim-head__identity {
+  min-width: 0;
+  flex: 1 1 16rem;
+}
+
+.sim-head__tools {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45rem;
+  flex: 0 1 auto;
+  max-width: 100%;
+}
+
+.sim-title {
+  margin: 0;
+  font-family: var(--bpb-font-display);
+  font-size: clamp(1.55rem, 2.8vw, 2rem);
+  color: #2a3344;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.sim-meta {
+  margin: 0.35rem 0 0;
+  font-family: var(--bpb-font-body);
+  font-size: 0.92rem;
+  color: #3d4a5c;
+}
+
+.sim-meta--tools {
+  margin: 0;
+  text-align: right;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.sim-shell--status {
+  max-width: 42rem;
+}
+
+.sim-status__title {
+  margin: 0.35rem 0 0;
+  font-family: var(--bpb-font-display);
+  font-size: 1.45rem;
+  font-weight: 400;
+  color: #2e3848;
+}
+
+.sim-status {
+  margin: 0.85rem 0 0;
+  font-family: var(--bpb-font-body);
+  font-size: 1.05rem;
+  color: #3d4a5c;
+}
+
+.sim-status--error {
+  color: #6b3a32;
+}
+
+.sim-status__next {
+  margin-top: 0.65rem;
+  font-size: 0.98rem;
+}
+
+.sim-meta--warn {
+  margin: 0.35rem 0 0;
+  text-align: right;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #6b4a32;
+}
+
+.sim-status a {
+  color: #3a5a8a;
+  text-decoration: underline;
+}
+
+.sim-bags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.sim-bag-wrap--opp {
+  opacity: 0.98;
+}
+
+/* Build-view round strip + video under each sim bag */
+.sim-bag-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.sim-bag-media.build-stage__media {
+  width: 100%;
+}
+
+.sim-round-host.build-round-host {
+  width: 100%;
+  max-width: 100%;
+}
+
+.sim-round-host .build-round-panel {
+  margin-inline: auto;
+}
+
+.sim-round-host .build-round__toggles {
+  gap: 0.35rem;
+}
+
+.sim-round-host .build-round__nav {
+  min-width: 0;
+}
+
+.sim-round-host .build-round__label {
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  color: #3c261d;
+  margin: 0;
+}
+
+.sim-round {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  margin: 0 0 0.4rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.9rem;
+  color: #3c261d;
+}
+
+.sim-round__label {
+  font-weight: 400;
+}
+
+.sim-round__select {
+  appearance: auto;
+  min-width: 10rem;
+  padding: 0.22rem 0.45rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #3c261d;
+  background: #ffecdc;
+  border: 2px solid #3c261d;
+  border-radius: 0.2rem;
+}
+
+.sim-round__select:focus-visible {
+  outline: 2px solid #eac914;
+  outline-offset: 2px;
+}
+
+.sim-bag.build-bag {
+  width: 100%;
+}
+
+.sim-dummy {
+  position: relative;
+  padding: 0.85rem 1rem 1rem;
+  background: rgba(255, 236, 220, 0.55);
+  border: 2px solid #3c261d;
+  border-radius: 0.35rem;
+  box-shadow: inset 0 0 0 1px rgba(234, 201, 20, 0.35);
+}
+
+.sim-dummy__label {
+  margin: 0 0 0.4rem;
+  font-family: var(--bpb-font-display);
+  font-size: 1.15rem;
+  color: #3c261d;
+}
+
+.sim-dummy__bar {
+  height: 1.1rem;
+  border-radius: 0.25rem;
+  background: rgba(60, 38, 29, 0.35);
+  overflow: hidden;
+  border: 1px solid #3c261d;
+}
+
+.sim-dummy__fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(180deg, #c94a3a 0%, #8f2a22 100%);
+  transition: width 0.12s ease;
+}
+
+.sim-dummy__hp {
+  margin: 0.35rem 0 0;
+  font-family: var(--bpb-font-body);
+  font-size: 0.9rem;
+  color: #3c261d;
+}
+
+.sim-dummy__floats {
+  position: absolute;
+  inset: 0.5rem 0.75rem auto auto;
+  pointer-events: none;
+  min-height: 2.5rem;
+  min-width: 4rem;
+}
+
+.sim-fx-float {
+  display: block;
+  font-family: var(--bpb-font-display);
+  font-size: 1.25rem;
+  color: #ffecdc;
+  text-shadow:
+    -0.07em -0.07em 0 #3c261d,
+    0.07em -0.07em 0 #3c261d,
+    -0.07em 0.07em 0 #3c261d,
+    0.07em 0.07em 0 #3c261d;
+  animation: sim-float-up 0.85s ease-out forwards;
+}
+
+.sim-fx-float--miss {
+  color: #c8c0b4;
+  font-size: 1.05rem;
+}
+
+.sim-fx-float--heal {
+  color: #8dff8d;
+}
+
+.sim-fx-float--buff {
+  color: #b8f08a;
+  font-size: 1rem;
+}
+
+.sim-fx-float--debuff {
+  color: #ff9a7a;
+  font-size: 1rem;
+}
+
+@keyframes sim-float-up {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-1.4rem);
+  }
+}
+
+.sim-bag .bpb-bg__item {
+  overflow: visible;
+}
+
+/* Cooldown: same box as the sprite, masked to its pixels, wipe is screen-up. */
+.sim-cd-shade {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: 6;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.sim-cd-shade.is-on {
+  opacity: 1;
+}
+
+.sim-cd-shade__fill {
+  /* Same box as the sprite. Angle undoes item face so 0% = screen bottom, 100% = screen top. */
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    var(--sim-cd-unspin, 0deg),
+    rgba(255, 255, 255, 0.42) calc(var(--sim-cd, 0) * 100%),
+    rgba(255, 255, 255, 0) calc(var(--sim-cd, 0) * 100%)
+  );
+}
+
+.sim-card--flip .bpb-bg__spin:not(.bpb-bg__spin--shadow) {
+  animation: sim-card-flip 0.3s ease-in-out;
+  transform-origin: 50% 50%;
+}
+
+@keyframes sim-card-flip {
+  0% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0.04);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.sim-bag .bpb-bg__item.sim-fx-pulse {
+  animation: sim-pulse 0.45s ease;
+  z-index: 4;
+}
+
+/* Engineer / Battery charge spark (Band S) — em coords match .bpb-bg__item */
+.sim-charge-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  overflow: visible;
+  font-size: inherit;
+}
+
+.sim-charge-tile {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1em;
+  height: 1em;
+  will-change: left, top, opacity;
+}
+
+.sim-charge-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+
+.sim-charge-spark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0.7em;
+  height: 0.7em;
+  will-change: left, top, transform, opacity;
+  filter: drop-shadow(0 0 0.08em rgba(255, 236, 180, 0.85));
+}
+
+.sim-charge-spark__trail,
+.sim-charge-spark__ball {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sim-charge-spark__trail {
+  width: 0.45em;
+  height: 0.45em;
+  opacity: 0.75;
+}
+
+.sim-charge-spark__ball {
+  width: 0.65em;
+  height: 0.65em;
+}
+
+.sim-fx-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120%;
+  height: 120%;
+  margin: 0;
+  border: 2px solid rgba(255, 236, 220, 0.95);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(234, 201, 20, 0.65);
+  transform: translate(-50%, -50%) scale(0.45);
+  opacity: 0.95;
+  pointer-events: none;
+  animation: sim-ring 0.5s ease-out forwards;
+  z-index: 6;
+}
+
+@keyframes sim-pulse {
+  0%,
+  100% {
+    filter: brightness(1);
+    transform: scale(1);
+  }
+  40% {
+    filter: brightness(1.4);
+    transform: scale(1.07);
+  }
+}
+
+@keyframes sim-ring {
+  to {
+    transform: translate(-50%, -50%) scale(1.35);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-fx-ring,
+  .sim-bag .bpb-bg__item.sim-fx-pulse,
+  .sim-hud--hit,
+  .sim-fx-float,
+  .sim-card--flip .bpb-bg__spin:not(.bpb-bg__spin--shadow) {
+    animation: none !important;
+  }
+
+  .sim-hud__trail {
+    transition: none;
+  }
+
+  .sim-charge-spark,
+  .sim-charge-tile {
+    transition: none;
+  }
+}
+
+
+.sim-link-btn {
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+  color: #5a4030;
+  font-family: var(--bpb-font-body);
+  font-size: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sim-link-btn:hover {
+  color: #3c261d;
+}
+
+.sim-link-btn:disabled,
+.sim-link-btn[aria-disabled='true'] {
+  color: #8a7568;
+  text-decoration: none;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Premium hard gate — lab chrome visible, run controls inert */
+.sim-shell--locked .sim-field__scrub,
+.sim-shell--locked .sim-field__mid {
+  position: relative;
+}
+
+.sim-field__lock-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 42%,
+    rgba(40, 28, 18, 0.28) 0%,
+    rgba(40, 28, 18, 0.08) 55%,
+    transparent 75%
+  );
+}
+
+.sim-locked-scrub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 0.75rem 0.55rem;
+  min-height: 4.5rem;
+  justify-content: center;
+}
+
+.sim-locked-scrub__bar {
+  width: min(100%, 16rem);
+  height: 1.35rem;
+  border-radius: 0.35rem;
+  background:
+    linear-gradient(180deg, rgba(255, 236, 220, 0.55) 0%, rgba(200, 170, 140, 0.35) 100%);
+  border: 1px solid rgba(60, 38, 29, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.sim-locked-scrub__msg,
+.sim-locked-log__msg {
+  margin: 0;
+  font-family: var(--bpb-font-body);
+  font-size: 0.92rem;
+  color: #3c261d;
+  text-align: center;
+}
+
+.sim-locked-log {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 7rem;
+  padding: 0.85rem 0.75rem;
+  border-radius: 0.35rem;
+  background: rgba(255, 236, 220, 0.35);
+  border: 1px dashed rgba(60, 38, 29, 0.35);
+}
+
+.sim-runs {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  background: rgba(255, 236, 220, 0.5);
+  border: 2px solid #3c261d;
+  border-radius: 0.3rem;
+}
+
+.sim-runs__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.45rem;
+}
+
+.sim-runs__btn {
+  appearance: none;
+  border: 2px solid #3c261d;
+  border-radius: 0.25rem;
+  background: #ffecdc;
+  color: #3c261d;
+  font-family: var(--bpb-font-body);
+  font-size: 0.82rem;
+  padding: 0.28rem 0.55rem;
+  cursor: pointer;
+}
+
+.sim-runs__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.sim-runs__btn:not(:disabled):hover {
+  background: #e8c46a;
+}
+
+.sim-runs__hint {
+  font-family: var(--bpb-font-body);
+  font-size: 0.78rem;
+  color: #5a4030;
+}
+
+.sim-runs__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-height: 9rem;
+  overflow: auto;
+}
+
+.sim-runs__empty {
+  font-family: var(--bpb-font-body);
+  font-size: 0.78rem;
+  color: #5a4030;
+}
+
+.sim-runs__item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.25rem;
+  align-items: stretch;
+}
+
+.sim-runs__pick {
+  appearance: none;
+  text-align: left;
+  border: 1px solid rgba(60, 38, 29, 0.45);
+  border-radius: 0.2rem;
+  background: rgba(255, 236, 220, 0.7);
+  padding: 0.3rem 0.45rem;
+  cursor: pointer;
+}
+
+.sim-runs__item.is-selected .sim-runs__pick {
+  background: rgba(234, 201, 20, 0.35);
+  border-color: #3c261d;
+}
+
+.sim-runs__title {
+  display: block;
+  font-family: var(--bpb-font-display);
+  font-size: 0.9rem;
+  color: #3c261d;
+}
+
+.sim-runs__meta {
+  display: block;
+  font-family: var(--bpb-font-body);
+  font-size: 0.7rem;
+  color: #5a4030;
+}
+
+.sim-runs__del {
+  appearance: none;
+  border: 1px solid #3c261d;
+  border-radius: 0.2rem;
+  background: #ffecdc;
+  color: #3c261d;
+  width: 1.7rem;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.sim-runs__compare {
+  margin: 0.4rem 0 0.55rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid rgba(60, 38, 29, 0.4);
+  border-radius: 0.2rem;
+  background: rgba(60, 38, 29, 0.06);
+}
+
+.sim-runs__compare-title {
+  margin: 0 0 0.35rem;
+  font-family: var(--bpb-font-display);
+  font-size: 0.95rem;
+  color: #3c261d;
+}
+
+.sim-runs__diff {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 0.75rem;
+  margin: 0;
+}
+
+.sim-runs__diff dt {
+  font-family: var(--bpb-font-body);
+  font-size: 0.72rem;
+  color: #5a4030;
+}
+
+.sim-runs__diff dd {
+  margin: 0 0 0.2rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.85rem;
+  color: #3c261d;
+}
+
+.sim-runs__delta {
+  margin-left: 0.25rem;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 1100px) {
+  .sim-field__stage-band {
+    display: none;
+  }
+
+  .sim-field {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-template-areas:
+      'scrub'
+      'you'
+      'opp'
+      'mid'
+      'hud';
+  }
+
+  .sim-field .sim-hud-row {
+    width: 100%;
+    --hud-s: 1.15;
+    gap: calc(1.5rem * var(--hud-s));
+  }
+
+  .sim-hud-row {
+    --hud-s: 1.15;
+    gap: calc(1.5rem * var(--hud-s));
+  }
+
+  .sim-field__scrub {
+    position: static;
+    transform: none;
+    width: 100%;
+    grid-area: scrub;
+    pointer-events: auto;
+  }
+
+  .sim-field__bag--you,
+  .sim-field__bag--opp {
+    justify-self: center;
+    width: min(100%, 22rem);
+  }
+
+  .sim-field__bag--empty {
+    display: none;
+  }
+
+  .sim-field__mid {
+    align-self: center;
+    padding-top: 0.35rem;
+  }
+
+  .sim-field__hud {
+    position: static;
+    transform: none;
+    grid-area: hud;
+    margin-top: calc(-1 * min(var(--sim-hud-lift, 2.25rem), 5rem));
+    pointer-events: auto;
+  }
+
+  .sim-field__tools {
+    padding-inline: 0.75rem 4.5rem;
+    text-align: right;
+  }
+
+  .sim-field__tools .sim-meta--tools {
+    text-align: right;
+  }
+
+  .sim-hud-row {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+
+  .sim-hud-vs {
+    display: none;
+  }
+}

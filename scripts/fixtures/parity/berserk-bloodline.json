@@ -1,0 +1,284 @@
+{
+  "name": "berserk-bloodline",
+  "slug": "berserk-bloodline",
+  "source": "demo_layout",
+  "seed": 42,
+  "durationSec": 30,
+  "placements": [
+    {
+      "id": "berserker_bag",
+      "key": "berserk-bloodline:0:berserker_bag",
+      "x": 0,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "holdall",
+      "key": "berserk-bloodline:1:holdall",
+      "x": 3,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "berserk-bloodline:2:leather_bag",
+      "x": 6,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "scholar_bag",
+      "key": "berserk-bloodline:3:scholar_bag",
+      "x": 0,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "box_of_prosperity",
+      "key": "berserk-bloodline:4:box_of_prosperity",
+      "x": 6,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "blood_goobert",
+      "key": "berserk-bloodline:5:blood_goobert",
+      "x": 0,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "goobert",
+      "key": "berserk-bloodline:6:goobert",
+      "x": 4,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "wooden_sword",
+      "key": "berserk-bloodline:7:wooden_sword",
+      "x": 8,
+      "y": 0,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "claws_of_attack",
+      "key": "berserk-bloodline:8:claws_of_attack",
+      "x": 0,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "axe",
+      "key": "berserk-bloodline:9:axe",
+      "x": 2,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "bloodthorne",
+      "key": "berserk-bloodline:10:bloodthorne",
+      "x": 4,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "heart_container",
+      "key": "berserk-bloodline:11:heart_container",
+      "x": 5,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "blood_amulet",
+      "key": "berserk-bloodline:12:blood_amulet",
+      "x": 7,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "bloody_dagger",
+      "key": "berserk-bloodline:13:bloody_dagger",
+      "x": 8,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "hero_sword",
+      "key": "berserk-bloodline:14:hero_sword",
+      "x": 7,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "piggy_of_riches",
+      "key": "berserk-bloodline:15:piggy_of_riches",
+      "x": 0,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "whetstone",
+      "key": "berserk-bloodline:16:whetstone",
+      "x": 2,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "dragon_claws",
+      "key": "berserk-bloodline:17:dragon_claws",
+      "x": 3,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "power_puppy",
+      "key": "berserk-bloodline:18:power_puppy",
+      "x": 0,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "heart_of_darkness",
+      "key": "berserk-bloodline:19:heart_of_darkness",
+      "x": 4,
+      "y": 3,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "flame",
+      "key": "berserk-bloodline:20:flame",
+      "x": 8,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "oil_lamp",
+      "key": "berserk-bloodline:21:oil_lamp",
+      "x": 5,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "rope",
+      "key": "berserk-bloodline:22:rope",
+      "x": 3,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "lucky_clover",
+      "key": "berserk-bloodline:23:lucky_clover",
+      "x": 6,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "flame_badge",
+      "key": "berserk-bloodline:24:flame_badge",
+      "x": 7,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "customer_card",
+      "key": "berserk-bloodline:25:customer_card",
+      "x": 8,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "dagger",
+      "key": "berserk-bloodline:26:dagger",
+      "x": 2,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "burning_torch",
+      "key": "berserk-bloodline:27:burning_torch",
+      "x": 1,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "skull_badge",
+      "key": "berserk-bloodline:28:skull_badge",
+      "x": 0,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "chili_goobert",
+      "key": "berserk-bloodline:29:chili_goobert",
+      "x": 4,
+      "y": 5,
+      "r": 0,
+      "gems": []
+    }
+  ],
+  "expect": {
+    "playerEndHpMin": 291,
+    "playerEndHpMax": 339,
+    "dummyEndHpMin": 0,
+    "dummyEndHpMax": 108
+  },
+  "live": {
+    "playerEndHp": null,
+    "dummyEndHp": null,
+    "playerStamina": null,
+    "stacks": null,
+    "capturedAt": null,
+    "notes": null,
+    "playerMaxHp": null,
+    "fightDurationSec": null,
+    "opponentClass": null,
+    "playerEndHpMin": null,
+    "playerEndHpMax": null,
+    "opponentHpComparable": false
+  },
+  "meta": {
+    "focusItemIds": [
+      "blood_goobert",
+      "bloodthorne",
+      "goobert"
+    ],
+    "simBaseline": {
+      "playerEndHp": 315,
+      "dummyEndHp": 18,
+      "seed": 42,
+      "durationSec": 30,
+      "measuredAt": "2026-08-22T05:23:25.745Z",
+      "toleranceFrac": 0.15
+    }
+  }
+}

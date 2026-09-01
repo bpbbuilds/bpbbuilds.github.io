@@ -1,0 +1,108 @@
+{
+  "name": "pyro-furnace",
+  "slug": "pyro-furnace",
+  "source": "demo_layout",
+  "seed": 42,
+  "durationSec": 30,
+  "placements": [
+    {
+      "id": "fire_pit",
+      "key": "pyro-furnace:0:fire_pit",
+      "x": 2,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "leather_bag",
+      "key": "pyro-furnace:1:leather_bag",
+      "x": 6,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "chili_goobert",
+      "key": "pyro-furnace:2:chili_goobert",
+      "x": 2,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "flame",
+      "key": "pyro-furnace:3:flame",
+      "x": 5,
+      "y": 2,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "frozen_flame",
+      "key": "pyro-furnace:4:frozen_flame",
+      "x": 6,
+      "y": 1,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "burning_banner",
+      "key": "pyro-furnace:5:burning_banner",
+      "x": 0,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "oil_lamp",
+      "key": "pyro-furnace:6:oil_lamp",
+      "x": 5,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    },
+    {
+      "id": "flame_badge",
+      "key": "pyro-furnace:7:flame_badge",
+      "x": 7,
+      "y": 4,
+      "r": 0,
+      "gems": []
+    }
+  ],
+  "expect": {
+    "playerEndHpMin": 114,
+    "playerEndHpMax": 144,
+    "dummyEndHpMin": 1043,
+    "dummyEndHpMax": 1223
+  },
+  "live": {
+    "playerEndHp": null,
+    "dummyEndHp": null,
+    "playerStamina": null,
+    "stacks": null,
+    "capturedAt": null,
+    "notes": null,
+    "playerMaxHp": null,
+    "fightDurationSec": null,
+    "opponentClass": null,
+    "playerEndHpMin": null,
+    "playerEndHpMax": null,
+    "opponentHpComparable": false
+  },
+  "meta": {
+    "focusItemIds": [
+      "chili_goobert",
+      "frozen_flame",
+      "oil_lamp"
+    ],
+    "simBaseline": {
+      "playerEndHp": 129,
+      "dummyEndHp": 1133,
+      "seed": 42,
+      "durationSec": 30,
+      "measuredAt": "2026-08-22T05:23:25.806Z",
+      "toleranceFrac": 0.15
+    }
+  }
+}

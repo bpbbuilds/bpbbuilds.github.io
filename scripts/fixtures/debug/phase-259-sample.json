@@ -1,0 +1,22 @@
+{
+  "kind": "bpb-sim-debug",
+  "title": "phase-259-canned-false-deep",
+  "placements": [{ "id": "hungry_blade", "key": "hb", "x": 0, "y": 0, "r": 0 }],
+  "catalog": [{ "id": "hungry_blade", "name": "Hungry Blade" }],
+  "paramChecks": [
+    {
+      "itemId": "hungry_blade",
+      "expectedKey": "meleeVampirismLimit",
+      "note": "canned: heal size must follow Character.applyVampirism min(stacks, round(dmg))"
+    }
+  ],
+  "ui": {
+    "mismatches": [
+      {
+        "itemId": "hungry_blade",
+        "stack": "vampirism",
+        "hint": "canned: Heal tab Vampirism vs Hungry Blade convert timing (onPreDealDamage_early)"
+      }
+    ]
+  }
+}
