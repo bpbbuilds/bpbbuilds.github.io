@@ -44,6 +44,8 @@ node scripts/extract-game-sprites.mjs  # potions: BPB CDN stills; other items: c
 node scripts/extract-game-items.mjs    # ItemData + shapes + display names + sprites → game-items.json
 node scripts/extract-game-recipes.mjs  # craft recipes → game-recipes.json
 node scripts/compute-library-layout.mjs # Item Library order+placements → assets/data/library-layout.json
+npm run sprite-display                 # Icon.scale × texture → assets/data/sprite-display.json
+npm run sprite-thumbs                  # catalog WebP thumbs (needs sprite-display) → assets/item-thumbs/{1x,2x}
 node scripts/import-game-items.mjs     # upsert Supabase items (+ 003_items_combat.sql)
 node scripts/cleanup-catalog-from-game.mjs  # apply display names/images; delete wiki alias rows
 
@@ -113,6 +115,7 @@ Catalog maps combat fields; `js/shared/tooltip.js` renders a stats block (damage
 - A few items with empty / missing DESCR keys (often placeholder ItemData rows)
 - Type-token recipes (e.g. ingredient `Food`) need special handling — skipped until modeled
 - Remaining wiki-only rows (generic gem pages, etc.) after `cleanup-catalog-from-game.mjs`
+- Catalog thumbs: `build-sprite-thumbs.mjs` downscales each sprite to its real Itemiary footprint (`sprite-display.json` `w`/`h` cells × 68px for 1x, × 136px for 2x) and writes WebP + `assets/data/sprite-thumbs.json`. Re-run after new sprites land; `--force` rebuilds, `--quality=N` overrides q90. Live-art items stay on PNG at runtime (glow/liquid plates measure `naturalWidth` against Godot-space offsets).
 - Item sprites: `extract-game-sprites.mjs` writes `{SceneStem}.png`. **Potions** (BottleOfBooze / `potionColor`) pull finished stills from the BPB CDN (`awerc.github.io/bpb-cdn/i/*.webp`), cache under `scripts/_cache/bpb-cdn/`, and convert to PNG — same idea as BPB Builds. Other layered items (Ruby Chonk, Con-Trap-Tron, …) are still **composite-baked** from the Icon tree. Set `BPB_CDN_SPRITES=0` for offline (cache / local wiki only). Requires `@napi-rs/canvas`.
 - DESCR converter: `$bl` = block number, `$block` = Block icon; `$cd1s`…`$cd5s` from multi-cooldown lists; script `const params` (Laboratory) merges into `params` jsonb.
 

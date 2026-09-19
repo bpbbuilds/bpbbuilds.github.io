@@ -12,7 +12,7 @@ When a custom domain proxies the Pages origin, add cache rules roughly:
 
 | Path | Policy |
 |---|---|
-| `/assets/*` (fonts, icons, `item-sprites`) | Long TTL + immutable |
+| `/assets/*` (fonts, icons, `item-sprites`, `item-thumbs`) | Long TTL + immutable |
 | `*.css` / `*.js` | Long TTL **only if** URLs are versioned (`?v=…`) |
 | `*.html` | Short TTL or bypass (always pick up new asset URLs) |
 

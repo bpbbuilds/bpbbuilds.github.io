@@ -39,4 +39,10 @@ node scripts/import-item-shapes.mjs
 `items.image` is a filename only (e.g. `Goobert.png`).  
 Page builds: `{root}assets/item-sprites/{image}`.
 
+The **Itemiary grid only** swaps in a footprint-sized WebP thumb —
+`{root}assets/item-thumbs/{1x|2x}/{stem}.webp` (`npm run sprite-thumbs`). Those
+thumbs **are committed** even though the source PNGs stay gitignored, so `/items/`
+works on a fresh clone. Spotlight, build boards, drag, and Export PNG keep the
+full-res PNG.
+
 Storage migration can replace that later without changing row ids.

@@ -1,5 +1,5 @@
 /**
- * Itemiary DOM pool — create once, park non-matches, move on filter (game ItemLibrary).
+ * Itemiary DOM pool — create once, cool+park off-window, reuse on scroll/filter.
  */
 
 import { shapeForItem, bodyBounds } from './shape.js';
@@ -24,6 +24,12 @@ import {
   filterEntriesNearViewport,
   APPEAR_VIEW_PAD_EM,
 } from './item-pieces.js';
+import {
+  VIRTUAL_PAD_EM,
+  placementsNearViewport,
+  itemHeightEm,
+  parkCooledEntry,
+} from './item-virtual.js';
 
 function isBagItem(item) {
   return String(item?.type || '') === 'Bag';
@@ -242,8 +248,11 @@ function ensureBoard(root) {
       '<div class="bpb-bg__under" aria-hidden="true"></div>' +
       '<div class="bpb-bg__items"></div>';
     root.appendChild(board);
-    bindRarityHover(root);
-    bindHoverSparks(root);
+    // Homepage create promo: decorative only — hover chrome is the hover jank.
+    if (!root.classList.contains('bpb-bg--promo')) {
+      bindRarityHover(root);
+      bindHoverSparks(root);
+    }
   }
   const under = board.querySelector('.bpb-bg__under');
   const itemsLayer = board.querySelector('.bpb-bg__items');
@@ -303,6 +312,8 @@ export function paintPooled(root, opts) {
   const itemiary = root.classList.contains('bpb-bg--itemiary');
   const deferSprite = itemiary || opts.deferSprite === true;
   const deferAppear = opts.deferAppear === true;
+  const appearNewOnly = opts.appearNewOnly === true;
+  const skipPark = opts.skipPark instanceof Set ? opts.skipPark : null;
   const appear =
     opts.appear === true &&
     !window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
@@ -366,6 +377,8 @@ export function paintPooled(root, opts) {
     const z = stackZ;
 
     let entry = pool.get(key);
+    /** True when this paint created the DOM node (vs reusing a parked pool hit). */
+    let created = false;
     /** @type {{ fromDeg: number, durationMs?: number } | undefined} */
     const faceCont =
       opts.faceContinue instanceof Map ? opts.faceContinue.get(key) : undefined;
@@ -408,13 +421,19 @@ export function paintPooled(root, opts) {
     });
 
     if (!entry) {
+      created = true;
       // Full Icon.scale sprite — Itemiary shrinks the whole bag via CSS scale(0.9)
       // so FilledSlots stay proportional (do not use libraryBagScale here).
+      const promo = root.classList.contains('bpb-bg--promo');
+      const itemiaryPromo = promo && root.classList.contains('bpb-bg--itemiary');
       const itemEl = createItemEl(item, getSpriteUrl, stackZ, face, resolvedGems, {
         deferSprite,
+        chrome: !promo,
+        shadow: !itemiaryPromo,
+        bagSlots: !itemiaryPromo,
       });
       if (!itemEl) continue;
-      const underEl = createUnderEl(item, face);
+      const underEl = promo ? null : createUnderEl(item, face);
       entry = {
         itemEl,
         underEl,
@@ -474,19 +493,23 @@ export function paintPooled(root, opts) {
     };
     if (deferAppear) warmEntries.push(warmEntry);
 
-    // Game refresh(popIn) / loading preview — batched after the loop (one reflow)
+    // Game refresh(popIn) / loading preview — batched after the loop (one reflow).
+    // Scroll keep-alive (appearNewOnly): only brand-new DOM nodes wave — reused
+    // parked pool hits must not re-appear every time they re-enter the window.
     if (appear) {
-      // Hide under until the shared wave starts (builds, Itemiary, under preview).
-      // Itemiary must wave footprints with sprites or the 1.1→1 settle looks like
-      // per-item grid realignment.
-      const waveUnder =
-        opts.appearLayer === 'under' ||
-        root.classList.contains('bpb-bg--placed') ||
-        root.classList.contains('bpb-bg--itemiary');
-      if (waveUnder) {
-        entry.underEl?.classList.add('bpb-bg__under-item--appear-pending');
+      const isNew =
+        created ||
+        (!appearNewOnly && (!prevShown || !prevShown.has(key)));
+      if (isNew) {
+        const waveUnder =
+          opts.appearLayer === 'under' ||
+          root.classList.contains('bpb-bg--placed') ||
+          root.classList.contains('bpb-bg--itemiary');
+        if (waveUnder) {
+          entry.underEl?.classList.add('bpb-bg__under-item--appear-pending');
+        }
+        appearList.push(warmEntry);
       }
-      appearList.push(warmEntry);
     }
   }
 
@@ -505,10 +528,17 @@ export function paintPooled(root, opts) {
     const leave = prevShown || pool.keys();
     for (const id of leave) {
       if (shown.has(id)) continue;
+      if (skipPark?.has(id)) continue;
       const entry = pool.get(id);
       if (!entry?.shown) continue;
-      parkEntry(entry.itemEl, entry.underEl);
-      entry.shown = false;
+      if (deferSprite) {
+        // Itemiary keep-alive: cool bitmaps + park; keep the pool entry so
+        // scrubbing back does not rebuild DOM / re-decode from scratch.
+        parkCooledEntry(entry);
+      } else {
+        parkEntry(entry.itemEl, entry.underEl);
+        entry.shown = false;
+      }
     }
   } else {
     for (const [id, entry] of pool) {
@@ -548,13 +578,17 @@ export function ensurePoolEntries(pool, root, items, getSpriteUrl) {
   const { under, itemsLayer } = layers;
   // Itemiary prewarm: DOM + geom only — deferred data-src (no network until warm/IO).
   const deferSprite = root.classList.contains('bpb-bg--itemiary');
+  const promo = root.classList.contains('bpb-bg--promo');
   for (const item of items) {
     if (!item?.id || pool.has(item.id)) continue;
     const itemEl = createItemEl(item, getSpriteUrl, item.libraryIndex ?? 1, 0, [], {
       deferSprite,
+      chrome: !promo,
+      shadow: !promo,
+      bagSlots: !promo,
     });
     if (!itemEl) continue;
-    const underEl = createUnderEl(item);
+    const underEl = promo ? null : createUnderEl(item);
     pool.set(item.id, {
       itemEl,
       underEl,
@@ -578,6 +612,9 @@ export function ensurePoolEntries(pool, root, items, getSpriteUrl) {
  *   cellPx?: number,
  *   cols?: number,
  *   fillWidth?: boolean,
+ *   promo?: boolean,
+ *   spriteRoot?: Element | null,
+ *   virtualize?: boolean,
  * }} options
  */
 export function mountItemiaryGrid(container, options) {
@@ -589,12 +626,14 @@ export function mountItemiaryGrid(container, options) {
     el = document.createElement('div');
     host.replaceChildren(el);
   }
-  el.className = 'bpb-bg bpb-bg--itemiary';
+  el.className =
+    'bpb-bg bpb-bg--itemiary' + (options.promo === true ? ' bpb-bg--promo' : '');
 
   const baseCellPx = options.cellPx ?? CELL_PX_DEFAULT;
   const fixedCols = options.cols ?? 20;
   const fillWidth = options.fillWidth !== false;
   const getSpriteUrl = options.getSpriteUrl;
+  const virtualize = options.promo !== true && options.virtualize !== false;
 
   /** @type {Map<string, PoolEntry>} */
   const pool = new Map();
@@ -612,6 +651,8 @@ export function mountItemiaryGrid(container, options) {
   let groupKeyFn = null;
   /** Play AppearInLibrary on the next paint only (not resize). Opt-in. */
   let appearNext = false;
+  /** Wave only newly mounted keys (scroll window), not the whole viewport. */
+  let appearNewOnly = false;
   /** @type {'item' | 'under'} */
   let appearLayerNext = 'item';
   let previewMode = false;
@@ -663,12 +704,35 @@ export function mountItemiaryGrid(container, options) {
   }
 
   /**
+   * @param {number} cellPx
+   * @param {number} nextRows
+   * @param {{ id: string, x: number, y: number }[]} nextPlacements
+   * @param {Map<string, object>} nextMap
+   */
+  function visibleSlice(cellPx, nextRows, nextPlacements, nextMap) {
+    if (!virtualize) return nextPlacements;
+    return placementsNearViewport(
+      nextPlacements,
+      nextMap,
+      {
+        cellPx,
+        rows: nextRows,
+        scrollTop: el.scrollTop,
+        clientHeight: el.clientHeight,
+      },
+      VIRTUAL_PAD_EM,
+    );
+  }
+
+  /**
    * @param {number} [cellPxHint]
    */
   function ensureSpriteIo(cellPxHint) {
     if (spriteIo) return spriteIo;
     const cellPx = cellPxHint > 0 ? cellPxHint : frozenCellPx || baseCellPx;
     const margin = Math.round(cellPx * Math.max(APPEAR_VIEW_PAD_EM, 2));
+    const ioRoot =
+      options.spriteRoot instanceof Element ? options.spriteRoot : el;
     spriteIo = new IntersectionObserver(
       (entries) => {
         for (const ent of entries) {
@@ -683,7 +747,7 @@ export function mountItemiaryGrid(container, options) {
           spriteIo?.unobserve(itemEl);
         }
       },
-      { root: el, rootMargin: `${margin}px 0px` },
+      { root: ioRoot, rootMargin: `${margin}px 0px` },
     );
     return spriteIo;
   }
@@ -692,12 +756,12 @@ export function mountItemiaryGrid(container, options) {
    * @param {number} [cellPxHint]
    */
   function syncSpriteObserver(cellPxHint) {
+    spriteIo?.disconnect();
+    spriteIo = null;
     const io = ensureSpriteIo(cellPxHint);
     for (const entry of pool.values()) {
       if (entry.shown && needsSpriteAttach(entry.itemEl)) {
         io.observe(entry.itemEl);
-      } else {
-        io.unobserve(entry.itemEl);
       }
     }
   }
@@ -714,7 +778,9 @@ export function mountItemiaryGrid(container, options) {
   async function paintNow(cellPx, cols, nextRows, nextPlacements, nextMap, hostW) {
     const appear = appearNext;
     const appearLayer = appearLayerNext;
+    const newOnly = appearNewOnly;
     appearNext = false;
+    appearNewOnly = false;
     appearLayerNext = 'item';
     frozenCellPx = cellPx;
     frozenHostW = hostW > 0 ? hostW : frozenHostW;
@@ -722,13 +788,18 @@ export function mountItemiaryGrid(container, options) {
       appearGuardUntil = performance.now() + APPEAR_LAYOUT_GUARD_MS;
     }
     el.classList.toggle('bpb-bg--preview', previewMode);
+
+    const slice = visibleSlice(cellPx, nextRows, nextPlacements, nextMap);
+
+    // Keep-alive: off-window nodes cool+park in paintPooled (no destroy / leave
+    // wave). Scrubbing back reuses the pool entry instead of rebuilding DOM.
     const gen = ++paintGen;
     const result = paintPooled(el, {
       cols,
       rows: nextRows,
       cellPx,
       fillWidth,
-      placements: nextPlacements,
+      placements: slice,
       itemsById: nextMap,
       getSpriteUrl,
       pool,
@@ -736,6 +807,8 @@ export function mountItemiaryGrid(container, options) {
       prevShown,
       appear,
       appearLayer,
+      appearNewOnly: newOnly,
+      skipPark: null,
       deferAppear: true,
       deferSprite: true,
     });
@@ -777,14 +850,12 @@ export function mountItemiaryGrid(container, options) {
     if (gen !== paintGen) return;
 
     if (appearList.length) {
-      // Same placements as warmEntries when appear is on — reuse cull.
       playAppearInLibraryBatch(el, appearList, {
         layer: appearLayer === 'under' ? 'under' : 'item',
-        inView: near,
+        inView: newOnly ? appearList : near,
         metrics: viewMetrics,
       });
     }
-    // Keep IO off the sync appear critical section
     requestAnimationFrame(() => {
       if (gen !== paintGen) return;
       syncSpriteObserver(cellPx);
@@ -824,8 +895,17 @@ export function mountItemiaryGrid(container, options) {
       itemsById = mergePoolIntoMap(new Map(packedItems.map((i) => [i.id, i])));
     }
 
-    const paintKey = `${layoutKey}|${lastPackKey}|${rows}|${placements.map((p) => `${p.id}:${p.x},${p.y}`).join(';')}|${mode}`;
-    if (paintKey === lastPaintKey && el.childElementCount) return Promise.resolve();
+    const visKey = virtualize
+      ? visibleSlice(cellPx, rows, placements, itemsById)
+          .map((p) => `${p.id}:${p.x},${p.y}`)
+          .join(';')
+      : '*';
+    const paintKey = `${layoutKey}|${lastPackKey}|${rows}|${visKey}|${mode}`;
+    if (paintKey === lastPaintKey && el.childElementCount) {
+      appearNext = false;
+      appearNewOnly = false;
+      return Promise.resolve();
+    }
     lastPaintKey = paintKey;
 
     return paintNow(cellPx, cols, rows, placements, itemsById, hostW);
@@ -842,6 +922,22 @@ export function mountItemiaryGrid(container, options) {
   // Observe the stage — scroller box changes from overflow are not real resizes.
   ro.observe(host);
 
+  let scrollRaf = 0;
+  function onScroll() {
+    if (!virtualize || mode == null) return;
+    if (scrollRaf) return;
+    scrollRaf = requestAnimationFrame(() => {
+      scrollRaf = 0;
+      appearNewOnly = true;
+      appearNext =
+        window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches !== true;
+      void render();
+    });
+  }
+  if (virtualize) {
+    el.addEventListener('scroll', onScroll, { passive: true });
+  }
+
   return {
     el,
     /**
@@ -849,7 +945,9 @@ export function mountItemiaryGrid(container, options) {
      */
     ensurePool(items) {
       poolItems = items || [];
-      ensurePoolEntries(pool, el, poolItems, getSpriteUrl);
+      if (!virtualize) {
+        ensurePoolEntries(pool, el, poolItems, getSpriteUrl);
+      }
       for (const item of poolItems) {
         shapeForItem(item);
         packGeom(item);
@@ -867,6 +965,7 @@ export function mountItemiaryGrid(container, options) {
       previewMode = opts.preview === true;
       el.className =
         'bpb-bg bpb-bg--itemiary bpb-bg--placed' +
+        (options.promo === true ? ' bpb-bg--promo' : '') +
         (previewMode ? ' bpb-bg--preview' : '');
       placements = nextPlacements || [];
       itemsById = mergePoolIntoMap(
@@ -888,6 +987,7 @@ export function mountItemiaryGrid(container, options) {
         rows = maxY;
       }
       appearNext = opts.appear === true;
+      appearNewOnly = false;
       appearLayerNext = opts.appearLayer === 'under' ? 'under' : 'item';
       lastPackKey = '';
       lastPackResult = null;
@@ -910,11 +1010,13 @@ export function mountItemiaryGrid(container, options) {
       previewMode = opts.preview === true;
       el.className =
         'bpb-bg bpb-bg--itemiary bpb-bg--packed' +
+        (options.promo === true ? ' bpb-bg--promo' : '') +
         (previewMode ? ' bpb-bg--preview' : '');
       packedItems = items || [];
       compact = opts.compact !== false;
       groupKeyFn = typeof opts.groupKey === 'function' ? opts.groupKey : null;
       appearNext = opts.appear === true;
+      appearNewOnly = false;
       appearLayerNext = opts.appearLayer === 'under' ? 'under' : 'item';
       lastPackKey = '';
       lastPackResult = null;
@@ -928,6 +1030,7 @@ export function mountItemiaryGrid(container, options) {
       mode = 'packed';
       packedItems = [];
       appearNext = false;
+      appearNewOnly = false;
       appearLayerNext = 'item';
       previewMode = false;
       lastPackKey = '';
@@ -938,10 +1041,46 @@ export function mountItemiaryGrid(container, options) {
       lastPaintKey = '';
       return paintNow(cellPx, cols, 1, [], itemsById, hostW);
     },
+    /**
+     * Scroll an item into the window and mount it (spotlight / recipe pick).
+     * @param {string} id
+     * @returns {Promise<HTMLElement | null>}
+     */
+    async scrollToId(id) {
+      const p = placements.find((pl) => pl.id === id);
+      if (!p) return null;
+      const { cellPx } = layoutMetrics();
+      const hEm = itemHeightEm(itemsById.get(id));
+      const topPx = (Number(p.y) || 0) * cellPx;
+      const hPx = hEm * cellPx;
+      const viewH = el.clientHeight;
+      const current = el.scrollTop;
+      if (topPx < current || topPx + hPx > current + viewH) {
+        el.scrollTop = Math.max(0, topPx - Math.max(0, (viewH - hPx) / 2));
+      }
+      lastPaintKey = '';
+      appearNewOnly = true;
+      appearNext =
+        window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches !== true;
+      await render();
+      const hit = el.querySelector(
+        `.bpb-bg__item[data-item-id="${CSS.escape(id)}"]:not(.bpb-bg__item--parked)`,
+      );
+      return hit instanceof HTMLElement ? hit : null;
+    },
     destroy() {
+      if (virtualize) el.removeEventListener('scroll', onScroll);
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      if (roRaf) cancelAnimationFrame(roRaf);
+      roRaf = 0;
       ro.disconnect();
       spriteIo?.disconnect();
       spriteIo = null;
+      for (const entry of pool.values()) {
+        entry.itemEl.remove();
+        entry.underEl?.remove();
+      }
       pool.clear();
       el.remove();
     },

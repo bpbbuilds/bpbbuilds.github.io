@@ -16,6 +16,7 @@
     "extract-items": "node scripts/extract-game-items.mjs",
     "library-layout": "node scripts/compute-library-layout.mjs",
     "sprite-display": "node scripts/compute-sprite-display.mjs",
+    "sprite-thumbs": "node scripts/build-sprite-thumbs.mjs",
     "history-decode-catalog": "node scripts/build-history-decode-catalog.mjs",
     "stamp-assets": "node scripts/stamp-asset-versions.mjs",
     "sim-inventory": "node scripts/extract-sim-item-inventory.mjs",

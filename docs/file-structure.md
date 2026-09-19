@@ -46,6 +46,29 @@ js/
       backpack-grid.js         # build editor later; shared packer is shared/backpack-grid/
       route-guide.js
       share.js
+    sim/
+      index.js                 # entry — imported by sim/index.html
+      page.js                  # orchestration
+      sim.css                  # page shell layout
+      sim-events.js            # shared SimEvent contract (engine + UI)
+      sim-combat-time.js
+      demo-timeline.js
+      engine/                  # combat simulation (not page chrome)
+      shell/                   # boot, board load, permalink, status
+      hud/                     # fighter HUD + avatars
+      fx/                      # damage numbers, item overlays, charge
+      log/                     # combat log, meter, results
+      log-ui/                  # /sim/log-ui/ kitchen sink
+      controls/                # scrubber, settings, premium gate
+      foe/                     # dummy / public build / mirror
+      report/                  # in-page issue report
+
+assets/
+  item-sprites/                # full-res game art (gitignored, generated locally)
+  item-thumbs/
+    1x/                        # Itemiary WebP, 68px per grid cell (committed)
+    2x/                        # Itemiary WebP, 136px per cell — devicePixelRatio > 1.5
+  data/                        # catalog JSON (layout, shapes, sprite-display, sprite-thumbs)
 ```
 
 HTML:
