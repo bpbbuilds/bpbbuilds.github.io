@@ -525,3 +525,4 @@ None.
 - Restored priority drops from history-uploaded board items, including history-scrubber items whose rendered key does not match a draft key. Dropping onto Needs, Wants, or Good to have changes only the placement priority and keeps the attached history locked.
 - Catalog drags now work for any matching item already on the board, including duplicate copies. A selected matching copy is used first; otherwise an unclassified copy is selected. Catalog items absent from the board remain rejected.
 - Mobile drop targeting now accounts for the dragged sprite’s position as well as the finger/pointer, so the held item can reach the Build tab controls without an accidental board move.
+- Corrected the held-item overlap calculation to measure coverage of the item rather than the much wider tier panel. A visible drop over a tier now resolves as a priority-only change instead of falling through to the history-unlock prompt.

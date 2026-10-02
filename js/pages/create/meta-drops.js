@@ -192,7 +192,10 @@ export function createMetaDrops(opts) {
       const w = Math.min(rect.right, box.right) - Math.max(rect.left, box.left);
       const h = Math.min(rect.bottom, box.bottom) - Math.max(rect.top, box.top);
       if (w <= 0 || h <= 0) continue;
-      const cover = (w * h) / Math.max(1, box.width * box.height);
+      // Build-tier targets are deliberately much wider than an item sprite on
+      // mobile. Measure how much of the held item is over the target, not how
+      // much of the whole target is covered by the item.
+      const cover = (w * h) / Math.max(1, rect.width * rect.height);
       if (cover < 0.35 || cover <= bestCover) continue;
       const hit = controlAtPoint(box.left + box.width / 2, box.top + box.height / 2);
       if (!hit) continue;
