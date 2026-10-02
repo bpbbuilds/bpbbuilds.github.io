@@ -543,3 +543,7 @@ None.
 
 - Reserved a normal toolbar row above the Create board from the initial empty state. The row is invisible until the first bag/item is placed, including reserved Play/Export control space, so revealing controls no longer pushes the board stage or Parked strip downward.
 - On narrow Create layouts, tightened only the page header and reduced the catalog from 30dvh to 24dvh so the reserved toolbar, full board, and Parked strip remain visible together.
+
+### 2026-10-02 Temporary Premium testing grant
+
+- Granted the requested verified tester a seven-day Premium entitlement through 2026-10-09 and synchronized the Discord Premium role. The existing entitlement expiry check will return the account to free access afterward unless renewed.
