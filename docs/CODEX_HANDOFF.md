@@ -497,6 +497,10 @@ None.
 
 - Website members in the Admin Members roster now have their displayed name linked to `/u/?d={discord_id}`. Discord-only rows remain non-linked; roster data and authorization are unchanged.
 
+### 2026-10-02 Admin member status icons
+
+- Replaced the Members roster Website, Discord, and Premium text badges with status icons using the BPB logo, Discord icon, and Premium crown. Icons retain accessible labels/tooltips and active/inactive visual states.
+
 ### 2026-10-02 Cosmetic publish authorization
 
 - Fixed Admin Cosmetics publishing and published-ID loading to use the owner-authenticated `admin-builds` Edge Function instead of direct browser writes/reads against the RLS-protected `cosmetic_drops` table. Added allow-listed `cosmetics` and `publish_cosmetic` actions with server-side field validation and service-role persistence.

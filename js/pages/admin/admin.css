@@ -496,7 +496,9 @@ body.page-admin #main {
 .admin-members__person a { overflow: hidden; color: inherit; text-overflow: ellipsis; text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 48%, transparent); text-underline-offset: 0.14em; }
 .admin-members__person a:hover { color: var(--bpb-rewards-gold-bright, #e8c878); }
 
-.admin-members__badge { display: inline-block; min-width: 3.2rem; padding: 0.15rem 0.4rem; border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 45%, transparent); border-radius: 999px; background: transparent; color: var(--bpb-rewards-cream, #dbc4a1); text-align: center; font-size: 0.82rem; }
+.admin-members__badge { display: inline-grid; place-items: center; width: 2rem; height: 2rem; padding: 0.22rem; border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 45%, transparent); border-radius: 999px; background: transparent; color: var(--bpb-rewards-cream, #dbc4a1); text-align: center; font-size: 0.82rem; }
+.admin-members__badge img { width: 1.35rem; height: 1.35rem; object-fit: contain; filter: grayscale(1); opacity: 0.42; }
+.admin-members__badge.is-active img { filter: none; opacity: 1; }
 .admin-members__badge.is-active { color: #b8f0c2; border-color: color-mix(in srgb, #b8f0c2 55%, #2a1a12); }
 .admin-members__badge--premium.is-active { color: var(--bpb-rewards-gold-bright, #e8c878); border-color: color-mix(in srgb, var(--bpb-rewards-gold-bright, #e8c878) 65%, #2a1a12); }
 

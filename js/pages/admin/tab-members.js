@@ -161,20 +161,26 @@ function memberRosterHtml(members, root) {
 function memberRowHtml(member, root) {
   const avatar = String(member?.avatar_url || '').trim();
   const name = escapeHtml(member?.name || 'Member');
-  const site = member?.website ? 'Yes' : '—';
-  const discord = member?.discord ? 'Yes' : '—';
-  const premium = member?.premium ? (member.plan === 'founding' ? 'Founding' : 'Premium') : '—';
+  const site = member?.website ? 'Website member' : 'No website account';
+  const discord = member?.discord ? 'Discord member' : 'Not in Discord';
+  const premium = member?.premium ? (member.plan === 'founding' ? 'Founding' : 'Premium') : 'No Premium';
   const href = member?.website ? profileHref(member?.discord_id, root) : null;
   const nameHtml = href ? `<a href="${escapeHtml(href)}">${name}</a>` : `<span>${name}</span>`;
   return `<tr>
     <td class="admin-members__person">${avatar ? `<img src="${escapeHtml(avatar)}" alt="" width="32" height="32">` : '<span class="admin-members__avatar">?</span>'}${nameHtml}</td>
-    <td>${badge(site, Boolean(member?.website))}</td><td>${badge(discord, Boolean(member?.discord))}</td><td>${badge(premium, Boolean(member?.premium), 'premium')}</td>
+    <td>${badge(site, Boolean(member?.website), 'website')}</td><td>${badge(discord, Boolean(member?.discord), 'discord')}</td><td>${badge(premium, Boolean(member?.premium), 'premium')}</td>
     <td>${escapeHtml(age(member?.discord_joined_at))}</td><td>${escapeHtml(age(member?.premium_since))}</td><td>${Math.max(0, Number(member?.build_count) || 0)}</td>
   </tr>`;
 }
 
 function badge(label, active, type = '') {
-  return `<span class="admin-members__badge${active ? ' is-active' : ''}${type ? ` admin-members__badge--${type}` : ''}">${escapeHtml(label)}</span>`;
+  const icons = {
+    website: ['../assets/brand/logo-bpb.png', 'Website'],
+    discord: ['../assets/theme/ui/ui-icon-discord.png', 'Discord'],
+    premium: ['../assets/blob/cosmetics/premium-crown.png', 'Premium'],
+  };
+  const icon = icons[type];
+  return `<span class="admin-members__badge${active ? ' is-active' : ''}${type ? ` admin-members__badge--${type}` : ''}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${icon ? `<img src="${icon[0]}" alt="${escapeHtml(icon[1])}" aria-hidden="true">` : escapeHtml(label)}</span>`;
 }
 
 function age(value) {
