@@ -100,6 +100,16 @@ export function listMembers(auth) {
   return adminRequest(auth, { action: 'members' });
 }
 
+/** Owner-only published cosmetic ids. */
+export function listPublishedCosmetics(auth) {
+  return adminRequest(auth, { action: 'cosmetics' });
+}
+
+/** Owner-only cosmetic catalog publish. */
+export function publishCosmetic(auth, cosmetic) {
+  return adminRequest(auth, { action: 'publish_cosmetic', cosmetic });
+}
+
 /**
  * @param {{ mode: 'jwt' | 'secret', token: string }} auth
  * @param {string} eventSlug

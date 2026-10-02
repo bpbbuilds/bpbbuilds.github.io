@@ -6,6 +6,8 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+- `js/pages/admin/tab-cosmetics.js`, `js/pages/admin/api.js`, and `supabase/functions/admin-builds/` (owner-gated cosmetic publishing repair)
+
 - `js/pages/admin/report-filters.js` (remove obsolete Guest reporter filter)
 
 - `js/pages/admin/tab-members.js`, `js/pages/admin/api.js`, `js/pages/admin/admin.css`, `supabase/functions/admin-builds/`, and `docs/pages/admin.md` (owner-only website/Discord member roster)
@@ -486,6 +488,11 @@ None.
 ### 2026-10-02 Admin Analytics styling
 
 - Restyled Analytics traffic tables and empty-state text with white UI text, light table separators, and the shared dark Patch3 shaded panel treatment used by KPI content. Analytics data and RPC behavior are unchanged.
+
+### 2026-10-02 Cosmetic publish authorization
+
+- Fixed Admin Cosmetics publishing and published-ID loading to use the owner-authenticated `admin-builds` Edge Function instead of direct browser writes/reads against the RLS-protected `cosmetic_drops` table. Added allow-listed `cosmetics` and `publish_cosmetic` actions with server-side field validation and service-role persistence.
+- Deployed `admin-builds` and passed the Admin Cosmetics JavaScript syntax check. Missing legacy cosmetic image files remain separate catalog asset gaps; they do not block publishing.
 
 ### 2026-10-02 Sim Reports reporter filter
 

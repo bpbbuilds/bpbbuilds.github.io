@@ -3,7 +3,6 @@
  */
 
 import { getSession } from '../../shared/auth.js';
-import { getSupabase } from '../../shared/supabase.js';
 import { openCosmeticUploadModal } from '../../shared/cosmetic-upload-modal.js';
 import { loadBlobCatalog } from '../u/blob/catalog.js';
 import { compositeTileHtml } from '../u/blob/wardrobe-markup.js';
@@ -15,6 +14,7 @@ import {
   syncAdminCosmeticFilters,
 } from './cosmetics-filters.js';
 import { escapeHtml } from './row.js';
+import { listPublishedCosmetics, publishCosmetic } from './api.js';
 
 /** @typedef {import('../u/blob/catalog.js').BlobCosmetic} BlobCosmetic */
 
@@ -223,7 +223,7 @@ function bindUploadButton(rootEl, opts) {
  * @param {BlobCosmetic[]} catalog
  * @param {Set<string>} published
  */
-function bindPublish(host, catalog, published) {
+function bindPublish(host, catalog, published, auth) {
   host.addEventListener('click', async (e) => {
     const t = e.target;
     if (!(t instanceof Element)) return;
@@ -241,8 +241,8 @@ function bindPublish(host, catalog, published) {
     }
     try {
       const session = await getSession();
-      if (!session?.access_token) throw new Error('Sign in as the site owner to publish.');
-      const { error } = await getSupabase().from('cosmetic_drops').insert({
+      if (!session?.access_token || auth?.mode !== 'jwt') throw new Error('Sign in as the site owner to publish.');
+      await publishCosmetic(auth, {
         id: item.id,
         name: item.name || item.id,
         slot: item.slot || '',
@@ -251,7 +251,6 @@ function bindPublish(host, catalog, published) {
         description: item.description || '',
         image: item.image || '',
       });
-      if (error && error.code !== '23505') throw new Error(error.message || 'Publish failed');
       published.add(item.id);
       btn.textContent = 'Published';
       if (status instanceof HTMLElement) {
@@ -272,15 +271,15 @@ function bindPublish(host, catalog, published) {
 /**
  * @returns {Promise<Set<string>>}
  */
-async function loadPublishedIds() {
+async function loadPublishedIds(auth) {
   const ids = new Set();
   try {
     const session = await getSession();
     if (!session?.access_token) return ids;
-    const { data, error } = await getSupabase().from('cosmetic_drops').select('id');
-    if (error || !Array.isArray(data)) return ids;
-    for (const row of data) {
-      const id = String(row?.id || '');
+    const result = await listPublishedCosmetics(auth);
+    const data = Array.isArray(result?.ids) ? result.ids : [];
+    for (const value of data) {
+      const id = String(value || '');
       if (id) ids.add(id);
     }
   } catch {
@@ -339,14 +338,14 @@ export async function mountCosmeticsPanel(host, opts) {
 
   try {
     const catalog = await loadBlobCatalog(root);
-    const published = await loadPublishedIds();
+    const published = await loadPublishedIds(opts.auth);
     const filters = defaultAdminCosmeticFilters();
     paintBody(host, root, catalog, filters, published);
     bindUploadButton(host, {
       root,
       displayName: opts.displayName,
     });
-    bindPublish(host, catalog, published);
+    bindPublish(host, catalog, published, opts.auth);
     bindQueueFilters(host);
     const rail = host.querySelector('.admin-cosmetics-filters');
     if (rail instanceof HTMLElement) {
