@@ -467,3 +467,8 @@ None.
 
 - Added an owner-only Members-tab line-item roster that merges website profiles, Discord guild members, and published-build counts. It shows website, Discord, and Premium/Founding status, Discord and Premium duration, and published builds; Discord-only members remain visible.
 - Added the `members` action to the already owner-gated `admin-builds` Edge Function; no roster data is exposed through public RLS/API access. Deployed the function. Node checks and targeted whitespace validation passed; Docker was unavailable for local Supabase tests.
+
+### 2026-10-02 CSP and board-preview console repair
+
+- Removed `frame-ancestors` from every meta CSP because browsers ignore that directive outside an HTTP response header (which GitHub Pages cannot set). The existing font assets loaded from `fonts.gstatic.com` are now explicitly allowed by `font-src`.
+- A board-still signed URL that is unavailable or rejected now transparently falls back to the existing locally painted board preview, rather than raising an unhandled `No signed board still URL` error.

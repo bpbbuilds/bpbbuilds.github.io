@@ -45,18 +45,7 @@ export function mountBoardStill(host, opts) {
 
   const baked = opts.bakedUrl;
   /** @type {Promise<string | null>} */
-  const stillUrl = baked
-    ? Promise.resolve(baked).then((url) => {
-        const resolved = String(url || '').trim();
-        if (!resolved) throw new Error('No signed board still URL');
-        if (!img.isConnected) return resolved;
-        img.src = resolved;
-        img.decode?.().catch(() => {});
-        img.classList.add('is-ready');
-        still.classList.add('is-ready');
-        return resolved;
-      })
-    : boardStillUrl({
+  const renderGenerated = () => boardStillUrl({
         placements: opts.placements,
         itemsById: opts.itemsById,
         getSpriteUrl: opts.getSpriteUrl,
@@ -74,6 +63,18 @@ export function mountBoardStill(host, opts) {
           still.classList.add('is-empty');
           return null;
         });
+  const stillUrl = baked
+    ? Promise.resolve(baked).then((url) => {
+        const resolved = String(url || '').trim();
+        if (!resolved) return renderGenerated();
+        if (!img.isConnected) return resolved;
+        img.src = resolved;
+        img.decode?.().catch(() => {});
+        img.classList.add('is-ready');
+        still.classList.add('is-ready');
+        return resolved;
+      }).catch(() => renderGenerated())
+    : renderGenerated();
 
   return {
     destroy() {
