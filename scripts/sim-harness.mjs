@@ -11,6 +11,13 @@ import { takeDamage, dealDamage } from '../js/pages/sim/engine/damage.js';
 import { createActor } from '../js/pages/sim/engine/actor.js';
 import { gainStacks } from '../js/pages/sim/engine/stacks.js';
 import { makeRng } from '../js/pages/sim/engine/rng.js';
+import {
+  bindBuffPowerPieces,
+  giveBuffPower,
+  scaleByBuffPower,
+  unbindBuffPowerPieces,
+} from '../js/pages/sim/engine/buff-power.js';
+import { grantStacks } from '../js/pages/sim/engine/buff-economy.js';
 
 const coverage = JSON.parse(
   fs.readFileSync('assets/data/sim-item-coverage.json', 'utf8'),
@@ -191,6 +198,23 @@ function unitChecks() {
   if (dealt.vampHeal < 1) {
     console.error('FAIL unit: vampirism heal', dealt.vampHeal);
     ok = false;
+  }
+  {
+    const whelp = { placementKey: 'whelp', buffPowers: {} };
+    bindBuffPowerPieces([whelp]);
+    giveBuffPower(whelp, 'poison', 1);
+    giveBuffPower(whelp, 'poison', 1);
+    const dummy = createActor('dummy');
+    const g = grantStacks(dummy, 'poison', 3, { originKey: 'whelp' });
+    unbindBuffPowerPieces();
+    if (g.gained !== 9) {
+      console.error('FAIL unit: death scythe poison buffPower 3×3', g.gained);
+      ok = false;
+    }
+    if (scaleByBuffPower(3, 'poison', { piece: { buffPowers: { poison: 2 } } }) !== 6) {
+      console.error('FAIL unit: scaleByBuffPower 3×2');
+      ok = false;
+    }
   }
   if (ok) console.log('OK unit: params + takeDamage/dealDamage');
   else failed += 1;

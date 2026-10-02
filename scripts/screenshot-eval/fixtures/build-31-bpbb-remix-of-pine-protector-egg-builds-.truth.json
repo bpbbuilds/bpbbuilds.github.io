@@ -1,0 +1,353 @@
+{
+  "note": "Exported from build 31 (bpbb-remix-of-pine-protector-egg-builds-v45k2f) for bag variety eval",
+  "items": [
+    {
+      "name": "Mana Orb",
+      "x": 7,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Falcon Blade",
+      "x": 3,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Prismatic Orb",
+      "x": 6,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Prismatic Orb",
+      "x": 4,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Falcon Blade",
+      "x": 4,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Djinn Lamp",
+      "x": 5,
+      "y": 4,
+      "r": 3
+    },
+    {
+      "name": "Mana Orb",
+      "x": 7,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Laboratory",
+      "x": 3,
+      "y": 4,
+      "r": 2
+    },
+    {
+      "name": "Djinn Lamp",
+      "x": 6,
+      "y": 4,
+      "r": 3
+    },
+    {
+      "name": "Con-Trap-Tron",
+      "x": 2,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Vampiric Armor",
+      "x": 0,
+      "y": 4,
+      "r": 2
+    },
+    {
+      "name": "Mana Orb",
+      "x": 2,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Mana Orb",
+      "x": 4,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Amulet of Darkness",
+      "x": 2,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Prismatic Orb",
+      "x": 5,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Amulet of Darkness",
+      "x": 5,
+      "y": 2,
+      "r": 3
+    },
+    {
+      "name": "Djinn Lamp",
+      "x": 6,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Amulet of Steel",
+      "x": 1,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Blueberries",
+      "x": 6,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Blueberries",
+      "x": 8,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Strong Stone Skin Potion",
+      "x": 0,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Strong Stone Skin Potion",
+      "x": 0,
+      "y": 2,
+      "r": 3
+    },
+    {
+      "name": "Strong Stone Skin Potion",
+      "x": 0,
+      "y": 3,
+      "r": 3
+    },
+    {
+      "name": "Djinn Lamp",
+      "x": 1,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Djinn Lamp",
+      "x": 2,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Blueberries",
+      "x": 5,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Shovel-B01 3000",
+      "x": 7,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Blueberries",
+      "x": 4,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Mana Orb",
+      "x": 5,
+      "y": 6,
+      "r": 0
+    }
+  ],
+  "bagCells": [
+    "7,4",
+    "8,4",
+    "7,5",
+    "8,5",
+    "4,0",
+    "5,0",
+    "6,0",
+    "7,0",
+    "4,1",
+    "5,1",
+    "6,1",
+    "7,1",
+    "4,2",
+    "5,2",
+    "6,2",
+    "7,2",
+    "2,2",
+    "2,3",
+    "4,3",
+    "3,2",
+    "3,3",
+    "5,3",
+    "5,4",
+    "6,3",
+    "6,4",
+    "8,2",
+    "7,3",
+    "8,3",
+    "4,4",
+    "2,4",
+    "3,4",
+    "2,5",
+    "3,5",
+    "4,5",
+    "5,5",
+    "6,5",
+    "0,6",
+    "1,6",
+    "2,6",
+    "1,2",
+    "1,3",
+    "1,4",
+    "1,5",
+    "1,1",
+    "2,1",
+    "3,1",
+    "1,0",
+    "2,0",
+    "3,0",
+    "0,3",
+    "0,4",
+    "0,5",
+    "0,0",
+    "0,1",
+    "0,2",
+    "5,6"
+  ],
+  "bags": [
+    {
+      "name": "Leather Bag",
+      "x": 7,
+      "y": 4,
+      "r": 2
+    },
+    {
+      "name": "Box of Cogs",
+      "x": 4,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 2,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 4,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 3,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 5,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 6,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Leather Bag",
+      "x": 7,
+      "y": 2,
+      "r": 2
+    },
+    {
+      "name": "Protective Purse",
+      "x": 4,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 2,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 4,
+      "y": 5,
+      "r": 3
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 0,
+      "y": 6,
+      "r": 1
+    },
+    {
+      "name": "Potion Belt",
+      "x": 1,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 1,
+      "y": 1,
+      "r": 3
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 1,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 0,
+      "y": 3,
+      "r": 2
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 0,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 4,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 5,
+      "y": 6,
+      "r": 0
+    }
+  ]
+}

@@ -3,6 +3,8 @@
  */
 
 import { canPickItem, isBagItem } from './collision.js';
+import { newPlacementKey } from './draft-io.js';
+import { gemCarry } from './socket-place.js';
 
 /**
  * @param {{
@@ -13,7 +15,7 @@ import { canPickItem, isBagItem } from './collision.js';
  *   grid: { el: HTMLElement },
  *   itemsById: Map<string, object>,
  *   onSelectKey: (key: string) => void,
- *   multi: { select: Function, isSelected: Function, size: Function, groupForDrag: Function },
+ *   multi: { select: Function, isSelected: Function, size: Function, groupForDrag: Function, clear?: Function },
  *   setMultiMoveKeys: (k: string[] | null) => void,
  *   setDrag: (d: any) => void,
  *   setDownPos: Function,
@@ -80,6 +82,96 @@ export function beginBoardMoveDrag(args) {
   metrics.ensure(true);
   ensureLifted(e.clientX, e.clientY);
   preview.previewAt(p.id, p.r, e.clientX, e.clientY, key);
+}
+
+/**
+ * Alt+drag from board — Photoshop-style duplicate: leave original, place a copy.
+ * Bags copy empty (contents stay); socket gems are copied onto the new item.
+ * @param {{
+ *   key: string,
+ *   p: object,
+ *   itemEl: HTMLElement,
+ *   e: PointerEvent,
+ *   grid: { el: HTMLElement },
+ *   itemsById: Map<string, object>,
+ *   onSelectKey: (key: string) => void,
+ *   multi: { clear?: Function },
+ *   setMultiMoveKeys: (k: string[] | null) => void,
+ *   setDrag: (d: any) => void,
+ *   setDownPos: Function,
+ *   setLastPointer: Function,
+ *   setLastMoveAt: Function,
+ *   setMoved: Function,
+ *   metrics: { ensure: Function },
+ *   float: { showOrphanPickup: Function },
+ *   preview: { previewAt: Function },
+ *   editMode: () => string,
+ * }} args
+ */
+export function beginBoardCopyDrag(args) {
+  const {
+    key,
+    p,
+    itemEl,
+    e,
+    grid,
+    itemsById,
+    onSelectKey,
+    multi,
+    setMultiMoveKeys,
+    setDrag,
+    setDownPos,
+    setLastPointer,
+    setLastMoveAt,
+    setMoved,
+    metrics,
+    float,
+    preview,
+    editMode,
+  } = args;
+
+  const item = itemsById.get(p.id);
+  if (!item || !canPickItem(item, editMode())) return;
+
+  multi.clear?.();
+  setMultiMoveKeys(null);
+  onSelectKey(key);
+
+  const liveEl =
+    grid.el.querySelector(
+      `.bpb-bg__item[data-placement-key="${CSS.escape(key)}"]:not(.bpb-bg__item--parked)`,
+    ) || itemEl;
+  if (!(liveEl instanceof HTMLElement)) return;
+
+  setDrag({
+    mode: 'place',
+    itemId: p.id,
+    placeKey: newPlacementKey(),
+    r: p.r || 0,
+    pickupR: p.r || 0,
+    pointerId: e.pointerId,
+    sourceEl: null,
+    sourceRect: liveEl.getBoundingClientRect(),
+    pickupDone: false,
+    isBag: isBagItem(item),
+    altCopy: true,
+    cargo: [],
+    ...gemCarry(p),
+  });
+  setDownPos({ x: e.clientX, y: e.clientY });
+  setLastPointer({ x: e.clientX, y: e.clientY });
+  setLastMoveAt(performance.now());
+  setMoved(true);
+  e.preventDefault();
+  try {
+    liveEl.setPointerCapture(e.pointerId);
+  } catch {
+    /* ignore */
+  }
+  metrics.ensure(true);
+  float.showOrphanPickup(item, p.r || 0, e.clientX, e.clientY);
+  // No skipKey — original stays on the board and still occupies cells.
+  preview.previewAt(p.id, p.r || 0, e.clientX, e.clientY, null);
 }
 
 /**

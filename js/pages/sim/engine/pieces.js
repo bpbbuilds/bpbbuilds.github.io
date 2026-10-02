@@ -44,6 +44,7 @@ import { createBalancedRng } from './balanced-rng.js';
  *   itemType?: string,
  *   damageKind?: 'melee'|'ranged',
  *   chance: number,
+ *   chance2?: number,
  *   chanceTag: string | null,
  *   params: Record<string, number>,
  *   stackHints: string[],
@@ -183,10 +184,19 @@ export function buildCombatPieces(placements, itemsById) {
       charges = null;
     }
 
+    const petStartOnly =
+      kind === 'pet' &&
+      !hasCd &&
+      !hasDamage &&
+      Boolean(script?.onCombatStart || script?.onPreCombatStart) &&
+      !script?.onCooldownEffect;
+
     const cooldown = hasCd
       ? Math.max(0.35, cd)
       : kind === 'pet'
-        ? 2.5
+        ? petStartOnly
+          ? 0
+          : 2.5
         : kind === 'card'
           ? 1.5
           : kind === 'consumable'
@@ -194,12 +204,13 @@ export function buildCombatPieces(placements, itemsById) {
             : 0;
 
     const startOnly =
-      Boolean(script?.onCombatStart) &&
-      !script?.onCooldownEffect &&
-      !hasCd &&
-      kind !== 'card' &&
-      kind !== 'pet' &&
-      kind !== 'consumable';
+      petStartOnly ||
+      (Boolean(script?.onCombatStart) &&
+        !script?.onCooldownEffect &&
+        !hasCd &&
+        kind !== 'card' &&
+        kind !== 'pet' &&
+        kind !== 'consumable');
 
     if (
       !hasCd &&
@@ -217,6 +228,7 @@ export function buildCombatPieces(placements, itemsById) {
     }
     const params = paramsFromItem(item);
     const chance = Number.isFinite(Number(item.chance)) ? Number(item.chance) : 0;
+    const chance2 = Number.isFinite(Number(item.chance2)) ? Number(item.chance2) : 0;
     const chanceTag =
       item.chanceTag != null && String(item.chanceTag).trim()
         ? String(item.chanceTag).trim().toLowerCase()
@@ -237,7 +249,7 @@ export function buildCombatPieces(placements, itemsById) {
       out.push({
         placementKey: p.key,
         itemId: item.id,
-        name: String(item.name || item.id),
+        name: String(item.displayName || item.name || item.id),
         kind: listenOnly && kind !== 'bag' ? 'passive' : kind,
         priority: rarityPriority(item) * 1000,
         cooldown: 0,
@@ -262,6 +274,7 @@ export function buildCombatPieces(placements, itemsById) {
         itemType: item.type ? String(item.type) : '',
         damageKind: damageKindFromItem(item),
         chance,
+        chance2,
         chanceTag,
         bonusChanceMult: 0,
         bonusChanceAdd1: 0,
@@ -288,7 +301,7 @@ export function buildCombatPieces(placements, itemsById) {
     out.push({
       placementKey: p.key,
       itemId: item.id,
-      name: String(item.name || item.id),
+      name: String(item.displayName || item.name || item.id),
       kind,
       priority: rarityPriority(item) * 1000 + Math.round(damageMax),
       cooldown: loopCd,
@@ -313,6 +326,7 @@ export function buildCombatPieces(placements, itemsById) {
       itemType: item.type ? String(item.type) : '',
       damageKind: damageKindFromItem(item),
       chance,
+      chance2,
       chanceTag,
       bonusChanceMult: 0,
       bonusChanceAdd1: 0,
@@ -345,7 +359,8 @@ export function activeLoopPieces(pieces) {
   return pieces.filter(
     (p) =>
       p.alive &&
-      p.kind !== 'armor' &&
+      // Passive armor (cooldown 0) stays out; CD armor (Vampiric, Bionic, …) ticks.
+      (p.kind !== 'armor' || (p.cooldown > 0 && p.cooldown < 500)) &&
       (p.kind !== 'bag' || (p.cooldown > 0 && p.cooldown < 500)) &&
       (p.kind !== 'card' || p._revealing) &&
       (p.charges == null || p.charges > 0) &&

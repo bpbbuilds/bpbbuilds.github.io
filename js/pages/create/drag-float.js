@@ -19,7 +19,12 @@ import {
   createTiltState,
 } from './drag-feel.js';
 import { playGrab, warmSfx } from './create-sfx.js';
-import { withGemInSocket } from './socket-place.js';
+import { gemCarry, withGemInSocket } from './socket-place.js';
+import {
+  fillCursorSprite,
+  clearCursorSprite,
+  sloshCursorPotion,
+} from './drag-live-sprite.js';
 
 /**
  * Build fixed cursor DOM (body-appended).
@@ -44,10 +49,9 @@ export function createCursorDom() {
   cursorShadow.alt = '';
   cursorShadow.draggable = false;
   cursorShadow.setAttribute('aria-hidden', 'true');
-  const cursorImg = document.createElement('img');
+  const cursorImg = document.createElement('span');
   cursorImg.className = 'create-board__cursor-sprite';
-  cursorImg.alt = '';
-  cursorImg.draggable = false;
+  cursorImg.setAttribute('aria-hidden', 'true');
   cursorEl.append(cursorShadow, slotsEl, cursorImg, gemsEl, cargoEl);
   document.body.appendChild(cursorEl);
   return { cursorEl, slotsEl, cargoEl, gemsEl, cursorShadow, cursorImg };
@@ -64,7 +68,7 @@ export function createCursorDom() {
  *   cursorEl: HTMLElement,
  *   slotsEl: HTMLElement,
  *   cargoEl: HTMLElement,
- *   cursorImg: HTMLImageElement,
+ *   cursorImg: HTMLElement,
  *   cursorShadow: HTMLImageElement,
  *   view: ReturnType<import('./drag-cursor.js').createDragCursorView>,
  *   getDrag: () => any,
@@ -145,34 +149,20 @@ export function createFloatController(deps) {
       drag?.gems ||
       drag?.restorePlacement?.gems ||
       null;
+    const gemR = drag?.gemR || drag?.restorePlacement?.gemR || null;
     if (!item || !gems?.some(Boolean)) view.clearHostGems?.();
-    else view.syncHostGems?.(item, gems, itemsById, getSpriteUrl);
+    else view.syncHostGems?.(item, gems, itemsById, getSpriteUrl, gemR);
   }
 
   /**
+   * @param {object | null} item
    * @param {string} src
    * @param {HTMLElement | null} [sourceEl]
    */
-  function setCursorSprite(src, sourceEl = null) {
-    let next = src;
-    const live = sourceEl?.querySelector?.(
-      'img.bpb-bg__sprite:not(.bpb-bg__sprite--shadow), img.bpb-bg__mark--gem, img.bpb-bg__sprite, img',
-    );
-    if (
-      live instanceof HTMLImageElement &&
-      live.complete &&
-      live.naturalWidth > 0
-    ) {
-      const liveSrc = live.currentSrc || live.src;
-      if (liveSrc) next = liveSrc;
-    }
-
-    cursorImg.style.opacity = '1';
-    if ((cursorImg.getAttribute('src') || '') !== next) {
-      cursorImg.src = next;
-    }
-    if ((cursorShadow.getAttribute('src') || '') !== next) {
-      cursorShadow.src = next;
+  function setCursorSprite(item, src, _sourceEl = null) {
+    fillCursorSprite(cursorImg, item, src);
+    if ((cursorShadow.getAttribute('src') || '') !== src) {
+      cursorShadow.src = src;
     }
   }
 
@@ -241,9 +231,13 @@ export function createFloatController(deps) {
         const row = placements.find((p) => p.key === drag.moveKey);
         if (row && Array.isArray(row.gems)) {
           drag.gems = row.gems.slice();
+          drag.gemR = Array.isArray(row.gemR) ? row.gemR.slice() : undefined;
         }
       } else if (Array.isArray(drag.restorePlacement?.gems)) {
         drag.gems = drag.restorePlacement.gems.slice();
+        drag.gemR = Array.isArray(drag.restorePlacement.gemR)
+          ? drag.restorePlacement.gemR.slice()
+          : undefined;
       }
     }
     tilt.setEnabled(!(drag?.cargo?.length > 0));
@@ -262,8 +256,9 @@ export function createFloatController(deps) {
     setDraggingBagChrome(bag);
     cursorEl.classList.add('is-held');
     cursorEl.classList.toggle('is-bag', bag);
+    cursorEl.hidden = false;
 
-    setCursorSprite(src, sourceEl);
+    setCursorSprite(item, src, sourceEl);
     cursorEl.style.transition = 'none';
     view.applySize(size, bag);
     view.setPosition(clientX, liftY);
@@ -273,7 +268,6 @@ export function createFloatController(deps) {
     view.syncBagSlots(item, r, null);
     paintCargo(face);
     paintHostGems();
-    cursorEl.hidden = false;
 
     markDragSource(sourceEl);
 
@@ -319,18 +313,24 @@ export function createFloatController(deps) {
 
     const prev = getLastPointer();
     let tiltDeg = tilt.angle();
-    if (prev) tiltDeg = tilt.step(clientX - prev.x, clientY - prev.y, dt);
+    const dx = prev ? clientX - prev.x : 0;
+    const dy = prev ? clientY - prev.y : 0;
+    if (prev) tiltDeg = tilt.step(dx, dy, dt);
 
     const liftY = clientY - pickOffsetPx();
     cursorEl.style.transition = 'none';
     view.setPosition(clientX, liftY);
     view.setTransform(face, tiltDeg, view.pickupScale(item), bag);
+    sloshCursorPotion(cursorImg, dx, dy, {
+      tiltDeg,
+      faceDeg: view.getVisualFaceDeg?.() ?? face * 90,
+    });
 
     if (
       !view.isBagCargoSpinning?.() &&
       view.needsChrome(itemId, r, placeOk, bag)
     ) {
-      setCursorSprite(src, drag?.sourceEl || null);
+      setCursorSprite(item, src, drag?.sourceEl || null);
       view.applySize(view.sizeFor(item, r), bag);
       view.syncBagSlots(item, r, placeOk);
       if (drag?.cargo?.length) paintCargo(face);
@@ -342,14 +342,14 @@ export function createFloatController(deps) {
   function resetCursorChrome(opts = {}) {
     cursorEl.style.transition = 'none';
     cursorEl.hidden = true;
-    cursorEl.classList.remove('is-held', 'is-bag');
+    cursorEl.classList.remove('is-held', 'is-bag', 'is-sell-hover');
     cursorEl.style.transform = 'translate3d(0, 0, 0) translate(-50%, -50%)';
     cursorImg.style.width = '';
     cursorImg.style.height = '';
     cursorImg.style.transform = '';
     cursorImg.style.opacity = '';
     cursorImg.style.transition = 'none';
-    cursorImg.removeAttribute('src');
+    clearCursorSprite(cursorImg);
     cursorShadow.style.width = '';
     cursorShadow.style.height = '';
     cursorShadow.style.transform = '';
@@ -358,6 +358,7 @@ export function createFloatController(deps) {
     view.setShadowDragged(false, { animate: false });
     view.clearSlots();
     view.clearCargo();
+    view.setSellHover?.(false);
     view.clearHostGems?.();
     view.resetSizeCache();
     clearDragSources();
@@ -393,10 +394,10 @@ export function createFloatController(deps) {
       if (hostRow && hostItem) {
         const occupied = hostRow.gems?.[restore.slot];
         if (!occupied || occupied === restore.gemId) {
-          const { gems } = withGemInSocket(
-            hostRow, hostItem, restore.slot, restore.gemId,
+          const { gems, gemR } = withGemInSocket(
+            hostRow, hostItem, restore.slot, restore.gemId, restore.face,
           );
-          state.updatePlacement(restore.hostKey, { gems }, { borrow: true });
+          state.updatePlacement(restore.hostKey, { gems, gemR }, { borrow: true });
           endDragHard();
           return;
         }
@@ -417,9 +418,7 @@ export function createFloatController(deps) {
             r: parkRestore.r || 0,
             key: parkRestore.key,
             priority: parkRestore.priority ?? null,
-            ...(Array.isArray(parkRestore.gems)
-              ? { gems: parkRestore.gems.slice() }
-              : {}),
+            ...gemCarry(parkRestore),
           },
         ],
         { borrow: true },
@@ -438,9 +437,7 @@ export function createFloatController(deps) {
           r: boardRestore.r,
           key: boardRestore.key,
           priority: boardRestore.priority ?? null,
-          ...(Array.isArray(boardRestore.gems)
-            ? { gems: boardRestore.gems.slice() }
-            : {}),
+          ...gemCarry(boardRestore),
         },
       ];
       for (const c of cargoRestore) {
@@ -452,7 +449,7 @@ export function createFloatController(deps) {
           r: ((Number(c.r) || 0) % 4 + 4) % 4,
           key: c.key,
           priority: null,
-          ...(Array.isArray(c.gems) ? { gems: c.gems.slice() } : {}),
+          ...gemCarry(c),
         });
       }
       state.setPlacements(next);
@@ -482,7 +479,7 @@ export function createFloatController(deps) {
           r: ((Number(c.r) || 0) % 4 + 4) % 4,
           key: c.key,
           priority: null,
-          ...(Array.isArray(c.gems) ? { gems: c.gems.slice() } : {}),
+          ...gemCarry(c),
         });
       }
       if (missing.length) {
@@ -580,10 +577,13 @@ export function createFloatController(deps) {
     playGrab();
     tilt.setEnabled(!(drag?.cargo?.length > 0));
     tilt.reset();
-    setCursorSprite(src, null);
-    const size = view.sizeFor(item, r);
     const bag = isBagItem(item);
     setDraggingBagChrome(bag);
+    cursorEl.classList.add('is-held');
+    cursorEl.classList.toggle('is-bag', bag);
+    cursorEl.hidden = false;
+    setCursorSprite(item, src, null);
+    const size = view.sizeFor(item, r);
     view.applySize(size, bag);
     view.setPosition(clientX, clientY - pickOffsetPx());
     view.setFaceInstant(r);
@@ -592,9 +592,6 @@ export function createFloatController(deps) {
     view.syncBagSlots(item, r, null);
     paintCargo(r);
     paintHostGems();
-    cursorEl.hidden = false;
-    cursorEl.classList.add('is-held');
-    cursorEl.classList.toggle('is-bag', bag);
   }
 
   return {

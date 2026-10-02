@@ -13,14 +13,15 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { startBattleRage } from '../battle-rage.js';
+import { advanceCooldownSeconds, isCooldownActive } from '../cooldown.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { grantTimedResistancePct } from '../timed-resistance.js';
 import { dealHit } from './handlers.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
+import { superiorRingPort } from './ports-ring.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
-import { logSpentStacks } from '../buff-log.js';
 import { rollPercent } from '../rng.js';
 
 /**
@@ -323,14 +324,9 @@ const manaOrbPort = {
       const { spent } = useMana(ctx.player, need, {
         originKey: piece.placementKey,
         originId: piece.itemId,
+        t: ctx.t,
       });
-      if (spent > 0) {
-        logSpentStacks(ctx.player, 'mana', spent, {
-          originKey: piece.placementKey,
-          originId: piece.itemId,
-          t: ctx.t,
-        });
-      }
+      if (!(spent > 0)) return;
       giveRandomBuffs(ctx.player, totalBuffs, ctx.rng, {
         originKey: piece.placementKey,
         originId: piece.itemId,
@@ -448,43 +444,46 @@ const wolfBadgePort = {
   },
 };
 
-/** MagicRing.gd via SuperiorRing.tscn */
-const superiorRingPort = {
-  handlerId: 'superior_ring',
-  family: 'unique',
-  onCombatStart(piece, ctx) {
-    piece._ringTick = 0;
-    const n = Math.max(1, Math.round(getPName(piece.params, 'start', getP1(piece.params, 2))));
-    const picked = giveRandomBuffs(ctx.player, n, ctx.rng, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'superior_ring', picked);
-  },
+/** TimePendant.gd — Every CDs: advance first ★ item that has an active CD. */
+/** @type {ScriptHandler} */
+const timePendantPort = {
+  handlerId: 'time_pendant',
+  family: 'custom_cd',
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'superior_ring', `Accessory: ${piece.name}`);
-    piece._ringTick = (piece._ringTick || 0) + 1;
-    const every = Math.max(1, Math.round(getPName(piece.params, 'every', getP2(piece.params, 1))));
-    grantStacks(ctx.player, 'mana', every, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    const plow = getPName(piece.params, 'playerlow', 0.35);
-    const olow = getPName(piece.params, 'oppolow', 0.35);
-    const relP = ctx.player.maxHp > 0 ? ctx.player.hp / ctx.player.maxHp : 1;
-    const relD = ctx.dummy.maxHp > 0 ? ctx.dummy.hp / ctx.dummy.maxHp : 1;
-    if (relP < plow) {
-      giveRandomBuffs(ctx.player, 1, ctx.rng, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-    }
-    if (relD < olow) {
-      grantStacks(ctx.dummy, 'poison', 1, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-        rng: ctx.rng,
-        opponent: ctx.player,
+    const sec = getPName(piece.params, 'cdadvance', getP1(piece.params, 1));
+    const links = affectedTargets(
+      ctx.graph,
+      piece.placementKey,
+      ctx.itemsById,
+      ctx.canAffect,
+    );
+    const target = (ctx.pieces || []).find(
+      (o) =>
+        links.some((l) => l.key === o.placementKey) && isCooldownActive(o),
+    );
+    if (target && sec > 0) {
+      const before = target.triggerTime;
+      advanceCooldownSeconds(target, sec, ctx);
+      ctx.events.push({
+        t: ctx.t,
+        type: 'buff',
+        actor: 'player',
+        target: 'player',
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        amount: sec,
+        label: `${piece.name}: −${sec}s CD → ${target.name}`,
+        meta: {
+          category: 'buff',
+          script: true,
+          handler: 'time_pendant',
+          stack: 'cooldown_advance',
+          targetKey: target.placementKey,
+          targetItemId: target.itemId,
+          triggerBefore: before,
+          triggerAfter: target.triggerTime,
+          miniActivate: true,
+        },
       });
     }
     return true;
@@ -512,4 +511,5 @@ export const AN_ACCESSORY_PORTS = {
   twine_badge: twineBadgePort,
   wolf_badge: wolfBadgePort,
   superior_ring: superiorRingPort,
+  time_pendant: timePendantPort,
 };

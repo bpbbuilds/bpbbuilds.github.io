@@ -86,9 +86,17 @@ const burningSwordPort = {
       const procs = Math.floor((Number(piece._heatBank) || 0) / need);
       if (procs <= 0) return;
       piece._heatBank %= need;
-      addBonusDamage(piece, bonus * procs);
+      const amt = bonus * procs;
+      // Attribute heat→damage to this sword, not the Heat grantor (Mana Orb).
+      const src = {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+        originName: piece.name,
+        via: 'heat',
+      };
+      addBonusDamage(piece, amt, src);
       for (const o of linked(ctx, piece)) {
-        if (canBeEmpoweredPiece(o)) addBonusDamage(o, bonus * procs);
+        if (canBeEmpoweredPiece(o)) addBonusDamage(o, amt, src);
       }
     });
   },

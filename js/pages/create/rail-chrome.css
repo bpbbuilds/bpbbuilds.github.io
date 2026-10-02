@@ -40,7 +40,7 @@
   font-weight: 700;
   font-style: italic;
   line-height: 1;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -71,7 +71,7 @@
   -webkit-text-stroke: 0.08em var(--il-ink, #3c261d);
   paint-order: stroke fill;
   text-shadow: var(--il-ui-ring);
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   background: color-mix(in srgb, var(--il-ink, #3c261d) 38%, #8a6a4a);
   transition: filter 0.12s ease, background 0.12s ease, opacity 0.12s ease;
 }
@@ -97,7 +97,7 @@
   border-color: #1e4d22;
   opacity: 1;
   filter: none;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   box-shadow: 0 0 0 1px color-mix(in srgb, #7dce82 40%, transparent);
 }
 
@@ -121,7 +121,7 @@
   -webkit-text-stroke: var(--il-ui-stroke, 0.1em) var(--il-ink, #3c261d);
   paint-order: stroke fill;
   text-shadow: var(--il-ui-ring);
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   background: color-mix(in srgb, var(--il-ink, #3c261d) 42%, #8a6a4a);
   transition: background 0.12s ease, filter 0.12s ease;
 }
@@ -356,7 +356,7 @@
   border: 2px solid transparent;
   border-radius: 0.25rem;
   background: transparent;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   font-family: var(--bpb-font-body);
   font-weight: 400;
   font-size: 1.5rem;
@@ -434,7 +434,7 @@
   font-weight: 700;
   font-style: italic;
   line-height: 1;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -458,6 +458,33 @@ body.cr-modal-open {
 }
 
 .cr-modal {
+  /* Same OptionsFont / Patch3 tokens as `.items-filters.il-filter` so form
+     dialogs match create + filter rails when they are not inside that rail. */
+  --il-ink: #3c261d;
+  --il-cream: #ffecdc;
+  --il-gold: #eac914;
+  --il-shade-pad-y: 0.4rem;
+  --il-shade-pad-x: 0.55rem;
+  --il-shade: rgba(14, 15, 16, 0.16);
+  --il-ui-stroke: 0.1em;
+  --il-ui-track: -0.03em;
+  --il-ui-ring:
+    0.1em 0 0 var(--il-ink),
+    0.092em 0.038em 0 var(--il-ink),
+    0.071em 0.071em 0 var(--il-ink),
+    0.038em 0.092em 0 var(--il-ink),
+    0 0.1em 0 var(--il-ink),
+    -0.038em 0.092em 0 var(--il-ink),
+    -0.071em 0.071em 0 var(--il-ink),
+    -0.092em 0.038em 0 var(--il-ink),
+    -0.1em 0 0 var(--il-ink),
+    -0.092em -0.038em 0 var(--il-ink),
+    -0.071em -0.071em 0 var(--il-ink),
+    -0.038em -0.092em 0 var(--il-ink),
+    0 -0.1em 0 var(--il-ink),
+    0.038em -0.092em 0 var(--il-ink),
+    0.071em -0.071em 0 var(--il-ink),
+    0.092em -0.038em 0 var(--il-ink);
   position: fixed;
   inset: 0;
   z-index: 80;
@@ -478,7 +505,7 @@ body.cr-modal-open {
   background: rgba(8, 6, 4, 0.55);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 .cr-modal__panel {
@@ -502,14 +529,51 @@ body.cr-modal-open {
     var(--bpb-shadow-paper, 0 4px 14px rgba(40, 24, 12, 0.35));
 }
 
+.cr-modal__panel--form {
+  --bpb-bg-scroll-thumb: #eac914;
+  --bpb-bg-scroll-track: #816230;
+  --bpb-bg-scroll-frame: #472a24;
+  max-height: min(88vh, 42rem);
+  /* Leather parchment closer to the create / filter rail than the dark info modal */
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--il-cream, #ffecdc) 42%, #8a6244),
+      color-mix(in srgb, #5a3828 38%, #c4a57a)
+    ),
+    url("../../../assets/theme/backgrounds/bg-parchment-panel.png");
+  background-size: cover;
+  background-position: center;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bpb-bg-scroll-thumb) var(--bpb-bg-scroll-track);
+}
+
+.cr-modal__panel--form::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+.cr-modal__panel--form::-webkit-scrollbar-track {
+  border: 3px solid var(--bpb-bg-scroll-frame);
+  border-radius: 16px;
+  background: var(--bpb-bg-scroll-track);
+}
+
+.cr-modal__panel--form::-webkit-scrollbar-thumb {
+  border: 2px solid var(--bpb-bg-scroll-frame);
+  border-radius: 20px;
+  background-color: var(--bpb-bg-scroll-thumb);
+}
+
 .cr-modal__title {
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.55rem;
   font-family: var(--bpb-font-display);
   font-size: 1.75rem;
   font-weight: 400;
   letter-spacing: 0.02em;
-  color: #fffaf0;
   line-height: 1.15;
+  color: var(--bpb-label-fill, #fffaf0);
+  text-shadow: var(--bpb-label-stroke);
 }
 
 .cr-modal__body {
@@ -550,7 +614,7 @@ body.cr-modal-open {
   -webkit-text-stroke: 0.07em var(--il-ink, #3c261d);
   paint-order: stroke fill;
   text-shadow: var(--il-ui-ring);
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   background: color-mix(in srgb, #8b2a2a 55%, #3c261d);
   transition: filter 0.12s ease;
 }
@@ -560,6 +624,33 @@ body.cr-modal-open {
 }
 
 .cr-modal__close:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--il-gold, #eac914) 80%, transparent);
+  outline-offset: 2px;
+}
+
+.cr-btn-quiet {
+  appearance: none;
+  display: inline-block;
+  margin: 0;
+  padding: 0.42rem 1rem 0.38rem;
+  border: 2px solid color-mix(in srgb, var(--il-cream, #ffecdc) 38%, var(--il-ink, #3c261d));
+  border-radius: 0.35rem;
+  background: color-mix(in srgb, var(--il-ink, #3c261d) 32%, transparent);
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.15;
+  color: var(--il-cream, #ffecdc);
+  cursor: var(--bpb-cursor-pointer);
+  transition: filter 0.12s ease, background 0.12s ease;
+}
+
+.cr-btn-quiet:hover {
+  filter: brightness(1.1);
+  background: color-mix(in srgb, var(--il-ink, #3c261d) 48%, transparent);
+}
+
+.cr-btn-quiet:focus-visible {
   outline: 2px solid color-mix(in srgb, var(--il-gold, #eac914) 80%, transparent);
   outline-offset: 2px;
 }
@@ -611,7 +702,7 @@ body.cr-modal-open {
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   transition: border-color 0.12s ease, background 0.12s ease;
 }
 
@@ -686,7 +777,7 @@ body.cr-modal-open {
   border: 2px solid transparent;
   border-radius: 0.25rem;
   background: transparent;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   font-family: var(--bpb-font-body);
   font-weight: 400;
   font-size: 1.15rem;
@@ -734,7 +825,7 @@ body.cr-modal-open {
   border-radius: 0.25rem;
   border: 1px solid color-mix(in srgb, var(--il-ink, #3c261d) 50%, transparent);
   background: rgba(55, 36, 22, 0.2);
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   font-family: var(--bpb-font-body);
   font-size: 0.85rem;
   color: var(--il-cream, #ffecdc);
@@ -764,7 +855,7 @@ body.cr-modal-open {
   border: 2px solid var(--il-ink, #3c261d);
   border-radius: 0.3rem;
   background: color-mix(in srgb, var(--il-ink, #3c261d) 35%, #8a6a4a);
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   font-family: var(--bpb-font-body);
   font-size: 1rem;
   letter-spacing: var(--il-ui-track, -0.03em);
@@ -781,6 +872,14 @@ body.cr-modal-open {
 .cr-io__btn--file {
   display: inline-flex;
   align-items: center;
+}
+
+.page-create .cr-label:not(.cr-label--sm) {
+  font-size: clamp(1.05rem, 1.35vw, 1.625rem);
+}
+
+.page-create .cr-label--sm {
+  font-size: clamp(0.95rem, 1.05vw, 1.25rem);
 }
 
 .cr-save-note {

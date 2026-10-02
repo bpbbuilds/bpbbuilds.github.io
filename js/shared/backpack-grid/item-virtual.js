@@ -1,7 +1,7 @@
 /**
  * Itemiary viewport window — near-scroll placements stay placed; the rest
- * cool+park in the pool (DOM kept, sprites unloaded) so scrubbing does not
- * rebuild nodes.
+ * park warm in the pool (DOM + decoded sprites kept) so scrubbing does not
+ * rebuild nodes or re-decode thumbs.
  */
 
 import { unmountLiveArt } from '../item-live-art/index.js';
@@ -18,6 +18,13 @@ export const VIRTUAL_PAD_EM = 6;
 export const ITEM_LEAVE_MS = 220;
 /** Skip the leave wave when a filter dumps many pieces at once. */
 export const MAX_LEAVE_ANIM = 18;
+
+export function itemWidthEm(item) {
+  if (!item) return 1;
+  const bounds =
+    item.__bpbBounds || (item.__bpbBounds = bodyBounds(shapeForItem(item)));
+  return bounds?.w > 0 ? bounds.w : 1;
+}
 
 /**
  * @param {object | null | undefined} item
@@ -37,6 +44,8 @@ export function itemHeightEm(item) {
  *   rows: number,
  *   scrollTop: number,
  *   clientHeight: number,
+ *   scrollLeft?: number,
+ *   clientWidth?: number,
  * }} metrics
  * @param {number} [padEm]
  */
@@ -60,9 +69,16 @@ export function placementsNearViewport(
     const h = itemHeightEm(itemsById.get(p.id));
     const topPx = (Number(p.y) || 0) * cellPx;
     const bottomPx = topPx + h * cellPx;
-    if (bottomPx >= scrollTop - padPx && topPx <= viewBottom + padPx) {
-      near.push(p);
+    if (bottomPx < scrollTop - padPx || topPx > viewBottom + padPx) continue;
+    const clientWidth = metrics.clientWidth || 0;
+    if (clientWidth > 0) {
+      const scrollLeft = Math.max(0, metrics.scrollLeft || 0);
+      const viewRight = scrollLeft + clientWidth;
+      const leftPx = (Number(p.x) || 0) * cellPx;
+      const rightPx = leftPx + itemWidthEm(itemsById.get(p.id)) * cellPx;
+      if (rightPx < scrollLeft - padPx || leftPx > viewRight + padPx) continue;
     }
+    near.push(p);
   }
   return near;
 }
@@ -123,7 +139,8 @@ export function recycleEntry(entry) {
 }
 
 /**
- * Keep-alive: cool bitmaps + park off-board, leave the pool entry in place.
+ * Keep-alive warm park: leave decoded sprites attached, only stop live-art
+ * RAF/WebGL, then park off-board. Scrubbing back skips re-decode.
  * @param {{
  *   itemEl: HTMLElement,
  *   underEl: HTMLElement | null,
@@ -132,10 +149,10 @@ export function recycleEntry(entry) {
  *   y?: number,
  * } | null | undefined} entry
  */
-export function parkCooledEntry(entry) {
+export function parkWarmEntry(entry) {
   if (!entry?.itemEl) return;
   cancelItemLeave(entry.itemEl, entry.underEl);
-  coolItemSprites(entry.itemEl);
+  unmountLiveArt(entry.itemEl);
   parkEntry(entry.itemEl, entry.underEl);
   entry.shown = false;
   entry.x = NaN;
@@ -143,7 +160,7 @@ export function parkCooledEntry(entry) {
 }
 
 /**
- * After leave clip — keep-alive parks; does not destroy the node.
+ * After leave clip — warm park; does not destroy the node or cool sprites.
  * @param {{
  *   itemEl: HTMLElement,
  *   underEl: HTMLElement | null,
@@ -153,5 +170,5 @@ export function parkCooledEntry(entry) {
  * }} entry
  */
 export function finishItemLeave(entry) {
-  parkCooledEntry(entry);
+  parkWarmEntry(entry);
 }

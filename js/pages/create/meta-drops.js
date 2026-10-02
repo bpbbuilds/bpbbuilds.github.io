@@ -14,10 +14,13 @@ import { pointOverElement } from './park-strip.js';
  *   state: ReturnType<import('./editor-state.js').createEditorState>,
  *   itemsById: Map<string, object>,
  *   getSpriteUrl: (item: object) => string,
+ *   notesComposer?: { el: HTMLElement, insertItem: Function, isOver: Function } | null,
+ *   getAllowedIds?: () => Set<string> | null,
  * }} opts
  */
 export function createMetaDrops(opts) {
-  const { host, state, itemsById, getSpriteUrl } = opts;
+  const { host, state, itemsById, getSpriteUrl, notesComposer, getAllowedIds } =
+    opts;
   /** @type {'r3' | 'r10' | null} */
   let armedRoute = null;
 
@@ -149,6 +152,10 @@ export function createMetaDrops(opts) {
   function getDropTarget(clientX, clientY) {
     if (!isOverBuildPanel(clientX, clientY)) return null;
 
+    if (notesComposer?.el && notesComposer.isOver(clientX, clientY)) {
+      return { kind: /** @type {const} */ ('mention'), el: notesComposer.el };
+    }
+
     for (const el of host.querySelectorAll('[data-route]')) {
       if (!(el instanceof HTMLElement)) continue;
       if (!pointOverElement(el, clientX, clientY)) continue;
@@ -208,6 +215,11 @@ export function createMetaDrops(opts) {
       if (String(item.type || '') === 'Bag') return false;
       return !!resolveTierPlacementKey(cur);
     }
+    if (target.kind === 'mention') {
+      const allowed = getAllowedIds?.() ?? null;
+      if (allowed && !allowed.has(String(cur.itemId))) return false;
+      return Boolean(getSpriteUrl(item));
+    }
     return false;
   }
 
@@ -224,6 +236,10 @@ export function createMetaDrops(opts) {
       host.querySelectorAll('.build-info__tier[data-priority]').forEach((el) => {
         el.classList.add('is-drop-valid');
       });
+    }
+
+    if (notesComposer?.el && canAcceptDrop(cur, { kind: 'mention' })) {
+      notesComposer.el.classList.add('is-drop-valid');
     }
 
     host.querySelectorAll('[data-route]').forEach((el) => {
@@ -272,6 +288,15 @@ export function createMetaDrops(opts) {
       state.setSelectedKey(key);
       clearDropHover();
       return 'done';
+    }
+
+    if (target.kind === 'mention') {
+      const ok = notesComposer?.insertItem(cur.itemId, {
+        clientX,
+        clientY,
+      });
+      clearDropHover();
+      return ok ? 'done' : 'reject';
     }
     return 'reject';
   }

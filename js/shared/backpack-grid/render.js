@@ -10,6 +10,23 @@ import { paintPooled, packWidth, cellPxFill } from './item-pool.js';
 const CELL_PX_DEFAULT = 34;
 
 /**
+ * Largest cell that keeps a cols×rows board inside the host content box.
+ * @param {Element} host
+ * @param {number} cols
+ * @param {number} rows
+ * @param {number} fallback
+ */
+function cellPxFitHost(host, cols, rows, fallback) {
+  const cs = getComputedStyle(host);
+  const padX = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+  const padY = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+  const w = host.clientWidth - padX;
+  const h = host.clientHeight - padY;
+  if (w < 8 || h < 8 || cols < 1 || rows < 1) return fallback;
+  return Math.round(Math.max(18, Math.min(w / cols, h / rows)) * 100) / 100;
+}
+
+/**
  * Auto-pack items into a continuous Itemiary grid.
  *
  * @param {Element | string} container
@@ -101,9 +118,11 @@ export function mountPackedGrid(container, options) {
  *   getSpriteUrl: (item: object) => string,
  *   cellPx?: number,
  *   fillWidth?: boolean,
+ *   fitHost?: boolean,
  *   exactBoard?: boolean,
  *   reserveScrollGap?: boolean,
  *   appear?: boolean,
+ *   promo?: boolean,
  * }} options
  */
 export function mountPlacedGrid(container, options) {
@@ -115,7 +134,8 @@ export function mountPlacedGrid(container, options) {
     el = document.createElement('div');
     host.replaceChildren(el);
   }
-  el.className = 'bpb-bg bpb-bg--placed';
+  el.className =
+    'bpb-bg bpb-bg--placed' + (options.promo === true ? ' bpb-bg--promo' : '');
 
   const map =
     options.itemsById instanceof Map
@@ -137,6 +157,7 @@ export function mountPlacedGrid(container, options) {
   const fixedRows = options.rows != null;
   const baseCellPx = options.cellPx ?? CELL_PX_DEFAULT;
   const fillWidth = options.fillWidth === true;
+  const fitHost = options.fitHost === true;
   // Build boards: exact cols×cell, no Itemiary scrollbar gutter (avoids right-edge clip)
   const exactBoard = options.exactBoard !== false;
   const reserveScrollGap = options.reserveScrollGap === true;
@@ -161,8 +182,8 @@ export function mountPlacedGrid(container, options) {
     const avail = reserveScrollGap
       ? packWidth(el, host.clientWidth || fallback)
       : Math.max(1, host.clientWidth || el.clientWidth || fallback);
-    const cellPx = fillWidth ? cellPxFill(avail, cols, baseCellPx) : baseCellPx;
-    const layoutKey = `${avail}:${cols}:${cellPx}:${rows}`;
+    const cellPx = fitHost ? cellPxFitHost(host, cols, rows, baseCellPx) : fillWidth ? cellPxFill(avail, cols, baseCellPx) : baseCellPx;
+    const layoutKey = `${avail}:${host.clientHeight}:${cols}:${cellPx}:${rows}`;
     const layoutChanged = layoutKey !== lastLayoutKey;
     lastLayoutKey = layoutKey;
     if (!forcePaint && !layoutChanged && el.childElementCount) return;
@@ -192,9 +213,9 @@ export function mountPlacedGrid(container, options) {
   }
 
   let ro = null;
-  if (fillWidth) {
+  if (fillWidth || fitHost) {
     ro = new ResizeObserver(() => render());
-    ro.observe(el);
+    ro.observe(fitHost ? host : el);
   }
   render({ forcePaint: true });
 

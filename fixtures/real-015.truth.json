@@ -1,0 +1,103 @@
+{
+  "note": "Hand-labeled with create ?label=1",
+  "source": "in-game",
+  "split": "train",
+  "labeledAt": "2026-09-27T04:02:36.463Z",
+  "shot": {
+    "w": 339,
+    "h": 244
+  },
+  "items": [
+    {
+      "name": "Healing Herbs",
+      "x": 2,
+      "y": 1,
+      "r": null
+    },
+    {
+      "name": "Walrus Tusk",
+      "x": 0,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Star of Courage",
+      "x": 2,
+      "y": 2,
+      "r": null
+    },
+    {
+      "name": "Piggybank",
+      "x": 3,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Wooden Sword",
+      "x": 5,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Cog Badge",
+      "x": 3,
+      "y": 2,
+      "r": null
+    }
+  ],
+  "skills": [],
+  "jewels": [
+    {
+      "name": "Chipped Sapphire",
+      "x": 1,
+      "y": 1,
+      "r": 0
+    }
+  ],
+  "bagCells": [
+    "4,1",
+    "5,1",
+    "4,2",
+    "5,2",
+    "0,1",
+    "1,1",
+    "2,1",
+    "0,2",
+    "1,2",
+    "2,2",
+    "3,1",
+    "3,2",
+    "3,3",
+    "3,4"
+  ],
+  "bags": [
+    {
+      "name": "Leather Bag",
+      "x": 4,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Duffle Bag",
+      "x": 0,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Potion Belt",
+      "x": 3,
+      "y": 1,
+      "r": 0
+    }
+  ],
+  "grid": {
+    "ok": true,
+    "originX": 19,
+    "originY": -0.5,
+    "cellW": 36.5,
+    "cellH": 36.5,
+    "imgW": 339,
+    "imgH": 244,
+    "score": 1.253
+  }
+}

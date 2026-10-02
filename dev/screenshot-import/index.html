@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dev — Screenshot import</title>
+  <link rel="stylesheet" href="../../css/theme.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../css/shared.css?v=fa3633b" />
+  <style>
+    .stb-main {
+      max-width: 72rem;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+      font-family: var(--bpb-font-body);
+      color: #3c261d;
+    }
+    .stb-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .stb-row img,
+    .stb-row canvas {
+      max-width: 34rem;
+      width: 100%;
+      height: auto;
+      border: 2px solid #3c261d;
+      background: #2a1a12;
+    }
+    .stb-log {
+      white-space: pre-wrap;
+      font-size: 0.8rem;
+      background: color-mix(in srgb, #ffecdc 60%, #8a6244);
+      padding: 0.6rem 0.8rem;
+      max-height: 24rem;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body class="page-dev-screenshot-import" data-root="../../">
+  <main id="main" class="stb-main" aria-label="Screenshot import sandbox">
+    <p>
+      Dev sandbox — screenshot import pipeline (not linked from nav, no premium gate).
+      <a href="../../create/">← Create</a>
+    </p>
+    <p>
+      <label for="stb-file">Screenshot</label>
+      <input id="stb-file" type="file" accept="image/*" />
+      <span id="stb-status" aria-live="polite">Loading catalog…</span>
+    </p>
+    <div class="stb-row">
+      <img id="stb-shot" alt="Uploaded screenshot" hidden />
+      <canvas id="stb-board" width="9" height="7" hidden></canvas>
+    </div>
+    <pre class="stb-log" id="stb-log"></pre>
+  </main>
+  <script type="module" src="../../js/pages/dev-screenshot-import/index.js?v=grid97"></script>
+</body>
+</html>

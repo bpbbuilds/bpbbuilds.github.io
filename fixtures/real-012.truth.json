@@ -1,0 +1,99 @@
+{
+  "note": "Hand-labeled with create ?label=1",
+  "source": "in-game",
+  "split": "train",
+  "labeledAt": "2026-09-27T04:12:34.990Z",
+  "shot": {
+    "w": 341,
+    "h": 249
+  },
+  "items": [
+    {
+      "name": "Healing Herbs",
+      "x": 4,
+      "y": 2,
+      "r": null
+    },
+    {
+      "name": "Pocket Sand",
+      "x": 5,
+      "y": 2,
+      "r": null
+    },
+    {
+      "name": "Shortbow",
+      "x": 4,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Stone",
+      "x": 3,
+      "y": 3,
+      "r": null
+    },
+    {
+      "name": "Lucky Clover",
+      "x": 3,
+      "y": 2,
+      "r": null
+    },
+    {
+      "name": "Oil Lamp",
+      "x": 2,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Star of Courage",
+      "x": 3,
+      "y": 4,
+      "r": null
+    }
+  ],
+  "skills": [],
+  "jewels": [
+    {
+      "name": "Chipped Sapphire",
+      "x": 2,
+      "y": 4,
+      "r": 0
+    }
+  ],
+  "bagCells": [
+    "4,2",
+    "5,2",
+    "4,3",
+    "5,3",
+    "2,2",
+    "3,2",
+    "2,3",
+    "3,3",
+    "2,4",
+    "3,4"
+  ],
+  "bags": [
+    {
+      "name": "Leather Bag",
+      "x": 4,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Ranger Bag",
+      "x": 2,
+      "y": 2,
+      "r": 0
+    }
+  ],
+  "grid": {
+    "ok": true,
+    "originX": 8,
+    "originY": 16,
+    "cellW": 36.5,
+    "cellH": 36.5,
+    "imgW": 341,
+    "imgH": 249,
+    "score": 1.21
+  }
+}

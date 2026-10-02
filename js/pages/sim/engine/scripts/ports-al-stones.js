@@ -138,7 +138,14 @@ export const artifactStoneHeatPort = {
       if ((getStackAmount(ctx.player, 'heat') || 0) < need) return;
       piece._ashOn = true;
       for (const w of linked(ctx, piece)) {
-        if (canBeEmpoweredPiece(w)) addBonusDamage(w, bonus);
+        if (canBeEmpoweredPiece(w)) {
+          addBonusDamage(w, bonus, {
+            originKey: piece.placementKey,
+            originId: piece.itemId,
+            originName: piece.name,
+            via: 'heat',
+          });
+        }
       }
     });
   },

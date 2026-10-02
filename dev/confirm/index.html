@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dev — Confirm dialog</title>
+  <link rel="preload" href="../../assets/fonts/milonga.woff2?v=fa3633b" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../../assets/fonts/libre-400.woff2?v=fa3633b" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../../css/theme.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../css/shared.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../js/shared/confirm-dialog.css?v=fa3633b" />
+  <style>
+    .dev-confirm-main {
+      max-width: 36rem;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+    }
+    .dev-confirm-banner {
+      margin: 0 0 1.25rem;
+      font-family: var(--bpb-font-body);
+      font-size: 0.95rem;
+      color: var(--bpb-ink, #3c261d);
+    }
+    .dev-confirm-banner a {
+      color: inherit;
+      text-decoration: underline;
+    }
+    .dev-confirm-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      padding: 1.1rem 1.2rem;
+      background: color-mix(in srgb, #ffecdc 35%, #8a6244);
+      border: 2px solid color-mix(in srgb, #ffecdc 30%, #3c261d);
+      border-radius: 0.4rem;
+    }
+    .dev-confirm-panel h1 {
+      margin: 0;
+      font-family: var(--bpb-font-display);
+      font-size: 1.65rem;
+      font-weight: 400;
+      color: var(--bpb-label-fill, #fffaf0);
+      text-shadow: var(--bpb-label-stroke);
+    }
+    .dev-confirm-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .dev-confirm-field label {
+      font-family: var(--bpb-font-body);
+      font-size: 0.85rem;
+      font-style: italic;
+      color: #3c261d;
+    }
+    .dev-confirm-field input,
+    .dev-confirm-field textarea {
+      font-family: var(--bpb-font-body);
+      font-size: 0.95rem;
+      padding: 0.4rem 0.55rem;
+      border: 2px solid #3c261d;
+      border-radius: 0.3rem;
+      background: color-mix(in srgb, #1a100c 55%, #3c261d);
+      color: #ffecdc;
+    }
+    .dev-confirm-field textarea {
+      min-height: 4.5rem;
+      resize: vertical;
+    }
+    .dev-confirm-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .dev-confirm-row label {
+      font-family: var(--bpb-font-body);
+      font-size: 0.9rem;
+      color: #3c261d;
+      display: inline-flex;
+      gap: 0.35rem;
+      align-items: center;
+    }
+    .dev-confirm-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .dev-confirm-actions button {
+      appearance: none;
+      font-family: var(--bpb-font-display);
+      font-size: 1.15rem;
+      padding: 0.4rem 1rem 0.35rem;
+      border: 2px solid #3c261d;
+      border-radius: 0.35rem;
+      color: #ffecdc;
+      background: color-mix(in srgb, #3d7a3a 55%, #3c261d);
+      cursor: pointer;
+      text-shadow: var(--bpb-label-stroke);
+    }
+    .dev-confirm-actions button:hover {
+      filter: brightness(1.08);
+    }
+    .dev-confirm-log {
+      margin: 0;
+      min-height: 1.4em;
+      font-family: var(--bpb-font-body);
+      font-size: 0.9rem;
+      font-style: italic;
+      color: #3c261d;
+    }
+  </style>
+</head>
+<body class="page-dev-confirm" data-root="../../">
+  <main id="main" class="dev-confirm-main" aria-label="Confirm dialog sandbox">
+    <p class="dev-confirm-banner">
+      Dev sandbox — site confirm dialog (not linked from nav).
+      <a href="../../create/">← Create</a>
+    </p>
+    <div class="dev-confirm-panel">
+      <h1 class="bpb-label-text">Confirm dialog</h1>
+      <div class="dev-confirm-field">
+        <label for="dev-confirm-title">Title</label>
+        <input id="dev-confirm-title" type="text" value="Clear board?" />
+      </div>
+      <div class="dev-confirm-field">
+        <label for="dev-confirm-body">Body</label>
+        <textarea id="dev-confirm-body">Removes everything on the board and in Parked. Attached run history is cleared too.</textarea>
+      </div>
+      <div class="dev-confirm-field">
+        <label for="dev-confirm-ok">Confirm label</label>
+        <input id="dev-confirm-ok" type="text" value="Clear" />
+      </div>
+      <div class="dev-confirm-field">
+        <label for="dev-confirm-cancel">Cancel label</label>
+        <input id="dev-confirm-cancel" type="text" value="Cancel" />
+      </div>
+      <div class="dev-confirm-row">
+        <label><input id="dev-confirm-danger" type="checkbox" checked /> Danger (red) confirm</label>
+      </div>
+      <div class="dev-confirm-actions">
+        <button type="button" id="dev-confirm-open">Open dialog</button>
+      </div>
+      <p class="dev-confirm-log" id="dev-confirm-log" aria-live="polite"></p>
+    </div>
+  </main>
+  <script type="module" src="../../js/pages/dev-confirm/index.js?v=fa3633b"></script>
+</body>
+</html>

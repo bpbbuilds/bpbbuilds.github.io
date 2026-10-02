@@ -46,9 +46,15 @@ export function unregisterChargePath(pathId) {
 /**
  * @param {import('./pieces.js').CombatPiece | null | undefined} piece
  * @param {number} delta
+ * @param {'speed' | 'buffAmp'} [mode]
  */
-function chargedItemStatChange(piece, delta) {
+function chargedItemStatChange(piece, delta, mode = 'speed') {
   if (!piece || !(Number(delta) || 0)) return;
+  // ConTrapTron.gd chargedItemStatChange → changeAmplificiationChancePercent_allBuffs
+  if (mode === 'buffAmp') {
+    piece.buffAmpChance = (Number(piece.buffAmpChance) || 0) + Number(delta);
+    return;
+  }
   addSpeed(piece, delta);
 }
 
@@ -58,8 +64,9 @@ function chargedItemStatChange(piece, delta) {
  * @param {number} cellIndex
  * @param {number} flatVal
  * @param {number} valPerTile
+ * @param {'speed' | 'buffAmp'} [mode]
  */
-export function changeChargedItemStat(tracker, cellIndex, flatVal, valPerTile) {
+export function changeChargedItemStat(tracker, cellIndex, flatVal, valPerTile, mode = 'speed') {
   const flat = Number(flatVal) || 0;
   const per = Number(valPerTile) || 0;
   const idx = Number(cellIndex) || 0;
@@ -70,15 +77,15 @@ export function changeChargedItemStat(tracker, cellIndex, flatVal, valPerTile) {
 
   if (last) {
     if (!cur) {
-      chargedItemStatChange(last, -previousVal);
+      chargedItemStatChange(last, -previousVal, mode);
     } else if (cur === last) {
-      chargedItemStatChange(cur, per);
+      chargedItemStatChange(cur, per, mode);
     } else {
-      chargedItemStatChange(last, -previousVal);
-      chargedItemStatChange(cur, newVal);
+      chargedItemStatChange(last, -previousVal, mode);
+      chargedItemStatChange(cur, newVal, mode);
     }
   } else if (cur) {
-    chargedItemStatChange(cur, newVal);
+    chargedItemStatChange(cur, newVal, mode);
   }
 }
 
@@ -89,12 +96,13 @@ export function changeChargedItemStat(tracker, cellIndex, flatVal, valPerTile) {
  * @param {import('./pieces.js').CombatPiece | null | undefined} curPiece
  * @param {number} flatVal
  * @param {number} valPerTile
+ * @param {'speed' | 'buffAmp'} [mode]
  * @returns {import('./pieces.js').CombatPiece | null}
  */
-export function enterChargeCell(tracker, cellIndex, curPiece, flatVal, valPerTile) {
+export function enterChargeCell(tracker, cellIndex, curPiece, flatVal, valPerTile, mode = 'speed') {
   const prevPiece = tracker.curChargedPiece;
   tracker.lastChargedPiece = tracker.curChargedPiece;
   tracker.curChargedPiece = curPiece || null;
-  changeChargedItemStat(tracker, cellIndex, flatVal, valPerTile);
+  changeChargedItemStat(tracker, cellIndex, flatVal, valPerTile, mode);
   return prevPiece;
 }

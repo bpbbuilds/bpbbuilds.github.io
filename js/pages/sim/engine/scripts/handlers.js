@@ -24,6 +24,7 @@ import { applyBonusDamageFactor } from '../piece-stats.js';
  *   itemsById: Map<string, object>,
  *   canAffect: object | null,
  *   pieces?: CombatPiece[],
+ *   allPieces?: CombatPiece[],
  *   deckIndex?: { i: number },
  *   cardKeys?: string[],
  *   bus?: { on: Function, emit: Function, reset: Function },
@@ -135,7 +136,7 @@ export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
       itemId: piece.itemId,
       placementKey: piece.placementKey,
       label: `${piece.name} missed`,
-      meta: { category: 'damage', script: true },
+      meta: { category: 'damage', script: true, isAttack: true },
     });
     const missResult = { hit: false, healthDamage: 0, raw: 0, critical: false, missed: true };
     const n = res.attackEffectCount || 1;

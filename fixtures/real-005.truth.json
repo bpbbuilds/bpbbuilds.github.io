@@ -1,0 +1,296 @@
+{
+  "note": "Hand-labeled with create ?label=1",
+  "source": "reddit",
+  "split": "train",
+  "labeledAt": "2026-09-27T04:02:23.491Z",
+  "shot": {
+    "w": 800,
+    "h": 663
+  },
+  "items": [
+    {
+      "name": "Blood Amulet",
+      "x": 7,
+      "y": 6,
+      "r": null
+    },
+    {
+      "name": "Cheese Goobert",
+      "x": 4,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Steel Goobert",
+      "x": 2,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Light Goobert",
+      "x": 4,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Goobert",
+      "x": 6,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Armored Wisdom Puppy",
+      "x": 8,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Armored Wisdom Puppy",
+      "x": 8,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Wisdom Puppy",
+      "x": 0,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Chain Whip",
+      "x": 0,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Wolf Emblem",
+      "x": 3,
+      "y": 6,
+      "r": null
+    },
+    {
+      "name": "Armored Courage Puppy",
+      "x": 2,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Armored Courage Puppy",
+      "x": 3,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Armored Power Puppy",
+      "x": 2,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Time Dilator",
+      "x": 4,
+      "y": 2,
+      "r": null
+    },
+    {
+      "name": "Star of Courage",
+      "x": 8,
+      "y": 0,
+      "r": null
+    }
+  ],
+  "skills": [
+    {
+      "name": "Girl Power",
+      "x": 6,
+      "y": 3,
+      "r": 2
+    },
+    {
+      "name": "It’s Slime Time!",
+      "x": 6,
+      "y": 6,
+      "r": 0
+    }
+  ],
+  "jewels": [],
+  "bagCells": [
+    "7,5",
+    "8,5",
+    "7,6",
+    "8,6",
+    "0,0",
+    "1,0",
+    "2,0",
+    "0,1",
+    "1,1",
+    "2,1",
+    "4,0",
+    "4,1",
+    "3,0",
+    "3,1",
+    "5,0",
+    "6,0",
+    "5,1",
+    "6,1",
+    "7,0",
+    "8,0",
+    "7,1",
+    "8,1",
+    "8,2",
+    "7,2",
+    "6,2",
+    "5,2",
+    "0,3",
+    "0,2",
+    "7,3",
+    "8,3",
+    "7,4",
+    "8,4",
+    "6,3",
+    "6,4",
+    "6,5",
+    "5,3",
+    "5,4",
+    "5,5",
+    "5,6",
+    "6,6",
+    "3,5",
+    "4,5",
+    "3,6",
+    "4,6",
+    "2,2",
+    "3,2",
+    "2,3",
+    "3,3",
+    "4,2",
+    "4,3",
+    "3,4",
+    "4,4",
+    "2,6",
+    "1,6",
+    "0,6",
+    "2,5",
+    "1,5",
+    "0,5",
+    "2,4",
+    "0,4",
+    "1,2",
+    "1,3",
+    "1,4"
+  ],
+  "bags": [
+    {
+      "name": "Leather Bag",
+      "x": 7,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Holdall",
+      "x": 0,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 3,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Leather Bag",
+      "x": 5,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 7,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Potion Belt",
+      "x": 5,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 0,
+      "y": 2,
+      "r": 3
+    },
+    {
+      "name": "Leather Bag",
+      "x": 7,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Holdall",
+      "x": 5,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 5,
+      "y": 6,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 3,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 2,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 2,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 4,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 3,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Utility Pouch",
+      "x": 0,
+      "y": 4,
+      "r": 2
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 1,
+      "y": 2,
+      "r": 0
+    }
+  ],
+  "grid": {
+    "ok": true,
+    "originX": -24,
+    "originY": -24,
+    "cellW": 80,
+    "cellH": 80,
+    "imgW": 800,
+    "imgH": 663,
+    "score": 1.331
+  }
+}

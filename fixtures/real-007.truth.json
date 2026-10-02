@@ -1,0 +1,419 @@
+{
+  "note": "Hand-labeled with create ?label=1",
+  "source": "in-game",
+  "split": "test",
+  "labeledAt": "2026-09-27T03:37:47.730Z",
+  "shot": {
+    "w": 841,
+    "h": 607
+  },
+  "items": [
+    {
+      "name": "Doom Cap",
+      "x": 4,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Fly Agaric",
+      "x": 5,
+      "y": 0,
+      "r": 2
+    },
+    {
+      "name": "Fly Agaric",
+      "x": 3,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fly Agaric",
+      "x": 6,
+      "y": 3,
+      "r": 3
+    },
+    {
+      "name": "Fly Agaric",
+      "x": 7,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Fly Agaric",
+      "x": 6,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Fly Agaric",
+      "x": 4,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Fly Agaric",
+      "x": 3,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Fly Agaric",
+      "x": 3,
+      "y": 6,
+      "r": 1
+    },
+    {
+      "name": "Fly Agaric",
+      "x": 6,
+      "y": 6,
+      "r": 3
+    },
+    {
+      "name": "Garlic",
+      "x": 8,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Garlic",
+      "x": 8,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Garlic",
+      "x": 4,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Blueberries",
+      "x": 8,
+      "y": 4,
+      "r": null
+    },
+    {
+      "name": "Blueberries",
+      "x": 5,
+      "y": 4,
+      "r": null
+    },
+    {
+      "name": "Blueberries",
+      "x": 5,
+      "y": 6,
+      "r": null
+    },
+    {
+      "name": "Darksaber",
+      "x": 0,
+      "y": 1,
+      "r": 2,
+      "gems": [
+        {
+          "name": "Chipped Topaz",
+          "r": 2
+        },
+        {
+          "name": "Chipped Ruby",
+          "r": 1
+        }
+      ]
+    },
+    {
+      "name": "Darksaber",
+      "x": 1,
+      "y": 1,
+      "r": 2,
+      "gems": [
+        {
+          "name": "Lump of Coal",
+          "r": 0
+        },
+        null
+      ]
+    },
+    {
+      "name": "Cursed Dagger",
+      "x": 0,
+      "y": 0,
+      "r": 1,
+      "gems": [
+        {
+          "name": "Chipped Emerald",
+          "r": 1
+        }
+      ]
+    },
+    {
+      "name": "Poison Dagger",
+      "x": 2,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Poison Dagger",
+      "x": 2,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Banana",
+      "x": 6,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Banana",
+      "x": 2,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Blueberries",
+      "x": 8,
+      "y": 0,
+      "r": null
+    },
+    {
+      "name": "Holy Armor",
+      "x": 0,
+      "y": 5,
+      "r": 3,
+      "gems": [
+        {
+          "name": "Corrupted Crystal",
+          "r": 1
+        },
+        {
+          "name": "Corrupted Crystal",
+          "r": 1
+        },
+        null
+      ]
+    },
+    {
+      "name": "Pocket Sand",
+      "x": 2,
+      "y": 4,
+      "r": null
+    },
+    {
+      "name": "Jynx torquilla",
+      "x": 7,
+      "y": 1,
+      "r": 2
+    }
+  ],
+  "skills": [
+    {
+      "name": "Mushroom Farm",
+      "x": 5,
+      "y": 5,
+      "r": null
+    }
+  ],
+  "bagCells": [
+    "6,0",
+    "7,0",
+    "6,1",
+    "7,1",
+    "4,0",
+    "5,0",
+    "4,1",
+    "5,1",
+    "2,2",
+    "3,2",
+    "2,3",
+    "3,3",
+    "6,5",
+    "7,5",
+    "6,6",
+    "7,6",
+    "4,5",
+    "5,5",
+    "4,6",
+    "5,6",
+    "2,4",
+    "3,4",
+    "2,5",
+    "3,5",
+    "0,5",
+    "1,5",
+    "0,6",
+    "1,6",
+    "0,4",
+    "1,4",
+    "0,3",
+    "1,3",
+    "0,2",
+    "1,2",
+    "0,0",
+    "0,1",
+    "1,0",
+    "1,1",
+    "2,0",
+    "2,1",
+    "3,0",
+    "3,1",
+    "4,2",
+    "5,2",
+    "6,2",
+    "7,2",
+    "8,6",
+    "8,5",
+    "2,6",
+    "3,6",
+    "4,4",
+    "4,3",
+    "5,4",
+    "5,3",
+    "6,4",
+    "6,3",
+    "7,4",
+    "7,3",
+    "8,0",
+    "8,1",
+    "8,2",
+    "8,3",
+    "8,4"
+  ],
+  "bags": [
+    {
+      "name": "Leather Bag",
+      "x": 6,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 4,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 2,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 6,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 4,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 2,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 0,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 0,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 0,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 0,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 0,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 1,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 2,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 3,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 4,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 6,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 8,
+      "y": 5,
+      "r": 3
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 2,
+      "y": 6,
+      "r": 0
+    },
+    {
+      "name": "Storage Coffin",
+      "x": 4,
+      "y": 3,
+      "r": 3
+    },
+    {
+      "name": "Potion Belt",
+      "x": 8,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 8,
+      "y": 4,
+      "r": 0
+    }
+  ],
+  "grid": {
+    "ok": true,
+    "originX": -28.91,
+    "originY": -20.5,
+    "cellW": 80.42,
+    "cellH": 80.42,
+    "imgW": 841,
+    "imgH": 607,
+    "score": 1.294
+  }
+}

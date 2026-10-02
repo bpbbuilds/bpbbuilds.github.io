@@ -1,0 +1,215 @@
+/* Settings cog (bottom-right). Panel floats left of the cog — cog never moves. */
+
+.sim-settings-dock {
+  position: relative;
+  display: block;
+}
+
+.sim-settings-btn {
+  display: block;
+  width: 3.65rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: var(--bpb-cursor-pointer);
+  filter: drop-shadow(0 4px 10px rgba(40, 30, 20, 0.35));
+  transition: transform 0.12s ease, filter 0.12s ease;
+  transform-origin: center bottom;
+}
+
+.sim-settings-btn:hover,
+.sim-settings-btn:focus-visible {
+  transform: scale(1.05);
+  outline: none;
+}
+
+.sim-settings-btn.is-open {
+  filter: drop-shadow(0 2px 6px rgba(40, 30, 20, 0.28));
+}
+
+.sim-settings-btn__art {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sim-settings-panel {
+  position: absolute;
+  right: calc(100% + 0.4rem);
+  bottom: 0.15rem;
+  width: min(17.5rem, calc(100vw - 5rem));
+  padding: 0.75rem 0.85rem 0.8rem;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 244, 0.98) 0%, rgba(248, 240, 228, 0.97) 100%);
+  border: 2px solid rgba(60, 38, 29, 0.55);
+  border-radius: 0.35rem;
+  box-shadow:
+    0 2px 0 rgba(60, 38, 29, 0.12),
+    0 10px 28px rgba(40, 30, 20, 0.18);
+}
+
+.sim-settings-panel[hidden] {
+  display: none !important;
+}
+
+.sim-settings-panel__title {
+  margin: 0 0 0.55rem;
+  font-family: var(--bpb-font-display);
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: #3c261d;
+}
+
+.sim-settings-panel__sub {
+  margin: 0.75rem 0 0.35rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid rgba(60, 38, 29, 0.18);
+  font-family: var(--bpb-font-display);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #3c261d;
+}
+
+.sim-settings-panel__opts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.sim-settings-panel__row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--bpb-font-body);
+  font-size: 1rem;
+  color: #3c261d;
+}
+
+.sim-settings-panel__opt {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.sim-settings-panel__check {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0;
+  accent-color: #6a4a32;
+  cursor: var(--bpb-cursor-pointer);
+  flex-shrink: 0;
+}
+
+.sim-settings-panel__label {
+  line-height: 1.3;
+}
+
+/* Same family as create `.cr-submit-info` — cream ink “i” chip */
+.sim-settings-panel__info-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sim-settings-info {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 2px solid color-mix(in srgb, #ffecdc 45%, #3c261d);
+  border-radius: 999px;
+  background: color-mix(in srgb, #3c261d 42%, #8a6a4a);
+  color: #ffecdc;
+  font-family: var(--bpb-font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1;
+  cursor: var(--bpb-cursor-pointer);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.12s ease, background 0.12s ease;
+}
+
+.sim-settings-info:hover,
+.sim-settings-info.is-open {
+  filter: brightness(1.12);
+}
+
+.sim-settings-info:focus-visible {
+  outline: 2px solid color-mix(in srgb, #eac914 80%, transparent);
+  outline-offset: 2px;
+}
+
+.sim-settings-panel__tip {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.35rem);
+  z-index: 4;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(14.5rem, 70vw);
+  padding: 0.45rem 0.55rem;
+  border: 2px solid rgba(60, 38, 29, 0.55);
+  border-radius: 0.3rem;
+  background: linear-gradient(180deg, #fffbf4 0%, #f8f0e4 100%);
+  box-shadow: 0 6px 16px rgba(40, 30, 20, 0.18);
+  font-family: var(--bpb-font-body);
+  font-size: 0.78rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: #5a4030;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.15rem);
+  transition: opacity 0.12s ease, transform 0.12s ease, visibility 0.12s ease;
+}
+
+.sim-settings-panel__info-wrap:hover .sim-settings-panel__tip,
+.sim-settings-panel__info-wrap:focus-within .sim-settings-panel__tip,
+.sim-settings-panel__info-wrap.is-open .sim-settings-panel__tip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.sim-settings-panel__links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.28rem;
+}
+
+.sim-settings-panel__link {
+  font-family: var(--bpb-font-body);
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: #5a4030;
+  text-decoration: underline;
+}
+
+a.sim-settings-panel__link:hover,
+.sim-settings-panel__link:hover {
+  color: #3c261d;
+}
+
+@media (max-width: 1100px) {
+  .sim-settings-btn {
+    width: 3.25rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .sim-settings-panel {
+    right: 0;
+    bottom: calc(100% + 0.35rem);
+    width: min(17.5rem, calc(100vw - 1.5rem));
+  }
+}

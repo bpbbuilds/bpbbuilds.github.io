@@ -57,6 +57,8 @@ export async function fetchRemixBuild(slug) {
   const key = String(slug || '').trim();
   if (!key) throw new Error('Missing remix slug.');
 
+  const { syncEventBuildVisibility } = await import('../events/event-gallery-sync.js');
+  await syncEventBuildVisibility();
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('builds')

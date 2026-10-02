@@ -33,6 +33,7 @@ type Body = {
   action?: string;
   slug?: string;
   filter?: Filter;
+  eventSlug?: string;
 };
 
 Deno.serve(async (req) => {
@@ -91,6 +92,9 @@ Deno.serve(async (req) => {
 
   if (action === 'list') {
     return listBuilds(supabase, body.filter);
+  }
+  if (action === 'event_entries') {
+    return listEventEntries(supabase, body.eventSlug);
   }
 
   const slug = String(body.slug || '').trim();
@@ -177,6 +181,35 @@ async function listBuilds(
     placements: byBuild.get(Number(b.id)) || [],
   }));
   return json({ builds: out }, 200);
+}
+
+const ENTRY_COLS =
+  'id, slug, title, hero_class, author_name, rank, gold_count, created_at, notes, youtube_url, is_public, event_slug, history, starting_bag_id, route_r3_item_id, route_r10_item_id';
+
+/**
+ * Submitted builds for one event, including the stored run history for the judging file.
+ * @param {import('https://esm.sh/@supabase/supabase-js@2.49.1').SupabaseClient} supabase
+ * @param {string | undefined} eventSlug
+ */
+async function listEventEntries(
+  supabase: ReturnType<typeof createClient>,
+  eventSlug: string | undefined,
+) {
+  const slug = String(eventSlug || '').trim().toLowerCase();
+  if (!slug) return json({ error: 'eventSlug is required' }, 400);
+
+  const { data, error } = await supabase
+    .from('builds')
+    .select(ENTRY_COLS)
+    .eq('event_slug', slug)
+    .order('created_at', { ascending: false })
+    .limit(200);
+
+  if (error) {
+    console.error(error);
+    return json({ error: 'List failed', detail: error.message }, 500);
+  }
+  return json({ builds: data || [] }, 200);
 }
 
 /** @returns {Record<string, boolean> | null} */

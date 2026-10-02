@@ -1,0 +1,397 @@
+{
+  "note": "Hand-labeled with create ?label=1",
+  "source": "reddit",
+  "split": "test",
+  "labeledAt": "2026-09-27T03:27:18.321Z",
+  "shot": {
+    "w": 4096,
+    "h": 2304
+  },
+  "items": [
+    {
+      "name": "Fancy Fencing Rapier",
+      "x": 0,
+      "y": 1,
+      "r": 0,
+      "gems": [
+        {
+          "name": "Flawed Topaz",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Leather Boots",
+      "x": 1,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Spiked Collar",
+      "x": 0,
+      "y": 0,
+      "r": null
+    },
+    {
+      "name": "Armored Power Puppy",
+      "x": 3,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Panzer Dragon",
+      "x": 0,
+      "y": 4,
+      "r": 2
+    },
+    {
+      "name": "Panzer Dragon",
+      "x": 3,
+      "y": 2,
+      "r": 3,
+      "gems": [
+        null,
+        {
+          "name": "Chipped Topaz",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Armored Courage Puppy",
+      "x": 2,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Armored Courage Puppy",
+      "x": 3,
+      "y": 2,
+      "r": 3
+    },
+    {
+      "name": "Wolf Emblem",
+      "x": 1,
+      "y": 3,
+      "r": null
+    },
+    {
+      "name": "Armored Power Puppy",
+      "x": 1,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Courage Puppy",
+      "x": 4,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Armored Wisdom Puppy",
+      "x": 5,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Armored Wisdom Puppy",
+      "x": 7,
+      "y": 6,
+      "r": 1
+    },
+    {
+      "name": "Vampiric Armor",
+      "x": 3,
+      "y": 5,
+      "r": 1,
+      "gems": [
+        {
+          "name": "Regular Ruby",
+          "r": 0
+        },
+        {
+          "name": "Regular Amethyst",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Corrupted Armor",
+      "x": 7,
+      "y": 1,
+      "r": 0,
+      "gems": [
+        {
+          "name": "Flawed Amethyst",
+          "r": 0
+        },
+        null,
+        null
+      ]
+    },
+    {
+      "name": "Amulet of Steel",
+      "x": 6,
+      "y": 5,
+      "r": null
+    },
+    {
+      "name": "Amulet of Steel",
+      "x": 6,
+      "y": 6,
+      "r": null
+    },
+    {
+      "name": "Amulet of Steel",
+      "x": 6,
+      "y": 3,
+      "r": null
+    },
+    {
+      "name": "Cap of Discomfort",
+      "x": 7,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Maneki-neko",
+      "x": 2,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Maneki-neko",
+      "x": 6,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Forging Hammer",
+      "x": 7,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Healing Herbs",
+      "x": 8,
+      "y": 5,
+      "r": null
+    }
+  ],
+  "skills": [
+    {
+      "name": "Echoing Battlecry",
+      "x": 6,
+      "y": 4,
+      "r": null
+    },
+    {
+      "name": "Power of the Moon",
+      "x": 5,
+      "y": 0,
+      "r": null
+    }
+  ],
+  "bagCells": [
+    "2,0",
+    "3,0",
+    "2,1",
+    "3,1",
+    "4,0",
+    "5,0",
+    "4,1",
+    "5,1",
+    "6,0",
+    "7,0",
+    "6,1",
+    "7,1",
+    "8,0",
+    "8,1",
+    "8,2",
+    "7,2",
+    "7,3",
+    "7,4",
+    "8,3",
+    "7,5",
+    "8,5",
+    "7,6",
+    "8,6",
+    "6,5",
+    "5,5",
+    "4,5",
+    "6,6",
+    "5,6",
+    "4,6",
+    "2,5",
+    "3,5",
+    "2,6",
+    "3,6",
+    "0,5",
+    "1,5",
+    "0,6",
+    "1,6",
+    "0,3",
+    "1,3",
+    "2,3",
+    "0,4",
+    "1,4",
+    "2,4",
+    "0,1",
+    "1,1",
+    "0,2",
+    "1,2",
+    "0,0",
+    "1,0",
+    "6,2",
+    "6,3",
+    "6,4",
+    "3,3",
+    "3,4",
+    "4,3",
+    "5,3",
+    "4,4",
+    "5,4",
+    "3,2",
+    "2,2",
+    "5,2",
+    "4,2"
+  ],
+  "bags": [
+    {
+      "name": "Leather Bag",
+      "x": 2,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 4,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 6,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 8,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 7,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 8,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 7,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 4,
+      "y": 5,
+      "r": 1
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 4,
+      "y": 6,
+      "r": 1
+    },
+    {
+      "name": "Leather Bag",
+      "x": 2,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 0,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Duffle Bag",
+      "x": 0,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 0,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 0,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 1,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 6,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 6,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 3,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Leather Bag",
+      "x": 4,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 2,
+      "y": 2,
+      "r": 2
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 4,
+      "y": 2,
+      "r": 2
+    }
+  ],
+  "grid": {
+    "ok": true,
+    "originX": -20.48,
+    "originY": 158.72,
+    "cellW": 353.28,
+    "cellH": 353.28,
+    "imgW": 4096,
+    "imgH": 2304,
+    "score": 1.209
+  }
+}

@@ -4,13 +4,12 @@
  */
 
 import {
-  giveAllBuffs,
   giveLeastBuffs,
   grantStacks,
   onBuffChanged,
   BUFF_KEYS,
 } from '../buff-economy.js';
-import { grantStun, PLAYER_STAMINA_REGEN } from '../actor.js';
+import { PLAYER_STAMINA_REGEN } from '../actor.js';
 import { applyStaminaRegeneration } from '../actor-stats.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
@@ -62,70 +61,7 @@ export const robodogPort = {
   },
 };
 
-/** Sloth.gd — slow neighbors; start maxHP; awaken/amulet buff+stun. */
-/** @type {ScriptHandler} */
-export const slothPort = {
-  handlerId: 'sloth',
-  family: 'pet_like',
-  onCombatStart(piece, ctx) {
-    const slow = getPName(piece.params, 'speed', 10) / 100;
-    for (const { other } of linkedWith(ctx, piece)) {
-      if (other.cooldown > 0 || other.baseCooldown > 0) addSpeed(other, -slow);
-    }
-    const links = linkedWith(ctx, piece);
-    const basePct = getPName(piece.params, 'maxhealth_base', getP1(piece.params, 10));
-    const perPct = getPName(piece.params, 'maxhealth_item', getP2(piece.params, 2));
-    const pct = (basePct + links.length * perPct) / 100;
-    const hp = Math.max(1, Math.round(ctx.player.maxHp * pct));
-    ctx.player.maxHp += hp;
-    ctx.player.hp = Math.min(ctx.player.maxHp, ctx.player.hp + hp);
-    ctx.events.push({
-      t: ctx.t,
-      type: 'heal',
-      target: 'player',
-      amount: hp,
-      label: `${piece.name}: +${hp} max HP`,
-      meta: { category: 'heal', script: true, handler: 'sloth' },
-    });
-    pushActivate(piece, ctx, 'sloth', `Pet: ${piece.name}`);
-  },
-  onCooldownEffect(piece, ctx) {
-    const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'sloth', `Pet: ${piece.name}`);
-    // Gap: awaken trigger() not wired from history — set piece._awakenNow for big path
-    if (piece._awakenNow) {
-      piece._awakenNow = false;
-      const n = Math.max(1, Math.round(getPName(piece.params, 'buffs', getP3(piece.params, 1))));
-      const picked = giveAllBuffs(player, n, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      pushBuffGrants(events, piece, player, t, 'sloth', picked);
-      grantStun(ctx.dummy, Math.max(0.5, getPName(piece.params, 'dur_stun', 2)), t);
-      piece.alive = false;
-      piece.charges = 0;
-    } else {
-      const n = Math.max(
-        1,
-        Math.round(getPName(piece.params, 'buffs_amulet', getPName(piece.params, 'buffs', 1))),
-      );
-      const picked = giveAllBuffs(player, n, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      pushBuffGrants(events, piece, player, t, 'sloth', picked);
-      grantStun(
-        ctx.dummy,
-        Math.max(
-          0.5,
-          getPName(piece.params, 'dur_stun_amulet', getPName(piece.params, 'dur_stun', 1)),
-        ),
-        t,
-      );
-    }
-    return true;
-  },
-};
+/** Sloth lives in ports-threshold.js (Exclusive/Sloth.gd). */
 
 /** ThornElemental.gd — spikes limit/crit prepare; CD spikes. */
 /** @type {ScriptHandler} */
@@ -272,7 +208,6 @@ export const wolpertingerPort = {
 /** @type {Record<string, ScriptHandler>} */
 export const WAVE_AI_C_PORTS_B = {
   robodog: robodogPort,
-  sloth: slothPort,
   thorn_elemental: thornElementalPort,
   turtle: turtlePort,
   wolpertinger: wolpertingerPort,

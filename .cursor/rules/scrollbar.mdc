@@ -1,0 +1,31 @@
+---
+description: Default scrollbar is the items-page bag bar
+alwaysApply: true
+---
+
+# Scrollbar
+
+The items-page bag bar is the default for any new scroller. Copy `.bpb-bg` in `js/shared/backpack-grid/backpack-grid.css`. Do not invent a gray, OS, or pill scrollbar.
+
+## Recipe
+
+Colors on the scroller:
+
+- `--bpb-bg-scroll-thumb: #eac914`
+- `--bpb-bg-scroll-track: #816230`
+- `--bpb-bg-scroll-frame: #472a24`
+
+Standard properties stay automatic. WebKit draws the bar:
+
+- `scrollbar-width: auto`
+- `scrollbar-color: auto`
+- `::-webkit-scrollbar` — 16px wide and tall
+- track — 3px solid frame, 16px radius, track fill
+- thumb — 2px solid frame, 20px radius, thumb fill
+- No `::-webkit-scrollbar-button` rules
+
+## Do not
+
+Set `scrollbar-color` to the gold/brown pair. On Windows that keeps the classic arrows and paints them yellow.
+
+Filter rails that already use the thinner square bar (`.items-filters` in `js/pages/items/catalog.css`, 10px, square thumb) stay on that bar. Do not add a third style.

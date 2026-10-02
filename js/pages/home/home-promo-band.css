@@ -119,15 +119,41 @@
   gap: 0.45rem;
 }
 
+/* Keep sticker title + meta clear of bag sprites that protrude above the grid */
+.home-promo--create .home-promo__stage {
+  gap: 0.95rem;
+}
+
 .home-promo__caption {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.28rem;
+  gap: 0;
   width: calc(var(--promo-stage-h, 20.2rem) * 9 / 7);
   max-width: 100%;
   min-height: 3.1rem;
   padding: 0;
+  overflow: visible;
+}
+
+.home-promo--create .home-promo__caption {
+  position: relative;
+  z-index: 2;
+  padding-bottom: 0.2rem;
+}
+
+.home-promo__caption-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-width: 0;
+  width: 100%;
+}
+
+.home-promo__caption-head {
+  position: relative;
+  z-index: 1;
 }
 
 .home-promo__caption-title {
@@ -138,6 +164,12 @@
   color: #ffecdc;
   text-align: center;
   text-decoration: none;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Room for the sticker stroke inside the clip box */
+  padding: 0.1em 0.15em;
 }
 
 a.home-promo__caption-title:hover {
@@ -145,20 +177,22 @@ a.home-promo__caption-title:hover {
 }
 
 .home-promo__caption-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.6rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  column-gap: 0.65rem;
   width: 100%;
   box-sizing: border-box;
-  padding: 0.4rem 0.55rem;
+  padding: 0 0.25rem 0.2rem;
+  /* Tuck the blob-height row up under the title so the name sits close */
+  margin-top: -1.1rem;
+  min-height: 4.65rem;
+  overflow: visible;
 }
 
-.home-promo--create .home-promo__caption-meta.home-promo__info-shade {
-  /* Reuse Patch3 tokens from .home-promo__info */
+.home-promo--create .home-promo__caption-meta {
   --promo-info-ink: #3c261d;
   --promo-info-cream: #ffecdc;
-  --promo-info-shade: rgba(14, 15, 16, 0.14);
   --promo-info-stroke: 0.1em;
   --promo-info-track: -0.03em;
   --promo-info-ring:
@@ -180,6 +214,25 @@ a.home-promo__caption-title:hover {
     0.092em -0.038em 0 var(--promo-info-ink);
 }
 
+.home-promo__caption-side {
+  display: flex;
+  align-items: flex-end;
+  min-width: 0;
+  min-height: 0;
+}
+
+.home-promo__caption-side--left {
+  justify-content: flex-start;
+  justify-self: start;
+  align-self: end;
+}
+
+.home-promo__caption-side--right {
+  justify-content: flex-end;
+  justify-self: end;
+  align-self: end;
+}
+
 .home-promo--create .home-promo__caption-author {
   color: var(--promo-info-cream);
   letter-spacing: var(--promo-info-track);
@@ -196,21 +249,6 @@ a.home-promo__caption-title:hover {
   color: var(--promo-info-cream);
 }
 
-.home-promo--create .home-promo__caption-tag {
-  color: var(--promo-info-cream);
-  border: 0;
-  background: color-mix(in srgb, #3c261d 55%, transparent);
-  text-shadow: 0 1px 0 rgba(20, 10, 5, 0.4);
-}
-
-.home-promo__caption-byline {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.4rem;
-  min-width: 0;
-}
-
 .home-promo__caption-avatar-link,
 .home-promo__caption-avatar--initials {
   display: flex;
@@ -222,6 +260,12 @@ a.home-promo__caption-title:hover {
   border-radius: 50%;
   overflow: hidden;
   background: #2a221c;
+}
+
+.home-promo__caption-avatar-link:has(.bpb-face) {
+  width: 4.65rem;
+  height: 4.65rem;
+  align-self: end;
 }
 
 .home-promo__caption-avatar {
@@ -237,6 +281,18 @@ img.home-promo__caption-avatar {
   border-radius: 50%;
 }
 
+.home-promo__caption-avatar.bpb-face,
+.home-promo__caption-avatar--blob {
+  width: 4.65rem;
+  height: 4.65rem;
+  border-radius: 0;
+  object-fit: contain;
+  background: transparent;
+  box-shadow: none;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
 .home-promo__caption-avatar--initials {
   font-family: var(--bpb-font-body);
   font-size: 0.62rem;
@@ -244,67 +300,35 @@ img.home-promo__caption-avatar {
 }
 
 .home-promo__caption-author {
-  font-family: var(--bpb-font-body);
-  font-style: italic;
-  font-size: 0.82rem;
+  justify-self: center;
+  align-self: end;
+  box-sizing: border-box;
+  font-family: var(--bpb-font-display, Georgia, serif);
+  font-style: normal;
+  font-size: clamp(1.45rem, 2.8vw, 1.85rem);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
   color: #c4b6a8;
   text-decoration: none;
+  text-align: center;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
+  max-width: 100%;
+  /* Room for sticker stroke / ring so it doesn’t clip */
+  padding: 0.12em 0.18em 0.22em;
 }
 
 a.home-promo__caption-author:hover {
   color: #ffecdc;
 }
 
-.home-promo__caption-tags {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.28rem 0.35rem;
-  margin-left: auto;
-}
-
-.home-promo__caption-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.22rem;
-  padding: 0.12rem 0.42rem 0.1rem;
-  border-radius: 0.22rem;
-  font-family: var(--bpb-font-body);
-  font-size: 0.72rem;
-  line-height: 1.15;
-  color: #ffecdc;
-  background: color-mix(in srgb, #3c261d 72%, #8a5a2b);
-}
-
 .home-promo__caption-class {
-  width: 1.25rem;
-  height: 1.25rem;
+  display: block;
+  width: 2.1rem;
+  height: 2.1rem;
   object-fit: contain;
   flex: 0 0 auto;
-}
-
-.home-promo__caption-tag--op {
-  background: color-mix(in srgb, #8b2e2e 72%, #3c261d);
-}
-
-.home-promo__caption-tag--feasible {
-  background: color-mix(in srgb, #2f5d3a 70%, #3c261d);
-}
-
-.home-promo__caption-tag--theory {
-  background: color-mix(in srgb, #3a4a7a 70%, #3c261d);
-}
-
-.home-promo__caption-tag--real {
-  background: color-mix(in srgb, #6a4a18 72%, #3c261d);
-}
-
-.home-promo__caption-tag--featured {
-  background: color-mix(in srgb, #8a6a18 75%, #3c261d);
+  filter: drop-shadow(0 1px 0 color-mix(in srgb, #3c261d 40%, transparent));
 }
 
 .home-promo__board-wrap {
@@ -315,16 +339,78 @@ a.home-promo__caption-author:hover {
   padding: 0.45rem;
 }
 
+.home-promo--create .home-promo__board-wrap {
+  padding-top: 0.85rem;
+  padding-bottom: 0.35rem;
+}
+
+.home-promo__board-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem 0.4rem;
+  width: 100%;
+  max-width: calc(var(--promo-stage-h, 20.2rem) * 9 / 7);
+  margin: 0 auto;
+  padding: 0.1rem 0.25rem 0.15rem;
+  box-sizing: border-box;
+}
+
+.home-promo__board-tags[hidden] {
+  display: none;
+}
+
+.home-promo__board-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
+  padding: 0.14rem 0.48rem 0.12rem;
+  border-radius: 0.22rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.78rem;
+  line-height: 1.15;
+  color: #ffecdc;
+  background: color-mix(in srgb, #3c261d 72%, #8a5a2b);
+  text-shadow: 0 1px 0 rgba(20, 10, 5, 0.4);
+}
+
+.home-promo--create .home-promo__board-tag {
+  color: #ffecdc;
+  border: 0;
+  background: color-mix(in srgb, #3c261d 55%, transparent);
+}
+
+.home-promo__board-tag--op {
+  background: color-mix(in srgb, #8b2e2e 72%, #3c261d);
+}
+
+.home-promo__board-tag--feasible {
+  background: color-mix(in srgb, #2f5d3a 70%, #3c261d);
+}
+
+.home-promo__board-tag--theory {
+  background: color-mix(in srgb, #3a4a7a 70%, #3c261d);
+}
+
+.home-promo__board-tag--real {
+  background: color-mix(in srgb, #6a4a18 72%, #3c261d);
+}
+
+.home-promo__board-tag--featured {
+  background: color-mix(in srgb, #8a6a18 75%, #3c261d);
+}
+
 .home-promo__board-link {
   display: block;
   position: relative;
   color: inherit;
   text-decoration: none;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 .home-promo__board-link:not([href]) {
-  cursor: default;
+  cursor: var(--bpb-cursor-default);
   pointer-events: none;
 }
 
@@ -391,36 +477,45 @@ a.home-promo__caption-author:hover {
 }
 
 .home-promo__skel-catalog {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  align-items: flex-start;
-  gap: 0.38rem 0.42rem;
+  position: relative;
+  container-type: inline-size;
   width: 100%;
   height: 100%;
-  padding: 0.35rem 0.45rem;
   overflow: hidden;
 }
 
-.home-promo__skel-item {
-  flex: 0 0 auto;
+.home-promo__skel-catalog .home-promo__skel-item {
+  position: absolute;
+  left: calc(var(--x, 0) * 10cqw + 0.05em);
+  top: calc(var(--y, 0) * 10cqw + 0.05em);
+  width: calc(var(--w, 1) * 10cqw - 0.1em);
+  height: calc(var(--h, 1) * 10cqw - 0.1em);
 }
 
 .home-promo__skel-title {
-  margin: 0 auto;
+  display: block;
+  margin: 0 auto 0.08rem;
 }
 
-.home-promo__skel-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.6rem;
+.home-promo__skel-avatar,
+.home-promo__skel-class,
+.home-promo__skel-gold-icon,
+.home-promo__skel-rank {
+  flex: 0 0 auto;
+}
+
+.home-promo__skel-board-wrap {
   width: 100%;
+  height: 100%;
 }
 
 .home-promo__skel-board {
   width: 100%;
   height: 100%;
+  background-image: url("../../../assets/icons/FilledSlot.png");
+  background-size: calc(100% / 9) calc(100% / 7);
+  background-repeat: repeat;
+  opacity: 0.35;
 }
 
 .home-promo__catalog-track {
@@ -455,8 +550,24 @@ a.home-promo__caption-author:hover {
   display: none !important;
 }
 
+/*
+ * Live glows (Mana Orb, Star of Courage / CircleLight, …) use plus-lighter.
+ * Catalog overflow:hidden, depart/appear scale(), and flyGhost transforms make
+ * Chromium paint those soft discs as gray boxes mid-flight — including when a
+ * ghost flies over an already-landed glowing item. Promo demo keeps base
+ * sprites only; idle glow belongs on create/sim boards.
+ */
+.home-promo--create .bpb-live__glow,
+.home-promo__catalog .bpb-live__glow,
+.home-promo__board .bpb-live__glow {
+  display: none !important;
+  animation: none !important;
+}
+
 .home-promo__fly {
   position: absolute;
+  left: 0;
+  top: 0;
   z-index: 80;
   display: block;
   margin: 0;
@@ -466,13 +577,61 @@ a.home-promo__caption-author:hover {
   object-fit: contain;
   user-select: none;
   transform-origin: center center;
+  will-change: transform;
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
-  transition:
-    left 420ms ease-in-out,
-    top 420ms ease-in-out,
-    width 420ms ease-in-out,
-    height 420ms ease-in-out,
-    transform 420ms ease-in-out;
+  transition: transform 420ms ease-in-out;
+}
+
+/* Demo board is a link — don't run Itemiary hover lift / :has() / sparks. */
+.home-promo__board .bpb-bg__item,
+.home-promo__board .bpb-bg__hit,
+.home-promo__board .bpb-bg__mark {
+  pointer-events: none !important;
+}
+
+.home-promo__board .bpb-bg__item:hover,
+.home-promo__board .bpb-bg__item:hover .bpb-bg__hit,
+.home-promo__board .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+.home-promo__catalog .bpb-bg__item:hover,
+.home-promo__catalog .bpb-bg__item:hover .bpb-bg__hit,
+.home-promo__catalog .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  filter: none;
+  z-index: unset;
+}
+
+.home-promo__catalog .bpb-bg__item {
+  contain: layout style;
+}
+
+/*
+ * Packed slots stay in layout for catalog seek. Shared --sprite-pending uses
+ * scale(0), which collapses getBoundingClientRect / IntersectionObserver to 0
+ * so the track cannot scroll to items whose sprites are not painted yet.
+ */
+.home-promo__catalog .bpb-bg__item--sprite-pending {
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.home-promo__catalog .bpb-bg__item--sprite-pending .bpb-bg__hit::before {
+  content: '';
+  position: absolute;
+  inset: 14%;
+  border-radius: 0.22em;
+  pointer-events: none;
+  background: linear-gradient(
+    110deg,
+    rgba(184, 150, 110, 0.45) 0%,
+    rgba(226, 201, 168, 0.7) 45%,
+    rgba(184, 150, 110, 0.45) 90%
+  );
+  background-size: 200% 100%;
+  animation: bpb-skel-shimmer 1.35s ease-in-out infinite;
+}
+
+.home-promo__catalog .bpb-bg__item--sprite-pending .bpb-bg__sprite {
+  opacity: 0;
 }
 
 @keyframes home-promo-appear-library {
@@ -726,6 +885,10 @@ a.home-promo__caption-author:hover {
   padding: 0.65rem 0.55rem 0.7rem;
 }
 
+.home-promo__info-how .bpb-skel--bar + .bpb-skel--bar {
+  margin-top: 0.38em;
+}
+
 .home-promo__info-desc {
   margin: 0;
   font-family: var(--bpb-font-body);
@@ -951,6 +1114,33 @@ a.home-promo__caption-author:hover {
   border-radius: 0.2rem;
 }
 
+/* Tablet portrait: board and build info side by side. The catalog column
+   overlaps itself at this width, so items fly in from the screen edges. */
+@media (max-width: 1100px) and (min-width: 901px) {
+  .home-promo--create .home-promo__card {
+    --promo-stage-h: 20rem;
+    grid-template-columns: minmax(0, 1.35fr) minmax(15rem, 18rem);
+    align-items: center;
+    gap: 0.85rem 1.15rem;
+  }
+
+  .home-promo--create .home-promo__side--catalog {
+    display: none;
+  }
+
+  .home-promo--create .home-promo__stage {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .home-promo--create .home-promo__side--cta {
+    width: 100%;
+    max-width: 18rem;
+    justify-self: center;
+    padding: 0.25rem 0;
+  }
+}
+
 @media (max-width: 900px) {
   .home-promo__band {
     min-height: 0;
@@ -1013,30 +1203,122 @@ a.home-promo__caption-author:hover {
     justify-self: end;
   }
 
-  .home-promo--create .home-promo__side--catalog {
-    grid-area: art;
+  .home-promo--create .home-promo__side--catalog,
+  .home-promo--create .home-promo__info {
+    display: none;
+  }
+
+  .home-promo--create .home-promo__card {
+    --promo-stage-h: 18rem;
+    grid-template-areas:
+      'board'
+      'cta';
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 0.5rem;
+    border: 0;
+    border-image: none;
+    background-clip: border-box;
+  }
+
+  /* Frame sits on top of the parchment. Its inner edge is transparent, so the
+     border must not be the card's own border or the page shows through as a bar. */
+  .home-promo--create .home-promo__card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: none;
+    border: 12px solid transparent;
+    border-image: url("../../../assets/theme/ui/ui-screen-frame.png") 28 / 12px / 0 stretch;
+  }
+
+  .home-promo--create .home-promo__stage {
+    width: min(100%, 22rem);
+    max-width: 100%;
     justify-self: center;
-    align-self: auto;
-    width: min(22rem, 100%);
-    height: calc(var(--promo-stage-h, 16rem) + 4.5rem);
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .home-promo--create .home-promo__caption {
     min-height: 0;
+    padding-bottom: 0;
+    gap: 0.1rem;
+  }
+
+  .home-promo--create .home-promo__caption-meta {
     margin-top: 0;
-    margin-bottom: 0;
+    min-height: 0;
+    padding-bottom: 0;
+    align-items: center;
+  }
+
+  .home-promo--create .home-promo__board-wrap {
+    padding-top: 0.2rem;
+    padding-bottom: 0;
+  }
+
+  .home-promo--create .home-promo__caption,
+  .home-promo--create .home-promo__board-tags {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .home-promo--create .home-promo__board-wrap,
+  .home-promo--create .home-promo__board-link {
+    width: 100%;
+    max-width: 100%;
+    align-self: stretch;
+    box-sizing: border-box;
+  }
+
+  .home-promo--create .home-promo__board-link {
+    display: block;
+  }
+
+  .home-promo--create .home-promo__board {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    margin-inline: auto;
   }
 
   .home-promo--create .home-promo__side--cta {
     grid-area: cta;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     width: 100%;
     max-width: 20rem;
     justify-self: center;
-    gap: 0.75rem;
+    gap: 0.2rem;
+    padding: 0;
+  }
+
+  .home-promo--create .home-promo__cta-block {
+    gap: 0.15rem;
+  }
+
+  .home-promo--create .home-promo__caption-avatar-link:has(.bpb-face),
+  .home-promo--create .home-promo__caption-avatar.bpb-face,
+  .home-promo--create .home-promo__caption-avatar--blob {
+    width: 2.6rem !important;
+    height: 2.6rem !important;
   }
 
   .home-promo__cta {
     width: min(100%, 20rem);
-    height: clamp(3.75rem, 14vw, 4.75rem);
+    height: clamp(3.15rem, 11vw, 3.85rem);
     font-size: clamp(1.15rem, 4.2vw, 1.55rem);
+  }
+
+  .home-promo--create .home-promo__cta {
+    width: fit-content;
+    max-width: 100%;
+    height: auto;
+    padding: 0.45em 0.85em;
   }
 
   .home-promo__side--left,
@@ -1052,7 +1334,7 @@ a.home-promo__caption-author:hover {
 
 @media (max-width: 768px) {
   .home-promo--create .home-promo__card {
-    --promo-stage-h: 14rem;
+    --promo-stage-h: 17rem;
   }
 }
 
@@ -1067,8 +1349,7 @@ a.home-promo__caption-author:hover {
   .home-promo--create .home-promo__card {
     grid-template-areas:
       'board'
-      'cta'
-      'art';
+      'cta';
   }
 
   .home-promo__side--left {
@@ -1081,11 +1362,6 @@ a.home-promo__caption-author:hover {
     grid-area: right;
     justify-self: center;
     width: min(12rem, 70%);
-  }
-
-  .home-promo--create .home-promo__side--catalog {
-    grid-area: art;
-    width: min(22rem, 100%);
   }
 }
 
@@ -1110,6 +1386,10 @@ a.home-promo__caption-author:hover {
 
   .home-promo__catalog-track {
     transition: none;
+  }
+
+  .home-promo__catalog .bpb-bg__item--sprite-pending .bpb-bg__hit::before {
+    animation: none;
   }
 
   .home-promo__fly {

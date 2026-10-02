@@ -1,6 +1,6 @@
 {
   "source": "ItemBook.detectMentionedStacks via DESCR templates",
-  "extractedAt": "2026-07-19T05:33:54.608Z",
+  "extractedAt": "2026-09-24T16:52:37.177Z",
   "byId": {
     "stone": [
       "Block"
@@ -46,6 +46,9 @@
     ],
     "amulet_of_the_wild": [
       "Spikes"
+    ],
+    "amulet_of_light": [
+      "Regeneration"
     ],
     "shovel": [
       "Blind"
@@ -1187,6 +1190,30 @@
     "halberd": [
       "Block"
     ],
+    "magic_ring": [
+      "Spikes",
+      "Vampirism",
+      "Poison",
+      "Regeneration",
+      "Lucky",
+      "Blind",
+      "Mana",
+      "Heat",
+      "Cold",
+      "Empower"
+    ],
+    "superior_ring": [
+      "Spikes",
+      "Vampirism",
+      "Poison",
+      "Regeneration",
+      "Lucky",
+      "Blind",
+      "Mana",
+      "Heat",
+      "Cold",
+      "Empower"
+    ],
     "broccotree": [
       "Regeneration",
       "Lucky"
@@ -1195,9 +1222,6 @@
       "Regeneration",
       "Lucky",
       "Mana"
-    ],
-    "amulet_of_light": [
-      "Regeneration"
     ],
     "gold_armor": [
       "Regeneration",

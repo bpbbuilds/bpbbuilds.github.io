@@ -78,18 +78,11 @@ function navHtml(root) {
  * @param {string} root
  */
 function footerHtml(root) {
-  const { about } = footerLinks(root);
   return `
     <footer class="site-footer">
       <div class="site-footer__inner">
         <p class="site-footer__brand">Backpack Battles Builds</p>
-        <p class="site-footer__disclaimer">
-          Fan-made, unofficial site. Not affiliated with, endorsed by, or sponsored by
-          Backpack Battles or its developers and publishers. Game assets appear for
-          reference and community guides only. The combat sandbox is unofficial and is not
-          advertised as matching the live game.
-          <a class="site-footer__disclaimer-link" href="${about}">About</a>
-        </p>
+        <p class="site-footer__disclaimer">Unofficial fan site — not affiliated with Backpack Battles or its developers.</p>
         ${navHtml(root)}
         ${socialsHtml(root)}
       </div>

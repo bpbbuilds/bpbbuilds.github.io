@@ -59,6 +59,8 @@ export function ctxForPiece(piece, world) {
     itemsById: world.itemsById,
     canAffect: world.canAffect,
     pieces: them ? world.themPieces : world.youPieces,
+    /** Both boards — for auras that hit player + opponent (Time Dilator, …). */
+    allPieces: [...(world.youPieces || []), ...(world.themPieces || [])],
     deckIndex: them ? world.themDeck : world.youDeck,
     cardKeys: them ? world.themCardKeys : world.youCardKeys,
     activatePiece: world.activatePiece,

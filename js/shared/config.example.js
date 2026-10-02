@@ -10,6 +10,12 @@ export const config = {
   supabasePublishableKey: 'YOUR_SUPABASE_PUBLISHABLE_KEY',
   submitBuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/submit-build',
   adminBuildsUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/admin-builds',
+  adminReportsUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/admin-reports',
   voteBuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/vote-build',
+  createCheckoutUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/create-checkout',
+  createPortalUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/create-portal',
+  reportSimUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/report-sim',
+  screenshotToBuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/screenshot-to-build',
+  discordGuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/discord-guild',
   submitSecret: '',
 };

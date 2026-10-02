@@ -30,6 +30,12 @@ export function createOpInfoModal() {
           you upload (unchanged from your upload). Don’t request OP on a Theory board.
         </p>
         <p>
+          Before you submit for OP review, fill <strong>Needs</strong>,
+          <strong>Wants</strong>, and <strong>Good to have</strong> (at least one
+          item each), and write a <strong>“Why it works”</strong> note of at least
+          30 characters.
+        </p>
+        <p>
           <strong>Videos are welcome</strong> (and optional). Add a YouTube link on
           the Build tab if you have a showcase or run footage.
         </p>

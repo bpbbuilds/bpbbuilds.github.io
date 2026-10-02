@@ -23,5 +23,6 @@ export function mountAdminBoardThumbs(listEl, opts) {
     spriteDisplay: opts.spriteDisplay,
     shapes: opts.shapes,
     sockets: opts.sockets,
+    tipSelector: '.admin-card__board',
   });
 }

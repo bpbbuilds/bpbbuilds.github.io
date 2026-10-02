@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-07-16T21:30:57.195Z",
+  "generatedAt": "2026-09-24T16:51:35.268Z",
   "source": "ItemLibrary sim (Grouping.None, Compact, 20 cols)",
   "cols": 20,
   "rows": 71,
-  "count": 517,
+  "count": 518,
   "excluded": 1,
   "order": [
     {
@@ -13,7 +13,7 @@
       "index": 0,
       "x": 0,
       "y": 0,
-      "score": -1.9998069498069497,
+      "score": -1.9998073217726398,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -25,7 +25,7 @@
       "index": 1,
       "x": 1,
       "y": 0,
-      "score": -1.9996138996138997,
+      "score": -1.9996146435452793,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -37,7 +37,7 @@
       "index": 2,
       "x": 3,
       "y": 0,
-      "score": -1.9994208494208494,
+      "score": -1.999421965317919,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -61,7 +61,7 @@
       "index": 4,
       "x": 4,
       "y": 0,
-      "score": 1.0007722007722009,
+      "score": 1.0007707129094412,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -73,7 +73,7 @@
       "index": 5,
       "x": 6,
       "y": 0,
-      "score": 3.000965250965251,
+      "score": 3.0009633911368017,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -85,7 +85,7 @@
       "index": 6,
       "x": 8,
       "y": 0,
-      "score": 3.001158301158301,
+      "score": 3.001156069364162,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -97,7 +97,7 @@
       "index": 7,
       "x": 7,
       "y": 0,
-      "score": 3.0368725868725868,
+      "score": 3.036801541425819,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -109,7 +109,7 @@
       "index": 8,
       "x": 9,
       "y": 0,
-      "score": 4.001351351351351,
+      "score": 4.001348747591522,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -121,7 +121,7 @@
       "index": 9,
       "x": 10,
       "y": 0,
-      "score": 4.001544401544401,
+      "score": 4.001541425818883,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -133,7 +133,7 @@
       "index": 10,
       "x": 11,
       "y": 0,
-      "score": 4.001737451737451,
+      "score": 4.001734104046243,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -145,7 +145,7 @@
       "index": 11,
       "x": 13,
       "y": 0,
-      "score": 4.001930501930502,
+      "score": 4.001926782273603,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -157,7 +157,7 @@
       "index": 12,
       "x": 14,
       "y": 0,
-      "score": 4.003861003861004,
+      "score": 4.003853564547206,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -169,7 +169,7 @@
       "index": 13,
       "x": 15,
       "y": 0,
-      "score": 4.053088803088803,
+      "score": 4.052986512524085,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -181,7 +181,7 @@
       "index": 14,
       "x": 16,
       "y": 0,
-      "score": 93.01660231660232,
+      "score": 93.01657032755298,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -193,7 +193,7 @@
       "index": 15,
       "x": 17,
       "y": 0,
-      "score": 93.01756756756757,
+      "score": 93.01753371868979,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -205,7 +205,7 @@
       "index": 16,
       "x": 18,
       "y": 0,
-      "score": 93.01853281853282,
+      "score": 93.01849710982658,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -217,7 +217,7 @@
       "index": 17,
       "x": 19,
       "y": 0,
-      "score": 93.01949806949807,
+      "score": 93.01946050096339,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -229,7 +229,7 @@
       "index": 18,
       "x": 9,
       "y": 1,
-      "score": 93.02046332046332,
+      "score": 93.0204238921002,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -241,7 +241,7 @@
       "index": 19,
       "x": 11,
       "y": 1,
-      "score": 93.05714285714286,
+      "score": 93.05703275529865,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -253,7 +253,7 @@
       "index": 20,
       "x": 12,
       "y": 1,
-      "score": 999.0351351351351,
+      "score": 999.0350674373796,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -265,7 +265,7 @@
       "index": 21,
       "x": 13,
       "y": 1,
-      "score": 1093.0314671814672,
+      "score": 1093.0314065510597,
       "classes": 1,
       "crafted": false,
       "gated": true
@@ -277,7 +277,7 @@
       "index": 22,
       "x": 15,
       "y": 1,
-      "score": 2093.0148648648646,
+      "score": 2093.014836223507,
       "classes": 2,
       "crafted": false,
       "gated": true
@@ -289,7 +289,7 @@
       "index": 23,
       "x": 16,
       "y": 1,
-      "score": 8004.022007722007,
+      "score": 8004.021965317919,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -301,7 +301,7 @@
       "index": 24,
       "x": 17,
       "y": 1,
-      "score": 16003.083976833977,
+      "score": 16003.083815028902,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -313,7 +313,7 @@
       "index": 25,
       "x": 18,
       "y": 1,
-      "score": 16004.081467181468,
+      "score": 16004.081310211946,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -325,7 +325,7 @@
       "index": 26,
       "x": 19,
       "y": 1,
-      "score": 16093.060424710424,
+      "score": 16093.060308285163,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -337,7 +337,7 @@
       "index": 27,
       "x": 0,
       "y": 2,
-      "score": 16093.060617760617,
+      "score": 16093.060500963391,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -349,7 +349,7 @@
       "index": 28,
       "x": 1,
       "y": 2,
-      "score": 20003.002123552124,
+      "score": 20003.0021194605,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -361,7 +361,7 @@
       "index": 29,
       "x": 4,
       "y": 2,
-      "score": 32004.073359073358,
+      "score": 32004.073217726396,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -373,7 +373,7 @@
       "index": 30,
       "x": 4,
       "y": 2,
-      "score": 36093.07799227799,
+      "score": 36093.077842003855,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -385,7 +385,7 @@
       "index": 31,
       "x": 5,
       "y": 2,
-      "score": 64004.08532818533,
+      "score": 64004.08516377649,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -397,7 +397,7 @@
       "index": 32,
       "x": 7,
       "y": 2,
-      "score": 99998.00231660232,
+      "score": 99998.00231213873,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -409,7 +409,7 @@
       "index": 33,
       "x": 10,
       "y": 2,
-      "score": 99998.00270270271,
+      "score": 99998.00269749518,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -421,7 +421,7 @@
       "index": 34,
       "x": 11,
       "y": 2,
-      "score": 99998.0028957529,
+      "score": 99998.0028901734,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -433,7 +433,7 @@
       "index": 35,
       "x": 13,
       "y": 2,
-      "score": 100002.00328185328,
+      "score": 100002.00327552986,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -445,7 +445,7 @@
       "index": 36,
       "x": 15,
       "y": 3,
-      "score": 100003.00347490348,
+      "score": 100003.00346820809,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -457,7 +457,7 @@
       "index": 37,
       "x": 19,
       "y": 2,
-      "score": 100003.00366795367,
+      "score": 100003.00366088632,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -469,7 +469,7 @@
       "index": 38,
       "x": 16,
       "y": 2,
-      "score": 100003.00424710425,
+      "score": 100003.004238921,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -481,7 +481,7 @@
       "index": 39,
       "x": 17,
       "y": 3,
-      "score": 100004.0025096525,
+      "score": 100004.00250481696,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -493,7 +493,7 @@
       "index": 40,
       "x": 0,
       "y": 3,
-      "score": 100004.00482625482,
+      "score": 100004.00481695568,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -505,7 +505,7 @@
       "index": 41,
       "x": 0,
       "y": 4,
-      "score": 100004.02162162162,
+      "score": 100004.02157996147,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -517,7 +517,7 @@
       "index": 42,
       "x": 7,
       "y": 3,
-      "score": 100004.05077220078,
+      "score": 100004.0506743738,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -529,7 +529,7 @@
       "index": 43,
       "x": 9,
       "y": 3,
-      "score": 100094.05096525096,
+      "score": 100094.05086705202,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -541,7 +541,7 @@
       "index": 44,
       "x": 12,
       "y": 3,
-      "score": 100094.05115830115,
+      "score": 100094.05105973025,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -553,7 +553,7 @@
       "index": 45,
       "x": 2,
       "y": 4,
-      "score": 100094.05135135136,
+      "score": 100094.05125240848,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -565,7 +565,7 @@
       "index": 46,
       "x": 3,
       "y": 4,
-      "score": 100094.05154440155,
+      "score": 100094.0514450867,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -577,7 +577,7 @@
       "index": 47,
       "x": 4,
       "y": 4,
-      "score": 100094.05173745174,
+      "score": 100094.05163776493,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -589,7 +589,7 @@
       "index": 48,
       "x": 5,
       "y": 4,
-      "score": 100094.05193050193,
+      "score": 100094.05183044316,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -601,7 +601,7 @@
       "index": 49,
       "x": 6,
       "y": 4,
-      "score": 100094.05212355213,
+      "score": 100094.05202312139,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -613,7 +613,7 @@
       "index": 50,
       "x": 7,
       "y": 4,
-      "score": 100094.08436293436,
+      "score": 100094.08420038536,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -625,7 +625,7 @@
       "index": 51,
       "x": 9,
       "y": 4,
-      "score": 100094.09845559846,
+      "score": 100094.09826589595,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -637,7 +637,7 @@
       "index": 52,
       "x": 11,
       "y": 4,
-      "score": 100098.03532818533,
+      "score": 100098.0352601156,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -649,7 +649,7 @@
       "index": 53,
       "x": 12,
       "y": 4,
-      "score": 100098.04015444015,
+      "score": 100098.04007707129,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -661,7 +661,7 @@
       "index": 54,
       "x": 15,
       "y": 4,
-      "score": 100101.00308880309,
+      "score": 100101.00308285163,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -673,7 +673,7 @@
       "index": 55,
       "x": 17,
       "y": 4,
-      "score": 100103.00444015444,
+      "score": 100103.00443159923,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -685,7 +685,7 @@
       "index": 56,
       "x": 19,
       "y": 4,
-      "score": 100103.03996138996,
+      "score": 100103.03988439306,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -697,7 +697,7 @@
       "index": 57,
       "x": 0,
       "y": 5,
-      "score": 100103.05328185328,
+      "score": 100103.05317919076,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -709,7 +709,7 @@
       "index": 58,
       "x": 1,
       "y": 5,
-      "score": 100103.0722007722,
+      "score": 100103.07206165703,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -721,7 +721,7 @@
       "index": 59,
       "x": 3,
       "y": 5,
-      "score": 100104.02432432433,
+      "score": 100104.02427745664,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -733,7 +733,7 @@
       "index": 60,
       "x": 4,
       "y": 5,
-      "score": 100104.06776061776,
+      "score": 100104.0676300578,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -745,7 +745,7 @@
       "index": 61,
       "x": 6,
       "y": 5,
-      "score": 100104.09922779923,
+      "score": 100104.09903660887,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -757,7 +757,7 @@
       "index": 62,
       "x": 8,
       "y": 5,
-      "score": 100193.0167953668,
+      "score": 100193.01676300578,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -769,7 +769,7 @@
       "index": 63,
       "x": 9,
       "y": 5,
-      "score": 100193.01776061776,
+      "score": 100193.01772639692,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -781,7 +781,7 @@
       "index": 64,
       "x": 13,
       "y": 5,
-      "score": 100193.01872586872,
+      "score": 100193.01868978805,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -793,7 +793,7 @@
       "index": 65,
       "x": 14,
       "y": 5,
-      "score": 100193.0196911197,
+      "score": 100193.01965317919,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -805,7 +805,7 @@
       "index": 66,
       "x": 19,
       "y": 5,
-      "score": 100193.02065637066,
+      "score": 100193.02061657033,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -817,7 +817,7 @@
       "index": 67,
       "x": 1,
       "y": 6,
-      "score": 101003.02393822394,
+      "score": 101003.02389210019,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -829,7 +829,7 @@
       "index": 68,
       "x": 3,
       "y": 6,
-      "score": 101004.00463320463,
+      "score": 101004.00462427746,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -841,7 +841,7 @@
       "index": 69,
       "x": 5,
       "y": 6,
-      "score": 101093.03166023166,
+      "score": 101093.03159922929,
       "classes": 1,
       "crafted": false,
       "gated": true
@@ -853,7 +853,7 @@
       "index": 70,
       "x": 8,
       "y": 6,
-      "score": 101099.04498069498,
+      "score": 101099.04489402697,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -865,7 +865,7 @@
       "index": 71,
       "x": 9,
       "y": 6,
-      "score": 101103.06003861004,
+      "score": 101103.0599229287,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -877,7 +877,7 @@
       "index": 72,
       "x": 10,
       "y": 6,
-      "score": 102003.00405405405,
+      "score": 102003.00404624277,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -889,7 +889,7 @@
       "index": 73,
       "x": 12,
       "y": 6,
-      "score": 102004.01447876448,
+      "score": 102004.01445086705,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -901,7 +901,7 @@
       "index": 74,
       "x": 13,
       "y": 6,
-      "score": 102093.01467181467,
+      "score": 102093.01464354528,
       "classes": 2,
       "crafted": false,
       "gated": true
@@ -913,7 +913,7 @@
       "index": 75,
       "x": 14,
       "y": 6,
-      "score": 102093.04652509652,
+      "score": 102093.0464354528,
       "classes": 2,
       "crafted": false,
       "gated": true
@@ -925,7 +925,7 @@
       "index": 76,
       "x": 15,
       "y": 6,
-      "score": 103998.02548262548,
+      "score": 103998.02543352601,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -937,7 +937,7 @@
       "index": 77,
       "x": 17,
       "y": 6,
-      "score": 104104.09671814671,
+      "score": 104104.0965317919,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -949,7 +949,7 @@
       "index": 78,
       "x": 18,
       "y": 6,
-      "score": 108003.02258687258,
+      "score": 108003.0225433526,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -961,7 +961,7 @@
       "index": 79,
       "x": 0,
       "y": 7,
-      "score": 108093.03436293437,
+      "score": 108093.03429672447,
       "classes": 8,
       "crafted": false,
       "gated": true
@@ -973,7 +973,7 @@
       "index": 80,
       "x": 2,
       "y": 7,
-      "score": 116003.06293436294,
+      "score": 116003.06281310212,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -985,7 +985,7 @@
       "index": 81,
       "x": 19,
       "y": 6,
-      "score": 116004.06023166023,
+      "score": 116004.06011560693,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -997,7 +997,7 @@
       "index": 82,
       "x": 7,
       "y": 7,
-      "score": 116093.03455598456,
+      "score": 116093.0344894027,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -1009,7 +1009,7 @@
       "index": 83,
       "x": 16,
       "y": 7,
-      "score": 116093.06081081081,
+      "score": 116093.06069364162,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -1021,7 +1021,7 @@
       "index": 84,
       "x": 17,
       "y": 7,
-      "score": 116093.061003861,
+      "score": 116093.06088631984,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -1033,7 +1033,7 @@
       "index": 85,
       "x": 19,
       "y": 7,
-      "score": 116093.06119691119,
+      "score": 116093.06107899807,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -1045,7 +1045,7 @@
       "index": 86,
       "x": 0,
       "y": 8,
-      "score": 116093.0613899614,
+      "score": 116093.0612716763,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -1057,7 +1057,7 @@
       "index": 87,
       "x": 1,
       "y": 8,
-      "score": 120003.00501930503,
+      "score": 120003.00500963391,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1069,7 +1069,7 @@
       "index": 88,
       "x": 3,
       "y": 8,
-      "score": 132003.07702702703,
+      "score": 132003.07687861272,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -1081,7 +1081,7 @@
       "index": 89,
       "x": 4,
       "y": 8,
-      "score": 132099.07625482624,
+      "score": 132099.0761078998,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -1093,7 +1093,7 @@
       "index": 90,
       "x": 8,
       "y": 8,
-      "score": 132101.08378378378,
+      "score": 132101.08362235068,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -1105,7 +1105,7 @@
       "index": 91,
       "x": 10,
       "y": 8,
-      "score": 132104.07355212356,
+      "score": 132104.0734104046,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -1117,7 +1117,7 @@
       "index": 92,
       "x": 11,
       "y": 8,
-      "score": 136093.0781853282,
+      "score": 136093.07803468208,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -1129,7 +1129,7 @@
       "index": 93,
       "x": 6,
       "y": 8,
-      "score": 164003.08996138995,
+      "score": 164003.08978805394,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -1141,7 +1141,7 @@
       "index": 94,
       "x": 14,
       "y": 8,
-      "score": 164004.0855212355,
+      "score": 164004.0853564547,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -1153,7 +1153,7 @@
       "index": 95,
       "x": 16,
       "y": 8,
-      "score": 164004.08571428573,
+      "score": 164004.08554913296,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -1165,7 +1165,7 @@
       "index": 96,
       "x": 17,
       "y": 8,
-      "score": 164103.08976833976,
+      "score": 164103.08959537573,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -1177,7 +1177,7 @@
       "index": 97,
       "x": 19,
       "y": 8,
-      "score": 164104.09111969112,
+      "score": 164104.0909441233,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -1189,7 +1189,7 @@
       "index": 98,
       "x": 0,
       "y": 9,
-      "score": 199998.0052123552,
+      "score": 199998.00520231214,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1201,7 +1201,7 @@
       "index": 99,
       "x": 6,
       "y": 9,
-      "score": 199998.00540540542,
+      "score": 199998.00539499035,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1213,7 +1213,7 @@
       "index": 100,
       "x": 2,
       "y": 9,
-      "score": 200003.00656370656,
+      "score": 200003.00655105972,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1225,7 +1225,7 @@
       "index": 101,
       "x": 7,
       "y": 9,
-      "score": 200003.00694980696,
+      "score": 200003.00693641618,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1237,7 +1237,7 @@
       "index": 102,
       "x": 10,
       "y": 9,
-      "score": 200003.00714285715,
+      "score": 200003.00712909442,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1249,7 +1249,7 @@
       "index": 103,
       "x": 13,
       "y": 9,
-      "score": 200003.02451737452,
+      "score": 200003.02447013487,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1261,7 +1261,7 @@
       "index": 104,
       "x": 18,
       "y": 8,
-      "score": 200003.0308880309,
+      "score": 200003.03082851638,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1273,7 +1273,7 @@
       "index": 105,
       "x": 14,
       "y": 9,
-      "score": 200004.00772200772,
+      "score": 200004.0077071291,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1285,7 +1285,7 @@
       "index": 106,
       "x": 0,
       "y": 10,
-      "score": 200004.0079150579,
+      "score": 200004.00789980733,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1297,7 +1297,7 @@
       "index": 107,
       "x": 3,
       "y": 10,
-      "score": 200004.05347490349,
+      "score": 200004.05337186897,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1309,7 +1309,7 @@
       "index": 108,
       "x": 4,
       "y": 10,
-      "score": 200004.05405405405,
+      "score": 200004.05394990367,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1321,7 +1321,7 @@
       "index": 109,
       "x": 5,
       "y": 10,
-      "score": 200004.06814671814,
+      "score": 200004.06801541426,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1333,7 +1333,7 @@
       "index": 110,
       "x": 8,
       "y": 10,
-      "score": 200094.06795366795,
+      "score": 200094.06782273602,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -1345,7 +1345,7 @@
       "index": 111,
       "x": 9,
       "y": 10,
-      "score": 200098.0055984556,
+      "score": 200098.0055876686,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -1357,7 +1357,7 @@
       "index": 112,
       "x": 11,
       "y": 10,
-      "score": 200098.0057915058,
+      "score": 200098.0057803468,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -1369,7 +1369,7 @@
       "index": 113,
       "x": 14,
       "y": 10,
-      "score": 200098.0227799228,
+      "score": 200098.02273603083,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -1381,7 +1381,7 @@
       "index": 114,
       "x": 12,
       "y": 10,
-      "score": 200098.04034749034,
+      "score": 200098.04026974953,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -1393,7 +1393,7 @@
       "index": 115,
       "x": 16,
       "y": 10,
-      "score": 200099.00617760618,
+      "score": 200099.00616570326,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -1405,7 +1405,7 @@
       "index": 116,
       "x": 17,
       "y": 10,
-      "score": 200103.00675675675,
+      "score": 200103.00674373796,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -1417,7 +1417,7 @@
       "index": 117,
       "x": 18,
       "y": 10,
-      "score": 200103.03320463322,
+      "score": 200103.0331406551,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -1429,7 +1429,7 @@
       "index": 118,
       "x": 19,
       "y": 10,
-      "score": 200104.0416988417,
+      "score": 200104.0416184971,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -1441,7 +1441,7 @@
       "index": 119,
       "x": 0,
       "y": 11,
-      "score": 200104.07548262549,
+      "score": 200104.0753371869,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -1453,7 +1453,7 @@
       "index": 120,
       "x": 7,
       "y": 11,
-      "score": 200191.03494208495,
+      "score": 200191.03487475915,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -1465,7 +1465,7 @@
       "index": 121,
       "x": 13,
       "y": 11,
-      "score": 200192.03474903476,
+      "score": 200192.03468208094,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -1477,7 +1477,7 @@
       "index": 122,
       "x": 4,
       "y": 11,
-      "score": 200193.016988417,
+      "score": 200193.016955684,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -1489,7 +1489,7 @@
       "index": 123,
       "x": 10,
       "y": 11,
-      "score": 200193.01795366796,
+      "score": 200193.01791907515,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -1501,7 +1501,7 @@
       "index": 124,
       "x": 15,
       "y": 11,
-      "score": 200193.0189189189,
+      "score": 200193.01888246628,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -1513,7 +1513,7 @@
       "index": 125,
       "x": 19,
       "y": 11,
-      "score": 200193.0198841699,
+      "score": 200193.01984585743,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -1525,7 +1525,7 @@
       "index": 126,
       "x": 1,
       "y": 12,
-      "score": 200193.02084942086,
+      "score": 200193.02080924856,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -1537,7 +1537,7 @@
       "index": 127,
       "x": 1,
       "y": 12,
-      "score": 200999.005984556,
+      "score": 200999.00597302505,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -1549,7 +1549,7 @@
       "index": 128,
       "x": 3,
       "y": 12,
-      "score": 201004.00752895753,
+      "score": 201004.00751445087,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -1561,7 +1561,7 @@
       "index": 129,
       "x": 4,
       "y": 12,
-      "score": 201093.03185328186,
+      "score": 201093.0317919075,
       "classes": 1,
       "crafted": false,
       "gated": true
@@ -1573,7 +1573,7 @@
       "index": 130,
       "x": 5,
       "y": 12,
-      "score": 201099.04517374517,
+      "score": 201099.0450867052,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -1585,7 +1585,7 @@
       "index": 131,
       "x": 8,
       "y": 12,
-      "score": 201099.05984555985,
+      "score": 201099.05973025048,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -1597,7 +1597,7 @@
       "index": 132,
       "x": 10,
       "y": 12,
-      "score": 201103.03243243243,
+      "score": 201103.0323699422,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -1609,7 +1609,7 @@
       "index": 133,
       "x": 17,
       "y": 12,
-      "score": 201104.02297297298,
+      "score": 201104.02292870905,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -1621,7 +1621,7 @@
       "index": 134,
       "x": 6,
       "y": 12,
-      "score": 202003.0528957529,
+      "score": 202003.0527938343,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -1633,7 +1633,7 @@
       "index": 135,
       "x": 12,
       "y": 12,
-      "score": 202093.01505791506,
+      "score": 202093.01502890175,
       "classes": 2,
       "crafted": false,
       "gated": true
@@ -1645,7 +1645,7 @@
       "index": 136,
       "x": 15,
       "y": 12,
-      "score": 202093.04633204633,
+      "score": 202093.04624277458,
       "classes": 2,
       "crafted": false,
       "gated": true
@@ -1657,7 +1657,7 @@
       "index": 137,
       "x": 19,
       "y": 12,
-      "score": 202094.0469111969,
+      "score": 202094.04682080925,
       "classes": 2,
       "crafted": false,
       "gated": true
@@ -1669,7 +1669,7 @@
       "index": 138,
       "x": 6,
       "y": 13,
-      "score": 202103.00733590734,
+      "score": 202103.00732177263,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -1681,7 +1681,7 @@
       "index": 139,
       "x": 3,
       "y": 14,
-      "score": 204098.0256756757,
+      "score": 204098.02562620424,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -1693,7 +1693,7 @@
       "index": 140,
       "x": 17,
       "y": 13,
-      "score": 204102.02606177607,
+      "score": 204102.0260115607,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -1705,7 +1705,7 @@
       "index": 141,
       "x": 0,
       "y": 14,
-      "score": 204103.02625482625,
+      "score": 204103.0262042389,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -1717,7 +1717,7 @@
       "index": 142,
       "x": 8,
       "y": 14,
-      "score": 204103.02953667953,
+      "score": 204103.0294797688,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -1729,7 +1729,7 @@
       "index": 143,
       "x": 0,
       "y": 13,
-      "score": 204104.09691119692,
+      "score": 204104.09672447015,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -1741,7 +1741,7 @@
       "index": 144,
       "x": 9,
       "y": 14,
-      "score": 208004.02316602317,
+      "score": 208004.0231213873,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -1753,7 +1753,7 @@
       "index": 145,
       "x": 10,
       "y": 14,
-      "score": 208098.04073359072,
+      "score": 208098.040655106,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -1765,7 +1765,7 @@
       "index": 146,
       "x": 11,
       "y": 14,
-      "score": 208098.04092664094,
+      "score": 208098.0408477842,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -1777,7 +1777,7 @@
       "index": 147,
       "x": 12,
       "y": 14,
-      "score": 208098.04401544403,
+      "score": 208098.04393063585,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -1789,7 +1789,7 @@
       "index": 148,
       "x": 13,
       "y": 14,
-      "score": 208103.0395752896,
+      "score": 208103.03949903662,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -1801,7 +1801,7 @@
       "index": 149,
       "x": 15,
       "y": 14,
-      "score": 208103.08223938223,
+      "score": 208103.08208092485,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -1813,7 +1813,7 @@
       "index": 150,
       "x": 0,
       "y": 15,
-      "score": 216003.06312741313,
+      "score": 216003.06300578034,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -1825,7 +1825,7 @@
       "index": 151,
       "x": 19,
       "y": 14,
-      "score": 216003.0635135135,
+      "score": 216003.0633911368,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -1837,7 +1837,7 @@
       "index": 152,
       "x": 1,
       "y": 15,
-      "score": 216003.06583011584,
+      "score": 216003.06570327553,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -1849,7 +1849,7 @@
       "index": 153,
       "x": 6,
       "y": 15,
-      "score": 216093.0615830116,
+      "score": 216093.06146435454,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -1861,7 +1861,7 @@
       "index": 154,
       "x": 7,
       "y": 15,
-      "score": 216093.06177606178,
+      "score": 216093.06165703275,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -1873,7 +1873,7 @@
       "index": 155,
       "x": 9,
       "y": 15,
-      "score": 220003.0081081081,
+      "score": 220003.00809248554,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -1885,7 +1885,7 @@
       "index": 156,
       "x": 15,
       "y": 15,
-      "score": 220103.05366795367,
+      "score": 220103.0535645472,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -1897,7 +1897,7 @@
       "index": 157,
       "x": 5,
       "y": 16,
-      "score": 220103.07181467183,
+      "score": 220103.07167630058,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -1909,7 +1909,7 @@
       "index": 158,
       "x": 12,
       "y": 16,
-      "score": 232004.0833976834,
+      "score": 232004.08323699422,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -1921,7 +1921,7 @@
       "index": 159,
       "x": 0,
       "y": 16,
-      "score": 232098.0805019305,
+      "score": 232098.08034682082,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -1933,7 +1933,7 @@
       "index": 160,
       "x": 16,
       "y": 16,
-      "score": 232099.0806949807,
+      "score": 232099.08053949903,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -1945,7 +1945,7 @@
       "index": 161,
       "x": 18,
       "y": 16,
-      "score": 232102.0835907336,
+      "score": 232102.08342967244,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -1957,7 +1957,7 @@
       "index": 162,
       "x": 1,
       "y": 17,
-      "score": 232103.07722007722,
+      "score": 232103.07707129096,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -1969,7 +1969,7 @@
       "index": 163,
       "x": 14,
       "y": 17,
-      "score": 232104.07644787646,
+      "score": 232104.07630057805,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -1981,7 +1981,7 @@
       "index": 164,
       "x": 3,
       "y": 18,
-      "score": 236093.07837837838,
+      "score": 236093.0782273603,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -1993,7 +1993,7 @@
       "index": 165,
       "x": 8,
       "y": 16,
-      "score": 264004.0859073359,
+      "score": 264004.0857418112,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -2005,7 +2005,7 @@
       "index": 166,
       "x": 10,
       "y": 16,
-      "score": 264004.0861003861,
+      "score": 264004.0859344894,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -2017,7 +2017,7 @@
       "index": 167,
       "x": 8,
       "y": 17,
-      "score": 264098.0862934363,
+      "score": 264098.0861271676,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -2029,7 +2029,7 @@
       "index": 168,
       "x": 5,
       "y": 18,
-      "score": 264098.0893822394,
+      "score": 264098.0892100193,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -2041,7 +2041,7 @@
       "index": 169,
       "x": 14,
       "y": 16,
-      "score": 264103.09015444014,
+      "score": 264103.0899807322,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -2053,7 +2053,7 @@
       "index": 170,
       "x": 10,
       "y": 17,
-      "score": 264104.0864864865,
+      "score": 264104.08631984587,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -2065,7 +2065,7 @@
       "index": 171,
       "x": 9,
       "y": 18,
-      "score": 299998.0083011583,
+      "score": 299998.0082851638,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -2077,7 +2077,7 @@
       "index": 172,
       "x": 11,
       "y": 18,
-      "score": 300001.00984555983,
+      "score": 300001.0098265896,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -2089,7 +2089,7 @@
       "index": 173,
       "x": 13,
       "y": 18,
-      "score": 300002.0111969112,
+      "score": 300002.0111753372,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -2101,7 +2101,7 @@
       "index": 174,
       "x": 15,
       "y": 18,
-      "score": 300003.0113899614,
+      "score": 300003.01136801543,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -2113,7 +2113,7 @@
       "index": 175,
       "x": 16,
       "y": 18,
-      "score": 300003.0115830116,
+      "score": 300003.0115606936,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -2125,7 +2125,7 @@
       "index": 176,
       "x": 1,
       "y": 19,
-      "score": 300003.011969112,
+      "score": 300003.0119460501,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -2137,7 +2137,7 @@
       "index": 177,
       "x": 7,
       "y": 19,
-      "score": 300003.01563706563,
+      "score": 300003.0156069364,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -2149,7 +2149,7 @@
       "index": 178,
       "x": 3,
       "y": 17,
-      "score": 300004.00926640927,
+      "score": 300004.00924855494,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -2161,7 +2161,7 @@
       "index": 179,
       "x": 17,
       "y": 18,
-      "score": 300004.0527027027,
+      "score": 300004.05260115606,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -2173,7 +2173,7 @@
       "index": 180,
       "x": 3,
       "y": 19,
-      "score": 300098.0086872587,
+      "score": 300098.0086705202,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2185,7 +2185,7 @@
       "index": 181,
       "x": 10,
       "y": 19,
-      "score": 300098.0133204633,
+      "score": 300098.0132947977,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2197,7 +2197,7 @@
       "index": 182,
       "x": 18,
       "y": 19,
-      "score": 300098.0135135135,
+      "score": 300098.0134874759,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2209,7 +2209,7 @@
       "index": 183,
       "x": 19,
       "y": 19,
-      "score": 300098.0158301158,
+      "score": 300098.01579961466,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2221,7 +2221,7 @@
       "index": 184,
       "x": 4,
       "y": 20,
-      "score": 300098.016023166,
+      "score": 300098.01599229284,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2233,7 +2233,7 @@
       "index": 185,
       "x": 0,
       "y": 21,
-      "score": 300098.02413127414,
+      "score": 300098.02408477844,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2245,7 +2245,7 @@
       "index": 186,
       "x": 5,
       "y": 21,
-      "score": 300098.0310810811,
+      "score": 300098.0310211946,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2257,7 +2257,7 @@
       "index": 187,
       "x": 15,
       "y": 20,
-      "score": 300098.0415057915,
+      "score": 300098.04142581887,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2269,7 +2269,7 @@
       "index": 188,
       "x": 17,
       "y": 20,
-      "score": 300098.07065637066,
+      "score": 300098.0705202312,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2281,7 +2281,7 @@
       "index": 189,
       "x": 3,
       "y": 21,
-      "score": 300098.072007722,
+      "score": 300098.0718689788,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2293,7 +2293,7 @@
       "index": 190,
       "x": 8,
       "y": 21,
-      "score": 300098.09903474903,
+      "score": 300098.09884393064,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2305,7 +2305,7 @@
       "index": 191,
       "x": 11,
       "y": 21,
-      "score": 300099.0498069498,
+      "score": 300099.04971098265,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2317,7 +2317,7 @@
       "index": 192,
       "x": 12,
       "y": 21,
-      "score": 300102.00965250965,
+      "score": 300102.00963391137,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2329,7 +2329,7 @@
       "index": 193,
       "x": 5,
       "y": 22,
-      "score": 300102.04575289576,
+      "score": 300102.0456647399,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2341,7 +2341,7 @@
       "index": 194,
       "x": 14,
       "y": 21,
-      "score": 300103.0088803089,
+      "score": 300103.00886319845,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2353,7 +2353,7 @@
       "index": 195,
       "x": 9,
       "y": 22,
-      "score": 300103.01003861,
+      "score": 300103.01001926785,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2365,7 +2365,7 @@
       "index": 196,
       "x": 15,
       "y": 22,
-      "score": 300103.0104247104,
+      "score": 300103.0104046243,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2377,7 +2377,7 @@
       "index": 197,
       "x": 18,
       "y": 21,
-      "score": 300103.0106177606,
+      "score": 300103.0105973025,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2389,7 +2389,7 @@
       "index": 198,
       "x": 2,
       "y": 22,
-      "score": 300103.0335907336,
+      "score": 300103.03352601157,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2401,7 +2401,7 @@
       "index": 199,
       "x": 7,
       "y": 22,
-      "score": 300103.0397683398,
+      "score": 300103.03969171486,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2413,7 +2413,7 @@
       "index": 200,
       "x": 19,
       "y": 22,
-      "score": 300103.04594594595,
+      "score": 300103.0458574181,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2425,7 +2425,7 @@
       "index": 201,
       "x": 0,
       "y": 23,
-      "score": 300103.04613899614,
+      "score": 300103.04605009634,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2437,7 +2437,7 @@
       "index": 202,
       "x": 4,
       "y": 23,
-      "score": 300103.06833976833,
+      "score": 300103.0682080925,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -2449,7 +2449,7 @@
       "index": 203,
       "x": 8,
       "y": 23,
-      "score": 300188.03552123555,
+      "score": 300188.0354527938,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -2461,7 +2461,7 @@
       "index": 204,
       "x": 7,
       "y": 19,
-      "score": 300193.0171814672,
+      "score": 300193.01714836224,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -2473,7 +2473,7 @@
       "index": 205,
       "x": 5,
       "y": 20,
-      "score": 300193.01814671815,
+      "score": 300193.0181117534,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -2485,7 +2485,7 @@
       "index": 206,
       "x": 16,
       "y": 21,
-      "score": 300193.0191119691,
+      "score": 300193.0190751445,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -2497,7 +2497,7 @@
       "index": 207,
       "x": 14,
       "y": 23,
-      "score": 300193.0200772201,
+      "score": 300193.02003853564,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -2509,7 +2509,7 @@
       "index": 208,
       "x": 18,
       "y": 23,
-      "score": 300193.02104247105,
+      "score": 300193.0210019268,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -2521,7 +2521,7 @@
       "index": 209,
       "x": 0,
       "y": 24,
-      "score": 301099.00637065637,
+      "score": 301099.0063583815,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -2533,7 +2533,7 @@
       "index": 210,
       "x": 1,
       "y": 24,
-      "score": 301099.03706563707,
+      "score": 301099.03699421964,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -2545,7 +2545,7 @@
       "index": 211,
       "x": 9,
       "y": 24,
-      "score": 301099.03725868725,
+      "score": 301099.0371868979,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -2557,7 +2557,7 @@
       "index": 212,
       "x": 12,
       "y": 24,
-      "score": 301099.03745173744,
+      "score": 301099.0373795761,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -2569,7 +2569,7 @@
       "index": 213,
       "x": 7,
       "y": 24,
-      "score": 301099.0453667954,
+      "score": 301099.0452793834,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -2581,7 +2581,7 @@
       "index": 214,
       "x": 1,
       "y": 24,
-      "score": 301104.0828185328,
+      "score": 301104.08265895955,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -2593,7 +2593,7 @@
       "index": 215,
       "x": 9,
       "y": 24,
-      "score": 301104.083011583,
+      "score": 301104.08285163774,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -2605,7 +2605,7 @@
       "index": 216,
       "x": 12,
       "y": 24,
-      "score": 301104.0832046332,
+      "score": 301104.083044316,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -2617,7 +2617,7 @@
       "index": 217,
       "x": 15,
       "y": 24,
-      "score": 301193.0818532819,
+      "score": 301193.0816955684,
       "classes": 1,
       "crafted": true,
       "gated": true
@@ -2629,7 +2629,7 @@
       "index": 218,
       "x": 16,
       "y": 24,
-      "score": 301998.0084942085,
+      "score": 301998.008477842,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -2641,7 +2641,7 @@
       "index": 219,
       "x": 19,
       "y": 24,
-      "score": 302093.01525096525,
+      "score": 302093.01522158,
       "classes": 2,
       "crafted": false,
       "gated": true
@@ -2653,7 +2653,7 @@
       "index": 220,
       "x": 4,
       "y": 25,
-      "score": 302094.0467181467,
+      "score": 302094.046628131,
       "classes": 2,
       "crafted": false,
       "gated": true
@@ -2665,7 +2665,7 @@
       "index": 221,
       "x": 5,
       "y": 25,
-      "score": 302103.03281853284,
+      "score": 302103.03275529866,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -2677,7 +2677,7 @@
       "index": 222,
       "x": 6,
       "y": 25,
-      "score": 302103.0333976834,
+      "score": 302103.0333333333,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -2689,7 +2689,7 @@
       "index": 223,
       "x": 14,
       "y": 24,
-      "score": 302103.08243243245,
+      "score": 302103.08227360307,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -2701,7 +2701,7 @@
       "index": 224,
       "x": 17,
       "y": 25,
-      "score": 304003.0391891892,
+      "score": 304003.03911368013,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -2713,7 +2713,7 @@
       "index": 225,
       "x": 1,
       "y": 26,
-      "score": 304004.0252895753,
+      "score": 304004.0252408478,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -2725,7 +2725,7 @@
       "index": 226,
       "x": 7,
       "y": 26,
-      "score": 304088.02876447875,
+      "score": 304088.02870905586,
       "classes": 4,
       "crafted": false,
       "gated": true
@@ -2737,7 +2737,7 @@
       "index": 227,
       "x": 3,
       "y": 26,
-      "score": 304093.02895752894,
+      "score": 304093.0289017341,
       "classes": 4,
       "crafted": false,
       "gated": true
@@ -2749,7 +2749,7 @@
       "index": 228,
       "x": 11,
       "y": 26,
-      "score": 304093.0291505791,
+      "score": 304093.02909441234,
       "classes": 4,
       "crafted": false,
       "gated": true
@@ -2761,7 +2761,7 @@
       "index": 229,
       "x": 9,
       "y": 26,
-      "score": 304093.0361003861,
+      "score": 304093.03603082855,
       "classes": 4,
       "crafted": false,
       "gated": true
@@ -2773,7 +2773,7 @@
       "index": 230,
       "x": 14,
       "y": 26,
-      "score": 304093.0362934363,
+      "score": 304093.03622350673,
       "classes": 4,
       "crafted": false,
       "gated": true
@@ -2785,7 +2785,7 @@
       "index": 231,
       "x": 15,
       "y": 26,
-      "score": 304093.0364864865,
+      "score": 304093.036416185,
       "classes": 4,
       "crafted": false,
       "gated": true
@@ -2797,7 +2797,7 @@
       "index": 232,
       "x": 17,
       "y": 26,
-      "score": 304093.0366795367,
+      "score": 304093.0366088632,
       "classes": 4,
       "crafted": false,
       "gated": true
@@ -2809,7 +2809,7 @@
       "index": 233,
       "x": 1,
       "y": 27,
-      "score": 304098.02586872585,
+      "score": 304098.02581888245,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -2821,7 +2821,7 @@
       "index": 234,
       "x": 18,
       "y": 26,
-      "score": 304098.05,
+      "score": 304098.0499036609,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -2833,7 +2833,7 @@
       "index": 235,
       "x": 4,
       "y": 27,
-      "score": 304098.0972972973,
+      "score": 304098.0971098266,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -2845,7 +2845,7 @@
       "index": 236,
       "x": 6,
       "y": 27,
-      "score": 307999.0222007722,
+      "score": 307999.02215799614,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -2857,7 +2857,7 @@
       "index": 237,
       "x": 9,
       "y": 27,
-      "score": 308093.0378378378,
+      "score": 308093.03776493255,
       "classes": 8,
       "crafted": false,
       "gated": true
@@ -2869,7 +2869,7 @@
       "index": 238,
       "x": 11,
       "y": 27,
-      "score": 308093.0382239382,
+      "score": 308093.03815028904,
       "classes": 8,
       "crafted": false,
       "gated": true
@@ -2881,7 +2881,7 @@
       "index": 239,
       "x": 13,
       "y": 27,
-      "score": 308093.03861003864,
+      "score": 308093.03853564546,
       "classes": 8,
       "crafted": false,
       "gated": true
@@ -2893,7 +2893,7 @@
       "index": 240,
       "x": 19,
       "y": 26,
-      "score": 308098.0223938224,
+      "score": 308098.0223506744,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -2905,7 +2905,7 @@
       "index": 241,
       "x": 15,
       "y": 28,
-      "score": 308098.0235521236,
+      "score": 308098.0235067437,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -2917,7 +2917,7 @@
       "index": 242,
       "x": 0,
       "y": 28,
-      "score": 308098.0963320463,
+      "score": 308098.0961464355,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -2929,7 +2929,7 @@
       "index": 243,
       "x": 1,
       "y": 28,
-      "score": 308099.0233590734,
+      "score": 308099.02331406553,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -2941,7 +2941,7 @@
       "index": 244,
       "x": 5,
       "y": 29,
-      "score": 316003.0637065637,
+      "score": 316003.063583815,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -2953,7 +2953,7 @@
       "index": 245,
       "x": 7,
       "y": 29,
-      "score": 316003.06486486486,
+      "score": 316003.0647398844,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -2965,7 +2965,7 @@
       "index": 246,
       "x": 6,
       "y": 29,
-      "score": 316003.06505791505,
+      "score": 316003.06493256264,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -2977,7 +2977,7 @@
       "index": 247,
       "x": 9,
       "y": 29,
-      "score": 316003.06525096524,
+      "score": 316003.0651252408,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -2989,7 +2989,7 @@
       "index": 248,
       "x": 7,
       "y": 27,
-      "score": 316003.06544401543,
+      "score": 316003.06531791907,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -3001,7 +3001,7 @@
       "index": 249,
       "x": 15,
       "y": 27,
-      "score": 316093.06196911196,
+      "score": 316093.061849711,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -3013,7 +3013,7 @@
       "index": 250,
       "x": 17,
       "y": 27,
-      "score": 316093.06216216215,
+      "score": 316093.0620423892,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -3025,7 +3025,7 @@
       "index": 251,
       "x": 11,
       "y": 29,
-      "score": 316093.0627413127,
+      "score": 316093.0626204239,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -3037,7 +3037,7 @@
       "index": 252,
       "x": 13,
       "y": 29,
-      "score": 316099.0673745174,
+      "score": 316099.0672447013,
       "classes": 16,
       "crafted": true,
       "gated": false
@@ -3049,7 +3049,7 @@
       "index": 253,
       "x": 14,
       "y": 29,
-      "score": 316103.0644787645,
+      "score": 316103.0643545279,
       "classes": 16,
       "crafted": true,
       "gated": false
@@ -3061,7 +3061,7 @@
       "index": 254,
       "x": 15,
       "y": 29,
-      "score": 316103.0656370656,
+      "score": 316103.0655105973,
       "classes": 16,
       "crafted": true,
       "gated": false
@@ -3073,7 +3073,7 @@
       "index": 255,
       "x": 19,
       "y": 29,
-      "score": 320003.0164092664,
+      "score": 320003.0163776493,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -3085,7 +3085,7 @@
       "index": 256,
       "x": 3,
       "y": 28,
-      "score": 332004.0974903475,
+      "score": 332004.0973025048,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -3097,7 +3097,7 @@
       "index": 257,
       "x": 2,
       "y": 30,
-      "score": 336093.07857142854,
+      "score": 336093.0784200385,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -3109,7 +3109,7 @@
       "index": 258,
       "x": 9,
       "y": 30,
-      "score": 364098.09131274134,
+      "score": 364098.0911368015,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -3121,7 +3121,7 @@
       "index": 259,
       "x": 10,
       "y": 30,
-      "score": 364099.0909266409,
+      "score": 364099.0907514451,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -3133,7 +3133,7 @@
       "index": 260,
       "x": 14,
       "y": 31,
-      "score": 364103.0866795367,
+      "score": 364103.0865125241,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -3145,7 +3145,7 @@
       "index": 261,
       "x": 11,
       "y": 30,
-      "score": 364103.08687258686,
+      "score": 364103.0867052023,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -3157,7 +3157,7 @@
       "index": 262,
       "x": 18,
       "y": 30,
-      "score": 364103.0888030888,
+      "score": 364103.0886319846,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -3169,7 +3169,7 @@
       "index": 263,
       "x": 5,
       "y": 31,
-      "score": 364103.0891891892,
+      "score": 364103.08901734103,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -3181,7 +3181,7 @@
       "index": 264,
       "x": 11,
       "y": 31,
-      "score": 364103.09034749033,
+      "score": 364103.0901734104,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -3193,7 +3193,7 @@
       "index": 265,
       "x": 2,
       "y": 30,
-      "score": 364104.0915057915,
+      "score": 364104.09132947976,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -3205,7 +3205,7 @@
       "index": 266,
       "x": 0,
       "y": 32,
-      "score": 364104.0918918919,
+      "score": 364104.09171483625,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -3217,7 +3217,7 @@
       "index": 267,
       "x": 6,
       "y": 31,
-      "score": 399998.01216216217,
+      "score": 399998.01213872834,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -3229,7 +3229,7 @@
       "index": 268,
       "x": 8,
       "y": 31,
-      "score": 399998.0137065637,
+      "score": 399998.01368015417,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -3241,7 +3241,7 @@
       "index": 269,
       "x": 2,
       "y": 32,
-      "score": 399998.0247104247,
+      "score": 399998.0246628131,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -3253,7 +3253,7 @@
       "index": 270,
       "x": 17,
       "y": 31,
-      "score": 400003.033976834,
+      "score": 400003.033911368,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -3265,7 +3265,7 @@
       "index": 271,
       "x": 4,
       "y": 33,
-      "score": 400003.0418918919,
+      "score": 400003.04181117535,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -3277,7 +3277,7 @@
       "index": 272,
       "x": 11,
       "y": 33,
-      "score": 400003.04459459457,
+      "score": 400003.0445086705,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -3289,7 +3289,7 @@
       "index": 273,
       "x": 13,
       "y": 33,
-      "score": 400004.0117760618,
+      "score": 400004.01175337186,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -3301,7 +3301,7 @@
       "index": 274,
       "x": 16,
       "y": 33,
-      "score": 400004.0140926641,
+      "score": 400004.0140655106,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -3313,7 +3313,7 @@
       "index": 275,
       "x": 18,
       "y": 33,
-      "score": 400004.0447876448,
+      "score": 400004.04470134876,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -3325,7 +3325,7 @@
       "index": 276,
       "x": 4,
       "y": 32,
-      "score": 400004.0525096525,
+      "score": 400004.0524084778,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -3337,7 +3337,7 @@
       "index": 277,
       "x": 0,
       "y": 34,
-      "score": 400089.01235521236,
+      "score": 400089.0123314065,
       "classes": 127,
       "crafted": false,
       "gated": true
@@ -3349,7 +3349,7 @@
       "index": 278,
       "x": 7,
       "y": 32,
-      "score": 400098.0090733591,
+      "score": 400098.0090558767,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3361,7 +3361,7 @@
       "index": 279,
       "x": 4,
       "y": 34,
-      "score": 400098.0138996139,
+      "score": 400098.01387283235,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3373,7 +3373,7 @@
       "index": 280,
       "x": 8,
       "y": 34,
-      "score": 400098.0162162162,
+      "score": 400098.0161849711,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3385,7 +3385,7 @@
       "index": 281,
       "x": 5,
       "y": 34,
-      "score": 400098.0420849421,
+      "score": 400098.04200385354,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3397,7 +3397,7 @@
       "index": 282,
       "x": 13,
       "y": 34,
-      "score": 400098.0496138996,
+      "score": 400098.0495183044,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3409,7 +3409,7 @@
       "index": 283,
       "x": 14,
       "y": 34,
-      "score": 400098.0501930502,
+      "score": 400098.05009633914,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3421,7 +3421,7 @@
       "index": 284,
       "x": 17,
       "y": 34,
-      "score": 400098.0685328185,
+      "score": 400098.0684007707,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3433,7 +3433,7 @@
       "index": 285,
       "x": 6,
       "y": 35,
-      "score": 400099.0523166023,
+      "score": 400099.05221579963,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3445,7 +3445,7 @@
       "index": 286,
       "x": 11,
       "y": 35,
-      "score": 400101.0438223938,
+      "score": 400101.0437379576,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3457,7 +3457,7 @@
       "index": 287,
       "x": 18,
       "y": 35,
-      "score": 400101.09884169884,
+      "score": 400101.0986512524,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3469,7 +3469,7 @@
       "index": 288,
       "x": 0,
       "y": 36,
-      "score": 400102.0436293436,
+      "score": 400102.04354527936,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3481,7 +3481,7 @@
       "index": 289,
       "x": 2,
       "y": 36,
-      "score": 400102.0442084942,
+      "score": 400102.0441233141,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3493,7 +3493,7 @@
       "index": 290,
       "x": 6,
       "y": 37,
-      "score": 400102.09864864865,
+      "score": 400102.09845857415,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3505,7 +3505,7 @@
       "index": 291,
       "x": 8,
       "y": 37,
-      "score": 400103.00945945946,
+      "score": 400103.0094412331,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3517,7 +3517,7 @@
       "index": 292,
       "x": 13,
       "y": 37,
-      "score": 400103.0102316602,
+      "score": 400103.01021194604,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3529,7 +3529,7 @@
       "index": 293,
       "x": 15,
       "y": 37,
-      "score": 400103.05038610037,
+      "score": 400103.0502890173,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3541,7 +3541,7 @@
       "index": 294,
       "x": 18,
       "y": 37,
-      "score": 400103.05057915056,
+      "score": 400103.05048169557,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3553,7 +3553,7 @@
       "index": 295,
       "x": 4,
       "y": 38,
-      "score": 400103.07413127413,
+      "score": 400103.0739884393,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3565,7 +3565,7 @@
       "index": 296,
       "x": 9,
       "y": 37,
-      "score": 400103.0756756757,
+      "score": 400103.0755298651,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3577,7 +3577,7 @@
       "index": 297,
       "x": 11,
       "y": 38,
-      "score": 400104.0471042471,
+      "score": 400104.0470134875,
       "classes": 127,
       "crafted": true,
       "gated": false
@@ -3589,7 +3589,7 @@
       "index": 298,
       "x": 15,
       "y": 32,
-      "score": 400193.0173745174,
+      "score": 400193.0173410405,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -3601,7 +3601,7 @@
       "index": 299,
       "x": 18,
       "y": 32,
-      "score": 400193.01833976834,
+      "score": 400193.0183044316,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -3613,7 +3613,7 @@
       "index": 300,
       "x": 10,
       "y": 34,
-      "score": 400193.0193050193,
+      "score": 400193.01926782273,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -3625,7 +3625,7 @@
       "index": 301,
       "x": 16,
       "y": 34,
-      "score": 400193.0202702703,
+      "score": 400193.0202312139,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -3637,7 +3637,7 @@
       "index": 302,
       "x": 3,
       "y": 35,
-      "score": 400193.02123552124,
+      "score": 400193.021194605,
       "classes": 127,
       "crafted": true,
       "gated": true
@@ -3649,7 +3649,7 @@
       "index": 303,
       "x": 16,
       "y": 35,
-      "score": 401003.09555984556,
+      "score": 401003.09537572257,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -3661,7 +3661,7 @@
       "index": 304,
       "x": 0,
       "y": 39,
-      "score": 401099.09575289575,
+      "score": 401099.09556840075,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -3673,7 +3673,7 @@
       "index": 305,
       "x": 3,
       "y": 39,
-      "score": 401103.03262548265,
+      "score": 401103.0325626204,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -3685,7 +3685,7 @@
       "index": 306,
       "x": 8,
       "y": 38,
-      "score": 401103.08166023163,
+      "score": 401103.08150289016,
       "classes": 1,
       "crafted": true,
       "gated": false
@@ -3697,7 +3697,7 @@
       "index": 307,
       "x": 17,
       "y": 38,
-      "score": 402003.01254826254,
+      "score": 402003.01252408477,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -3709,7 +3709,7 @@
       "index": 308,
       "x": 0,
       "y": 39,
-      "score": 402093.01544401544,
+      "score": 402093.0154142582,
       "classes": 2,
       "crafted": false,
       "gated": true
@@ -3721,7 +3721,7 @@
       "index": 309,
       "x": 10,
       "y": 39,
-      "score": 402093.0472972973,
+      "score": 402093.0472061657,
       "classes": 2,
       "crafted": false,
       "gated": true
@@ -3733,7 +3733,7 @@
       "index": 310,
       "x": 13,
       "y": 39,
-      "score": 402098.09594594594,
+      "score": 402098.095761079,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -3745,7 +3745,7 @@
       "index": 311,
       "x": 5,
       "y": 40,
-      "score": 402099.02142857143,
+      "score": 402099.0213872832,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -3757,7 +3757,7 @@
       "index": 312,
       "x": 16,
       "y": 39,
-      "score": 402103.01081081084,
+      "score": 402103.0107899807,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -3769,7 +3769,7 @@
       "index": 313,
       "x": 7,
       "y": 40,
-      "score": 402103.0142857143,
+      "score": 402103.01425818884,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -3781,7 +3781,7 @@
       "index": 314,
       "x": 9,
       "y": 40,
-      "score": 402103.03301158303,
+      "score": 402103.0329479769,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -3793,7 +3793,7 @@
       "index": 315,
       "x": 11,
       "y": 40,
-      "score": 402103.0337837838,
+      "score": 402103.0337186898,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -3805,7 +3805,7 @@
       "index": 316,
       "x": 12,
       "y": 40,
-      "score": 402103.03416988417,
+      "score": 402103.03410404624,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -3817,7 +3817,7 @@
       "index": 317,
       "x": 17,
       "y": 40,
-      "score": 402103.0569498069,
+      "score": 402103.05684007704,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -3829,7 +3829,7 @@
       "index": 318,
       "x": 14,
       "y": 40,
-      "score": 402103.08127413125,
+      "score": 402103.08111753373,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -3841,7 +3841,7 @@
       "index": 319,
       "x": 2,
       "y": 41,
-      "score": 402103.09613899613,
+      "score": 402103.09595375723,
       "classes": 2,
       "crafted": true,
       "gated": false
@@ -3853,7 +3853,7 @@
       "index": 320,
       "x": 0,
       "y": 42,
-      "score": 402189.0455598456,
+      "score": 402189.04547206167,
       "classes": 2,
       "crafted": true,
       "gated": true
@@ -3865,7 +3865,7 @@
       "index": 321,
       "x": 7,
       "y": 42,
-      "score": 404098.0293436294,
+      "score": 404098.0292870906,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -3877,7 +3877,7 @@
       "index": 322,
       "x": 9,
       "y": 42,
-      "score": 404098.0426640927,
+      "score": 404098.04258188826,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -3889,7 +3889,7 @@
       "index": 323,
       "x": 17,
       "y": 41,
-      "score": 404099.0971042471,
+      "score": 404099.0969171484,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -3901,7 +3901,7 @@
       "index": 324,
       "x": 2,
       "y": 43,
-      "score": 404101.08262548264,
+      "score": 404101.0824662813,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -3913,7 +3913,7 @@
       "index": 325,
       "x": 11,
       "y": 42,
-      "score": 404103.0393822394,
+      "score": 404103.0393063584,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -3925,7 +3925,7 @@
       "index": 326,
       "x": 14,
       "y": 42,
-      "score": 404103.0424710425,
+      "score": 404103.04238921,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -3937,7 +3937,7 @@
       "index": 327,
       "x": 4,
       "y": 41,
-      "score": 404103.04285714286,
+      "score": 404103.04277456645,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -3949,7 +3949,7 @@
       "index": 328,
       "x": 5,
       "y": 43,
-      "score": 404103.04305019305,
+      "score": 404103.0429672447,
       "classes": 4,
       "crafted": true,
       "gated": false
@@ -3961,7 +3961,7 @@
       "index": 329,
       "x": 9,
       "y": 43,
-      "score": 408089.038030888,
+      "score": 408089.0379576108,
       "classes": 8,
       "crafted": false,
       "gated": true
@@ -3973,7 +3973,7 @@
       "index": 330,
       "x": 5,
       "y": 44,
-      "score": 408089.0384169884,
+      "score": 408089.0383429672,
       "classes": 8,
       "crafted": false,
       "gated": true
@@ -3985,7 +3985,7 @@
       "index": 331,
       "x": 11,
       "y": 44,
-      "score": 408089.0388030888,
+      "score": 408089.0387283237,
       "classes": 8,
       "crafted": false,
       "gated": true
@@ -3997,7 +3997,7 @@
       "index": 332,
       "x": 13,
       "y": 44,
-      "score": 408098.08204633207,
+      "score": 408098.08188824664,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -4009,7 +4009,7 @@
       "index": 333,
       "x": 15,
       "y": 44,
-      "score": 408099.02374517376,
+      "score": 408099.02369942196,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -4021,7 +4021,7 @@
       "index": 334,
       "x": 17,
       "y": 44,
-      "score": 408099.0965250965,
+      "score": 408099.09633911366,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -4033,7 +4033,7 @@
       "index": 335,
       "x": 0,
       "y": 45,
-      "score": 408101.04343629343,
+      "score": 408101.0433526012,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -4045,7 +4045,7 @@
       "index": 336,
       "x": 2,
       "y": 45,
-      "score": 408102.04324324324,
+      "score": 408102.04315992293,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -4057,7 +4057,7 @@
       "index": 337,
       "x": 9,
       "y": 45,
-      "score": 408103.0422779923,
+      "score": 408103.0421965318,
       "classes": 8,
       "crafted": true,
       "gated": false
@@ -4069,7 +4069,7 @@
       "index": 338,
       "x": 19,
       "y": 43,
-      "score": 416003.01100386103,
+      "score": 416003.01098265895,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -4081,7 +4081,7 @@
       "index": 339,
       "x": 4,
       "y": 46,
-      "score": 416003.06332046335,
+      "score": 416003.0631984586,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -4093,7 +4093,7 @@
       "index": 340,
       "x": 8,
       "y": 36,
-      "score": 416093.06235521234,
+      "score": 416093.0622350674,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -4105,7 +4105,7 @@
       "index": 341,
       "x": 10,
       "y": 36,
-      "score": 416093.06254826253,
+      "score": 416093.06242774567,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -4117,7 +4117,7 @@
       "index": 342,
       "x": 6,
       "y": 46,
-      "score": 416098.0671814672,
+      "score": 416098.06705202314,
       "classes": 16,
       "crafted": true,
       "gated": false
@@ -4129,7 +4129,7 @@
       "index": 343,
       "x": 7,
       "y": 46,
-      "score": 416099.0980694981,
+      "score": 416099.0978805395,
       "classes": 16,
       "crafted": true,
       "gated": false
@@ -4141,7 +4141,7 @@
       "index": 344,
       "x": 11,
       "y": 46,
-      "score": 416103.0803088803,
+      "score": 416103.0801541426,
       "classes": 16,
       "crafted": true,
       "gated": false
@@ -4153,7 +4153,7 @@
       "index": 345,
       "x": 17,
       "y": 46,
-      "score": 416104.08416988415,
+      "score": 416104.08400770713,
       "classes": 16,
       "crafted": true,
       "gated": false
@@ -4165,7 +4165,7 @@
       "index": 346,
       "x": 4,
       "y": 47,
-      "score": 416104.0982625483,
+      "score": 416104.0980732177,
       "classes": 16,
       "crafted": true,
       "gated": false
@@ -4177,7 +4177,7 @@
       "index": 347,
       "x": 5,
       "y": 47,
-      "score": 416193.0640926641,
+      "score": 416193.0639691715,
       "classes": 16,
       "crafted": true,
       "gated": true
@@ -4189,7 +4189,7 @@
       "index": 348,
       "x": 10,
       "y": 47,
-      "score": 416193.0642857143,
+      "score": 416193.06416184973,
       "classes": 16,
       "crafted": true,
       "gated": true
@@ -4201,7 +4201,7 @@
       "index": 349,
       "x": 14,
       "y": 36,
-      "score": 416193.08108108107,
+      "score": 416193.0809248555,
       "classes": 16,
       "crafted": true,
       "gated": true
@@ -4213,7 +4213,7 @@
       "index": 350,
       "x": 14,
       "y": 47,
-      "score": 418103.0646718147,
+      "score": 418103.06454720616,
       "classes": 18,
       "crafted": true,
       "gated": false
@@ -4225,7 +4225,7 @@
       "index": 351,
       "x": 14,
       "y": 40,
-      "score": 420003.01274131273,
+      "score": 420003.012716763,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4237,7 +4237,7 @@
       "index": 352,
       "x": 18,
       "y": 47,
-      "score": 432098.0760617761,
+      "score": 432098.0759152216,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -4249,7 +4249,7 @@
       "index": 353,
       "x": 0,
       "y": 48,
-      "score": 432098.0776061776,
+      "score": 432098.0774566474,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -4261,7 +4261,7 @@
       "index": 354,
       "x": 11,
       "y": 48,
-      "score": 432099.07683397684,
+      "score": 432099.0766859345,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -4273,7 +4273,7 @@
       "index": 355,
       "x": 16,
       "y": 47,
-      "score": 432099.0808880309,
+      "score": 432099.08073217724,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -4285,7 +4285,7 @@
       "index": 356,
       "x": 4,
       "y": 49,
-      "score": 432101.07664092665,
+      "score": 432101.07649325626,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -4297,7 +4297,7 @@
       "index": 357,
       "x": 6,
       "y": 49,
-      "score": 432103.0774131274,
+      "score": 432103.0772639692,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -4309,7 +4309,7 @@
       "index": 358,
       "x": 8,
       "y": 49,
-      "score": 432103.0978764479,
+      "score": 432103.0976878613,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -4321,7 +4321,7 @@
       "index": 359,
       "x": 10,
       "y": 41,
-      "score": 432104.0976833977,
+      "score": 432104.09749518306,
       "classes": 32,
       "crafted": true,
       "gated": false
@@ -4333,7 +4333,7 @@
       "index": 360,
       "x": 13,
       "y": 48,
-      "score": 436093.0787644788,
+      "score": 436093.07861271675,
       "classes": 16,
       "crafted": false,
       "gated": true
@@ -4345,7 +4345,7 @@
       "index": 361,
       "x": 13,
       "y": 50,
-      "score": 464098.0895752896,
+      "score": 464098.0894026975,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -4357,7 +4357,7 @@
       "index": 362,
       "x": 0,
       "y": 51,
-      "score": 464099.0907335907,
+      "score": 464099.09055876685,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -4369,7 +4369,7 @@
       "index": 363,
       "x": 2,
       "y": 51,
-      "score": 464099.0996138996,
+      "score": 464099.0994219653,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -4381,7 +4381,7 @@
       "index": 364,
       "x": 6,
       "y": 51,
-      "score": 464102.088996139,
+      "score": 464102.0888246628,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -4393,7 +4393,7 @@
       "index": 365,
       "x": 10,
       "y": 51,
-      "score": 464103.0905405405,
+      "score": 464103.0903660886,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -4405,7 +4405,7 @@
       "index": 366,
       "x": 17,
       "y": 51,
-      "score": 464104.0916988417,
+      "score": 464104.091522158,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -4417,7 +4417,7 @@
       "index": 367,
       "x": 0,
       "y": 52,
-      "score": 464104.0920849421,
+      "score": 464104.09190751443,
       "classes": 64,
       "crafted": true,
       "gated": false
@@ -4429,7 +4429,7 @@
       "index": 368,
       "x": 19,
       "y": 41,
-      "score": 499997.0554054054,
+      "score": 499997.0552986513,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4441,7 +4441,7 @@
       "index": 369,
       "x": 13,
       "y": 43,
-      "score": 499997.0555984556,
+      "score": 499997.05549132946,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4453,7 +4453,7 @@
       "index": 370,
       "x": 16,
       "y": 43,
-      "score": 499997.055984556,
+      "score": 499997.05587668595,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4465,7 +4465,7 @@
       "index": 371,
       "x": 18,
       "y": 44,
-      "score": 499997.05617760617,
+      "score": 499997.0560693642,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4477,7 +4477,7 @@
       "index": 372,
       "x": 4,
       "y": 45,
-      "score": 499997.05637065636,
+      "score": 499997.0562620424,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4489,7 +4489,7 @@
       "index": 373,
       "x": 0,
       "y": 48,
-      "score": 499997.05733590736,
+      "score": 499997.0572254335,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4501,7 +4501,7 @@
       "index": 374,
       "x": 1,
       "y": 48,
-      "score": 499997.05926640925,
+      "score": 499997.0591522158,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4513,7 +4513,7 @@
       "index": 375,
       "x": 3,
       "y": 48,
-      "score": 499997.06675675674,
+      "score": 499997.06664739887,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -4525,7 +4525,7 @@
       "index": 376,
       "x": 9,
       "y": 48,
-      "score": 499997.0698841699,
+      "score": 499997.0697495183,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4537,7 +4537,7 @@
       "index": 377,
       "x": 17,
       "y": 48,
-      "score": 499997.0702702703,
+      "score": 499997.0701348748,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4549,7 +4549,7 @@
       "index": 378,
       "x": 10,
       "y": 49,
-      "score": 499997.07123552123,
+      "score": 499997.0710982659,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4561,7 +4561,7 @@
       "index": 379,
       "x": 17,
       "y": 49,
-      "score": 499997.0714285714,
+      "score": 499997.0712909441,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4573,7 +4573,7 @@
       "index": 380,
       "x": 0,
       "y": 50,
-      "score": 499997.0757915058,
+      "score": 499997.0756840077,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -4585,7 +4585,7 @@
       "index": 381,
       "x": 2,
       "y": 50,
-      "score": 499997.0951737452,
+      "score": 499997.0949903661,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4597,7 +4597,7 @@
       "index": 382,
       "x": 3,
       "y": 50,
-      "score": 499997.0953667954,
+      "score": 499997.0951830443,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4609,7 +4609,7 @@
       "index": 383,
       "x": 10,
       "y": 50,
-      "score": 499997.0965637065,
+      "score": 499997.0964547206,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -4621,7 +4621,7 @@
       "index": 384,
       "x": 15,
       "y": 50,
-      "score": 499997.0998069498,
+      "score": 499997.09961464355,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4633,7 +4633,7 @@
       "index": 385,
       "x": 17,
       "y": 50,
-      "score": 499997.1226640927,
+      "score": 499997.1224855492,
       "classes": 3,
       "crafted": false,
       "gated": false
@@ -4645,7 +4645,7 @@
       "index": 386,
       "x": 12,
       "y": 51,
-      "score": 499997.13752895757,
+      "score": 499997.1374181118,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -4657,7 +4657,7 @@
       "index": 387,
       "x": 19,
       "y": 51,
-      "score": 499997.1436293436,
+      "score": 499997.14344894025,
       "classes": 5,
       "crafted": false,
       "gated": false
@@ -4669,7 +4669,7 @@
       "index": 388,
       "x": 5,
       "y": 52,
-      "score": 499997.21285714285,
+      "score": 499997.21267822734,
       "classes": 12,
       "crafted": false,
       "gated": false
@@ -4681,7 +4681,7 @@
       "index": 389,
       "x": 8,
       "y": 52,
-      "score": 499997.2399227799,
+      "score": 499997.2397687861,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -4693,7 +4693,7 @@
       "index": 390,
       "x": 9,
       "y": 52,
-      "score": 499997.25498069497,
+      "score": 499997.2547976878,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -4705,7 +4705,7 @@
       "index": 391,
       "x": 12,
       "y": 52,
-      "score": 499997.2738223938,
+      "score": 499997.2736416185,
       "classes": 18,
       "crafted": false,
       "gated": false
@@ -4717,7 +4717,7 @@
       "index": 392,
       "x": 15,
       "y": 52,
-      "score": 499997.39953667956,
+      "score": 499997.39938342967,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -4729,7 +4729,7 @@
       "index": 393,
       "x": 16,
       "y": 52,
-      "score": 499997.573050193,
+      "score": 499997.57287090557,
       "classes": 48,
       "crafted": false,
       "gated": false
@@ -4741,7 +4741,7 @@
       "index": 394,
       "x": 18,
       "y": 52,
-      "score": 499997.7322779923,
+      "score": 499997.7321001927,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -4753,7 +4753,7 @@
       "index": 395,
       "x": 19,
       "y": 52,
-      "score": 499997.8134362934,
+      "score": 499997.813256262,
       "classes": 72,
       "crafted": false,
       "gated": false
@@ -4765,7 +4765,7 @@
       "index": 396,
       "x": 8,
       "y": 53,
-      "score": 499998.02683397685,
+      "score": 499998.0267822736,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4777,7 +4777,7 @@
       "index": 397,
       "x": 1,
       "y": 53,
-      "score": 499998.02702702704,
+      "score": 499998.02697495185,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4789,7 +4789,7 @@
       "index": 398,
       "x": 2,
       "y": 53,
-      "score": 499998.05324324325,
+      "score": 499998.05306358385,
       "classes": 96,
       "crafted": false,
       "gated": false
@@ -4801,7 +4801,7 @@
       "index": 399,
       "x": 4,
       "y": 53,
-      "score": 499998.05772200774,
+      "score": 499998.05761078995,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4813,7 +4813,7 @@
       "index": 400,
       "x": 5,
       "y": 53,
-      "score": 499998.0579150579,
+      "score": 499998.0578034682,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4825,7 +4825,7 @@
       "index": 401,
       "x": 11,
       "y": 53,
-      "score": 499998.0588803089,
+      "score": 499998.05876685935,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4837,7 +4837,7 @@
       "index": 402,
       "x": 12,
       "y": 53,
-      "score": 499998.05907335907,
+      "score": 499998.0589595376,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4849,7 +4849,7 @@
       "index": 403,
       "x": 15,
       "y": 53,
-      "score": 499998.0687258687,
+      "score": 499998.06859344896,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4861,7 +4861,7 @@
       "index": 404,
       "x": 16,
       "y": 53,
-      "score": 499998.0693050193,
+      "score": 499998.0691714836,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4873,7 +4873,7 @@
       "index": 405,
       "x": 17,
       "y": 53,
-      "score": 499998.0694980695,
+      "score": 499998.0693641619,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4885,7 +4885,7 @@
       "index": 406,
       "x": 18,
       "y": 53,
-      "score": 499998.0704633205,
+      "score": 499998.07032755297,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4897,7 +4897,7 @@
       "index": 407,
       "x": 19,
       "y": 53,
-      "score": 499998.07393822394,
+      "score": 499998.0737957611,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4909,7 +4909,7 @@
       "index": 408,
       "x": 0,
       "y": 54,
-      "score": 499998.0743243243,
+      "score": 499998.0741811175,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4921,7 +4921,7 @@
       "index": 409,
       "x": 2,
       "y": 54,
-      "score": 499998.0745173745,
+      "score": 499998.07437379577,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4933,7 +4933,7 @@
       "index": 410,
       "x": 3,
       "y": 54,
-      "score": 499998.0749034749,
+      "score": 499998.0747591522,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4945,7 +4945,7 @@
       "index": 411,
       "x": 4,
       "y": 54,
-      "score": 499998.07528957527,
+      "score": 499998.0751445087,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4957,7 +4957,7 @@
       "index": 412,
       "x": 5,
       "y": 54,
-      "score": 499998.08455598453,
+      "score": 499998.08439306356,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4969,7 +4969,7 @@
       "index": 413,
       "x": 6,
       "y": 54,
-      "score": 499998.0847490347,
+      "score": 499998.0845857418,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -4981,7 +4981,7 @@
       "index": 414,
       "x": 7,
       "y": 54,
-      "score": 499998.0891119691,
+      "score": 499998.0889788054,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -4993,7 +4993,7 @@
       "index": 415,
       "x": 9,
       "y": 54,
-      "score": 499999.02664092666,
+      "score": 499999.02658959536,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5005,7 +5005,7 @@
       "index": 416,
       "x": 10,
       "y": 54,
-      "score": 499999.0303088803,
+      "score": 499999.0302504817,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5017,7 +5017,7 @@
       "index": 417,
       "x": 12,
       "y": 54,
-      "score": 499999.04054054053,
+      "score": 499999.0404624278,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5029,7 +5029,7 @@
       "index": 418,
       "x": 12,
       "y": 54,
-      "score": 499999.0444015444,
+      "score": 499999.0443159923,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5041,7 +5041,7 @@
       "index": 419,
       "x": 16,
       "y": 54,
-      "score": 499999.05463320465,
+      "score": 499999.05452793837,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5053,7 +5053,7 @@
       "index": 420,
       "x": 17,
       "y": 54,
-      "score": 499999.0581081081,
+      "score": 499999.05799614644,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5065,7 +5065,7 @@
       "index": 421,
       "x": 18,
       "y": 54,
-      "score": 499999.05945945944,
+      "score": 499999.059344894,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5077,7 +5077,7 @@
       "index": 422,
       "x": 0,
       "y": 55,
-      "score": 499999.0652123552,
+      "score": 499999.06510597304,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -5089,7 +5089,7 @@
       "index": 423,
       "x": 1,
       "y": 55,
-      "score": 499999.0689189189,
+      "score": 499999.06878612714,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5101,7 +5101,7 @@
       "index": 424,
       "x": 2,
       "y": 55,
-      "score": 499999.0696911197,
+      "score": 499999.06955684006,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5113,7 +5113,7 @@
       "index": 425,
       "x": 3,
       "y": 55,
-      "score": 499999.0700772201,
+      "score": 499999.06994219654,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5125,7 +5125,7 @@
       "index": 426,
       "x": 4,
       "y": 55,
-      "score": 499999.07374517375,
+      "score": 499999.07360308286,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5137,7 +5137,7 @@
       "index": 427,
       "x": 5,
       "y": 55,
-      "score": 499999.0750965251,
+      "score": 499999.07495183044,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5149,7 +5149,7 @@
       "index": 428,
       "x": 6,
       "y": 55,
-      "score": 499999.0786872587,
+      "score": 499999.0785741811,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -5161,7 +5161,7 @@
       "index": 429,
       "x": 7,
       "y": 55,
-      "score": 499999.0984942085,
+      "score": 499999.09838150284,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -5173,7 +5173,7 @@
       "index": 430,
       "x": 9,
       "y": 55,
-      "score": 499999.1383011583,
+      "score": 499999.1381888247,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -5185,7 +5185,7 @@
       "index": 431,
       "x": 15,
       "y": 55,
-      "score": 499999.2401158301,
+      "score": 499999.2399614643,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -5197,7 +5197,7 @@
       "index": 432,
       "x": 16,
       "y": 55,
-      "score": 499999.39972972975,
+      "score": 499999.3995761079,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -5209,7 +5209,7 @@
       "index": 433,
       "x": 17,
       "y": 55,
-      "score": 499999.7324710425,
+      "score": 499999.73229287093,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -5221,7 +5221,7 @@
       "index": 434,
       "x": 0,
       "y": 56,
-      "score": 500003.03011583013,
+      "score": 500003.0300578035,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5233,7 +5233,7 @@
       "index": 435,
       "x": 1,
       "y": 56,
-      "score": 500003.0413127413,
+      "score": 500003.0412331407,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5245,7 +5245,7 @@
       "index": 436,
       "x": 2,
       "y": 56,
-      "score": 500003.0494208494,
+      "score": 500003.0493256262,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5257,7 +5257,7 @@
       "index": 437,
       "x": 4,
       "y": 56,
-      "score": 500003.05482625484,
+      "score": 500003.05472061655,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5269,7 +5269,7 @@
       "index": 438,
       "x": 5,
       "y": 56,
-      "score": 500003.05965250963,
+      "score": 500003.05953757226,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5281,7 +5281,7 @@
       "index": 439,
       "x": 9,
       "y": 56,
-      "score": 500003.07084942085,
+      "score": 500003.07071290945,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5293,7 +5293,7 @@
       "index": 440,
       "x": 11,
       "y": 56,
-      "score": 500003.0716216216,
+      "score": 500003.07148362236,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5305,7 +5305,7 @@
       "index": 441,
       "x": 13,
       "y": 56,
-      "score": 500003.0944015444,
+      "score": 500003.09421965317,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5317,7 +5317,7 @@
       "index": 442,
       "x": 15,
       "y": 56,
-      "score": 500003.0945945946,
+      "score": 500003.0944123314,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5329,7 +5329,7 @@
       "index": 443,
       "x": 16,
       "y": 56,
-      "score": 500003.0947876448,
+      "score": 500003.09460500965,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5341,7 +5341,7 @@
       "index": 444,
       "x": 18,
       "y": 56,
-      "score": 500004.0411196911,
+      "score": 500004.04104046244,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5353,7 +5353,7 @@
       "index": 445,
       "x": 0,
       "y": 57,
-      "score": 500004.04749034747,
+      "score": 500004.0473988439,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5365,7 +5365,7 @@
       "index": 446,
       "x": 8,
       "y": 57,
-      "score": 500004.04768339766,
+      "score": 500004.04759152216,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5377,7 +5377,7 @@
       "index": 447,
       "x": 0,
       "y": 58,
-      "score": 500004.0478764479,
+      "score": 500004.0477842004,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5389,7 +5389,7 @@
       "index": 448,
       "x": 1,
       "y": 58,
-      "score": 500004.0480694981,
+      "score": 500004.0479768786,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5401,7 +5401,7 @@
       "index": 449,
       "x": 2,
       "y": 58,
-      "score": 500004.0482625483,
+      "score": 500004.04816955683,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5413,7 +5413,7 @@
       "index": 450,
       "x": 3,
       "y": 58,
-      "score": 500004.0484555985,
+      "score": 500004.0483622351,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5425,7 +5425,7 @@
       "index": 451,
       "x": 4,
       "y": 58,
-      "score": 500004.05386100383,
+      "score": 500004.05375722545,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5437,7 +5437,7 @@
       "index": 452,
       "x": 5,
       "y": 58,
-      "score": 500004.05444015446,
+      "score": 500004.0543352601,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5449,7 +5449,7 @@
       "index": 453,
       "x": 6,
       "y": 58,
-      "score": 500004.05501930503,
+      "score": 500004.0549132948,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5461,7 +5461,7 @@
       "index": 454,
       "x": 7,
       "y": 58,
-      "score": 500004.0675675676,
+      "score": 500004.06743737956,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5473,7 +5473,7 @@
       "index": 455,
       "x": 8,
       "y": 58,
-      "score": 500004.0747104247,
+      "score": 500004.074566474,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5485,7 +5485,7 @@
       "index": 456,
       "x": 10,
       "y": 58,
-      "score": 500004.0758687259,
+      "score": 500004.07572254335,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5497,7 +5497,7 @@
       "index": 457,
       "x": 11,
       "y": 58,
-      "score": 500004.078957529,
+      "score": 500004.078805395,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5509,7 +5509,7 @@
       "index": 458,
       "x": 12,
       "y": 58,
-      "score": 500004.07934362936,
+      "score": 500004.0791907514,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5521,7 +5521,7 @@
       "index": 459,
       "x": 13,
       "y": 58,
-      "score": 500004.094015444,
+      "score": 500004.09383429674,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5533,7 +5533,7 @@
       "index": 460,
       "x": 14,
       "y": 58,
-      "score": 500004.09420849424,
+      "score": 500004.0940269749,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5545,7 +5545,19 @@
       "index": 461,
       "x": 15,
       "y": 58,
-      "score": 500004.0994208494,
+      "score": 500004.09922928707,
+      "classes": 127,
+      "crafted": false,
+      "gated": false
+    },
+    {
+      "id": "time_pendant",
+      "gid": 518,
+      "name": "Time Pendant",
+      "index": 462,
+      "x": 16,
+      "y": 58,
+      "score": 500004.0998073218,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5554,10 +5566,10 @@
       "id": "bowl_of_treats",
       "gid": 162,
       "name": "Big Bowl of Treats",
-      "index": 462,
-      "x": 16,
+      "index": 463,
+      "x": 17,
       "y": 58,
-      "score": 501003.03127413127,
+      "score": 501003.03121387283,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -5566,10 +5578,10 @@
       "id": "piercing_arrow",
       "gid": 141,
       "name": "Piercing Arrow",
-      "index": 463,
-      "x": 18,
-      "y": 58,
-      "score": 501004.02722007723,
+      "index": 464,
+      "x": 0,
+      "y": 59,
+      "score": 501004.02716763003,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -5578,10 +5590,10 @@
       "id": "yggdrasil_leaf",
       "gid": 142,
       "name": "Yggdrasil Leaf",
-      "index": 464,
-      "x": 0,
-      "y": 59,
-      "score": 501004.0274131274,
+      "index": 465,
+      "x": 19,
+      "y": 58,
+      "score": 501004.0273603083,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -5590,10 +5602,10 @@
       "id": "poison_ivy",
       "gid": 145,
       "name": "Poison Ivy",
-      "index": 465,
-      "x": 1,
+      "index": 466,
+      "x": 2,
       "y": 59,
-      "score": 501004.027992278,
+      "score": 501004.02793834294,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -5602,10 +5614,10 @@
       "id": "mega_clover",
       "gid": 159,
       "name": "Mega Clover",
-      "index": 466,
-      "x": 2,
+      "index": 467,
+      "x": 3,
       "y": 59,
-      "score": 501004.0306949807,
+      "score": 501004.03063583816,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -5614,10 +5626,10 @@
       "id": "cursed_dagger",
       "gid": 146,
       "name": "Cursed Dagger",
-      "index": 467,
-      "x": 4,
+      "index": 468,
+      "x": 5,
       "y": 59,
-      "score": 501998.0281853282,
+      "score": 501998.0281310212,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -5626,10 +5638,10 @@
       "id": "snake",
       "gid": 166,
       "name": "Snake",
-      "index": 468,
-      "x": 5,
+      "index": 469,
+      "x": 6,
       "y": 59,
-      "score": 502003.032046332,
+      "score": 502003.03198458574,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -5638,10 +5650,10 @@
       "id": "cursed_hair_comb",
       "gid": 143,
       "name": "Nocturnal Lock Lifter",
-      "index": 469,
-      "x": 5,
+      "index": 470,
+      "x": 6,
       "y": 59,
-      "score": 502004.0276061776,
+      "score": 502004.0275529865,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -5650,10 +5662,10 @@
       "id": "mr_struggles",
       "gid": 144,
       "name": "Mr. Struggles",
-      "index": 470,
-      "x": 7,
+      "index": 471,
+      "x": 10,
       "y": 59,
-      "score": 502004.0277992278,
+      "score": 502004.02774566476,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -5662,10 +5674,10 @@
       "id": "cauldron",
       "gid": 167,
       "name": "Cauldron",
-      "index": 471,
-      "x": 10,
+      "index": 472,
+      "x": 11,
       "y": 59,
-      "score": 502004.0322393822,
+      "score": 502004.032177264,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -5674,10 +5686,10 @@
       "id": "forging_hammer",
       "gid": 130,
       "name": "Forging Hammer",
-      "index": 472,
-      "x": 12,
+      "index": 473,
+      "x": 13,
       "y": 59,
-      "score": 503998.0250965251,
+      "score": 503998.02504816954,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -5686,10 +5698,10 @@
       "id": "brass_knuckles",
       "gid": 202,
       "name": "Brass Knuckles",
-      "index": 473,
-      "x": 13,
+      "index": 474,
+      "x": 15,
       "y": 59,
-      "score": 503998.038996139,
+      "score": 503998.03892100195,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -5698,10 +5710,10 @@
       "id": "wolf_emblem",
       "gid": 137,
       "name": "Wolf Emblem",
-      "index": 474,
-      "x": 15,
+      "index": 475,
+      "x": 16,
       "y": 59,
-      "score": 504004.0264478765,
+      "score": 504004.0263969171,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -5710,10 +5722,10 @@
       "id": "anvil",
       "gid": 147,
       "name": "Anvil",
-      "index": 475,
-      "x": 16,
+      "index": 476,
+      "x": 17,
       "y": 59,
-      "score": 504004.02837837837,
+      "score": 504004.02832369943,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -5722,10 +5734,10 @@
       "id": "deer_totem",
       "gid": 148,
       "name": "Deerwood Guardian",
-      "index": 476,
-      "x": 18,
+      "index": 477,
+      "x": 19,
       "y": 59,
-      "score": 504004.02857142856,
+      "score": 504004.0285163777,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -5734,10 +5746,10 @@
       "id": "shaman_mask",
       "gid": 186,
       "name": "Shaman Mask",
-      "index": 477,
-      "x": 19,
-      "y": 59,
-      "score": 504004.0359073359,
+      "index": 478,
+      "x": 0,
+      "y": 60,
+      "score": 504004.0358381503,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -5746,10 +5758,10 @@
       "id": "friendly_fire",
       "gid": 154,
       "name": "Friendly Fire",
-      "index": 478,
-      "x": 0,
+      "index": 479,
+      "x": 1,
       "y": 60,
-      "score": 508003.02972972975,
+      "score": 508003.029672447,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -5758,10 +5770,10 @@
       "id": "burning_banner",
       "gid": 155,
       "name": "Burning Banner",
-      "index": 479,
-      "x": 1,
+      "index": 480,
+      "x": 2,
       "y": 60,
-      "score": 508004.02992277994,
+      "score": 508004.02986512525,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -5770,10 +5782,10 @@
       "id": "dark_lantern",
       "gid": 158,
       "name": "Dark Lantern",
-      "index": 480,
+      "index": 481,
       "x": 8,
       "y": 60,
-      "score": 508004.0305019305,
+      "score": 508004.0304431599,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -5782,10 +5794,10 @@
       "id": "frozen_flame",
       "gid": 185,
       "name": "Frozen Flame",
-      "index": 481,
+      "index": 482,
       "x": 9,
       "y": 60,
-      "score": 508004.03571428574,
+      "score": 508004.03564547206,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -5794,10 +5806,10 @@
       "id": "dragon_nest",
       "gid": 195,
       "name": "Dragon Nest",
-      "index": 482,
-      "x": 13,
+      "index": 483,
+      "x": 14,
       "y": 60,
-      "score": 508004.03764478763,
+      "score": 508004.0375722543,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -5806,10 +5818,10 @@
       "id": "water_elemental",
       "gid": 344,
       "name": "Water Elemental",
-      "index": 483,
-      "x": 15,
+      "index": 484,
+      "x": 16,
       "y": 60,
-      "score": 515999.06640926644,
+      "score": 515999.0662813102,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -5818,10 +5830,10 @@
       "id": "shiny_mantle",
       "gid": 342,
       "name": "Shiny Mantle",
-      "index": 484,
-      "x": 2,
+      "index": 485,
+      "x": 3,
       "y": 61,
-      "score": 516002.066023166,
+      "score": 516002.06589595374,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -5830,10 +5842,10 @@
       "id": "evil_hat",
       "gid": 345,
       "name": "Harold, the Hateful Hat",
-      "index": 485,
-      "x": 5,
+      "index": 486,
+      "x": 6,
       "y": 61,
-      "score": 516003.0666023166,
+      "score": 516003.06647398847,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -5842,10 +5854,10 @@
       "id": "rainbow_potion",
       "gid": 346,
       "name": "Rainbow Potion",
-      "index": 486,
+      "index": 487,
       "x": 10,
       "y": 61,
-      "score": 516003.0667953668,
+      "score": 516003.06666666665,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -5854,10 +5866,10 @@
       "id": "spirit_bells",
       "gid": 343,
       "name": "Spirit Bells",
-      "index": 487,
-      "x": 17,
+      "index": 488,
+      "x": 18,
       "y": 60,
-      "score": 516004.0662162162,
+      "score": 516004.066088632,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -5866,10 +5878,10 @@
       "id": "random_loadout_bag",
       "gid": 281,
       "name": "Sack of Surprises",
-      "index": 488,
-      "x": 18,
+      "index": 489,
+      "x": 12,
       "y": 61,
-      "score": 520003.0542471043,
+      "score": 520003.0541425819,
       "classes": 127,
       "crafted": false,
       "gated": false
@@ -5878,10 +5890,10 @@
       "id": "ranger_bag",
       "gid": 67,
       "name": "Ranger Bag",
-      "index": 489,
+      "index": 490,
       "x": 0,
       "y": 62,
-      "score": 521003.0129343629,
+      "score": 521003.01290944126,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -5890,10 +5902,10 @@
       "id": "vineweave_basket",
       "gid": 252,
       "name": "Vineweave Basket",
-      "index": 490,
-      "x": 8,
+      "index": 491,
+      "x": 9,
       "y": 62,
-      "score": 521003.04864864866,
+      "score": 521003.0485549133,
       "classes": 1,
       "crafted": false,
       "gated": false
@@ -5902,10 +5914,10 @@
       "id": "storage_coffin",
       "gid": 68,
       "name": "Storage Coffin",
-      "index": 491,
-      "x": 11,
+      "index": 492,
+      "x": 14,
       "y": 62,
-      "score": 522003.0131274131,
+      "score": 522003.01310211944,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -5914,10 +5926,10 @@
       "id": "relic_case",
       "gid": 253,
       "name": "Relic Case",
-      "index": 492,
-      "x": 4,
+      "index": 493,
+      "x": 5,
       "y": 61,
-      "score": 522003.04884169885,
+      "score": 522003.0487475915,
       "classes": 2,
       "crafted": false,
       "gated": false
@@ -5926,10 +5938,10 @@
       "id": "berserker_bag",
       "gid": 129,
       "name": "Duffle Bag",
-      "index": 493,
-      "x": 13,
+      "index": 494,
+      "x": 16,
       "y": 62,
-      "score": 524003.0249034749,
+      "score": 524003.02485549136,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -5938,10 +5950,10 @@
       "id": "toolbox",
       "gid": 255,
       "name": "Utility Pouch",
-      "index": 494,
-      "x": 5,
+      "index": 495,
+      "x": 6,
       "y": 63,
-      "score": 524003.04922779923,
+      "score": 524003.049132948,
       "classes": 4,
       "crafted": false,
       "gated": false
@@ -5950,10 +5962,10 @@
       "id": "fire_pit",
       "gid": 113,
       "name": "Fire Pit",
-      "index": 495,
-      "x": 16,
-      "y": 63,
-      "score": 528003.0218146718,
+      "index": 496,
+      "x": 2,
+      "y": 64,
+      "score": 528003.0217726397,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -5962,10 +5974,10 @@
       "id": "portable_altar",
       "gid": 254,
       "name": "Offering Bowl",
-      "index": 496,
-      "x": 2,
-      "y": 64,
-      "score": 528003.049034749,
+      "index": 497,
+      "x": 12,
+      "y": 63,
+      "score": 528003.0489402697,
       "classes": 8,
       "crafted": false,
       "gated": false
@@ -5974,10 +5986,10 @@
       "id": "fedora",
       "gid": 375,
       "name": "Fedora",
-      "index": 497,
-      "x": 13,
+      "index": 498,
+      "x": 16,
       "y": 64,
-      "score": 532003.0723938224,
+      "score": 532003.0722543353,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -5986,10 +5998,10 @@
       "id": "mercury_elemental",
       "gid": 377,
       "name": "Mercury Elemental",
-      "index": 498,
+      "index": 499,
       "x": 0,
       "y": 65,
-      "score": 532003.0727799227,
+      "score": 532003.0726396918,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -5998,10 +6010,10 @@
       "id": "turtle",
       "gid": 378,
       "name": "Turtle",
-      "index": 499,
-      "x": 16,
-      "y": 62,
-      "score": 532003.072972973,
+      "index": 500,
+      "x": 18,
+      "y": 64,
+      "score": 532003.07283237,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -6010,10 +6022,10 @@
       "id": "scale",
       "gid": 376,
       "name": "Scale",
-      "index": 500,
-      "x": 8,
+      "index": 501,
+      "x": 9,
       "y": 65,
-      "score": 532004.0725868726,
+      "score": 532004.0724470135,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -6022,10 +6034,10 @@
       "id": "ukulele",
       "gid": 379,
       "name": "Ukulele",
-      "index": 501,
+      "index": 502,
       "x": 19,
-      "y": 63,
-      "score": 532004.0731660231,
+      "y": 61,
+      "score": 532004.0730250481,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -6034,10 +6046,10 @@
       "id": "scholar_bag",
       "gid": 347,
       "name": "Scholar Bag",
-      "index": 502,
-      "x": 2,
-      "y": 66,
-      "score": 536003.066988417,
+      "index": 503,
+      "x": 11,
+      "y": 65,
+      "score": 536003.066859345,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -6046,10 +6058,10 @@
       "id": "puzzlebox",
       "gid": 403,
       "name": "Puzzlebox",
-      "index": 503,
+      "index": 504,
       "x": 5,
-      "y": 66,
-      "score": 536003.0777992278,
+      "y": 65,
+      "score": 536003.0776493256,
       "classes": 16,
       "crafted": false,
       "gated": false
@@ -6058,10 +6070,10 @@
       "id": "bag_of_giving",
       "gid": 368,
       "name": "Bag of Giving",
-      "index": 504,
-      "x": 10,
+      "index": 505,
+      "x": 14,
       "y": 66,
-      "score": 552003.0710424711,
+      "score": 552003.0709055876,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -6070,10 +6082,10 @@
       "id": "sewing_case",
       "gid": 410,
       "name": "Sewing Case",
-      "index": 505,
-      "x": 13,
-      "y": 66,
-      "score": 552003.0791505792,
+      "index": 506,
+      "x": 0,
+      "y": 67,
+      "score": 552003.0789980732,
       "classes": 32,
       "crafted": false,
       "gated": false
@@ -6082,10 +6094,10 @@
       "id": "bionic_armor",
       "gid": 453,
       "name": "Mecha Armor",
-      "index": 506,
+      "index": 507,
       "x": 17,
       "y": 66,
-      "score": 564002.0874517375,
+      "score": 564002.087283237,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -6094,10 +6106,10 @@
       "id": "tesla_coil",
       "gid": 451,
       "name": "Tesla Coil",
-      "index": 507,
+      "index": 508,
       "x": 19,
-      "y": 66,
-      "score": 564004.0870656371,
+      "y": 65,
+      "score": 564004.0868978805,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -6106,10 +6118,10 @@
       "id": "mana_crystal",
       "gid": 452,
       "name": "Mana Crystal",
-      "index": 508,
-      "x": 7,
-      "y": 61,
-      "score": 564004.0872586872,
+      "index": 509,
+      "x": 2,
+      "y": 62,
+      "score": 564004.0870905587,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -6118,10 +6130,10 @@
       "id": "laboratory",
       "gid": 454,
       "name": "Laboratory",
-      "index": 509,
-      "x": 0,
-      "y": 67,
-      "score": 564004.0876447876,
+      "index": 510,
+      "x": 8,
+      "y": 66,
+      "score": 564004.0874759152,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -6130,10 +6142,10 @@
       "id": "hypercube",
       "gid": 455,
       "name": "Hypercube",
-      "index": 510,
-      "x": 8,
+      "index": 511,
+      "x": 4,
       "y": 67,
-      "score": 564004.0878378379,
+      "score": 564004.0876685934,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -6142,10 +6154,10 @@
       "id": "gold_cube",
       "gid": 456,
       "name": "Gold Cube",
-      "index": 511,
-      "x": 12,
-      "y": 61,
-      "score": 564094.088030888,
+      "index": 512,
+      "x": 2,
+      "y": 63,
+      "score": 564094.0878612717,
       "classes": 64,
       "crafted": false,
       "gated": true
@@ -6154,10 +6166,10 @@
       "id": "bismuth_cube",
       "gid": 457,
       "name": "Bismuth Cube",
-      "index": 512,
-      "x": 13,
+      "index": 513,
+      "x": 16,
       "y": 64,
-      "score": 564094.0882239382,
+      "score": 564094.0880539499,
       "classes": 64,
       "crafted": false,
       "gated": true
@@ -6166,10 +6178,10 @@
       "id": "chrome_cube",
       "gid": 458,
       "name": "Chromium Cube",
-      "index": 513,
-      "x": 15,
-      "y": 64,
-      "score": 564094.0884169884,
+      "index": 514,
+      "x": 5,
+      "y": 65,
+      "score": 564094.0882466282,
       "classes": 64,
       "crafted": false,
       "gated": true
@@ -6178,10 +6190,10 @@
       "id": "plastic_cube",
       "gid": 459,
       "name": "Plastic Cube",
-      "index": 514,
-      "x": 4,
-      "y": 65,
-      "score": 564094.0886100386,
+      "index": 515,
+      "x": 7,
+      "y": 67,
+      "score": 564094.0884393064,
       "classes": 64,
       "crafted": false,
       "gated": true
@@ -6190,10 +6202,10 @@
       "id": "engineer_box",
       "gid": 440,
       "name": "Port-O-Charger",
-      "index": 515,
-      "x": 2,
-      "y": 68,
-      "score": 584003.084942085,
+      "index": 516,
+      "x": 10,
+      "y": 67,
+      "score": 584003.08477842,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -6202,10 +6214,10 @@
       "id": "engineer_bag_2",
       "gid": 441,
       "name": "Box of Cogs",
-      "index": 516,
-      "x": 9,
+      "index": 517,
+      "x": 6,
       "y": 68,
-      "score": 584003.0851351351,
+      "score": 584003.0849710982,
       "classes": 64,
       "crafted": false,
       "gated": false
@@ -8523,93 +8535,98 @@
       "y": 58
     },
     {
-      "id": "bowl_of_treats",
+      "id": "time_pendant",
       "x": 16,
+      "y": 58
+    },
+    {
+      "id": "bowl_of_treats",
+      "x": 17,
       "y": 58
     },
     {
       "id": "piercing_arrow",
-      "x": 18,
-      "y": 58
-    },
-    {
-      "id": "yggdrasil_leaf",
       "x": 0,
       "y": 59
     },
     {
-      "id": "poison_ivy",
-      "x": 1,
-      "y": 59
+      "id": "yggdrasil_leaf",
+      "x": 19,
+      "y": 58
     },
     {
-      "id": "mega_clover",
+      "id": "poison_ivy",
       "x": 2,
       "y": 59
     },
     {
+      "id": "mega_clover",
+      "x": 3,
+      "y": 59
+    },
+    {
       "id": "cursed_dagger",
-      "x": 4,
+      "x": 5,
       "y": 59
     },
     {
       "id": "snake",
-      "x": 5,
+      "x": 6,
       "y": 59
     },
     {
       "id": "cursed_hair_comb",
-      "x": 5,
+      "x": 6,
       "y": 59
     },
     {
       "id": "mr_struggles",
-      "x": 7,
-      "y": 59
-    },
-    {
-      "id": "cauldron",
       "x": 10,
       "y": 59
     },
     {
-      "id": "forging_hammer",
-      "x": 12,
+      "id": "cauldron",
+      "x": 11,
       "y": 59
     },
     {
-      "id": "brass_knuckles",
+      "id": "forging_hammer",
       "x": 13,
       "y": 59
     },
     {
-      "id": "wolf_emblem",
+      "id": "brass_knuckles",
       "x": 15,
       "y": 59
     },
     {
-      "id": "anvil",
+      "id": "wolf_emblem",
       "x": 16,
       "y": 59
     },
     {
-      "id": "deer_totem",
-      "x": 18,
+      "id": "anvil",
+      "x": 17,
       "y": 59
     },
     {
-      "id": "shaman_mask",
+      "id": "deer_totem",
       "x": 19,
       "y": 59
     },
     {
-      "id": "friendly_fire",
+      "id": "shaman_mask",
       "x": 0,
       "y": 60
     },
     {
-      "id": "burning_banner",
+      "id": "friendly_fire",
       "x": 1,
+      "y": 60
+    },
+    {
+      "id": "burning_banner",
+      "x": 2,
       "y": 60
     },
     {
@@ -8624,22 +8641,22 @@
     },
     {
       "id": "dragon_nest",
-      "x": 13,
+      "x": 14,
       "y": 60
     },
     {
       "id": "water_elemental",
-      "x": 15,
+      "x": 16,
       "y": 60
     },
     {
       "id": "shiny_mantle",
-      "x": 2,
+      "x": 3,
       "y": 61
     },
     {
       "id": "evil_hat",
-      "x": 5,
+      "x": 6,
       "y": 61
     },
     {
@@ -8649,12 +8666,12 @@
     },
     {
       "id": "spirit_bells",
-      "x": 17,
+      "x": 18,
       "y": 60
     },
     {
       "id": "random_loadout_bag",
-      "x": 18,
+      "x": 12,
       "y": 61
     },
     {
@@ -8664,42 +8681,42 @@
     },
     {
       "id": "vineweave_basket",
-      "x": 8,
+      "x": 9,
       "y": 62
     },
     {
       "id": "storage_coffin",
-      "x": 11,
+      "x": 14,
       "y": 62
     },
     {
       "id": "relic_case",
-      "x": 4,
+      "x": 5,
       "y": 61
     },
     {
       "id": "berserker_bag",
-      "x": 13,
+      "x": 16,
       "y": 62
     },
     {
       "id": "toolbox",
-      "x": 5,
+      "x": 6,
       "y": 63
     },
     {
       "id": "fire_pit",
-      "x": 16,
-      "y": 63
-    },
-    {
-      "id": "portable_altar",
       "x": 2,
       "y": 64
     },
     {
+      "id": "portable_altar",
+      "x": 12,
+      "y": 63
+    },
+    {
       "id": "fedora",
-      "x": 13,
+      "x": 16,
       "y": 64
     },
     {
@@ -8709,38 +8726,38 @@
     },
     {
       "id": "turtle",
-      "x": 16,
-      "y": 62
+      "x": 18,
+      "y": 64
     },
     {
       "id": "scale",
-      "x": 8,
+      "x": 9,
       "y": 65
     },
     {
       "id": "ukulele",
       "x": 19,
-      "y": 63
+      "y": 61
     },
     {
       "id": "scholar_bag",
-      "x": 2,
-      "y": 66
+      "x": 11,
+      "y": 65
     },
     {
       "id": "puzzlebox",
       "x": 5,
-      "y": 66
+      "y": 65
     },
     {
       "id": "bag_of_giving",
-      "x": 10,
+      "x": 14,
       "y": 66
     },
     {
       "id": "sewing_case",
-      "x": 13,
-      "y": 66
+      "x": 0,
+      "y": 67
     },
     {
       "id": "bionic_armor",
@@ -8750,51 +8767,51 @@
     {
       "id": "tesla_coil",
       "x": 19,
-      "y": 66
+      "y": 65
     },
     {
       "id": "mana_crystal",
-      "x": 7,
-      "y": 61
+      "x": 2,
+      "y": 62
     },
     {
       "id": "laboratory",
-      "x": 0,
-      "y": 67
+      "x": 8,
+      "y": 66
     },
     {
       "id": "hypercube",
-      "x": 8,
+      "x": 4,
       "y": 67
     },
     {
       "id": "gold_cube",
-      "x": 12,
-      "y": 61
+      "x": 2,
+      "y": 63
     },
     {
       "id": "bismuth_cube",
-      "x": 13,
+      "x": 16,
       "y": 64
     },
     {
       "id": "chrome_cube",
-      "x": 15,
-      "y": 64
-    },
-    {
-      "id": "plastic_cube",
-      "x": 4,
+      "x": 5,
       "y": 65
     },
     {
+      "id": "plastic_cube",
+      "x": 7,
+      "y": 67
+    },
+    {
       "id": "engineer_box",
-      "x": 2,
-      "y": 68
+      "x": 10,
+      "y": 67
     },
     {
       "id": "engineer_bag_2",
-      "x": 9,
+      "x": 6,
       "y": 68
     }
   ]

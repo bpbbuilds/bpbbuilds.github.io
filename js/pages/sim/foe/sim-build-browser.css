@@ -1,0 +1,566 @@
+/* Scoped public-build browser — covers mid + opp columns of .sim-field.
+   Same parchment + screen-frame chrome as home Create promo. */
+
+.sim-build-browser {
+  --il-ink: #3c261d;
+  --il-cream: #ffecdc;
+  --il-gold: #eac914;
+  --il-sticker: #f7efc2;
+  --il-shade: rgba(14, 15, 16, 0.22);
+  --il-ui-stroke: 0.1em;
+  --il-ui-track: -0.03em;
+  --il-ui-ring:
+    0.1em 0 0 var(--il-ink),
+    0.092em 0.038em 0 var(--il-ink),
+    0.071em 0.071em 0 var(--il-ink),
+    0.038em 0.092em 0 var(--il-ink),
+    0 0.1em 0 var(--il-ink),
+    -0.038em 0.092em 0 var(--il-ink),
+    -0.071em 0.071em 0 var(--il-ink),
+    -0.092em 0.038em 0 var(--il-ink),
+    -0.1em 0 0 var(--il-ink),
+    -0.092em -0.038em 0 var(--il-ink),
+    -0.071em -0.071em 0 var(--il-ink),
+    -0.038em -0.092em 0 var(--il-ink),
+    0 -0.1em 0 var(--il-ink),
+    0.038em -0.092em 0 var(--il-ink),
+    0.071em -0.071em 0 var(--il-ink),
+    0.092em -0.038em 0 var(--il-ink);
+
+  grid-column: 2 / -1;
+  grid-row: 1 / -1;
+  z-index: 40;
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  min-height: 18rem;
+  height: 100%;
+  margin: -0.15rem 0 0;
+  overflow: hidden;
+  pointer-events: auto;
+  background: transparent;
+}
+
+/* Clear mid/opp chrome under the picker so lab paper shows (no grey wash). */
+.sim-field:has([data-sim-build-browser]) .sim-field__mid,
+.sim-field:has([data-sim-build-browser]) .sim-field__bag--opp {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Dummy / class figure (black sprite box) sits in the opp column and was
+   painting over the picker. Hide it while the picker is open. */
+.sim-field:has([data-sim-build-browser]) .sim-avatar-stack--foe {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+body.page-sim .build-more-tip {
+  z-index: 10050;
+}
+
+/* Fight CD / charge chrome must not paint on public-build thumbs. */
+.sim-build-browser .sim-cd-shade,
+.sim-build-browser .sim-charge-layer {
+  display: none !important;
+}
+
+.sim-bb__backdrop {
+  appearance: none;
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0.4rem;
+  /* Click-to-dismiss only — paints nothing so the field keeps its own light. */
+  background: transparent;
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.sim-bb__panel {
+  --sim-bb-frame-pad: clamp(1.1rem, 2vw, 1.65rem);
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  max-height: min(82vh, 46rem);
+  margin: 0.35rem;
+  padding: calc(var(--sim-bb-frame-pad) + 0.55rem) calc(var(--sim-bb-frame-pad) + 0.7rem)
+    calc(var(--sim-bb-frame-pad) + 0.65rem);
+  border: 0;
+  border-radius: 0.35rem;
+  /* Home Create promo parchment */
+  background-color: #e4d5bc;
+  background-image: url('../../../../assets/theme/ui/ui-parchment-fill.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38);
+  overflow: hidden;
+}
+
+.sim-bb__panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: url('../../../../assets/theme/ui/ui-screen-frame.png') center / 100% 100% no-repeat;
+}
+
+.sim-bb__panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.sim-bb__head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.45rem;
+}
+
+.sim-bb__title {
+  margin: 0;
+  flex: 0 0 auto;
+  font-family: var(--bpb-font-display, Georgia, serif);
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  color: var(--bpb-label-fill, #fffaf0);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+.sim-bb__close {
+  appearance: none;
+  margin: 0 0 0 auto;
+  flex: 0 0 auto;
+  padding: 0.28rem 0.7rem 0.24rem;
+  border: 2px solid var(--il-ink);
+  border-radius: 0.28rem;
+  background: color-mix(in srgb, var(--il-ink) 38%, #8a6a4a);
+  color: var(--il-cream);
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-weight: 400;
+  font-size: 0.92rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.1;
+  -webkit-text-stroke: 0.08em var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.sim-bb__close:hover {
+  filter: brightness(1.1);
+}
+
+.sim-bb__close:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--il-gold) 80%, transparent);
+  outline-offset: 2px;
+}
+
+.sim-bb__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 19.5rem);
+  gap: 0.65rem;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.sim-bb__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  align-content: start;
+  overflow: auto;
+  min-height: 12rem;
+  padding: 0.1rem 0.15rem 0.45rem 0;
+  scrollbar-color: #c9a227 transparent;
+}
+
+.sim-bb__grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sim-bb__grid::-webkit-scrollbar-thumb {
+  background: #c9a227;
+  border-radius: 4px;
+}
+
+@media (min-width: 1280px) {
+  .sim-bb__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.sim-bb__empty {
+  margin: 1rem 0.25rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-weight: 400;
+  font-size: 1.15rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.2;
+  color: var(--il-cream);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+}
+
+.sim-bb__card {
+  appearance: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: var(--bpb-cursor-pointer);
+  font-family: var(--bpb-font-body, Georgia, serif);
+  width: 100%;
+  min-width: 0;
+  align-items: start;
+}
+
+.sim-bb__card:hover {
+  filter: brightness(1.05);
+}
+
+.sim-bb__card:focus-visible {
+  filter: brightness(1.05);
+  outline: 2px solid color-mix(in srgb, var(--il-gold) 80%, transparent);
+  outline-offset: 2px;
+}
+
+.sim-bb__card-head,
+.sim-bb__card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  min-width: 0;
+  width: calc(9 * var(--builds-feed-cell, 24px));
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.sim-bb__byline {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.sim-bb__card-avatar {
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 auto;
+  background: color-mix(in srgb, var(--il-ink) 14%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--il-ink) 28%, transparent);
+}
+
+.sim-bb__card-avatar.bpb-face,
+.sim-bb__card-avatar--blob {
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.sim-bb__card-avatar--initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--il-cream);
+  background: color-mix(in srgb, var(--il-ink) 72%, #8a5a2b);
+  box-shadow: none;
+}
+
+.sim-bb__card-author {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-weight: 400;
+  font-size: 0.92rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.15;
+  color: var(--il-cream);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+}
+
+.sim-bb__score {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  flex: 0 0 auto;
+}
+
+.sim-bb__score-icon {
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.28));
+}
+
+.sim-bb__score-n {
+  min-width: 1rem;
+  text-align: center;
+  font-family: var(--bpb-font-display, Georgia, serif);
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--bpb-label-fill, #fffaf0);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+.sim-bb__board {
+  --builds-feed-cell: 24px;
+  display: block;
+  box-sizing: content-box;
+  width: calc(9 * var(--builds-feed-cell));
+  height: calc(7 * var(--builds-feed-cell));
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  border-radius: 0;
+  background: none;
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sim-bb__board.is-empty {
+  min-height: 4rem;
+  height: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sim-bb__board .builds-post__board-empty {
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.78rem;
+  line-height: 1.2;
+  color: var(--il-cream);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+}
+
+.sim-bb__board > .bpb-board-still,
+.sim-bb__board > .bpb-bg {
+  --bpb-bg-scroll-gap: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+  max-height: none;
+  scrollbar-gutter: auto;
+  scrollbar-width: none;
+}
+
+.sim-bb__board .bpb-bg__board {
+  margin: 0 !important;
+  max-width: none !important;
+}
+
+.sim-bb__board .bpb-bg__board,
+.sim-bb__board .bpb-bg__items,
+.sim-bb__board .bpb-bg__under,
+.sim-bb__board .bpb-bg__fabric,
+.sim-bb__board .bpb-bg__item,
+.sim-bb__board .bpb-bg__hit {
+  overflow: visible;
+}
+
+.sim-bb__board > .bpb-bg::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.sim-bb__card-title {
+  min-width: 0;
+  flex: 1 1 auto;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.2;
+  color: var(--il-cream);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sim-bb__card-class {
+  display: block;
+  width: 1.85rem;
+  height: 1.85rem;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.sim-bb__card-class--empty {
+  width: 1.85rem;
+  height: 1.85rem;
+}
+
+.sim-build-browser .builds-feed-filters.items-filters {
+  --bpb-bg-scroll-thumb: #eac914;
+  --bpb-bg-scroll-track: #816230;
+  --bpb-bg-scroll-frame: #472a24;
+  --il-shade: rgba(14, 15, 16, 0.14);
+  position: static;
+  top: auto;
+  max-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.35rem 0.4rem 0.55rem;
+  background: transparent;
+  isolation: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bpb-bg-scroll-thumb) var(--bpb-bg-scroll-track);
+}
+
+/* No outer Patch3 slab — section shades carry the chrome */
+.sim-build-browser .builds-feed-filters.items-filters::before {
+  content: none;
+  display: none;
+}
+
+/* Restore Item Library–style Patch3 bands per filter section */
+.sim-build-browser .builds-feed-filters .il-filter__shade {
+  position: relative;
+  z-index: 0;
+  margin-bottom: 0.4rem;
+  background: none;
+}
+
+.sim-build-browser .builds-feed-filters .il-filter__shade::before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--il-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.sim-build-browser .builds-feed-filters .il-filter__shade:last-child {
+  margin-bottom: 0;
+}
+
+/* Signature gold filter scrollbar (create / Itemiary) */
+.sim-build-browser .builds-feed-filters.items-filters::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+.sim-build-browser .builds-feed-filters.items-filters::-webkit-scrollbar-track {
+  border: 3px solid var(--bpb-bg-scroll-frame);
+  border-radius: 16px;
+  background: var(--bpb-bg-scroll-track);
+}
+
+.sim-build-browser .builds-feed-filters.items-filters::-webkit-scrollbar-thumb {
+  border: 2px solid var(--bpb-bg-scroll-frame);
+  border-radius: 20px;
+  background-color: var(--bpb-bg-scroll-thumb);
+}
+
+.sim-bb__input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.32rem 0.5rem;
+  border: 2px solid var(--il-ink);
+  border-radius: 0.28rem;
+  background: rgba(55, 36, 22, 0.28);
+  box-shadow: inset 0 2px 4px rgba(20, 10, 5, 0.28);
+  color: var(--il-cream);
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.85rem;
+}
+
+.sim-bb__input::placeholder {
+  color: color-mix(in srgb, var(--il-cream) 55%, transparent);
+}
+
+.sim-bb__input:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--il-gold) 80%, transparent);
+  outline-offset: 2px;
+}
+
+.sim-bb__skel-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  padding: 0;
+  min-height: 11rem;
+}
+
+.sim-bb__skel-card .bpb-skel--block {
+  flex: 1 1 auto;
+  min-height: 7rem;
+  aspect-ratio: 9 / 7;
+}
+
+@media (max-width: 1100px) {
+  .sim-build-browser {
+    grid-column: 1 / -1;
+  }
+
+  .sim-bb__body {
+    grid-template-columns: 1fr;
+  }
+
+  .sim-bb__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .sim-bb__grid {
+    grid-template-columns: 1fr;
+  }
+}

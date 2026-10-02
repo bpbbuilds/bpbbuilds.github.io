@@ -14,14 +14,20 @@ import {
 import { EDIT_MODE } from './editor-state.js';
 import { attachDragSession } from './drag-session.js';
 import { mountParkStrip, parkedFromPlacement } from './park-strip.js';
+import { bindCreateParkFly, queueAutoParkFly } from './create-park-fly.js';
 import { mountSellBin } from './sell-bin.js';
 import { economyReadoutHtml, paintEconomyReadout } from './economy-readout.js';
 import { premiumCtaFxHtml } from '../../shared/premium-cta.js';
 import { requirePremium, resumePremiumIntent } from '../../shared/premium-gate.js';
-import { mountBoardOnboard } from './board-onboard.js';
-import { mountBoardImport } from './board-import.js';
+import { isBoardAndParkEmpty, mountBoardOnboard } from './board-onboard.js?v=place-back';
+import { mountBoardImport } from './board-import.js?v=bags2u';
+import { mountLabelTool, wantLabelTool } from './label-tool.js?v=shells1';
 import { createHistoryScrubberController } from './history-scrubber.js';
 import { mountHistoryEditGuard } from './history-edit-guard.js';
+import { exportBoardPng } from './export-board-png.js';
+import { isTypingTarget } from '../../shared/is-typing-target.js';
+import { confirmDialog } from '../../shared/confirm-dialog.js';
+import { SCREENSHOT_IMPORT_ENABLED } from '../../shared/feature-flags.js';
 
 const CELL_PX = 96;
 
@@ -142,6 +148,62 @@ export function mountBoardEditor(host, opts) {
           >
             <img src="${rootBase}assets/icons/filters/ResetButton.png" alt="" width="36" height="36" draggable="false" />
           </button>
+          <div class="create-board__export" data-export-wrap hidden>
+            <button
+              type="button"
+              class="bpb-premium-cta bpb-premium-cta--orb bpb-premium-cta--toolbar create-board__gallery"
+              data-act="export-png"
+              title="Export PNG (Premium)"
+              aria-label="Export board as PNG (Premium)"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span class="bpb-premium-cta__face" aria-hidden="true">
+                ${premiumCtaFxHtml(rootBase)}
+                <img
+                  class="bpb-premium-cta__icon"
+                  src="${rootBase}assets/icons/create/GalleryOrb.png"
+                  alt=""
+                  width="160"
+                  height="160"
+                  draggable="false"
+                />
+              </span>
+            </button>
+            <div
+              class="create-board__export-menu"
+              role="menu"
+              aria-label="Export PNG options"
+            >
+              <button
+                type="button"
+                class="create-board__export-opt"
+                role="menuitem"
+                data-export-mode="all"
+                title="Export bags and items"
+              >
+                All
+              </button>
+              <button
+                type="button"
+                class="create-board__export-opt"
+                role="menuitem"
+                data-export-mode="items"
+                title="Export items only (no bags)"
+              >
+                Items
+              </button>
+              <button
+                type="button"
+                class="create-board__export-opt"
+                role="menuitem"
+                data-export-mode="bags"
+                title="Export bags only"
+              >
+                Bags
+              </button>
+            </div>
+          </div>
           <a
             class="bpb-premium-cta bpb-premium-cta--orb bpb-premium-cta--toolbar create-board__play"
             href="${rootBase}sim/"
@@ -209,26 +271,127 @@ export function mountBoardEditor(host, opts) {
   const boardRoot = host.querySelector('.create-board');
   const unlockBtn = host.querySelector('[data-act="unlock-history"]');
   const playSimLink = host.querySelector('[data-act="play-sim"]');
+  const exportWrap = host.querySelector('[data-export-wrap]');
+  const exportPngBtn = host.querySelector('[data-act="export-png"]');
   if (!(bagHost instanceof HTMLElement)) {
     return { destroy() {}, beginCatalogDrag() {}, isDragging: () => false };
   }
 
   const playSimUrl = `${rootBase}sim/`;
+  /** @type {'all' | 'items' | 'bags'} */
+  let pendingExportMode = 'all';
 
   function goPlaySim() {
     location.href = playSimUrl;
   }
 
-  void resumePremiumIntent({
+  /**
+   * @param {'all' | 'items' | 'bags'} [mode]
+   */
+  async function doExportPng(mode = 'all') {
+    const draft = state.getDraft();
+    const placements = draft.placements || [];
+    if (!placements.length) {
+      window.alert('Place items before exporting.');
+      return;
+    }
+    if (exportPngBtn instanceof HTMLButtonElement) {
+      exportPngBtn.disabled = true;
+    }
+    exportWrap?.querySelectorAll('[data-export-mode]').forEach((el) => {
+      if (el instanceof HTMLButtonElement) el.disabled = true;
+    });
+    try {
+      await exportBoardPng({
+        placements,
+        itemsById,
+        getSpriteUrl,
+        title: draft.title || 'untitled',
+        root: rootBase,
+        mode,
+      });
+    } catch (err) {
+      console.error(err);
+      window.alert(err instanceof Error ? err.message : 'Export failed.');
+    } finally {
+      if (exportPngBtn instanceof HTMLButtonElement) {
+        exportPngBtn.disabled = false;
+      }
+      exportWrap?.querySelectorAll('[data-export-mode]').forEach((el) => {
+        if (el instanceof HTMLButtonElement) el.disabled = false;
+      });
+      exportWrap?.classList.remove('is-open');
+      if (exportPngBtn instanceof HTMLButtonElement) {
+        exportPngBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+  }
+
+  /**
+   * @param {'all' | 'items' | 'bags'} mode
+   */
+  function requestExportPng(mode) {
+    pendingExportMode = mode;
+    const placements = state.getDraft().placements || [];
+    if (!placements.length) {
+      window.alert('Place items before exporting.');
+      return;
+    }
+    const reason =
+      mode === 'items'
+        ? 'Export a PNG of your items (no bags).'
+        : mode === 'bags'
+          ? 'Export a PNG of your bags.'
+          : 'Export a PNG of your backpack board.';
+    void requirePremium({
+      reason,
+      intentKey: `create-export-png-${mode}`,
+      onGranted: () => doExportPng(mode),
+    });
+  }
+
+  const premiumResume = {
     'create-play-sim': goPlaySim,
-  });
+    'create-export-png': () => {
+      void doExportPng(pendingExportMode);
+    },
+    'create-export-png-all': () => {
+      void doExportPng('all');
+    },
+    'create-export-png-items': () => {
+      void doExportPng('items');
+    },
+    'create-export-png-bags': () => {
+      void doExportPng('bags');
+    },
+  };
+  if (SCREENSHOT_IMPORT_ENABLED) {
+    premiumResume['create-screenshot-import'] = () => {
+      boardImport?.openMediaPicker?.();
+    };
+  }
+  void resumePremiumIntent(premiumResume);
+
+  function syncAwaitingBuildChrome() {
+    if (!(boardRoot instanceof HTMLElement)) return;
+    boardRoot.classList.toggle('is-awaiting-build', isBoardAndParkEmpty(state.getDraft()));
+  }
 
   function syncPlaySimChrome() {
-    if (!(playSimLink instanceof HTMLAnchorElement)) return;
     const hasItems = (state.getDraft().placements || []).length > 0;
-    playSimLink.hidden = !hasItems;
-    if (hasItems) playSimLink.removeAttribute('aria-disabled');
-    else playSimLink.setAttribute('aria-disabled', 'true');
+    if (playSimLink instanceof HTMLAnchorElement) {
+      playSimLink.hidden = !hasItems;
+      if (hasItems) playSimLink.removeAttribute('aria-disabled');
+      else playSimLink.setAttribute('aria-disabled', 'true');
+    }
+    if (exportWrap instanceof HTMLElement) {
+      exportWrap.hidden = !hasItems;
+      exportWrap.classList.toggle('is-open', false);
+    }
+    if (exportPngBtn instanceof HTMLButtonElement) {
+      exportPngBtn.disabled = false;
+      exportPngBtn.setAttribute('aria-expanded', 'false');
+    }
   }
 
   /** @param {boolean} locked */
@@ -242,10 +405,14 @@ export function mountBoardEditor(host, opts) {
     }
   }
 
-  /** @type {{ openFilePicker: () => void, destroy: () => void } | null} */
+  /** @type {{ openFilePicker: () => void, openMediaPicker?: () => void, importScreenshot: (file: File | Blob) => Promise<void>, destroy: () => void } | null} */
   let boardImport = null;
   /** @type {{ sync: () => void, destroy: () => void } | null} */
   let onboard = null;
+  const labelTool =
+    SCREENSHOT_IMPORT_ENABLED && wantLabelTool()
+      ? mountLabelTool({ state, itemsById })
+      : null;
   if (stageEl instanceof HTMLElement) {
     boardImport = mountBoardImport(stageEl, {
       state,
@@ -253,6 +420,8 @@ export function mountBoardEditor(host, opts) {
       getSpriteUrl,
       root: rootBase,
       onHistoryPickerClose: () => onboard?.sync(),
+      onScreenshotLoaded: () => onboard?.sync(),
+      onScreenshotFile: (file) => labelTool?.setScreenshot(file),
     });
     onboard = mountBoardOnboard(stageEl, {
       state,
@@ -260,8 +429,26 @@ export function mountBoardEditor(host, opts) {
       getSpriteUrl,
       root: rootBase,
       onRequestHistoryFile: () => boardImport?.openFilePicker(),
-      onRequestMedia: () => boardImport?.notifyMediaSoon(),
+      onRequestMedia: SCREENSHOT_IMPORT_ENABLED ? () => boardImport?.openMediaPicker?.() : undefined,
+      mediaEnabled: SCREENSHOT_IMPORT_ENABLED,
     });
+    if (labelTool) {
+      // Inbox (?shot=) re-runs import. A label-check edit (?fix=real-NNN) loads the saved board.
+      setTimeout(() => {
+        void labelTool.queuedFix().then(async (fix) => {
+          if (fix) {
+            state.replaceDraft({
+              placements: fix.placements,
+              parked: [],
+              history: null,
+            });
+            return;
+          }
+          const file = await labelTool.queuedShot();
+          if (file) void boardImport?.importScreenshot(file);
+        });
+      }, 0);
+    }
   }
 
   const sellBin = mountSellBin(document.body);
@@ -283,8 +470,15 @@ export function mountBoardEditor(host, opts) {
     cellPx: CELL_PX,
   });
 
+  /** Placements currently painted on the bag (history scrubber frame or draft). */
+  function getVisiblePlacements() {
+    return historyViewPlacements || state.getDraft().placements || [];
+  }
+
   function stampKeys() {
-    const placements = state.getDraft().placements;
+    // Match the painted board — draft alone is wrong while the history scrubber
+    // owns the bag, and wiping keys here breaks live tip CD merges.
+    const placements = getVisiblePlacements();
     const items = grid.el.querySelectorAll('.bpb-bg__item:not(.bpb-bg__item--parked)');
     for (const el of items) {
       if (!(el instanceof HTMLElement)) continue;
@@ -292,10 +486,15 @@ export function mountBoardEditor(host, opts) {
       const left = parseFloat(el.style.left);
       const top = parseFloat(el.style.top);
       const hit = placements.find(
-        (p) => p.id === id && Number(p.x) === left && Number(p.y) === top,
+        (p) =>
+          p.id === id &&
+          Number(p.x) === left &&
+          Number(p.y) === top &&
+          p.key != null &&
+          String(p.key) !== '',
       );
-      if (hit) el.dataset.placementKey = hit.key;
-      else delete el.dataset.placementKey;
+      if (hit) el.dataset.placementKey = String(hit.key);
+      // else keep paint-time dataset.placementKey (item-pool already stamped it)
     }
     paintSelection();
     paintLayerDim();
@@ -374,6 +573,7 @@ export function mountBoardEditor(host, opts) {
       stampKeys();
       paintModeChrome();
       paintEconomy();
+      syncPlaySimChrome();
       return;
     }
     const faceKeys = pendingFaceAnimKeys;
@@ -415,6 +615,7 @@ export function mountBoardEditor(host, opts) {
         itemsById,
       );
       if (floating.length) {
+        queueAutoParkFly(floating);
         state.setPlacements(kept);
         state.appendParked?.(floating.map((p) => parkedFromPlacement(p)));
       }
@@ -471,6 +672,15 @@ export function mountBoardEditor(host, opts) {
   /** @param {MouseEvent} e */
   function onToolbarClick(e) {
     const t = e.target instanceof Element ? e.target : null;
+    const exportModeBtn = t?.closest?.('[data-export-mode]');
+    if (exportModeBtn instanceof HTMLElement && host.contains(exportModeBtn)) {
+      e.preventDefault();
+      const mode = exportModeBtn.getAttribute('data-export-mode');
+      if (mode === 'all' || mode === 'items' || mode === 'bags') {
+        requestExportPng(mode);
+      }
+      return;
+    }
     const modeBtn = t?.closest?.('[data-mode]');
     if (modeBtn instanceof HTMLElement && host.contains(modeBtn)) {
       const mode = modeBtn.dataset.mode;
@@ -488,10 +698,20 @@ export function mountBoardEditor(host, opts) {
     }
     if (act === 'clear') {
       void (async () => {
-        if (state.isHistoryLocked?.() && !(await state.requestHistoryUnlock())) return;
         const hasBoard = state.getDraft().placements.length > 0;
         const hasPark = (state.getParked?.() ?? []).length > 0;
-        if ((hasBoard || hasPark) && !confirm('Clear the board and parked items?')) return;
+        if (!hasBoard && !hasPark) return;
+        const locked = Boolean(state.isHistoryLocked?.());
+        const ok = await confirmDialog({
+          title: 'Clear board?',
+          body: locked
+            ? 'Removes everything on the board and in Parked. Attached run history is cleared too.'
+            : 'Removes everything on the board and in Parked.',
+          confirmLabel: 'Clear',
+          cancelLabel: 'Cancel',
+          danger: true,
+        });
+        if (!ok) return;
         state.clearBoard();
       })();
       return;
@@ -500,9 +720,18 @@ export function mountBoardEditor(host, opts) {
       void (async () => {
         const hasPark = (state.getParked?.() ?? []).length > 0;
         if (!hasPark) return;
-        if (state.isHistoryLocked?.() && !(await state.requestHistoryUnlock())) return;
-        if (!confirm('Clear all parked items?')) return;
-        state.setParked?.([]);
+        const locked = Boolean(state.isHistoryLocked?.());
+        const ok = await confirmDialog({
+          title: 'Clear parked?',
+          body: locked
+            ? 'Removes all parked items. Attached run history is cleared too.'
+            : 'Removes all parked items.',
+          confirmLabel: 'Clear',
+          cancelLabel: 'Cancel',
+          danger: true,
+        });
+        if (!ok) return;
+        state.clearParked?.();
       })();
       return;
     }
@@ -517,18 +746,42 @@ export function mountBoardEditor(host, opts) {
         intentKey: 'create-play-sim',
         onGranted: goPlaySim,
       });
+      return;
+    }
+    if (act === 'export-png') {
+      e.preventDefault();
+      // Touch / keyboard: toggle menu; hover also reveals options via CSS
+      if (exportWrap instanceof HTMLElement) {
+        const open = !exportWrap.classList.contains('is-open');
+        exportWrap.classList.toggle('is-open', open);
+        if (exportPngBtn instanceof HTMLButtonElement) {
+          exportPngBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+      }
+      return;
     }
   }
 
+  // Close export menu when clicking elsewhere
+  document.addEventListener(
+    'pointerdown',
+    (e) => {
+      if (!(exportWrap instanceof HTMLElement) || !exportWrap.classList.contains('is-open')) {
+        return;
+      }
+      const t = e.target instanceof Node ? e.target : null;
+      if (t && exportWrap.contains(t)) return;
+      exportWrap.classList.remove('is-open');
+      if (exportPngBtn instanceof HTMLButtonElement) {
+        exportPngBtn.setAttribute('aria-expanded', 'false');
+      }
+    },
+    true,
+  );
+
   /** @param {KeyboardEvent} e */
   function onKey(e) {
-    if (
-      e.target instanceof HTMLInputElement ||
-      e.target instanceof HTMLTextAreaElement ||
-      e.target instanceof HTMLSelectElement
-    ) {
-      return;
-    }
+    if (isTypingTarget(e.target)) return;
     if (session.isDragging()) return;
     if (e.key === '1' || e.key === 'z' || e.key === 'Z') {
       e.preventDefault();
@@ -579,6 +832,16 @@ export function mountBoardEditor(host, opts) {
     },
   });
 
+  const unbindParkFly =
+    parkEl instanceof HTMLElement && grid.el instanceof HTMLElement
+      ? bindCreateParkFly({
+          boardRoot: grid.el,
+          parkEl,
+          itemsById,
+          getSpriteUrl,
+        })
+      : () => {};
+
   const park = parkEl instanceof HTMLElement
     ? mountParkStrip(parkEl, {
       state,
@@ -594,6 +857,7 @@ export function mountBoardEditor(host, opts) {
   let prevMode = state.getEditMode();
   let prevHistory = state.getDraft().history;
   const unsub = state.subscribe(() => {
+    syncAwaitingBuildChrome();
     const draft = state.getDraft();
     const placements = draft.placements;
     const parked = state.getParked?.() ?? draft.parked;
@@ -605,6 +869,8 @@ export function mountBoardEditor(host, opts) {
       if (!history) historyViewPlacements = null;
       historyScrubber?.sync(history || null);
       syncHistoryLockChrome(Boolean(history));
+      // History attach paints the bag via scrubber; still refresh Play / Export.
+      syncPlaySimChrome();
     }
 
     // Selection-only emits must not re-paint the board (would fight drag-source hide)
@@ -640,22 +906,26 @@ export function mountBoardEditor(host, opts) {
   stampKeys();
   paintModeChrome();
   paintEconomy();
+  syncAwaitingBuildChrome();
   syncPlaySimChrome();
   park.sync();
 
   return {
     beginCatalogDrag: session.beginCatalogDrag,
     isDragging: () => session.isDragging(),
+    getVisiblePlacements,
     setMetaDrop(next) {
       session.setMetaDrop?.(next);
     },
     destroy() {
       unsub();
+      unbindParkFly();
       historyLock?.destroy();
       historyScrubber?.destroy();
       historyScrubber = null;
       onboard?.destroy();
       boardImport?.destroy();
+      labelTool?.destroy();
       park.destroy();
       sellBin.destroy();
       session.destroy();

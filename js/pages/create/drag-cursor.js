@@ -7,6 +7,7 @@ import { shapeForItem, bodyBounds } from '../../shared/backpack-grid/index.js';
 import { isBagItem } from './collision.js';
 import { createAngleTween } from '../../shared/backpack-grid/face-spin.js';
 import { PICKUP_SCALE, PICKUP_MS, SHADOW_TWEEN_MS } from './drag-feel.js';
+import { feedLiveDrag } from '../../shared/item-live-art/index.js';
 
 function assetRoot() {
   const raw = document.body?.dataset?.root ?? './';
@@ -41,7 +42,7 @@ function spriteCells(item, body) {
 /**
  * @param {HTMLElement} cursorEl
  * @param {HTMLElement} slotsEl
- * @param {HTMLImageElement} imgEl
+ * @param {HTMLElement} imgEl
  * @param {HTMLElement} cargoEl
  * @param {() => number} getCellPx
  * @param {HTMLImageElement} [shadowEl]
@@ -74,6 +75,17 @@ export function createDragCursorView(
   let lastGemsSig = '';
   let lastChromeSig = '';
   let shadowDrag = false;
+  /** Cargo footprints in cursor-local px (for sell-hover group outline). */
+  let groupParts = /** @type {{ x: number, y: number, w: number, h: number }[]} */ ([]);
+
+  let outlineEl = cursorEl.querySelector('.create-board__cursor-group-outline');
+  if (!(outlineEl instanceof HTMLElement)) {
+    outlineEl = document.createElement('div');
+    outlineEl.className = 'create-board__cursor-group-outline';
+    outlineEl.hidden = true;
+    outlineEl.setAttribute('aria-hidden', 'true');
+    cursorEl.appendChild(outlineEl);
+  }
   /** Face whose cargo/slots layout is on screen while the bag sprite tweens. */
   let spinCargoFromFace = /** @type {number | null} */ (null);
   /** @type {(() => void) | null} */
@@ -114,6 +126,14 @@ export function createDragCursorView(
     }
     if (gemsEl) {
       gemsEl.style.transform = `translate(-50%, -50%) rotate(${rot})`;
+      // Gem face is world-space (same as holding the gem). The layer already
+      // spins with the weapon, so take that turn back off the sprite.
+      for (const img of gemsEl.querySelectorAll(':scope > img')) {
+        if (!(img instanceof HTMLElement)) continue;
+        const world = Number(img.dataset.gemDeg);
+        if (!Number.isFinite(world)) continue;
+        img.style.transform = `translate(-50%, -50%) rotate(${world - visualFaceDeg}deg)`;
+      }
     }
     // Game insideRotationNode — cargo + bag tiles spin with the sprite
     if (spinCargoFromFace != null) {
@@ -125,7 +145,16 @@ export function createDragCursorView(
       // a stale flag would leave CanAddBag squares axis-locked).
       slotsEl.style.transformOrigin = '50% 50%';
       slotsEl.style.transform = t;
+      for (const img of cargoEl.querySelectorAll('.create-board__cursor-gem')) {
+        if (!(img instanceof HTMLElement)) continue;
+        const world = Number(img.dataset.gemDeg);
+        const host = Number(img.dataset.hostDeg);
+        if (!Number.isFinite(world) || !Number.isFinite(host)) continue;
+        img.style.transform = `translate(-50%, -50%) rotate(${world - host - delta}deg)`;
+      }
     }
+    // BottleOfBooze: liquid angle tracks -global_rotation (face + tilt on cursor).
+    feedLiveDrag(imgEl, 0, 0, { tiltDeg: lastTilt, faceDeg: visualFaceDeg });
   }
 
   function paintTransform() {
@@ -262,6 +291,36 @@ export function createDragCursorView(
       `translate(calc(-50% + ${o}px), calc(-50% + ${o}px)) rotate(${rot})`;
   }
 
+  function layoutGroupOutline() {
+    if (!(outlineEl instanceof HTMLElement)) return;
+    const mainW = Number.isFinite(lastW) ? lastW : 0;
+    const mainH = Number.isFinite(lastH) ? lastH : 0;
+    let minX = 0;
+    let minY = 0;
+    let maxX = mainW;
+    let maxY = mainH;
+    for (const p of groupParts) {
+      minX = Math.min(minX, p.x);
+      minY = Math.min(minY, p.y);
+      maxX = Math.max(maxX, p.x + p.w);
+      maxY = Math.max(maxY, p.y + p.h);
+    }
+    const pad = 7;
+    outlineEl.style.left = `${minX - pad}px`;
+    outlineEl.style.top = `${minY - pad}px`;
+    outlineEl.style.width = `${Math.max(0, maxX - minX) + pad * 2}px`;
+    outlineEl.style.height = `${Math.max(0, maxY - minY) + pad * 2}px`;
+  }
+
+  /** @param {boolean} on */
+  function setSellHover(on) {
+    cursorEl.classList.toggle('is-sell-hover', on);
+    if (outlineEl instanceof HTMLElement) {
+      outlineEl.hidden = !on;
+      if (on) layoutGroupOutline();
+    }
+  }
+
   /**
    * @param {ReturnType<typeof sizeFor>} size
    * @param {boolean} [_bag]
@@ -281,12 +340,14 @@ export function createDragCursorView(
     lastSprH = size.sprH;
     cursorEl.style.width = `${size.w}px`;
     cursorEl.style.height = `${size.h}px`;
+    cursorEl.style.setProperty('--bpb-bg-cell', `${size.cell}px`);
     imgEl.style.width = `${size.sprW}px`;
     imgEl.style.height = `${size.sprH}px`;
     if (shadowEl) {
       shadowEl.style.width = `${size.sprW}px`;
       shadowEl.style.height = `${size.sprH}px`;
     }
+    layoutGroupOutline();
   }
 
   /**
@@ -318,11 +379,13 @@ export function createDragCursorView(
    * @param {(string | null | undefined)[] | null | undefined} gemIds
    * @param {Map<string, object>} itemsById
    * @param {(item: object) => string} getSpriteUrl
+   * @param {(number | null | undefined)[] | null | undefined} [gemR]
    */
-  function syncHostGems(item, gemIds, itemsById, getSpriteUrl) {
+  function syncHostGems(item, gemIds, itemsById, getSpriteUrl, gemR) {
     if (!gemsEl) return;
     const ids = Array.isArray(gemIds) ? gemIds : [];
-    const sig = `${item?.id || ''}|${ids.map((g) => g || '').join(',')}|${getCellPx()}`;
+    const faces = Array.isArray(gemR) ? gemR : [];
+    const sig = `${item?.id || ''}|${ids.map((g, i) => `${g || ''}:${Number(faces[i]) || 0}`).join(',')}|${getCellPx()}`;
     if (sig === lastGemsSig) return;
     lastGemsSig = sig;
     gemsEl.replaceChildren();
@@ -356,10 +419,14 @@ export function createDragCursorView(
       img.alt = '';
       img.draggable = false;
       img.src = src;
+      const face = Math.round(Number(faces[i]));
+      const gemRot = Number.isFinite(face) ? ((face % 4) + 4) % 4 : 0;
+      img.dataset.gemDeg = String(gemRot * 90);
       img.style.left = `${x}px`;
       img.style.top = `${y}px`;
       img.style.width = `${gw}px`;
       img.style.height = `${gh}px`;
+      img.style.transform = `translate(-50%, -50%) rotate(${gemRot * 90 - visualFaceDeg}deg)`;
       gemsEl.appendChild(img);
     }
     if (!gemsEl.childNodes.length) gemsEl.hidden = true;
@@ -377,15 +444,18 @@ export function createDragCursorView(
     const sig = `${face}|${cell}|${(cargo || [])
       .map((e) => {
         const g = Array.isArray(e.gems) ? e.gems.map((x) => x || '').join(',') : '';
-        return `${e.id}:${e.ox},${e.oy},${e.r}:${g}`;
+        const gr = Array.isArray(e.gemR) ? e.gemR.join(',') : '';
+        return `${e.id}:${e.ox},${e.oy},${e.r}:${g}:${gr}`;
       })
       .join(';')}`;
     if (sig === lastCargoSig) return;
     lastCargoSig = sig;
 
     cargoEl.replaceChildren();
+    groupParts = [];
     if (!cargo?.length) {
       cargoEl.hidden = true;
+      layoutGroupOutline();
       return;
     }
     cargoEl.hidden = false;
@@ -407,6 +477,12 @@ export function createDragCursorView(
       wrap.style.top = `${entry.oy * cell}px`;
       wrap.style.width = `${size.footW}px`;
       wrap.style.height = `${size.footH}px`;
+      groupParts.push({
+        x: entry.ox * cell,
+        y: entry.oy * cell,
+        w: size.footW,
+        h: size.footH,
+      });
 
       const img = document.createElement('img');
       img.alt = '';
@@ -442,7 +518,8 @@ export function createDragCursorView(
 
       // Socketed gems ride with cargo (board gems are hidden as drag sources).
       // Same offsets as syncHostGems; rotate with the cargo sprite face.
-      const gemIds = Array.isArray(entry.gems) ? entry.gems : [];
+          const gemIds = Array.isArray(entry.gems) ? entry.gems : [];
+      const gemFaces = Array.isArray(entry.gemR) ? entry.gemR : [];
       if (gemIds.some(Boolean)) {
         const offsets = Array.isArray(item.socketOffsets) ? item.socketOffsets : [];
         const gemsLayer = document.createElement('div');
@@ -468,10 +545,15 @@ export function createDragCursorView(
           gemImg.alt = '';
           gemImg.draggable = false;
           gemImg.src = gemSrc;
+          const gf = Math.round(Number(gemFaces[i]));
+          const gemRot = Number.isFinite(gf) ? ((gf % 4) + 4) % 4 : 0;
+          gemImg.dataset.gemDeg = String(gemRot * 90);
+          gemImg.dataset.hostDeg = String(itemR * 90);
           gemImg.style.left = `${x}px`;
           gemImg.style.top = `${y}px`;
           gemImg.style.width = `${gw}px`;
           gemImg.style.height = `${gh}px`;
+          gemImg.style.transform = `translate(-50%, -50%) rotate(${gemRot * 90 - itemR * 90}deg)`;
           gemsLayer.appendChild(gemImg);
         }
         if (gemsLayer.childNodes.length) wrap.appendChild(gemsLayer);
@@ -479,6 +561,7 @@ export function createDragCursorView(
 
       cargoEl.appendChild(wrap);
     }
+    layoutGroupOutline();
   }
 
   /**
@@ -507,8 +590,10 @@ export function createDragCursorView(
 
   function clearCargo() {
     lastCargoSig = '';
+    groupParts = [];
     cargoEl.hidden = true;
     cargoEl.replaceChildren();
+    layoutGroupOutline();
   }
 
   function clearHostGems() {
@@ -552,6 +637,7 @@ export function createDragCursorView(
     cancelFaceTween,
     syncBagSlots,
     syncBagCargo,
+    setSellHover,
     syncHostGems,
     pickupScale,
     clearSlots,

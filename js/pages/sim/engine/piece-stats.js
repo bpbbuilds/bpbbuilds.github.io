@@ -5,6 +5,7 @@
 
 import { recordPieceMod, summarizeStatMods } from './stat-mods.js';
 import { effectiveChance } from './chance.js';
+import { pushItemOverlayEvent } from './item-fx-log.js';
 
 /** @typedef {import('./pieces.js').CombatPiece} CombatPiece */
 /** @typedef {import('./actor.js').SimActor} SimActor */
@@ -104,6 +105,13 @@ export function addBonusDamage(piece, amount, opts = {}) {
     originName: opts.originName,
   });
   piece.bonusDamage = (Number(piece.bonusDamage) || 0) + n;
+  if (opts.silentLabel) return;
+  pushItemOverlayEvent(piece, {
+    type: 'info',
+    amount: n,
+    label: `${n > 0 ? '+' : ''}${n} damage`,
+    meta: { category: 'item_label', kind: 'damage_buff' },
+  });
 }
 
 /**
@@ -217,7 +225,14 @@ export function snapshotPieceStats(piece, stacks = null, opts = {}) {
     baseCooldown: Number(piece.baseCooldown ?? piece.cooldown) || 0,
     cooldown: modifiedCooldown(piece, stacks),
     loopCd: Number(piece.cooldown) || 0,
-    triggerTime: piece.triggerTime,
+    // Engine triggerTime is iteration units; chrome expects wall-clock remaining
+    // (Item._physics_process subtracts delta×speed — remaining wall = trig/speed).
+    triggerTime: (() => {
+      const trig = Number(piece.triggerTime);
+      if (!Number.isFinite(trig) || trig >= 500 || !(trig > 0)) return trig;
+      const spd = pieceSpeed(piece, stacks);
+      return spd > 0 ? trig / spd : trig;
+    })(),
     staminaCost: piece.staminaCost,
     accuracy: modifiedAccuracy(piece, stacks),
     chance: effectiveChance(piece),

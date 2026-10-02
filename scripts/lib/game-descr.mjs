@@ -91,14 +91,21 @@ export function gameTemplateToPlain(template, item = {}) {
   s = s.replace(/\\~/g, '');
   s = s.replace(/\\n/g, '\n');
 
-  // $t[Label:] / $t1[…] / $m[…] → label text (+ blank line before if mid-string)
-  s = replaceDollarBrackets(s, /t1?|m/, (_name, inner, offset, whole) => {
+  // $t[Label:] / $t1[…] → ability triggers (blank line before if mid-string).
+  // $m[…] → inline mode text (Djinn "or" / "and" / "health:") — never a section break.
+  s = replaceDollarBrackets(s, /t1?/, (_name, inner, offset, whole) => {
     const label = inner.trim();
     const before = String(whole).slice(0, offset).replace(/\s+$/u, '');
     if (!before) return label;
     if (/\n\n$/u.test(String(whole).slice(0, offset))) return label;
     return `\n\n${label}`;
   });
+  s = replaceDollarBrackets(s, /m/, (_name, inner) => {
+    const label = String(inner).trim();
+    return label ? ` ${label} ` : '';
+  });
+  // Collapse spaces introduced around inline $m[] joins
+  s = s.replace(/[ \t]{2,}/g, ' ');
 
   // $h[value] → plain value (tooltip golds numbers). Must be balanced (nested rare).
   s = replaceDollarBrackets(s, /h/i, (_name, inner) => inner);
@@ -197,6 +204,10 @@ export function gameTemplateToPlain(template, item = {}) {
     return `<${tag}> item`;
   });
 
+  // Placement counters ($n_magic): keep tokens for tip runtime
+  // (RainbowOrb.gd insertCounter → " ($num)" when placed; strip when unplaced).
+  // Do NOT convert to fake <N_*> icons.
+
   // Tooltip.gd `keywords` that are NOT in Util.icons → colored text, not <Icon>
   // (rage, fatigue, stun, …). Rarity enum wraps are also plain text.
   const TEXT_KEYWORDS = new Set([
@@ -277,4 +288,44 @@ export function normKey(s) {
     .toLowerCase()
     .replace(/&/g, 'and')
     .replace(/[^a-z0-9]+/g, '');
+}
+
+const RING_LIST_STACKS = [
+  'lucky',
+  'regeneration',
+  'spikes',
+  'mana',
+  'heat',
+  'vampirism',
+  'empower',
+  'poison',
+  'blind',
+  'cold',
+];
+
+/**
+ * MagicRing.gd getDescription when effects are empty (Itemiary / uncrafted).
+ * @param {object} item
+ * @param {object[]} tables PHash tables
+ * @param {(tables: object[], key: string) => string | null} getMessage
+ * @returns {{ template: string, effect: string } | null}
+ */
+export function magicRingLibraryEffect(item, tables, getMessage) {
+  const library = getMessage(tables, 'Magic Ring_LIBRARY');
+  const list = getMessage(tables, 'Magic Ring_LIST');
+  if (!library || !list) return null;
+  const params = item.params && typeof item.params === 'object' ? item.params : {};
+  let template = library;
+  for (let i = 1; i <= 4; i++) {
+    const trigger = getMessage(tables, `Magic Ring_TRIGGER${i}`);
+    if (!trigger) continue;
+    const scale = Number(params[`scale${i}`]) || 1;
+    let effectStr = list;
+    for (const stack of RING_LIST_STACKS) {
+      const n = Math.round(Number(params[stack] || 0) * scale);
+      effectStr = effectStr.replace(new RegExp(`\\{${stack}\\}`, 'g'), String(n));
+    }
+    template += `\n\n${trigger.replace('{effect}', `\n${effectStr}`)}`;
+  }
+  return { template, effect: gameTemplateToPlain(template, item) };
 }

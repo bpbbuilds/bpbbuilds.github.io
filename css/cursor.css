@@ -1,0 +1,106 @@
+/* Game cursors. Hotspots match Core/Game.gd after the 128px cap. */
+
+:root {
+  --bpb-cursor-default: url("/assets/cursors/default.png") 27 27, auto;
+  --bpb-cursor-clicked: url("/assets/cursors/default-clicked.png") 27 27, auto;
+  --bpb-cursor-pointer: url("/assets/cursors/interactable.png") 29 16, pointer;
+  --bpb-cursor-pointer-down: url("/assets/cursors/interactable-clicked.png") 29 16, pointer;
+  --bpb-cursor-grab: url("/assets/cursors/grabbable.png") 27 27, grab;
+  --bpb-cursor-grabbing: url("/assets/cursors/grabbed.png") 27 27, grabbing;
+  --bpb-cursor-ns: url("/assets/cursors/resize-ns.png") 36 36, ns-resize;
+  --bpb-cursor-ns-down: url("/assets/cursors/resize-ns-active.png") 36 36, ns-resize;
+  --bpb-cursor-ew: url("/assets/cursors/resize-ew.png") 42 42, ew-resize;
+  --bpb-cursor-ew-down: url("/assets/cursors/resize-ew-active.png") 42 42, ew-resize;
+}
+
+/* Near the screen edge the full hand sticks out of the viewport and Chrome
+   falls back to the system arrow. A full-size element cursor covers that
+   band (see .bpb-cursor-follower). Do not swap in the smaller sm/ hands. */
+
+html {
+  cursor: var(--bpb-cursor-default);
+}
+
+html a[href],
+html button,
+html summary,
+html select,
+html label,
+html [role="button"],
+html [role="tab"],
+html [role="link"],
+html [type="button"],
+html [type="submit"],
+html [type="reset"],
+html [type="checkbox"],
+html [type="radio"],
+html [type="file"],
+html [type="range"] {
+  cursor: var(--bpb-cursor-pointer);
+}
+
+html.bpb-cursor-down,
+html.bpb-cursor-down * {
+  cursor: var(--bpb-cursor-clicked) !important;
+}
+
+html.bpb-cursor-down.bpb-cursor-kind-pointer,
+html.bpb-cursor-down.bpb-cursor-kind-pointer * {
+  cursor: var(--bpb-cursor-pointer-down) !important;
+}
+
+html.bpb-cursor-down.bpb-cursor-kind-grab,
+html.bpb-cursor-down.bpb-cursor-kind-grab * {
+  cursor: var(--bpb-cursor-grabbing) !important;
+}
+
+html.bpb-cursor-down.bpb-cursor-kind-ns,
+html.bpb-cursor-down.bpb-cursor-kind-ns * {
+  cursor: var(--bpb-cursor-ns-down) !important;
+}
+
+html.bpb-cursor-down.bpb-cursor-kind-ew,
+html.bpb-cursor-down.bpb-cursor-kind-ew * {
+  cursor: var(--bpb-cursor-ew-down) !important;
+}
+
+/* Full hand, drawn as an element so it can hang off the screen edge.
+   Chrome drops a CSS cursor in that band and the footer was using a tiny hand. */
+html.bpb-live-cursor,
+html.bpb-live-cursor * {
+  cursor: none !important;
+}
+
+.bpb-cursor-follower {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100000;
+  display: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+html.bpb-live-cursor .bpb-cursor-follower {
+  display: block;
+}
+
+/* YouTube's page replaces the cursor. This layer sits on the picture so the
+   game hand shows there. The bottom strip stays open for the player controls. */
+.bpb-yt-hit {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 3.25rem;
+  background: transparent;
+  cursor: var(--bpb-cursor-pointer);
+  touch-action: pan-x pan-y;
+}

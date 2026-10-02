@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dev — Label inbox</title>
+  <link rel="stylesheet" href="../../css/theme.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../css/shared.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../js/pages/create/rail-chrome.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../js/pages/label-inbox/label-inbox.css?v=inbox1" />
+</head>
+<body class="page-dev-label-inbox" data-root="../../">
+  <main id="main" class="li-main" aria-label="Screenshot label inbox">
+    <header class="li-head">
+      <h1 class="li-title bpb-label-text">Label inbox</h1>
+      <p class="cr-hint">
+        Screenshots scraped from r/BackpackBattles. Click one to open it in the labeling tool,
+        fix the board, save, then come back. Local dev only.
+        <a href="../../create/?label=1">Labeling tool →</a>
+      </p>
+      <div class="li-controls">
+        <span class="cr-hint" id="li-count" aria-live="polite">Loading…</span>
+        <label class="li-toggle cr-hint"><input type="checkbox" id="li-show-hidden" /> Show done / skipped</label>
+      </div>
+    </header>
+    <ul class="li-grid" id="li-grid"></ul>
+  </main>
+  <script type="module" src="../../js/pages/label-inbox/index.js?v=inbox4"></script>
+</body>
+</html>

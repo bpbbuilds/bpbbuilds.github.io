@@ -1,0 +1,103 @@
+{
+  "note": "Hand-labeled with create ?label=1",
+  "source": "in-game",
+  "split": "test",
+  "labeledAt": "2026-09-27T04:03:18.096Z",
+  "shot": {
+    "w": 250,
+    "h": 264
+  },
+  "items": [
+    {
+      "name": "Amulet of Feasting",
+      "x": 0,
+      "y": 0,
+      "r": null
+    },
+    {
+      "name": "Star of Courage",
+      "x": 1,
+      "y": 2,
+      "r": null
+    },
+    {
+      "name": "Piggybank",
+      "x": 0,
+      "y": 3,
+      "r": 2
+    },
+    {
+      "name": "Wooden Buckler",
+      "x": 2,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Whetstone",
+      "x": 1,
+      "y": 0,
+      "r": null
+    },
+    {
+      "name": "Battery",
+      "x": 1,
+      "y": 1,
+      "r": null
+    }
+  ],
+  "skills": [],
+  "jewels": [
+    {
+      "name": "Chipped Sapphire",
+      "x": 0,
+      "y": 1,
+      "r": 0
+    }
+  ],
+  "bagCells": [
+    "0,3",
+    "1,3",
+    "0,4",
+    "1,4",
+    "0,0",
+    "1,0",
+    "0,1",
+    "1,1",
+    "0,2",
+    "1,2",
+    "2,0",
+    "3,0",
+    "2,1",
+    "3,1"
+  ],
+  "bags": [
+    {
+      "name": "Leather Bag",
+      "x": 0,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Port-O-Charger",
+      "x": 0,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 2,
+      "y": 0,
+      "r": 0
+    }
+  ],
+  "grid": {
+    "ok": true,
+    "originX": -13.5,
+    "originY": -0.5,
+    "cellW": 32.5,
+    "cellH": 32.5,
+    "imgW": 250,
+    "imgH": 264,
+    "score": 1.234
+  }
+}

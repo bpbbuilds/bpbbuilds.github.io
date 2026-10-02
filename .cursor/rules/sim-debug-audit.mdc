@@ -118,4 +118,4 @@ Debug JSON: `paramChecks` `expectedKey: "blockremoval"` if Stone activated with 
 2. Compare report numbers to GD + catalog params (`paramChecks`, `catalog[].params`).
 3. Call out sim-only presentation (weapon-attributed vamp heals, `start_max_hp` floors, wrong `getPName`).
 4. Prefer a dedicated port matching the `.gd` file over a generic handler.
-5. **Do not** empty `paramChecks` / `ui.mismatches` in report code to hide a miss — see [`docs/sim-debug-protocol.md`](docs/sim-debug-protocol.md) (Phase 259).
+5. **Do not** empty `paramChecks` / `ui.mismatches` in report code to hide a miss — see [`docs/sim/sim-debug-protocol.md`](docs/sim/sim-debug-protocol.md) (Phase 259).

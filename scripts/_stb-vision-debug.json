@@ -1,0 +1,40 @@
+{
+  "provider": "openai",
+  "responseMode": "json_schema_enum",
+  "catalogNameCount": 518,
+  "status": 200,
+  "ms": 4585,
+  "model": "gpt-4.1-2025-04-14",
+  "usage": {
+    "prompt_tokens": 2943,
+    "completion_tokens": 867,
+    "total_tokens": 3810,
+    "prompt_tokens_details": {
+      "cached_tokens": 1792,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "cost": {
+    "usd": 0.010134,
+    "ratesPer1M": {
+      "in": 2,
+      "out": 8,
+      "cached": 0.5
+    },
+    "prompt_tokens": 2943,
+    "completion_tokens": 867,
+    "cached_tokens": 1792
+  },
+  "message": {
+    "role": "assistant",
+    "content": "{\"items\":[{\"name\":\"Flame\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":0,\"cellRow\":0,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Flame\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":0,\"cellRow\":1,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Flame\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":1,\"cellRow\":0,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Darksaber\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":2,\"cellRow\":0,\"sizeW\":1,\"sizeH\":4},{\"name\":\"Mana Orb\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":3,\"cellRow\":0,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Piggybank\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":5,\"cellRow\":0,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Piggybank\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":4,\"cellRow\":2,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Piggybank\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":5,\"cellRow\":2,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Star of Courage\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":4,\"cellRow\":1,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Treasure Chest\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":5,\"cellRow\":1,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Mana Orb\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":3,\"cellRow\":1,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Amulet of Energy\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":2,\"cellRow\":4,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Phoenix\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":0,\"cellRow\":3,\"sizeW\":2,\"sizeH\":2},{\"name\":\"Phoenix\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":2,\"cellRow\":3,\"sizeW\":2,\"sizeH\":2},{\"name\":\"Corrupted Armor\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":3,\"cellRow\":2,\"sizeW\":2,\"sizeH\":3},{\"name\":\"Bunch of Coins\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":0,\"cellRow\":5,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Bunch of Coins\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":1,\"cellRow\":5,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Bunch of Coins\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":4,\"cellRow\":5,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Bunch of Coins\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":5,\"cellRow\":5,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Whetstone\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":2,\"cellRow\":5,\"sizeW\":2,\"sizeH\":1},{\"name\":\"Lantern Berry\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":2,\"cellRow\":2,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Amulet of Energy\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":1,\"cellRow\":2,\"sizeW\":1,\"sizeH\":1},{\"name\":\"Falcon Blade\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":1,\"cellRow\":3,\"sizeW\":1,\"sizeH\":3},{\"name\":\"Amulet of Darkness\",\"confidence\":1,\"rotation\":0,\"notes\":\"\",\"cellCol\":1,\"cellRow\":1,\"sizeW\":1,\"sizeH\":1}]}",
+    "refusal": null,
+    "annotations": []
+  }
+}

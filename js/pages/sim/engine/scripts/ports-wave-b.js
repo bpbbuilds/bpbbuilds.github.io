@@ -17,7 +17,7 @@ import { getP, getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addBonusDamageFactor, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount, loseStacks } from '../stacks.js';
 import { applyEffectDmgFactor } from '../actor-stats.js';
-import { dealHit } from './handlers.js';
+import { dealEffectDamage, dealHit } from './handlers.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { itemHasType, pushActivate } from './ports-util.js';
 import { randInt } from '../rng.js';
@@ -557,8 +557,9 @@ export const spellScrollFrostboltPort = {
       return true;
     }
     pushActivate(piece, ctx, 'spell_scroll_frostbolt', `Scroll: ${piece.name}`);
-    const raw = randInt(piece.damageMin || 4, piece.damageMax || 8, rng);
-    dealHit(piece, ctx, raw);
+    // SpellScrollFrostbolt.gd: `descriptor.minDam` through dealEffectDamage.
+    const raw = Math.max(1, Math.round(piece.damageMin || 4));
+    dealEffectDamage(piece, ctx, raw);
     const cold = Math.max(1, Math.round(getP3(piece.params, 2)));
     const dur = Math.max(0.5, getPName(piece.params, 'dur_cold', getP2(piece.params, 3)));
     grantTemporaryStacks(dummy, 'cold', cold, dur, t, {
@@ -671,7 +672,7 @@ export const hedgehogPort = {
     const per = Number(getPName(piece.params, 'dam_spikes', getP1(piece.params, 1))) || 1;
     const spikes = player.stacks.spikes || 0;
     const raw = Math.max(0, Math.round((piece.damageMin || 3) + spikes * per));
-    dealHit(piece, ctx, raw);
+    dealEffectDamage(piece, ctx, raw);
     return true;
   },
 };
@@ -702,7 +703,7 @@ export const bombPort = {
         (Number(dummy.damageResistancePct) || 0) - damFactor * removed * 100;
     }
     const raw = Math.max(1, Math.round(piece.damageMin || 5));
-    dealHit(piece, ctx, raw);
+    dealEffectDamage(piece, ctx, raw);
     piece.alive = false;
     piece.charges = 0;
     events.push({

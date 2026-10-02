@@ -126,6 +126,24 @@ export function clearDragSources() {
   });
 }
 
+/**
+ * Live drag lookup registered by the active drag session.
+ * Lets passive listeners (board onboarding overlay) know what is being dragged
+ * without the session wiring callbacks into each controller.
+ * @type {(() => any) | null}
+ */
+let dragLookup = null;
+
+/** @param {() => any} lookup */
+export function registerDragLookup(lookup) {
+  dragLookup = lookup;
+}
+
+/** @returns {any} */
+export function getCurrentDrag() {
+  return dragLookup ? dragLookup() : null;
+}
+
 /** @param {boolean} on */
 export function setCreateDragging(on) {
   document.body.classList.toggle('is-bpb-dragging', on);
@@ -136,7 +154,7 @@ export function setCreateDragging(on) {
     } catch {
       /* ignore */
     }
-    document.dispatchEvent(new CustomEvent('bpb-create-drag'));
+    document.dispatchEvent(new CustomEvent('bpb-create-drag', { detail: { drag: getCurrentDrag() } }));
     document.querySelectorAll('.bpb-tooltip-float').forEach((el) => {
       el.classList.remove('is-visible');
       el.setAttribute('aria-hidden', 'true');

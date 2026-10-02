@@ -1,4 +1,5 @@
 /* Shared backpack grid — Itemiary parchment look */
+@import url('../item-live-art/item-live-art.css');
 
 .bpb-bg {
   --bpb-bg-cell: 34px;
@@ -181,7 +182,9 @@
 
 body.page-build .bpb-bg__item:not(.bpb-bg__item--parked) .bpb-bg__spin--shadow,
 body.page-create .bpb-bg__item:not(.bpb-bg__item--parked) .bpb-bg__spin--shadow,
-body.page-builds .bpb-bg__item:not(.bpb-bg__item--parked) .bpb-bg__spin--shadow {
+body.page-builds .bpb-bg__item:not(.bpb-bg__item--parked) .bpb-bg__spin--shadow,
+body.page-sim .bpb-bg__item:not(.bpb-bg__item--parked) .bpb-bg__spin--shadow,
+body.page-events .bpb-bg__item:not(.bpb-bg__item--parked) .bpb-bg__spin--shadow {
   display: block;
 }
 
@@ -196,7 +199,9 @@ body.page-builds .bpb-bg__item:not(.bpb-bg__item--parked) .bpb-bg__spin--shadow 
  */
 body.page-build .bpb-bg__item--bag .bpb-bg__sprite--shadow,
 body.page-create .bpb-bg__item--bag .bpb-bg__sprite--shadow,
-body.page-builds .bpb-bg__item--bag .bpb-bg__sprite--shadow {
+body.page-builds .bpb-bg__item--bag .bpb-bg__sprite--shadow,
+body.page-sim .bpb-bg__item--bag .bpb-bg__sprite--shadow,
+body.page-events .bpb-bg__item--bag .bpb-bg__sprite--shadow {
   opacity: 0.45;
   filter: brightness(0) blur(0.75px);
 }
@@ -229,6 +234,18 @@ body.page-builds .bpb-bg__item--bag .bpb-bg__sprite--shadow {
   z-index: 30000 !important;
 }
 
+/* Hover lifts .bpb-bg__hit to 30000 — sockets/gems must stay above the sprite */
+.bpb-bg__item:hover .bpb-bg__sockets,
+.bpb-bg__item:focus-within .bpb-bg__sockets,
+.bpb-bg--show-sockets .bpb-bg__sockets {
+  z-index: 30001 !important;
+}
+
+.bpb-bg__item:hover .bpb-bg__gems,
+.bpb-bg__item:focus-within .bpb-bg__gems {
+  z-index: 30002 !important;
+}
+
 /* Game library hover: body outlines + star/diamond affect tiles (not sockets) */
 .bpb-bg__markers {
   position: absolute;
@@ -237,7 +254,7 @@ body.page-builds .bpb-bg__item--bag .bpb-bg__sprite--shadow {
   opacity: 0;
   transition: opacity 0.12s ease;
   /* Above this item's sprite even before the parent z bump applies */
-  z-index: 4;
+  z-index: 5;
 }
 
 .bpb-bg__item:hover:not(:has(.bpb-bg__mark--gem:hover)) .bpb-bg__markers,
@@ -341,33 +358,32 @@ body.is-bpb-dragging .bpb-bg--placed .bpb-bg__item {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 5;
+  z-index: 7;
   overflow: visible;
 }
 
-/* Hover lifts .bpb-bg__hit (sprite) to 30000 — keep gems above it */
-.bpb-bg__item:hover .bpb-bg__gems,
-.bpb-bg__item:focus-within .bpb-bg__gems {
-  z-index: 30002 !important;
-}
-
-/* Socket chrome — game Game.showSockets (all items) while a gem is hovered */
+/* Socket chrome — game Game.showSockets while a gem is dragged.
+ * Empty holes show above the host. A filled slot hides the hole so it
+ * does not cover the armor/weapon; the gem layer stays on top. */
 .bpb-bg__sockets {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 4;
+  z-index: 6;
   overflow: visible;
+}
+
+.bpb-bg__sockets .bpb-bg__mark--socket {
   opacity: 0;
   transition: opacity 0.12s ease;
 }
 
-.bpb-bg--show-sockets .bpb-bg__sockets {
+.bpb-bg--show-sockets .bpb-bg__sockets .bpb-bg__mark--socket:not(.is-occupied) {
   opacity: 1;
 }
 
-.bpb-bg--show-sockets .bpb-bg__sockets .bpb-bg__mark--socket {
-  z-index: 30001;
+.bpb-bg__sockets .bpb-bg__mark--socket.is-occupied {
+  opacity: 0;
 }
 
 /* GemSocket.onHoverWithGem — gold tint + slight scale */
@@ -398,7 +414,7 @@ body.is-bpb-dragging .bpb-bg--placed .bpb-bg__item {
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.55));
   /* Hit target for gem tooltips (parent .bpb-bg__gems stays pointer-events: none) */
   pointer-events: auto;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 .bpb-bg__mark--socket.bpb-bg__mark--gem:hover,
@@ -517,14 +533,15 @@ body.is-bpb-dragging .bpb-bg--placed .bpb-bg__item {
 .bpb-bg__hit {
   position: absolute;
   inset: 0;
-  /* Inline z-index from render.js (bag vs non-bag + library order) */
+  /* Below sockets (6) / gems (7) — game Icon/Sockets paint after the sprite */
+  z-index: 1;
   margin: 0;
   padding: 0;
   border: 0;
   background: transparent;
   /* Pads re-enable hits on body cells only */
   pointer-events: none;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   /* Prevent UA button font (~13px) from breaking any leftover em sizes */
   font: inherit;
   color: inherit;
@@ -692,12 +709,42 @@ body.is-bpb-dragging .bpb-bg--placed .bpb-bg__item {
   animation-delay: var(--bpb-appear-delay, 0ms);
 }
 
+@keyframes bpb-bg-leave-library {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+
+@keyframes bpb-bg-leave-library-bag {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+
+.bpb-bg__item--leave,
+.bpb-bg__under-item--leave {
+  transform-origin: center center;
+  animation: bpb-bg-leave-library 0.22s ease-in both;
+  pointer-events: none;
+}
+
+.bpb-bg--itemiary .bpb-bg__item--leave.bpb-bg__item--bag,
+.bpb-bg--itemiary .bpb-bg__under-item--leave.bpb-bg__under-item--bag {
+  animation-name: bpb-bg-leave-library-bag;
+}
+
 /*
  * Itemiary bags rest at 0.9 (AppearInLibrarySmall) when not mid-wave.
  * Non-bags: no resting transform — Itemiary keeps --appear after the wave so
  * fill-mode holds the end scale (touching delay/class was restarting the anim).
  */
-.bpb-bg--itemiary .bpb-bg__item--bag:not(.bpb-bg__item--parked):not(.bpb-bg__item--appear):not(.bpb-bg__item--appear-bag) {
+.bpb-bg--itemiary .bpb-bg__item--bag:not(.bpb-bg__item--parked):not(.bpb-bg__item--appear):not(.bpb-bg__item--appear-bag):not(.bpb-bg__item--leave) {
   transform: scale(0.9);
   transform-origin: center center;
 }
@@ -711,7 +758,9 @@ body.is-bpb-dragging .bpb-bg--placed .bpb-bg__item {
   .bpb-bg__item--appear,
   .bpb-bg__item--appear-bag,
   .bpb-bg__under-item--appear,
-  .bpb-bg__under-item--appear-bag {
+  .bpb-bg__under-item--appear-bag,
+  .bpb-bg__item--leave,
+  .bpb-bg__under-item--leave {
     animation: none;
   }
 }
@@ -726,22 +775,38 @@ body.is-bpb-dragging .bpb-bg--placed .bpb-bg__item {
   max-width: none;
   object-fit: contain;
   pointer-events: none;
-  /* Itemiary: avoid per-sprite drop-shadow while scrolling (~500 nodes).
-   * Build viewer uses a separate silhouette layer (.bpb-bg__spin--shadow). */
 }
 
-.bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
-.bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+/* Itemiary: SE depth via CSS (game shadowOffset ~5/80 cell) — no second silhouette img. */
+.bpb-bg--itemiary .bpb-bg__item:not(.bpb-bg__item--parked)
+  > .bpb-bg__spin:not(.bpb-bg__spin--shadow)
+  .bpb-bg__sprite {
+  filter: drop-shadow(0.0625em 0.0625em 0 rgba(0, 0, 0, 0.45));
+}
+
+.bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+.bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
   filter: drop-shadow(0 1px 1px rgba(20, 10, 5, 0.28));
 }
 
-body.page-build .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
-body.page-build .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
-body.page-create .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
-body.page-create .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
-body.page-builds .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
-body.page-builds .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
-  /* Keep game silhouette shadow; skip the light hover drop-shadow on builds */
+.bpb-bg--itemiary .bpb-bg__item:hover > .bpb-bg__spin:not(.bpb-bg__spin--shadow) .bpb-bg__sprite,
+.bpb-bg--itemiary .bpb-bg__item:focus-within > .bpb-bg__spin:not(.bpb-bg__spin--shadow) .bpb-bg__sprite {
+  filter:
+    drop-shadow(0.0625em 0.0625em 0 rgba(0, 0, 0, 0.45))
+    drop-shadow(0 1px 1px rgba(20, 10, 5, 0.28));
+}
+
+body.page-build .bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-build .bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-create .bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-create .bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-builds .bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-builds .bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-sim .bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-sim .bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-events .bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:hover .bpb-bg__sprite:not(.bpb-bg__sprite--shadow),
+body.page-events .bpb-bg:not(.bpb-bg--itemiary) .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite--shadow) {
+  /* Keep game silhouette shadow; skip the light hover drop-shadow on boards */
   filter: none;
 }
 
@@ -751,4 +816,26 @@ body.page-builds .bpb-bg__item:focus-within .bpb-bg__sprite:not(.bpb-bg__sprite-
   border-radius: 0.1em;
   background: rgba(60, 40, 25, 0.35);
   filter: none;
+}
+
+/* Screenshot import: unknown sprite placeholder */
+.bpb-bg__item--unrecognized {
+  background: rgba(60, 38, 29, 0.35);
+  outline: 2px dashed #eac914;
+  outline-offset: -2px;
+}
+.bpb-bg__item--unrecognized .bpb-bg__sprite--empty {
+  display: none;
+}
+.bpb-bg__unrecognized-label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--bpb-font-display, Milonga, serif);
+  font-size: 0.85em;
+  color: #ffecdc;
+  text-shadow: 0 0 0.15em #3c261d, 0 0 0.15em #3c261d;
+  pointer-events: none;
+  z-index: 2;
 }

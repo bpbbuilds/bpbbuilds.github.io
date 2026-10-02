@@ -1,0 +1,803 @@
+{
+  "generatedAt": "2026-09-24T02:43:36.025Z",
+  "source": "tools/game-extract-full/Items/**/*.gd",
+  "note": "Create-board tip speed auras. prepare = inventory tip parity; combat_start included for common neighbor haste so tips match what players expect on a placed board.",
+  "auras": {
+    "echoing_battlecry": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 65
+        }
+      ]
+    },
+    "sloth": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": -1,
+          "param": "speed",
+          "fallback": 30
+        }
+      ]
+    },
+    "con_trap_tron": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "first_link",
+          "sign": -1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ]
+    },
+    "flute": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "p3",
+          "fallback": 10
+        }
+      ]
+    },
+    "fanfare": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "p5",
+          "fallback": 5
+        }
+      ]
+    },
+    "wolpertinger": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "p3",
+          "fallback": 5
+        }
+      ]
+    },
+    "twine_badge": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ]
+    },
+    "sewing_case": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "cargo",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10,
+          "requireCooldown": true
+        }
+      ]
+    },
+    "puzzlebox": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "cargo",
+          "sign": -1,
+          "param": "speed",
+          "fallback": 20,
+          "requireCooldown": true
+        }
+      ]
+    },
+    "puzzle_badge": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": -1,
+          "param": "speed",
+          "fallback": 20
+        }
+      ]
+    },
+    "time_dilator": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "all_weapons",
+          "sign": -1,
+          "param": "slow",
+          "fallback": 30
+        }
+      ]
+    },
+    "gold_armor": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "all_weapons",
+          "sign": -1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ]
+    },
+    "dual_wielding": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "all_weapons_stamina",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 15,
+          "needExactly": 2
+        }
+      ]
+    },
+    "markswoman": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ]
+    },
+    "uniquely_unique": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "first_link",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 20
+        }
+      ]
+    },
+    "knife_to_meet_you": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "inventory_type",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10,
+          "type": "dagger"
+        },
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed2",
+          "fallback": 5
+        }
+      ]
+    },
+    "shielded": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "links_armor_cd",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ]
+    },
+    "gloves_of_haste": {
+      "when": "combat_start",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": 1,
+          "param": "p1",
+          "fallback": 20
+        }
+      ]
+    },
+    "vampiric_gloves": {
+      "when": "combat_start",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 15
+        }
+      ]
+    },
+    "falcon_blade": {
+      "when": "combat_start",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 40
+        }
+      ]
+    },
+    "stone_gloves": {
+      "when": "combat_start",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": -1,
+          "param": "speedreduction",
+          "fallback": 20
+        }
+      ]
+    },
+    "fanny_pack": {
+      "when": "combat_start",
+      "modes": [
+        {
+          "mode": "cargo",
+          "sign": 1,
+          "param": "p1",
+          "fallback": 15,
+          "requireCooldown": true
+        }
+      ]
+    },
+    "toolbox": {
+      "when": "combat_start",
+      "modes": [
+        {
+          "mode": "cargo",
+          "sign": -1,
+          "param": "speedreduction",
+          "fallback": 20,
+          "requireEmpowerable": true
+        }
+      ]
+    },
+    "amulet_of_agility": {
+      "when": "combat_start",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 15
+        }
+      ]
+    },
+    "extra_bags": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "links_empty_secondary",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 5
+        }
+      ]
+    },
+    "book_of_darkness": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ]
+    },
+    "book_of_ice": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ]
+    },
+    "book_of_light": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ]
+    },
+    "book_of_nature": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ]
+    },
+    "prismatic_sword": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_type",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 5,
+          "type": "magic"
+        }
+      ]
+    },
+    "ultima": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_type",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 5,
+          "type": "spell"
+        }
+      ]
+    },
+    "amulet_of_feasting": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "AmuletofFeasting"
+    },
+    "arcane_intellect": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "ArcaneIntellect"
+    },
+    "blood_manipulation": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "BloodManipulation"
+    },
+    "buy_the_holy_light": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "BuytheHolyLight"
+    },
+    "cauldron": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "p4",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "Cauldron"
+    },
+    "chess_master": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "unknown",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "ChessMaster"
+    },
+    "cthulhu": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "Cthulhu"
+    },
+    "dark_ritual": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "DarkRitual"
+    },
+    "death_lotus": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "DeathLotus"
+    },
+    "eat_o_matic": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "inventory_loop",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "Eat-o-matic"
+    },
+    "energy_conversion": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "EnergyConversion"
+    },
+    "forest_dragon": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "ForestDragon"
+    },
+    "friendly_fire": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "p3",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "FriendlyFire"
+    },
+    "girl_power": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "GirlPower"
+    },
+    "heavy_drinking": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "HeavyDrinking"
+    },
+    "level_up": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "unknown",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "LevelUp"
+    },
+    "little_mimic": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "unknown",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "LittleMimic"
+    },
+    "lucky_cat": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "inventory_loop",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "LuckyCat"
+    },
+    "magitecc_armor": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "MagiteccArmor"
+    },
+    "mana_mastery": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "ManaMastery"
+    },
+    "mrs_struggles": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "p1",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "MrsStruggles"
+    },
+    "onion_cutter": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "OnionCutter"
+    },
+    "perpetuum_mobile": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "PerpetuumMobile"
+    },
+    "pot": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "Pot"
+    },
+    "power_puppy": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "p4",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "PowerPuppy"
+    },
+    "scale": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "Scale"
+    },
+    "shelly": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "Shelly"
+    },
+    "snowmaster": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "Snowmaster"
+    },
+    "spell_scroll_dark": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "SpellScrollDark"
+    },
+    "spell_scroll_light": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "SpellScrollLight"
+    },
+    "ukulele": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "Ukulele"
+    },
+    "water_elemental": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "speed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "WaterElemental"
+    },
+    "heart_of_darkness": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "self_per_links",
+          "sign": 1,
+          "param": "darkspeed",
+          "fallback": 10
+        }
+      ],
+      "auto": true,
+      "stem": "HeartofDarkness"
+    },
+    "__food_base__": {
+      "when": "prepare",
+      "modes": [
+        {
+          "mode": "food_self_per_links",
+          "sign": 1,
+          "param": null,
+          "fallback": 10
+        }
+      ],
+      "note": "Food.gd prepare()"
+    }
+  }
+}

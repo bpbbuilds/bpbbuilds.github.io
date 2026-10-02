@@ -86,6 +86,42 @@ export class BitStream {
     }
     return value;
   }
+
+  /**
+   * Write a value in the same width `pull(rangeMax)` reads.
+   * @param {number} value
+   * @param {number} rangeMax
+   */
+  push(value, rangeMax) {
+    this.pushBitsize(value, ceilLog2(rangeMax));
+  }
+
+  /**
+   * @param {number} value
+   * @param {number} nbits
+   */
+  pushBitsize(value, nbits) {
+    const n = Math.max(0, nbits);
+    const v = Number(value) || 0;
+    for (let digit = n - 1; digit >= 0; digit -= 1) {
+      this.bits.push((v >> digit) & 1 ? 1 : 0);
+    }
+  }
+
+  /** Pack bits into the game's 6-bit history string. */
+  toGodotString() {
+    const bits = this.bits.slice();
+    while (bits.length % 6 !== 0) bits.push(0);
+    let out = '';
+    for (let i = 0; i < bits.length; i += 6) {
+      let value = 0;
+      for (let digit = 0; digit < 6; digit += 1) {
+        value = (value << 1) | (bits[i + digit] ? 1 : 0);
+      }
+      out += String.fromCharCode(value + BASE64_OFFSET);
+    }
+    return out;
+  }
 }
 
 /**
@@ -121,6 +157,31 @@ export function leagueFromRating(rating) {
  */
 export function classFromIndex(classI) {
   return CLASSES[classI] || null;
+}
+
+/**
+ * Magic Ring stores 2 effects (12 bits). Superior Ring stores 3 (18 bits).
+ * The game always reads that width, even when the effects are empty.
+ * @param {HistoryDecodeCatalog} cat
+ * @param {number} gid
+ */
+export function ringPersistBits(cat, gid) {
+  const id = cat.gidToId?.[String(gid)];
+  if (id === 'magic_ring') return cat.magicRingPersistBits || 12;
+  if (id === 'superior_ring') return 18;
+  return 0;
+}
+
+/**
+ * @param {string | null | undefined} name
+ * @returns {number}
+ */
+export function classToIndex(name) {
+  const key = String(name || '').trim().toLowerCase();
+  for (const [index, label] of Object.entries(CLASSES)) {
+    if (label.toLowerCase() === key) return Number(index);
+  }
+  return 5;
 }
 
 /**
@@ -185,15 +246,26 @@ export function deserializeItems(buildInfo, cat, version = '1.1.0') {
   if (health < 0 || stamina < 0) return null;
 
   const totalNumItems = versionAtLeast110(version) ? cat.numItems : 510;
+  const indexBits = ceilLog2(totalNumItems);
+  const minItemBits =
+    indexBits + ceilLog2(MAX_SIZE) * 2 + ceilLog2(4);
   /** @type {{ gid: number, id: string | null, x: number, y: number, r: number, gems: number[], persistent?: { magicRing?: number } }[]} */
   const items = [];
-  while (bs.bitsLeft() >= 8) {
+  while (bs.bitsLeft() >= minItemBits) {
+    const mark = bs.current;
     const index = bs.pull(totalNumItems);
-    if (index < 0 || index >= totalNumItems) return null;
+    // Trailing padding / incomplete frame — keep items already read.
+    if (index < 0 || index >= totalNumItems) {
+      bs.current = mark;
+      break;
+    }
     const x = bs.pull(MAX_SIZE);
     const y = bs.pull(MAX_SIZE);
     const face = bs.pull(4);
-    if (x < 0 || y < 0 || face < 0) return null;
+    if (x < 0 || y < 0 || face < 0) {
+      bs.current = mark;
+      break;
+    }
 
     /** @type {{ gid: number, id: string | null, x: number, y: number, r: number, gems: number[] }} */
     const entry = {
@@ -208,18 +280,32 @@ export function deserializeItems(buildInfo, cat, version = '1.1.0') {
     if (nSock > 0) {
       const hasGems = bs.pull(2);
       if (hasGems === 1) {
+        let gemFail = false;
         for (let i = 0; i < nSock; i += 1) {
           const g = bs.pull(cat.totalNumGems);
-          if (g < 0) return null;
+          if (g < 0) {
+            gemFail = true;
+            break;
+          }
           entry.gems.push(g);
         }
-      } else if (hasGems < 0) return null;
+        if (gemFail) {
+          bs.current = mark;
+          break;
+        }
+      } else if (hasGems < 0) {
+        bs.current = mark;
+        break;
+      }
     }
 
-    if (index === cat.magicRingGid) {
-      const persist = cat.magicRingPersistBits || 12;
-      const dataAsInt = bs.pullBitsize(persist);
-      if (dataAsInt < 0) return null;
+    const ringBits = ringPersistBits(cat, index);
+    if (ringBits > 0) {
+      const dataAsInt = bs.pullBitsize(ringBits);
+      if (dataAsInt < 0) {
+        bs.current = mark;
+        break;
+      }
       if (dataAsInt > 0) {
         entry.persistent = { magicRing: dataAsInt };
       }

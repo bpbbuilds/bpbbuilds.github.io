@@ -10,7 +10,7 @@ import {
   bannerTitleClaimsEngine11,
   engineBannerCopy,
   phase38AllowsEngine11Marketing,
-} from '../js/pages/sim/engine-claim.js';
+} from '../js/pages/sim/shell/engine-claim.js';
 import { isLiveFilled } from '../js/pages/sim/engine/parity-live.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -128,7 +128,7 @@ ok(/Combat sandbox/i.test(privacy), 'Privacy mentions Combat sandbox');
 const footer = fs.readFileSync(path.join(ROOT, 'js/shared/footer.js'), 'utf8');
 ok(/combat sandbox/i.test(footer) && /matching the live game/i.test(footer), 'Footer disclaimer mentions unofficial sandbox');
 
-const ipDoc = fs.readFileSync(path.join(ROOT, 'docs/sim-ip-marketing.md'), 'utf8');
+const ipDoc = fs.readFileSync(path.join(ROOT, 'docs/sim/sim-ip-marketing.md'), 'utf8');
 ok(/No-go/i.test(ipDoc) && /Not a counsel sign-off/i.test(ipDoc), 'IP marketing note is a no-go, not a sign-off');
 
 const leftoverParamChecks = (staple.dumps || []).reduce(
@@ -165,7 +165,7 @@ const payload = {
 ok(!payload.claimEngine11, '270: claimEngine11 stays false');
 ok(!bannerTitleClaimsEngine11(copy.title), '270: banner does not title Engine 1:1');
 
-const phases = fs.readFileSync(path.join(ROOT, 'docs/sim-phases.md'), 'utf8');
+const phases = fs.readFileSync(path.join(ROOT, 'docs/sim/sim-phases.md'), 'utf8');
 ok(/270 — Ladder closeout/i.test(phases), 'sim-phases 270 is ladder closeout, not a 1:1 claim');
 ok(/Engine 1:1 is \*\*not\*\* claimed/i.test(phases), 'sim-phases says 1:1 is not claimed');
 

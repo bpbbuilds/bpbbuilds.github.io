@@ -3,6 +3,7 @@
  */
 
 import { classIconPath } from '../../shared/class-icons.js';
+import { notesToHtml } from '../../shared/item-mentions.js';
 import { skelBar, skelBlock, skelRegion } from '../../shared/skeleton.js';
 import { startingBagIdsForClass } from '../../shared/starting-bags.js';
 import { discussControlHtml } from './discuss.js';
@@ -187,7 +188,7 @@ export function renderInfoRail(
         </div>
       </section>
 
-      ${howItWorksBlock(howText)}
+      ${howItWorksBlock(howText, itemsById, getSpriteUrl)}
 
       <section class="build-info__section build-info__discuss-wrap" aria-label="Discuss this build">
         ${discussControlHtml(build, root)}
@@ -199,13 +200,17 @@ export function renderInfoRail(
 /**
  * Notes body only (no heading) — Patch3 shade + ruled strip.
  * @param {string} text
+ * @param {Map<string, object>} itemsById
+ * @param {(item: object) => string} getSpriteUrl
  */
-function howItWorksBlock(text) {
+function howItWorksBlock(text, itemsById, getSpriteUrl) {
   if (!text) return '';
+  const body = notesToHtml(text, itemsById, getSpriteUrl);
+  if (!body) return '';
   return `
     <section class="build-info__section build-info__how" aria-label="Build description">
       <div class="build-info__how-body build-info__shade">
-        <p class="build-info__how-text">${escapeHtml(text)}</p>
+        <p class="build-info__how-text">${body}</p>
       </div>
     </section>
   `;

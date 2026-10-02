@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "count": 27,
+  "classes": [
+    {
+      "index": 0,
+      "id": "bag_of_giving",
+      "name": "Bag of Giving",
+      "image": "BagofGiving",
+      "type": "Bag"
+    },
+    {
+      "index": 1,
+      "id": "engineer_bag_2",
+      "name": "Box of Cogs",
+      "image": "EngineerBag2",
+      "type": "Bag"
+    },
+    {
+      "index": 2,
+      "id": "box_of_prosperity",
+      "name": "Box of Prosperity",
+      "image": "BoxofProsperity",
+      "type": "Bag"
+    },
+    {
+      "index": 3,
+      "id": "berserker_bag",
+      "name": "Duffle Bag",
+      "image": "BerserkerBag",
+      "type": "Bag"
+    },
+    {
+      "index": 4,
+      "id": "fanny_pack",
+      "name": "Fanny Pack",
+      "image": "FannyPack",
+      "type": "Bag"
+    },
+    {
+      "index": 5,
+      "id": "fire_pit",
+      "name": "Fire Pit",
+      "image": "FirePit",
+      "type": "Bag"
+    },
+    {
+      "index": 6,
+      "id": "holdall",
+      "name": "Holdall",
+      "image": "Holdall",
+      "type": "Bag"
+    },
+    {
+      "index": 7,
+      "id": "leather_bag",
+      "name": "Leather Bag",
+      "image": "LeatherBag",
+      "type": "Bag"
+    },
+    {
+      "index": 8,
+      "id": "portable_altar",
+      "name": "Offering Bowl",
+      "image": "PortableAltar",
+      "type": "Bag"
+    },
+    {
+      "index": 9,
+      "id": "engineer_box",
+      "name": "Port-O-Charger",
+      "image": "EngineerBox",
+      "type": "Bag"
+    },
+    {
+      "index": 10,
+      "id": "potion_belt",
+      "name": "Potion Belt",
+      "image": "PotionBelt",
+      "type": "Bag"
+    },
+    {
+      "index": 11,
+      "id": "protective_purse",
+      "name": "Protective Purse",
+      "image": "ProtectivePurse",
+      "type": "Bag"
+    },
+    {
+      "index": 12,
+      "id": "puzzlebag_j",
+      "name": "Puzzlebag of Endurance",
+      "image": "PuzzlebagJ",
+      "type": "Bag"
+    },
+    {
+      "index": 13,
+      "id": "puzzlebag_t",
+      "name": "Puzzlebag of Energy",
+      "image": "PuzzlebagT",
+      "type": "Bag"
+    },
+    {
+      "index": 14,
+      "id": "puzzlebag_s",
+      "name": "Puzzlebag of Improvement",
+      "image": "PuzzlebagS",
+      "type": "Bag"
+    },
+    {
+      "index": 15,
+      "id": "puzzlebag_l",
+      "name": "Puzzlebag of Love",
+      "image": "PuzzlebagL",
+      "type": "Bag"
+    },
+    {
+      "index": 16,
+      "id": "puzzlebag_z",
+      "name": "Puzzlebag of Ruin",
+      "image": "PuzzlebagZ",
+      "type": "Bag"
+    },
+    {
+      "index": 17,
+      "id": "puzzlebox",
+      "name": "Puzzlebox",
+      "image": "Puzzlebox",
+      "type": "Bag"
+    },
+    {
+      "index": 18,
+      "id": "ranger_bag",
+      "name": "Ranger Bag",
+      "image": "RangerBag",
+      "type": "Bag"
+    },
+    {
+      "index": 19,
+      "id": "relic_case",
+      "name": "Relic Case",
+      "image": "RelicCase",
+      "type": "Bag"
+    },
+    {
+      "index": 20,
+      "id": "random_loadout_bag",
+      "name": "Sack of Surprises",
+      "image": "RandomLoadoutBag",
+      "type": "Bag"
+    },
+    {
+      "index": 21,
+      "id": "scholar_bag",
+      "name": "Scholar Bag",
+      "image": "ScholarBag",
+      "type": "Bag"
+    },
+    {
+      "index": 22,
+      "id": "sewing_case",
+      "name": "Sewing Case",
+      "image": "SewingCase",
+      "type": "Bag"
+    },
+    {
+      "index": 23,
+      "id": "stamina_sack",
+      "name": "Stamina Sack",
+      "image": "StaminaSack",
+      "type": "Bag"
+    },
+    {
+      "index": 24,
+      "id": "storage_coffin",
+      "name": "Storage Coffin",
+      "image": "StorageCoffin",
+      "type": "Bag"
+    },
+    {
+      "index": 25,
+      "id": "toolbox",
+      "name": "Utility Pouch",
+      "image": "Toolbox",
+      "type": "Bag"
+    },
+    {
+      "index": 26,
+      "id": "vineweave_basket",
+      "name": "Vineweave Basket",
+      "image": "VineweaveBasket",
+      "type": "Bag"
+    }
+  ]
+}

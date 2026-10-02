@@ -1,0 +1,359 @@
+{
+  "shot": "c__Users_Justin_AppData_Roaming_Cursor_User_workspaceStorage_fcafc5aecf3daf29cd692b4a8d718545_images_image-79a5afb4-8c4c-4e66-925c-c0497c4ed2de.png",
+  "results": [
+    {
+      "model": "gpt-4.1-2025-04-14",
+      "ok": true,
+      "ms": 8310,
+      "usage": {
+        "prompt_tokens": 562,
+        "completion_tokens": 933,
+        "total_tokens": 1495,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "itemCount": 23,
+      "counts": {
+        "Flame": 3,
+        "Manathirst": 1,
+        "Orb of Evolution": 2,
+        "Piggybank": 3,
+        "Star Fragment": 1,
+        "Treasure Chest": 1,
+        "Amethyst Crystal": 1,
+        "Phoenix": 2,
+        "Gold": 2,
+        "Stone": 2,
+        "Corrupted Armor": 1,
+        "Holy Water": 1,
+        "Falcon Blade": 1,
+        "Skull": 1,
+        "Candle": 1
+      },
+      "score": {
+        "forbiddenFalsePositives": 0,
+        "forbiddenNames": [],
+        "expectedFamilyHits": 16,
+        "total": 23
+      },
+      "items": [
+        {
+          "name": "Flame",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Top left, 1x1"
+        },
+        {
+          "name": "Flame",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Second from left, top row, 1x1"
+        },
+        {
+          "name": "Flame",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Third from left, top row, 1x1"
+        },
+        {
+          "name": "Manathirst",
+          "confidence": 0.8,
+          "rotation": 0,
+          "notes": "Top row, purple smoky blade, 2x1"
+        },
+        {
+          "name": "Orb of Evolution",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Top row, rightmost, blue orb, 1x1"
+        },
+        {
+          "name": "Piggybank",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Top right, pink pig, 1x1"
+        },
+        {
+          "name": "Piggybank",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Second row, far right, pink pig, 1x1"
+        },
+        {
+          "name": "Piggybank",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Third row, far right, pink pig, 1x1"
+        },
+        {
+          "name": "Star Fragment",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Top row, yellow star, 1x1"
+        },
+        {
+          "name": "Treasure Chest",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Top row, blue/gold chest, 2x1"
+        },
+        {
+          "name": "Amethyst Crystal",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Second row, leftmost, purple bottle, 1x2"
+        },
+        {
+          "name": "Phoenix",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Bottom left, orange fire bird, 2x2"
+        },
+        {
+          "name": "Phoenix",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Bottom center, orange fire bird, 2x2"
+        },
+        {
+          "name": "Gold",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Bottom left, gold coin, 1x1"
+        },
+        {
+          "name": "Gold",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Bottom center, gold coin, 1x1"
+        },
+        {
+          "name": "Orb of Evolution",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Bottom right, blue orb, 1x1"
+        },
+        {
+          "name": "Stone",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Bottom right, gray rock, 2x1"
+        },
+        {
+          "name": "Stone",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Bottom right, gray rock, 2x1, below previous"
+        },
+        {
+          "name": "Corrupted Armor",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Center right, large red/black armor, 2x2"
+        },
+        {
+          "name": "Holy Water",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Center, green bottle, 1x1"
+        },
+        {
+          "name": "Falcon Blade",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Center, winged gold sword, 2x1"
+        },
+        {
+          "name": "Skull",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Left center, white skull, 1x1"
+        },
+        {
+          "name": "Candle",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "Center, orange flame on stick, 1x1"
+        }
+      ]
+    },
+    {
+      "model": "gpt-4o-2024-08-06",
+      "ok": true,
+      "ms": 6951,
+      "usage": {
+        "prompt_tokens": 562,
+        "completion_tokens": 808,
+        "total_tokens": 1370,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "itemCount": 21,
+      "counts": {
+        "Flame": 4,
+        "Purple Smoky Blade": 1,
+        "Orb": 2,
+        "Vial": 1,
+        "Phoenix": 2,
+        "Falcon Blade": 1,
+        "Green Gem": 1,
+        "Candle": 1,
+        "Corrupted Armor": 1,
+        "Piggybank": 3,
+        "Star": 1,
+        "Chest": 1,
+        "Stone": 2
+      },
+      "score": {
+        "forbiddenFalsePositives": 0,
+        "forbiddenNames": [],
+        "expectedFamilyHits": 15,
+        "total": 21
+      },
+      "items": [
+        {
+          "name": "Flame",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "top left, 1x1"
+        },
+        {
+          "name": "Flame",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "second from top left, 1x1"
+        },
+        {
+          "name": "Flame",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "third from top left, 1x1"
+        },
+        {
+          "name": "Flame",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "fourth from top left, 1x1"
+        },
+        {
+          "name": "Purple Smoky Blade",
+          "confidence": 0.7,
+          "rotation": 0,
+          "notes": "top row, second from left, 2x1"
+        },
+        {
+          "name": "Orb",
+          "confidence": 0.8,
+          "rotation": 0,
+          "notes": "top row, third from left, 1x1"
+        },
+        {
+          "name": "Vial",
+          "confidence": 0.8,
+          "rotation": 0,
+          "notes": "second row, first from left, 1x1"
+        },
+        {
+          "name": "Orb",
+          "confidence": 0.8,
+          "rotation": 0,
+          "notes": "second row, second from left, 1x1"
+        },
+        {
+          "name": "Phoenix",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "bottom left, 2x2"
+        },
+        {
+          "name": "Phoenix",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "bottom row, second from left, 2x2"
+        },
+        {
+          "name": "Falcon Blade",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "center, 1x3"
+        },
+        {
+          "name": "Green Gem",
+          "confidence": 0.8,
+          "rotation": 0,
+          "notes": "center, below Falcon Blade, 1x1"
+        },
+        {
+          "name": "Candle",
+          "confidence": 0.8,
+          "rotation": 0,
+          "notes": "center, below Green Gem, 1x1"
+        },
+        {
+          "name": "Corrupted Armor",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "center right, 2x2"
+        },
+        {
+          "name": "Piggybank",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "top right, 1x1"
+        },
+        {
+          "name": "Piggybank",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "second from top right, 1x1"
+        },
+        {
+          "name": "Piggybank",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "third from top right, 1x1"
+        },
+        {
+          "name": "Star",
+          "confidence": 0.8,
+          "rotation": 0,
+          "notes": "top row, fourth from left, 1x1"
+        },
+        {
+          "name": "Chest",
+          "confidence": 0.8,
+          "rotation": 0,
+          "notes": "top right, 1x1"
+        },
+        {
+          "name": "Stone",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "bottom right, 1x1"
+        },
+        {
+          "name": "Stone",
+          "confidence": 1,
+          "rotation": 0,
+          "notes": "bottom row, second from right, 1x1"
+        }
+      ]
+    }
+  ]
+}

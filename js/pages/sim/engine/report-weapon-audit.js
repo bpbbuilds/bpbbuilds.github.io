@@ -3,7 +3,7 @@
  */
 
 import { COMBAT_DELAY, toCombatLogTime } from '../sim-combat-time.js';
-import { pieceSnapAt } from '../sim-live-item.js';
+import { pieceSnapAt } from '../shell/sim-live-item.js';
 import { pieceSpeed } from './piece-stats.js';
 
 /**

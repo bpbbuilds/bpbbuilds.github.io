@@ -1,9 +1,10 @@
-﻿/**
+/**
  * Build author credit — left of the backpack (avatar, name, more builds).
  * Discord profiles link to /u/{discord_id}/; Smojo still links to YouTube.
  * “More builds” thumbnails are mounted by more-builds.js (interactive grids).
  */
 
+import { faceHtml, hydrateFaces } from '../../shared/blob-face.js';
 import { SMOJO_YOUTUBE_URL } from '../../shared/social-links.js';
 import { profileHref } from '../../shared/profile-href.js';
 
@@ -16,7 +17,6 @@ const SMOJO_YT = SMOJO_YOUTUBE_URL;
 export function renderAuthorRail(build, root) {
   const base = root.endsWith('/') ? root : `${root}/`;
   const name = String(build?.author_name || '').trim() || 'Unknown';
-  const avatar = resolveAvatar(build, base, name);
   const href = authorHref(build, name, base);
   const nameClass = 'build-author__name build-info__ui-text';
   const external = Boolean(href && /^https?:\/\//i.test(href));
@@ -41,9 +41,7 @@ export function renderAuthorRail(build, root) {
       }>${escapeHtml(name)}</a>`
     : `<p class="${nameClass}">${escapeHtml(name)}</p>`;
 
-  const avatarInner = avatar.src
-    ? `<img class="build-author__avatar" src="${escapeAttr(avatar.src)}" alt="" width="96" height="96" />`
-    : `<span class="build-author__avatar build-author__avatar--initials" aria-hidden="true">${escapeHtml(avatar.initials)}</span>`;
+  const avatarInner = authorFaceHtml(build, base, name);
 
   const avatarHtml = href
     ? `<a class="build-author__avatar-link" href="${escapeAttr(href)}"${
@@ -65,6 +63,47 @@ export function renderAuthorRail(build, root) {
 }
 
 /**
+ * After author rail is in the DOM, layer equipped cosmetics onto blob faces.
+ * @param {ParentNode | null | undefined} scope
+ * @param {string} root
+ */
+export function hydrateAuthorFaces(scope, root) {
+  return hydrateFaces(scope, root);
+}
+
+/**
+ * @param {object} build
+ * @param {string} root
+ * @param {string} name
+ */
+function authorFaceHtml(build, root, name) {
+  const face = faceHtml(
+    {
+      avatar_url: build?.author_avatar_url,
+      equipped_avatar: build?.author_equipped_avatar,
+    },
+    root,
+    {
+      className: 'build-author__avatar',
+      size: 96,
+      alt: name,
+    },
+  );
+  if (face) return face;
+
+  if (/^smojo$/i.test(name)) {
+    return `<img class="build-author__avatar" src="${escapeAttr(`${root}assets/brand/logo-backpack-battles-builds.png`)}" alt="" width="96" height="96" />`;
+  }
+
+  const parts = name.split(/\s+/).filter(Boolean);
+  const initials =
+    parts.length >= 2
+      ? `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+      : name.slice(0, 2).toUpperCase();
+  return `<span class="build-author__avatar build-author__avatar--initials" aria-hidden="true">${escapeHtml(initials || '?')}</span>`;
+}
+
+/**
  * @param {object} build
  * @param {string} name
  * @param {string} root
@@ -76,30 +115,6 @@ function authorHref(build, name, root) {
   if (url) return url;
   if (/^smojo$/i.test(name)) return SMOJO_YT;
   return null;
-}
-
-/**
- * @param {object} build
- * @param {string} root
- * @param {string} name
- */
-function resolveAvatar(build, root, name) {
-  const custom = String(build?.author_avatar_url || '').trim();
-  if (custom) return { src: custom, initials: '' };
-
-  if (/^smojo$/i.test(name)) {
-    return {
-      src: `${root}assets/brand/logo-backpack-battles-builds.png`,
-      initials: '',
-    };
-  }
-
-  const parts = name.split(/\s+/).filter(Boolean);
-  const initials =
-    parts.length >= 2
-      ? `${parts[0][0]}${parts[1][0]}`.toUpperCase()
-      : name.slice(0, 2).toUpperCase();
-  return { src: '', initials: initials || '?' };
 }
 
 function escapeHtml(s) {

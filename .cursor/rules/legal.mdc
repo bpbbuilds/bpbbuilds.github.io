@@ -23,7 +23,8 @@ Update the matching page(s) in the **same task** (or call it out if the user def
 | Change | Touch |
 |---|---|
 | Auth / accounts / email / Steam–Discord login | Privacy (+ Terms conduct / accounts) |
-| Ads, analytics, affiliates, paid membership, Stripe | Privacy + Terms; leave Monetization/IP research honest |
+| Ads, analytics, page-view counts, affiliates, paid membership, Stripe | Privacy + Terms; leave Monetization/IP research honest |
+| Screenshot import: where the image is read, stored, or sent | Privacy screenshot section + Terms screenshot blurb |
 | Votes bound to profiles, captcha, rate limits | Privacy (votes) |
 | history.db: new fields stored, retention, delete UX, upload prompts | Privacy history section; Terms history blurb if needed |
 | UGC rules, OP approval, moderation, soft-hide, bans | Terms |
@@ -33,6 +34,8 @@ Update the matching page(s) in the **same task** (or call it out if the user def
 
 ## Habits
 
+- Do this in the **same task** as the behavior change. Set each touched page’s “Last updated” date
+- These pages use the rewards plate (`.bpb-panel--rewards`) on the town scene. Titles are gold uppercase Baskerville. Do not put them back on parchment, Milonga sticker titles, or cream outlines
 - Prefer small, accurate stub edits over long new essays
 - Keep the “not legal advice / may change” note
 - Do **not** invent a specific publisher legal entity name — “developers and publishers of Backpack Battles” is enough

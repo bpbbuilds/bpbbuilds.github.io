@@ -1,7 +1,7 @@
 {
-  "builtAt": "2026-08-25T16:42:04.615Z",
+  "builtAt": "2026-09-24T16:59:34.262Z",
   "totals": {
-    "count": 524
+    "count": 525
   },
   "byId": {
     "acorn_collar": {
@@ -1317,6 +1317,10 @@
       "notes": "ports.js / ports-*.js"
     },
     "time_melting": {
+      "pattern": "hand_port",
+      "notes": "ports.js / ports-*.js"
+    },
+    "time_pendant": {
       "pattern": "hand_port",
       "notes": "ports.js / ports-*.js"
     },

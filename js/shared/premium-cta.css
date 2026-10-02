@@ -15,9 +15,11 @@
   justify-content: center;
   margin: 0;
   padding: 0;
+  border: 0;
+  background: transparent;
   text-decoration: none;
   line-height: 0;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   transition: transform 0.14s ease, filter 0.14s ease;
 }
 

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dev — Label check</title>
+  <link rel="stylesheet" href="../../css/theme.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../css/shared.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../js/pages/create/rail-chrome.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../js/shared/backpack-grid/backpack-grid.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../js/pages/label-review/label-review.css?v=review5" />
+</head>
+<body class="page-dev-label-review" data-root="../../">
+  <main id="main" class="lr-main" aria-label="Saved label check">
+    <header class="lr-head">
+      <h1 class="lr-title bpb-label-text">Label check</h1>
+      <p class="cr-hint">
+        Each saved fixture: the screenshot on the left, the board that was written to
+        <code>fixtures/real-NNN.truth.json</code> on the right.
+        Edit opens that board so you can add missing items and bags, then save over the same file.
+        <a href="../label-inbox/">Inbox</a>
+        ·
+        <a href="../../create/?label=1">Labeling tool</a>
+      </p>
+      <p class="cr-hint" id="lr-status" role="status">Loading labels…</p>
+      <nav class="lr-jump" id="lr-jump" aria-label="Fixtures"></nav>
+    </header>
+    <div id="lr-list"></div>
+  </main>
+  <script type="module" src="../../js/pages/label-review/index.js?v=review5"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
-  "extractedAt": "2026-07-21T06:42:54.376Z",
-  "count": 318,
-  "parsed": 265,
+  "extractedAt": "2026-09-24T16:57:11.688Z",
+  "count": 319,
+  "parsed": 266,
   "unsupportedApprox": 0,
   "inheritedFields": 104,
   "hasAttackEffectCount": 81,
@@ -461,6 +461,9 @@
     ],
     "amulet_of_fortune": [
       "Buff"
+    ],
+    "amulet_of_light": [
+      "Regeneration"
     ],
     "shovel": [
       "Blind"
@@ -1395,9 +1398,6 @@
       "Regeneration",
       "Lucky",
       "Mana"
-    ],
-    "amulet_of_light": [
-      "Regeneration"
     ],
     "gold_armor": [
       "Regeneration"
@@ -3641,6 +3641,9 @@
     ],
     "TimeMelting": [
       "time_melting"
+    ],
+    "TimePendant": [
+      "time_pendant"
     ],
     "ToastGoobert": [
       "toast_goobert"
@@ -6849,6 +6852,13 @@
       "file": "Exclusive/TimeMelting.gd",
       "primary": {
         "op": "hasInventoryDuration"
+      }
+    },
+    "time_pendant": {
+      "id": "time_pendant",
+      "file": "Exclusive/TimePendant.gd",
+      "primary": {
+        "op": "hasCooldown"
       }
     },
     "toad": {

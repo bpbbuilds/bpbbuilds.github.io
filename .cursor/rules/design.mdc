@@ -7,7 +7,7 @@ alwaysApply: true
 
 ## Direction
 
-- Theme after **Backpack Battles** UI: cozy **parchment + leather** fantasy journal — see `docs/theme.md` and `assets/theme-refs/`
+- Theme after **Backpack Battles** UI: cozy **parchment + leather** fantasy journal — see `docs/product/theme.md` and `assets/theme-refs/`
 - Not a generic SaaS skin; not a pixel-clone of BPB Builds (same material family, closer to the real game + better UX)
 - Preserve **tooltip** skin in `js/shared/tooltip.css` (cream/gold frames); page chrome stays parchment/leather
 
@@ -32,37 +32,51 @@ alwaysApply: true
 - Rarity as colored paint-swipe labels
 - Saturated item sprites as the colorful accent layer
 
-## Create / filter UI recipe (canonical)
+## In-page forms & filter chrome (canonical)
 
-Prefer this chrome for create, Itemiary filters, recessed panels, and in-page dialogs — not generic bordered modals or flat gray overlays.
+Filter rails and in-page pickers (Item Library, builds filters, create Build info) use this parchment recipe.
+
+**Form dialogs and onboarding** (event entry, stepped wizards, future form modules) use the rewards plate instead — see `.cursor/rules/forms.mdc`. Do not put those on Patch3.
 
 **Reference surfaces**
 
 | Surface | Where |
 |---|---|
-| Filter \| Build rail | `js/pages/create/rail-chrome.css` (`.cr-tabs`, `.cr-panel`, `.cr-submit`) |
-| Patch3 shade bands | Parked, essentials tiers, history-lock panel — `::before` + `assets/icons/filters/Patch3.png` mask-border |
-| OptionsFont labels | Filter checkboxes / grouping — see `.cursor/rules/typography.mdc` |
+| Filter \| Build rail | `js/pages/create/rail-chrome.css` (`.cr-tabs`, `.cr-panel`, `.cr-label`, `.cr-input`, `.cr-submit`, `.cr-btn-quiet`, `.cr-modal`) |
+| Patch3 shade bands | Filters, form fields, parked, essentials — `il-filter__shade` `::before` + `assets/icons/filters/Patch3.png` mask-border |
+| OptionsFont labels | `.cr-label` / `.il-filter__check-label` — see `.cursor/rules/typography.mdc` |
+
+**Form fields**
+
+- Each control sits in a Patch3 shade band (`il-filter__shade cr-field-shade`)
+- Field name: `.cr-label` (OptionsFont). Never Milonga on field labels or compact fact keys
+- Helper copy: `.cr-hint` (Baskerville italic)
+- Inputs: `.cr-input` / `.cr-textarea` (recessed ink well, Baskerville). Long notes use gold scrollbar (`.cr-textarea--notes`)
+- Primary submit: `.cr-submit.is-ready` (green, Milonga sticker CTA)
+- Secondary: `.cr-btn-quiet` (Baskerville, no sticker)
+- Input dialogs that are filters or small pickers stay `.cr-modal` on parchment. Form dialogs and onboarding use the rewards plate (`.cursor/rules/forms.mdc`)
+- Read-only session facts: Patch3 band + compact Baskerville `dl`, not a Milonga two-column dump and not a raw permalink
 
 **Do**
 
-- Recessed sections: Patch3 mask-border shade (`--build-shade` / warm ink wash), not a hard `border + border-radius` card
+- Recessed sections: Patch3 mask-border shade (`--build-shade` / `--il-shade` / warm ink wash), not a hard `border + border-radius` card
 - Interactive outline/tint on the **shade** (`::before`), not a parchment cell rect
-- Dialogs / confirms over the board: scope to the relevant region (e.g. bag stage only); soft feathered / radial dim — no sharp full-bleed SaaS scrim
-- Primary actions: create-rail language (Milonga display CTA like `.cr-submit`, cream fill, ink stroke); secondary = Baskerville quiet button
+- Board-scoped confirms (sell, lock): stay over the relevant region; soft feathered / radial dim — no sharp full-bleed SaaS scrim
 - Tokens: cream `#ffecdc` / `--il-cream`, ink `#3c261d` / `--il-ink`, gold `#eac914` / `--il-gold` for accents
 - Gold scrollbars and grouping-style dropdowns when matching filter / History list chrome
 
 **Don’t**
 
-- Invent a second modal system (prefer Patch3 panel + rail buttons over purple/gray dialog kits)
+- Invent a second modal or form kit (no purple/gray dialogs, no SaaS input stacks)
+- Stretch form dialogs toward full viewport width
+- Put Milonga on filter checkboxes, field labels, or fact keys
 - Hard-cut rectangular overlays that cover Parked / scrubber when only the bag needs attention
 - Flat gray “bone” panels with a brown border pretending to be filter UI
-- Default new create controls to Inter / system pills / `rounded-full` chip clusters
+- Default new controls to Inter / system pills / `rounded-full` chip clusters
 
 ## Typography & assets
 
-Match the game’s face roles (detail in `docs/theme.md` + `.cursor/rules/typography.mdc`):
+Match the game’s face roles (detail in `docs/product/theme.md` + `.cursor/rules/typography.mdc`):
 
 - **Libre Baskerville** (`--bpb-font-body`) — UI controls, filter labels (rarity / shop / crafted / gated), dropdowns, counts, body, meta
 - **Milonga** (`--bpb-font-display`) — headings, nav banner words, tooltip item names, display / CTA stickers
@@ -83,4 +97,4 @@ Match the game’s face roles (detail in `docs/theme.md` + `.cursor/rules/typogr
 - Purple-on-white / purple-indigo “AI default” themes
 - Flat gray pages with a brown border pretending to be parchment
 - Copying BPB Builds’ web parchment 1:1
-- Ignoring `docs/theme.md` / theme-refs once set
+- Ignoring `docs/product/theme.md` / theme-refs once set

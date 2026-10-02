@@ -120,8 +120,14 @@ export function takeDamage(defender, attacker, src) {
     dmg = Math.round(dmg * 2);
   }
 
-  // Shield.gd — chance melee block applies flat damblock, then afterBlock
-  /** @type {null | { piece?: object, damblock: number, afterBlock?: Function }} */
+  // Shield.gd — chance melee block → beforeBlock (DR + spikes) → afterBlock
+  /** @type {null | {
+   *   piece?: object,
+   *   damblock: number,
+   *   getDamblock?: () => number,
+   *   beforeBlock?: Function,
+   *   afterBlock?: Function,
+   * }} */
   let shieldHit = null;
   const melee =
     src.isMelee !== false && src.isAttack !== false && !src.isPoison && !src.isSpikes;
@@ -136,7 +142,22 @@ export function takeDamage(defender, attacker, src) {
     }
   }
   if (shieldHit) {
-    const cut = Math.min(dmg, Math.max(0, Math.round(Number(shieldHit.damblock) || 0)));
+    const prePayload = {
+      t: src.nowT ?? 0,
+      defender,
+      attacker,
+      piece: shieldHit.piece ?? null,
+    };
+    try {
+      shieldHit.beforeBlock?.(prePayload);
+    } catch (err) {
+      console.error('[sim] shield beforeBlock', err);
+    }
+    const damblockRaw =
+      typeof shieldHit.getDamblock === 'function'
+        ? shieldHit.getDamblock()
+        : Number(shieldHit.damblock) || 0;
+    const cut = Math.min(dmg, Math.max(0, Math.round(damblockRaw)));
     if (cut > 0) {
       dmg -= cut;
       res.reduced = (res.reduced || 0) + cut;
@@ -182,13 +203,17 @@ export function takeDamage(defender, attacker, src) {
   if (defender.hp <= 0) defender.dead = true;
 
   if (shieldHit) {
+    const damblockRaw =
+      typeof shieldHit.getDamblock === 'function'
+        ? shieldHit.getDamblock()
+        : Number(shieldHit.damblock) || 0;
     const payload = {
       t: src.nowT ?? 0,
       defender,
       attacker,
       damage: res,
       piece: shieldHit.piece ?? null,
-      blockedFlat: Number(shieldHit.damblock) || 0,
+      blockedFlat: Math.max(0, Math.round(damblockRaw)),
     };
     try {
       shieldHit.afterBlock?.(payload);

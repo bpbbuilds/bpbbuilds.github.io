@@ -11,16 +11,36 @@ import {
   stealRandomBuff,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
+import {
+  buildScriptChargePath,
+  chargeEnterSchedule,
+} from '../charge-path.js';
+import { scheduleStatChargePath } from '../charge-delivery.js';
 import { advanceCooldownSeconds } from '../cooldown.js';
 import { getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { itemHasType, pushActivate } from './ports-util.js';
-import { emitChargePulse } from '../charge-delivery.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
  */
+
+/** ConTrapTron.gd sendCharge paths (CollisionMap cells). */
+const CON_TRAP_CELLS_1 = [
+  { x: -1, y: -1 },
+  { x: 0, y: -2 },
+  { x: 1, y: -3 },
+  { x: 2, y: -2 },
+  { x: 2, y: -1 },
+];
+const CON_TRAP_CELLS_2 = [
+  { x: -1, y: 0 },
+  { x: -1, y: 1 },
+  { x: 0, y: 2 },
+  { x: 1, y: 1 },
+  { x: 2, y: 1 },
+];
 
 function linkedCd(ctx, piece) {
   const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
@@ -34,6 +54,104 @@ function linkedCd(ctx, piece) {
 
 function firstLinkedCd(ctx, piece) {
   return linkedCd(ctx, piece)[0] || null;
+}
+
+/**
+ * Dual sendCharge + buff-amp changeChargedItemStat (ConTrapTron.emitCharge).
+ * @param {object} piece
+ * @param {import('./handlers.js').ScriptCtx} ctx
+ */
+function emitConTrapCharges(piece, ctx) {
+  const { t, events, graph, itemsById } = ctx;
+  const item = itemsById.get(piece.itemId);
+  const boardPiece = graph.pieces.get(piece.placementKey);
+  if (!item || !boardPiece) return;
+  const durPerTile = Math.max(0.01, getPName(piece.params, 'dur', 2));
+  const flat = Number(piece.chance) || getPName(piece.params, 'chance', 50);
+  const perTile = Number(piece.chance2) || getPName(piece.params, 'chance2', 10);
+  const placement = {
+    x: boardPiece.x,
+    y: boardPiece.y,
+    r: boardPiece.r,
+    key: piece.placementKey,
+  };
+  const paths = [CON_TRAP_CELLS_1, CON_TRAP_CELLS_2];
+  for (let i = 0; i < paths.length; i += 1) {
+    const pathId = `contrap:${piece.placementKey}:${t}:${i}`;
+    const path = buildScriptChargePath({
+      pathId,
+      item,
+      placement,
+      startT: t,
+      collisionCells: paths[i],
+      durPerTile,
+    });
+    if (!path) continue;
+    for (const cell of path.cells) {
+      const tk = graph.filled.get(cell.cell) || null;
+      cell.targetKey = tk && tk !== piece.placementKey ? tk : null;
+    }
+    events.push({
+      t,
+      type: 'charge',
+      actor: 'player',
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `${piece.name}: charge`,
+      meta: {
+        category: 'charge',
+        phase: 'start',
+        pathId,
+        chargePath: path,
+        handler: 'con_trap_tron',
+      },
+    });
+    scheduleStatChargePath(piece, ctx, {
+      path,
+      flat,
+      perTile,
+      mode: 'buffAmp',
+    });
+    const schedule = chargeEnterSchedule(path.cells.length, durPerTile);
+    let lastKey = null;
+    for (const step of schedule) {
+      const cell = path.cells[step.cellIndex];
+      const targetKey = cell?.targetKey ?? null;
+      const targetPiece = targetKey
+        ? (ctx.pieces || []).find((p) => p.placementKey === targetKey)
+        : null;
+      const enterAbs = t + step.enterT;
+      if (targetKey !== lastKey) {
+        if (targetPiece) {
+          if (!targetPiece.pendingCharges) targetPiece.pendingCharges = [];
+          targetPiece.pendingCharges.push({
+            at: enterAbs,
+            meta: { pathId, cellIndex: step.cellIndex, emitterKey: piece.placementKey },
+          });
+        }
+        lastKey = targetKey;
+      }
+      events.push({
+        t: enterAbs,
+        type: 'charge',
+        actor: 'player',
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: targetPiece
+          ? `${piece.name}: charge → ${targetPiece.name}`
+          : `${piece.name}: charge cell`,
+        meta: {
+          category: 'charge',
+          phase: 'cell',
+          pathId,
+          cellIndex: step.cellIndex,
+          cell: cell?.cell,
+          targetKey: targetKey || undefined,
+          handler: 'con_trap_tron',
+        },
+      });
+    }
+  }
 }
 
 function cubeAdvance(target, ctx, piece) {
@@ -145,28 +263,44 @@ const coilPort = {
   },
 };
 
-/** @type {import('./handlers.js').ScriptHandler} */
+/**
+ * ConTrapTron.gd — speed malus on first CD link; below HP% emit dual charges
+ * (buff-amp on path) + advance linked CD.
+ * @type {import('./handlers.js').ScriptHandler}
+ */
 const conTrapTronPort = {
   handlerId: 'con_trap_tron',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPreCombatStart(piece, ctx) {
     piece._trap = false;
-    const malus = getPName(piece.params, 'speed', 20) / 100;
+    const malus = getPName(piece.params, 'speed', 10) / 100;
     const target = firstLinkedCd(ctx, piece);
-    if (target) addSpeed(target, -malus);
-    const th = getPName(piece.params, 'healtht', 50) / 100;
-    ctx.bus?.on?.('player_damaged', () => {
-      if (piece._trap) return;
-      if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
+    if (target && malus) addSpeed(target, -malus);
+  },
+  onCombatStart(piece, ctx) {
+    const th = getPName(piece.params, 'healtht', 70) / 100 - 0.0001;
+    ctx.bus?.on?.('player_damaged', (payload) => {
+      if (piece._trap || !piece.alive) return;
+      const maxHp = Number(ctx.player.maxHp) || 0;
+      if (!(maxHp > 0)) return;
+      const rel = (Number(ctx.player.hp) || 0) / maxHp;
+      if (!(rel < th)) return;
       piece._trap = true;
-      emitChargePulse(piece, ctx, { label: `${piece.name}: charge` });
-      const item = firstLinkedCd(ctx, piece);
-      if (item) {
-        let adv = getPName(piece.params, 'cdadvance_base', 2);
-        if (item.kind !== 'weapon') adv += getPName(piece.params, 'cdadvance_bonus', 1);
-        advanceCooldownSeconds(item, adv, ctx);
-      }
+      const t = payload?.t ?? ctx.t;
+      const prevT = ctx.t;
+      ctx.t = t;
       pushActivate(piece, ctx, 'con_trap_tron', `Gadget: ${piece.name}`);
+      emitConTrapCharges(piece, ctx);
+      ctx.bus?.emit?.('charge_emitted', { piece, t });
+      const linked = firstLinkedCd(ctx, piece);
+      if (linked) {
+        let adv = getPName(piece.params, 'cdadvance_base', 2);
+        if (linked.kind !== 'weapon') {
+          adv += getPName(piece.params, 'cdadvance_bonus', 3);
+        }
+        advanceCooldownSeconds(linked, adv, ctx);
+      }
+      ctx.t = prevT;
     });
   },
 };
@@ -182,7 +316,7 @@ const eatOMaticPort = {
     if (primary) addSpeed(primary, getPName(piece.params, 'speed', 20) / 100);
     piece._eatOthers = foods.filter((f) => f !== primary);
   },
-  onChargeReceived(piece, ctx) {
+  onChargeReceived(piece) {
     const primary = piece._eatPrimary;
     if (primary) addSpeed(primary, getPName(piece.params, 'speed2', 15) / 100);
     for (const f of piece._eatOthers || []) addSpeed(f, getPName(piece.params, 'speed3', 8) / 100);

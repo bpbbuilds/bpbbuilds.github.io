@@ -172,7 +172,7 @@
   color: rgb(255, 226, 56);
   text-shadow: var(--bpb-label-stroke);
   background: transparent;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   transition: filter 0.12s ease, opacity 0.12s ease;
 }
 
@@ -345,7 +345,7 @@
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   pointer-events: auto;
   /* Counter-rotate so sprites stay upright while their ring spins */
   animation: home-items-orbit-ccw var(--orbit-duration) linear infinite;

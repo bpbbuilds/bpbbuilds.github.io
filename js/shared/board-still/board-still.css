@@ -1,0 +1,58 @@
+/**
+ * Catalog / tip board still — one PNG, CSS-scaled. Paint is 9×7 + 1 cell overhang.
+ */
+
+.bpb-board-still {
+  --bpb-still-overhang: 1;
+  position: relative;
+  display: block;
+  box-sizing: content-box;
+  width: calc(9 * var(--bpb-still-cell, 28px));
+  height: calc(7 * var(--bpb-still-cell, 28px));
+  overflow: visible;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.bpb-board-still:not(.is-ready):not(.is-empty) {
+  background: color-mix(in srgb, #3c261d 16%, transparent);
+}
+
+.bpb-board-still__img {
+  position: absolute;
+  left: calc(var(--bpb-still-overhang) * -1 * var(--bpb-still-cell, 28px));
+  top: calc(var(--bpb-still-overhang) * -1 * var(--bpb-still-cell, 28px));
+  width: calc((9 + var(--bpb-still-overhang) * 2) * var(--bpb-still-cell, 28px));
+  height: calc((7 + var(--bpb-still-overhang) * 2) * var(--bpb-still-cell, 28px));
+  max-width: none;
+  image-rendering: auto;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  opacity: 0;
+}
+
+.bpb-board-still__img.is-ready {
+  opacity: 1;
+}
+
+.bpb-board-still--appear.is-ready {
+  animation: bpb-board-still-in 0.38s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpb-board-still--appear.is-ready {
+    animation: none;
+  }
+}
+
+@keyframes bpb-board-still-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

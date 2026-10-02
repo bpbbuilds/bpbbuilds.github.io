@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "@napi-rs/canvas": "^1.0.2",
+    "discord.js": "^14.27.0",
+    "onnxruntime-web": "^1.20.1",
     "pg": "^8.22.0",
     "sql.js": "^1.12.0"
   },
@@ -20,6 +22,7 @@
     "history-decode-catalog": "node scripts/build-history-decode-catalog.mjs",
     "stamp-assets": "node scripts/stamp-asset-versions.mjs",
     "sim-inventory": "node scripts/extract-sim-item-inventory.mjs",
+    "board-tip-speed-auras": "node scripts/gen-board-tip-speed-auras.mjs",
     "sim-ap-census": "node scripts/build-sim-ap-census.mjs",
     "sim-ports": "node scripts/gen-sim-dedicated-ports.mjs",
     "sim-auto-ports": "node scripts/build-sim-auto-ports.mjs",
@@ -65,7 +68,16 @@
     "sim-live-bands": "node scripts/sim-live-bands.mjs",
     "sim-live-capture": "node scripts/sim-live-capture.mjs",
     "build-parity-fixtures": "node scripts/build-parity-fixtures.mjs",
-    "sim-ai-shallow-count": "node scripts/sim-ai-shallow-count.mjs"
+    "detector-synth": "node scripts/screenshot-detector/gen-synth.mjs",
+    "detector-synth-bags": "node scripts/screenshot-detector/gen-synth-bags.mjs",
+    "detector-smoke": "node scripts/screenshot-detector/detect-smoke.mjs",
+    "detector-publish": "node scripts/screenshot-detector/publish-model.mjs",
+    "detector-publish-bags": "node scripts/screenshot-detector/publish-bag-model.mjs",
+    "sim-ai-shallow-count": "node scripts/sim-ai-shallow-count.mjs",
+    "bot": "node bot/index.js",
+    "bot:sync": "node bot/sync.js",
+    "bot:watch": "node bot/watch.js",
+    "bot:commands": "node bot/deploy-commands.mjs"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-25T16:42:04.668Z",
-  "inventoryExtractedAt": "2026-08-25T05:20:50.817Z",
+  "generatedAt": "2026-09-24T16:59:34.330Z",
+  "inventoryExtractedAt": "2026-09-24T16:53:39.392Z",
   "goal": "Every placeable combat item has a dedicated handlerId (not a family catch-all). Raise fidelity stub → reviewed → parity.",
   "skipIds": [
     "weapon",
@@ -491,6 +491,7 @@
     "tiger_rune",
     "time_dilator",
     "time_melting",
+    "time_pendant",
     "toad",
     "toast_goobert",
     "toolbox",
@@ -575,14 +576,14 @@
     }
   },
   "totals": {
-    "entries": 448,
+    "entries": 449,
     "stub": 0,
-    "reviewed": 448,
+    "reviewed": 449,
     "byBand": {
       "I": 19,
       "J": 72,
       "K": 30,
-      "L": 33,
+      "L": 34,
       "M": 44,
       "N": 43,
       "O": 207
@@ -5063,6 +5064,19 @@
       ],
       "template": "empower_aura",
       "handlerId": "time_melting",
+      "fidelity": "reviewed"
+    },
+    "time_pendant": {
+      "id": "time_pendant",
+      "band": "L",
+      "family": "custom_cd",
+      "scriptStem": "TimePendant",
+      "file": "Exclusive/TimePendant.gd",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "template": "basic_cd",
+      "handlerId": "time_pendant",
       "fidelity": "reviewed"
     },
     "toad": {

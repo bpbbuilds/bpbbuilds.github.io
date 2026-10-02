@@ -34,6 +34,27 @@ export function readMyVote(buildKey) {
 }
 
 /**
+ * Slugs this browser has upvoted (local cache; same keys as Liked feed filter).
+ * @returns {string[]}
+ */
+export function listUpvotedBuildSlugs() {
+  /** @type {string[]} */
+  const out = [];
+  try {
+    for (let i = 0; i < localStorage.length; i += 1) {
+      const key = localStorage.key(i);
+      if (!key || !key.startsWith(STORAGE_PREFIX)) continue;
+      const slug = key.slice(STORAGE_PREFIX.length).trim();
+      if (!slug) continue;
+      if (Number(localStorage.getItem(key)) === 1) out.push(slug);
+    }
+  } catch {
+    /* private mode */
+  }
+  return out;
+}
+
+/**
  * @param {string} buildKey
  * @param {-1 | 0 | 1} vote
  */

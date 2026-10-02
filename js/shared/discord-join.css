@@ -1,0 +1,110 @@
+/* Sign-in invite prompt. Rewards plate, same family as the enter wizard. */
+
+.bpb-discord-join {
+  position: fixed;
+  inset: 0;
+  z-index: 10060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.bpb-discord-join[hidden] {
+  display: none !important;
+}
+
+.bpb-discord-join-open {
+  overflow: hidden;
+}
+
+.bpb-discord-join__backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(20, 12, 8, 0.42) 0%,
+    rgba(20, 12, 8, 0.62) 100%
+  );
+}
+
+.bpb-discord-join__panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 22rem);
+  padding: 1.35rem 1.25rem 1.2rem;
+  text-align: center;
+}
+
+.bpb-discord-join__x {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.55rem;
+  border: 0;
+  background: transparent;
+  color: var(--bpb-rewards-gold, #c6a567);
+  font-family: var(--bpb-font-body);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: var(--bpb-cursor-pointer, pointer);
+}
+
+.bpb-discord-join__title {
+  margin: 0;
+  font-family: var(--bpb-font-body);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+}
+
+.bpb-discord-join__rule {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.55rem 0 0.75rem;
+}
+
+.bpb-discord-join__rule span {
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--bpb-rewards-gold, #c6a567);
+}
+
+.bpb-discord-join__rule i {
+  width: 0.45rem;
+  height: 0.45rem;
+  background: var(--bpb-rewards-gold, #c6a567);
+  transform: rotate(45deg);
+}
+
+.bpb-discord-join__hint {
+  margin: 0 0 1rem;
+  font-family: var(--bpb-font-body);
+  font-style: italic;
+  font-size: 0.98rem;
+  color: var(--bpb-rewards-cream, #dbc4a1);
+}
+
+.bpb-discord-join__join,
+.bpb-discord-join__later {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0.45rem 0 0;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--bpb-rewards-gold, #c6a567);
+  background: transparent;
+  color: var(--bpb-rewards-cream, #dbc4a1);
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  text-align: center;
+  text-decoration: none;
+  cursor: var(--bpb-cursor-pointer, pointer);
+}
+
+.bpb-discord-join__join {
+  background: #2a1c16;
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+}

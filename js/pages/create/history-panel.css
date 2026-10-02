@@ -1,6 +1,9 @@
+@import url('../../shared/build-search-input.css');
+@import url('./notes-mentions.css');
+
 /*
  * History overlay — transparent shell over create board minus park.
- * Stacking: create-history 200010 > onboard 200000 > catalog-hint.
+ * Stacking: create-history 200010 > onboard 200000.
  */
 
 .create-history {
@@ -88,6 +91,29 @@
   min-width: 0;
 }
 
+/* Create history: class icons, three across. None lit means every class. */
+.create-history__class-grid.il-filter__classes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.2rem 0.35rem;
+  margin: 0 0 0.45rem;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.create-history .create-history__class-grid .il-filter__icon-btn {
+  flex: none;
+  width: 100%;
+  height: 2.85rem;
+  min-width: 0;
+  padding: 0.1rem;
+}
+
+.create-history .create-history__class-grid .il-filter__icon-btn:focus-visible {
+  outline: 2px solid var(--bpb-ink, #3c261d);
+  outline-offset: 2px;
+}
+
 /* Grouping-style dropdowns (Item Library) */
 .create-history__dd {
   position: relative;
@@ -107,7 +133,7 @@
   padding: 0.1rem 0.15rem;
   border: 0;
   background: transparent;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 .create-history__dd.is-disabled .create-history__dd-trigger {
@@ -158,7 +184,7 @@
   border: 2px solid transparent;
   background: transparent;
   text-align: left;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   font-family: var(--bpb-font-body);
   font-weight: 400;
   font-size: 1.2rem;
@@ -191,7 +217,7 @@
   border: 0;
   border-radius: 0.2rem;
   background: transparent;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   justify-self: end;
   line-height: 0;
 }
@@ -228,6 +254,23 @@
 .create-history__list-col {
   overflow: hidden;
   min-height: 0;
+}
+
+.create-history__search {
+  flex: 0 0 auto;
+  margin: 0 0 0.35rem;
+}
+
+.create-history__search .bpb-build-search-shade {
+  margin-bottom: 0;
+}
+
+.create-history__search .cr-label--sm {
+  font-size: 1rem;
+}
+
+.bpb-build-search__suggest {
+  z-index: 200020;
 }
 
 .create-history__list {
@@ -290,7 +333,7 @@
   background: transparent;
   color: var(--bpb-ink, #3c261d);
   font-family: var(--bpb-font-body);
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   overflow: visible;
   --history-row-shade: rgba(14, 15, 16, 0.1);
 }
@@ -686,14 +729,14 @@
   max-width: 100%;
   gap: 0.1rem;
   padding: 0.1rem 0 0.15rem;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .create-history__round-host .build-round-strip__btn {
-  flex: 1 1 0;
+  flex: 0 1 calc(var(--build-round-slot) + 4px);
+  width: calc(var(--build-round-slot) + 4px);
   min-width: 0;
-  max-width: none;
-  width: auto;
+  max-width: calc(var(--build-round-slot) + 4px);
   border-width: 2px;
   padding: 0.05rem 0;
 }
@@ -790,7 +833,7 @@
   -webkit-text-stroke: 0.07em var(--il-ink);
   paint-order: stroke fill;
   text-shadow: var(--il-ui-ring);
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 .create-history__load:disabled {

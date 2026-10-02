@@ -68,9 +68,10 @@ import { AP_START_PORTS } from './ports-ap-start.js';
 import { AP_PERM_PORTS } from './ports-ap-perm.js';
 import { AP_ONHIT_PORTS } from './ports-ap-onhit.js';
 import { AP_AURA_PORTS } from './ports-ap-aura.js';
-import { canBeEmpoweredPiece, markFoodConsumed } from './food-helpers.js';
+import { applyFoodPrepareSpeed, canBeEmpoweredPiece, markFoodConsumed } from './food-helpers.js';
 import { addAccuracy, addBonusDamage, addSpeed } from '../piece-stats.js';
 import { withStatSource } from '../stat-mods.js';
+import { buffPowerOf } from '../buff-power.js';
 import {
   advanceBuffThresholds,
   giveLeastBuffs,
@@ -242,39 +243,96 @@ export const heroLongswordPort = {
   onCooldownEffect: (piece, ctx) => basicCd.onCooldownEffect(piece, ctx),
 };
 
+/**
+ * FalconBlade.gd — combat start: addSpeed(p1/100) on star CD links; CD: double strike.
+ */
 /** @type {ScriptHandler} */
 export const falconBladePort = {
   handlerId: 'falcon_blade',
   family: 'synergy_aura',
   onCombatStart(piece, ctx) {
     const { t, events, graph, itemsById, canAffect } = ctx;
-    const speedPct = Math.max(1, getP1(piece.params, 15));
-    const mult = 1 / (1 + speedPct / 100);
+    const speedPct = getPName(piece.params, 'speed', getP1(piece.params, 40));
+    const frac = speedPct / 100;
+    if (!frac) return;
+    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
+    let buffed = 0;
+    for (const other of ctx.pieces || []) {
+      if (other.placementKey === piece.placementKey) continue;
+      if (!links.some((l) => l.key === other.placementKey)) continue;
+      if (!(other.cooldown > 0) || other.cooldown >= 500) continue;
+      addSpeed(other, frac);
+      buffed += 1;
+      events.push({
+        t: t + 0.01,
+        type: 'info',
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: +${speedPct}% speed → ${other.name}`,
+        meta: {
+          category: 'adjacency',
+          script: true,
+          handler: 'falcon_blade',
+          targetKey: other.placementKey,
+          speedPct,
+        },
+      });
+    }
+    // Game activate(null, false) at combat start.
+    pushActivate(piece, ctx, 'falcon_blade', `Weapon: ${piece.name}`);
+    events.push({
+      t,
+      type: 'info',
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `${piece.name}: haste aura +${speedPct}% (${buffed} items)`,
+      meta: {
+        category: 'adjacency',
+        script: true,
+        handler: 'falcon_blade',
+        speedPct,
+        buffed,
+      },
+    });
+  },
+  onCooldownEffect: (piece, ctx) => doubleStrike.onCooldownEffect(piece, ctx),
+};
+
+/**
+ * GlovesofHaste.gd — combat start: addSpeed(p1/100) on star CD links; activate().
+ */
+/** @type {ScriptHandler} */
+export const glovesOfHastePort = {
+  handlerId: 'gloves_of_haste',
+  family: 'synergy_aura',
+  onCombatStart(piece, ctx) {
+    const { t, events, graph, itemsById, canAffect } = ctx;
+    const speedPct = getPName(piece.params, 'speed', getP1(piece.params, 20));
+    const frac = speedPct / 100;
+    if (!frac) return;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     for (const other of ctx.pieces || []) {
       if (other.placementKey === piece.placementKey) continue;
       if (!links.some((l) => l.key === other.placementKey)) continue;
-      if (!(other.cooldown > 0)) continue;
-      other.cooldown = Math.max(0.35, other.cooldown * mult);
-      other.triggerTime = other.cooldown;
+      if (!(other.cooldown > 0) || other.cooldown >= 500) continue;
+      addSpeed(other, frac);
       events.push({
         t: t + 0.01,
         type: 'info',
-        label: `${piece.name}: haste ${speedPct}% → ${other.name}`,
-        meta: { category: 'adjacency', script: true, handler: 'falcon_blade' },
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: +${speedPct}% speed → ${other.name}`,
+        meta: {
+          category: 'adjacency',
+          script: true,
+          handler: 'gloves_of_haste',
+          targetKey: other.placementKey,
+          speedPct,
+        },
       });
     }
-    events.push({
-      t,
-      type: 'buff',
-      actor: 'player',
-      itemId: piece.itemId,
-      amount: speedPct,
-      label: `${piece.name}: haste aura ${speedPct}% (${links.length} items)`,
-      meta: { category: 'adjacency', script: true, handler: 'falcon_blade' },
-    });
+    pushActivate(piece, ctx, 'gloves_of_haste', `Accessory: ${piece.name}`);
   },
-  onCooldownEffect: (piece, ctx) => doubleStrike.onCooldownEffect(piece, ctx),
 };
 
 /** @type {ScriptHandler} */
@@ -308,50 +366,41 @@ export const healingHerbsPort = {
 };
 
 /**
- * Gloves of Haste — addSpeed(getP1/100) on CD items.
- */
-/** @type {ScriptHandler} */
-export const glovesOfHastePort = {
-  handlerId: 'gloves_of_haste',
-  family: 'synergy_aura',
-  onCombatStart: falconBladePort.onCombatStart,
-};
-
-/**
- * Blueberries.gd — giveMana_capped(p1, p2); Lucky on overflow; activate().
+ * Blueberries.gd + Food.gd prepare — giveMana_capped → Lucky on overflow; food-link haste.
  */
 /** @type {ScriptHandler} */
 export const blueberriesPort = {
   handlerId: 'blueberries',
   family: 'food',
+  onCombatStart(piece, ctx) {
+    applyFoodPrepareSpeed(piece, ctx);
+  },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    const amount = Math.max(1, Math.round(getPName(piece.params, 'mana', getP1(piece.params, 1))));
+    pushActivate(piece, ctx, 'blueberries', `Food: ${piece.name}`);
+    // Item.giveMana_capped: round(amount * buffPowers[Mana]) then fill to maximum.
+    const raw = Math.max(
+      0,
+      Math.round(getPName(piece.params, 'mana', getP1(piece.params, 1))),
+    );
+    const amount = Math.max(0, Math.round(raw * buffPowerOf(piece, 'mana')));
     const maximum = Math.max(
       1,
       Math.round(getPName(piece.params, 'manat', getP2(piece.params, 10))),
     );
-    const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP3(piece.params, 1))));
-    const curMana = player.stacks.mana || 0;
+    const luck = Math.max(
+      1,
+      Math.round(getPName(piece.params, 'luck', getP3(piece.params, 1))),
+    );
+    const curMana = Number(player.stacks.mana) || 0;
 
     let manaGiven = 0;
     let overflow = amount;
-    if (maximum > curMana) {
-      const missing = maximum - curMana;
-      manaGiven = Math.min(amount, missing);
+    if (maximum > curMana && amount > 0) {
+      manaGiven = Math.min(amount, maximum - curMana);
       overflow = amount - manaGiven;
       if (manaGiven > 0) gainStacks(player, 'mana', manaGiven);
     }
-
-    events.push({
-      t,
-      type: 'activate',
-      actor: 'player',
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `Food: ${piece.name}`,
-      meta: { category: 'consumable', script: true, handler: 'blueberries' },
-    });
 
     if (manaGiven > 0) {
       events.push({
@@ -373,22 +422,10 @@ export const blueberriesPort = {
     }
 
     if (overflow > 0) {
-      gainStacks(player, 'lucky', luck);
-      events.push({
+      grantStacks(player, 'lucky', luck, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
         t: t + 0.004,
-        type: 'buff',
-        target: 'player',
-        amount: luck,
-        itemId: piece.itemId,
-        placementKey: piece.placementKey,
-        label: `${piece.name}: +${luck} Lucky (mana overflow)`,
-        meta: {
-          category: 'buff',
-          stack: 'lucky',
-          script: true,
-          handler: 'blueberries',
-          lucky: player.stacks.lucky,
-        },
       });
     }
 

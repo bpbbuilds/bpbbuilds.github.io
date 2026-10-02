@@ -33,13 +33,9 @@ export function openHistoryPicker(opts) {
         : null;
 
   const onboard = document.querySelector('[data-board-onboard]');
-  const catalogHint = document.querySelector('[data-onboard-catalog-hint]');
   if (onboard instanceof HTMLElement && !onboard.hidden) {
     onboard.hidden = true;
     onboard.style.display = 'none';
-  }
-  if (catalogHint instanceof HTMLElement) {
-    catalogHint.hidden = true;
   }
 
   /* Toolbar (economy / layer toggles) shows through transparent History shell */
@@ -83,9 +79,6 @@ export function openHistoryPicker(opts) {
     rootEl.remove();
     boardEl.classList.remove('is-history-open');
     dbHandle.close();
-    if (catalogHint instanceof HTMLElement) {
-      catalogHint.hidden = false;
-    }
     opts.onClose?.();
     if (returnFocusEl?.isConnected) {
       try {
@@ -113,8 +106,9 @@ export function openHistoryPicker(opts) {
           placements,
           roundIndex,
         });
-        opts.onLoaded?.();
+        // Close UI before success toast so a destroy error cannot look like a failed load.
         destroy();
+        opts.onLoaded?.();
       } catch (err) {
         const msg =
           err instanceof Error ? err.message : 'Could not load that board.';

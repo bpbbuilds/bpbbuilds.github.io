@@ -3,21 +3,12 @@
  */
 
 import { getSupabase } from '../../shared/supabase.js';
-import { skelBlock, skelRegion } from '../../shared/skeleton.js';
-import { mountPlacedGrid } from '../../shared/backpack-grid/index.js';
+import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import { classIconPath } from '../../shared/class-icons.js';
-import {
-  mapItem,
-  makeSpriteUrl,
-  applyShapes,
-  applySocketOffsets,
-} from '../build/map-item.js';
-import { bindMoreBuildTips, registerMoreBuildTip } from '../build/more-build-tip.js';
+import { mountFeedBoardThumbs } from '../builds/board-thumbs.js';
 import { buildViewHref } from '../builds/post-row.js';
 
-const BOARD_COLS = 9;
-const BOARD_ROWS = 7;
-const THUMB_CELL_PX = 16;
+const THUMB_CELL_PX = 18;
 const MAX_BUILDS = 10;
 const LOOKUP_LIMIT = 80;
 
@@ -74,27 +65,6 @@ export function createSpotlightBuilds(opts = {}) {
 
   /**
    * @param {string} itemId
-   */
-  function paintSkeleton(itemId) {
-    activeItemId = itemId;
-    clearThumbs();
-    root.innerHTML = `
-      <div class="il-spotlight-builds__panel">
-        <h3 class="il-spotlight-builds__heading">Builds</h3>
-        ${skelRegion(
-          `<div class="il-spotlight-builds__skel">
-            ${skelBlock({ className: 'il-spotlight-builds__skel-card' })}
-            ${skelBlock({ className: 'il-spotlight-builds__skel-card' })}
-            ${skelBlock({ className: 'il-spotlight-builds__skel-card' })}
-          </div>`,
-          { label: 'Loading builds' },
-        )}
-      </div>`;
-    root.hidden = false;
-  }
-
-  /**
-   * @param {string} itemId
    * @param {object[]} builds
    */
   function paintBuilds(itemId, builds) {
@@ -143,7 +113,7 @@ export function createSpotlightBuilds(opts = {}) {
       .join('');
 
     root.innerHTML = `
-      <div class="il-spotlight-builds__panel">
+      <div class="il-spotlight-builds__panel il-filter__shade">
         <h3 class="il-spotlight-builds__heading">${escapeHtml(title)}</h3>
         <div class="il-spotlight-builds__scroll">
           <ul class="il-spotlight-builds__list">${cards}</ul>
@@ -172,13 +142,15 @@ export function createSpotlightBuilds(opts = {}) {
 
     const gen = ++showGen;
     activeItemId = id;
+    // Stay hidden until we know this item has builds (no skeleton flash).
+    clearThumbs();
+    root.hidden = true;
+    root.innerHTML = '';
 
     if (cache.has(id)) {
       paintBuilds(id, cache.get(id) || []);
       return;
     }
-
-    paintSkeleton(id);
 
     try {
       const builds = await fetchBuildsForItem(id);
@@ -188,13 +160,7 @@ export function createSpotlightBuilds(opts = {}) {
     } catch (err) {
       if (gen !== showGen || activeItemId !== id) return;
       console.error(err);
-      clearThumbs();
-      root.innerHTML = `
-        <div class="il-spotlight-builds__panel">
-          <h3 class="il-spotlight-builds__heading">Builds</h3>
-          <p class="il-spotlight-builds__status" role="status">Could not load builds.</p>
-        </div>`;
-      root.hidden = false;
+      hide();
     }
   }
 
@@ -276,6 +242,7 @@ export function sortScoreForItem(entry) {
  * @returns {Promise<object[]>}
  */
 async function fetchBuildsForItem(itemId) {
+  await syncEventBuildVisibility();
   const supabase = getSupabase();
   const { data: hits, error: hitErr } = await supabase
     .from('build_placements')
@@ -324,7 +291,10 @@ async function fetchBuildsForItem(itemId) {
     .select(
       `
       id, slug, title, hero_class, blurb, is_op, is_featured, build_tag, vote_score,
-      author_name, rank, gold_count, created_at,
+      author_name, rank, gold_count, created_at, board_still_path,
+      profile:profiles!builds_author_id_fkey (
+        discord_id, display_name, avatar_url, equipped_avatar
+      ),
       placements:build_placements (
         id, x, y, r, gems, priority,
         item:items ( ${ITEM_SELECT} )
@@ -338,8 +308,31 @@ async function fetchBuildsForItem(itemId) {
 
   const order = new Map(ids.map((id, i) => [id, i]));
   return (data || [])
-    .slice()
+    .map(withAuthorFace)
     .sort((a, b) => (order.get(a.id) ?? 99) - (order.get(b.id) ?? 99));
+}
+
+/**
+ * Tip faces read author_avatar_url / author_equipped_avatar, not the nested profile.
+ * @param {object} row
+ */
+function withAuthorFace(row) {
+  const raw = row?.profile;
+  const profile =
+    raw && typeof raw === 'object' && !Array.isArray(raw)
+      ? raw
+      : Array.isArray(raw)
+        ? raw[0]
+        : null;
+  const liveName = String(profile?.display_name || '').trim();
+  return {
+    ...row,
+    author_discord_id: String(profile?.discord_id || '').trim() || null,
+    author_avatar_url: String(profile?.avatar_url || '').trim() || null,
+    author_equipped_avatar:
+      profile?.equipped_avatar != null ? String(profile.equipped_avatar) : null,
+    author_name: liveName || row.author_name || 'Unknown',
+  };
 }
 
 /**
@@ -353,112 +346,17 @@ async function fetchBuildsForItem(itemId) {
  * }} opts
  */
 function mountStripThumbs(host, opts) {
-  const getSpriteUrl = makeSpriteUrl(opts.root, opts.spriteDisplay || null);
-  const bySlug = new Map(
-    (opts.builds || []).map((b) => [String(b.slug || ''), b]),
-  );
-  /** @type {{ destroy?: () => void }[]} */
-  const grids = [];
-  /** @type {Map<string, object>} */
-  const tipItemsById = new Map();
-
-  host.querySelectorAll('[data-spotlight-board]').forEach((boardHost) => {
-    if (!(boardHost instanceof HTMLElement)) return;
-    const slug = boardHost.getAttribute('data-spotlight-board') || '';
-    const build = bySlug.get(slug);
-    if (!build) return;
-
-    const { placements, itemsById } = placementsForBuild(build, {
-      shapes: opts.shapes,
-      sockets: opts.sockets,
-      getSpriteUrl,
-    });
-    if (!placements.length) {
-      boardHost.innerHTML = `<span class="il-spotlight-builds__empty">No board</span>`;
-      return;
-    }
-
-    for (const [id, item] of itemsById) tipItemsById.set(id, item);
-
-    boardHost.replaceChildren();
-    const grid = mountPlacedGrid(boardHost, {
-      placements,
-      itemsById,
-      cols: BOARD_COLS,
-      rows: BOARD_ROWS,
-      getSpriteUrl,
-      fillWidth: false,
-      exactBoard: true,
-      reserveScrollGap: false,
-      cellPx: THUMB_CELL_PX,
-    });
-    const bg = boardHost.querySelector(':scope > .bpb-bg');
-    if (bg instanceof HTMLElement) {
-      bg.classList.add('bpb-bg--feed-thumb');
-      bg.style.overflow = 'visible';
-      bg.style.maxHeight = 'none';
-      bg.style.setProperty('--bpb-bg-scroll-gap', '0px');
-    }
-    grids.push(grid);
-
-    const tipEl = boardHost.closest('[data-spotlight-build-tip]');
-    if (tipEl instanceof HTMLElement) {
-      registerMoreBuildTip(tipEl, build, placements);
-    }
-  });
-
-  const unbindTip = bindMoreBuildTips(host, {
-    itemsById: tipItemsById,
-    getSpriteUrl,
+  return mountFeedBoardThumbs(host, {
+    builds: opts.builds,
     root: opts.root,
-    overEl: null,
-    thumbSelector: '[data-spotlight-build-tip]',
+    spriteDisplay: opts.spriteDisplay,
+    shapes: opts.shapes,
+    sockets: opts.sockets,
+    boardAttr: 'data-spotlight-board',
+    tipSelector: '[data-spotlight-build-tip]',
+    cellPx: THUMB_CELL_PX,
+    emptyHtml: `<span class="il-spotlight-builds__empty">No board</span>`,
   });
-
-  return () => {
-    try {
-      unbindTip();
-    } catch {
-      /* ignore */
-    }
-    for (const g of grids) g.destroy?.();
-    grids.length = 0;
-  };
-}
-
-/**
- * @param {object} build
- * @param {{
- *   shapes?: object | null,
- *   sockets?: object | null,
- *   getSpriteUrl: (item: object) => string,
- * }} opts
- */
-function placementsForBuild(build, opts) {
-  /** @type {Map<string, object>} */
-  const itemsById = new Map();
-  const placements = [];
-
-  for (const [i, p] of (build.placements || []).entries()) {
-    const item = mapItem(p.item);
-    if (!item?.id) continue;
-    itemsById.set(item.id, item);
-    placements.push({
-      id: item.id,
-      x: Number(p.x) || 0,
-      y: Number(p.y) || 0,
-      r: Number(p.r) || 0,
-      key: String(p.id ?? `${item.id}:${i}:${p.x},${p.y}:${p.r || 0}`),
-      gems: Array.isArray(p.gems) ? p.gems : undefined,
-    });
-  }
-
-  const items = [...itemsById.values()];
-  applyShapes(items, opts.shapes || null);
-  applySocketOffsets(items, opts.sockets || null);
-  for (const item of items) opts.getSpriteUrl(item);
-
-  return { placements, itemsById };
 }
 
 /** @param {string} s */

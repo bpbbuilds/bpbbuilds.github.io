@@ -1,0 +1,71 @@
+/*
+ * Combat labels (DamageNumber.tscn / BuffLabel.tscn). Everything positional is
+ * written by sim-dmg-numbers.js in game px × the body scale, so this file only
+ * holds the label chrome: the Node2D anchor, the RichTextLabel box and the
+ * Baskerville Bold + ink outline face from DamageNumberBaseFont.tres.
+ */
+
+.sim-dn-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.sim-dn-tint-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Node2D: position → rotation → scale, all about the spawn point */
+.sim-dn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+/* RichTextLabel: fixed 672 (numbers) / 529 (buff labels) box, [center] text */
+.sim-dn__txt {
+  position: absolute;
+  display: block;
+  text-align: center;
+  white-space: nowrap;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #ffffff;
+  -webkit-text-stroke: var(--dn-stroke, 4px) var(--dn-ink, #22120c);
+  paint-order: stroke fill;
+  will-change: opacity, filter;
+}
+
+/* OutOfStaminaLabel.tscn — Milonga Regular 40 (not Baskerville Bold) */
+.sim-dn__txt--display {
+  font-family: var(--bpb-font-display, Milonga, Georgia, serif);
+  font-weight: 400;
+}
+
+.sim-dn__g {
+  display: inline-block;
+}
+
+.sim-dn__icon {
+  display: inline-block;
+  width: auto;
+  vertical-align: -0.18em;
+  image-rendering: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Keep the pops (they carry the numbers) but drop the crit glyph jitter. */
+  .sim-dn__g {
+    transform: none !important;
+  }
+}

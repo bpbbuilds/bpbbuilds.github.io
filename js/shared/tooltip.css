@@ -222,6 +222,40 @@
   text-shadow: 4px 3px 0 #3c261d;
 }
 
+.bpb-tooltip__preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.05em 0 0.35em;
+}
+
+.bpb-tooltip__preview-img,
+.bpb-tooltip__preview-base,
+.bpb-tooltip__preview-layer {
+  display: block;
+  width: 7.5rem;
+  height: 7.5rem;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+}
+
+.bpb-tooltip__preview-stack {
+  position: relative;
+  display: block;
+  width: 7.5rem;
+  height: 7.5rem;
+}
+
+.bpb-tooltip__preview-base,
+.bpb-tooltip__preview-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .bpb-tooltip__sections {
   display: flex;
   flex-direction: column;
@@ -438,12 +472,12 @@
   gap: 0.3em 0.4em;
   padding: 0.04em 0.15em;
   list-style: none;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 .bpb-tooltip__mod-via--static .bpb-tooltip__mod-cause,
 .bpb-tooltip__mod-cause--static {
-  cursor: default;
+  cursor: var(--bpb-cursor-default);
 }
 
 .bpb-tooltip__mod-via > summary.bpb-tooltip__mod-cause {
@@ -747,11 +781,11 @@
 }
 
 .bpb-tooltip-float:not(.is-pinned) .bpb-tooltip__mod-via > summary {
-  cursor: default;
+  cursor: var(--bpb-cursor-default);
 }
 
 .bpb-tooltip-float.is-pinned .bpb-tooltip__mod-via > summary {
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 /* Sim Advanced: Changed by sidecar (attached panel, not inside game frame) */
@@ -840,5 +874,6 @@
   width: var(--bpb-tooltip-w);
   max-width: var(--bpb-tooltip-w);
   font-size: 25px;
-  filter: drop-shadow(0 10px 22px rgba(20, 10, 5, 0.45));
+  /* Soft lift only — heavy blur reads as a dark smudge on bright page BGs (profile) */
+  filter: drop-shadow(0 2px 4px rgba(20, 10, 5, 0.28));
 }

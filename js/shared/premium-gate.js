@@ -4,11 +4,7 @@
 
 import { getSession, getProfile } from './auth.js';
 import { hasPremiumAccess, claimFoundingSlot } from './entitlements.js';
-import {
-  openSignInOffer,
-  openUpgradeOffer,
-  maybeShowPostSignInOffer,
-} from './premium-offer.js';
+import { openSignInOffer, openUpgradeOffer } from './premium-offer.js';
 
 export const PREMIUM_INTENT_KEY = 'bpb-premium-intent';
 
@@ -146,6 +142,8 @@ export async function resumePremiumIntent(handlers) {
     return true;
   }
 
-  await maybeShowPostSignInOffer(intent.reason || undefined);
+  // Still not entitled. Drop the saved click so a later visit does not
+  // reopen the upgrade dialog on its own.
+  clearPremiumIntent();
   return false;
 }

@@ -11,15 +11,18 @@ import { getSupabase } from './supabase.js';
  *   discord_id: string,
  *   display_name: string | null,
  *   avatar_url: string | null,
+ *   equipped_avatar: string | null,
  *   is_owner: boolean,
  *   voter_key: string | null,
  *   plan: PlanId,
  *   founding_slot: number | null,
  *   premium_until: string | null,
+ *   cosmetic_grants?: unknown,
+ *   coins?: number,
  * }} Profile */
 
 export const PREMIUM_PRICE_LABEL = '$3/mo';
-export const FOUNDING_TOTAL = 50;
+export const FOUNDING_TOTAL = 10;
 
 /**
  * @param {string | null | undefined} raw
@@ -74,10 +77,10 @@ export function planLabel(profile) {
 }
 
 /**
- * @returns {Promise<{ used: number, total: number, open: boolean }>}
+ * @returns {Promise<{ used: number, total: number, open: boolean, started: boolean }>}
  */
 export async function getFoundingStatus() {
-  const fallback = { used: 0, total: FOUNDING_TOTAL, open: true };
+  const fallback = { used: 0, total: FOUNDING_TOTAL, open: false, started: false };
   try {
     const supabase = getSupabase();
     const { data, error } = await supabase.rpc('get_founding_status');
@@ -87,8 +90,9 @@ export async function getFoundingStatus() {
     }
     const used = Math.max(0, Math.round(Number(data?.used) || 0));
     const total = Math.max(1, Math.round(Number(data?.total) || FOUNDING_TOTAL));
-    const open = data?.open !== false && used < total;
-    return { used, total, open };
+    const started = data?.started === true;
+    const open = data?.open === true && started && used < total;
+    return { used, total, open, started };
   } catch (err) {
     console.error(err);
     return fallback;

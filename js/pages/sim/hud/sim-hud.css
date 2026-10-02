@@ -1,0 +1,363 @@
+/*
+ * Combat HUD chrome — 1:1 with game Core/Character.tscn `CombatUI`.
+ *
+ * All inner geometry is game px (emitted from sim-hud-geo.js as inline rects);
+ * this file only sets the stage scale, art, fonts and bar colors. Sizes here are
+ * therefore raw px inside .sim-hud__stage, never rem.
+ */
+
+.sim-hud {
+  /* Stage 573×512 game px (0.66 base + 25%) */
+  --hud-k: 0.825;
+  --hud-cream: #ffecd4;
+  --hud-ink: #3c261d;
+  position: relative;
+  box-sizing: content-box;
+  width: calc(573px * var(--hud-k));
+  height: calc(512px * var(--hud-k));
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.sim-hud__stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: scale(var(--hud-k));
+  transform-origin: top left;
+  overflow: visible;
+}
+
+.sim-hud__stage > *,
+.sim-hud__body > *,
+.sim-hud__over > *,
+.sim-hud__counter > *,
+.sim-hud__stat > * {
+  position: absolute;
+}
+
+/* CombatUI/Sheet — CombatSheet.png / CombatSheet_Opponent.png */
+.sim-hud__sheet {
+  z-index: 0;
+  filter: drop-shadow(0 3px 5px rgba(20, 10, 5, 0.35));
+}
+
+/* Shared rows sit 32.5px left on the opponent card (game sheet offset) */
+.sim-hud__body {
+  top: 0;
+  width: 573px;
+  height: 512px;
+  z-index: 2;
+}
+
+/* CombatUI/Sheet/NameBanner — class ribbon overhanging the card top */
+.sim-hud__banner {
+  z-index: 4;
+  pointer-events: none;
+}
+
+.sim-hud__banner-art {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  filter: drop-shadow(0 2px 2px rgba(20, 10, 5, 0.45));
+}
+
+.sim-hud__banner-art.is-flipped {
+  transform: scaleX(-1);
+}
+
+/* CombatUI/Sheet/Sword — player z_index 3, opponent 0 */
+.sim-hud__sword {
+  z-index: 5;
+  filter: drop-shadow(0 2px 3px rgba(20, 10, 5, 0.4));
+}
+
+.sim-hud__sword.is-flipped {
+  transform: scaleX(-1);
+  z-index: 3;
+}
+
+/* CombatUI/Name — Baskerville Regular 40, outline 3, cream, shadow (1,2) */
+.sim-hud__name {
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: auto;
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.17;
+  color: var(--hud-cream);
+  paint-order: stroke fill;
+  -webkit-text-stroke: 6px var(--hud-ink);
+  text-shadow: 1px 2px 0 var(--hud-ink);
+}
+
+/* Health / Stamina / Buffs / Debuffs — Baskerville Bold 25, outline 3 */
+.sim-hud__label {
+  z-index: 3;
+  display: block;
+  font-family: var(--bpb-font-body);
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 1.17;
+  color: var(--hud-cream);
+  paint-order: stroke fill;
+  -webkit-text-stroke: 6px var(--hud-ink);
+  text-shadow: 1px 2px 0 var(--hud-ink);
+}
+
+/*
+ * Bars are ColorRects painted by Shader/Heathbar.gdshader: gradientMapping(0) is
+ * near-black past the fill, the lit band is the noise ramp. Colors below are
+ * that gradient (health SubResource 4, stamina SubResource 17).
+ */
+.sim-hud__bar {
+  z-index: 1;
+  overflow: hidden;
+  background: #150e0b;
+  border: 0;
+  border-radius: 0;
+}
+
+.sim-hud__trail,
+.sim-hud__fill {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  border-radius: 0;
+}
+
+/* Shader damageDiffColor band between last damage and current fill */
+.sim-hud__trail {
+  z-index: 0;
+  background: linear-gradient(180deg, #ffd0d0 0%, #d08a86 100%);
+  transition: width 0.45s ease-out;
+}
+
+.sim-hud__fill {
+  z-index: 1;
+  transition: width 0.1s linear;
+}
+
+.sim-hud__fill--hp {
+  background:
+    linear-gradient(
+      180deg,
+      #af1a08 0%,
+      #d62e22 22%,
+      #ff4b38 48%,
+      #d62e22 74%,
+      #8f1c0d 100%
+    );
+}
+
+.sim-hud__fill--stam {
+  background:
+    linear-gradient(
+      180deg,
+      #4c3b03 0%,
+      #d3b40f 24%,
+      #ffe618 50%,
+      #e6cc12 76%,
+      #4c3b03 100%
+    );
+}
+
+/* Healthbar/BarBorder1 + Staminarbar/BarBorder2 (flip_h + flip_v) */
+.sim-hud__bar-border {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.sim-hud__bar-border.is-flipped {
+  transform: scale(-1, -1);
+}
+
+/* Healthbar/Label + Staminarbar/Label — Bold 25, align right, grows left */
+.sim-hud__bar-text {
+  z-index: 4;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: right;
+  pointer-events: none;
+  font-family: var(--bpb-font-body);
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 1.17;
+  color: var(--hud-cream);
+  paint-order: stroke fill;
+  -webkit-text-stroke: 6px var(--hud-ink);
+  text-shadow: 1px 1px 0 var(--hud-ink);
+}
+
+/* Zero-size anchors: children carry the card coords, so nothing eats hover */
+.sim-hud__stacks,
+.sim-hud__counter {
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  overflow: visible;
+}
+
+/*
+ * StackCounter.tscn — Sprite tweens from scale 0 (hidden) to
+ * baseScale × BlockHud.calcScale(value) over 0.3s; Label is Bold 26 outline 3.
+ */
+.sim-hud__counter {
+  z-index: 3;
+}
+
+/*
+ * CombatUI/Block has z_index 3 and comes after Sheet in the tree, so in the
+ * game it paints over the bars, the name banner and the sword. It therefore
+ * lives outside .sim-hud__body's stacking context, on the card offset.
+ */
+.sim-hud__over {
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: 6;
+  overflow: visible;
+}
+
+.sim-hud__counter-icon {
+  transform: scale(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 1px 2px rgba(20, 10, 5, 0.35));
+}
+
+.sim-hud__counter-num {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  pointer-events: none;
+  font-family: var(--bpb-font-body);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.17;
+  color: var(--hud-cream);
+  paint-order: stroke fill;
+  -webkit-text-stroke: 6px var(--hud-ink);
+  text-shadow: 1px 1px 0 var(--hud-ink);
+}
+
+.sim-hud__counter.is-on .sim-hud__counter-icon {
+  pointer-events: auto;
+  cursor: help;
+}
+
+/* CharacterStatsDisplay — 60px grid of 55px icons, active stats only */
+.sim-hud__stats {
+  width: 0;
+  height: 0;
+  z-index: 6;
+  overflow: visible;
+}
+
+.sim-hud__stat {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  pointer-events: auto;
+  cursor: help;
+}
+
+.sim-hud__stat-icon {
+  filter: drop-shadow(0 1px 2px rgba(20, 10, 5, 0.45));
+}
+
+/* CharacterStatIcon/Label — Bold 20, outline 3, centered under the icon */
+.sim-hud__stat-val {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  font-family: var(--bpb-font-body);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.17;
+  color: var(--hud-cream);
+  paint-order: stroke fill;
+  -webkit-text-stroke: 6px var(--hud-ink);
+  text-shadow: 1px 1px 0 var(--hud-ink);
+}
+
+.sim-hud--hit .sim-hud__sheet {
+  animation: sim-hud-hit 0.35s ease;
+}
+
+@keyframes sim-hud-hit {
+  0% {
+    filter: drop-shadow(0 0 6px rgba(200, 40, 30, 0.85));
+  }
+  100% {
+    filter: drop-shadow(0 3px 5px rgba(20, 10, 5, 0.35));
+  }
+}
+
+/* Swords cross in the seam, so the two stages overlap instead of using a gap.
+   Scoped so the boot skeleton keeps its own spacing. */
+.sim-hud-row:has(.sim-hud),
+.sim-field .sim-hud-row:has(.sim-hud) {
+  gap: 0;
+  /* Only counters / name / stat icons take hover — the rest of the card must
+     not swallow clicks on the bag underneath. */
+  pointer-events: none;
+}
+
+/* Sheets are UI chrome: they sit in front of the fighters, like the game */
+.sim-field__hud:has(.sim-hud) {
+  z-index: 7;
+}
+
+.sim-hud-row .sim-hud[data-hud='player'] {
+  margin-right: calc(-96px * var(--hud-k));
+  z-index: 2;
+}
+
+.sim-hud-row .sim-hud[data-hud='dummy'] {
+  z-index: 1;
+}
+
+@media (max-width: 1100px) {
+  .sim-hud {
+    --hud-k: 0.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-hud__counter-icon,
+  .sim-hud__trail,
+  .sim-hud__fill {
+    transition: none;
+  }
+
+  .sim-hud--hit .sim-hud__sheet {
+    animation: none;
+  }
+}

@@ -1,5 +1,5 @@
 /**
- * Owner admin API — Edge Function admin-builds.
+ * Owner admin API — Edge Functions admin-builds + admin-reports.
  * Prefers Discord owner JWT; secret header is break-glass.
  */
 
@@ -32,12 +32,13 @@ export async function resolveAdminAuth() {
 }
 
 /**
+ * @param {string} url
  * @param {{ mode: 'jwt' | 'secret', token: string }} auth
- * @param {{ action: string, slug?: string, filter?: string }} body
+ * @param {Record<string, unknown>} body
  */
-export async function adminRequest(auth, body) {
-  const url = String(config.adminBuildsUrl || '').trim();
-  if (!url || url.includes('YOUR_')) {
+async function adminPost(url, auth, body) {
+  const endpoint = String(url || '').trim();
+  if (!endpoint || endpoint.includes('YOUR_')) {
     throw new Error(
       'Admin URL not configured. Run node scripts/write-config.mjs after setting SUPABASE_PROJECT_URL.',
     );
@@ -55,7 +56,7 @@ export async function adminRequest(auth, body) {
     headers['x-bpb-submit-secret'] = auth.token;
   }
 
-  const res = await fetch(url, {
+  const res = await fetch(endpoint, {
     method: 'POST',
     headers,
     body: JSON.stringify(body),
@@ -84,10 +85,26 @@ export async function adminRequest(auth, body) {
 
 /**
  * @param {{ mode: 'jwt' | 'secret', token: string }} auth
+ * @param {{ action: string, slug?: string, filter?: string, eventSlug?: string }} body
+ */
+export function adminRequest(auth, body) {
+  return adminPost(String(config.adminBuildsUrl || ''), auth, body);
+}
+
+/**
+ * @param {{ mode: 'jwt' | 'secret', token: string }} auth
  * @param {string} [filter]
  */
 export function listBuilds(auth, filter = 'all') {
   return adminRequest(auth, { action: 'list', filter });
+}
+
+/**
+ * @param {{ mode: 'jwt' | 'secret', token: string }} auth
+ * @param {string} eventSlug
+ */
+export function listEventEntries(auth, eventSlug) {
+  return adminRequest(auth, { action: 'event_entries', eventSlug });
 }
 
 /**
@@ -97,4 +114,38 @@ export function listBuilds(auth, filter = 'all') {
  */
 export function mutateBuild(auth, action, slug) {
   return adminRequest(auth, { action, slug });
+}
+
+/**
+ * @param {{ mode: 'jwt' | 'secret', token: string }} auth
+ * @param {{ action: string, id?: string, status?: string, filter?: string }} body
+ */
+export function adminReportsRequest(auth, body) {
+  return adminPost(String(config.adminReportsUrl || ''), auth, body);
+}
+
+/**
+ * @param {{ mode: 'jwt' | 'secret', token: string }} auth
+ * @param {string | Record<string, unknown>} [filterOrQuery]
+ */
+export function listReports(auth, filterOrQuery = 'open') {
+  const query =
+    typeof filterOrQuery === 'string' ? { filter: filterOrQuery } : filterOrQuery || {};
+  return adminReportsRequest(auth, { action: 'list', ...query });
+}
+
+/**
+ * @param {{ mode: 'jwt' | 'secret', token: string }} auth
+ */
+export function reportStats(auth) {
+  return adminReportsRequest(auth, { action: 'stats' });
+}
+
+/**
+ * @param {{ mode: 'jwt' | 'secret', token: string }} auth
+ * @param {string} id
+ * @param {'open' | 'fixed' | 'wontfix'} status
+ */
+export function setReportStatus(auth, id, status) {
+  return adminReportsRequest(auth, { action: 'set_status', id, status });
 }

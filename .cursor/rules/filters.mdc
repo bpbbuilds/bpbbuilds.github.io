@@ -1,0 +1,36 @@
+---
+description: Side panel filters use the shared Item Library filter rail
+alwaysApply: true
+---
+
+# Side panel filters
+
+When the user says side panel, filter rail, right filter, or “the filter we use everywhere,” use the Item Library filter rail. Do not invent a second column.
+
+## Recipe
+
+- Shell: `aside.items-filters.il-filter`
+- Head: count line + reset image button
+- Bands: `.il-filter__shade` (Patch3). Labels are OptionsFont (`.cr-label` / `.il-filter__check-label`)
+- Checks, class icons, and grouping dropdowns stay the ones in `js/pages/items/filters.css`
+- Worked copies: `js/pages/events/event-filters.js`, `js/pages/admin/builds-filters.js`
+
+## Narrow windows
+
+When the rail would sit above the content, make it a right-hand panel instead. That is 1240px and below, or a later breakpoint only when the rail still fits beside the content until then. Wider screens keep the rail in the row.
+
+- Layout: `bpb-filter-drawer` on the row that holds the content and the rail
+- Rail: `bpb-filter-drawer__panel`
+- Open control: gold **Filters** tab on the right. Close: gold ×, the dimmed page, or Escape
+- Markup and wiring: `filterDrawerChromeHtml` and `bindFilterDrawer` in `js/shared/filter-drawer.js`. Styles: `js/shared/filter-drawer.css`
+- Worked copies: profile Builds, Inventory, and Blob. Builds and Events catalogs use the same panel
+- A form that only borrows filter chrome (settings) stays a form
+
+## Scrollbar
+
+The rail keeps the thinner square bar already on `.items-filters`. Do not set `scrollbar-color` to the gold/brown pair.
+
+## Don’t
+
+- Gray SaaS filter columns, pill chips, or a new panel skin
+- Put a filter rail on the rewards plate. That plate is for forms

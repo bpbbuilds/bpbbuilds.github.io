@@ -238,6 +238,16 @@ export function createSpotlightRecipes(opts) {
    */
   function layout(optsLayout = {}) {
     if (root.hidden) return;
+    if (window.matchMedia?.('(max-width: 900px)')?.matches) {
+      applyIconSizes();
+      root.style.removeProperty('width');
+      root.style.removeProperty('max-height');
+      root.style.removeProperty('left');
+      root.style.removeProperty('top');
+      root.style.removeProperty('right');
+      root.style.removeProperty('transform');
+      return;
+    }
     const remeasureWidth = optsLayout.remeasureWidth !== false;
     const stage = layoutCtx.stage;
     const tip = layoutCtx.tipHost;

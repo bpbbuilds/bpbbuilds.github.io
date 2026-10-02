@@ -5,6 +5,7 @@
 import { isGemItem } from './collision.js';
 import {
   clearSocketHover,
+  gemFace,
   setShowSockets,
   withGemInSocket,
   withoutGemInSocket,
@@ -47,19 +48,22 @@ export function createGemDragHelpers(opts) {
    * @param {string} gemId
    * @param {{ hostKey: string, slot: number }} socket
    * @param {string | null} [removeKey]
-   * @returns {{ ok: boolean, prevGemId: string }}
+   * @returns {{ ok: boolean, prevGemId: string, prevFace: number }}
    */
   function dropGemIntoSocket(gemId, socket, removeKey = null) {
     const placements = state.getDraft().placements;
     const host = placements.find((p) => p.key === socket.hostKey);
-    if (!host) return { ok: false, prevGemId: '' };
+    if (!host) return { ok: false, prevGemId: '', prevFace: 0 };
     const hostItem = itemsById.get(host.id);
-    if (!hostItem) return { ok: false, prevGemId: '' };
-    const { gems, prevGemId } = withGemInSocket(host, hostItem, socket.slot, gemId);
+    if (!hostItem) return { ok: false, prevGemId: '', prevFace: 0 };
+    const face = gemFace(getDrag()?.r);
+    const { gems, gemR, prevGemId, prevFace } = withGemInSocket(
+      host, hostItem, socket.slot, gemId, face,
+    );
 
     /** @type {object[]} */
     let next = placements.map((p) => {
-      if (p.key === host.key) return { ...p, gems };
+      if (p.key === host.key) return { ...p, gems, gemR };
       return p;
     });
     if (removeKey) next = next.filter((p) => p.key !== removeKey);
@@ -68,6 +72,7 @@ export function createGemDragHelpers(opts) {
     return {
       ok: true,
       prevGemId: prevGemId && prevGemId !== gemId ? prevGemId : '',
+      prevFace: prevGemId && prevGemId !== gemId ? prevFace : 0,
     };
   }
 
@@ -80,12 +85,13 @@ export function createGemDragHelpers(opts) {
     const host = state.getDraft().placements.find((p) => p.key === hostKey);
     const hostItem = host ? itemsById.get(host.id) : null;
     if (!host || !hostItem) return;
-    const gems = withoutGemInSocket(host, hostItem, slot);
+    const face = gemFace(host.gemR?.[slot]);
+    const { gems, gemR } = withoutGemInSocket(host, hostItem, slot);
     // borrow: lift while history attached; unlock only on geometry commit
-    state.updatePlacement(hostKey, { gems }, { borrow: true });
+    state.updatePlacement(hostKey, { gems, gemR }, { borrow: true });
     const drag = getDrag();
     if (drag) {
-      drag.unsocketRestore = { hostKey, slot, gemId };
+      drag.unsocketRestore = { hostKey, slot, gemId, face };
     }
   }
 

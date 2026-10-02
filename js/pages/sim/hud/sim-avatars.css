@@ -1,0 +1,595 @@
+/* Stage avatar figures under bag columns (game-like combat size) */
+
+.sim-field__bag--you,
+.sim-field__bag--opp {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.sim-field__bag--you .sim-bag-wrap,
+.sim-field__bag--opp .sim-bag-wrap {
+  flex: 0 0 auto;
+}
+
+.sim-avatar-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+  width: 100%;
+  /* Pin feet to column bottom so dummy / empty bag match a full backpack */
+  margin-top: auto;
+  padding-top: 1.1rem;
+  margin-bottom: 0.15rem;
+  min-height: 20rem;
+  pointer-events: none;
+}
+
+.sim-avatar-stack--you {
+  align-self: center;
+}
+
+.sim-avatar-stack--foe {
+  align-self: center;
+}
+
+.sim-opp-chrome [data-sim-foe-avatar-host] {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 0;
+}
+
+/* Bag-column edge rails (sword x / mirrored right) — not glued to sprite */
+.sim-side-rail {
+  position: absolute;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sim-rail-gap, 0.35rem);
+  pointer-events: none;
+  --sim-rail-person: 2.55rem;
+  --sim-rail-gap: 0.35rem;
+}
+
+.sim-side-rail--you {
+  left: 0;
+  bottom: 7.25rem;
+  top: auto;
+}
+
+.sim-side-rail--foe {
+  right: 0;
+  bottom: 7.25rem;
+  top: auto;
+}
+
+.sim-side-rail__slot {
+  appearance: none;
+  box-sizing: border-box;
+  width: 2.05rem;
+  height: 2.05rem;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(70, 88, 120, 0.4);
+  border-radius: 0.32rem;
+  background: rgba(250, 251, 252, 0.92);
+  color: #2a3344;
+  pointer-events: none;
+  cursor: var(--bpb-cursor-default);
+}
+
+.sim-side-rail__slot:not(.is-inert) {
+  pointer-events: auto;
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.sim-side-rail__slot:not(.is-inert):hover,
+.sim-side-rail__slot:not(.is-inert):focus-visible {
+  border-color: rgba(70, 88, 120, 0.7);
+  outline: none;
+}
+
+.sim-side-rail__slot.is-inert {
+  opacity: 0.55;
+}
+
+.sim-side-rail__slot--empty {
+  border-style: dashed;
+  background: rgba(250, 251, 252, 0.45);
+}
+
+.sim-side-rail__slot--person,
+.sim-side-rail__slot--opponent {
+  width: var(--sim-rail-person);
+  height: var(--sim-rail-person);
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.sim-side-rail__slot--person:hover,
+.sim-side-rail__slot--person:focus-visible,
+.sim-side-rail__slot--person:not(.is-inert):hover,
+.sim-side-rail__slot--person:not(.is-inert):focus-visible,
+.sim-side-rail__slot--opponent:hover,
+.sim-side-rail__slot--opponent:focus-visible,
+.sim-side-rail__slot--opponent:not(.is-inert):hover,
+.sim-side-rail__slot--opponent:not(.is-inert):focus-visible {
+  border: 0;
+  background: transparent;
+  filter: brightness(1.08);
+}
+
+.sim-side-rail__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: transparent;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 1px 0 rgba(60, 38, 29, 0.55));
+}
+
+.sim-side-rail__pop {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 0.4rem);
+  z-index: 8;
+  padding: 0.3rem;
+  border: 1px solid rgba(70, 88, 120, 0.35);
+  border-radius: 0.35rem;
+  background: rgba(250, 251, 252, 0.97);
+  box-shadow: 0 6px 18px rgba(20, 10, 5, 0.18);
+  pointer-events: auto;
+}
+
+.sim-side-rail--you.is-pop-open .sim-side-rail__slot--empty {
+  visibility: hidden;
+}
+
+.sim-side-rail__pop--you,
+.sim-side-rail__pop--foe {
+  position: absolute;
+  top: 0;
+  z-index: 8;
+  width: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.sim-side-rail__pop--you {
+  left: calc(var(--sim-rail-person) + var(--sim-rail-gap));
+  right: auto;
+}
+
+.sim-side-rail__pop--foe {
+  right: calc(var(--sim-rail-person) + var(--sim-rail-gap));
+  left: auto;
+}
+
+.sim-side-rail__choices {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.sim-side-rail__choices--you,
+.sim-side-rail__choices--foe {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: var(--sim-rail-gap);
+}
+
+.sim-side-rail__choice {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin: 0;
+  padding: 0.15rem;
+  border: 0;
+  border-radius: 0.28rem;
+  background: transparent;
+  color: #2a3344;
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.sim-side-rail__choice:hover,
+.sim-side-rail__choice:focus-visible {
+  background: rgba(42, 51, 68, 0.08);
+  outline: none;
+}
+
+.sim-side-rail__choice.is-active {
+  background: rgba(42, 51, 68, 0.14);
+}
+
+.sim-side-rail__choice:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.sim-side-rail__choice--you,
+.sim-side-rail__choice--foe {
+  width: var(--sim-rail-person);
+  height: var(--sim-rail-person);
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.sim-side-rail__choice--you:hover,
+.sim-side-rail__choice--you:focus-visible,
+.sim-side-rail__choice--you.is-active,
+.sim-side-rail__choice--foe:hover,
+.sim-side-rail__choice--foe:focus-visible,
+.sim-side-rail__choice--foe.is-active {
+  background: transparent;
+  outline: none;
+}
+
+.sim-side-rail__choice--you:hover,
+.sim-side-rail__choice--you:focus-visible,
+.sim-side-rail__choice--foe:hover,
+.sim-side-rail__choice--foe:focus-visible {
+  filter: brightness(1.08);
+}
+
+.sim-side-rail__choice--you.is-active,
+.sim-side-rail__choice--foe.is-active {
+  filter: none;
+}
+
+.sim-side-rail__choice--you:not(.is-active):not(:disabled),
+.sim-side-rail__choice--foe:not(.is-active):not(:disabled) {
+  opacity: 0.78;
+}
+
+.sim-side-rail__choice--you:disabled,
+.sim-side-rail__choice--foe:disabled {
+  opacity: 0.55;
+  cursor: var(--bpb-cursor-default);
+}
+
+.sim-side-rail__choice-img {
+  display: block;
+  width: 2.15rem;
+  height: 2.15rem;
+  object-fit: contain;
+  object-position: center;
+  flex: 0 0 auto;
+}
+
+.sim-side-rail__choice-img--class {
+  width: 2.15rem;
+  height: 2.15rem;
+}
+
+.sim-side-rail__choice-img--profile {
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.sim-side-rail__choice-img--empty {
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 50%;
+  border: 1px dashed rgba(70, 88, 120, 0.4);
+  background: transparent;
+}
+
+.sim-side-rail__choice--you .sim-side-rail__choice-img,
+.sim-side-rail__choice--foe .sim-side-rail__choice-img {
+  width: 100%;
+  height: 100%;
+}
+
+.sim-side-rail__build {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(70, 88, 120, 0.22);
+  min-width: 11rem;
+}
+
+.sim-side-rail__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.7rem;
+  color: #2a3344;
+}
+
+.sim-side-rail__input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.28rem 0.35rem;
+  border: 1px solid rgba(70, 88, 120, 0.35);
+  border-radius: 0.25rem;
+  background: #fff;
+  font: inherit;
+  color: inherit;
+}
+
+.sim-side-rail__apply {
+  appearance: none;
+  align-self: flex-end;
+  margin: 0;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid #2a3344;
+  border-radius: 0.25rem;
+  background: #2a3344;
+  color: #f4f6fa;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.72rem;
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.sim-side-rail__apply:hover,
+.sim-side-rail__apply:focus-visible {
+  outline: none;
+  filter: brightness(1.08);
+}
+
+.sim-avatar {
+  margin: 0;
+  position: relative;
+  width: min(100%, 16.5rem);
+  max-width: 18rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sim-avatar.sim-avatar--blob {
+  width: min(100%, 20rem);
+  max-width: 22rem;
+}
+
+.sim-avatar-pick {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem;
+  pointer-events: auto;
+}
+
+.sim-avatar-pick__btn {
+  appearance: none;
+  border: 1px solid rgba(70, 88, 120, 0.35);
+  background: rgba(250, 251, 252, 0.9);
+  color: #2a3344;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.72rem;
+  line-height: 1.2;
+  padding: 0.22rem 0.45rem;
+  border-radius: 0.28rem;
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.sim-avatar-pick__btn:hover,
+.sim-avatar-pick__btn:focus-visible {
+  border-color: rgba(70, 88, 120, 0.65);
+  outline: none;
+}
+
+.sim-avatar-pick__btn.is-active {
+  background: #2a3344;
+  border-color: #2a3344;
+  color: #f4f6fa;
+}
+
+.sim-avatar-pick__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/*
+ * The lunge / hop / HitAnimation squash + tint are driven by
+ * sim-dmg-numbers.js through these vars, so the base look has to stay
+ * composable: one transform, and the multiply tint filter first in the chain.
+ */
+.sim-avatar__img {
+  --sim-av-base: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 22.5rem;
+  object-fit: contain;
+  object-position: bottom center;
+  transform: translate(var(--sim-av-dx, 0px), var(--sim-av-dy, 0px))
+    scale(
+      calc(var(--sim-av-base) * var(--sim-av-sx, 1)),
+      calc(var(--sim-av-base) * var(--sim-av-sy, 1))
+    );
+  transform-origin: bottom center;
+  filter: var(--sim-av-tint, ) drop-shadow(0 2px 0 #3c261d)
+    drop-shadow(0 6px 12px rgba(20, 10, 5, 0.4));
+}
+
+.sim-avatar--class .sim-avatar__img {
+  max-height: 21rem;
+  --sim-av-base: 1.14;
+}
+
+.sim-avatar--dummy .sim-avatar__img {
+  max-height: 22.5rem;
+  object-fit: contain;
+  background: transparent;
+}
+
+.sim-avatar--profile .sim-avatar__img {
+  max-height: 13.5rem;
+  width: 13.5rem;
+  height: 13.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(60, 38, 29, 0.55);
+  box-sizing: border-box;
+}
+
+.sim-avatar--blob .sim-avatar__img {
+  max-height: 24rem;
+  width: auto;
+  height: auto;
+  max-width: min(100%, 22rem);
+  border-radius: 0;
+  border: 0;
+  object-fit: contain;
+  background: transparent;
+  box-shadow: none;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  --sim-av-base: 1.22;
+}
+
+.sim-side-rail__choice-img--blob {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 0;
+  background: transparent;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  /* Blob art has transparent padding — slightly enlarge so it matches PFP/class. */
+  transform: scale(1.28);
+  transform-origin: center;
+}
+.sim-field {
+  --sim-avatar-stage-pad: 0;
+  padding-bottom: 0.75rem;
+}
+
+.sim-field__hud {
+  /* Sit below avatar feet */
+  transform: translateY(0);
+  bottom: 0.15rem;
+}
+
+body.page-sim {
+  --sim-hud-lift: 0.25rem;
+}
+
+.sim-field .sim-hud-row {
+  width: min(100%, calc(44rem * var(--hud-s, 1.5)));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.75rem;
+  align-items: start;
+  justify-items: center;
+}
+
+.sim-hud-row .sim-hud[data-hud='player'] {
+  justify-self: end;
+}
+
+.sim-hud-row .sim-hud[data-hud='dummy'] {
+  justify-self: start;
+}
+
+@media (max-width: 1100px) {
+  .sim-avatar-stack {
+    min-height: 10rem;
+    margin-top: auto;
+    padding-top: 0.85rem;
+  }
+
+  .sim-side-rail {
+    --sim-rail-person: 2.15rem;
+  }
+
+  .sim-side-rail__slot {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .sim-side-rail__slot--person,
+  .sim-side-rail__slot--opponent {
+    width: var(--sim-rail-person);
+    height: var(--sim-rail-person);
+  }
+
+  .sim-avatar {
+    width: min(100%, 8.5rem);
+    max-width: 9.5rem;
+  }
+
+  .sim-avatar__img {
+    max-height: 10.5rem;
+  }
+
+  .sim-avatar--class .sim-avatar__img {
+    max-height: 9.5rem;
+  }
+
+  .sim-avatar--dummy .sim-avatar__img {
+    max-height: 11rem;
+  }
+
+  .sim-avatar--profile .sim-avatar__img {
+    max-height: 7.5rem;
+    width: 7.5rem;
+    height: 7.5rem;
+  }
+
+  .sim-avatar--blob .sim-avatar__img {
+    max-height: 12rem;
+    max-width: min(100%, 11rem);
+    --sim-av-base: 1.12;
+  }
+
+  .sim-field {
+    --sim-avatar-stage-pad: 11rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .sim-field__hud {
+    position: static;
+    transform: none;
+  }
+
+  .sim-field .sim-hud-row {
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .sim-hud-row .sim-hud[data-hud='player'],
+  .sim-hud-row .sim-hud[data-hud='dummy'] {
+    justify-self: stretch;
+    max-width: none;
+  }
+
+  .sim-hud-vs {
+    display: none;
+  }
+}

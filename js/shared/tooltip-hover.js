@@ -83,11 +83,28 @@ function clampTooltipHeight(host) {
   }
 
   const rect = host.getBoundingClientRect();
-  const top = Math.max(0, rect.top);
-  const maxTooltipH = Math.max(160, vh - EDGE - top);
-  host.style.setProperty('--bpb-tooltip-max-h', `${maxTooltipH}px`);
+  host.style.removeProperty('--bpb-tooltip-max-h');
+  host.style.removeProperty('--bpb-tooltip-mods-max-h');
 
   const card = host.querySelector('.bpb-tooltip');
+  const box = card instanceof HTMLElement ? card : host;
+  const boxRect = box.getBoundingClientRect();
+  const overflow = boxRect.bottom - (vh - EDGE);
+  if (overflow > 0) {
+    const curTop = Number.parseFloat(host.style.top);
+    const base = Number.isFinite(curTop) ? curTop : rect.top;
+    const nextTop = Math.max(EDGE, base - overflow);
+    host.style.top = `${Math.round(nextTop)}px`;
+    const still = overflow - (base - nextTop);
+    if (still <= 1) return;
+  } else {
+    return;
+  }
+
+  const fitted = host.getBoundingClientRect();
+  const maxTooltipH = Math.max(160, vh - EDGE - Math.max(0, fitted.top));
+  host.style.setProperty('--bpb-tooltip-max-h', `${maxTooltipH}px`);
+
   const modsScroll = host.querySelector('.bpb-tooltip__mods-scroll');
   if (!(card instanceof HTMLElement) || !(modsScroll instanceof HTMLElement)) return;
 

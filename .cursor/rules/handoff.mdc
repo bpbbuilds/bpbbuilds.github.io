@@ -1,0 +1,12 @@
+---
+description: Read both handoffs; Cursor writes only its own
+alwaysApply: true
+---
+
+# Handoff
+
+- Follow root `AGENTS.md` (shared with Codex). Only one assistant edits that file at a time.
+- Before starting, read `docs/CURSOR_HANDOFF.md` and `docs/CODEX_HANDOFF.md`.
+- After a completed task, update **only** `docs/CURSOR_HANDOFF.md` (facts, scores, blockers, owned paths, next step). Do not edit `docs/CODEX_HANDOFF.md`.
+- Do not edit paths Codex lists as owned. Do not invent progress.
+- Keep the long screenshot-import history in the Cursor handoff. Do not copy it into this rule.

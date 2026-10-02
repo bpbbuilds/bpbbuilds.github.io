@@ -1,0 +1,11 @@
+{
+  "version": "v1",
+  "inputSize": 640,
+  "sha256": "5f42a498917d6217d92d5570bdcc3d08b46908e57ad740861007822c8ff74045",
+  "url": "/assets/ml/screenshot-detector/v1/screenshot-detector.onnx",
+  "classesUrl": "/assets/data/detector-classes.json",
+  "classCount": 426,
+  "updatedAt": "2026-09-26T12:49:12.648Z",
+  "local": true,
+  "note": "Rolled back from v2 after pine 28/29; v2 ONNX kept at assets/ml/screenshot-detector/v2/"
+}

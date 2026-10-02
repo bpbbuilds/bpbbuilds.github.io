@@ -6,28 +6,45 @@
  *     seekPromoCatalogItem,
  *     hidePromoCatalogItem,
  *     restorePromoCatalogItems,
+ *     prefetchPromoCatalogItems,
  *   } from './home-promo-catalog.js';
  */
 
 import { getSupabase } from '../../shared/supabase.js';
-import { mountItemiaryGrid } from '../../shared/backpack-grid/index.js';
+import {
+  attachSpriteSrc,
+  mountItemiaryGrid,
+} from '../../shared/backpack-grid/index.js';
+import { loadLiveArt } from '../../shared/item-live-art/index.js';
 import {
   applyShapes,
   applySocketOffsets,
   makeSpriteUrl,
   mapItem,
 } from '../build/map-item.js';
+import {
+  CATALOG_APPEAR_MS,
+  CATALOG_CELL_PX,
+  currentTranslateY,
+  isPackedCatalogItem,
+  itemMidYInTrack,
+  pendingInBand,
+  prefetchPromoCatalogItems,
+  revealCatalogNear,
+  warmPending,
+  warmVisibleCatalog,
+} from './home-promo-catalog-warm.js';
+
+export { prefetchPromoCatalogItems };
 
 /** Sprites + pack only — skip tooltip/combat blobs (those dominate payload). */
 const ITEM_SELECT =
   'id, gid, name, rarity, type, class, extra_types, tags, image, sockets';
 
 const CATALOG_COLS = 10;
-const CATALOG_CELL_PX = 22;
 const SEEK_TIMEOUT_MS = 540;
 const SEEK_SNAP_PX = 2;
 const CATALOG_DEPART_MS = 400;
-const CATALOG_APPEAR_MS = 500;
 
 /**
  * @param {string} url
@@ -43,7 +60,7 @@ async function fetchJson(url) {
 }
 
 /**
- * Duplicate the packed grid so wrapping past the end stays seamless.
+ * Wrap the packed grid in a transform track (no DOM clone — one catalog copy).
  * @param {HTMLElement} gridEl
  */
 function loopCatalogTrack(gridEl) {
@@ -64,24 +81,6 @@ function loopCatalogTrack(gridEl) {
 
   gridEl.replaceWith(track);
   track.appendChild(gridEl);
-
-  const clone = /** @type {HTMLElement} */ (gridEl.cloneNode(true));
-  clone.setAttribute('aria-hidden', 'true');
-  clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
-  track.appendChild(clone);
-}
-
-/**
- * @param {HTMLElement} el
- */
-function currentTranslateY(el) {
-  const t = getComputedStyle(el).transform;
-  if (!t || t === 'none') return 0;
-  try {
-    return new DOMMatrixReadOnly(t).m42;
-  } catch {
-    return 0;
-  }
 }
 
 /**
@@ -94,38 +93,40 @@ function copyHeight(track) {
 }
 
 /**
- * Snap back by one copy after scrolling into the clone.
+ * Keep the single catalog copy inside the clip (no looping clone).
  * @param {HTMLElement} track
+ * @param {HTMLElement} catalogRoot
  */
-function wrapTrack(track) {
+function clampTrack(track, catalogRoot) {
   const copyH = copyHeight(track);
   if (copyH < 8) return;
+  const clipH = catalogRoot.getBoundingClientRect().height || 0;
+  const minY = Math.min(0, clipH - copyH);
   let y = currentTranslateY(track);
-  if (y > -copyH + 0.5) return;
-  while (y <= -copyH + 0.5) y += copyH;
+  if (y > 0) y = 0;
+  if (y < minY) y = minY;
+  const cur = currentTranslateY(track);
+  if (Math.abs(cur - y) < 0.5) return;
   track.style.transition = 'none';
   track.style.transform = `translateY(${y}px)`;
-  void track.getBoundingClientRect();
   track.style.transition = '';
 }
 
 /**
  * @param {HTMLElement} catalogRoot
  * @param {string} itemId
+ * @param {number} viewMidLocal
  * @returns {HTMLElement | null}
  */
-function nearestCatalogNode(catalogRoot, itemId, midY) {
+function nearestPackedNode(catalogRoot, itemId, viewMidLocal) {
   let nearest = null;
   let nearestAbs = Infinity;
   const nodes = catalogRoot.querySelectorAll(
     `.bpb-bg__item[data-item-id="${CSS.escape(itemId)}"]`,
   );
   for (const node of nodes) {
-    if (!(node instanceof HTMLElement)) continue;
-    if (node.classList.contains('home-promo__item--depart')) continue;
-    const r = node.getBoundingClientRect();
-    if (r.width < 2 || r.height < 2) continue;
-    const d = Math.abs((r.top + r.bottom) / 2 - midY);
+    if (!(node instanceof HTMLElement) || !isPackedCatalogItem(node)) continue;
+    const d = Math.abs(itemMidYInTrack(node) - viewMidLocal);
     if (d < nearestAbs) {
       nearestAbs = d;
       nearest = node;
@@ -135,7 +136,7 @@ function nearestCatalogNode(catalogRoot, itemId, midY) {
 }
 
 /**
- * Scroll the catalog so the nearest copy of `itemId` is vertically centered.
+ * Scroll the catalog so the packed slot for `itemId` is in view, then paint it.
  * @param {Element | null} catalogRoot
  * @param {string} itemId
  * @returns {Promise<HTMLElement | null>}
@@ -152,40 +153,45 @@ export function seekPromoCatalogItem(catalogRoot, itemId) {
       return;
     }
 
-    const clip = catalogRoot.getBoundingClientRect();
-    const clipMid = (clip.top + clip.bottom) / 2;
+    const clipH = catalogRoot.getBoundingClientRect().height || 1;
+    const copyH = copyHeight(track);
+    const minY = Math.min(0, clipH - copyH);
     const currentY = currentTranslateY(track);
-
-    /** @type {HTMLElement | null} */
-    let best = null;
-    let bestDelta = 0;
-    let bestAbs = Infinity;
-    const nodes = catalogRoot.querySelectorAll(
-      `.bpb-bg__item[data-item-id="${CSS.escape(itemId)}"]`,
-    );
-    for (const node of nodes) {
-      if (!(node instanceof HTMLElement)) continue;
-      const r = node.getBoundingClientRect();
-      if (r.width < 2 || r.height < 2) continue;
-      if (node.classList.contains('home-promo__item--depart')) continue;
-      const delta = clipMid - (r.top + r.bottom) / 2;
-      const abs = Math.abs(delta);
-      if (abs < bestAbs) {
-        bestAbs = abs;
-        bestDelta = delta;
-        best = node;
-      }
-    }
+    const viewMidLocal = -currentY + clipH * 0.38;
+    const best = nearestPackedNode(catalogRoot, itemId, viewMidLocal);
     if (!best) {
       resolve(null);
       return;
     }
 
+    const destMid = itemMidYInTrack(best);
+    const targetY = Math.max(
+      minY,
+      Math.min(0, clipH * 0.38 - destMid),
+    );
+    const bestAbs = Math.abs(targetY - currentY);
+    void warmPending(
+      catalogRoot,
+      pendingInBand(catalogRoot, viewMidLocal, destMid, clipH * 0.9),
+    );
+
+    let raf = 0;
+    let lastWarm = 0;
+    const tickWarm = (now) => {
+      if (now - lastWarm > 48) {
+        lastWarm = now;
+        void warmVisibleCatalog(catalogRoot);
+      }
+      raf = requestAnimationFrame(tickWarm);
+    };
+
     const finish = () => {
-      wrapTrack(track);
-      const clip2 = catalogRoot.getBoundingClientRect();
-      const mid = (clip2.top + clip2.bottom) / 2;
-      resolve(nearestCatalogNode(catalogRoot, itemId, mid) || best);
+      if (raf) window.cancelAnimationFrame(raf);
+      clampTrack(track, catalogRoot);
+      const y = currentTranslateY(track);
+      const mid = -y + clipH * 0.38;
+      const node = nearestPackedNode(catalogRoot, itemId, mid) || best;
+      void revealCatalogNear(catalogRoot, node).then(() => resolve(node));
     };
 
     if (bestAbs <= SEEK_SNAP_PX) {
@@ -206,7 +212,8 @@ export function seekPromoCatalogItem(catalogRoot, itemId) {
     };
     const timer = window.setTimeout(done, SEEK_TIMEOUT_MS);
     track.addEventListener('transitionend', onEnd);
-    track.style.transform = `translateY(${currentY + bestDelta}px)`;
+    raf = requestAnimationFrame(tickWarm);
+    track.style.transform = `translateY(${targetY}px)`;
   });
 }
 
@@ -224,18 +231,16 @@ export function hidePromoCatalogItem(catalogRoot, itemId) {
     }
     const nodes = [...catalogRoot.querySelectorAll(
       `.bpb-bg__item[data-item-id="${CSS.escape(itemId)}"]`,
-    )].filter(
-      (n) =>
-        n instanceof HTMLElement &&
-        !n.classList.contains('home-promo__item--depart'),
-    );
+    )].filter((n) => n instanceof HTMLElement && isPackedCatalogItem(n));
     if (!nodes.length) {
       resolve();
       return;
     }
-    for (const n of nodes) n.classList.remove('home-promo__item--appear');
-    void catalogRoot.offsetWidth;
-    for (const n of nodes) n.classList.add('home-promo__item--depart');
+    for (const n of nodes) {
+      attachSpriteSrc(n);
+      n.classList.remove('home-promo__item--appear');
+      n.classList.add('home-promo__item--depart');
+    }
     window.setTimeout(resolve, CATALOG_DEPART_MS + 16);
   });
 }
@@ -258,9 +263,10 @@ export function restorePromoCatalogItems(catalogRoot) {
       resolve();
       return;
     }
-    for (const n of nodes) n.classList.remove('home-promo__item--depart');
-    void catalogRoot.offsetWidth;
-    for (const n of nodes) n.classList.add('home-promo__item--appear');
+    for (const n of nodes) {
+      n.classList.remove('home-promo__item--depart');
+      n.classList.add('home-promo__item--appear');
+    }
     window.setTimeout(() => {
       for (const n of nodes) n.classList.remove('home-promo__item--appear');
       resolve();
@@ -286,6 +292,7 @@ export async function mountPromoCatalog(host, opts) {
     fetchJson(`${root}assets/data/sprite-display.json`),
     fetchJson(`${root}assets/data/item-shapes.json`),
     fetchJson(`${root}assets/data/socket-offsets.json`),
+    loadLiveArt(),
   ]);
 
   if (itemsRes.error) {
@@ -306,12 +313,18 @@ export async function mountPromoCatalog(host, opts) {
   for (const item of items) getSpriteUrl(item);
 
   stage.replaceChildren();
+  const catalogClip = host.querySelector('[data-promo-catalog-root]');
   const grid = mountItemiaryGrid(stage, {
     getSpriteUrl,
     cellPx: CATALOG_CELL_PX,
     cols: CATALOG_COLS,
     fillWidth: true,
+    promo: true,
+    spriteRoot: catalogClip instanceof HTMLElement ? catalogClip : stage,
   });
   await grid.showPacked(items, { compact: true, appear: false });
   loopCatalogTrack(grid.el);
+  const clip =
+    catalogClip instanceof HTMLElement ? catalogClip : stage;
+  void warmVisibleCatalog(clip);
 }

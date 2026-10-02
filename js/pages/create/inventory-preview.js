@@ -90,8 +90,13 @@ export function createInventoryPreview(_stageEl, getBoard) {
       skipKey = null,
       boardRect,
     } = opts;
-    const cellW = boardRect.width / BOARD_COLS;
-    const cellH = boardRect.height / BOARD_ROWS;
+    // Tile coordinates live inside the board's layout box. On mobile the whole
+    // board is scaled with transform; getBoundingClientRect() is then screen
+    // sized, and using it here makes the preview shrink a second time.
+    const localW = board.clientWidth || board.offsetWidth || boardRect.width;
+    const localH = board.clientHeight || board.offsetHeight || boardRect.height;
+    const cellW = localW / BOARD_COLS;
+    const cellH = localH / BOARD_ROWS;
 
     /** @type {{ x: number, y: number, kind: string }[]} */
     const all = [];
@@ -134,7 +139,7 @@ export function createInventoryPreview(_stageEl, getBoard) {
 
     const sig = list
       .map((c) => `${c.x},${c.y}:${c.kind}`)
-      .join('|') + `|${Math.round(cellW)}`;
+      .join('|') + `|${Math.round(cellW)}:${Math.round(cellH)}`;
     if (sig === lastSig) return;
     lastSig = sig;
 

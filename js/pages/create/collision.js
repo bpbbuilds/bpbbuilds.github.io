@@ -38,6 +38,8 @@ export function isGemItem(item) {
  */
 export function canPickItem(item, editMode = EDIT_MODE.DEFAULT) {
   if (!item) return false;
+  // Amulet Unidentified reveals into another amulet on drop — never a board piece.
+  if (String(item.id) === 'amulet_unidentified') return false;
   if (editMode === EDIT_MODE.BAG_LAYER) return isBagItem(item);
   if (editMode === EDIT_MODE.ITEM_LAYER) return !isBagItem(item);
   return true;

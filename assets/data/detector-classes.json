@@ -1,0 +1,2988 @@
+{
+  "version": 1,
+  "count": 426,
+  "classes": [
+    {
+      "index": 0,
+      "id": "ace_of_spades",
+      "name": "Ace of Spades",
+      "image": "AceofSpades",
+      "type": "Card"
+    },
+    {
+      "index": 1,
+      "id": "acorn_collar",
+      "name": "Acorn Collar",
+      "image": "AcornCollar",
+      "type": "Accessory"
+    },
+    {
+      "index": 2,
+      "id": "amethyst_egg",
+      "name": "Amethyst Egg",
+      "image": "AmethystEgg",
+      "type": "Pet"
+    },
+    {
+      "index": 3,
+      "id": "amethyst_whelp",
+      "name": "Amethyst Whelp",
+      "image": "AmethystWhelp",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 4,
+      "id": "amulet_of_alchemy",
+      "name": "Amulet of Alchemy",
+      "image": "AmuletofAlchemy",
+      "type": "Accessory"
+    },
+    {
+      "index": 5,
+      "id": "amulet_of_darkness",
+      "name": "Amulet of Darkness",
+      "image": "AmuletofDarkness",
+      "type": "Accessory"
+    },
+    {
+      "index": 6,
+      "id": "amulet_of_agility",
+      "name": "Amulet of Energy",
+      "image": "AmuletofAgility",
+      "type": "Accessory"
+    },
+    {
+      "index": 7,
+      "id": "amulet_of_feasting",
+      "name": "Amulet of Feasting",
+      "image": "AmuletofFeasting",
+      "type": "Accessory"
+    },
+    {
+      "index": 8,
+      "id": "amulet_of_fortune",
+      "name": "Amulet of Fortune",
+      "image": "AmuletofFortune",
+      "type": "Accessory"
+    },
+    {
+      "index": 9,
+      "id": "amulet_of_life",
+      "name": "Amulet of Life",
+      "image": "AmuletofLife",
+      "type": "Accessory"
+    },
+    {
+      "index": 10,
+      "id": "amulet_of_light",
+      "name": "Amulet of Light",
+      "image": "AmuletofLight",
+      "type": "Accessory"
+    },
+    {
+      "index": 11,
+      "id": "amulet_of_steel",
+      "name": "Amulet of Steel",
+      "image": "AmuletofSteel",
+      "type": "Accessory"
+    },
+    {
+      "index": 12,
+      "id": "amulet_of_the_wild",
+      "name": "Amulet of the Wild",
+      "image": "AmuletoftheWild",
+      "type": "Accessory"
+    },
+    {
+      "index": 13,
+      "id": "angel_crystal",
+      "name": "Angel Crystal",
+      "image": "AngelCrystal",
+      "type": "Accessory"
+    },
+    {
+      "index": 14,
+      "id": "anvil",
+      "name": "Anvil",
+      "image": "Anvil",
+      "type": "Accessory"
+    },
+    {
+      "index": 15,
+      "id": "arcane_boots",
+      "name": "Arcane Boots",
+      "image": "ArcaneBoots",
+      "type": "Shoes"
+    },
+    {
+      "index": 16,
+      "id": "armored_courage_puppy",
+      "name": "Armored Courage Puppy",
+      "image": "ArmoredCouragePuppy",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 17,
+      "id": "armored_power_puppy",
+      "name": "Armored Power Puppy",
+      "image": "ArmoredPowerPuppy",
+      "type": "Pet"
+    },
+    {
+      "index": 18,
+      "id": "armored_wisdom_puppy",
+      "name": "Armored Wisdom Puppy",
+      "image": "ArmoredWisdomPuppy",
+      "type": "Pet"
+    },
+    {
+      "index": 19,
+      "id": "artifact_stone_cold",
+      "name": "Artifact Stone: Cold",
+      "image": "ArtifactStoneCold",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 20,
+      "id": "artifact_stone_death",
+      "name": "Artifact Stone: Death",
+      "image": "ArtifactStoneDeath",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 21,
+      "id": "artifact_stone_heat",
+      "name": "Artifact Stone: Heat",
+      "image": "ArtifactStoneHeat",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 22,
+      "id": "automanaton",
+      "name": "Automanaton",
+      "image": "Automanaton",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 23,
+      "id": "axe",
+      "name": "Axe",
+      "image": "Axe",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 24,
+      "id": "badger_spirit",
+      "name": "Badger Spirit Companion",
+      "image": "BadgerSpirit",
+      "type": "Pet"
+    },
+    {
+      "index": 25,
+      "id": "bag_of_giving",
+      "name": "Bag of Giving",
+      "image": "BagofGiving",
+      "type": "Bag"
+    },
+    {
+      "index": 26,
+      "id": "bag_of_stones",
+      "name": "Bag of Stones",
+      "image": "BagofStones",
+      "type": "Accessory"
+    },
+    {
+      "index": 27,
+      "id": "banana",
+      "name": "Banana",
+      "image": "Banana",
+      "type": "Food"
+    },
+    {
+      "index": 28,
+      "id": "battery",
+      "name": "Battery",
+      "image": "Battery",
+      "type": "Accessory"
+    },
+    {
+      "index": 29,
+      "id": "poison_shortbow",
+      "name": "Belladonna's Shade",
+      "image": "PoisonShortbow",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 30,
+      "id": "poison_bow",
+      "name": "Belladonna's Whisper",
+      "image": "PoisonBow",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 31,
+      "id": "bowl_of_treats",
+      "name": "Big Bowl of Treats",
+      "image": "BowlofTreats",
+      "type": "Food"
+    },
+    {
+      "index": 32,
+      "id": "bismuth_cube",
+      "name": "Bismuth Cube",
+      "image": "BismuthCube",
+      "type": "Accessory"
+    },
+    {
+      "index": 33,
+      "id": "black_bishop",
+      "name": "Black Bishop",
+      "image": "BlackBishop",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 34,
+      "id": "black_king",
+      "name": "Black King",
+      "image": "BlackKing",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 35,
+      "id": "black_knight",
+      "name": "Black Knight",
+      "image": "BlackKnight",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 36,
+      "id": "black_pawn",
+      "name": "Black Pawn",
+      "image": "BlackPawn",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 37,
+      "id": "black_queen",
+      "name": "Black Queen",
+      "image": "BlackQueen",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 38,
+      "id": "black_rook",
+      "name": "Black Rook",
+      "image": "BlackRook",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 39,
+      "id": "molten_spear2",
+      "name": "Blazing Spear",
+      "image": "MoltenSpear2",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 40,
+      "id": "blood_amulet",
+      "name": "Blood Amulet",
+      "image": "BloodAmulet",
+      "type": "Accessory"
+    },
+    {
+      "index": 41,
+      "id": "blood_goobert",
+      "name": "Blood Goobert",
+      "image": "BloodGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 42,
+      "id": "vampiric_scythe",
+      "name": "Blood Harvester",
+      "image": "VampiricScythe",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 43,
+      "id": "bloodthorne",
+      "name": "Bloodthorne",
+      "image": "Bloodthorne",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 44,
+      "id": "bloody_dagger",
+      "name": "Bloody Dagger",
+      "image": "BloodyDagger",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 45,
+      "id": "magic_collar",
+      "name": "Blue Sage Collar",
+      "image": "MagicCollar",
+      "type": "Accessory"
+    },
+    {
+      "index": 46,
+      "id": "blueberries",
+      "name": "Blueberries",
+      "image": "Blueberries",
+      "type": "Food"
+    },
+    {
+      "index": 47,
+      "id": "pot",
+      "name": "Boiling Pot",
+      "image": "Pot",
+      "type": "Accessory"
+    },
+    {
+      "index": 48,
+      "id": "boomerang",
+      "name": "Boomerang",
+      "image": "Boomerang",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 49,
+      "id": "bow_and_arrow",
+      "name": "Bow and Arrow",
+      "image": "BowandArrow",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 50,
+      "id": "engineer_bag_2",
+      "name": "Box of Cogs",
+      "image": "EngineerBag2",
+      "type": "Bag"
+    },
+    {
+      "index": 51,
+      "id": "box_of_prosperity",
+      "name": "Box of Prosperity",
+      "image": "BoxofProsperity",
+      "type": "Bag"
+    },
+    {
+      "index": 52,
+      "id": "box_of_riches",
+      "name": "Box of Riches",
+      "image": "BoxofRiches",
+      "type": "Accessory"
+    },
+    {
+      "index": 53,
+      "id": "brass_knuckles",
+      "name": "Brass Knuckles",
+      "image": "BrassKnuckles",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 54,
+      "id": "broccoli",
+      "name": "Broccoli",
+      "image": "Broccoli",
+      "type": "Food"
+    },
+    {
+      "index": 55,
+      "id": "broccoli_goobert",
+      "name": "Broccoli Goobert",
+      "image": "BroccoliGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 56,
+      "id": "broccotree",
+      "name": "Broccotree",
+      "image": "Broccotree",
+      "type": "Food"
+    },
+    {
+      "index": 57,
+      "id": "broom",
+      "name": "Broom",
+      "image": "Broom",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 58,
+      "id": "coins",
+      "name": "Bunch of Coins",
+      "image": "Coins",
+      "type": "Accessory"
+    },
+    {
+      "index": 59,
+      "id": "burning_banner",
+      "name": "Burning Banner",
+      "image": "BurningBanner",
+      "type": "Accessory"
+    },
+    {
+      "index": 60,
+      "id": "burning_blade",
+      "name": "Burning Blade",
+      "image": "BurningBlade",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 61,
+      "id": "burning_sword",
+      "name": "Burning Sword",
+      "image": "BurningSword",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 62,
+      "id": "burning_torch",
+      "name": "Burning Torch",
+      "image": "BurningTorch",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 63,
+      "id": "busted_blade",
+      "name": "Busted Blade",
+      "image": "BustedBlade",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 64,
+      "id": "cap_of_brilliance",
+      "name": "Cap of Brilliance",
+      "image": "CapofBrilliance",
+      "type": "Helmet"
+    },
+    {
+      "index": 65,
+      "id": "evil_cap",
+      "name": "Cap of Discomfort",
+      "image": "EvilCap",
+      "type": "Helmet"
+    },
+    {
+      "index": 66,
+      "id": "leather_helm",
+      "name": "Cap of Resilience",
+      "image": "LeatherHelm",
+      "type": "Helmet"
+    },
+    {
+      "index": 67,
+      "id": "carrot",
+      "name": "Carrot",
+      "image": "Carrot",
+      "type": "Food"
+    },
+    {
+      "index": 68,
+      "id": "carrot_goobert",
+      "name": "Carrot Goobert",
+      "image": "CarrotGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 69,
+      "id": "cat_spirit",
+      "name": "Cat Spirit Companion",
+      "image": "CatSpirit",
+      "type": "Pet"
+    },
+    {
+      "index": 70,
+      "id": "cauldron",
+      "name": "Cauldron",
+      "image": "Cauldron",
+      "type": "Accessory"
+    },
+    {
+      "index": 71,
+      "id": "chain_whip",
+      "name": "Chain Whip",
+      "image": "ChainWhip",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 72,
+      "id": "chainsaw",
+      "name": "Chainsaw",
+      "image": "Chainsaw",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 73,
+      "id": "charge_splitter",
+      "name": "Charge Splitter",
+      "image": "ChargeSplitter",
+      "type": "Accessory"
+    },
+    {
+      "index": 74,
+      "id": "cheese",
+      "name": "Cheese",
+      "image": "Cheese",
+      "type": "Food"
+    },
+    {
+      "index": 75,
+      "id": "cheese_goobert",
+      "name": "Cheese Goobert",
+      "image": "CheeseGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 76,
+      "id": "chess_board",
+      "name": "Chess Board",
+      "image": "ChessBoard",
+      "type": "Accessory"
+    },
+    {
+      "index": 77,
+      "id": "chili_goobert",
+      "name": "Chili Goobert",
+      "image": "ChiliGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 78,
+      "id": "chili_pepper",
+      "name": "Chili Pepper",
+      "image": "ChiliPepper",
+      "type": "Food"
+    },
+    {
+      "index": 79,
+      "id": "chrome_cube",
+      "name": "Chromium Cube",
+      "image": "ChromeCube",
+      "type": "Accessory"
+    },
+    {
+      "index": 80,
+      "id": "claws_of_attack",
+      "name": "Claws of Attack",
+      "image": "ClawsofAttack",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 81,
+      "id": "cog",
+      "name": "Cog",
+      "image": "Cog",
+      "type": "Accessory"
+    },
+    {
+      "index": 82,
+      "id": "cog_badge",
+      "name": "Cog Badge",
+      "image": "CogBadge",
+      "type": "Accessory"
+    },
+    {
+      "index": 83,
+      "id": "coil",
+      "name": "Coil",
+      "image": "Coil",
+      "type": "Accessory"
+    },
+    {
+      "index": 84,
+      "id": "magic_mirror",
+      "name": "Cold Mirror",
+      "image": "MagicMirror",
+      "type": "Spell"
+    },
+    {
+      "index": 85,
+      "id": "con_trap_tron",
+      "name": "Con-Trap-Tron",
+      "image": "Con-Trap-Tron",
+      "type": "Accessory"
+    },
+    {
+      "index": 86,
+      "id": "corrupted_armor",
+      "name": "Corrupted Armor",
+      "image": "CorruptedArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 87,
+      "id": "courage_puppy",
+      "name": "Courage Puppy",
+      "image": "CouragePuppy",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 88,
+      "id": "critwood_staff",
+      "name": "Critwood Staff",
+      "image": "CritwoodStaff",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 89,
+      "id": "crossblades",
+      "name": "Crossblades",
+      "image": "Crossblades",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 90,
+      "id": "crow",
+      "name": "Crow",
+      "image": "Crow",
+      "type": "Pet"
+    },
+    {
+      "index": 91,
+      "id": "cthulhu",
+      "name": "Cthulhu",
+      "image": "Cthulhu",
+      "type": "Pet"
+    },
+    {
+      "index": 92,
+      "id": "cubert",
+      "name": "Cubert",
+      "image": "Cubert",
+      "type": "Pet"
+    },
+    {
+      "index": 93,
+      "id": "cupcake",
+      "name": "Cupcake",
+      "image": "Cupcake",
+      "type": "Food"
+    },
+    {
+      "index": 94,
+      "id": "cupcake_goobert",
+      "name": "Cupcake Goobert",
+      "image": "CupcakeGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 95,
+      "id": "cupcake_staff",
+      "name": "Cupcake Staff",
+      "image": "CupcakeStaff",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 96,
+      "id": "cupcake_dragon",
+      "name": "Cupdrake",
+      "image": "CupcakeDragon",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 97,
+      "id": "cursed_dagger",
+      "name": "Cursed Dagger",
+      "image": "CursedDagger",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 98,
+      "id": "customer_card",
+      "name": "Customer Card",
+      "image": "CustomerCard",
+      "type": "Accessory"
+    },
+    {
+      "index": 99,
+      "id": "dagger",
+      "name": "Dagger",
+      "image": "Dagger",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 100,
+      "id": "daggerang",
+      "name": "Daggerang",
+      "image": "Daggerang",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 101,
+      "id": "dancing_dragon",
+      "name": "Dancing Dragon",
+      "image": "DancingDragon",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 102,
+      "id": "dark_lantern",
+      "name": "Dark Lantern",
+      "image": "DarkLantern",
+      "type": "Accessory"
+    },
+    {
+      "index": 103,
+      "id": "darkest_lotus",
+      "name": "Darkest Lotus",
+      "image": "DarkestLotus",
+      "type": "Card"
+    },
+    {
+      "index": 104,
+      "id": "darksaber",
+      "name": "Darksaber",
+      "image": "Darksaber",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 105,
+      "id": "death_lotus",
+      "name": "Death Lotus",
+      "image": "DeathLotus",
+      "type": "Spell"
+    },
+    {
+      "index": 106,
+      "id": "death_scythe",
+      "name": "Death Scythe",
+      "image": "DeathScythe",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 107,
+      "id": "deck_of_cards",
+      "name": "Deck of Cards",
+      "image": "DeckofCards",
+      "type": "Accessory"
+    },
+    {
+      "index": 108,
+      "id": "deer_totem",
+      "name": "Deerwood Guardian",
+      "image": "DeerTotem",
+      "type": "Accessory"
+    },
+    {
+      "index": 109,
+      "id": "demonic_flask",
+      "name": "Demonic Flask",
+      "image": "DemonicFlask",
+      "type": "Potion"
+    },
+    {
+      "index": 110,
+      "id": "devouring_sphere",
+      "name": "Devouring Sphere",
+      "image": "DevouringSphere",
+      "type": "Spell"
+    },
+    {
+      "index": 111,
+      "id": "divine_potion",
+      "name": "Divine Potion",
+      "image": "DivinePotion",
+      "type": "Potion"
+    },
+    {
+      "index": 112,
+      "id": "djinn_lamp",
+      "name": "Djinn Lamp",
+      "image": "DjinnLamp",
+      "type": "Accessory"
+    },
+    {
+      "index": 113,
+      "id": "doom_cap",
+      "name": "Doom Cap",
+      "image": "DoomCap",
+      "type": "Food"
+    },
+    {
+      "index": 114,
+      "id": "double_axe",
+      "name": "Double Axe",
+      "image": "DoubleAxe",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 115,
+      "id": "draconic_orb",
+      "name": "Draconic Orb",
+      "image": "DraconicOrb",
+      "type": "Accessory"
+    },
+    {
+      "index": 116,
+      "id": "dragon_claws",
+      "name": "Dragon Claws",
+      "image": "DragonClaws",
+      "type": "Gloves"
+    },
+    {
+      "index": 117,
+      "id": "dragon_knight",
+      "name": "Dragon Knight",
+      "image": "DragonKnight",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 118,
+      "id": "dragon_nest",
+      "name": "Dragon Nest",
+      "image": "DragonNest",
+      "type": "Accessory"
+    },
+    {
+      "index": 119,
+      "id": "dragonscale_armor",
+      "name": "Dragonscale Armor",
+      "image": "DragonscaleArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 120,
+      "id": "dragonskin_boots",
+      "name": "Dragonskin Boots",
+      "image": "DragonskinBoots",
+      "type": "Shoes"
+    },
+    {
+      "index": 121,
+      "id": "berserker_bag",
+      "name": "Duffle Bag",
+      "image": "BerserkerBag",
+      "type": "Bag"
+    },
+    {
+      "index": 122,
+      "id": "eat_o_matic",
+      "name": "Eat-o-matic",
+      "image": "Eat-o-matic",
+      "type": "Accessory"
+    },
+    {
+      "index": 123,
+      "id": "eggscalibur",
+      "name": "Eggscalibur",
+      "image": "Eggscalibur",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 124,
+      "id": "electric_torch",
+      "name": "Electric Torch",
+      "image": "ElectricTorch",
+      "type": "Accessory"
+    },
+    {
+      "index": 125,
+      "id": "emerald_egg",
+      "name": "Emerald Egg",
+      "image": "EmeraldEgg",
+      "type": "Pet"
+    },
+    {
+      "index": 126,
+      "id": "emerald_whelp",
+      "name": "Emerald Whelp",
+      "image": "EmeraldWhelp",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 127,
+      "id": "employee_uniform",
+      "name": "Employee Uniform",
+      "image": "EmployeeUniform",
+      "type": "Armor"
+    },
+    {
+      "index": 128,
+      "id": "book_of_darkness",
+      "name": "Encyclopspedia of Darkness",
+      "image": "BookofDarkness",
+      "type": "Book"
+    },
+    {
+      "index": 129,
+      "id": "phoenix2",
+      "name": "Enraged Phoenix",
+      "image": "Phoenix2",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 130,
+      "id": "whetstone3",
+      "name": "Essence of Steel",
+      "image": "Whetstone3",
+      "type": "Accessory"
+    },
+    {
+      "index": 131,
+      "id": "falcon_blade",
+      "name": "Falcon Blade",
+      "image": "FalconBlade",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 132,
+      "id": "fancy_fencing_rapier",
+      "name": "Fancy Fencing Rapier",
+      "image": "FancyFencingRapier",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 133,
+      "id": "fanfare",
+      "name": "Fanfare",
+      "image": "Fanfare",
+      "type": "Accessory"
+    },
+    {
+      "index": 134,
+      "id": "fanny_pack",
+      "name": "Fanny Pack",
+      "image": "FannyPack",
+      "type": "Bag"
+    },
+    {
+      "index": 135,
+      "id": "fedora",
+      "name": "Fedora",
+      "image": "Fedora",
+      "type": "Helmet"
+    },
+    {
+      "index": 136,
+      "id": "fire_pit",
+      "name": "Fire Pit",
+      "image": "FirePit",
+      "type": "Bag"
+    },
+    {
+      "index": 137,
+      "id": "flame",
+      "name": "Flame",
+      "image": "Flame",
+      "type": "Accessory"
+    },
+    {
+      "index": 138,
+      "id": "flame_badge",
+      "name": "Flame Badge",
+      "image": "FlameBadge",
+      "type": "Accessory"
+    },
+    {
+      "index": 139,
+      "id": "flame_whip",
+      "name": "Flame Whip",
+      "image": "FlameWhip",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 140,
+      "id": "flute",
+      "name": "Flute",
+      "image": "Flute",
+      "type": "Accessory"
+    },
+    {
+      "index": 141,
+      "id": "fly_agaric",
+      "name": "Fly Agaric",
+      "image": "FlyAgaric",
+      "type": "Food"
+    },
+    {
+      "index": 142,
+      "id": "forest_dragon",
+      "name": "Forest Dragon",
+      "image": "ForestDragon",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 143,
+      "id": "forging_hammer",
+      "name": "Forging Hammer",
+      "image": "ForgingHammer",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 144,
+      "id": "lucky_bow",
+      "name": "Fortuna's Grace",
+      "image": "LuckyBow",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 145,
+      "id": "lucky_shortbow",
+      "name": "Fortuna's Hope",
+      "image": "LuckyShortbow",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 146,
+      "id": "friendly_fire",
+      "name": "Friendly Fire",
+      "image": "FriendlyFire",
+      "type": "Pet"
+    },
+    {
+      "index": 147,
+      "id": "book_of_ice",
+      "name": "Frieren’s Guide to Ice",
+      "image": "BookofIce",
+      "type": "Book"
+    },
+    {
+      "index": 148,
+      "id": "frog_prince",
+      "name": "Frog Prince",
+      "image": "FrogPrince",
+      "type": "Pet"
+    },
+    {
+      "index": 149,
+      "id": "frostbite",
+      "name": "Frostbite",
+      "image": "Frostbite",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 150,
+      "id": "frozen_buckler",
+      "name": "Frozen Buckler",
+      "image": "FrozenBuckler",
+      "type": "Shield"
+    },
+    {
+      "index": 151,
+      "id": "frozen_flame",
+      "name": "Frozen Flame",
+      "image": "FrozenFlame",
+      "type": "Accessory"
+    },
+    {
+      "index": 152,
+      "id": "furcifer_prime",
+      "name": "Furcifer Prime Subscription",
+      "image": "FurciferPrime",
+      "type": "Accessory"
+    },
+    {
+      "index": 153,
+      "id": "garlic",
+      "name": "Garlic",
+      "image": "Garlic",
+      "type": "Food"
+    },
+    {
+      "index": 154,
+      "id": "generator",
+      "name": "Generator",
+      "image": "Generator",
+      "type": "Accessory"
+    },
+    {
+      "index": 155,
+      "id": "gingerbread_man",
+      "name": "Gingerbread Jerry",
+      "image": "GingerbreadMan",
+      "type": "Food"
+    },
+    {
+      "index": 156,
+      "id": "gloves_of_haste",
+      "name": "Gloves of Haste",
+      "image": "GlovesofHaste",
+      "type": "Gloves"
+    },
+    {
+      "index": 157,
+      "id": "stone_gloves",
+      "name": "Gloves of Power",
+      "image": "StoneGloves",
+      "type": "Gloves"
+    },
+    {
+      "index": 158,
+      "id": "crown",
+      "name": "Glowing Crown",
+      "image": "Crown",
+      "type": "Helmet"
+    },
+    {
+      "index": 159,
+      "id": "gold_armor",
+      "name": "Gold Armor",
+      "image": "GoldArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 160,
+      "id": "gold_cube",
+      "name": "Gold Cube",
+      "image": "GoldCube",
+      "type": "Accessory"
+    },
+    {
+      "index": 161,
+      "id": "goobert",
+      "name": "Goobert",
+      "image": "Goobert",
+      "type": "Pet"
+    },
+    {
+      "index": 162,
+      "id": "goobling",
+      "name": "Goobling",
+      "image": "Goobling",
+      "type": "Pet"
+    },
+    {
+      "index": 163,
+      "id": "halberd",
+      "name": "Halberd",
+      "image": "Halberd",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 164,
+      "id": "hammer",
+      "name": "Hammer",
+      "image": "Hammer",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 165,
+      "id": "bomb",
+      "name": "Happy Bomb",
+      "image": "Bomb",
+      "type": "Accessory"
+    },
+    {
+      "index": 166,
+      "id": "evil_hat",
+      "name": "Harold, the Hateful Hat",
+      "image": "EvilHat",
+      "type": "Pet"
+    },
+    {
+      "index": 167,
+      "id": "healing_herbs",
+      "name": "Healing Herbs",
+      "image": "HealingHerbs",
+      "type": "Accessory"
+    },
+    {
+      "index": 168,
+      "id": "health_potion",
+      "name": "Health Potion",
+      "image": "HealthPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 169,
+      "id": "heart_container",
+      "name": "Heart Container",
+      "image": "HeartContainer",
+      "type": "Accessory"
+    },
+    {
+      "index": 170,
+      "id": "heart_of_darkness",
+      "name": "Heart of Darkness",
+      "image": "HeartofDarkness",
+      "type": "Accessory"
+    },
+    {
+      "index": 171,
+      "id": "heart_shield",
+      "name": "Heart Shield",
+      "image": "HeartShield",
+      "type": "Shield"
+    },
+    {
+      "index": 172,
+      "id": "hedgehog",
+      "name": "Hedgehog",
+      "image": "Hedgehog",
+      "type": "Pet"
+    },
+    {
+      "index": 173,
+      "id": "hero_longsword",
+      "name": "Hero Longsword",
+      "image": "HeroLongsword",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 174,
+      "id": "hero_shield",
+      "name": "Hero Shield",
+      "image": "HeroShield",
+      "type": "Shield"
+    },
+    {
+      "index": 175,
+      "id": "hero_sword",
+      "name": "Hero Sword",
+      "image": "HeroSword",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 176,
+      "id": "heroic_potion",
+      "name": "Heroic Potion",
+      "image": "HeroicPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 177,
+      "id": "holdall",
+      "name": "Holdall",
+      "image": "Holdall",
+      "type": "Bag"
+    },
+    {
+      "index": 178,
+      "id": "holo_fire_lizard",
+      "name": "Holo Fire Lizard",
+      "image": "HoloFireLizard",
+      "type": "Card"
+    },
+    {
+      "index": 179,
+      "id": "holy_armor",
+      "name": "Holy Armor",
+      "image": "HolyArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 180,
+      "id": "holy_spear",
+      "name": "Holy Spear",
+      "image": "HolySpear",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 181,
+      "id": "hungry_blade",
+      "name": "Hungry Blade",
+      "image": "HungryBlade",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 182,
+      "id": "hyper_hedgehog",
+      "name": "Hyper Hedgehog",
+      "image": "HyperHedgehog",
+      "type": "Pet"
+    },
+    {
+      "index": 183,
+      "id": "hypercube",
+      "name": "Hypercube",
+      "image": "Hypercube",
+      "type": "Accessory"
+    },
+    {
+      "index": 184,
+      "id": "ice_armor",
+      "name": "Ice Armor",
+      "image": "IceArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 185,
+      "id": "ice_dragon",
+      "name": "Ice Dragon",
+      "image": "IceDragon",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 186,
+      "id": "ice_flower",
+      "name": "Ice Flower",
+      "image": "IceFlower",
+      "type": "Spell"
+    },
+    {
+      "index": 187,
+      "id": "big_bloodthorne",
+      "name": "Impractically Large Bloodthorne",
+      "image": "BigBloodthorne",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 188,
+      "id": "greatsword",
+      "name": "Impractically Large Greatsword",
+      "image": "Greatsword",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 189,
+      "id": "whetstone2",
+      "name": "Improved Whetstone",
+      "image": "Whetstone2",
+      "type": "Accessory"
+    },
+    {
+      "index": 190,
+      "id": "joker",
+      "name": "Jimbo",
+      "image": "Joker",
+      "type": "Card"
+    },
+    {
+      "index": 191,
+      "id": "jynx_staff",
+      "name": "Jynx Staff",
+      "image": "JynxStaff",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 192,
+      "id": "jynx_torquilla",
+      "name": "Jynx torquilla",
+      "image": "Jynxtorquilla",
+      "type": "Pet"
+    },
+    {
+      "index": 193,
+      "id": "katana",
+      "name": "Katana",
+      "image": "Katana",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 194,
+      "id": "king_crown",
+      "name": "King Crown",
+      "image": "KingCrown",
+      "type": "Helmet"
+    },
+    {
+      "index": 195,
+      "id": "king_goobert",
+      "name": "King Goobert",
+      "image": "KingGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 196,
+      "id": "laboratory",
+      "name": "Laboratory",
+      "image": "Laboratory",
+      "type": "Accessory"
+    },
+    {
+      "index": 197,
+      "id": "light_flower",
+      "name": "Lantern Berry",
+      "image": "LightFlower",
+      "type": "Spell"
+    },
+    {
+      "index": 198,
+      "id": "leaf_badge",
+      "name": "Leaf Badge",
+      "image": "LeafBadge",
+      "type": "Accessory"
+    },
+    {
+      "index": 199,
+      "id": "leather_armor",
+      "name": "Leather Armor",
+      "image": "LeatherArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 200,
+      "id": "leather_bag",
+      "name": "Leather Bag",
+      "image": "LeatherBag",
+      "type": "Bag"
+    },
+    {
+      "index": 201,
+      "id": "leather_boots",
+      "name": "Leather Boots",
+      "image": "LeatherBoots",
+      "type": "Shoes"
+    },
+    {
+      "index": 202,
+      "id": "light_goobert",
+      "name": "Light Goobert",
+      "image": "LightGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 203,
+      "id": "lightning_potion",
+      "name": "Lightning in a Bottle",
+      "image": "LightningPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 204,
+      "id": "lightning_staff",
+      "name": "Lightning Staff",
+      "image": "LightningStaff",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 205,
+      "id": "lightsaber",
+      "name": "Lightsaber",
+      "image": "Lightsaber",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 206,
+      "id": "little_mimic",
+      "name": "Lil Chestnut",
+      "image": "LittleMimic",
+      "type": "Pet"
+    },
+    {
+      "index": 207,
+      "id": "lucky_clover",
+      "name": "Lucky Clover",
+      "image": "LuckyClover",
+      "type": "Accessory"
+    },
+    {
+      "index": 208,
+      "id": "lucky_piggy",
+      "name": "Lucky Piggy",
+      "image": "LuckyPiggy",
+      "type": "Accessory"
+    },
+    {
+      "index": 209,
+      "id": "mage_hat",
+      "name": "Mage Hat",
+      "image": "MageHat",
+      "type": "Helmet"
+    },
+    {
+      "index": 210,
+      "id": "magic_badge",
+      "name": "Magic Badge",
+      "image": "MagicBadge",
+      "type": "Accessory"
+    },
+    {
+      "index": 211,
+      "id": "book_of_basics",
+      "name": "Magic For Dummies",
+      "image": "BookofBasics",
+      "type": "Book"
+    },
+    {
+      "index": 212,
+      "id": "magic_ring",
+      "name": "Magic Ring",
+      "image": "MagicRing",
+      "type": "Accessory"
+    },
+    {
+      "index": 213,
+      "id": "magic_staff",
+      "name": "Magic Staff",
+      "image": "MagicStaff",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 214,
+      "id": "magic_torch",
+      "name": "Magic Torch",
+      "image": "MagicTorch",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 215,
+      "id": "magitecc_armor",
+      "name": "Magitecc Armor",
+      "image": "MagiteccArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 216,
+      "id": "mana_crystal",
+      "name": "Mana Crystal",
+      "image": "ManaCrystal",
+      "type": "Accessory"
+    },
+    {
+      "index": 217,
+      "id": "mana_orb",
+      "name": "Mana Orb",
+      "image": "ManaOrb",
+      "type": "Accessory"
+    },
+    {
+      "index": 218,
+      "id": "mana_potion",
+      "name": "Mana Potion",
+      "image": "ManaPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 219,
+      "id": "mananana",
+      "name": "Mananana",
+      "image": "Mananana",
+      "type": "Food"
+    },
+    {
+      "index": 220,
+      "id": "manathirst",
+      "name": "Manathirst",
+      "image": "Manathirst",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 221,
+      "id": "lucky_cat",
+      "name": "Maneki-neko",
+      "image": "LuckyCat",
+      "type": "Accessory"
+    },
+    {
+      "index": 222,
+      "id": "bionic_armor",
+      "name": "Mecha Armor",
+      "image": "BionicArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 223,
+      "id": "mecha_bat",
+      "name": "Mecha Bat",
+      "image": "MechaBat",
+      "type": "Pet"
+    },
+    {
+      "index": 224,
+      "id": "mega_clover",
+      "name": "Mega Clover",
+      "image": "MegaClover",
+      "type": "Accessory"
+    },
+    {
+      "index": 225,
+      "id": "mercury_elemental",
+      "name": "Mercury Elemental",
+      "image": "MercuryElemental",
+      "type": "Pet"
+    },
+    {
+      "index": 226,
+      "id": "miss_fortune",
+      "name": "Miss Fortune",
+      "image": "MissFortune",
+      "type": "Accessory"
+    },
+    {
+      "index": 227,
+      "id": "molten_dagger",
+      "name": "Molten Dagger",
+      "image": "MoltenDagger",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 228,
+      "id": "molten_greatsword",
+      "name": "Molten Greatsword",
+      "image": "MoltenGreatsword",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 229,
+      "id": "molten_spear",
+      "name": "Molten Spear",
+      "image": "MoltenSpear",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 230,
+      "id": "moon_armor",
+      "name": "Moon Armor",
+      "image": "MoonArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 231,
+      "id": "moon_shield",
+      "name": "Moon Shield",
+      "image": "MoonShield",
+      "type": "Shield"
+    },
+    {
+      "index": 232,
+      "id": "mr_struggles",
+      "name": "Mr. Struggles",
+      "image": "MrStruggles",
+      "type": "Accessory"
+    },
+    {
+      "index": 233,
+      "id": "mrs_struggles",
+      "name": "Mrs. Struggles",
+      "image": "MrsStruggles",
+      "type": "Accessory"
+    },
+    {
+      "index": 234,
+      "id": "book_of_nature",
+      "name": "Nature Chronicles: Trees",
+      "image": "BookofNature",
+      "type": "Book"
+    },
+    {
+      "index": 235,
+      "id": "cursed_hair_comb",
+      "name": "Nocturnal Lock Lifter",
+      "image": "CursedHairComb",
+      "type": "Accessory"
+    },
+    {
+      "index": 236,
+      "id": "null_blade",
+      "name": "Null Blade",
+      "image": "NullBlade",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 237,
+      "id": "obsidian_dragon",
+      "name": "Obsidian Dragon",
+      "image": "ObsidianDragon",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 238,
+      "id": "portable_altar",
+      "name": "Offering Bowl",
+      "image": "PortableAltar",
+      "type": "Bag"
+    },
+    {
+      "index": 239,
+      "id": "oil_lamp",
+      "name": "Oil Lamp",
+      "image": "OilLamp",
+      "type": "Accessory"
+    },
+    {
+      "index": 240,
+      "id": "owl_spirit",
+      "name": "Owl Spirit Companion",
+      "image": "OwlSpirit",
+      "type": "Pet"
+    },
+    {
+      "index": 241,
+      "id": "pan",
+      "name": "Pan",
+      "image": "Pan",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 242,
+      "id": "pandamonium",
+      "name": "Pandamonium",
+      "image": "Pandamonium",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 243,
+      "id": "steel_dragon",
+      "name": "Panzer Dragon",
+      "image": "SteelDragon",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 244,
+      "id": "paradise_birb",
+      "name": "Paradise Birb",
+      "image": "ParadiseBirb",
+      "type": "Pet"
+    },
+    {
+      "index": 245,
+      "id": "pestilence_flask",
+      "name": "Pestilence Flask",
+      "image": "PestilenceFlask",
+      "type": "Potion"
+    },
+    {
+      "index": 246,
+      "id": "phoenix",
+      "name": "Phoenix",
+      "image": "Phoenix",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 247,
+      "id": "piercing_arrow",
+      "name": "Piercing Arrow",
+      "image": "PiercingArrow",
+      "type": "Accessory"
+    },
+    {
+      "index": 248,
+      "id": "piggy_of_riches",
+      "name": "Piggy of Riches",
+      "image": "PiggyofRiches",
+      "type": "Accessory"
+    },
+    {
+      "index": 249,
+      "id": "piggybank",
+      "name": "Piggybank",
+      "image": "Piggybank",
+      "type": "Accessory"
+    },
+    {
+      "index": 250,
+      "id": "pine_protector",
+      "name": "Pine Protector",
+      "image": "PineProtector",
+      "type": "Shield"
+    },
+    {
+      "index": 251,
+      "id": "pineapple",
+      "name": "Pineapple",
+      "image": "Pineapple",
+      "type": "Food"
+    },
+    {
+      "index": 252,
+      "id": "plastic_cube",
+      "name": "Plastic Cube",
+      "image": "PlasticCube",
+      "type": "Accessory"
+    },
+    {
+      "index": 253,
+      "id": "platin_customer_card",
+      "name": "Platinum Customer Card",
+      "image": "PlatinCustomerCard",
+      "type": "Accessory"
+    },
+    {
+      "index": 254,
+      "id": "pocket_sand",
+      "name": "Pocket Sand",
+      "image": "PocketSand",
+      "type": "Accessory"
+    },
+    {
+      "index": 255,
+      "id": "poison_dagger",
+      "name": "Poison Dagger",
+      "image": "PoisonDagger",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 256,
+      "id": "poison_frog",
+      "name": "Poison Frog",
+      "image": "PoisonFrog",
+      "type": "Pet"
+    },
+    {
+      "index": 257,
+      "id": "poison_goobert",
+      "name": "Poison Goobert",
+      "image": "PoisonGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 258,
+      "id": "poison_grenade",
+      "name": "Poison Grenade",
+      "image": "PoisonGrenade",
+      "type": "Accessory"
+    },
+    {
+      "index": 259,
+      "id": "poison_ivy",
+      "name": "Poison Ivy",
+      "image": "PoisonIvy",
+      "type": "Accessory"
+    },
+    {
+      "index": 260,
+      "id": "poison_spear",
+      "name": "Poison Spear",
+      "image": "PoisonSpear",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 261,
+      "id": "pop",
+      "name": "Pop",
+      "image": "Pop",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 262,
+      "id": "engineer_box",
+      "name": "Port-O-Charger",
+      "image": "EngineerBox",
+      "type": "Bag"
+    },
+    {
+      "index": 263,
+      "id": "potion_belt",
+      "name": "Potion Belt",
+      "image": "PotionBelt",
+      "type": "Bag"
+    },
+    {
+      "index": 264,
+      "id": "power_puppy",
+      "name": "Power Puppy",
+      "image": "PowerPuppy",
+      "type": "Pet"
+    },
+    {
+      "index": 265,
+      "id": "present",
+      "name": "Present",
+      "image": "Present",
+      "type": "Accessory"
+    },
+    {
+      "index": 266,
+      "id": "rainbow_orb",
+      "name": "Prismatic Orb",
+      "image": "RainbowOrb",
+      "type": "Accessory"
+    },
+    {
+      "index": 267,
+      "id": "prismatic_sword",
+      "name": "Prismatic Sword",
+      "image": "PrismaticSword",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 268,
+      "id": "prismatic_wand",
+      "name": "Prismatic Wand",
+      "image": "PrismaticWand",
+      "type": "Accessory"
+    },
+    {
+      "index": 269,
+      "id": "protective_purse",
+      "name": "Protective Purse",
+      "image": "ProtectivePurse",
+      "type": "Bag"
+    },
+    {
+      "index": 270,
+      "id": "pumpkin",
+      "name": "Pumpkin",
+      "image": "Pumpkin",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 271,
+      "id": "puzzle_badge",
+      "name": "Puzzle Badge",
+      "image": "PuzzleBadge",
+      "type": "Accessory"
+    },
+    {
+      "index": 272,
+      "id": "puzzlebag_j",
+      "name": "Puzzlebag of Endurance",
+      "image": "PuzzlebagJ",
+      "type": "Bag"
+    },
+    {
+      "index": 273,
+      "id": "puzzlebag_t",
+      "name": "Puzzlebag of Energy",
+      "image": "PuzzlebagT",
+      "type": "Bag"
+    },
+    {
+      "index": 274,
+      "id": "puzzlebag_s",
+      "name": "Puzzlebag of Improvement",
+      "image": "PuzzlebagS",
+      "type": "Bag"
+    },
+    {
+      "index": 275,
+      "id": "puzzlebag_l",
+      "name": "Puzzlebag of Love",
+      "image": "PuzzlebagL",
+      "type": "Bag"
+    },
+    {
+      "index": 276,
+      "id": "puzzlebag_z",
+      "name": "Puzzlebag of Ruin",
+      "image": "PuzzlebagZ",
+      "type": "Bag"
+    },
+    {
+      "index": 277,
+      "id": "puzzlebox",
+      "name": "Puzzlebox",
+      "image": "Puzzlebox",
+      "type": "Bag"
+    },
+    {
+      "index": 278,
+      "id": "rainbow_badge",
+      "name": "Rainbow Badge",
+      "image": "RainbowBadge",
+      "type": "Accessory"
+    },
+    {
+      "index": 279,
+      "id": "rainbow_goobert_berserker",
+      "name": "Rainbow Goobert Deathslushy Mansquisher",
+      "image": "RainbowGoobertBerserker",
+      "type": "Pet"
+    },
+    {
+      "index": 280,
+      "id": "rainbow_goobert_pyromancer",
+      "name": "Rainbow Goobert Epicglob Uberviscous",
+      "image": "RainbowGoobertPyromancer",
+      "type": "Pet"
+    },
+    {
+      "index": 281,
+      "id": "rainbow_goobert_engineer",
+      "name": "Rainbow Goobert Fluffyloaf Prismacrust",
+      "image": "RainbowGoobertEngineer",
+      "type": "Pet"
+    },
+    {
+      "index": 282,
+      "id": "rainbow_goobert_adventurer",
+      "name": "Rainbow Goobert Gigabrocolomega ",
+      "image": "RainbowGoobertAdventurer",
+      "type": "Pet"
+    },
+    {
+      "index": 283,
+      "id": "rainbow_goobert_ranger",
+      "name": "Rainbow Goobert Megasludge Alphapuddle",
+      "image": "RainbowGoobertRanger",
+      "type": "Pet"
+    },
+    {
+      "index": 284,
+      "id": "rainbow_goobert",
+      "name": "Rainbow Goobert Omegaooze Primeslime",
+      "image": "RainbowGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 285,
+      "id": "rainbow_goobert_mage",
+      "name": "Rainbow Goobert Omnicolor Sugargoo ",
+      "image": "RainbowGoobertMage",
+      "type": "Pet"
+    },
+    {
+      "index": 286,
+      "id": "rainbow_potion",
+      "name": "Rainbow Potion",
+      "image": "RainbowPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 287,
+      "id": "ranger_bag",
+      "name": "Ranger Bag",
+      "image": "RangerBag",
+      "type": "Bag"
+    },
+    {
+      "index": 288,
+      "id": "rat",
+      "name": "Rat",
+      "image": "Rat",
+      "type": "Pet"
+    },
+    {
+      "index": 289,
+      "id": "rat_chef",
+      "name": "Rat Chef",
+      "image": "RatChef",
+      "type": "Pet"
+    },
+    {
+      "index": 290,
+      "id": "vampiric_collar",
+      "name": "Red Orchid Collar",
+      "image": "VampiricCollar",
+      "type": "Accessory"
+    },
+    {
+      "index": 291,
+      "id": "relic_case",
+      "name": "Relic Case",
+      "image": "RelicCase",
+      "type": "Bag"
+    },
+    {
+      "index": 292,
+      "id": "repeater",
+      "name": "Repeater",
+      "image": "Repeater",
+      "type": "Accessory"
+    },
+    {
+      "index": 293,
+      "id": "resistor",
+      "name": "Resistor",
+      "image": "Resistor",
+      "type": "Accessory"
+    },
+    {
+      "index": 294,
+      "id": "reverse",
+      "name": "Reverse!",
+      "image": "Reverse",
+      "type": "Card"
+    },
+    {
+      "index": 295,
+      "id": "rib_saw_blade",
+      "name": "Ripsaw Blade",
+      "image": "RibSawBlade",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 296,
+      "id": "rope",
+      "name": "Rope",
+      "image": "Rope",
+      "type": "Accessory"
+    },
+    {
+      "index": 297,
+      "id": "ruby_chonk",
+      "name": "Ruby Chonk",
+      "image": "RubyChonk",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 298,
+      "id": "ruby_egg",
+      "name": "Ruby Egg",
+      "image": "RubyEgg",
+      "type": "Pet"
+    },
+    {
+      "index": 299,
+      "id": "ruby_whelp",
+      "name": "Ruby Whelp",
+      "image": "RubyWhelp",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 300,
+      "id": "random_loadout_bag",
+      "name": "Sack of Surprises",
+      "image": "RandomLoadoutBag",
+      "type": "Bag"
+    },
+    {
+      "index": 301,
+      "id": "sapphire_egg",
+      "name": "Sapphire Egg",
+      "image": "SapphireEgg",
+      "type": "Pet"
+    },
+    {
+      "index": 302,
+      "id": "sapphire_whelp",
+      "name": "Sapphire Whelp",
+      "image": "SapphireWhelp",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 303,
+      "id": "scale",
+      "name": "Scale",
+      "image": "Scale",
+      "type": "Accessory"
+    },
+    {
+      "index": 304,
+      "id": "scholar_bag",
+      "name": "Scholar Bag",
+      "image": "ScholarBag",
+      "type": "Bag"
+    },
+    {
+      "index": 305,
+      "id": "scissorswords",
+      "name": "Scissorswords",
+      "image": "Scissorswords",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 306,
+      "id": "book_of_light",
+      "name": "Scripture of Light ",
+      "image": "BookofLight",
+      "type": "Book"
+    },
+    {
+      "index": 307,
+      "id": "serpent_staff",
+      "name": "Serpent Staff",
+      "image": "SerpentStaff",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 308,
+      "id": "sewing_case",
+      "name": "Sewing Case",
+      "image": "SewingCase",
+      "type": "Bag"
+    },
+    {
+      "index": 309,
+      "id": "shaman_mask",
+      "name": "Shaman Mask",
+      "image": "ShamanMask",
+      "type": "Accessory"
+    },
+    {
+      "index": 310,
+      "id": "shell_totem",
+      "name": "Shell Totem",
+      "image": "ShellTotem",
+      "type": "Weapon"
+    },
+    {
+      "index": 311,
+      "id": "shelly",
+      "name": "Shelly",
+      "image": "Shelly",
+      "type": "Pet"
+    },
+    {
+      "index": 312,
+      "id": "shepherds_crook",
+      "name": "Shepherd’s Crook",
+      "image": "ShepherdsCrook",
+      "type": "Accessory"
+    },
+    {
+      "index": 313,
+      "id": "shield_of_valor",
+      "name": "Shield of Valor",
+      "image": "ShieldofValor",
+      "type": "Shield"
+    },
+    {
+      "index": 314,
+      "id": "shiny_mantle",
+      "name": "Shiny Mantle",
+      "image": "ShinyMantle",
+      "type": "Armor"
+    },
+    {
+      "index": 315,
+      "id": "shiny_shell",
+      "name": "Shiny Shell",
+      "image": "ShinyShell",
+      "type": "Accessory"
+    },
+    {
+      "index": 316,
+      "id": "shortbow",
+      "name": "Shortbow",
+      "image": "Shortbow",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 317,
+      "id": "shovel",
+      "name": "Shovel",
+      "image": "Shovel",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 318,
+      "id": "robodog",
+      "name": "Shovel-B01 3000",
+      "image": "Robodog",
+      "type": "Pet"
+    },
+    {
+      "index": 319,
+      "id": "sandbag",
+      "name": "Sir Sand",
+      "image": "Sandbag",
+      "type": "Accessory"
+    },
+    {
+      "index": 320,
+      "id": "skull_badge",
+      "name": "Skull Badge",
+      "image": "SkullBadge",
+      "type": "Accessory"
+    },
+    {
+      "index": 321,
+      "id": "slice_of_bread",
+      "name": "Slice of Bread",
+      "image": "SliceofBread",
+      "type": "Food"
+    },
+    {
+      "index": 322,
+      "id": "slice_of_toast",
+      "name": "Slice of Toast",
+      "image": "SliceofToast",
+      "type": "Food"
+    },
+    {
+      "index": 323,
+      "id": "sloth",
+      "name": "Sloth",
+      "image": "Sloth",
+      "type": "Pet"
+    },
+    {
+      "index": 324,
+      "id": "snake",
+      "name": "Snake",
+      "image": "Snake",
+      "type": "Pet"
+    },
+    {
+      "index": 325,
+      "id": "snow_stick",
+      "name": "Snow Stick",
+      "image": "SnowStick",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 326,
+      "id": "snowball",
+      "name": "Snowball",
+      "image": "Snowball",
+      "type": "Accessory"
+    },
+    {
+      "index": 327,
+      "id": "snowcake",
+      "name": "Snowcake",
+      "image": "Snowcake",
+      "type": "Food"
+    },
+    {
+      "index": 328,
+      "id": "snowmaster",
+      "name": "Snowmaster",
+      "image": "Snowmaster",
+      "type": "Pet"
+    },
+    {
+      "index": 329,
+      "id": "spear",
+      "name": "Spear",
+      "image": "Spear",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 330,
+      "id": "spectral_dagger",
+      "name": "Spectral Dagger",
+      "image": "SpectralDagger",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 331,
+      "id": "spell_scroll_light",
+      "name": "Spell Scroll: Blessing of Purity",
+      "image": "SpellScrollLight",
+      "type": "Spell"
+    },
+    {
+      "index": 332,
+      "id": "spell_scroll_dark",
+      "name": "Spell Scroll: Dark Frenzy",
+      "image": "SpellScrollDark",
+      "type": "Spell"
+    },
+    {
+      "index": 333,
+      "id": "spell_scroll_frostbolt",
+      "name": "Spell Scroll: Frostbolt",
+      "image": "SpellScrollFrostbolt",
+      "type": "Spell"
+    },
+    {
+      "index": 334,
+      "id": "spell_scroll_ice",
+      "name": "Spell Scroll: Ice Block ",
+      "image": "SpellScrollIce",
+      "type": "Spell"
+    },
+    {
+      "index": 335,
+      "id": "spell_scroll_nature",
+      "name": "Spell Scroll: Regrowth",
+      "image": "SpellScrollNature",
+      "type": "Spell"
+    },
+    {
+      "index": 336,
+      "id": "spiked_collar",
+      "name": "Spiked Collar",
+      "image": "SpikedCollar",
+      "type": "Accessory"
+    },
+    {
+      "index": 337,
+      "id": "spiked_shield",
+      "name": "Spiked Shield",
+      "image": "SpikedShield",
+      "type": "Shield"
+    },
+    {
+      "index": 338,
+      "id": "spiked_staff",
+      "name": "Spiked Staff",
+      "image": "SpikedStaff",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 339,
+      "id": "spiked_wall",
+      "name": "Spiked Wall",
+      "image": "SpikedWall",
+      "type": "Shield"
+    },
+    {
+      "index": 340,
+      "id": "spirit_bells",
+      "name": "Spirit Bells",
+      "image": "SpiritBells",
+      "type": "Accessory"
+    },
+    {
+      "index": 341,
+      "id": "spring_loader",
+      "name": "Spring Loader",
+      "image": "SpringLoader",
+      "type": "Accessory"
+    },
+    {
+      "index": 342,
+      "id": "squirrel",
+      "name": "Squirrel",
+      "image": "Squirrel",
+      "type": "Pet"
+    },
+    {
+      "index": 343,
+      "id": "squirrel_archer",
+      "name": "Squirrel Archer",
+      "image": "SquirrelArcher",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 344,
+      "id": "stable_recombobulator",
+      "name": "Stable Recombobulator",
+      "image": "StableRecombobulator",
+      "type": "Accessory"
+    },
+    {
+      "index": 345,
+      "id": "staff_of_fire",
+      "name": "Staff of Fire",
+      "image": "StaffofFire",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 346,
+      "id": "staff_of_unhealing",
+      "name": "Staff of Unhealing",
+      "image": "StaffofUnhealing",
+      "type": "Weapon"
+    },
+    {
+      "index": 347,
+      "id": "stamina_sack",
+      "name": "Stamina Sack",
+      "image": "StaminaSack",
+      "type": "Bag"
+    },
+    {
+      "index": 348,
+      "id": "onion_cutter",
+      "name": "Stankus’ Toothpick",
+      "image": "OnionCutter",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 349,
+      "id": "star_of_courage",
+      "name": "Star of Courage",
+      "image": "StarofCourage",
+      "type": "Accessory"
+    },
+    {
+      "index": 350,
+      "id": "steel_goobert",
+      "name": "Steel Goobert",
+      "image": "SteelGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 351,
+      "id": "stone",
+      "name": "Stone",
+      "image": "Stone",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 352,
+      "id": "stone_armor",
+      "name": "Stone Armor",
+      "image": "StoneArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 353,
+      "id": "stone_badge",
+      "name": "Stone Badge",
+      "image": "StoneBadge",
+      "type": "Accessory"
+    },
+    {
+      "index": 354,
+      "id": "stone_golem",
+      "name": "Stone Golem",
+      "image": "StoneGolem",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 355,
+      "id": "stone_helm",
+      "name": "Stone Helm",
+      "image": "StoneHelm",
+      "type": "Helmet"
+    },
+    {
+      "index": 356,
+      "id": "stone_shoes",
+      "name": "Stone Shoes",
+      "image": "StoneShoes",
+      "type": "Shoes"
+    },
+    {
+      "index": 357,
+      "id": "stone_skin_potion",
+      "name": "Stone Skin Potion",
+      "image": "StoneSkinPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 358,
+      "id": "storage_coffin",
+      "name": "Storage Coffin",
+      "image": "StorageCoffin",
+      "type": "Bag"
+    },
+    {
+      "index": 359,
+      "id": "strong_demonic_flask",
+      "name": "Strong Demonic Flask",
+      "image": "StrongDemonicFlask",
+      "type": "Potion"
+    },
+    {
+      "index": 360,
+      "id": "strong_divine_potion",
+      "name": "Strong Divine Potion",
+      "image": "StrongDivinePotion",
+      "type": "Potion"
+    },
+    {
+      "index": 361,
+      "id": "strong_health_potion",
+      "name": "Strong Health Potion",
+      "image": "StrongHealthPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 362,
+      "id": "strong_heroic_potion",
+      "name": "Strong Heroic Potion",
+      "image": "StrongHeroicPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 363,
+      "id": "strong_mana_potion",
+      "name": "Strong Mana Potion",
+      "image": "StrongManaPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 364,
+      "id": "strong_pestilence_flask",
+      "name": "Strong Pestilence Flask",
+      "image": "StrongPestilenceFlask",
+      "type": "Potion"
+    },
+    {
+      "index": 365,
+      "id": "strong_stone_skin_potion",
+      "name": "Strong Stone Skin Potion",
+      "image": "StrongStoneSkinPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 366,
+      "id": "strong_vampiric_potion",
+      "name": "Strong Vampiric Potion",
+      "image": "StrongVampiricPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 367,
+      "id": "bazooka",
+      "name": "Stuff-Throwinator",
+      "image": "Bazooka",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 368,
+      "id": "sun_armor",
+      "name": "Sun Armor",
+      "image": "SunArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 369,
+      "id": "sun_shield",
+      "name": "Sun Shield",
+      "image": "SunShield",
+      "type": "Shield"
+    },
+    {
+      "index": 370,
+      "id": "superior_ring",
+      "name": "Superior Ring",
+      "image": "SuperiorRing",
+      "type": "Accessory"
+    },
+    {
+      "index": 371,
+      "id": "tesla_coil",
+      "name": "Tesla Coil",
+      "image": "TeslaCoil",
+      "type": "Accessory"
+    },
+    {
+      "index": 372,
+      "id": "the_fool",
+      "name": "The Fool",
+      "image": "TheFool",
+      "type": "Card"
+    },
+    {
+      "index": 373,
+      "id": "the_lovers",
+      "name": "The Lovers",
+      "image": "TheLovers",
+      "type": "Card"
+    },
+    {
+      "index": 374,
+      "id": "thors_hammer",
+      "name": "Thor’s Hammer",
+      "image": "ThorsHammer",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 375,
+      "id": "thorn_elemental",
+      "name": "Thorn Elemental",
+      "image": "ThornElemental",
+      "type": "Pet"
+    },
+    {
+      "index": 376,
+      "id": "thorn_whip",
+      "name": "Thorn Whip",
+      "image": "ThornWhip",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 377,
+      "id": "thornbloom",
+      "name": "Thornbloom",
+      "image": "Thornbloom",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 378,
+      "id": "thunder_drake",
+      "name": "Thunder Drake",
+      "image": "ThunderDrake",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 379,
+      "id": "time_dilator",
+      "name": "Time Dilator",
+      "image": "TimeDilator",
+      "type": "Accessory"
+    },
+    {
+      "index": 380,
+      "id": "time_pendant",
+      "name": "Time Pendant",
+      "image": "TimePendant",
+      "type": "Accessory"
+    },
+    {
+      "index": 381,
+      "id": "toad",
+      "name": "Toad",
+      "image": "Toad",
+      "type": "Pet"
+    },
+    {
+      "index": 382,
+      "id": "toast_goobert",
+      "name": "Toast Goobert",
+      "image": "ToastGoobert",
+      "type": "Pet"
+    },
+    {
+      "index": 383,
+      "id": "torch",
+      "name": "Torch",
+      "image": "Torch",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 384,
+      "id": "lootbox",
+      "name": "Treasure Chest",
+      "image": "Lootbox",
+      "type": "Accessory"
+    },
+    {
+      "index": 385,
+      "id": "fire_shelly",
+      "name": "Turbo-Shelly",
+      "image": "FireShelly",
+      "type": "Pet"
+    },
+    {
+      "index": 386,
+      "id": "turtle",
+      "name": "Turtle",
+      "image": "Turtle",
+      "type": "Pet"
+    },
+    {
+      "index": 387,
+      "id": "thorn_bow",
+      "name": "Tusk Piercer",
+      "image": "ThornBow",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 388,
+      "id": "thorn_shortbow",
+      "name": "Tusk Poker",
+      "image": "ThornShortbow",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 389,
+      "id": "twine",
+      "name": "Twine",
+      "image": "Twine",
+      "type": "Accessory"
+    },
+    {
+      "index": 390,
+      "id": "twine_badge",
+      "name": "Twine Badge",
+      "image": "TwineBadge",
+      "type": "Accessory"
+    },
+    {
+      "index": 391,
+      "id": "ukulele",
+      "name": "Ukulele",
+      "image": "Ukulele",
+      "type": "Accessory"
+    },
+    {
+      "index": 392,
+      "id": "amulet_unidentified",
+      "name": "Unidentified Amulet",
+      "image": "AmuletofAgility",
+      "type": "Accessory"
+    },
+    {
+      "index": 393,
+      "id": "ghost",
+      "name": "Unsettling Presence",
+      "image": "Ghost",
+      "type": "Pet"
+    },
+    {
+      "index": 394,
+      "id": "unstable_recombobulator",
+      "name": "Unstable Recombobulator",
+      "image": "UnstableRecombobulator",
+      "type": "Accessory"
+    },
+    {
+      "index": 395,
+      "id": "toolbox",
+      "name": "Utility Pouch",
+      "image": "Toolbox",
+      "type": "Bag"
+    },
+    {
+      "index": 396,
+      "id": "vampiric_armor",
+      "name": "Vampiric Armor",
+      "image": "VampiricArmor",
+      "type": "Armor"
+    },
+    {
+      "index": 397,
+      "id": "vampiric_gloves",
+      "name": "Vampiric Gloves",
+      "image": "VampiricGloves",
+      "type": "Gloves"
+    },
+    {
+      "index": 398,
+      "id": "vampiric_potion",
+      "name": "Vampiric Potion",
+      "image": "VampiricPotion",
+      "type": "Potion"
+    },
+    {
+      "index": 399,
+      "id": "long_spear",
+      "name": "Very Long Spear",
+      "image": "LongSpear",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 400,
+      "id": "villain_sword",
+      "name": "Villain Sword",
+      "image": "VillainSword",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 401,
+      "id": "vineweave_basket",
+      "name": "Vineweave Basket",
+      "image": "VineweaveBasket",
+      "type": "Bag"
+    },
+    {
+      "index": 402,
+      "id": "walrus_tusk",
+      "name": "Walrus Tusk",
+      "image": "WalrusTusk",
+      "type": "Accessory"
+    },
+    {
+      "index": 403,
+      "id": "wand_of_dissonance",
+      "name": "Wand of Dissonance",
+      "image": "WandofDissonance",
+      "type": "Accessory"
+    },
+    {
+      "index": 404,
+      "id": "wand",
+      "name": "Wand of Equilibrium",
+      "image": "Wand",
+      "type": "Accessory"
+    },
+    {
+      "index": 405,
+      "id": "war_scythe",
+      "name": "War Scythe",
+      "image": "WarScythe",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 406,
+      "id": "water_elemental",
+      "name": "Water Elemental",
+      "image": "WaterElemental",
+      "type": "Ranged Weapon"
+    },
+    {
+      "index": 407,
+      "id": "whetstone",
+      "name": "Whetstone",
+      "image": "Whetstone",
+      "type": "Accessory"
+    },
+    {
+      "index": 408,
+      "id": "white_bishop",
+      "name": "White Bishop",
+      "image": "WhiteBishop",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 409,
+      "id": "white_king",
+      "name": "White King",
+      "image": "WhiteKing",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 410,
+      "id": "white_knight",
+      "name": "White Knight",
+      "image": "WhiteKnight",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 411,
+      "id": "holy_collar",
+      "name": "White Lily Collar",
+      "image": "HolyCollar",
+      "type": "Accessory"
+    },
+    {
+      "index": 412,
+      "id": "white_pawn",
+      "name": "White Pawn",
+      "image": "WhitePawn",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 413,
+      "id": "white_queen",
+      "name": "White Queen",
+      "image": "WhiteQueen",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 414,
+      "id": "white_rook",
+      "name": "White Rook",
+      "image": "WhiteRook",
+      "type": "Chess Piece"
+    },
+    {
+      "index": 415,
+      "id": "white_eyes_blue_dragon",
+      "name": "White-Eyes Blue Dragon",
+      "image": "White-EyesBlueDragon",
+      "type": "Card"
+    },
+    {
+      "index": 416,
+      "id": "winged_boots",
+      "name": "Winged Boots",
+      "image": "WingedBoots",
+      "type": "Shoes"
+    },
+    {
+      "index": 417,
+      "id": "wisdom_puppy",
+      "name": "Wisdom Puppy",
+      "image": "WisdomPuppy",
+      "type": "Pet"
+    },
+    {
+      "index": 418,
+      "id": "wolf_badge",
+      "name": "Wolf Badge",
+      "image": "WolfBadge",
+      "type": "Accessory"
+    },
+    {
+      "index": 419,
+      "id": "wolf_emblem",
+      "name": "Wolf Emblem",
+      "image": "WolfEmblem",
+      "type": "Accessory"
+    },
+    {
+      "index": 420,
+      "id": "wolpertinger",
+      "name": "Wolpertinger",
+      "image": "Wolpertinger",
+      "type": "Pet"
+    },
+    {
+      "index": 421,
+      "id": "snowman",
+      "name": "Wonky Snowman",
+      "image": "Snowman",
+      "type": "Accessory"
+    },
+    {
+      "index": 422,
+      "id": "wooden_buckler",
+      "name": "Wooden Buckler",
+      "image": "WoodenBuckler",
+      "type": "Shield"
+    },
+    {
+      "index": 423,
+      "id": "wooden_sword",
+      "name": "Wooden Sword",
+      "image": "WoodenSword",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 424,
+      "id": "wrench",
+      "name": "Wrench",
+      "image": "Wrench",
+      "type": "Melee Weapon"
+    },
+    {
+      "index": 425,
+      "id": "yggdrasil_leaf",
+      "name": "Yggdrasil Leaf",
+      "image": "YggdrasilLeaf",
+      "type": "Accessory"
+    }
+  ]
+}

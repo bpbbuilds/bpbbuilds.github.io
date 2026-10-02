@@ -4,7 +4,7 @@
  */
 import { simulateEngine } from '../js/pages/sim/engine/simulate.js';
 import { getScriptHandler } from '../js/pages/sim/engine/scripts/registry.js';
-import { mergeLiveItemStats, pieceSnapAt } from '../js/pages/sim/sim-live-item.js';
+import { mergeLiveItemStats, pieceSnapAt } from '../js/pages/sim/shell/sim-live-item.js';
 import { modifiedCooldown } from '../js/pages/sim/engine/piece-stats.js';
 import { buildCombatPieces } from '../js/pages/sim/engine/pieces.js';
 import { buildBoardGraph } from '../js/pages/sim/engine/board-graph.js';

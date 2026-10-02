@@ -13,7 +13,7 @@ function rootPrefix() {
 
 async function boot() {
   initNav();
-  initFooter();
+  initFooter({ variant: 'slim' });
   const main = document.getElementById('main');
   if (!(main instanceof HTMLElement)) return;
   await initBuildsFeed(main, { root: rootPrefix() });

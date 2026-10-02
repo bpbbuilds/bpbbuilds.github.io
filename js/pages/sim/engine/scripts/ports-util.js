@@ -92,7 +92,7 @@ export function pieceHasCombatCooldown(piece) {
  * @param {string} handler
  * @param {string} [label]
  */
-export function pushActivate(piece, ctx, handler, label) {
+export function pushActivate(piece, ctx, handler, label, extra) {
   if (piece?.kind === 'bag' && !pieceHasCombatCooldown(piece)) {
     return;
   }
@@ -110,6 +110,7 @@ export function pushActivate(piece, ctx, handler, label) {
       script: true,
       handler,
       combatStart: ctx.combatStartSeq != null,
+      ...(extra && typeof extra === 'object' ? extra : {}),
     },
   });
 }
@@ -122,7 +123,13 @@ export function afterEffectFinished(
   { activate = true, consume = true, label = '' } = {},
 ) {
   if (activate) {
-    pushActivate(piece, ctx, handler, label || `${piece.name}`);
+    pushActivate(
+      piece,
+      ctx,
+      handler,
+      label || `${piece.name}`,
+      consume ? { consume: true } : undefined,
+    );
   }
   piece._cdLocked = true;
   piece.cooldown = 999;

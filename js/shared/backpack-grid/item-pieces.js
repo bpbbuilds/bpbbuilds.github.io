@@ -4,7 +4,8 @@
 
 import { shapeForItem, bodyBounds } from './shape.js';
 import { spriteSizeStyle } from './sprite-size.js';
-import { animateSpinRotate, prefersReducedMotion } from './face-spin.js';
+import { animateSpinRotate, prefersReducedMotion, readRotateDeg, writeSpinRotate } from './face-spin.js';
+import { liveInnerHtml, mountLiveArt, syncLiveArtFace, unmountLiveArt } from '../item-live-art/index.js';
 
 const CDN = 'https://awerc.github.io/bpb-cdn';
 /** Off-board park X (em), mirrors game clear() parking. */
@@ -143,17 +144,18 @@ function socketPositions(item, shape, bounds, slotCount) {
 
 /**
  * @param {string | { url?: string, w?: number, h?: number, id?: string, name?: string, rarity?: string } | null | undefined} g
- * @returns {{ url: string, w: number, h: number, id: string, name: string, rarity: string } | null}
+ * @returns {{ url: string, w: number, h: number, id: string, name: string, rarity: string, r: number } | null}
  */
 function normalizeGem(g) {
   if (!g) return null;
   if (typeof g === 'string') {
-    return { url: g, w: 0.72, h: 0.72, id: '', name: '', rarity: '' };
+    return { url: g, w: 0.72, h: 0.72, id: '', name: '', rarity: '', r: 0 };
   }
   const url = g.url;
   if (!url) return null;
   const w = Number(g.w);
   const h = Number(g.h);
+  const face = Math.round(Number(g.r));
   return {
     url,
     w: Number.isFinite(w) && w > 0 ? w : 0.72,
@@ -161,6 +163,7 @@ function normalizeGem(g) {
     id: g.id ? String(g.id) : '',
     name: g.name ? String(g.name) : '',
     rarity: g.rarity ? String(g.rarity) : '',
+    r: Number.isFinite(face) ? ((face % 4) + 4) % 4 : 0,
   };
 }
 
@@ -182,7 +185,9 @@ function socketChromeSpans(item, shape, bounds, gems = []) {
   if (!n) return '';
   return socketPositions(item, shape, bounds, n)
     .map(({ i, posStyle }) => {
-      return `<span class="bpb-bg__mark bpb-bg__mark--socket" data-socket-slot="${i}" style="${posStyle}background-image:url('${escapeAttr(emptyUrl)}')" aria-hidden="true"></span>`;
+      // Filled slots hide Socket.png (see .is-occupied). The gem paints above.
+      const occupied = normalizeGem(gems[i]) ? ' is-occupied' : '';
+      return `<span class="bpb-bg__mark bpb-bg__mark--socket${occupied}" data-socket-slot="${i}" style="${posStyle}background-image:url('${escapeAttr(emptyUrl)}')" aria-hidden="true"></span>`;
     })
     .join('');
 }
@@ -206,14 +211,16 @@ function socketLayerHtml(item, shape, bounds, gems = []) {
  * @param {ReturnType<typeof shapeForItem>} shape
  * @param {{ minX: number, minY: number }} bounds
  * @param {(string | { url?: string, w?: number, h?: number } | null | undefined)[]} [gems]
+ * @param {number} [hostFace] host quarter-turns; gems sit inside that spin
  */
-function gemLayerHtml(item, shape, bounds, gems = []) {
+function gemLayerHtml(item, shape, bounds, gems = [], hostFace = 0) {
   if (!gems.some((g) => normalizeGem(g))) return '';
   const n = Math.max(
     Math.floor(Number(item.sockets) || 0),
     gems.length,
     Array.isArray(item.socketOffsets) ? item.socketOffsets.length : 0,
   );
+  const hostDeg = (((Number(hostFace) || 0) % 4) + 4) % 4 * 90;
   const parts = socketPositions(item, shape, bounds, n)
     .map(({ i, posStyle }) => {
       const gem = normalizeGem(gems[i]);
@@ -225,7 +232,10 @@ function gemLayerHtml(item, shape, bounds, gems = []) {
         ? ` data-rarity="${escapeAttr(gem.rarity)}"`
         : '';
       const label = gem.name || 'Gem';
-      return `<img class="bpb-bg__mark bpb-bg__mark--socket bpb-bg__mark--gem" data-gem-slot="${i}"${idAttr}${rarityAttr} src="${escapeAttr(gem.url)}" alt="${escapeAttr(label)}" title="" draggable="false" style="${posStyle}width:${gem.w}em;height:${gem.h}em" />`;
+      // data-gem-deg is the held-item facing. Local rotate undoes the host spin.
+      const world = gem.r * 90;
+      const rot = `rotate:${world - hostDeg}deg;`;
+      return `<img class="bpb-bg__mark bpb-bg__mark--socket bpb-bg__mark--gem" data-gem-slot="${i}" data-gem-deg="${world}"${idAttr}${rarityAttr} src="${escapeAttr(gem.url)}" alt="${escapeAttr(label)}" title="" draggable="false" style="${posStyle}${rot}width:${gem.w}em;height:${gem.h}em" />`;
     })
     .filter(Boolean);
   if (!parts.length) return '';
@@ -294,18 +304,43 @@ function elementFromHtml(html) {
 /** Cap so a stuck decode cannot block catalog init / filter bind. */
 const SPRITE_WARM_TIMEOUT_MS = 2500;
 
+/** Baked still only — Itemiary scroll must not pull glow layers (potions stay live). */
+const BROWSE_STILL_ATTACH =
+  'img.bpb-bg__sprite[data-src]:not(.bpb-live__layer), img.bpb-live__base[data-src]';
+const BROWSE_STILL_PENDING =
+  'img.bpb-bg__sprite[data-src]:not([src]):not(.bpb-live__layer), img.bpb-live__base[data-src]:not([src])';
+const BROWSE_STILL_SRC =
+  'img.bpb-bg__sprite[src]:not(.bpb-live__layer), img.bpb-live__base[src]';
+const FULL_LAYER_ATTACH =
+  'img.bpb-bg__sprite[data-src], img.bpb-live__layer[data-src]';
+const FULL_LAYER_PENDING =
+  'img.bpb-bg__sprite[data-src]:not([src]), img.bpb-live__layer[data-src]:not([src])';
+const FULL_LAYER_SRC = 'img.bpb-bg__sprite[src], img.bpb-live__layer[src]';
+
 /**
- * Copy data-src → src on main + shadow sprites (Itemiary deferred load).
- * Forces eager — native lazy + --sprite-pending (visibility:hidden) never fetches,
- * so decode() hangs and the catalog stays blank.
+ * Itemiary bag (not spotlight clone) — stills while scrolling (except potions).
  * @param {HTMLElement} itemEl
- * @returns {HTMLImageElement[]} imgs that received a new src
  */
-export function attachSpriteSrc(itemEl) {
-  if (!(itemEl instanceof HTMLElement)) return [];
+function isItemiaryBrowseItem(itemEl) {
+  return Boolean(
+    itemEl.closest('.bpb-bg--itemiary') && !itemEl.closest('.il-spotlight'),
+  );
+}
+
+/** @param {HTMLElement} itemEl */
+function isPotionLiveItem(itemEl) {
+  return Boolean(itemEl.querySelector('.bpb-live[data-live-kind="potion"]'));
+}
+
+/**
+ * @param {HTMLElement} itemEl
+ * @param {string} selector
+ * @returns {HTMLImageElement[]}
+ */
+function attachMatchingSrc(itemEl, selector) {
   /** @type {HTMLImageElement[]} */
   const attached = [];
-  for (const img of itemEl.querySelectorAll('img.bpb-bg__sprite[data-src]')) {
+  for (const img of itemEl.querySelectorAll(selector)) {
     if (!(img instanceof HTMLImageElement)) continue;
     const url = img.getAttribute('data-src');
     if (!url || img.getAttribute('src')) continue;
@@ -317,13 +352,41 @@ export function attachSpriteSrc(itemEl) {
 }
 
 /**
- * True when Itemiary deferred sprites have not been attached yet.
+ * Copy data-src → src on browse stills only (thumb / base). Potions use full live.
+ * @param {HTMLElement} itemEl
+ * @returns {HTMLImageElement[]}
+ */
+export function attachBrowseStills(itemEl) {
+  if (!(itemEl instanceof HTMLElement)) return [];
+  return attachMatchingSrc(itemEl, BROWSE_STILL_ATTACH);
+}
+
+/**
+ * Copy data-src → src on main + all live layers (boards / focus / spotlight).
+ * Forces eager — native lazy + --sprite-pending (visibility:hidden) never fetches,
+ * so decode() hangs and the catalog stays blank.
+ * @param {HTMLElement} itemEl
+ * @returns {HTMLImageElement[]} imgs that received a new src
+ */
+export function attachSpriteSrc(itemEl) {
+  if (!(itemEl instanceof HTMLElement)) return [];
+  return attachMatchingSrc(itemEl, FULL_LAYER_ATTACH);
+}
+
+/**
+ * True when deferred sprites needed for the current mode are not attached yet.
+ * Itemiary browse ignores dormant glow data-src; potions need full flask/overlay.
  * @param {HTMLElement} itemEl
  */
 export function needsSpriteAttach(itemEl) {
-  return Boolean(
-    itemEl?.querySelector?.('img.bpb-bg__sprite[data-src]:not([src])'),
-  );
+  if (!(itemEl instanceof HTMLElement)) return false;
+  if (isItemiaryBrowseItem(itemEl)) {
+    if (isPotionLiveItem(itemEl)) {
+      return Boolean(itemEl.querySelector(FULL_LAYER_PENDING));
+    }
+    return Boolean(itemEl.querySelector(BROWSE_STILL_PENDING));
+  }
+  return Boolean(itemEl.querySelector(FULL_LAYER_PENDING));
 }
 
 /**
@@ -363,6 +426,7 @@ function waitSpriteReady(img) {
 
 /**
  * Attach deferred srcs and await load/decode for the given item roots.
+ * Itemiary: potions full live; other browse stills only. Boards/spotlight: full live.
  * Clears --sprite-pending after ready (or timeout) so init cannot stall.
  * @param {Iterable<HTMLElement>} itemEls
  * @returns {Promise<void>}
@@ -375,15 +439,43 @@ export function warmItemSprites(itemEls) {
   for (const el of itemEls) {
     if (!(el instanceof HTMLElement)) continue;
     roots.push(el);
-    attachSpriteSrc(el);
-    for (const img of el.querySelectorAll('img.bpb-bg__sprite[src]')) {
-      if (!(img instanceof HTMLImageElement)) continue;
-      waits.push(waitSpriteReady(img));
+    if (isItemiaryBrowseItem(el) && !isPotionLiveItem(el)) {
+      attachBrowseStills(el);
+      for (const img of el.querySelectorAll(BROWSE_STILL_SRC)) {
+        if (img instanceof HTMLImageElement) waits.push(waitSpriteReady(img));
+      }
+    } else {
+      attachSpriteSrc(el);
+      mountLiveArt(el);
+      for (const img of el.querySelectorAll(FULL_LAYER_SRC)) {
+        if (img instanceof HTMLImageElement) waits.push(waitSpriteReady(img));
+      }
     }
   }
   return Promise.all(waits).then(() => {
     for (const el of roots) el.classList.remove('bpb-bg__item--sprite-pending');
   });
+}
+
+/**
+ * Hover / focus — pull glow layers + start WebGL/CSS live art.
+ * @param {HTMLElement} itemEl
+ */
+export function activateItemLiveArt(itemEl) {
+  if (!(itemEl instanceof HTMLElement)) return;
+  if (!itemEl.querySelector('.bpb-live')) return;
+  attachSpriteSrc(itemEl);
+  mountLiveArt(itemEl);
+}
+
+/**
+ * Leave hover — stop RAF for glow/holo; potions stay animated while visible.
+ * @param {HTMLElement} itemEl
+ */
+export function deactivateItemLiveArt(itemEl) {
+  if (!(itemEl instanceof HTMLElement)) return;
+  if (isPotionLiveItem(itemEl)) return;
+  unmountLiveArt(itemEl);
 }
 
 /**
@@ -396,7 +488,7 @@ export function warmItemSprites(itemEls) {
  * @param {Element} root — .bpb-bg scroller
  * @param {{ itemEl: HTMLElement, x?: number, y?: number }[]} entries
  * @param {number} [padEm]
- * @param {{ cellPx?: number, rows?: number, scrollTop?: number, clientHeight?: number }} [metrics]
+ * @param {{ cellPx?: number, rows?: number, scrollTop?: number, clientHeight?: number, scrollLeft?: number, clientWidth?: number }} [metrics]
  * @returns {typeof entries}
  */
 export function filterEntriesNearViewport(
@@ -429,9 +521,18 @@ export function filterEntriesNearViewport(
     const hEm = parseFloat(entry.itemEl.style.height) || 1;
     const topPx = y * cellPx;
     const bottomPx = (y + hEm) * cellPx;
-    if (bottomPx >= scrollTop - padPx && topPx <= viewBottom + padPx) {
-      near.push(entry);
+    if (bottomPx < scrollTop - padPx || topPx > viewBottom + padPx) continue;
+    const clientWidth = metrics?.clientWidth || 0;
+    if (clientWidth > 0) {
+      const scrollLeft = Math.max(0, metrics?.scrollLeft || 0);
+      const viewRight = scrollLeft + clientWidth;
+      const x = Number.isFinite(entry.x) ? /** @type {number} */ (entry.x) : 0;
+      const wEm = parseFloat(entry.itemEl.style.width) || 1;
+      const leftPx = x * cellPx;
+      const rightPx = (x + wEm) * cellPx;
+      if (rightPx < scrollLeft - padPx || leftPx > viewRight + padPx) continue;
     }
+    near.push(entry);
   }
   return near;
 }
@@ -442,8 +543,15 @@ export function filterEntriesNearViewport(
  * @param {number} stackZ
  * @param {number} [face] Game FaceDirection 0–3 (UP/RIGHT/DOWN/LEFT)
  * @param {(string | { url?: string, w?: number, h?: number } | null | undefined)[]} [gems] socketed gems
- * @param {{ libraryBagScale?: boolean, deferSprite?: boolean }} [opts]
+ * @param {{
+ *   libraryBagScale?: boolean,
+ *   deferSprite?: boolean,
+ *   chrome?: boolean,
+ *   shadow?: boolean,
+ *   bagSlots?: boolean,
+ * }} [opts]
  *   deferSprite: Itemiary pool — data-src only until warm/IO (parked eager would fetch all).
+ *   chrome: hover markers / hit pads / empty sockets (default true).
  * @returns {HTMLElement | null}
  */
 export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], opts = {}) {
@@ -457,16 +565,21 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
   const bag = isBagItem(item);
   const z = Number.isFinite(stackZ) ? stackZ : placedStackZ(item, 1);
 
-  const bagSlots = bag
-    ? `<div class="bpb-bg__bag-slots" aria-hidden="true">${bodyCellSpans(
-        shape,
-        bounds,
-        'bpb-bg__cell bpb-bg__cell--bag',
-        bagSlotUrl(),
-      )}</div>`
-    : '';
+  const useChrome = opts.chrome !== false;
+  const useShadow = opts.shadow !== false;
+  const useBagSlots = opts.bagSlots !== false;
+  const bagSlots =
+    bag && useBagSlots
+      ? `<div class="bpb-bg__bag-slots" aria-hidden="true">${bodyCellSpans(
+          shape,
+          bounds,
+          'bpb-bg__cell bpb-bg__cell--bag',
+          bagSlotUrl(),
+        )}</div>`
+      : '';
 
-  const src = getSpriteUrl(item);
+  const src =
+    String(item.id) === '__unrecognized__' ? '' : getSpriteUrl(item);
   const deferSprite = opts.deferSprite === true;
   const sizeStyle = spriteSizeStyle(item, bounds, {
     libraryBagScale: opts.libraryBagScale === true,
@@ -478,27 +591,38 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
       ? `left:calc(50% + ${ax} * var(--bpb-bg-cell));top:calc(50% + ${ay} * var(--bpb-bg-cell));`
       : '';
   // Deferred: data-src only (no loading=lazy — hidden pending nodes never fetch).
-  const img = src
-    ? deferSprite
-      ? `<img class="bpb-bg__sprite" data-src="${escapeAttr(src)}" alt="" draggable="false" decoding="async" style="${anchorStyle}${sizeStyle}" />`
-      : `<img class="bpb-bg__sprite" src="${escapeAttr(src)}" alt="" draggable="false" loading="eager" decoding="async" style="${anchorStyle}${sizeStyle}" />`
-    : `<span class="bpb-bg__sprite bpb-bg__sprite--empty" aria-hidden="true"></span>`;
+  const liveImg = liveInnerHtml(item, {
+    src,
+    defer: deferSprite,
+    anchorStyle,
+    sizeStyle,
+  });
+  const img = liveImg
+    ? liveImg
+    : src
+      ? deferSprite
+        ? `<img class="bpb-bg__sprite" data-src="${escapeAttr(src)}" alt="" draggable="false" decoding="async" style="${anchorStyle}${sizeStyle}" />`
+        : `<img class="bpb-bg__sprite" src="${escapeAttr(src)}" alt="" draggable="false" loading="eager" decoding="async" style="${anchorStyle}${sizeStyle}" />`
+      : `<span class="bpb-bg__sprite bpb-bg__sprite--empty" aria-hidden="true"></span>`;
 
   // Game: duplicate sprite, modulate (0,0,0,0.5), global_position + (5,5) — offset in
   // world space, not local, so SE stays SE after rotation (Item.shadowOffset_dropped).
-  const shadowImg = src
-    ? deferSprite
-      ? `<img class="bpb-bg__sprite bpb-bg__sprite--shadow" data-src="${escapeAttr(src)}" alt="" draggable="false" decoding="async" style="${anchorStyle}${sizeStyle}" aria-hidden="true" />`
-      : `<img class="bpb-bg__sprite bpb-bg__sprite--shadow" src="${escapeAttr(src)}" alt="" draggable="false" loading="eager" decoding="async" style="${anchorStyle}${sizeStyle}" aria-hidden="true" />`
-    : '';
+  const shadowImg =
+    src && useShadow
+      ? deferSprite
+        ? `<img class="bpb-bg__sprite bpb-bg__sprite--shadow" data-src="${escapeAttr(src)}" alt="" draggable="false" decoding="async" style="${anchorStyle}${sizeStyle}" aria-hidden="true" />`
+        : `<img class="bpb-bg__sprite bpb-bg__sprite--shadow" src="${escapeAttr(src)}" alt="" draggable="false" loading="eager" decoding="async" style="${anchorStyle}${sizeStyle}" aria-hidden="true" />`
+      : '';
 
-  const hitPads = shape.body
-    .map((c) => {
-      const left = c.x - bounds.minX;
-      const top = c.y - bounds.minY;
-      return `<span class="bpb-bg__hit-pad" style="left:${left}em;top:${top}em" aria-hidden="true"></span>`;
-    })
-    .join('');
+  const hitPads = useChrome
+    ? shape.body
+        .map((c) => {
+          const left = c.x - bounds.minX;
+          const top = c.y - bounds.minY;
+          return `<span class="bpb-bg__hit-pad" style="left:${left}em;top:${top}em" aria-hidden="true"></span>`;
+        })
+        .join('')
+    : '';
 
   // Godot: rotation = face * π/2. Use individual CSS props so translate
   // runs before rotate (shorthand would rotate then translate and skew the pivot).
@@ -514,7 +638,9 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
   const tags = Array.isArray(item.tags) ? item.tags.map(String).join(',') : '';
   const html = `
     <div
-      class="bpb-bg__item${bag ? ' bpb-bg__item--bag' : ''} bpb-bg__item--parked"
+      class="bpb-bg__item${bag ? ' bpb-bg__item--bag' : ''}${
+        String(item.id) === '__unrecognized__' ? ' bpb-bg__item--unrecognized' : ''
+      } bpb-bg__item--parked"
       data-item-id="${escapeAttr(item.id)}"
       data-item-type="${escapeAttr(itemType)}"
       data-item-class="${escapeAttr(itemClass)}"
@@ -529,7 +655,13 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
       data-face="${r}"
       data-rarity="${escapeAttr(rarity)}"
       style="left:${PARK_X_EM}em;top:0;width:${rotBounds.w}em;height:${rotBounds.h}em;z-index:${z}"
+      ${String(item.id) === '__unrecognized__' ? 'title="Unrecognized item"' : ''}
     >
+      ${
+        String(item.id) === '__unrecognized__'
+          ? `<span class="bpb-bg__unrecognized-label" aria-hidden="true">?</span>`
+          : ''
+      }
       ${
         shadowImg
           ? `<div class="bpb-bg__spin bpb-bg__spin--shadow" style="${shadowSpinStyle}" aria-hidden="true">${shadowImg}</div>`
@@ -541,12 +673,15 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
           ${hitPads}
         </button>
         ${bagSlots}
-        ${socketLayerHtml(item, shape, bounds, gems)}
-        ${gemLayerHtml(item, shape, bounds, gems)}
-        ${hoverMarkersHtml(item, shape, bounds)}
+        ${useChrome ? socketLayerHtml(item, shape, bounds, gems) : ''}
+        ${gemLayerHtml(item, shape, bounds, gems, r)}
+        ${useChrome ? hoverMarkersHtml(item, shape, bounds) : ''}
       </div>
     </div>`;
-  return elementFromHtml(html);
+  const el = elementFromHtml(html);
+  // Deferred Itemiary: bind shaders on warm/IO, not while the node is parked.
+  if (el instanceof HTMLElement && !deferSprite) mountLiveArt(el);
+  return el;
 }
 
 /**
@@ -715,14 +850,18 @@ function bindAppearCleanup(el, isUnder) {
  * @param {HTMLElement} itemEl
  * @param {HTMLElement | null} underEl
  */
-function clearAppear(itemEl, underEl) {
+export function clearAppear(itemEl, underEl) {
   // Do not clear --sprite-pending here: playAppear runs clearAppear on the full
   // list before the viewport cull; off-screen deferred sprites must stay hidden.
-  itemEl.classList.remove(...APPEAR_ITEM);
+  itemEl.classList.remove(...APPEAR_ITEM, 'bpb-bg__item--leave');
   itemEl.style.removeProperty('--bpb-appear-delay');
   itemEl.style.removeProperty('transform');
   itemEl.style.removeProperty('transform-origin');
-  underEl?.classList.remove(...APPEAR_UNDER, 'bpb-bg__under-item--appear-pending');
+  underEl?.classList.remove(
+    ...APPEAR_UNDER,
+    'bpb-bg__under-item--appear-pending',
+    'bpb-bg__under-item--leave',
+  );
   underEl?.style.removeProperty('--bpb-appear-delay');
   underEl?.style.removeProperty('transform');
   underEl?.style.removeProperty('transform-origin');
@@ -775,6 +914,7 @@ export function applyItemFace(itemEl, underEl, item, face, opts = {}) {
     underEl.style.width = `${rotBounds.w}em`;
     underEl.style.height = `${rotBounds.h}em`;
   }
+  syncLiveArtFace(itemEl);
 
   /** @type {HTMLElement[]} */
   const spins = [];
@@ -797,6 +937,7 @@ export function applyItemFace(itemEl, underEl, item, face, opts = {}) {
   let pending = spins.length;
   const finish = () => {
     if (spinning) itemEl.classList.remove('is-face-spinning');
+    syncLiveArtFace(itemEl);
     opts.onDone?.();
   };
 
@@ -821,8 +962,9 @@ export function applyItemFace(itemEl, underEl, item, face, opts = {}) {
 }
 
 /**
- * Refresh socketed gem sprites on an existing item (pool reuse).
- * createItemEl only stamps gems at create time — placements can gain/lose gems later.
+ * Refresh socketed gem sprites + occupied socket chrome on an existing item
+ * (pool reuse). createItemEl only stamps gems at create time — placements can
+ * gain/lose gems later.
  *
  * @param {HTMLElement} itemEl
  * @param {object} item host armor/weapon
@@ -836,9 +978,25 @@ export function syncItemGems(itemEl, item, gems = []) {
 
   const shape = shapeForItem(item, 0);
   const bounds = item.__bpbBounds || (item.__bpbBounds = bodyBounds(shape));
-  const html = gemLayerHtml(item, shape, bounds, gems);
-  const prev = spin.querySelector(':scope > .bpb-bg__gems');
 
+  // Keep Socket.png chrome in sync (is-occupied hides a filled hole)
+  const sockHtml = socketLayerHtml(item, shape, bounds, gems);
+  const prevSock = spin.querySelector(':scope > .bpb-bg__sockets');
+  if (sockHtml) {
+    const nextSock = elementFromHtml(sockHtml);
+    if (nextSock instanceof HTMLElement) {
+      if (prevSock) prevSock.replaceWith(nextSock);
+      else {
+        const hit = spin.querySelector(':scope > .bpb-bg__hit');
+        if (hit) hit.after(nextSock);
+        else spin.prepend(nextSock);
+      }
+    }
+  }
+
+  const hostFace = Number(itemEl.getAttribute('data-face')) || 0;
+  const html = gemLayerHtml(item, shape, bounds, gems, hostFace);
+  const prev = spin.querySelector(':scope > .bpb-bg__gems');
   if (!html) {
     prev?.remove();
     return;
@@ -847,7 +1005,14 @@ export function syncItemGems(itemEl, item, gems = []) {
   const next = elementFromHtml(html);
   if (!(next instanceof HTMLElement)) return;
   if (prev) prev.replaceWith(next);
-  else spin.appendChild(next);
+  else {
+    const sock = spin.querySelector(':scope > .bpb-bg__sockets');
+    const markers = spin.querySelector(':scope > .bpb-bg__markers');
+    if (sock) sock.after(next);
+    else if (markers) markers.before(next);
+    else spin.appendChild(next);
+  }
+  writeSpinRotate(spin, readRotateDeg(spin));
 }
 
 /**

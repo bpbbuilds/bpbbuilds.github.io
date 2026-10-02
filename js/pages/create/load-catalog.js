@@ -52,6 +52,7 @@ export async function loadCreateCatalog(root) {
     origins,
     classMasks,
     mentionedStacks,
+    extraCds,
     combinationsRes,
     itemsRes,
   ] = await Promise.all([
@@ -61,6 +62,7 @@ export async function loadCreateCatalog(root) {
     load('assets/data/item-origins.json'),
     load('assets/data/item-class-masks.json'),
     load('assets/data/item-mentioned-stacks.json'),
+    load('assets/data/item-extra-cooldowns.json'),
     getSupabase().from('combinations').select('result_item_id'),
     getSupabase().from('items').select(ITEM_SELECT),
   ]);
@@ -69,6 +71,8 @@ export async function loadCreateCatalog(root) {
 
   const classMasksById = classMasks?.byId || null;
   const mentionedStacksById = mentionedStacks?.byId || null;
+  const extraCdsById =
+    extraCds?.byId && typeof extraCds.byId === 'object' ? extraCds.byId : null;
 
   const craftedIds = new Set(
     (combinationsRes.data || [])
@@ -95,6 +99,20 @@ export async function loadCreateCatalog(root) {
     }
     if (mentionedStacksById) {
       item.mentionedStacks = mentionedStacksById[item.id] || [];
+    }
+    if (
+      (!item.extraCooldowns || !item.extraCooldowns.length) &&
+      extraCdsById &&
+      Array.isArray(extraCdsById[item.id])
+    ) {
+      item.extraCooldowns = extraCdsById[item.id]
+        .map(Number)
+        .filter((n) => n > 0);
+    }
+    // Laboratory etc.: DB sometimes stores null primary CD while effect has phases.
+    if (!(Number(item.cooldown) > 0) && item.id === 'laboratory') {
+      item.cooldown = 2;
+      if (!item.extraCooldowns?.length) item.extraCooldowns = [4, 6, 8, 12];
     }
     item.isTreasure = treasureIds.has(item.id);
     return item;

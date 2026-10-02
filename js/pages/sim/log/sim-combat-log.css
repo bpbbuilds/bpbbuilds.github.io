@@ -1,0 +1,1035 @@
+/* Band Q — Combat Log + Damage Dealt (game-matched chrome) */
+
+/* Dock: only the Open Log book until the report is opened */
+.sim-results--dock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.15rem;
+}
+
+.sim-results__open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inside the floating logbook: meters + log side by side */
+.sim-results--logbook {
+  display: grid;
+  grid-template-columns: minmax(11rem, 0.9fr) minmax(16rem, 1.3fr) minmax(11rem, 0.9fr);
+  gap: 0.65rem;
+  margin: 0;
+  align-items: start;
+  min-height: 0;
+  flex: 1;
+}
+
+.sim-results__col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 12rem;
+}
+
+.sim-results__col .sim-results__dmg,
+.sim-results__col .sim-results__log {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sim-results__col .sim-dmg,
+.sim-results__col .sim-clog {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  max-height: none;
+  height: auto;
+}
+
+.sim-results__resize {
+  appearance: none;
+  flex: 0 0 0.72rem;
+  width: 100%;
+  margin: 0.18rem 0 0;
+  padding: 0;
+  border: 1px solid rgba(60, 38, 29, 0.85);
+  border-radius: 0 0 0.18rem 0.18rem;
+  cursor: var(--bpb-cursor-ns);
+  touch-action: none;
+  background:
+    linear-gradient(180deg, rgba(90, 58, 40, 0.95), rgba(40, 24, 18, 0.98));
+  box-shadow: inset 0 1px 0 rgba(255, 236, 220, 0.22);
+}
+
+.sim-results__resize::after {
+  content: '';
+  display: block;
+  width: 2.4rem;
+  height: 3px;
+  margin: 0.2rem auto 0;
+  border-radius: 2px;
+  background: #eac914;
+  box-shadow: 0 3px 0 rgba(234, 201, 20, 0.35);
+}
+
+.sim-results__resize:hover,
+.sim-results__resize:focus-visible,
+.sim-results__resize.is-dragging {
+  filter: brightness(1.12);
+  outline: none;
+}
+
+.sim-results__resize:focus-visible {
+  box-shadow: 0 0 0 2px #eac914;
+}
+
+@media (max-width: 1100px) {
+  .sim-results--logbook {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sim-results--logbook [data-resize-col="log"] {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .sim-results--logbook {
+    grid-template-columns: 1fr;
+    overflow: auto;
+    max-height: calc(100vh - 4rem);
+  }
+  .sim-results--logbook [data-resize-col="log"] {
+    grid-column: auto;
+    order: 0;
+  }
+}
+
+/* —— Open Log book (game CombatLogButton) —— */
+.sim-logbook-btn {
+  position: relative;
+  display: block;
+  width: 7.5rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: var(--bpb-cursor-pointer);
+  filter: drop-shadow(0 4px 10px rgba(40, 30, 20, 0.35));
+  transition: transform 0.12s ease;
+}
+
+.sim-logbook-btn:hover,
+.sim-logbook-btn:focus-visible {
+  transform: translateY(-2px) scale(1.03);
+  outline: none;
+}
+
+.sim-logbook-btn.is-open {
+  opacity: 0.72;
+}
+
+.sim-logbook-btn__art {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sim-logbook-btn__label {
+  position: absolute;
+  /* Game CombatLogButtonHint: 20,19–112,117 on a 150×170 button — book page only. */
+  left: 13.33%;
+  top: 11.18%;
+  width: 61.33%;
+  height: 57.65%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: #3c261d;
+  text-shadow:
+    0 1px 0 rgba(255, 236, 220, 0.35),
+    0 0 2px rgba(255, 236, 220, 0.5);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* —— Floating / draggable combat report —— */
+/* Above #site-nav (100) + screen frame (9990); below tooltips (~10020). */
+.sim-logbook {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.sim-logbook[hidden] {
+  display: none !important;
+}
+
+.sim-logbook__frame {
+  position: fixed;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: calc(100vw - 0.5rem);
+  max-height: calc(100vh - 0.5rem);
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  z-index: 1;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+}
+
+.sim-logbook__frame.is-dragging {
+  cursor: var(--bpb-cursor-grabbing);
+  user-select: none;
+}
+
+.sim-logbook__chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 2.2rem 0.45rem 0.35rem;
+  margin: 0 0 0.45rem;
+  border-bottom: 1px solid rgba(255, 236, 220, 0.14);
+  color: #ffecdc;
+  font-family: var(--bpb-font-display);
+  touch-action: none;
+}
+
+.sim-logbook__chrome-title {
+  font-size: 1.05rem;
+}
+
+.sim-logbook__chrome-hint {
+  margin-left: auto;
+  font-family: var(--bpb-font-body);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+.sim-logbook__close {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.45rem;
+  z-index: 2;
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 2px solid #3c261d;
+  border-radius: 0.2rem;
+  background: #ffecdc;
+  color: #3c261d;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: var(--bpb-cursor-pointer);
+  font-family: var(--bpb-font-body);
+}
+
+.sim-logbook__close:hover,
+.sim-logbook__close:focus-visible {
+  background: #eac914;
+  outline: none;
+}
+
+.sim-logbook__body {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.sim-logbook__body .sim-clog,
+.sim-logbook__body .sim-dmg {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  height: auto;
+}
+
+.sim-logbook__body .sim-clog__list,
+.sim-logbook__body .sim-dmg__list {
+  max-height: none;
+  min-height: 0;
+}
+
+.sim-logbook__drag {
+  cursor: var(--bpb-cursor-grab);
+}
+
+.sim-logbook__frame.is-dragging .sim-logbook__drag {
+  cursor: var(--bpb-cursor-grabbing);
+}
+
+.sim-clog__drag-hint {
+  margin-left: auto;
+  font-size: 0.7rem;
+  opacity: 0.55;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.sim-dmg,
+.sim-clog {
+  --clog-ink: #ffecdc;
+  --clog-ink-dark: #3c261d;
+  /* Game LogLinePlayerStylebox / LogLineOpponentStylebox */
+  --clog-you: rgba(255, 236, 212, 0.62);
+  --clog-opp: rgba(128, 0, 0, 0.6);
+  --clog-line-gold: #ffe337;
+  --clog-frame: #3c261d;
+  --clog-gold: #eac914;
+  background:
+    linear-gradient(180deg, rgba(72, 42, 32, 0.92), rgba(48, 28, 22, 0.96)),
+    var(--bpb-parchment, #2a1a14);
+  border: 3px solid var(--clog-frame);
+  border-radius: 0.2rem;
+  box-shadow:
+    inset 0 0 0 1px rgba(234, 201, 20, 0.12),
+    0 4px 14px rgba(0, 0, 0, 0.35);
+  color: var(--clog-ink);
+  font-family: var(--bpb-font-body);
+  min-height: 16rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sim-dmg {
+  --dmg-outline:
+    1px 0 0 #3c261d,
+    -1px 0 0 #3c261d,
+    0 1px 0 #3c261d,
+    0 -1px 0 #3c261d;
+  /* Game meter text is outline_size 3 — ring fills the stroke's gaps */
+  --dmg-ring:
+    0.12em 0 0 #3c261d,
+    0.085em 0.085em 0 #3c261d,
+    0 0.12em 0 #3c261d,
+    -0.085em 0.085em 0 #3c261d,
+    -0.12em 0 0 #3c261d,
+    -0.085em -0.085em 0 #3c261d,
+    0 -0.12em 0 #3c261d,
+    0.085em -0.085em 0 #3c261d;
+  position: relative;
+}
+
+.sim-dmg__head,
+.sim-clog__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  padding: 0.45rem 0.65rem;
+  border-bottom: 1px solid rgba(255, 236, 220, 0.12);
+}
+
+.sim-dmg__head {
+  position: relative;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0;
+  min-height: 1.7rem;
+  padding: 0 0 0.55rem;
+  border-bottom: 0;
+}
+
+.sim-clog__title {
+  font-family: var(--bpb-font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--clog-ink);
+  margin: 0;
+}
+
+.sim-dmg__metric-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: auto;
+  z-index: 5;
+  display: flex;
+  justify-content: flex-end;
+  width: auto;
+  margin: 0;
+  min-width: 0;
+}
+
+.sim-dmg__side {
+  font-family: var(--bpb-font-body);
+  font-size: 0.72rem;
+  color: var(--clog-ink);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Game MetricList = ItemListButton: flat, OptionsFont 26 + 3px outline, no pill */
+.sim-dmg__metric-btn {
+  appearance: none;
+  width: auto;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--clog-cream, #ffecd4);
+  font-family: var(--bpb-font-body);
+  font-size: 1.625rem;
+  font-weight: 400;
+  line-height: 1.1;
+  -webkit-text-stroke: 3px #3c261d;
+  paint-order: stroke fill;
+  text-shadow: var(--dmg-ring);
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.sim-dmg__metric-btn:hover,
+.sim-dmg__metric-btn.is-open {
+  color: #ffe337;
+}
+
+.sim-dmg__metric-label {
+  min-width: 0;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sim-dmg__metric-caret {
+  display: block;
+  width: auto;
+  height: 1.15rem;
+  flex-shrink: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sim-dmg__metric-btn.is-open .sim-dmg__metric-caret {
+  transform: rotate(180deg);
+}
+
+.sim-dmg__collapse {
+  appearance: none;
+  border: none;
+  background: none;
+  color: rgba(255, 236, 220, 0.75);
+  cursor: var(--bpb-cursor-pointer);
+  font-size: 0.95rem;
+  padding: 0.2rem 0.35rem;
+}
+
+.sim-dmg__menu {
+  position: absolute;
+  z-index: 40;
+  left: auto;
+  right: 0;
+  top: calc(100% + 2px);
+  transform: none;
+  margin: 0;
+  padding: 0.15rem 0;
+  list-style: none;
+  min-width: 12rem;
+  width: max-content;
+  max-height: 16rem;
+  overflow: auto;
+  background: #e8d4bc;
+  border: 2px solid #3c261d;
+  border-radius: 0.1rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  scrollbar-color: #eac914 #816230;
+}
+
+.sim-dmg__menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.55rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #3c261d;
+  cursor: var(--bpb-cursor-pointer);
+  border-bottom: 1px solid rgba(60, 38, 29, 0.18);
+}
+
+.sim-dmg__menu-item:last-child {
+  border-bottom: none;
+}
+
+.sim-dmg__menu-item:hover,
+.sim-dmg__menu-item.is-selected {
+  background: #f0e0a8;
+}
+
+.sim-dmg__micon {
+  width: 1.1rem;
+  height: 1.1rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.sim-dmg__body {
+  padding: 0.2rem 0.15rem 0.45rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Game StackChangeSectionLabel: Baskerville Bold 24 + 3px outline, prefix " " */
+.sim-dmg__section {
+  list-style: none;
+  margin: 0.35rem 0 0.12rem;
+  padding: 0 0 0 4px;
+  min-height: 34px;
+  font-family: var(--bpb-font-body);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 34px;
+  letter-spacing: 1px;
+  color: var(--clog-cream, #ffecd4);
+  -webkit-text-stroke: 3px #3c261d;
+  paint-order: stroke fill;
+  text-shadow: var(--dmg-ring);
+  opacity: 1;
+  cursor: var(--bpb-cursor-default);
+  pointer-events: none;
+}
+
+.sim-dmg__section:first-child {
+  margin-top: 0.1rem;
+}
+
+.sim-dmg__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.15rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow: auto;
+  scrollbar-color: #eac914 #6a4a28;
+}
+
+/* Keep game row heights — a scrolling list must not squeeze entries */
+.sim-dmg__list > * {
+  flex: 0 0 auto;
+}
+
+.sim-dmg__list::-webkit-scrollbar {
+  width: 8px;
+}
+.sim-dmg__list::-webkit-scrollbar-track {
+  background: #6a4a28;
+  border-radius: 4px;
+}
+.sim-dmg__list::-webkit-scrollbar-thumb {
+  background: #eac914;
+  border-radius: 4px;
+}
+
+/* Game DamageMeterEntry 387×41: name 5→175, bar 179→237, symbol 241→261,
+   total 260→385; panel y 2→38 with the log-line tab radii. */
+.sim-dmg__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 170px) 58px 20px max-content;
+  column-gap: 4px;
+  align-items: center;
+  height: 41px;
+  padding: 0 0 0 5px;
+  background: none;
+  cursor: var(--bpb-cursor-pointer);
+  color: var(--clog-cream, #ffecd4);
+}
+
+.sim-dmg__row::before {
+  content: '';
+  position: absolute;
+  inset: 2px 0 3px;
+  /* Game DamageMeterEntryStylebox */
+  background: rgba(255, 204, 153, 0.28);
+  border-radius: 0 10px 10px 10px;
+}
+
+.sim-dmg__row > * {
+  position: relative;
+}
+
+.sim-dmg__row:hover::before,
+.sim-dmg__row.is-active::before {
+  background: rgba(255, 204, 153, 0.44);
+}
+
+/* Game DamageMeterTotal: min-h 44, panel y 10→37, name + absolute only */
+.sim-dmg__row--total {
+  grid-template-columns: minmax(0, 170px) 82px max-content;
+  height: 44px;
+  cursor: var(--bpb-cursor-default);
+  font-weight: 400;
+}
+
+.sim-dmg__row--total::before {
+  inset: 10px 0 7px;
+}
+
+.sim-dmg__row--total:hover::before,
+.sim-dmg__row--total.is-active::before {
+  background: rgba(255, 204, 153, 0.28);
+}
+
+/* Divider1 sprite above the Total row */
+.sim-dmg__row--total::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 8px;
+  right: 8px;
+  height: 3px;
+  background: rgba(60, 38, 29, 0.5);
+  border-radius: 2px;
+}
+
+.sim-dmg__row--total .sim-dmg__total {
+  grid-column: 3;
+}
+
+.sim-dmg__name {
+  margin-top: 2px;
+  font-family: var(--bpb-font-body);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-text-stroke: 3px #3c261d;
+  paint-order: stroke fill;
+  text-shadow: var(--dmg-ring);
+}
+
+/* Game ProgressBar: fixed 58×16, 3px ink border (radius 3), fill radius 2 */
+.sim-dmg__bar {
+  position: relative;
+  box-sizing: content-box;
+  width: 58px;
+  height: 16px;
+  /* expand_margin 2 + 3px border draws outside the 58×16 gauge */
+  margin: 3px 0 0 -3px;
+  background: none;
+  border: 3px solid #3c261d;
+  border-radius: 3px;
+  overflow: visible;
+}
+
+.sim-dmg__fill {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: #fce26f;
+}
+
+/* RelDamage 1→33 vs ProgressBar 15→31 — glyph waist on the bar’s top ink */
+.sim-dmg__pct {
+  position: absolute;
+  top: -14px;
+  left: 0;
+  width: 50px;
+  height: 32px;
+  display: block;
+  overflow: visible;
+  text-align: right;
+  font-family: var(--bpb-font-body);
+  font-size: 1.375rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--clog-cream, #ffecd4);
+  -webkit-text-stroke: 3px #3c261d;
+  paint-order: stroke fill;
+  text-shadow: var(--dmg-ring);
+}
+
+/* Game PlotButton: 20×20 symbol, tinted with that source's plot color */
+.sim-dmg__plotbtn {
+  appearance: none;
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: var(--bpb-cursor-pointer);
+  line-height: 0;
+}
+
+.sim-dmg__symbol {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: var(--plot-tint, #fce26f);
+  -webkit-mask: var(--plot-mask) center / contain no-repeat;
+  mask: var(--plot-mask) center / contain no-repeat;
+}
+
+/* Game AbsoluteDamage box starts at x 260, 1px left of the symbol's right edge.
+   Game font is 22 in a 125px clip_text box; 20 keeps long "180.0 (18.0/s)"
+   inside the panel instead of clipping it against the patch border. */
+.sim-dmg__total {
+  box-sizing: border-box;
+  margin: -1px 0 0 -5px;
+  text-align: right;
+  font-family: var(--bpb-font-body);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.1;
+  white-space: nowrap;
+  -webkit-text-stroke: 3px #3c261d;
+  paint-order: stroke fill;
+  text-shadow: var(--dmg-ring);
+}
+
+/* Plot line toggled off → gray bar + dim text (DamageMeterEntry.gd) */
+.sim-dmg__row.is-off .sim-dmg__name,
+.sim-dmg__row.is-off .sim-dmg__pct,
+.sim-dmg__row.is-off .sim-dmg__total {
+  color: #b2aeaa;
+}
+
+.sim-dmg__rate {
+  opacity: 1;
+  font-size: inherit;
+}
+
+.sim-dmg__empty {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  padding: 0.35rem;
+}
+
+/* Game DamageMeterPlot: 394×240 Control, inline in the meter list per section */
+.sim-dmg__plotrow {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 394px;
+  max-width: 100%;
+}
+
+.sim-dmg__plot {
+  display: block;
+  width: 394px;
+  max-width: 100%;
+  height: auto;
+  cursor: crosshair;
+}
+
+.sim-dmg__pline {
+  fill: none;
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.sim-dmg__psym {
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.sim-dmg__vbar {
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.5;
+}
+
+.sim-dmg__plab {
+  fill: var(--clog-cream, #ffecd4);
+  font-family: var(--bpb-font-body);
+  font-size: 22px;
+  paint-order: stroke fill;
+  stroke: #3c261d;
+  stroke-width: 3px;
+}
+
+.sim-dmg__plab--end {
+  text-anchor: end;
+}
+
+/* —— Combat Log —— */
+
+.sim-clog__title {
+  margin-right: auto;
+}
+
+.sim-clog__sides {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.sim-clog__side {
+  appearance: none;
+  border: 1px solid rgba(255, 236, 220, 0.35);
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.8rem;
+  cursor: var(--bpb-cursor-pointer);
+  opacity: 0.45;
+}
+
+.sim-clog__side--you {
+  background: #cfc0ae;
+  color: #3c261d;
+}
+
+.sim-clog__side--opp {
+  background: #6b2e2c;
+  color: #ffecdc;
+}
+
+.sim-clog__side.is-on {
+  opacity: 1;
+  box-shadow: 0 0 0 1px rgba(234, 201, 20, 0.45);
+}
+
+.sim-clog__act {
+  appearance: none;
+  border: none;
+  background: none;
+  color: rgba(255, 236, 220, 0.75);
+  font-family: var(--bpb-font-body);
+  font-size: 0.72rem;
+  text-decoration: underline;
+  cursor: var(--bpb-cursor-pointer);
+  padding: 0.15rem;
+}
+
+.sim-clog__act:hover {
+  color: #eac914;
+}
+
+.sim-clog__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.55rem;
+  border-bottom: 1px solid rgba(255, 236, 220, 0.1);
+}
+
+.sim-clog__search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 236, 220, 0.2);
+  border-radius: 0.2rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.sim-clog__search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--clog-ink);
+  font-family: var(--bpb-font-body);
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.sim-clog__search input::placeholder {
+  color: rgba(255, 236, 220, 0.45);
+}
+
+.sim-clog__search-icon {
+  opacity: 0.6;
+}
+
+.sim-clog__replay {
+  display: inline-flex;
+  gap: 0.15rem;
+}
+
+.sim-clog__rbtn {
+  appearance: none;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 1px solid rgba(255, 236, 220, 0.35);
+  border-radius: 0.2rem;
+  background: rgba(255, 236, 220, 0.1);
+  color: var(--clog-ink);
+  cursor: var(--bpb-cursor-pointer);
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.sim-clog__rbtn:hover {
+  background: rgba(234, 201, 20, 0.2);
+}
+
+.sim-clog__list {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0;
+  flex: 1;
+  min-height: 12rem;
+  max-height: 22rem;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  scrollbar-color: #eac914 #472a24;
+}
+
+.sim-clog__list::-webkit-scrollbar {
+  width: 10px;
+}
+.sim-clog__list::-webkit-scrollbar-track {
+  background: #472a24;
+  background-image: url('../../../../assets/icons/scrollbar/track.png');
+  background-size: 100% 100%;
+}
+.sim-clog__list::-webkit-scrollbar-thumb {
+  background: #eac914;
+  background-image: url('../../../../assets/icons/scrollbar/thumb.png');
+  background-size: 100% 100%;
+  border-radius: 1px;
+}
+
+.sim-clog__line {
+  box-sizing: border-box;
+  padding: 0.22rem 2px 0.22rem 6px;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: #3c261d;
+  background: var(--clog-you);
+  /* Game LogLinePlayerStylebox: TL square, other corners 10 */
+  border-radius: 0 10px 10px 10px;
+  cursor: var(--bpb-cursor-pointer);
+  opacity: 0.55;
+  transition: opacity 0.12s ease;
+}
+
+.sim-clog__line--opp {
+  background: var(--clog-opp);
+  color: #fff;
+  /* Game LogLineOpponentStylebox: TR square, other corners 10 */
+  border-radius: 10px 0 10px 10px;
+}
+
+.sim-clog__line--sub {
+  padding-top: 0.08rem;
+  padding-bottom: 0.08rem;
+  padding-left: 1.15rem;
+  font-size: 0.84rem;
+  opacity: 0.88;
+}
+
+.sim-clog__line--sub2 {
+  padding-left: 2.1rem;
+}
+
+.sim-clog__line[data-depth="3"] {
+  padding-left: 2.9rem;
+}
+
+.sim-clog__line--sub.is-past,
+.sim-clog__line--sub.is-active {
+  opacity: 1;
+}
+
+.sim-clog__line--activation {
+  opacity: 0.4;
+}
+
+.sim-clog__line.is-past {
+  opacity: 0.92;
+}
+
+.sim-clog__line.is-active {
+  opacity: 1;
+  outline: 3px solid var(--clog-line-gold);
+  outline-offset: -3px;
+}
+
+.sim-clog__line.is-hover:not(.is-minimized) {
+  outline: 3px solid var(--clog-line-gold);
+  outline-offset: -3px;
+}
+
+.sim-clog__line.is-minimized {
+  height: 5px;
+  padding: 0;
+  overflow: hidden;
+  opacity: 0.35;
+  cursor: var(--bpb-cursor-default);
+}
+
+.sim-clog__line.is-minimized .sim-clog__msg {
+  visibility: hidden;
+}
+
+.sim-clog__msg {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.sim-clog__icon {
+  display: inline-block;
+  width: 1.05rem;
+  height: 1.05rem;
+  /* Buff art is not square (Block 133×174, Mana 110×143) — don't stretch it */
+  object-fit: contain;
+  vertical-align: -0.2rem;
+  margin: 0 0.08rem;
+}
+
+.sim-clog__icon--stat {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.sim-clog__crit {
+  color: #ff6b6b;
+  font-weight: 700;
+}
+
+.sim-clog__line--opp .sim-clog__crit {
+  color: #ffb0c8;
+}
+
+/* Board highlight from log/meter */
+.sim-bag .bpb-bg__item.sim-log-hi {
+  outline: 2px solid #eac914;
+  outline-offset: 1px;
+  filter: brightness(1.12);
+}

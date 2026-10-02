@@ -4,6 +4,29 @@
 
 import { HERO_CLASSES } from '../items/filter-logic.js';
 
+/** Socket face 0–3. Local so draft I/O does not import the drag graph. */
+function gemFace(n) {
+  const f = Math.round(Number(n));
+  if (!Number.isFinite(f)) return 0;
+  return ((f % 4) + 4) % 4;
+}
+
+/**
+ * Keep socket ids and non-zero faces. Trailing empty slots are dropped.
+ * @param {{ gems?: string[], gemR?: number[] }} target
+ * @param {Record<string, unknown>} raw
+ */
+function attachSocketGems(target, raw) {
+  if (!Array.isArray(raw.gems)) return;
+  const gems = raw.gems.map((g) => (g == null || g === '' ? '' : String(g)));
+  while (gems.length && gems[gems.length - 1] === '') gems.pop();
+  if (!gems.length) return;
+  target.gems = gems;
+  if (!Array.isArray(raw.gemR)) return;
+  const gemR = gems.map((_, i) => gemFace(raw.gemR[i]));
+  if (gemR.some((n) => n !== 0)) target.gemR = gemR;
+}
+
 export const DRAFT_STORAGE_KEY = 'bpb-create-draft:v1';
 export const DRAFT_VERSION = 1;
 
@@ -17,6 +40,7 @@ export const DRAFT_VERSION = 1;
  *   r: number,
  *   key: string,
  *   gems?: string[],
+ *   gemR?: number[],
  *   priority?: Priority,
  *   instance?: import('../sim/engine/placement-instance.js').PlacementInstance,
  * }} DraftPlacement
@@ -30,6 +54,7 @@ export const DRAFT_VERSION = 1;
  *   r: number,
  *   key: string,
  *   gems?: string[],
+ *   gemR?: number[],
  *   priority?: Priority,
  * }} ParkedEntry
  */
@@ -52,7 +77,7 @@ export function normalizeBuildTag(raw) {
  *     result: 'win' | 'loss',
  *     health?: number,
  *     stamina?: number,
- *     placements: { id: string, x: number, y: number, r: number, gems?: string[], instance?: import('../sim/engine/placement-instance.js').PlacementInstance }[],
+ *     placements: { id: string, x: number, y: number, r: number, gems?: string[], gemR?: number[], instance?: import('../sim/engine/placement-instance.js').PlacementInstance }[],
  *   }[],
  * }} DraftHistory
  */
@@ -119,13 +144,7 @@ export function normalizeDraftHistory(raw) {
         y,
         r: ((Number(pl.r) || 0) % 4 + 4) % 4,
       };
-      if (Array.isArray(pl.gems)) {
-        next.gems = pl.gems.map((g) => (g == null || g === '' ? '' : String(g)));
-        while (next.gems.length && next.gems[next.gems.length - 1] === '') {
-          next.gems.pop();
-        }
-        if (!next.gems.length) delete next.gems;
-      }
+      attachSocketGems(next, pl);
       if (pl.instance && typeof pl.instance === 'object') {
         next.instance = /** @type {DraftHistory['rounds'][number]['placements'][number]['instance']} */ (
           pl.instance
@@ -178,9 +197,7 @@ export function lastRoundPlacementsFromHistory(history, draftPlacements = []) {
       key: `hist-${i}:${p.id}:${p.x},${p.y}:${r}`,
       priority: prioByKey.get(prioKey) ?? null,
     };
-    if (Array.isArray(p.gems) && p.gems.length) {
-      row.gems = p.gems.slice();
-    }
+    attachSocketGems(row, p);
     return row;
   });
 }
@@ -237,13 +254,7 @@ function normalizeParkedList(raw) {
       key,
       priority,
     };
-    if (Array.isArray(o.gems)) {
-      entry.gems = o.gems.map((g) => (g == null || g === '' ? '' : String(g)));
-      while (entry.gems.length && entry.gems[entry.gems.length - 1] === '') {
-        entry.gems.pop();
-      }
-      if (!entry.gems.length) delete entry.gems;
-    }
+    attachSocketGems(entry, o);
     out.push(entry);
     // Legacy nested cargo → flatten into sibling parked items
     if (Array.isArray(o.cargo)) {
@@ -264,9 +275,7 @@ function normalizeParkedList(raw) {
           key: ckey,
           priority: null,
         };
-        if (Array.isArray(cr.gems)) {
-          piece.gems = cr.gems.map((g) => (g == null || g === '' ? '' : String(g)));
-        }
+        attachSocketGems(piece, cr);
         out.push(piece);
       }
     }
@@ -308,14 +317,7 @@ export function normalizeDraft(raw) {
     }
     /** @type {DraftPlacement} */
     const next = { id, x, y, r, key, priority };
-    if (Array.isArray(row.gems)) {
-      // Keep empty slots as '' so socket indices stay stable
-      next.gems = row.gems.map((g) => (g == null || g === '' ? '' : String(g)));
-      while (next.gems.length && next.gems[next.gems.length - 1] === '') {
-        next.gems.pop();
-      }
-      if (!next.gems.length) delete next.gems;
-    }
+    attachSocketGems(next, row);
     placements.push(next);
   }
 
@@ -389,6 +391,8 @@ export function loadDraft() {
 /** @param {Draft} draft */
 export function saveDraft(draft) {
   try {
+    // Set while ?fix=real-NNN is open so a label edit does not replace the create draft.
+    if (sessionStorage.getItem('bpb-label-fix-hold') === '1') return;
     localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
   } catch {
     /* quota / private mode */

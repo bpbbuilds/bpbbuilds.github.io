@@ -162,6 +162,7 @@
 
 .il-filter__count {
   margin: 0;
+  padding-inline: 0.22em 0.06em;
   font-family: var(--bpb-font-body);
   font-weight: 700;
   font-size: 1.625rem;
@@ -171,6 +172,7 @@
   -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
   paint-order: stroke fill;
   text-shadow: var(--il-ui-ring);
+  overflow: visible;
 }
 
 .il-filter__reset {
@@ -181,7 +183,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 .il-filter__reset img {
@@ -208,7 +210,7 @@
   padding: 0.15rem 0.2rem;
   border: 0;
   background: transparent;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 .il-filter__group-arrow {
@@ -253,7 +255,7 @@
   border: 2px solid transparent;
   background: transparent;
   text-align: left;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   font-family: var(--bpb-font-body);
   font-weight: 400;
   font-size: 1.5rem;
@@ -269,10 +271,22 @@
   border-top: 1px solid rgba(42, 26, 16, 0.22);
 }
 
-.il-filter__group-option.is-active,
-.il-filter__group-option:hover {
+.il-filter__group-option:hover,
+.il-filter__group-option.is-active {
   border-color: var(--il-gold);
-  background: color-mix(in srgb, var(--il-cream) 55%, var(--il-menu-bg));
+  background: rgba(234, 201, 20, 0.12);
+}
+
+.il-filter__group-option:disabled,
+.il-filter__group-option.is-disabled {
+  opacity: 0.5;
+  cursor: var(--bpb-cursor-default);
+}
+
+.il-filter__group-option:disabled:hover,
+.il-filter__group-option.is-disabled:hover {
+  border-color: transparent;
+  background: transparent;
 }
 
 .il-filter__classes {
@@ -293,7 +307,7 @@
   border: 2px solid transparent;
   border-radius: 0.4rem;
   background: transparent;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   line-height: 0;
 }
 
@@ -369,7 +383,7 @@
   padding: 0.15rem 0;
   border: 0;
   background: transparent;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   text-align: left;
 }
 
@@ -634,4 +648,111 @@
 .il-filter__input:focus {
   outline: 2px solid color-mix(in srgb, var(--il-gold) 70%, transparent);
   outline-offset: 1px;
+}
+
+/* Narrow drawer layout: keep every filter group inside the viewport-width panel. */
+@media (max-width: 900px) {
+  /* In the side drawer, make the primary search the first filter control.
+     Keep debuffs at the end instead of moving the whole desktop search row. */
+  .items-filters.il-filter {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .il-filter__head {
+    order: 0;
+  }
+
+  .il-filter__search-row {
+    display: contents;
+  }
+
+  .il-filter__search {
+    order: 1;
+  }
+
+  .il-filter__grouping {
+    order: 2;
+  }
+
+  .il-filter__classes {
+    order: 3;
+  }
+
+  .il-filter__rarities {
+    order: 4;
+  }
+
+  .il-filter__types {
+    order: 5;
+  }
+
+  .il-filter__lower {
+    order: 6;
+  }
+
+  .il-filter__debuffs {
+    order: 7;
+  }
+
+  .il-filter__count,
+  .il-filter__sticker,
+  .il-filter__group-option,
+  .il-filter__check-label {
+    font-size: clamp(1.05rem, 4.5vw, 1.35rem);
+  }
+
+  .il-filter__classes .il-filter__icon-btn {
+    height: clamp(2.5rem, 13vw, 3.1rem);
+  }
+
+  .il-filter__rarities {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem;
+  }
+
+  .il-filter__check--swiped,
+  .il-filter__rarity-col:last-child .il-filter__check--swiped {
+    min-width: 0;
+    width: 100%;
+    --swipe-left: 2.8rem;
+    --swipe-len: 100%;
+  }
+
+  .il-filter__types {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.3rem;
+  }
+
+  .il-filter__lower {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.65rem;
+    column-gap: 0;
+  }
+
+  .il-filter__buffs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.35rem;
+  }
+
+  .il-filter__icon-btn--stack {
+    width: clamp(2.4rem, 13vw, 3.125rem);
+    height: clamp(2.4rem, 13vw, 3.125rem);
+    justify-self: center;
+  }
+
+  .il-filter__search-row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.55rem;
+  }
+
+  .il-filter__search {
+    max-width: none;
+  }
+
+  .il-filter__debuffs {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
 }

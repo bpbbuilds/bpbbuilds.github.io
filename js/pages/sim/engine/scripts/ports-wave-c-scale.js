@@ -10,6 +10,7 @@ import {
   useLucky,
   useRegeneration,
 } from '../buff-economy.js';
+import { giveBuffPower } from '../buff-power.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addAccuracy, addBonusDamage, addBonusDamageFromBuffChange, addSpeed } from '../piece-stats.js';
@@ -359,7 +360,7 @@ export const hungryBladePort = {
   },
 };
 
-/** WarScythe.gd — poison amp on linked; poison spend → crit. */
+/** WarScythe.gd — +1 poison power on linked; poison spend → crit. */
 /** @type {ScriptHandler} */
 export const warScythePort = {
   handlerId: 'war_scythe',
@@ -367,17 +368,10 @@ export const warScythePort = {
   onCombatStart(piece, ctx) {
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
     const keys = new Set(links.map((l) => l.key));
-    onBuffChanged(ctx.dummy, (ch) => {
-      if (ch.stack !== 'poison' || !(ch.amount > 0)) return;
-      if (!ch.originKey || !keys.has(ch.originKey)) return;
-      if (ch.originKey === piece.placementKey) return;
-      grantStacks(ctx.dummy, 'poison', ch.amount, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-        rng: ctx.rng,
-        opponent: ctx.player,
-      });
-    });
+    for (const other of ctx.pieces || []) {
+      if (!keys.has(other.placementKey)) continue;
+      giveBuffPower(other, 'poison', 1);
+    }
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'war_scythe');

@@ -1,573 +1,21 @@
-/* Shared layout helpers used across pages.
- * Header: wood shelves flanking BPB logo + Builds banner.
- */
+/* Shared layout helpers used across pages. */
 
 @import url("../js/shared/skeleton.css");
+@import url("../js/shared/board-still/board-still.css");
+@import url("../js/shared/nav.css");
+@import url("../js/shared/blob-face.css");
 @import url("../js/shared/premium-cta.css");
 @import url("../js/shared/premium-offer.css");
-
-.site-nav-shell {
-  position: relative;
-  z-index: 1;
-  padding: 0.2rem 0.85rem 0;
-}
-
-.site-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: min(96rem, calc(100vw - 1rem));
-  margin: 0 auto;
-  /* Top: hanging banners; bottom: Login plaque under the right shelf */
-  padding: 2rem 0.5rem 4.4rem;
-}
-
-.site-nav__rail {
-  position: relative;
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 32rem;
-  display: flex;
-  align-items: center;
-}
-
-.site-nav__shelf {
-  width: 100%;
-  height: auto;
-  display: block;
-  pointer-events: none;
-  user-select: none;
-  position: relative;
-  /* Above hanging Login ropes, below banners/socials on the shelf */
-  z-index: 2;
-}
-
-.site-nav__shelf--mirror {
-  transform: scaleX(-1);
-}
-
-.site-nav__banners {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% - 0.9rem);
-  transform: translateX(-50%);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 0.35rem;
-  width: 82%;
-  /* Sit on top of the shelf plank */
-  z-index: 3;
-}
-
-.site-nav__banners--right {
-  justify-content: center;
-}
-
-.site-nav__banners--right .site-nav__link {
-  flex: 1 1 0;
-  max-width: calc(50% - 0.175rem);
-  width: auto;
-}
-
-.site-nav__socials {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: calc(50% - 0.175rem);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  flex-wrap: nowrap;
-  gap: 0.55rem;
-  padding: 0 0.1rem 0.25rem;
-}
-
-.site-nav__auth {
-  position: absolute;
-  /* Hang under the shelf, toward the social icons */
-  right: auto;
-  left: 52%;
-  /* Overlap into the shelf so hang-lines look fastened under the plank */
-  top: calc(100% - 1.15rem);
-  /* Behind shelf (ropes tuck under), banners stay z-index 3 on top */
-  z-index: 1;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  min-width: 0;
-  transform: none;
-  pointer-events: none;
-}
-
-.site-nav__auth > * {
-  pointer-events: auto;
-}
-
-.site-nav__login {
-  appearance: none;
-  position: relative;
-  display: block;
-  width: clamp(8rem, 14.5vw, 10.5rem);
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  line-height: 0;
-}
-
-.site-nav__login-plate {
-  display: block;
-  width: 100%;
-  height: auto;
-  transition: filter 0.15s ease, transform 0.15s ease;
-}
-
-.site-nav__login:hover .site-nav__login-plate {
-  filter: brightness(1.08);
-}
-
-.site-nav__login:focus-visible {
-  outline: 2px solid #3c261d;
-  outline-offset: 3px;
-  border-radius: 0.25rem;
-}
-
-.site-nav__login-text {
-  position: absolute;
-  left: 50%;
-  /* Plate body sits below hanging cords (game InventoryLabel) */
-  top: 62%;
-  transform: translate(-50%, -50%);
-  width: max-content;
-  max-width: 78%;
-  text-align: center;
-  font-family: var(--bpb-font-display, "Milonga", Georgia, serif);
-  font-size: clamp(1.1rem, 2.15vw, 1.55rem);
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  line-height: 1;
-  color: #3c261d;
-  pointer-events: none;
-}
-
-/* Signed-in: same hanging shop sign, persona + Sign out on the plate */
-.site-nav__login--session {
-  cursor: default;
-}
-
-.site-nav__login--session:hover .site-nav__login-plate {
-  filter: none;
-}
-
-.site-nav__login-session {
-  position: absolute;
-  left: 50%;
-  top: 61%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.12rem;
-  width: 78%;
-  max-width: 78%;
-  line-height: 1.05;
-}
-
-.site-nav__login-persona {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  max-width: 100%;
-  text-decoration: none;
-  color: #3c261d;
-  min-width: 0;
-}
-
-.site-nav__login-persona:hover .site-nav__login-name {
-  text-decoration: underline;
-  text-underline-offset: 0.1em;
-}
-
-.site-nav__login-avatar {
-  width: clamp(1.35rem, 2.4vw, 1.85rem);
-  height: clamp(1.35rem, 2.4vw, 1.85rem);
-  border-radius: 0.28rem;
-  object-fit: cover;
-  border: 1.5px solid #3c261d;
-  flex-shrink: 0;
-  background: #c4a882;
-}
-
-.site-nav__login-avatar--empty {
-  display: inline-block;
-}
-
-.site-nav__login-name {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: var(--bpb-font-display, "Milonga", Georgia, serif);
-  font-size: clamp(0.72rem, 1.35vw, 0.95rem);
-  font-weight: 400;
-  color: #3c261d;
-  line-height: 1.1;
-}
-
-.site-nav__login-out {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  font-family: var(--bpb-font-body, Georgia, serif);
-  font-size: clamp(0.55rem, 1.05vw, 0.68rem);
-  font-weight: 400;
-  line-height: 1;
-  color: #3c261d;
-  text-decoration: underline;
-  text-underline-offset: 0.12em;
-  opacity: 0.88;
-}
-
-.site-nav__login-out:hover {
-  opacity: 1;
-}
-
-.site-nav__social {
-  position: relative;
-  display: block;
-  width: clamp(2.75rem, 5vw, 3.75rem);
-  line-height: 0;
-  transform: perspective(18rem) rotateY(-12deg);
-  transform-origin: center bottom;
-  transition: transform 0.15s ease;
-}
-
-.site-nav__social::after {
-  content: "";
-  position: absolute;
-  left: 14%;
-  right: 10%;
-  bottom: 0.05rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(20, 12, 8, 0.5) 0%,
-    rgba(20, 12, 8, 0.22) 48%,
-    rgba(20, 12, 8, 0) 74%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-.site-nav__social:hover {
-  transform: perspective(18rem) rotateY(-12deg) translateY(-1px) scale(1.06);
-}
-
-.site-nav__social:hover::after {
-  opacity: 0.8;
-  transform: scaleX(1.05);
-}
-
-.site-nav__social img {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.site-nav__link {
-  position: relative;
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: calc(50% - 0.175rem);
-  display: block;
-  line-height: 0;
-  text-decoration: none;
-}
-
-.site-nav__banner {
-  display: block;
-  width: 100%;
-  height: auto;
-  transition: filter 0.15s ease;
-}
-
-.site-nav__link:hover .site-nav__banner {
-  filter: brightness(1.14) saturate(1.05);
-}
-
-.site-nav__banner--mirror {
-  transform: scaleX(-1);
-}
-
-.site-nav__link-text {
-  position: absolute;
-  left: 50%;
-  right: auto;
-  bottom: 16%;
-  top: auto;
-  display: block;
-  width: max-content;
-  max-width: 86%;
-  text-align: center;
-  font-family: var(--bpb-font-display, "Milonga", Georgia, serif);
-  font-size: clamp(1.1rem, 2.2vw, 1.7rem);
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  color: var(--bpb-label-fill, #fffaf0);
-  text-shadow: var(--bpb-label-stroke);
-  line-height: 1;
-  transform: translateX(-50%) rotate(-1.2deg);
-  pointer-events: none;
-}
-
-.site-nav__link-text--right {
-  transform: translateX(-50%) rotate(1.2deg);
-}
-
-.site-nav__brand {
-  position: relative;
-  flex: 0 0 auto;
-  display: block;
-  line-height: 0;
-  text-decoration: none;
-  z-index: 1;
-}
-
-/* Shared stage — width/height morph with the active mark */
-.site-nav__logo-swap {
-  --logo-w: min(24rem, 32vw);
-  --logo-ratio: 403 / 992;
-  position: relative;
-  display: block;
-  width: var(--logo-w);
-  height: calc(var(--logo-w) * var(--logo-ratio));
-  margin-inline: auto;
-  transition:
-    width 0.2s cubic-bezier(0.33, 1, 0.68, 1),
-    height 0.2s cubic-bezier(0.33, 1, 0.68, 1);
-}
-
-#site-nav.is-scrolled .site-nav__logo-swap {
-  --logo-w: min(11rem, 18vw);
-  --logo-ratio: 782 / 1458;
-}
-
-.site-nav__logo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  transform-origin: center center;
-  transition:
-    opacity 0.18s ease,
-    transform 0.2s cubic-bezier(0.33, 1, 0.68, 1),
-    filter 0.18s ease;
-  pointer-events: none;
-}
-
-.site-nav__logo--full {
-  opacity: 1;
-  transform: scale(1);
-  filter: none;
-}
-
-.site-nav__logo--compact {
-  opacity: 0;
-  transform: scale(1.12);
-  /* Compact mark is a darker paint than the full wordmark — lift midtones a bit */
-  filter: brightness(1.18) contrast(1.04);
-}
-
-#site-nav.is-scrolled .site-nav__logo--full {
-  opacity: 0;
-  transform: scale(0.72);
-}
-
-#site-nav.is-scrolled .site-nav__logo--compact {
-  opacity: 1;
-  transform: scale(1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .site-nav__logo-swap,
-  .site-nav__logo,
-  .site-nav__builds {
-    transition: none;
-  }
-}
-
-.site-nav__builds {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translateX(-50%);
-  display: block;
-  width: min(11rem, 16vw);
-  height: auto;
-  margin-top: -1.20em;
-  transition: width 0.2s cubic-bezier(0.33, 1, 0.68, 1);
-}
-
-/* —— Nav loading skeleton —— */
-.site-nav-skel-wrap {
-  width: 100%;
-}
-
-.site-nav--skel {
-  pointer-events: none;
-}
-
-.site-nav__skel-shelf {
-  width: 100%;
-  padding: 0.15rem 0;
-}
-
-.site-nav__skel-shelf-bar {
-  width: 100%;
-}
-
-.site-nav__skel-banners {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% - 0.9rem);
-  transform: translateX(-50%);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 0.35rem;
-  width: 82%;
-  z-index: 1;
-}
-
-.site-nav__skel-banner {
-  flex: 1 1 0;
-  max-width: calc(50% - 0.175rem);
-}
-
-.site-nav__skel-banners--right {
-  justify-content: center;
-}
-
-.site-nav__skel-socials {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: calc(50% - 0.175rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.85rem;
-  padding: 0 0.1rem 0.25rem;
-}
-
-.site-nav__skel-social {
-  width: clamp(2.75rem, 5vw, 3.75rem);
-  height: clamp(2.25rem, 4vw, 3.1rem);
-  flex: 0 0 auto;
-}
-
-.site-nav__brand--skel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  min-width: min(24rem, 32vw);
-}
-
-.site-nav__skel-logo {
-  width: min(24rem, 32vw);
-  height: auto;
-  aspect-ratio: 992 / 403;
-}
-
-.site-nav__skel-builds {
-  width: min(11rem, 16vw);
-}
-
-@media (max-width: 900px) {
-  .site-nav__rail {
-    max-width: 16rem;
-  }
-
-  .site-nav__logo-swap,
-  .site-nav__brand--skel,
-  .site-nav__skel-logo {
-    --logo-w: min(18rem, 36vw);
-  }
-
-  .site-nav__brand--skel,
-  .site-nav__skel-logo {
-    width: min(18rem, 36vw);
-  }
-
-  #site-nav.is-scrolled .site-nav__logo-swap {
-    --logo-w: min(9rem, 22vw);
-  }
-}
-
-@media (max-width: 640px) {
-  .site-nav {
-    padding: 2rem 0.35rem 3.1rem;
-  }
-
-  .site-nav__auth {
-    left: 42%;
-    right: auto;
-    top: calc(100% - 0.95rem);
-  }
-
-  .site-nav__login {
-    width: clamp(6.5rem, 40vw, 8.5rem);
-  }
-
-  .site-nav__login-text {
-    font-size: clamp(1rem, 4.2vw, 1.25rem);
-  }
-
-  .site-nav__rail {
-    max-width: 7.5rem;
-  }
-
-  .site-nav__link-text {
-    font-size: 0.85rem;
-    letter-spacing: 0.03em;
-  }
-
-  .site-nav__logo-swap {
-    --logo-w: min(12rem, 44vw);
-  }
-
-  .site-nav__brand--skel,
-  .site-nav__skel-logo {
-    width: min(12rem, 44vw);
-  }
-
-  #site-nav.is-scrolled .site-nav__logo-swap {
-    --logo-w: min(7.5rem, 28vw);
-  }
-
-  .site-nav__builds,
-  .site-nav__skel-builds {
-    width: min(7rem, 26vw);
-  }
-}
+@import url("../js/shared/discord-join.css");
 
 /* —— Site footer —— */
 .site-footer {
+  box-sizing: border-box;
   flex-shrink: 0;
+  width: 100%;
+  margin: 0;
   margin-top: auto;
-  padding: 1.75rem 1rem 2rem;
+  padding: 1.75rem var(--bpb-frame-edge-x, 1rem) max(3.25rem, var(--bpb-frame-edge-y, 2rem));
   background:
     linear-gradient(
       180deg,
@@ -601,14 +49,9 @@
   margin: 0;
   max-width: 40rem;
   font-size: 0.8rem;
-  line-height: 1.45;
+  line-height: 1.35;
+  text-align: center;
   color: rgba(255, 236, 220, 0.82);
-}
-
-.site-footer__disclaimer-link {
-  color: var(--bpb-gold, #e8c84a);
-  text-decoration: underline;
-  text-underline-offset: 0.12em;
 }
 
 .site-footer__nav {
@@ -627,8 +70,7 @@
 .site-footer__nav a:hover,
 .site-footer__nav a:focus-visible {
   color: var(--bpb-gold, #e8c84a);
-  text-decoration: underline;
-  text-underline-offset: 0.12em;
+  text-decoration: none;
 }
 
 .site-footer__socials {
@@ -655,14 +97,31 @@
   height: auto;
 }
 
-/* Slim one-line footer — dense pages (sim, etc.) */
+/* Slim one-line footer — dense pages (sim, items).
+   Keep frame-edge inset when the leather screen chrome is on (sim zeros those tokens). */
 .site-footer--slim {
   margin-top: 0;
-  padding: 0.4rem 1rem;
+  padding: 0.4rem var(--bpb-frame-edge-x, 1rem)
+    max(3.25rem, var(--bpb-frame-edge-y, 0.4rem));
+}
+
+/* No wood frame on phone/tablet, so the footer sits on the viewport edge
+   instead of keeping the 3.25rem pad that clears the desktop rim. */
+@media (max-width: 1100px) {
+  .site-footer {
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .site-footer--slim {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+  }
 }
 
 .site-footer__inner--slim {
-  width: min(96rem, calc(100vw - 1.5rem));
+  width: min(
+    96rem,
+    calc(100vw - 2 * var(--bpb-frame-edge-x, 0.75rem) - 0.5rem)
+  );
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
@@ -701,7 +160,6 @@
     text-align: center;
     gap: 0.45rem;
   }
-
   .site-footer__inner--slim .site-footer__brand,
   .site-footer__inner--slim .site-footer__nav,
   .site-footer__inner--slim .site-footer__socials {
@@ -712,5 +170,92 @@
     flex-wrap: wrap;
     white-space: normal;
     justify-content: center;
+  }
+}
+
+/* Items catalog mobile filters - fixed button, side panel overlay */
+@media (max-width: 1240px) {
+  /* Fixed filters toggle button on mobile - stays on top */
+  .items-filters__toggle {
+    position: fixed;
+    z-index: 50;
+    top: 46%;
+    right: 0;
+    margin: 0;
+    padding: 0.75rem 0.4rem;
+    border: 2px solid #3c261d;
+    border-right: 0;
+    border-radius: 0.45rem 0 0 0.45rem;
+    background: #eac914;
+    color: #3c261d;
+    font-family: var(--bpb-font-body);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    writing-mode: vertical-rl;
+    cursor: var(--bpb-cursor-pointer);
+    box-shadow: -2px 2px 0 rgba(60, 38, 29, 0.28);
+  }
+
+/* When filters drawer is open, dim the page */
+.page-items .items-layout.is-filters-open {
+}
+
+  /* Overlay backdrop when filters are open */
+  .page-items .items-filters__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 110;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgba(28, 16, 10, 0.48);
+    cursor: var(--bpb-cursor-pointer);
+  }
+
+  /* Filter panel when open - fixed position on the right */
+  .page-items .items-layout.is-filters-open .items-filters.items-filters {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 120;
+    width: min(22rem, 88vw);
+    max-width: 88vw;
+    height: auto;
+    max-height: none;
+    margin: 0;
+    background: #5c4030;
+    transform: translateX(105%);
+    transition: transform 0.2s ease;
+    box-shadow: -6px 0 18px rgba(28, 16, 10, 0.28);
+  }
+
+  /* When open, slide the filter panel in */
+  .page-items .items-layout.is-filters-open .items-filters.items-filters {
+    transform: translateX(0);
+  }
+
+  /* Close button on the filter panel */
+  .page-items .items-filters__close {
+    display: grid;
+    place-items: center;
+    flex: 0 0 2.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #3c261d;
+    border-radius: 0.3rem;
+    background: #eac914;
+    cursor: var(--bpb-cursor-pointer);
+  }
+
+  /* Count label adjustment */
+  .page-items .il-filter__count {
+    flex: 1 1 auto;
+    min-width: 0;
   }
 }

@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-19T01:29:57.658Z",
+  "generatedAt": "2026-09-27T02:18:03.652Z",
   "source": "assets/item-sprites + assets/data/sprite-display.json",
   "cell1x": 68,
   "cell2x": 136,
   "quality": 90,
-  "count": 519,
+  "count": 521,
   "images": [
     "AceofSpades.png",
     "AcornAce.png",
@@ -481,6 +481,7 @@
     "TigerRune.png",
     "TimeDilator.png",
     "TimeMelting.png",
+    "TimePendant.png",
     "Toad.png",
     "ToastGoobert.png",
     "Toolbox.png",
@@ -490,6 +491,7 @@
     "TwineBadge.png",
     "Ukulele.png",
     "Ultima.png",
+    "UnidentifiedAmulet.png",
     "UnidentifiedSkill.png",
     "UniquelyUnique.png",
     "UnstableRecombobulator.png",

@@ -11,7 +11,8 @@ import { bindShareBuild } from './share.js';
 import { bindBuildVote, voteControlHtml } from './vote.js';
 import { premiumCtaFxHtml } from '../../shared/premium-cta.js';
 import { requirePremium, resumePremiumIntent } from '../../shared/premium-gate.js';
-import { buildSimPlayHref } from '../sim/sim-permalink.js';
+import { buildSimPlayHref } from '../sim/shell/sim-permalink.js';
+import { isTypingTarget } from '../../shared/is-typing-target.js';
 
 const BUILD_PLAY_INTENT = 'build-play-sim';
 const BUILD_PLAY_REASON = 'Play this build in the combat sandbox.';
@@ -90,7 +91,6 @@ export function finalBoardFrames(placements) {
  *   previewMode?: boolean,
  *   simPicker?: {
  *     activeRound: number | null,
- *     publishedLabel?: string,
  *     onRoundNavigate: (round: number) => void,
  *   },
  * }} opts
@@ -218,11 +218,6 @@ export function mountRoundScrubber(host, opts) {
           </button>
           <p class="build-round__label" aria-live="polite">
             <span class="build-round__text build-round__text--round">Round <span data-cur>1</span>/<span data-max>1</span></span>
-            ${
-              simPicker
-                ? `<span class="build-round__text build-round__text--published" hidden>${simPicker.publishedLabel || 'Published board'}</span>`
-                : ''
-            }
             <span class="build-round__text build-round__text--video" hidden>Video</span>
           </p>
           <button type="button" class="build-round__btn build-round__btn--next" aria-label="Next round">
@@ -311,7 +306,6 @@ export function mountRoundScrubber(host, opts) {
   const curEl = host.querySelector('[data-cur]');
   const maxEl = host.querySelector('[data-max]');
   const roundText = host.querySelector('.build-round__text--round');
-  const publishedText = host.querySelector('.build-round__text--published');
   const videoText = host.querySelector('.build-round__text--video');
   const prevBtn = host.querySelector('.build-round__btn--prev');
   const nextBtn = host.querySelector('.build-round__btn--next');
@@ -410,14 +404,19 @@ export function mountRoundScrubber(host, opts) {
 
     if (!showingVideo && index >= 0) lastBoardIndex = index;
 
-    if (roundText instanceof HTMLElement) roundText.hidden = showingVideo || onPublishedBoard;
-    if (publishedText instanceof HTMLElement) {
-      publishedText.hidden = !onPublishedBoard;
-    }
+    if (roundText instanceof HTMLElement) roundText.hidden = showingVideo;
     if (videoText instanceof HTMLElement) videoText.hidden = !showingVideo;
 
     if (!showingVideo && frame) {
       if (curEl) curEl.textContent = String(frame.round);
+      if (maxEl) maxEl.textContent = String(displayMax);
+    } else if (!showingVideo && onPublishedBoard) {
+      // `Number(null)` is 0 — never treat a missing round as round 0.
+      const explicit = Number(simPicker?.activeRound);
+      const fallback = frames[frames.length - 1]?.round;
+      const shown =
+        Number.isFinite(explicit) && explicit >= 1 ? explicit : fallback;
+      if (curEl) curEl.textContent = shown != null ? String(shown) : '—';
       if (maxEl) maxEl.textContent = String(displayMax);
     }
 
@@ -513,6 +512,7 @@ export function mountRoundScrubber(host, opts) {
 
   /** @param {KeyboardEvent} e */
   function onKey(e) {
+    if (isTypingTarget(e.target)) return;
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
       step(-1);

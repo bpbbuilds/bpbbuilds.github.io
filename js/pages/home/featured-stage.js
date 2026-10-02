@@ -6,6 +6,7 @@
  */
 
 import { getSupabase } from '../../shared/supabase.js';
+import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import { youtubeThumb, youtubeEmbedSrc } from '../../shared/youtube.js';
 import { classIconPath } from '../../shared/class-icons.js';
 import { skelBar, skelBlock, skelRegion } from '../../shared/skeleton.js';
@@ -40,6 +41,7 @@ function thumbOnErrorAttr(youtubeUrl) {
 
 /** @returns {Promise<object[]>} */
 async function fetchFeaturedBuilds() {
+  await syncEventBuildVisibility();
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('builds')
@@ -80,6 +82,7 @@ function slideHtml(build, root, realIndex, domIndex) {
         <div class="fs-lane fs-lane--video">
           <div class="fs-focus__media">
             <img class="fs-focus__thumb" src="${escapeAttr(thumb)}" alt=""${errAttr} />
+            <span class="fs-focus__play" aria-hidden="true"></span>
           </div>
         </div>
         <div class="fs-lane fs-lane--info">
@@ -344,6 +347,7 @@ export async function initFeaturedStage(selector = '#featured-stage') {
     const errAttr = build.thumbnail_path ? '' : thumbOnErrorAttr(build.youtube_url);
     media.innerHTML = `
       <img class="fs-focus__thumb" src="${escapeAttr(thumb)}" alt=""${errAttr} />
+      <span class="fs-focus__play" aria-hidden="true"></span>
     `;
   }
 
@@ -363,6 +367,10 @@ export async function initFeaturedStage(selector = '#featured-stage') {
     `;
   }
 
+  function phoneCarousel() {
+    return window.matchMedia('(max-width: 767px)').matches;
+  }
+
   function schedulePreview(domIdx, immediate = false) {
     if (playDelay) {
       clearTimeout(playDelay);
@@ -371,6 +379,8 @@ export async function initFeaturedStage(selector = '#featured-stage') {
     Array.from(track.children).forEach((child, idx) => {
       if (idx !== domIdx) clearPreview(child);
     });
+    // Phone cards stay on the poster until a tap. The embed chrome is too loud in the peek row.
+    if (phoneCarousel()) return;
     const mount = () => {
       mountPreview(track.children[domIdx]);
       playDelay = null;
@@ -487,6 +497,16 @@ export async function initFeaturedStage(selector = '#featured-stage') {
   track.addEventListener('click', (e) => {
     const slide = e.target.closest('.fs-slide');
     if (!slide || !track.contains(slide)) return;
+    const media = e.target.closest('.fs-focus__media');
+    if (
+      media &&
+      slide.classList.contains('is-active') &&
+      phoneCarousel() &&
+      !media.querySelector('iframe')
+    ) {
+      mountPreview(slide);
+      return;
+    }
     if (slide.classList.contains('is-active')) return;
     if (e.target.closest('a')) e.preventDefault();
     const domIdx = Number(slide.getAttribute('data-dom-index'));

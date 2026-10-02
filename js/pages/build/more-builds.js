@@ -6,12 +6,10 @@
  */
 
 import { getSupabase } from '../../shared/supabase.js';
-import { mountPlacedGrid } from '../../shared/backpack-grid/index.js';
+import { mountBoardStill, boardStillPublicUrl } from '../../shared/board-still/index.js';
 import { classIconPath } from '../../shared/class-icons.js';
 import { bindMoreBuildTips, registerMoreBuildTip } from './more-build-tip.js';
 
-const BOARD_COLS = 9;
-const BOARD_ROWS = 7;
 /** Small enough to fit 3 thumbs in the author column; still readable for hover. */
 const THUMB_CELL_PX = 14;
 
@@ -78,6 +76,7 @@ export async function fetchAuthorMoreBuilds(opts) {
       .select(
         `
         slug, title, hero_class, is_op, is_featured, build_tag, vote_score, created_at,
+        board_still_path,
         placements:build_placements (
           id, x, y, r, gems,
           item:items ( ${ITEM_SELECT} )
@@ -187,6 +186,7 @@ function sortBuildsHot(rows) {
  *   getSpriteUrl: (item: object) => string,
  *   root?: string,
  *   overEl?: HTMLElement | null,
+ *   author?: object | null,
  * }} opts
  */
 export function mountAuthorMoreBuilds(railEl, opts) {
@@ -197,7 +197,7 @@ export function mountAuthorMoreBuilds(railEl, opts) {
   const itemsById = opts.itemsById;
   const getSpriteUrl = opts.getSpriteUrl;
   const root = opts.root || '../../';
-  const grids = [];
+  const stills = [];
 
   list.replaceChildren();
 
@@ -253,27 +253,22 @@ export function mountAuthorMoreBuilds(railEl, opts) {
       gems: Array.isArray(p.gems) ? p.gems : undefined,
     }));
 
-    const grid = mountPlacedGrid(gridHost, {
+    const mounted = mountBoardStill(gridHost, {
       placements,
       itemsById,
-      cols: BOARD_COLS,
-      rows: BOARD_ROWS,
       getSpriteUrl,
-      fillWidth: false,
-      exactBoard: true,
-      reserveScrollGap: false,
+      root,
       cellPx: THUMB_CELL_PX,
+      bakedUrl: boardStillPublicUrl(build.board_still_path),
     });
-    grids.push(grid);
+    stills.push(mounted);
 
     if (thumb instanceof HTMLElement) {
-      registerMoreBuildTip(thumb, build, placements);
+      registerMoreBuildTip(thumb, withAuthor(build, opts.author), mounted.stillUrl);
     }
   }
 
   const unbindTip = bindMoreBuildTips(list, {
-    itemsById,
-    getSpriteUrl,
     root,
     overEl: opts.overEl,
   });
@@ -289,9 +284,9 @@ export function mountAuthorMoreBuilds(railEl, opts) {
     } catch {
       /* ignore */
     }
-    for (const g of grids) {
+    for (const s of stills) {
       try {
-        g.destroy?.({ keepHost: true });
+        s.destroy?.();
       } catch {
         /* ignore */
       }
@@ -323,6 +318,22 @@ function moreBuildLabel(build) {
   }
 
   return raw;
+}
+
+/**
+ * More-builds rows are the same creator as the page. Keep their face on the tip.
+ * @param {object} build
+ * @param {object | null | undefined} author
+ */
+function withAuthor(build, author) {
+  if (!author) return build;
+  return {
+    ...build,
+    author_name: build.author_name || author.author_name || null,
+    author_avatar_url: build.author_avatar_url || author.author_avatar_url || null,
+    author_equipped_avatar:
+      build.author_equipped_avatar ?? author.author_equipped_avatar ?? null,
+  };
 }
 
 function escapeHtml(s) {

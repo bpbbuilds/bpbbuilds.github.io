@@ -4,19 +4,13 @@
 
 import { initNav } from '../../shared/nav.js';
 import { initFooter } from '../../shared/footer.js';
+import { getProfile } from '../../shared/auth.js';
 import { getSupabase } from '../../shared/supabase.js';
 import { skelBar, skelBlock, skelRegion } from '../../shared/skeleton.js';
-import { mountFeedBoardThumbs } from '../builds/board-thumbs.js';
-import { bindFeedPostActions } from '../builds/post-actions.js';
-import { postRowHtml } from '../builds/post-row.js';
-
-const ITEM_SELECT =
-  'id, gid, name, rarity, type, class, extra_types, tags, cost, effect, image, shape, sockets, accuracy, cooldown, stamina_cost, damage_min, damage_max, block, chance, chance_tag, params';
-
-function rootPrefix() {
-  const raw = document.body?.dataset?.root ?? '../';
-  return raw.endsWith('/') ? raw : `${raw}/`;
-}
+import { fetchJson, rootPrefix } from './html.js';
+import { mountProfileShell } from './shell.js?v=liked-once';
+import { loadBlobCatalog } from './blob/catalog.js';
+import { applyProfileBackground } from './profile-bg.js';
 
 /**
  * @returns {string}
@@ -32,9 +26,75 @@ function discordIdFromLocation() {
   return '';
 }
 
+/**
+ * @param {string} discordId
+ */
+async function fetchProfile(discordId) {
+  const supabase = getSupabase();
+  const full =
+    'id, discord_id, display_name, avatar_url, equipped_avatar, plan, founding_slot, is_owner, cosmetic_grants, coins';
+  const core =
+    'id, discord_id, display_name, avatar_url, equipped_avatar, plan, founding_slot, is_owner';
+
+  let { data, error } = await supabase
+    .from('profiles')
+    .select(full)
+    .eq('discord_id', discordId)
+    .maybeSingle();
+
+  if (
+    error &&
+    (/cosmetic_grants|coins/i.test(String(error.message || '')) ||
+      /column .* does not exist/i.test(String(error.message || '')))
+  ) {
+    console.warn(
+      '[profile] profiles missing cosmetic_grants/coins — apply docs/db/sql/021 + 022',
+    );
+    ({ data, error } = await supabase
+      .from('profiles')
+      .select(core)
+      .eq('discord_id', discordId)
+      .maybeSingle());
+  }
+
+  if (error) throw error;
+  if (data) {
+    if (data.cosmetic_grants == null) {
+      data = { ...data, cosmetic_grants: [] };
+    }
+    if (data.coins == null || !Number.isFinite(Number(data.coins))) {
+      data = { ...data, coins: 0 };
+    } else {
+      data = { ...data, coins: Math.max(0, Math.floor(Number(data.coins))) };
+    }
+  }
+  return data;
+}
+
+function loadingSkel() {
+  return skelRegion(
+    `<div class="profile-skel">
+      <div class="profile-skel__hub">
+        <div class="profile-skel__persona">
+          ${skelBlock({ className: 'profile-skel__avatar' })}
+          <div class="profile-skel__persona-copy">
+            ${skelBar({ width: '42%' })}
+            ${skelBar({ width: '28%' })}
+          </div>
+        </div>
+        <div class="profile-skel__side">
+          <div class="profile-skel__rail">${skelBlock()}${skelBlock()}${skelBlock()}</div>
+        </div>
+        <div class="profile-skel__stage">${skelBlock()}${skelBlock()}</div>
+      </div>
+    </div>`,
+    { label: 'Loading profile' },
+  );
+}
+
 async function boot() {
   initNav();
-  initFooter();
+  initFooter({ variant: 'slim' });
   const main = document.getElementById('main');
   if (!(main instanceof HTMLElement)) return;
   const root = rootPrefix();
@@ -44,14 +104,7 @@ async function boot() {
     return;
   }
 
-    main.innerHTML = skelRegion(
-    `<div class="profile-skel">
-      <div class="profile-skel__persona">${skelBlock({ className: 'profile-skel__avatar' })}${skelBar({ width: '40%' })}</div>
-      ${skelBar({ width: '55%' })}
-      <div class="profile-skel__list">${skelBlock()}${skelBlock()}</div>
-    </div>`,
-    { label: 'Loading profile' },
-  );
+  main.innerHTML = loadingSkel();
 
   try {
     const [profile, spriteDisplay, shapes, sockets] = await Promise.all([
@@ -66,126 +119,29 @@ async function boot() {
       return;
     }
 
-    const builds = await fetchAuthorBuilds(profile.id);
     const name = String(profile.display_name || profile.discord_id || 'Adventurer').trim();
     document.title = `${name} — Smojo Builds`;
 
-    const avatar = String(profile.avatar_url || '').trim();
-    const avatarHtml = avatar
-      ? `<img class="profile-persona__avatar" src="${escapeAttr(avatar)}" alt="" width="72" height="72" />`
-      : `<span class="profile-persona__avatar profile-persona__avatar--empty" aria-hidden="true"></span>`;
+    const viewerProfile = await getProfile();
+    const isSelf =
+      Boolean(viewerProfile?.discord_id) &&
+      String(viewerProfile.discord_id) === String(profile.discord_id);
 
-    const listHtml = builds.length
-      ? `<ul class="builds-feed__list builds-feed__list--card" aria-label="Builds by ${escapeAttr(name)}">${builds
-          .map((b) =>
-            postRowHtml(
-              {
-                ...b,
-                author_discord_id: profile.discord_id,
-                author_avatar_url: profile.avatar_url,
-                author_name: name,
-              },
-              root,
-              { view: 'card' },
-            ),
-          )
-          .join('')}</ul>`
-      : `<p class="build-status builds-feed__empty">No public builds yet.</p>`;
+    mountProfileShell(main, {
+      profile,
+      viewerProfile,
+      isSelf,
+      root,
+      assets: { spriteDisplay, shapes, sockets },
+    });
 
-    main.innerHTML = `
-      <header class="profile-persona">
-        ${avatarHtml}
-        <div class="profile-persona__text">
-          <h1 class="profile-persona__name profile-ui-text">${escapeHtml(name)}</h1>
-          <p class="profile-persona__meta profile-ui-text">Discord · ${escapeHtml(String(profile.discord_id))}</p>
-        </div>
-      </header>
-      <section class="profile-builds" aria-label="Public builds">
-        <h2 class="profile-builds__title profile-ui-text">Builds</h2>
-        <div data-profile-list>${listHtml}</div>
-      </section>
-    `;
-
-    const list = main.querySelector('.builds-feed__list');
-    if (list instanceof HTMLElement && builds.length) {
-      mountFeedBoardThumbs(list, {
-        builds,
-        root,
-        view: 'card',
-        spriteDisplay,
-        shapes,
-        sockets,
-      });
-      bindFeedPostActions(list, { builds, root });
-    }
+    loadBlobCatalog(root)
+      .then((cat) => applyProfileBackground(profile.equipped_avatar, cat))
+      .catch((err) => console.error(err));
   } catch (err) {
     console.error(err);
     main.innerHTML = `<p class="build-status">Could not load profile.</p>`;
   }
-}
-
-/**
- * @param {string} discordId
- */
-async function fetchProfile(discordId) {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('id, discord_id, display_name, avatar_url')
-    .eq('discord_id', discordId)
-    .maybeSingle();
-  if (error) throw error;
-  return data;
-}
-
-/**
- * @param {string} authorId
- */
-async function fetchAuthorBuilds(authorId) {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('builds')
-    .select(
-      `
-      slug, title, hero_class, blurb, is_op, is_featured, build_tag, vote_score,
-      author_id, author_name, rank, gold_count, youtube_url, created_at, updated_at,
-      placements:build_placements (
-        id, x, y, r, gems,
-        item:items ( ${ITEM_SELECT} )
-      )
-    `,
-    )
-    .eq('is_public', true)
-    .eq('author_id', authorId)
-    .order('created_at', { ascending: false })
-    .limit(60);
-  if (error) throw error;
-  return data ?? [];
-}
-
-/**
- * @param {string} path
- */
-async function fetchJson(path) {
-  try {
-    const res = await fetch(path, { signal: AbortSignal.timeout(12000) });
-    if (!res.ok) return null;
-    return await res.json();
-  } catch {
-    return null;
-  }
-}
-
-function escapeHtml(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function escapeAttr(s) {
-  return escapeHtml(s).replace(/'/g, '&#39;');
 }
 
 boot();

@@ -3,8 +3,11 @@
  */
 
 import { classIconPath } from '../../shared/class-icons.js';
+import { faceHtml } from '../../shared/blob-face.js';
 import { profileHref as hrefForProfile } from '../../shared/profile-href.js';
 import { resolveSubclassItem } from '../../shared/subclass-items.js';
+import { getCatalogEvent } from '../events/catalog-data.js';
+import { eventMarkHtml } from '../build/event-banner-tip.js';
 import { postActionsHtml, postVoteHtml } from './post-actions.js';
 
 const LEAGUE_ICONS = {
@@ -60,20 +63,41 @@ export function formatRelativeTime(iso) {
 }
 
 /**
+ * Link for a build that was submitted to an event. Empty when it was not.
+ * @param {string | null | undefined} eventSlug
+ * @param {string} root
+ */
+export function eventEntryLinkHtml(eventSlug, root) {
+  const slug = String(eventSlug || '').trim();
+  if (!slug) return '';
+  const base = root.endsWith('/') ? root : `${root}/`;
+  const title = getCatalogEvent(slug)?.title || slug;
+  const href = `${base}events/?e=${encodeURIComponent(slug)}`;
+  return `<a class="builds-post__event" href="${escapeAttr(href)}">Entered in ${escapeHtml(title)}</a>`;
+}
+
+/**
  * @param {object} build
  * @param {string} root
  * @param {string} name
- * @returns {{ src: string, initials: string }}
+ * @returns {string}
  */
-function resolveAvatar(build, root, name) {
-  const custom = String(build?.author_avatar_url || '').trim();
-  if (custom) return { src: custom, initials: '' };
+function authorFaceHtml(build, root, name) {
+  const face = faceHtml(
+    {
+      avatar_url: build?.author_avatar_url,
+      equipped_avatar: build?.author_equipped_avatar,
+    },
+    root,
+    {
+      className: 'builds-post__avatar',
+      alt: name,
+    },
+  );
+  if (face) return face;
 
   if (/^smojo$/i.test(name)) {
-    return {
-      src: `${root}assets/brand/logo-backpack-battles-builds.png`,
-      initials: '',
-    };
+    return `<img class="builds-post__avatar" src="${escapeAttr(`${root}assets/brand/logo-backpack-battles-builds.png`)}" alt="" width="28" height="28" draggable="false" />`;
   }
 
   const parts = name.split(/\s+/).filter(Boolean);
@@ -81,16 +105,17 @@ function resolveAvatar(build, root, name) {
     parts.length >= 2
       ? `${parts[0][0]}${parts[1][0]}`.toUpperCase()
       : name.slice(0, 2).toUpperCase();
-  return { src: '', initials: initials || '?' };
+  return `<span class="builds-post__avatar builds-post__avatar--initials" aria-hidden="true">${escapeHtml(initials || '?')}</span>`;
 }
 
 /**
  * @param {object} build
  * @param {string} root
- * @param {{ view?: 'card' | 'compact' }} [opts]
+ * @param {{ view?: 'card' | 'compact' | 'grid', eventMark?: boolean }} [opts]
  */
 export function postRowHtml(build, root, opts = {}) {
-  const view = opts.view === 'compact' ? 'compact' : 'card';
+  const view =
+    opts.view === 'compact' || opts.view === 'grid' ? opts.view : 'card';
   const base = root.endsWith('/') ? root : `${root}/`;
   const href = buildViewHref(build.slug, base);
   const title = String(build.title || 'Untitled');
@@ -99,7 +124,7 @@ export function postRowHtml(build, root, opts = {}) {
   const slug = String(build.slug || '');
   const hero = String(build.hero_class || '').trim();
   const isOp = Boolean(build.is_op);
-  const avatar = resolveAvatar(build, base, author);
+  const avatarInner = authorFaceHtml(build, base, author);
 
   const flairs = [];
   if (isOp) flairs.push({ kind: 'op', label: 'OP' });
@@ -120,9 +145,6 @@ export function postRowHtml(build, root, opts = {}) {
     : '';
 
   const profileUrl = hrefForProfile(build.author_discord_id, base) || '';
-  const avatarInner = avatar.src
-    ? `<img class="builds-post__avatar" src="${escapeAttr(avatar.src)}" alt="" width="28" height="28" draggable="false" />`
-    : `<span class="builds-post__avatar builds-post__avatar--initials" aria-hidden="true">${escapeHtml(avatar.initials)}</span>`;
   const avatarHtml = profileUrl
     ? `<a class="builds-post__avatar-link" href="${escapeAttr(profileUrl)}" aria-label="${escapeAttr(author)}">${avatarInner}</a>`
     : avatarInner;
@@ -130,11 +152,17 @@ export function postRowHtml(build, root, opts = {}) {
     ? `<a class="builds-post__author" href="${escapeAttr(profileUrl)}">${escapeHtml(author)}</a>`
     : `<span class="builds-post__author">${escapeHtml(author)}</span>`;
 
+  const eventHtml = opts.eventMark
+    ? eventMarkHtml(build.event_slug, base)
+    : eventEntryLinkHtml(build.event_slug, base);
+  const bylineRest = `
+      ${authorInner}
+      ${when ? `<span class="builds-post__dot" aria-hidden="true">·</span><span class="builds-post__time">${escapeHtml(when)}</span>` : ''}
+      ${eventHtml ? `<span class="builds-post__dot" aria-hidden="true">·</span>${eventHtml}` : ''}`;
   const bylineHtml = `
     <span class="builds-post__byline">
       ${avatarHtml}
-      ${authorInner}
-      ${when ? `<span class="builds-post__dot" aria-hidden="true">·</span><span class="builds-post__time">${escapeHtml(when)}</span>` : ''}
+      ${bylineRest}
     </span>`;
 
   const boardHtml = `
@@ -164,6 +192,28 @@ export function postRowHtml(build, root, opts = {}) {
           </div>
           ${postActionsHtml(build, base)}
         </div>
+      </div>
+    </li>`;
+  }
+
+  if (view === 'grid') {
+    return `
+    <li class="builds-post builds-post--grid" data-build-slug="${escapeAttr(slug)}">
+      <div class="builds-post__grid">
+        <div class="builds-post__top">
+          <div class="builds-post__meta">
+            ${bylineHtml}
+            <a class="builds-post__grid-text" href="${escapeAttr(href)}">
+              <span class="builds-post__title" title="${escapeAttr(title)}">${escapeHtml(title)}</span>
+              ${flairHtml}
+            </a>
+          </div>
+          ${postVoteHtml(base)}
+        </div>
+        <a class="builds-post__grid-board" href="${escapeAttr(href)}" tabindex="-1" aria-hidden="true">
+          ${boardHtml}
+        </a>
+        ${postActionsHtml(build, base)}
       </div>
     </li>`;
   }
@@ -203,11 +253,16 @@ export function postRowHtml(build, root, opts = {}) {
     <li class="builds-post" data-build-slug="${escapeAttr(slug)}">
       <div class="builds-post__top">
         <div class="builds-post__meta">
-          ${bylineHtml}
-          <a class="builds-post__head" href="${escapeAttr(href)}">
-            <span class="builds-post__title">${escapeHtml(title)}</span>
-            ${flairHtml}
-          </a>
+          <div class="builds-post__identity">
+            ${avatarHtml}
+            <div class="builds-post__identity-copy">
+              <span class="builds-post__byline">${bylineRest}</span>
+              <a class="builds-post__head" href="${escapeAttr(href)}">
+                <span class="builds-post__title">${escapeHtml(title)}</span>
+                ${flairHtml}
+              </a>
+            </div>
+          </div>
         </div>
         ${postVoteHtml(base)}
       </div>

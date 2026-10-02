@@ -16,7 +16,7 @@ import { affectedTargets } from '../board-graph.js';
 import { getP, getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
-import { dealHit } from './handlers.js';
+import { dealEffectDamage, dealHit } from './handlers.js';
 import { itemHasType, pushActivate } from './ports-util.js';
 import { rollItemChance } from './ports-wave-c-util.js';
 import { randInt, rollPercent } from '../rng.js';
@@ -265,7 +265,7 @@ export const ratPort = {
   onCooldownEffect(piece, ctx) {
     petActivate(piece, ctx, 'rat');
     const raw = Math.max(1, Number(piece.damageMin) || getP1(piece.params, 4));
-    dealHit(piece, ctx, raw);
+    dealEffectDamage(piece, ctx, raw);
     if (rollItemChance(piece, ctx.rng)) {
       grantStacks(ctx.dummy, 'poison', Math.max(1, Math.round(getPName(piece.params, 'poison', 1))), {
         originKey: piece.placementKey,
@@ -401,7 +401,7 @@ export const friendlyFirePort = {
       if (heat >= t3 && prev < t3) {
         piece._ffMax = heat;
         const raw = Math.max(1, Number(piece.damageMin) || 6);
-        dealHit(piece, ctx, raw);
+        dealEffectDamage(piece, ctx, raw);
       } else if (heat >= t2 && prev < t2) {
         piece._ffMax = heat;
         grantStacks(ctx.player, 'regeneration', Math.max(1, Math.round(getP(piece.params, 6, 1))), {

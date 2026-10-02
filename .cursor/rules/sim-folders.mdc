@@ -1,0 +1,45 @@
+---
+description: Sim page section folders — where new /sim/ JS and CSS go
+globs: js/pages/sim/**/*
+alwaysApply: false
+---
+
+# Sim page folders (`js/pages/sim/`)
+
+`/sim/` is the first large page that **must** use section folders. Do not add new UI files on the page root. Other pages stay flat until they hit the same mess.
+
+## Root only
+
+| File | Why it stays |
+|---|---|
+| `index.js` | HTML entry |
+| `page.js` | Orchestration |
+| `sim.css` | Stage / field layout |
+| `sim-events.js` | Shared event contract (engine + UI) |
+| `sim-combat-time.js` | Shared by engine + UI |
+| `demo-timeline.js` | Engine demo mode |
+
+## Section folders
+
+| Folder | Put here |
+|---|---|
+| `engine/` | Combat sim (already split). Do not move. |
+| `shell/` | Boot, board load, permalink, status, runs, live tips |
+| `hud/` | Combat HUD + fighter avatars |
+| `fx/` | Damage numbers, item overlays, charge, item chrome |
+| `log/` | Combat log, damage meter, results, logbook |
+| `log-ui/` | `/sim/log-ui/` kitchen sink (separate HTML) |
+| `controls/` | Scrubber, settings, round picker, premium gate |
+| `foe/` | Dummy / public build / mirror, rails, build browser |
+| `report/` | In-page issue report |
+
+Colocate that section’s `.css` next to its `.js`. HTML still loads only `index.js`.
+
+```js
+// ❌ js/pages/sim/sim-new-widget.js
+// ✅ js/pages/sim/fx/sim-new-widget.js  (or hud/ log/ foe/ …)
+```
+
+When adding a **new kind** of chrome, make a new folder — do not grow the root. Keep ~500 lines / one job per file.
+
+Other pages that import sim helpers use the section path (`../sim/shell/sim-permalink.js`, not `../sim/sim-permalink.js`).

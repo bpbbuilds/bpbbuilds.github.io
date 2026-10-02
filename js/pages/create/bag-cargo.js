@@ -8,6 +8,7 @@
 
 import { shapeForItem, bodyBounds } from '../../shared/backpack-grid/index.js';
 import { placementsInsideBag } from './collision.js';
+import { gemCarry } from './socket-place.js';
 
 /**
  * @param {object} bagItem
@@ -33,7 +34,7 @@ export function captureBagCargo(bagItem, bagP, placements, itemsById) {
       /** Footprint at current face — used when reprojecting with the bag */
       bw: Math.max(1, b.w),
       bh: Math.max(1, b.h),
-      gems: Array.isArray(p.gems) ? p.gems.slice() : undefined,
+      ...gemCarry(p),
     };
   });
 }
@@ -70,7 +71,7 @@ export function captureMultiDraggedInside(mainKey, groupKeys, placements, itemsB
       oy: Number(p.y) - Number(main.y),
       bw: Math.max(1, b.w),
       bh: Math.max(1, b.h),
-      gems: Array.isArray(p.gems) ? p.gems.slice() : undefined,
+      ...gemCarry(p),
     });
   }
   return out;

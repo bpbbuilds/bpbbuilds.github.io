@@ -36,6 +36,7 @@ import { armPieceCooldown, rearmAfterTrigger, rollIterationCooldown } from './co
 import { pieceSpeed } from './piece-stats.js';
 import { tickTemporaryStacks } from './buff-economy.js';
 import { bindBuffCombatLog, unbindBuffCombatLog, collapseDuplicateBuffLogs } from './buff-log.js';
+import { bindBuffPowerPieces, unbindBuffPowerPieces } from './buff-power.js';
 import {
   FATIGUE_TIME,
   FATIGUE_TICK_INTERVAL,
@@ -109,6 +110,10 @@ function applyPreCombat(placements, itemsById, actor, events, t, pieces) {
  *   seed?: number,
  *   canAffect?: object | null,
  *   dummyBlock?: number,
+ *   dummyMaxHp?: number | null,
+ *   dummyAttacks?: boolean,
+ *   dummyAttackDamage?: number | null,
+ *   dummyAttackCd?: number | null,
  *   opponentPlacements?: { id: string, key: string, gems?: string[] }[],
  *   round?: number | null,
  *   opponentRound?: number | null,
@@ -125,12 +130,34 @@ export function simulateEngine(opts) {
   const rng = makeRng(seed);
   const coverage = computeCoverage(opts.placements, opts.itemsById);
   const canAffect = opts.canAffect || null;
-  const dummyBlock = Math.max(0, Math.round(Number(opts.dummyBlock) || 0));
+  const dummyBlockRaw = Math.max(0, Math.round(Number(opts.dummyBlock) || 0));
   const themPl = tagOpponentPlacements(opts.opponentPlacements || []);
   const vsBoard = themPl.length > 0;
+  // Training-dummy start block is dummy-only; vs boards (public / mirror) start at 0.
+  const dummyBlock = vsBoard ? 0 : dummyBlockRaw;
   const hp = actorMaxHpForSim(opts.round, vsBoard, opts.opponentRound);
   const playerHp = opts.playerMaxHp ?? hp.player;
-  const dummyHp = vsBoard ? opts.opponentMaxHp ?? hp.dummy : hp.dummy;
+  const dummyMaxOverride = Number(opts.dummyMaxHp);
+  const dummyHp = vsBoard
+    ? opts.opponentMaxHp ?? hp.dummy
+    : Number.isFinite(dummyMaxOverride) && dummyMaxOverride > 0
+      ? Math.round(dummyMaxOverride)
+      : hp.dummy;
+  const dummyAttacks = opts.dummyAttacks !== false;
+  const dummyAtkDmg = Math.max(
+    0,
+    Math.round(
+      Number.isFinite(Number(opts.dummyAttackDamage))
+        ? Number(opts.dummyAttackDamage)
+        : DUMMY_ATTACK_DAMAGE,
+    ),
+  );
+  const dummyAtkCd = Math.max(
+    0.05,
+    Number.isFinite(Number(opts.dummyAttackCd)) && Number(opts.dummyAttackCd) > 0
+      ? Number(opts.dummyAttackCd)
+      : DUMMY_ATTACK_CD,
+  );
   // Max stamina = base 5 + Stamina Sacks on the board (Character.recalculateMaxStamina).
   // Do not use history.stamina — that field is a checksum of the same formula, and
   // treating it as an override skipped sacks and inflated start pools (e.g. 13→15).
@@ -168,9 +195,11 @@ export function simulateEngine(opts) {
     getT: () => (logClockOverride != null ? logClockOverride : t),
     dummy,
   });
+  bindBuffPowerPieces(pieces);
   try {
     return simulateEngineBody();
   } finally {
+    unbindBuffPowerPieces();
     unbindBuffCombatLog();
   }
 
@@ -205,7 +234,7 @@ export function simulateEngine(opts) {
   let tickAccum = 0;
   let tickCounter = 0;
   let snapAccum = 0;
-  let dummyCd = DUMMY_ATTACK_CD;
+  let dummyCd = dummyAtkCd;
   let itemsLive = false;
   const logChain = createLogChainAllocator();
   const bus = createCombatBus();
@@ -214,6 +243,14 @@ export function simulateEngine(opts) {
   dummy._combatBus = bus;
   player._eventLog = events;
   dummy._eventLog = events;
+  for (const p of youPieces) {
+    p._eventLog = events;
+    p._owner = player;
+  }
+  for (const p of themPieces) {
+    p._eventLog = events;
+    p._owner = dummy;
+  }
   bus.on('actor_healed', (payload) => {
     const healer = payload?.actor;
     if (!healer || (healer.id !== 'player' && healer.id !== 'dummy')) return;
@@ -647,12 +684,12 @@ export function simulateEngine(opts) {
         if (!ok && piece.charges == null) continue;
       }
 
-      // Dummy AI — skipped when an opponent bag is fighting
-      if (!vsBoard) {
+      // Dummy AI — skipped when an opponent bag is fighting or attacks disabled
+      if (!vsBoard && dummyAttacks) {
       dummyCd -= step;
       while (dummyCd <= 0 && !player.dead && !dummy.dead) {
         if (isStunned(dummy, t)) {
-          dummyCd += DUMMY_ATTACK_CD;
+          dummyCd += dummyAtkCd;
           break;
         }
         events.push({
@@ -671,7 +708,7 @@ export function simulateEngine(opts) {
           ),
         );
         const res = takeDamage(player, dummy, {
-          amount: DUMMY_ATTACK_DAMAGE,
+          amount: dummyAtkDmg,
           accuracy: dummyAcc,
           canMiss: true,
           isAttack: true,
@@ -693,7 +730,7 @@ export function simulateEngine(opts) {
             actor: 'dummy',
             target: 'player',
             label: 'Training Dummy: missed',
-            meta: { category: 'damage', systemOrigin: 'Training Dummy' },
+            meta: { category: 'damage', systemOrigin: 'Training Dummy', isAttack: true },
           });
         } else {
           events.push({
@@ -704,12 +741,13 @@ export function simulateEngine(opts) {
             amount: res.healthDamage,
             label:
               res.blocked > 0 || res.reduced > 0
-                ? `Training Dummy: hit ${DUMMY_ATTACK_DAMAGE} (DR/block) → ${res.healthDamage}`
+                ? `Training Dummy: hit ${dummyAtkDmg} (DR/block) → ${res.healthDamage}`
                 : `Training Dummy: hit for ${res.healthDamage}`,
             meta: {
               category: 'damage',
               systemOrigin: 'Training Dummy',
-              raw: DUMMY_ATTACK_DAMAGE,
+              isAttack: true,
+              raw: dummyAtkDmg,
               blocked: res.blocked,
               reduced: res.reduced,
               playerHp: player.hp,
@@ -734,7 +772,7 @@ export function simulateEngine(opts) {
             });
           }
         }
-        dummyCd += DUMMY_ATTACK_CD;
+        dummyCd += dummyAtkCd;
       }
       }
 

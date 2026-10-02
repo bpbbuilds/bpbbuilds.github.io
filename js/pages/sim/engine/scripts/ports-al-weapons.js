@@ -3,6 +3,7 @@
  */
 
 import { grantStacks, grantTemporaryStacks, onBuffChanged, spendStacks, useMana, useRegeneration } from '../buff-economy.js';
+import { giveBuffPower } from '../buff-power.js';
 import { dealDamage } from '../damage.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
@@ -173,7 +174,13 @@ export const bustedBladePort = {
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'empower') return;
       const emp = getStackAmount(ctx.player, 'empower');
-      addBonusDamage(piece, (emp - piece._bbEmp) * per);
+      const delta = (emp - piece._bbEmp) * per;
+      // Varying dmg is this weapon's mechanic — not the buff grantor (Mana Orb).
+      addBonusDamage(piece, delta, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+        originName: piece.name,
+      });
       piece._bbEmp = emp;
     });
     ctx.bus?.on?.('battle_rage_started', () => {
@@ -202,7 +209,12 @@ export const forgingHammerPort = {
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'empower') return;
       const emp = getStackAmount(ctx.player, 'empower');
-      addBonusDamage(piece, (emp - piece._fhEmp) * per);
+      const delta = (emp - piece._fhEmp) * per;
+      addBonusDamage(piece, delta, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+        originName: piece.name,
+      });
       piece._fhEmp = emp;
     });
   },
@@ -235,12 +247,13 @@ export const popPort = {
   },
 };
 
-/** VampiricScythe.gd — speed from player vamp (cap p2%). */
+/** VampiricScythe.gd — +1 vamp power on linked; speed from player vamp (cap p2%). */
 /** @type {ScriptHandler} */
 export const vampiricScythePort = {
   handlerId: 'vampiric_scythe',
   family: 'weapon_base',
   onCombatStart(piece, ctx) {
+    for (const other of linked(ctx, piece)) giveBuffPower(other, 'vampirism', 1);
     piece._vsSpd = 0;
     const per = getP1(piece.params, 1) / 100;
     const cap = getP2(piece.params, 50) / 100;
@@ -259,12 +272,13 @@ export const vampiricScythePort = {
   },
 };
 
-/** DeathScythe.gd — crit% once foe poison ≥ p1. */
+/** DeathScythe.gd — +1 poison power on linked; crit% once foe poison ≥ p1. */
 /** @type {ScriptHandler} */
 export const deathScythePort = {
   handlerId: 'death_scythe',
   family: 'weapon_base',
   onCombatStart(piece, ctx) {
+    for (const other of linked(ctx, piece)) giveBuffPower(other, 'poison', 1);
     piece._dsCrit = false;
     const th = Math.max(1, Math.round(getP1(piece.params, 8)));
     const apply = () => {

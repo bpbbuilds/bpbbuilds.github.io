@@ -21,10 +21,10 @@ Heft comes from the **outline**, not `font-weight: 700`. Prefer Regular + stroke
 | Recipe | When | How on web |
 |---|---|---|
 | **Sticker / shop-label** | Nav hanging tabs, banner words, gold shop tags, strong display CTAs, featured build **title** | `color: var(--bpb-label-fill)` + `text-shadow: var(--bpb-label-stroke)` (or class `.bpb-label-text`). Face: Milonga for banners/titles |
-| **OptionsFont** | Item Library rarity / Class Items / Treasure / Shop / Crafted / Gated filters | Baskerville Regular 26px, cream fill, **~3px / 0.1em** ink outline (`#3c261d`) — see below |
+| **OptionsFont** | Item Library rarity / Class Items / Treasure / Shop / Crafted / Gated filters; create Build-tab field labels; in-page form / dialog labels (`.cr-label`) | Baskerville Regular 26px, cream fill, **~3px / 0.1em** ink outline (`#3c261d`) — see below |
 | **Plain body** | Blurbs, long reading copy, quiet meta | Baskerville, no sticker stroke (optional soft shadow only if needed for contrast) |
 
-Detail + tokens: `docs/theme.md` → Type. Tokens live in `css/theme.css` (`--bpb-label-*`).
+Detail + tokens: `docs/product/theme.md` → Type. Tokens live in `css/theme.css` (`--bpb-label-*`).
 
 ## OptionsFont recipe (Item Library filters)
 
@@ -40,8 +40,10 @@ Source: `Interface/Options/OptionsFont.tres` — **same** for rarity and Shop / 
 ## Do
 
 - Item Library rarity / Class Items / Treasure / Shop / Crafted / Gated → OptionsFont recipe above
+- Create Build-tab labels and other in-page form labels → same OptionsFont (`.cr-label`); compact fact keys stay **plain Baskerville italic**, not Milonga
 - Grouping dropdown + “Items found” count → Baskerville (count may be Bold 26 in-game)
 - Page `h1`–`h3`, nav hanging tabs, featured build **title**, banner buttons → **Milonga** + sticker stroke when they should read as game chrome
+- Form dialogs and onboarding (rewards plate) → gold uppercase Baskerville, not Milonga — see `.cursor/rules/forms.mdc`
 - Featured class line → Baskerville **italic** + sticker stroke (`--bpb-label-stroke`) when on chrome panels (e.g. featured stage)
 - When adding new UI text that should look “like the game,” choose sticker vs OptionsFont vs plain — then apply it explicitly
 

@@ -45,6 +45,7 @@ Complex widgets (tooltip): module CSS next to the JS.
 - **Max ~500 lines per `.js` file** — split earlier if a file is doing multiple jobs
 - Each file = **one page section or one feature** (not a dumping ground)
 - Related modules live in a **folder** together (don’t leave `mod1.js`/`mod2.js` loose at repo root)
+- Large pages may use **section folders** under `js/pages/<page>/` (`/sim/` is the first — see `.cursor/rules/sim-folders.mdc`). Do not dump new sim UI files on the page root.
 - Every page has **`js/pages/<page>/index.js`** as the home/entry file that imports and starts the other modules for that page
 - The HTML page loads **only that `index.js`** (module script), not every section file individually
 - Shared code stays in `js/shared/` — including **`nav.js`** and **`footer.js`**; every page entry imports and mounts them
@@ -67,7 +68,7 @@ initFooter();
 initFeaturedOp();
 ```
 
-Detail also in `docs/file-structure.md`.
+Detail also in `docs/features/file-structure.md`.
 
 ## Architecture rules
 

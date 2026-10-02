@@ -3,6 +3,7 @@
  */
 
 import { pieceSpeed } from './piece-stats.js';
+import { pushItemOverlayEvent } from './item-fx-log.js';
 
 /**
  * Item.adjustCooldown — ±5% jitter on catalog CD (player); foe band slightly tighter.
@@ -147,6 +148,14 @@ export function advanceCooldownSeconds(piece, amount, ctx) {
     }
   } finally {
     piece._cdAdvanceDepth = Math.max(0, (piece._cdAdvanceDepth || 1) - 1);
+  }
+  if (isCooldownActive(piece)) {
+    pushItemOverlayEvent(piece, {
+      type: 'cooldown',
+      amount: sec,
+      label: `${sec}s cooldown`,
+      meta: { category: 'item_label', kind: 'advance' },
+    });
   }
   return true;
 }

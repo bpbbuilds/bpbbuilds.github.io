@@ -39,7 +39,11 @@ export function youtubeEmbedSrc(url) {
     rel: '0',
     modestbranding: '1',
     playsinline: '1',
+    enablejsapi: '1',
   });
+  if (typeof location !== 'undefined' && location.origin) {
+    params.set('origin', location.origin);
+  }
   return `https://www.youtube.com/embed/${id}?${params}`;
 }
 
@@ -56,6 +60,10 @@ export function youtubeWatchEmbedSrc(url) {
     rel: '0',
     modestbranding: '1',
     playsinline: '1',
+    enablejsapi: '1',
   });
+  if (typeof location !== 'undefined' && location.origin) {
+    params.set('origin', location.origin);
+  }
   return `https://www.youtube.com/embed/${id}?${params}`;
 }

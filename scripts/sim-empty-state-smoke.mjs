@@ -5,7 +5,7 @@
 import {
   resolveSimBoardStatus,
   simStatusShellHtml,
-} from '../js/pages/sim/sim-status.js';
+} from '../js/pages/sim/shell/sim-status.js';
 
 let failed = 0;
 function ok(cond, msg) {
@@ -15,9 +15,9 @@ function ok(cond, msg) {
   } else console.log('OK', msg);
 }
 
-/** @param {Partial<import('../js/pages/sim/board-load.js').SimBoardLoad>} board */
+/** @param {Partial<import('../js/pages/sim/shell/board-load.js').SimBoardLoad>} board */
 function status(board) {
-  return resolveSimBoardStatus(/** @type {import('../js/pages/sim/board-load.js').SimBoardLoad} */ (board));
+  return resolveSimBoardStatus(/** @type {import('../js/pages/sim/shell/board-load.js').SimBoardLoad} */ (board));
 }
 
 ok(status(null)?.kind === 'error', 'null board → error');

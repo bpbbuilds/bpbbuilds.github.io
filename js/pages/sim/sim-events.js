@@ -1,6 +1,6 @@
 /**
  * Shared SimEvent contract — demo timeline and engine both emit this shape.
- * Aligns with docs/sim-combat-audit.md (game CombatEvent / EventType).
+ * Aligns with docs/sim/sim-combat-audit.md (game CombatEvent / EventType).
  */
 
 /**

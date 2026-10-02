@@ -1,0 +1,10 @@
+{
+  "version": "bags-v1b",
+  "inputSize": 640,
+  "sha256": "7748f24071b17b8ecea99103e586e56cce4f84f72747a4658565e894e18cbbc4",
+  "url": "/assets/ml/screenshot-detector/bags-v1b/screenshot-detector-bags.onnx",
+  "classesUrl": "/assets/data/detector-bag-classes.json",
+  "classCount": 27,
+  "updatedAt": "2026-09-26T12:37:40.064Z",
+  "local": true
+}

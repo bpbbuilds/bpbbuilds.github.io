@@ -219,6 +219,19 @@ export const speakWithAnimalsPort = {
 export const wolfEmblemPort = {
   handlerId: 'wolf_emblem',
   family: 'unique',
+  onPreCombatStart(piece, ctx) {
+    const item = ctx.itemsById.get(piece.itemId);
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    const pets = links.filter((l) => l.color === 'secondary').length;
+    const bonus =
+      (Number(item?.chance ?? piece.chance) || 0) +
+      pets * (Number(item?.chance2) || 0);
+    if (!bonus) return;
+    for (const other of ctx.pieces || []) {
+      if (!links.some((l) => l.key === other.placementKey && l.color === 'primary')) continue;
+      other.critChance = (Number(other.critChance) || 0) + bonus;
+    }
+  },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
     pushActivate(piece, ctx, 'wolf_emblem', `Accessory: ${piece.name}`);
@@ -257,6 +270,12 @@ export const wolfEmblemPort = {
 export const amuletOfTheWildPort = {
   handlerId: 'amulet_of_the_wild',
   family: 'unique',
+  onPreCombatStart(piece, ctx) {
+    const lim = getPName(piece.params, 'spikedam', 0) / 100;
+    if (!lim) return;
+    ctx.player.meleeSpikesLimit = Math.max(Number(ctx.player.meleeSpikesLimit) || 0, lim);
+    ctx.player.rangedSpikesLimit = Math.max(Number(ctx.player.rangedSpikesLimit) || 0, lim);
+  },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
     pushActivate(piece, ctx, 'amulet_of_the_wild', `Accessory: ${piece.name}`);

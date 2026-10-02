@@ -1,0 +1,167 @@
+/**
+ * Living idle art layers (flask / liquid / glow / holo) inside .bpb-bg__sprite.
+ *
+ * Soft light plates (CircleLight / TorchLight / StarLight) must NOT be clipped
+ * by overflow:hidden — clipping turns the soft disc into a gray rectangle.
+ * Additive lights do not use isolation (isolate + plus-lighter also boxes).
+ */
+
+.bpb-bg__sprite.bpb-live {
+  display: block;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.bpb-live[data-live-kind='potion'] {
+  overflow: hidden;
+}
+
+.bpb-live:has(.bpb-live__holo) {
+  /* Holo canvas should add onto the item sprite, not the parchment. */
+  isolation: isolate;
+}
+
+.bpb-live--crop {
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  /* Item / flask PNGs must mask by alpha, not luminance — dark steel would
+   * otherwise punch itself out of the silhouette. */
+  -webkit-mask-source-type: alpha;
+  mask-mode: alpha;
+}
+
+.bpb-live__layer,
+.bpb-live__liquid,
+.bpb-live__holo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.bpb-live__flask,
+.bpb-live__base {
+  z-index: 0;
+  /* Base art is a normal sprite — never blend with parchment. */
+  mix-blend-mode: normal;
+}
+
+.bpb-live__liquid {
+  z-index: 1;
+  background: transparent;
+}
+
+/* Masked fluid / front glass — sized like Godot BottleOfBooze on Icon. */
+.bpb-live__liquid--plate,
+.bpb-live__overlay--plate {
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  object-fit: fill;
+  translate: -50% -50%;
+}
+
+.bpb-live__overlay--plate {
+  z-index: 2;
+}
+
+.bpb-live__badge--plate {
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  object-fit: fill;
+  translate: -50% -50%;
+}
+
+.bpb-live__holo {
+  z-index: 1;
+  mix-blend-mode: plus-lighter;
+}
+
+.bpb-live__overlay {
+  z-index: 2;
+}
+
+.bpb-live__glow {
+  z-index: 3;
+  /* Sized + offset in JS from Godot Sprite.position (see layoutGlowPlate). */
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  object-fit: fill;
+  translate: -50% -50%;
+  mix-blend-mode: plus-lighter;
+  transform-origin: center center;
+  opacity: var(--bpb-live-op0, 0.28);
+}
+
+/*
+ * Soft lights: CircleLight / TorchLight / StarLight PNGs with alpha.
+ * Do not paint a solid background + mask — plus-lighter made that a gray box.
+ */
+.bpb-live__glow--light {
+  /* size/pos from layoutGlowPlate; tint via inline SVG feColorMatrix filter */
+}
+
+.bpb-live__glow--pulse {
+  animation: bpb-live-glow var(--bpb-live-period, 5s) ease-in-out infinite alternate;
+}
+
+.bpb-live__glow--flicker {
+  animation: bpb-live-flicker var(--bpb-live-period, 4s) ease-in-out infinite;
+}
+
+@keyframes bpb-live-glow {
+  from {
+    opacity: var(--bpb-live-op0, 0.28);
+  }
+  to {
+    opacity: var(--bpb-live-op1, 0.45);
+  }
+}
+
+@keyframes bpb-live-flicker {
+  0%,
+  100% {
+    opacity: var(--bpb-live-op0, 0.18);
+    transform: scale(1);
+  }
+  35% {
+    opacity: var(--bpb-live-op1, 0.32);
+    transform: scale(1.05);
+  }
+  62% {
+    opacity: calc((var(--bpb-live-op0, 0.18) + var(--bpb-live-op1, 0.32)) * 0.5);
+    transform: scale(1.1);
+  }
+}
+
+.bpb-bg__item[data-potion-empty] .bpb-live__liquid {
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpb-live__glow--pulse,
+  .bpb-live__glow--flicker {
+    animation: none;
+    opacity: var(--bpb-live-op1, 0.4);
+    transform: none;
+  }
+}

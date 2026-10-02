@@ -10,6 +10,7 @@ import { CLASS_STARTING_BAG_IDS, startingBagIdsForClass } from '../../shared/sta
 import { getSupabase } from '../../shared/supabase.js';
 import { createTooltipHover } from '../../shared/tooltip-hover.js';
 import { mapItem, makeSpriteUrl } from '../build/map-item.js';
+import { classCharacterPath } from '../../shared/class-icons.js';
 import { escapeAttr, escapeHtml, rootPrefix } from './home-build-media.js';
 
 /** @type {Record<string, string>} */
@@ -31,14 +32,6 @@ const CLASS_BLURB = {
 
 const BAG_ITEM_SELECT =
   'id, gid, name, rarity, type, class, extra_types, tags, cost, effect, image, shape, sockets, accuracy, cooldown, stamina_cost, damage_min, damage_max, block, chance, chance_tag, params';
-
-/**
- * @param {string} root
- * @param {string} name
- */
-function characterSprite(root, name) {
-  return `${root}assets/characters/char-${String(name).toLowerCase()}.png`;
-}
 
 /** @returns {string[]} */
 function allStartingBagIds() {
@@ -78,7 +71,7 @@ function sectionHtml(root) {
   const cards = HERO_CLASSES.map((name) => {
     const blurb = CLASS_BLURB[name] || `Browse ${name} builds from the catalog.`;
     const href = `${root}builds/?class=${encodeURIComponent(name)}`;
-    const art = characterSprite(root, name);
+    const art = classCharacterPath(root, name);
 
     return `
       <article class="home-mobs__snap" data-home-mobs-card data-hero-class="${escapeAttr(name)}">

@@ -1,0 +1,33 @@
+﻿{
+  "metric": {
+    "goodTotal": 0,
+    "badColorTotal": 320,
+    "missingTotal": 101.25,
+    "colorRejects": true,
+    "missingRejects": true
+  },
+  "scoreBefore": {
+    "total": 296.35,
+    "covered": 155.58,
+    "unexplained": 187.69
+  },
+  "swap": {
+    "which": "DarksaberΓåÆLightsaber",
+    "total": 300.37,
+    "rejects": true
+  },
+  "removeFlame": {
+    "total": 303.39,
+    "rejects": true
+  },
+  "placed": [
+    "Darksaber",
+    "Piggybank",
+    "Flame",
+    "Prismatic Orb",
+    "Falcon Blade",
+    "Bunch of Coins"
+  ],
+  "Darksaber": true,
+  "Falcon": true
+}

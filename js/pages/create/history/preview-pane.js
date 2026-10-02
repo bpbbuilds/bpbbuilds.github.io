@@ -25,10 +25,12 @@ import { skelBar, skelBlock, skelRegion } from '../../../shared/skeleton.js';
  *     roundIndex: number,
  *   }) => void,
  *   onCancel: () => void,
+ *   lockLastRound?: boolean,
  * }} opts
  */
 export function mountHistoryPreview(opts) {
   const { host, db, itemsById, getSpriteUrl, root, onLoad, onCancel } = opts;
+  const lockLastRound = Boolean(opts.lockLastRound);
   const base = root.endsWith('/') ? root : `${root}/`;
 
   host.innerHTML = `
@@ -36,7 +38,7 @@ export function mountHistoryPreview(opts) {
       <div class="create-history__preview-status" data-preview-status role="status">Select a run</div>
       <div class="create-history__bag-host" data-preview-bag hidden></div>
       <div class="create-history__preview-stats" data-preview-stats hidden></div>
-      <div class="create-history__round-host" data-preview-round hidden></div>
+      ${lockLastRound ? '' : '<div class="create-history__round-host" data-preview-round hidden></div>'}
       <div class="create-history__preview-actions">
         <button type="button" class="create-history__load" data-history-load disabled>Load</button>
         <button type="button" class="create-history__cancel" data-history-close>Cancel</button>
@@ -133,9 +135,8 @@ export function mountHistoryPreview(opts) {
    * @param {number} [initialIndex]
    */
   function mountRun(run, initialIndex) {
-    if (!(bagHost instanceof HTMLElement) || !(roundHost instanceof HTMLElement)) {
-      return;
-    }
+    if (!(bagHost instanceof HTMLElement)) return;
+    if (!lockLastRound && !(roundHost instanceof HTMLElement)) return;
     clearPreview();
     currentRun = run;
     const frames = framesFromHistoryRun(run);
@@ -145,14 +146,15 @@ export function mountHistoryPreview(opts) {
     }
     if (statusEl instanceof HTMLElement) statusEl.hidden = true;
 
-    const startIdx = Math.max(
-      0,
-      Math.min(frames.length - 1, initialIndex ?? frames.length - 1),
-    );
+    const startIdx = lockLastRound
+      ? frames.length - 1
+      : Math.max(
+          0,
+          Math.min(frames.length - 1, initialIndex ?? frames.length - 1),
+        );
     const start = frames[startIdx];
 
     bagHost.hidden = false;
-    roundHost.hidden = false;
 
     grid = mountPlacedGrid(bagHost, {
       placements: start.placements,
@@ -160,31 +162,35 @@ export function mountHistoryPreview(opts) {
       cols: BOARD_COLS,
       rows: BOARD_ROWS,
       getSpriteUrl,
-      fillWidth: true,
+      fillWidth: !lockLastRound,
+      fitHost: lockLastRound,
       exactBoard: true,
       reserveScrollGap: false,
       cellPx: 40,
     });
 
-    scrubber = mountRoundScrubber(roundHost, {
-      frames,
-      root: base,
-      showHistory: true,
-      previewMode: true,
-      hasVideo: false,
-      initialIndex: startIdx,
-      onItemsVisibleChange: (v) => {
-        grid?.el.classList.toggle('bpb-bg--hide-items', !v);
-      },
-      onBagsVisibleChange: (v) => {
-        grid?.el.classList.toggle('bpb-bg--hide-bags', !v);
-      },
-      onChange(frame) {
-        if (!frame || !grid) return;
-        grid.update(frame.placements, itemsById, { appear: true });
-        paintStats(frame.placements);
-      },
-    });
+    if (!lockLastRound) {
+      roundHost.hidden = false;
+      scrubber = mountRoundScrubber(roundHost, {
+        frames,
+        root: base,
+        showHistory: true,
+        previewMode: true,
+        hasVideo: false,
+        initialIndex: startIdx,
+        onItemsVisibleChange: (v) => {
+          grid?.el.classList.toggle('bpb-bg--hide-items', !v);
+        },
+        onBagsVisibleChange: (v) => {
+          grid?.el.classList.toggle('bpb-bg--hide-bags', !v);
+        },
+        onChange(frame) {
+          if (!frame || !grid) return;
+          grid.update(frame.placements, itemsById, { appear: true });
+          paintStats(frame.placements);
+        },
+      });
+    }
 
     paintStats(start.placements);
     if (loadBtn instanceof HTMLButtonElement) loadBtn.disabled = false;
@@ -215,19 +221,33 @@ export function mountHistoryPreview(opts) {
       busy = false;
     }
     if (my !== gen) return;
-    mountRun(run, roundIndex);
+    mountRun(run, lockLastRound ? undefined : roundIndex);
   }
 
   function requestLoad() {
-    if (!currentRun || !scrubber) return;
+    if (!currentRun) return false;
+    if (lockLastRound) {
+      const frames = framesFromHistoryRun(currentRun);
+      const idx = Math.max(0, frames.length - 1);
+      const frame = frames[idx];
+      if (!frame?.placements?.length) return false;
+      onLoad({
+        run: currentRun,
+        placements: frame.placements,
+        roundIndex: idx,
+      });
+      return true;
+    }
+    if (!scrubber) return false;
     const frame = scrubber.frame;
     const idx = scrubber.index;
-    if (!frame?.placements?.length) return;
+    if (!frame?.placements?.length) return false;
     onLoad({
       run: currentRun,
       placements: frame.placements,
       roundIndex: idx,
     });
+    return true;
   }
 
   loadBtn?.addEventListener('click', () => requestLoad());

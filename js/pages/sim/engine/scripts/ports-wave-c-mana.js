@@ -11,11 +11,10 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addBonusDamage, addBonusDamageFromBuffChange, addSpeed } from '../piece-stats.js';
-import { healActor } from '../actor.js';
 import { hasCombatCooldown } from './food-helpers.js';
-import { dealHit } from './handlers.js';
+import { dealHit, stealLife } from './handlers.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 
 /**
@@ -311,32 +310,31 @@ export const jynxStaffPort = {
   },
 };
 
-/** Manathirst.gd — on-hit mana; any mana gain fills lifesteal meter. */
+/** Manathirst.gd — onPrepare listens; one stealLife per mana gain that crosses getP1. */
 /** @type {ScriptHandler} */
 export const manathirstPort = {
   handlerId: 'manathirst',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPreCombatStart(piece, ctx) {
     piece._manaGained = 0;
-    const need = Math.max(1, Math.round(getP1(piece.params, 5)));
+    if (piece._manathirstBound) return;
+    piece._manathirstBound = true;
+    // getP1() is `manat` (30). One crossing per mana event; leftover stays.
+    const need = Math.max(
+      1,
+      Math.round(getPName(piece.params, 'manat', getP1(piece.params, 30))),
+    );
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'mana' || !(ch.amount > 0)) return;
       piece._manaGained = (piece._manaGained || 0) + ch.amount;
-      while ((piece._manaGained || 0) >= need) {
-        piece._manaGained -= need;
-        const ls = Math.max(1, Math.round(getPName(piece.params, 'dam', getP3(piece.params, 4))));
-        const healed = healActor(ctx.player, ls + (ctx.player.stacks.vampirism || 0));
-        if (healed > 0) {
-          ctx.events.push({
-            t: ctx.t + 0.008,
-            type: 'heal',
-            target: 'player',
-            amount: healed,
-            label: `${piece.name}: lifesteal +${healed}`,
-            meta: { category: 'heal', script: true, handler: 'manathirst' },
-          });
-        }
-      }
+      if ((piece._manaGained || 0) < need) return;
+      piece._manaGained -= need;
+      const dam = Number(getPName(piece.params, 'dam', getP2(piece.params, 10))) || 0;
+      const vamp = Number(ctx.player.stacks.vampirism) || 0;
+      const ls = Number(getPName(piece.params, 'lifesteal', getP3(piece.params, 100))) / 100;
+      const now = Number(ctx.player._simT);
+      if (Number.isFinite(now)) ctx.t = now;
+      stealLife(piece, ctx, dam + vamp, ls);
     });
   },
   onCooldownEffect(piece, ctx) {
@@ -344,7 +342,8 @@ export const manathirstPort = {
   },
   onDealtDamage(piece, ctx, hit) {
     if (!hit?.hit) return;
-    const mana = Math.max(1, Math.round(getPName(piece.params, 'mana', getP2(piece.params, 1))));
+    const mana = Math.round(getPName(piece.params, 'mana', getP4(piece.params, 2)));
+    if (!(mana > 0)) return;
     grantStacks(ctx.player, 'mana', mana, {
       originKey: piece.placementKey,
       originId: piece.itemId,

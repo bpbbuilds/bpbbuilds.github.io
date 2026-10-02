@@ -1,5 +1,5 @@
 /**
- * Itemiary DOM pool — create once, cool+park off-window, reuse on scroll/filter.
+ * Itemiary DOM pool — create once, park warm off-window, reuse on scroll/filter.
  */
 
 import { shapeForItem, bodyBounds } from './shape.js';
@@ -21,6 +21,8 @@ import {
   markSpritePending,
   needsSpriteAttach,
   warmItemSprites,
+  activateItemLiveArt,
+  deactivateItemLiveArt,
   filterEntriesNearViewport,
   APPEAR_VIEW_PAD_EM,
 } from './item-pieces.js';
@@ -28,7 +30,7 @@ import {
   VIRTUAL_PAD_EM,
   placementsNearViewport,
   itemHeightEm,
-  parkCooledEntry,
+  parkWarmEntry,
 } from './item-virtual.js';
 
 function isBagItem(item) {
@@ -403,13 +405,17 @@ export function paintPooled(root, opts) {
     }
 
     const gemIds = Array.isArray(p.gems) ? p.gems : [];
-    const gemSig = gemIds.map((g) => (g ? String(g) : '')).join('\0');
-    const resolvedGems = gemIds.map((gid) => {
+    const gemFaces = Array.isArray(p.gemR) ? p.gemR : [];
+    const gemSig = gemIds
+      .map((g, i) => `${g ? String(g) : ''}:${Number(gemFaces[i]) || 0}`)
+      .join('\0');
+    const resolvedGems = gemIds.map((gid, i) => {
       if (!gid) return null;
       const gem = itemsById.get(gid);
       if (!gem) return null;
       const url = getSpriteUrl(gem) || null;
       if (!url) return null;
+      const face = Math.round(Number(gemFaces[i]));
       return {
         url,
         id: gem.id,
@@ -417,6 +423,7 @@ export function paintPooled(root, opts) {
         rarity: gem.rarity || '',
         w: Number(gem.spriteW) || undefined,
         h: Number(gem.spriteH) || undefined,
+        r: Number.isFinite(face) ? ((face % 4) + 4) % 4 : 0,
       };
     });
 
@@ -429,7 +436,8 @@ export function paintPooled(root, opts) {
       const itemEl = createItemEl(item, getSpriteUrl, stackZ, face, resolvedGems, {
         deferSprite,
         chrome: !promo,
-        shadow: !itemiaryPromo,
+        // Itemiary: CSS drop-shadow instead of a second silhouette img (decode cost).
+        shadow: !itemiary,
         bagSlots: !itemiaryPromo,
       });
       if (!itemEl) continue;
@@ -532,9 +540,9 @@ export function paintPooled(root, opts) {
       const entry = pool.get(id);
       if (!entry?.shown) continue;
       if (deferSprite) {
-        // Itemiary keep-alive: cool bitmaps + park; keep the pool entry so
-        // scrubbing back does not rebuild DOM / re-decode from scratch.
-        parkCooledEntry(entry);
+        // Itemiary keep-alive: park warm (keep decoded thumbs); only tear down
+        // live-art RAF so scrubbing back skips re-decode.
+        parkWarmEntry(entry);
       } else {
         parkEntry(entry.itemEl, entry.underEl);
         entry.shown = false;
@@ -584,7 +592,7 @@ export function ensurePoolEntries(pool, root, items, getSpriteUrl) {
     const itemEl = createItemEl(item, getSpriteUrl, item.libraryIndex ?? 1, 0, [], {
       deferSprite,
       chrome: !promo,
-      shadow: !promo,
+      shadow: false,
       bagSlots: !promo,
     });
     if (!itemEl) continue;
@@ -630,8 +638,8 @@ export function mountItemiaryGrid(container, options) {
     'bpb-bg bpb-bg--itemiary' + (options.promo === true ? ' bpb-bg--promo' : '');
 
   const baseCellPx = options.cellPx ?? CELL_PX_DEFAULT;
-  const fixedCols = options.cols ?? 20;
-  const fillWidth = options.fillWidth !== false;
+  let fixedCols = options.cols ?? 20;
+  let fillWidth = options.fillWidth !== false;
   const getSpriteUrl = options.getSpriteUrl;
   const virtualize = options.promo !== true && options.virtualize !== false;
 
@@ -647,6 +655,10 @@ export function mountItemiaryGrid(container, options) {
   let itemsById = /** @type {Map<string, object>} */ (new Map());
   let rows = 1;
   let compact = true;
+  /** @type {'row' | 'column'} */
+  let packFlow = 'row';
+  /** Column flow: how many rows the strip packs into before the next column. */
+  let packRows = 1;
   /** @type {((item: object) => string | number) | null} */
   let groupKeyFn = null;
   /** Play AppearInLibrary on the next paint only (not resize). Opt-in. */
@@ -664,6 +676,7 @@ export function mountItemiaryGrid(container, options) {
   /** Cell size committed by the last paint — held until the stage really resizes. */
   let frozenCellPx = 0;
   let frozenHostW = 0;
+  let frozenCols = 0;
   /** Ignore ResizeObserver while AppearInLibrary is in flight. */
   let appearGuardUntil = 0;
   let roRaf = 0;
@@ -671,6 +684,58 @@ export function mountItemiaryGrid(container, options) {
   let spriteIo = null;
   /** Bumps when a newer paint supersedes an in-flight warm. */
   let paintGen = 0;
+
+  /**
+   * Stills while scrolling; live art only on hover/focus (not spotlight clones).
+   * @param {Event} e
+   */
+  function onLivePointerOver(e) {
+    if (!(e.target instanceof Element)) return;
+    const item = e.target.closest('.bpb-bg__item:not(.bpb-bg__item--parked)');
+    if (!item || !el.contains(item) || item.closest('.il-spotlight')) return;
+    const related = e.relatedTarget instanceof Node ? e.relatedTarget : null;
+    if (related && item.contains(related)) return;
+    activateItemLiveArt(item);
+  }
+
+  /**
+   * @param {Event} e
+   */
+  function onLivePointerOut(e) {
+    if (!(e.target instanceof Element)) return;
+    const item = e.target.closest('.bpb-bg__item');
+    if (!item || !el.contains(item) || item.closest('.il-spotlight')) return;
+    const related = e.relatedTarget instanceof Node ? e.relatedTarget : null;
+    if (related && item.contains(related)) return;
+    deactivateItemLiveArt(item);
+  }
+
+  /**
+   * @param {FocusEvent} e
+   */
+  function onLiveFocusIn(e) {
+    if (!(e.target instanceof Element)) return;
+    const item = e.target.closest('.bpb-bg__item:not(.bpb-bg__item--parked)');
+    if (!item || !el.contains(item) || item.closest('.il-spotlight')) return;
+    activateItemLiveArt(item);
+  }
+
+  /**
+   * @param {FocusEvent} e
+   */
+  function onLiveFocusOut(e) {
+    if (!(e.target instanceof Element)) return;
+    const item = e.target.closest('.bpb-bg__item');
+    if (!item || !el.contains(item) || item.closest('.il-spotlight')) return;
+    const related = e.relatedTarget instanceof Node ? e.relatedTarget : null;
+    if (related && item.contains(related)) return;
+    deactivateItemLiveArt(item);
+  }
+
+  el.addEventListener('pointerover', onLivePointerOver);
+  el.addEventListener('pointerout', onLivePointerOut);
+  el.addEventListener('focusin', onLiveFocusIn);
+  el.addEventListener('focusout', onLiveFocusOut);
 
   function stageWidth() {
     const rectW = host.getBoundingClientRect().width;
@@ -685,6 +750,7 @@ export function mountItemiaryGrid(container, options) {
     // Scroller clientWidth flicker used to "correct" positions after the wave.
     if (
       frozenCellPx > 0 &&
+      frozenCols === fixedCols &&
       Math.abs(hostW - frozenHostW) < HOST_RESIZE_EPS_PX
     ) {
       return {
@@ -719,6 +785,8 @@ export function mountItemiaryGrid(container, options) {
         rows: nextRows,
         scrollTop: el.scrollTop,
         clientHeight: el.clientHeight,
+        scrollLeft: el.scrollLeft,
+        clientWidth: el.clientWidth,
       },
       VIRTUAL_PAD_EM,
     );
@@ -747,7 +815,7 @@ export function mountItemiaryGrid(container, options) {
           spriteIo?.unobserve(itemEl);
         }
       },
-      { root: ioRoot, rootMargin: `${margin}px 0px` },
+      { root: ioRoot, rootMargin: `${margin}px` },
     );
     return spriteIo;
   }
@@ -784,6 +852,7 @@ export function mountItemiaryGrid(container, options) {
     appearLayerNext = 'item';
     frozenCellPx = cellPx;
     frozenHostW = hostW > 0 ? hostW : frozenHostW;
+    frozenCols = cols;
     if (appear) {
       appearGuardUntil = performance.now() + APPEAR_LAYOUT_GUARD_MS;
     }
@@ -826,6 +895,8 @@ export function mountItemiaryGrid(container, options) {
       rows: nextRows,
       clientHeight,
       scrollTop,
+      scrollLeft: el.scrollLeft,
+      clientWidth: el.clientWidth,
     };
 
     // If the scroller has no clientHeight yet, viewport cull is empty — warm a
@@ -874,26 +945,36 @@ export function mountItemiaryGrid(container, options) {
    */
   function render() {
     const { avail, cellPx, cols, hostW } = layoutMetrics();
-    const layoutKey = `${avail}:${cols}:${cellPx}:${mode}`;
 
     if (mode === 'packed') {
-      const packKey = `${cols}|${compact ? 1 : 0}|${groupKeyFn ? 1 : 0}|${packedItems.map((i) => i.id).join('\0')}`;
+      const axisLimit = packFlow === 'column' ? packRows : cols;
+      const packKey = `${packFlow}|${axisLimit}|${compact ? 1 : 0}|${groupKeyFn ? 1 : 0}|${packedItems.map((i) => i.id).join('\0')}`;
       if (packKey !== lastPackKey || !lastPackResult) {
         lastPackKey = packKey;
         if (!packedItems.length) {
-          lastPackResult = { placements: [], rows: 1 };
+          lastPackResult = { placements: [], rows: 1, cols };
         } else {
-          const packed = packItems(packedItems, cols, {
+          const packed = packItems(packedItems, axisLimit, {
             compact,
             groupKey: groupKeyFn || undefined,
+            flow: packFlow,
           });
-          lastPackResult = { placements: packed.placements, rows: packed.rows };
+          lastPackResult = {
+            placements: packed.placements,
+            rows: packed.rows,
+            cols: packed.cols,
+          };
         }
       }
       placements = lastPackResult.placements;
       rows = lastPackResult.rows;
       itemsById = mergePoolIntoMap(new Map(packedItems.map((i) => [i.id, i])));
     }
+
+    const paintCols = mode === 'packed' && packFlow === 'column'
+      ? Math.max(1, lastPackResult?.cols || cols)
+      : cols;
+    const layoutKey = `${avail}:${paintCols}:${cellPx}:${mode}:${packFlow}`;
 
     const visKey = virtualize
       ? visibleSlice(cellPx, rows, placements, itemsById)
@@ -908,7 +989,7 @@ export function mountItemiaryGrid(container, options) {
     }
     lastPaintKey = paintKey;
 
-    return paintNow(cellPx, cols, rows, placements, itemsById, hostW);
+    return paintNow(cellPx, paintCols, rows, placements, itemsById, hostW);
   }
 
   const ro = new ResizeObserver(() => {
@@ -1046,6 +1127,58 @@ export function mountItemiaryGrid(container, options) {
      * @param {string} id
      * @returns {Promise<HTMLElement | null>}
      */
+    /**
+     * Change how many columns the bag packs into. Clears the frozen cell
+     * size so the next paint refits sprites to the stage.
+     * @param {number} n
+     * @returns {boolean} true when the count actually changed
+     */
+    setCols(n) {
+      const next = Math.max(1, Math.floor(Number(n) || 1));
+      if (next === fixedCols) return false;
+      fixedCols = next;
+      frozenCellPx = 0;
+      frozenHostW = 0;
+      frozenCols = 0;
+      lastPackKey = '';
+      lastPackResult = null;
+      lastPaintKey = '';
+      paintGen += 1;
+      return true;
+    },
+    /**
+     * `column` packs down the strip, then to the right. `rows` is that strip height.
+     * @param {'row' | 'column'} flow
+     * @param {number} [rowLimit]
+     * @returns {boolean}
+     */
+    setPackFlow(flow, rowLimit) {
+      const nextFlow = flow === 'column' ? 'column' : 'row';
+      const nextRows = Math.max(1, Math.floor(Number(rowLimit) || 1));
+      if (nextFlow === packFlow && (nextFlow !== 'column' || nextRows === packRows)) return false;
+      packFlow = nextFlow;
+      packRows = nextRows;
+      lastPackKey = '';
+      lastPackResult = null;
+      lastPaintKey = '';
+      paintGen += 1;
+      return true;
+    },
+    /**
+     * When false, the bag stays cols×cell wide and the stage can scroll sideways.
+     * @param {boolean} on
+     * @returns {boolean}
+     */
+    setFillWidth(on) {
+      const next = on !== false;
+      if (next === fillWidth) return false;
+      fillWidth = next;
+      frozenCellPx = 0;
+      frozenHostW = 0;
+      lastPaintKey = '';
+      paintGen += 1;
+      return true;
+    },
     async scrollToId(id) {
       const p = placements.find((pl) => pl.id === id);
       if (!p) return null;
@@ -1070,6 +1203,10 @@ export function mountItemiaryGrid(container, options) {
     },
     destroy() {
       if (virtualize) el.removeEventListener('scroll', onScroll);
+      el.removeEventListener('pointerover', onLivePointerOver);
+      el.removeEventListener('pointerout', onLivePointerOut);
+      el.removeEventListener('focusin', onLiveFocusIn);
+      el.removeEventListener('focusout', onLiveFocusOut);
       if (scrollRaf) cancelAnimationFrame(scrollRaf);
       scrollRaf = 0;
       if (roRaf) cancelAnimationFrame(roRaf);

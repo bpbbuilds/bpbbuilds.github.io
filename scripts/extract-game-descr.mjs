@@ -14,7 +14,12 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { gameTemplateToPlain, gemDescrKey, normKey } from './lib/game-descr.mjs';
+import {
+  gameTemplateToPlain,
+  gemDescrKey,
+  magicRingLibraryEffect,
+  normKey,
+} from './lib/game-descr.mjs';
 import { mentionedStacksFromTemplate } from './lib/mentioned-stacks.mjs';
 import { loadPHashTranslation, getMessageAny } from './lib/phash-translation.mjs';
 
@@ -211,6 +216,26 @@ function main() {
     }
 
     if (!template) {
+      if (item.id === 'magic_ring' || item.id === 'superior_ring') {
+        const ring = magicRingLibraryEffect(
+          item,
+          phashTables.map((t) => t.table),
+          getMessageAny,
+        );
+        if (ring?.effect) {
+          outItems.push({
+            id: item.id,
+            gid: item.gid,
+            name: item.name,
+            descrKey,
+            template: ring.template,
+            effect: ring.effect,
+            source: 'phash-ring',
+          });
+          hitPhash++;
+          continue;
+        }
+      }
       miss++;
       outItems.push({
         id: item.id,

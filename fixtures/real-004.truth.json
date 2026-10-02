@@ -1,0 +1,466 @@
+{
+  "note": "Hand-labeled with create ?label=1",
+  "source": "reddit",
+  "split": "train",
+  "labeledAt": "2026-09-27T03:30:52.077Z",
+  "shot": {
+    "w": 1806,
+    "h": 947
+  },
+  "items": [
+    {
+      "name": "Hammer",
+      "x": 2,
+      "y": 3,
+      "r": 3,
+      "gems": [
+        null,
+        {
+          "name": "Regular Amethyst",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Spectral Dagger",
+      "x": 3,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Spectral Dagger",
+      "x": 4,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Spectral Dagger",
+      "x": 5,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Spectral Dagger",
+      "x": 6,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Mana Orb",
+      "x": 6,
+      "y": 2,
+      "r": null
+    },
+    {
+      "name": "Mana Orb",
+      "x": 2,
+      "y": 1,
+      "r": null
+    },
+    {
+      "name": "Mega Clover",
+      "x": 0,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Lucky Clover",
+      "x": 2,
+      "y": 0,
+      "r": null
+    },
+    {
+      "name": "Lucky Clover",
+      "x": 7,
+      "y": 4,
+      "r": null
+    },
+    {
+      "name": "Lucky Piggy",
+      "x": 3,
+      "y": 5,
+      "r": 3
+    },
+    {
+      "name": "Lucky Piggy",
+      "x": 4,
+      "y": 5,
+      "r": 3
+    },
+    {
+      "name": "Lucky Piggy",
+      "x": 1,
+      "y": 6,
+      "r": 0
+    },
+    {
+      "name": "Lucky Piggy",
+      "x": 0,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Lucky Piggy",
+      "x": 0,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "King Crown",
+      "x": 5,
+      "y": 3,
+      "r": 1,
+      "gems": [
+        {
+          "name": "Perfect Sapphire",
+          "r": 0
+        },
+        {
+          "name": "Regular Sapphire",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Blueberries",
+      "x": 7,
+      "y": 3,
+      "r": null
+    },
+    {
+      "name": "Blueberries",
+      "x": 3,
+      "y": 0,
+      "r": null
+    },
+    {
+      "name": "Blue Sage Collar",
+      "x": 4,
+      "y": 0,
+      "r": null
+    },
+    {
+      "name": "Blue Sage Collar",
+      "x": 5,
+      "y": 0,
+      "r": null
+    },
+    {
+      "name": "Blue Sage Collar",
+      "x": 2,
+      "y": 2,
+      "r": null
+    },
+    {
+      "name": "Blue Sage Collar",
+      "x": 3,
+      "y": 3,
+      "r": null
+    },
+    {
+      "name": "Blue Sage Collar",
+      "x": 4,
+      "y": 3,
+      "r": null
+    },
+    {
+      "name": "Lucky Clover",
+      "x": 0,
+      "y": 6,
+      "r": null
+    },
+    {
+      "name": "Banana",
+      "x": 7,
+      "y": 2,
+      "r": 2
+    },
+    {
+      "name": "Carrot",
+      "x": 7,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Carrot",
+      "x": 8,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Shield of Valor",
+      "x": 6,
+      "y": 5,
+      "r": 1,
+      "gems": [
+        {
+          "name": "Flawed Sapphire",
+          "r": 0
+        },
+        {
+          "name": "Flawed Topaz",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Glowing Crown",
+      "x": 5,
+      "y": 5,
+      "r": 1,
+      "gems": [
+        {
+          "name": "Flawed Topaz",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Wolpertinger",
+      "x": 0,
+      "y": 2,
+      "r": 0
+    }
+  ],
+  "skills": [
+    {
+      "name": "Spicy Banana",
+      "x": 8,
+      "y": 4,
+      "r": null
+    }
+  ],
+  "bagCells": [
+    "2,0",
+    "3,0",
+    "4,0",
+    "2,1",
+    "3,1",
+    "4,1",
+    "2,2",
+    "3,2",
+    "4,2",
+    "7,3",
+    "8,3",
+    "7,4",
+    "8,4",
+    "3,5",
+    "4,5",
+    "3,6",
+    "4,6",
+    "0,0",
+    "0,1",
+    "0,2",
+    "1,0",
+    "1,1",
+    "1,2",
+    "7,5",
+    "6,5",
+    "5,5",
+    "7,6",
+    "6,6",
+    "5,6",
+    "0,4",
+    "0,5",
+    "0,6",
+    "1,3",
+    "1,4",
+    "1,5",
+    "1,6",
+    "8,6",
+    "8,5",
+    "8,0",
+    "7,0",
+    "5,0",
+    "6,0",
+    "5,1",
+    "6,1",
+    "5,2",
+    "6,2",
+    "7,1",
+    "8,1",
+    "7,2",
+    "8,2",
+    "6,3",
+    "6,4",
+    "5,3",
+    "5,4",
+    "4,3",
+    "4,4",
+    "3,3",
+    "3,4",
+    "2,3",
+    "2,4",
+    "2,5",
+    "2,6",
+    "0,3"
+  ],
+  "bags": [
+    {
+      "name": "Vineweave Basket",
+      "x": 2,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 7,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 3,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 0,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 1,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 5,
+      "y": 5,
+      "r": 1
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 5,
+      "y": 6,
+      "r": 1
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 0,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 1,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 1,
+      "y": 6,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 8,
+      "y": 6,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 8,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 8,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Protective Purse",
+      "x": 7,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 5,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 5,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 5,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 7,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 7,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 6,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 5,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 4,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 3,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 2,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 2,
+      "y": 5,
+      "r": 1
+    },
+    {
+      "name": "Protective Purse",
+      "x": 0,
+      "y": 3,
+      "r": 0
+    }
+  ],
+  "grid": {
+    "ok": true,
+    "originX": -1.13,
+    "originY": 56.44,
+    "cellW": 138.84,
+    "cellH": 138.84,
+    "imgW": 1806,
+    "imgH": 947,
+    "score": 1.215
+  }
+}

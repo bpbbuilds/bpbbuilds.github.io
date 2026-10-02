@@ -43,6 +43,24 @@ export function currentStatSource() {
 }
 
 /**
+ * Run `fn` with an empty attribution stack so buff listeners do not inherit
+ * the grantor's withStatSource (Mana Orb grant → weapon converts → wrongly
+ * labeled "Bonus from Mana Orb").
+ * @param {() => T} fn
+ * @returns {T}
+ * @template T
+ */
+export function runWithoutStatSource(fn) {
+  if (!stack.length) return fn();
+  const saved = stack.splice(0, stack.length);
+  try {
+    return fn();
+  } finally {
+    for (const s of saved) stack.push(s);
+  }
+}
+
+/**
  * @param {object} piece
  * @param {{
  *   stat: string,

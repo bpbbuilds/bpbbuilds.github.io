@@ -118,12 +118,13 @@ export const dragonKnightPort = {
   },
 };
 
+/** EchoingBattlecry.gd — prepare: haste × start-of-battle links; CD replays starts. */
 /** @type {ScriptHandler} */
 export const echoingBattlecryPort = {
   handlerId: 'echoing_battlecry',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const { graph, itemsById, canAffect, pieces, rng } = ctx;
+  onPreCombatStart(piece, ctx) {
+    const { graph, itemsById, canAffect, rng } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     /** @type {string[]} */
     const keys = links.map((l) => l.key);
@@ -134,7 +135,7 @@ export const echoingBattlecryPort = {
       keys[j] = tmp;
     }
     piece._echoQueue = keys;
-    const speed = getPName(piece.params, 'speed', getP1(piece.params, 5)) / 100;
+    const speed = getPName(piece.params, 'speed', getP1(piece.params, 65)) / 100;
     if (keys.length && speed) addSpeed(piece, keys.length * speed);
   },
   onCooldownEffect(piece, ctx) {
@@ -158,8 +159,7 @@ export const echoingBattlecryPort = {
       }
     }
     if (!q.length) {
-      piece.alive = false;
-      piece.charges = 0;
+      afterEffectFinished(piece, ctx, 'echoing_battlecry', { activate: false });
     }
     return true;
   },

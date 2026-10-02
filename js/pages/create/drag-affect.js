@@ -102,19 +102,21 @@ function boardMaps(placements, itemsById, skipKey) {
   const skip = toSkipSet(skipKey);
   /** @type {Set<string>} */
   const bagCells = new Set();
-  /** @type {Map<string, object>} */
+  /** @type {Map<string, { item: object, key: string }>} */
   const filled = new Map();
   for (const p of placements) {
     if (skip && p.key && skip.has(p.key)) continue;
     const item = itemsById.get(p.id);
     if (!item) continue;
     const cells = placementBodyCells(item, p);
+    const placeKey = String(p.key || `${p.id}:${p.x},${p.y},${p.r || 0}`);
     if (isBagItem(item)) {
       for (const c of cells) bagCells.add(`${c.x},${c.y}`);
     } else {
       for (const c of cells) {
         const k = `${c.x},${c.y}`;
-        if (!filled.has(k)) filled.set(k, item);
+        // Key by placement — same catalog id can sit twice (two bananas).
+        if (!filled.has(k)) filled.set(k, { item, key: placeKey });
       }
     }
   }
@@ -231,7 +233,7 @@ export function createDragAffectPreview(stageEl, getBoardEl) {
 
       marks.sort((a, b) => a.y - b.y || a.x - b.x);
 
-      /** @type {Set<object>} */
+      /** @type {Set<string>} */
       const itemsChecked = new Set();
       /** @type {Set<string>} */
       const distinctIds = new Set();
@@ -243,15 +245,16 @@ export function createDragAffectPreview(stageEl, getBoardEl) {
         if (maps.bagCells.has(mark.cell)) {
           const target = maps.filled.get(mark.cell) || null;
           if (target) {
-            if (skipRecheck && itemsChecked.has(target)) {
+            // Match placed hover: recheck per placement instance, not catalog id.
+            if (skipRecheck && itemsChecked.has(target.key)) {
               hit = false;
             } else {
-              hit = canAffectColor(rulesById, item, target, layer.color, ctx);
+              hit = canAffectColor(rulesById, item, target.item, layer.color, ctx);
               if (hit && distinctMode) {
-                if (distinctIds.has(target.id)) hit = false;
-                else distinctIds.add(target.id);
+                if (distinctIds.has(target.item.id)) hit = false;
+                else distinctIds.add(target.item.id);
               }
-              itemsChecked.add(target);
+              itemsChecked.add(target.key);
             }
           } else {
             hit = canAffectColor(rulesById, item, null, layer.color, ctx);

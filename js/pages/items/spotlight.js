@@ -68,10 +68,12 @@ function pieceFlipTransform(dx, dy, scale = 1) {
  *       tipHost?: HTMLElement | null,
  *     }) => void,
  *     hide: () => void,
+ *     el?: HTMLElement,
  *   } | null,
  *   builds?: {
  *     showFor: (id: string) => void,
  *     hide: () => void,
+ *     el?: HTMLElement,
  *   } | null,
  * }} opts
  */
@@ -81,6 +83,7 @@ export function createSpotlight(opts) {
   root.setAttribute('aria-hidden', 'true');
   root.innerHTML = `
     <div class="il-spotlight__dim" data-spotlight-dim></div>
+    <div class="il-spotlight__sheet" data-spotlight-sheet></div>
     <div class="il-spotlight__stage" data-spotlight-stage>
       <div
         class="il-spotlight__piece"
@@ -95,10 +98,16 @@ export function createSpotlight(opts) {
   document.body.appendChild(root);
 
   const dim = root.querySelector('[data-spotlight-dim]');
+  const sheet = root.querySelector('[data-spotlight-sheet]');
   const stage = root.querySelector('[data-spotlight-stage]');
   const piece = root.querySelector('[data-spotlight-piece]');
   const underLayer = root.querySelector('[data-spotlight-under]');
   const itemsLayer = root.querySelector('[data-spotlight-items]');
+
+  const mobileMq = window.matchMedia?.('(max-width: 900px)') || null;
+  let mobileLayoutRaf = 0;
+  /** @type {MutationObserver | null} */
+  let mobilePanelObserver = null;
 
   /** @type {string | null} */
   let activeId = null;
@@ -110,6 +119,145 @@ export function createSpotlight(opts) {
   let closeTimer = null;
   /** @type {((e: TransitionEvent) => void) | null} */
   let pieceTransitionEnd = null;
+
+  /** @type {Map<HTMLElement, { parent: Node, next: ChildNode | null }>} */
+  const parked = new Map();
+
+  /**
+   * @param {HTMLElement} el
+   */
+  function parkInSheet(el) {
+    if (!(sheet instanceof HTMLElement)) return;
+    if (!parked.has(el)) {
+      parked.set(el, { parent: el.parentNode || document.body, next: el.nextSibling });
+    }
+    sheet.appendChild(el);
+  }
+
+  function restoreParked() {
+    for (const [el, home] of parked) {
+      const parent = home.parent;
+      if (!parent) continue;
+      if (home.next && home.next.parentNode === parent) parent.insertBefore(el, home.next);
+      else parent.appendChild(el);
+    }
+    parked.clear();
+  }
+
+  function clearMobileStackStyles() {
+    restoreParked();
+    root.style.removeProperty('--il-spotlight-top');
+    if (stage instanceof HTMLElement) {
+      stage.style.removeProperty('left');
+      stage.style.removeProperty('top');
+      stage.style.removeProperty('transform');
+      stage.style.removeProperty('transform-origin');
+      stage.style.removeProperty('margin-bottom');
+    }
+
+    const tipHost = opts.getTip()?.host;
+    if (tipHost instanceof HTMLElement) {
+      tipHost.style.removeProperty('--bpb-tooltip-mobile-cap');
+      tipHost.style.removeProperty('--bpb-tooltip-scale');
+    }
+
+    for (const panel of [opts.recipes?.el, opts.builds?.el]) {
+      if (!(panel instanceof HTMLElement)) continue;
+      panel.style.removeProperty('left');
+      panel.style.removeProperty('top');
+      panel.style.removeProperty('right');
+      panel.style.removeProperty('bottom');
+      panel.style.removeProperty('width');
+      panel.style.removeProperty('max-width');
+      panel.style.removeProperty('max-height');
+      panel.style.removeProperty('transform');
+    }
+  }
+
+  function navClearancePx() {
+    const nav = document.querySelector('#site-nav');
+    const menu = document.querySelector('.site-nav__menu');
+    let bottom = 0;
+    if (nav instanceof HTMLElement) bottom = Math.max(bottom, nav.getBoundingClientRect().bottom);
+    if (menu instanceof HTMLElement && menu.getClientRects().length) {
+      bottom = Math.max(bottom, menu.getBoundingClientRect().bottom);
+    }
+    return Math.ceil(bottom);
+  }
+
+  function layoutMobileStack() {
+    if (!mobileMq?.matches || (!open && !closing)) {
+      clearMobileStackStyles();
+      return;
+    }
+    if (!(sheet instanceof HTMLElement)) return;
+
+    root.style.setProperty('--il-spotlight-top', `${navClearancePx()}px`);
+
+    if (stage instanceof HTMLElement) parkInSheet(stage);
+    const tipHost = opts.getTip()?.host;
+    if (tipHost instanceof HTMLElement && tipHost.classList.contains('is-visible')) {
+      parkInSheet(tipHost);
+      const card = tipHost.querySelector('.bpb-tooltip');
+      const declared = card instanceof HTMLElement
+        ? parseFloat(getComputedStyle(card).getPropertyValue('--bpb-tooltip-w'))
+        : 0;
+      const cs = getComputedStyle(sheet);
+      const pad = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+      const room = Math.max(160, sheet.clientWidth - pad);
+      const layoutW = declared > 0 ? declared : tipHost.scrollWidth;
+      const scale = layoutW > 0 ? Math.min(1, room / layoutW) : 1;
+      tipHost.style.setProperty('--bpb-tooltip-scale', scale.toFixed(4));
+    }
+    const recipes = opts.recipes?.el;
+    if (recipes instanceof HTMLElement) parkInSheet(recipes);
+    const builds = opts.builds?.el;
+    if (builds instanceof HTMLElement) parkInSheet(builds);
+
+    if (stage instanceof HTMLElement && piece instanceof HTMLElement) {
+      stage.style.left = 'auto';
+      stage.style.top = 'auto';
+      stage.style.transformOrigin = 'top center';
+      const naturalW = piece.offsetWidth;
+      const naturalH = piece.offsetHeight;
+      const maxW = Math.max(0, sheet.clientWidth - 8);
+      const maxH = Math.min(Math.round(window.innerHeight * 0.22), 150);
+      const scale =
+        naturalW > 0 && naturalH > 0
+          ? Math.min(1, maxW / naturalW, maxH / naturalH)
+          : 1;
+      stage.style.transform = scale < 1 ? `scale(${scale})` : 'none';
+      stage.style.marginBottom = scale < 1 ? `${-Math.round(naturalH * (1 - scale))}px` : '0';
+    }
+  }
+
+  function scheduleMobileStack() {
+    if (mobileLayoutRaf) cancelAnimationFrame(mobileLayoutRaf);
+    mobileLayoutRaf = requestAnimationFrame(() => {
+      mobileLayoutRaf = requestAnimationFrame(() => {
+        mobileLayoutRaf = 0;
+        layoutMobileStack();
+      });
+    });
+  }
+
+  const onMobileResize = () => scheduleMobileStack();
+  window.addEventListener('resize', onMobileResize);
+  mobileMq?.addEventListener('change', onMobileResize);
+
+  const mobilePanels = [opts.recipes?.el, opts.builds?.el].filter(
+    (panel) => panel instanceof HTMLElement,
+  );
+  if (mobilePanels.length) {
+    mobilePanelObserver = new MutationObserver(() => scheduleMobileStack());
+    mobilePanels.forEach((panel) =>
+      mobilePanelObserver.observe(panel, {
+        childList: true,
+        attributes: true,
+        attributeFilter: ['hidden'],
+      }),
+    );
+  }
 
   function clearPieceTransition() {
     if (pieceTransitionEnd && piece instanceof HTMLElement) {
@@ -373,6 +521,8 @@ export function createSpotlight(opts) {
     showItem(item, origin instanceof Element ? origin : null);
     root.classList.add('is-open');
     root.setAttribute('aria-hidden', 'false');
+    layoutMobileStack();
+    scheduleMobileStack();
 
     // Layout at final stage position, then FLIP from catalog
     requestAnimationFrame(() => {
@@ -391,6 +541,7 @@ export function createSpotlight(opts) {
     clearPieceTransition();
     clearSourceMark();
     clearPiece();
+    clearMobileStackStyles();
     root.classList.remove('is-open', 'is-closing');
     root.setAttribute('aria-hidden', 'true');
     opts.recipes?.hide();
@@ -435,6 +586,9 @@ export function createSpotlight(opts) {
   }
 
   dim?.addEventListener('click', onDimClick);
+  sheet?.addEventListener('click', (e) => {
+    if (e.target === sheet) close();
+  });
   stage?.addEventListener('click', (e) => e.stopPropagation());
   window.addEventListener('keydown', onKey);
 
@@ -451,6 +605,10 @@ export function createSpotlight(opts) {
     close,
     destroy() {
       if (closeTimer) clearTimeout(closeTimer);
+      if (mobileLayoutRaf) cancelAnimationFrame(mobileLayoutRaf);
+      mobilePanelObserver?.disconnect();
+      window.removeEventListener('resize', onMobileResize);
+      mobileMq?.removeEventListener('change', onMobileResize);
       window.removeEventListener('keydown', onKey);
       finishClose();
       root.remove();

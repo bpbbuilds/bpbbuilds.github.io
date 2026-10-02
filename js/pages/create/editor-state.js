@@ -44,6 +44,7 @@ export const EDIT_MODE = /** @type {const} */ ({
  *   removeParked: (key: string) => ParkedEntry | null,
  *   takeParkedById: (itemId: string, opts?: { borrow?: boolean }) => ParkedEntry | null,
  *   clearBoard: () => void,
+ *   clearParked: () => void,
  *   setPriority: (key: string, priority: Priority) => void,
  *   setSelectedKey: (key: string | null) => void,
  *   isHistoryLocked: () => boolean,
@@ -53,6 +54,12 @@ export const EDIT_MODE = /** @type {const} */ ({
  * }}
  */
 export function createEditorState() {
+  try {
+    const fixing = new URLSearchParams(window.location.search).get('fix');
+    if (!fixing) sessionStorage.removeItem('bpb-label-fix-hold');
+  } catch {
+    /* ignore */
+  }
   /** @type {Draft} */
   let draft = loadDraft();
   /** @type {string | null} */
@@ -192,6 +199,7 @@ export function createEditorState() {
         priority: p.priority ?? null,
       };
       if (Array.isArray(p.gems)) row.gems = p.gems.slice();
+      if (Array.isArray(p.gemR)) row.gemR = p.gemR.slice();
       draft = { ...draft, placements: [...draft.placements, row] };
       selectedKey = key;
       commit();
@@ -263,15 +271,27 @@ export function createEditorState() {
       return hit;
     },
     clearBoard() {
-      if (blockIfHistoryLocked()) return;
+      // Clears board + park + attached history in one step (no unlock gate).
       draft = {
         ...draft,
         placements: [],
         parked: [],
         history: null,
+        hero_class: null,
+        starting_bag_id: null,
         build_tag: draft.build_tag === 'real' ? 'feasible' : draft.build_tag,
       };
       selectedKey = null;
+      commit();
+    },
+    clearParked() {
+      // Park wipe while history-locked also drops history (same as clear board).
+      draft = {
+        ...draft,
+        parked: [],
+        history: null,
+        build_tag: draft.build_tag === 'real' ? 'feasible' : draft.build_tag,
+      };
       commit();
     },
     setPriority(key, priority) {

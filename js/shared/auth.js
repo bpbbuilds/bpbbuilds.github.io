@@ -80,10 +80,14 @@ export async function signOut() {
   if (error) throw error;
 }
 
+const PROFILE_CORE_COLS =
+  'id, discord_id, display_name, avatar_url, equipped_avatar, is_owner, voter_key, plan, founding_slot, premium_until';
+const PROFILE_FULL_COLS = `${PROFILE_CORE_COLS}, cosmetic_grants, coins`;
+
 /**
  * @param {import('https://esm.sh/@supabase/supabase-js@2').User | null | undefined} user
  */
-function discordIdFromUser(user) {
+export function discordIdFromUser(user) {
   if (!user) return '';
   const meta = user.user_metadata || {};
   const fromMeta = String(meta.provider_id || meta.sub || '').trim();
@@ -97,20 +101,98 @@ function discordIdFromUser(user) {
 }
 
 /**
- * @param {import('https://esm.sh/@supabase/supabase-js@2').User} user
+ * @param {import('https://esm.sh/@supabase/supabase-js@2').User | null | undefined} user
  */
-function personaFromUser(user) {
+export function personaFromUser(user) {
+  if (!user) return { display_name: null, avatar_url: null };
   const meta = user.user_metadata || {};
+  const identity = Array.isArray(user.identities)
+    ? user.identities.find((i) => i?.provider === 'discord')
+    : null;
+  const idata = identity?.identity_data || {};
   const display_name =
-    String(meta.full_name || meta.name || meta.preferred_username || '').trim() ||
-    null;
+    String(
+      meta.full_name ||
+        meta.name ||
+        meta.custom_claims?.global_name ||
+        meta.preferred_username ||
+        idata.full_name ||
+        idata.name ||
+        idata.preferred_username ||
+        '',
+    ).trim() || null;
   const avatar_url =
-    String(meta.avatar_url || meta.picture || '').trim() || null;
+    String(meta.avatar_url || meta.picture || idata.avatar_url || idata.picture || '').trim() ||
+    null;
   return { display_name, avatar_url };
 }
 
 /**
+ * @param {unknown} err
+ */
+function isMissingProfileColumn(err) {
+  const msg = String(
+    /** @type {{ message?: string, details?: string, hint?: string }} */ (err)
+      ?.message ||
+      err ||
+      '',
+  );
+  return (
+    /cosmetic_grants|coins/i.test(msg) || /column .* does not exist/i.test(msg)
+  );
+}
+
+/**
+ * @param {Record<string, unknown>} data
+ * @param {import('https://esm.sh/@supabase/supabase-js@2').User} user
+ * @returns {Profile}
+ */
+function mapProfileRow(data, user) {
+  const persona = personaFromUser(user);
+  const discordFromRow = String(data.discord_id || '').trim();
+  const discordFromSession = discordIdFromUser(user);
+  const coinsRaw = data.coins;
+  const coins =
+    coinsRaw != null && Number.isFinite(Number(coinsRaw))
+      ? Math.max(0, Math.floor(Number(coinsRaw)))
+      : 0;
+  return {
+    id: String(data.id),
+    discord_id: discordFromRow || discordFromSession,
+    display_name:
+      data.display_name != null && String(data.display_name).trim()
+        ? String(data.display_name).trim()
+        : persona.display_name,
+    avatar_url:
+      data.avatar_url != null && String(data.avatar_url).trim()
+        ? String(data.avatar_url).trim()
+        : persona.avatar_url,
+    equipped_avatar:
+      data.equipped_avatar != null ? String(data.equipped_avatar) : null,
+    is_owner: data.is_owner === true,
+    voter_key: data.voter_key ? String(data.voter_key) : null,
+    plan: /** @type {Profile['plan']} */ (
+      ['founding', 'premium'].includes(String(data.plan || ''))
+        ? String(data.plan)
+        : 'free'
+    ),
+    founding_slot:
+      data.founding_slot != null && Number.isFinite(Number(data.founding_slot))
+        ? Number(data.founding_slot)
+        : null,
+    premium_until: data.premium_until ? String(data.premium_until) : null,
+    cosmetic_grants: Array.isArray(data.cosmetic_grants)
+      ? data.cosmetic_grants
+      : data.cosmetic_grants != null
+        ? data.cosmetic_grants
+        : [],
+    coins,
+  };
+}
+
+/**
  * Load profile for the current session (cached).
+ * Retries without newer columns if not migrated yet.
  * @param {{ force?: boolean }} [opts]
  * @returns {Promise<Profile | null>}
  */
@@ -126,13 +208,23 @@ export async function getProfile(opts = {}) {
       return null;
     }
     const supabase = getSupabase();
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from('profiles')
-      .select(
-        'id, discord_id, display_name, avatar_url, is_owner, voter_key, plan, founding_slot, premium_until',
-      )
+      .select(PROFILE_FULL_COLS)
       .eq('id', session.user.id)
       .maybeSingle();
+
+    if (error && isMissingProfileColumn(error)) {
+      console.warn(
+        '[auth] profiles missing cosmetic_grants/coins — apply docs/db/sql/021 + 022',
+        error,
+      );
+      ({ data, error } = await supabase
+        .from('profiles')
+        .select(PROFILE_CORE_COLS)
+        .eq('id', session.user.id)
+        .maybeSingle());
+    }
 
     if (error) {
       console.error(error);
@@ -143,24 +235,7 @@ export async function getProfile(opts = {}) {
       profileCache = null;
       return null;
     }
-    profileCache = /** @type {Profile} */ ({
-      id: String(data.id),
-      discord_id: String(data.discord_id || ''),
-      display_name: data.display_name ?? null,
-      avatar_url: data.avatar_url ?? null,
-      is_owner: data.is_owner === true,
-      voter_key: data.voter_key ? String(data.voter_key) : null,
-      plan: /** @type {Profile['plan']} */ (
-        ['founding', 'premium'].includes(String(data.plan || ''))
-          ? String(data.plan)
-          : 'free'
-      ),
-      founding_slot:
-        data.founding_slot != null && Number.isFinite(Number(data.founding_slot))
-          ? Number(data.founding_slot)
-          : null,
-      premium_until: data.premium_until ? String(data.premium_until) : null,
-    });
+    profileCache = mapProfileRow(/** @type {Record<string, unknown>} */ (data), session.user);
     return profileCache;
   })();
 
@@ -210,6 +285,8 @@ async function afterSignedIn(session) {
   await claimFoundingSlot();
   profileCache = undefined;
   await getProfile({ force: true });
+  const { maybePromptDiscordJoin } = await import('./discord-join.js');
+  await maybePromptDiscordJoin();
 }
 
 /**

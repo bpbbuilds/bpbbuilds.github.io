@@ -1,10 +1,10 @@
 {
-  "extractedAt": "2026-08-25T05:20:50.817Z",
+  "extractedAt": "2026-09-24T16:53:39.392Z",
   "source": "tools/game-extract-full/Items",
-  "scriptFileCount": 508,
-  "withCombatOverrides": 451,
+  "scriptFileCount": 509,
+  "withCombatOverrides": 452,
   "byMethod": {
-    "doCooldownEffect": 203,
+    "doCooldownEffect": 204,
     "onCombatStart": 98,
     "onPreCombatStart": 18,
     "onPostCombatStart": 1,
@@ -291,6 +291,7 @@
       "spirit_bells",
       "squirrel",
       "stone_badge",
+      "time_pendant",
       "toast_goobert",
       "wand",
       "wisp"
@@ -4016,6 +4017,16 @@
         "onPrepare"
       ],
       "family": "synergy_aura"
+    },
+    "time_pendant": {
+      "id": "time_pendant",
+      "scriptStem": "TimePendant",
+      "file": "Exclusive/TimePendant.gd",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd"
     },
     "toad": {
       "id": "toad",

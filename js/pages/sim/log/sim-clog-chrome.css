@@ -1,0 +1,830 @@
+/* Game CombatLog chrome — TooltipBase nine-patch + collapsible You / Opp / Search tabs.
+   Source: Interface/Tooltips/TooltipBase.png, Interface/DamageMeter/*, Core/Main.tscn CombatLog. */
+
+.sim-clog-ui {
+  --clog-patch: url('../../../../assets/icons/sim/log/TooltipBase.png');
+  --clog-cream: #ffecd4;
+  --clog-ink: #3c261d;
+  --clog-gold: #ffe337;
+  /* Thin Godot-style outline — not the 0.1em sticker / OptionsFont ring */
+  --clog-outline:
+    1px 0 0 var(--clog-ink),
+    -1px 0 0 var(--clog-ink),
+    0 1px 0 var(--clog-ink),
+    0 -1px 0 var(--clog-ink);
+  /* OptionsFont.tres: Baskerville Regular 26 + 3px outline ≈ 0.115em */
+  --clog-ring-stroke: 0.1em;
+  --clog-ring:
+    0.1em 0 0 var(--clog-ink),
+    0.092em 0.038em 0 var(--clog-ink),
+    0.071em 0.071em 0 var(--clog-ink),
+    0.038em 0.092em 0 var(--clog-ink),
+    0 0.1em 0 var(--clog-ink),
+    -0.038em 0.092em 0 var(--clog-ink),
+    -0.071em 0.071em 0 var(--clog-ink),
+    -0.092em 0.038em 0 var(--clog-ink),
+    -0.1em 0 0 var(--clog-ink),
+    -0.092em -0.038em 0 var(--clog-ink),
+    -0.071em -0.071em 0 var(--clog-ink),
+    -0.038em -0.092em 0 var(--clog-ink),
+    0 -0.1em 0 var(--clog-ink),
+    0.038em -0.092em 0 var(--clog-ink),
+    0.071em -0.071em 0 var(--clog-ink),
+    0.092em -0.038em 0 var(--clog-ink);
+  position: relative;
+  width: min(34rem, calc(100vw - 8rem));
+  min-width: 30rem;
+  margin: 5.6rem 5.2rem 0.85rem;
+}
+
+.sim-clog-patch {
+  border-style: solid;
+  border-width: 28px 30px 25px 24px;
+  border-image-source: var(--clog-patch);
+  border-image-slice: 28 30 25 24 fill;
+  border-image-width: 28px 30px 25px 24px;
+  border-image-repeat: stretch;
+  background: transparent;
+}
+
+.sim-clog-panel {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: 18.75rem;
+  height: 30.5rem;
+  max-height: calc(100vh - 6rem);
+}
+
+.sim-clog-panel .sim-results__log {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.sim-clog-panel .sim-clog {
+  --clog-ink: #3c261d;
+  --clog-ink-dark: #3c261d;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: var(--clog-ink);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  /* Godot draws Label / MetricList as siblings of the NinePatchRect with
+     rect_clip_content = false — the title at y19 sits above the 28px patch. */
+  overflow: visible;
+}
+
+/* Game DamageMeter / FilterPanel: same TooltipBase nine-patch, grow margins.
+   Collapsed You/Opp = 77×115, OpenButton 63×103. Open ≈ 440×500, button 63×52. */
+.sim-clog-tab {
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  display: block;
+  pointer-events: auto;
+}
+
+.sim-clog-tab--you,
+.sim-clog-tab--opp {
+  top: 3px;
+  width: 77px;
+  height: 115px;
+  /* Godot keeps patch_margin at every size: the collapsed 77×115 meter still
+     draws the full 24/28/30/25 frame (a 23×62 well), it does not scale down. */
+  border-width: 28px 30px 25px 24px;
+  border-image-width: 28px 30px 25px 24px;
+}
+
+/* Game open(): player meter 454 wide, opponent 445 */
+.sim-clog-tab--you.is-open,
+.sim-clog-tab--opp.is-open {
+  width: min(454px, 46vw);
+  height: 100%;
+  min-height: 200px;
+  border-width: 28px 30px 25px 24px;
+  border-image-width: 28px 30px 25px 24px;
+}
+
+.sim-clog-tab--opp.is-open {
+  width: min(445px, 46vw);
+}
+
+.sim-clog-tab--you {
+  right: calc(100% - 14px);
+}
+
+/* Game OpponentDamageMeter margin_left = −15 (player meter is margin_right 14) */
+.sim-clog-tab--opp {
+  left: calc(100% - 15px);
+}
+
+/* Game FilterPanel.close(): only margin_top → −52 and margin_right → 83.
+   margin_left stays 0 (flush with the log's left edge) and margin_bottom stays
+   20, so the flap is 83×72 with its bottom 20px behind the log
+   (show_behind_parent = true → z-index below .sim-clog-panel). */
+.sim-clog-tab--filter {
+  left: 0;
+  right: auto;
+  top: auto;
+  bottom: calc(100% - 20px);
+  z-index: 1;
+  width: 83px;
+  height: 72px;
+  border-width: 25px;
+  border-image-slice: 25 fill;
+  border-image-width: 25px;
+}
+
+/* Game FilterPanel open: 528 wide against the log's 532, 119 tall */
+.sim-clog-tab--filter.is-open {
+  left: 0;
+  right: 4px;
+  width: auto;
+  height: 119px;
+}
+
+.sim-clog-tab--filter.is-open .sim-clog-tab__body {
+  overflow: visible;
+}
+
+.sim-clog-tab__chev {
+  appearance: none;
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: var(--bpb-cursor-pointer);
+  line-height: 0;
+}
+
+.sim-clog-tab__chev img {
+  display: block;
+  width: 57px;
+  height: 99px;
+  max-width: none;
+  object-fit: none;
+  object-position: 0 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Game OpenButton: y 9, 63 wide; DamageMeter.close() sizes it 63×103, open()
+   63×52. Player x (right−70 … right−7), opponent x 5…68 — one offset per side
+   for both states now that the patch border is the full 28 / 30 / 24. */
+.sim-clog-tab--you .sim-clog-tab__chev,
+.sim-clog-tab--opp .sim-clog-tab__chev {
+  top: -19px;
+  width: 63px;
+  height: 103px;
+  /* stretch_mode = STRETCH_KEEP: native 57×99 art at the rect's top-left, and
+     the glyph only fills y 5–46, so the shorter open rect loses nothing. */
+  overflow: visible;
+}
+
+.sim-clog-tab--you .sim-clog-tab__chev {
+  right: -23px;
+  left: auto;
+}
+
+.sim-clog-tab--you .sim-clog-tab__chev img {
+  transform: scaleX(-1);
+}
+
+.sim-clog-tab--you.is-open .sim-clog-tab__chev,
+.sim-clog-tab--opp.is-open .sim-clog-tab__chev {
+  height: 52px;
+}
+
+.sim-clog-tab--you.is-open .sim-clog-tab__chev img {
+  transform: none;
+}
+
+.sim-clog-tab--opp .sim-clog-tab__chev {
+  left: -19px;
+  right: auto;
+}
+
+.sim-clog-tab--opp.is-open .sim-clog-tab__chev img {
+  transform: scaleX(-1);
+}
+
+/* Game OpenButton: 44×55 rect anchored to the panel bottom at x 16 / bottom 9 —
+   bottom-anchored, so it does not move when the flap opens or closes. Offsets
+   compensate the 25px nine-patch border. */
+.sim-clog-tab--filter .sim-clog-tab__chev {
+  top: auto;
+  left: -9px;
+  bottom: -16px;
+  width: 44px;
+  height: 55px;
+  overflow: hidden;
+}
+
+/* Godot rotates the 57×99 texture 90° about pivot (26.6, 23.0), which lands the
+   chevron glyph at ~(24, 26) in the 44×55 rect — centre it the same way here. */
+.sim-clog-tab--filter .sim-clog-tab__chev img {
+  width: 57px;
+  height: 99px;
+  margin: -24.6px 0 0 -28.4px;
+  transform: rotate(90deg) scaleX(-1);
+}
+
+.sim-clog-tab--filter.is-open .sim-clog-tab__chev img {
+  transform: rotate(90deg);
+}
+
+.sim-clog-tab__chev:hover img,
+.sim-clog-tab__chev:focus-visible img {
+  filter: brightness(1.12);
+}
+
+.sim-clog-tab__icon {
+  position: absolute;
+  width: 39px;
+  height: 32px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Game Icon (collapsed only): player x right−60…right−21 / y 62–94,
+   opponent x 20…59 / y 63–95 — minus the 30 / 24 / 28 patch margins. */
+.sim-clog-tab--you .sim-clog-tab__icon {
+  top: 34px;
+  right: -9px;
+  transform: scaleX(-1);
+}
+
+.sim-clog-tab--opp .sim-clog-tab__icon {
+  top: 35px;
+  left: -4px;
+}
+
+.sim-clog-tab.is-open .sim-clog-tab__icon {
+  display: none;
+}
+
+.sim-clog-tab.is-open {
+  display: flex;
+  flex-direction: column;
+}
+
+.sim-clog-tab__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sim-clog-tab:not(.is-open) .sim-clog-tab__body {
+  display: none;
+}
+
+.sim-clog-tab--you.is-open .sim-clog-tab__body,
+.sim-clog-tab--opp.is-open .sim-clog-tab__body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Game DamageMeter insets live on the metric row + list, not the patch body.
+   MetricList sits at y15 / y21 (above the 28px patch), so the body must not
+   clip — the list keeps its own overflow. */
+.sim-clog-tab--you.is-open .sim-clog-tab__body,
+.sim-clog-tab--opp.is-open .sim-clog-tab__body {
+  padding: 0;
+  overflow: visible;
+}
+
+.sim-clog-tab .sim-dmg {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  /* MetricList is a sibling of the ScrollContainer at y15 / y21 — never clipped */
+  overflow: visible;
+}
+
+/* Game MetricList box: player (9,15)-(283,61); opponent right-aligned at x 433 */
+.sim-clog-tab .sim-dmg__head {
+  position: relative;
+  height: 46px;
+  min-height: 46px;
+  margin: -13px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.sim-clog-tab--you .sim-dmg__head {
+  justify-content: flex-start;
+  margin-left: -15px;
+}
+
+/* Game opponent MetricList: x 165–433 of the 445 open panel → 12px from the
+   right edge (minus the 30px patch), y 21 (minus the 28px patch). */
+.sim-clog-tab--opp .sim-dmg__head {
+  justify-content: flex-end;
+  margin-right: -18px;
+  margin-top: -7px;
+}
+
+.sim-clog-tab .sim-dmg__metric-wrap {
+  position: relative;
+  top: auto;
+  right: auto;
+  align-items: center;
+}
+
+.sim-clog-tab--you .sim-dmg__metric-wrap {
+  justify-content: flex-start;
+}
+
+/* Player MetricList inherits ItemListButton align = 0 with Button's default
+   icon_align = LEFT → "[▼] Damage Dealt"; the button stylebox insets it ~6px so
+   the arrow does not sit on the frame. Opponent overrides both to RIGHT. */
+.sim-clog-tab--you .sim-dmg__metric-btn {
+  justify-content: flex-start;
+  padding-left: 6px;
+}
+
+.sim-clog-tab--you .sim-dmg__metric-caret {
+  order: -1;
+}
+
+.sim-clog-tab--you .sim-dmg__metric-label {
+  text-align: left;
+}
+
+.sim-clog-tab--opp .sim-dmg__metric-btn {
+  padding-right: 6px;
+}
+
+.sim-clog-tab--you .sim-dmg__menu {
+  left: 0;
+  right: auto;
+}
+
+.sim-clog-tab .sim-dmg__body {
+  padding: 0;
+  gap: 0;
+  /* Game ScrollContainer runs into the patch region (right 10 / 13 of 30) */
+  overflow: visible;
+}
+
+/* Game ScrollContainer inset: player 18/65/10/20, opponent 19/65/13/19 */
+.sim-clog-tab--you .sim-dmg__list {
+  margin: 4px -20px -5px -6px;
+  padding: 0;
+}
+
+.sim-clog-tab--opp .sim-dmg__list {
+  margin: 4px -17px -6px -5px;
+  padding: 0;
+}
+
+.sim-clog-tab .sim-dmg__collapse,
+.sim-clog-tab .sim-dmg__side {
+  display: none;
+}
+
+/* Vertical resize strips (game VerticalResizeButton, cursor shape 9).
+   Rects are game px relative to each section's own bottom edge, shifted into the
+   padding box (patch left 24 / right 30 / bottom 25). */
+.sim-clog-resize {
+  appearance: none;
+  position: absolute;
+  border: 0;
+  background: transparent;
+  cursor: var(--bpb-cursor-ns);
+  touch-action: none;
+  z-index: 3;
+}
+
+/* CombatLog: x 3 → w−56, y h−23 → h+34 */
+.sim-clog-resize--log {
+  left: -21px;
+  right: 26px;
+  bottom: -59px;
+  height: 57px;
+}
+
+/* PlayerDamageMeter: x 11 → w−48, y h−17 → h+33 */
+.sim-clog-resize--you {
+  left: -13px;
+  right: 18px;
+  bottom: -58px;
+  height: 50px;
+}
+
+/* OpponentDamageMeter: x 38 → w−21, y h−22 → h+29 */
+.sim-clog-resize--opp {
+  left: 14px;
+  right: -9px;
+  bottom: -54px;
+  height: 51px;
+}
+
+/* Game close() hides the meter strip; only the open meter can be dragged. */
+.sim-clog-tab:not(.is-open) .sim-clog-resize {
+  display: none;
+}
+
+.sim-clog-resize:focus-visible {
+  outline: 2px solid #eac914;
+  outline-offset: 1px;
+}
+
+/* Keep the drag from selecting log text mid-resize. */
+.sim-clog-ui.is-resizing,
+.sim-clog-ui.is-resizing * {
+  user-select: none;
+}
+
+/* Header: Combat Log + You / Opponent (game PlayerButton / OpponentButton).
+   Panel patch is 24/28/30/25, so header coords = game px − left 24 / top 28. */
+.sim-clog-panel .sim-clog__head {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  /* Game: title box starts at x 21 / y 19 */
+  margin: -9px 0 0 -3px;
+  padding: 0;
+  border: 0;
+  cursor: var(--bpb-cursor-grab);
+  touch-action: none;
+}
+
+.sim-logbook__frame.is-dragging .sim-clog-panel .sim-clog__head {
+  cursor: var(--bpb-cursor-grabbing);
+}
+
+/* Game Label: box 173 wide, centered, Baskerville Bold 25 + 3px outline */
+.sim-clog-panel .sim-clog__title {
+  flex: 0 0 auto;
+  width: 173px;
+  margin: 0 26px 0 0;
+  text-align: center;
+  font-family: var(--bpb-font-body);
+  font-size: 1.5625rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--clog-cream);
+  -webkit-text-stroke: var(--clog-ring-stroke) var(--clog-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--clog-ring);
+  cursor: var(--bpb-cursor-grab);
+}
+
+.sim-clog-panel .sim-clog__sides {
+  display: inline-flex;
+  /* Game: You ends at 303, Opponent starts at 315; both sit at y 24 */
+  gap: 12px;
+  margin-top: 2px;
+  align-items: center;
+}
+
+/* Game PlayerButton 83×26 / OpponentButton h 28, Baskerville Regular 19,
+   outline_size 0 → flat cream text, no ink ring. */
+.sim-clog-panel .sim-clog__side {
+  appearance: none;
+  box-sizing: border-box;
+  min-width: 83px;
+  min-height: 26px;
+  padding: 0 2px 0 6px;
+  border: 2px solid transparent;
+  font-family: var(--bpb-font-body);
+  font-size: 1.1875rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--clog-cream);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  background: rgba(37, 33, 28, 0.62);
+  cursor: var(--bpb-cursor-pointer);
+  opacity: 1;
+  box-shadow: none;
+}
+
+.sim-clog-panel .sim-clog__side:hover {
+  border-color: var(--clog-cream);
+}
+
+.sim-clog-panel .sim-clog__side.is-on:hover {
+  border-width: 3px;
+  border-color: #ffd817;
+}
+
+.sim-clog-panel .sim-clog__side--you {
+  border-radius: 0 10px 10px 10px;
+}
+
+.sim-clog-panel .sim-clog__side--opp {
+  min-width: 0;
+  min-height: 28px;
+  background: rgba(35, 28, 28, 0.6);
+  border-radius: 10px 0 10px 10px;
+}
+
+.sim-clog-panel .sim-clog__side--you.is-on {
+  background: rgba(255, 236, 212, 0.62);
+  color: var(--clog-ink);
+  text-shadow: none;
+}
+
+.sim-clog-panel .sim-clog__side--opp.is-on {
+  background: rgba(128, 0, 0, 0.6);
+  color: var(--clog-cream);
+  text-shadow: none;
+}
+
+/* Game CloseButton: 50×50, 13px from the right edge, 12px down (patch 28/30) */
+.sim-clog-panel .sim-clog__close {
+  appearance: none;
+  position: absolute;
+  top: -16px;
+  right: -17px;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: var(--bpb-cursor-pointer);
+  z-index: 4;
+}
+
+.sim-clog-panel .sim-clog__close img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.sim-clog-panel .sim-clog__close:hover img,
+.sim-clog-panel .sim-clog__close:focus-visible img {
+  content: unset;
+  filter: brightness(1.08);
+}
+
+/* Game ScrollContainer inset: left 18 / top 64 / right 20 / bottom 22 of the
+   panel rect (patch 24/28/30/25); VBoxContainer separation 2. */
+.sim-clog-panel .sim-clog__list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 0;
+  margin: 13px -10px 3px -6px;
+  gap: 2px;
+}
+
+.sim-clog-panel .sim-clog__line,
+.sim-clog-panel .sim-clog__msg {
+  -webkit-text-stroke: 0;
+  paint-order: normal;
+  text-shadow: none;
+}
+
+/* Game LogLine font: Baskerville Regular 20, no outline; timestamps Bold 20.
+   LogLine*Stylebox content margins are 6 / 2 / 0 / 0 — no vertical padding, and
+   the font carries extra_spacing_bottom -2, so a row is ~23px tall. */
+.sim-clog-panel .sim-clog__line {
+  color: #3c261d;
+  font-size: 1.25rem;
+  line-height: 1.15;
+  padding: 0 2px 0 6px;
+  opacity: 1;
+}
+
+/* Nested lines are the same 20px LogLine — the "  > " prefix is the indent */
+.sim-clog-panel .sim-clog__line--sub,
+.sim-clog-panel .sim-clog__line--sub2,
+.sim-clog-panel .sim-clog__line[data-depth='3'] {
+  font-size: 1.25rem;
+  padding: 0 2px 0 6px;
+}
+
+.sim-clog-panel .sim-clog__t {
+  font-weight: 700;
+}
+
+/* Game CombatEvent: only critical damage is recolored (bold + red) */
+.sim-clog-panel .sim-clog__crit {
+  font-weight: 700;
+  color: #c10200;
+}
+
+.sim-clog-panel .sim-clog__line--opp .sim-clog__crit {
+  color: #ff9795;
+}
+
+/* Activation lines only dim their stylebox (bg_color.a *= 0.6), not the text */
+.sim-clog-panel .sim-clog__line--activation {
+  opacity: 1;
+  background: rgba(255, 236, 212, 0.37);
+}
+
+.sim-clog-panel .sim-clog__line--activation.sim-clog__line--opp {
+  background: rgba(128, 0, 0, 0.36);
+}
+
+.sim-clog-panel .sim-clog__line--opp,
+.sim-clog-panel .sim-clog__line--opp .sim-clog__msg {
+  color: #fff;
+}
+
+/* Filter tab (search + activations + replay).
+   Game FilterPanel is 528×119 with a 25px patch, so body coords = panel − 25. */
+.sim-clog-filter {
+  position: relative;
+  /* Game: replay buttons at y 51, searchbar left edge at x 77 (body = panel − 25) */
+  padding: 26px 0 0 52px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Game Activations button: box (68,8)–(513,54), text + icon right-aligned */
+.sim-clog-filter .sim-clog__act {
+  position: absolute;
+  top: -17px;
+  right: -10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 46px;
+  gap: 0.2rem;
+  padding: 0;
+  color: var(--clog-cream);
+  font-family: var(--bpb-font-body);
+  font-size: 1.625rem;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-text-stroke: var(--clog-ring-stroke) var(--clog-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--clog-ring);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.sim-clog-filter .sim-clog__act:hover,
+.sim-clog-filter .sim-clog__act:focus-visible {
+  color: var(--clog-gold);
+}
+
+/* NextOptionArrow.png is 35×52, scaled to the 46px button box */
+.sim-clog-filter .sim-clog__act img {
+  width: auto;
+  height: 2.35rem;
+}
+
+.sim-clog-filter .sim-clog__toolbar {
+  display: flex;
+  align-items: center;
+  /* Game: searchbar ends at 321, PlayBack starts at 326 */
+  gap: 5px;
+  /* Game controls run to x 519 — 15px from the panel edge, past the 25px patch */
+  margin-right: -16px;
+  padding: 0;
+  border: 0;
+}
+
+/* Game Searchbar: 244×40 at (77,55) */
+.sim-clog-filter .sim-clog__search {
+  flex: 0 0 auto;
+  width: 244px;
+  height: 40px;
+  box-sizing: border-box;
+  background: transparent;
+  border: 3px solid rgba(28, 17, 12, 0.82);
+  border-radius: 1px;
+  padding: 0 10px 0 8px;
+}
+
+.sim-clog-filter .sim-clog__search input {
+  width: 100%;
+  color: var(--clog-cream);
+  font-family: var(--bpb-font-body);
+  font-size: 1.625rem;
+  line-height: 1;
+  background: transparent;
+}
+
+.sim-clog-filter .sim-clog__search input::placeholder {
+  color: rgba(255, 236, 212, 0.72);
+}
+
+.sim-clog-filter .sim-clog__replay {
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+  gap: 0;
+}
+
+/* Game Play/PlayBack 46×39, PlayFromStart/PlayFromEnd 48×45, shared centre line */
+.sim-clog-filter .sim-clog__rbtn {
+  appearance: none;
+  width: 46px;
+  height: 39px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.sim-clog-filter .sim-clog__rbtn--fs {
+  width: 48px;
+  height: 45px;
+}
+
+/* Game: 6px gap between the backward pair and the forward pair (420 → 426) */
+.sim-clog-filter .sim-clog__rbtn[data-replay='start'] {
+  margin-left: 6px;
+}
+
+.sim-clog-filter .sim-clog__rbtn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.sim-clog-filter .sim-clog__rbtn.is-flip img {
+  transform: scaleX(-1);
+}
+
+.sim-clog-filter .sim-clog__rbtn:hover img,
+.sim-clog-filter .sim-clog__rbtn:focus-visible img {
+  filter: brightness(1.1);
+}
+
+.sim-clog-filter .sim-clog__rbtn[aria-pressed='true'] img {
+  filter: brightness(1.06);
+}
+
+/* Game scroll theme (Main.tscn SubResource 205) — the log list and both meter
+   lists share it: VScrollbar.png track (30×470) + VScrollbar_grabber.png pill
+   (23×59), bar ≈30px wide. */
+/* Chromium ignores ::-webkit-scrollbar once scrollbar-color is set, so the
+   standard properties are the Firefox-only fallback. */
+.sim-clog-ui .sim-clog__list,
+.sim-clog-ui .sim-dmg__list {
+  scrollbar-color: auto;
+  scrollbar-width: auto;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .sim-clog-ui .sim-clog__list,
+  .sim-clog-ui .sim-dmg__list {
+    scrollbar-color: #eac914 #7c5a33;
+  }
+}
+
+.sim-clog-ui .sim-clog__list::-webkit-scrollbar,
+.sim-clog-ui .sim-dmg__list::-webkit-scrollbar {
+  width: 30px;
+  background: transparent;
+}
+
+.sim-clog-ui .sim-clog__list::-webkit-scrollbar-track,
+.sim-clog-ui .sim-dmg__list::-webkit-scrollbar-track {
+  background: url('../../../../assets/icons/scrollbar/track.png') center / 30px 100%
+    no-repeat;
+  border-radius: 0;
+}
+
+.sim-clog-ui .sim-clog__list::-webkit-scrollbar-thumb,
+.sim-clog-ui .sim-dmg__list::-webkit-scrollbar-thumb {
+  min-height: 42px;
+  background: none;
+  border-radius: 0;
+  border-style: solid;
+  border-width: 18px 11px;
+  border-image-source: url('../../../../assets/icons/scrollbar/thumb.png');
+  border-image-slice: 18 11 fill;
+  border-image-width: 18px 11px;
+  border-image-repeat: stretch;
+}
+
+@media (max-width: 900px) {
+  .sim-clog-ui {
+    width: min(100%, 34rem);
+    min-width: 0;
+    margin: 4.2rem 0.35rem 0.5rem;
+  }
+
+  .sim-clog-tab--you.is-open,
+  .sim-clog-tab--opp.is-open {
+    width: min(22rem, 88vw);
+  }
+}

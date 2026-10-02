@@ -4,6 +4,8 @@
  * Env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_ANON_KEY, BPB_SUBMIT_SECRET
  */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.1';
+import galleryOpens from './event-gallery.json' with { type: 'json' };
+import { syncPlanRoles } from '../_shared/discord.ts';
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -16,6 +18,7 @@ type AuthorCtx = {
   mode: 'jwt' | 'secret';
   author_id: string | null;
   author_name: string;
+  discord_id?: string | null;
 };
 
 const YT_RE =
@@ -149,6 +152,8 @@ type DraftBody = {
   starting_bag_id?: string | null;
   placements?: Placement[];
   history?: unknown;
+  board_still_path?: string | null;
+  event_slug?: string | null;
 };
 
 const HISTORY_MAX_ROUNDS = 40;
@@ -208,6 +213,7 @@ Deno.serve(async (req) => {
       mode: 'jwt',
       author_id: String(profile.id),
       author_name: name,
+      discord_id: String(profile.discord_id || '').trim() || null,
     };
   }
 
@@ -251,6 +257,33 @@ Deno.serve(async (req) => {
   const route_r3_item_id = String(body.route_r3_item_id).trim();
   const route_r10_item_id = String(body.route_r10_item_id).trim();
   const starting_bag_id = String(body.starting_bag_id).trim();
+
+  let board_still_path: string | null = null;
+  const stillRaw = body.board_still_path != null ? String(body.board_still_path).trim() : '';
+  if (stillRaw) {
+    if (stillRaw.includes('..') || stillRaw.startsWith('/')) {
+      return json({ error: 'Invalid board_still_path.' }, 400);
+    }
+    if (author!.mode === 'jwt' && author!.author_id) {
+      const prefix = `${author!.author_id}/`;
+      if (!stillRaw.startsWith(prefix)) {
+        return json({ error: 'board_still_path must be under your user folder.' }, 400);
+      }
+    }
+    if (!/\.(webp|png)$/i.test(stillRaw)) {
+      return json({ error: 'board_still_path must end in .webp or .png.' }, 400);
+    }
+    board_still_path = stillRaw;
+  }
+
+  let event_slug: string | null = null;
+  const eventRaw = body.event_slug != null ? String(body.event_slug).trim() : '';
+  if (eventRaw) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(eventRaw) || eventRaw.length > 64) {
+      return json({ error: 'Invalid event_slug.' }, 400);
+    }
+    event_slug = eventRaw.toLowerCase();
+  }
 
   let placements = body.placements!;
   if (history) {
@@ -354,7 +387,8 @@ Deno.serve(async (req) => {
       is_op: false,
       op_requested,
       is_featured: false,
-      is_public: true,
+      is_public: !eventEntryHeld(event_slug),
+      event_held: eventEntryHeld(event_slug),
       gold_count,
       rank,
       route_r3_item_id,
@@ -362,6 +396,8 @@ Deno.serve(async (req) => {
       starting_bag_id,
     };
     if (historyClean) insertRow.history = historyClean;
+    if (board_still_path) insertRow.board_still_path = board_still_path;
+    if (event_slug) insertRow.event_slug = event_slug;
 
     const { data: build, error: buildErr } = await supabase
       .from('builds')
@@ -393,6 +429,27 @@ Deno.serve(async (req) => {
       console.error(placeErr);
       await supabase.from('builds').delete().eq('id', build.id);
       return json({ error: 'Could not save placements', detail: placeErr.message }, 500);
+    }
+
+    if (author!.discord_id && author!.author_id) {
+      const { count } = await supabase
+        .from('builds')
+        .select('id', { count: 'exact', head: true })
+        .eq('author_id', author!.author_id);
+      const { data: planRow } = await supabase
+        .from('profiles')
+        .select('plan')
+        .eq('id', author!.author_id)
+        .maybeSingle();
+      try {
+        await syncPlanRoles(
+          author!.discord_id,
+          String(planRow?.plan || 'free'),
+          count || 0,
+        );
+      } catch (err) {
+        console.error('discord nick', err);
+      }
     }
 
     return json({ id: build.id, slug: build.slug }, 200);
@@ -613,12 +670,34 @@ function validateDraft(d: DraftBody): string | null {
   if (d.is_op && (tag === 'theory' || d.build_tag === 'theorycraft')) {
     return 'OP can’t be combined with Theory.';
   }
+  if (d.is_op === true) {
+    const placements = Array.isArray(d.placements) ? d.placements : [];
+    const hasNeeds = placements.some((p) => p.priority === 'needed');
+    const hasWants = placements.some((p) => p.priority === 'nice');
+    const hasGood = placements.some((p) => p.priority === 'optional');
+    if (!hasNeeds || !hasWants || !hasGood) {
+      return 'OP review needs at least one item in Needs, Wants, and Good to have.';
+    }
+    const notesLen = String(d.notes || '').trim().length;
+    if (notesLen < 30) {
+      return 'OP review needs a “Why it works” description of at least 30 characters.';
+    }
+  }
   for (const p of d.placements) {
     if (!p?.id || !Number.isFinite(Number(p.x)) || !Number.isFinite(Number(p.y))) {
       return 'Invalid placement.';
     }
   }
   return null;
+}
+
+/** Contest boards stay hidden until the gallery clock in event-gallery.json. */
+function eventEntryHeld(slug: string | null): boolean {
+  if (!slug) return false;
+  const opens = (galleryOpens as Record<string, string>)[slug];
+  if (!opens) return false;
+  const t = Date.parse(opens);
+  return Number.isFinite(t) && Date.now() < t;
 }
 
 function makeSlug(title: string): string {

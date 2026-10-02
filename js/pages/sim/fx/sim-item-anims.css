@@ -1,0 +1,725 @@
+/**
+ * Board ActivationAni — Item.tscn Icon clips + Item.gd tweens.
+ * 80px tile → 1em.
+ *
+ * Jump family plays on `.bpb-bg__item` (screen-up, outside face rotate —
+ * Item.gd uses global_position.y). Slash/etc. play on `.bpb-bg__hit` +
+ * `.bpb-bg__spin--shadow` + socket/gem layers so CD shade, BuildViewer
+ * shadow, and jewels follow the blade.
+ */
+
+.bpb-bg__item.sim-ani-lift {
+  z-index: 4;
+  overflow: visible;
+}
+
+.sim-bag .bpb-bg__item.sim-ani,
+.sim-bag .bpb-bg__item .bpb-bg__hit.sim-ani,
+.sim-bag .bpb-bg__item .bpb-bg__spin--shadow.sim-ani,
+.sim-bag .bpb-bg__item .bpb-bg__sockets.sim-ani,
+.sim-bag .bpb-bg__item .bpb-bg__gems.sim-ani {
+  --sim-ani-rate: 1;
+  --sim-ani-dur: 0.5s;
+  animation-duration: calc(var(--sim-ani-dur) / var(--sim-ani-rate, 1));
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+  animation-fill-mode: none;
+  transform-origin: center center;
+  /* Hover brightness on the same node as motion smears in Chromium. */
+  filter: none;
+  isolation: isolate;
+  backface-visibility: hidden;
+}
+
+/* Live-art flicker/holo use transform + plus-lighter — pause while slashing. */
+.sim-bag .bpb-bg__item.sim-ani .bpb-live__glow,
+.sim-bag .bpb-bg__item.sim-ani .bpb-live__holo,
+.sim-bag .bpb-bg__hit.sim-ani .bpb-live__glow,
+.sim-bag .bpb-bg__hit.sim-ani .bpb-live__holo {
+  animation: none !important;
+  transform: none !important;
+  mix-blend-mode: normal;
+}
+
+.sim-ani--Flash,
+.sim-ani--Jump,
+.sim-ani--Block,
+.sim-ani--Scale,
+.sim-ani--Squish,
+.sim-ani--SquishyJump,
+.sim-ani--VerySquishyJump,
+.sim-ani--Slash,
+.sim-ani--Stab,
+.sim-ani--Bonk,
+.sim-ani--ReverseBonk,
+.sim-ani--Chop,
+.sim-ani--Wave,
+.sim-ani--Sweep,
+.sim-ani--Spin,
+.sim-ani--Throw,
+.sim-ani--Shoot,
+.sim-ani--Struggle,
+.sim-ani--ReverseStab,
+.sim-ani--Hiss,
+.sim-ani--Tackle,
+.sim-ani--DoubleSlash {
+  --sim-ani-dur: 0.5s;
+}
+
+.sim-ani--Potion {
+  --sim-ani-dur: 1s;
+}
+
+.sim-ani--mini,
+.sim-ani--mini-consumed {
+  --sim-ani-dur: 0.3s;
+}
+
+.sim-ani--consume {
+  --sim-ani-dur: 0.1s;
+  animation-fill-mode: forwards;
+}
+
+.sim-ani--nostamina {
+  --sim-ani-dur: 0.35s;
+}
+
+.sim-ani--Flash {
+  animation-name: sim-ani-flash;
+}
+
+.sim-ani--Jump {
+  animation-name: sim-ani-jump;
+}
+
+.sim-ani--Block {
+  animation-name: sim-ani-block;
+}
+
+.sim-ani--Scale {
+  animation-name: sim-ani-scale;
+}
+
+.sim-ani--Squish {
+  animation-name: sim-ani-squish;
+}
+
+.sim-ani--Slash {
+  animation-name: sim-ani-slash;
+}
+
+.sim-ani--Stab {
+  animation-name: sim-ani-stab;
+}
+
+.sim-ani--ReverseStab {
+  --sim-ani-dur: 0.3s;
+  animation-name: sim-ani-reverse-stab;
+}
+
+.sim-ani--Bonk {
+  animation-name: sim-ani-bonk;
+}
+
+.sim-ani--ReverseBonk {
+  animation-name: sim-ani-reverse-bonk;
+}
+
+.sim-ani--Chop {
+  animation-name: sim-ani-chop;
+}
+
+.sim-ani--Wave {
+  animation-name: sim-ani-wave;
+}
+
+.sim-ani--Potion {
+  animation-name: sim-ani-potion;
+}
+
+.sim-ani--Sweep {
+  animation-name: sim-ani-sweep;
+}
+
+.sim-ani--Spin {
+  animation-name: sim-ani-spin;
+}
+
+.sim-ani--Throw {
+  animation-name: sim-ani-throw;
+}
+
+.sim-ani--Shoot {
+  animation-name: sim-ani-shoot;
+}
+
+.sim-ani--Struggle {
+  animation-name: sim-ani-struggle;
+}
+
+.sim-ani--Hiss {
+  animation-name: sim-ani-hiss;
+}
+
+.sim-ani--Tackle {
+  animation-name: sim-ani-tackle;
+}
+
+.sim-ani--DoubleSlash {
+  animation-name: sim-ani-double-slash;
+}
+
+.sim-ani--mini {
+  animation-name: sim-ani-mini;
+}
+
+.sim-ani--mini-consumed {
+  animation-name: sim-ani-mini-consumed;
+  animation-fill-mode: forwards;
+}
+
+.sim-ani--consume {
+  animation-name: sim-ani-consume;
+}
+
+.sim-ani--nostamina {
+  animation-name: sim-ani-nostamina;
+}
+
+.sim-ani--consumed {
+  filter: brightness(0.7);
+}
+
+/* UP / DOWN = tall squash; LEFT / RIGHT = wide (Item.gd JumpSquash). */
+.bpb-bg__item[data-face='0'].sim-ani--SquishyJump,
+.bpb-bg__item[data-face='2'].sim-ani--SquishyJump,
+.bpb-bg__item:not([data-face]).sim-ani--SquishyJump,
+.bpb-bg__item[data-face='0'] .sim-ani--SquishyJump,
+.bpb-bg__item[data-face='2'] .sim-ani--SquishyJump,
+.bpb-bg__item:not([data-face]) .sim-ani--SquishyJump {
+  animation-name: sim-ani-squishy-jump-tall;
+}
+
+.bpb-bg__item[data-face='1'].sim-ani--SquishyJump,
+.bpb-bg__item[data-face='3'].sim-ani--SquishyJump,
+.bpb-bg__item[data-face='1'] .sim-ani--SquishyJump,
+.bpb-bg__item[data-face='3'] .sim-ani--SquishyJump {
+  animation-name: sim-ani-squishy-jump-wide;
+}
+
+.bpb-bg__item[data-face='0'].sim-ani--VerySquishyJump,
+.bpb-bg__item[data-face='2'].sim-ani--VerySquishyJump,
+.bpb-bg__item:not([data-face]).sim-ani--VerySquishyJump,
+.bpb-bg__item[data-face='0'] .sim-ani--VerySquishyJump,
+.bpb-bg__item[data-face='2'] .sim-ani--VerySquishyJump,
+.bpb-bg__item:not([data-face]) .sim-ani--VerySquishyJump {
+  animation-name: sim-ani-very-squishy-jump-tall;
+}
+
+.bpb-bg__item[data-face='1'].sim-ani--VerySquishyJump,
+.bpb-bg__item[data-face='3'].sim-ani--VerySquishyJump,
+.bpb-bg__item[data-face='1'] .sim-ani--VerySquishyJump,
+.bpb-bg__item[data-face='3'] .sim-ani--VerySquishyJump {
+  animation-name: sim-ani-very-squishy-jump-wide;
+}
+
+@keyframes sim-ani-flash {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  40% {
+    filter: brightness(2);
+  }
+}
+
+@keyframes sim-ani-flash-double {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  12% {
+    filter: brightness(2);
+  }
+  35% {
+    filter: brightness(1);
+  }
+  54% {
+    filter: brightness(2);
+  }
+}
+
+@keyframes sim-ani-mini {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  32% {
+    filter: brightness(2);
+  }
+}
+
+@keyframes sim-ani-mini-consumed {
+  0% {
+    filter: brightness(1);
+  }
+  32% {
+    filter: brightness(2);
+  }
+  100% {
+    filter: brightness(0.7);
+  }
+}
+
+@keyframes sim-ani-consume {
+  from {
+    filter: brightness(1);
+  }
+  to {
+    filter: brightness(0.7);
+  }
+}
+
+/* Jump(40): 0.1s up + 0.2s down (0.05s delay) + Activate flash 0.5s */
+@keyframes sim-ani-jump {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  20% {
+    transform: translate(0, -0.5em) scale(1);
+  }
+  70% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* Block: Jump(30, 1.3) at 1.2× tween speed */
+@keyframes sim-ani-block {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  17% {
+    transform: translate(0, -0.375em) scale(1.3);
+  }
+  58% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* Scale(1.5): 0.2s out, 0.3s back */
+@keyframes sim-ani-scale {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.5);
+  }
+}
+
+/* Squish wiggle — Item.gd 1.2/0.8 → 0.8/1.2 → 1.1/0.9 → 1 */
+@keyframes sim-ani-squish {
+  0% {
+    transform: scale(1, 1);
+  }
+  14% {
+    transform: scale(1.2, 0.8);
+  }
+  54% {
+    transform: scale(0.8, 1.2);
+  }
+  80% {
+    transform: scale(1.1, 0.9);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes sim-ani-squishy-jump-tall {
+  0% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+  20% {
+    transform: translate(0, -0.5em) scale(0.91, 1.1);
+  }
+  70% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+  100% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+}
+
+@keyframes sim-ani-squishy-jump-wide {
+  0% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+  20% {
+    transform: translate(0, -0.5em) scale(1.1, 0.91);
+  }
+  70% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+  100% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+}
+
+@keyframes sim-ani-very-squishy-jump-tall {
+  0% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+  20% {
+    transform: translate(0, -0.5em) scale(0.83, 1.2);
+  }
+  70% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+  100% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+}
+
+@keyframes sim-ani-very-squishy-jump-wide {
+  0% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+  20% {
+    transform: translate(0, -0.5em) scale(1.2, 0.83);
+  }
+  70% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+  100% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+}
+
+/* Slash: (−10) → (+10) px, −9.2° → 13.8° */
+@keyframes sim-ani-slash {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  14% {
+    transform: translate(-0.125em, 0) rotate(-9.2deg);
+  }
+  31% {
+    transform: translate(0.125em, 0) rotate(13.8deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* Stab: y 20 → −30 */
+@keyframes sim-ani-stab {
+  0% {
+    transform: translate(0, 0);
+  }
+  14% {
+    transform: translate(0, 0.25em);
+  }
+  31% {
+    transform: translate(0, -0.375em);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes sim-ani-reverse-stab {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  30% {
+    transform: translate(0, 0.375em);
+  }
+}
+
+/* Bonk: x −10 → +10, rot −9.2 → 15.1 */
+@keyframes sim-ani-bonk {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  14% {
+    transform: translate(-0.125em, 0) rotate(-9.2deg);
+  }
+  30% {
+    transform: translate(0.125em, 0) rotate(15.1deg);
+  }
+  60% {
+    transform: translate(0.125em, 0) rotate(15.1deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes sim-ani-reverse-bonk {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  14% {
+    transform: translate(0.125em, 0) rotate(13.2deg);
+  }
+  36% {
+    transform: translate(-0.25em, 0) rotate(-15.1deg);
+  }
+  60% {
+    transform: translate(-0.25em, 0) rotate(-15.1deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* Chop: x −20 hold → +35 */
+@keyframes sim-ani-chop {
+  0% {
+    transform: translate(0, 0);
+  }
+  14% {
+    transform: translate(-0.25em, 0);
+  }
+  27% {
+    transform: translate(-0.25em, 0);
+  }
+  50% {
+    transform: translate(0.4375em, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* Wave: x 10 → −10, y −20, rot 3 → −3.7 */
+@keyframes sim-ani-wave {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(0.125em, -0.15em) rotate(3deg);
+  }
+  35% {
+    transform: translate(0.08em, -0.25em) rotate(1deg);
+  }
+  70% {
+    transform: translate(-0.125em, -0.08em) rotate(-3.7deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* Potion: tip −9.2° → 5° → −2° (tscn, default 1s length) */
+@keyframes sim-ani-potion {
+  0% {
+    transform: rotate(0deg);
+  }
+  6% {
+    transform: rotate(-9.2deg);
+  }
+  31% {
+    transform: rotate(5deg);
+  }
+  53% {
+    transform: rotate(-2deg);
+  }
+  71%,
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* Sweep: x 10 / −10 / 10, rot −11.1 / 11.4 / −11.1 */
+@keyframes sim-ani-sweep {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  21% {
+    transform: translate(0.125em, 0) rotate(-11.1deg);
+  }
+  44% {
+    transform: translate(-0.125em, 0) rotate(11.4deg);
+  }
+  70% {
+    transform: translate(0.125em, 0) rotate(-11.1deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes sim-ani-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  99% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* Throw: x −20 → 40, y 0 → −30, rot −40 → 13.6 → −7.1 */
+@keyframes sim-ani-throw {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(-0.251em, 0) rotate(-40deg);
+  }
+  67% {
+    transform: translate(0.5em, -0.375em) rotate(13.6deg);
+  }
+  71% {
+    transform: translate(0.5em, -0.375em) rotate(13.6deg);
+  }
+  82% {
+    transform: translate(0.25em, -0.19em) rotate(-7.1deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* Shoot clip x −20 → 40 + squash 1.3/0.8 → 0.8/1 → 1.1/0.9 */
+@keyframes sim-ani-shoot {
+  0% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+  40% {
+    transform: translate(-0.251em, 0) scale(1.3, 0.8);
+  }
+  60% {
+    transform: translate(0.5em, 0) scale(1.05, 0.9);
+  }
+  80% {
+    transform: translate(0.2em, 0) scale(0.8, 1);
+  }
+  90% {
+    transform: translate(0.08em, 0) scale(1.1, 0.9);
+  }
+  100% {
+    transform: translate(0, 0) scale(1, 1);
+  }
+}
+
+/* Struggle: clip rot −19.4° + Jump(30) */
+@keyframes sim-ani-struggle {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(0, -0.375em) rotate(-10deg);
+  }
+  31% {
+    transform: translate(0, -0.375em) rotate(-19.4deg);
+  }
+  42% {
+    transform: translate(0, -0.2em) rotate(-19.4deg);
+  }
+  63% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* Hiss: Snake clip + y-squash 0.8 → 1.2 */
+@keyframes sim-ani-hiss {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1, 1);
+  }
+  20% {
+    transform: translate(0, 0.25em) rotate(-3deg) scale(1, 0.8);
+  }
+  36% {
+    transform: translate(0, 0.25em) rotate(-3deg) scale(1, 0.85);
+  }
+  72% {
+    transform: translate(0.125em, -0.125em) rotate(10.9deg) scale(1, 1.2);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1, 1);
+  }
+}
+
+@keyframes sim-ani-tackle {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  14% {
+    transform: translate(-0.125em, 0) rotate(-9.2deg);
+  }
+  31% {
+    transform: translate(0.125em, 0) rotate(13.8deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* DoubleSlash: x −2 → 18 → −18, rot −2.1 → 16 → −16 */
+@keyframes sim-ani-double-slash {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  5% {
+    transform: translate(-0.025em, 0) rotate(-2.1deg);
+  }
+  11% {
+    transform: translate(0.225em, 0) rotate(16deg);
+  }
+  28% {
+    transform: translate(0.225em, 0) rotate(16deg);
+  }
+  54% {
+    transform: translate(-0.225em, 0) rotate(-16deg);
+  }
+  57% {
+    transform: translate(-0.225em, 0) rotate(-16deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes sim-ani-nostamina {
+  0% {
+    transform: translate(0, 0);
+  }
+  11% {
+    transform: translate(-0.1875em, 0);
+  }
+  28% {
+    transform: translate(0.1875em, 0);
+  }
+  45% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-bag .bpb-bg__item.sim-ani:not(.sim-ani--consume):not(.sim-ani--mini-consumed),
+  .sim-bag .bpb-bg__item .bpb-bg__hit.sim-ani:not(.sim-ani--consume):not(.sim-ani--mini-consumed),
+  .sim-bag .bpb-bg__item .bpb-bg__spin--shadow.sim-ani:not(.sim-ani--consume):not(.sim-ani--mini-consumed),
+  .sim-bag .bpb-bg__item .bpb-bg__sockets.sim-ani:not(.sim-ani--consume):not(.sim-ani--mini-consumed),
+  .sim-bag .bpb-bg__item .bpb-bg__gems.sim-ani:not(.sim-ani--consume):not(.sim-ani--mini-consumed) {
+    --sim-ani-dur: 0.5s;
+    animation-name: sim-ani-flash !important;
+  }
+}

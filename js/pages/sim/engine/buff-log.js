@@ -135,7 +135,7 @@ export function logGrantedStacks(actor, stack, amount, opts = {}) {
     placementKey: opts.originKey ?? null,
     label: `+${amount} ${key}`,
     meta: {
-      category: type === 'debuff' ? 'dot' : 'buff',
+      category: type === 'debuff' ? 'debuff' : 'buff',
       stack: key,
       script: true,
       handler: originId || 'grantStacks',
@@ -152,6 +152,44 @@ export function logGrantedStacks(actor, stack, amount, opts = {}) {
  * @param {number} amount positive spent
  * @param {object} [opts]
  */
+/**
+ * Resisted / nullified / protected / reflected — character BuffLabel, not an
+ * item stack pop (Util.spawnResistedLabel / Protected / Reflect).
+ * @param {object} actor
+ * @param {string} stack
+ * @param {number} amount
+ * @param {'resisted' | 'nullified' | 'protected' | 'reflected'} kind
+ * @param {object} [opts]
+ */
+export function logBlockedStacks(actor, stack, amount, kind, opts = {}) {
+  if (!bound?.events || !(amount > 0)) return;
+  const key = String(stack || '').toLowerCase();
+  if (!key) return;
+  const t = Number.isFinite(Number(opts.t))
+    ? Number(opts.t)
+    : Number(bound.getT?.()) || 0;
+  const type = DEBUFFS.has(key) ? 'debuff' : 'buff';
+  const originId = opts.originId ?? null;
+  const target = bound.dummy && actor === bound.dummy ? 'dummy' : 'player';
+  bound.events.push({
+    t,
+    type,
+    actor: target === 'dummy' ? 'dummy' : 'player',
+    target,
+    amount,
+    itemId: originId,
+    placementKey: opts.originKey ?? null,
+    label: `${kind} ${amount} ${key}`,
+    meta: {
+      category: 'status',
+      stack: key,
+      kind,
+      script: true,
+      handler: originId || kind,
+    },
+  });
+}
+
 export function logSpentStacks(actor, stack, amount, opts = {}) {
   if (!bound?.events || !(amount > 0) || opts.silentLog) return;
   const key = String(stack || '').toLowerCase();
@@ -168,6 +206,8 @@ export function logSpentStacks(actor, stack, amount, opts = {}) {
   }
   const target = bound.dummy && actor === bound.dummy ? 'dummy' : 'player';
   const kind = opts.hostileStrip ? 'strip' : opts.cleanse ? 'cleanse' : 'spend';
+  // Game LOG_USE_BUFF when used=true; otherwise "Lost".
+  const used = opts.used === true || kind === 'spend';
   bound.events.push({
     t,
     type,
@@ -184,6 +224,7 @@ export function logSpentStacks(actor, stack, amount, opts = {}) {
       handler: originId || 'spendStacks',
       fromSpendStacks: true,
       kind,
+      used,
     },
   });
 }

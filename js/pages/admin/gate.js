@@ -74,27 +74,31 @@ export function mountGate(host, opts) {
   const preset = String(config.submitSecret || '').trim();
   const err = opts.error ? `<p class="admin-gate__error" role="alert">${escapeHtml(opts.error)}</p>` : '';
   const ownerBtn = opts.ownerReady && typeof opts.onOwnerSession === 'function'
-    ? `<button type="button" class="admin-btn admin-btn--primary" data-admin-owner>Continue as Discord owner</button>`
+    ? `<button type="button" class="cr-btn-quiet" data-admin-owner>Continue as Discord owner</button>`
     : '';
 
   host.innerHTML = `
     <div class="admin-gate">
       <h1 class="admin-gate__title">Admin</h1>
-      <p class="admin-gate__blurb">Prefer Sign in with Discord (owner). Break-glass: submit secret. Not linked from the public nav.</p>
+      <p class="cr-hint">Owner Discord shows a nav checkmark. Break-glass: submit secret.</p>
       ${err}
       ${ownerBtn}
       <form class="admin-gate__form" autocomplete="off">
-        <label class="admin-gate__label" for="admin-secret">Submit secret</label>
-        <input
-          id="admin-secret"
-          class="admin-gate__input"
-          type="password"
-          name="secret"
-          spellcheck="false"
-          autocomplete="off"
-          value="${escapeAttr(preset)}"
-        />
-        <button type="submit" class="admin-btn admin-btn--primary">Unlock with secret</button>
+        <div class="il-filter__shade cr-field-shade">
+          <label class="cr-field" for="admin-secret">
+            <span class="cr-label cr-label--sm">Submit secret</span>
+            <input
+              id="admin-secret"
+              class="cr-input"
+              type="password"
+              name="secret"
+              spellcheck="false"
+              autocomplete="off"
+              value="${escapeAttr(preset)}"
+            />
+          </label>
+        </div>
+        <button type="submit" class="cr-submit is-ready">Unlock with secret</button>
       </form>
     </div>
   `;

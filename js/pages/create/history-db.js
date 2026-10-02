@@ -18,7 +18,7 @@ let sqlModulePromise = null;
  * @param {string} root
  * @returns {Promise<any>}
  */
-async function getSqlJs(root) {
+export async function getSqlJs(root) {
   const base = root.endsWith('/') ? root : `${root}/`;
   if (!globalThis.initSqlJs) {
     await new Promise((resolve, reject) => {
@@ -189,11 +189,15 @@ export async function decodeHistoryRun(db, summary, root) {
 
   /** @type {HistoryDecodedRun['rounds']} */
   const rounds = [];
+  let skipped = 0;
   while (stmt.step()) {
     const row = stmt.getAsObject();
     const buildInfo = String(row.buildInfo || '');
     const data = deserializeItems(buildInfo, cat, summary.version);
-    if (!data) continue;
+    if (!data) {
+      skipped += 1;
+      continue;
+    }
     /** @type {import('./draft-io.js').DraftPlacement[]} */
     const placements = [];
     data.items.forEach((it, i) => {
@@ -231,6 +235,11 @@ export async function decodeHistoryRun(db, summary, root) {
 
   if (!rounds.length) {
     throw new Error(`Run ${summary.runId} had no decodable rounds.`);
+  }
+  if (skipped > 0) {
+    console.warn(
+      `[history] run ${summary.runId}: skipped ${skipped} undecodable round(s); kept ${rounds.length}`,
+    );
   }
 
   return {

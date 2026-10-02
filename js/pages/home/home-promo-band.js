@@ -10,57 +10,86 @@ import { escapeAttr, rootPrefix } from './home-build-media.js';
 import { playAssemble } from './home-promo-assemble.js';
 import { mountPromoCatalog } from './home-promo-catalog.js';
 
-/** Packed-item sizes for the catalog shimmer (s/m/l). */
-const CATALOG_SKEL_SIZES = 's s m s l s s m s s l s m s s s m l s s s m s s l s m s s s m s l s s m';
-
-/**
- * @param {'s' | 'm' | 'l'} kind
- */
-function catalogSkelPx(kind) {
-  if (kind === 'l') return { width: '2.15rem', height: '2.7rem' };
-  if (kind === 'm') return { width: '1.65rem', height: '1.65rem' };
-  return { width: '1.15rem', height: '1.15rem' };
-}
+/** 10-col packed stamp (no holes) — same geometry as the live Itemiary catalog. */
+const CATALOG_SKEL_STAMP = [
+  [0, 0, 2, 2],
+  [2, 0, 1, 1],
+  [3, 0, 1, 1],
+  [4, 0, 2, 1],
+  [6, 0, 1, 2],
+  [7, 0, 3, 2],
+  [2, 1, 2, 1],
+  [4, 1, 2, 1],
+  [0, 2, 1, 2],
+  [1, 2, 2, 1],
+  [3, 2, 1, 1],
+  [4, 2, 2, 2],
+  [6, 2, 2, 1],
+  [8, 2, 2, 1],
+  [1, 3, 1, 1],
+  [2, 3, 2, 1],
+  [6, 3, 4, 1],
+];
+const CATALOG_SKEL_STAMP_ROWS = 4;
+const CATALOG_SKEL_REPEATS = 6;
 
 function createPromoCatalogSkel() {
-  const cells = CATALOG_SKEL_SIZES.split(' ')
-    .map((kind, i) =>
-      skelBlock({
-        className: 'home-promo__skel-item',
-        ...catalogSkelPx(/** @type {'s'|'m'|'l'} */ (kind)),
-        radius: i % 9 === 0 ? '0.35rem' : '0.22rem',
-      }),
-    )
-    .join('');
-  return skelRegion(`<div class="home-promo__skel-catalog">${cells}</div>`, {
+  const tiles = [];
+  for (let r = 0; r < CATALOG_SKEL_REPEATS; r += 1) {
+    const dy = r * CATALOG_SKEL_STAMP_ROWS;
+    for (const [x, y, w, h] of CATALOG_SKEL_STAMP) {
+      const radius = w * h >= 4 ? '0.28em' : '0.18em';
+      tiles.push(
+        `<span class="bpb-skel bpb-skel--block home-promo__skel-item" style="--x:${x};--y:${y + dy};--w:${w};--h:${h};border-radius:${radius}" aria-hidden="true"></span>`,
+      );
+    }
+  }
+  return skelRegion(`<div class="home-promo__skel-catalog">${tiles.join('')}</div>`, {
     className: 'home-promo__skel-catalog-wrap',
     label: 'Loading items',
   });
 }
 
 function createPromoCaptionSkel() {
-  return `${skelBar({ className: 'home-promo__skel-title', width: '68%', height: '1.15em' })}
-    <div class="home-promo__skel-meta">
-      ${skelBar({ width: '36%', height: '0.8em' })}
-      ${skelBar({ width: '30%', height: '0.8em' })}
+  return `<header class="home-promo__caption-head home-promo__caption-head--icon">
+      ${skelBlock({ className: 'home-promo__skel-class', width: '2.1rem', height: '2.1rem', radius: '0.25rem' })}
+      ${skelBar({ className: 'home-promo__skel-title', width: '11.5rem', height: '1.25rem' })}
+    </header>
+    <div class="home-promo__caption-meta">
+      <div class="home-promo__caption-side home-promo__caption-side--left">
+        ${skelBlock({ className: 'home-promo__skel-avatar', width: '4.65rem', height: '4.65rem', radius: '0.35rem' })}
+      </div>
+      ${skelBar({ width: '8.5rem', height: '1.15rem' })}
+      <div class="home-promo__caption-side home-promo__caption-side--right" aria-hidden="true"></div>
     </div>`;
+}
+
+function createPromoBoardSkel() {
+  return skelRegion(`<div class="home-promo__skel-board" aria-hidden="true"></div>`, {
+    className: 'home-promo__skel-board-wrap',
+    label: 'Loading board',
+  });
 }
 
 function createPromoInfoSkel() {
   return `<div class="home-promo__info-grid">
       <div class="home-promo__info-cell home-promo__info-shade">
-        ${skelBar({ width: '2.4rem', height: '0.7em' })}
-        ${skelBar({ width: '3.2rem', height: '1.1em' })}
+        <span class="home-promo__info-label">Gold</span>
+        <span class="home-promo__info-gold">
+          ${skelBar({ width: '2.35rem', height: '1.2rem' })}
+          ${skelBlock({ className: 'home-promo__skel-gold-icon', width: '1.45rem', height: '1.45rem', radius: '0.28rem' })}
+        </span>
       </div>
       <div class="home-promo__info-cell home-promo__info-shade">
-        ${skelBar({ width: '2.4rem', height: '0.7em' })}
-        ${skelBlock({ width: '2.6rem', height: '2.6rem', radius: '0.35rem' })}
+        <span class="home-promo__info-label">Rank</span>
+        ${skelBlock({ className: 'home-promo__skel-rank', width: '2.85rem', height: '2.85rem', radius: '0.35rem' })}
       </div>
     </div>
     <div class="home-promo__info-how home-promo__info-shade">
-      ${skelBar({ width: '100%', height: '0.75em' })}
-      ${skelBar({ width: '88%', height: '0.75em' })}
-      ${skelBar({ width: '72%', height: '0.75em' })}
+      ${skelBar({ width: '100%', height: '0.78em' })}
+      ${skelBar({ width: '94%', height: '0.78em' })}
+      ${skelBar({ width: '78%', height: '0.78em' })}
+      ${skelBar({ width: '62%', height: '0.78em' })}
     </div>`;
 }
 
@@ -104,10 +133,11 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
               <div class="home-promo__board-wrap">
                 <a class="home-promo__board-link" data-promo-board-link>
                   <div class="home-promo__board" data-promo-empty-board>
-                    ${skelBlock({ className: 'home-promo__skel-board', radius: '0.4rem' })}
+                    ${createPromoBoardSkel()}
                   </div>
                 </a>
               </div>
+              <div class="home-promo__board-tags" data-promo-board-tags hidden></div>
             </div>
             <div class="home-promo__side home-promo__side--right home-promo__side--cta">
               <div class="home-promo__info" data-promo-info>
@@ -135,15 +165,28 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
     const catalogRoot = host.querySelector('[data-promo-catalog-root]');
     const captionEl = host.querySelector('[data-promo-caption]');
     const boardLink = host.querySelector('[data-promo-board-link]');
+    const boardTagsEl = host.querySelector('[data-promo-board-tags]');
     const infoEl = host.querySelector('[data-promo-info]');
     if (!(boardHost instanceof HTMLElement)) return;
-    const catalogReady = mountPromoCatalog(host, { root });
+    const promoMq = window.matchMedia('(max-width: 1100px)');
+    const catalogReady = promoMq.matches
+      ? Promise.resolve()
+      : mountPromoCatalog(host, { root });
+    if (promoMq.matches) {
+      const onWide = () => {
+        if (promoMq.matches) return;
+        promoMq.removeEventListener('change', onWide);
+        void mountPromoCatalog(host, { root });
+      };
+      promoMq.addEventListener('change', onWide);
+    }
     void playAssemble({
       grid: null,
       boardHost,
       catalogRoot: catalogRoot instanceof HTMLElement ? catalogRoot : null,
       captionEl: captionEl instanceof HTMLElement ? captionEl : null,
       boardLink: boardLink instanceof HTMLAnchorElement ? boardLink : null,
+      boardTagsEl: boardTagsEl instanceof HTMLElement ? boardTagsEl : null,
       infoEl: infoEl instanceof HTMLElement ? infoEl : null,
       catalogReady,
       root,

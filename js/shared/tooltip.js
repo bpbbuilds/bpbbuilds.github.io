@@ -125,7 +125,58 @@
       append.push("Always offered in rounds 1 and 2.");
     }
 
+    if (
+      (id === "magic_ring" || id === "superior_ring") &&
+      !/Gains \d+ of the following effects/i.test(String(item.effect || ""))
+    ) {
+      const ring = magicRingLibraryLines(item);
+      if (ring) prepend.push(ring);
+    }
+
     return { prepend, append };
+  }
+
+  const RING_STACKS = [
+    ["lucky", "Luck"],
+    ["regeneration", "Regeneration"],
+    ["spikes", "Spikes"],
+    ["mana", "Mana"],
+    ["heat", "Heat"],
+    ["vampirism", "Vampirism"],
+    ["empower", "Empower"],
+  ];
+  const RING_DEBUFFS = [
+    ["poison", "Poison"],
+    ["blind", "Blind"],
+    ["cold", "Cold"],
+  ];
+
+  function magicRingLibraryLines(item) {
+    const p = item.params && typeof item.params === "object" ? item.params : {};
+    const effects = Number(p.effects ?? 2);
+    const cd = item.cooldown != null ? item.cooldown : 6;
+    const healtht = Number(p.healtht ?? 50);
+    const healthtOpp = Number(p.healtht_opp ?? 70);
+    const listAt = (scale) => {
+      const buffs = RING_STACKS.map(
+        ([k, tag]) => `${Math.round(Number(p[k] || 0) * scale)} <${tag}>`,
+      ).join(" / ");
+      const debuffs = RING_DEBUFFS.map(
+        ([k, tag]) => `${Math.round(Number(p[k] || 0) * scale)} <${tag}>`,
+      ).join(" / ");
+      return `Gain ${buffs} / inflict ${debuffs}.`;
+    };
+    const s1 = Number(p.scale1) || 1;
+    const s2 = Number(p.scale2) || 0.75;
+    const s3 = Number(p.scale3) || 1.5;
+    const s4 = Number(p.scale4) || 1.5;
+    return [
+      `Gains ${effects} of the following effects:`,
+      `Start of battle:\n${listAt(s1)}`,
+      `Every ${cd}s:\n${listAt(s2)}`,
+      `Health drops below ${healtht}%:\n${listAt(s3)} (Once)`,
+      `Opponent drops below ${healthtOpp}%:\n${listAt(s4)} (Once)`,
+    ].join("\n\n");
   }
 
   /** Game effect tags → CDN icon stem (or local asset). */
@@ -205,6 +256,35 @@
     const root = document.body?.dataset?.root ?? "./";
     const prefix = root.endsWith("/") ? root : `${root}/`;
     return `${prefix}${relPath.replace(/^\//, "")}`;
+  }
+
+  /**
+   * Optional art under the title — blob cosmetics only.
+   * Set `item.previewImage` (and optional `item.previewBase` for blob underlay).
+   * Game catalog items use `image` for board sprites; do not show that here.
+   */
+  function previewHtml(item) {
+    const layer = String(item?.previewImage || "").trim();
+    if (!layer) return "";
+    const layerSrc =
+      /^(https?:|data:|\/|\.\.?\/)/i.test(layer) ? layer : assetUrl(layer);
+    const base = String(item?.previewBase || "").trim();
+    if (base) {
+      const baseSrc =
+        /^(https?:|data:|\/|\.\.?\/)/i.test(base) ? base : assetUrl(base);
+      return (
+        `<div class="bpb-tooltip__preview" aria-hidden="true">` +
+        `<span class="bpb-tooltip__preview-stack">` +
+        `<img class="bpb-tooltip__preview-base" alt="" width="120" height="120" src="${escapeHtml(baseSrc)}" draggable="false" />` +
+        `<img class="bpb-tooltip__preview-layer" alt="" width="120" height="120" src="${escapeHtml(layerSrc)}" draggable="false" />` +
+        `</span></div>`
+      );
+    }
+    return (
+      `<div class="bpb-tooltip__preview" aria-hidden="true">` +
+      `<img class="bpb-tooltip__preview-img" alt="" width="120" height="120" src="${escapeHtml(layerSrc)}" draggable="false" />` +
+      `</div>`
+    );
   }
 
   function iconUrl(name) {
@@ -315,6 +395,7 @@
 
     // Paragraph break before a new ability label after a sentence
     // (covers older DB rows that lost game \~ / $t breaks, e.g. Broom)
+    text = repairInlineModeBreaks(text);
     text = text.replace(/\.\s+(?=[A-Z][^:\n]{0,48}:)/g, ".\n\n");
 
     text = escapeHtml(text);
@@ -380,6 +461,7 @@
     let text = String(raw || "").trim();
     if (!text || text === "-" || text === "–" || text === "—") return [];
     text = text.replace(/\r\n/g, "\n");
+    text = repairInlineModeBreaks(text);
     // "…. On hit:" / "…. Start of battle:" when paragraphs were flattened
     text = text.replace(/\.\s+(?=[A-Z][^:\n]{0,48}:)/g, ".\n\n");
     // Trailing passive lines often start with "Deals "
@@ -388,6 +470,23 @@
       .split(/\n\n+/)
       .map((p) => p.trim())
       .filter(Boolean);
+  }
+
+  /**
+   * Bad $m[] convert turned Djinn-style mode words into their own paragraphs:
+   * "Luck\n\nor 1 Spikes" / "Mana\n\nand 27\n\nhealth: Give".
+   * Game keeps $m[or|/and|/health:] inline inside the $t ability line.
+   */
+  function repairInlineModeBreaks(effect) {
+    let text = String(effect || "");
+    // "\n\nor 1" / "\n\nand 27" (mode word starts the paragraph)
+    text = text.replace(/\n\n+(or|and)\s+/gi, " $1 ");
+    // "27\n\nhealth:" → "27 health:"
+    text = text.replace(/(\d+)\s*\n\n+(health:)/gi, "$1 $2");
+    // leftover single newlines around mode words mid-clause
+    text = text.replace(/([^\n])\n(or|and)\n([^\n])/gi, "$1 $2 $3");
+    text = text.replace(/[ \t]{2,}/g, " ");
+    return text;
   }
 
   function formatKeywordLine(key) {
@@ -442,7 +541,7 @@
    * Cooldown (weapon+canEmpower) → Crit (canDamage && crit!=0).
    * CSV `chance` / `cooldown` on non-weapons feed $chance / $cd in effect text only.
    */
-  function propRow(name, value, icon, perSecond, valueTint, psTint) {
+  function propRow(name, value, icon, perSecond, valueTint, psTint, valueHtml) {
     const tintCls = (t) =>
       t === 1 ? " bpb-tooltip__stat--up" : t === -1 ? " bpb-tooltip__stat--down" : "";
     const ps = perSecond
@@ -451,12 +550,15 @@
     const iconHtml = icon
       ? `<img class="bpb-tooltip__prop-icon" alt="" width="22" height="22" src="${iconUrl(icon)}" />`
       : `<span class="bpb-tooltip__prop-icon" aria-hidden="true"></span>`;
+    const valueInner = valueHtml
+      ? valueHtml
+      : `<span class="bpb-tooltip__prop-value${tintCls(valueTint)}">${escapeHtml(value)}</span>`;
     return (
       `<div class="bpb-tooltip__prop">` +
       `<span class="bpb-tooltip__prop-name">${escapeHtml(name)}:</span>` +
       iconHtml +
       `<span class="bpb-tooltip__prop-vals">` +
-      `<span class="bpb-tooltip__prop-value${tintCls(valueTint)}">${escapeHtml(value)}</span>` +
+      valueInner +
       ps +
       `</span>` +
       `</div>`
@@ -567,12 +669,99 @@
       rows.push(propRow("Accuracy", `${fmtNum(acc)}%`, "Accuracy", null, accTint, 0));
     }
 
-    // Cooldown property: weapons that can be empowered only (not Flute/accessories).
-    if (empowerable && cd != null && !Number.isNaN(cd) && cd !== 0) {
-      const cdTint = cat && Number.isFinite(Number(baseCd)) && Number(baseCd) > 0
-        ? statTint(Number(baseCd) - cd)
-        : 0;
-      rows.push(propRow("Cooldown", `${fmtNum(cd)}s`, "Cooldown", null, cdTint, 0));
+    // Cooldown: weapons that can be empowered (game), plus create/sim live
+    // preview (`showCooldownRow`). After-based items (Laboratory, multi-phase
+    // potions) keep times in effect text only — never a top Cooldown row.
+    const afterBased = (() => {
+      const id = String(item.id || '');
+      if (
+        id === 'laboratory' ||
+        id === 'hogus_bogus' ||
+        id === 'wisp' ||
+        id === 'lightning_potion'
+      ) {
+        return true;
+      }
+      if (Array.isArray(item.extraCooldowns) && item.extraCooldowns.length) {
+        return true;
+      }
+      const effect = String(item.effect || '');
+      const hasAfter =
+        /\bAfter\s+[\d.]+s\b/i.test(effect) ||
+        /\bAfter\s*\{[^}]+\}\s*[\d.]+s\b/i.test(effect) ||
+        /After\s*\$cd/i.test(effect);
+      if (!hasAfter) return false;
+      const hasEvery =
+        /\bEvery\s+[\d.]+s\b/i.test(effect) ||
+        /\bEvery\s*\{[^}]+\}\s*[\d.]+s\b/i.test(effect) ||
+        /Every\s*\$cd/i.test(effect);
+      return !hasEvery;
+    })();
+    const catalogExtraCds = Array.isArray(item.extraCooldowns)
+      ? item.extraCooldowns.map(Number).filter((n) => n > 0)
+      : [];
+    const hasMultiCd =
+      !afterBased &&
+      (catalogExtraCds.length > 0 ||
+        (Array.isArray(item.extraCooldownsLive) &&
+          item.extraCooldownsLive.length > 1) ||
+        (Array.isArray(item.extraCooldownsCatalog) &&
+          item.extraCooldownsCatalog.length > 1));
+    if (
+      !afterBased &&
+      ((empowerable || item.showCooldownRow || hasMultiCd) &&
+        cd != null &&
+        !Number.isNaN(cd) &&
+        cd !== 0)
+    ) {
+      const cdTint =
+        cat && Number.isFinite(Number(baseCd)) && Number(baseCd) > 0
+          ? statTint(Number(baseCd) - cd)
+          : 0;
+      const extras = Array.isArray(item.extraCooldownsLive)
+        ? item.extraCooldownsLive
+        : null;
+      const catalogExtras = Array.isArray(item.extraCooldownsCatalog)
+        ? item.extraCooldownsCatalog
+        : catalogExtraCds.length && Number(baseCd) > 0
+          ? [Number(baseCd), ...catalogExtraCds]
+          : null;
+      let cdLabel = `${fmtNum(cd)}s`;
+      /** @type {string | null} */
+      let cdLabelHtml = null;
+      const phaseList =
+        extras && extras.length > 1
+          ? extras
+          : catalogExtras && catalogExtras.length > 1
+            ? catalogExtras
+            : null;
+      if (phaseList) {
+        cdLabel = phaseList.map((n) => `${fmtNum(n)}s`).join(' → ');
+        // Per-phase tint when live phases differ from catalog (Lab 2→4→6→8→12).
+        if (
+          extras &&
+          catalogExtras &&
+          catalogExtras.length === extras.length
+        ) {
+          cdLabelHtml = extras
+            .map((n, i) => {
+              const baseN = Number(catalogExtras[i]);
+              const tint =
+                Number.isFinite(baseN) && baseN > 0 ? statTint(baseN - Number(n)) : 0;
+              const cls =
+                tint === 1
+                  ? ' bpb-tooltip__stat--up'
+                  : tint === -1
+                    ? ' bpb-tooltip__stat--down'
+                    : '';
+              return `<span class="bpb-tooltip__prop-value${cls}">${escapeHtml(`${fmtNum(n)}s`)}</span>`;
+            })
+            .join('<span class="bpb-tooltip__prop-value"> → </span>');
+        }
+      }
+      rows.push(
+        propRow("Cooldown", cdLabel, "Cooldown", null, cdTint, 0, cdLabelHtml),
+      );
     }
 
     // Crit Chance: runtime critChancePercent only — NOT CSV `chance` ($chance in effect).
@@ -938,12 +1127,65 @@
   }
 
   /**
+   * Rainbow Orb (Prismatic Orb) / Prismatic Sword:
+   * Game DESCR keeps `$n_magic` …; RainbowOrb.getDescription → insertCounter
+   * (`Rainbow Orb_Counter` = " ($num)") when placed, else strip.
+   * Catalog may already be scrubbed to `<Magic> item:` — inject counts there too.
+   */
+  function expandPlacementCounters(effect, item) {
+    let text = String(effect || "");
+    const counts =
+      item.placementCounters && typeof item.placementCounters === "object"
+        ? item.placementCounters
+        : null;
+
+    /** @param {string} key */
+    const counterText = (key) => {
+      if (!counts) return "";
+      const n = Number(counts[String(key).toLowerCase()]);
+      return Number.isFinite(n) ? ` (${n})` : "";
+    };
+
+    // Live $n_* tokens (preferred — matches game DESCR)
+    text = text.replace(/\$n_([a-z][a-z0-9_]*)\b/gi, (_, key) =>
+      counterText(key),
+    );
+
+    // Fake icon leftovers: item<N_magic> / <N_vampiric>
+    text = text.replace(/(item)?<N_([a-z][a-z0-9_]*)>/gi, (_, itemWord, key) => {
+      const prefix = itemWord ? "item" : "";
+      const c = counterText(key);
+      return c ? `${prefix}${c}` : prefix;
+    });
+
+    // Scrubbed DB rows: insert after `<Magic> item` when counts are known
+    if (counts) {
+      const TAG_FOR = {
+        magic: "Magic",
+        vampiric: "Vampiric",
+        holy: "Holy",
+        dark: "Dark",
+      };
+      for (const [key, raw] of Object.entries(counts)) {
+        const n = Number(raw);
+        if (!Number.isFinite(n)) continue;
+        const tag =
+          TAG_FOR[String(key).toLowerCase()] ||
+          String(key).charAt(0).toUpperCase() + String(key).slice(1);
+        const re = new RegExp(`(<${tag}>\\s*item)(?!\\s*\\()`, "gi");
+        text = text.replace(re, `$1 (${n})`);
+      }
+    }
+    return text;
+  }
+
+  /**
    * Failed descr convert left `$p2s` as `<P2s>` (fake icon). Resolve from item.params.
    * Game: $p2s = indexed param 2 + "s" (seconds), same family as $cds.
    * Also repair stale imports that wrote the wrong number for named cd/stamina.
    */
   function expandUnresolvedParamTags(effect, item) {
-    let text = String(effect || "");
+    let text = expandPlacementCounters(effect, item);
     const params =
       item.params && typeof item.params === "object" ? item.params : {};
     const indexed = [];
@@ -1061,13 +1303,23 @@
     // Cost after glossary (keeps ability text contiguous like the game)
     if (showCost) {
       sections.push(sectionDiv);
-      sections.push(
-        `<div class="bpb-tooltip__cost">` +
-          `<span class="bpb-tooltip__label">Item cost</span>: ` +
-          `<span class="bpb-tooltip__cost-value"><span class="bpb-tooltip__n">${escapeHtml(item.cost)}</span>` +
-          `<img class="bpb-tooltip__gold" alt="" width="22" height="22" src="${iconUrl("Gold")}" /></span>` +
-          `</div>`
-      );
+      const goldImg = `<img class="bpb-tooltip__gold" alt="" width="22" height="22" src="${iconUrl("Gold")}" />`;
+      const amount = `<span class="bpb-tooltip__n">${escapeHtml(item.cost)}</span>`;
+      if (item.costDisplay === "worth") {
+        // Cosmetics: coin icon + fiscal worth (0 = not buyable/sellable)
+        sections.push(
+          `<div class="bpb-tooltip__cost bpb-tooltip__cost--worth" aria-label="Worth ${escapeHtml(item.cost)} gold">` +
+            `<span class="bpb-tooltip__cost-value">${goldImg}${amount}</span>` +
+            `</div>`,
+        );
+      } else {
+        sections.push(
+          `<div class="bpb-tooltip__cost">` +
+            `<span class="bpb-tooltip__label">Item cost</span>: ` +
+            `<span class="bpb-tooltip__cost-value">${amount}${goldImg}</span>` +
+            `</div>`,
+        );
+      }
     }
 
     // Thin fade into footer (Divider2 family — never the dotted Divider1)
@@ -1098,6 +1350,7 @@
     root.innerHTML =
       `<div class="bpb-tooltip__inner"><div class="bpb-tooltip__stack">` +
       `<h1 class="bpb-tooltip__title">${escapeHtml(item.name)}</h1>` +
+      previewHtml(item) +
       `<div class="bpb-tooltip__sections">${sections.join("")}</div>` +
       `</div></div>`;
 

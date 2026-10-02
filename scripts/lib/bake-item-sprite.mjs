@@ -631,7 +631,10 @@ export async function bakeItemSprite({ scenePath, extractRoot, outPath }) {
     // glass). Still skip pure additive materials; draw other bloom fills.
     const skipBloom =
       !isIcon && !isFluid && bloomMod && (skipAdditive || !behindParent);
-    const drawSelf = !(skipFxTex || skipAdditive || skipBloom);
+    // Resting alpha ~0 is an activation overlay the animation fades in
+    // (Heart of Darkness fill). Do not force it on. Glass keeps a real alpha.
+    const restingHidden = !isIcon && !isFluid && mod.a < 0.02;
+    const drawSelf = !(skipFxTex || skipAdditive || skipBloom || restingHidden);
 
     // Icon texture *_outline.png + sibling finished .png (PrismaticSword): use
     // the finished still — in-game color comes from a bloom glass child we can't

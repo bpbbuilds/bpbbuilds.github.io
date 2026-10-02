@@ -3,7 +3,11 @@
  * Board + round scrubber | right info rail (class, bag, route, essentials).
  */
 
+import { bindEventBannerTip, eventMarkHtml } from './event-banner-tip.js';
+import { getProfile } from '../../shared/auth.js';
 import { getSupabase } from '../../shared/supabase.js';
+import { eventEntryVisibleTo } from '../events/event-builds-privacy.js';
+import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import { mountPlacedGrid } from '../../shared/backpack-grid/index.js';
 import { createTooltipHover } from '../../shared/tooltip-hover.js';
 import {
@@ -18,7 +22,7 @@ import {
   mountRoundScrubber,
 } from './round-scrubber.js';
 import { renderInfoRail, renderBuildLoadingShell } from './info-rail.js';
-import { renderAuthorRail } from './author-rail.js';
+import { renderAuthorRail, hydrateAuthorFaces } from './author-rail.js';
 import {
   MORE_BUILDS_CAP,
   fetchAuthorMoreBuilds,
@@ -89,33 +93,48 @@ function withTimeout(promise, ms) {
   });
 }
 
-/**
- * @param {string} slug
- */
-async function fetchBuild(slug) {
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from('builds')
-    .select(
-      `
+const BUILD_PAGE_SELECT = `
       id, slug, title, hero_class, blurb, notes, youtube_url, thumbnail_path,
       is_op, op_requested, build_tag, vote_score, author_id, author_name, gold_count, rank, starting_bag_id, history,
+      event_slug,
       route_r3, route_r10, route_r3_item_id, route_r10_item_id,
       profile:profiles!builds_author_id_fkey (
-        discord_id, display_name, avatar_url
+        discord_id, display_name, avatar_url, equipped_avatar
       ),
       placements:build_placements (
         id, x, y, r, gems, priority,
         item:items ( ${ITEM_SELECT} )
-      )
-    `,
-    )
+      )`;
+
+/**
+ * @param {string} slug
+ */
+async function fetchBuild(slug) {
+  await syncEventBuildVisibility();
+  const supabase = getSupabase();
+  const viewer = await getProfile().catch(() => null);
+  let { data, error } = await supabase
+    .from('builds')
+    .select(BUILD_PAGE_SELECT)
     .eq('slug', slug)
     .eq('is_public', true)
     .maybeSingle();
 
   if (error) throw error;
+  if (!data && viewer?.id) {
+    const own = await supabase
+      .from('builds')
+      .select(BUILD_PAGE_SELECT)
+      .eq('slug', slug)
+      .eq('author_id', viewer.id)
+      .maybeSingle();
+    if (own.error) throw own.error;
+    data = own.data;
+  }
   if (!data) return data;
+  if (!eventEntryVisibleTo(data.event_slug, data.author_id, viewer?.id || null)) {
+    return { _eventPrivate: true };
+  }
   const profile =
     data.profile && typeof data.profile === 'object' && !Array.isArray(data.profile)
       ? data.profile
@@ -124,11 +143,13 @@ async function fetchBuild(slug) {
         : null;
   const discord_id = String(profile?.discord_id || '').trim();
   const avatar = String(profile?.avatar_url || '').trim();
+  const equipped = profile?.equipped_avatar != null ? String(profile.equipped_avatar) : null;
   const liveName = String(profile?.display_name || '').trim();
   return {
     ...data,
     author_discord_id: discord_id || null,
     author_avatar_url: avatar || null,
+    author_equipped_avatar: equipped,
     author_name: liveName || data.author_name || 'Unknown',
   };
 }
@@ -226,6 +247,8 @@ function renderPage(main, build, root, spriteDisplay, routeSkills, gridMeta = {}
       })}
     </div>
   `;
+  void hydrateAuthorFaces(main, root);
+  bindEventBannerTip(main);
 
   const bagHost = main.querySelector('#build-bag');
   const roundHost = main.querySelector('#build-round');
@@ -285,6 +308,7 @@ function renderPage(main, build, root, spriteDisplay, routeSkills, gridMeta = {}
         getSpriteUrl,
         root,
         overEl: infoRail instanceof HTMLElement ? infoRail : null,
+        author: build,
       });
     } catch (err) {
       console.warn('Author more-builds mount failed:', err);
@@ -389,6 +413,7 @@ function renderStageHead(build, root) {
   const authFlair = authLabel
     ? `<span class="builds-post__flair builds-post__flair--${escapeAttr(String(authRaw))} build-stage__auth">${escapeHtml(authLabel)}</span>`
     : '';
+  const eventMark = eventMarkHtml(build?.event_slug, base);
 
   return `
     <header class="build-stage__head">
@@ -396,6 +421,7 @@ function renderStageHead(build, root) {
         <h1 class="build-stage__title">${escapeHtml(title)}</h1>
         ${op}
         ${authFlair}
+        ${eventMark}
       </div>
     </header>
   `;
@@ -523,9 +549,15 @@ export async function initBuildPage() {
       fetchJson(`${root}assets/data/socket-offsets.json`),
     ]);
 
-    if (!build) {
-      main.innerHTML = `<p class="build-status">Build not found.</p>`;
-      document.title = 'Build not found — Smojo Builds';
+    if (!build || build._eventPrivate) {
+      main.innerHTML = `<p class="build-status">${
+        build?._eventPrivate
+          ? 'This entry is private until the event gallery opens.'
+          : 'Build not found.'
+      }</p>`;
+      document.title = build?._eventPrivate
+        ? 'Private entry — Smojo Builds'
+        : 'Build not found — Smojo Builds';
       return;
     }
 

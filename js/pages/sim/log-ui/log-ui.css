@@ -1,0 +1,66 @@
+/* Kitchen-sink workbench — do not restyle live /sim/ log chrome here. */
+
+body.page-sim-log-ui {
+  overflow: auto;
+  height: auto;
+  max-height: none;
+}
+
+body.page-sim-log-ui #main {
+  overflow: visible;
+}
+
+.sim-log-ui {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100rem;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3rem;
+}
+
+.sim-log-ui__intro {
+  margin: 0 0 1rem;
+  max-width: 42rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #3c261d;
+}
+
+.sim-log-ui__intro h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.65rem;
+}
+
+/* Leave room for the You / Opponent flaps (454 / 445 px) so the page scroller
+   does not clip them — the live /sim/ layout centres the log instead. */
+.sim-log-ui .sim-clog-ui {
+  margin: 5.6rem 29rem 0;
+}
+
+.sim-log-ui .sim-clog-tab--you,
+.sim-log-ui .sim-clog-tab--opp,
+.sim-log-ui .sim-clog-tab--filter {
+  pointer-events: auto;
+}
+
+/* Sink-only separator between specimen families — never ships to /sim/ */
+.sim-log-ui .sim-log-ui__group {
+  list-style: none;
+  margin: 0.5rem 0 0.15rem;
+  padding: 0 0 0 6px;
+  font-family: var(--bpb-font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #ffecd4;
+  text-shadow:
+    1px 1px 0 #3c261d,
+    -1px 1px 0 #3c261d;
+  border-top: 1px dashed rgba(255, 236, 212, 0.35);
+}
+
+.sim-log-ui .sim-log-ui__group:first-child {
+  margin-top: 0;
+  border-top: 0;
+}

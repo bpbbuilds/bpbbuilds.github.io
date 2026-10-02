@@ -66,12 +66,23 @@ export function gainStacks(actor, stack, amount, opts = {}) {
   }
 
   const rng = opts.rng;
-  const resistPct = Number(actor.stackResist?.[stack]) || 0;
-  if (resistPct > 0 && typeof rng === 'function') {
+  // Buff.gd: totalResistChance = resist − item.getAmplificationChancePercent(type)
+  let totalResist = Number(actor.stackResist?.[stack]) || 0;
+  if (!opts.reflect) {
+    const amp = Number(opts.amplificationChance) || 0;
+    if (amp) totalResist -= amp;
+  }
+  if (totalResist > 0 && typeof rng === 'function') {
     for (let i = 0; i < left; i++) {
-      if (rollPercent(resistPct, rng)) resisted += 1;
+      if (rollPercent(totalResist, rng)) resisted += 1;
     }
     left -= resisted;
+  } else if (totalResist < 0 && typeof rng === 'function') {
+    let bonus = 0;
+    for (let i = 0; i < left; i++) {
+      if (rollPercent(-totalResist, rng)) bonus += 1;
+    }
+    left += bonus;
   }
 
   // Character.debuffResistStacks — flat consumable soak (LeatherArmor / Buff.gd)

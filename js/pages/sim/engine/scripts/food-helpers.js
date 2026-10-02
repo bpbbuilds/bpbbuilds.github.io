@@ -2,6 +2,21 @@
  * Shared food activation helpers (Band Z 151).
  */
 
+import { affectedTargets } from '../board-graph.js';
+import { addSpeed } from '../piece-stats.js';
+
+/**
+ * Food.gd prepare() — +10% speed per canAffect food link.
+ * @param {object} piece
+ * @param {object} ctx
+ */
+export function applyFoodPrepareSpeed(piece, ctx) {
+  const { graph, itemsById, canAffect } = ctx;
+  if (!graph || !itemsById) return;
+  const n = affectedTargets(graph, piece.placementKey, itemsById, canAffect).length;
+  if (n > 0) addSpeed(piece, 0.1 * n);
+}
+
 /**
  * @param {object} piece
  * @param {object} ctx

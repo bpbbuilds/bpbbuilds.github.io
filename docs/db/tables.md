@@ -23,6 +23,9 @@ Detailed setup docs live under `docs/db/tables/`.
 | `build_placements` | Items placed on a build’s grid | Live | [build-placements-table.md](./tables/build-placements-table.md) |
 | `build_votes` | Up/down votes per anonymous voter | Live | [build-votes-table.md](./tables/build-votes-table.md) |
 | `profiles` | Discord Auth users / authors | Ready | [profiles-table.md](./tables/profiles-table.md) |
+| `sim_reports` | Combat sandbox issue reports | Live | [sim-reports-table.md](./tables/sim-reports-table.md) |
+| `page_views` | Anonymous daily counts of public page sections | Live | [`sql/026_page_views.sql`](./sql/026_page_views.sql) |
+| `member_daily` | Daily account, paid Premium, founding, and revenue totals | Live | [`sql/027_member_daily.sql`](./sql/027_member_daily.sql) |
 
 ## How tables interact
 
@@ -69,6 +72,7 @@ profiles                items ◄──── build_placements.gems[]
 | `build_placements` | Yes (via parent build) | With parent build only |
 | `build_votes` | No (service role) | Edge Function `vote-build` only |
 | `profiles` | Yes | Own row update (not `is_owner`); insert via Auth trigger |
+| `sim_reports` | No | Edge `report-sim` insert; Edge `admin-reports` owner list/stats/status |
 
 ---
 
@@ -129,7 +133,7 @@ See [builds-table.md](./tables/builds-table.md).
 
 **Used by:** Edge Function `vote-build`; net score denormalized to `builds.vote_score`.
 
-See [build-votes-table.md](./tables/build-votes-table.md) and [votes.md](../votes.md).
+See [build-votes-table.md](./tables/build-votes-table.md) and [votes.md](../pages/votes.md).
 
 ---
 
@@ -157,11 +161,21 @@ See [build-placements-table.md](./tables/build-placements-table.md).
 
 **Purpose:** Discord-linked site users (Supabase Auth).
 
-**Used by:** Author credits, My builds, `/u/{discord_id}/`, admin owner JWT, vote bind.
+**Used by:** Author credits, My builds, `/u/{discord_id}/`, admin (`is_owner`), vote bind.
 
-**Key fields:** `id` (= `auth.users.id`), `discord_id`, `display_name`, `avatar_url`, `is_owner`, `voter_key`
+**Key fields:** `id` (= `auth.users.id`), `discord_id`, `display_name`, `avatar_url`, `equipped_avatar`, `cosmetic_grants`, `is_owner`, `voter_key`
 
 See [profiles-table.md](./tables/profiles-table.md).
+
+---
+
+## `sim_reports`
+
+**Purpose:** User-filed combat sandbox issues (description + frozen session snapshot).
+
+**Used by:** `/sim/` Report issue form; `/admin/` Sim reports queue.
+
+See [sim-reports-table.md](./tables/sim-reports-table.md).
 
 ---
 
@@ -173,6 +187,9 @@ See [profiles-table.md](./tables/profiles-table.md).
 4. `build_placements`
 5. `build_votes` (after builds)
 6. `profiles` (`013_profiles.sql` — also FK `builds.author_id`)
+7. `sim_reports` (`018_sim_reports.sql`)
+8. `builds.event_slug` (`019_builds_event_slug.sql`)
+9. `profiles.cosmetic_grants` (`021_profiles_cosmetic_grants.sql`)
 
 ## Design rules
 

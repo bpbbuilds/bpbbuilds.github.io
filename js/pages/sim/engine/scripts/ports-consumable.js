@@ -16,7 +16,7 @@ import { addSpeed } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { getScriptHandler } from './registry.js';
-import { markFoodConsumed } from './food-helpers.js';
+import { applyFoodPrepareSpeed, markFoodConsumed } from './food-helpers.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -157,33 +157,51 @@ export const evilHatPort = {
   },
 };
 
-/** Cupcake.gd — heal + giveMostBuffs(buffs). */
+/**
+ * Cupcake.gd + Food.gd prepare —
+ * prepare: +10% speed per food link; CD: heal() → giveMostBuffs(buffs) → activate().
+ */
 /** @type {ScriptHandler} */
 export const cupcakePort = {
   handlerId: 'cupcake',
   family: 'food',
+  onCombatStart(piece, ctx) {
+    applyFoodPrepareSpeed(piece, ctx);
+  },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    pushActivate(piece, ctx, 'cupcake', `Food: ${piece.name}`);
-    const healAmt = Math.max(1, Math.round(getPName(piece.params, 'heal', getP1(piece.params, 8))));
+    // Game heal() → getP_m("heal") (catalog heal = 10).
+    const healAmt = Math.max(
+      1,
+      Math.round(getPName(piece.params, 'heal', getP1(piece.params, 10))),
+    );
     const healed = healActor(player, healAmt);
-    if (healed > 0) {
+    if (healed > 0 || (player._lastHeal && !player._lastHeal.meterAttached)) {
+      const logged = Number(player._lastHeal?.loggedAmount) || healed;
+      if (player._lastHeal) player._lastHeal.meterAttached = true;
       events.push({
         t: t + 0.002,
         type: 'heal',
+        actor: 'player',
         target: 'player',
-        amount: healed,
-        label: `${piece.name}: heal +${healed}`,
+        amount: logged,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: heal +${logged}`,
         meta: { category: 'heal', script: true, handler: 'cupcake', playerHp: player.hp },
       });
     }
+    // Game giveMostBuffs(numBuffs) — Item.giveStacks(..., self).
     const n = Math.max(1, Math.round(getPName(piece.params, 'buffs', getP2(piece.params, 2))));
     const picked = giveMostBuffs(player, n, rng, {
+      piece,
       originKey: piece.placementKey,
       originId: piece.itemId,
+      t,
+      silentLog: true,
     });
     pushBuffGrants(events, piece, player, t, 'cupcake', picked, 0.004);
-    markFoodConsumed(piece, ctx, 'cupcake');
+    pushActivate(piece, ctx, 'cupcake', `Food: ${piece.name}`);
     return true;
   },
 };
@@ -353,7 +371,7 @@ function bindHealthPotionDrink(piece, ctx, withRegen) {
     const t = payload.t ?? ctx.t;
     healActor(player, healAmt);
     const logged = requestedHealAmount(player, healAmt);
-    pushActivate(piece, { ...ctx, t }, handler, `Potion: ${piece.name}`);
+    pushActivate(piece, { ...ctx, t }, handler, `Potion: ${piece.name}`, { consume: true });
     ctx.events.push({
       t: t + 0.001,
       type: 'heal',

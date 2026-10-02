@@ -2,12 +2,14 @@
  * Publish a create draft via submit-build (Discord JWT; secret = break-glass).
  */
 
-import { getSession, signInWithDiscord } from '../../shared/auth.js';
+import { getSession, getProfile, signInWithDiscord } from '../../shared/auth.js';
 import { config } from '../../shared/config.js';
+import { bakeAndUploadBoardStill } from '../../shared/board-still/upload.js';
 import {
   lastRoundPlacementsFromHistory,
   normalizeDraftHistory,
 } from './draft-io.js';
+import { gemFace } from './socket-place.js';
 
 const PENDING_SUBMIT_KEY = 'bpb-pending-submit';
 
@@ -46,15 +48,24 @@ function mapPlacementsPayload(placements) {
     y: p.y,
     r: p.r ?? 0,
     gems: p.gems || [],
+    ...(Array.isArray(p.gemR) && p.gemR.some((n) => gemFace(n) !== 0)
+      ? { gemR: p.gemR.map((n) => gemFace(n)) }
+      : {}),
     priority: p.priority ?? null,
   }));
 }
 
 /**
  * @param {import('./draft-io.js').Draft} draft
+ * @param {{
+ *   itemsById?: Map<string, object> | null,
+ *   getSpriteUrl?: ((item: object) => string) | null,
+ *   root?: string,
+ *   eventSlug?: string | null,
+ * }} [paint]
  * @returns {Promise<{ id: number, slug: string }>}
  */
-export async function publishDraft(draft) {
+export async function publishDraft(draft, paint = {}) {
   const url = String(config.submitBuildUrl || '').trim();
   if (!url || url.includes('YOUR_')) {
     throw new Error(
@@ -70,10 +81,33 @@ export async function publishDraft(draft) {
   }
 
   const history = normalizeDraftHistory(draft.history);
-  const placements = history
+  const rawPlacements = history
     ? lastRoundPlacementsFromHistory(history, draft.placements || [])
     : draft.placements || [];
+  const placements = rawPlacements.filter((p) => String(p.id || '') !== '__unrecognized__');
   const build_tag = history ? 'real' : draft.build_tag;
+
+  /** @type {string | null} */
+  let board_still_path = null;
+  const itemsById = paint.itemsById;
+  const getSpriteUrl = paint.getSpriteUrl;
+  if (
+    placements.length &&
+    itemsById instanceof Map &&
+    typeof getSpriteUrl === 'function'
+  ) {
+    const profile = await getProfile().catch(() => null);
+    const authorId = profile?.id ? String(profile.id) : '';
+    if (authorId) {
+      board_still_path = await bakeAndUploadBoardStill({
+        placements: mapPlacementsPayload(placements),
+        itemsById,
+        getSpriteUrl,
+        root: paint.root,
+        authorId,
+      });
+    }
+  }
 
   /** @type {Record<string, unknown>} */
   const payload = {
@@ -91,6 +125,9 @@ export async function publishDraft(draft) {
     placements: mapPlacementsPayload(placements),
   };
   if (history) payload.history = history;
+  if (board_still_path) payload.board_still_path = board_still_path;
+  const eventSlug = String(paint.eventSlug || '').trim();
+  if (eventSlug) payload.event_slug = eventSlug;
 
   /** @type {Record<string, string>} */
   const headers = {

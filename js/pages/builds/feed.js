@@ -3,8 +3,16 @@
  */
 
 import { getProfile, onAuthChange } from '../../shared/auth.js';
+import { hydrateFaces } from '../../shared/blob-face.js';
 import { getSupabase } from '../../shared/supabase.js';
 import { skelBar, skelBlock, skelRegion } from '../../shared/skeleton.js';
+import {
+  buildMatchesSearch,
+  itemSpriteUrl,
+  itemsFromBuilds,
+  parseBuildSearchQuery,
+} from '../../shared/build-search.js';
+import { mountBuildSearchInput } from '../../shared/build-search-input.js';
 import { readMyVote } from '../build/vote.js';
 import { HERO_CLASSES } from '../items/filter-logic.js';
 import { mountFeedBoardThumbs } from './board-thumbs.js';
@@ -20,7 +28,13 @@ import {
   isAllFeedRanks,
   syncFeedFiltersUi,
 } from './feed-filters.js';
+import { isFeedEvent } from './feed-event-filter.js';
+import { getCatalogEvent } from '../events/catalog-data.js';
+import { eventBuildGalleryIsPublic, eventEntryVisibleTo } from '../events/event-builds-privacy.js';
+import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import { bindFeedPostActions } from './post-actions.js';
+import { bindFeedFilterDrawer } from './feed-filter-drawer.js';
+import { bindEventBannerTip } from '../build/event-banner-tip.js';
 import { postRowHtml } from './post-row.js';
 
 /** @typedef {import('./feed-filters.js').FeedFilterState} FeedFilterState */
@@ -50,8 +64,14 @@ export async function initBuildsFeed(main, opts) {
   let unmountBoards = null;
   /** @type {(() => void) | null} */
   let unbindActions = null;
+  /** @type {() => void} */
+  let unbindEventTips = () => {};
   /** @type {(() => void) | null} */
   let unbindFilters = null;
+  /** @type {{ destroy: () => void, setItems: (items: object[]) => void, clear: () => void, setQuery: (q: string) => void } | null} */
+  let searchInput = null;
+  /** @type {object[]} */
+  let catalogItems = [];
   /** @type {string | null} */
   let myAuthorId = null;
 
@@ -70,6 +90,13 @@ export async function initBuildsFeed(main, opts) {
     shapes = shapeData;
     sockets = socketData;
     myAuthorId = profile?.id || null;
+    if (myAuthorId) {
+      const held = await fetchMyHeldEntries(myAuthorId).catch(() => []);
+      const seen = new Set(all.map((b) => String(b.slug || '')));
+      for (const row of held) {
+        if (!seen.has(String(row.slug || ''))) all.push(row);
+      }
+    }
     if (!myAuthorId) state = { ...state, mine: false };
   } catch (err) {
     console.error(err);
@@ -83,6 +110,8 @@ export async function initBuildsFeed(main, opts) {
       <div class="builds-feed-col">
         <div class="builds-feed__list-host" data-feed-list></div>
       </div>
+      <button type="button" class="builds-feed-filters__backdrop" data-feed-filters-backdrop hidden aria-label="Close filters"></button>
+      <button type="button" class="builds-feed-filters__toggle" data-feed-filters-open aria-expanded="false" aria-controls="builds-feed-filters">Filters</button>
       ${feedFiltersHtml(root, state, rows0.length, { canMine: Boolean(myAuthorId) })}
     </div>`;
 
@@ -90,11 +119,28 @@ export async function initBuildsFeed(main, opts) {
   const rail = main.querySelector('.builds-feed-filters');
   if (!(listHost instanceof HTMLElement) || !(rail instanceof HTMLElement)) return;
 
+  bindFeedFilterDrawer(main.querySelector('.builds-layout'));
+
   unbindFilters = bindFeedFilters(rail, {
     getState: () => state,
     defaultState: defaultFeedFilterState,
+    onResetSearch() {
+      searchInput?.clear();
+    },
     onChange(next) {
       state = next;
+      paintList();
+    },
+  });
+
+  catalogItems = itemsFromBuilds(all);
+  searchInput = mountBuildSearchInput(rail, {
+    items: catalogItems,
+    getSpriteUrl: (item) => itemSpriteUrl(root, item),
+    initialQuery: state.q,
+    onChange(q) {
+      if (q === state.q) return;
+      state = { ...state, q };
       paintList();
     },
   });
@@ -140,24 +186,39 @@ export async function initBuildsFeed(main, opts) {
     unmountBoards = null;
     unbindActions?.();
     unbindActions = null;
+    unbindEventTips();
+    unbindEventTips = () => {};
 
     writeFeedStateToUrl(state);
     const rows = sortBuilds(filterBuilds(all, state, myAuthorId), state.sort);
     syncFeedFiltersUi(rail, state, rows.length);
 
     if (!rows.length) {
-      listHost.innerHTML = `<p class="build-status builds-feed__empty">No builds match these filters.</p>`;
+      const eventEv = state.event ? getCatalogEvent(state.event) : null;
+      const privateEvent = Boolean(state.event && eventEv && !eventBuildGalleryIsPublic(eventEv));
+      let empty = 'No builds match these filters.';
+      if (privateEvent) {
+        empty = myAuthorId
+          ? 'No entry of yours for this event yet — other players’ boards stay hidden until the gallery opens.'
+          : 'Event boards are private until the gallery opens. Sign in to see your own entry if you have one.';
+      }
+      listHost.innerHTML = `<p class="build-status builds-feed__empty">${empty}</p>`;
       return;
     }
 
     const viewClass =
-      state.view === 'compact' ? 'builds-feed__list--compact' : 'builds-feed__list--card';
+      state.view === 'compact'
+        ? 'builds-feed__list--compact'
+        : state.view === 'grid'
+          ? 'builds-feed__list--grid'
+          : 'builds-feed__list--card';
     listHost.innerHTML = `<ul class="builds-feed__list ${viewClass}" data-feed-view="${state.view}" aria-label="Build posts">${rows
-      .map((b) => postRowHtml(b, root, { view: state.view }))
+      .map((b) => postRowHtml(b, root, { view: state.view, eventMark: true }))
       .join('')}</ul>`;
 
     const list = listHost.querySelector('.builds-feed__list');
     if (list instanceof HTMLElement) {
+      void hydrateFaces(list, root);
       unmountBoards = mountFeedBoardThumbs(list, {
         builds: rows,
         root,
@@ -173,6 +234,7 @@ export async function initBuildsFeed(main, opts) {
           if (state.liked) paintList();
         },
       });
+      unbindEventTips = bindEventBannerTip(list);
     }
   }
 
@@ -183,6 +245,7 @@ export async function initBuildsFeed(main, opts) {
  * @returns {Promise<object[]>}
  */
 async function fetchPublicBuilds() {
+  await syncEventBuildVisibility();
   const supabase = getSupabase();
   const placementSelect = `
       placements:build_placements (
@@ -191,14 +254,16 @@ async function fetchPublicBuilds() {
       )`;
   const withProfile = `
       slug, title, hero_class, blurb, is_op, is_featured, build_tag, vote_score,
-      author_id, author_name, rank, gold_count, youtube_url, created_at, updated_at,
+      author_id, author_name, rank, gold_count, youtube_url, event_slug, board_still_path,
+      created_at, updated_at,
       profile:profiles!builds_author_id_fkey (
-        discord_id, display_name, avatar_url
+        discord_id, display_name, avatar_url, equipped_avatar
       ),
       ${placementSelect}`;
   const bare = `
       slug, title, hero_class, blurb, is_op, is_featured, build_tag, vote_score,
-      author_id, author_name, rank, gold_count, youtube_url, created_at, updated_at,
+      author_id, author_name, rank, gold_count, youtube_url, event_slug, board_still_path,
+      created_at, updated_at,
       ${placementSelect}`;
 
   let { data, error } = await supabase
@@ -220,6 +285,31 @@ async function fetchPublicBuilds() {
   return (data ?? []).map(normalizeBuildAuthor);
 }
 
+/**
+ * The signed-in author's contest entries that are still hidden from everyone else.
+ * @param {string} authorId
+ */
+async function fetchMyHeldEntries(authorId) {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('builds')
+    .select(
+      `
+      slug, title, hero_class, blurb, is_op, is_featured, build_tag, vote_score,
+      author_id, author_name, rank, gold_count, youtube_url, event_slug, board_still_path,
+      created_at, updated_at,
+      placements:build_placements (
+        id, x, y, r, gems,
+        item:items ( ${ITEM_SELECT} )
+      )`,
+    )
+    .eq('author_id', authorId)
+    .eq('event_held', true)
+    .limit(20);
+  if (error) throw error;
+  return (data ?? []).map(normalizeBuildAuthor);
+}
+
 /** @param {object} row */
 function normalizeBuildAuthor(row) {
   const raw = row?.profile;
@@ -231,11 +321,13 @@ function normalizeBuildAuthor(row) {
         : null;
   const discord_id = String(profile?.discord_id || '').trim();
   const avatar = String(profile?.avatar_url || '').trim();
+  const equipped = profile?.equipped_avatar != null ? String(profile.equipped_avatar) : null;
   const liveName = String(profile?.display_name || '').trim();
   return {
     ...row,
     author_discord_id: discord_id || null,
     author_avatar_url: avatar || row.author_avatar_url || null,
+    author_equipped_avatar: equipped,
     author_name: liveName || row.author_name || 'Unknown',
   };
 }
@@ -300,7 +392,10 @@ function readFeedStateFromUrl() {
   const liked = q.get('liked') === '1' || q.get('liked') === 'true';
   const mine = q.get('mine') === '1' || q.get('mine') === 'true';
   const heroClass = HERO_CLASSES.includes(classRaw) ? classRaw : null;
-  return { sort, view, tags, liked, mine, heroClass, ranks };
+  const eventRaw = String(q.get('event') || '').trim();
+  const event = isFeedEvent(eventRaw) ? eventRaw : null;
+  const searchQ = String(q.get('q') || '').trim();
+  return { sort, view, tags, liked, mine, heroClass, ranks, event, q: searchQ };
 }
 
 /**
@@ -314,7 +409,9 @@ function writeFeedStateToUrl(state) {
   if (state.mine) q.set('mine', '1');
   if (state.tags.length) q.set('tags', state.tags.join(','));
   if (state.heroClass) q.set('class', state.heroClass);
+  if (state.event) q.set('event', state.event);
   if (!isAllFeedRanks(state.ranks)) q.set('ranks', state.ranks.join(','));
+  if (state.q) q.set('q', state.q);
   const qs = q.toString();
   const next = `${location.pathname}${qs ? `?${qs}` : ''}${location.hash || ''}`;
   const cur = `${location.pathname}${location.search}${location.hash || ''}`;
@@ -340,7 +437,8 @@ function buildHasTag(b, tag) {
  * @param {FeedFilterState} state
  * @param {string | null} [myAuthorId]
  */
-function filterBuilds(rows, state, myAuthorId = null) {
+export function filterBuilds(rows, state, myAuthorId = null) {
+  const parsed = parseBuildSearchQuery(state.q || '');
   return rows.filter((b) => {
     if (state.mine) {
       if (!myAuthorId || String(b.author_id || '') !== myAuthorId) return false;
@@ -348,10 +446,13 @@ function filterBuilds(rows, state, myAuthorId = null) {
     if (state.liked && readMyVote(String(b.slug || '')) !== 1) return false;
     if (state.tags.length && !state.tags.some((t) => buildHasTag(b, t))) return false;
     if (state.heroClass && String(b.hero_class || '') !== state.heroClass) return false;
+    if (state.event && String(b.event_slug || '') !== state.event) return false;
+    if (!eventEntryVisibleTo(b.event_slug, b.author_id, myAuthorId)) return false;
     if (!isAllFeedRanks(state.ranks)) {
       const key = String(b.rank || '').toLowerCase();
       if (!state.ranks.includes(key)) return false;
     }
+    if (!buildMatchesSearch(b, parsed)) return false;
     return true;
   });
 }
@@ -381,7 +482,7 @@ function ageHours(b) {
  * @param {object[]} rows
  * @param {FeedSort} sort
  */
-function sortBuilds(rows, sort) {
+export function sortBuilds(rows, sort) {
   const copy = rows.slice();
 
   if (sort === 'new') {
@@ -445,7 +546,9 @@ function paintSkeleton(main) {
   main.innerHTML = skelRegion(
     `<div class="builds-layout builds-layout--skel">
       <div class="builds-feed-col">
-        <div class="builds-feed__list builds-feed__list--skel">${row()}${row()}</div>
+        <div class="builds-feed__list-host">
+          <div class="builds-feed__list builds-feed__list--skel">${row()}${row()}</div>
+        </div>
       </div>
       <aside class="items-filters il-filter builds-feed-filters builds-feed-filters--skel" aria-hidden="true">
         ${skelBar({ width: '70%', height: '1.1rem', radius: '0.2rem' })}

@@ -12,9 +12,9 @@ Open follow-ups. Check off when done.
 - [x] Homepage featured video carousel (Twitch-style stage from `builds` / `is_featured`)
 - [x] `builds` table + RLS + seed featured rows
 - [x] Homepage “View build” → `/builds/{slug}/`
-- [x] **Builds catalog** `/builds/` browse v1 — sort/view, tag/class/rank filters, Liked, card + compact boards (see Next pages)
-- [x] **Admin** `/admin/` — OP approve/deny, feature, soft-hide (`docs/admin.md`)
-- [x] **Create board core** `/create/` — drag-drop 9×7 board, catalog, localStorage draft (`docs/create-placement.md`)
+- [x] **Builds catalog** `/builds/` browse v1 — sort/view, tag/class/rank filters, Liked, card + compact boards, shared search (`?q=` / `@user` / `[Item]`) (see Next pages)
+- [x] **Admin** `/admin/` portal — overview metrics, reports queue, builds curation (`docs/pages/admin.md`)
+- [x] **Create board core** `/create/` — drag-drop 9×7 board, catalog, localStorage draft (`docs/pages/create-placement.md`)
   - Soft **Parked** strip (MVP bare sprites; theme polish open under Create page polish)
   - **Sell / discard** Chestnut bin (fixed bottom-right; cargo/gems → Parked)
   - Layer modes All / Bags / Items / Clear (functional; UI polish open under Create page polish)
@@ -41,7 +41,7 @@ Priority follows `docs/purpose.md` main jobs.
   - [x] **Liked** — local-vote filter (`?liked=1`); **My builds** — Discord auth filter (`?mine=1`)
   - [x] Post chrome — byline / title / flair / Build Info OptionsFont; vote · comment · remix · share row
   - [x] Board thumbs — fixed cell + visible overflow so edge bags/items extrude (not clipped)
-  - [x] Real **Top** / Hot scores from stored `vote_score` (see Social / [`docs/votes.md`](votes.md))
+  - [x] Real **Top** / Hot scores from stored `vote_score` (see Social / [`docs/pages/votes.md`](pages/votes.md))
 - [x] **Build creator** `/create/` — board + catalog + park + sell (see Done); **Filter | Build** rail + meta pane mounted
   - Nav CREATE points here
   - Later: gate publish behind Steam (see Auth)
@@ -49,15 +49,15 @@ Priority follows `docs/purpose.md` main jobs.
   - [x] **Build tags** — Feasible ↔ Theorycraft (exclusive); OP request path
   - [x] **Authenticity tags (3-way)** — Theory · Feasible · Real on `build_tag`; Real tied to attached history; filters + create meta + catalog/build badges
   - [x] **Rank selector** on create meta — league badge (bronze … grandma) for the build
-  - [x] **Submit build** — Edge Function `submit-build` + `/builds/view/?slug=`; OP → `op_requested` until owner approval (`docs/create-submit.md`)
+  - [x] **Submit build** — Edge Function `submit-build` + `/builds/view/?slug=`; OP → `op_requested` until owner approval (`docs/pages/create-submit.md`)
   - [x] No fake combat history on published boards (scrubber strip only when real history exists)
   - [x] Remix preload from build pages (`?remix=` → board + meta; clears OP / YouTube)
-  - Placement rules vs game: [`docs/create-placement.md`](create-placement.md)
-- [x] **Admin page** `/admin/` (not public-nav) — approve / deny OP (`op_requested` → `is_op`), feature, soft-hide / restore (`docs/admin.md`)
+  - Placement rules vs game: [`docs/pages/create-placement.md`](pages/create-placement.md)
+- [x] **Admin page** `/admin/` portal — overview, sim reports, OP / feature / hide (`docs/pages/admin.md`)
   - Edge Function `admin-builds` + `BPB_SUBMIT_SECRET` (same as submit)
-- [x] **User profiles** `/u/{discord_id}/` — Discord persona + public builds; nav link when signed in (`docs/auth.md`)
-  - [ ] **Profile polish** — stronger parchment/leather layout, hierarchy, premium badge placement (see Monetization)
-  - [ ] **Premium status on profile** — show plan / Premium flair when `profiles.plan` is paid
+- [x] **User profiles** `/u/{discord_id}/` — Discord persona + public builds; nav link when signed in (`docs/pages/auth.md`)
+  - [x] **Profile polish** — Patch3 persona + Builds bands, sticker Founding/Premium flair (`js/pages/u/`)
+  - [x] **Premium status on profile** — show plan / Premium flair when `profiles.plan` is paid
 - [x] **OP builds linkage** — catalog + admin curation for `is_op` / `is_featured` (homepage carousel already reads `is_featured`)
   - [x] **Submit for OP UX** — Request OP label, Submit for OP review CTA, OP pending on build page; Steam owner gate later
 - [x] **Legal pages** — `/legal/about/`, `/legal/terms/`, `/legal/privacy/` + shared footer (`js/shared/footer.js`)
@@ -67,7 +67,7 @@ Priority follows `docs/purpose.md` main jobs.
 - [x] **Class starting bags (2 per class)** — Build-tab loadout pick required; auto-place once; may sell off board; `starting_bag_id` on draft + `builds` (`js/shared/starting-bags.js`, `009_starting_bag.sql`)
   - [x] Shared starter ids + create picker / validate / remix / submit-build
   - [x] Build page prefers stored `starting_bag_id` (fallbacks for older rows)
-- [x] **Loose class access** — hard-block wrong-class Class Uniques + skills; soft-warn other-class shop items (badge sold OK). No unlocker ownership tracking. See [`docs/create-item-access.md`](create-item-access.md) (`js/shared/item-access.js`)
+- [x] **Loose class access** — hard-block wrong-class Class Uniques + skills; soft-warn other-class shop items (badge sold OK). No unlocker ownership tracking. See [`docs/pages/create-item-access.md`](pages/create-item-access.md) (`js/shared/item-access.js`)
   - [x] Create drag / route slots / submit-validate + submit-build hard mirror
 - [ ] **Full unlocker graph** (later / out of scope for loose v1) — `gateItem` edges, `storage_coffin` lockouts, temporary next-shop crafts
 
@@ -79,11 +79,12 @@ Priority follows `docs/purpose.md` main jobs.
 - [x] **Run economy readout** — gold + cost/max + game Stamina Usage tier (Very low→Very high icons) on create toolbar; layer icons stay centered
 - [x] **Build uploader + selector** — empty-board onboard (class → bag); drop/`history.db` → full History UI (list + bag preview + round scrubber); Load applies the scrubbed round into the create draft
 - [x] **History overlay theme + layout polish** — transparent board-minus-park shell; rankingDif / league %; grouping-style filters; gold scrollbar; X close; Trophy·Watch·Heart stats; W/L strip inside Patch3; preview bag center + protrusion; Load CTA (`scripts/_test-history-picker.mjs`, `_test-history-wl-clip.mjs`)
-- [ ] **Screenshot → build** — drop/upload a backpack screenshot on create to detect layout (AI / vision — see Monetization + Creator tooling)
-- [ ] **Why it works — item mentions** — reference items inline in notes for readers
-  - [ ] Drag a catalog/board item onto the notes field to insert an item chip / icon
-  - [ ] Type `[` then letters → dropdown under the caret with ~5 closest item matches; click (or Enter) to insert `[Item Name]` (or equivalent token that renders as icon + name on the build page)
-- [ ] **Text focus vs round picker keys** — while a create text field (title, notes, etc.) is focused, arrow keys move the caret in that field; do not steal them for history round scrubber / board shift
+- [ ] **Screenshot → build** — Paused for launch; implementation and research are preserved behind a default-off gate. Detail: [Create image upload documentation](pages/create/feature/imageUpload/README.md).
+- [x] **Export board PNG** — button on `/create/` to download a PNG of the current backpack (sprites + bag); **Premium-only** (founding included) via shared gate / offer panel
+- [x] **Why it works — item mentions** — reference items inline in notes for readers
+  - [x] Drag a catalog/board item onto the notes field to insert an item chip / icon
+  - [x] Type `[` then letters → dropdown under the caret with ~5 closest item matches; click (or Enter) to insert `[Item Name]` (or equivalent token that renders as icon + name on the build page)
+- [x] **Text focus vs round picker keys** — while a create text field (title, notes, etc.) is focused, arrow keys move the caret in that field; do not steal them for history round scrubber / board shift
 - [ ] **Essentials from socketed gems** — allow dragging a gem/item seated in an armor (or other) socket onto Needs / Wants / Good to have (e.g. Corrupted Crystal in a socket); today only free board items can be tier-assigned
 
 ## Build page polish
@@ -97,11 +98,12 @@ Priority follows `docs/purpose.md` main jobs.
 - [x] **More builds tooltips** — build preview tip (larger board + class/gold/rank) instead of item tooltips
 - [x] **Gold count** — history More builds / `?run=` pages now get `gold_count` from final-board item prices
 - [x] **Premium Play CTA** — rectangular Play plaque under round counter (`PlayButton.png` + `.bpb-premium-cta`); create toolbar parity
+- [ ] **Share link OG / embed image** — Discord, Twitter/X, iMessage, etc. preview shows the **build board PNG** (not a generic site card). Likely needs pre-rendered (or on-demand) board images + `og:image` / Twitter card meta; static GH Pages may need **Cloudflare** (Workers / Image) or similar for crawler-friendly HTML. Wire from every Share button + canonical build URL.
 
 ## Social / history (after showcase exists)
 
-- [x] **Likes / votes** on builds + stored `vote_score` / `build_votes`; catalog Hot/Top/Best/Rising use quality (`docs/votes.md`)
-  - [x] **Bind votes to auth** — Discord sign-in binds `bpb-voter-id` → `profiles.voter_key` (RPC + vote-build JWT); merge when safe. See [`docs/auth.md`](auth.md) + [`docs/votes.md`](votes.md)
+- [x] **Likes / votes** on builds + stored `vote_score` / `build_votes`; catalog Hot/Top/Best/Rising use quality (`docs/pages/votes.md`)
+  - [x] **Bind votes to auth** — Discord sign-in binds `bpb-voter-id` → `profiles.voter_key` (RPC + vote-build JWT); merge when safe. See [`docs/pages/auth.md`](pages/auth.md) + [`docs/pages/votes.md`](pages/votes.md)
   - [ ] **Vote abuse soft-guards (later)** — light rate limits on `vote-build`; optional captcha only if farming shows up (anonymous MVP is fine until auth)
 - [x] **Discuss CTA** on build pages — YouTube if video, else Discord
 - [ ] **Comments** on build pages (auth required)
@@ -125,11 +127,11 @@ Priority follows `docs/purpose.md` main jobs.
 - [x] **Privacy Policy** — stub at `/legal/privacy/` (votes, Supabase, no ads email yet)
 - [x] **Data policy (history.db)** — covered in Privacy (what we store, retention, clear-on-unlock, contact for deletion)
 - [x] **Fan-made disclaimer** — footer line + `/legal/about/` non-affiliation notice
-- [ ] **Monetization + IP risk** — explore what (if anything) is safe to sell/affiliate while using game art/assets; get clarity before shipping paid features
+- [x] **Monetization + IP risk** — owner **conditional go** on $3/mo tools membership; combat “matches the game” stays no-go ([`monetization-ip.md`](product/monetization-ip.md), [`sim-ip-marketing.md`](sim/sim-ip-marketing.md))
 
 ## Auth
 
-**Shape:** **Supabase Auth** = session. **Discord** = v1 login + persona (no email/password). **Steam** = link while signed in later. **Stripe** = memberships later (see Monetization). Detail: [`docs/auth.md`](auth.md).
+**Shape:** **Supabase Auth** = session. **Discord** = v1 login + persona (no email/password). **Steam** = link while signed in later. **Stripe** = memberships later (see Monetization). Detail: [`docs/pages/auth.md`](pages/auth.md).
 
 - [x] **Supabase Auth + profiles** — `013_profiles.sql`, RLS, Discord trigger, owner flag
 - [x] **Discord login** — OAuth; nav Sign in / avatar → `/u/{discord_id}/` + Sign out
@@ -145,8 +147,11 @@ Priority follows `docs/purpose.md` main jobs.
 
 ## Discord integration (research)
 
-- [ ] **Auto-join Discord server on site Sign in?** — possible via OAuth `guilds.join` + bot in server + Edge call (not free with Supabase alone; see note below)
-- [ ] **Discord bot — build announce** — when a build is published on the site, auto-post to a Discord channel (embed: title, class, link, Real/Feasible/Theory)
+Dedicated plan: [`features/discord-bot.md`](features/discord-bot.md) — hosting (Oracle always-free VPS), phases, setup checklist.
+
+- [ ] **Auto-join Discord server on site Sign in?** — possible via OAuth `guilds.join` + bot in server (see the bot plan's Phase A notes)
+- [x] **Discord bot — build announce** — public site builds post into the Discord builds forum (title, class, author, link, Real/Feasible/Theory, board still when saved). OG share image is still separate
+- [ ] **Share link OG / embed image** — see Build page polish; crawlers need board PNG in meta (Cloudflare or similar likely)
 - [ ] **Discord ↔ site comments (maybe)** — optional: messages in a build thread / under announce posts appear as site comments (or link-out only); decide sync vs “Discuss on Discord” CTA
 - [ ] Bot permissions, channel mapping, rate limits, moderation
 
@@ -160,12 +165,16 @@ Channel growth is the north star. Paid features likely need AI + legal green lig
 - [ ] **Discord billing? (secondary only)** — server subscriptions/roles can grant the same perk via bot sync, but don’t rely on Discord alone (smaller funnel, messier entitlements). Prefer Discord as community + login; paid role as a mirror of Stripe.
 - [ ] **Premium gate UX** — when a non-member hits a premium control (Play / sim / future AI), show an upgrade prompt (dialog or soft overlay) instead of a dead click; keep free teaser path where we decide one exists
 - [ ] **Upgrade CTA on promise surfaces** — clear “Upgrade to Premium” entry near premium CTAs (build Play row, create Play, sim entry) that routes to checkout / settings billing
-- [ ] **Settings / billing page** — account settings with Stripe Customer Portal (manage plan, cancel, invoices); link from nav / profile when signed in
-- [ ] **Premium status on profile** — badge / plan label on `/u/{discord_id}/` (and own profile) from `profiles.plan`
-- [ ] **Profile page visual polish** — make `/u/` feel on-brand (parchment hierarchy, less bare list); works for free + Premium members
+- [ ] **Settings / billing page** — account settings with Stripe Customer Portal (manage plan, cancel, invoices); link from nav / profile when signed in — **nav + profile links shipped**; full settings page still optional
+- [x] **Premium status on profile** — badge / plan label on `/u/{discord_id}/` (and own profile) from `profiles.plan`
+- [x] **Profile page visual polish** — `/u/` Patch3 hierarchy + sticker plan badges (free + Premium)
+- [x] **Export board PNG (Premium)** — download a PNG of the create-page backpack; free users get upgrade prompt (same gate as Play / sim)
+- [ ] **Export history.db (Premium, Phase 2)** — synthetic History file from create / published build so people can practice that board in-game. Detail: [`launch-phase-2.md`](product/launch-phase-2.md). Not Phase 1.
+- [ ] **Build combat stats (Phase 2)** — DPS, heal / s, max HP / s, block / s, etc. on build pages, sim, and build tips. Sim-derived, not live PvP. Detail: [`launch-phase-2.md`](product/launch-phase-2.md).
+- [ ] **Character builder / pose export (Premium, back burner)** — tall order (sim-scale). Compose game character sprites from parts (head / arms / body / …), optionally hold catalog items, export PNG for thumbnails / videos. Research game part assets first; Premium-only like board PNG. Not Phase 1.
 - [ ] **AI: Screenshot → build** — paid or free-tier?; backpack image → detected layout in `/create/` (vision)
 - [ ] **AI: Optimize** — reorder / pack someone’s board for a more optimal legal layout (same item set or guided swaps — define scope); likely AI + rules
-- [ ] **Solo combat sandbox / sim** — dummy-target board sim (`/sim/`; Band A shipped — see [`sim-phases.md`](sim-phases.md) Band F). Strong monetize candidate: free short preview vs paid full 30s runs, deeper logs, save/compare sims, or membership unlock. Gate behind auth when paid; legal/IP check before selling game-like combat.
+- [ ] **Solo combat sandbox / sim** — dummy-target board sim (`/sim/`; Band A shipped — see [`sim-phases.md`](sim/sim-phases.md) Band F). Strong monetize candidate: free short preview vs paid full 30s runs, deeper logs, save/compare sims, or membership unlock. Gate behind auth when paid; legal/IP check before selling game-like combat.
 - [ ] Gate paid AI / sim behind auth; never auto-publish optimized boards as OP
 
 ## Items polish
@@ -179,7 +188,7 @@ DevTools on `/create/` showed weak Core Web Vitals mostly from full-catalog spri
 
 - [x] **Lazy-load catalog sprites** — Itemiary deferred `data-src` + decode warm near viewport / before AppearInLibrary; pool prewarm is geom-only (`item-pieces.js` / `item-pool.js`)
 - [x] **Reserve catalog / board / nav space** — HTML nav/create shells + board 9/7 skel until mount; catalog swaps filters in place (no shell wipe)
-- [x] **Production cache lifetimes** — see [`docs/deploy-cache.md`](deploy-cache.md); `npm run stamp-assets` for `?v=` stamps (GH Pages needs Cloudflare for long TTL)
+- [x] **Production cache lifetimes** — see [`docs/features/deploy-cache.md`](features/deploy-cache.md); `npm run stamp-assets` for `?v=` stamps (GH Pages needs Cloudflare for long TTL)
 - [x] **Font-display / font loading** — tooltip `@font-face` `swap`; preload Milonga + Baskerville woff2 on home/items/create
 - [x] **Forced reflow audit** — Itemiary paintNow: pass viewport metrics, cull once, single appear flush, defer sprite IO (`item-pool.js` / `item-pieces.js`)
 - [ ] **DOM size trim (later)** — Itemiary pool keeps many nodes; only worth it after lazy sprites if Interaction/memory still hurts
@@ -263,9 +272,11 @@ Helpers for `/create/` and remix — not auto-publish. Overlaps Monetization AI 
 
 ### Solo board combat sandbox (`/sim/`)
 
-Predictive **dummy-target** fight sim — not vs another real backpack. Dedicated page (not bolted onto `/create/`). Aim as close to 1:1 game combat over time.
+Predictive fight sim — dedicated page (not bolted onto `/create/`). Aim as close to 1:1 game combat over time.
 
-**Docs:** [`sim.md`](sim.md) · [`sim-combat-audit.md`](sim-combat-audit.md) · full roadmap [`sim-phases.md`](sim-phases.md) (phases 1–110).
+**Launch foe / avatar UX** (Dummy · Public build · Mirror; class vs profile sprites; UI first): [`launch-phase-1.md`](product/launch-phase-1.md) Sim · [`sim-product.md`](sim/sim-product.md) Core UX.
+
+**Docs:** [`sim.md`](sim/sim.md) · [`sim-combat-audit.md`](sim/sim-combat-audit.md) · full roadmap [`sim-phases.md`](sim/sim-phases.md) (phases 1–110).
 
 **North stars:** combat rules → **1:1 GDScript**; fight HUD → **Health / Stamina / Buffs / Debuffs**; fight log → **Combat Log + Damage Dealt 1:1** (Band Q).
 
@@ -302,11 +313,11 @@ Predictive **dummy-target** fight sim — not vs another real backpack. Dedicate
 - [x] **Visual fight pass** — activation rings, speed 1×/2×/4×, banner + bar art
 - [x] **Save / compare runs** — localStorage summaries + delta panel
 - [x] **Deep-link** — `?slug=&seed=&mode=&t=&speed=` + Copy link
-- [x] **Validation notes** — [`sim-validation.md`](sim-validation.md)
+- [x] **Validation notes** — [`sim-validation.md`](sim/sim-validation.md)
 
 #### Band G — GDScript 1:1 foundations (shipped)
 
-- [x] Handler audit appendix [`sim-handler-audit.md`](sim-handler-audit.md)
+- [x] Handler audit appendix [`sim-validation.md`](sim/sim-validation.md)
 - [x] `getP*` param wiring + `damage.js` / `stacks.js` foundations
 - [x] First reviewed ports (broom, banana, poison bow, hero longsword, falcon, herbs, …)
 
@@ -324,11 +335,11 @@ Predictive **dummy-target** fight sim — not vs another real backpack. Dedicate
 - [x] Band Y Phase 144 — outlier ports + hard deferrals documented (`ports-outliers*`; harness floor **60**)
 - [x] Band Z 147–155 — temp stacks, fatigue, combat-bus, food/aura/on-hit depth + pilots (`npm run sim-band-z-smoke`; floor stays **60**, solid ~69%)
 - [x] Phase **159** — HUD temp stacks (`snapshotActor.temp` + countdown chips; smoke in `sim-band-z-smoke`)
-- [x] Solid patterns → 100% + harness floor ratchets — Waves A–D **shipped** (floor **100**) — [`sim-phases.md`](sim-phases.md) Band AC–AE
+- [x] Solid patterns → 100% + harness floor ratchets — Waves A–D **shipped** (floor **100**) — [`sim-phases.md`](sim/sim-phases.md) Band AC–AE
 
 #### Engine 1:1 leftovers (after Phase 270)
 
-Numbered AP–AS is closed. Do **not** title `/sim/` **Engine 1:1** or flip `engine11Achieved` until these are done (and Phase 38 for public copy). Detail: [`sim-phases.md`](sim-phases.md) · flags: [`sim-validation.md`](sim-validation.md) · claim JSON: `assets/data/sim-engine-claim.json`.
+Numbered AP–AS is closed. Do **not** title `/sim/` **Engine 1:1** or flip `engine11Achieved` until these are done (and Phase 38 for public copy). Detail: [`sim-phases.md`](sim/sim-phases.md) · flags: [`sim-validation.md`](sim/sim-validation.md) · claim JSON: `assets/data/sim-engine-claim.json`.
 
 - [ ] **Bag vs bag, then live compare** — first slice shipped: `/sim/?slug=A&oppSlug=B` (optional `oppRound`). Dummy auto-attack is off; both bags run. Smoke: `npm run sim-vs-board-smoke`. Next: fight the same two boards in-game and compare end HP / log (do **not** paste ranked HP onto dummy `live.*`). Cross-bag steal/charge still thin.
 - [x] **Reaper Unhealing paramCheck** — `heal()` at full HP still unheals and now logs the Heal tab amount (`flushUnloggedHeal`); Unhealing uses `takeDamage`. `reaper-harvest` staple `paramChecks` empty. Smoke: `npm run sim-ar-milestone`.
@@ -395,9 +406,10 @@ Goal: propose **last-round / endgame boards** that synergize — not full shop r
 - [ ] Skip for v1: full combat engine / route AI — see **Solo board combat sandbox** above (community history upload is in-product now)
 
 ### added by me
-- [ ] **Phase 1 public launch** — founding 50 Premium forever, Stripe, Discord roles, light blobs: [`docs/launch-phase-1.md`](launch-phase-1.md)
+- [ ] **Phase 1 public launch** — founding 50 Premium forever, Stripe, Discord roles, light blobs: [`docs/product/launch-phase-1.md`](product/launch-phase-1.md)
 - [ ] some form of a promotion for free premium for first x users (see Phase 1 founding 50)
-- [ ] funded contest for specific build type with prize money. event system arqitecture would have to exsist, voting system ect. discord tags, on website tags, discount off website ect.
+- [ ] funded contest for specific build type with prize money. event system arqitecture would have to exsist, voting system ect. discord tags, on website tags, discount off website ect. — Phase 2 Events hub: [`launch-phase-2.md`](product/launch-phase-2.md)
+- [ ] **DPS Stone Phase 2:** auto `history.db` → dummy score → leaderboard; then **top‑3 highlight video** from those boards — [`highestDPS.md`](pages/events/eventIdeas/highestDPS.md) (needs accurate sim)
 - [ ] **Create filters: Alt-click = only this** — Alt-click a filter (rarity / shop / crafted / gated / etc.) to select that one alone (clear the rest of that group)
 - [ ] **Builds reverse / forward** — game-style back and forward buttons on build pages (round / history navigation like the in-game UI)
 - [ ] **Create drag lag** — fix the slight delay when moving items (board ↔ board and Parked ↔ board) 

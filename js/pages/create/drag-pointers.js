@@ -10,9 +10,11 @@ import { canPickItem, canPlace, isBagItem, isGemItem } from './collision.js';
 import { canShiftBoard, shiftDirFromKey, shiftPlacements } from './board-shift.js';
 import { pickOffsetPx } from './drag-feel.js';
 import { setCreateDragging } from './drag-source.js';
-import { beginBoardMoveDrag, finishMarqueePickup } from './drag-marquee.js';
+import { beginBoardMoveDrag, beginBoardCopyDrag, finishMarqueePickup } from './drag-marquee.js';
 import { newPlacementKey } from './draft-io.js';
+import { gemFace } from './socket-place.js';
 import { EDIT_MODE } from './editor-state.js';
+import { isTypingTarget } from '../../shared/is-typing-target.js';
 
 /**
  * @param {{
@@ -44,7 +46,7 @@ import { EDIT_MODE } from './editor-state.js';
  *   },
  *   editMode: () => string,
  *   metrics: { ensure: (force?: boolean) => unknown },
- *   float: { startPickupFrom: Function, rotateDrag: Function, cancelDragWithFlyback: Function },
+ *   float: { startPickupFrom: Function, rotateDrag: Function, cancelDragWithFlyback: Function, showOrphanPickup: Function },
  *   preview: { previewAt: Function },
  *   gems: { dropGemIntoSocket: Function, getHoveredSocket: Function, liftGemFromSocket: Function },
  *   view: { setPosition: Function },
@@ -55,6 +57,7 @@ import { EDIT_MODE } from './editor-state.js';
  *   commitToSell: (cur: any) => string,
  *   commitToMeta?: (cur: any, x: number, y: number) => 'done' | 'reject' | 'miss',
  *   isPointerOverPark: (x: number, y: number) => boolean,
+ *   isPointerOverCatalog?: (x: number, y: number) => boolean,
  *   isPointerOverSell: (x: number, y: number) => boolean,
  *   isPointerOverMeta?: (x: number, y: number) => boolean,
  *   beginHotswapFromPlacement: (p: object, x: number, y: number) => boolean,
@@ -107,6 +110,7 @@ export function bindDragPointers(ctx) {
     commitToSell,
     commitToMeta,
     isPointerOverPark,
+    isPointerOverCatalog,
     isPointerOverSell,
     isPointerOverMeta,
     beginHotswapFromPlacement,
@@ -138,7 +142,7 @@ export function bindDragPointers(ctx) {
           id: result.prevGemId,
           x: 0,
           y: 0,
-          r: 0,
+          r: result.prevFace || 0,
           key: newPlacementKey(),
           priority: null,
         },
@@ -228,19 +232,26 @@ export function bindDragPointers(ctx) {
     }
   }
 
-  function beginCatalogDrag(itemId, e) {
-    // Game InputBlocker while draggedItem — shop/catalog cannot start a pick
-    if (getDrag() || getFlyingBack() || !itemsById.has(itemId)) return;
-    if (document.body.classList.contains('is-bpb-dragging')) return;
-    // History lock: allow drag start; unlock only if drop changes board geometry.
-    selectionBox?.cancel();
+  const NARROW_CREATE_MQ = '(max-width: 1100px)';
+  /** @type {{ pointerId: number, onMove: (e: PointerEvent) => void, onEnd: (e: PointerEvent) => void, onTouchMove: (e: TouchEvent) => void } | null} */
+  let touchArm = null;
+
+  function clearTouchArm() {
+    if (!touchArm) return;
+    window.removeEventListener('pointermove', touchArm.onMove);
+    window.removeEventListener('pointerup', touchArm.onEnd);
+    window.removeEventListener('pointercancel', touchArm.onEnd);
+    window.removeEventListener('touchmove', touchArm.onTouchMove);
+    touchArm = null;
+  }
+
+  /**
+   * @param {string} itemId
+   * @param {PointerEvent} e
+   * @param {HTMLElement | null} src
+   */
+  function startCatalogDrag(itemId, e, src) {
     const item = itemsById.get(itemId);
-    if (!canPickItem(item, editMode())) return;
-    const hero = String(state.getDraft()?.hero_class || '').trim();
-    if (hero && isHardIllegalAccess(accessVerdict(hero, item))) return;
-    const t = e.target instanceof Element ? e.target : null;
-    const sourceEl = t?.closest?.('.bpb-bg__item[data-item-id]:not(.bpb-bg__item--parked)');
-    const src = sourceEl instanceof HTMLElement ? sourceEl : null;
     setDrag({
       mode: 'place',
       itemId,
@@ -267,6 +278,90 @@ export function bindDragPointers(ctx) {
   }
 
   /**
+   * On a narrow create page, a sideways touch scrolls the catalog.
+   * A vertical touch lifts the item onto the board.
+   * @param {string} itemId
+   * @param {PointerEvent} e
+   * @param {HTMLElement | null} src
+   */
+  function armTouchCatalogDrag(itemId, e, src) {
+    clearTouchArm();
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const pointerId = e.pointerId;
+    const scrollEl = src?.closest('.bpb-bg');
+    let lastX = startX;
+    let mode = /** @type {'pending' | 'scroll'} */ ('pending');
+    const slop = 12;
+
+    /** @param {PointerEvent} ev */
+    function onMove(ev) {
+      if (ev.pointerId !== pointerId) return;
+      const dx = ev.clientX - startX;
+      const dy = ev.clientY - startY;
+      if (mode === 'pending' && dx * dx + dy * dy < slop * slop) return;
+      // Up toward the board picks the item up, even with some sideways drift.
+      if (dy < -10 && Math.abs(dy) > Math.abs(dx) * 0.5) {
+        clearTouchArm();
+        ev.preventDefault();
+        startCatalogDrag(itemId, ev, src);
+        return;
+      }
+      if (Math.abs(dx) > Math.abs(dy)) {
+        mode = 'scroll';
+        if (scrollEl instanceof HTMLElement) {
+          scrollEl.scrollLeft -= ev.clientX - lastX;
+        }
+        lastX = ev.clientX;
+        return;
+      }
+      clearTouchArm();
+      ev.preventDefault();
+      startCatalogDrag(itemId, ev, src);
+    }
+
+    /** @param {PointerEvent} ev */
+    function onEnd(ev) {
+      if (ev.pointerId !== pointerId) return;
+      clearTouchArm();
+    }
+
+    /** @param {TouchEvent} ev */
+    function onTouchMove(ev) {
+      if (mode !== 'scroll') ev.preventDefault();
+    }
+
+    touchArm = { pointerId, onMove, onEnd, onTouchMove };
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onEnd);
+    window.addEventListener('pointercancel', onEnd);
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+  }
+
+  function beginCatalogDrag(itemId, e) {
+    // Game InputBlocker while draggedItem — shop/catalog cannot start a pick
+    if (dropUnlockPending || getDrag() || getFlyingBack() || !itemsById.has(itemId)) return;
+    if (document.body.classList.contains('is-bpb-dragging')) return;
+    // History lock: allow drag start; unlock only if drop changes board geometry.
+    selectionBox?.cancel();
+    const item = itemsById.get(itemId);
+    if (!canPickItem(item, editMode())) return;
+    const hero = String(state.getDraft()?.hero_class || '').trim();
+    if (hero && isHardIllegalAccess(accessVerdict(hero, item))) return;
+    const t = e.target instanceof Element ? e.target : null;
+    const sourceEl = t?.closest?.('.bpb-bg__item[data-item-id]:not(.bpb-bg__item--parked)');
+    const src = sourceEl instanceof HTMLElement ? sourceEl : null;
+    if (
+      e.pointerType === 'touch' &&
+      window.matchMedia(NARROW_CREATE_MQ).matches
+    ) {
+      armTouchCatalogDrag(itemId, e, src);
+      return;
+    }
+    startCatalogDrag(itemId, e, src);
+  }
+
+  /**
    * Free-follow re-arm (game: click anywhere while holding draggedItem).
    * Window capture so catalog InputBlocker pass-through still places / flybacks.
    * @param {any} drag
@@ -288,7 +383,8 @@ export function bindDragPointers(ctx) {
 
   /** @param {PointerEvent} e */
   function onWindowFreeFollowDown(e) {
-    if (e.button !== 0 || getFlyingBack()) return;
+    if (getFlyingBack()) return;
+    if (e.pointerType !== 'touch' && e.pointerType !== 'pen' && e.button !== 0) return;
     const drag = getDrag();
     if (!drag || !(drag.hotswap || drag.pointerId < 0)) return;
     // Board host already handles via onPointerDown
@@ -302,7 +398,8 @@ export function bindDragPointers(ctx) {
     // RMB rotate is window-level (onRmbPointerDown) — host misses it under
     // pointer-capture / when the float is over the catalog.
     if (e.button === 2) return;
-    if (e.button !== 0 || getFlyingBack()) return;
+    if (getFlyingBack()) return;
+    if (e.pointerType !== 'touch' && e.pointerType !== 'pen' && e.button !== 0) return;
 
     const drag = getDrag();
     // Free-follow (hotswap or same-frame ignored LMB-up): re-arm primary for place
@@ -311,6 +408,7 @@ export function bindDragPointers(ctx) {
       return;
     }
 
+    if (dropUnlockPending) return;
     if (drag) return;
     const t = e.target instanceof Element ? e.target : null;
     if (t?.closest?.('.create-board__toolbar')) return;
@@ -326,13 +424,15 @@ export function bindDragPointers(ctx) {
       const gemItem = itemsById.get(gemId);
       if (!canPickItem(gemItem, editMode())) return;
       if (hostEl instanceof HTMLElement) onSelectKey(hostKey);
+      const hostRow = state.getDraft().placements.find((p) => p.key === hostKey);
+      const face = gemFace(hostRow?.gemR?.[slot]);
     setDrag({
       mode: 'unsocket',
       itemId: gemId,
       hostKey,
       socketSlot: slot,
-      r: 0,
-      pickupR: 0,
+      r: face,
+      pickupR: face,
       pointerId: e.pointerId,
       sourceEl: gemMark,
       sourceRect: gemMark.getBoundingClientRect(),
@@ -351,7 +451,7 @@ export function bindDragPointers(ctx) {
       }
       metrics.ensure(true);
       ensureLifted(e.clientX, e.clientY);
-      preview.previewAt(gemId, 0, e.clientX, e.clientY, null);
+      preview.previewAt(gemId, face, e.clientX, e.clientY, null);
       return;
     }
 
@@ -404,6 +504,29 @@ export function bindDragPointers(ctx) {
    * @param {PointerEvent} e
    */
   function beginMoveDrag(key, p, itemEl, e) {
+    if (e.altKey) {
+      beginBoardCopyDrag({
+        key,
+        p,
+        itemEl,
+        e,
+        grid,
+        itemsById,
+        onSelectKey,
+        multi,
+        setMultiMoveKeys,
+        setDrag,
+        setDownPos,
+        setLastPointer,
+        setLastMoveAt,
+        setMoved,
+        metrics,
+        float,
+        preview,
+        editMode,
+      });
+      return;
+    }
     beginBoardMoveDrag({
       key,
       p,
@@ -450,6 +573,12 @@ export function bindDragPointers(ctx) {
     });
   }
 
+  /** @param {TouchEvent} e */
+  function onTouchMoveWhileDragging(e) {
+    if (!getDrag() || getFlyingBack()) return;
+    e.preventDefault();
+  }
+
   /** @param {PointerEvent} e */
   function onPointerMove(e) {
     if (selectionBox?.isActive()) {
@@ -476,7 +605,7 @@ export function bindDragPointers(ctx) {
 
   /** @param {PointerEvent} e */
   function onPointerUp(e) {
-    if (selectionBox?.isActive() && e.button === 0) {
+    if (selectionBox?.isActive() && (e.button === 0 || e.pointerType === 'touch' || e.pointerType === 'pen')) {
       const result = selectionBox.end(e.clientX, e.clientY);
       if (result) finishMarquee(result);
       return;
@@ -502,7 +631,7 @@ export function bindDragPointers(ctx) {
       }
       return;
     }
-    if (e.button !== 0) return;
+    if (e.pointerType !== 'touch' && e.pointerType !== 'pen' && e.button !== 0) return;
 
     // Synthetic primary-up as RMB goes down
     if (performance.now() < suppressPlaceUntil) {
@@ -523,17 +652,84 @@ export function bindDragPointers(ctx) {
   let dropUnlockPending = false;
 
   /**
-   * Geometry drops clear history; cancel → flyback with history kept.
+   * @param {any} cur
+   */
+  function cloneDrag(cur) {
+    if (!cur) return null;
+    return {
+      ...cur,
+      cargo: Array.isArray(cur.cargo) ? cur.cargo.map((c) => ({ ...c })) : cur.cargo,
+      gems: Array.isArray(cur.gems) ? cur.gems.slice() : cur.gems,
+      gemR: Array.isArray(cur.gemR) ? cur.gemR.slice() : cur.gemR,
+      unsocketRestore: cur.unsocketRestore ? { ...cur.unsocketRestore } : null,
+      restoreParked: cur.restoreParked ? { ...cur.restoreParked } : null,
+      restorePlacement: cur.restorePlacement ? { ...cur.restorePlacement } : null,
+    };
+  }
+
+  /**
+   * After flyback the item is home again — lift it once more before replay.
+   * @param {any} snap
+   */
+  function reliftForReplay(snap) {
+    if (snap.mode === 'unsocket' && snap.unsocketRestore) {
+      const { hostKey, slot, gemId } = snap.unsocketRestore;
+      gems.liftGemFromSocket(hostKey, slot, gemId);
+      return;
+    }
+    if (snap.fromPark && snap.restoreParked) {
+      const key = snap.restoreParked.key;
+      if (key) state.removeParked?.(key);
+      else state.takeParkedById?.(snap.itemId, { borrow: true });
+    }
+  }
+
+  /**
+   * Return the item to the board/socket/park, then ask. Replay only on Edit board.
+   * @param {(snap: any, keys: string[] | null) => void} replay
+   * @param {any} [cur]
    * @returns {Promise<boolean>}
    */
-  async function ensureHistoryUnlockedForGeometry() {
-    if (!state.isHistoryLocked?.()) return true;
-    if (dropUnlockPending) return false;
+  async function unlockThenReplay(replay, cur = getDrag()) {
+    if (!state.isHistoryLocked?.()) return false;
+    if (dropUnlockPending || !cur) return false;
+    const snap = cloneDrag(cur);
+    const keys = getMultiMoveKeys()?.slice() || null;
     dropUnlockPending = true;
     try {
-      return Boolean(await state.requestHistoryUnlock?.());
+      await float.cancelDragWithFlyback('cancel');
+      const ok = Boolean(await state.requestHistoryUnlock?.());
+      if (!ok) return false;
+      replay(snap, keys);
+      return true;
     } finally {
       dropUnlockPending = false;
+      setMultiMoveKeys(null);
+    }
+  }
+
+  /**
+   * @param {any} snap
+   * @param {any} tryAdd
+   * @param {{ hostKey: string, slot: number } | null} socketHit
+   * @param {number} cx
+   * @param {number} cy
+   */
+  function replayBoardDrop(snap, tryAdd, socketHit, cx, cy) {
+    const item = itemsById.get(snap.itemId);
+    const removeKey = snap.mode === 'move' ? snap.moveKey : null;
+    if (socketHit && isGemItem(item)) {
+      seatGemAndMaybeHotswap(snap.itemId, socketHit, removeKey, cx, cy);
+      return;
+    }
+    if (tryAdd && !tryAdd.socket && item) {
+      const placeCur =
+        snap.mode === 'unsocket' ? { ...snap, mode: 'place', moveKey: null } : snap;
+      const result = commitTryAdd(placeCur, tryAdd, cx, cy);
+      if (result === 'failed' && snap.mode === 'unsocket' && snap.unsocketRestore) {
+        const r = snap.unsocketRestore;
+        gems.dropGemIntoSocket(r.gemId, { hostKey: r.hostKey, slot: r.slot });
+      }
     }
   }
 
@@ -615,26 +811,48 @@ export function bindDragPointers(ctx) {
 
     // Sell when the mouse is on the Chestnut (geometry — may unlock)
     if (getMoved() && isPointerOverSell?.(cx, cy)) {
-      if (!(await ensureHistoryUnlockedForGeometry())) {
-        setMultiMoveKeys(null);
-        void float.cancelDragWithFlyback('cancel');
+      if (state.isHistoryLocked?.()) {
+        await unlockThenReplay((snap, keys) => {
+          if (keys?.length) setMultiMoveKeys(keys);
+          reliftForReplay(snap);
+          commitToSell?.(snap);
+        }, cur);
         return;
       }
-      if (!getDrag()) return;
       const result = commitToSell?.(cur);
       if (result === 'done') {
         setMultiMoveKeys(null);
         return;
       }
     }
-    // Soft park — Storagebox.isHovered (main bag over Park / catalog)
-    if (getMoved() && isPointerOverPark?.(cx, cy)) {
-      if (!(await ensureHistoryUnlockedForGeometry())) {
-        setMultiMoveKeys(null);
-        void float.cancelDragWithFlyback('cancel');
+    // Catalog column — delete (same as sell), never park
+    if (getMoved() && isPointerOverCatalog?.(cx, cy)) {
+      if (state.isHistoryLocked?.()) {
+        await unlockThenReplay((snap, keys) => {
+          if (keys?.length) setMultiMoveKeys(keys);
+          reliftForReplay(snap);
+          commitToSell?.(snap);
+        }, cur);
         return;
       }
-      if (!getDrag()) return;
+      const result = commitToSell?.(cur);
+      if (result === 'done') {
+        setMultiMoveKeys(null);
+        return;
+      }
+    }
+    // Soft park — Storagebox.isHovered (main bag over Park strip only)
+    if (getMoved() && isPointerOverPark?.(cx, cy)) {
+      if (state.isHistoryLocked?.()) {
+        await unlockThenReplay((snap, keys) => {
+          // Flyback already restored a park lift — don't park a second copy.
+          if (snap.fromPark && snap.mode !== 'unsocket') return;
+          if (keys?.length) setMultiMoveKeys(keys);
+          reliftForReplay(snap);
+          commitToPark?.(snap);
+        }, cur);
+        return;
+      }
       const result = commitToPark?.(cur);
       if (result === 'done') {
         setMultiMoveKeys(null);
@@ -666,11 +884,24 @@ export function bindDragPointers(ctx) {
 
     if (cur.mode === 'place') {
       if (socketHit || (tryAdd && !tryAdd.socket)) {
-        if (!(await ensureHistoryUnlockedForGeometry())) {
-          void float.cancelDragWithFlyback('cancel');
+        if (state.isHistoryLocked?.()) {
+          const add = tryAdd
+            ? {
+                ...tryAdd,
+                origin: tryAdd.origin ? { ...tryAdd.origin } : tryAdd.origin,
+                collisions: (tryAdd.collisions || []).slice(),
+              }
+            : null;
+          const sock = socketHit
+            ? { hostKey: socketHit.hostKey, slot: socketHit.slot }
+            : null;
+          await unlockThenReplay((snap, keys) => {
+            if (keys?.length) setMultiMoveKeys(keys);
+            reliftForReplay(snap);
+            replayBoardDrop(snap, add, sock, cx, cy);
+          }, cur);
           return;
         }
-        if (!getDrag()) return;
       }
       if (socketHit) {
         seatGemAndMaybeHotswap(cur.itemId, socketHit, null, cx, cy);
@@ -691,11 +922,24 @@ export function bindDragPointers(ctx) {
         return;
       }
       if (socketHit || (tryAdd && !tryAdd.socket)) {
-        if (!(await ensureHistoryUnlockedForGeometry())) {
-          void float.cancelDragWithFlyback('cancel');
+        if (state.isHistoryLocked?.()) {
+          const add = tryAdd
+            ? {
+                ...tryAdd,
+                origin: tryAdd.origin ? { ...tryAdd.origin } : tryAdd.origin,
+                collisions: (tryAdd.collisions || []).slice(),
+              }
+            : null;
+          const sock = socketHit
+            ? { hostKey: socketHit.hostKey, slot: socketHit.slot }
+            : null;
+          await unlockThenReplay((snap, keys) => {
+            if (keys?.length) setMultiMoveKeys(keys);
+            reliftForReplay(snap);
+            replayBoardDrop(snap, add, sock, cx, cy);
+          }, cur);
           return;
         }
-        if (!getDrag()) return;
       }
       cur.unsocketRestore = null;
       if (socketHit) {
@@ -730,13 +974,23 @@ export function bindDragPointers(ctx) {
       const geometryDrop =
         getMoved() &&
         ((socketHit && isGemItem(item)) || (tryAdd && !tryAdd.socket && item));
-      if (geometryDrop) {
-        if (!(await ensureHistoryUnlockedForGeometry())) {
-          setMultiMoveKeys(null);
-          void float.cancelDragWithFlyback('cancel');
-          return;
-        }
-        if (!getDrag()) return;
+      if (geometryDrop && state.isHistoryLocked?.()) {
+        const add = tryAdd
+          ? {
+              ...tryAdd,
+              origin: tryAdd.origin ? { ...tryAdd.origin } : tryAdd.origin,
+              collisions: (tryAdd.collisions || []).slice(),
+            }
+          : null;
+        const sock = socketHit
+          ? { hostKey: socketHit.hostKey, slot: socketHit.slot }
+          : null;
+        await unlockThenReplay((snap, keys) => {
+          if (keys?.length) setMultiMoveKeys(keys);
+          reliftForReplay(snap);
+          replayBoardDrop(snap, add, sock, cx, cy);
+        }, cur);
+        return;
       }
       if (getMoved() && socketHit && isGemItem(item)) {
         seatGemAndMaybeHotswap(cur.itemId, socketHit, cur.moveKey, cx, cy);
@@ -779,13 +1033,7 @@ export function bindDragPointers(ctx) {
   }
 
   function onKey(e) {
-    if (
-      e.target instanceof HTMLInputElement ||
-      e.target instanceof HTMLTextAreaElement ||
-      e.target instanceof HTMLSelectElement
-    ) {
-      return;
-    }
+    if (isTypingTarget(e.target)) return;
 
     if (selectionBox?.isActive() && e.key === 'Escape') {
       e.preventDefault();
@@ -912,6 +1160,7 @@ export function bindDragPointers(ctx) {
   window.addEventListener('pointermove', onPointerMove);
   window.addEventListener('pointerup', onPointerUp);
   window.addEventListener('pointercancel', onPointerCancel);
+  window.addEventListener('touchmove', onTouchMoveWhileDragging, { passive: false });
   window.addEventListener('keydown', onKey);
   window.addEventListener('wheel', onWheel, { passive: false });
   window.addEventListener('contextmenu', onContextMenu, true);
@@ -966,7 +1215,13 @@ export function bindDragPointers(ctx) {
    */
   async function resolveFailedBagDrop(cur, item) {
     if (!bagShouldParkInsteadOfFlyback(cur, item)) return false;
-    if (!(await ensureHistoryUnlockedForGeometry())) return false;
+    if (state.isHistoryLocked?.()) {
+      return unlockThenReplay((snap, keys) => {
+        if (keys?.length) setMultiMoveKeys(keys);
+        reliftForReplay(snap);
+        commitToPark?.(snap);
+      }, cur);
+    }
     if (!getDrag()) return false;
     return commitToPark?.(cur) === 'done';
   }
@@ -974,6 +1229,7 @@ export function bindDragPointers(ctx) {
   return {
     beginCatalogDrag,
     destroy() {
+      clearTouchArm();
       host.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('pointerdown', onWindowFreeFollowDown, true);
       window.removeEventListener('pointerdown', onRmbPointerDown, true);
@@ -981,6 +1237,7 @@ export function bindDragPointers(ctx) {
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('pointercancel', onPointerCancel);
+      window.removeEventListener('touchmove', onTouchMoveWhileDragging);
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('contextmenu', onContextMenu, true);

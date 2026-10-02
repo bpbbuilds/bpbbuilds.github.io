@@ -13,6 +13,8 @@ import { createOpInfoModal } from './op-info-modal.js';
 import { sumBoardGold } from './draft-gold.js';
 import { createMetaDrops } from './meta-drops.js';
 import { tryAutoPlaceStartingBag } from './starting-bag-place.js';
+import { boardMentionIds } from '../../shared/item-mentions.js';
+import { mountNotesComposer } from './notes-composer.js';
 
 const RANKS = [
   { id: 'bronze', label: 'Bronze', file: 'League_Bronze.png' },
@@ -37,6 +39,7 @@ const RANKS = [
  */
 export function mountMetaPane(host, opts) {
   const { state, itemsById, getSpriteUrl } = opts;
+  const items = opts.items || [];
   const root = opts.root.endsWith('/') ? opts.root : `${opts.root}/`;
   const opInfo = createOpInfoModal();
 
@@ -82,16 +85,21 @@ export function mountMetaPane(host, opts) {
       </div>
 
       <div class="il-filter__shade cr-field-shade">
-        <label class="cr-field">
-          <span class="cr-label">Why it works</span>
-          <textarea
-            class="cr-input cr-textarea cr-textarea--notes"
+        <div class="cr-field">
+          <span class="cr-label" id="cr-notes-label">Why it works</span>
+          <div
+            class="cr-input cr-textarea cr-textarea--notes cr-notes"
             data-field="notes"
-            maxlength="4000"
-            rows="5"
-            placeholder="Synergies, route tips, what makes the board tick…"
-          ></textarea>
-        </label>
+            data-notes-composer
+            contenteditable="true"
+            role="textbox"
+            aria-multiline="true"
+            aria-labelledby="cr-notes-label"
+            spellcheck="true"
+            data-placeholder="Synergies, route tips… Drag an item in, or type [Wooden Sword]"
+          ></div>
+          <p class="cr-hint" data-notes-hint>Drag items from the catalog or board. Type [name] to insert. Hover a chip for the tooltip.</p>
+        </div>
       </div>
 
       <section class="cr-class" aria-label="Class">
@@ -115,7 +123,7 @@ export function mountMetaPane(host, opts) {
 
       <section class="cr-tags il-filter__shade" aria-label="Build tags">
         <h3 class="cr-label cr-label--block">Tags</h3>
-        <p class="cr-hint">Required. Theory / Feasible / Real (Real needs attached history). Request OP asks for admin review — the public badge is not instant. Request OP can’t pair with Theory.</p>
+        <p class="cr-hint">Required. Theory / Feasible / Real (Real needs attached history). Request OP asks for admin review — the public badge is not instant. Request OP can’t pair with Theory, and requires Needs + Wants + Good to have plus a 30+ character “Why it works” note.</p>
         <div class="cr-tags__list" role="group" aria-label="Tags">
           <button type="button" class="cr-tag" data-tag="theory" aria-pressed="false">Theory</button>
           <button type="button" class="cr-tag" data-tag="feasible" aria-pressed="false">Feasible</button>
@@ -196,7 +204,7 @@ export function mountMetaPane(host, opts) {
       </section>
 
       <section class="build-info__section build-info__ess" aria-label="Essentials">
-        <p class="cr-hint">Drag a board item onto a tier (item must be on the board first).</p>
+        <p class="cr-hint" data-ess-hint>Drag a board item onto a tier (item must be on the board first).</p>
         <div class="build-info__ess-grid">
           <button type="button" class="build-info__tier build-info__shade" data-priority="needed" data-tier-box="needed" aria-label="Needs">
             <h4 class="build-info__tier-label build-info__ui-text">Needs</h4>
@@ -219,11 +227,34 @@ export function mountMetaPane(host, opts) {
   `;
 
   const titleInput = host.querySelector('[data-field="title"]');
-  const notesInput = host.querySelector('[data-field="notes"]');
   const youtubeInput = host.querySelector('[data-field="youtube_url"]');
   const goldValueEl = host.querySelector('[data-gold-value]');
   const startingBagRow = host.querySelector('[data-starting-bag-row]');
-  const drops = createMetaDrops({ host, state, itemsById, getSpriteUrl });
+
+  function getAllowedIds() {
+    const d = state.getDraft();
+    return d.history?.rounds?.length ? boardMentionIds(d.placements) : null;
+  }
+
+  const notesEl = host.querySelector('[data-notes-composer]');
+  const notesComposer =
+    notesEl instanceof HTMLElement
+      ? mountNotesComposer(notesEl, {
+          state,
+          items,
+          itemsById,
+          getSpriteUrl,
+          getAllowedIds,
+        })
+      : null;
+  const drops = createMetaDrops({
+    host,
+    state,
+    itemsById,
+    getSpriteUrl,
+    notesComposer,
+    getAllowedIds,
+  });
   /** @type {string} */
   let paintedStartingHero = '';
 
@@ -275,8 +306,25 @@ export function mountMetaPane(host, opts) {
     if (titleInput instanceof HTMLInputElement && titleInput.value !== d.title) {
       titleInput.value = d.title;
     }
-    if (notesInput instanceof HTMLTextAreaElement && notesInput.value !== d.notes) {
-      notesInput.value = d.notes || '';
+    notesComposer?.setNotes(d.notes || '');
+    const notesHint = host.querySelector('[data-notes-hint]');
+    if (notesHint instanceof HTMLElement) {
+      if (d.history?.rounds?.length) {
+        notesHint.textContent =
+          'History attached — only items on this board can be inserted.';
+      } else if (d.is_op) {
+        notesHint.textContent =
+          'Required for OP review (30+ characters). Drag items or type [name] to insert.';
+      } else {
+        notesHint.textContent =
+          'Drag items from the catalog or board. Type [name] to insert. Hover a chip for the tooltip.';
+      }
+    }
+    const essHint = host.querySelector('[data-ess-hint]');
+    if (essHint instanceof HTMLElement) {
+      essHint.textContent = d.is_op
+        ? 'Required for OP review: at least one item in Needs, Wants, and Good to have. Drag from the board.'
+        : 'Drag a board item onto a tier (item must be on the board first).';
     }
     const yt = d.youtube_url || '';
     if (youtubeInput instanceof HTMLInputElement && youtubeInput.value !== yt) {
@@ -338,10 +386,6 @@ export function mountMetaPane(host, opts) {
   /** @param {Event} e */
   function onInput(e) {
     const t = e.target;
-    if (t instanceof HTMLTextAreaElement) {
-      if (t.dataset.field === 'notes') state.patchMeta({ notes: t.value });
-      return;
-    }
     if (!(t instanceof HTMLInputElement)) return;
     if (t.dataset.field === 'title') state.patchMeta({ title: t.value });
     if (t.dataset.field === 'youtube_url') {
@@ -456,6 +500,7 @@ export function mountMetaPane(host, opts) {
     tryCommitDrop: drops.tryCommitDrop,
     destroy() {
       unsub();
+      notesComposer?.destroy();
       opInfo.destroy();
       host.replaceChildren();
     },

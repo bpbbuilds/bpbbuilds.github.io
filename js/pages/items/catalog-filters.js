@@ -87,8 +87,11 @@ export function filtersHtml(root, state, shown) {
   ).join('');
 
   return `
-    <aside class="items-filters il-filter" aria-label="Filter items">
+    <aside id="items-filters" class="items-filters il-filter bpb-filter-drawer__panel" aria-label="Filter items">
       <div class="il-filter__head">
+        <button type="button" class="bpb-filter-drawer__close" data-bpb-filter-close aria-label="Close filters">
+          <span class="bpb-filter-drawer__close-icon" aria-hidden="true"></span>
+        </button>
         <p class="il-filter__count" data-filter-count>${shown} items found.</p>
         <button type="button" class="il-filter__reset" data-filter-reset title="Reset filters" aria-label="Reset filters">
           <img src="${escapeAttr(iconUrl(root, 'assets/icons/filters/ResetButton.png'))}" alt="" draggable="false" />

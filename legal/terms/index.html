@@ -4,27 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Terms of Service — Smojo Builds</title>
-  <link rel="stylesheet" href="../../css/theme.css" />
-  <link rel="stylesheet" href="../../css/shared.css" />
-  <link rel="stylesheet" href="../../js/pages/legal/legal.css" />
+  <link rel="stylesheet" href="../../css/theme.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../css/shared.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../js/pages/legal/legal.css?v=plate" />
 </head>
 <body class="page-legal" data-root="../../">
   <div id="site-nav"></div>
 
   <main id="main" class="legal-main" aria-label="Terms of Service">
-    <article class="legal-card">
-      <h1>Terms of Service</h1>
+    <article class="legal-card bpb-panel--rewards">
+      <header class="legal-card__head">
+        <span class="legal-card__rule" aria-hidden="true"></span>
+        <h1>Terms of Service</h1>
+        <span class="legal-card__rule legal-card__rule--end" aria-hidden="true"></span>
+      </header>
       <p class="legal-note">
-        Stub terms for a fan site. Not legal advice. We may update this page; continued use means
-        you accept the current version.
+        These terms describe the current use of this unofficial fan site. They are not legal advice.
+        We may update them when the service, features, or rules change; continued use means you
+        accept the current version.
       </p>
-      <p class="legal-meta">Last updated: August 2026</p>
+      <p class="legal-meta">Last updated: October 1, 2026</p>
 
       <h2>The service</h2>
       <p>
         Smojo Builds provides unofficial Backpack Battles tools: build pages, an item catalog, a
         creator for drafting and submitting builds, and an optional combat sandbox. The site is
-        provided “as is” without warranties of any kind.
+        provided “as is” without warranties of any kind. Some tools (for example the combat sandbox
+        and board PNG export) may require a Premium or founding membership.
+      </p>
+
+      <h2>Premium / founding</h2>
+      <p>
+        Paid <strong>Premium</strong> is offered at <strong>$3/month (USD)</strong> via Stripe.
+        Subscriptions renew until you cancel in the Stripe Customer Portal (linked from the site
+        when signed in). Access for paid members follows Stripe subscription status — including
+        through the end of a billing period if you cancel at period end.
+      </p>
+      <p>
+        The first <strong>10</strong> eligible Discord sign-ins after the founding promo starts may
+        receive <strong>lifetime Premium</strong> (founding). Founding is a site grant: it is
+        <strong>not</strong> removed when a Stripe subscription is canceled, and founding members
+        do not need a paid Stripe sub to keep Premium.
+      </p>
+      <p>
+        Prices, promo timing, and which features are gated may change; the offer UI and these terms
+        are the current stub description, not a permanent price lock beyond what Stripe has already
+        billed.
       </p>
 
       <h2>Combat sandbox</h2>
@@ -50,7 +75,26 @@
         <li>Do not upload malware, spam, or illegal material</li>
         <li>Do not impersonate others or abuse voting / submission systems</li>
         <li>We may remove or hide builds that break these terms or harm the community</li>
+        <li>Event entries stay private to their author until that event's gallery opens</li>
       </ul>
+
+      <h2>Blob cosmetic submissions</h2>
+      <p>
+        Profile Blob / Inventory may offer a <strong>Submit cosmetic</strong> form for original
+        blob art. By submitting, you confirm you have the right to share that art and grant us a
+        non-exclusive license to review, host, display, and moderate it on Smojo Builds. We may
+        reject or remove submissions. The early form is a stub — upload / review storage may land
+        later; do not put secrets in notes.
+      </p>
+
+      <h2>Combat sandbox reports</h2>
+      <p>
+        The optional <strong>Report issue</strong> form on the combat sandbox sends a description
+        plus frozen session facts (seed, board, opponent, permalink) so we can investigate sim bugs.
+        Site owners review those reports on a private admin page. Do not put secrets or unrelated
+        personal data in the description. See
+        <a href="../privacy/">Privacy</a>.
+      </p>
 
       <h2>History uploads</h2>
       <p>
@@ -59,11 +103,23 @@
         <a href="../privacy/">Privacy</a> for what we store.
       </p>
 
+      <h2>Paused screenshot import</h2>
+      <p>
+        Screenshot-to-build reconstruction is not offered at launch. The Create page does not
+        accept backpack screenshots for processing, and its optional cloud vision fallback is
+        disabled. If the feature returns, we will update these terms and
+        <a href="../privacy/">Privacy</a> before enabling it.
+      </p>
+
       <h2>Accounts</h2>
       <p>
         Optional Discord sign-in is provided through Supabase Auth. There is no email/password
         register form on this site. You are responsible for activity under your Discord-linked
         account. We may suspend access for abuse (spam, vote manipulation, impersonation, etc.).
+        If your Discord account is in the community server, your site plan may be shown there
+        as a Premium or founding role, and your server nickname may keep the name you set
+        plus how many builds you have uploaded. Public builds are also posted in that
+        server's builds forum.
       </p>
 
       <h2>Conduct</h2>
@@ -75,15 +131,22 @@
       <h2>Contact</h2>
       <p>
         Reach out via
-        <a href="https://discord.gg/WgR5kSJNF7" target="_blank" rel="noopener noreferrer">Discord</a>
+        <a href="https://discord.gg/s5WghmrFSp" target="_blank" rel="noopener noreferrer">Discord</a>
         or
         <a href="https://www.youtube.com/@SmojoWasTaken" target="_blank" rel="noopener noreferrer">YouTube</a>.
+      </p>
+
+      <h2>Updates to these terms</h2>
+      <p>
+        We will change the date above when these terms are revised. Material changes may also be
+        called out in the site UI or community announcements. Feature-specific behavior is governed
+        by the version published when you use that feature.
       </p>
     </article>
   </main>
 
   <div id="site-footer"></div>
 
-  <script type="module" src="../../js/pages/legal/index.js"></script>
+  <script type="module" src="../../js/pages/legal/index.js?v=fa3633b"></script>
 </body>
 </html>

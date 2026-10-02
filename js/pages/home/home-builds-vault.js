@@ -1,24 +1,16 @@
 /**
- * Homepage builds vault — centered VH “Vault Gear” layout with live backpack thumbs.
+ * Homepage builds vault — centered VH “Vault Gear” layout with still board thumbs.
  *
  *   import { initHomeBuildsVault } from './home-builds-vault.js';
  *   initHomeBuildsVault();
  */
 
 import { getSupabase } from '../../shared/supabase.js';
-import { mountPlacedGrid } from '../../shared/backpack-grid/index.js';
+import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import { classIconPath } from '../../shared/class-icons.js';
+import { faceHtml, hydrateFaces } from '../../shared/blob-face.js';
 import { skelBlock, skelRegion } from '../../shared/skeleton.js';
-import {
-  mapItem,
-  makeSpriteUrl,
-  applyShapes,
-  applySocketOffsets,
-} from '../build/map-item.js';
-import {
-  bindMoreBuildTips,
-  registerMoreBuildTip,
-} from '../build/more-build-tip.js';
+import { mountFeedBoardThumbs } from '../builds/board-thumbs.js';
 import {
   buildViewHref,
   escapeAttr,
@@ -27,9 +19,11 @@ import {
 } from './home-build-media.js';
 import { normalizePromoBuild } from './home-promo-caption.js';
 
-const GRID_TARGET = 16;
-const BOARD_COLS = 9;
-const BOARD_ROWS = 7;
+const GRID_TARGET = 24;
+/** Enough cards per row so one loop covers ~2 viewports even with a short catalog. */
+const ROW_MIN_CARDS = 10;
+/** Marquee travel speed — duration is derived from measured group width. */
+const MARQUEE_PX_PER_SEC = 40;
 /** Large mini boards for the vault marquee (9×22 was tight; bump cell size). */
 const THUMB_CELL_PX = 28;
 
@@ -52,12 +46,13 @@ const LABEL_TONES = [
  * @returns {Promise<object[]>}
  */
 async function fetchVaultBuilds() {
+  await syncEventBuildVisibility();
   const supabase = getSupabase();
   const select = `
     id, slug, title, hero_class, is_op, is_featured, updated_at,
-    gold_count, rank, author_name, author_id,
+    gold_count, rank, author_name, author_id, board_still_path,
     profile:profiles!builds_author_id_fkey (
-      discord_id, display_name, avatar_url
+      discord_id, display_name, avatar_url, equipped_avatar
     ),
     placements:build_placements (
       id, x, y, r, gems, priority,
@@ -101,61 +96,30 @@ async function fetchVaultBuilds() {
 }
 
 /**
- * @param {object} build
- * @param {{
- *   shapes?: object | null,
- *   sockets?: object | null,
- *   getSpriteUrl: (item: object) => string,
- * }} opts
- */
-function placementsForBuild(build, opts) {
-  /** @type {Map<string, object>} */
-  const itemsById = new Map();
-  const items = [];
-  const placements = [];
-
-  for (const [i, p] of (build.placements || []).entries()) {
-    const item = mapItem(p.item);
-    if (!item?.id) continue;
-    items.push(item);
-    itemsById.set(item.id, item);
-    placements.push({
-      id: item.id,
-      x: Number(p.x) || 0,
-      y: Number(p.y) || 0,
-      r: Number(p.r) || 0,
-      key: String(p.id ?? `${item.id}:${i}:${p.x},${p.y}:${p.r || 0}`),
-      gems: Array.isArray(p.gems) ? p.gems : undefined,
-    });
-  }
-
-  applyShapes(items, opts.shapes || null);
-  applySocketOffsets(items, opts.sockets || null);
-  for (const item of items) opts.getSpriteUrl(item);
-
-  return { placements, itemsById };
-}
-
-/**
+ * Author face — blob + cosmetics or Discord pfp per the author's Identity setting.
  * @param {object} build
  * @param {string} root
  * @param {string} name
  */
-function resolveVaultAvatar(build, root, name) {
-  const custom = String(build?.author_avatar_url || '').trim();
-  if (custom) return { src: custom, initials: '' };
+function vaultAvatarHtml(build, root, name) {
+  const face = faceHtml(
+    {
+      avatar_url: build?.author_avatar_url,
+      equipped_avatar: build?.author_equipped_avatar,
+    },
+    root,
+    { className: 'home-vault__cell-avatar', size: 36, alt: name },
+  );
+  if (face) return face;
   if (/^smojo$/i.test(name)) {
-    return {
-      src: `${root}assets/brand/logo-backpack-battles-builds.png`,
-      initials: '',
-    };
+    return `<img class="home-vault__cell-avatar" src="${escapeAttr(`${root}assets/brand/logo-backpack-battles-builds.png`)}" alt="" width="22" height="22" draggable="false" />`;
   }
   const parts = name.split(/\s+/).filter(Boolean);
   const initials =
     parts.length >= 2
       ? `${parts[0][0]}${parts[1][0]}`.toUpperCase()
       : name.slice(0, 2).toUpperCase();
-  return { src: '', initials: initials || '?' };
+  return `<span class="home-vault__cell-avatar home-vault__cell-avatar--initials" aria-hidden="true">${escapeHtml(initials || '?')}</span>`;
 }
 
 /**
@@ -171,11 +135,7 @@ function gridCellHtml(build, root, index) {
   const icon = classIconPath(root, build.hero_class);
   const hero = String(build.hero_class || '').trim();
   const author = String(build.author_name || 'Unknown').trim() || 'Unknown';
-  const avatar = resolveVaultAvatar(build, root, author);
-
-  const avatarInner = avatar.src
-    ? `<img class="home-vault__cell-avatar" src="${escapeAttr(avatar.src)}" alt="" width="22" height="22" draggable="false" />`
-    : `<span class="home-vault__cell-avatar home-vault__cell-avatar--initials" aria-hidden="true">${escapeHtml(avatar.initials)}</span>`;
+  const avatarInner = vaultAvatarHtml(build, root, author);
 
   return `
     <a
@@ -191,19 +151,71 @@ function gridCellHtml(build, root, index) {
           aria-hidden="true"
         ></span>
       </span>
-      <span class="home-vault__cell-label home-vault__cell-label--${escapeAttr(tone)}">
+      <span class="home-vault__cell-meta">
+        ${avatarInner}
+        <span class="home-vault__cell-copy">
+          <span class="home-vault__cell-author-name">${escapeHtml(author)}</span>
+          <span class="home-vault__cell-name home-vault__cell-label--${escapeAttr(tone)}">${escapeHtml(title)}</span>
+        </span>
         ${
           icon
-            ? `<img class="home-vault__cell-class" src="${escapeAttr(icon)}" alt="" title="${escapeAttr(hero)}" width="20" height="20" />`
+            ? `<img class="home-vault__cell-class" src="${escapeAttr(icon)}" alt="" title="${escapeAttr(hero)}" width="28" height="28" />`
             : ''
         }
-        <span class="home-vault__cell-name">${escapeHtml(title)}</span>
-      </span>
-      <span class="home-vault__cell-author">
-        ${avatarInner}
-        <span class="home-vault__cell-author-name">${escapeHtml(author)}</span>
       </span>
     </a>`;
+}
+
+/**
+ * Repeat through `builds` until the row is long enough for a smooth loop.
+ * @param {object[]} builds
+ * @param {number} minCount
+ */
+function padRowBuilds(builds, minCount) {
+  if (!builds.length) return [];
+  if (builds.length >= minCount) return builds.slice();
+  /** @type {object[]} */
+  const out = [];
+  let i = 0;
+  while (out.length < minCount) {
+    out.push(builds[i % builds.length]);
+    i += 1;
+  }
+  return out;
+}
+
+/**
+ * @template T
+ * @param {T[]} list
+ * @param {number} by
+ */
+function rotateList(list, by) {
+  const n = list.length;
+  if (!n) return [];
+  const k = ((by % n) + n) % n;
+  return list.slice(k).concat(list.slice(0, k));
+}
+
+/**
+ * Split / pad unique builds into two staggered rows.
+ * Short catalogs cycle so each group stays wide; rows start at different offsets.
+ * @param {object[]} builds
+ */
+function vaultRowSets(builds) {
+  if (!builds.length) return { topRow: [], bottomRow: [] };
+
+  if (builds.length <= ROW_MIN_CARDS) {
+    return {
+      topRow: padRowBuilds(builds, ROW_MIN_CARDS),
+      bottomRow: padRowBuilds(rotateList(builds, 1), ROW_MIN_CARDS),
+    };
+  }
+
+  const mid = Math.ceil(builds.length / 2);
+  return {
+    topRow: padRowBuilds(builds.slice(0, mid), ROW_MIN_CARDS),
+    bottomRow: padRowBuilds(builds.slice(mid), ROW_MIN_CARDS),
+  };
 }
 
 /**
@@ -229,18 +241,29 @@ function marqueeRowHtml(builds, root, indexOffset, dir) {
 }
 
 /**
+ * Match animation duration to group width so short catalogs don't "snap" every ~16s.
+ * @param {HTMLElement} host
+ */
+function syncVaultMarqueeSpeed(host) {
+  host.querySelectorAll('[data-vault-row]').forEach((row) => {
+    const group = row.querySelector('.home-vault__group');
+    const track = row.querySelector('.home-vault__track');
+    if (!(group instanceof HTMLElement) || !(track instanceof HTMLElement)) return;
+    const w = group.getBoundingClientRect().width;
+    if (w < 1) return;
+    const sec = Math.max(22, w / MARQUEE_PX_PER_SEC);
+    track.style.setProperty('--vault-marquee-duration', `${sec.toFixed(2)}s`);
+  });
+}
+
+/**
  * @param {string} root
  * @param {object[]} builds
  */
 function sectionHtml(root, builds) {
   const opHref = `${root}builds/?tags=op`;
   const catalog = `${root}builds/`;
-  const mid = Math.ceil(builds.length / 2) || 1;
-  const top = builds.slice(0, mid);
-  const bottom = builds.slice(mid);
-  // Keep both rows populated even with a short list
-  const topRow = top.length ? top : builds;
-  const bottomRow = bottom.length ? bottom : builds;
+  const { topRow, bottomRow } = vaultRowSets(builds);
 
   return `
     <div class="home-vault">
@@ -280,9 +303,14 @@ function sectionHtml(root, builds) {
 function skeletonHtml() {
   const skelCell = `
     <div class="home-vault__cell home-vault__cell--skel" aria-hidden="true">
-      ${skelBlock({ className: 'home-vault__skel-media', width: '16.5rem', height: '12.9rem', radius: '0.55rem' })}
-      ${skelBlock({ className: 'home-vault__skel-label', width: '8rem', height: '0.7rem', radius: '0.2rem' })}
-      ${skelBlock({ className: 'home-vault__skel-author', width: '5.5rem', height: '0.65rem', radius: '0.2rem' })}
+      ${skelBlock({ className: 'home-vault__skel-media', width: '16.5rem', height: '14rem', radius: '0.55rem' })}
+      <span class="home-vault__cell-meta">
+        ${skelBlock({ className: 'home-vault__skel-face', width: '2.25rem', height: '2.25rem', radius: '50%' })}
+        <span class="home-vault__cell-copy">
+          ${skelBlock({ className: 'home-vault__skel-author', width: '5.5rem', height: '0.65rem', radius: '0.2rem' })}
+          ${skelBlock({ className: 'home-vault__skel-label', width: '8rem', height: '0.7rem', radius: '0.2rem' })}
+        </span>
+      </span>
     </div>`;
   const group = `<div class="home-vault__group">${Array.from({ length: 6 }, () => skelCell).join('')}</div>`;
 
@@ -336,64 +364,18 @@ async function loadAssetExtras(root) {
  */
 async function mountBoards(host, builds, root) {
   const extras = await loadAssetExtras(root);
-  const getSpriteUrl = makeSpriteUrl(root, extras.spriteDisplay);
-  const bySlug = new Map(builds.map((b) => [String(b.slug || ''), b]));
-  /** @type {Map<string, object>} */
-  const tipItemsById = new Map();
-
-  host.querySelectorAll('[data-vault-board]').forEach((boardHost) => {
-    if (!(boardHost instanceof HTMLElement)) return;
-    const slug = boardHost.getAttribute('data-vault-board') || '';
-    const build = bySlug.get(slug);
-    if (!build) return;
-
-    const { placements, itemsById } = placementsForBuild(build, {
-      shapes: extras.shapes,
-      sockets: extras.sockets,
-      getSpriteUrl,
-    });
-    if (!placements.length) {
-      boardHost.innerHTML = `<span class="home-vault__board-empty">Empty</span>`;
-      return;
-    }
-
-    for (const [id, item] of itemsById) tipItemsById.set(id, item);
-
-    boardHost.replaceChildren();
-    mountPlacedGrid(boardHost, {
-      placements,
-      itemsById,
-      cols: BOARD_COLS,
-      rows: BOARD_ROWS,
-      getSpriteUrl,
-      fillWidth: false,
-      exactBoard: true,
-      reserveScrollGap: false,
-      cellPx: THUMB_CELL_PX,
-    });
-    const bg = boardHost.querySelector(':scope > .bpb-bg');
-    if (bg instanceof HTMLElement) {
-      bg.classList.add('bpb-bg--feed-thumb');
-      bg.style.overflow = 'visible';
-      bg.style.maxHeight = 'none';
-      bg.style.setProperty('--bpb-bg-scroll-gap', '0px');
-    }
-
-    const tipEl = boardHost.closest('[data-vault-build-tip]');
-    if (tipEl instanceof HTMLElement) {
-      registerMoreBuildTip(tipEl, build, placements);
-    }
-  });
-
   const marquee = host.querySelector('[data-vault-marquee]');
   if (!(marquee instanceof HTMLElement)) return () => {};
-
-  return bindMoreBuildTips(marquee, {
-    itemsById: tipItemsById,
-    getSpriteUrl,
+  return mountFeedBoardThumbs(marquee, {
+    builds,
     root,
-    overEl: null,
-    thumbSelector: '[data-vault-build-tip]',
+    spriteDisplay: extras.spriteDisplay,
+    shapes: extras.shapes,
+    sockets: extras.sockets,
+    boardAttr: 'data-vault-board',
+    tipSelector: '[data-vault-build-tip]',
+    cellPx: THUMB_CELL_PX,
+    emptyHtml: `<span class="home-vault__board-empty">Empty</span>`,
   });
 }
 
@@ -457,7 +439,9 @@ export async function initHomeBuildsVault(selector = '#home-builds-vault') {
       return;
     }
     paintVault(host, sectionHtml(root, builds));
+    void hydrateFaces(host, root);
     await mountBoards(host, builds, root);
+    requestAnimationFrame(() => syncVaultMarqueeSpeed(host));
     // Tips stay bound until next init / navigation (static homepage section).
   } catch (err) {
     console.error('[home] builds vault failed', err);

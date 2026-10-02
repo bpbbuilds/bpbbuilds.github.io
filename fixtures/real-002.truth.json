@@ -1,0 +1,127 @@
+{
+  "note": "Hand-labeled with create ?label=1",
+  "source": "in-game",
+  "split": "train",
+  "labeledAt": "2026-09-27T03:26:12.070Z",
+  "shot": {
+    "w": 562,
+    "h": 408
+  },
+  "items": [
+    {
+      "name": "Piggybank",
+      "x": 3,
+      "y": 4,
+      "r": 2
+    },
+    {
+      "name": "Healing Herbs",
+      "x": 3,
+      "y": 3,
+      "r": null
+    },
+    {
+      "name": "Healing Herbs",
+      "x": 4,
+      "y": 3,
+      "r": null
+    },
+    {
+      "name": "Healing Herbs",
+      "x": 3,
+      "y": 5,
+      "r": null
+    },
+    {
+      "name": "Battery",
+      "x": 5,
+      "y": 3,
+      "r": null
+    },
+    {
+      "name": "Hungry Blade",
+      "x": 5,
+      "y": 4,
+      "r": 1,
+      "gems": [
+        {
+          "name": "Chipped Topaz",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Walrus Tusk",
+      "x": 4,
+      "y": 5,
+      "r": 1
+    },
+    {
+      "name": "Star of Courage",
+      "x": 6,
+      "y": 5,
+      "r": null
+    },
+    {
+      "name": "Customer Card",
+      "x": 6,
+      "y": 2,
+      "r": null
+    }
+  ],
+  "skills": [],
+  "bagCells": [
+    "5,2",
+    "6,2",
+    "5,3",
+    "6,3",
+    "5,4",
+    "6,4",
+    "5,5",
+    "6,5",
+    "7,4",
+    "7,5",
+    "3,3",
+    "4,3",
+    "3,4",
+    "4,4",
+    "3,5",
+    "4,5"
+  ],
+  "bags": [
+    {
+      "name": "Leather Bag",
+      "x": 5,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 5,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 7,
+      "y": 4,
+      "r": 1
+    },
+    {
+      "name": "Port-O-Charger",
+      "x": 3,
+      "y": 3,
+      "r": 0
+    }
+  ],
+  "grid": {
+    "ok": true,
+    "originX": 18,
+    "originY": 7,
+    "cellW": 67.5,
+    "cellH": 67.5,
+    "imgW": 562,
+    "imgH": 408,
+    "score": 1.23
+  }
+}

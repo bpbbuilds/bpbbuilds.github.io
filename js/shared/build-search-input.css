@@ -1,0 +1,120 @@
+/* Build catalog search field — self-contained (pages may not load rail-chrome). */
+
+.bpb-build-search-shade {
+  --bpb-build-search-ink: var(--il-ink, #3c261d);
+  --bpb-build-search-cream: var(--il-cream, #ffecdc);
+  --bpb-build-search-gold: var(--il-gold, #eac914);
+  margin-bottom: 0.45rem;
+}
+
+.bpb-build-search-shade .cr-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0;
+}
+
+.bpb-build-search-shade .cr-label {
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-weight: 400;
+  font-size: 1.625rem;
+  letter-spacing: var(--il-ui-track, -0.03em);
+  line-height: 1.15;
+  color: var(--bpb-build-search-cream);
+  -webkit-text-stroke: var(--il-ui-stroke, 0.1em) var(--bpb-build-search-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring, 0 0 0.12em #3c261d);
+}
+
+.bpb-build-search-shade .cr-label--sm {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 1.25rem;
+}
+
+.bpb-build-search-shade .cr-hint,
+.bpb-build-search__hint {
+  margin: 0.35rem 0 0;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.78rem;
+  font-style: italic;
+  line-height: 1.25;
+  color: var(--bpb-build-search-cream);
+  -webkit-text-stroke: 0.06em var(--bpb-build-search-ink);
+  paint-order: stroke fill;
+  opacity: 0.92;
+}
+
+.bpb-build-search.cr-input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 2.35rem;
+  max-height: 5.5rem;
+  margin: 0;
+  padding: 0.4rem 0.7rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.35;
+  border-radius: 0.3rem;
+  border: 2px solid var(--bpb-build-search-ink);
+  background: rgba(55, 36, 22, 0.28);
+  box-shadow: inset 0 2px 4px rgba(20, 10, 5, 0.28);
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 1rem;
+  color: var(--bpb-build-search-cream);
+  outline: none;
+  caret-color: var(--bpb-build-search-cream);
+}
+
+.bpb-build-search:not(.has-content)::before {
+  content: attr(data-placeholder);
+  color: color-mix(in srgb, var(--bpb-build-search-cream) 48%, transparent);
+  pointer-events: none;
+}
+
+.bpb-build-search:focus,
+.bpb-build-search:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--bpb-build-search-gold) 80%, transparent);
+  outline-offset: 1px;
+}
+
+.bpb-build-search .bpb-mention {
+  width: 1.25em;
+  height: 1.25em;
+  vertical-align: -0.22em;
+}
+
+.bpb-build-search__suggest {
+  z-index: 80;
+}
+
+/*
+ * Builds feed / admin hide section Patch3 bands. Keep a recessed shade
+ * behind Search so the field still reads as filter chrome.
+ */
+.builds-feed-filters .bpb-build-search-shade.il-filter__shade,
+.admin-builds-filters .bpb-build-search-shade.il-filter__shade,
+.admin-report-filters .bpb-build-search-shade.il-filter__shade {
+  position: relative;
+  z-index: 0;
+  padding: var(--il-shade-pad-y, 0.4rem) var(--il-shade-pad-x, 0.55rem);
+}
+
+.builds-feed-filters .bpb-build-search-shade.il-filter__shade::before,
+.admin-builds-filters .bpb-build-search-shade.il-filter__shade::before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--il-shade, rgba(14, 15, 16, 0.14));
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}

@@ -21,7 +21,7 @@
   background: rgba(8, 6, 4, 0.52);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  cursor: default;
+  cursor: var(--bpb-cursor-default);
   opacity: 0;
   transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -280,7 +280,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   border-radius: 0.2rem;
   line-height: 0;
   filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4));
@@ -304,7 +304,7 @@
   border-radius: 0.15rem;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .il-spotlight-recipes {
     max-width: calc(100vw - 0.75rem);
   }
@@ -317,6 +317,56 @@
     width: 12px;
     height: 12px;
   }
+
+  /* Each recipe is a swipeable option instead of a tall stacked list. */
+  .il-spotlight-recipes__scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+  }
+
+  .il-spotlight-recipes__list {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0.45rem;
+    min-width: max-content;
+  }
+
+  .il-spotlight-recipes__row {
+    flex: 0 0 min(100%, 22rem);
+    flex-wrap: wrap;
+    align-content: center;
+    min-width: 0;
+    min-height: 6.5rem;
+    padding: 0.45rem;
+    border: 1px solid rgba(255, 236, 220, 0.18);
+    border-radius: 0.3rem;
+    background: rgba(34, 22, 16, 0.22);
+  }
+
+  .il-spotlight-recipes__ings {
+    flex: 1 1 7rem;
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .il-spotlight-recipes__sprite {
+    max-width: clamp(2.75rem, 15vw, 4rem);
+    max-height: clamp(2.75rem, 15vw, 4rem);
+  }
+
+  .il-spotlight-recipes__divider {
+    flex: 0 0 4px;
+    align-self: stretch;
+    margin: 0.5rem 0;
+  }
+
+  .il-spotlight-recipes__divider img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+  }
 }
 
 /*
@@ -327,13 +377,17 @@
   --bpb-bg-scroll-thumb: #eac914;
   --bpb-bg-scroll-track: #816230;
   --bpb-bg-scroll-frame: #472a24;
-  --il-spotlight-builds-cell: 16px;
+  --il-spotlight-builds-cell: 18px;
+  /* Same Patch3 shade tokens as `.items-filters.il-filter` */
+  --il-shade: rgba(14, 15, 16, 0.09);
+  --il-shade-pad-y: 0.5rem;
+  --il-shade-pad-x: 0.65rem;
   position: fixed;
   z-index: 70;
   left: 50%;
-  bottom: 0.65rem;
+  bottom: 1.85rem;
   transform: translateX(-50%);
-  width: min(92vw, 52rem);
+  width: min(92vw, 56rem);
   max-width: calc(100vw - 1rem);
   pointer-events: none;
   box-sizing: border-box;
@@ -343,23 +397,17 @@
   pointer-events: auto;
 }
 
-.il-spotlight-builds__panel {
+.il-spotlight-builds__panel.il-filter__shade {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  padding: 0.45rem 0.55rem 0.5rem;
-  border-radius: 0.35rem;
-  background:
-    linear-gradient(
-      165deg,
-      color-mix(in srgb, #2a1a12 78%, transparent),
-      color-mix(in srgb, #1a100c 88%, transparent)
-    );
-  border: 2px solid color-mix(in srgb, #3c261d 70%, #8a5a2b);
-  box-shadow:
-    0 6px 22px rgba(10, 6, 4, 0.45),
-    inset 0 1px 0 color-mix(in srgb, #ffecdc 12%, transparent);
+  /* Extra bottom so card labels clear the Patch3 feather edge */
+  padding: 0.5rem 0.65rem 0.95rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .il-spotlight-builds__heading {
@@ -405,7 +453,7 @@
   align-items: flex-start;
   gap: 0.65rem;
   margin: 0;
-  padding: 0.15rem 0.1rem 0.25rem;
+  padding: 0.15rem 0.1rem 0.35rem;
   list-style: none;
 }
 
@@ -506,15 +554,140 @@
   border-radius: 0.25rem;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .il-spotlight-builds {
-    --il-spotlight-builds-cell: 13px;
-    bottom: 0.4rem;
-    width: min(96vw, 52rem);
+    --il-spotlight-builds-cell: 14px;
   }
 
   .il-spotlight-builds__heading {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .il-spotlight-builds__list {
+    gap: 1.15rem;
+    padding: 0.2rem 0.15rem 0.55rem;
+  }
+
+  .il-spotlight-builds__link {
+    gap: 0.4rem;
+    padding: 0.35rem 0.3rem 0.45rem;
+  }
+}
+
+/* Narrow item details: one scrollable column under the nav (menu stays clear). */
+@media (max-width: 900px) {
+  .il-spotlight {
+    overflow: hidden;
+  }
+
+  .il-spotlight__dim {
+    position: fixed;
+  }
+
+  .il-spotlight__sheet {
+    display: none;
+  }
+
+  .il-spotlight.is-open .il-spotlight__sheet,
+  .il-spotlight.is-closing .il-spotlight__sheet {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    position: absolute;
+    z-index: 2;
+    top: var(--il-spotlight-top, 4.25rem);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 0.7rem 0.85rem max(1.35rem, env(safe-area-inset-bottom));
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+    pointer-events: auto;
+  }
+
+  .il-spotlight__sheet::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+  }
+
+  .il-spotlight__sheet::-webkit-scrollbar-track {
+    border: 3px solid #472a24;
+    border-radius: 16px;
+    background: #816230;
+  }
+
+  .il-spotlight__sheet::-webkit-scrollbar-thumb {
+    border: 2px solid #472a24;
+    border-radius: 20px;
+    background-color: #eac914;
+  }
+
+  .il-spotlight__sheet .il-spotlight__stage {
+    position: relative;
+    top: auto;
+    left: auto;
+    align-self: center;
+    flex: 0 0 auto;
+    transform: none;
+  }
+
+  .il-spotlight__sheet .bpb-tooltip-float.is-locked {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    right: auto !important;
+    width: max-content;
+    max-width: none;
+    height: auto;
+    margin-inline: auto;
+    transform: none !important;
+    zoom: var(--bpb-tooltip-scale, 1);
+    z-index: 1;
+    pointer-events: auto;
+    --bpb-tooltip-max-h: none;
+  }
+
+  /* In the column the card must keep its full frame height. The floating
+     layout uses a negative bottom margin to tuck text into the frame, and
+     that was pulling the recipes up over the cost line. */
+  .il-spotlight__sheet .bpb-tooltip-float.is-locked .bpb-tooltip {
+    display: block;
+    max-height: none !important;
+    height: auto;
+    overflow: visible;
+    padding-bottom: calc((var(--patch-b) - var(--inset-b)) * 1px);
+  }
+
+  .il-spotlight__sheet .il-spotlight-recipes__panel {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .il-spotlight__sheet .il-spotlight-recipes,
+  .il-spotlight__sheet .il-spotlight-builds {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    transform: none !important;
+    box-sizing: border-box;
+  }
+
+  .il-spotlight__sheet .il-spotlight-builds__panel.il-filter__shade {
+    padding: 0.65rem 0.7rem 1.05rem;
+    gap: 0.45rem;
   }
 }
 

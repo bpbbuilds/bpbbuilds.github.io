@@ -143,6 +143,23 @@ export function readRotateDeg(el) {
 }
 
 /**
+ * Socketed gems live inside the host spin. Their stored face is the same
+ * quarter-turns you see while holding the gem, so undo the host angle.
+ * @param {HTMLElement} el
+ * @param {number} hostDeg
+ */
+export function writeSpinRotate(el, hostDeg) {
+  el.style.rotate = `${hostDeg}deg`;
+  const gems = el.querySelectorAll(':scope > .bpb-bg__gems > .bpb-bg__mark--gem');
+  for (const img of gems) {
+    if (!(img instanceof HTMLElement)) continue;
+    const world = Number(img.getAttribute('data-gem-deg'));
+    if (!Number.isFinite(world)) continue;
+    img.style.rotate = `${world - hostDeg}deg`;
+  }
+}
+
+/**
  * Ease `.bpb-bg__spin` (or any node using CSS `rotate`) to face * 90°.
  * @param {HTMLElement} el
  * @param {number} targetDeg
@@ -163,11 +180,11 @@ export function animateSpinRotate(el, targetDeg, opts = {}) {
   }
   if (Number.isFinite(opts.fromDeg)) {
     tween.setInstant(Number(opts.fromDeg));
-    el.style.rotate = `${Number(opts.fromDeg)}deg`;
+    writeSpinRotate(el, Number(opts.fromDeg));
   }
   if (!animate) {
     tween.setInstant(targetDeg);
-    el.style.rotate = `${targetDeg}deg`;
+    writeSpinRotate(el, targetDeg);
     opts.onDone?.();
     return;
   }
@@ -179,7 +196,7 @@ export function animateSpinRotate(el, targetDeg, opts = {}) {
   tween.tweenTo(
     targetDeg,
     (deg) => {
-      el.style.rotate = `${deg}deg`;
+      writeSpinRotate(el, deg);
     },
     typeof opts.onDone === 'function' ? opts.onDone : undefined,
     dur,

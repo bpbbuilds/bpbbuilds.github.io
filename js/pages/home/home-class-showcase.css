@@ -104,7 +104,7 @@
   text-decoration: none;
   color: inherit;
   user-select: none;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   overflow: visible;
 }
 

@@ -2,13 +2,13 @@
  * Band AP 250 — leftover aura / food / link MAP items → `.gd` ports.
  */
 
-import { healActor } from '../actor.js';
+import { giveStamina, healActor } from '../actor.js';
 import { useMana } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
-import { canBeEmpoweredPiece } from './food-helpers.js';
+import { applyFoodPrepareSpeed, canBeEmpoweredPiece } from './food-helpers.js';
 import { itemHasType, pushActivate } from './ports-util.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 
@@ -95,41 +95,66 @@ const shepherdsCrookPort = {
   },
 };
 
-/** Mananana.gd — if mana ≥ manat: spend, heal, stamina; always activate; repeating food CD. */
+/**
+ * Mananana.gd + Food.gd prepare —
+ * prepare: +10% speed per food link; CD: if mana ≥ manat → useMana → heal → giveStamina; always activate.
+ */
 const manananaPort = {
   handlerId: 'mananana',
   family: 'food',
+  onCombatStart(piece, ctx) {
+    applyFoodPrepareSpeed(piece, ctx);
+  },
   onCooldownEffect(piece, ctx) {
+    const { t, player, events } = ctx;
     const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP1(piece.params, 2))));
-    if (getStackAmount(ctx.player, 'mana') >= need) {
-      useMana(ctx.player, need, origin(piece));
-      const heal = Math.max(1, Math.round(getPName(piece.params, 'heal', getP2(piece.params, 10))));
-      const got = healActor(ctx.player, heal);
-      if (got > 0) {
-        ctx.events.push({
-          t: ctx.t + 0.002,
+    if (getStackAmount(player, 'mana') >= need) {
+      useMana(player, need, origin(piece));
+      // Game heal(getP_m("heal"), event2) — requested amount (heal amp) goes to the Heal tab.
+      const healAmt = Math.max(
+        1,
+        Math.round(getPName(piece.params, 'heal', getP2(piece.params, 10))),
+      );
+      const healed = healActor(player, healAmt);
+      if (healed > 0 || (player._lastHeal && !player._lastHeal.meterAttached)) {
+        const logged = Number(player._lastHeal?.loggedAmount) || healed;
+        if (player._lastHeal) player._lastHeal.meterAttached = true;
+        events.push({
+          t: t + 0.002,
           type: 'heal',
+          actor: 'player',
           target: 'player',
-          amount: got,
+          amount: logged,
           itemId: piece.itemId,
           placementKey: piece.placementKey,
-          label: `${piece.name}: +${got} HP`,
-          meta: { category: 'heal', script: true, handler: 'mananana' },
+          label: `${piece.name}: heal +${logged}`,
+          meta: { category: 'heal', script: true, handler: 'mananana', playerHp: player.hp },
         });
       }
-      const stam = Math.max(1, Math.round(getPName(piece.params, 'stamina', getP3(piece.params, 2))));
-      ctx.player.stamina = Math.min(
-        Number(ctx.player.maxStamina) || 20,
-        (Number(ctx.player.stamina) || 0) + stam,
+      // Game giveStamina(stamina, event2) — catalog stamina = 2.
+      const stamAmt = Math.max(
+        1,
+        Math.round(getPName(piece.params, 'stamina', getP3(piece.params, 2))),
       );
-      ctx.events.push({
-        t: ctx.t + 0.003,
+      giveStamina(player, stamAmt);
+      events.push({
+        t: t + 0.003,
         type: 'stamina',
-        amount: stam,
-        label: `${piece.name}: +${stam} stamina`,
-        meta: { category: 'stamina', script: true, handler: 'mananana' },
+        actor: 'player',
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        amount: stamAmt,
+        label: `${piece.name}: Regenerated ${stamAmt} stamina`,
+        meta: {
+          category: 'stamina',
+          kind: 'gained',
+          script: true,
+          handler: 'mananana',
+          stamina: player.stamina,
+        },
       });
     }
+    // Game always activate() even when mana was short.
     pushActivate(piece, ctx, 'mananana', `Food: ${piece.name}`);
     return true;
   },

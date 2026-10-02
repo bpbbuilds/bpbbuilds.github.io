@@ -1,0 +1,363 @@
+{
+  "note": "Exported from build 25 (bpbb-heat-gen-vamp-build-t5kjf3) for bag variety eval",
+  "items": [
+    {
+      "name": "Blood Goobert",
+      "x": 4,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Ruby Chonk",
+      "x": 6,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Mrs. Struggles",
+      "x": 4,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Amulet of Energy",
+      "x": 2,
+      "y": 6,
+      "r": 0
+    },
+    {
+      "name": "Bloodthorne",
+      "x": 1,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Ruby Chonk",
+      "x": 6,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Miss Fortune",
+      "x": 5,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Toad",
+      "x": 3,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Toad",
+      "x": 3,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Miss Fortune",
+      "x": 1,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Miss Fortune",
+      "x": 3,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Mrs. Struggles",
+      "x": 4,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Mr. Struggles",
+      "x": 1,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Oil Lamp",
+      "x": 0,
+      "y": 1,
+      "r": 2
+    },
+    {
+      "name": "Amulet of Light",
+      "x": 2,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Amulet of Light",
+      "x": 2,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Mrs. Struggles",
+      "x": 0,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Mrs. Struggles",
+      "x": 1,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Oil Lamp",
+      "x": 0,
+      "y": 0,
+      "r": 3
+    },
+    {
+      "name": "Blueberries",
+      "x": 6,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Blueberries",
+      "x": 7,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Blueberries",
+      "x": 8,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Mrs. Struggles",
+      "x": 0,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Cap of Resilience",
+      "x": 5,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Deck of Cards",
+      "x": 6,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Star of Courage",
+      "x": 7,
+      "y": 6,
+      "r": 0
+    },
+    {
+      "name": "Amulet of Darkness",
+      "x": 3,
+      "y": 2,
+      "r": 3
+    }
+  ],
+  "bagCells": [
+    "2,1",
+    "2,2",
+    "2,3",
+    "2,4",
+    "0,1",
+    "0,2",
+    "1,1",
+    "1,2",
+    "3,1",
+    "3,2",
+    "4,1",
+    "5,1",
+    "4,2",
+    "5,2",
+    "6,0",
+    "7,0",
+    "6,1",
+    "6,2",
+    "7,1",
+    "7,2",
+    "2,5",
+    "3,5",
+    "2,6",
+    "3,6",
+    "4,5",
+    "5,5",
+    "4,6",
+    "5,6",
+    "0,5",
+    "1,5",
+    "0,6",
+    "1,6",
+    "8,0",
+    "8,1",
+    "6,3",
+    "6,4",
+    "7,3",
+    "7,4",
+    "8,2",
+    "8,3",
+    "8,4",
+    "4,3",
+    "5,3",
+    "4,4",
+    "5,4",
+    "3,3",
+    "3,4",
+    "0,3",
+    "1,3",
+    "0,4",
+    "1,4",
+    "0,0",
+    "1,0",
+    "2,0",
+    "3,0",
+    "4,0",
+    "6,5",
+    "7,5",
+    "6,6",
+    "7,6"
+  ],
+  "bags": [
+    {
+      "name": "Relic Case",
+      "x": 2,
+      "y": 1,
+      "r": 2
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 0,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 1,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 3,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Leather Bag",
+      "x": 4,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 6,
+      "y": 0,
+      "r": 2
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 6,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 7,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Leather Bag",
+      "x": 2,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 4,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 0,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 8,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 6,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 7,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 8,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Protective Purse",
+      "x": 8,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 4,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 3,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Leather Bag",
+      "x": 0,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 0,
+      "y": 0,
+      "r": 2
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 2,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Leather Bag",
+      "x": 6,
+      "y": 5,
+      "r": 0
+    }
+  ]
+}

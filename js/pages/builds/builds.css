@@ -1,62 +1,157 @@
+@import url('../create/notes-mentions.css');
+@import url('../../shared/build-search-input.css');
+
 /* Builds catalog — Reddit-inspired parchment feed */
 /* Scene background: body.page-builds in css/theme.css (town square) */
-
-body.page-builds {
-  overflow-x: clip;
-}
 
 body.page-builds #main {
   flex: 1 1 auto;
   min-height: 0;
+  overflow: hidden;
 }
 
 .builds-main {
   --builds-filters-width: 22rem;
   box-sizing: border-box;
   width: 100%;
-  max-width: min(48rem + 9 * 60px + var(--builds-filters-width), 72rem);
+  max-width: min(72rem + 9 * 60px + var(--builds-filters-width), 108rem);
   margin: 0 auto;
-  /* Frame already insets #main — keep side pad light */
-  padding: 1.25rem 0.35rem 3.5rem;
+  /* Frame already insets #main — keep side pad light; bottom hugs slim footer */
+  padding: 1.25rem 0.35rem 0.85rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .builds-layout {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, var(--builds-filters-width));
   gap: 1.25rem 1.5rem;
-  align-items: start;
+  align-items: stretch;
   isolation: isolate;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .builds-feed-col {
-  min-width: 0;
+    min-width: 0;
+  min-height: 0;
   max-width: 100%;
   position: relative;
   z-index: 0;
-  /* visible: overflow-x:clip forces overflow-y to clip too, shaving board sprites */
-  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Feed list — fills height to the page border; page itself does not scroll */
+.builds-feed__list-host {
+  --bpb-bg-scroll-thumb: #eac914;
+  --bpb-bg-scroll-track: #816230;
+  --bpb-bg-scroll-frame: #472a24;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-bottom: 0.35rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  /* Same as the items bag: custom track/thumb below, standard colors left
+     automatic so Windows does not paint yellow arrow buttons. */
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+
+/* Same gold scrollbar chrome as the items bag (.bpb-bg) */
+.builds-feed__list-host::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.builds-feed__list-host::-webkit-scrollbar-track {
+  border: 3px solid var(--bpb-bg-scroll-frame);
+  border-radius: 16px;
+  background: var(--bpb-bg-scroll-track);
+}
+
+.builds-feed__list-host::-webkit-scrollbar-thumb {
+  border: 2px solid var(--bpb-bg-scroll-frame);
+  border-radius: 20px;
+  background-color: var(--bpb-bg-scroll-thumb);
+}
+
+/* Mobile view: use homepage-style image-based scrollbar */
+@media (max-width: 1240px) {
+  .builds-feed__list-host {
+    scrollbar-width: auto;
+    scrollbar-color: #eac914 #472a24;
+  }
+  
+  .builds-feed__list-host::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .builds-feed__list-host::-webkit-scrollbar-track {
+    background: url("../../../assets/icons/scrollbar/track.png") center / 18px 100% no-repeat;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .builds-feed__list-host::-webkit-scrollbar-thumb {
+    border-image-source: url("../../../assets/icons/scrollbar/thumb.png");
+    border-image-width: 2px 2px 2px 2px;
+    border-image-slice: 20 20 20 20;
+    border-image-repeat: stretch;
+    border: none;
+    border-radius: 0;
+  }
 }
 
 .builds-feed-filters.items-filters {
   --items-filters-width: 100%;
+  --builds-filters-scroll-thumb: #eac914;
+  --builds-filters-scroll-track: #816230;
+  --builds-filters-scroll-frame: #472a24;
   /* Match feed card Patch3 shade */
   --builds-post-body-shade: rgba(14, 15, 16, 0.22);
   box-sizing: border-box;
+  /* Contain ::before shade to this rail (not an ancestor like .profile-builds) */
+  position: relative;
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  position: sticky;
-  /* Sit below fixed nav (space synced by nav.js) */
-  top: calc(var(--bpb-nav-space, 4.75rem) + 0.35rem);
-  max-height: calc(
-    100vh - var(--bpb-nav-space, 4.75rem) - var(--bpb-frame-edge-y, 0px) - 1rem
-  );
+  min-height: 0;
+  max-height: 100%;
+  align-self: stretch;
   z-index: 1;
   isolation: isolate;
-  /* Don’t spill into the feed column; menus use fixed positioning */
+  /* Clip horizontal spill into the feed; menus stay absolute under their triggers */
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 0.65rem 0.65rem 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--builds-filters-scroll-thumb) var(--builds-filters-scroll-track);
+}
+
+.builds-feed-filters.items-filters::-webkit-scrollbar {
+  width: 10px;
+}
+
+.builds-feed-filters.items-filters::-webkit-scrollbar-track {
+  border: 2px solid var(--builds-filters-scroll-frame);
+  background: var(--builds-filters-scroll-track);
+}
+
+.builds-feed-filters.items-filters::-webkit-scrollbar-thumb {
+  border: 2px solid var(--builds-filters-scroll-frame);
+  border-radius: 0;
+  background: var(--builds-filters-scroll-thumb);
 }
 
 /* Same Patch3 panel as .builds-post__body */
@@ -112,16 +207,20 @@ body.page-builds #main {
   margin-bottom: 0;
 }
 
-.builds-feed-filters__menus .il-filter__group-menu {
-  z-index: 30;
+.builds-feed-filters__menus .il-filter__grouping:has(.il-filter__group-menu:not([hidden])) {
+  z-index: 40;
 }
 
-.builds-feed-filters__menus .il-filter__group-menu:not([hidden]) {
-  /* Escape overflow:hidden on the sticky rail; top/left set in JS */
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 40;
+.builds-feed-filters__menus .il-filter__group-menu {
+  z-index: 30;
+  /* Stay under the trigger (absolute). Fixed+viewport coords fought the sticky rail CB. */
+  min-width: 10.5rem;
+}
+
+/* View sits on the right of the menus row — open toward the rail, not past its edge */
+.builds-feed-filters__menus .il-filter__grouping[data-feed-view-root] .il-filter__group-menu {
+  left: auto;
+  right: 0;
 }
 
 .builds-feed-filters .il-filter__grouping .il-filter__sticker {
@@ -289,6 +388,20 @@ body.page-builds #main {
   min-width: 0;
 }
 
+.builds-post__identity {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 0.85rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.builds-post__identity-copy {
+  display: grid;
+  gap: 0.28rem;
+  min-width: 0;
+}
+
 .builds-post__avatar-link {
   display: inline-flex;
   flex-shrink: 0;
@@ -308,12 +421,19 @@ body.page-builds #main {
   box-shadow: 0 0 0 1px color-mix(in srgb, #3c261d 28%, transparent);
 }
 
+.builds-post__avatar.bpb-face {
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  object-fit: contain;
+}
+
 .builds-post__avatar--initials {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-family: var(--bpb-font-body);
-  font-size: 0.62rem;
+  font-size: clamp(0.58rem, calc(0.46rem + 0.18vw), 0.78rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   color: #ffecdc;
@@ -324,7 +444,7 @@ body.page-builds #main {
 .builds-post__author {
   font-family: var(--bpb-font-body);
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: clamp(0.88rem, calc(0.62rem + 0.48vw), 1.45rem);
   letter-spacing: var(--bp-ui-track);
   line-height: 1.15;
   color: var(--bp-ui-cream);
@@ -344,7 +464,7 @@ a.builds-post__author:hover {
 .builds-post__dot {
   font-family: var(--bpb-font-body);
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: clamp(0.78rem, calc(0.55rem + 0.34vw), 1.05rem);
   line-height: 1;
   color: var(--bp-ui-sticker);
   -webkit-text-stroke: var(--bp-ui-stroke) var(--bp-ui-ink);
@@ -352,10 +472,11 @@ a.builds-post__author:hover {
   text-shadow: var(--bp-ui-ring);
 }
 
-.builds-post__time {
+.builds-post__time,
+.builds-post__event {
   font-family: var(--bpb-font-body);
   font-weight: 400;
-  font-size: 1.05rem;
+  font-size: clamp(0.78rem, calc(0.55rem + 0.34vw), 1.05rem);
   letter-spacing: var(--bp-ui-track);
   line-height: 1.15;
   color: var(--bp-ui-sticker);
@@ -364,11 +485,20 @@ a.builds-post__author:hover {
   text-shadow: var(--bp-ui-ring);
 }
 
+.builds-post__event {
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+  text-decoration: none;
+}
+
+.builds-post__event:hover {
+  text-decoration: underline;
+}
+
 .builds-post__title {
   display: block;
   font-family: var(--bpb-font-body);
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: clamp(1rem, calc(0.66rem + 0.72vw), 1.5rem);
   letter-spacing: var(--bp-ui-track);
   line-height: 1.2;
   color: var(--bp-ui-cream);
@@ -388,7 +518,7 @@ a.builds-post__author:hover {
 .builds-post__flair {
   font-family: var(--bpb-font-body);
   font-weight: 400;
-  font-size: 1.05rem;
+  font-size: clamp(0.78rem, calc(0.56rem + 0.34vw), 1.05rem);
   letter-spacing: var(--bp-ui-track);
   line-height: 1.15;
   padding: 0.18rem 0.5rem 0.16rem;
@@ -440,6 +570,7 @@ a.builds-post__author:hover {
 .builds-post__board {
   /* content-box + visible overflow: bags/items may extrude past the 9×7 grid */
   --builds-feed-cell: 60px;
+  --bpb-still-cell: var(--builds-feed-cell);
   display: block;
   box-sizing: content-box;
   width: calc(9 * var(--builds-feed-cell));
@@ -454,7 +585,7 @@ a.builds-post__author:hover {
   /* Allow hover for build tips (item hits stay inert via feed-thumb) */
   pointer-events: auto;
   user-select: none;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   justify-self: start;
 }
 
@@ -487,7 +618,7 @@ a.builds-post__author:hover {
 .builds-post__info-title {
   font-family: var(--bpb-font-body);
   font-weight: 400;
-  font-size: 1.35rem;
+  font-size: clamp(1rem, calc(0.7rem + 0.5vw), 1.45rem);
   letter-spacing: var(--bp-ui-track);
   line-height: 1.15;
   color: var(--bp-ui-sticker);
@@ -498,7 +629,7 @@ a.builds-post__author:hover {
 
 .builds-post__info-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.45rem;
   width: 100%;
   align-content: start;
@@ -533,7 +664,7 @@ a.builds-post__author:hover {
 .builds-post__info-label {
   font-family: var(--bpb-font-body);
   font-weight: 400;
-  font-size: 1.15rem;
+  font-size: clamp(0.8rem, calc(0.58rem + 0.34vw), 1.15rem);
   letter-spacing: var(--bp-ui-track);
   line-height: 1.15;
   color: var(--bp-ui-cream);
@@ -584,7 +715,7 @@ a.builds-post__author:hover {
 .builds-post__gold-num {
   font-family: var(--bpb-font-body);
   font-weight: 700;
-  font-size: 1.35rem;
+  font-size: clamp(0.9rem, calc(0.62rem + 0.48vw), 1.35rem);
   letter-spacing: var(--bp-ui-track);
   line-height: 1.15;
   color: var(--bp-ui-cream);
@@ -603,7 +734,7 @@ a.builds-post__author:hover {
 .builds-post__info-empty {
   font-family: var(--bpb-font-body);
   font-weight: 400;
-  font-size: 1.15rem;
+  font-size: clamp(0.8rem, calc(0.58rem + 0.34vw), 1.15rem);
   letter-spacing: var(--bp-ui-track);
   line-height: 1.15;
   color: var(--bp-ui-sticker);
@@ -701,13 +832,13 @@ a.builds-post__author:hover {
   background: transparent;
   margin: 0;
   padding: 0.15rem 0.1rem;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
   text-decoration: none;
   font-family: var(--bpb-font-display);
-  font-size: 1.2rem;
+  font-size: clamp(0.82rem, calc(0.56rem + 0.4vw), 1.2rem);
   letter-spacing: 0.02em;
   line-height: 1;
   color: #ffecdc;
@@ -762,7 +893,7 @@ a.builds-post__author:hover {
 
 .builds-post__action-label {
   display: inline-block;
-  font-size: 1.2rem;
+  font-size: inherit;
 }
 
 .builds-post__vote .build-round__vote {
@@ -778,7 +909,7 @@ a.builds-post__author:hover {
   background: transparent;
   margin: 0;
   padding: 0.15rem;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   line-height: 0;
   opacity: 0.9;
   transition: transform 0.12s ease, opacity 0.12s ease, filter 0.12s ease;
@@ -826,7 +957,7 @@ a.builds-post__author:hover {
   min-width: 1.85rem;
   text-align: center;
   font-family: var(--bpb-font-display);
-  font-size: 1.65rem;
+  font-size: clamp(1rem, calc(0.62rem + 0.7vw), 1.65rem);
   letter-spacing: 0.02em;
   line-height: 1;
   color: #ffecdc;
@@ -859,7 +990,7 @@ a.builds-post__author:hover {
 
 .builds-post__actions .build-round__share {
   /* shares .builds-post__action look; keep icon sizing from build page */
-  font-size: 1.2rem;
+  font-size: inherit;
 }
 
 .builds-post__actions .build-round__share-icon {
@@ -987,7 +1118,7 @@ a.builds-post__author:hover {
 }
 
 .builds-post__compact-thumb[data-feed-build-tip] {
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 .builds-post__compact-side {
@@ -1043,12 +1174,19 @@ a.builds-post__author:hover {
 
 .builds-feed__list--compact .builds-post__author,
 .builds-feed__list--compact .builds-post__time,
+.builds-feed__list--compact .builds-post__event,
 .builds-feed__list--compact .builds-post__dot {
-  font-size: 0.88rem;
+  font-size: clamp(0.72rem, calc(0.52rem + 0.3vw), 0.95rem);
+}
+
+.builds-feed__list--compact .build-stage__event,
+.builds-feed__list--grid .build-stage__event {
+  font-size: 0.82rem;
+  padding: 0.08rem 0.4rem 0.06rem;
 }
 
 .builds-feed__list--compact .builds-post__title {
-  font-size: 1.15rem;
+  font-size: clamp(0.9rem, calc(0.6rem + 0.5vw), 1.15rem);
   line-height: 1.25;
 }
 
@@ -1058,7 +1196,7 @@ a.builds-post__author:hover {
 }
 
 .builds-feed__list--compact .builds-post__flair {
-  font-size: 0.85rem;
+  font-size: clamp(0.7rem, calc(0.52rem + 0.28vw), 0.85rem);
   padding: 0.08rem 0.35rem 0.06rem;
 }
 
@@ -1092,12 +1230,188 @@ a.builds-post__author:hover {
 }
 
 .builds-feed__list--compact .builds-post__vote .build-round__vote-score {
-  font-size: 1.25rem;
+  font-size: clamp(0.9rem, calc(0.58rem + 0.48vw), 1.25rem);
   min-width: 1.5rem;
 }
 
 .builds-feed__list--compact .builds-post__action-label {
-  font-size: 0.9rem;
+  font-size: clamp(0.7rem, calc(0.52rem + 0.3vw), 0.9rem);
+}
+
+/* —— Grid view (3-col · card-like · board only, no info panel) —— */
+
+.builds-feed__list--grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem 0.85rem;
+  align-items: start;
+}
+
+.builds-feed__list--grid .builds-post {
+  padding: 0.55rem 0.2rem 0.65rem;
+  border-bottom: 1px solid color-mix(in srgb, #3c261d 18%, transparent);
+  min-width: 0;
+}
+
+.builds-post__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.builds-post__grid .builds-post__top {
+  gap: 0.45rem 0.55rem;
+}
+
+.builds-post__grid .builds-post__meta {
+  gap: 0.2rem;
+}
+
+.builds-post__grid-text {
+  display: grid;
+  gap: 0.08rem;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 0.2rem;
+}
+
+.builds-post__grid-text:hover .builds-post__title {
+  filter: brightness(1.06);
+}
+
+.builds-post__grid-text:focus-visible {
+  outline: 2px solid color-mix(in srgb, #3c261d 50%, transparent);
+  outline-offset: 2px;
+}
+
+.builds-post__grid-board {
+  display: block;
+  line-height: 0;
+  width: fit-content;
+  max-width: 100%;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 0.4rem;
+  overflow: visible;
+  transition: filter 0.12s ease;
+}
+
+.builds-post__grid-board:hover {
+  filter: brightness(1.04);
+}
+
+.builds-post__grid-board:focus-visible {
+  outline: 2px solid color-mix(in srgb, #3c261d 50%, transparent);
+  outline-offset: 2px;
+}
+
+.builds-feed__list--grid .builds-post__board {
+  --builds-feed-cell: 32px;
+  box-sizing: content-box;
+  width: calc(9 * var(--builds-feed-cell));
+  height: calc(7 * var(--builds-feed-cell));
+  max-width: 100%;
+  margin: 0;
+  padding: 0.25rem;
+  border-radius: 0.4rem;
+  background: color-mix(in srgb, #3c261d 10%, transparent);
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+  cursor: inherit;
+  justify-self: start;
+}
+
+.builds-post__grid-board[data-feed-build-tip] {
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.builds-feed__list--grid .builds-post__byline {
+  gap: 0.25rem 0.3rem;
+}
+
+.builds-feed__list--grid .builds-post__avatar {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.builds-feed__list--grid .builds-post__avatar--initials {
+  font-size: 0.52rem;
+}
+
+.builds-feed__list--grid .builds-post__author,
+.builds-feed__list--grid .builds-post__time,
+.builds-feed__list--grid .builds-post__event,
+.builds-feed__list--grid .builds-post__dot {
+  font-size: clamp(0.68rem, calc(0.5rem + 0.3vw), 0.95rem);
+}
+
+.builds-feed__list--grid .builds-post__title {
+  font-size: clamp(0.82rem, calc(0.55rem + 0.5vw), 1.15rem);
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.builds-feed__list--grid .builds-post__flairs {
+  gap: 0.15rem 0.25rem;
+  margin-top: 0.02rem;
+}
+
+.builds-feed__list--grid .builds-post__flair {
+  font-size: clamp(0.66rem, calc(0.5rem + 0.25vw), 0.82rem);
+  padding: 0.06rem 0.3rem 0.05rem;
+}
+
+.builds-feed__list--grid .builds-post__actions {
+  margin: 0.1rem 0 0;
+  padding: 0;
+  gap: 0.2rem 0.4rem;
+}
+
+.builds-feed__list--grid .builds-post__actions-main {
+  gap: 0.1rem 0.35rem;
+}
+
+.builds-feed__list--grid .builds-post__play {
+  --bpb-premium-h: 1.75rem;
+  --bpb-premium-w: 4.4rem;
+}
+
+.builds-feed__list--grid .builds-post__action-icon,
+.builds-feed__list--grid .builds-post__comment-icon,
+.builds-feed__list--grid .builds-post__remix-icon,
+.builds-feed__list--grid .builds-post__actions .build-round__share-icon {
+  width: 1.65rem;
+  height: 1.65rem;
+}
+
+.builds-feed__list--grid .builds-post__vote .build-round__vote-icon {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.builds-feed__list--grid .builds-post__vote .build-round__vote-score {
+  font-size: clamp(0.82rem, calc(0.55rem + 0.46vw), 1.15rem);
+  min-width: 1.4rem;
+}
+
+.builds-feed__list--grid .builds-post__action-label {
+  font-size: clamp(0.66rem, calc(0.5rem + 0.28vw), 0.88rem);
+}
+
+@media (max-width: 720px) {
+  .builds-feed__list--grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .builds-feed__list--grid .builds-post__board {
+    --builds-feed-cell: clamp(19px, 4.8vw, 28px);
+  }
 }
 
 /*
@@ -1105,12 +1419,20 @@ a.builds-post__author:hover {
  * Step cell size down before they collide; stack earlier than pre-frame.
  */
 @media (max-width: 1500px) and (min-width: 1241px) {
+  .builds-feed__list--card {
+    --builds-feed-cell: 48px;
+  }
+
   .builds-feed__list--card .builds-post__board {
     --builds-feed-cell: 48px;
   }
 }
 
 @media (max-width: 1360px) and (min-width: 1241px) {
+  .builds-feed__list--card {
+    --builds-feed-cell: 42px;
+  }
+
   .builds-feed__list--card .builds-post__board {
     --builds-feed-cell: 42px;
   }
@@ -1119,14 +1441,22 @@ a.builds-post__author:hover {
 /* Frame edges ≈ 2×(100vw×40/1920); stack before board+rail fight for width */
 @media (max-width: 1240px) {
   .builds-layout {
+    display: flex;
+    flex-direction: column;
     grid-template-columns: 1fr;
   }
 
   .builds-feed-filters.items-filters {
-    position: static;
-    max-height: none;
+    flex: 0 0 auto;
     width: 100%;
+    max-height: min(38vh, 22rem);
     order: -1;
+  }
+
+  .builds-feed-col {
+    flex: 1 1 auto;
+    min-height: 0;
+    order: 1;
   }
 }
 
@@ -1145,16 +1475,28 @@ a.builds-post__author:hover {
     max-width: 18rem;
     justify-self: center;
   }
+
+  /* On mobile, keep the four Build Info values in one compact row. */
+  .builds-post__info-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .builds-post__info-cell--wide {
+    grid-column: auto;
+  }
 }
 
 @media (max-width: 720px) {
-  .builds-feed__list--card .builds-post__board {
+  .builds-feed__list--card .builds-post__board,
+  .page-builds .builds-feed__list--card {
     --builds-feed-cell: 36px;
   }
 }
 
 @media (max-width: 560px) {
-  .builds-feed__list--card .builds-post__board {
+  .builds-feed__list--card .builds-post__board,
+  .page-builds .builds-feed__list--card {
     --builds-feed-cell: 28px;
   }
 
@@ -1168,5 +1510,338 @@ a.builds-post__author:hover {
 
   .builds-post__action-label {
     font-size: 0.95rem;
+  }
+}
+
+/* Narrow windows: filters are a right-hand panel, not a block on top of the feed.
+   Desktop (above 1240px) keeps the rail in the row. */
+.builds-feed-filters__toggle,
+.builds-feed-filters__close,
+.builds-feed-filters__backdrop {
+  display: none;
+}
+
+.builds-feed-filters__close-icon,
+.builds-feed-filters__close-icon::before,
+.builds-feed-filters__close-icon::after {
+  display: block;
+  width: 1.05rem;
+  height: 2px;
+  border-radius: 1px;
+  background: #3c261d;
+}
+
+.builds-feed-filters__close-icon {
+  position: relative;
+  background: transparent;
+}
+
+.builds-feed-filters__close-icon::before,
+.builds-feed-filters__close-icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.builds-feed-filters__close-icon::before {
+  transform: rotate(45deg);
+}
+
+.builds-feed-filters__close-icon::after {
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 900px) {
+  .page-builds .builds-feed__list--grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Compact grid header: avatar/byline on the left, votes on the right,
+     with the title spanning the full card width below them. */
+  .page-builds .builds-feed__list--grid .builds-post__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "byline vote"
+      "title title";
+    align-items: center;
+    gap: 0.18rem 0.25rem;
+  }
+
+  .page-builds .builds-feed__list--grid .builds-post__meta {
+    display: contents;
+  }
+
+  .page-builds .builds-feed__list--grid .builds-post__byline {
+    grid-area: byline;
+    flex-wrap: nowrap;
+    min-width: 0;
+    overflow: hidden;
+    gap: 0.15rem 0.2rem;
+  }
+
+  .page-builds .builds-feed__list--grid .builds-post__author,
+  .page-builds .builds-feed__list--grid .builds-post__time {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .page-builds .builds-feed__list--grid .builds-post__grid-text {
+    grid-area: title;
+    min-width: 0;
+  }
+
+  .page-builds .builds-feed__list--grid .builds-post__vote {
+    grid-area: vote;
+    align-self: center;
+    margin-left: 0;
+  }
+
+  .page-builds .builds-feed__list--grid .builds-post__vote .build-round__vote {
+    gap: 0;
+  }
+
+  .page-builds .builds-feed__list--grid .builds-post__vote .build-round__vote-btn {
+    padding: 0;
+  }
+
+  .page-builds .builds-feed__list--grid .builds-post__vote .build-round__vote-icon {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .page-builds .builds-feed__list--grid .builds-post__vote .build-round__vote-score {
+    min-width: 0.9rem;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 1240px) {
+
+  /* .builds-layout is isolated, so its fixed drawer cannot otherwise rise over #site-nav. */
+  .page-builds .builds-layout.is-filters-open {
+    position: relative;
+    z-index: 101;
+  }
+
+.page-builds .builds-feed-filters__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Overlay the layout; the feed list scrolls inside this persistent parent. */
+    position: absolute;
+    z-index: 40;
+    top: 46%;
+    right: 0;
+    margin: 0;
+    padding: 0.75rem 0.4rem;
+    border: 2px solid #3c261d;
+    border-right: 0;
+    border-radius: 0.45rem 0 0 0.45rem;
+    background: #eac914;
+    color: #3c261d;
+    font-family: var(--bpb-font-body);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    writing-mode: vertical-rl;
+    cursor: var(--bpb-cursor-pointer);
+    box-shadow: -2px 2px 0 rgba(60, 38, 29, 0.28);
+}
+
+  .page-builds .builds-feed-filters__toggle[hidden],
+  .page-builds .builds-layout.is-filters-open .builds-feed-filters__toggle {
+    display: none;
+  }
+
+  .page-builds .builds-feed-filters__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 110;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgba(28, 16, 10, 0.48);
+    cursor: var(--bpb-cursor-pointer);
+  }
+
+  .page-builds .builds-feed-filters__backdrop[hidden] {
+    display: none;
+  }
+
+  .page-builds .builds-feed-filters.items-filters {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 120;
+    width: min(22rem, 88vw);
+    max-width: 88vw;
+    height: auto;
+    max-height: none;
+    margin: 0;
+    order: 0;
+    background: #5c4030;
+    transform: translateX(105%);
+    transition: transform 0.2s ease;
+    box-shadow: -6px 0 18px rgba(28, 16, 10, 0.28);
+  }
+
+  .page-builds .builds-layout.is-filters-open .builds-feed-filters.items-filters {
+    transform: translateX(0);
+  }
+
+  .page-builds .builds-feed-filters__close {
+    display: grid;
+    place-items: center;
+    flex: 0 0 2.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #3c261d;
+    border-radius: 0.3rem;
+    background: #eac914;
+    cursor: var(--bpb-cursor-pointer);
+  }
+
+  .page-builds .il-filter__count {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 1240px) and (prefers-reduced-motion: reduce) {
+  .page-builds .builds-feed-filters.items-filters {
+    transition: none;
+  }
+}
+
+/* Builds catalog: creator face and name read larger than the time and event. */
+.page-builds .builds-post__avatar {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+.page-builds .builds-post__identity .builds-post__avatar {
+  width: 4.75rem;
+  height: 4.75rem;
+}
+
+.page-builds .builds-post__avatar--initials {
+  font-size: clamp(0.72rem, calc(0.52rem + 0.36vw), 1rem);
+}
+
+.page-builds .builds-post__identity .builds-post__avatar--initials {
+  font-size: clamp(0.95rem, calc(0.68rem + 0.58vw), 1.45rem);
+}
+
+.page-builds .builds-post__author {
+  font-size: clamp(0.92rem, calc(0.62rem + 0.62vw), 1.45rem);
+}
+
+.page-builds .builds-feed__list--compact .builds-post__avatar,
+.page-builds .builds-feed__list--grid .builds-post__avatar {
+  width: 2rem;
+  height: 2rem;
+}
+
+.page-builds .builds-feed__list--compact .builds-post__avatar--initials,
+.page-builds .builds-feed__list--grid .builds-post__avatar--initials {
+  font-size: 0.75rem;
+}
+
+.page-builds .builds-feed__list--compact .builds-post__author,
+.page-builds .builds-feed__list--grid .builds-post__author {
+  font-size: clamp(0.78rem, calc(0.54rem + 0.48vw), 1.2rem);
+}
+
+/* Card view: Build Info matches the board height and the icons grow into that space. */
+@media (min-width: 901px) {
+  .page-builds .builds-feed__list--card {
+    --builds-feed-cell: 60px;
+  }
+
+  .page-builds .builds-post__stage {
+    align-items: stretch;
+  }
+
+  .page-builds .builds-post__info {
+    height: calc(7 * var(--builds-feed-cell) + 0.7rem);
+    max-height: calc(7 * var(--builds-feed-cell) + 0.7rem);
+    width: min(100%, 20rem);
+    min-width: 0;
+    min-height: 0;
+    justify-self: center;
+    overflow: hidden;
+    container: build-info / size;
+  }
+
+  .page-builds .builds-post__info-title {
+    font-size: clamp(1.35rem, 8cqh, 1.85rem);
+  }
+
+  .page-builds .builds-post__info-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    align-content: stretch;
+    gap: 0.35rem;
+  }
+
+  .page-builds .builds-post__info-cell,
+  .page-builds .builds-post__info-cell--wide {
+    min-height: 0;
+    height: auto;
+    justify-content: center;
+    gap: 0.2rem;
+    padding: 0.35rem 0.3rem;
+  }
+
+  .page-builds .builds-post__info-label {
+    font-size: clamp(1.05rem, 6.5cqh, 1.45rem);
+  }
+
+  .page-builds .builds-post__info-value {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    max-height: 100%;
+  }
+
+  .page-builds .builds-post__info-icon,
+  .page-builds .builds-post__info-icon--rank,
+  .page-builds .builds-post__info-icon--empty {
+    width: 20cqh;
+    height: 20cqh;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .page-builds .builds-post__gold-num {
+    font-size: clamp(1.45rem, 8cqh, 2.15rem);
+  }
+
+  .page-builds .builds-post__gold-icon {
+    width: 7cqh;
+    height: 7cqh;
+  }
+}
+
+@media (max-width: 1500px) and (min-width: 1241px) {
+  .page-builds .builds-feed__list--card {
+    --builds-feed-cell: 48px;
+  }
+}
+
+@media (max-width: 1360px) and (min-width: 1241px) {
+  .page-builds .builds-feed__list--card {
+    --builds-feed-cell: 42px;
   }
 }

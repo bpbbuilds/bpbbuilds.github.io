@@ -12,7 +12,7 @@ export {
   bodyBounds,
 } from './shape.js';
 export { packItems, packGeom, colsForWidth } from './pack.js';
-export { spriteSizeStyle } from './sprite-size.js';
+export { spriteSizeStyle, spriteSizeCells } from './sprite-size.js';
 export { mountPackedGrid, mountPlacedGrid } from './render.js';
 export { mountItemiaryGrid } from './item-pool.js';
 export {
@@ -22,6 +22,7 @@ export {
   syncItemGems,
   attachSpriteSrc,
   warmItemSprites,
+  needsSpriteAttach,
   filterEntriesNearViewport,
 } from './item-pieces.js';
 export {

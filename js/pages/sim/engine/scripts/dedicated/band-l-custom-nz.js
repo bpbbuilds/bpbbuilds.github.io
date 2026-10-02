@@ -16,7 +16,7 @@ function stub(id, family, template) {
   };
 }
 
-/** Band L — Custom CD N–Z: custom_cd id >= n (33 items) */
+/** Band L — Custom CD N–Z: custom_cd id >= n (34 items) */
 /** @type {Record<string, import('../handlers.js').ScriptHandler>} */
 export const HANDLERS_L = {
   "pineapple": stub("pineapple", "custom_cd", "basic_cd"), // reviewed · Pineapple.gd
@@ -49,6 +49,7 @@ export const HANDLERS_L = {
   "spirit_bells": stub("spirit_bells", "custom_cd", "basic_cd"), // reviewed · Exclusive/SpiritBells.gd
   "squirrel": stub("squirrel", "custom_cd", "basic_cd"), // reviewed · Exclusive/Squirrel.gd
   "stone_badge": stub("stone_badge", "custom_cd", "basic_cd"), // reviewed · Exclusive/StoneBadge.gd
+  "time_pendant": stub("time_pendant", "custom_cd", "basic_cd"), // reviewed · Exclusive/TimePendant.gd
   "toast_goobert": stub("toast_goobert", "custom_cd", "basic_cd"), // reviewed · Exclusive/ToastGoobert.gd
   "wand": stub("wand", "custom_cd", "basic_cd"), // reviewed · Exclusive/Wand.gd
   "wisp": stub("wisp", "custom_cd", "basic_cd"), // reviewed · Exclusive/Wisp.gd

@@ -1,0 +1,31 @@
+---
+description: Forms and onboarding use the rewards-plate dialog (event entry)
+alwaysApply: true
+---
+
+# Forms and onboarding
+
+Form dialogs and onboarding flows use the **rewards plate**, the same leather dialog as DPS Stone event entry. Filter rails and Item Library chrome stay on the parchment recipe in `design.mdc`.
+
+## Reference
+
+- Plate: `.bpb-panel--rewards` in `css/theme.css` (`--bpb-rewards-ink`, `--bpb-rewards-gold`, `--bpb-rewards-gold-bright`, `--bpb-rewards-cream`)
+- Worked example: `js/pages/events/enter-wizard.css` and the enter-wizard markup
+
+## Do
+
+- Shell: dark leather plate, gold border, gold corner ticks. Soft dim behind the dialog.
+- Title row: Baskerville **bold**, uppercase, tracked, gold. A gold rule with a diamond on each side. Gold × to close.
+- Section titles: same gold Baskerville. Not Milonga, and not an OptionsFont cream outline.
+- Hints: Baskerville italic, cream.
+- Fields: dark well, gold border. A path or file picker uses a **dashed** gold border. The field name is gold; the value is cream.
+- Secondary actions: full width, gold outline, cream label, dark fill.
+- Stepped flows: a gold rule, the step name in small gold uppercase, then dots. The current step is the filled gold dot.
+- An info **i** floats its note. It does not push the section taller.
+
+## Don’t
+
+- Put these dialogs back on parchment Patch3, a green Milonga submit, or a gray/purple form kit
+- Use Milonga sticker titles or 26px cream outlines on this plate
+- Invent a second plate. Extend `.bpb-panel--rewards` and the enter-wizard type
+- Set `scrollbar-color` to the gold/brown pair. Scrollbars stay the items-bag recipe

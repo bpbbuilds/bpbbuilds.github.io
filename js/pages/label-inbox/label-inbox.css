@@ -1,0 +1,94 @@
+.li-main {
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+  font-family: var(--bpb-font-body);
+  color: #3c261d;
+}
+
+.li-title {
+  font-family: var(--bpb-font-display);
+  font-size: 2.25rem;
+  margin: 0 0 0.25rem;
+}
+
+.li-head .cr-hint {
+  color: #3c261d;
+}
+
+.li-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: center;
+  margin: 0.75rem 0 1.25rem;
+}
+
+.li-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+
+.li-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.5rem;
+  background: color-mix(in srgb, #ffecdc 55%, #8a6244);
+  border-radius: 6px;
+}
+
+.li-card.is-done,
+.li-card.is-skip {
+  opacity: 0.45;
+}
+
+.li-thumb {
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: #2a1a12;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.li-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.li-thumb:hover,
+.li-thumb:focus-visible {
+  outline: 3px solid #eac914;
+}
+
+.li-meta {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.85rem;
+}
+
+.li-name {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.li-actions {
+  margin: 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.li-meta .cr-hint,
+.li-card .cr-btn-quiet {
+  color: #3c261d;
+}

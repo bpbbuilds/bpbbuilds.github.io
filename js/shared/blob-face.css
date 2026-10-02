@@ -1,0 +1,55 @@
+/* Stacked blob face — bare character, no pfp box / circle / fill */
+
+.bpb-face {
+  position: relative;
+  display: inline-grid !important;
+  place-items: center;
+  box-sizing: border-box;
+  overflow: visible;
+  flex-shrink: 0;
+  vertical-align: middle;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none;
+}
+
+.bpb-face__base,
+.bpb-face__overlay {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+  background: transparent;
+}
+
+.bpb-face__base {
+  z-index: 1;
+}
+
+.bpb-face__overlay {
+  z-index: 2;
+}
+
+/*
+ * Hosts that wrap Discord pfps in a circle / leather plate — drop the frame
+ * when the face inside is a website blob.
+ */
+:is(
+  .build-author__avatar-wrap,
+  .build-author__avatar-link,
+  .builds-post__avatar-link,
+  .home-promo__caption-avatar-link,
+  .profile-persona__avatar-cell
+):has(.bpb-face) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}

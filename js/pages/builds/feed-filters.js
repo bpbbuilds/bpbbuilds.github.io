@@ -3,11 +3,13 @@
  */
 
 import { HERO_CLASSES } from '../items/filter-logic.js';
+import { feedEventLabel, feedEventOptionsHtml, isFeedEvent } from './feed-event-filter.js';
+import { buildSearchFieldHtml } from '../../shared/build-search-input.js';
 
 /** @typedef {'best' | 'hot' | 'new' | 'top' | 'rising'} FeedSort */
-/** @typedef {'card' | 'compact'} FeedView */
+/** @typedef {'card' | 'grid' | 'compact'} FeedView */
 /** @typedef {'op' | 'feasible' | 'theory' | 'real' | 'featured'} FeedTag */
-/** @typedef {{ sort: FeedSort, view: FeedView, tags: FeedTag[], liked: boolean, mine: boolean, heroClass: string | null, ranks: string[] }} FeedFilterState */
+/** @typedef {{ sort: FeedSort, view: FeedView, tags: FeedTag[], liked: boolean, mine: boolean, heroClass: string | null, ranks: string[], event: string | null, q: string }} FeedFilterState */
 
 export const FEED_SORTS = /** @type {const} */ ([
   'best',
@@ -17,7 +19,7 @@ export const FEED_SORTS = /** @type {const} */ ([
   'rising',
 ]);
 
-export const FEED_VIEWS = /** @type {const} */ (['card', 'compact']);
+export const FEED_VIEWS = /** @type {const} */ (['card', 'grid', 'compact']);
 
 export const FEED_TAGS = /** @type {const} */ ([
   'op',
@@ -76,6 +78,7 @@ export const FEED_SORT_LABELS = {
 
 export const FEED_VIEW_LABELS = {
   card: 'Card',
+  grid: 'Grid',
   compact: 'Compact',
 };
 
@@ -97,6 +100,8 @@ export function defaultFeedFilterState() {
     mine: false,
     heroClass: null,
     ranks: allFeedRanks(),
+    event: null,
+    q: '',
   };
 }
 
@@ -111,6 +116,7 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
   const countLabel = shown === 1 ? '1 build found.' : `${shown} builds found.`;
   const sortLabel = FEED_SORT_LABELS[state.sort] || 'Hot';
   const viewLabel = FEED_VIEW_LABELS[state.view] || 'Card';
+  const eventLabel = feedEventLabel(state.event);
   const canMine = opts.canMine === true;
   const mineOn = canMine && state.mine;
 
@@ -149,13 +155,18 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
   const anyClassOn = !state.heroClass;
 
   return `
-    <aside class="items-filters il-filter builds-feed-filters" aria-label="Filter builds">
+    <aside class="items-filters il-filter builds-feed-filters bpb-filter-drawer__panel" id="builds-feed-filters" aria-label="Filter builds">
       <div class="il-filter__head">
+        <button type="button" class="builds-feed-filters__close bpb-filter-drawer__close" data-feed-filters-close data-bpb-filter-close aria-label="Close filters">
+          <span class="builds-feed-filters__close-icon bpb-filter-drawer__close-icon" aria-hidden="true"></span>
+        </button>
         <p class="il-filter__count" data-filter-count>${escapeHtml(countLabel)}</p>
         <button type="button" class="il-filter__reset" data-feed-reset title="Reset filters" aria-label="Reset filters">
           <img src="${escapeAttr(base)}assets/icons/filters/ResetButton.png" alt="" draggable="false" />
         </button>
       </div>
+
+      ${buildSearchFieldHtml('Title, @user, [Item]…')}
 
       <div class="il-filter__shade builds-feed-filters__menus">
         <div class="il-filter__grouping" data-feed-sort-root>
@@ -172,8 +183,17 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
             <img class="il-filter__group-arrow" src="${escapeAttr(base)}assets/icons/filters/DropdownArrow.png" alt="" draggable="false" />
             <span class="il-filter__sticker" data-feed-view-label>${escapeHtml(viewLabel)}</span>
           </button>
-          <div class="il-filter__group-menu" data-feed-view-menu hidden role="listbox" aria-label="Feed view">
+          <div class="il-filter__group-menu" data-feed-view-menu hidden role="listbox" aria-label="View builds">
             ${viewOptions}
+          </div>
+        </div>
+        <div class="il-filter__grouping" data-feed-event-root>
+          <button type="button" class="il-filter__group-trigger" data-feed-event-trigger aria-haspopup="listbox" aria-expanded="false">
+            <img class="il-filter__group-arrow" src="${escapeAttr(base)}assets/icons/filters/DropdownArrow.png" alt="" draggable="false" />
+            <span class="il-filter__sticker" data-feed-event-label>${escapeHtml(eventLabel)}</span>
+          </button>
+          <div class="il-filter__group-menu" data-feed-event-menu hidden role="listbox" aria-label="Filter by event">
+            ${feedEventOptionsHtml(state.event)}
           </div>
         </div>
       </div>
@@ -243,6 +263,9 @@ export function syncFeedFiltersUi(rail, state, shown) {
   const viewLabel = rail.querySelector('[data-feed-view-label]');
   if (viewLabel) viewLabel.textContent = FEED_VIEW_LABELS[state.view] || 'Card';
 
+  const eventLabelEl = rail.querySelector('[data-feed-event-label]');
+  if (eventLabelEl) eventLabelEl.textContent = feedEventLabel(state.event);
+
   rail.querySelectorAll('[data-feed-sort]').forEach((el) => {
     const on = el.getAttribute('data-feed-sort') === state.sort;
     el.classList.toggle('is-active', on);
@@ -251,6 +274,14 @@ export function syncFeedFiltersUi(rail, state, shown) {
 
   rail.querySelectorAll('[data-feed-view]').forEach((el) => {
     const on = el.getAttribute('data-feed-view') === state.view;
+    el.classList.toggle('is-active', on);
+    el.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+
+  rail.querySelectorAll('[data-feed-event]').forEach((el) => {
+    if (el.hasAttribute('disabled')) return;
+    const raw = el.getAttribute('data-feed-event') || '';
+    const on = raw ? state.event === raw : !state.event;
     el.classList.toggle('is-active', on);
     el.setAttribute('aria-selected', on ? 'true' : 'false');
   });
@@ -297,6 +328,7 @@ export function syncFeedFiltersUi(rail, state, shown) {
  *   getState: () => FeedFilterState,
  *   onChange: (next: FeedFilterState) => void,
  *   defaultState: () => FeedFilterState,
+ *   onResetSearch?: () => void,
  * }} opts
  * @returns {() => void}
  */
@@ -313,6 +345,11 @@ export function bindFeedFilters(rail, opts) {
       trigger: rail.querySelector('[data-feed-view-trigger]'),
       menu: rail.querySelector('[data-feed-view-menu]'),
     },
+    {
+      root: rail.querySelector('[data-feed-event-root]'),
+      trigger: rail.querySelector('[data-feed-event-trigger]'),
+      menu: rail.querySelector('[data-feed-event-menu]'),
+    },
   ];
 
   /** @param {{ menu: Element | null, trigger: Element | null }} m */
@@ -320,9 +357,6 @@ export function bindFeedFilters(rail, opts) {
     if (!(m.menu instanceof HTMLElement) || !(m.trigger instanceof HTMLElement)) return;
     m.menu.hidden = true;
     m.trigger.setAttribute('aria-expanded', 'false');
-    m.menu.style.removeProperty('top');
-    m.menu.style.removeProperty('left');
-    m.menu.style.removeProperty('min-width');
   }
 
   /** @param {{ menu: Element | null, trigger: Element | null }} m */
@@ -333,11 +367,6 @@ export function bindFeedFilters(rail, opts) {
     if (!(m.menu instanceof HTMLElement) || !(m.trigger instanceof HTMLElement)) return;
     m.menu.hidden = false;
     m.trigger.setAttribute('aria-expanded', 'true');
-    // Rail uses overflow:hidden so menus are position:fixed — pin under trigger.
-    const r = m.trigger.getBoundingClientRect();
-    m.menu.style.top = `${Math.round(r.bottom + 4)}px`;
-    m.menu.style.left = `${Math.round(r.left)}px`;
-    m.menu.style.minWidth = `${Math.round(Math.max(r.width, 10.5 * 16))}px`;
   }
 
   function closeAllMenus() {
@@ -352,6 +381,7 @@ export function bindFeedFilters(rail, opts) {
     const reset = t.closest('[data-feed-reset]');
     if (reset && rail.contains(reset)) {
       closeAllMenus();
+      opts.onResetSearch?.();
       opts.onChange(opts.defaultState());
       return;
     }
@@ -367,6 +397,14 @@ export function bindFeedFilters(rail, opts) {
     const viewTrig = t.closest('[data-feed-view-trigger]');
     if (viewTrig && rail.contains(viewTrig)) {
       const m = menus[1];
+      if (m.menu instanceof HTMLElement && !m.menu.hidden) closeMenu(m);
+      else openMenu(m);
+      return;
+    }
+
+    const eventTrig = t.closest('[data-feed-event-trigger]');
+    if (eventTrig && rail.contains(eventTrig)) {
+      const m = menus[2];
       if (m.menu instanceof HTMLElement && !m.menu.hidden) closeMenu(m);
       else openMenu(m);
       return;
@@ -391,6 +429,18 @@ export function bindFeedFilters(rail, opts) {
       const cur = opts.getState();
       if (view === cur.view) return;
       opts.onChange({ ...cur, view });
+      return;
+    }
+
+    const eventOpt = t.closest('[data-feed-event]');
+    if (eventOpt instanceof HTMLElement && rail.contains(eventOpt)) {
+      if (eventOpt.hasAttribute('disabled')) return;
+      const raw = eventOpt.getAttribute('data-feed-event') || '';
+      const event = isFeedEvent(raw) ? raw : null;
+      closeAllMenus();
+      const cur = opts.getState();
+      if (event === cur.event) return;
+      opts.onChange({ ...cur, event });
       return;
     }
 

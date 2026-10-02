@@ -188,13 +188,24 @@
 }
 
 @media (max-width: 900px) {
+  .items-main {
+    --items-catalog-width: 100%;
+  }
+
   .items-layout {
-    grid-template-columns: minmax(0, var(--items-catalog-width));
+    grid-template-columns: minmax(0, 1fr);
     justify-content: center;
     row-gap: 0.85rem;
   }
 
-  .items-bag,
+  .items-bag {
+    grid-column: 1;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    justify-self: stretch;
+  }
+
   .items-filters {
     grid-column: 1;
     justify-self: stretch;

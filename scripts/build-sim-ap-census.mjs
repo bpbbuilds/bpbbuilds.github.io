@@ -194,22 +194,11 @@ ${consumeRows
   .join('\n')}
 `;
 
-const batchesPath = path.join(root, 'docs/sim-port-batches.md');
-const batches = fs.readFileSync(batchesPath, 'utf8');
-const startMark = '<!-- sim-ap-census:start -->';
-const endMark = '<!-- sim-ap-census:end -->';
-if (!batches.includes(startMark) || !batches.includes(endMark)) {
-  throw new Error(`Missing ${startMark} / ${endMark} in docs/sim-port-batches.md`);
-}
-const patched = batches.replace(
-  new RegExp(`${startMark}[\\s\\S]*?${endMark}`),
-  `${startMark}\n\n${md.trim()}\n\n${endMark}`,
-);
-fs.writeFileSync(batchesPath, patched);
-
 const outJson = path.join(root, 'assets/data/sim-ap-census.json');
 fs.writeFileSync(outJson, `${JSON.stringify(payload, null, 2)}\n`);
 console.log(
   `Wrote ${outJson}: genericCd=${genericCd.length} genericOther=${genericOther.length} ` +
     `handMissing=${handPortMissing.length} cdThenConsume=${consumeRows.length}`,
 );
+// Human-readable census used to patch docs/sim/sim-phases.md; that burn-down
+// doc was removed — JSON + sim-phases.md are the living sources.

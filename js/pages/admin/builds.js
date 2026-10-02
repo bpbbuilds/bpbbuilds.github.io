@@ -1,12 +1,26 @@
 /**
- * All / Featured / Hidden builds list.
+ * All / Featured / Hidden builds list + filter rail.
  */
 
+import {
+  buildMatchesSearch,
+  itemSpriteUrl,
+  itemsFromBuilds,
+  parseBuildSearchQuery,
+} from '../../shared/build-search.js';
+import { mountBuildSearchInput } from '../../shared/build-search-input.js';
 import { listBuilds, mutateBuild, AdminAuthError } from './api.js';
+import {
+  adminBuildsFiltersHtml,
+  bindAdminBuildsFilters,
+  defaultAdminBuildsFilters,
+  syncAdminBuildsFiltersUi,
+} from './builds-filters.js';
 import { actionsForBuild, buildCardHtml, escapeHtml } from './row.js';
 import { mountAdminBoardThumbs } from './thumbs.js';
 
-/** @typedef {'all' | 'featured' | 'hidden'} BuildsFilter */
+/** @typedef {import('./builds-filters.js').AdminBuildsFilterState} AdminBuildsFilterState */
+/** @typedef {import('./builds-filters.js').AdminBuildsListFilter} BuildsFilter */
 
 /**
  * @param {HTMLElement} host
@@ -24,75 +38,148 @@ import { mountAdminBoardThumbs } from './thumbs.js';
  * @returns {Promise<() => void>}
  */
 export async function mountBuildsPanel(host, opts) {
-  const filter = opts.filter || 'all';
+  /** @type {AdminBuildsFilterState} */
+  let filters = {
+    ...defaultAdminBuildsFilters(),
+    list: opts.filter || 'all',
+  };
+
+  /** @type {object[]} */
+  let all = [];
+  /** @type {ReturnType<typeof mountBuildSearchInput> | null} */
+  let searchInput = null;
+  /** @type {(() => void) | null} */
+  let unbindRail = null;
+  /** @type {(() => void) | null} */
+  let unmountThumbs = null;
 
   host.innerHTML = `
-    <section class="admin-panel" aria-labelledby="admin-builds-h">
-      <div class="admin-panel__head">
-        <h2 id="admin-builds-h" class="admin-panel__title">Builds</h2>
-        <div class="admin-tabs" role="tablist" aria-label="Build lists">
-          ${tabBtn('all', 'All', filter)}
-          ${tabBtn('featured', 'Featured', filter)}
-          ${tabBtn('hidden', 'Hidden', filter)}
-        </div>
+    <div class="admin-builds-layout">
+      <div class="admin-builds-col">
+        <section class="admin-panel admin-panel--builds" aria-labelledby="admin-builds-h">
+          <div class="admin-panel__head">
+            <h2 id="admin-builds-h" class="admin-panel__title">Builds</h2>
+          </div>
+          <p class="admin-panel__blurb">Feature for the homepage carousel. Hide soft-deletes a build; Restore brings it back. Search: @user · [Item] · free text.</p>
+          <div class="admin-panel__body" data-admin-builds-body>
+            <p class="admin-status" role="status">Loading…</p>
+          </div>
+        </section>
       </div>
-      <p class="admin-panel__blurb">Feature for the homepage carousel. Hide soft-deletes a build; Restore brings it back.</p>
-      <div class="admin-panel__body" data-admin-builds-body>
-        <p class="admin-status" role="status">Loading…</p>
-      </div>
-    </section>
+      ${adminBuildsFiltersHtml(opts.root, filters, 0)}
+    </div>
   `;
 
-  host.querySelectorAll('[data-admin-filter]').forEach((el) => {
-    el.addEventListener('click', () => {
-      const f = el.getAttribute('data-admin-filter');
-      if (f === 'all' || f === 'featured' || f === 'hidden') {
-        opts.onFilterChange?.(f);
-      }
-    });
+  const body = host.querySelector('[data-admin-builds-body]');
+  const rail = host.querySelector('.admin-builds-filters');
+  if (!(body instanceof HTMLElement) || !(rail instanceof HTMLElement)) {
+    return () => {};
+  }
+
+  const destroy = () => {
+    searchInput?.destroy();
+    searchInput = null;
+    unbindRail?.();
+    unbindRail = null;
+    try {
+      unmountThumbs?.();
+    } catch {
+      /* ignore */
+    }
+    unmountThumbs = null;
+  };
+
+  unbindRail = bindAdminBuildsFilters(rail, {
+    getState: () => filters,
+    defaultState: defaultAdminBuildsFilters,
+    onResetSearch() {
+      searchInput?.clear();
+    },
+    onChange(next, meta) {
+      const listChanged = Boolean(meta?.listChanged) || next.list !== filters.list;
+      filters = next;
+      opts.onFilterChange?.(filters.list);
+      if (listChanged) void reloadList();
+      else paintCards();
+    },
   });
 
-  const body = host.querySelector('[data-admin-builds-body]');
-  if (!(body instanceof HTMLElement)) return () => {};
+  searchInput = mountBuildSearchInput(rail, {
+    items: [],
+    getSpriteUrl: (item) => itemSpriteUrl(opts.root, item),
+    onChange(q) {
+      if (q === filters.q) return;
+      filters = { ...filters, q };
+      paintCards();
+    },
+  });
 
-  try {
-    const data = await listBuilds(opts.auth, filter);
-    const builds = Array.isArray(data?.builds) ? data.builds : [];
+  /**
+   * @param {object[]} builds
+   */
+  function visibleBuilds(builds) {
+    const parsed = parseBuildSearchQuery(filters.q || '');
+    return builds.filter((b) => {
+      if (filters.heroClass && String(b.hero_class || '') !== filters.heroClass) {
+        return false;
+      }
+      return buildMatchesSearch(b, parsed);
+    });
+  }
+
+  function paintCards() {
+    try {
+      unmountThumbs?.();
+    } catch {
+      /* ignore */
+    }
+    unmountThumbs = null;
+
+    const builds = visibleBuilds(all);
+    syncAdminBuildsFiltersUi(rail, filters, builds.length);
+    searchInput?.setItems(itemsFromBuilds(all));
+
     if (!builds.length) {
-      body.innerHTML = `<p class="admin-empty">No builds in this list.</p>`;
-      return () => {};
+      body.innerHTML = `<p class="admin-empty">No builds match these filters.</p>`;
+      return;
     }
     body.innerHTML = `
       <div class="admin-cards" data-admin-list>
         ${builds
-          .map((b) => buildCardHtml(b, opts.root, actionsForBuild(b, filter)))
+          .map((b) => buildCardHtml(b, opts.root, actionsForBuild(b, filters.list)))
           .join('')}
       </div>
     `;
     bindActions(body, opts);
     const list = body.querySelector('[data-admin-list]');
-    if (!(list instanceof HTMLElement)) return () => {};
-    return mountAdminBoardThumbs(list, {
-      builds,
-      root: opts.root,
-      spriteDisplay: opts.spriteDisplay,
-      shapes: opts.shapes,
-      sockets: opts.sockets,
-    });
-  } catch (err) {
-    if (err instanceof AdminAuthError) {
-      opts.onUnauthorized();
-      return () => {};
+    if (list instanceof HTMLElement) {
+      unmountThumbs = mountAdminBoardThumbs(list, {
+        builds,
+        root: opts.root,
+        spriteDisplay: opts.spriteDisplay,
+        shapes: opts.shapes,
+        sockets: opts.sockets,
+      });
     }
-    body.innerHTML = `<p class="admin-status admin-status--err" role="alert">${escapeHtml(err?.message || 'Failed to load')}</p>`;
-    return () => {};
   }
-}
 
-/** @param {BuildsFilter} id @param {string} label @param {BuildsFilter} active */
-function tabBtn(id, label, active) {
-  const on = id === active ? ' is-active' : '';
-  return `<button type="button" class="admin-tab${on}" role="tab" aria-selected="${id === active}" data-admin-filter="${id}">${label}</button>`;
+  async function reloadList() {
+    body.innerHTML = `<p class="admin-status" role="status">Loading…</p>`;
+    try {
+      const data = await listBuilds(opts.auth, filters.list);
+      all = Array.isArray(data?.builds) ? data.builds : [];
+      paintCards();
+    } catch (err) {
+      if (err instanceof AdminAuthError) {
+        opts.onUnauthorized();
+        return;
+      }
+      body.innerHTML = `<p class="admin-status admin-status--err" role="alert">${escapeHtml(err?.message || 'Failed to load')}</p>`;
+    }
+  }
+
+  await reloadList();
+  return destroy;
 }
 
 /**

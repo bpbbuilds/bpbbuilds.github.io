@@ -5,7 +5,10 @@ node_modules/
 js/shared/config.js
 scripts/_cache/
 scripts/_fixtures/history-mini.db
+fixtures/inbox/
 scripts/__pycache__/
+assets/ml/screenshot-detector/**/*.onnx
+yolov8n.pt
 assets/item-sprites/
 tools/gdre/
 tools/gdke/
@@ -20,6 +23,7 @@ _enc.bin
 _key.bin
 Items.en.translation
 supabase/.temp/
+bot/data/
 .cursor/debug*.log
 .DS_Store
 Thumbs.db

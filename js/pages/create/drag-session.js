@@ -10,16 +10,20 @@ import {
   commitDragToPark,
   pointerOverPark,
   mainOverStorage,
+  mainOverCatalog,
+  pointerOverCatalog,
 } from './park-strip.js';
 import { commitDragToSell, pointerOverSell } from './sell-bin.js';
+import { pickOffsetPx } from './drag-feel.js';
 import { createInventoryPreview } from './inventory-preview.js';
 import { createMultiSelect } from './multi-select.js';
 import { createSelectionBox } from './selection-box.js';
 import { EDIT_MODE } from './editor-state.js';
 import { newPlacementKey } from './draft-io.js';
+import { gemCarry } from './socket-place.js';
 import { createDragAffectPreview } from './drag-affect.js';
 import { createDragCursorView } from './drag-cursor.js';
-import { markDragSource, hideGroupSources } from './drag-source.js';
+import { markDragSource, hideGroupSources, registerDragLookup } from './drag-source.js';
 import { createDragMetrics } from './drag-metrics.js';
 import { createGemDragHelpers } from './drag-gems.js';
 import { createCursorDom, createFloatController } from './drag-float.js';
@@ -60,6 +64,7 @@ export function attachDragSession(opts) {
 
   /** @type {any} */
   let drag = null;
+  registerDragLookup(() => drag);
   /** @type {string[] | null} */
   let multiMoveKeys = null;
   let downPos = /** @type {{ x: number, y: number } | null} */ (null);
@@ -154,6 +159,7 @@ export function attachDragSession(opts) {
     if (sellEl instanceof HTMLElement) {
       sellEl.classList.remove('is-drop-hover');
     }
+    view.setSellHover?.(false);
     metaDrop?.clearDropHover?.();
     gems.setGemSocketsVisible(false);
     view.cancelFaceTween();
@@ -305,6 +311,8 @@ export function attachDragSession(opts) {
     ensureLifted(p.x, p.y);
     // Storagebox.isHovered — main bag position, not pointer
     const overStorage = mainOverStorage(cursorEl, parkEl);
+    // Catalog column — delete (sell), not park
+    const overCatalog = mainOverCatalog(cursorEl);
     // Sellbox.isHovered — mouse in sell rect
     const overSell = pointerOverSell(sellEl, p.x, p.y);
     const overMeta = !!metaDrop?.isOverBuildPanel?.(p.x, p.y);
@@ -315,7 +323,7 @@ export function attachDragSession(opts) {
       itemsById,
       multiMoveKeys,
     });
-    const parkValid = !overSell && !overMeta && capacityOk;
+    const parkValid = !overSell && !overMeta && !overCatalog && capacityOk;
     if (parkEl instanceof HTMLElement) {
       parkEl.classList.toggle('is-drop-valid', parkValid);
       parkEl.classList.toggle(
@@ -330,8 +338,9 @@ export function attachDragSession(opts) {
     if (sellEl instanceof HTMLElement) {
       sellEl.classList.toggle('is-drop-hover', overSell);
     }
+    view.setSellHover?.(overSell);
     metaDrop?.updateDropHover?.(drag, p.x, p.y);
-    if (overStorage || overSell || overMeta) {
+    if (overStorage || overSell || overMeta || overCatalog) {
       preview.hidePreview?.();
     } else {
       preview.previewAt(
@@ -411,7 +420,7 @@ export function attachDragSession(opts) {
       isBag: isBagItem(item),
       hotswap: true,
       cargo,
-      gems: Array.isArray(placement.gems) ? placement.gems.slice() : undefined,
+      ...gemCarry(placement),
       restorePlacement: {
         id: placement.id,
         x: Number(placement.x) || 0,
@@ -419,7 +428,7 @@ export function attachDragSession(opts) {
         r: placement.r || 0,
         key: restoreKey,
         priority: placement.priority ?? null,
-        gems: Array.isArray(placement.gems) ? placement.gems.slice() : undefined,
+        ...gemCarry(placement),
       },
     };
     downPos = { x: clientX, y: clientY };
@@ -442,6 +451,9 @@ export function attachDragSession(opts) {
    */
   function beginParkDrag(itemId, clientX, clientY, pointerId, sourceEl) {
     if (drag || flyingBack) return false;
+    if (host.closest('.create-board')?.classList.contains('is-history-lock-open')) {
+      return false;
+    }
     // History lock: borrow from park for the drag; unlock only on geometry drop.
     const entry = state.takeParkedById?.(itemId, { borrow: true });
     if (!entry) return false;
@@ -482,13 +494,13 @@ export function attachDragSession(opts) {
       fromPark: true,
       placeKey,
       cargo: [],
-      gems: Array.isArray(entry.gems) ? entry.gems.slice() : undefined,
+      ...gemCarry(entry),
       restoreParked: {
         id: entry.id,
         r: entry.r || 0,
         key: placeKey,
         priority: entry.priority ?? null,
-        gems: Array.isArray(entry.gems) ? entry.gems.slice() : undefined,
+        ...gemCarry(entry),
       },
     };
     downPos = { x: clientX, y: clientY };
@@ -589,14 +601,30 @@ export function attachDragSession(opts) {
   }
 
   function isPointerOverPark(clientX, clientY) {
-    // Sellbox overlaps catalog (create storage stand-in) — never park over sell.
+    // Sellbox overlaps catalog — never park over sell.
     if (pointerOverSell(sellEl, clientX, clientY)) return false;
-    // Build meta panel wins over catalog storage (zones + gaps between them).
+    // Catalog deletes; do not treat it as storage.
+    if (mainOverCatalog(cursorEl) || pointerOverCatalog(clientX, clientY)) {
+      return false;
+    }
+    // Build meta panel wins over park (zones + gaps between them).
     if (metaDrop?.isOverBuildPanel?.(clientX, clientY)) return false;
     if (metaDrop?.getDropTarget?.(clientX, clientY)) return false;
     // Prefer main-bag storage hover (game); fall back to pointer for pre-lift.
     if (mainOverStorage(cursorEl, parkEl)) return true;
     return pointerOverPark(parkEl, clientX, clientY);
+  }
+
+  /** Catalog column drop → delete (same commit as sell chest). */
+  function isPointerOverCatalog(clientX, clientY) {
+    if (pointerOverSell(sellEl, clientX, clientY)) return false;
+    if (metaDrop?.isOverBuildPanel?.(clientX, clientY)) return false;
+    if (metaDrop?.getDropTarget?.(clientX, clientY)) return false;
+    if (mainOverCatalog(cursorEl)) return true;
+    // The held item is lifted above a coarse pointer. The finger stays in the
+    // catalog strip while that item is already over the board.
+    if (pickOffsetPx() > 0) return false;
+    return pointerOverCatalog(clientX, clientY);
   }
 
   function isPointerOverSell(clientX, clientY) {
@@ -683,6 +711,7 @@ export function attachDragSession(opts) {
       startPickupFrom: float.startPickupFrom,
       rotateDrag,
       cancelDragWithFlyback: float.cancelDragWithFlyback,
+      showOrphanPickup: float.showOrphanPickup,
     },
     preview,
     gems,
@@ -694,6 +723,7 @@ export function attachDragSession(opts) {
     commitToSell,
     commitToMeta,
     isPointerOverPark,
+    isPointerOverCatalog,
     isPointerOverSell,
     isPointerOverMeta,
     beginHotswapFromPlacement,

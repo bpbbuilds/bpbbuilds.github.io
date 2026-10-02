@@ -7,6 +7,9 @@
   pointer-events: none;
   overflow: hidden;
   background: #000533;
+  isolation: isolate;
+  contain: paint;
+  transform: translateZ(0);
 }
 
 .combat-sky[hidden] {
@@ -33,7 +36,7 @@
   height: 1667px;
   background-color: var(--sky-mod, #2ca4ff);
   transform: translateY(var(--sky-y, -400px));
-  will-change: transform, background-color;
+  will-change: transform;
 }
 
 .combat-sky__sky::after {
@@ -72,20 +75,22 @@
   -webkit-mask-position: center;
   mask-position: center;
   opacity: var(--a, 1);
-  will-change: left, top, opacity, background-color;
 }
 
 /* Sun / moon / stars keep painted color — use img, not mask tint */
 .combat-sky__celestial {
+  --x: 0px;
+  --y: 0px;
   position: absolute;
-  left: var(--x);
-  top: var(--y);
+  left: 0;
+  top: 0;
   width: var(--w);
   height: var(--h);
-  transform: translate(-50%, -50%) scale(var(--sx, 1), var(--sy, 1));
+  transform: translate3d(var(--x), var(--y), 0) translate(-50%, -50%)
+    scale(var(--sx, 1), var(--sy, 1));
   transform-origin: center center;
   opacity: var(--a, 1);
-  will-change: left, top, opacity;
+  will-change: transform, opacity;
   pointer-events: none;
 }
 
@@ -151,7 +156,7 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   animation: combat-sky-spin 16.67s linear infinite;
-  will-change: transform, background-color;
+  will-change: transform;
 }
 
 @keyframes combat-sky-spin {
@@ -161,6 +166,17 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Hill1 stops short of the 1080 stage. Phone view has no wood frame, so the
+   night fill (#000533) showed as a line under the grass. */
+.combat-sky__ground {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1920px;
+  height: 28px;
+  background: var(--ground-mod, #727a2a);
 }
 
 .combat-sky__speckles {

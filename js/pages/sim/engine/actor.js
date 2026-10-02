@@ -5,6 +5,7 @@
 import { collectActorHudStats } from './actor-stats.js';
 import { gainStacks as gainStacksImpl } from './stacks.js';
 import { summarizeTemporaryStacks } from './temp-stacks.js';
+import { pushStunLabel } from './item-fx-log.js';
 
 /** @typedef {'player' | 'dummy'} SimActorId */
 
@@ -203,11 +204,15 @@ export function grantStun(actor, durationSec, nowT, opts = {}) {
   const rng = opts.rng;
   if (resist > 0 && typeof rng === 'function') {
     // LeatherHelm: chance to ignore stun entirely
-    if (rng() * 100 < resist) return;
+    if (rng() * 100 < resist) {
+      pushStunLabel(actor, nowT, dur, opts, 'stun_resisted');
+      return;
+    }
   }
   const until = (Number(nowT) || 0) + dur;
   actor.stunnedUntil = Math.max(Number(actor.stunnedUntil) || 0, until);
   actor._combatBus?.emit?.('actor_stunned', { actor, t: nowT, duration: dur });
+  pushStunLabel(actor, nowT, dur, opts, 'stunned');
 }
 
 /**

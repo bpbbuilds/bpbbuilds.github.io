@@ -35,51 +35,68 @@ import { emitChargePulse } from '../charge-delivery.js';
 export const amuletOfAgilityPort = {
   handlerId: 'amulet_of_agility',
   family: 'synergy_aura',
-  onCombatStart(piece, ctx) {
-    const speed = getPName(piece.params, 'speed', getP1(piece.params, 15)) / 100;
-    const dur = Math.max(0, getPName(piece.params, 'dur', 1));
-    const refundRate = getPName(piece.params, 'refund', 25) / 100;
+  onPreCombatStart(piece, ctx) {
+    const refundRate = getPName(piece.params, 'refund', getP3(piece.params, 25)) / 100;
     /** @type {Record<string, number>} */
     piece._usedStacks = {};
     for (const k of BUFF_KEYS) piece._usedStacks[k] = 0;
-
-    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-    const untilT = ctx.t + dur;
-    for (const other of ctx.pieces || []) {
-      if (other.placementKey === piece.placementKey) continue;
-      if (!links.some((l) => l.key === other.placementKey)) continue;
-      if (!(other.baseCooldown > 0 || other.cooldown > 0)) continue;
-      if (speed) {
-        if (dur > 0) grantTimedSpeed(other, speed, untilT, `amulet_energy:${piece.placementKey}`);
-        else addSpeed(other, speed);
-      }
-    }
-    // Game: amount < 0 && event.getParam("used") → accumulate used*refund, round-refund.
+    piece._amuletRefundRate = refundRate;
+    // Game onPrepare: connectToCharacterBuffs before combat-start spends.
     onBuffChanged(ctx.player, (ch) => {
       if (piece._amuletRefunding) return;
       if (!(ch.amount < 0) || !ch.used) return;
       if (!BUFF_KEYS.includes(String(ch.stack))) return;
       const buffType = String(ch.stack);
       const used = Math.abs(ch.amount);
-      piece._usedStacks[buffType] = (Number(piece._usedStacks[buffType]) || 0) + used * refundRate;
+      const rate = Number(piece._amuletRefundRate) || 0;
+      piece._usedStacks[buffType] = (Number(piece._usedStacks[buffType]) || 0) + used * rate;
       const toRefund = Math.round(piece._usedStacks[buffType]);
       if (!(toRefund > 0)) return;
       piece._usedStacks[buffType] -= toRefund;
       piece._amuletRefunding = true;
       try {
+        // Game giveStacks(..., self, event) — refund gains are *this amulet's*
+        // (ItemMetrics / Combat Log origin), not the item that spent the buff.
         grantStacks(ctx.player, buffType, toRefund, {
+          piece,
           originKey: piece.placementKey,
           originId: piece.itemId,
+          t: ctx.t,
+          silentLog: true,
+        });
+        pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'amulet_of_agility', {
+          [buffType]: toRefund,
         });
       } finally {
         piece._amuletRefunding = false;
       }
     });
+  },
+  onCombatStart(piece, ctx) {
+    const speed = getPName(piece.params, 'speed', getP1(piece.params, 100)) / 100;
+    const dur = Math.max(0, getPName(piece.params, 'dur', getP2(piece.params, 1)));
+    const refundRate = Number(piece._amuletRefundRate) || getPName(piece.params, 'refund', 25) / 100;
+
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    const untilT = ctx.t + dur;
+    let n = 0;
+    for (const other of ctx.pieces || []) {
+      if (other.placementKey === piece.placementKey) continue;
+      if (!links.some((l) => l.key === other.placementKey)) continue;
+      // Item.hasCooldown() — exclude locked / listen-only CDs (999).
+      const cd = Number(other.cooldown) || 0;
+      if (!(cd > 0 && cd < 500)) continue;
+      if (speed) {
+        if (dur > 0) grantTimedSpeed(other, speed, untilT, `amulet_energy:${piece.placementKey}`);
+        else addSpeed(other, speed);
+      }
+      n += 1;
+    }
     pushActivate(piece, ctx, 'amulet_of_agility', `Accessory: ${piece.name}`);
     ctx.events.push({
       t: ctx.t,
       type: 'info',
-      label: `${piece.name}: +${Math.round(speed * 100)}% speed ${dur}s (CD items), ${Math.round(refundRate * 100)}% used-buff refund`,
+      label: `${piece.name}: +${Math.round(speed * 100)}% speed ${dur}s ×${n} CD items, ${Math.round(refundRate * 100)}% used-buff refund`,
       meta: { category: 'adjacency', script: true, handler: 'amulet_of_agility' },
     });
   },

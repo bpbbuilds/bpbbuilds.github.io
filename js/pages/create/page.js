@@ -7,9 +7,11 @@ import { getSession, onAuthChange } from '../../shared/auth.js';
 import { skelBar, skelBlock } from '../../shared/skeleton.js';
 import { createTooltipHover } from '../../shared/tooltip-hover.js';
 import { initItemsCatalog } from '../items/catalog.js';
+import { watchCatalogColumns } from './catalog-cols.js';
+import { mountCreateFilterDrawer } from './filter-drawer.js';
 import { initWheelToGrid } from '../items/wheel-to-grid.js';
 import { createEditorState } from './editor-state.js';
-import { mountBoardEditor } from './board-editor.js';
+import { mountBoardEditor } from './board-editor.js?v=place-back';
 import { wrapFiltersWithTabs } from './rail-tabs.js';
 import { mountMetaPane } from './meta-pane.js';
 import { validateCreateDraft } from './submit-validate.js';
@@ -22,6 +24,13 @@ import {
   publishDraft,
 } from './publish.js';
 import { applyRemixFromUrl } from './remix.js';
+import {
+  computeBoardLiveStatsSync,
+  computePlacementCounters,
+  getCachedCanAffect,
+  mergeBoardLiveItem,
+  warmBoardLiveCanAffect,
+} from './board-live-stats.js';
 
 /** Fallback if create/index.html shell is missing (keeps board 9/7 reserve). */
 function ensureCreateShell(main) {
@@ -70,6 +79,7 @@ async function waitForSession(ms = 5000) {
  * @param {{
  *   state: ReturnType<typeof createEditorState>,
  *   itemsById: Map<string, object> | null,
+ *   getSpriteUrl?: ((item: object) => string) | null,
  *   rail: ReturnType<typeof wrapFiltersWithTabs> | null,
  *   submitInfo: ReturnType<typeof createSubmitInfoModal>,
  *   root: string,
@@ -94,7 +104,11 @@ async function resumePendingSubmit(opts) {
 
   opts.rail?.setSubmitBusy?.(true);
   try {
-    const { slug } = await publishDraft(draft);
+    const { slug } = await publishDraft(draft, {
+      itemsById: opts.itemsById,
+      getSpriteUrl: opts.getSpriteUrl,
+      root: opts.root,
+    });
     clearDraft();
     location.href = buildViewHref(slug, opts.root);
   } catch (err) {
@@ -147,6 +161,7 @@ export async function initCreatePage() {
       enableSpotlight: false,
       cols: 10,
       fillWidth: true,
+      mobileRarityOrder: true,
       onItemPointerDown(itemId, e) {
         if (board?.isDragging?.()) return;
         if (meta?.tryAssignSkill?.(itemId)) return;
@@ -161,6 +176,7 @@ export async function initCreatePage() {
     }
 
     itemsById = catalog.itemsById;
+    watchCatalogColumns(catalogHost);
 
     const remixResult = await applyRemixFromUrl(state);
     if (remixResult.error) {
@@ -190,7 +206,11 @@ export async function initCreatePage() {
           }
           rail?.setSubmitBusy?.(true);
           try {
-            const { slug } = await publishDraft(draft);
+            const { slug } = await publishDraft(draft, {
+              itemsById,
+              getSpriteUrl: catalog.getSpriteUrl,
+              root,
+            });
             clearDraft();
             location.href = buildViewHref(slug, root);
           } catch (err) {
@@ -218,6 +238,7 @@ export async function initCreatePage() {
         });
       }
     }
+    if (filtersEl instanceof HTMLElement) mountCreateFilterDrawer(filtersEl);
 
     state.subscribe(refreshSubmitReady);
     refreshSubmitReady();
@@ -239,6 +260,7 @@ export async function initCreatePage() {
     if (meta) board.setMetaDrop?.(meta);
 
     const tip = createTooltipHover();
+    await warmBoardLiveCanAffect();
     tip.bind(boardHost, {
       selector:
         '.bpb-bg__item[data-item-id]:not(.bpb-bg__item--parked):not(.is-layer-dim)',
@@ -246,17 +268,58 @@ export async function initCreatePage() {
         if (!(el instanceof HTMLElement) || el.classList.contains('is-layer-dim')) {
           return null;
         }
-        return catalog.itemsById.get(el.dataset.itemId);
+        const id = el.dataset.itemId;
+        const key = el.dataset.placementKey;
+        const catalogItem = id ? catalog.itemsById.get(id) : null;
+        if (!catalogItem) return null;
+        const canAffect = getCachedCanAffect();
+        const placements =
+          board?.getVisiblePlacements?.() || state.getDraft().placements || [];
+        const liveMap = canAffect
+          ? computeBoardLiveStatsSync(placements, catalog.itemsById, canAffect)
+          : null;
+        let live = key && liveMap ? liveMap.get(key) : null;
+        let resolveKey = key || '';
+        // Fallback when stampKeys missed (unique id on board).
+        if ((!live || !resolveKey) && id) {
+          const sameId = placements.filter((p) => p.id === id);
+          if (sameId.length === 1 && sameId[0].key) {
+            resolveKey = String(sameId[0].key);
+            if (!live && liveMap) live = liveMap.get(resolveKey) || null;
+          }
+        }
+        const placementCounters =
+          resolveKey && canAffect
+            ? computePlacementCounters(
+                catalogItem,
+                placements,
+                catalog.itemsById,
+                canAffect,
+                resolveKey,
+              )
+            : null;
+        return mergeBoardLiveItem(catalogItem, live, { placementCounters });
       },
       place: 'overFilters',
       filtersSelector: '[data-create-catalog]',
       filtersScope: boardHost.closest('.create-layout') || document,
     });
+    if (rail?.buildHost) {
+      tip.bind(rail.buildHost, {
+        selector: '.bpb-mention[data-item-id]',
+        getItem: (el) =>
+          el instanceof HTMLElement
+            ? catalog.itemsById.get(el.dataset.itemId)
+            : null,
+        place: 'itemRight',
+      });
+    }
 
     // After Discord OAuth from Submit: finish publish → build view
     await resumePendingSubmit({
       state,
       itemsById,
+      getSpriteUrl: catalog.getSpriteUrl,
       rail,
       submitInfo,
       root,

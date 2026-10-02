@@ -1,0 +1,48 @@
+{
+  "note": "Hand-labeled from pine-protector-640.png (LANCZOS downscale of pine-protector; same labels) on the 9x7 board (x=col, y=row, r=CW quarter turns; r=null = rotation-agnostic 1x1). Unlabeled: red-edged cleaver-on-stone 1x1 at 2,3 — not among the 426 detector classes, so the v1 model can't see it.",
+  "items": [
+    { "name": "Strong Stone Skin Potion", "x": 0, "y": 0, "r": 0 },
+    { "name": "Amulet of Steel", "x": 1, "y": 0, "r": null },
+    { "name": "Djinn Lamp", "x": 2, "y": 0, "r": 0 },
+    { "name": "Blueberries", "x": 4, "y": 0, "r": null },
+    { "name": "Blueberries", "x": 5, "y": 0, "r": null },
+    { "name": "Blueberries", "x": 6, "y": 0, "r": null },
+
+    { "name": "Djinn Lamp", "x": 1, "y": 1, "r": 0 },
+    { "name": "Falcon Blade", "x": 3, "y": 1, "r": 0 },
+    { "name": "Mana Orb", "x": 4, "y": 1, "r": null },
+    { "name": "Prismatic Orb", "x": 5, "y": 1, "r": null },
+    { "name": "Djinn Lamp", "x": 6, "y": 1, "r": 0 },
+
+    { "name": "Strong Stone Skin Potion", "x": 0, "y": 2, "r": 3 },
+    { "name": "Amulet of Darkness", "x": 2, "y": 2, "r": null },
+    { "name": "Prismatic Orb", "x": 4, "y": 2, "r": null },
+    { "name": "Amulet of Darkness", "x": 5, "y": 2, "r": null },
+    { "name": "Prismatic Orb", "x": 6, "y": 2, "r": null },
+    { "name": "Mana Orb", "x": 7, "y": 2, "r": null },
+    { "name": "Blueberries", "x": 8, "y": 2, "r": null },
+
+    { "name": "Strong Stone Skin Potion", "x": 0, "y": 3, "r": 3 },
+    { "name": "Falcon Blade", "x": 4, "y": 3, "r": 1 },
+    { "name": "Shovel-B01 3000", "x": 7, "y": 3, "r": 1 },
+
+    { "name": "Vampiric Armor", "x": 0, "y": 4, "r": 2 },
+    { "name": "Mana Orb", "x": 2, "y": 4, "r": null },
+    { "name": "Laboratory", "x": 3, "y": 4, "r": 2 },
+    { "name": "Djinn Lamp", "x": 5, "y": 4, "r": 3 },
+    { "name": "Djinn Lamp", "x": 6, "y": 4, "r": 3 },
+    { "name": "Mana Orb", "x": 7, "y": 4, "r": null },
+
+    { "name": "Con-Trap-Tron", "x": 2, "y": 5, "r": 0 },
+    { "name": "Mana Orb", "x": 5, "y": 6, "r": null }
+  ],
+  "bagCells": [
+    "0,0", "1,0", "2,0", "3,0", "4,0", "5,0", "6,0",
+    "0,1", "1,1", "2,1", "3,1", "4,1", "5,1", "6,1", "7,1",
+    "0,2", "1,2", "2,2", "3,2", "4,2", "5,2", "6,2", "7,2", "8,2",
+    "0,3", "1,3", "2,3", "3,3", "4,3", "5,3", "6,3", "7,3", "8,3",
+    "0,4", "1,4", "2,4", "3,4", "4,4", "5,4", "6,4", "7,4", "8,4",
+    "0,5", "1,5", "2,5", "3,5", "4,5", "5,5", "6,5", "7,5", "8,5",
+    "0,6", "1,6", "2,6", "3,6", "5,6"
+  ]
+}

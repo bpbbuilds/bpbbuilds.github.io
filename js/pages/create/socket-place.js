@@ -18,6 +18,37 @@ export function hostSocketCount(item) {
   );
 }
 
+/** Gem face in 90° steps (Gem.quantizedRotation). */
+export function gemFace(n) {
+  const f = Math.round(Number(n));
+  if (!Number.isFinite(f)) return 0;
+  return ((f % 4) + 4) % 4;
+}
+
+/**
+ * Faces aligned to gem slots. Missing entries are face 0.
+ * @param {object | null | undefined} placement
+ * @param {number} len
+ * @returns {number[]}
+ */
+export function gemRFor(placement, len) {
+  const src = Array.isArray(placement?.gemR) ? placement.gemR : [];
+  const out = [];
+  for (let i = 0; i < len; i += 1) out.push(gemFace(src[i]));
+  return out;
+}
+
+/**
+ * Copy socket ids and faces onto a new placement or cargo row.
+ * @param {object | null | undefined} src
+ */
+export function gemCarry(src) {
+  if (!src || !Array.isArray(src.gems)) return {};
+  const gems = src.gems.map((g) => (g == null || g === '' ? '' : String(g)));
+  if (!gems.length) return {};
+  return { gems, gemR: gemRFor(src, gems.length) };
+}
+
 /**
  * @param {object} placement
  * @param {object} hostItem
@@ -106,21 +137,30 @@ export function paintSocketHover(boardRoot, hovered) {
 }
 
 /**
- * Write gem into host socket; returns previous gem id in that slot (hotswap).
+ * Write gem into host socket; returns previous gem id and face (hotswap).
  * @param {object} placement
  * @param {object} hostItem
  * @param {number} slot
  * @param {string} gemId
- * @returns {{ gems: string[], prevGemId: string }}
+ * @param {number} [face]
+ * @returns {{ gems: string[], gemR: number[], prevGemId: string, prevFace: number }}
  */
-export function withGemInSocket(placement, hostItem, slot, gemId) {
+export function withGemInSocket(placement, hostItem, slot, gemId, face = 0) {
   const gems = gemsSlotsFor(placement, hostItem);
+  const gemR = gemRFor(placement, gems.length);
   if (slot < 0 || slot >= gems.length) {
-    return { gems: placement.gems ? placement.gems.slice() : [], prevGemId: '' };
+    return {
+      gems: placement.gems ? placement.gems.slice() : [],
+      gemR: gemRFor(placement, Array.isArray(placement.gems) ? placement.gems.length : 0),
+      prevGemId: '',
+      prevFace: 0,
+    };
   }
   const prevGemId = gems[slot] || '';
+  const prevFace = gemR[slot] || 0;
   gems[slot] = String(gemId);
-  return { gems, prevGemId };
+  gemR[slot] = gemFace(face);
+  return { gems, gemR, prevGemId, prevFace };
 }
 
 /**
@@ -128,12 +168,16 @@ export function withGemInSocket(placement, hostItem, slot, gemId) {
  * @param {object} placement
  * @param {object} hostItem
  * @param {number} slot
- * @returns {string[]}
+ * @returns {{ gems: string[], gemR: number[] }}
  */
 export function withoutGemInSocket(placement, hostItem, slot) {
   const gems = gemsSlotsFor(placement, hostItem);
-  if (slot >= 0 && slot < gems.length) gems[slot] = '';
-  return gems;
+  const gemR = gemRFor(placement, gems.length);
+  if (slot >= 0 && slot < gems.length) {
+    gems[slot] = '';
+    gemR[slot] = 0;
+  }
+  return { gems, gemR };
 }
 
 export { isGemItem };

@@ -1,0 +1,139 @@
+{
+  "note": "Hand-labeled with create ?label=1",
+  "source": "reddit",
+  "split": "test",
+  "labeledAt": "2026-09-27T03:42:43.933Z",
+  "shot": {
+    "w": 1057,
+    "h": 969
+  },
+  "items": [
+    {
+      "name": "Spear",
+      "x": 1,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Hero Sword",
+      "x": 0,
+      "y": 4,
+      "r": 1
+    },
+    {
+      "name": "Whetstone",
+      "x": 0,
+      "y": 3,
+      "r": null
+    },
+    {
+      "name": "Whetstone",
+      "x": 2,
+      "y": 4,
+      "r": null
+    },
+    {
+      "name": "Piggybank",
+      "x": 1,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Gloves of Haste",
+      "x": 6,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Lucky Clover",
+      "x": 8,
+      "y": 4,
+      "r": null
+    },
+    {
+      "name": "Star of Courage",
+      "x": 0,
+      "y": 5,
+      "r": null
+    },
+    {
+      "name": "Banana",
+      "x": 4,
+      "y": 3,
+      "r": 3
+    }
+  ],
+  "skills": [
+    {
+      "name": "Smithing For Dummies",
+      "x": 3,
+      "y": 4,
+      "r": null
+    }
+  ],
+  "bagCells": [
+    "7,3",
+    "8,3",
+    "7,4",
+    "8,4",
+    "5,3",
+    "6,3",
+    "5,4",
+    "6,4",
+    "3,3",
+    "4,3",
+    "3,4",
+    "4,4",
+    "0,3",
+    "0,4",
+    "0,5",
+    "1,3",
+    "2,3",
+    "1,4",
+    "2,4",
+    "1,5",
+    "2,5"
+  ],
+  "bags": [
+    {
+      "name": "Leather Bag",
+      "x": 7,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 5,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 3,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 0,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Ranger Bag",
+      "x": 1,
+      "y": 3,
+      "r": 0
+    }
+  ],
+  "grid": {
+    "ok": true,
+    "originX": 27.75,
+    "originY": -4.62,
+    "cellW": 106.36,
+    "cellH": 106.36,
+    "imgW": 1057,
+    "imgH": 969,
+    "score": 1.231
+  }
+}

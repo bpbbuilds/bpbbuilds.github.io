@@ -1,6 +1,8 @@
 /**
- * Create Sellbox stand-in — delete held item; cargo/gems → Parked
- * (game Item.drop → SELLBOX: sell main, pushDraggedInside / gems to storage).
+ * Create Sellbox stand-in — delete held item.
+ *
+ * Single bag: game Item.drop → SELLBOX (sell main, insides/gems → Parked).
+ * Multi-select: delete every selected piece; socketed gems still → Parked.
  */
 
 import { newPlacementKey } from './draft-io.js';
@@ -14,6 +16,23 @@ import { parkedFromPlacement, pointOverElement } from './park-strip.js';
 export function pointerOverSell(sellEl, clientX, clientY) {
   // Sellbox.isHovered — mouse in sell rect (not bag position)
   return pointOverElement(sellEl, clientX, clientY);
+}
+
+/**
+ * @param {(string | null | undefined)[] | null | undefined} gems
+ * @param {import('./draft-io.js').ParkedEntry[]} toPark
+ */
+function parkGems(gems, toPark) {
+  if (!Array.isArray(gems)) return;
+  for (const gid of gems) {
+    if (!gid) continue;
+    toPark.push({
+      id: String(gid),
+      r: 0,
+      key: newPlacementKey(),
+      priority: null,
+    });
+  }
 }
 
 /**
@@ -34,10 +53,16 @@ export function commitDragToSell(args) {
   const removeKeys = new Set();
   /** @type {import('./draft-io.js').ParkedEntry[]} */
   const toPark = [];
+  const discardFollowers = Array.isArray(multiMoveKeys) && multiMoveKeys.length > 1;
+  const cargo = Array.isArray(cur.cargo) ? cur.cargo : [];
 
-  // Game: cargo / multi followers → storage (Parked), main is discarded
-  for (const c of Array.isArray(cur.cargo) ? cur.cargo : []) {
+  for (const c of cargo) {
     if (c?.key) removeKeys.add(c.key);
+    if (discardFollowers) {
+      // Multi-select: dump the follower, keep only its socketed gems.
+      parkGems(c.gems, toPark);
+      continue;
+    }
     if (c?.id) {
       toPark.push(
         parkedFromPlacement({
@@ -51,18 +76,7 @@ export function commitDragToSell(args) {
     }
   }
 
-  // Game pushGemsToStorage on sell
-  if (Array.isArray(cur.gems)) {
-    for (const gid of cur.gems) {
-      if (!gid) continue;
-      toPark.push({
-        id: String(gid),
-        r: 0,
-        key: newPlacementKey(),
-        priority: null,
-      });
-    }
-  }
+  parkGems(cur.gems, toPark);
 
   if (cur.mode === 'move' && cur.moveKey) {
     removeKeys.add(cur.moveKey);

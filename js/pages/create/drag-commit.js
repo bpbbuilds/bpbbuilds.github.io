@@ -12,9 +12,11 @@ import {
 } from './collision.js';
 import { captureBagCargo } from './bag-cargo.js';
 import { flattenParkedEntries, parkedFromPlacement } from './park-strip.js';
+import { queueAutoParkFly } from './create-park-fly.js';
 import { rehomeColliders } from './try-add.js';
 import { EDIT_MODE } from './editor-state.js';
 import { newPlacementKey } from './draft-io.js';
+import { gemCarry, gemFace } from './socket-place.js';
 
 /**
  * @param {object | null | undefined} p
@@ -30,10 +32,15 @@ function withPlacementFields(p, patch = {}) {
     priority: p?.priority ?? null,
     ...patch,
   };
-  if (Array.isArray(p?.gems) && patch.gems === undefined) {
-    row.gems = p.gems.slice();
-  } else if (Array.isArray(patch.gems)) {
-    row.gems = patch.gems.slice();
+  const gems = Array.isArray(patch.gems)
+    ? patch.gems.slice()
+    : Array.isArray(p?.gems)
+      ? p.gems.slice()
+      : null;
+  if (gems) row.gems = gems;
+  const faceSrc = patch.gemR !== undefined ? patch.gemR : p?.gemR;
+  if (gems && Array.isArray(faceSrc)) {
+    row.gemR = gems.map((_, i) => gemFace(faceSrc[i]));
   }
   return row;
 }
@@ -168,7 +175,7 @@ export function commitTryAdd(args) {
     prevHeld || {
       id: cur.itemId,
       priority: null,
-      ...(Array.isArray(cur.gems) ? { gems: cur.gems } : {}),
+      ...gemCarry(cur),
     };
 
   const heldCargoKeys = new Set(
@@ -362,6 +369,7 @@ export function commitTryAdd(args) {
       toPark.push(parkedFromPlacement(leftover, []));
     }
 
+    queueAutoParkFly(toPark);
     state.setPlacements(board);
     state.appendParked?.(toPark);
     endDragHard();
@@ -420,23 +428,25 @@ export function commitTryAdd(args) {
     cargoLeftover = applied.leftover;
   }
 
+  // Park extras that would have been deleted (keep first as free-follow).
+  // Snapshot board rects *before* setPlacements removes them from the DOM.
+  const first = cargoLeftover || leftovers[0] || null;
+  const rest = leftovers.filter((l) => !first || l.key !== first.key);
+  const parkRest = rest.flatMap((l) =>
+    flattenParkedEntries(l, colliderBagCargo.get(l.key) || []),
+  );
+  const rejectPark = cargoRejected.filter((p) => !first || p.key !== first.key);
+  queueAutoParkFly([...parkRest, ...rejectPark]);
+
   state.setPlacements(board);
   endDragHard();
 
-  // Park extras that would have been deleted (keep first as free-follow).
-  const first = cargoLeftover || leftovers[0] || null;
-  const rest = leftovers.filter((l) => !first || l.key !== first.key);
-  if (rest.length) {
+  if (parkRest.length) state.appendParked?.(parkRest);
+  if (rejectPark.length) {
     state.appendParked?.(
-      rest.flatMap((l) =>
-        flattenParkedEntries(l, colliderBagCargo.get(l.key) || []),
-      ),
+      rejectPark.map((p) => parkedFromPlacement(p, [])),
     );
   }
-  parkPlacements(
-    state,
-    cargoRejected.filter((p) => !first || p.key !== first.key),
-  );
 
   if (first) {
     queueMicrotask(() => {
@@ -490,8 +500,9 @@ function applyMoveCommit(args) {
       state.getDraft().placements,
       itemsById,
     );
-    state.setPlacements(kept);
+    // Park while floaters are still painted on the board.
     parkPlacements(state, floating);
+    state.setPlacements(kept);
   }
   return null;
 }
@@ -526,7 +537,7 @@ function applyFollowersOnto(
           r: p.r,
           ox: Number(p.x) - Number(prevMain.x),
           oy: Number(p.y) - Number(prevMain.y),
-          gems: Array.isArray(p.gems) ? p.gems.slice() : undefined,
+          ...gemCarry(p),
           priority: p.priority ?? null,
         };
       })
@@ -550,6 +561,7 @@ function applyFollowersOnto(
       x: Math.round(Number(target.x) + (Number(entry.ox) || 0)),
       y: Math.round(Number(target.y) + (Number(entry.oy) || 0)),
       gems: entry.gems ?? prior?.gems,
+      gemR: entry.gemR ?? prior?.gemR,
       priority: entry.priority ?? prior?.priority ?? null,
     });
     const cells = placementBodyCells(followerItem, nextP);
@@ -609,6 +621,8 @@ function applyCargoOnto(cur, prevBag, target, working, itemsById, mode) {
 /** @param {object[]} placements */
 function parkPlacements(state, placements) {
   if (!placements?.length) return;
+  // Snapshot board rects before appendParked / setPlacements re-paint.
+  queueAutoParkFly(placements);
   state.appendParked?.(
     placements.map((p) => parkedFromPlacement(p, [])),
   );
@@ -645,7 +659,7 @@ function applyMultiSelectDrop(
           r: p.r,
           ox: Number(p.x) - Number(prevMain.x),
           oy: Number(p.y) - Number(prevMain.y),
-          gems: Array.isArray(p.gems) ? p.gems.slice() : undefined,
+          ...gemCarry(p),
           priority: p.priority ?? null,
         };
       })
@@ -700,7 +714,7 @@ function applyBagMoveWithCargo(cur, prevBag, target, state, itemsById, mode) {
       r: p.r,
       ox: Number(p.x) - Number(prevBag.x),
       oy: Number(p.y) - Number(prevBag.y),
-      gems: Array.isArray(p.gems) ? p.gems.slice() : undefined,
+      ...gemCarry(p),
     }));
   }
 

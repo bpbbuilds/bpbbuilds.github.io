@@ -115,6 +115,35 @@ function parseCsv(text) {
   });
 }
 
+/** Item.ActivationAni names (Item.gd). */
+const ACTIVATION_ANI = [
+  'Scale',
+  'Jump',
+  'SquishyJump',
+  'VerySquishyJump',
+  'Slash',
+  'Stab',
+  'Bonk',
+  'ReverseBonk',
+  'Chop',
+  'Squish',
+  'Block',
+  'Wave',
+  'Potion',
+  'Sweep',
+  'Spin',
+  'Throw',
+  'Shoot',
+  'Struggle',
+  'ReverseStab',
+  'Hiss',
+  'Tackle',
+  'DoubleSlash',
+  'Flash',
+];
+
+const ANI_NORM = new Map(ACTIVATION_ANI.map((a) => [a.toLowerCase().replace(/[^a-z]/g, ''), a]));
+
 function slugify(name) {
   return (
     String(name || '')
@@ -124,6 +153,22 @@ function slugify(name) {
       .replace(/^_|_$/g, '')
       .slice(0, 80) || 'item'
   );
+}
+
+/**
+ * ItemBook.gd: bag → Scale, Potion → Potion, else ItemData.animation (default Jump).
+ * Pumpkin.gd overrides to Throw.
+ * @param {{ type?: string, animation?: string, name?: string }} row
+ */
+export function resolveActivationAni(row) {
+  const type = String(row.type || '').trim();
+  const name = String(row.name || '').trim();
+  if (/bag/i.test(type)) return 'Scale';
+  if (/potion/i.test(type)) return 'Potion';
+  if (slugify(name) === 'pumpkin') return 'Throw';
+  const raw = String(row.animation || '').trim();
+  if (!raw) return 'Jump';
+  return ANI_NORM.get(raw.toLowerCase().replace(/[^a-z]/g, '')) || 'Jump';
 }
 
 function numOrNull(raw) {
@@ -312,6 +357,7 @@ function parseItem(row) {
     requires: String(row.requires ?? '').trim() || null,
     gateItem: String(row.gateItem ?? '').trim() || null,
     image: `${internalName.replace(/\s+/g, '')}.png`,
+    activationAni: resolveActivationAni(row),
   };
 }
 
@@ -417,6 +463,14 @@ function main() {
   };
   fs.mkdirSync(CACHE, { recursive: true });
   fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
+  const aniOut = path.join(ROOT, 'assets', 'data', 'sim-activation-ani.json');
+  const aniMap = {};
+  for (const item of items) aniMap[item.id] = item.activationAni || 'Jump';
+  fs.mkdirSync(path.dirname(aniOut), { recursive: true });
+  fs.writeFileSync(
+    aniOut,
+    `${JSON.stringify({ source: 'ItemData.csv', extractedAt: out.extractedAt, items: aniMap }, null, 2)}\n`,
+  );
   console.log(
     JSON.stringify(
       {

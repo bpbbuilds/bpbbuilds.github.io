@@ -1,0 +1,118 @@
+/* Foe mode switch — Dummy / Public build / Mirror */
+
+.sim-foe {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0 0 0.85rem;
+  padding: 0.65rem 0.7rem 0.7rem;
+  border: 1px solid rgba(70, 88, 120, 0.22);
+  border-radius: 0.35rem;
+  background: rgba(255, 255, 255, 0.55);
+  box-sizing: border-box;
+}
+
+.sim-foe__label {
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(40, 48, 64, 0.72);
+}
+
+.sim-foe__modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.sim-foe__mode {
+  appearance: none;
+  border: 1px solid rgba(70, 88, 120, 0.35);
+  background: rgba(250, 251, 252, 0.9);
+  color: #2a3344;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.82rem;
+  line-height: 1.2;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.28rem;
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.sim-foe__mode:hover,
+.sim-foe__mode:focus-visible {
+  border-color: rgba(70, 88, 120, 0.65);
+  outline: none;
+}
+
+.sim-foe__mode.is-active {
+  background: #2a3344;
+  border-color: #2a3344;
+  color: #f4f6fa;
+}
+
+.sim-foe__build {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.45rem;
+}
+
+.sim-foe__build[hidden] {
+  display: none !important;
+}
+
+.sim-foe__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1 1 8rem;
+  min-width: 0;
+}
+
+.sim-foe__field--round {
+  flex: 0 0 4.5rem;
+}
+
+.sim-foe__field-label {
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.72rem;
+  color: rgba(40, 48, 64, 0.65);
+}
+
+.sim-foe__input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid rgba(70, 88, 120, 0.35);
+  border-radius: 0.28rem;
+  padding: 0.35rem 0.45rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.85rem;
+  background: #fff;
+  color: #1e2430;
+}
+
+.sim-foe__input:focus-visible {
+  outline: 2px solid rgba(70, 88, 120, 0.45);
+  outline-offset: 1px;
+}
+
+.sim-foe__apply {
+  appearance: none;
+  border: 1px solid #2a3344;
+  background: #2a3344;
+  color: #f4f6fa;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.82rem;
+  padding: 0.38rem 0.7rem;
+  border-radius: 0.28rem;
+  cursor: var(--bpb-cursor-pointer);
+  flex: 0 0 auto;
+}
+
+.sim-foe__apply:hover,
+.sim-foe__apply:focus-visible {
+  filter: brightness(1.08);
+  outline: none;
+}

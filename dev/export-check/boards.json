@@ -1,0 +1,1147 @@
+{
+  "boards": [
+    {
+      "id": "rounds-1-3",
+      "title": "Rounds 1–3",
+      "scene": "paper",
+      "placements": [
+        {
+          "id": "berserker_bag",
+          "name": "Duffle Bag",
+          "x": 4,
+          "y": 4,
+          "r": 3
+        },
+        {
+          "id": "potion_belt",
+          "name": "Potion Belt",
+          "x": 0,
+          "y": 2,
+          "r": 0
+        },
+        {
+          "id": "whetstone",
+          "name": "Whetstone",
+          "x": 5,
+          "y": 6,
+          "r": 0
+        },
+        {
+          "id": "the_lovers",
+          "name": "The Lovers",
+          "x": 4,
+          "y": 4,
+          "r": 0
+        },
+        {
+          "id": "spirit_bells",
+          "name": "Spirit Bells",
+          "x": 0,
+          "y": 2,
+          "r": 2
+        },
+        {
+          "id": "rope",
+          "name": "Rope",
+          "x": 0,
+          "y": 4,
+          "r": 3
+        },
+        {
+          "id": "lightning_potion",
+          "name": "Lightning in a Bottle",
+          "x": 5,
+          "y": 4,
+          "r": 2
+        },
+        {
+          "id": "white_king",
+          "name": "White King",
+          "x": 4,
+          "y": 6,
+          "r": 2
+        }
+      ]
+    },
+    {
+      "id": "rounds-10-11",
+      "title": "Rounds 10–11",
+      "scene": "shop",
+      "placements": [
+        {
+          "id": "berserker_bag",
+          "name": "Duffle Bag",
+          "x": 1,
+          "y": 3,
+          "r": 3
+        },
+        {
+          "id": "engineer_box",
+          "name": "Port-O-Charger",
+          "x": 4,
+          "y": 2,
+          "r": 1
+        },
+        {
+          "id": "leather_bag",
+          "name": "Leather Bag",
+          "x": 7,
+          "y": 3,
+          "r": 2
+        },
+        {
+          "id": "holdall",
+          "name": "Holdall",
+          "x": 4,
+          "y": 4,
+          "r": 0
+        },
+        {
+          "id": "burning_spikes",
+          "name": "Thermal Thorns",
+          "x": 5,
+          "y": 2,
+          "r": 0
+        },
+        {
+          "id": "flawless_amethyst",
+          "name": "Flawless Amethyst",
+          "x": 1,
+          "y": 4,
+          "r": 0
+        },
+        {
+          "id": "rat_chef",
+          "name": "Rat Chef",
+          "x": 2,
+          "y": 3,
+          "r": 2
+        },
+        {
+          "id": "emerald_egg",
+          "name": "Emerald Egg",
+          "x": 7,
+          "y": 3,
+          "r": 0
+        },
+        {
+          "id": "ruby_whelp",
+          "name": "Ruby Whelp",
+          "x": 5,
+          "y": 4,
+          "r": 3
+        },
+        {
+          "id": "miss_fortune",
+          "name": "Miss Fortune",
+          "x": 4,
+          "y": 2,
+          "r": 2
+        },
+        {
+          "id": "flame",
+          "name": "Flame",
+          "x": 2,
+          "y": 5,
+          "r": 0
+        },
+        {
+          "id": "amulet_of_alchemy",
+          "name": "Amulet of Alchemy",
+          "x": 4,
+          "y": 4,
+          "r": 1
+        },
+        {
+          "id": "customer_card",
+          "name": "Customer Card",
+          "x": 6,
+          "y": 2,
+          "r": 1
+        },
+        {
+          "id": "courage_puppy",
+          "name": "Courage Puppy",
+          "x": 5,
+          "y": 3,
+          "r": 2
+        },
+        {
+          "id": "black_king",
+          "name": "Black King",
+          "x": 1,
+          "y": 3,
+          "r": 2
+        },
+        {
+          "id": "slice_of_toast",
+          "name": "Slice of Toast",
+          "x": 1,
+          "y": 5,
+          "r": 3
+        },
+        {
+          "id": "plastic_cube",
+          "name": "Plastic Cube",
+          "x": 4,
+          "y": 5,
+          "r": 3
+        }
+      ]
+    },
+    {
+      "id": "rounds-17-18",
+      "title": "Rounds 17–18",
+      "scene": "battle",
+      "placements": [
+        {
+          "id": "toolbox",
+          "name": "Utility Pouch",
+          "x": 3,
+          "y": 3,
+          "r": 3
+        },
+        {
+          "id": "engineer_box",
+          "name": "Port-O-Charger",
+          "x": 6,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "leather_bag",
+          "name": "Leather Bag",
+          "x": 0,
+          "y": 3,
+          "r": 0
+        },
+        {
+          "id": "relic_case",
+          "name": "Relic Case",
+          "x": 4,
+          "y": 6,
+          "r": 3
+        },
+        {
+          "id": "scholar_bag",
+          "name": "Scholar Bag",
+          "x": 5,
+          "y": 0,
+          "r": 0
+        },
+        {
+          "id": "random_loadout_bag",
+          "name": "Sack of Surprises",
+          "x": 2,
+          "y": 1,
+          "r": 0
+        },
+        {
+          "id": "knife_to_meet_you",
+          "name": "Knife to Meet You",
+          "x": 2,
+          "y": 2,
+          "r": 1
+        },
+        {
+          "id": "fortunas_kiss",
+          "name": "Fortuna’s Kiss",
+          "x": 3,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "perfect_topaz",
+          "name": "Perfect Topaz",
+          "x": 5,
+          "y": 6,
+          "r": 0
+        },
+        {
+          "id": "tiger_rune",
+          "name": "Tiger Rune",
+          "x": 4,
+          "y": 4,
+          "r": 3
+        },
+        {
+          "id": "lucky_cat",
+          "name": "Maneki-neko",
+          "x": 6,
+          "y": 1,
+          "r": 3
+        },
+        {
+          "id": "ice_flower",
+          "name": "Ice Flower",
+          "x": 0,
+          "y": 3,
+          "r": 0
+        },
+        {
+          "id": "time_dilator",
+          "name": "Time Dilator",
+          "x": 3,
+          "y": 5,
+          "r": 2
+        },
+        {
+          "id": "blueberries",
+          "name": "Blueberries",
+          "x": 5,
+          "y": 5,
+          "r": 0
+        },
+        {
+          "id": "turtle",
+          "name": "Turtle",
+          "x": 7,
+          "y": 4,
+          "r": 2
+        },
+        {
+          "id": "rope",
+          "name": "Rope",
+          "x": 5,
+          "y": 0,
+          "r": 0
+        },
+        {
+          "id": "whetstone",
+          "name": "Whetstone",
+          "x": 3,
+          "y": 2,
+          "r": 0
+        },
+        {
+          "id": "burning_sword",
+          "name": "Burning Sword",
+          "x": 4,
+          "y": 5,
+          "r": 2
+        },
+        {
+          "id": "anvil",
+          "name": "Anvil",
+          "x": 5,
+          "y": 3,
+          "r": 0
+        },
+        {
+          "id": "customer_card",
+          "name": "Customer Card",
+          "x": 8,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "bag_of_stones",
+          "name": "Bag of Stones",
+          "x": 6,
+          "y": 6,
+          "r": 2
+        },
+        {
+          "id": "blood_amulet",
+          "name": "Blood Amulet",
+          "x": 6,
+          "y": 4,
+          "r": 3
+        },
+        {
+          "id": "artifact_stone_heat",
+          "name": "Artifact Stone: Heat",
+          "x": 3,
+          "y": 1,
+          "r": 1
+        },
+        {
+          "id": "electric_torch",
+          "name": "Electric Torch",
+          "x": 1,
+          "y": 3,
+          "r": 0
+        },
+        {
+          "id": "white_pawn",
+          "name": "White Pawn",
+          "x": 4,
+          "y": 3,
+          "r": 3
+        },
+        {
+          "id": "twine_badge",
+          "name": "Twine Badge",
+          "x": 7,
+          "y": 0,
+          "r": 0
+        },
+        {
+          "id": "rainbow_badge",
+          "name": "Rainbow Badge",
+          "x": 3,
+          "y": 4,
+          "r": 0
+        },
+        {
+          "id": "stone_badge",
+          "name": "Stone Badge",
+          "x": 7,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "plastic_cube",
+          "name": "Plastic Cube",
+          "x": 2,
+          "y": 1,
+          "r": 3
+        },
+        {
+          "id": "wolf_badge",
+          "name": "Wolf Badge",
+          "x": 5,
+          "y": 1,
+          "r": 2
+        }
+      ]
+    },
+    {
+      "id": "uploaded-rounds-1-3",
+      "title": "Rounds 1–3, uploaded runs",
+      "scene": "paper",
+      "note": "Median of 30 early frames on the 10 uploaded builds: 4 bags, 8 items, 0 skills, 0 loose jewels, 1 socketed gem.",
+      "placements": [
+        {
+          "id": "portable_altar",
+          "name": "Offering Bowl",
+          "x": 1,
+          "y": 5,
+          "r": 3
+        },
+        {
+          "id": "stamina_sack",
+          "name": "Stamina Sack",
+          "x": 0,
+          "y": 3,
+          "r": 3
+        },
+        {
+          "id": "stamina_sack",
+          "name": "Stamina Sack",
+          "x": 3,
+          "y": 5,
+          "r": 1
+        },
+        {
+          "id": "fanny_pack",
+          "name": "Fanny Pack",
+          "x": 7,
+          "y": 0,
+          "r": 1
+        },
+        {
+          "id": "spell_scroll_frostbolt",
+          "name": "Spell Scroll: Frostbolt",
+          "x": 1,
+          "y": 5,
+          "r": 2
+        },
+        {
+          "id": "amulet_of_alchemy",
+          "name": "Amulet of Alchemy",
+          "x": 1,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "reverse",
+          "name": "Reverse!",
+          "x": 3,
+          "y": 5,
+          "r": 1
+        },
+        {
+          "id": "molten_dagger",
+          "name": "Molten Dagger",
+          "x": 7,
+          "y": 0,
+          "r": 2,
+          "gems": [
+            "perfect_topaz"
+          ]
+        },
+        {
+          "id": "book_of_darkness",
+          "name": "Encyclopspedia of Darkness",
+          "x": 1,
+          "y": 6,
+          "r": 1
+        },
+        {
+          "id": "customer_card",
+          "name": "Customer Card",
+          "x": 5,
+          "y": 5,
+          "r": 0
+        },
+        {
+          "id": "chrome_cube",
+          "name": "Chromium Cube",
+          "x": 0,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "artifact_stone_cold",
+          "name": "Artifact Stone: Cold",
+          "x": 2,
+          "y": 3,
+          "r": 1
+        }
+      ]
+    },
+    {
+      "id": "uploaded-rounds-10-11",
+      "title": "Rounds 10–11, uploaded runs",
+      "scene": "shop",
+      "note": "Median of 20 mid frames on the 10 uploaded builds: 14 bags, 21 items, 2 skills, 0 loose jewels, 0 socketed gems.",
+      "placements": [
+        {
+          "id": "portable_altar",
+          "name": "Offering Bowl",
+          "x": 3,
+          "y": 1,
+          "r": 1
+        },
+        {
+          "id": "fanny_pack",
+          "name": "Fanny Pack",
+          "x": 7,
+          "y": 3,
+          "r": 0
+        },
+        {
+          "id": "potion_belt",
+          "name": "Potion Belt",
+          "x": 4,
+          "y": 0,
+          "r": 3
+        },
+        {
+          "id": "potion_belt",
+          "name": "Potion Belt",
+          "x": 3,
+          "y": 6,
+          "r": 1
+        },
+        {
+          "id": "stamina_sack",
+          "name": "Stamina Sack",
+          "x": 2,
+          "y": 5,
+          "r": 3
+        },
+        {
+          "id": "fanny_pack",
+          "name": "Fanny Pack",
+          "x": 1,
+          "y": 3,
+          "r": 0
+        },
+        {
+          "id": "portable_altar",
+          "name": "Offering Bowl",
+          "x": 7,
+          "y": 1,
+          "r": 2
+        },
+        {
+          "id": "potion_belt",
+          "name": "Potion Belt",
+          "x": 3,
+          "y": 3,
+          "r": 3
+        },
+        {
+          "id": "leather_bag",
+          "name": "Leather Bag",
+          "x": 0,
+          "y": 5,
+          "r": 3
+        },
+        {
+          "id": "portable_altar",
+          "name": "Offering Bowl",
+          "x": 1,
+          "y": 1,
+          "r": 1
+        },
+        {
+          "id": "leather_bag",
+          "name": "Leather Bag",
+          "x": 7,
+          "y": 4,
+          "r": 3
+        },
+        {
+          "id": "potion_belt",
+          "name": "Potion Belt",
+          "x": 0,
+          "y": 0,
+          "r": 1
+        },
+        {
+          "id": "fanny_pack",
+          "name": "Fanny Pack",
+          "x": 5,
+          "y": 2,
+          "r": 2
+        },
+        {
+          "id": "potion_belt",
+          "name": "Potion Belt",
+          "x": 1,
+          "y": 4,
+          "r": 1
+        },
+        {
+          "id": "time_melting",
+          "name": "Time Melting",
+          "x": 5,
+          "y": 0,
+          "r": 2
+        },
+        {
+          "id": "speak_with_animals",
+          "name": "Speak with Animals",
+          "x": 7,
+          "y": 4,
+          "r": 2
+        },
+        {
+          "id": "wolf_emblem",
+          "name": "Wolf Emblem",
+          "x": 8,
+          "y": 1,
+          "r": 0
+        },
+        {
+          "id": "stone_badge",
+          "name": "Stone Badge",
+          "x": 6,
+          "y": 6,
+          "r": 2
+        },
+        {
+          "id": "poison_dagger",
+          "name": "Poison Dagger",
+          "x": 3,
+          "y": 5,
+          "r": 3
+        },
+        {
+          "id": "spectral_dagger",
+          "name": "Spectral Dagger",
+          "x": 4,
+          "y": 1,
+          "r": 0
+        },
+        {
+          "id": "friendly_fire",
+          "name": "Friendly Fire",
+          "x": 6,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "ace_of_spades",
+          "name": "Ace of Spades",
+          "x": 2,
+          "y": 0,
+          "r": 0
+        },
+        {
+          "id": "pop",
+          "name": "Pop",
+          "x": 0,
+          "y": 5,
+          "r": 1
+        },
+        {
+          "id": "deer_totem",
+          "name": "Deerwood Guardian",
+          "x": 2,
+          "y": 4,
+          "r": 0
+        },
+        {
+          "id": "black_queen",
+          "name": "Black Queen",
+          "x": 8,
+          "y": 2,
+          "r": 1
+        },
+        {
+          "id": "anvil",
+          "name": "Anvil",
+          "x": 7,
+          "y": 5,
+          "r": 0
+        },
+        {
+          "id": "piggybank",
+          "name": "Piggybank",
+          "x": 3,
+          "y": 6,
+          "r": 2
+        },
+        {
+          "id": "broccoli_goobert",
+          "name": "Broccoli Goobert",
+          "x": 1,
+          "y": 2,
+          "r": 2
+        },
+        {
+          "id": "shortbow",
+          "name": "Shortbow",
+          "x": 6,
+          "y": 0,
+          "r": 3
+        },
+        {
+          "id": "furcifer_prime",
+          "name": "Furcifer Prime Subscription",
+          "x": 4,
+          "y": 0,
+          "r": 0
+        },
+        {
+          "id": "black_queen",
+          "name": "Black Queen",
+          "x": 5,
+          "y": 2,
+          "r": 0
+        },
+        {
+          "id": "evil_cap",
+          "name": "Cap of Discomfort",
+          "x": 1,
+          "y": 0,
+          "r": 0
+        },
+        {
+          "id": "reverse",
+          "name": "Reverse!",
+          "x": 3,
+          "y": 2,
+          "r": 0
+        },
+        {
+          "id": "shell_totem",
+          "name": "Shell Totem",
+          "x": 4,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "onion_cutter",
+          "name": "Stankus’ Toothpick",
+          "x": 7,
+          "y": 1,
+          "r": 0
+        },
+        {
+          "id": "book_of_nature",
+          "name": "Nature Chronicles: Trees",
+          "x": 8,
+          "y": 3,
+          "r": 2
+        },
+        {
+          "id": "amulet_of_fortune",
+          "name": "Amulet of Fortune",
+          "x": 4,
+          "y": 4,
+          "r": 3
+        }
+      ]
+    },
+    {
+      "id": "uploaded-rounds-17-18",
+      "title": "Rounds 17–18, uploaded runs",
+      "scene": "battle",
+      "note": "Median of 19 late frames on the 10 uploaded builds: 22 bags, 29 items, 2 skills, 0 loose jewels, 1 socketed gem. The bags on this board had room for 28 items.",
+      "placements": [
+        {
+          "id": "stamina_sack",
+          "name": "Stamina Sack",
+          "x": 5,
+          "y": 4,
+          "r": 2
+        },
+        {
+          "id": "stamina_sack",
+          "name": "Stamina Sack",
+          "x": 0,
+          "y": 0,
+          "r": 3
+        },
+        {
+          "id": "fanny_pack",
+          "name": "Fanny Pack",
+          "x": 6,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "stamina_sack",
+          "name": "Stamina Sack",
+          "x": 0,
+          "y": 4,
+          "r": 0
+        },
+        {
+          "id": "fanny_pack",
+          "name": "Fanny Pack",
+          "x": 0,
+          "y": 1,
+          "r": 2
+        },
+        {
+          "id": "portable_altar",
+          "name": "Offering Bowl",
+          "x": 2,
+          "y": 2,
+          "r": 3
+        },
+        {
+          "id": "fanny_pack",
+          "name": "Fanny Pack",
+          "x": 6,
+          "y": 5,
+          "r": 1
+        },
+        {
+          "id": "protective_purse",
+          "name": "Protective Purse",
+          "x": 0,
+          "y": 2,
+          "r": 3
+        },
+        {
+          "id": "stamina_sack",
+          "name": "Stamina Sack",
+          "x": 7,
+          "y": 0,
+          "r": 0
+        },
+        {
+          "id": "portable_altar",
+          "name": "Offering Bowl",
+          "x": 7,
+          "y": 4,
+          "r": 2
+        },
+        {
+          "id": "potion_belt",
+          "name": "Potion Belt",
+          "x": 1,
+          "y": 3,
+          "r": 2
+        },
+        {
+          "id": "potion_belt",
+          "name": "Potion Belt",
+          "x": 3,
+          "y": 0,
+          "r": 3
+        },
+        {
+          "id": "fanny_pack",
+          "name": "Fanny Pack",
+          "x": 4,
+          "y": 3,
+          "r": 2
+        },
+        {
+          "id": "potion_belt",
+          "name": "Potion Belt",
+          "x": 2,
+          "y": 1,
+          "r": 3
+        },
+        {
+          "id": "potion_belt",
+          "name": "Potion Belt",
+          "x": 8,
+          "y": 0,
+          "r": 0
+        },
+        {
+          "id": "leather_bag",
+          "name": "Leather Bag",
+          "x": 2,
+          "y": 5,
+          "r": 2
+        },
+        {
+          "id": "stamina_sack",
+          "name": "Stamina Sack",
+          "x": 2,
+          "y": 4,
+          "r": 3
+        },
+        {
+          "id": "protective_purse",
+          "name": "Protective Purse",
+          "x": 0,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "protective_purse",
+          "name": "Protective Purse",
+          "x": 7,
+          "y": 6,
+          "r": 2
+        },
+        {
+          "id": "protective_purse",
+          "name": "Protective Purse",
+          "x": 4,
+          "y": 5,
+          "r": 3
+        },
+        {
+          "id": "stamina_sack",
+          "name": "Stamina Sack",
+          "x": 4,
+          "y": 2,
+          "r": 1
+        },
+        {
+          "id": "protective_purse",
+          "name": "Protective Purse",
+          "x": 1,
+          "y": 2,
+          "r": 3
+        },
+        {
+          "id": "stoned",
+          "name": "Stoned",
+          "x": 1,
+          "y": 5,
+          "r": 3
+        },
+        {
+          "id": "level_up",
+          "name": "Level Up",
+          "x": 5,
+          "y": 6,
+          "r": 3
+        },
+        {
+          "id": "wand",
+          "name": "Wand of Equilibrium",
+          "x": 4,
+          "y": 3,
+          "r": 2
+        },
+        {
+          "id": "spell_scroll_nature",
+          "name": "Spell Scroll: Regrowth",
+          "x": 0,
+          "y": 2,
+          "r": 1
+        },
+        {
+          "id": "ice_flower",
+          "name": "Ice Flower",
+          "x": 2,
+          "y": 3,
+          "r": 2
+        },
+        {
+          "id": "gold_armor",
+          "name": "Gold Armor",
+          "x": 1,
+          "y": 0,
+          "r": 2,
+          "gems": [
+            "corrupted_crystal"
+          ]
+        },
+        {
+          "id": "joker",
+          "name": "Jimbo",
+          "x": 7,
+          "y": 1,
+          "r": 1
+        },
+        {
+          "id": "lucky_clover",
+          "name": "Lucky Clover",
+          "x": 6,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "staff_of_fire",
+          "name": "Staff of Fire",
+          "x": 2,
+          "y": 5,
+          "r": 3
+        },
+        {
+          "id": "rainbow_potion",
+          "name": "Rainbow Potion",
+          "x": 1,
+          "y": 3,
+          "r": 1
+        },
+        {
+          "id": "flame",
+          "name": "Flame",
+          "x": 8,
+          "y": 0,
+          "r": 3
+        },
+        {
+          "id": "poison_bow",
+          "name": "Belladonna's Whisper",
+          "x": 4,
+          "y": 1,
+          "r": 2
+        },
+        {
+          "id": "burning_banner",
+          "name": "Burning Banner",
+          "x": 3,
+          "y": 2,
+          "r": 0
+        },
+        {
+          "id": "pocket_sand",
+          "name": "Pocket Sand",
+          "x": 0,
+          "y": 6,
+          "r": 1
+        },
+        {
+          "id": "burning_torch",
+          "name": "Burning Torch",
+          "x": 7,
+          "y": 2,
+          "r": 1
+        },
+        {
+          "id": "magic_mirror",
+          "name": "Cold Mirror",
+          "x": 3,
+          "y": 0,
+          "r": 1
+        },
+        {
+          "id": "poison_ivy",
+          "name": "Poison Ivy",
+          "x": 1,
+          "y": 6,
+          "r": 3
+        },
+        {
+          "id": "broom",
+          "name": "Broom",
+          "x": 5,
+          "y": 4,
+          "r": 1
+        },
+        {
+          "id": "mecha_bat",
+          "name": "Mecha Bat",
+          "x": 0,
+          "y": 0,
+          "r": 3
+        },
+        {
+          "id": "spell_scroll_nature",
+          "name": "Spell Scroll: Regrowth",
+          "x": 6,
+          "y": 5,
+          "r": 2
+        },
+        {
+          "id": "sandbag",
+          "name": "Sir Sand",
+          "x": 2,
+          "y": 6,
+          "r": 1
+        },
+        {
+          "id": "leaf_badge",
+          "name": "Leaf Badge",
+          "x": 3,
+          "y": 4,
+          "r": 2
+        },
+        {
+          "id": "torch",
+          "name": "Torch",
+          "x": 3,
+          "y": 1,
+          "r": 1
+        },
+        {
+          "id": "black_rook",
+          "name": "Black Rook",
+          "x": 0,
+          "y": 5,
+          "r": 0
+        },
+        {
+          "id": "wrench",
+          "name": "Wrench",
+          "x": 6,
+          "y": 0,
+          "r": 1
+        },
+        {
+          "id": "mana_crystal",
+          "name": "Mana Crystal",
+          "x": 8,
+          "y": 3,
+          "r": 2
+        },
+        {
+          "id": "strong_demonic_flask",
+          "name": "Strong Demonic Flask",
+          "x": 6,
+          "y": 6,
+          "r": 1
+        },
+        {
+          "id": "amulet_of_agility",
+          "name": "Amulet of Energy",
+          "x": 8,
+          "y": 5,
+          "r": 3
+        },
+        {
+          "id": "white_bishop",
+          "name": "White Bishop",
+          "x": 0,
+          "y": 4,
+          "r": 3
+        },
+        {
+          "id": "mana_crystal",
+          "name": "Mana Crystal",
+          "x": 5,
+          "y": 0,
+          "r": 3
+        }
+      ]
+    }
+  ]
+}

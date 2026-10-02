@@ -7,6 +7,7 @@
  */
 
 import { getSupabase } from '../../shared/supabase.js';
+import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import {
   mountPlacedGrid,
   shapeForItem,
@@ -22,6 +23,7 @@ import {
 import { BOARD_COLS, BOARD_ROWS, isBagItem } from '../create/collision.js';
 import {
   hidePromoCatalogItem,
+  prefetchPromoCatalogItems,
   restorePromoCatalogItems,
   seekPromoCatalogItem,
 } from './home-promo-catalog.js';
@@ -36,6 +38,7 @@ const BOARD_DEPART_MS = 400;
 const BOARD_STAGGER_MS = 2;
 const BOARD_STAGGER_MAX_MS = 400;
 const BOARD_CELL_PX = 26;
+const PROMO_MOBILE_MQ = '(max-width: 1100px)';
 
 const ITEM_SELECT =
   'id, gid, name, rarity, type, class, extra_types, tags, cost, effect, image, shape, sockets, accuracy, cooldown, stamina_cost, damage_min, damage_max, block, chance, chance_tag, params';
@@ -80,6 +83,7 @@ async function loadAssetExtras(root) {
  * @returns {Promise<object[]>}
  */
 async function fetchRealBuilds() {
+  await syncEventBuildVisibility();
   const supabase = getSupabase();
   const placementSelect = `
     placements:build_placements (
@@ -91,7 +95,7 @@ async function fetchRealBuilds() {
     id, slug, title, hero_class, blurb, gold_count, rank, is_op, is_featured, build_tag, updated_at,
     author_id, author_name,
     profile:profiles!builds_author_id_fkey (
-      discord_id, display_name, avatar_url
+      discord_id, display_name, avatar_url, equipped_avatar
     ),
     ${placementSelect}
   `;
@@ -220,6 +224,7 @@ function remountBoard(boardHost, getSpriteUrl, prevGrid) {
     exactBoard: true,
     reserveScrollGap: false,
     cellPx: BOARD_CELL_PX,
+    promo: true,
   });
   if (grid?.el instanceof HTMLElement) {
     grid.el.style.overflow = 'visible';
@@ -248,8 +253,12 @@ function originFromNode(node) {
   const sprite = node.querySelector(
     '.bpb-bg__sprite:not(.bpb-bg__sprite--shadow)',
   );
-  const el = sprite instanceof HTMLElement ? sprite : node;
-  return docBox(el.getBoundingClientRect());
+  let r =
+    sprite instanceof HTMLElement ? sprite.getBoundingClientRect() : null;
+  if (!r || r.width < 2 || r.height < 2) {
+    r = node.getBoundingClientRect();
+  }
+  return docBox(r);
 }
 
 /**
@@ -284,20 +293,38 @@ function catalogOrigin(catalogRoot, itemId) {
   for (const node of nodes) {
     if (!(node instanceof HTMLElement)) continue;
     if (node.classList.contains('home-promo__item--depart')) continue;
+    if (node.classList.contains('bpb-bg__item--parked')) continue;
     const r = node.getBoundingClientRect();
-    if (r.width < 2 || r.height < 2) continue;
     const cy = (r.top + r.bottom) / 2;
     const visible = clip
       ? cy >= clip.top - 8 && cy <= clip.bottom + 8
       : true;
-    const score = (visible ? 0 : 10000) + Math.abs(cy - midY);
+    const area = Math.max(1, r.width) * Math.max(1, r.height);
+    const score = (visible ? 0 : 10000) + Math.abs(cy - midY) - area * 0.0001;
     if (score < bestScore) {
       bestScore = score;
-      best = r;
+      best = r.width >= 2 && r.height >= 2 ? r : node.getBoundingClientRect();
     }
   }
   if (!best) return fallback;
   return docBox(best);
+}
+
+/**
+ * Off-screen start for the mobile demo, alternating left and right.
+ * @param {number} index
+ * @param {{ left: number, top: number, width: number, height: number }} target
+ */
+function sideOrigin(index, target) {
+  const size = Math.max(48, Math.round(Math.max(target.width, target.height) * 0.9));
+  const top = target.top + (target.height - size) / 2;
+  const fromLeft = index % 2 === 0;
+  const left = fromLeft ? -size - 12 : window.innerWidth + 12;
+  return { left, top, width: size, height: size };
+}
+
+function promoUsesSides() {
+  return window.matchMedia(PROMO_MOBILE_MQ).matches;
 }
 
 /**
@@ -326,8 +353,9 @@ function spriteDisplayPx(item, cellPx) {
  * @param {HTMLElement} boardHost
  * @param {{ x: number, y: number, r?: number, id: string }} p
  * @param {object | null} item
+ * @param {'document' | 'viewport'} [space]
  */
-function cellTarget(boardHost, p, item) {
+function cellTarget(boardHost, p, item, space = 'document') {
   const board =
     boardHost.querySelector('.bpb-bg__board') || boardHost;
   const br = board.getBoundingClientRect();
@@ -343,12 +371,13 @@ function cellTarget(boardHost, p, item) {
   const size = spriteDisplayPx(item, cellPx);
   const cx = br.left + (p.x + rotW / 2) * cellPx;
   const cy = br.top + (p.y + rotH / 2) * cellPx;
-  return docBox({
+  const box = {
     left: cx - size.width / 2,
     top: cy - size.height / 2,
     width: size.width,
     height: size.height,
-  });
+  };
+  return space === 'viewport' ? box : docBox(box);
 }
 
 /**
@@ -357,10 +386,11 @@ function cellTarget(boardHost, p, item) {
  *   from: { left: number, top: number, width: number, height: number },
  *   to: { left: number, top: number, width: number, height: number },
  *   rotate?: number,
+ *   fixed?: boolean,
  * }} opts
  */
 function flyGhost(opts) {
-  const { src, from, to, rotate = 0 } = opts;
+  const { src, from, to, rotate = 0, fixed = false } = opts;
   return new Promise((resolve) => {
     const img = document.createElement('img');
     img.className = 'home-promo__fly';
@@ -368,11 +398,20 @@ function flyGhost(opts) {
     img.alt = '';
     img.draggable = false;
     img.setAttribute('aria-hidden', 'true');
-    img.style.left = `${from.left}px`;
-    img.style.top = `${from.top}px`;
-    img.style.width = `${from.width}px`;
-    img.style.height = `${from.height}px`;
-    img.style.transform = 'rotate(0deg)';
+    const tw = Math.max(1, to.width);
+    const th = Math.max(1, to.height);
+    const fw = Math.max(1, from.width);
+    const fh = Math.max(1, from.height);
+    const fromCx = from.left + fw / 2;
+    const fromCy = from.top + fh / 2;
+    const toCx = to.left + tw / 2;
+    const toCy = to.top + th / 2;
+    /* One scale keeps the sprite's aspect. Independent x/y scales squashed wide and tall items. */
+    const startScale = Math.min(fw / tw, fh / th);
+    img.style.width = `${tw}px`;
+    img.style.height = `${th}px`;
+    if (fixed) img.style.position = 'fixed';
+    img.style.transform = `translate3d(${fromCx}px, ${fromCy}px, 0) translate(-50%, -50%) scale(${startScale}) rotate(0deg)`;
     document.body.appendChild(img);
 
     let settled = false;
@@ -384,20 +423,13 @@ function flyGhost(opts) {
     };
 
     img.addEventListener('transitionend', (e) => {
-      if (e.target === img && e.propertyName === 'left') finish();
+      if (e.target === img && e.propertyName === 'transform') finish();
     });
     window.setTimeout(finish, FLY_MS + 120);
 
-    img.style.transition = 'none';
-    void img.getBoundingClientRect();
-    img.style.transition = '';
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        img.style.left = `${to.left}px`;
-        img.style.top = `${to.top}px`;
-        img.style.width = `${to.width}px`;
-        img.style.height = `${to.height}px`;
-        img.style.transform = `rotate(${rotate}deg)`;
+        img.style.transform = `translate3d(${toCx}px, ${toCy}px, 0) translate(-50%, -50%) scale(1) rotate(${rotate}deg)`;
       });
     });
   });
@@ -414,16 +446,15 @@ function departBoardItems(boardHost) {
   if (!items.length) return Promise.resolve();
 
   items.sort((a, b) => {
-    const dy = a.offsetTop - b.offsetTop;
+    const dy = (parseFloat(a.style.top) || 0) - (parseFloat(b.style.top) || 0);
     if (dy) return dy;
-    return a.offsetLeft - b.offsetLeft;
+    return (parseFloat(a.style.left) || 0) - (parseFloat(b.style.left) || 0);
   });
 
   for (const el of items) {
     el.classList.remove('home-promo__item--appear');
     el.style.removeProperty('--home-promo-wave-delay');
   }
-  void boardHost.offsetWidth;
   items.forEach((el, i) => {
     const delay = Math.min(i * BOARD_STAGGER_MS, BOARD_STAGGER_MAX_MS);
     el.style.setProperty('--home-promo-wave-delay', `${delay}ms`);
@@ -481,13 +512,15 @@ function fadeNewBagChrome(boardHost) {
  *   catalogRoot: HTMLElement | null,
  *   captionEl?: HTMLElement | null,
  *   boardLink?: HTMLAnchorElement | null,
+ *   boardTagsEl?: HTMLElement | null,
  *   infoEl?: HTMLElement | null,
  *   root: string,
  *   catalogReady?: Promise<unknown>,
  * }} opts
  */
 export async function playAssemble(opts) {
-  const { boardHost, catalogRoot, captionEl, boardLink, infoEl, root } = opts;
+  const { boardHost, catalogRoot, captionEl, boardLink, boardTagsEl, infoEl, root } =
+    opts;
   if (!(boardHost instanceof HTMLElement)) return;
 
   const base = root.endsWith('/') ? root : `${root}/`;
@@ -502,17 +535,31 @@ export async function playAssemble(opts) {
     builds = await buildsP;
   } catch (err) {
     console.warn('[home-promo] assemble fetch failed', err);
-    paintPromoCaption(captionEl, null, base, boardLink, infoEl);
+    paintPromoCaption(captionEl, null, base, boardLink, infoEl, boardTagsEl);
     boardHost.replaceChildren();
     return;
   }
   if (!builds.length) {
-    paintPromoCaption(captionEl, null, base, boardLink, infoEl);
+    paintPromoCaption(captionEl, null, base, boardLink, infoEl, boardTagsEl);
     boardHost.replaceChildren();
     return;
   }
 
   const getSpriteUrl = makeSpriteUrl(base, extras.spriteDisplay);
+  const seenSrc = new Set();
+  for (const build of builds) {
+    for (const p of build.placements || []) {
+      const item = mapItem(p.item);
+      if (!item?.id) continue;
+      const src = getSpriteUrl(item);
+      if (src && !seenSrc.has(src)) {
+        seenSrc.add(src);
+        const pre = new Image();
+        pre.decoding = 'async';
+        pre.src = src;
+      }
+    }
+  }
   const grid = remountBoard(boardHost, getSpriteUrl, opts.grid);
   if (!grid) return;
   const reduced = prefersReducedMotion();
@@ -528,10 +575,17 @@ export async function playAssemble(opts) {
       const ordered = orderPlacements(mapped.placements, mapped.itemsById);
       if (!ordered.length) continue;
 
-      paintPromoCaption(captionEl, build, base, boardLink, infoEl);
+      paintPromoCaption(captionEl, build, base, boardLink, infoEl, boardTagsEl);
       grid.update([], mapped.itemsById);
       clearPromoWave(boardHost);
       fabricSeen.clear();
+      const fromSides = promoUsesSides();
+      if (!fromSides) {
+        void prefetchPromoCatalogItems(
+          catalogRoot,
+          ordered.map((p) => p.id),
+        );
+      }
 
       if (reduced) {
         grid.update(ordered, mapped.itemsById);
@@ -541,28 +595,39 @@ export async function playAssemble(opts) {
       }
 
       const placed = [];
+      let wave = 0;
       for (const group of groupPlacements(ordered)) {
         if (!boardHost.isConnected) return;
         const first = group[0];
         const item = mapped.itemsById.get(first.id);
         const src = item ? getSpriteUrl(item) : '';
-        const node = await seekPromoCatalogItem(catalogRoot, first.id);
-        await sleep(SEEK_BEAT_MS);
-        const from =
-          node instanceof HTMLElement
-            ? originFromNode(node)
-            : catalogOrigin(catalogRoot, first.id);
-        const hideP = hidePromoCatalogItem(catalogRoot, first.id);
+        let from = null;
+        /** @type {Promise<void>} */
+        let hideP = Promise.resolve();
+        if (!fromSides) {
+          const node = await seekPromoCatalogItem(catalogRoot, first.id);
+          await sleep(SEEK_BEAT_MS);
+          from =
+            node instanceof HTMLElement
+              ? originFromNode(node)
+              : catalogOrigin(catalogRoot, first.id);
+          hideP = hidePromoCatalogItem(catalogRoot, first.id);
+        }
         const arrived = group.map(() => null);
         const landPs = group.map((p, i) =>
           sleep(i * FLY_STAGGER_MS).then(async () => {
             if (!boardHost.isConnected) return;
-            if (src) {
+            const piece = mapped.itemsById.get(p.id) || item || null;
+            const to = cellTarget(boardHost, p, piece, fromSides ? 'viewport' : 'document');
+            const start = fromSides ? sideOrigin(wave + i, to) : from;
+            const pieceSrc = piece ? getSpriteUrl(piece) : src;
+            if (pieceSrc && start) {
               await flyGhost({
-                src,
-                from,
-                to: cellTarget(boardHost, p, item || null),
+                src: pieceSrc,
+                from: start,
+                to,
                 rotate: faceDeg(p.r),
+                fixed: fromSides,
               });
             } else await sleep(FLY_MS);
             if (!boardHost.isConnected) return;
@@ -579,13 +644,14 @@ export async function playAssemble(opts) {
         );
         await Promise.all([hideP, ...landPs]);
         placed.push(...group);
+        wave += group.length;
       }
 
       await sleep(HOLD_MS);
       if (!boardHost.isConnected) return;
       await Promise.all([
         departBoardItems(boardHost),
-        restorePromoCatalogItems(catalogRoot),
+        fromSides ? Promise.resolve() : restorePromoCatalogItems(catalogRoot),
       ]);
       if (!boardHost.isConnected) return;
       grid.update([], mapped.itemsById);

@@ -1,0 +1,88 @@
+.xc-main {
+  max-width: 92rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+  font-family: var(--bpb-font-body);
+  color: #3c261d;
+}
+
+.xc-title {
+  font-family: var(--bpb-font-display);
+  font-size: 2.25rem;
+  font-weight: 400;
+  margin: 0 0 0.35rem;
+}
+
+.xc-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0 0;
+}
+
+.xc-jump {
+  width: 5.5rem;
+}
+
+.xc-card {
+  margin: 0 0 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(60, 38, 29, 0.25);
+}
+
+.xc-card h2 {
+  font-family: var(--bpb-font-display);
+  font-size: 1.75rem;
+  font-weight: 400;
+  margin: 0 0 0.35rem;
+  color: var(--bpb-label-fill, #ffecdc);
+  text-shadow: var(--bpb-label-stroke);
+}
+
+.xc-pair {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1fr) minmax(18rem, 1.1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.xc-shot,
+.xc-board {
+  min-width: 0;
+}
+
+.xc-shot img,
+.xc-export {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #1a120e;
+}
+
+.xc-label {
+  margin: 0 0 0.4rem;
+}
+
+.xc-json {
+  margin-top: 0.75rem;
+}
+
+.xc-json summary {
+  cursor: var(--bpb-cursor-pointer);
+  font-family: var(--bpb-font-body);
+}
+
+.xc-json pre {
+  max-height: 16rem;
+  overflow: auto;
+  font-size: 0.8rem;
+  background: rgba(60, 38, 29, 0.06);
+  padding: 0.6rem 0.75rem;
+}
+
+@media (max-width: 800px) {
+  .xc-pair {
+    grid-template-columns: 1fr;
+  }
+}

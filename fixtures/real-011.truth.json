@@ -1,0 +1,409 @@
+{
+  "note": "Hand-labeled with create ?label=1",
+  "source": "in-game",
+  "split": "train",
+  "labeledAt": "2026-09-27T04:12:07.137Z",
+  "shot": {
+    "w": 816,
+    "h": 828
+  },
+  "items": [
+    {
+      "name": "Fancy Fencing Rapier",
+      "x": 4,
+      "y": 3,
+      "r": 3,
+      "gems": [
+        {
+          "name": "Chipped Emerald",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Rainbow Goobert Gigabrocolomega ",
+      "x": 2,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "King Crown",
+      "x": 0,
+      "y": 0,
+      "r": 0,
+      "gems": [
+        {
+          "name": "Regular Ruby",
+          "r": 0
+        },
+        {
+          "name": "Regular Amethyst",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Spiked Shield",
+      "x": 7,
+      "y": 1,
+      "r": 0,
+      "gems": [
+        {
+          "name": "Flawed Topaz",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Blueberries",
+      "x": 3,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Blueberries",
+      "x": 3,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Blueberries",
+      "x": 4,
+      "y": 2,
+      "r": 0
+    },
+    {
+      "name": "Broccotree",
+      "x": 4,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Broccoli",
+      "x": 5,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Jynx Staff",
+      "x": 4,
+      "y": 4,
+      "r": 3,
+      "gems": [
+        {
+          "name": "Flawed Amethyst",
+          "r": 0
+        }
+      ]
+    },
+    {
+      "name": "Paradise Birb",
+      "x": 0,
+      "y": 4,
+      "r": 0
+    },
+    {
+      "name": "Amulet of Feasting",
+      "x": 7,
+      "y": 0,
+      "r": 2
+    },
+    {
+      "name": "Amulet of Life",
+      "x": 8,
+      "y": 0,
+      "r": null
+    },
+    {
+      "name": "Flute",
+      "x": 3,
+      "y": 6,
+      "r": 0
+    },
+    {
+      "name": "Fanfare",
+      "x": 3,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Piggy of Riches",
+      "x": 6,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Ukulele",
+      "x": 2,
+      "y": 4,
+      "r": 2
+    },
+    {
+      "name": "Magic Ring",
+      "x": 3,
+      "y": 4,
+      "r": null
+    },
+    {
+      "name": "Unsettling Presence",
+      "x": 0,
+      "y": 2,
+      "r": 1
+    },
+    {
+      "name": "Sir Sand",
+      "x": 8,
+      "y": 5,
+      "r": 0
+    }
+  ],
+  "skills": [
+    {
+      "name": "Shielded",
+      "x": 8,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "It’s Slime Time!",
+      "x": 1,
+      "y": 3,
+      "r": 0
+    }
+  ],
+  "jewels": [
+    {
+      "name": "Burning Coal",
+      "x": 7,
+      "y": 6,
+      "r": 0
+    },
+    {
+      "name": "Lump of Coal",
+      "x": 6,
+      "y": 6,
+      "r": 0
+    },
+    {
+      "name": "Chipped Emerald",
+      "x": 0,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Flawed Emerald",
+      "x": 2,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Flawed Sapphire",
+      "x": 2,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Corrupted Crystal",
+      "x": 0,
+      "y": 4,
+      "r": 0
+    }
+  ],
+  "bagCells": [
+    "0,0",
+    "1,0",
+    "0,1",
+    "1,1",
+    "2,0",
+    "3,0",
+    "2,1",
+    "3,1",
+    "0,5",
+    "1,5",
+    "0,6",
+    "1,6",
+    "4,5",
+    "5,5",
+    "4,6",
+    "5,6",
+    "7,1",
+    "8,1",
+    "7,2",
+    "8,2",
+    "7,3",
+    "8,3",
+    "7,4",
+    "8,4",
+    "8,6",
+    "7,6",
+    "6,6",
+    "8,5",
+    "7,5",
+    "6,5",
+    "3,6",
+    "3,5",
+    "3,4",
+    "0,2",
+    "1,2",
+    "2,2",
+    "8,0",
+    "7,0",
+    "6,0",
+    "5,0",
+    "4,1",
+    "4,2",
+    "4,3",
+    "4,4",
+    "3,2",
+    "3,3",
+    "4,0",
+    "1,3",
+    "2,3",
+    "1,4",
+    "2,4",
+    "6,1",
+    "6,2",
+    "5,1",
+    "5,2",
+    "5,3",
+    "5,4",
+    "6,3",
+    "6,4",
+    "2,5",
+    "2,6",
+    "0,3",
+    "0,4"
+  ],
+  "bags": [
+    {
+      "name": "Leather Bag",
+      "x": 0,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 2,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 0,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 4,
+      "y": 5,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 7,
+      "y": 1,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 7,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 6,
+      "y": 6,
+      "r": 1
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 6,
+      "y": 5,
+      "r": 1
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 3,
+      "y": 4,
+      "r": 2
+    },
+    {
+      "name": "Stamina Sack",
+      "x": 0,
+      "y": 2,
+      "r": 3
+    },
+    {
+      "name": "Potion Belt",
+      "x": 5,
+      "y": 0,
+      "r": 1
+    },
+    {
+      "name": "Sewing Case",
+      "x": 3,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Protective Purse",
+      "x": 4,
+      "y": 0,
+      "r": 0
+    },
+    {
+      "name": "Leather Bag",
+      "x": 1,
+      "y": 3,
+      "r": 0
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 6,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 5,
+      "y": 1,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 5,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 6,
+      "y": 3,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 2,
+      "y": 5,
+      "r": 1
+    },
+    {
+      "name": "Fanny Pack",
+      "x": 0,
+      "y": 3,
+      "r": 1
+    }
+  ],
+  "grid": {
+    "ok": true,
+    "originX": 25.88,
+    "originY": 36.23,
+    "cellW": 87.98,
+    "cellH": 87.98,
+    "imgW": 816,
+    "imgH": 828,
+    "score": 1.257
+  }
+}

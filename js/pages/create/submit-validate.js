@@ -31,11 +31,32 @@ export function collectSoftCues(draft, opts = {}) {
   const cues = [];
   const itemsById = opts.itemsById;
   const hasNeeds = (draft.placements || []).some((p) => p.priority === 'needed');
-  if (draft.placements?.length && !hasNeeds) {
-    cues.push({ level: 'warn', code: 'needs', message: 'Needs tier is empty.' });
+  const hasWants = (draft.placements || []).some((p) => p.priority === 'nice');
+  const hasGood = (draft.placements || []).some((p) => p.priority === 'optional');
+  if (draft.placements?.length && !draft.is_op) {
+    if (!hasNeeds) {
+      cues.push({ level: 'warn', code: 'needs', message: 'Needs tier is empty.' });
+    }
+    if (!hasWants) {
+      cues.push({ level: 'warn', code: 'wants', message: 'Wants tier is empty.' });
+    }
+    if (!hasGood) {
+      cues.push({
+        level: 'warn',
+        code: 'good',
+        message: 'Good to have tier is empty.',
+      });
+    }
   }
-  if (!String(draft.notes || '').trim()) {
+  const notesTrim = String(draft.notes || '').trim();
+  if (!notesTrim && !draft.is_op) {
     cues.push({ level: 'warn', code: 'notes', message: '“Why it works” notes are empty.' });
+  } else if (notesTrim && notesTrim.length < 30 && !draft.is_op) {
+    cues.push({
+      level: 'warn',
+      code: 'notes-short',
+      message: `“Why it works” is short (${notesTrim.length}/30 characters).`,
+    });
   }
   if (
     draft.is_op &&
@@ -227,6 +248,28 @@ export function validateCreateDraft(draft, opts = {}) {
       code: 'op-theory',
       message: 'OP can’t be combined with Theory.',
     });
+  }
+  if (draft.is_op) {
+    const placements = draft.placements || [];
+    const hasNeeds = placements.some((p) => p.priority === 'needed');
+    const hasWants = placements.some((p) => p.priority === 'nice');
+    const hasGood = placements.some((p) => p.priority === 'optional');
+    if (!hasNeeds || !hasWants || !hasGood) {
+      errors.push({
+        level: 'error',
+        code: 'op-essentials',
+        message:
+          'OP review needs at least one item in Needs, Wants, and Good to have.',
+      });
+    }
+    const notesLen = String(draft.notes || '').trim().length;
+    if (notesLen < 30) {
+      errors.push({
+        level: 'error',
+        code: 'op-notes',
+        message: `OP review needs a “Why it works” description of at least 30 characters (${notesLen}/30).`,
+      });
+    }
   }
 
   if (itemsById instanceof Map) {

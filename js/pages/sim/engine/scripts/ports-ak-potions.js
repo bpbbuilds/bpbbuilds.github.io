@@ -27,14 +27,35 @@ import { pushActivate } from './ports-util.js';
  */
 function drinkPotion(piece, ctx, t, onDrink) {
   if (!piece.alive || piece.charges === 0) return;
-  onDrink();
+  // Empty first so block/buff listeners from onDrink cannot re-enter.
   piece.alive = false;
   piece.charges = 0;
+  onDrink();
   ctx.bus?.emit?.('potion_emptied', { piece, t });
   const prevT = ctx.t;
   ctx.t = t;
-  pushActivate(piece, ctx, piece.itemId, `${piece.name} consumed`);
+  pushActivate(piece, ctx, piece.itemId, `${piece.name} consumed`, { consume: true });
   ctx.t = prevT;
+}
+
+/**
+ * Item.healthToBlock(health, block) — spend up to `health` HP (leave 1),
+ * grant ceil((spent/health)*block) Block.
+ * @param {import('../actor.js').SimActor} player
+ * @param {number} healthCap
+ * @param {number} blockCap
+ * @param {object} [opts]
+ */
+function healthToBlock(player, healthCap, blockCap, opts = {}) {
+  const want = Math.max(0, Number(healthCap) || 0);
+  const blockWant = Math.max(0, Number(blockCap) || 0);
+  if (!(want > 0) || !(blockWant > 0)) return { spent: 0, block: 0 };
+  const clamped = Math.min(want, Math.max(0, (Number(player.hp) || 0) - 1));
+  if (!(clamped > 0)) return { spent: 0, block: 0 };
+  player.hp = Math.max(1, (Number(player.hp) || 0) - clamped);
+  const block = Math.max(1, Math.ceil((clamped / want) * blockWant));
+  grantStacks(player, 'block', block, opts);
+  return { spent: clamped, block };
 }
 
 function lockCd(piece) {
@@ -208,40 +229,61 @@ function vampiricPotionPort(handlerId, strong) {
   };
 }
 
-/** StoneSkinPotion — drink when Block >= p1; HP→Block. Strong: temp spikes. */
+/** StoneSkinPotion.gd — onPrepare listen; drink when Block >= p1; healthToBlock(p2, getBlock). */
 function stoneSkinPort(handlerId, strong) {
   /** @type {ScriptHandler} */
   return {
     handlerId,
     family: 'consumable',
     deferStartActivate: true,
-    onCombatStart(piece, ctx) {
+    onPreCombatStart(piece, ctx) {
       lockCd(piece);
-      const need = Math.max(1, Math.round(getP1(piece.params, 15)));
-      onBuffChanged(ctx.player, (ch) => {
-        if (!piece.alive || ch.stack !== 'block') return;
-        if ((ctx.player.block || 0) < need) return;
-        drinkPotion(piece, ctx, ctx.t, () => {
-          const hp = Math.max(1, Math.round(getP2(piece.params, 10)));
-          ctx.player.hp = Math.max(1, ctx.player.hp - hp);
-          const block = Math.max(1, Math.round(piece.blockGrant || getPName(piece.params, 'block', 20)));
-          grantStacks(ctx.player, 'block', block, {
+      const need = Math.max(
+        1,
+        Math.round(getPName(piece.params, 'blockt', getP1(piece.params, 45))),
+      );
+      const tryDrink = (t) => {
+        if (!piece.alive || (Number(ctx.player.block) || 0) < need) return;
+        drinkPotion(piece, ctx, t, () => {
+          const healthCap = Math.max(
+            1,
+            Math.round(getPName(piece.params, 'healtht', getP2(piece.params, 15))),
+          );
+          const blockCap = Math.max(
+            1,
+            Math.round(
+              Number(piece.blockGrant) ||
+                Number(ctx.itemsById?.get?.(piece.itemId)?.block) ||
+                30,
+            ),
+          );
+          healthToBlock(ctx.player, healthCap, blockCap, {
             originKey: piece.placementKey,
             originId: piece.itemId,
           });
           if (strong) {
             const spikes = Math.max(
               1,
-              Math.round(getPName(piece.params, 'spikes', 4)),
+              Math.round(getPName(piece.params, 'spikes', 2)),
             );
             const dur = Math.max(1, getPName(piece.params, 'dur', 4));
-            grantTemporaryStacks(ctx.player, 'spikes', spikes, dur, ctx.t, {
+            grantTemporaryStacks(ctx.player, 'spikes', spikes, dur, t, {
               originKey: piece.placementKey,
               originId: piece.itemId,
             });
           }
         });
+      };
+      piece._stoneSkinTryDrink = tryDrink;
+      onBuffChanged(ctx.player, (ch) => {
+        if (ch.stack !== 'block') return;
+        tryDrink(ctx.t);
       });
+    },
+    onCombatStart(piece, ctx) {
+      // Catch block already ≥ threshold if a later start script granted it
+      // without another change after our listener (or pre-existing block).
+      piece._stoneSkinTryDrink?.(ctx.t);
     },
   };
 }

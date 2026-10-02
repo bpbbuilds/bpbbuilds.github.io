@@ -14,29 +14,22 @@ function petActivate(piece, ctx, handler) {
   pushActivate(piece, ctx, handler, `Pet: ${piece.name}`);
 }
 
-/** RubyEgg.gd */
+/** RubyEgg.gd — start-of-battle only (no combat CD; hatch is shop-side). */
 /** @type {ScriptHandler} */
 export const rubyEggPort = {
   handlerId: 'ruby_egg',
-  family: 'pet_like',
-  onCombatStart(piece, ctx) {
-    const n = Math.max(1, Math.round(getP1(piece.params, 1)));
+  family: 'start_buff',
+  onPreCombatStart(piece, ctx) {
+    const n = Math.max(1, Math.round(getP1(piece.params, 3)));
     ctx.player.debuffReflectStacks = (ctx.player.debuffReflectStacks || 0) + n;
-    grantStacks(ctx.player, 'heat', Math.max(1, Math.round(getP3(piece.params, 1))), {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    petActivate(piece, ctx, 'ruby_egg');
   },
-  onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'ruby_egg');
-    ctx.player.debuffReflectStacks =
-      (ctx.player.debuffReflectStacks || 0) + Math.max(1, Math.round(getP1(piece.params, 1)));
-    grantStacks(ctx.player, 'heat', Math.max(1, Math.round(getP3(piece.params, 1))), {
+  onCombatStart(piece, ctx) {
+    // doCooldownEffect(false) — heat + activate; reflect already from onPreCombatStart
+    grantStacks(ctx.player, 'heat', Math.max(1, Math.round(getP3(piece.params, 4))), {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    return true;
+    petActivate(piece, ctx, 'ruby_egg');
   },
 };
 

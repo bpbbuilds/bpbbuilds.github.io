@@ -409,6 +409,7 @@ const HAND = [
   'stable_recombobulator',
   'star_of_courage',
   'superior_ring',
+  'time_pendant',
   'twine',
   'twine_badge',
   'unstable_recombobulator',

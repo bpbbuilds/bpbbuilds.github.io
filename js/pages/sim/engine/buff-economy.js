@@ -4,8 +4,10 @@
 
 import { gainStacks, loseStacks, getStackAmount } from './stacks.js';
 import { expireTemporaryStacks, grantTemporary } from './temp-stacks.js';
-import { logGrantedStacks, logSpentStacks } from './buff-log.js';
+import { logGrantedStacks, logSpentStacks, logBlockedStacks } from './buff-log.js';
+import { scaleByBuffPower, originPieceFromOpts } from './buff-power.js';
 import { rollPercent } from './rng.js';
+import { runWithoutStatSource } from './stat-mods.js';
 
 /** Game.getBuffs() — Lucky…Heat (not Block). */
 export const BUFF_KEYS = [
@@ -57,13 +59,17 @@ export function onBuffChanged(actor, fn) {
 export function emitBuffChanged(actor, change) {
   const list = actor._buffListeners;
   if (!list?.length) return;
-  for (const fn of list) {
-    try {
-      fn(change);
-    } catch (err) {
-      console.error('[sim] buff listener', err);
+  // Listeners must not inherit the grantor's withStatSource — otherwise Mana Orb
+  // (buff grant) is blamed for Forging Hammer / Burning Sword flat "Bonus" damage.
+  runWithoutStatSource(() => {
+    for (const fn of list) {
+      try {
+        fn(change);
+      } catch (err) {
+        console.error('[sim] buff listener', err);
+      }
     }
-  }
+  });
 }
 
 /**
@@ -74,6 +80,7 @@ export function emitBuffChanged(actor, change) {
  * @param {object} [opts]
  */
 export function grantStacks(actor, stack, amount, opts = {}) {
+  amount = scaleByBuffPower(amount, stack, opts);
   // EvilCap buffNullifyChance — chance to refuse a buff gain
   if (
     amount > 0 &&
@@ -82,10 +89,26 @@ export function grantStacks(actor, stack, amount, opts = {}) {
     typeof opts.rng === 'function'
   ) {
     if (opts.rng() * 100 < Number(actor.buffNullifyChance)) {
-      return { gained: 0, resisted: Math.round(amount), reflected: 0 };
+      const n = Math.round(amount);
+      logBlockedStacks(actor, stack, n, 'nullified', opts);
+      return { gained: 0, resisted: n, reflected: 0 };
     }
   }
-  const g = gainStacks(actor, /** @type {any} */ (stack), amount, opts);
+  // Item buffAmplificationChances / buffAmpChance (Con-Trap-Tron path, Double Rainbow, …)
+  const origin = originPieceFromOpts(opts);
+  const amp =
+    (Number(origin?.buffAmpChance) || 0) +
+    (Number(origin?.buffAmplificationChances?.[stack]) || 0);
+  const g = gainStacks(actor, /** @type {any} */ (stack), amount, {
+    ...opts,
+    amplificationChance: amp || opts.amplificationChance,
+  });
+  if (g.resisted > 0) {
+    logBlockedStacks(actor, stack, g.resisted, 'resisted', opts);
+  }
+  if (g.reflected > 0) {
+    logBlockedStacks(actor, stack, g.reflected, 'reflected', opts);
+  }
   if (g.gained > 0) {
     const originId = opts.originId ?? opts.originKey ?? null;
     if (originId) {
@@ -123,6 +146,7 @@ export function spendStacks(actor, stack, amount, opts = {}) {
     (Number(actor.buffProtect) || 0) > 0
   ) {
     actor.buffProtect -= 1;
+    logBlockedStacks(actor, stack, need, 'protected', opts);
     return { spent: 0, protected: true };
   }
   // Buff.gd loseStacks cleanseProtection — steal / strip / cleanse, not item useStacks
@@ -151,17 +175,28 @@ export function spendStacks(actor, stack, amount, opts = {}) {
   if (have < need) return { spent: 0 };
   const spent = loseStacks(actor, /** @type {any} */ (stack), need);
   if (spent > 0) {
+    const originKey =
+      opts.originKey ?? opts.piece?.placementKey ?? opts.origin?.placementKey ?? null;
+    const originId =
+      opts.originId ?? opts.piece?.itemId ?? opts.origin?.itemId ?? null;
+    const used = !opts.hostileStrip && !opts.cleanse;
     emitBuffChanged(actor, {
       amount: -spent,
       stack,
-      used: !opts.hostileStrip && !opts.cleanse,
-      originKey: opts.originKey ?? null,
-      originId: opts.originId ?? null,
+      used,
+      originKey,
+      originId,
     });
-    // Item use (lucky/mana/regen) is usually logged by the port; hostile strip /
-    // cleanse had no event trail so vamp-cap auditors drifted (Darkest Lotus).
-    if (opts.hostileStrip || opts.cleanse) {
-      logSpentStacks(actor, stack, spent, opts);
+    // Game Buff.changeCurrentLogShowLabel: when an item spends/strips stacks it
+    // always combat-logs + Util.spawnBuffLabel_item (−N on the item). Ports that
+    // also push a matching spend line are deduped in logSpentStacks.
+    if (originKey || originId || opts.hostileStrip || opts.cleanse) {
+      logSpentStacks(actor, stack, spent, {
+        ...opts,
+        originKey,
+        originId,
+        used,
+      });
     }
   }
   return { spent };
@@ -204,6 +239,7 @@ export function useMana(actor, amount, opts = {}) {
  * @param {object} [opts]
  */
 export function grantTemporaryStacks(actor, stack, amount, durationSec, nowT, opts = {}) {
+  amount = scaleByBuffPower(amount, stack, opts);
   const g = grantTemporary(actor, stack, amount, durationSec, nowT, opts);
   if (g.gained > 0) {
     emitBuffChanged(actor, {

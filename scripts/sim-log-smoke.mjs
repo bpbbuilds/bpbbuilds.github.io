@@ -2,13 +2,13 @@
  * Smoke test for Band Q combat log sentences + damage meters.
  *   node scripts/sim-log-smoke.mjs
  */
-import { formatLogLine, prepareLogEvents } from '../js/pages/sim/sim-log-sentences.js';
+import { formatLogLine, prepareLogEvents } from '../js/pages/sim/log/sim-log-sentences.js';
 import {
   buildDamageSources,
   buildCumulativeSeries,
   buildMetricSources,
   METER_METRICS,
-} from '../js/pages/sim/sim-meter-metrics.js';
+} from '../js/pages/sim/log/sim-meter-metrics.js';
 
 const itemsById = new Map([
   ['wooden_sword', { id: 'wooden_sword', name: 'Wooden Sword' }],

@@ -42,6 +42,7 @@ export function bindChargeHandlerResolve(fn) {
  *   flat: number,
  *   perTile: number,
  *   emitterKey?: string,
+ *   mode?: 'speed' | 'buffAmp',
  * }} job
  * @param {{ pieces?: object[] }} worldCtx
  * @param {(piece: object) => import('./scripts/handlers.js').ScriptCtx} actCtx
@@ -72,6 +73,7 @@ export function processChargeJob(job, worldCtx, actCtx) {
       targetPiece,
       job.flat,
       job.perTile,
+      job.mode === 'buffAmp' ? 'buffAmp' : 'speed',
     );
   });
   const prevKey = prevPiece?.placementKey ?? null;
@@ -94,10 +96,11 @@ export function processChargeJob(job, worldCtx, actCtx) {
  *   path: import('./charge-path.js').ChargePath,
  *   flat: number,
  *   perTile: number,
+ *   mode?: 'speed' | 'buffAmp',
  * }} opts
  */
 export function scheduleStatChargePath(emitter, ctx, opts) {
-  const { path, flat, perTile } = opts;
+  const { path, flat, perTile, mode = 'speed' } = opts;
   const jobs = ctx.chargeJobs;
   if (!path || !Array.isArray(jobs)) return;
 
@@ -115,6 +118,7 @@ export function scheduleStatChargePath(emitter, ctx, opts) {
       flat,
       perTile,
       emitterKey: emitter.placementKey,
+      mode,
     });
   }
 }

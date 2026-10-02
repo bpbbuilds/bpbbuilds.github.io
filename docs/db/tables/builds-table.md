@@ -23,6 +23,7 @@ create table public.builds (
   notes text,                                   -- longer guide body (why it works, etc.)
   youtube_url text,                             -- full watch URL or youtu.be link
   thumbnail_path text,                          -- optional Storage path; null → YouTube thumb
+  board_still_path text,                        -- catalog board still in bucket board-stills; null → client paint
   author_id uuid,                               -- FK to profiles (nullable for legacy)
   author_name text,                             -- display snapshot at submit
   is_op boolean not null default false,         -- owner-curated OP badge
@@ -71,6 +72,7 @@ alter table public.builds
 | `notes` | **Long** guide writeup (synergies, route notes later) |
 | `youtube_url` | Showcase video; null if none |
 | `thumbnail_path` | Custom thumb in Storage; if null, derive from YouTube |
+| `board_still_path` | Baked bag still in public Storage bucket `board-stills` (`{author_id}/{uuid}.webp`). Null → catalogs paint client-side. Not the featured YouTube thumb. |
 | `author_id` | Link to `profiles.id` when submitted with Discord session |
 | `author_name` | Display snapshot at submit (profile page shows live name) |
 | `is_op` | Manual OP badge (owner approval) |
@@ -80,10 +82,11 @@ alter table public.builds
 | `is_public` | Hide drafts / private builds from public lists |
 | `gold_count` | Typical gold spent to run this build (info rail) |
 | `rank` | League badge key for info rail (`bronze` … `grandma`) |
+| `event_slug` | Community event this build was submitted for (`019_builds_event_slug.sql`). Null = not an event entry. Catalog filter uses `FEED_EVENTS` in `js/pages/builds/feed-event-filter.js`. |
 | `route_r3_item_id` / `route_r10_item_id` | Round 3 / Round 10 skill picks (`items.id`) |
 | `starting_bag_id` | Class starting bag chosen at run start (loadout); not required on the final board |
 | `history` | Optional JSON: `{ runId, rounds: [{ round, result, placements }] }` for the build-page W/L scrubber. Null = final board only. Catalog thumbs still use `build_placements` (last round when history was published). |
-| `vote_score` | Net community score (`sum(build_votes.vote)`). Updated by `vote-build`. See [`docs/votes.md`](../../votes.md). |
+| `vote_score` | Net community score (`sum(build_votes.vote)`). Updated by `vote-build`. See [`docs/pages/votes.md`](../../pages/votes.md). |
 
 ### `blurb` vs `notes`
 
@@ -156,11 +159,22 @@ create policy "Public read published builds"
   for select
   to anon, authenticated
   using (is_public = true);
+
+create policy "Authors read own builds"
+  on public.builds
+  for select
+  to authenticated
+  using (author_id = auth.uid());
 ```
+
+Contest entries use `event_held` plus `is_public = false` until the gallery clock in
+[`024_event_entry_privacy.sql`](../sql/024_event_entry_privacy.sql). Authors can still
+read their own row and placements. `sync_event_build_visibility()` releases them when
+that clock passes.
 
 Until Auth, insert/update from the Supabase dashboard, a service-role script, or the
 owner-gated Edge Function `submit-build` (see `supabase/functions/submit-build/` and
-`docs/create-submit.md`). No public anon INSERT.
+`docs/pages/create-submit.md`). No public anon INSERT.
 
 ## 4. Seeding
 
@@ -188,7 +202,7 @@ Recommended UX: muted autoplay is fine for atmosphere; **Watch** (and optional i
 1. Create `builds` + RLS + seed featured rows.
 2. Create `items` when catalog work starts.
 3. Create `build_placements` for real grids.
-4. Admin toggles for `is_op` / `is_featured` / soft-hide via `/admin/` (`docs/admin.md`).
+4. Admin toggles for `is_op` / `is_featured` / soft-hide via `/admin/` (`docs/pages/admin.md`).
 
 ## Checklist
 
@@ -203,8 +217,13 @@ Recommended UX: muted autoplay is fine for atmosphere; **Watch** (and optional i
 - [x] `history` jsonb for publish-with-history scrubber (`010_build_history.sql`)
 - [x] Authenticity tags `theory` | `feasible` | `real` (`011_build_authenticity_tags.sql`; remaps legacy `theorycraft`)
 - [x] `vote_score` + `build_votes` (`012_build_votes.sql`)
+- [x] `event_slug` for catalog Events filter (`019_builds_event_slug.sql`)
+- [x] `board_still_path` + Storage bucket `board-stills` (`020_builds_board_still_path.sql`)
+- [x] Event entries stay private to the author until the gallery opens (`024_event_entry_privacy.sql`)
 
 SQL: [`docs/db/sql/001_builds.sql`](../sql/001_builds.sql)  
 Apply: `node scripts/_apply-builds.mjs` (uses `.env` `SUPABASE_DB_PASSWORD` + host from `SUPABASE_DB_URL`)  
 Authenticity tags: `node scripts/_apply-build-authenticity-tags.mjs`  
-Votes: `node scripts/_apply-build-votes.mjs`
+Votes: `node scripts/_apply-build-votes.mjs`  
+Event slug: `node scripts/_apply-builds-event-slug.mjs`  
+Board stills: apply [`020_builds_board_still_path.sql`](../sql/020_builds_board_still_path.sql) in the SQL editor (column + bucket + policies)

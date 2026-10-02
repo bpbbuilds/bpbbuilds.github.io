@@ -11,10 +11,11 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
+import { rollItemChance } from '../chance.js';
 import { getP1, getP2, getPName } from '../params.js';
 import { addAccuracy, addBonusDamageFactor, addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
-import { itemHasType, pushActivate } from './ports-util.js';
+import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { rollPercent } from '../rng.js';
 
@@ -244,27 +245,81 @@ const piggyPinataPort = {
   },
 };
 
+/**
+ * SpicyBanana.gd —
+ * starred Banana/Mananana activate → rollChance → +heat + activate;
+ * every `stamina` stamina spent → heal(heal) (fractional accrual).
+ * (Shop banana weight boost is out-of-combat — skipped.)
+ */
 const spicyBananaPort = {
   handlerId: 'spicy_banana',
   family: 'unique',
   onCombatStart(piece, ctx) {
     piece._stamAcc = 0;
-    const heat = Math.max(1, Math.round(getPName(piece.params, 'heat', 1)));
-    const need = Math.max(1, getPName(piece.params, 'stamina', 8));
-    const heal = Math.max(1, Math.round(getPName(piece.params, 'heal', 4)));
-    onBuffChanged(ctx.player, () => {});
-    ctx.bus?.on?.('player_damaged', () => {});
-    for (const o of linked(ctx, piece)) {
-      if (o.itemId !== 'banana' && o.itemId !== 'mananana') continue;
-    }
-    piece._spicy = { heat, need, heal };
+    const heat = Math.max(
+      1,
+      Math.round(getPName(piece.params, 'heat', getP1(piece.params, 2))),
+    );
+    // Catalog stamina = 1 → heal every 1 stamina spent.
+    const need = Math.max(
+      0.01,
+      Number(getPName(piece.params, 'stamina', getP2(piece.params, 1))) || 1,
+    );
+    const healPer = Math.max(
+      1,
+      Math.round(getPName(piece.params, 'heal', getPName(piece.params, 'p3', 3))),
+    );
+    piece._spicy = { heat, need, healPer };
+
+    ctx.player._combatBus?.on?.('stamina_used', (payload) => {
+      if (!piece.alive) return;
+      if (payload?.actor && payload.actor !== ctx.player) return;
+      const amt = Number(payload?.amount) || 0;
+      if (!(amt > 0)) return;
+      piece._stamAcc = (Number(piece._stamAcc) || 0) + amt;
+      const ticks = Math.floor(piece._stamAcc / need);
+      if (!(ticks > 0)) return;
+      piece._stamAcc -= ticks * need;
+      const healAmt = ticks * healPer;
+      const healed = healActor(ctx.player, healAmt);
+      if (healed > 0 || (ctx.player._lastHeal && !ctx.player._lastHeal.meterAttached)) {
+        const logged = Number(ctx.player._lastHeal?.loggedAmount) || healed;
+        if (ctx.player._lastHeal) ctx.player._lastHeal.meterAttached = true;
+        ctx.events.push({
+          t: (Number(payload.t) || ctx.t) + 0.002,
+          type: 'heal',
+          actor: 'player',
+          target: 'player',
+          amount: logged,
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          label: `${piece.name}: heal +${logged}`,
+          meta: { category: 'heal', script: true, handler: 'spicy_banana' },
+        });
+      }
+      // Game miniActivate() — VFX only; no Activations metric.
+    });
   },
   onPeerActivated(listener, activated, ctx) {
     if (activated.itemId !== 'banana' && activated.itemId !== 'mananana') return;
-    if (!rollPercent(chanceOf(listener, ctx), ctx.rng)) return;
-    grantStacks(ctx.player, 'heat', Math.max(1, Math.round(getPName(listener.params, 'heat', 1))), {
+    // Game rollChance() — catalog chance 75 (chanceTag heat is tip chrome).
+    if (!rollItemChance(listener, ctx.rng)) return;
+    const heat = Math.max(
+      1,
+      Math.round(
+        Number(listener._spicy?.heat) ||
+          getPName(listener.params, 'heat', getP1(listener.params, 2)),
+      ),
+    );
+    grantStacks(ctx.player, 'heat', heat, {
+      piece: listener,
       originKey: listener.placementKey,
       originId: listener.itemId,
+      t: ctx.t,
+      silentLog: true,
+    });
+    pushBuffGrants(ctx.events, listener, ctx.player, ctx.t, 'spicy_banana', {
+      heat,
     });
     pushActivate(listener, ctx, 'spicy_banana', `Skill: ${listener.name}`);
   },

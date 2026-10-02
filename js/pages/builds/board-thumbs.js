@@ -1,8 +1,8 @@
 /**
- * Mount mini backpack boards into feed post media slots.
+ * Catalog backpack thumbs — one cached PNG per unique board (not live grids).
  */
 
-import { mountPlacedGrid } from '../../shared/backpack-grid/index.js';
+import { mountBoardStill, boardStillPublicUrl } from '../../shared/board-still/index.js';
 import {
   mapItem,
   makeSpriteUrl,
@@ -11,22 +11,26 @@ import {
 } from '../build/map-item.js';
 import { bindMoreBuildTips, registerMoreBuildTip } from '../build/more-build-tip.js';
 
-const BOARD_COLS = 9;
-const BOARD_ROWS = 7;
 /** Card feed preview — large enough to read the layout at a glance. */
 const FEED_CELL_PX = 60;
 /** Compact feed thumb — matches CSS `--builds-feed-cell: 18px`. */
 const FEED_CELL_COMPACT_PX = 18;
+/** Grid feed tile — mid-size still (~28–32px). */
+const FEED_CELL_GRID_PX = 30;
 
 /**
  * @param {HTMLElement} listEl
  * @param {{
  *   builds: object[],
  *   root: string,
- *   view?: 'card' | 'compact',
+ *   view?: 'card' | 'compact' | 'grid',
  *   spriteDisplay?: object | null,
  *   shapes?: object | null,
  *   sockets?: object | null,
+ *   tipSelector?: string,
+ *   boardAttr?: string,
+ *   cellPx?: number,
+ *   emptyHtml?: string,
  * }} opts
  * @returns {() => void}
  */
@@ -36,19 +40,19 @@ export function mountFeedBoardThumbs(listEl, opts) {
   const root = opts.root.endsWith('/') ? opts.root : `${opts.root}/`;
   const compact =
     opts.view === 'compact' || listEl.classList.contains('builds-feed__list--compact');
+  const grid =
+    opts.view === 'grid' || listEl.classList.contains('builds-feed__list--grid');
+  const boardAttr = opts.boardAttr || 'data-feed-board';
   const getSpriteUrl = makeSpriteUrl(root, opts.spriteDisplay || null);
   const bySlug = new Map(
     (opts.builds || []).map((b) => [String(b.slug || ''), b]),
   );
   /** @type {{ destroy?: () => void }[]} */
-  const grids = [];
-  /** Merged catalog for hover build tips */
-  /** @type {Map<string, object>} */
-  const tipItemsById = new Map();
+  const stills = [];
 
-  listEl.querySelectorAll('[data-feed-board]').forEach((host) => {
+  listEl.querySelectorAll(`[${boardAttr}]`).forEach((host) => {
     if (!(host instanceof HTMLElement)) return;
-    const slug = host.getAttribute('data-feed-board') || '';
+    const slug = host.getAttribute(boardAttr) || '';
     const build = bySlug.get(slug);
     if (!build) {
       host.classList.add('is-empty');
@@ -63,56 +67,53 @@ export function mountFeedBoardThumbs(listEl, opts) {
 
     if (!placements.length) {
       host.classList.add('is-empty');
-      host.innerHTML = `<span class="builds-post__board-empty">No board</span>`;
+      host.innerHTML =
+        opts.emptyHtml || `<span class="builds-post__board-empty">No board</span>`;
       return;
     }
 
-    for (const [id, item] of itemsById) tipItemsById.set(id, item);
-
-    host.replaceChildren();
-    const cellPx = compact
-      ? cellPxFromHost(host, FEED_CELL_COMPACT_PX)
-      : cellPxFromHost(host, FEED_CELL_PX);
-    // Keep CSS board box in sync when we cap cells to the feed column.
+    const defaultCell = compact
+      ? FEED_CELL_COMPACT_PX
+      : grid
+        ? FEED_CELL_GRID_PX
+        : FEED_CELL_PX;
+    const cellPx =
+      Number(opts.cellPx) > 0
+        ? Number(opts.cellPx)
+        : cellPxFromHost(host, defaultCell);
     host.style.setProperty('--builds-feed-cell', `${cellPx}px`);
-    const grid = mountPlacedGrid(host, {
+    const bakedUrl = boardStillPublicUrl(build.board_still_path);
+    const mounted = mountBoardStill(host, {
       placements,
       itemsById,
-      cols: BOARD_COLS,
-      rows: BOARD_ROWS,
       getSpriteUrl,
-      // Fixed cell from CSS `--builds-feed-cell` (incl. breakpoints).
-      // fillWidth + padded border-box host oversizes the board and clips sprites.
-      fillWidth: false,
-      exactBoard: true,
-      reserveScrollGap: false,
+      root,
       cellPx,
-      // Same AppearInLibrary wave as build view / items catalog
-      appear: true,
+      bakedUrl,
     });
-    // Overflow / sizing for feed thumbs lives in CSS (.builds-post__board > .bpb-bg).
-    // Do not mutate styles here — that restarts the appear wave mid-flight.
-    grids.push(grid);
+    stills.push(mounted);
 
-    // Build tips only in compact view (small thumb → larger preview on hover).
-    if (compact) {
-      const tipEl = host.closest('.builds-post__compact-thumb');
-      if (tipEl instanceof HTMLElement) {
-        tipEl.setAttribute('data-feed-build-tip', '');
-        registerMoreBuildTip(tipEl, build, placements);
-      }
+    const tipEl = opts.tipSelector
+      ? host.closest(opts.tipSelector)
+      : compact
+        ? host.closest('.builds-post__compact-thumb')
+        : grid
+          ? host.closest('.builds-post__grid-board')
+          : null;
+    if (tipEl instanceof HTMLElement) {
+      tipEl.setAttribute('data-feed-build-tip', '');
+      registerMoreBuildTip(tipEl, build, mounted.stillUrl);
     }
   });
 
-  const unbindTip = compact
-    ? bindMoreBuildTips(listEl, {
-        itemsById: tipItemsById,
-        getSpriteUrl,
-        root,
-        overEl: null,
-        thumbSelector: '[data-feed-build-tip]',
-      })
-    : () => {};
+  const unbindTip =
+    opts.tipSelector || compact || grid
+      ? bindMoreBuildTips(listEl, {
+          root,
+          overEl: null,
+          thumbSelector: opts.tipSelector || '[data-feed-build-tip]',
+        })
+      : () => {};
 
   return () => {
     try {
@@ -120,8 +121,8 @@ export function mountFeedBoardThumbs(listEl, opts) {
     } catch {
       /* ignore */
     }
-    for (const g of grids) g.destroy?.();
-    grids.length = 0;
+    for (const s of stills) s.destroy?.();
+    stills.length = 0;
   };
 }
 
@@ -137,19 +138,18 @@ function cellPxFromHost(host, fallback) {
   const cssPx = parseFloat(raw);
   const preferred = Number.isFinite(cssPx) && cssPx > 0 ? cssPx : fallback;
 
-  const col = host.closest('.builds-feed-col');
+  const col = host.closest('.builds-feed-col, .profile-main');
   if (!(col instanceof HTMLElement)) return preferred;
 
   const colW = col.clientWidth;
   if (colW <= 0) return preferred;
 
-  // Card stage: board + Build Info. Reserve info + gaps inside the post body.
   const stage = host.closest('.builds-post__stage');
   const stacked =
     stage instanceof HTMLElement &&
     getComputedStyle(stage).gridTemplateColumns.split(' ').length <= 1;
 
-  const reserve = stacked ? 48 : 11.5 * 16; /* ~info min + gaps + body pad */
+  const reserve = stacked ? 48 : 11.5 * 16;
   const avail = colW - reserve;
   if (avail < 9 * 28) return Math.min(preferred, 28);
 
@@ -166,7 +166,7 @@ function cellPxFromHost(host, fallback) {
  *   getSpriteUrl: (item: object) => string,
  * }} opts
  */
-function placementsForBuild(build, opts) {
+export function placementsForBuild(build, opts) {
   /** @type {Map<string, object>} */
   const itemsById = new Map();
   const placements = [];

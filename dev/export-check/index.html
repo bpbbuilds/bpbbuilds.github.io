@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dev — Export check</title>
+  <link rel="stylesheet" href="../../css/theme.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../css/shared.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../js/pages/create/rail-chrome.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../js/shared/backpack-grid/backpack-grid.css?v=fa3633b" />
+  <link rel="stylesheet" href="../../js/pages/export-check/export-check.css?v=export4" />
+</head>
+<body class="page-dev-export-check" data-root="../../">
+  <main id="main" class="xc-main" aria-label="Export check">
+    <header class="xc-head">
+      <h1 class="xc-title bpb-label-text">Export check</h1>
+      <p class="cr-hint">
+        Left is the export PNG on a game background. Right is that same JSON on the backpack grid.
+      </p>
+      <p class="cr-hint" id="xc-status" role="status">Loading boards…</p>
+      <div class="xc-pager">
+        <button type="button" class="cr-btn-quiet" id="xc-prev">Previous</button>
+        <label class="cr-hint" for="xc-jump">Board</label>
+        <input id="xc-jump" class="cr-input xc-jump" type="number" min="1" value="1" inputmode="numeric" />
+        <button type="button" class="cr-btn-quiet" id="xc-next">Next</button>
+      </div>
+    </header>
+    <div id="xc-list"></div>
+  </main>
+  <script type="module" src="../../js/pages/export-check/index.js?v=export4"></script>
+</body>
+</html>

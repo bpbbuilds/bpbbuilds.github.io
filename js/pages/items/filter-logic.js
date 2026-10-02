@@ -369,8 +369,7 @@ export function filterItems(items, state, meta = {}) {
     }
 
     if (q) {
-      const hay = `${item.name} ${item.type} ${item.class} ${(item.extraTypes || []).join(' ')}`.toLowerCase();
-      if (!hay.includes(q)) return false;
+      if (!String(item.name || '').toLowerCase().includes(q)) return false;
     }
 
     if (!itemMatchesCategory(item, state.category, treasureIds)) return false;

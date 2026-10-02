@@ -49,6 +49,7 @@ export function logWeaponHitEvents(opts) {
     meta: {
       category: 'damage',
       eventId: damageId,
+      isAttack: true,
       raw: res.raw,
       damage: res.damage,
       healthDamage: res.healthDamage,

@@ -29,7 +29,7 @@ Only via Edge Function `vote-build` (service role). RLS enabled with **no** publ
 
 - `builds.vote_score` — denormalized sum; public readable with the build
 - Client: [`js/pages/build/vote.js`](../../../js/pages/build/vote.js)
-- Docs: [`docs/votes.md`](../../votes.md)
+- Docs: [`docs/pages/votes.md`](../../pages/votes.md)
 
 SQL: [`docs/db/sql/012_build_votes.sql`](../sql/012_build_votes.sql)  
 Apply: `node scripts/_apply-build-votes.mjs`

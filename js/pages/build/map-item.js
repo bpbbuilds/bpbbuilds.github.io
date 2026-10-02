@@ -4,6 +4,16 @@
  */
 
 /**
+ * Shop unidentified amulet uses Energy Amulet art in the DB.
+ * Game texture is UnidentifiedAmulet.png; the item never stays on a board.
+ * @param {object} row
+ */
+function catalogImage(row) {
+  if (row?.id === 'amulet_unidentified') return 'UnidentifiedAmulet.png';
+  return row?.image || null;
+}
+
+/**
  * @param {object} row
  */
 export function mapItem(row) {
@@ -19,11 +29,16 @@ export function mapItem(row) {
     tags: Array.isArray(row.tags) ? row.tags : [],
     cost: row.cost,
     effect: row.effect || '',
-    image: row.image || null,
+    image: catalogImage(row),
     shape: row.shape ?? [[1]],
     sockets: row.sockets ?? null,
     accuracy: row.accuracy ?? null,
     cooldown: row.cooldown ?? null,
+    extraCooldowns: Array.isArray(row.extra_cooldowns)
+      ? row.extra_cooldowns.map(Number).filter((n) => n > 0)
+      : Array.isArray(row.extraCooldowns)
+        ? row.extraCooldowns.map(Number).filter((n) => n > 0)
+        : [],
     staminaCost: row.stamina_cost ?? null,
     damageMin: row.damage_min ?? null,
     damageMax: row.damage_max ?? null,

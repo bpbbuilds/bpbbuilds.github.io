@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-25T16:42:04.616Z",
+  "updatedAt": "2026-09-24T16:59:34.265Z",
   "ids": [
     "ace_of_spades",
     "acorn_ace",
@@ -480,6 +480,7 @@
     "tiger_rune",
     "time_dilator",
     "time_melting",
+    "time_pendant",
     "toad",
     "toast_goobert",
     "toolbox",
@@ -526,5 +527,5 @@
     "wrench",
     "yggdrasil_leaf"
   ],
-  "count": 524
+  "count": 525
 }

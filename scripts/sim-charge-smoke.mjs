@@ -11,7 +11,7 @@ import {
   GENERATOR_CHARGE_CELLS,
   sampleWaypoint,
 } from '../js/pages/sim/engine/charge-path.js';
-import { isLogNoise } from '../js/pages/sim/sim-log-sentences.js';
+import { isLogNoise } from '../js/pages/sim/log/sim-log-sentences.js';
 
 const batteryItem = {
   id: 'battery',

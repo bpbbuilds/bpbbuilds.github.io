@@ -8,7 +8,7 @@ import {
   parseDummyBlock,
   parseSimRound,
   readSimQuery,
-} from '../js/pages/sim/sim-permalink.js';
+} from '../js/pages/sim/shell/sim-permalink.js';
 import {
   COMBAT_DELAY,
   combatDurationSec,

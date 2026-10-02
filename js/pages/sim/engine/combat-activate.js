@@ -240,7 +240,7 @@ function activatePieceBody(piece, ctx) {
         itemId: piece.itemId,
         placementKey: piece.placementKey,
         label: `${piece.name} missed`,
-        meta: { category: 'damage' },
+        meta: { category: 'damage', isAttack: true },
       });
       const missResult = {
         hit: false,

@@ -1,11 +1,11 @@
 {
-  "extractedAt": "2026-07-16T23:58:30.988Z",
+  "extractedAt": "2026-09-24T16:51:36.427Z",
   "cellSize": 80,
   "defaultIconScale": [
     2,
     2
   ],
-  "count": 521,
+  "count": 523,
   "byImage": {
     "AceofSpades.png": {
       "iconScale": [
@@ -839,6 +839,23 @@
       "anchorX": 0,
       "anchorY": 0,
       "fileStem": "AmuletUnidentified"
+    },
+    "UnidentifiedAmulet.png": {
+      "iconScale": [
+        0.5,
+        0.5
+      ],
+      "scaleFrom": "AmuletUnidentified.tscn",
+      "texW": 171,
+      "texH": 171,
+      "w": 1.069,
+      "h": 1.069,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0,
+      "anchorY": 0,
+      "fileStem": "UnidentifiedAmulet"
     },
     "AngelCrystal.png": {
       "iconScale": [
@@ -6296,6 +6313,23 @@
       "anchorX": 0.013,
       "anchorY": 0.023,
       "fileStem": "TimeMelting"
+    },
+    "TimePendant.png": {
+      "iconScale": [
+        0.45,
+        0.45
+      ],
+      "scaleFrom": "TimePendant.tscn",
+      "texW": 169,
+      "texH": 169,
+      "w": 0.951,
+      "h": 0.951,
+      "bag": false,
+      "layered": false,
+      "texSource": "extract",
+      "anchorX": 0.063,
+      "anchorY": 0,
+      "fileStem": "TimePendant"
     },
     "Toad.png": {
       "iconScale": [

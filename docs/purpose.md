@@ -47,7 +47,7 @@ A build page should teach someone how to **run** the build:
 | Why it works | Synergies / explanation |
 | Priority | **Essential** vs **nice to have** items |
 | Route | **Round 3 skill** + **Round 10 skill** (required — every match picks these); other routing notes. Important amulets go on the board + **Needs / Wants** |
-| Social | Share; like/dislike **later**. Discuss CTA: **Comment on YouTube** if the build has a video, else **[Discord](https://discord.gg/WgR5kSJNF7)** |
+| Social | Share; like/dislike **later**. Discuss CTA: **Comment on YouTube** if the build has a video, else **[Discord](https://discord.gg/s5WghmrFSp)** |
 | Actions | **Remix / create** → build creator with this build auto-loaded |
 | Author | **[Smojo](https://www.youtube.com/@SmojoWasTaken)** — hardcode for MVP OK |
 
@@ -113,16 +113,17 @@ Do not pixel-clone or imply official affiliation.
 - Remix opens creator with build loaded
 - Community posts: free; OP: approval required
 - Author credit: **[Smojo](https://www.youtube.com/@SmojoWasTaken)** (hardcoded fine for now)
-- Discuss fallback: [Discord](https://discord.gg/WgR5kSJNF7)
+- Discuss fallback: [Discord](https://discord.gg/s5WghmrFSp)
 - Round 3 + Round 10 skills = **required structured fields** on build guides
 - Amulets = structured field when used (important, but not every build)
 - Identity later: Steam lean for community; owner stays Smojo-branded
 - Domain: generic BPB Builds–style
-- Homepage layout: featured stage → OP cards → catalog Hot/New → Create CTA → channel row → footer (`docs/homepage.md`)
+- Homepage layout: featured stage → OP cards → catalog Hot/New → Create CTA → channel row → footer (`docs/product/homepage.md`)
 
 ## Still open
 
 - Final site/domain name
 - Exact Steam vs other auth when community ships
 - How freeform “why it works” writeup sits beside the structured route fields
-- **Public launch (Phase 1)** — founding 50 Premium, Stripe, Discord roles, light blobs: [`launch-phase-1.md`](launch-phase-1.md)
+- **Public launch (Phase 1)** — founding 50 Premium, Stripe, Discord roles, light blobs: [`launch-phase-1.md`](product/launch-phase-1.md)
+- **After launch (Phase 2)** — parked tools (e.g. Premium `history.db` export): [`launch-phase-2.md`](product/launch-phase-2.md)

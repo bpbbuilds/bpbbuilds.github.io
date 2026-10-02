@@ -13,6 +13,7 @@ import { advanceCooldownSeconds, isCooldownActive } from '../cooldown.js';
 import { getStackAmount } from '../stacks.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { getScriptHandler } from './registry.js';
+import { magicRingPort } from './ports-ring.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -34,53 +35,6 @@ export const chessBoardPort = {
   },
   onCooldownEffect(piece, ctx) {
     pushActivate(piece, ctx, 'chess_board', `Board: ${piece.name}`);
-    return true;
-  },
-};
-
-/**
- * MagicRing.gd — crafted Start / Every / PlayerLow / OppoLow scaled stacks.
- * Params: start, every, playerlow, oppolow (counts); stacks via p1.
- */
-/** @type {ScriptHandler} */
-export const magicRingPort = {
-  handlerId: 'magic_ring',
-  family: 'unique',
-  onCombatStart(piece, ctx) {
-    piece._ringTick = 0;
-    const n = Math.max(1, Math.round(getPName(piece.params, 'start', getP1(piece.params, 2))));
-    const picked = giveRandomBuffs(ctx.player, n, ctx.rng, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'magic_ring', picked);
-  },
-  onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'magic_ring', `Accessory: ${piece.name}`);
-    piece._ringTick = (piece._ringTick || 0) + 1;
-    const every = Math.max(1, Math.round(getPName(piece.params, 'every', getP2(piece.params, 1))));
-    grantStacks(ctx.player, 'mana', every, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    const plow = getPName(piece.params, 'playerlow', 0.35);
-    const olow = getPName(piece.params, 'oppolow', 0.35);
-    const relP = ctx.player.maxHp > 0 ? ctx.player.hp / ctx.player.maxHp : 1;
-    const relD = ctx.dummy.maxHp > 0 ? ctx.dummy.hp / ctx.dummy.maxHp : 1;
-    if (relP < plow) {
-      giveRandomBuffs(ctx.player, 1, ctx.rng, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-    }
-    if (relD < olow) {
-      grantStacks(ctx.dummy, 'poison', 1, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-        rng: ctx.rng,
-        opponent: ctx.player,
-      });
-    }
     return true;
   },
 };

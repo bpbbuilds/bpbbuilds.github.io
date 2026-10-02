@@ -17,9 +17,9 @@ import {
   chargeEnterSchedule,
 } from '../charge-path.js';
 import { scheduleStatChargePath } from '../charge-delivery.js';
-import { advanceCooldownSeconds } from '../cooldown.js';
+import { advanceCooldownSeconds, isCooldownActive } from '../cooldown.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
-import { addBonusDamage, addSpeed } from '../piece-stats.js';
+import { addBonusDamage, addSpeed, modifiedCooldown } from '../piece-stats.js';
 import { randInt } from '../rng.js';
 import { gainStacks } from '../stacks.js';
 import { dealHit } from './handlers.js';
@@ -232,28 +232,27 @@ export const puzzleboxPort = {
   },
 };
 
+/** TimeDilator.gd — prepare: slow all weapons (both sides); CD: haste highest-CD active item. */
 /** @type {ScriptHandler} */
 export const timeDilatorPort = {
   handlerId: 'time_dilator',
   family: 'unique',
   onCombatStart(piece, ctx) {
-    const slow = getPName(piece.params, 'slow', getP1(piece.params, 10)) / 100;
-    for (const other of ctx.pieces || []) {
-      if (other.placementKey === piece.placementKey) continue;
-      if (!(other.damageMax > 0 || other.kind === 'weapon')) continue;
-      if (slow) addSpeed(other, -slow);
+    const slow = getPName(piece.params, 'slow', getP1(piece.params, 30)) / 100;
+    if (!slow) return;
+    for (const other of ctx.allPieces || ctx.pieces || []) {
+      if (!isCombatWeapon(other, ctx.itemsById)) continue;
+      addSpeed(other, -slow);
     }
   },
   onCooldownEffect(piece, ctx) {
-    const { t, events, pieces } = ctx;
-    pushActivate(piece, ctx, 'time_dilator', `Accessory: ${piece.name}`);
-    const speedUp = getPName(piece.params, 'speed', getP2(piece.params, 15)) / 100;
+    const { t, events, pieces, player } = ctx;
+    const speedUp = getPName(piece.params, 'speed', getP2(piece.params, 6)) / 100;
     let slowest = null;
     let slowestCd = 0;
     for (const other of pieces || []) {
-      if (other.placementKey === piece.placementKey) continue;
-      if (!(other.cooldown > 0) || !other.alive) continue;
-      const cd = Number(other.baseCooldown || other.cooldown) || 0;
+      if (!isCooldownActive(other)) continue;
+      const cd = modifiedCooldown(other, player?.stacks);
       if (cd > slowestCd) {
         slowestCd = cd;
         slowest = other;
@@ -264,13 +263,32 @@ export const timeDilatorPort = {
       events.push({
         t: t + 0.004,
         type: 'info',
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
         label: `${piece.name}: haste → ${slowest.name}`,
-        meta: { category: 'adjacency', script: true, handler: 'time_dilator' },
+        meta: {
+          category: 'buff',
+          script: true,
+          handler: 'time_dilator',
+          targetKey: slowest.placementKey,
+          targetItemId: slowest.itemId,
+          speedUp,
+          modifiedCd: slowestCd,
+        },
       });
     }
     return true;
   },
 };
+
+/**
+ * @param {object} piece
+ * @param {Map<string, object>} itemsById
+ */
+function isCombatWeapon(piece, itemsById) {
+  if (piece?.kind === 'weapon') return true;
+  return itemHasType(itemsById?.get?.(piece?.itemId), 'weapon');
+}
 
 /** @type {ScriptHandler} */
 export const bigBloodthornePort = {

@@ -1,0 +1,214 @@
+/* Dummy settings — create Filter/Build rail chrome (Patch3 + OptionsFont) */
+
+.sim-opp-dummy {
+  --il-ink: #3c261d;
+  --il-cream: #ffecdc;
+  --il-gold: #eac914;
+  --il-shade: rgba(14, 15, 16, 0.14);
+  --il-ui-stroke: 0.1em;
+  --il-ui-track: -0.03em;
+  --il-ui-ring:
+    0.1em 0 0 var(--il-ink),
+    0.092em 0.038em 0 var(--il-ink),
+    0.071em 0.071em 0 var(--il-ink),
+    0.038em 0.092em 0 var(--il-ink),
+    0 0.1em 0 var(--il-ink),
+    -0.038em 0.092em 0 var(--il-ink),
+    -0.071em 0.071em 0 var(--il-ink),
+    -0.092em 0.038em 0 var(--il-ink),
+    -0.1em 0 0 var(--il-ink),
+    -0.092em -0.038em 0 var(--il-ink),
+    -0.071em -0.071em 0 var(--il-ink),
+    -0.038em -0.092em 0 var(--il-ink),
+    0 -0.1em 0 var(--il-ink),
+    0.038em -0.092em 0 var(--il-ink),
+    0.071em -0.071em 0 var(--il-ink),
+    0.092em -0.038em 0 var(--il-ink);
+
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+  min-height: 12rem;
+  padding: 0.7rem 0.75rem 0.85rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+.sim-opp-dummy::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--il-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.sim-opp-dummy__empty {
+  margin: 0;
+  padding: 1.5rem 0.5rem;
+  text-align: center;
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.25rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.15;
+  color: var(--il-cream);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+}
+
+.sim-opp-dummy .sim-dummy-set {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.sim-dummy-set__label {
+  margin: 0 0 0.15rem;
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.4rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.15;
+  color: var(--il-cream);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+}
+
+.sim-opp-dummy .sim-dummy-set__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.5rem 0.55rem;
+  align-items: end;
+}
+
+.sim-dummy-set__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.sim-dummy-set__field-label {
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.15;
+  color: var(--il-cream);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+}
+
+.sim-dummy-set__input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.3rem;
+  border: 2px solid var(--il-ink);
+  background: var(--il-cream);
+  box-shadow: inset 0 2px 4px rgba(20, 10, 5, 0.18);
+  font-family: var(--bpb-font-body);
+  font-size: 1rem;
+  color: var(--il-ink);
+  caret-color: var(--il-ink);
+}
+
+.sim-dummy-set__input::placeholder {
+  color: color-mix(in srgb, var(--il-ink) 45%, transparent);
+}
+
+.sim-dummy-set__input:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--il-gold) 80%, transparent);
+  outline-offset: 2px;
+}
+
+.sim-dummy-set__check {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.1rem 0;
+  border: 0;
+  background: transparent;
+  cursor: var(--bpb-cursor-pointer);
+  text-align: left;
+}
+
+.sim-dummy-set__box {
+  flex-shrink: 0;
+  width: 1.7rem;
+  height: 1.7rem;
+  background: url('../../../../assets/icons/filters/Unchecked.png') center / contain no-repeat;
+}
+
+.sim-dummy-set__check.is-on .sim-dummy-set__box {
+  background-image: url('../../../../assets/icons/filters/Checked2.png');
+}
+
+.sim-dummy-set__check-label {
+  font-family: var(--bpb-font-body);
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: var(--il-ui-track);
+  line-height: 1.15;
+  color: var(--il-cream);
+  -webkit-text-stroke: var(--il-ui-stroke) var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+}
+
+.sim-dummy-set__check:hover {
+  filter: brightness(1.08);
+}
+
+.sim-dummy-set__check:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--il-gold) 80%, transparent);
+  outline-offset: 2px;
+}
+
+.sim-dummy-set__apply {
+  appearance: none;
+  margin: 0;
+  justify-self: end;
+  padding: 0.32rem 0.85rem 0.28rem;
+  border: 2px solid var(--il-ink);
+  border-radius: 0.35rem;
+  font-family: var(--bpb-font-display);
+  font-weight: 400;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  color: var(--il-cream);
+  -webkit-text-stroke: 0.08em var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: var(--il-ui-ring);
+  cursor: var(--bpb-cursor-pointer);
+  background: color-mix(in srgb, var(--il-ink) 38%, #8a6a4a);
+  transition: filter 0.12s ease, background 0.12s ease;
+}
+
+.sim-dummy-set__apply:hover {
+  filter: brightness(1.1);
+}
+
+.sim-dummy-set__apply:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--il-gold) 80%, transparent);
+  outline-offset: 2px;
+}

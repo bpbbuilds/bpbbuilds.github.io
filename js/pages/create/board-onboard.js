@@ -7,6 +7,8 @@
 
 import { HERO_CLASSES } from '../items/filter-logic.js';
 import { startingBagIdsForClass } from '../../shared/starting-bags.js';
+import { isBagItem } from './collision.js';
+import { getCurrentDrag } from './drag-source.js';
 import { tryAutoPlaceStartingBag } from './starting-bag-place.js';
 
 /** Skip only — cleared again after the board/park have had content. */
@@ -75,11 +77,13 @@ export function shouldShowOnboard(draft) {
  *   root: string,
  *   onRequestHistoryFile?: () => void,
  *   onRequestMedia?: () => void,
+ *   mediaEnabled?: boolean,
  * }} opts
  */
 export function mountBoardOnboard(stageEl, opts) {
   const { state, itemsById, getSpriteUrl } = opts;
   const root = opts.root.endsWith('/') ? opts.root : `${opts.root}/`;
+  const mediaEnabled = opts.mediaEnabled === true;
 
   /** @type {'class' | 'bag'} */
   let step = 'class';
@@ -87,6 +91,10 @@ export function mountBoardOnboard(stageEl, opts) {
   let sessionHero = null;
   /** After the user had items, emptying board+park clears Skip and reopens. */
   let hadContent = !isBoardAndParkEmpty(state.getDraft());
+  /** Catalog drag over an empty board — drop hint instead of the class picker. */
+  let placingBack = false;
+  /** Catalog drag is a bag (true), an item (false), or unknown (null). */
+  let draggingBag = null;
 
   const overlay = document.createElement('div');
   overlay.className = 'create-onboard';
@@ -95,28 +103,28 @@ export function mountBoardOnboard(stageEl, opts) {
   overlay.setAttribute('data-step', 'class');
   overlay.innerHTML = `
     <div class="create-onboard__panel" data-onboard-panel>
-      <h2 class="create-onboard__title build-info__ui-text" data-onboard-title>Pick a class to begin</h2>
+      <div class="create-onboard__head">
+        <button type="button" class="create-onboard__back" data-onboard-back hidden aria-label="Pick another class"></button>
+        <h2 class="create-onboard__title build-info__ui-text" data-onboard-title>Pick a class to begin</h2>
+      </div>
       <div class="create-onboard__grid create-onboard__grid--classes" data-onboard-classes role="group" aria-label="Hero class"></div>
       <div class="create-onboard__grid create-onboard__grid--bags" data-onboard-bags role="group" aria-label="Starting bag"></div>
       <div class="create-onboard__actions">
-        <button type="button" class="create-onboard__btn create-onboard__btn--dashed create-onboard__btn--history" data-onboard-history>
-          <span class="create-onboard__history-label">history.db</span>
-          <code class="create-onboard__history-path" data-onboard-path>${HISTORY_DB_DIR}</code>
-        </button>
-        <button type="button" class="create-onboard__path-copy" data-onboard-copy-path>Copy path</button>
-        <button type="button" class="create-onboard__btn create-onboard__btn--dashed create-onboard__btn--media" data-onboard-media>Media</button>
+        <p class="create-onboard__or">or upload a build</p>
+        <div class="create-onboard__upload">
+          <div class="create-onboard__upload-col">
+            <button type="button" class="create-onboard__btn create-onboard__btn--dashed create-onboard__btn--history" data-onboard-history>
+              <span class="create-onboard__history-label">history.db</span>
+              <code class="create-onboard__history-path" data-onboard-path>${HISTORY_DB_DIR}</code>
+            </button>
+            <button type="button" class="create-onboard__path-copy" data-onboard-copy-path>Copy path</button>
+          </div>
+          <button type="button" class="create-onboard__btn create-onboard__btn--dashed create-onboard__btn--media" data-onboard-media aria-label="Media" title="Media"${mediaEnabled ? '' : ' hidden'}>
+            <img class="create-onboard__media-icon" src="${root}assets/icons/create/GalleryOrb.png" alt="" width="72" height="72" draggable="false" />
+          </button>
+        </div>
       </div>
     </div>
-    <aside class="create-onboard__catalog-hint" data-onboard-catalog-hint aria-hidden="true">
-      <img
-        class="create-onboard__catalog-hint-img"
-        src="${root}assets/icons/create/hand-drag-bag.png"
-        alt=""
-        width="200"
-        height="120"
-        draggable="false"
-      />
-    </aside>
   `;
   document.body.appendChild(overlay);
 
@@ -125,7 +133,6 @@ export function mountBoardOnboard(stageEl, opts) {
   const bagsEl = overlay.querySelector('[data-onboard-bags]');
   const copyPathBtn = overlay.querySelector('[data-onboard-copy-path]');
   const panelEl = overlay.querySelector('[data-onboard-panel]');
-  const catalogHintEl = overlay.querySelector('[data-onboard-catalog-hint]');
 
   /**
    * Stage only (toolbar + park excluded) — panel centers in the empty board area.
@@ -175,9 +182,12 @@ export function mountBoardOnboard(stageEl, opts) {
       'padding:0',
       'margin:0',
       'background:transparent',
-      'pointer-events:auto',
+      `pointer-events:${placingBack ? 'none' : 'auto'}`,
       'transform:none',
     ].join(';');
+    if (panelEl instanceof HTMLElement) {
+      panelEl.style.pointerEvents = placingBack ? 'none' : '';
+    }
 
     if (panelEl instanceof HTMLElement) {
       panelEl.style.position = 'absolute';
@@ -186,16 +196,6 @@ export function mountBoardOnboard(stageEl, opts) {
       panelEl.style.right = 'auto';
       panelEl.style.transform = 'translate(-50%, -50%)';
       panelEl.style.margin = '0';
-    }
-
-    // Catalog drag cue — own layer on the stage's right edge (not part of the picker)
-    if (catalogHintEl instanceof HTMLElement) {
-      catalogHintEl.style.position = 'absolute';
-      catalogHintEl.style.top = '50%';
-      catalogHintEl.style.right = '0.35rem';
-      catalogHintEl.style.left = 'auto';
-      catalogHintEl.style.transform = 'translateY(-50%)';
-      catalogHintEl.style.margin = '0';
     }
   }
 
@@ -267,11 +267,13 @@ export function mountBoardOnboard(stageEl, opts) {
     if (bagsEl instanceof HTMLElement) {
       bagsEl.style.display = showBags ? 'flex' : 'none';
     }
-    if (titleEl instanceof HTMLElement) {
+    if (titleEl instanceof HTMLElement && !placingBack) {
       titleEl.textContent = showBags
         ? 'Pick a starting bag'
         : 'Pick a class to begin';
     }
+    const backBtn = overlay.querySelector('[data-onboard-back]');
+    if (backBtn instanceof HTMLButtonElement) backBtn.hidden = !showBags;
     if (showBags && sessionHero) {
       paintBags(sessionHero);
     } else if (!showBags) {
@@ -281,15 +283,25 @@ export function mountBoardOnboard(stageEl, opts) {
     }
   }
 
-  /** Prefer bag step when a class is already chosen. */
+  /** Cleared board — always start over at class, not the bag step. */
   function resetStepForEmptyBoard() {
-    const hero = state.getDraft().hero_class;
-    if (hero && HERO_CLASSES.includes(hero)) {
-      sessionHero = hero;
-      step = 'bag';
-    } else {
-      sessionHero = null;
-      step = 'class';
+    sessionHero = null;
+    step = 'class';
+    const d = state.getDraft();
+    if (d.hero_class || d.starting_bag_id) {
+      state.patchMeta({ hero_class: null, starting_bag_id: null });
+    }
+  }
+
+  function backToClass() {
+    sessionHero = null;
+    step = 'class';
+    applyStepDom();
+    const d = state.getDraft();
+    if (d.hero_class || d.starting_bag_id) {
+      queueMicrotask(() => {
+        state.patchMeta({ hero_class: null, starting_bag_id: null });
+      });
     }
   }
 
@@ -335,6 +347,8 @@ export function mountBoardOnboard(stageEl, opts) {
 
     if (!empty) {
       hadContent = true;
+      placingBack = false;
+      overlay.classList.remove('is-place-back');
       overlay.hidden = true;
       overlay.style.display = 'none';
       return;
@@ -354,8 +368,41 @@ export function mountBoardOnboard(stageEl, opts) {
     }
 
     overlay.hidden = false;
-    applyStepDom();
+    if (placingBack) {
+      showPlaceBack();
+    } else {
+      applyStepDom();
+    }
     positionOverBoard();
+  }
+
+  function showPlaceBack() {
+    placingBack = true;
+    overlay.classList.add('is-place-back');
+    overlay.classList.toggle('is-item-warning', draggingBag === false);
+    if (titleEl instanceof HTMLElement) {
+      titleEl.textContent = draggingBag === false
+        ? 'Please place a bag before placing an item'
+        : 'Place Bag Here';
+    }
+  }
+
+  function onCatalogDrag() {
+    if (!isBoardAndParkEmpty(state.getDraft()) || isOnboardSkipped()) return;
+    const drag = getCurrentDrag();
+    const item = drag?.itemId ? itemsById.get(drag.itemId) : null;
+    draggingBag = item ? isBagItem(item) : null;
+    showPlaceBack();
+    overlay.hidden = false;
+    positionOverBoard();
+  }
+
+  function onCatalogDragEnd() {
+    if (!placingBack) return;
+    placingBack = false;
+    draggingBag = null;
+    overlay.classList.remove('is-place-back', 'is-item-warning');
+    syncVisibility();
   }
 
   async function copyHistoryPath() {
@@ -379,6 +426,11 @@ export function mountBoardOnboard(stageEl, opts) {
   function onActionClick(e) {
     const t = e.target instanceof Element ? e.target : null;
     if (!t || !overlay.contains(t)) return;
+    if (t.closest('[data-onboard-back]')) {
+      e.preventDefault();
+      backToClass();
+      return;
+    }
     if (t.closest('[data-onboard-copy-path]')) {
       e.preventDefault();
       void copyHistoryPath();
@@ -391,13 +443,15 @@ export function mountBoardOnboard(stageEl, opts) {
     }
     if (t.closest('[data-onboard-media]')) {
       e.preventDefault();
-      opts.onRequestMedia?.();
+      if (mediaEnabled) opts.onRequestMedia?.();
     }
   }
 
   paintClasses();
   if (bagsEl instanceof HTMLElement) bagsEl.style.display = 'none';
   overlay.addEventListener('click', onActionClick);
+  document.addEventListener('bpb-create-drag', onCatalogDrag);
+  document.addEventListener('bpb-create-drag-end', onCatalogDragEnd);
   window.addEventListener('resize', positionOverBoard);
   window.addEventListener('scroll', positionOverBoard, true);
 
@@ -427,6 +481,8 @@ export function mountBoardOnboard(stageEl, opts) {
       unsub();
       ro?.disconnect();
       overlay.removeEventListener('click', onActionClick);
+      document.removeEventListener('bpb-create-drag', onCatalogDrag);
+      document.removeEventListener('bpb-create-drag-end', onCatalogDragEnd);
       window.removeEventListener('resize', positionOverBoard);
       window.removeEventListener('scroll', positionOverBoard, true);
       overlay.remove();

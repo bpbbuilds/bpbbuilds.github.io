@@ -1,9 +1,10 @@
-﻿/**
+/**
  * Soft park strip — flat items, stacked by id in the tray UI.
  */
 
 import { isBagItem, bagCellsSet, isPlacementFloating } from './collision.js';
 import { newPlacementKey } from './draft-io.js';
+import { gemCarry } from './socket-place.js';
 
 /** Max distinct item ids in the parked tray (stacks share one slot). */
 export const PARK_UNIQUE_MAX = 27;
@@ -20,7 +21,7 @@ export function parkedFromPlacement(placement) {
     key: placement.key || newPlacementKey(),
     priority: placement.priority ?? null,
   };
-  if (Array.isArray(placement.gems)) entry.gems = placement.gems.slice();
+  Object.assign(entry, gemCarry(placement));
   return entry;
 }
 
@@ -144,8 +145,8 @@ export function pointerOverPark(parkEl, clientX, clientY) {
 
 /**
  * Storagebox.isHovered — uses Game.draggedItem.global_position (main held bag),
- * not the mouse. Create: main float over Park strip OR catalog column (game
- * storage sits beside the inventory; catalog is that right-hand region here).
+ * not the mouse. Create: main float over the Park strip only.
+ * Catalog is a delete zone (see mainOverCatalog), not storage.
  *
  * @param {HTMLElement | null | undefined} cursorEl
  * @param {HTMLElement | null | undefined} parkEl
@@ -156,9 +157,30 @@ export function mainOverStorage(cursorEl, parkEl) {
   if (r.width < 1 && r.height < 1) return false;
   const x = r.left + r.width / 2;
   const y = r.top + r.height / 2;
-  if (pointOverElement(parkEl, x, y)) return true;
+  return pointOverElement(parkEl, x, y);
+}
+
+/**
+ * Dropping onto the item catalog deletes (same as sell), does not park.
+ * @param {HTMLElement | null | undefined} cursorEl
+ */
+export function mainOverCatalog(cursorEl) {
+  if (!(cursorEl instanceof HTMLElement) || cursorEl.hidden) return false;
+  const r = cursorEl.getBoundingClientRect();
+  if (r.width < 1 && r.height < 1) return false;
+  const x = r.left + r.width / 2;
+  const y = r.top + r.height / 2;
   const catalog = document.querySelector('.page-create .create-col--catalog');
   return pointOverElement(catalog, x, y);
+}
+
+/**
+ * @param {number} clientX
+ * @param {number} clientY
+ */
+export function pointerOverCatalog(clientX, clientY) {
+  const catalog = document.querySelector('.page-create .create-col--catalog');
+  return pointOverElement(catalog, clientX, clientY);
 }
 
 /**
@@ -476,7 +498,7 @@ export function mountParkStrip(parkRoot, opts) {
 
   /** @param {PointerEvent} e */
   function onPointerDown(e) {
-    if (e.button !== 0) return;
+    if (e.pointerType !== 'touch' && e.pointerType !== 'pen' && e.button !== 0) return;
     const chip = e.target instanceof Element
       ? e.target.closest('.create-board__park-chip')
       : null;

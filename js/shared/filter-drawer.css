@@ -1,0 +1,158 @@
+/* Narrow windows: a filter rail opens from the right instead of sitting above the content. */
+
+.bpb-filter-drawer__toggle,
+.bpb-filter-drawer__close,
+.bpb-filter-drawer__backdrop {
+  display: none;
+}
+
+.bpb-filter-drawer__close-icon,
+.bpb-filter-drawer__close-icon::before,
+.bpb-filter-drawer__close-icon::after {
+  display: block;
+  width: 1.05rem;
+  height: 2px;
+  border-radius: 1px;
+  background: #3c261d;
+}
+
+.bpb-filter-drawer__close-icon {
+  position: relative;
+  background: transparent;
+}
+
+.bpb-filter-drawer__close-icon::before,
+.bpb-filter-drawer__close-icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.bpb-filter-drawer__close-icon::before {
+  transform: rotate(45deg);
+}
+
+.bpb-filter-drawer__close-icon::after {
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 1240px) {
+  .bpb-filter-drawer.is-filters-open {
+    position: relative;
+    z-index: 130;
+  }
+
+  /* Profile stage is its own layer (z-index 0). Lift it or the nav covers the close control. */
+  .profile-stage:has(.bpb-filter-drawer.is-filters-open) {
+    z-index: 130;
+  }
+
+  .bpb-filter-drawer__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 40;
+    top: 46%;
+    right: 0;
+    margin: 0;
+    padding: 0.75rem 0.4rem;
+    border: 2px solid #3c261d;
+    border-right: 0;
+    border-radius: 0.45rem 0 0 0.45rem;
+    background: #eac914;
+    color: #3c261d;
+    font-family: var(--bpb-font-body);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    writing-mode: vertical-rl;
+    cursor: var(--bpb-cursor-pointer);
+    box-shadow: -2px 2px 0 rgba(60, 38, 29, 0.28);
+  }
+
+  .bpb-filter-drawer__toggle[hidden],
+  .bpb-filter-drawer.is-filters-open .bpb-filter-drawer__toggle {
+    display: none;
+  }
+
+  .bpb-filter-drawer__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 110;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgba(28, 16, 10, 0.48);
+    cursor: var(--bpb-cursor-pointer);
+  }
+
+  .bpb-filter-drawer__backdrop[hidden] {
+    display: none;
+  }
+
+  .bpb-filter-drawer .bpb-filter-drawer__panel.items-filters,
+  .page-profile .profile-builds__layout.bpb-filter-drawer .builds-feed-filters.items-filters {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 120;
+    width: min(22rem, 88vw);
+    max-width: 88vw;
+    max-height: none;
+    height: auto;
+    margin: 0;
+    order: 0;
+    flex: none;
+    padding: 0.65rem 0.65rem 1rem;
+    box-sizing: border-box;
+    background: #5c4030;
+    transform: translateX(105%);
+    transition: transform 0.2s ease;
+    box-shadow: -6px 0 18px rgba(28, 16, 10, 0.28);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .bpb-filter-drawer.is-filters-open .bpb-filter-drawer__panel.items-filters,
+  .page-profile .profile-builds__layout.bpb-filter-drawer.is-filters-open .builds-feed-filters.items-filters {
+    transform: translateX(0);
+  }
+
+  .bpb-filter-drawer .bpb-filter-drawer__close {
+    display: grid;
+    place-items: center;
+    flex: 0 0 2.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #3c261d;
+    border-radius: 0.3rem;
+    background: #eac914;
+    cursor: var(--bpb-cursor-pointer);
+  }
+
+  .bpb-filter-drawer .il-filter__head {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .bpb-filter-drawer .il-filter__count,
+  .bpb-filter-drawer .il-filter__sticker {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 1240px) and (prefers-reduced-motion: reduce) {
+  .bpb-filter-drawer .bpb-filter-drawer__panel.items-filters,
+  .page-profile .profile-builds__layout.bpb-filter-drawer .builds-feed-filters.items-filters {
+    transition: none;
+  }
+}

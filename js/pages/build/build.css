@@ -1,5 +1,13 @@
 /* Build page — board + round scrubber + right info rail (items-filters look) */
 @import url("./more-build-tip.css");
+@import url("./event-banner-tip.css");
+@import url("../create/notes-mentions.css");
+
+html:has(body.page-build),
+html:has(body.page-build),
+body.page-build {
+  overflow-x: clip;
+}
 
 .page-build {
   --build-info-width: 28rem;
@@ -35,21 +43,18 @@
 }
 
 .build-main {
-  --build-catalog-width: min(
-    45rem,
-    calc(
-      100vw - var(--build-info-width) - var(--build-author-width) - 4 *
-        var(--build-side-gap)
-    )
-  );
+  --build-catalog-width: 45rem;
   width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   padding: 2.25rem var(--build-side-gap) 1.5rem;
   box-sizing: border-box;
   flex: 1 1 auto;
+  min-width: 0;
   min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow-x: clip;
 }
 
 .build-visually-hidden {
@@ -67,17 +72,25 @@
 /* 1fr | author | board | info | 1fr */
 .build-layout {
   display: grid;
-  grid-template-columns: 1fr auto auto auto 1fr;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, var(--build-author-width))
+    minmax(0, var(--build-catalog-width))
+    minmax(0, var(--build-info-width))
+    minmax(0, 1fr);
   column-gap: var(--build-side-gap);
   align-items: start;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   flex: 1 1 auto;
 }
 
 .build-author {
   grid-column: 2;
-  width: var(--build-author-width);
-  max-width: 100%;
+  width: 100%;
+  max-width: var(--build-author-width);
+  min-width: 0;
   position: sticky;
   top: 0.75rem;
   z-index: 2;
@@ -120,6 +133,18 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.build-author__avatar.bpb-face,
+.build-author__avatar--blob {
+  display: inline-grid !important;
+  object-fit: contain;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 .build-author__avatar--initials {
@@ -214,7 +239,7 @@ a.build-author__name:hover {
   gap: 0.35rem;
   text-decoration: none;
   color: inherit;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   border-radius: 0.35rem;
   transition: filter 0.12s ease, background 0.12s ease;
 }
@@ -231,14 +256,17 @@ a.build-author__thumb:focus-visible {
 
 .build-author__thumb-grid {
   width: calc(9 * var(--build-thumb-cell));
+  height: calc(7 * var(--build-thumb-cell));
   line-height: 0;
   border-radius: 0.25rem;
   /* Soft parchment well behind the mini board */
   background: color-mix(in srgb, var(--build-ink) 08%, transparent);
   padding: 0.2rem;
   box-sizing: content-box;
+  overflow: visible;
 }
 
+.build-author__thumb-grid .bpb-board-still,
 .build-author__thumb-grid .bpb-bg {
   overflow: visible;
   max-height: none;
@@ -316,8 +344,9 @@ a.build-author__thumb:focus-visible {
 
 .build-stage {
   grid-column: 3;
-  width: var(--build-catalog-width);
-  max-width: 100%;
+  width: 100%;
+  max-width: var(--build-catalog-width);
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -325,6 +354,7 @@ a.build-author__thumb:focus-visible {
 }
 
 .build-stage__head {
+  position: relative;
   width: 100%;
   margin: 0 0 0.7rem;
   display: flex;
@@ -336,6 +366,7 @@ a.build-author__thumb:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 0.55rem;
   max-width: 100%;
   min-width: 0;
@@ -445,6 +476,7 @@ a.build-author__thumb:focus-visible {
   visibility: hidden;
   transform: scale(1.04);
   pointer-events: none;
+  cursor: var(--bpb-cursor-pointer);
   transition:
     opacity 0.32s ease,
     transform 0.32s ease,
@@ -489,6 +521,7 @@ a.build-author__thumb:focus-visible {
   height: 100%;
   border: 0;
   display: block;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -500,8 +533,9 @@ a.build-author__thumb:focus-visible {
 
 .build-info {
   grid-column: 4;
-  width: var(--build-info-width);
-  max-width: 100%;
+  width: 100%;
+  max-width: var(--build-info-width);
+  min-width: 0;
   position: sticky;
   top: 0.75rem;
   /* Below floating item tooltips (body host ~1000+) */
@@ -578,7 +612,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   }
 
   .build-main {
-    --build-catalog-width: min(45rem, calc(100vw - 2 * var(--build-side-gap)));
+    --build-catalog-width: min(45rem, 100%);
   }
 }
 
@@ -692,7 +726,7 @@ body.page-build .bpb-tooltip-float.is-locked {
 }
 
 .build-info [data-item-id] {
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 .build-info__icon--empty {
@@ -784,6 +818,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   flex: 1 1 auto;
   width: 100%;
   min-height: 2rem;
+  overflow: visible;
 }
 
 .build-info__gold {
@@ -791,6 +826,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
+  overflow: visible;
 }
 
 .build-info__gold-icon {
@@ -802,7 +838,9 @@ body.page-build .bpb-tooltip-float.is-locked {
 
 .build-info__gold-num {
   font-size: 1.625rem;
-  line-height: 1;
+  line-height: 1.15;
+  padding-inline: 0.22em 0.06em;
+  overflow: visible;
 }
 
 .build-info__rank-icon {
@@ -889,6 +927,12 @@ body.page-build .bpb-tooltip-float.is-locked {
   white-space: pre-wrap;
 }
 
+.build-info__how-text .bpb-mention {
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  paint-order: normal;
+}
+
 .build-info__discuss-wrap {
   margin-top: 0.85rem;
   display: flex;
@@ -901,7 +945,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   background: transparent;
   margin: 0;
   padding: 0.35rem 0.55rem;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -1045,8 +1089,10 @@ body.page-build .bpb-tooltip-float.is-locked {
   align-items: stretch;
   gap: 0.12rem;
   width: 100%;
+  max-width: 100%;
   padding: 0.15rem 0 0.25rem;
   box-sizing: border-box;
+  overflow-x: clip;
 }
 
 .build-round-strip__btn {
@@ -1055,7 +1101,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   background: transparent;
   padding: 0.08rem 0;
   margin: 0;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   border-radius: 0.2rem;
   line-height: 0;
   /* Fixed slot — do not grow/shrink with round count */
@@ -1124,7 +1170,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   line-height: 0;
 }
 
@@ -1196,7 +1242,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   background: transparent;
   margin: 0;
   padding: 0.1rem;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   line-height: 0;
   opacity: 0.82;
   transition: transform 0.12s ease, opacity 0.12s ease, filter 0.12s ease;
@@ -1311,7 +1357,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   background: transparent;
   margin: 0;
   padding: 0.15rem 0.2rem;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -1359,7 +1405,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   border: 0;
   background: transparent;
   padding: 0.15rem 0.35rem;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   font-family: var(--bpb-font-display);
   font-size: 1.85rem;
   line-height: 1;
@@ -1378,7 +1424,7 @@ body.page-build .bpb-tooltip-float.is-locked {
 
 .build-round__btn:disabled {
   opacity: 0.35;
-  cursor: default;
+  cursor: var(--bpb-cursor-default);
 }
 
 .build-round__label {

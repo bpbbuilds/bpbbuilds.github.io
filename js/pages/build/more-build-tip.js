@@ -1,12 +1,11 @@
 /**
- * Build preview tooltip for “More builds” thumbs (not item tooltips).
+ * Build preview tooltip for catalog thumbs (not item tooltips).
+ * Board art is the same cached still as the thumb — no live grid on hover.
  */
 
-import { mountPlacedGrid } from '../../shared/backpack-grid/index.js';
 import { classIconPath } from '../../shared/class-icons.js';
+import { faceHtml, hydrateFaces } from '../../shared/blob-face.js';
 
-const BOARD_COLS = 9;
-const BOARD_ROWS = 7;
 /** Large preview board inside the class tooltip frame. */
 const PREVIEW_CELL_PX = 48;
 const EDGE = 8;
@@ -51,8 +50,6 @@ function frameKeyForBuild(build) {
 /**
  * @param {HTMLElement} listEl
  * @param {{
- *   itemsById: Map<string, object>,
- *   getSpriteUrl: (item: object) => string,
  *   root?: string,
  *   overEl?: HTMLElement | null,
  *   thumbSelector?: string,
@@ -62,8 +59,6 @@ function frameKeyForBuild(build) {
 export function bindMoreBuildTips(listEl, opts) {
   if (!(listEl instanceof HTMLElement)) return () => {};
 
-  const itemsById = opts.itemsById;
-  const getSpriteUrl = opts.getSpriteUrl;
   const thumbSelector = opts.thumbSelector || '.build-author__thumb';
   const root = opts.root?.endsWith('/') ? opts.root : `${opts.root || '../../'}/`;
   /** @type {HTMLElement | null} */
@@ -76,12 +71,11 @@ export function bindMoreBuildTips(listEl, opts) {
 
   /** @type {HTMLElement | null} */
   let host = null;
-  /** @type {ReturnType<typeof mountPlacedGrid> | null} */
-  let grid = null;
   /** @type {HTMLElement | null} */
   let activeThumb = null;
   /** @type {ReturnType<typeof setTimeout> | 0} */
   let hideTimer = 0;
+  let showGen = 0;
 
   function ensureHost() {
     if (host) return host;
@@ -101,20 +95,9 @@ export function bindMoreBuildTips(listEl, opts) {
     }
   }
 
-  function destroyGrid() {
-    if (grid) {
-      try {
-        grid.destroy?.({ keepHost: true });
-      } catch {
-        /* ignore */
-      }
-      grid = null;
-    }
-  }
-
   function hide() {
     clearHide();
-    destroyGrid();
+    showGen += 1;
     activeThumb = null;
     if (host) {
       host.hidden = true;
@@ -126,15 +109,16 @@ export function bindMoreBuildTips(listEl, opts) {
   /**
    * @param {HTMLElement} thumb
    * @param {object} build
-   * @param {object[]} placements
+   * @param {Promise<string | null> | string | null | undefined} stillUrl
    */
-  function show(thumb, build, placements) {
+  async function show(thumb, build, stillUrl) {
     clearHide();
     const tip = ensureHost();
-    destroyGrid();
+    const gen = (showGen += 1);
     activeThumb = thumb;
 
     const title = tipTitle(build);
+    const author = String(build.author_name || '').trim();
     const hero = String(build.hero_class || '').trim();
     const frameKey = frameKeyForBuild(build);
     tip.dataset.frame = frameKey;
@@ -150,12 +134,13 @@ export function bindMoreBuildTips(listEl, opts) {
     tip.innerHTML = `
       <div class="bpb-tooltip__inner build-more-tip__inner">
         <header class="build-more-tip__head">
-          ${
-            icon
-              ? `<img class="build-more-tip__class" src="${escapeAttr(icon)}" alt="" width="36" height="36" />`
-              : ''
-          }
+          ${creatorHtml(build, root)}
           <div class="build-more-tip__titles">
+            ${
+              author
+                ? `<p class="build-more-tip__creator-name">${escapeHtml(author)}</p>`
+                : ''
+            }
             <p class="build-more-tip__title">${escapeHtml(title)}</p>
             ${
               hero
@@ -163,6 +148,11 @@ export function bindMoreBuildTips(listEl, opts) {
                 : ''
             }
           </div>
+          ${
+            icon
+              ? `<img class="build-more-tip__class" src="${escapeAttr(icon)}" alt="" width="36" height="36" />`
+              : ''
+          }
         </header>
         <div class="build-more-tip__board" data-preview-board></div>
         <footer class="build-more-tip__meta">
@@ -193,21 +183,16 @@ export function bindMoreBuildTips(listEl, opts) {
     `;
 
     tip.hidden = false;
-    const boardHost = tip.querySelector('[data-preview-board]');
-    if (boardHost instanceof HTMLElement) {
-      grid = mountPlacedGrid(boardHost, {
-        placements,
-        itemsById,
-        cols: BOARD_COLS,
-        rows: BOARD_ROWS,
-        getSpriteUrl,
-        fillWidth: false,
-        exactBoard: true,
-        reserveScrollGap: false,
-        cellPx: PREVIEW_CELL_PX,
-      });
-    }
+    void hydrateFaces(tip, root);
+    placeTip(tip, thumb);
 
+    const url = await Promise.resolve(stillUrl);
+    if (gen !== showGen || activeThumb !== thumb) return;
+    const boardHost = tip.querySelector('[data-preview-board]');
+    if (url && boardHost instanceof HTMLElement) {
+      boardHost.style.setProperty('--bpb-still-cell', `${PREVIEW_CELL_PX}px`);
+      boardHost.innerHTML = `<span class="bpb-board-still"><img class="bpb-board-still__img is-ready" src="${escapeAttr(url)}" alt="" draggable="false" /></span>`;
+    }
     placeTip(tip, thumb);
   }
 
@@ -235,7 +220,6 @@ export function bindMoreBuildTips(listEl, opts) {
       const scale = Math.min(1, Math.max(0.45, targetW / layoutW));
       tip.style.setProperty('--build-more-tip-scale', String(scale));
       const scaledW = layoutW * scale;
-      // Center over Build Info; clamp into the viewport.
       let left = r.left + (r.width - scaledW) / 2;
       if (left < EDGE) left = EDGE;
       if (left + scaledW > window.innerWidth - EDGE) {
@@ -281,7 +265,7 @@ export function bindMoreBuildTips(listEl, opts) {
     const data = tipStore.get(thumb);
     if (!data) return;
     if (activeThumb === thumb && host && !host.hidden) return;
-    show(thumb, data.build, data.placements);
+    show(thumb, data.build, data.stillUrl);
   }
 
   /** @param {Event} e */
@@ -297,7 +281,6 @@ export function bindMoreBuildTips(listEl, opts) {
     hideTimer = setTimeout(hide, 80);
   }
 
-  /** Keep tip while moving onto it (optional — tip is not interactive). */
   function onTipOver() {
     clearHide();
   }
@@ -322,16 +305,49 @@ export function bindMoreBuildTips(listEl, opts) {
   };
 }
 
-/** @type {WeakMap<HTMLElement, { build: object, placements: object[] }>} */
+/** @type {WeakMap<HTMLElement, { build: object, stillUrl: Promise<string | null> | string | null }>} */
 export const tipStore = new WeakMap();
 
 /**
  * @param {HTMLElement} thumb
  * @param {object} build
- * @param {object[]} placements
+ * @param {Promise<string | null> | string | null | undefined} stillUrl
  */
-export function registerMoreBuildTip(thumb, build, placements) {
-  tipStore.set(thumb, { build, placements });
+export function registerMoreBuildTip(thumb, build, stillUrl) {
+  tipStore.set(thumb, { build, stillUrl: stillUrl ?? null });
+}
+
+/**
+ * Creator face for the left side of the tooltip header.
+ * @param {object} build
+ * @param {string} root
+ */
+function creatorHtml(build, root) {
+  const name = String(build?.author_name || '').trim();
+  if (!name) return '';
+  const profile = {
+    avatar_url: build?.author_avatar_url,
+    equipped_avatar: build?.author_equipped_avatar,
+  };
+  const face =
+    faceHtml(profile, root, {
+      className: 'build-more-tip__creator-face',
+      size: 64,
+      alt: name,
+    }) || creatorInitials(name);
+  return face;
+}
+
+/**
+ * @param {string} name
+ */
+function creatorInitials(name) {
+  const parts = name.split(/\s+/).filter(Boolean);
+  const initials =
+    parts.length >= 2
+      ? `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+      : name.slice(0, 2).toUpperCase();
+  return `<span class="build-more-tip__creator-face build-more-tip__creator-face--initials" aria-hidden="true">${escapeHtml(initials || '?')}</span>`;
 }
 
 /**

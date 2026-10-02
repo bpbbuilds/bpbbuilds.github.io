@@ -1,0 +1,145 @@
+/* Market stub — stall scene + rewards plate */
+
+body.page-market {
+  height: 100vh;
+  max-height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: var(--bpb-rewards-cream, #dbc4a1);
+  background-color: #c4a574;
+  background-image: url("../../../assets/theme/backgrounds/bg-market-stall-arch.png");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+body.page-market #site-nav-space,
+body.page-market #site-footer {
+  flex: 0 0 auto;
+}
+
+body.page-market #main {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.market-main {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(28rem, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.25rem 0;
+}
+
+.market-soon {
+  width: 100%;
+  padding: 1.15rem 1.25rem 1rem;
+}
+
+.market-soon__title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.85rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+}
+
+.market-soon__title-text {
+  flex: 0 1 auto;
+  text-align: center;
+}
+
+.market-soon__rule {
+  position: relative;
+  flex: 1 1 1.25rem;
+  min-width: 0.85rem;
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 85%, transparent),
+    transparent
+  );
+}
+
+.market-soon__rule:first-child::before,
+.market-soon__rule:last-child::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  transform: translateY(-50%);
+}
+
+.market-soon__rule:first-child::before {
+  left: 0;
+  border-width: 3.5px 7px 3.5px 0;
+  border-color: transparent var(--bpb-rewards-gold, #c6a567) transparent transparent;
+}
+
+.market-soon__rule:last-child::after {
+  right: 0;
+  border-width: 3.5px 0 3.5px 7px;
+  border-color: transparent transparent transparent var(--bpb-rewards-gold, #c6a567);
+}
+
+.market-soon__hint,
+.market-soon__note {
+  margin: 0;
+  font-family: var(--bpb-font-body);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--bpb-rewards-cream, #dbc4a1);
+}
+
+.market-soon__hint {
+  font-size: 0.95rem;
+}
+
+.market-soon__action {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 1rem 0 0.85rem;
+  padding: 0.55rem 0.75rem;
+  text-align: center;
+  text-decoration: none;
+  font-family: var(--bpb-font-body);
+  font-size: 1rem;
+  font-style: normal;
+  color: var(--bpb-rewards-cream, #dbc4a1);
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 70%, transparent);
+}
+
+.market-soon__action:hover {
+  filter: brightness(1.08);
+}
+
+.market-soon__action:focus-visible {
+  outline: 2px solid var(--bpb-rewards-gold-bright, #e8c878);
+  outline-offset: 2px;
+}
+
+.market-soon__note {
+  margin: 0;
+  font-size: 0.82rem;
+  opacity: 0.9;
+}

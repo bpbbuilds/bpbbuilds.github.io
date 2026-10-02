@@ -1,0 +1,9 @@
+{
+  "byId": {
+    "laboratory": [4, 6, 8, 12],
+    "hogus_bogus": [6, 9],
+    "wisp": [5],
+    "lightning_potion": [7]
+  },
+  "note": "Extra phases after primary. Laboratory primary CD is 2s — board-live-stats PHASE_CDS / load-catalog fill that when DB cooldown is null."
+}

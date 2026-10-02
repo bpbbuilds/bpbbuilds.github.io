@@ -1,0 +1,202 @@
+/* Transparent cast. Sizes follow the OBS browser-source frame (1440p = 2560×1440). */
+
+html,
+body.page-blob-overlay {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent !important;
+  background-image: none !important;
+  color: #ffecdc;
+}
+
+body.page-blob-overlay::after {
+  content: none !important;
+  background: none !important;
+}
+
+body.page-blob-overlay #blob-overlay {
+  padding: 0;
+  max-width: none;
+}
+
+.blob-cast {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+.blob-cast--row,
+.blob-cast--low,
+.blob-cast--pop,
+.blob-cast--grid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1.4vh 1.6vh;
+  padding: 2vh 2.4vh 1.6vh;
+}
+
+.blob-cast--row,
+.blob-cast--low,
+.blob-cast--pop {
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  --blob-cast-face: min(16vh, calc((100vw - 6vh) / var(--blob-cast-n, 1) - 1.6vh));
+}
+
+.blob-cast--low,
+.blob-cast--pop {
+  padding-bottom: 0;
+}
+
+.blob-cast--pop .blob-cast__person {
+  animation: blob-cast-pop 8s ease-in-out infinite;
+}
+
+.blob-cast--grid {
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: flex-end;
+  --blob-cast-face: min(14vh, calc((100vw - 6vh) / var(--blob-cast-cols, 4) - 1.6vh));
+}
+
+.blob-cast__person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4vh;
+  margin: 0;
+  min-width: 0;
+  width: var(--blob-cast-face, 14vh);
+}
+
+.blob-cast--float {
+  position: relative;
+  --blob-cast-face: 12vh;
+}
+
+.blob-cast--walk {
+  position: relative;
+  --blob-cast-face: min(16vh, 14vw);
+}
+
+.blob-cast--walk .blob-cast__person {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  animation: blob-cast-walk 22s linear infinite;
+}
+
+.blob-cast--walk .blob-cast__face {
+  transform-origin: 50% 100%;
+  animation: blob-cast-step 0.42s ease-in-out infinite;
+}
+
+.blob-cast__face {
+  width: var(--blob-cast-face, 14vh);
+  height: var(--blob-cast-face, 14vh);
+}
+
+.blob-cast__name {
+  max-width: 100%;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: clamp(16px, 1.7vh, 32px);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.15;
+  text-align: center;
+  color: #ffecdc;
+  text-shadow:
+    0 0.08em 0 #3c261d,
+    0.08em 0 0 #3c261d,
+    -0.08em 0 0 #3c261d,
+    0 -0.08em 0 #3c261d;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.blob-cast--float .blob-cast__person {
+  position: absolute;
+  width: var(--blob-cast-face);
+  animation: blob-cast-drift 7s ease-in-out infinite alternate;
+}
+
+.blob-cast__empty {
+  margin: 0;
+  padding: 2vh;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: clamp(16px, 1.8vh, 28px);
+  font-style: italic;
+  color: #ffecdc;
+  text-shadow: 0 0.06em 0 #3c261d;
+}
+
+@keyframes blob-cast-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -1.6vh, 0);
+  }
+}
+
+@keyframes blob-cast-walk {
+  0% {
+    transform: translate3d(2vw, 0, 0) scaleX(1);
+  }
+  45% {
+    transform: translate3d(calc(100vw - var(--blob-cast-face) - 2vw), 0, 0) scaleX(1);
+  }
+  50% {
+    transform: translate3d(calc(100vw - var(--blob-cast-face) - 2vw), 0, 0) scaleX(-1);
+  }
+  95% {
+    transform: translate3d(2vw, 0, 0) scaleX(-1);
+  }
+  100% {
+    transform: translate3d(2vw, 0, 0) scaleX(1);
+  }
+}
+
+@keyframes blob-cast-step {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-5deg);
+  }
+  50% {
+    transform: translate3d(0, -1.1vh, 0) rotate(5deg);
+  }
+}
+
+@keyframes blob-cast-pop {
+  0%,
+  22% {
+    transform: translate3d(0, 0, 0);
+  }
+  48%,
+  62% {
+    transform: translate3d(0, 108%, 0);
+  }
+  88%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob-cast--float .blob-cast__person,
+  .blob-cast--pop .blob-cast__person,
+  .blob-cast--walk .blob-cast__person,
+  .blob-cast--walk .blob-cast__face {
+    animation: none;
+  }
+
+  .blob-cast--walk .blob-cast__person {
+    left: var(--blob-cast-walk-x, 2vw);
+  }
+}

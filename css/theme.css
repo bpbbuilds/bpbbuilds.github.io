@@ -1,5 +1,7 @@
+@import url("cursor.css?v=edge");
+
 /* BPB Website — global theme tokens
- * Derived from Backpack Battles UI (see docs/theme.md + assets/theme-refs/)
+ * Derived from Backpack Battles UI (see docs/product/theme.md + assets/theme-refs/)
  * Page-specific layout → Tailwind. Tooltip skin → js/shared/tooltip.css
  */
 
@@ -148,6 +150,7 @@ body::after {
   padding-top: calc(var(--bpb-frame-edge-y) * 0.35);
   padding-left: var(--bpb-frame-edge-x);
   padding-right: var(--bpb-frame-edge-x);
+  isolation: isolate;
 }
 
 /* In-flow stand-in sized to the *expanded* nav — keeps layout stable while nav is fixed */
@@ -163,10 +166,30 @@ body::after {
   padding-right: var(--bpb-frame-edge-x);
 }
 
+/* Phone and tablet portrait: the stretched wood rim eats the screen. Drop it and the inset that cleared it.
+   The shelf nav also gives way to the menu under 1100px (iPad Pro 13 portrait is 1032). */
+@media (max-width: 1100px) {
+  :root {
+    --bpb-frame-edge-x: 0px;
+    --bpb-frame-edge-y: 0px;
+  }
+
+  body::after {
+    content: none;
+    display: none;
+  }
+
+  #site-nav {
+    padding-top: 0.35rem;
+    padding-left: 0.65rem;
+    padding-right: 0.65rem;
+  }
+}
+
 #site-footer {
-  padding-bottom: var(--bpb-frame-edge-y);
-  padding-left: var(--bpb-frame-edge-x);
-  padding-right: var(--bpb-frame-edge-x);
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* Homepage: combat day→night sky (js/pages/home/combat-sky.js) */
@@ -182,6 +205,41 @@ body.page-home {
 body.page-home #main {
   flex: 1 1 auto;
   min-height: 0;
+}
+
+/* Homepage: signature gold scrollbar (game track/thumb) */
+html:has(body.page-home) {
+  overflow-x: clip;
+  scrollbar-width: auto;
+  scrollbar-color: #eac914 #472a24;
+}
+
+html:has(body.page-home)::-webkit-scrollbar {
+  width: 18px;
+  background: transparent;
+}
+
+html:has(body.page-home)::-webkit-scrollbar-track {
+  background: url("../assets/icons/scrollbar/track.png") center / 18px 100% no-repeat;
+  border-radius: 0;
+}
+
+html:has(body.page-home)::-webkit-scrollbar-thumb {
+  min-height: 42px;
+  background: none;
+  border-radius: 0;
+  border-style: solid;
+  border-width: 12px 7px;
+  border-image-source: url("../assets/icons/scrollbar/thumb.png");
+  border-image-slice: 18 11 fill;
+  border-image-width: 12px 7px;
+  border-image-repeat: stretch;
+}
+
+html:has(body.page-home)::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 /* Items catalog: shop interior — calm wall behind parchment UI */
@@ -213,6 +271,12 @@ body.page-items #main {
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
+}
+
+body.page-items #site-footer {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  z-index: 1;
 }
 
 body.page-items #site-footer:empty {
@@ -267,9 +331,9 @@ body.page-build {
   flex-direction: column;
 }
 
-/* Builds catalog + profiles: town square — public browse (home family).
- * Sim uses testing-grounds lab chrome in js/pages/sim/sim.css (see docs/sim-product.md). */
-body.page-builds,
+/* Profiles: town square — public browse (home family).
+ * Builds uses the same backdrop but locks the viewport (list scrolls inside #main).
+ * Sim uses testing-grounds lab chrome in js/pages/sim/sim.css (see docs/sim/sim-product.md). */
 body.page-profile {
   background-color: #6b5340;
   background-image:
@@ -286,6 +350,72 @@ body.page-profile {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* Builds catalog: town square + viewport lock — feed list scrolls, footer stays */
+body.page-builds {
+  background-color: #6b5340;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(212, 184, 150, 0.4) 0%,
+      rgba(70, 48, 32, 0.5) 100%
+    ),
+    var(--bpb-bg-town);
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+body.page-builds #site-nav-space {
+  flex-shrink: 0;
+}
+
+body.page-builds #main {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.page-builds #site-footer {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+body.page-builds #site-footer:empty {
+  display: none;
+}
+
+/* Events: same shop interior backdrop as the items catalog — page scrolls */
+body.page-events {
+  background-color: #5a4535;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(212, 184, 150, 0.42) 0%,
+      rgba(70, 48, 32, 0.5) 100%
+    ),
+    var(--bpb-bg-shop);
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+}
+
+body.page-events #main {
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 #main {
@@ -308,7 +438,7 @@ h3 {
 }
 
 /* Outlined cream sticker treatment — face is Milonga for banner chrome.
-   Filter / Options UI labels should use --bpb-font-body instead (see docs/theme.md). */
+   Filter / Options UI labels should use --bpb-font-body instead (see docs/product/theme.md). */
 .bpb-label-text {
   color: var(--bpb-label-fill);
   font-family: var(--bpb-font-display);
@@ -334,6 +464,96 @@ a:hover {
   border: var(--bpb-border);
   border-radius: var(--bpb-radius-panel);
   box-shadow: var(--bpb-shadow-paper);
+}
+
+/*
+ * Modular ink Rewards plate — stretches to any size/shape.
+ * Game-style dark leather fill + gold rim (no fixed-aspect art to distort).
+ */
+.bpb-panel--rewards {
+  --bpb-rewards-ink: #3c261d;
+  --bpb-rewards-ink-mid: #4a3224;
+  --bpb-rewards-ink-deep: #2a1a12;
+  --bpb-rewards-gold: #c6a567;
+  --bpb-rewards-gold-bright: #e8c878;
+  --bpb-rewards-cream: #dbc4a1;
+  --bpb-rewards-corner: 0.75rem;
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  box-sizing: border-box;
+  padding: 0.75rem 0.85rem 0.85rem;
+  border-radius: 0.4rem;
+  color: var(--bpb-rewards-cream);
+  background-color: var(--bpb-rewards-ink);
+  background-image:
+    radial-gradient(
+      ellipse 95% 80% at 50% 32%,
+      color-mix(in srgb, var(--bpb-rewards-ink-mid) 72%, transparent),
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bpb-rewards-ink-mid) 88%, #6b4a32) 0%,
+      var(--bpb-rewards-ink) 42%,
+      var(--bpb-rewards-ink-deep) 100%
+    );
+  background-size: auto, auto;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  border: 2px solid var(--bpb-rewards-gold);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--bpb-rewards-gold) 42%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bpb-rewards-gold-bright) 28%, transparent),
+    inset 0 -10px 28px rgba(0, 0, 0, 0.38),
+    0 10px 22px rgba(0, 0, 0, 0.32);
+  overflow: hidden;
+}
+
+/* Subtle BPB tile pattern — sits under content, above the ink fill */
+.bpb-panel--rewards::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: url("../assets/theme/ui/ui-rewards-pattern.png") center / 132px repeat;
+  opacity: 0.34;
+  mix-blend-mode: soft-light;
+}
+
+/* Four gold corner brackets — scale with padding, not a fixed image */
+.bpb-panel--rewards::before {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  inset: 0.3rem;
+  pointer-events: none;
+  border-radius: 0.18rem;
+  background:
+    linear-gradient(var(--bpb-rewards-gold-bright), var(--bpb-rewards-gold-bright)) top left /
+      var(--bpb-rewards-corner) 2px no-repeat,
+    linear-gradient(var(--bpb-rewards-gold-bright), var(--bpb-rewards-gold-bright)) top left /
+      2px var(--bpb-rewards-corner) no-repeat,
+    linear-gradient(var(--bpb-rewards-gold-bright), var(--bpb-rewards-gold-bright)) top right /
+      var(--bpb-rewards-corner) 2px no-repeat,
+    linear-gradient(var(--bpb-rewards-gold-bright), var(--bpb-rewards-gold-bright)) top right /
+      2px var(--bpb-rewards-corner) no-repeat,
+    linear-gradient(var(--bpb-rewards-gold-bright), var(--bpb-rewards-gold-bright)) bottom left /
+      var(--bpb-rewards-corner) 2px no-repeat,
+    linear-gradient(var(--bpb-rewards-gold-bright), var(--bpb-rewards-gold-bright)) bottom left /
+      2px var(--bpb-rewards-corner) no-repeat,
+    linear-gradient(var(--bpb-rewards-gold-bright), var(--bpb-rewards-gold-bright)) bottom right /
+      var(--bpb-rewards-corner) 2px no-repeat,
+    linear-gradient(var(--bpb-rewards-gold-bright), var(--bpb-rewards-gold-bright)) bottom right /
+      2px var(--bpb-rewards-corner) no-repeat;
+  opacity: 0.92;
+}
+
+.bpb-panel--rewards > * {
+  position: relative;
+  z-index: 2;
 }
 
 .bpb-banner {

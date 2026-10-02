@@ -1,0 +1,57 @@
+/**
+ * Item.showCooldown + Shader/ItemProgress.gdshader
+ *
+ * Filled texels: mix(rgb, white, 0.05) then * 1.5. Progress grows from
+ * screen-bottom (direction = DOWN, rotateProgress inverts UP/RIGHT).
+ * Pad is the game's `progress + 0.05` so a thin strip is visible at 0.
+ *
+ * Overlay is the sprite itself (PNG alpha = silhouette). No white plate,
+ * no extra WebGL — one background image + brightness, painted only while .is-on.
+ */
+
+.sim-cd-shade {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: 6;
+  pointer-events: none;
+  visibility: hidden;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-image: linear-gradient(
+    var(--sim-cd-unspin, 0deg),
+    #000 0%,
+    #000 calc((var(--sim-cd, 0) + 0.05) * 100%),
+    transparent calc((var(--sim-cd, 0) + 0.05) * 100% + 2%)
+  );
+  mask-image: linear-gradient(
+    var(--sim-cd-unspin, 0deg),
+    #000 0%,
+    #000 calc((var(--sim-cd, 0) + 0.05) * 100%),
+    transparent calc((var(--sim-cd, 0) + 0.05) * 100% + 2%)
+  );
+}
+
+/* Inside .bpb-live: sit on flask/base, under glass overlay + glow children. */
+.sim-cd-shade--live {
+  top: 0;
+  left: 0;
+  translate: none;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.sim-cd-shade.is-on {
+  visibility: visible;
+  /* ItemProgress: COLOR.rgb *= 1.5 after a 5% white mix (mix is nearly invisible). */
+  filter: brightness(1.5);
+}

@@ -5,13 +5,19 @@
 import { applyHealEfficiency, applyStaminaRegeneration } from '../actor-stats.js';
 import { startBattleRage } from '../battle-rage.js';
 import { grantTimedResistancePct } from '../timed-resistance.js';
-import { cleanseRandomDebuffs, giveRandomBuffs, grantStacks, onBuffChanged } from '../buff-economy.js';
+import {
+  BUFF_KEYS,
+  cleanseRandomDebuffs,
+  giveRandomBuffs,
+  grantStacks,
+  onBuffChanged,
+} from '../buff-economy.js';
 import { gainStacks } from '../stacks.js';
 import { getItemsInside } from '../board-graph.js';
 import { reEmitCharge } from '../charge-delivery.js';
 import { getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
-import { itemHasType } from './ports-util.js';
+import { itemHasType, pushBuffGrants } from './ports-util.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -257,26 +263,55 @@ export const puzzlebagZPort = {
   },
 };
 
-/** PuzzlebagT.gd — insides that usesBuffs: refund a fraction of spent buffs. */
+/**
+ * PuzzlebagT.gd (display: Puzzlebag of Energy) —
+ * onPrepare: insides that usesBuffs; refund `buff%` of *used* buff spends
+ * (fractional accrual). giveStacks origin is the bag (Combat Log / meter).
+ */
+/** @type {ScriptHandler} */
 export const puzzlebagTPort = {
   handlerId: 'puzzlebag_t',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const refund = getPName(piece.params, 'buff', 20) / 100;
-    const acc = {};
-    const keys = new Set(getItemsInside(ctx.graph, piece.placementKey));
+  onPreCombatStart(piece, ctx) {
+    const refund = getPName(piece.params, 'buff', 25) / 100;
+    if (!(refund > 0)) return;
+    // Game: canApplyEffect = usesBuffs → getAffectedItemsInside().
+    const usesIds = ctx.canAffect?.usesBuffsIds;
+    const keys = new Set();
+    for (const o of insides(ctx, piece)) {
+      if (usesIds && !usesIds.has(String(o.itemId))) continue;
+      keys.add(o.placementKey);
+    }
+    if (!keys.size) return;
+    /** @type {Record<string, number>} */
+    piece._usedStacks = {};
+    for (const k of BUFF_KEYS) piece._usedStacks[k] = 0;
     onBuffChanged(ctx.player, (ch) => {
+      if (piece._bagRefunding) return;
       if (!(ch.amount < 0) || !ch.used || !ch.originKey || !keys.has(ch.originKey)) return;
-      const stack = String(ch.stack || '');
-      if (!stack) return;
-      acc[stack] = (acc[stack] || 0) + Math.abs(ch.amount) * refund;
-      const n = Math.round(acc[stack]);
-      if (n <= 0) return;
-      acc[stack] -= n;
-      grantStacks(ctx.player, stack, n, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
+      const buffType = String(ch.stack || '');
+      if (!BUFF_KEYS.includes(buffType)) return;
+      const used = Math.abs(ch.amount);
+      piece._usedStacks[buffType] =
+        (Number(piece._usedStacks[buffType]) || 0) + used * refund;
+      const toRefund = Math.round(piece._usedStacks[buffType]);
+      if (!(toRefund > 0)) return;
+      piece._usedStacks[buffType] -= toRefund;
+      piece._bagRefunding = true;
+      try {
+        grantStacks(ctx.player, buffType, toRefund, {
+          piece,
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+          t: ctx.t,
+          silentLog: true,
+        });
+        pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'puzzlebag_t', {
+          [buffType]: toRefund,
+        });
+      } finally {
+        piece._bagRefunding = false;
+      }
     });
   },
 };

@@ -28,6 +28,7 @@ import {
   createSpotlightRecipes,
 } from '../spotlight-recipes.js';
 import { createSpotlightBuilds } from '../spotlight-builds.js';
+import { bindFilterDrawer } from '../../../shared/filter-drawer.js';
 import { loadLiveArt, liveArtSpec } from '../../../shared/item-live-art/index.js';
 import {
   LIBRARY_COLS,
@@ -48,6 +49,21 @@ import { loadingShellHtml, paintLayoutPreview, promoteLoadingShell } from './she
 let catalogCols = LIBRARY_COLS;
 /** When false, cells stay CELL_PX and the bag width shrinks with column count. */
 let catalogFillWidth = true;
+/** Create's narrow horizontal strip uses rarity order; standalone Items does not. */
+let createMobileRarityOrder = false;
+/** `column` on the narrow Create strip: rarity runs left to right. */
+let catalogPackFlow = /** @type {'row' | 'column'} */ ('row');
+/** Column-flow strip height in cells. */
+let catalogPackRows = 4;
+
+const RARITY_ORDER = new Map([
+  ['common', 0],
+  ['rare', 1],
+  ['epic', 2],
+  ['legendary', 3],
+  ['godly', 4],
+  ['unique', 5],
+]);
 
 /** @type {Map<string, object>} */
 let itemById = new Map();
@@ -62,6 +78,8 @@ let unbindTips = null;
 /** @type {(() => void) | null} */
 let unbindFilters = null;
 /** @type {(() => void) | null} */
+let unbindFilterDrawer = null;
+/** @type {(() => void) | null} */
 let unbindSpotlightClick = null;
 /** @type {(() => void) | null} */
 let unbindItemPointer = null;
@@ -75,8 +93,12 @@ let spotlightBuilds = null;
 let recipeIndex = null;
 /** @type {ReturnType<typeof mountItemiaryGrid> | null} */
 let itemiaryGrid = null;
+/** @type {Element | null} */
+let catalogHost = null;
 /** @type {number} */
 let paintRaf = 0;
+/** @type {number} */
+let colsRaf = 0;
 /** @type {boolean} */
 let paintPending = false;
 /** @type {number} */
@@ -155,6 +177,10 @@ function teardown() {
     unbindTips();
     unbindTips = null;
   }
+  if (unbindFilterDrawer) {
+    unbindFilterDrawer();
+    unbindFilterDrawer = null;
+  }
   if (tipLayer) {
     tipLayer.destroy();
     tipLayer = null;
@@ -163,6 +189,14 @@ function teardown() {
     cancelAnimationFrame(paintRaf);
     paintRaf = 0;
   }
+  if (colsRaf) {
+    cancelAnimationFrame(colsRaf);
+    colsRaf = 0;
+  }
+  catalogHost = null;
+  createMobileRarityOrder = false;
+  catalogPackFlow = 'row';
+  catalogPackRows = 4;
   paintPending = false;
   if (prewarmHandle) {
     if (typeof window.cancelIdleCallback === 'function') {
@@ -302,7 +336,7 @@ function wireItemPointerDown(host, handler) {
 
   /** @param {PointerEvent} e */
   const onDown = (e) => {
-    if (e.button !== 0) return;
+    if (e.pointerType !== 'touch' && e.pointerType !== 'pen' && e.button !== 0) return;
     if (!(e.target instanceof Element)) return;
     const hit = e.target.closest(
       '.bpb-bg__item[data-item-id]:not(.bpb-bg__item--parked)',
@@ -310,7 +344,8 @@ function wireItemPointerDown(host, handler) {
     if (!hit || !host.contains(hit)) return;
     const id = hit.getAttribute('data-item-id');
     if (!id || !itemById.has(id)) return;
-    e.preventDefault();
+    // Touch stays a catalog pan until the create page decides it is a drag.
+    if (e.pointerType !== 'touch') e.preventDefault();
     tipLayer?.hide?.();
     handler(id, e);
   };
@@ -324,6 +359,94 @@ function wireItemPointerDown(host, handler) {
 /**
  * @param {Element} host
  */
+/**
+ * Repack the live catalog into `n` columns. Used by the create page so item
+ * cells stay readable as the bag narrows. No-ops when the count is unchanged.
+ * @param {number} n
+ * @returns {boolean}
+ */
+function scheduleColsPaint() {
+  if (!catalogHost || !itemiaryGrid) return;
+  if (colsRaf) return;
+  colsRaf = requestAnimationFrame(() => {
+    colsRaf = 0;
+    if (catalogHost) void paintGrid(catalogHost, { appear: false });
+  });
+}
+
+/**
+ * Keep the narrow Create strip readable while scrolling horizontally.
+ * Items are ordered common → unique, then packed down each column and on to the right.
+ * @param {object[]} items
+ * @returns {object[]}
+ */
+function sortCreateMobileRarity(items) {
+  return items.slice().sort((a, b) => {
+    const ar =
+      RARITY_ORDER.get(String(a?.rarity || '').trim().toLowerCase()) ?? 99;
+    const br =
+      RARITY_ORDER.get(String(b?.rarity || '').trim().toLowerCase()) ?? 99;
+    if (ar !== br) return ar - br;
+
+    const ai = libraryOrderIndex.has(a.id)
+      ? libraryOrderIndex.get(a.id)
+      : Number.POSITIVE_INFINITY;
+    const bi = libraryOrderIndex.has(b.id)
+      ? libraryOrderIndex.get(b.id)
+      : Number.POSITIVE_INFINITY;
+    if (ai !== bi) return ai - bi;
+    return String(a.id).localeCompare(String(b.id));
+  });
+}
+
+export function setCatalogCols(n) {
+  const next = Math.max(1, Math.floor(Number(n) || 1));
+  const flowChanged = catalogPackFlow !== 'row';
+  catalogPackFlow = 'row';
+  if (flowChanged) itemiaryGrid?.setPackFlow?.('row', 0);
+  if (next === catalogCols) {
+    if (flowChanged) scheduleColsPaint();
+    return flowChanged;
+  }
+  catalogCols = next;
+  itemiaryGrid?.setCols?.(next);
+  scheduleColsPaint();
+  return true;
+}
+
+/**
+ * Narrow Create catalog: pack down this many rows, then continue to the right.
+ * @param {number} n
+ * @returns {boolean}
+ */
+export function setCatalogStripRows(n) {
+  const next = Math.max(2, Math.floor(Number(n) || 2));
+  if (catalogPackFlow === 'column' && catalogPackRows === next) return false;
+  catalogPackFlow = 'column';
+  catalogPackRows = next;
+  itemiaryGrid?.setPackFlow?.('column', next);
+  scheduleColsPaint();
+  return true;
+}
+
+/**
+ * Wide create catalog: cells stay a fixed size and the bag scrolls sideways.
+ * @param {boolean} on
+ * @returns {boolean}
+ */
+export function setCatalogFillWidth(on) {
+  const next = on !== false;
+  if (next === catalogFillWidth && itemiaryGrid) {
+    const changed = itemiaryGrid.setFillWidth?.(next) === true;
+    if (changed) scheduleColsPaint();
+    return changed;
+  }
+  catalogFillWidth = next;
+  const changed = itemiaryGrid?.setFillWidth?.(next) === true;
+  if (changed) scheduleColsPaint();
+  return changed || !itemiaryGrid;
+}
+
 function schedulePaintGrid(host) {
   const meta = { craftedIds, gatedIds, shopItemIds, treasureIds };
   updateFilterMeta(host, filterItems(allItems, filterState, meta).length);
@@ -341,14 +464,19 @@ function schedulePaintGrid(host) {
  * @param {Element} stage
  */
 function ensureItemiary(stage) {
-  if (itemiaryGrid) return itemiaryGrid;
-  itemiaryGrid = mountItemiaryGrid(stage, {
-    // Grid only — spotlight / create board / export keep full-res spriteUrl.
-    getSpriteUrl: thumbUrl,
-    cellPx: CELL_PX,
-    cols: catalogCols,
-    fillWidth: catalogFillWidth,
-  });
+  if (!itemiaryGrid) {
+    itemiaryGrid = mountItemiaryGrid(stage, {
+      // Grid only — spotlight / create board / export keep full-res spriteUrl.
+      getSpriteUrl: thumbUrl,
+      cellPx: CELL_PX,
+      cols: catalogCols,
+      fillWidth: catalogFillWidth,
+    });
+  }
+  itemiaryGrid.setPackFlow?.(
+    catalogPackFlow === 'column' ? 'column' : 'row',
+    catalogPackRows,
+  );
   return itemiaryGrid;
 }
 
@@ -382,7 +510,15 @@ async function paintGrid(host, opts = {}) {
   const meta = { craftedIds, gatedIds, shopItemIds, treasureIds };
   let filtered = filterItems(allItems, filterState, meta);
   const grouping = filterState.grouping || 'none';
-  if (grouping === 'none') filtered = sortByLibraryOrder(filtered, libraryOrderIndex);
+  if (grouping === 'none') {
+    filtered = sortByLibraryOrder(filtered, libraryOrderIndex);
+    if (
+      createMobileRarityOrder &&
+      window.matchMedia?.('(max-width: 1100px)').matches
+    ) {
+      filtered = sortCreateMobileRarity(filtered);
+    }
+  }
   else filtered = sortForGrouping(filtered, grouping, meta);
   filteredOrder = filtered;
 
@@ -433,6 +569,7 @@ async function paintGrid(host, opts = {}) {
  *   onItemPointerDown?: (itemId: string, e: PointerEvent) => void,
  *   cols?: number,
  *   fillWidth?: boolean,
+ *   mobileRarityOrder?: boolean,
  * }} [opts]
  * @returns {Promise<{
  *   itemsById: Map<string, object>,
@@ -453,7 +590,15 @@ export async function initItemsCatalog(selector = '#items-catalog', opts = {}) {
 
   assetRoot = rootPrefix();
   teardown();
+  catalogHost = host;
   catalogCols = nextCols;
+  createMobileRarityOrder = opts.mobileRarityOrder === true;
+  if (
+    createMobileRarityOrder &&
+    window.matchMedia?.('(max-width: 1100px)').matches
+  ) {
+    catalogPackFlow = 'column';
+  }
   catalogFillWidth =
     opts.fillWidth === true
       ? true
@@ -594,6 +739,8 @@ export async function initItemsCatalog(selector = '#items-catalog', opts = {}) {
     }
 
     promoteLoadingShell(host, filtered.length, assetRoot, filterState);
+
+    unbindFilterDrawer = bindFilterDrawer(host.querySelector('.items-layout'));
 
     unbindFilters = bindFilters(host, {
       state: filterState,

@@ -1,0 +1,450 @@
+/* Profile Inventory tab — owned blob cosmetics */
+
+.profile-inv {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.profile-inv__head {
+  margin: 0;
+}
+
+.profile-inv__title {
+  margin: 0 0 0.35rem;
+  font-family: var(--bpb-font-display, Georgia, serif);
+  font-weight: 400;
+  font-size: clamp(1.45rem, 2.6vw, 1.85rem);
+  line-height: 1.1;
+}
+
+.profile-inv__lede {
+  margin: 0;
+  max-width: 40rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, #ffecdc 78%, transparent);
+}
+
+.profile-inv__link {
+  color: var(--il-gold, #eac914);
+  text-underline-offset: 0.12em;
+}
+
+.profile-inv__link:hover {
+  filter: brightness(1.08);
+}
+
+/* Inventory + sticky filter rail (builds/events pattern) */
+.profile-inv__body {
+  --profile-inv-filters-width: 22rem;
+  --profile-inv-panel-shade: rgba(14, 15, 16, 0.22);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--profile-inv-filters-width));
+  gap: 1.25rem 1.5rem;
+  align-items: start;
+  min-width: 0;
+}
+
+.profile-inv__viewer.items-filters {
+  --items-filters-width: 100%;
+  --profile-inv-scroll-thumb: #eac914;
+  --profile-inv-scroll-track: #816230;
+  --profile-inv-scroll-frame: #472a24;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  top: auto;
+  max-height: none;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.65rem 0.65rem 0.75rem;
+  box-sizing: border-box;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.profile-inv__catalog {
+  --profile-inv-scroll-thumb: #eac914;
+  --profile-inv-scroll-track: #816230;
+  --profile-inv-scroll-frame: #472a24;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  /* ~5 pouch rows visible (+30%); more items scroll like Itemiary */
+  max-height: min(36.4rem, calc((100dvh - 14rem) * 1.3));
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.1rem 0.15rem 0.25rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--profile-inv-scroll-thumb) var(--profile-inv-scroll-track);
+}
+
+.profile-inv__catalog::-webkit-scrollbar {
+  width: 12px;
+}
+
+.profile-inv__catalog::-webkit-scrollbar-track {
+  border: 2px solid var(--profile-inv-scroll-frame);
+  background: var(--profile-inv-scroll-track);
+}
+
+.profile-inv__catalog::-webkit-scrollbar-thumb {
+  border: 2px solid var(--profile-inv-scroll-frame);
+  background: var(--profile-inv-scroll-thumb);
+}
+
+.profile-inv__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(15, minmax(0, 1fr));
+  gap: 0;
+  width: 100%;
+}
+
+.profile-inv__cell {
+  margin: 0;
+  min-width: 0;
+}
+
+.profile-inv__tile {
+  appearance: none;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  aspect-ratio: 1;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-image: url('../../../assets/icons/FilledSlot.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: var(--bpb-cursor-default);
+  transition: filter 0.12s ease, box-shadow 0.12s ease;
+}
+
+.profile-inv__tile--empty {
+  pointer-events: none;
+  opacity: 0.92;
+}
+
+.profile-inv-filters.items-filters {
+  --items-filters-width: 100%;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  position: sticky;
+  top: calc(var(--bpb-nav-space, 4.75rem) + 0.35rem);
+  max-height: calc(
+    100vh - var(--bpb-nav-space, 4.75rem) - var(--bpb-frame-edge-y, 0px) - 1rem
+  );
+  z-index: 1;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.65rem 0.65rem 0.75rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.profile-inv__viewer.items-filters::before,
+.profile-inv-filters.items-filters::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--profile-inv-panel-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.profile-inv__viewer.items-filters > *,
+.profile-inv-filters.items-filters > * {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-inv__head-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.profile-inv__submit-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 0 0.15rem;
+}
+
+.profile-inv__submit-btn {
+  appearance: none;
+  margin: 0;
+  padding: 0.1rem 0.2rem;
+  border: 0;
+  background: transparent;
+  cursor: var(--bpb-cursor-pointer);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 9.5rem;
+  height: 2.35rem;
+  padding: 0 0.85rem;
+  border-radius: 0;
+  font-family: var(--bpb-font-display);
+  font-size: 0.98rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--bpb-label-fill, #ffecdc);
+  text-shadow: var(--bpb-label-stroke);
+  background-color: transparent;
+  background-image: url('../../../assets/theme/ui/ui-btn-crimson.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.profile-inv__submit-btn:hover {
+  filter: brightness(1.1);
+  color: #fff;
+}
+
+.profile-inv__submit-btn:active {
+  transform: translateY(1px);
+  filter: brightness(0.96);
+}
+
+.profile-inv__submit-btn:focus-visible {
+  outline: 2px solid var(--il-gold, #eac914);
+  outline-offset: 2px;
+}
+
+.profile-inv-filters__title {
+  margin: 0;
+}
+
+.profile-inv__viewer .il-filter__shade,
+.profile-inv-filters .il-filter__shade {
+  margin-bottom: 0;
+}
+
+.profile-inv-filters .il-filter__shade::before {
+  content: none;
+  display: none;
+}
+
+.profile-inv-filters .il-filter__search {
+  max-width: none;
+}
+
+.profile-inv__type-checks,
+.profile-inv__slot-checks,
+.profile-inv__view-checks {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.3rem 0.55rem;
+}
+
+.profile-inv__slot-checks {
+  grid-template-columns: 1fr 1fr;
+}
+
+.profile-inv__view-checks {
+  grid-template-columns: 1fr;
+}
+
+.profile-inv__hint {
+  margin: 0 0 0.45rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-style: italic;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: color-mix(in srgb, #ffecdc 70%, transparent);
+}
+
+.profile-inv__tile--background {
+  cursor: var(--bpb-cursor-pointer);
+  background-image: none;
+  border-radius: 0.2rem;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #3c261d 35%, transparent);
+}
+
+.profile-inv__tile--background:hover {
+  filter: brightness(1.08);
+}
+
+.profile-inv__tile.is-equipped,
+.profile-inv__tile.is-selected {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--il-gold, #eac914) 85%, #3c261d);
+}
+
+.profile-inv__tile:focus-visible {
+  outline: 2px solid var(--il-gold, #eac914);
+  outline-offset: 2px;
+}
+
+.profile-inv__art {
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+}
+
+.profile-inv__tile .blob-tile-preview {
+  width: 88%;
+  height: 88%;
+}
+
+/* Item-only view — crop fills the pouch (no blob base) */
+.profile-inv__tile--item-only .blob-item-icon--inv {
+  display: block;
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+  user-select: none;
+  background: transparent;
+}
+
+.profile-inv__tile--item-only .blob-item-icon--letter {
+  display: grid;
+  place-items: center;
+  border-radius: 0.15rem;
+}
+
+.profile-inv__tile--background .profile-inv__art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: auto;
+  border-radius: 0.15rem;
+}
+
+.profile-inv__swatch {
+  display: block;
+  width: 88%;
+  height: 88%;
+  border-radius: 0.15rem;
+  background: var(--inv-swatch, #8a5a2b);
+}
+
+.profile-inv__badge {
+  position: absolute;
+  right: 0.2rem;
+  bottom: 0.2rem;
+  padding: 0.08rem 0.35rem;
+  border-radius: 0.15rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.65rem;
+  line-height: 1.1;
+  color: #ffecdc;
+  background: color-mix(in srgb, #3c261d 82%, #8a6a18);
+  box-shadow: 0 0 0 1px color-mix(in srgb, #eac914 55%, transparent);
+  pointer-events: none;
+}
+
+.profile-inv__empty {
+  margin: 0.35rem 0;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.9rem;
+  color: color-mix(in srgb, #ffecdc 72%, transparent);
+}
+
+.profile-inv__status {
+  margin: 0.45rem 0 0;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.82rem;
+  color: color-mix(in srgb, #ffecdc 85%, transparent);
+}
+
+.profile-inv__status--ok {
+  color: #b6e3a8;
+}
+
+.profile-inv__status--err {
+  color: #f0a8a0;
+}
+
+/* Equipped profile backdrop (overrides default town when set) */
+body.page-profile.has-profile-equip-bg {
+  background-image:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, #1a120c 28%, transparent) 0%,
+      color-mix(in srgb, #1a120c 12%, transparent) 35%,
+      color-mix(in srgb, #1a120c 22%, transparent) 100%
+    ),
+    var(--profile-equip-bg);
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+@media (max-width: 1100px) {
+  .profile-inv__body {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: 1fr;
+  }
+
+  .profile-inv-filters.items-filters {
+    position: static;
+    max-height: none;
+    width: 100%;
+    order: -1;
+  }
+
+  .profile-inv__slot-checks {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .profile-inv__grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .profile-inv__grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}

@@ -1,11 +1,13 @@
 /* Featured video stage — Karry Kraze–style scroll-snap carousel */
 
 .fs-shell {
-  width: 100%;
-  max-width: 100vw;
-  margin: 0.75rem auto 2rem;
+  /* Bleed past #main frame padding so cards meet the screen-frame on both sides */
+  width: calc(100% + 2 * var(--bpb-frame-edge-x, 0px));
+  max-width: none;
+  margin: 0.75rem calc(-1 * var(--bpb-frame-edge-x, 0px)) 2rem;
   padding: 0.5rem 0 1rem;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .fs-status {
@@ -20,7 +22,7 @@
   max-width: 28rem;
 }
 
-/* Native horizontal track — padding creates side peeks */
+/* Native horizontal track — padding creates side peeks; shell clips them at the page frame */
 .fs-track {
   position: relative;
   display: flex;
@@ -70,7 +72,7 @@
     transform 0.45s ease,
     opacity 0.45s ease;
   z-index: 1;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
   user-select: none;
   /* Keep peek art from painting under the active card */
   isolation: isolate;
@@ -81,7 +83,7 @@
   opacity: 1;
   filter: none;
   z-index: 10;
-  cursor: default;
+  cursor: var(--bpb-cursor-default);
 }
 
 .fs-slide:not(.is-active):hover {
@@ -89,7 +91,7 @@
   opacity: 0.85;
   filter: none;
   z-index: 5;
-  cursor: pointer;
+  cursor: var(--bpb-cursor-pointer);
 }
 
 /* —— Loading skeleton (uses shared .bpb-skel) —— */
@@ -98,7 +100,7 @@
 }
 
 .fs-slide--skel {
-  cursor: default;
+  cursor: var(--bpb-cursor-default);
   pointer-events: none;
 }
 
@@ -148,18 +150,18 @@
   /* How much of the info sheet slides under the video (fraction of the grid cell) */
   --fs-info-tuck-n: 0.16;
   --fs-info-tuck: calc(100% * var(--fs-info-tuck-n));
-  --fs-frame-pad: clamp(0.85rem, 2.2cqw, 1.45rem);
-  /* Fluid type/UI — scales with card width (cqw) */
-  --fs-text-title: clamp(1.05rem, 4.2cqw, 1.85rem);
-  --fs-text-class: clamp(0.88rem, 2.6cqw, 1.15rem);
-  --fs-text-blurb: clamp(0.78rem, 2.25cqw, 1rem);
-  --fs-text-btn: clamp(0.85rem, 2.55cqw, 1.15rem);
-  --fs-btn-h: clamp(2.15rem, 6.4cqw, 2.85rem);
-  --fs-icon-class: clamp(1.25rem, 3.8cqw, 1.75rem);
-  --fs-icon-btn: clamp(1rem, 2.85cqw, 1.3rem);
-  --fs-op-w: clamp(3.2rem, 9.5cqw, 5rem);
-  --fs-op-clearance: clamp(4.25rem, 11cqw, 5.75rem);
-  --fs-op-right: clamp(1.5rem, 5.5cqw, 2.5rem);
+  --fs-frame-pad: clamp(0.85rem, 1.26cqw, 1.45rem);
+  /* Fluid type — the max is the 1440p card. Narrower cards, including 1080p, scale down. */
+  --fs-text-title: clamp(1.05rem, 2.4cqw, 1.85rem);
+  --fs-text-class: clamp(0.88rem, 1.5cqw, 1.15rem);
+  --fs-text-blurb: clamp(0.78rem, 1.3cqw, 1rem);
+  --fs-text-btn: clamp(0.85rem, 1.46cqw, 1.15rem);
+  --fs-btn-h: clamp(2.15rem, 3.7cqw, 2.85rem);
+  --fs-icon-class: clamp(1.25rem, 2.2cqw, 1.75rem);
+  --fs-icon-btn: clamp(1rem, 1.64cqw, 1.3rem);
+  --fs-op-w: clamp(3.2rem, 5.5cqw, 5rem);
+  --fs-op-clearance: clamp(4.25rem, 6.3cqw, 5.75rem);
+  --fs-op-right: clamp(1.5rem, 3.2cqw, 2.5rem);
 }
 
 .fs-lane {
@@ -196,10 +198,10 @@
   isolation: isolate;
   width: calc(100% + var(--fs-info-tuck));
   margin-left: calc(-1 * var(--fs-info-tuck));
-  --fs-op-clearance: clamp(4.25rem, 11cqw, 5.75rem);
+  --fs-op-clearance: clamp(4.25rem, 6.3cqw, 5.75rem);
   /* Extra inset so sticker stroke / serifs don’t clip on the gold rim */
-  --fs-sheet-pad-x: clamp(0.52rem, 1.8cqw, 0.82rem);
-  --fs-sheet-pad-y: clamp(0.95rem, 3.2cqw, 1.45rem);
+  --fs-sheet-pad-x: clamp(0.52rem, 1.42cqw, 0.82rem);
+  --fs-sheet-pad-y: clamp(0.95rem, 2.52cqw, 1.45rem);
   --fs-stroke-bleed: 0.14em;
   padding: 0;
   border: 0;
@@ -347,15 +349,17 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    currentColor 3%,
-    currentColor 97%,
+    currentColor 8%,
+    currentColor 92%,
     transparent 100%
   );
   position: relative;
 }
 
-.fs-rule__line::before,
-.fs-rule__line::after {
+/* Only the outer ends get arrowheads — bare ::before/::after + solid borders
+   paint stray squares on the inner ends. */
+.fs-rule__line:first-child::before,
+.fs-rule__line:last-child::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -367,13 +371,13 @@
 
 .fs-rule__line:first-child::before {
   left: 0;
-  border-width: 3px 7px 3px 0;
+  border-width: 3.5px 7px 3.5px 0;
   border-color: transparent currentColor transparent transparent;
 }
 
 .fs-rule__line:last-child::after {
   right: 0;
-  border-width: 3px 0 3px 7px;
+  border-width: 3.5px 0 3.5px 7px;
   border-color: transparent transparent transparent currentColor;
 }
 
@@ -570,7 +574,7 @@
   }
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1100px) {
   .fs-focus {
     grid-template-columns: 1fr;
     aspect-ratio: auto;
@@ -601,7 +605,7 @@
     margin-left: 0;
     height: auto;
     max-height: none;
-    min-height: 10rem;
+    min-height: 0;
     align-self: stretch;
   }
 
@@ -626,5 +630,137 @@
     width: 100%;
     height: var(--fs-btn-h);
     text-align: center;
+  }
+}
+
+/* 720p: tighter sheet and smaller type. 1080p and up keep the fluid card scale. */
+@media (max-width: 1366px) and (min-width: 768px) {
+  .fs-track {
+    gap: 0.4rem;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .fs-focus {
+    --fs-text-title: clamp(0.92rem, 2.05cqw, 1.35rem);
+    --fs-text-class: clamp(0.75rem, 1.25cqw, 0.95rem);
+    --fs-text-blurb: clamp(0.7rem, 1.1cqw, 0.86rem);
+    --fs-text-btn: clamp(0.72rem, 1.15cqw, 0.95rem);
+    --fs-btn-h: clamp(1.75rem, 3cqw, 2.2rem);
+    --fs-icon-class: clamp(1rem, 1.8cqw, 1.35rem);
+    --fs-icon-btn: clamp(0.85rem, 1.4cqw, 1.05rem);
+  }
+
+  .fs-lane--info {
+    --fs-sheet-pad-y: clamp(0.55rem, 1.5cqw, 0.85rem);
+    --fs-sheet-pad-x: clamp(0.4rem, 1cqw, 0.6rem);
+  }
+
+  .fs-focus__stitch,
+  .fs-focus__main {
+    gap: 0.18rem;
+  }
+
+  .fs-focus__header {
+    gap: 0.22rem;
+  }
+
+  .fs-focus__title {
+    min-height: 0;
+  }
+
+  .fs-focus__actions {
+    column-gap: 0.4rem;
+  }
+
+  .fs-focus__meta {
+    gap: 0.25rem 0.4rem;
+  }
+}
+
+/* Phone: one video card, with the next one peeking so the row still swipes. */
+@media (max-width: 767px) {
+  .fs-shell {
+    margin-bottom: 1.15rem;
+  }
+
+  .fs-track {
+    gap: 0.65rem;
+    padding: 0.35rem 0.75rem 0.65rem;
+  }
+
+  .fs-slide {
+    width: 74vw;
+    max-width: 74vw;
+    transform: scale(0.97);
+    opacity: 0.82;
+  }
+
+  .fs-slide.is-active {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  .fs-slide:not(.is-active):hover {
+    transform: scale(0.97);
+    opacity: 0.92;
+  }
+
+  .fs-focus__blurb {
+    -webkit-line-clamp: 2;
+  }
+
+  .fs-focus__title {
+    min-height: 0;
+  }
+
+  .fs-focus__media:not(:has(iframe)) .fs-focus__play {
+    display: block;
+    position: absolute;
+    z-index: 4;
+    left: 50%;
+    top: 50%;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 999px;
+    background: color-mix(in srgb, #3c261d 72%, transparent);
+    box-shadow: 0 0 0 2px #eac914;
+    pointer-events: none;
+  }
+
+  .fs-focus__play::before {
+    content: "";
+    position: absolute;
+    left: 1.08rem;
+    top: 0.78rem;
+    border-style: solid;
+    border-width: 0.58rem 0 0.58rem 0.95rem;
+    border-color: transparent transparent transparent #ffecdc;
+  }
+}
+
+.fs-focus__play {
+  display: none;
+}
+
+/* Tablet portrait: one card you can read, with a slim peek of the next. */
+@media (max-width: 1100px) and (min-width: 901px) {
+  .fs-shell {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .fs-track {
+    gap: 0.85rem;
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+
+  .fs-slide {
+    width: 88%;
+    max-width: 88%;
   }
 }
