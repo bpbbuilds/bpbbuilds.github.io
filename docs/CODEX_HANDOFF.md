@@ -368,6 +368,10 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 
 - Removed the standalone confirmation and Create rail sandboxes, plus four legacy static build route shells (`berserk-bloodline`, `poison-garden-ranger`, `pyro-furnace`, `reaper-harvest`). The live Create rail keeps its shared chrome; no source links point to the removed routes.
 - Removed the now-stale Create rail sandbox TODO entry. `dev/export-check/` was not touched because Cursor currently owns it; screenshot label/review/import routes and fixtures remain preserved.
+
+### 2026-10-01 Deferred CSS performance work
+
+- Added a TODO for page-level CSS entry files plus a production bundle/minify step. Runtime CSS `@import` alone is explicitly not the intended optimization.
 - Updated admin/auth/schema documentation and the access wording in About, Terms, and Privacy. Validation: `node --check` passed for changed browser/config scripts and `git diff --check` passed.
 
 ## Proposal

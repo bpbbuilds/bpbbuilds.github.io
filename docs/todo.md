@@ -186,6 +186,8 @@ Channel growth is the north star. Paid features likely need AI + legal green lig
 
 DevTools on `/create/` showed weak Core Web Vitals mostly from full-catalog sprite load — not a mystery JS hotspot. Tackle in this order when we care about speed:
 
+- [ ] **Page CSS bundles** — add one CSS entry per page and a production bundle/minify step so each page loads one deduplicated stylesheet rather than several `<link>` files. Do not use chained runtime `@import` as the performance solution.
+
 - [x] **Lazy-load catalog sprites** — Itemiary deferred `data-src` + decode warm near viewport / before AppearInLibrary; pool prewarm is geom-only (`item-pieces.js` / `item-pool.js`)
 - [x] **Reserve catalog / board / nav space** — HTML nav/create shells + board 9/7 skel until mount; catalog swaps filters in place (no shell wipe)
 - [x] **Production cache lifetimes** — see [`docs/features/deploy-cache.md`](features/deploy-cache.md); `npm run stamp-assets` for `?v=` stamps (GH Pages needs Cloudflare for long TTL)
