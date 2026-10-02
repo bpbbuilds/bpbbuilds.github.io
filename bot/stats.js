@@ -1,6 +1,7 @@
 /**
  * Website Stats category. Locked voice channels show live counts in the name.
  * Uploaded builds is every build saved on the site.
+ * Founding members is the used count out of the founding cap.
  */
 import fs from 'fs';
 import path from 'path';
@@ -14,14 +15,19 @@ const POLL_MS = 60_000;
 
 let categoryId = '';
 let buildsChannelId = '';
+let foundingChannelId = '';
 let polling = false;
 
 export function statsCategoryId() {
   return categoryId;
 }
 
+export function foundingStatsChannelId() {
+  return foundingChannelId;
+}
+
 /**
- * @returns {{ categoryId: string, buildsChannelId: string }}
+ * @returns {{ categoryId: string, buildsChannelId: string, foundingChannelId: string }}
  */
 function readState() {
   try {
@@ -29,25 +35,28 @@ function readState() {
     return {
       categoryId: String(parsed?.categoryId || ''),
       buildsChannelId: String(parsed?.buildsChannelId || ''),
+      foundingChannelId: String(parsed?.foundingChannelId || ''),
     };
   } catch {
-    return { categoryId: '', buildsChannelId: '' };
+    return { categoryId: '', buildsChannelId: '', foundingChannelId: '' };
   }
 }
 
 /**
- * @param {{ categoryId: string, buildsChannelId: string }} state
+ * @param {{ categoryId: string, buildsChannelId: string, foundingChannelId: string }} state
  */
 function writeState(state) {
   fs.mkdirSync(path.dirname(statePath), { recursive: true });
   fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
   categoryId = state.categoryId;
   buildsChannelId = state.buildsChannelId;
+  foundingChannelId = state.foundingChannelId;
 }
 
 const saved = readState();
 categoryId = saved.categoryId;
 buildsChannelId = saved.buildsChannelId;
+foundingChannelId = saved.foundingChannelId;
 
 /**
  * @param {string} token
@@ -92,24 +101,95 @@ function buildsName(count) {
 }
 
 /**
- * Keep the honeypot at the bottom of the server list.
+ * @param {number} used
+ * @param {number} total
+ */
+function foundingName(used, total) {
+  return `👑 Founding members: ${used}/${total}`;
+}
+
+/**
+ * @param {string} base
+ * @param {string} key
+ * @returns {Promise<{ used: number, total: number } | null>}
+ */
+async function foundingCount(base, key) {
+  const res = await fetch(`${base}/rest/v1/rpc/get_founding_status`, {
+    method: 'POST',
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      'Content-Type': 'application/json',
+    },
+    body: '{}',
+  });
+  if (!res.ok) return null;
+  const row = await res.json();
+  const used = Number(row?.used);
+  const total = Number(row?.total);
+  if (!Number.isFinite(used)) return null;
+  return { used, total: Number.isFinite(total) && total > 0 ? total : 10 };
+}
+
+const STATS_CATEGORY_NAME = '📊 Website Stats';
+
+/**
+ * Reuse a stats category or counter that is already on the server.
  * @param {string} token
  * @param {string} guildId
- * @param {string} honeypotId
+ * @param {number} type
+ * @param {string} [parentId]
  */
-async function keepHoneypotLast(token, guildId, honeypotId) {
-  if (!honeypotId) return;
+async function findExisting(token, guildId, type, parentId = '', prefix = '') {
   const res = await discord(token, `/guilds/${guildId}/channels`);
-  if (!res.ok) return;
+  if (!res.ok) return '';
   const rows = await res.json();
-  if (!Array.isArray(rows)) return;
-  const honeypot = rows.find((row) => row.id === honeypotId);
-  if (!honeypot) return;
-  const maxOther = rows
-    .filter((row) => row.id !== honeypotId)
-    .reduce((top, row) => Math.max(top, Number(row.position) || 0), 0);
-  if (Number(honeypot.position) > maxOther) return;
-  await discord(token, `/channels/${honeypotId}`, 'PATCH', { position: maxOther + 1 });
+  const found = (Array.isArray(rows) ? rows : []).find((row) => {
+    if (row?.type !== type) return false;
+    if (type === 4) return row.name === STATS_CATEGORY_NAME;
+    if (parentId && row.parent_id !== parentId) return false;
+    return prefix && String(row.name || '').startsWith(prefix);
+  });
+  return found?.id ? String(found.id) : '';
+}
+
+/**
+ * @param {string} token
+ * @param {string} guildId
+ * @param {string} category
+ * @param {string} existingId
+ * @param {string} prefix
+ * @param {string} name
+ * @param {number} position
+ */
+async function ensureCounter(token, guildId, category, existingId, prefix, name, position) {
+  let id = existingId;
+  if (id) {
+    const current = await discord(token, `/channels/${id}`);
+    if (!current.ok) id = '';
+  }
+  const created = !id;
+  if (!id) id = await findExisting(token, guildId, 2, category, prefix);
+  if (!id) {
+    id = await ensureChannel(token, guildId, '', 2, {
+      name: name || `${prefix}: 0`,
+      parent_id: category,
+      position,
+      permission_overwrites: [{ id: guildId, type: 0, allow: '0', deny: CONNECT_DENY }],
+    });
+    return { id, created: true, renamed: false };
+  }
+  if (!name) return { id, created, renamed: false };
+  const current = await discord(token, `/channels/${id}`);
+  if (!current.ok) return { id, created, renamed: false };
+  const row = await current.json();
+  if (row.name === name) return { id, created, renamed: false };
+  const patched = await discord(token, `/channels/${id}`, 'PATCH', { name, position });
+  if (!patched.ok) {
+    const detail = await patched.text();
+    console.error(`Stats rename failed (${patched.status}): ${detail.slice(0, 160)}`);
+  }
+  return { id, created, renamed: patched.ok };
 }
 
 /**
@@ -165,45 +245,48 @@ export async function syncStats(env) {
   const anchorRes = await discord(token, `/channels/${anchorId}`);
   const anchor = anchorRes.ok ? await anchorRes.json() : null;
   const state = readState();
-  const nextCategory = await ensureChannel(token, guildId, state.categoryId, 4, {
-    name: '📊 Website Stats',
-    ...(Number.isFinite(anchor?.position) ? { position: anchor.position + 1 } : {}),
-  });
+  let nextCategory = state.categoryId
+    ? await ensureChannel(token, guildId, state.categoryId, 4, { name: STATS_CATEGORY_NAME })
+    : '';
+  if (!nextCategory) nextCategory = await findExisting(token, guildId, 4);
+  if (!nextCategory) {
+    nextCategory = await ensureChannel(token, guildId, '', 4, {
+      name: STATS_CATEGORY_NAME,
+      ...(Number.isFinite(anchor?.position) ? { position: anchor.position + 1 } : {}),
+    });
+  }
   if (!nextCategory) return;
 
   const count = await uploadedBuildCount(base, key);
-  const name = buildsName(count == null ? 0 : count);
-  let nextBuilds = state.buildsChannelId;
-  let renamed = false;
-  if (nextBuilds) {
-    const current = await discord(token, `/channels/${nextBuilds}`);
-    if (!current.ok) nextBuilds = '';
-    else {
-      const row = await current.json();
-      if (row.name !== name && count != null) {
-        const patched = await discord(token, `/channels/${nextBuilds}`, 'PATCH', { name });
-        renamed = patched.ok;
-        if (!patched.ok) {
-          const detail = await patched.text();
-          console.error(`Stats rename failed (${patched.status}): ${detail.slice(0, 160)}`);
-        }
-      }
-    }
+  const builds = await ensureCounter(
+    token,
+    guildId,
+    nextCategory,
+    state.buildsChannelId,
+    '🎒 Uploaded builds',
+    count == null ? '' : buildsName(count),
+    0,
+  );
+  if (!builds.id) return;
+  const founding = await foundingCount(base, key);
+  const foundingCounter = await ensureCounter(
+    token,
+    guildId,
+    nextCategory,
+    state.foundingChannelId,
+    '👑 Founding members',
+    founding ? foundingName(founding.used, founding.total) : '',
+    1,
+  );
+  writeState({
+    categoryId: nextCategory,
+    buildsChannelId: builds.id,
+    foundingChannelId: foundingCounter.id,
+  });
+  if (builds.created || builds.renamed) console.log(`Website stats: ${buildsName(count == null ? 0 : count)}`);
+  if (founding && (foundingCounter.created || foundingCounter.renamed)) {
+    console.log(`Website stats: ${foundingName(founding.used, founding.total)}`);
   }
-  const created = !nextBuilds;
-  if (!nextBuilds) {
-    nextBuilds = await ensureChannel(token, guildId, '', 2, {
-      name,
-      parent_id: nextCategory,
-      permission_overwrites: [{ id: guildId, type: 0, allow: '0', deny: CONNECT_DENY }],
-    });
-  }
-  if (!nextBuilds) return;
-  writeState({ categoryId: nextCategory, buildsChannelId: nextBuilds });
-  if (created || nextCategory !== state.categoryId) {
-    await keepHoneypotLast(token, guildId, env.DISCORD_HONEYPOT_CHANNEL_ID || '');
-  }
-  if (created || renamed) console.log(`Website stats: ${name}`);
 
   if (!polling) {
     polling = true;

@@ -6,9 +6,12 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { moveCreatorIcons, useHostedCreatorIcon } from './announce-icon.js';
-import { embedDescription, foldLinksIntoPosts, showBuildInEmbeds } from './announce-links.js';
+import { embedDescription, fieldsWithLinks, foldLinksIntoPosts, showBuildInEmbeds, applyLinkColumns } from './announce-links.js';
+import { refreshItemMentions, withItemEmoji } from './announce-mentions.js';
+import { applyVoteButtons, voteComponentsFor } from './announce-votes.js';
 import { buildThumbPng, hostBoardImage, stillUrl } from './board-thumb.js';
 import {
+  classEmojiId,
   classFieldValue,
   creatorCredit,
   loadClassEmojis,
@@ -54,11 +57,19 @@ const RANK_LABELS = {
 };
 
 const FORUM_TOPIC = 'Builds published on the website are posted here automatically.';
-const FORUM_TAG_NAMES = [
-  ...Object.values(CLASS_LABELS),
-  ...Object.values(TAG_LABELS),
-  'OP',
-];
+const CLASS_KEYS = Object.keys(CLASS_LABELS);
+const OTHER_TAG_NAMES = [...Object.values(TAG_LABELS), 'OP'];
+
+const CLASS_TAG_MARKS = ['\u0301', '\u0302', '\u0303', '\u0304', '\u0306', '\u0307', '\u0308', '\u030A'];
+
+/**
+ * Discord drops blank tag names, and it still requires each name to be unique.
+ * A dot keeps the class word off the tag. The class icon is the emoji on that tag.
+ * @param {number} index
+ */
+function classTagName(index) {
+  return `\u00B7${CLASS_TAG_MARKS[index] || ''}`;
+}
 
 const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'announced-slugs.json');
 
@@ -242,7 +253,10 @@ async function rememberExistingThreads(config, known) {
 /**
  * @param {ReturnType<typeof announceConfig>} config
  */
-async function ensureForum(config) {
+/**
+ * @param {ReturnType<typeof announceConfig>} config
+ */
+export async function ensureForum(config) {
   const res = await discord(config.token, `/channels/${config.forumId}`);
   if (!res.ok) {
     console.error(`Builds forum lookup failed (${res.status})`);
@@ -250,19 +264,46 @@ async function ensureForum(config) {
   }
   const channel = await res.json();
   const current = channel.available_tags || [];
-  const byName = new Map(current.map((tag) => [tag.name, tag]));
-  const tagsMatch = FORUM_TAG_NAMES.length === current.length
-    && FORUM_TAG_NAMES.every((name) => byName.has(name));
+  /** @type {{ id?: string, name: string, moderated: boolean, emoji_id?: string | null, label: string }[]} */
+  const planned = [];
+  CLASS_KEYS.forEach((key, index) => {
+    const label = CLASS_LABELS[key];
+    const emojiId = classEmojiId(key);
+    const name = emojiId ? classTagName(index) : label;
+    const existing = current.find((tag) => tag.name === label || tag.name === name || (emojiId && tag.emoji_id === emojiId));
+    planned.push({
+      ...(existing?.id ? { id: existing.id } : {}),
+      name,
+      moderated: false,
+      ...(emojiId ? { emoji_id: emojiId } : {}),
+      label,
+    });
+  });
+  for (const name of OTHER_TAG_NAMES) {
+    const existing = current.find((tag) => tag.name === name);
+    planned.push({
+      ...(existing?.id ? { id: existing.id } : {}),
+      name,
+      moderated: false,
+      label: name,
+    });
+  }
+  const tagsMatch = planned.every((tag) => current.some((row) => (
+    row.name === tag.name
+    && String(row.emoji_id || '') === String(tag.emoji_id || '')
+  )));
+  /** @type {Map<string, string>} */
+  const tagIds = new Map();
+  for (const tag of current) {
+    const plannedTag = planned.find((row) => row.id && row.id === tag.id);
+    if (plannedTag) tagIds.set(plannedTag.label, tag.id);
+    else if (tag.name) tagIds.set(tag.name, tag.id);
+  }
   const topicMatch = channel.topic === FORUM_TOPIC;
   const sortMatch = channel.default_sort_order === 1;
-  /** @type {Map<string, string>} */
-  const tagIds = new Map(current.map((tag) => [tag.name, tag.id]));
-  if (topicMatch && tagsMatch && sortMatch) return tagIds;
+  if (topicMatch && tagsMatch && sortMatch && tagIds.size >= planned.length) return tagIds;
 
-  const available_tags = FORUM_TAG_NAMES.map((name) => {
-    const existing = byName.get(name);
-    return existing ? { id: existing.id, name, moderated: false } : { name, moderated: false };
-  });
+  const available_tags = planned.map(({ label, ...tag }) => tag);
   const patched = await discord(config.token, `/channels/${config.forumId}`, 'PATCH', {
     topic: FORUM_TOPIC,
     available_tags,
@@ -274,8 +315,13 @@ async function ensureForum(config) {
     return tagIds;
   }
   const next = await patched.json();
-  console.log('Builds forum is set to post website uploads');
-  return new Map((next.available_tags || []).map((tag) => [tag.name, tag.id]));
+  const ids = new Map();
+  for (const tag of next.available_tags || []) {
+    const plannedTag = planned.find((row) => (row.id && row.id === tag.id) || row.name === tag.name);
+    if (plannedTag) ids.set(plannedTag.label, tag.id);
+  }
+  console.log('Builds forum class tags use the class icons');
+  return ids;
 }
 
 /**
@@ -294,6 +340,8 @@ async function listPublicBuilds(config) {
     'is_op',
     'rank',
     'board_still_path',
+    'youtube_url',
+    'vote_score',
     'created_at',
     'profiles(display_name,avatar_url,equipped_avatar,discord_id)',
   ].join(',');
@@ -315,7 +363,7 @@ function buildUrl(config, slug) {
  * @param {Record<string, unknown>} build
  * @param {Map<string, string>} tagIds
  */
-function postBody(config, build, tagIds, credit) {
+async function postBody(config, build, tagIds, credit) {
   const slug = String(build.slug || '');
   const title = clip(String(build.title || 'Build').replace(/\s+/g, ' ').trim() || 'Build', 100);
   const className = labelOf(CLASS_LABELS, build.hero_class);
@@ -327,7 +375,8 @@ function postBody(config, build, tagIds, credit) {
   if (tagName) fields.push({ name: 'Tag', value: tagName, inline: true });
   if (rank) fields.push({ name: 'Rank', value: rank, inline: true });
   if (build.is_op) fields.push({ name: 'OP', value: 'Yes', inline: true });
-  const blurb = clip(String(build.blurb || '').replace(/\s+/g, ' ').trim(), 500);
+  const blurb = clip(await withItemEmoji(config, String(build.blurb || '').replace(/\s+/g, ' ').trim()), 500);
+  const description = embedDescription(config, slug, blurb);
   const author = credit?.author || (String(build.author_name || '').trim()
     ? { name: clip(String(build.author_name || '').trim(), 256) }
     : null);
@@ -347,14 +396,15 @@ function postBody(config, build, tagIds, credit) {
       embeds: [{
         title: clip(String(build.title || 'Build').trim() || 'Build', 256),
         url: buildUrl(config, slug),
-        description: embedDescription(config, slug, blurb),
+        ...(description ? { description } : {}),
         color: 0xeac914,
         ...(author ? { author } : {}),
-        ...(fields.length ? { fields } : {}),
+        fields: fieldsWithLinks(config, build, fields),
         ...(boardImage ? { image: { url: boardImage } } : {}),
         ...(faceThumb ? { thumbnail: { url: faceThumb } } : {}),
         footer: { text: slug },
       }],
+      components: await voteComponentsFor(config.token, slug, build.vote_score),
       ...(credit?.thumb ? { attachments: [{ id: 0, filename: 'build.png' }] } : {}),
     },
   };
@@ -383,7 +433,7 @@ async function postPending(config, known, tagIds, linked, creditState, thumbDone
       config.token,
       `/channels/${config.forumId}/threads`,
       'POST',
-      postBody(config, build, tagIds, credit),
+      await postBody(config, build, tagIds, credit),
       files.length ? files : null,
     );
     if (!res.ok) {
@@ -422,6 +472,7 @@ export function startBuildAnnounce(env) {
     const linked = new Set(saved.linked);
     const credit = saved.credit;
     const classDone = new Set(saved.classEmoji);
+    const mentionDone = new Set();
     const thumbDone = new Set(saved.thumbs);
     const iconDone = new Set(saved.icons);
     const embedShown = new Set();
@@ -439,6 +490,8 @@ export function startBuildAnnounce(env) {
         await foldLinksIntoPosts(config, known, linked, builds, () => {
           writeState(known, linked, credit, classDone, thumbDone);
         });
+        await applyLinkColumns(config, known, builds);
+        await applyVoteButtons(config, known, builds);
         await refreshAuthorCredit(config, known, credit, builds, writeState, linked);
         await refreshClassFields(config, known, classDone, (done) => {
           writeState(known, linked, credit, done, thumbDone);
@@ -450,6 +503,7 @@ export function startBuildAnnounce(env) {
           writeState(known, linked, credit, classDone, thumbDone, done);
         }, { creatorCredit, postDiscord });
         await showBuildInEmbeds(config, known, embedShown, builds);
+        await refreshItemMentions(config, known, mentionDone);
       } catch (err) {
         console.error(err instanceof Error ? err.message : err);
       }

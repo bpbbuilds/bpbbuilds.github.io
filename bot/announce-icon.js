@@ -1,6 +1,7 @@
 /**
- * Creator pictures stay on the post, but not as a forum-card image.
- * The card uses the board file. The face is a normal image link.
+ * Creator pictures stay on the post.
+ * The small image on the right of the embed is that face.
+ * The large image is the board.
  */
 /**
  * @param {{ base: string, key: string }} config
@@ -64,7 +65,7 @@ function embedWithAuthor(embed, author) {
 }
 
 /**
- * Point existing posts at the hosted face so the forum card is only the board.
+ * Point existing posts at the hosted face, and use that face as the embed thumbnail.
  * @param {{ token: string, base: string, key: string }} config
  * @param {Record<string, string>} known
  * @param {Set<string>} done
@@ -100,10 +101,8 @@ export async function moveCreatorIcons(config, known, done, builds, persist, dep
     if (!nextIcon || nextIcon.includes('creator.png') || nextIcon.startsWith('attachment://')) continue;
     const board = files.find((file) => file.filename === 'build.png');
     const next = embedWithAuthor(embed, credit.author);
-    if (board?.url) {
-      next.image = { url: board.url };
-      next.thumbnail = { url: board.url };
-    }
+    if (board?.url && !next.image?.url) next.image = { url: board.url };
+    if (/^https?:\/\//i.test(nextIcon)) next.thumbnail = { url: nextIcon };
     const patched = await deps.postDiscord(
       config.token,
       `/channels/${threadId}/messages/${threadId}`,
@@ -123,5 +122,5 @@ export async function moveCreatorIcons(config, known, done, builds, persist, dep
     moved += 1;
     await new Promise((resolve) => setTimeout(resolve, 400));
   }
-  if (moved) console.log(`Creator icon kept off the forum thumbnail on ${moved} post${moved === 1 ? '' : 's'}`);
+  if (moved) console.log(`Creator face set as the embed thumbnail on ${moved} post${moved === 1 ? '' : 's'}`);
 }

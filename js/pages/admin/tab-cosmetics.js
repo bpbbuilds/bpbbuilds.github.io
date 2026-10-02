@@ -2,6 +2,8 @@
  * Admin Cosmetics tab — review player submissions + upload our own (shared modal).
  */
 
+import { getSession } from '../../shared/auth.js';
+import { getSupabase } from '../../shared/supabase.js';
 import { openCosmeticUploadModal } from '../../shared/cosmetic-upload-modal.js';
 import { loadBlobCatalog } from '../u/blob/catalog.js';
 import { compositeTileHtml } from '../u/blob/wardrobe-markup.js';
@@ -56,7 +58,7 @@ function sortCosmetics(a, b) {
  * @param {BlobCosmetic} c
  * @param {string} root
  */
-function catalogRowHtml(c, root) {
+function catalogRowHtml(c, root, published) {
   const grant = grantLabel(c.grant || (c.starter ? 'starter' : null));
   return `
     <li class="admin-cosmetics__row">
@@ -69,6 +71,14 @@ function catalogRowHtml(c, root) {
           · ${escapeHtml(String(c.rarity || 'Common'))}
         </p>
         <p class="admin-cosmetics__grant ${grantClass(c)}">${escapeHtml(grant)}</p>
+      </div>
+      <div class="admin-cosmetics__row-actions">
+        <button
+          type="button"
+          class="cr-btn-quiet"
+          data-admin-cos-publish="${escapeHtml(c.id)}"
+          ${published ? 'disabled' : ''}
+        >${published ? 'Published' : 'Publish'}</button>
       </div>
     </li>`;
 }
@@ -86,8 +96,8 @@ function matchingCosmetics(catalog, state) {
  * @param {string} root
  * @param {number} total
  */
-function catalogListHtml(rows, root, total) {
-  if (rows.length) return rows.map((c) => catalogRowHtml(c, root)).join('');
+function catalogListHtml(rows, root, total, published) {
+  if (rows.length) return rows.map((c) => catalogRowHtml(c, root, published.has(c.id))).join('');
   const empty = total ? 'No cosmetics match these filters.' : 'Catalog is empty.';
   return `<li class="admin-empty">${empty}</li>`;
 }
@@ -98,12 +108,12 @@ function catalogListHtml(rows, root, total) {
  * @param {BlobCosmetic[]} catalog
  * @param {import('./cosmetics-filters.js').AdminCosmeticFilterState} state
  */
-function paintCatalog(host, root, catalog, state) {
+function paintCatalog(host, root, catalog, state, published) {
   const rows = matchingCosmetics(catalog, state);
   const list = host.querySelector('[data-admin-cos-catalog]');
-  if (list instanceof HTMLElement) list.innerHTML = catalogListHtml(rows, root, catalog.length);
+  if (list instanceof HTMLElement) list.innerHTML = catalogListHtml(rows, root, catalog.length, published);
   const hint = host.querySelector('[data-admin-cos-catalog-hint]');
-  if (hint) hint.textContent = `${rows.length} shown · ${catalog.length} published.`;
+  if (hint) hint.textContent = `${rows.length} shown · ${catalog.length} in the catalog.`;
   const rail = host.querySelector('.admin-cosmetics-filters');
   if (rail instanceof HTMLElement) syncAdminCosmeticFilters(rail, state, rows.length);
 }
@@ -114,7 +124,7 @@ function paintCatalog(host, root, catalog, state) {
  * @param {BlobCosmetic[]} catalog
  * @param {import('./cosmetics-filters.js').AdminCosmeticFilterState} state
  */
-function paintBody(host, root, catalog, state) {
+function paintBody(host, root, catalog, state, published) {
   const rows = matchingCosmetics(catalog, state);
   host.innerHTML = `
     <div class="admin-cosmetics-layout">
@@ -158,8 +168,7 @@ function paintBody(host, root, catalog, state) {
     <section class="admin-cosmetics__section" aria-labelledby="admin-cosmetics-upload-h">
       <h3 class="admin-cosmetics__section-title" id="admin-cosmetics-upload-h">Upload ours</h3>
       <p class="admin-cosmetics__hint">
-        Official Smojo cosmetics. Same form as player submit — admins can set ownership and override id.
-        Pipeline writes the catalog later.
+        Official Smojo cosmetics. Saving one does not announce it. Publish a catalog row when it should go out.
       </p>
       <button type="button" class="cr-submit is-ready" data-admin-cos-upload-open>
         Upload cosmetic
@@ -168,9 +177,10 @@ function paintBody(host, root, catalog, state) {
 
     <section class="admin-cosmetics__section admin-cosmetics__section--catalog" aria-labelledby="admin-cosmetics-live-h">
       <h3 class="admin-cosmetics__section-title" id="admin-cosmetics-live-h">Live catalog</h3>
-      <p class="admin-cosmetics__hint" data-admin-cos-catalog-hint>${rows.length} shown · ${catalog.length} published.</p>
+      <p class="admin-cosmetics__hint" data-admin-cos-catalog-hint>${rows.length} shown · ${catalog.length} in the catalog.</p>
+      <p class="admin-status" data-admin-cos-publish-status hidden></p>
       <ul class="admin-cosmetics__list" data-admin-cos-catalog role="list">
-        ${catalogListHtml(rows, root, catalog.length)}
+        ${catalogListHtml(rows, root, catalog.length, published)}
       </ul>
     </section>
         </section>
@@ -208,6 +218,77 @@ function bindUploadButton(rootEl, opts) {
 /**
  * @param {HTMLElement} rootEl
  */
+/**
+ * @param {HTMLElement} host
+ * @param {BlobCosmetic[]} catalog
+ * @param {Set<string>} published
+ */
+function bindPublish(host, catalog, published) {
+  host.addEventListener('click', async (e) => {
+    const t = e.target;
+    if (!(t instanceof Element)) return;
+    const btn = t.closest('[data-admin-cos-publish]');
+    if (!(btn instanceof HTMLButtonElement) || !host.contains(btn) || btn.disabled) return;
+    const id = btn.getAttribute('data-admin-cos-publish') || '';
+    const item = catalog.find((row) => row.id === id);
+    const status = host.querySelector('[data-admin-cos-publish-status]');
+    if (!item) return;
+    btn.disabled = true;
+    btn.textContent = 'Publishing…';
+    if (status instanceof HTMLElement) {
+      status.hidden = false;
+      status.textContent = `Publishing ${item.name || item.id}…`;
+    }
+    try {
+      const session = await getSession();
+      if (!session?.access_token) throw new Error('Sign in as the site owner to publish.');
+      const { error } = await getSupabase().from('cosmetic_drops').insert({
+        id: item.id,
+        name: item.name || item.id,
+        slot: item.slot || '',
+        rarity: item.rarity || '',
+        grant: item.grant || (item.starter ? 'starter' : ''),
+        description: item.description || '',
+        image: item.image || '',
+      });
+      if (error && error.code !== '23505') throw new Error(error.message || 'Publish failed');
+      published.add(item.id);
+      btn.textContent = 'Published';
+      if (status instanceof HTMLElement) {
+        status.textContent = `${item.name || item.id} will show in Cosmetic drops.`;
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Publish';
+      const message = err instanceof Error ? err.message : 'Publish failed';
+      if (status instanceof HTMLElement) {
+        status.hidden = false;
+        status.textContent = message;
+      }
+    }
+  });
+}
+
+/**
+ * @returns {Promise<Set<string>>}
+ */
+async function loadPublishedIds() {
+  const ids = new Set();
+  try {
+    const session = await getSession();
+    if (!session?.access_token) return ids;
+    const { data, error } = await getSupabase().from('cosmetic_drops').select('id');
+    if (error || !Array.isArray(data)) return ids;
+    for (const row of data) {
+      const id = String(row?.id || '');
+      if (id) ids.add(id);
+    }
+  } catch {
+    /* catalog still renders */
+  }
+  return ids;
+}
+
 function bindQueueFilters(rootEl) {
   const list = rootEl.querySelector('[data-admin-cos-queue-list]');
   rootEl.querySelectorAll('[data-admin-cos-queue]').forEach((btn) => {
@@ -258,12 +339,14 @@ export async function mountCosmeticsPanel(host, opts) {
 
   try {
     const catalog = await loadBlobCatalog(root);
+    const published = await loadPublishedIds();
     const filters = defaultAdminCosmeticFilters();
-    paintBody(host, root, catalog, filters);
+    paintBody(host, root, catalog, filters, published);
     bindUploadButton(host, {
       root,
       displayName: opts.displayName,
     });
+    bindPublish(host, catalog, published);
     bindQueueFilters(host);
     const rail = host.querySelector('.admin-cosmetics-filters');
     if (rail instanceof HTMLElement) {
@@ -274,7 +357,7 @@ export async function mountCosmeticsPanel(host, opts) {
           filters.slot = next.slot;
           filters.rarity = next.rarity;
           filters.q = next.q;
-          paintCatalog(host, root, catalog, filters);
+          paintCatalog(host, root, catalog, filters, published);
         },
       });
     }

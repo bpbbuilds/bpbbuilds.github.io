@@ -12,9 +12,16 @@ import { isRulesMessage, rulesChannelId, syncRules } from './rules.js';
 import { syncNews } from './news.js';
 import { syncPremium } from './premium.js';
 import { syncMarket } from './market.js';
+import { syncQuest } from './quest.js';
+import { syncCosmeticDrops } from './cosmetic-drops.js';
+import { syncCommunity } from './community.js';
+import { syncEvents } from './events-feed.js';
+import { syncPastEvents } from './past-events.js';
+import { syncOnboarding } from './onboarding.js';
 import { syncStats } from './stats.js';
 import { syncLayout } from './layout.js';
 import { handleCommand, handleInvButton } from './commands/index.js';
+import { handleVoteButton } from './announce-votes.js';
 
 const env = loadEnv();
 const config = requireBotEnv(env);
@@ -123,7 +130,9 @@ client.on('interactionCreate', (interaction) => {
     ? handleCommand(interaction)
     : interaction.isButton() && interaction.customId.startsWith('inv:')
       ? handleInvButton(interaction)
-      : null;
+      : interaction.isButton() && interaction.customId.startsWith('vote:')
+        ? handleVoteButton(interaction, env)
+        : null;
   if (!run) return;
   Promise.resolve(run).catch(async (err) => {
     console.error(err instanceof Error ? err.message : err);
@@ -158,8 +167,14 @@ client.once('clientReady', () => {
     .then(() => syncRules(env))
     .then(() => syncPremium(env))
     .then(() => syncMarket(env))
+    .then(() => syncQuest(env))
+    .then(() => syncCosmeticDrops(env))
+    .then(() => syncCommunity(env))
     .then(() => syncStats(env))
+    .then(() => syncEvents(env))
+    .then(() => syncPastEvents(env))
     .then(() => syncWelcome(env))
+    .then(() => syncOnboarding(env))
     .then(() => syncLayout(env))
     .catch((err) => console.error(err instanceof Error ? err.message : err));
   startBuildAnnounce(env);

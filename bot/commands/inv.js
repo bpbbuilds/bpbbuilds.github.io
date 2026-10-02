@@ -107,12 +107,14 @@ async function loadProfile(discordId) {
  */
 async function itemPng(file) {
   const base = await loadImage(fs.readFileSync(BLOB_BASE));
-  const canvas = createCanvas(base.width, base.height);
+  const scale = 8;
+  const canvas = createCanvas(base.width * scale, base.height * scale);
   const ctx = canvas.getContext('2d');
-  ctx.drawImage(base, 0, 0);
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(base, 0, 0, base.width * scale, base.height * scale);
   if (file && fs.existsSync(file)) {
     const overlay = await loadImage(fs.readFileSync(file));
-    ctx.drawImage(overlay, 0, 0, base.width, base.height);
+    ctx.drawImage(overlay, 0, 0, base.width * scale, base.height * scale);
   }
   return canvas.toBuffer('image/png');
 }

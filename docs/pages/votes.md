@@ -18,6 +18,10 @@ See [`docs/pages/auth.md`](auth.md).
 3. Function resolves voter key (profile if JWT, else body), upserts/deletes `build_votes`, recomputes `builds.vote_score`, returns `{ vote_score, my_vote }`.
 4. UI shows the **net** `vote_score` (not “base + myVote”).
 
+## Discord
+
+The builds forum post has Up and Down buttons. They call the same `vote-build` function with that member’s `profiles.voter_key`. Clicking the active choice again clears it. The middle button shows `builds.vote_score`. A site vote updates that number on the next bot check. A Discord account with no site profile cannot vote.
+
 ## Deploy
 
 ```bash

@@ -23,6 +23,8 @@ const CLASS_EMOJI_NAMES = new Set([
 
 /** @type {Map<string, string>} */
 let classEmojis = new Map();
+/** @type {Map<string, string>} */
+let classEmojiIds = new Map();
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BLOB_BASE = path.join(ROOT, 'assets', 'blob', 'blob-base.png');
 const SLOT_ORDER = ['hat', 'face', 'head', 'neck', 'body', 'hand'];
@@ -119,13 +121,23 @@ export async function loadClassEmojis(token, guildId) {
   if (!res.ok) return classEmojis;
   const list = await res.json();
   const next = new Map();
+  const nextIds = new Map();
   for (const emoji of Array.isArray(list) ? list : []) {
     const name = String(emoji?.name || '');
     if (!CLASS_EMOJI_NAMES.has(name) || !emoji?.id) continue;
     next.set(name, emoji.animated ? `<a:${name}:${emoji.id}>` : `<:${name}:${emoji.id}>`);
+    nextIds.set(name, String(emoji.id));
   }
   classEmojis = next;
+  classEmojiIds = nextIds;
   return classEmojis;
+}
+
+/**
+ * @param {string | null | undefined} heroClass
+ */
+export function classEmojiId(heroClass) {
+  return classEmojiIds.get(String(heroClass || '').trim().toLowerCase()) || '';
 }
 
 /**
@@ -349,7 +361,7 @@ export async function refreshClassFields(config, known, done, persist) {
 
 /**
  * Put the board picture on posts that are already in the forum.
- * The forum page uses the first image file as the card thumbnail.
+ * The creator face stays the small image on the right.
  * @param {{ token: string, base: string, key: string }} config
  * @param {Record<string, string>} known
  * @param {Set<string>} done
@@ -371,8 +383,10 @@ export async function refreshBoardThumbs(config, known, done, builds, persist) {
     const embed = message.embeds?.[0];
     if (!embed) continue;
     const next = embedWithFields(embed, Array.isArray(embed.fields) ? embed.fields : []);
+    const face = String(embed.author?.icon_url || '');
     delete next.image;
-    delete next.thumbnail;
+    if (/^https?:\/\//i.test(face)) next.thumbnail = { url: face };
+    else delete next.thumbnail;
     const files = [{ filename: 'build.png', bytes: png }];
     const attachments = [{ id: 0, filename: 'build.png' }];
     const patched = await postDiscord(

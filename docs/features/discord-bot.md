@@ -1,6 +1,6 @@
 # Discord bot — hosting + development plan
 
-**Status:** bot is in the BPB Builds server. `npm run bot:sync` mirrors `profiles.plan` onto Premium and Founding, and sets nicknames to `chosen name | 🎒 uploaded builds`. A nickname change is kept, and the build count is added back onto it. `npm run bot:watch` keeps resetting those nicknames and posts each public website build into the **builds** forum. Sign-in calls `discord-guild` and offers the invite when the account is not in the server. Guild slash commands are registered from `bot/command-list.js` with `npm run bot:commands`. `/test` replies that the bot is online. `/inv` pages through a member’s blob inventory, one item image at a time.
+**Status:** bot is in the BPB Builds server. `npm run bot:sync` mirrors `profiles.plan` onto Premium and Founding, and sets nicknames to `chosen name | 🎒 uploaded builds`. A nickname change is kept, and the build count is added back onto it. `npm run bot:watch` keeps resetting those nicknames and posts each public website build into the **builds** forum. Sign-in calls `discord-guild` and offers the invite when the account is not in the server. Guild slash commands are registered from `bot/command-list.js` with `npm run bot:commands`. `/test` replies that the bot is online. `/inv` pages through a member’s blob inventory, one item image at a time. `/blob` shows that member’s equipped blob as an image embed. `/profile` shows that blob, then their name and how many builds they have uploaded. The events channel keeps one card per current event, with that event’s banner and links. A new catalog event is posted on the next check. Ended events and events removed from the catalog are deleted. The quest channel is reserved for quest information once quests exist. Community updates is hidden from everyone except the Admin role. The past-events forum is where finished events go. The welcome channel is one embed covering the site, this server, and the YouTube channel. Cosmetic drops, under Community info, posts a cosmetic only after an owner publishes it from the admin catalog. Build posts have Up and Down buttons that use the site vote score. Only members who have signed in on the site can vote.
 
 **Locked decisions:**
 
@@ -94,6 +94,8 @@ Register via `bot/deploy-commands.mjs`; use **guild-scoped** commands while iter
 - [ ] `/premium` — what Premium gets + site link (static reply, cheapest win)
 - [x] `/test` — replies that the bot is online
 - [x] `/inv` — pages through a member’s blob inventory, one worn item image at a time
+- [x] `/blob` — shows a member’s equipped blob as an image embed
+- [x] `/profile` — shows the blob, then the member’s name and uploaded build count
 
 ## Phase C — build announce
 

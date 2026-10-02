@@ -82,6 +82,37 @@ Held-out (never train): real-001, 003, 007, 008, 010, 013. Train split of the 15
 
 ## Confirmed — recent changes
 
+- Page CSP `frame-src` now allows this site, so the admin blob-cast preview can load `/overlay/blobs/`. YouTube embeds stay allowed. `frame-ancestors` is already absent from the live meta policy, and `font-src` already allows the Google font host. The Permissions-Policy ad-auction warnings are not sent by GitHub Pages.
+- Events catalog is only DPS Stone (`highest-dps`). The six filler events were removed. Discord already posted only DPS Stone.
+- Discord Community info has a read-only Cosmetic drops channel. Admin catalog rows have Publish. Upload still only saves. Publish records the cosmetic and the bot posts it once. Quest and event cosmetics stay quiet until published.
+- Discord Website Stats sits directly under Main Chat. Information and the other categories follow it.
+- Discord Website Stats has a locked voice channel for founding members, `👑 Founding members: used/10`. It follows `get_founding_status` and updates with the uploaded-builds counter.
+- Patch notes todo now uses [BPBのビ](https://www.univ-bpb.tech/) as the historical backlog and asks for a reviewed draft when a new note appears. The page is not built.
+- Discord build votes use the site’s up and down arrow icons. Discord still draws them as its own gray buttons, with the score between them.
+- Discord build embeds add a Watch link when the build has a YouTube video. Builds without a video stay as they were.
+- Discord build posts have Up and Down buttons. They use the same site vote score. Only a Discord account that has signed in on the site can vote. The middle button shows the score, and a site vote updates it on the next check.
+- Discord build embeds put the links in columns: Create your own, View, More builds, and More from the creator. The old stacked link list was removed. All 10 current posts were updated.
+- Discord build posts show the creator’s blob or Discord picture as the small image on the right of the embed. The board stays the large image. All 10 current posts were updated.
+- Discord builds forum class tags use the class icons. Discord still requires a unique tag name, so the class word is gone and only a dot remains beside the icon.
+- Discord build posts turn `[[item_id]]` into the item picture. Those pictures live on the bot’s emoji list (2,000), because the server list only holds 50 and 30 are already used.
+- Discord event cards drop the description paragraph. DPS Stone lists the place rewards (Premium Crown, gold, gift card, titles) instead of “Event Trophy”.
+- Discord events channel uses a small image on the intro. Each current event is one card with that event’s banner and its links. New events are posted on the next check. Ended or removed events are deleted.
+- Discord onboarding is on. Everyone gets welcome, rules, announcements, main chat, builds, events, and bot commands. A question adds item ideas, cosmetics, past events, quest, market, and Premium.
+- Discord membership screening is on. New members accept the server rules before they can talk.
+- Discord server profile now has a description and a welcome screen: welcome, rules, main chat, the builds forum, and events.
+- Discord rules are conduct rules. They no longer list what each chat allows.
+- Discord welcome embed uses columns. Server columns are the category name, then the channel tags, with no per-channel writeup.
+- Discord welcome is one message and one embed. The other welcome messages were removed. The logo stays on that embed.
+- Discord past-events forum is under Forums. Finished events go there, and people can reply under a post.
+- Discord Community info holds quest, market movement, and events. Current Events and Archived Events were removed.
+- Discord main chat sits above every category.
+- Discord Admin category is last. Community updates sits in it, still hidden from everyone except the Admin role. The extra Website Stats category was removed.
+- Discord welcome GIFs show again. The first embed edit stored them with no size, so Discord drew nothing. A second edit after the files cached fills the size.
+- Discord welcome GIFs play at 24 fps: the item catalog, the builds grid, and the create promo. The slide speed is the same as before.
+- Discord quest channel in Information says quests are not made yet (TBA). Quest information goes there once quests exist.
+- Discord events channel under Current Events posts new events, starting-soon notices, stage changes, and endings. Members cannot type there.
+- Discord `/profile` shows the member’s blob, then their name and uploaded build count.
+- Discord `/blob` shows a member’s equipped blob as an image embed.
 - Discord `/inv` pages through a member’s blob inventory. Each page is one item on the blob, with Previous and Next.
 - Discord market-movement channel says the market is not made yet (TBA). Reports start once the market exists.
 - Discord channels sit in Information, Chat, Forums, events, then Website Stats. Definitely-post-here is in its own category at the bottom.

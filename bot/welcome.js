@@ -1,6 +1,5 @@
 /**
- * Welcome channel guide: site pages, this server, and the YouTube channel.
- * Each section is an embed with a banner image above the copy.
+ * Welcome channel guide. One message, one embed: the site, this server, and YouTube.
  */
 import fs from 'fs';
 import path from 'path';
@@ -10,7 +9,11 @@ import { rulesChannelId } from './rules.js';
 import { newsChannelId } from './news.js';
 import { premiumChannelId } from './premium.js';
 import { marketChannelId } from './market.js';
-import { statsCategoryId } from './stats.js';
+import { questChannelId } from './quest.js';
+import { eventsChannelId } from './events-feed.js';
+import { cosmeticDropsChannelId } from './cosmetic-drops.js';
+import { pastEventsForumId } from './past-events.js';
+import { foundingStatsChannelId } from './stats.js';
 
 const API = 'https://discord.com/api/v10';
 const GOLD = 0xeac914;
@@ -25,6 +28,7 @@ const BUILDS = '1553880481001644062';
 const IDEAS = '1554346585729540096';
 const COSMETICS = '1555344242690359387';
 const BOTS = '1555306905067323402';
+const UPLOADED = '1555346503395053568';
 const WELCOME = '1554348212423368835';
 
 /** @type {Set<string>} */
@@ -76,10 +80,11 @@ async function discord(token, apiPath, method = 'GET', body) {
  * @param {string} name
  * @param {string} filePath
  */
-async function hostImage(config, name, filePath) {
+async function hostImage(config, name, filePath, version = '') {
   const bytes = fs.readFileSync(path.join(ROOT, filePath));
   const gif = path.extname(filePath).toLowerCase() === '.gif';
-  const objectPath = `welcome/${name}${gif ? '.gif' : '.png'}`;
+  const suffix = version ? `-${version}` : '';
+  const objectPath = `welcome/${name}${suffix}${gif ? '.gif' : '.png'}`;
   if (gif) {
     await fetch(`${config.base}/storage/v1/bucket/discord-builds`, {
       method: 'PUT',
@@ -114,146 +119,89 @@ async function hostImage(config, name, filePath) {
 }
 
 /**
- * Banner embed, then the text embed, so the picture sits above the copy.
- * @param {string} imageUrl
- * @param {string} title
- * @param {string} url
- * @param {string} description
+ * @param {Array<string | false>} parts
  */
-function section(imageUrl, title, url, description) {
-  return {
-    color: GOLD,
-    title,
-    url,
-    description,
-    ...(imageUrl ? { image: { url: imageUrl } } : {}),
-  };
+function lines(parts) {
+  return parts.filter((part) => part !== false).join('\n');
 }
 
 /**
- * @param {Record<string, string>} images
+ * Discord draws up to three inline fields on a row.
+ * @param {string} name
+ * @param {string} value
  */
-function messages(images) {
-  const page = (key, title, href, description) => section(images[key] || '', title, href, description);
-  const pages = [
-    page(
-      'items',
-      'Items',
-      `${SITE}/items/`,
-      'The item library. Weapons, bags, skills, and treasures, with game-style tooltips.',
-    ),
-    page(
-      'builds',
-      'Builds',
-      `${SITE}/builds/`,
-      'Public builds. Open a guide for the board, the route, and a YouTube video when the author added one.',
-    ),
-    page(
-      'create',
-      'Create',
-      `${SITE}/create/`,
-      'The build editor. Lay out a board and publish it, or remix a build that is already loaded.',
-    ),
-    page(
-      'events',
-      'Events',
-      `${SITE}/events/`,
-      'Community events. DPS Stone scores a real ranked or unranked stone board from a history.db file against one shared dummy.',
-    ),
-    page(
-      'market',
-      'Market',
-      `${SITE}/market/`,
-      'Coming soon. A shop for blob cosmetics. Nothing is listed yet.',
-    ),
-    page(
-      'quest',
-      'Quest',
-      `${SITE}/quest/`,
-      'Coming soon. Quests that pay coins and cosmetics, including a sim-dummy task. Nothing to claim yet.',
-    ),
-    page(
-      'sim',
-      'Sim',
-      `${SITE}/sim/`,
-      'A fan-made fight against a dummy. Not official combat, and not a live match.',
-    ),
-    page(
-      'profile',
-      'Profile',
-      `${SITE}/u/`,
-      'Sign in with Discord. Your page has your builds, blob wardrobe, inventory, and settings.',
-    ),
-    page(
-      'about',
-      'About',
-      `${SITE}/legal/about/`,
-      `What this fan site is. Also see [Terms](${SITE}/legal/terms/) and [Privacy](${SITE}/legal/privacy/).`,
-    ),
-  ];
+function column(name, value) {
+  return { name, value, inline: true };
+}
 
-  return [
-    {
-      embeds: [
-        section(
-          images.welcome || '',
-          'Welcome to BPB Builds',
-          SITE,
-          [
-            `This channel is the welcome note. You can't type here. Say hello in <#${MAIN}>.`,
-            '',
-            '**BPB Builds** is an unofficial fan site for Backpack Battles: guides, an item library, a build creator, events, and a combat sandbox. It is not affiliated with the game or its developers and publishers.',
-            '',
-            'The next messages cover the site, this server, and the YouTube channel.',
-          ].join('\n'),
-        ),
-      ],
-    },
-    { embeds: pages.slice(0, 5).flat() },
-    { embeds: pages.slice(5).flat() },
-    {
-      embeds: [
-        section(
-          images.discord || '',
-          'Discord',
-          INVITE,
-          [
-            `<#${WELCOME}> is this note. Messages stay off.`,
-            ...(rulesChannelId() ? [`<#${rulesChannelId()}> is the server rules. Messages stay off.`] : []),
-            ...(newsChannelId() ? [`<#${newsChannelId()}> is for site and server news. Messages stay off.`] : []),
-            ...(premiumChannelId() ? [`<#${premiumChannelId()}> explains Premium. Messages stay off.`] : []),
-            ...(marketChannelId() ? [`<#${marketChannelId()}> is where market listings, buys, and sales will be posted. Messages stay off.`] : []),
-            ...(statsCategoryId() ? [`<#${statsCategoryId()}> shows live website numbers. Uploaded builds is how many builds are saved on the site.`] : []),
-            `<#${MAIN}> is general chat.`,
-            `<#${BUILDS}> is the builds forum. The bot posts each public build from the site. You can reply under a post. You can't start a new post there.`,
-            `<#${IDEAS}> is the item-ideas forum.`,
-            `<#${COSMETICS}> is where you submit a new blob cosmetic. Include the art, the name, and a slot tag.`,
-            `<#${BOTS}> is for bot commands. \`/test\` checks that the bot is online.`,
-            '',
-            'Archived Events and Current Events are empty shelves for event channels.',
-            '',
-            'Your nickname stays the name you set, then ` | 🎒 ` and your uploaded build count. Clearing it uses your Discord name plus that count. The backpack marks builds on the site.',
-            '',
-            `[Invite link](${INVITE})`,
-          ].join('\n'),
-        ),
-      ],
-    },
-    {
-      embeds: [
-        section(
-          images.youtube || '',
-          'YouTube · smojo.',
-          YOUTUBE,
-          [
-            'The channel is [@SmojoWasTaken](https://www.youtube.com/@SmojoWasTaken).',
-            '',
-            'The site is built around this channel. Guide videos on build pages play from YouTube, so a view on the site still counts there.',
-          ].join('\n'),
-        ),
-      ],
-    },
-  ];
+/**
+ * @param {string[]} ids
+ */
+function mentions(ids) {
+  return ids.filter(Boolean).map((id) => `<#${id}>`).join('\n');
+}
+
+/**
+ * One embed. Inline fields are the columns. Channel lists are the category, then the tags.
+ * @param {string} imageUrl
+ */
+function guide(imageUrl) {
+  const blank = '\u200b';
+  return {
+    color: GOLD,
+    title: 'Welcome to BPB Builds',
+    url: SITE,
+    description: lines([
+      `This channel is the welcome note. You can't type here. Say hello in <#${MAIN}>.`,
+      '',
+      '**BPB Builds** is an unofficial fan site for Backpack Battles: guides, an item library, a build creator, events, and a combat sandbox. It is not affiliated with the game or its developers and publishers.',
+      '',
+      'Your nickname keeps the name you set, then ` | 🎒 ` and your uploaded build count.',
+      '',
+      `[Invite](${INVITE})`,
+    ]),
+    fields: [
+      column('The site', lines([
+        `[Items](${SITE}/items/)`,
+        `[Builds](${SITE}/builds/)`,
+        `[Create](${SITE}/create/)`,
+      ])),
+      column(blank, lines([
+        `[Events](${SITE}/events/)`,
+        `[Market](${SITE}/market/)`,
+        `[Quest](${SITE}/quest/)`,
+      ])),
+      column(blank, lines([
+        `[Sim](${SITE}/sim/)`,
+        `[Profile](${SITE}/u/)`,
+        `[About](${SITE}/legal/about/)`,
+        `[Terms](${SITE}/legal/terms/)`,
+        `[Privacy](${SITE}/legal/privacy/)`,
+      ])),
+      column('Information', mentions([
+        WELCOME,
+        rulesChannelId(),
+        newsChannelId(),
+        premiumChannelId(),
+      ])),
+      column('Community info', mentions([
+        questChannelId(),
+        marketChannelId(),
+        eventsChannelId(),
+        cosmeticDropsChannelId(),
+      ])),
+      column('Chat', mentions([MAIN, BOTS])),
+      column('Forums', mentions([
+        BUILDS,
+        IDEAS,
+        COSMETICS,
+        pastEventsForumId(),
+      ])),
+      column('Website Stats', mentions([UPLOADED, foundingStatsChannelId()])),
+      column('YouTube', `[@SmojoWasTaken](${YOUTUBE})`),
+    ],
+    ...(imageUrl ? { image: { url: imageUrl } } : {}),
+  };
 }
 
 /**
@@ -278,20 +226,7 @@ function writeState(ids) {
   for (const id of ids) remember(id);
 }
 
-const IMAGES = {
-  welcome: 'assets/brand/logo-bpb.png',
-  items: 'assets/theme/ui/items-catalog-scroll.gif',
-  builds: 'assets/theme/ui/builds-grid-scroll.gif',
-  create: 'assets/theme/ui/create-promo.gif',
-  events: 'assets/theme/ui/ui-ranked-banner.png',
-  market: 'assets/theme/ui/ui-shop-sign.png',
-  quest: 'assets/theme/ui/ui-continue-banner.png',
-  sim: 'assets/theme/ui/ui-character-sheet.png',
-  profile: 'assets/brand/logo-bpb.png',
-  about: 'assets/theme/ui/ui-label-banner-gold.png',
-  discord: 'assets/theme/ui/ui-icon-discord.png',
-  youtube: 'assets/theme/ui/ui-icon-youtube.png',
-};
+const LOGO = 'assets/brand/logo-bpb.png';
 
 /**
  * @param {Record<string, string>} env
@@ -311,18 +246,8 @@ export async function syncWelcome(env) {
   const saved = readState();
   for (const id of saved.ids) remember(id);
 
-  /** @type {Record<string, string>} */
-  const images = {};
-  for (const [name, filePath] of Object.entries(IMAGES)) {
-    images[name] = await hostImage({ base, key }, name, filePath);
-  }
-  for (const name of ['welcome', 'items', 'builds', 'create']) {
-    if (!images[name]) continue;
-    const version = name === 'builds' ? 'grid' : 'slow';
-    images[name] = `${images[name]}?v=${version}`;
-  }
-
-  const payloads = messages(images);
+  const logo = await hostImage({ base, key }, 'welcome', LOGO, '24b');
+  const payloads = [{ embeds: [guide(logo)] }];
   /** @type {string[]} */
   const ids = saved.ids.length ? [...saved.ids] : [legacyId];
 
@@ -355,10 +280,41 @@ export async function syncWelcome(env) {
   }
 
   const keptIds = ids.slice(0, payloads.length).filter(Boolean);
-  for (const extra of ids.slice(payloads.length)) {
-    if (!extra || extra === legacyId) continue;
-    await discord(token, `/channels/${channelId}/messages/${extra}`, 'DELETE');
-  }
+  const keepId = keptIds[0] || '';
   writeState(keptIds);
-  console.log(`Welcome guide updated (${keptIds.length} messages)`);
+  if (keepId) await deleteOtherMessages(token, channelId, keepId);
+  console.log('Welcome guide updated (1 message)');
+}
+
+/**
+ * @param {string} token
+ * @param {string} channelId
+ * @param {string} keepId
+ */
+async function deleteOtherMessages(token, channelId, keepId) {
+  let before = '';
+  for (;;) {
+    const query = before ? `?limit=100&before=${before}` : '?limit=100';
+    const listed = await discord(token, `/channels/${channelId}/messages${query}`);
+    if (!listed.ok) {
+      const detail = await listed.text();
+      console.error(`Welcome list failed (${listed.status}): ${detail.slice(0, 180)}`);
+      return;
+    }
+    const rows = await listed.json();
+    if (!Array.isArray(rows) || !rows.length) return;
+    for (const row of rows) {
+      const id = String(row?.id || '');
+      if (!id || id === keepId) continue;
+      const removed = await discord(token, `/channels/${channelId}/messages/${id}`, 'DELETE');
+      if (!removed.ok && removed.status !== 404) {
+        const detail = await removed.text();
+        console.error(`Welcome delete failed (${removed.status}): ${detail.slice(0, 180)}`);
+      }
+      await sleep(350);
+    }
+    if (rows.length < 100) return;
+    before = String(rows[rows.length - 1]?.id || '');
+    if (!before) return;
+  }
 }

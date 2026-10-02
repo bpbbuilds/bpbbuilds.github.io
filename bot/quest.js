@@ -1,5 +1,6 @@
 /**
- * Read-only rules channel. One embed, with a banner image above the rules.
+ * Read-only quest channel. Information lands here once quests exist.
+ * Members cannot type. The bot can post later.
  */
 import fs from 'fs';
 import path from 'path';
@@ -9,37 +10,15 @@ const API = 'https://discord.com/api/v10';
 const GOLD = 0xeac914;
 const SITE = 'https://bpbbuilds.github.io';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'rules.json');
+const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'quest.json');
 const HEADER = path.join(ROOT, 'assets', 'brand', 'logo-bpb.png');
-const WELCOME = '1554348212423368835';
 const READ_ONLY_DENY = '380104611840';
-const CHANNEL_NAME = '📜│ʀᴜʟᴇꜱ™';
-const SCREENING_DESCRIPTION = 'Unofficial fan server for Backpack Battles. It is not affiliated with the game or its developers and publishers.';
-const RULES = [
-  'Be decent. No harassment, hate, slurs, threats, or bullying.',
-  'Keep it clean. No NSFW, spam, scams, or ads.',
-  'Respect privacy. Don\'t post someone else\'s private information.',
-  'Play fair. Don\'t upload malware, impersonate people, or abuse votes and submissions.',
-  'Staff can remove messages and ban.',
-];
+const CHANNEL_NAME = '🧭│ǫᴜᴇꜱᴛ™';
 
-/** @type {Set<string>} */
-const kept = new Set();
 let channelId = '';
 
-/**
- * @param {string} id
- */
-export function isRulesMessage(id) {
-  return kept.has(String(id || ''));
-}
-
-export function rulesChannelId() {
+export function questChannelId() {
   return channelId;
-}
-
-function remember(id) {
-  if (id) kept.add(String(id));
 }
 
 /**
@@ -64,12 +43,22 @@ function writeState(state) {
   fs.mkdirSync(path.dirname(statePath), { recursive: true });
   fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
   channelId = state.channelId;
-  remember(state.messageId);
 }
 
 const saved = readState();
 channelId = saved.channelId;
-remember(saved.messageId);
+
+/**
+ * @returns {string}
+ */
+function infoParent() {
+  try {
+    const layoutPath = path.join(path.dirname(statePath), 'layout.json');
+    return String(JSON.parse(fs.readFileSync(layoutPath, 'utf8'))?.infoId || '');
+  } catch {
+    return '';
+  }
+}
 
 /**
  * @param {string} token
@@ -78,7 +67,7 @@ remember(saved.messageId);
  * @param {object | null} [body]
  */
 async function discord(token, apiPath, method = 'GET', body) {
-  const res = await fetch(`${API}${apiPath}`, {
+  return fetch(`${API}${apiPath}`, {
     method,
     headers: {
       Authorization: `Bot ${token}`,
@@ -86,7 +75,6 @@ async function discord(token, apiPath, method = 'GET', body) {
     },
     body: body ? JSON.stringify(body) : undefined,
   });
-  return res;
 }
 
 /**
@@ -94,7 +82,7 @@ async function discord(token, apiPath, method = 'GET', body) {
  */
 async function hostHeader(config) {
   const png = fs.readFileSync(HEADER);
-  const objectPath = 'welcome/rules.png';
+  const objectPath = 'welcome/quest.png';
   const res = await fetch(`${config.base}/storage/v1/object/discord-builds/${objectPath}`, {
     method: 'POST',
     headers: {
@@ -107,7 +95,7 @@ async function hostHeader(config) {
   });
   if (!res.ok) {
     const detail = await res.text();
-    console.error(`Rules image failed (${res.status}): ${detail.slice(0, 160)}`);
+    console.error(`Quest image failed (${res.status}): ${detail.slice(0, 160)}`);
     return '';
   }
   return `${config.base}/storage/v1/object/public/discord-builds/${objectPath}?v=bpb`;
@@ -118,22 +106,19 @@ async function hostHeader(config) {
  */
 function payload(imageUrl) {
   const description = [
-    '**BPB Builds** is an unofficial fan server for Backpack Battles. It is not affiliated with the game or its developers and publishers.',
+    '**Not made yet. TBA.**',
     '',
-    ...RULES.flatMap((rule) => {
-      const title = rule.slice(0, rule.indexOf('.'));
-      const rest = rule.slice(rule.indexOf('.') + 1);
-      return ['', `**${title}.**${rest}`];
-    }),
+    'This channel will carry quest information once quests exist.',
+    'You can\'t type here.',
     '',
-    `Site terms: [Terms](${SITE}/legal/terms/).`,
+    `[Quest](${SITE}/quest/)`,
   ].join('\n');
   return {
     content: null,
     embeds: [{
       color: GOLD,
-      title: 'Rules',
-      url: `${SITE}/legal/terms/`,
+      title: 'Quest',
+      url: `${SITE}/quest/`,
       description,
       ...(imageUrl ? { image: { url: imageUrl } } : {}),
     }],
@@ -146,28 +131,22 @@ function payload(imageUrl) {
  * @param {string} existingId
  */
 async function ensureChannel(token, guildId, existingId) {
-  const welcome = await discord(token, `/channels/${WELCOME}`);
-  const welcomeRow = welcome.ok ? await welcome.json() : null;
   const overwrites = [{ id: guildId, type: 0, allow: '0', deny: READ_ONLY_DENY }];
+  const parent = infoParent();
   const body = {
     name: CHANNEL_NAME,
-    topic: 'Server rules. Messages here are turned off.',
+    topic: 'Quest information once quests exist. Messages here are turned off.',
     permission_overwrites: overwrites,
-    ...(welcomeRow?.parent_id ? { parent_id: welcomeRow.parent_id } : {}),
-    ...(Number.isFinite(welcomeRow?.position) ? { position: welcomeRow.position + 1 } : {}),
+    ...(parent ? { parent_id: parent } : {}),
   };
   if (existingId) {
     const patched = await discord(token, `/channels/${existingId}`, 'PATCH', body);
     if (patched.ok) return existingId;
-    const detail = await patched.text();
-    console.error(`Rules channel update failed (${patched.status}): ${detail.slice(0, 180)}`);
-    const current = await discord(token, `/channels/${existingId}`);
-    if (current.ok) return existingId;
   }
   const created = await discord(token, `/guilds/${guildId}/channels`, 'POST', { ...body, type: 0 });
   if (!created.ok) {
     const detail = await created.text();
-    console.error(`Rules channel failed (${created.status}): ${detail.slice(0, 180)}`);
+    console.error(`Quest channel failed (${created.status}): ${detail.slice(0, 180)}`);
     return '';
   }
   const row = await created.json();
@@ -177,13 +156,13 @@ async function ensureChannel(token, guildId, existingId) {
 /**
  * @param {Record<string, string>} env
  */
-export async function syncRules(env) {
+export async function syncQuest(env) {
   const token = env.DISCORD_BOT_TOKEN || '';
   const guildId = env.DISCORD_GUILD_ID || '';
   const base = String(env.SUPABASE_PROJECT_URL || '').replace(/\/$/, '');
   const key = env.SUPABASE_SERVICE_ROLE_KEY || '';
   if (!token || !guildId || !base || !key) {
-    console.error('Rules channel skipped: missing Discord or Supabase env');
+    console.error('Quest channel skipped: missing Discord or Supabase env');
     return;
   }
   const state = readState();
@@ -197,7 +176,7 @@ export async function syncRules(env) {
     const patched = await discord(token, `/channels/${nextChannel}/messages/${messageId}`, 'PATCH', body);
     if (!patched.ok && patched.status !== 404) {
       const detail = await patched.text();
-      console.error(`Rules edit failed (${patched.status}): ${detail.slice(0, 180)}`);
+      console.error(`Quest edit failed (${patched.status}): ${detail.slice(0, 180)}`);
       return;
     }
     if (!patched.ok) messageId = '';
@@ -206,37 +185,12 @@ export async function syncRules(env) {
     const posted = await discord(token, `/channels/${nextChannel}/messages`, 'POST', body);
     if (!posted.ok) {
       const detail = await posted.text();
-      console.error(`Rules post failed (${posted.status}): ${detail.slice(0, 180)}`);
+      console.error(`Quest post failed (${posted.status}): ${detail.slice(0, 180)}`);
       return;
     }
     const row = await posted.json();
     messageId = String(row.id || '');
   }
   writeState({ channelId: nextChannel, messageId });
-  await enableScreening(token, guildId);
-  console.log('Rules channel is read-only');
-}
-
-/**
- * Membership screening on Access. New members accept the rules before they can talk.
- * @param {string} token
- * @param {string} guildId
- */
-async function enableScreening(token, guildId) {
-  const patched = await discord(token, `/guilds/${guildId}/member-verification`, 'PATCH', {
-    enabled: true,
-    description: SCREENING_DESCRIPTION,
-    form_fields: [{
-      field_type: 'TERMS',
-      label: 'Read and agree to the server rules',
-      required: true,
-      values: RULES,
-    }],
-  });
-  if (!patched.ok) {
-    const detail = await patched.text();
-    console.error(`Rules screening failed (${patched.status}): ${detail.slice(0, 240)}`);
-    return;
-  }
-  console.log('Server rules are required before access');
+  console.log('Quest channel is read-only');
 }
