@@ -146,16 +146,14 @@ export function createMetaDrops(opts) {
   }
 
   /**
+   * Needs / Wants / skills are the drop, even when the panel box test misses.
    * @param {number} clientX
    * @param {number} clientY
    */
-  function getDropTarget(clientX, clientY) {
-    if (!isOverBuildPanel(clientX, clientY)) return null;
-
+  function controlAtPoint(clientX, clientY) {
     if (notesComposer?.el && notesComposer.isOver(clientX, clientY)) {
       return { kind: /** @type {const} */ ('mention'), el: notesComposer.el };
     }
-
     for (const el of host.querySelectorAll('[data-route]')) {
       if (!(el instanceof HTMLElement)) continue;
       if (!pointOverElement(el, clientX, clientY)) continue;
@@ -175,6 +173,69 @@ export function createMetaDrops(opts) {
     return null;
   }
 
+  /**
+   * Held sprite covering a tier counts, even if the pointer is still on the bag.
+   * @param {DOMRect | null | undefined} rect
+   */
+  function targetFromRect(rect) {
+    if (!rect || rect.width < 2 || rect.height < 2 || !isBuildPanelOpen()) return null;
+    /** @type {ReturnType<typeof controlAtPoint>} */
+    let best = null;
+    let bestCover = 0;
+    const nodes = [
+      ...host.querySelectorAll('[data-route]'),
+      ...host.querySelectorAll('.build-info__tier[data-priority]'),
+    ];
+    for (const el of nodes) {
+      if (!(el instanceof HTMLElement)) continue;
+      const box = el.getBoundingClientRect();
+      const w = Math.min(rect.right, box.right) - Math.max(rect.left, box.left);
+      const h = Math.min(rect.bottom, box.bottom) - Math.max(rect.top, box.top);
+      if (w <= 0 || h <= 0) continue;
+      const cover = (w * h) / Math.max(1, box.width * box.height);
+      if (cover < 0.35 || cover <= bestCover) continue;
+      const hit = controlAtPoint(box.left + box.width / 2, box.top + box.height / 2);
+      if (!hit) continue;
+      best = hit;
+      bestCover = cover;
+    }
+    return best;
+  }
+
+  /**
+   * @param {number} clientX
+   * @param {number} clientY
+   * @param {DOMRect | null} [heldRect]
+   */
+  function getDropTarget(clientX, clientY, heldRect = null) {
+    const direct = controlAtPoint(clientX, clientY);
+    if (direct) return direct;
+    if (heldRect) {
+      const cx = heldRect.left + heldRect.width / 2;
+      const cy = heldRect.top + heldRect.height / 2;
+      const atCenter = controlAtPoint(cx, cy);
+      if (atCenter) return atCenter;
+      const covered = targetFromRect(heldRect);
+      if (covered) return covered;
+    }
+    return null;
+  }
+
+  /**
+   * Pointer or held item is on the Build tab (tiers, skills, or the panel).
+   * @param {number} clientX
+   * @param {number} clientY
+   * @param {DOMRect | null} [heldRect]
+   */
+  function engagesMeta(clientX, clientY, heldRect = null) {
+    if (getDropTarget(clientX, clientY, heldRect)) return true;
+    if (isOverBuildPanel(clientX, clientY)) return true;
+    if (!heldRect) return false;
+    const cx = heldRect.left + heldRect.width / 2;
+    const cy = heldRect.top + heldRect.height / 2;
+    return isOverBuildPanel(cx, cy);
+  }
+
   function clearDropHover() {
     host.querySelectorAll('.is-drop-hover, .is-drop-reject, .is-drop-valid').forEach((el) => {
       el.classList.remove('is-drop-hover', 'is-drop-reject', 'is-drop-valid');
@@ -187,11 +248,31 @@ export function createMetaDrops(opts) {
    */
   function resolveTierPlacementKey(cur) {
     if (!cur?.itemId) return null;
-    if (cur.mode === 'move' && cur.moveKey) return cur.moveKey;
     const item = itemsById.get(cur.itemId);
     if (!item || String(item.type || '') === 'Bag') return null;
-    const hit = state.getDraft().placements.find((p) => p.id === cur.itemId);
-    return hit?.key || null;
+    const draft = state.getDraft().placements;
+    if (cur.mode === 'move' && cur.moveKey && draft.some((p) => p.key === cur.moveKey)) {
+      return cur.moveKey;
+    }
+    const hx = Number(cur.homeX);
+    const hy = Number(cur.homeY);
+    if (Number.isFinite(hx) && Number.isFinite(hy)) {
+      const at = draft.find(
+        (p) => p.id === cur.itemId && Number(p.x) === hx && Number(p.y) === hy,
+      );
+      if (at?.key) return at.key;
+    }
+    // Catalog drags have no placement key. They are still valid as long as
+    // that item is already on this board: assigning a tier only annotates an
+    // existing placement, so it does not alter an attached history run.
+    const same = draft.filter((p) => p.id === cur.itemId && p.key);
+    if (!same.length) return null;
+
+    // If several copies exist, keep the choice predictable: respect an
+    // explicitly selected copy, otherwise use an unclassified one first.
+    const selected = state.getSelectedKey?.();
+    if (selected && same.some((p) => p.key === selected)) return selected;
+    return same.find((p) => !p.priority)?.key || same[0].key;
   }
 
   /**
@@ -228,7 +309,7 @@ export function createMetaDrops(opts) {
    * @param {number} clientX
    * @param {number} clientY
    */
-  function updateDropHover(cur, clientX, clientY) {
+  function updateDropHover(cur, clientX, clientY, heldRect = null) {
     clearDropHover();
     if (!cur || !isBuildPanelOpen()) return;
 
@@ -251,7 +332,7 @@ export function createMetaDrops(opts) {
       }
     });
 
-    const target = getDropTarget(clientX, clientY);
+    const target = getDropTarget(clientX, clientY, heldRect);
     if (!target) return;
     target.el.classList.remove('is-drop-valid');
     target.el.classList.add(
@@ -265,10 +346,10 @@ export function createMetaDrops(opts) {
    * @param {number} clientY
    * @returns {'done' | 'reject' | 'miss'}
    */
-  function tryCommitDrop(cur, clientX, clientY) {
-    if (!isOverBuildPanel(clientX, clientY)) return 'miss';
+  function tryCommitDrop(cur, clientX, clientY, heldRect = null) {
+    if (!engagesMeta(clientX, clientY, heldRect)) return 'miss';
 
-    const target = getDropTarget(clientX, clientY);
+    const target = getDropTarget(clientX, clientY, heldRect);
     if (!target) return 'reject';
     if (!canAcceptDrop(cur, target)) return 'reject';
 
@@ -284,7 +365,7 @@ export function createMetaDrops(opts) {
     if (target.kind === 'tier') {
       const key = resolveTierPlacementKey(cur);
       if (!key) return 'reject';
-      state.setPriority(key, target.priority);
+      if (!state.setPriority(key, target.priority)) return 'reject';
       state.setSelectedKey(key);
       clearDropHover();
       return 'done';
@@ -342,6 +423,7 @@ export function createMetaDrops(opts) {
     tryAssignSkill,
     getDropTarget,
     isOverBuildPanel,
+    engagesMeta,
     updateDropHover,
     clearDropHover,
     tryCommitDrop,

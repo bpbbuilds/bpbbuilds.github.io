@@ -482,8 +482,26 @@ export function bindDragPointers(ctx) {
     selectionBox?.cancel();
     const key = itemEl.dataset.placementKey;
     if (!key) return;
-    const p = state.getDraft().placements.find((x) => x.key === key);
-    if (!p) return;
+    let p = state.getDraft().placements.find((x) => x.key === key);
+    if (!p) {
+      // History scrubber paints rounds without draft keys. Match the cell,
+      // then keep a view-only row so a tier drop can still resolve the draft.
+      const id = itemEl.getAttribute('data-item-id') || '';
+      const x = parseFloat(itemEl.style.left);
+      const y = parseFloat(itemEl.style.top);
+      if (!id || !Number.isFinite(x) || !Number.isFinite(y)) return;
+      const face = Number(itemEl.getAttribute('data-face'));
+      const at = state.getDraft().placements.find(
+        (row) => row.id === id && Number(row.x) === x && Number(row.y) === y,
+      );
+      p = at || {
+        id,
+        x,
+        y,
+        r: Number.isFinite(face) ? ((face % 4) + 4) % 4 : 0,
+        key,
+      };
+    }
     const item = itemsById.get(p.id);
     if (!canPickItem(item, editMode())) return;
 
@@ -868,10 +886,15 @@ export function bindDragPointers(ctx) {
       cur.mode === 'move' ? cur.moveKey || null : null,
     );
     // Fast rotate+drop can miss a valid snap for one frame — reuse last good
-    // board snap for *items* only. Bags must not reuse: a null tryAdd means
-    // outside / blocked; caching an older edge snap dropped bags off-grid.
+    // board snap for *items* only, and only while the pointer is still on the
+    // bag. Off-board (Needs / Wants / the gap) must not replay a stale cell.
     if (!tryAdd) {
-      const cached = preview.getLastTryAdd?.();
+      const board = grid.el?.querySelector?.('.bpb-bg__board') || grid.el;
+      const box = board instanceof HTMLElement ? board.getBoundingClientRect() : null;
+      const onBoard = !!box
+        && cx >= box.left && cx <= box.right
+        && cy >= box.top && cy <= box.bottom;
+      const cached = onBoard ? preview.getLastTryAdd?.() : null;
       if (cached && !cached.socket) {
         const held = itemsById.get(cur.itemId);
         if (held && !isBagItem(held)) tryAdd = cached;
@@ -971,6 +994,24 @@ export function bindDragPointers(ctx) {
     }
 
     if (cur.mode === 'move' && cur.moveKey) {
+      const home = state.getDraft().placements.find((p) => p.key === cur.moveKey);
+      const origin = tryAdd && !tryAdd.socket ? tryAdd.origin : null;
+      const sameHome = Boolean(
+        home && origin
+        && Math.round(Number(origin.x)) === Math.round(Number(home.x))
+        && Math.round(Number(origin.y)) === Math.round(Number(home.y))
+        && ((Number(cur.r) || 0) % 4 + 4) % 4 === ((Number(home.r) || 0) % 4 + 4) % 4,
+      );
+      // Putting it back does not edit the run. Tier drops already returned above.
+      if (
+        state.isHistoryLocked?.()
+        && getMoved()
+        && sameHome
+        && !(socketHit && isGemItem(item))
+      ) {
+        void float.cancelDragWithFlyback('cancel');
+        return;
+      }
       const geometryDrop =
         getMoved() &&
         ((socketHit && isGemItem(item)) || (tryAdd && !tryAdd.socket && item));

@@ -6,6 +6,8 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+- `js/pages/create/meta-drops.js`, `js/pages/create/drag-pointers.js`, and `js/pages/create/editor-state.js` (Build-tab priority drops from history-attached boards and catalog)
+
 - `js/pages/admin/tab-cosmetics.js`, `js/pages/admin/api.js`, and `supabase/functions/admin-builds/` (owner-gated cosmetic publishing repair)
 
 - `js/pages/admin/report-filters.js` (remove obsolete Guest reporter filter)
@@ -517,3 +519,9 @@ None.
 ### 2026-10-02 Security contribution rules
 
 - Added a shared `AGENTS.md` security checklist covering server authorization, secrets, RLS/Storage, input limits, escaping/CSP, payment entitlements, regression coverage, deployment validation, and legal-page review requirements for future changes.
+
+### 2026-10-02 Create Build-tab priority drops
+
+- Restored priority drops from history-uploaded board items, including history-scrubber items whose rendered key does not match a draft key. Dropping onto Needs, Wants, or Good to have changes only the placement priority and keeps the attached history locked.
+- Catalog drags now work for any matching item already on the board, including duplicate copies. A selected matching copy is used first; otherwise an unclassified copy is selected. Catalog items absent from the board remain rejected.
+- Mobile drop targeting now accounts for the dragged sprite’s position as well as the finger/pointer, so the held item can reach the Build tab controls without an accidental board move.
