@@ -57,6 +57,18 @@ where discord_id = 'YOUR_DISCORD_SNOWFLAKE';
 3. Apply `013_profiles.sql`
 4. Deploy Edge Functions: `submit-build`, `vote-build`, `admin-builds`, `admin-reports` (`verify_jwt = false`; functions validate JWT themselves)
 
+## Private launch access
+
+- The site defaults to `siteAccessMode: 'live'` (public).
+- Set `BPB_SITE_ACCESS_MODE=private` before running `node scripts/write-config.mjs`, then deploy the
+  resulting browser-safe `js/shared/config.js`, to require Discord sign-in and active membership in
+  the BPB Builds server. Switch the value back to `live` for public launch.
+- The shared access gate calls `discord-guild` with the signed-in user JWT. It blocks the app with a
+  sign-in panel, then a member-only panel with the Discord invite and a recheck button. A failed
+  membership check is denied rather than treated as access.
+- GitHub Pages is static public hosting: this is an application/UI access gate, not a way to make
+  files or already-public URLs secret. Protect non-public data with Supabase RLS or private Storage.
+
 ## Client
 
 - [`js/shared/auth.js`](../../js/shared/auth.js) — `signInWithDiscord`, `signOut`, `getSession`, `getProfile`, `refreshProfile`, `onAuthChange`, voter bind

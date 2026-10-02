@@ -12,6 +12,7 @@ import { paintNavAuth, paintNavFounding, paintNavAdmin } from './nav/session.js'
 import { bindNavDrawer } from './nav/drawer.js';
 import { bindNavScrollLogo, ensureNavSpace, syncNavSpace } from './nav/scroll-logo.js';
 import { notePageView } from './page-traffic.js';
+import { initSiteAccess } from './access-gate.js';
 import './game-cursor.js';
 
 export { navSkeletonHtml };
@@ -50,6 +51,7 @@ export async function initNav(selector = '#site-nav') {
 
   const root = rootPrefix();
   initAuth();
+  await initSiteAccess();
 
   // Reserve layout space immediately (nav is fixed / out of flow)
   ensureNavSpace(host);

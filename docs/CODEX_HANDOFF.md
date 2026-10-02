@@ -35,6 +35,8 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 - `docs/pages/auth.md` (Discord OAuth production redirect configuration)
 - `js/shared/auth.js` (Discord OAuth callback handling)
 - `js/shared/supabase.js` (OAuth client configuration)
+- `js/shared/access-gate.js`, `js/shared/access-gate.css`, `js/shared/discord-join.js`, `js/shared/nav.js`, `js/shared/config.js`, `js/shared/config.example.js`, and `css/shared.css` (private/live Discord-member site access gate)
+- `scripts/write-config.mjs` (private/live mode configuration generation)
 
 Before editing product code, list the folders you are taking in this section. Do not take paths already listed under **Owned paths** in [`CURSOR_HANDOFF.md`](CURSOR_HANDOFF.md). Screenshot import is Codex-owned while listed above.
 
@@ -328,6 +330,14 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 - Investigated the reported `bad_oauth_state` with hosted Auth logs: one stale callback failed, but the immediately following fresh attempt completed a Discord login successfully. The live Auth endpoint was verified to create a fresh provider state and use the required Supabase callback URL.
 - Renamed the 12 case-mismatched static item sprites to their catalog names (including Blueberries, Bow and Arrow, Thornburst, and Con-Trap-Tron), fixing the Pages 404s on case-sensitive hosting.
 - Validation: `node --check` passed for both changed shared modules; all 521 canonical sprite names from `sprite-thumbs.json` exist after the rename; targeted `git diff --check` passed.
+
+### 2026-10-01 Private/live Discord-member access mode
+
+- Confirmed the prior implementation was only an optional post-sign-in Discord invite prompt; it did not restrict site access.
+- Added a shared private-launch access gate. `siteAccessMode: 'live'` remains the deployed default. Setting `BPB_SITE_ACCESS_MODE=private` before `node scripts/write-config.mjs` produces a config that requires Discord sign-in and an affirmative `discord-guild` membership response on every standard site page. The gate is fail-closed, supplies sign-in, server-join, recheck, and account-switch actions, and removes stale optional invite prompting while private mode is active.
+- Updated Auth documentation plus About, Terms, and Privacy to describe the optional member-only launch access. Their existing October 1, 2026 revision date remains current.
+- Limitation documented: GitHub Pages is static public hosting, so this blocks the web application UI rather than turning already-published files/URLs private; non-public data still needs Supabase RLS/private Storage.
+- Validation: `node --check` passed for the new gate, shared navigation, Discord prompt, config, and config writer; `git diff --check` passed. The page-entry audit confirmed all normal public page boots reach shared navigation (admin reaches it through its shell).
 
 ## Proposal
 

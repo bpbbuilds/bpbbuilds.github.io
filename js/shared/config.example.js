@@ -6,6 +6,8 @@
  * Normal publish uses Discord JWT. Admin prefers owner Discord; secret unlocks /admin/.
  */
 export const config = {
+  // 'live' (public) or 'private' (signed-in Discord server members only)
+  siteAccessMode: 'live',
   supabaseUrl: 'YOUR_SUPABASE_PROJECT_URL',
   supabasePublishableKey: 'YOUR_SUPABASE_PUBLISHABLE_KEY',
   submitBuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/submit-build',

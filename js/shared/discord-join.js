@@ -69,6 +69,9 @@ function showJoinPrompt() {
 
 /** Check membership and open the invite prompt when they are not in the server. */
 export async function maybePromptDiscordJoin() {
+  // The private launch gate owns this state and must not leave a dismissible
+  // invite prompt over the mandatory membership screen.
+  if (String(config.siteAccessMode || 'live').toLowerCase() === 'private') return;
   if (alreadyAsked()) return;
   const url = config.discordGuildUrl;
   if (!url) return;

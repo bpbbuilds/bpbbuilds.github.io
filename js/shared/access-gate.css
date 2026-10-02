@@ -1,0 +1,74 @@
+/* Full-screen launch access gate. The mode is controlled in config.js. */
+.bpb-access-gate {
+  position: fixed;
+  z-index: 20000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.bpb-access-gate__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 9, 6, 0.86);
+  backdrop-filter: blur(5px);
+}
+
+.bpb-access-gate__panel {
+  position: relative;
+  width: min(100%, 31rem);
+  padding: clamp(1.4rem, 5vw, 2.4rem);
+  text-align: center;
+}
+
+.bpb-access-gate__logo {
+  display: block;
+  width: min(13rem, 62vw);
+  height: auto;
+  margin: 0 auto 1rem;
+}
+
+.bpb-access-gate h1 {
+  margin: 0;
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+  font-family: var(--bpb-font-body);
+  font-size: clamp(1.35rem, 5vw, 1.75rem);
+}
+
+.bpb-access-gate p {
+  margin: 0;
+  color: var(--bpb-rewards-cream, #dbc4a1);
+  font-family: var(--bpb-font-body);
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.bpb-access-gate__rule {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0.8rem 0 1rem;
+}
+
+.bpb-access-gate__rule span { flex: 1; height: 1px; background: var(--bpb-rewards-gold, #c6a567); }
+.bpb-access-gate__rule i { width: 0.5rem; height: 0.5rem; background: var(--bpb-rewards-gold, #c6a567); transform: rotate(45deg); }
+
+.bpb-access-gate__actions { display: grid; gap: 0.65rem; margin-top: 1.35rem; }
+.bpb-access-gate__primary,
+.bpb-access-gate__secondary,
+.bpb-access-gate__text {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--bpb-rewards-gold, #c6a567);
+  background: #2a1c16;
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+  cursor: var(--bpb-cursor-pointer, pointer);
+  font: inherit;
+  text-align: center;
+  text-decoration: none;
+}
+.bpb-access-gate__secondary { background: transparent; color: var(--bpb-rewards-cream, #dbc4a1); }
+.bpb-access-gate__text { border-color: transparent; background: transparent; color: var(--bpb-rewards-cream, #dbc4a1); text-decoration: underline; }
+.bpb-access-gate-open { overflow: hidden; }
