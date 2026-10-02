@@ -47,7 +47,8 @@
 
 .create-main {
   /* Match Item Library — lower filter rows must not clip on desktop. */
-  --items-filters-width: 32rem;
+  --create-rail-width: 32rem;
+  --items-filters-width: var(--create-rail-width);
   --items-side-gap: 1rem;
   /* Leave room for the board; the catalog shares the remaining column. */
   --items-catalog-width: min(
@@ -93,8 +94,8 @@
 
 .create-col--board {
   --build-catalog-width: min(
-    56rem,
-    calc(100vw - var(--items-filters-width) - 22rem - 4 * var(--items-side-gap))
+    clamp(30rem, 35vw, 56rem),
+    calc(100vw - var(--create-rail-width) - 22rem - 4 * var(--items-side-gap))
   );
   display: flex;
   flex-direction: column;
@@ -110,7 +111,7 @@
 
 .page-create .create-col--catalog.items-main {
   /* Keep the Create rail aligned with the full Item Library rail. */
-  --items-filters-width: 32rem;
+  --items-filters-width: var(--create-rail-width);
   --items-catalog-width: min(
     36rem,
     calc(100vw - var(--items-filters-width) - 40rem - 4 * var(--items-side-gap))
@@ -2382,6 +2383,13 @@ body.page-create.is-bpb-dragging .create-sellbin {
 /* Wider than the phone/tablet split: calculated board/catalog sizes, full 32rem rail,
    catalog packed against the rail (no flexible gutter between them). */
 @media (min-width: 1101px) {
+  .page-create .create-main {
+    /* Scale the desktop composition down from the 2560px reference rather
+       than keeping the board and rail at their largest fixed widths. */
+    --create-rail-width: clamp(21rem, 20vw, 32rem);
+    --items-side-gap: clamp(0.5rem, 0.625vw, 1rem);
+  }
+
   .page-create .bpb-filter-drawer {
     padding-right: 0;
   }
@@ -2427,6 +2435,32 @@ body.page-create.is-bpb-dragging .create-sellbin {
     background: transparent;
     box-shadow: none;
     overflow: hidden;
+  }
+
+  /* Prevent the Build/Filter rail contents from clipping as the rail narrows
+     on 1080p and 1440p desktops. */
+  .page-create .cr-tab {
+    padding-inline: clamp(0.65rem, 0.82vw, 1.05rem);
+    font-size: clamp(1.05rem, 0.98vw, 1.25rem);
+  }
+
+  .page-create .cr-submit {
+    padding-inline: clamp(0.6rem, 0.7vw, 0.9rem);
+    font-size: clamp(1rem, 0.9vw, 1.15rem);
+  }
+
+  .page-create .cr-label {
+    font-size: clamp(1.2rem, 1.27vw, 1.625rem);
+  }
+
+  .page-create .build-info__list-item img {
+    width: clamp(2.4rem, 3.12vw, 4rem);
+    height: clamp(2.4rem, 3.12vw, 4rem);
+  }
+
+  .page-create .build-info__tier--wide .build-info__list-item img {
+    width: clamp(2.15rem, 2.73vw, 3.5rem);
+    height: clamp(2.15rem, 2.73vw, 3.5rem);
   }
 }
 
