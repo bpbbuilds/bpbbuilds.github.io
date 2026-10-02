@@ -71,7 +71,7 @@ profiles                items ◄──── build_placements.gems[]
 | `builds` | Yes (published) | Edge `submit-build` (JWT or break-glass secret); `vote_score` public read |
 | `build_placements` | Yes (via parent build) | With parent build only |
 | `build_votes` | No (service role) | Edge Function `vote-build` only |
-| `profiles` | Yes | Own row update (not `is_owner`); insert via Auth trigger |
+| `profiles` | Yes | Own display/profile fields only; identity, access verification, roles, grants, currency, and membership are server-managed |
 | `sim_reports` | No | Edge `report-sim` insert; Edge `admin-reports` owner list/stats/status |
 
 ---
@@ -163,7 +163,7 @@ See [build-placements-table.md](./tables/build-placements-table.md).
 
 **Used by:** Author credits, My builds, `/u/{discord_id}/`, admin (`is_owner`), vote bind.
 
-**Key fields:** `id` (= `auth.users.id`), `discord_id`, `display_name`, `avatar_url`, `equipped_avatar`, `cosmetic_grants`, `is_owner`, `voter_key`, `discord_guild_verified_at` (recent Private-mode membership check)
+**Key fields:** `id` (= `auth.users.id`), `discord_id`, `display_name`, `avatar_url`, `equipped_avatar`, `cosmetic_grants`, `is_owner`, `voter_key`, `discord_guild_verified_at` (server-recorded recent Private-mode membership check)
 
 See [profiles-table.md](./tables/profiles-table.md).
 

@@ -68,7 +68,10 @@ where discord_id = 'YOUR_DISCORD_SNOWFLAKE';
   membership check is denied rather than treated as access.
 - A successful private-mode check records a 15-minute Discord-membership verification on the profile.
   Existing public-read Supabase policies become restrictive in Private mode, so direct database reads
-  also require that recent verification.
+  also require that recent verification. That verification timestamp, owner role, membership fields,
+  cosmetic grants, and coins are server-managed: client profile updates cannot set or alter them.
+- OAuth return URLs are restricted by both the Supabase dashboard allow-list and the client to the
+  current site origin. Do not pass an arbitrary URL to `signInWithDiscord`.
 - GitHub Pages is static public hosting: this is an application/UI access gate, not a way to make
   files or already-public URLs secret. Protect non-public data with Supabase RLS or private Storage.
 

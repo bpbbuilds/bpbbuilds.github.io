@@ -33,15 +33,17 @@ function isUuid(s) {
  * @param {string} [pathOrUrl]
  */
 export function authRedirectTo(pathOrUrl) {
-  if (pathOrUrl && /^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
-  if (pathOrUrl) {
-    try {
-      return new URL(pathOrUrl, location.href).href;
-    } catch {
-      /* fall through */
-    }
+  const fallback = location.href.split('#')[0];
+  if (!pathOrUrl) return fallback;
+
+  try {
+    const target = new URL(pathOrUrl, location.href);
+    // OAuth callbacks must never be directed to a caller-provided origin.
+    // Supabase's dashboard allow-list remains a second line of defense.
+    return target.origin === location.origin ? target.href : fallback;
+  } catch {
+    return fallback;
   }
-  return location.href.split('#')[0];
 }
 
 /**

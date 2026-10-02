@@ -1,0 +1,11 @@
+-- Canonical migrations:
+--   supabase/migrations/20261002020000_login_security_hardening.sql
+--   supabase/migrations/20261002021000_enable_private_access_rls.sql
+-- Apply with `supabase db push`; do not execute this documentation pointer separately.
+
+-- Client profile inserts/updates preserve only safe profile values; identity,
+-- ownership, membership, grants, currency, and Discord verification are
+-- server-managed. The private access helper is `private.site_access_allowed()`
+-- (SECURITY DEFINER, empty search path) and the public helper was removed.
+-- All access-controlled tables have RLS enabled so the restrictive policies
+-- installed by 029 actually run in Private mode.

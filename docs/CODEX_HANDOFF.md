@@ -377,7 +377,20 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 ### 2026-10-01 Static social metadata
 
 - Added canonical URLs, descriptions, Open Graph, and Twitter card metadata to the main public pages. Static build-view metadata is intentionally generic; per-build cards need generated HTML or an edge host.
+
+### 2026-10-01 Login security audit (no changes)
+
+- Found a critical Private-mode bypass: `discord_guild_verified_at` is not frozen by `profiles_protect_owner`, while authenticated users can update their own profile row. A user can set that timestamp directly and satisfy the Private RLS policy without a Discord membership check. Also flag the profile insert fallback: it permits self-supplied membership fields if a profile row is ever missing.
+- Recommended next work: freeze server-managed fields (including the Discord verification timestamp) on both update and insert, tighten profile grants/policies, move the private-access helper out of exposed `public`, and add RLS deny/allow regression tests.
 - Updated admin/auth/schema documentation and the access wording in About, Terms, and Privacy. Validation: `node --check` passed for changed browser/config scripts and `git diff --check` passed.
+
+### 2026-10-01 Login security remediation
+
+- Claimed `js/shared/auth.js`, the 030 database documentation/migrations, access tests, auth/schema docs, and the affected legal/public HTML heads for login security remediation.
+- Applied `20261002020000_login_security_hardening.sql` and `20261002021000_enable_private_access_rls.sql` to project `xklkysmakrmgtiztsqug`. Authenticated browser profile changes can no longer self-set ownership, Discord membership verification, plan/payment, grants, or coins; fallback inserts are also normalized to safe values.
+- Moved the Private-mode predicate from exposed `public` to the unexposed `private` schema, set an empty function search path, removed its public RPC, and enabled RLS on every table protected by its restrictive policy. With the runtime setting still Private, an anonymous `items` REST read now returns `[]`; the former public RPC returns HTTP 404.
+- OAuth redirect targets are constrained to the current origin in addition to the Supabase allow-list. Added meta CSPs to normal application pages (a full response-header CSP needs a proxy/custom host rather than GitHub Pages alone), and documented the enforced behavior in Auth, schema, Terms, Privacy, and About.
+- Added `supabase/tests/login_security_rls.sql` for local `supabase test db` regression coverage. Node syntax and `git diff --check` passed; browser smoke testing could not run because this checkout has no installed Playwright package.
 
 ## Proposal
 
