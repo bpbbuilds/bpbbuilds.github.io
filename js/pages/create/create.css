@@ -2169,8 +2169,26 @@ body.page-create.is-bpb-dragging .create-sellbin {
   }
 
   .create-main {
+    /* The compact Create header plus a slightly shorter catalog leaves enough
+       room for the toolbar, full board, and Parked strip in one viewport. */
+    padding-top: 0.15rem;
+    padding-bottom: 0.35rem;
     overflow: hidden;
     overscroll-behavior: none;
+  }
+
+  body.page-create .site-nav-shell {
+    padding-top: 0;
+  }
+
+  body.page-create .site-nav {
+    padding-top: 0.15rem;
+    padding-bottom: 0;
+  }
+
+  body.page-create .site-nav__builds {
+    width: min(8rem, 42vw);
+    margin-bottom: -0.15rem;
   }
 
   .create-layout {
@@ -2224,9 +2242,9 @@ body.page-create.is-bpb-dragging .create-sellbin {
   }
 
   .create-col--catalog {
-    flex: 0 0 30dvh;
-    height: 30dvh;
-    max-height: 30dvh;
+    flex: 0 0 24dvh;
+    height: 24dvh;
+    max-height: 24dvh;
     overflow: hidden;
   }
 
