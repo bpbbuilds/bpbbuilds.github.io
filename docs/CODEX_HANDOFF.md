@@ -32,6 +32,7 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 - `js/pages/create/inventory-preview.js` (mobile Create drag-hover grid positioning)
 - `index.html`, `js/shared/config.js`, and `js/pages/home/` (public Pages bootstrap and homepage first-load diagnostics)
 - `.gitignore` and `assets/item-sprites/` (static item-sprite Pages deployment)
+- `docs/pages/auth.md` (Discord OAuth production redirect configuration)
 
 Before editing product code, list the folders you are taking in this section. Do not take paths already listed under **Owned paths** in [`CURSOR_HANDOFF.md`](CURSOR_HANDOFF.md). Screenshot import is Codex-owned while listed above.
 
@@ -312,6 +313,12 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 
 - Removed the `assets/item-sprites/` ignore rule and committed the 638 static item sprites (56.7MiB) needed by board, catalog, and homepage rendering.
 - Pushed commit `528ad04` to the public Pages repository. GitHub Pages built it successfully, and `https://bpbbuilds.github.io/assets/item-sprites/LeatherBag.png` returned HTTP 200 after deployment.
+
+### 2026-10-01 Discord OAuth production callback
+
+- Updated the hosted Supabase Auth URL configuration for project `xklkysmakrmgtiztsqug`: Site URL is now `https://bpbbuilds.github.io/`, with redirects allowed for the GitHub Pages site and the two Live Server development origins (`127.0.0.1:5500` and `localhost:5500`). The client already supplies its current page as `redirectTo`, so a sign-in initiated on Pages returns to Pages instead of the former local-IP Site URL.
+- Documented the exact URL configuration in `docs/pages/auth.md`. Updated About, Terms, and Privacy to describe the approved BPB Builds return URL; their existing October 1, 2026 revision date remains current.
+- Validation: re-read the hosted Auth configuration after the update and confirmed the Site URL and allow list. `git diff --check` passed for the documentation and legal changes.
 
 ## Proposal
 

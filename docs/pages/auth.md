@@ -50,7 +50,10 @@ where discord_id = 'YOUR_DISCORD_SNOWFLAKE';
 ## Dashboard (manual)
 
 1. Authentication → Providers → enable **Discord** (Client ID / Secret from Discord Developer Portal)
-2. Redirect URLs: local origin + GitHub Pages origin (and `/u/` paths as needed)
+2. URL Configuration: set **Site URL** to `https://bpbbuilds.github.io/`. Allow these redirect URLs:
+   `https://bpbbuilds.github.io/**`, `http://127.0.0.1:5500/**`, and
+   `http://localhost:5500/**`. The live site returns to the page where sign-in began; the local
+   entries are only for Live Server development.
 3. Apply `013_profiles.sql`
 4. Deploy Edge Functions: `submit-build`, `vote-build`, `admin-builds`, `admin-reports` (`verify_jwt = false`; functions validate JWT themselves)
 
