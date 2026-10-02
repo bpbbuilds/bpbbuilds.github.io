@@ -66,6 +66,9 @@ where discord_id = 'YOUR_DISCORD_SNOWFLAKE';
 - The shared access gate calls `discord-guild` with the signed-in user JWT. It blocks the app with a
   sign-in panel, then a member-only panel with the Discord invite and a recheck button. A failed
   membership check is denied rather than treated as access.
+- A successful private-mode check records a 15-minute Discord-membership verification on the profile.
+  Existing public-read Supabase policies become restrictive in Private mode, so direct database reads
+  also require that recent verification.
 - GitHub Pages is static public hosting: this is an application/UI access gate, not a way to make
   files or already-public URLs secret. Protect non-public data with Supabase RLS or private Storage.
 

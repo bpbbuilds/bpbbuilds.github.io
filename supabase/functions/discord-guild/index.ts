@@ -60,5 +60,10 @@ Deno.serve(async (req) => {
     String(profile?.plan || 'free'),
     count || 0,
   );
+  const { error: accessError } = await supabase
+    .from('profiles')
+    .update({ discord_guild_verified_at: result.inGuild === true ? new Date().toISOString() : null })
+    .eq('id', userData.user.id);
+  if (accessError) return reply({ error: 'Could not record membership check' }, 500);
   return reply({ inGuild: result.inGuild });
 });

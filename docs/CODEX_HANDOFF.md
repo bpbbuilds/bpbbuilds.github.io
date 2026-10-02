@@ -41,6 +41,7 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 - `supabase/functions/site-access/`, `supabase/config.toml`, `supabase/migrations/20261002000000_site_access.sql`, and `docs/db/sql/028_site_access.sql` (persisted access-mode setting and owner API)
 - `docs/pages/admin.md`, `docs/pages/auth.md`, `docs/db/tables.md`, and `legal/about/`, `legal/terms/`, `legal/privacy/` (runtime access-mode documentation and legal maintenance)
 - `js/pages/*/index.js` and `js/pages/admin/shell.js` (Private-mode boot gate)
+- `supabase/functions/discord-guild/`, `supabase/migrations/20261002010000_private_access_data.sql`, and `docs/db/sql/029_private_access_data.sql` (Private-mode database read enforcement)
 
 Before editing product code, list the folders you are taking in this section. Do not take paths already listed under **Owned paths** in [`CURSOR_HANDOFF.md`](CURSOR_HANDOFF.md). Screenshot import is Codex-owned while listed above.
 
@@ -355,6 +356,12 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 - Corrected the private-gate logo to the deployed `assets/brand/logo-bpb.png` path.
 - All standard site entry points now wait for `initNav()` to confirm access before starting page-specific data/UI code. A denied private visitor remains at the gate; after a successful recheck the page reloads and then boots normally. This stops removal of the gate element from starting the normal application in that tab.
 - Limitation: GitHub Pages remains public static hosting. Static source/assets can still be fetched or inspected, so absolute private-site enforcement needs an authenticated hosting/proxy layer in front of a custom domain; this UI boot gate cannot provide that on `bpbbuilds.github.io` alone.
+
+### 2026-10-01 Private access data enforcement
+
+- Added `029_private_access_data.sql`: when the runtime setting is Private, restrictive RLS policies deny anonymous and unverified reads of items, recipes, builds, placements, and profiles. A verified Discord-server membership is recorded for 15 minutes on the user profile by `discord-guild`.
+- Applied migration `20261002010000_private_access_data.sql` and deployed the updated `discord-guild` Edge Function. The runtime setting was Private during validation; the anonymous `private_site_access_allowed` RPC returned `false`, confirming direct public database reads are denied.
+- Updated Auth/schema docs and Terms/Privacy for the short-lived membership-verification timestamp and database enforcement. `node --check` and `git diff --check` passed.
 - Updated admin/auth/schema documentation and the access wording in About, Terms, and Privacy. Validation: `node --check` passed for changed browser/config scripts and `git diff --check` passed.
 
 ## Proposal

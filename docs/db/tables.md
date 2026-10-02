@@ -163,7 +163,7 @@ See [build-placements-table.md](./tables/build-placements-table.md).
 
 **Used by:** Author credits, My builds, `/u/{discord_id}/`, admin (`is_owner`), vote bind.
 
-**Key fields:** `id` (= `auth.users.id`), `discord_id`, `display_name`, `avatar_url`, `equipped_avatar`, `cosmetic_grants`, `is_owner`, `voter_key`
+**Key fields:** `id` (= `auth.users.id`), `discord_id`, `display_name`, `avatar_url`, `equipped_avatar`, `cosmetic_grants`, `is_owner`, `voter_key`, `discord_guild_verified_at` (recent Private-mode membership check)
 
 See [profiles-table.md](./tables/profiles-table.md).
 
@@ -191,6 +191,7 @@ See [sim-reports-table.md](./tables/sim-reports-table.md).
 8. `builds.event_slug` (`019_builds_event_slug.sql`)
 9. `profiles.cosmetic_grants` (`021_profiles_cosmetic_grants.sql`)
 10. `site_settings` (`028_site_access.sql`)
+11. Private-mode profile verification and restrictive read policies (`029_private_access_data.sql`)
 
 ---
 

@@ -33,7 +33,7 @@
       </p>
       <ul>
         <li><strong>Builds</strong> — title, tags, board placements, route notes, optional video link, moderation flags, author link. Event entries stay visible only to their author until that event's gallery opens (when a scored event ends, or when voting starts). Until then they are not on the public builds feed</li>
-        <li><strong>Profiles</strong> — Discord user id, display name, Discord avatar URL, optional public equipped sim look (<code>equipped_avatar</code>), optional cosmetic grants, public coin balance (<code>coins</code>, for a future site marketplace), optional bound vote key, owner flag (for site admins), and membership fields (<code>plan</code>, founding slot, <code>premium_until</code>, Stripe customer id when applicable)</li>
+        <li><strong>Profiles</strong> — Discord user id, display name, Discord avatar URL, optional public equipped sim look (<code>equipped_avatar</code>), optional cosmetic grants, public coin balance (<code>coins</code>, for a future site marketplace), optional bound vote key, owner flag (for site admins), membership fields (<code>plan</code>, founding slot, <code>premium_until</code>, Stripe customer id when applicable), and a recent Discord-server verification time while Private access is enabled</li>
         <li><strong>Votes</strong> — anonymous <code>voter_key</code> in local storage + server vote rows; bound to your profile after Discord sign-in when possible</li>
         <li><strong>Local drafts</strong> — create-page drafts may stay in your browser (localStorage) until you submit or clear them</li>
         <li><strong>Combat sandbox</strong> — dummy fights on <code>/sim/</code> run in your browser. Fight results stay local unless you send an issue report (see below). The page may keep a mode preference in localStorage (<code>bpb-sim-mode</code>)</li>
@@ -66,7 +66,7 @@
         separate and only changes when you set it. Submitting a build requires a signed-in
         Discord session. You can sign out from the site nav. After sign-in, our Discord bot
         checks whether that account is in the community server. When site owners enable private access, that
-        membership result is used to allow or deny access to the site UI; otherwise, a non-member
+        membership result is used to allow or deny access to the site UI and Supabase-backed app data; otherwise, a non-member
         may be offered an invite. If the account is in the server, your site plan (free, Premium, or founding) is mirrored
         to a Discord role. In that server the bot keeps the nickname you set and adds how
         many builds you have uploaded. When a build is public on the site,
