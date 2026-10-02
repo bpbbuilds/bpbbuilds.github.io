@@ -6,6 +6,8 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+- `js/pages/admin/tab-members.js`, `js/pages/admin/api.js`, `js/pages/admin/admin.css`, `supabase/functions/admin-builds/`, and `docs/pages/admin.md` (owner-only website/Discord member roster)
+
 - `js/pages/admin/admin.css` (Admin Overview site-access KPI-card visual alignment)
 
 - `docs/todo.md` (implementation-status reconciliation)
@@ -460,3 +462,8 @@ None.
 ### 2026-10-02 Admin site-access visual alignment
 
 - Restyled the Admin Overview Live/Private site-access section with the same layered parchment gradient, border/shadow depth, spacing, and active gold emphasis used by KPI tiles. The two mode choices now read as compact KPI-style controls; behavior and owner-only access are unchanged.
+
+### 2026-10-02 Admin member roster
+
+- Added an owner-only Members-tab line-item roster that merges website profiles, Discord guild members, and published-build counts. It shows website, Discord, and Premium/Founding status, Discord and Premium duration, and published builds; Discord-only members remain visible.
+- Added the `members` action to the already owner-gated `admin-builds` Edge Function; no roster data is exposed through public RLS/API access. Deployed the function. Node checks and targeted whitespace validation passed; Docker was unavailable for local Supabase tests.

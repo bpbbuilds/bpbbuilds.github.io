@@ -99,6 +99,9 @@ Deno.serve(async (req) => {
   if (action === 'event_entries') {
     return listEventEntries(supabase, body.eventSlug);
   }
+  if (action === 'members') {
+    return listMembers(supabase);
+  }
 
   const slug = String(body.slug || '').trim();
   if (!slug) return json({ error: 'slug is required' }, 400);
@@ -213,6 +216,93 @@ async function listEventEntries(
     return json({ error: 'List failed', detail: error.message }, 500);
   }
   return json({ builds: data || [] }, 200);
+}
+
+/** Owner-only merge of website profiles and Discord guild members. */
+async function listMembers(supabase: ReturnType<typeof createClient>) {
+  const { data: profiles, error: profileErr } = await supabase
+    .from('profiles')
+    .select('id, discord_id, display_name, avatar_url, plan, premium_until, created_at')
+    .order('created_at', { ascending: false })
+    .limit(2000);
+  if (profileErr) return json({ error: 'Could not load website members' }, 500);
+
+  const { data: builds, error: buildErr } = await supabase
+    .from('builds')
+    .select('author_id')
+    .not('author_id', 'is', null)
+    .limit(10000);
+  if (buildErr) return json({ error: 'Could not count member builds' }, 500);
+  const buildCounts = new Map<string, number>();
+  for (const build of builds || []) {
+    const id = String(build.author_id || '');
+    if (id) buildCounts.set(id, (buildCounts.get(id) || 0) + 1);
+  }
+
+  const token = Deno.env.get('DISCORD_BOT_TOKEN') || '';
+  const guildId = Deno.env.get('DISCORD_GUILD_ID') || '';
+  const discordMembers: Record<string, { name: string; avatar_url: string | null; joined_at: string | null }> = {};
+  if (token && guildId) {
+    let after = '';
+    for (let page = 0; page < 20; page += 1) {
+      const url = new URL(`https://discord.com/api/v10/guilds/${guildId}/members`);
+      url.searchParams.set('limit', '1000');
+      if (after) url.searchParams.set('after', after);
+      const res = await fetch(url, { headers: { Authorization: `Bot ${token}` } });
+      if (!res.ok) return json({ error: 'Could not load Discord members' }, 502);
+      const rows = await res.json();
+      if (!Array.isArray(rows) || !rows.length) break;
+      for (const member of rows) {
+        const id = String(member?.user?.id || '');
+        if (!id) continue;
+        const user = member.user || {};
+        const avatarHash = String(member?.avatar || user?.avatar || '');
+        discordMembers[id] = {
+          name: String(member?.nick || user?.global_name || user?.username || 'Discord member'),
+          avatar_url: avatarHash ? `https://cdn.discordapp.com/avatars/${id}/${avatarHash}.png?size=64` : null,
+          joined_at: member?.joined_at ? String(member.joined_at) : null,
+        };
+        after = id;
+      }
+      if (rows.length < 1000) break;
+    }
+  }
+
+  const rows = new Map<string, Record<string, unknown>>();
+  for (const profile of profiles || []) {
+    const discordId = String(profile.discord_id || '');
+    const discord = discordMembers[discordId];
+    rows.set(discordId || `site:${profile.id}`, {
+      id: profile.id,
+      discord_id: discordId || null,
+      name: String(profile.display_name || discord?.name || 'Website member'),
+      avatar_url: profile.avatar_url || discord?.avatar_url || null,
+      website_joined_at: profile.created_at || null,
+      discord_joined_at: discord?.joined_at || null,
+      website: true,
+      discord: Boolean(discord),
+      premium: profile.plan === 'premium' || profile.plan === 'founding',
+      plan: profile.plan || 'free',
+      premium_since: premiumStartedAt(profile),
+      build_count: buildCounts.get(String(profile.id)) || 0,
+    });
+  }
+  for (const [discordId, discord] of Object.entries(discordMembers)) {
+    if (rows.has(discordId)) continue;
+    rows.set(discordId, {
+      id: null, discord_id: discordId, name: discord.name, avatar_url: discord.avatar_url,
+      website_joined_at: null, discord_joined_at: discord.joined_at,
+      website: false, discord: true, premium: false, plan: 'free', premium_since: null, build_count: 0,
+    });
+  }
+  return json({ members: [...rows.values()].sort((a, b) => String(a.name).localeCompare(String(b.name))) });
+}
+
+function premiumStartedAt(profile: Record<string, unknown>) {
+  if (profile.plan === 'founding') return profile.created_at || null;
+  const until = Date.parse(String(profile.premium_until || ''));
+  if (!Number.isFinite(until)) return null;
+  return new Date(until - 30 * 24 * 60 * 60 * 1000).toISOString();
 }
 
 /** @returns {Record<string, boolean> | null} */

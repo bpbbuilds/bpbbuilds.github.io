@@ -5,6 +5,7 @@
 import { getSupabase } from '../../shared/supabase.js';
 import { skelBar, skelRegion } from '../../shared/skeleton.js';
 import { escapeHtml } from './row.js';
+import { listMembers } from './api.js';
 
 const PRICE_CENTS = 300;
 
@@ -24,9 +25,12 @@ export async function mountMembersPanel(host, opts) {
   }
 
   try {
-    const { data, error } = await getSupabase().rpc('member_stats');
+    const [{ data, error }, roster] = await Promise.all([
+      getSupabase().rpc('member_stats'),
+      listMembers(opts.auth),
+    ]);
     if (error) throw error;
-    host.innerHTML = memberPanelHtml(parseStats(data));
+    host.innerHTML = memberPanelHtml(parseStats(data), roster?.members);
   } catch (err) {
     const message =
       err && typeof err === 'object' && 'message' in err && err.message
@@ -88,7 +92,7 @@ function carryForward(series) {
 /**
  * @param {ReturnType<typeof parseStats>} stats
  */
-export function memberPanelHtml(stats) {
+export function memberPanelHtml(stats, members = []) {
   const series = carryForward(stats.series);
   const tiles = [
     ['Users', String(stats.users)],
@@ -128,8 +132,49 @@ export function memberPanelHtml(stats) {
         <h2 class="admin-members__title">Monthly revenue</h2>
         ${chartSvg(series, [{ key: 'revenueDollars', color: '#9a7b12' }], 'Monthly revenue over 30 days')}
       </section>
+      ${memberRosterHtml(members)}
       <p class="admin-members__note">Paid Premium is $3 a month. Founding is free, so it is not in the revenue line. The user line uses each profile’s sign-up day. Premium and revenue are saved once per UTC day, then refreshed when you open this tab.</p>
     </div>`;
+}
+
+function memberRosterHtml(members) {
+  const rows = Array.isArray(members) ? members : [];
+  return `
+    <section class="admin-members__block" aria-labelledby="admin-member-roster-title">
+      <h2 class="admin-members__title" id="admin-member-roster-title">Member line items <span>${rows.length}</span></h2>
+      <div class="admin-members__roster-wrap" tabindex="0">
+        <table class="admin-members__roster">
+          <thead><tr><th scope="col">Member</th><th scope="col">Website</th><th scope="col">Discord</th><th scope="col">Premium</th><th scope="col">Discord time</th><th scope="col">Premium time</th><th scope="col">Builds</th></tr></thead>
+          <tbody>${rows.length ? rows.map(memberRowHtml).join('') : '<tr><td colspan="7">No members found.</td></tr>'}</tbody>
+        </table>
+      </div>
+    </section>`;
+}
+
+function memberRowHtml(member) {
+  const avatar = String(member?.avatar_url || '').trim();
+  const name = escapeHtml(member?.name || 'Member');
+  const site = member?.website ? 'Yes' : '—';
+  const discord = member?.discord ? 'Yes' : '—';
+  const premium = member?.premium ? (member.plan === 'founding' ? 'Founding' : 'Premium') : '—';
+  return `<tr>
+    <td class="admin-members__person">${avatar ? `<img src="${escapeHtml(avatar)}" alt="" width="32" height="32">` : '<span class="admin-members__avatar">?</span>'}<span>${name}</span></td>
+    <td>${badge(site, Boolean(member?.website))}</td><td>${badge(discord, Boolean(member?.discord))}</td><td>${badge(premium, Boolean(member?.premium), 'premium')}</td>
+    <td>${escapeHtml(age(member?.discord_joined_at))}</td><td>${escapeHtml(age(member?.premium_since))}</td><td>${Math.max(0, Number(member?.build_count) || 0)}</td>
+  </tr>`;
+}
+
+function badge(label, active, type = '') {
+  return `<span class="admin-members__badge${active ? ' is-active' : ''}${type ? ` admin-members__badge--${type}` : ''}">${escapeHtml(label)}</span>`;
+}
+
+function age(value) {
+  const when = Date.parse(String(value || ''));
+  if (!Number.isFinite(when)) return '—';
+  const days = Math.max(0, Math.floor((Date.now() - when) / 86400000));
+  if (days < 30) return `${days}d`;
+  if (days < 365) return `${Math.floor(days / 30)}mo`;
+  return `${Math.floor(days / 365)}y`;
 }
 
 /**

@@ -270,6 +270,59 @@ body.page-admin #main {
   color: var(--bpb-ink-muted, #5c4636);
 }
 
+.admin-members__title span {
+  margin-left: 0.35rem;
+  color: var(--bpb-ink-muted, #5c4636);
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-members__roster-wrap {
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, #3c261d 20%, transparent);
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--bpb-parchment-light, #e2c9a8) 70%, #fff);
+}
+
+.admin-members__roster {
+  width: 100%;
+  min-width: 48rem;
+  border-collapse: collapse;
+  font-family: var(--bpb-font-body);
+  color: var(--bpb-ink, #3c261d);
+}
+
+.admin-members__roster th,
+.admin-members__roster td {
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid color-mix(in srgb, #3c261d 14%, transparent);
+}
+
+.admin-members__roster th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: color-mix(in srgb, #d4b896 80%, #fff);
+  font-size: 0.76rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-members__roster tbody tr:last-child td { border-bottom: 0; }
+.admin-members__roster td:not(:first-child) { font-variant-numeric: tabular-nums; }
+
+.admin-members__person { display: flex; align-items: center; gap: 0.55rem; max-width: 15rem; overflow: hidden; }
+.admin-members__person img,
+.admin-members__avatar { flex: 0 0 auto; width: 2rem; height: 2rem; border-radius: 50%; object-fit: cover; }
+.admin-members__avatar { display: grid; place-items: center; background: #6c4b36; color: #fff8df; font-family: var(--bpb-font-display); }
+.admin-members__person span:last-child { overflow: hidden; text-overflow: ellipsis; }
+
+.admin-members__badge { display: inline-block; min-width: 3.2rem; padding: 0.15rem 0.4rem; border-radius: 999px; background: color-mix(in srgb, #3c261d 9%, transparent); color: var(--bpb-ink-muted, #5c4636); text-align: center; font-size: 0.82rem; }
+.admin-members__badge.is-active { background: color-mix(in srgb, #2f6b45 20%, #fff); color: #1f5135; }
+.admin-members__badge--premium.is-active { background: color-mix(in srgb, var(--il-gold, #eac914) 34%, #fff); color: #6c4a00; }
+
 .admin-kpis,
 .admin-metrics {
   display: grid;

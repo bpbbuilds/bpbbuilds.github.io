@@ -36,6 +36,8 @@ Build writes go through Edge Function `admin-builds`. Report list / stats / stat
 
 Report KPIs: Open, Total, and Resolved tiles also filter the list. Today / Last 30 days / Oldest open are counts only. Won’t-fix stays in the tabs.
 
+The owner-only **Members** tab includes a merged website/Discord roster. It shows website, Discord, and Premium status; Discord/Premium duration; and the number of published builds. Discord-only members are included even when they have not signed into the website.
+
 The queue is a line list under the KPIs, with a **builds-style filter rail** on the right (search, status, date, character, opponent, reporter). Click a row to expand. Resolved rows are muted with a struck snippet. List payloads include `reporter_avatar_url` and `you_hero_class` (from the report session or the linked build).
 
 List responses for builds include placements so admin can preview boards without relying on public RLS (hidden builds included).

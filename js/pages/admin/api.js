@@ -95,6 +95,11 @@ export function listBuilds(auth, filter = 'all') {
   return adminRequest(auth, { action: 'list', filter });
 }
 
+/** Owner-only merged website and Discord member roster. */
+export function listMembers(auth) {
+  return adminRequest(auth, { action: 'members' });
+}
+
 /**
  * @param {{ mode: 'jwt' | 'secret', token: string }} auth
  * @param {string} eventSlug
