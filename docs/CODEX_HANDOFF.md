@@ -541,4 +541,4 @@ None.
 
 ### 2026-10-02 Create toolbar layout stability
 
-- Moved the Create board toolbar out of normal layout flow and layered it over the top of the board. Its appearance after the first bag/item no longer pushes the board stage or Parked strip downward.
+- Reserved a normal toolbar row above the Create board from the initial empty state. The row is invisible until the first bag/item is placed, including reserved Play/Export control space, so revealing controls no longer pushes the board stage or Parked strip downward.
