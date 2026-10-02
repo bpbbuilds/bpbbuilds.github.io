@@ -33,6 +33,8 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 - `index.html`, `js/shared/config.js`, and `js/pages/home/` (public Pages bootstrap and homepage first-load diagnostics)
 - `.gitignore` and `assets/item-sprites/` (static item-sprite Pages deployment)
 - `docs/pages/auth.md` (Discord OAuth production redirect configuration)
+- `js/shared/auth.js` (Discord OAuth callback handling)
+- `js/shared/supabase.js` (OAuth client configuration)
 
 Before editing product code, list the folders you are taking in this section. Do not take paths already listed under **Owned paths** in [`CURSOR_HANDOFF.md`](CURSOR_HANDOFF.md). Screenshot import is Codex-owned while listed above.
 
@@ -319,6 +321,13 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 - Updated the hosted Supabase Auth URL configuration for project `xklkysmakrmgtiztsqug`: Site URL is now `https://bpbbuilds.github.io/`, with redirects allowed for the GitHub Pages site and the two Live Server development origins (`127.0.0.1:5500` and `localhost:5500`). The client already supplies its current page as `redirectTo`, so a sign-in initiated on Pages returns to Pages instead of the former local-IP Site URL.
 - Documented the exact URL configuration in `docs/pages/auth.md`. Updated About, Terms, and Privacy to describe the approved BPB Builds return URL; their existing October 1, 2026 revision date remains current.
 - Validation: re-read the hosted Auth configuration after the update and confirmed the Site URL and allow list. `git diff --check` passed for the documentation and legal changes.
+
+### 2026-10-01 Discord callback completion and sprite URL repair
+
+- Claimed `js/shared/auth.js` and `js/shared/supabase.js` for the OAuth callback repair. Supabase now uses an explicit PKCE completion in the shared auth helper, so the Discord `code` is exchanged before any page asks for the session. Consumed callback parameters and stale OAuth errors are removed from browser history, preventing Back from replaying an expired state.
+- Investigated the reported `bad_oauth_state` with hosted Auth logs: one stale callback failed, but the immediately following fresh attempt completed a Discord login successfully. The live Auth endpoint was verified to create a fresh provider state and use the required Supabase callback URL.
+- Renamed the 12 case-mismatched static item sprites to their catalog names (including Blueberries, Bow and Arrow, Thornburst, and Con-Trap-Tron), fixing the Pages 404s on case-sensitive hosting.
+- Validation: `node --check` passed for both changed shared modules; all 521 canonical sprite names from `sprite-thumbs.json` exist after the rename; targeted `git diff --check` passed.
 
 ## Proposal
 

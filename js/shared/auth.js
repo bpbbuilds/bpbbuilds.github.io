@@ -16,6 +16,8 @@ let profileCache;
 let profileInflight = null;
 /** @type {boolean} */
 let authWired = false;
+/** @type {Promise<void> | null} */
+let oauthCallbackInflight = null;
 
 /**
  * @param {string} s
@@ -43,10 +45,52 @@ export function authRedirectTo(pathOrUrl) {
 }
 
 /**
+ * Exchange a Discord OAuth code exactly once after the browser returns to the
+ * static site. Supabase's automatic URL detection can race page boot on a
+ * GitHub Pages reload, so callback ownership stays here instead.
+ * @returns {Promise<void>}
+ */
+function finishOAuthCallback() {
+  if (oauthCallbackInflight) return oauthCallbackInflight;
+  oauthCallbackInflight = (async () => {
+    if (typeof window === 'undefined') return;
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get('code');
+    const oauthError = url.searchParams.get('error');
+
+    if (!code && !oauthError) return;
+
+    // Do not leave a consumed code or an expired-state error in history; using
+    // Back must not send the visitor through a stale OAuth callback again.
+    for (const key of ['code', 'error', 'error_code', 'error_description']) {
+      url.searchParams.delete(key);
+    }
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+
+    if (!code) {
+      console.warn('[auth] Discord sign-in did not complete. Start a fresh sign-in attempt.');
+      return;
+    }
+
+    const { error } = await getSupabase().auth.exchangeCodeForSession(code);
+    if (error) {
+      console.error('[auth] Discord session exchange failed', error);
+      throw error;
+    }
+  })();
+  return oauthCallbackInflight;
+}
+
+/**
  * @returns {Promise<import('https://esm.sh/@supabase/supabase-js@2').Session | null>}
  */
 export async function getSession() {
   ensureAuthWiring();
+  try {
+    await finishOAuthCallback();
+  } catch {
+    return null;
+  }
   const supabase = getSupabase();
   const { data, error } = await supabase.auth.getSession();
   if (error) {
