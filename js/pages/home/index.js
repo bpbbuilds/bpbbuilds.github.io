@@ -11,9 +11,9 @@ initCombatSky();
 initNav();
 initFooter();
 initFeaturedStage();
-initHomePromoBand('#home-promo-band', { variant: 'create' });
 
 const initBelowFold = () => {
+  initHomePromoBand('#home-promo-band', { variant: 'create' });
   initHomeClassShowcase();
   initHomeItemsExplore();
   initHomeBuildsVault();

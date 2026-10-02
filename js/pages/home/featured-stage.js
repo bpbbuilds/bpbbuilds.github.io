@@ -281,6 +281,7 @@ export async function initFeaturedStage(selector = '#featured-stage') {
   let scrollDebounce = null;
   let autoTimer = null;
   let playDelay = null;
+  let previewEnabled = false;
 
   function centerOffset(el) {
     return el.offsetLeft - track.offsetWidth / 2 + el.offsetWidth / 2;
@@ -372,6 +373,7 @@ export async function initFeaturedStage(selector = '#featured-stage') {
   }
 
   function schedulePreview(domIdx, immediate = false) {
+    if (!previewEnabled) return;
     if (playDelay) {
       clearTimeout(playDelay);
       playDelay = null;
@@ -379,7 +381,8 @@ export async function initFeaturedStage(selector = '#featured-stage') {
     Array.from(track.children).forEach((child, idx) => {
       if (idx !== domIdx) clearPreview(child);
     });
-    // Phone cards stay on the poster until a tap. The embed chrome is too loud in the peek row.
+    // Keep the poster on initial load. Loading a YouTube iframe is expensive,
+    // so video playback begins only after the visitor selects a slide.
     if (phoneCarousel()) return;
     const mount = () => {
       mountPreview(track.children[domIdx]);
@@ -497,11 +500,11 @@ export async function initFeaturedStage(selector = '#featured-stage') {
   track.addEventListener('click', (e) => {
     const slide = e.target.closest('.fs-slide');
     if (!slide || !track.contains(slide)) return;
+    previewEnabled = true;
     const media = e.target.closest('.fs-focus__media');
     if (
       media &&
       slide.classList.contains('is-active') &&
-      phoneCarousel() &&
       !media.querySelector('iframe')
     ) {
       mountPreview(slide);
@@ -516,6 +519,9 @@ export async function initFeaturedStage(selector = '#featured-stage') {
 
   track.addEventListener('mouseenter', stopTimer);
   track.addEventListener('mouseleave', startTimer);
+  track.addEventListener('pointerdown', () => {
+    previewEnabled = true;
+  }, { passive: true });
   track.addEventListener('touchstart', stopTimer, { passive: true });
   track.addEventListener('touchend', startTimer, { passive: true });
 
@@ -524,7 +530,6 @@ export async function initFeaturedStage(selector = '#featured-stage') {
   requestAnimationFrame(() => {
     centerTrackInstant(track, startDom);
     highlight(startDom, true);
-    schedulePreview(startDom, true);
     startTimer();
   });
 }
