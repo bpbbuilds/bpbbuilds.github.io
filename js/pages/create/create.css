@@ -367,30 +367,6 @@
   container-name: create-board;
 }
 
-/* Narrow board column (720p / stacked) — stack the toolbar instead of clipping it. */
-@container create-board (max-width: 36rem) {
-  .create-board__toolbar {
-    grid-template-columns: 1fr;
-    justify-items: center;
-  }
-
-  .create-board__toolbar-spacer {
-    display: none;
-  }
-
-  .create-board.is-history-locked .create-board__toolbar-spacer {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    order: -1;
-  }
-
-  .create-board__economy {
-    justify-self: center;
-    justify-content: center;
-  }
-}
-
 /* Confirm before clearing attached run history — stage (bag) only */
 .create-history-lock {
   position: absolute;
@@ -820,26 +796,191 @@
   color: #ffb4a0;
 }
 
+/* Keep board controls and run economy on one row at narrow widths.  Controls
+ * stop reserving the visual centre and make room for the status readout. */
 @media (max-width: 720px) {
   .create-board__toolbar {
-    grid-template-columns: 1fr;
-    justify-items: center;
+    grid-template-columns: minmax(0, 1fr) auto;
+    justify-items: stretch;
+    column-gap: 0.3rem;
+    row-gap: 0;
   }
 
   .create-board__toolbar-spacer {
     display: none;
   }
 
+  .create-board.is-history-locked .create-board__toolbar {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
   .create-board.is-history-locked .create-board__toolbar-spacer {
     display: flex;
-    justify-content: center;
-    width: 100%;
-    order: -1;
+    width: auto;
+  }
+
+  .create-board__toolbar-center {
+    flex-wrap: nowrap;
+    justify-self: start;
+    gap: 0.22rem;
+  }
+
+  .create-board__toolbar .build-round__toggles,
+  .create-board__modes {
+    flex-wrap: nowrap;
+    gap: 0.18rem;
+    margin-right: 0;
   }
 
   .create-board__economy {
-    justify-self: center;
-    justify-content: center;
+    flex-wrap: nowrap;
+    justify-self: end;
+    justify-content: flex-end;
+    gap: 0.25rem;
+  }
+
+  .create-board__econ {
+    gap: 0.12rem;
+  }
+
+  .create-board__econ-num {
+    font-size: 1.12rem;
+    padding-inline: 0.1em 0.03em;
+  }
+
+  .create-board__econ-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .create-board__econ-icon--usage {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  .create-board__econ-label {
+    font-size: 0.96rem;
+  }
+
+  .create-board__toolbar .build-round__toggle {
+    padding: 0.04rem;
+  }
+
+  .create-board__toolbar .build-round__toggle img {
+    width: 1.75rem;
+  }
+
+  .create-board__toolbar .build-round__toggle--bags img {
+    width: 1.5rem;
+  }
+
+  .create-board__toggle--clear {
+    margin-left: 0.08rem;
+  }
+
+  .create-board__toggle--clear img {
+    width: 1.45rem;
+  }
+
+  .create-board__toolbar .bpb-premium-cta--orb.bpb-premium-cta--toolbar {
+    --bpb-premium-h: 1.8rem;
+    --bpb-premium-w: 1.8rem;
+  }
+}
+
+/* The board can be narrow even on a wide viewport (for example, alongside
+ * the catalog rail), so retain the same compact layout based on its container. */
+@container create-board (max-width: 36rem) {
+  .create-board__toolbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    justify-items: stretch;
+    column-gap: 0.3rem;
+    row-gap: 0;
+  }
+
+  .create-board__toolbar-spacer {
+    display: none;
+  }
+
+  .create-board.is-history-locked .create-board__toolbar {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .create-board.is-history-locked .create-board__toolbar-spacer {
+    display: flex;
+    width: auto;
+  }
+
+  .create-board__toolbar-center,
+  .create-board__toolbar .build-round__toggles,
+  .create-board__modes,
+  .create-board__economy {
+    flex-wrap: nowrap;
+  }
+
+  .create-board__toolbar-center {
+    justify-self: start;
+    gap: 0.22rem;
+  }
+
+  .create-board__toolbar .build-round__toggles,
+  .create-board__modes {
+    gap: 0.18rem;
+    margin-right: 0;
+  }
+
+  .create-board__economy {
+    justify-self: end;
+    justify-content: flex-end;
+    gap: 0.25rem;
+  }
+
+  .create-board__econ {
+    gap: 0.12rem;
+  }
+
+  .create-board__econ-num {
+    font-size: 1.12rem;
+    padding-inline: 0.1em 0.03em;
+  }
+
+  .create-board__econ-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .create-board__econ-icon--usage {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  .create-board__econ-label {
+    font-size: 0.96rem;
+  }
+
+  .create-board__toolbar .build-round__toggle {
+    padding: 0.04rem;
+  }
+
+  .create-board__toolbar .build-round__toggle img {
+    width: 1.75rem;
+  }
+
+  .create-board__toolbar .build-round__toggle--bags img {
+    width: 1.5rem;
+  }
+
+  .create-board__toggle--clear {
+    margin-left: 0.08rem;
+  }
+
+  .create-board__toggle--clear img {
+    width: 1.45rem;
+  }
+
+  .create-board__toolbar .bpb-premium-cta--orb.bpb-premium-cta--toolbar {
+    --bpb-premium-h: 1.8rem;
+    --bpb-premium-w: 1.8rem;
   }
 }
 

@@ -547,3 +547,8 @@ None.
 ### 2026-10-02 Temporary Premium testing grant
 
 - Granted the requested verified tester a seven-day Premium entitlement through 2026-10-09 and synchronized the Discord Premium role. The existing entitlement expiry check will return the account to free access afterward unless renewed.
+
+### 2026-10-02 Create compact toolbar row
+
+- Reworked the narrow Create-board toolbar into a compact single row: the edit controls now align from the left instead of reserving the center, while gold, stamina, and the stamina status stay together at the right.
+- Reduced only the narrow-layout icon, label, and gap sizes. The same rules also apply when the board column itself is narrow on an otherwise wide screen. History-locked boards retain their unlock control in the row.
