@@ -968,7 +968,8 @@ button.admin-metric:focus-visible {
   margin: 0.28rem 0 0;
   font-family: var(--bpb-font-body);
   font-size: 0.85rem;
-  color: color-mix(in srgb, #3c261d 62%, transparent);
+  color: var(--bp-ui-cream, #fff8df);
+  text-shadow: var(--bp-ui-ring);
 }
 
 .admin-card__flags {

@@ -501,6 +501,10 @@ None.
 
 - Replaced the Members roster Website, Discord, and Premium text badges with status icons using the BPB logo, Discord icon, and Premium crown. Icons retain accessible labels/tooltips and active/inactive visual states.
 
+### 2026-10-02 Admin Builds metadata text
+
+- Changed Admin Builds line-item metadata (creator, hero class, and created time) to white UI text with the existing outline treatment for readability on the dark shaded cards.
+
 ### 2026-10-02 Cosmetic publish authorization
 
 - Fixed Admin Cosmetics publishing and published-ID loading to use the owner-authenticated `admin-builds` Edge Function instead of direct browser writes/reads against the RLS-protected `cosmetic_drops` table. Added allow-listed `cosmetics` and `publish_cosmetic` actions with server-side field validation and service-role persistence.
