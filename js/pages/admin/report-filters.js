@@ -7,7 +7,7 @@ import { escapeAttr, escapeHtml } from './row.js';
 
 /** @typedef {'all' | 'open' | 'fixed' | 'wontfix'} ReportStatusFilter */
 /** @typedef {'any' | 'today' | '7d' | '30d'} ReportDateFilter */
-/** @typedef {'any' | 'signed' | 'guest'} ReportReporterFilter */
+/** @typedef {'any' | 'signed'} ReportReporterFilter */
 
 /**
  * @typedef {{
@@ -43,7 +43,6 @@ export const REPORT_FOES = /** @type {const} */ ([
 export const REPORT_REPORTERS = /** @type {const} */ ([
   { id: 'any', label: 'Anyone' },
   { id: 'signed', label: 'Signed in' },
-  { id: 'guest', label: 'Guest' },
 ]);
 
 /** @returns {ReportListFilters} */

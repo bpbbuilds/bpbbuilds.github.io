@@ -6,6 +6,8 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+- `js/pages/admin/report-filters.js` (remove obsolete Guest reporter filter)
+
 - `js/pages/admin/tab-members.js`, `js/pages/admin/api.js`, `js/pages/admin/admin.css`, `supabase/functions/admin-builds/`, and `docs/pages/admin.md` (owner-only website/Discord member roster)
 
 - `js/pages/admin/admin.css` (Admin Overview site-access KPI-card visual alignment)
@@ -484,6 +486,10 @@ None.
 ### 2026-10-02 Admin Analytics styling
 
 - Restyled Analytics traffic tables and empty-state text with white UI text, light table separators, and the shared dark Patch3 shaded panel treatment used by KPI content. Analytics data and RPC behavior are unchanged.
+
+### 2026-10-02 Sim Reports reporter filter
+
+- Removed the obsolete Guest option from the Admin Sim Reports reporter filter. Reports are authenticated-only now; legacy Guest rows are not offered as a current filter choice.
 
 ### 2026-10-02 Security contribution rules
 
