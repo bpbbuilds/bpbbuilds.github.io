@@ -46,12 +46,12 @@ create table public.profiles (
 | `equipped_avatar` | Public look (`NULL` / `discord` → `avatar_url`; JSON v1 loadout with `base`: `discord` \| `blob` + cosmetic slots). Not overwritten by Discord sync. |
 | `cosmetic_grants` | JSON array of blob cosmetic ids (e.g. event winners). Public read; not client-writable. |
 | `coins` | Soft currency balance for future cosmetic buy/sell. Public read; not client-writable (`≥ 0`). |
-| `is_owner` | Site admin: `/admin/` + nav checkmark; also client Premium bypass |
-| `voter_key` | Bound anon vote key (merge on first sign-in) |
+| `is_owner` | Site admin: `/admin/` + nav checkmark; also client Premium bypass. Self-only. |
+| `voter_key` | Bound anon vote key (merge on first sign-in). Self-only. |
 | `plan` | `free` \| `founding` \| `premium` |
 | `founding_slot` | 1–10 when `plan = founding` |
-| `premium_until` | Stripe subscription end |
-| `stripe_customer_id` | Stripe Customer id (webhook) |
+| `premium_until` | Stripe subscription end. Self-only. |
+| `stripe_customer_id` | Stripe Customer id (webhook). Server-only. |
 
 ## Triggers / RPC
 

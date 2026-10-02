@@ -126,10 +126,6 @@ export async function signOut() {
   if (error) throw error;
 }
 
-const PROFILE_CORE_COLS =
-  'id, discord_id, display_name, avatar_url, equipped_avatar, is_owner, voter_key, plan, founding_slot, premium_until';
-const PROFILE_FULL_COLS = `${PROFILE_CORE_COLS}, cosmetic_grants, coins`;
-
 /**
  * @param {import('https://esm.sh/@supabase/supabase-js@2').User | null | undefined} user
  */
@@ -171,21 +167,6 @@ export function personaFromUser(user) {
     String(meta.avatar_url || meta.picture || idata.avatar_url || idata.picture || '').trim() ||
     null;
   return { display_name, avatar_url };
-}
-
-/**
- * @param {unknown} err
- */
-function isMissingProfileColumn(err) {
-  const msg = String(
-    /** @type {{ message?: string, details?: string, hint?: string }} */ (err)
-      ?.message ||
-      err ||
-      '',
-  );
-  return (
-    /cosmetic_grants|coins/i.test(msg) || /column .* does not exist/i.test(msg)
-  );
 }
 
 /**
@@ -238,7 +219,8 @@ function mapProfileRow(data, user) {
 
 /**
  * Load profile for the current session (cached).
- * Retries without newer columns if not migrated yet.
+ * Sensitive fields come from an authenticated self-profile RPC rather than a
+ * broadly readable table row.
  * @param {{ force?: boolean }} [opts]
  * @returns {Promise<Profile | null>}
  */
@@ -254,23 +236,7 @@ export async function getProfile(opts = {}) {
       return null;
     }
     const supabase = getSupabase();
-    let { data, error } = await supabase
-      .from('profiles')
-      .select(PROFILE_FULL_COLS)
-      .eq('id', session.user.id)
-      .maybeSingle();
-
-    if (error && isMissingProfileColumn(error)) {
-      console.warn(
-        '[auth] profiles missing cosmetic_grants/coins — apply docs/db/sql/021 + 022',
-        error,
-      );
-      ({ data, error } = await supabase
-        .from('profiles')
-        .select(PROFILE_CORE_COLS)
-        .eq('id', session.user.id)
-        .maybeSingle());
-    }
+    const { data, error } = await supabase.rpc('get_my_profile');
 
     if (error) {
       console.error(error);

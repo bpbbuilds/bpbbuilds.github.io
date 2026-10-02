@@ -59,6 +59,6 @@ export function isEntitledPremium(profile: {
   const until = profile.premium_until
     ? Date.parse(String(profile.premium_until))
     : NaN;
-  if (!Number.isFinite(until)) return true;
-  return until > Date.now();
+  // Paid access must fail closed if Stripe did not provide an end date.
+  return Number.isFinite(until) && until > Date.now();
 }

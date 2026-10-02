@@ -2,7 +2,7 @@
 -- migrations. These are regression checks for the Private-mode trust boundary.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(7);
+select plan(10);
 
 select has_function('private', 'site_access_allowed', 'Private-mode predicate is not exposed through public');
 select isnt(
@@ -35,6 +35,17 @@ select results_eq(
   $$values (true)$$,
   'Page views has RLS enabled'
 );
+select results_eq(
+  $$select has_column_privilege('anon', 'public.profiles', 'stripe_customer_id', 'select')$$,
+  $$values (false)$$,
+  'Stripe customer ids are not publicly selectable'
+);
+select results_eq(
+  $$select has_column_privilege('anon', 'public.profiles', 'voter_key', 'select')$$,
+  $$values (false)$$,
+  'Vote keys are not publicly selectable'
+);
+select has_function('public', 'get_my_profile', 'Self-profile RPC exists');
 
 select * from finish();
 rollback;

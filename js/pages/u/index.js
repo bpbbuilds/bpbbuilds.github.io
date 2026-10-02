@@ -32,9 +32,9 @@ function discordIdFromLocation() {
 async function fetchProfile(discordId) {
   const supabase = getSupabase();
   const full =
-    'id, discord_id, display_name, avatar_url, equipped_avatar, plan, founding_slot, is_owner, cosmetic_grants, coins';
+    'id, discord_id, display_name, avatar_url, equipped_avatar, plan, founding_slot, cosmetic_grants, coins';
   const core =
-    'id, discord_id, display_name, avatar_url, equipped_avatar, plan, founding_slot, is_owner';
+    'id, discord_id, display_name, avatar_url, equipped_avatar, plan, founding_slot';
 
   let { data, error } = await supabase
     .from('profiles')

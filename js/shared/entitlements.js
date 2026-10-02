@@ -58,8 +58,8 @@ export function hasPremiumAccess(profile) {
   if (plan === 'founding') return true;
   if (plan === 'premium') {
     const until = profile.premium_until ? Date.parse(profile.premium_until) : NaN;
-    if (!Number.isFinite(until)) return true;
-    return until > Date.now();
+    // A paid subscription with no Stripe end date is not an entitlement.
+    return Number.isFinite(until) && until > Date.now();
   }
   return false;
 }

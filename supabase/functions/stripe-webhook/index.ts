@@ -99,23 +99,16 @@ async function onCheckoutCompleted(
 
   const customerId = String(session.customer || '').trim();
   const subId = String(session.subscription || '').trim();
-  let premiumUntil: string | null = null;
+  if (!subId || !customerId) return;
 
-  if (subId) {
-    const sub = await stripeGet(stripeKey, `/subscriptions/${subId}`);
-    premiumUntil = periodEndIso(sub);
+  // Checkout completion does not itself prove a successful recurring payment.
+  // Reuse the active/trialing subscription state transition below.
+  const sub = await stripeGet(stripeKey, `/subscriptions/${subId}`);
+  if (!isActiveSubscriptionStatus(String(sub.status || '')) || !periodEndIso(sub)) {
+    await onSubscriptionChange(supabase, sub, sub.status === 'canceled');
+    return;
   }
-
-  await supabase
-    .from('profiles')
-    .update({
-      plan: 'premium',
-      premium_until: premiumUntil,
-      ...(customerId ? { stripe_customer_id: customerId } : {}),
-      updated_at: new Date().toISOString(),
-    })
-    .eq('id', userId);
-  await mirrorDiscordPlan(supabase, userId);
+  await onSubscriptionChange(supabase, sub, false);
 }
 
 async function onSubscriptionChange(
@@ -136,7 +129,7 @@ async function onSubscriptionChange(
   const active = !deleted && isActiveSubscriptionStatus(String(sub.status || ''));
   const premiumUntil = periodEndIso(sub);
 
-  if (active) {
+  if (active && premiumUntil) {
     await supabase
       .from('profiles')
       .update({

@@ -1,0 +1,3 @@
+-- Canonical migration: supabase/migrations/20261002024000_require_self_profile_auth.sql
+-- `get_my_profile()` explicitly rejects anonymous calls and returns only the
+-- signed-in caller's sensitive account fields.

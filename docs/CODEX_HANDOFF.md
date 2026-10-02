@@ -401,3 +401,16 @@ None.
 - Claimed the 031 RLS migration/documentation, access tests, and this handoff to resolve the Advisor findings for `founding_promo`, `member_daily`, and `page_views`.
 - Applied `20261002022000_enable_advisor_rls.sql` to project `xklkysmakrmgtiztsqug`. The tables keep no direct client policies; their existing SECURITY DEFINER RPCs retain the necessary server-side behavior.
 - Verified anonymous REST reads for all three return `[]`. Added local pgTAP checks that each table has RLS enabled; `git diff --check` passed.
+
+### 2026-10-01 Premium pipeline security audit (no changes)
+
+- Checkout and Portal correctly require a verified Supabase JWT; Stripe Price and return URLs are server-owned; the Stripe webhook verifies `stripe-signature`; plan fields are server-managed; Discord role syncing mirrors rather than grants entitlement.
+- Found two material follow-ups: `checkout.session.completed` grants `plan = premium` without requiring the fetched subscription to be `active`/`trialing` (or checking Checkout payment state), and a `premium_until` of null is treated as entitled indefinitely by both Edge and browser helpers. A delayed/failed payment plus incomplete Stripe data could therefore create a temporary or indefinite entitlement.
+- `profiles_select_all` also exposes `stripe_customer_id`, `voter_key`, owner state, and verification timestamps through the Data API in Live mode. Stripe customer ids should not be public, and exposed voter keys can undermine the vote identity model. Replace broad profile table reads with a safe public projection and a private self-profile RPC/view before launch.
+
+### 2026-10-01 Premium pipeline remediation
+
+- Claimed Stripe webhook/entitlement helpers, the sensitive-profile migrations/docs, profile client paths, access tests, and this handoff for Premium-pipeline security remediation.
+- Applied `20261002023000_profile_sensitive_columns.sql` and `20261002024000_require_self_profile_auth.sql` to project `xklkysmakrmgtiztsqug`. Public profiles now expose display/cosmetic/plan fields only; Stripe customer ids, vote keys, ownership, and access verification cannot be selected through the Data API. `get_my_profile()` is authenticated and self-only.
+- Deployed `stripe-webhook`. Checkout completion now fetches and verifies an `active`/`trialing` subscription with a valid period end before granting Premium. Paid entitlement now fails closed when the Stripe period end is missing or invalid. Founding remains lifetime access.
+- Verified anonymous profile reads can select safe fields but receive 401 for `stripe_customer_id`, `voter_key`, and `is_owner`; anonymous self-profile RPC calls receive 400. Node syntax checks and `git diff --check` passed. Legal pages were reviewed; this tightening does not change what data is collected or the membership terms.
