@@ -489,6 +489,10 @@ None.
 
 - Restyled Analytics traffic tables and empty-state text with white UI text, light table separators, and the shared dark Patch3 shaded panel treatment used by KPI content. Analytics data and RPC behavior are unchanged.
 
+### 2026-10-02 History class picker layout
+
+- Changed the Create History upload picker from a three-column wrapping grid to seven equal columns in one row, one per hero-class icon. Selection behavior and the rest of the History overlay are unchanged.
+
 ### 2026-10-02 Cosmetic publish authorization
 
 - Fixed Admin Cosmetics publishing and published-ID loading to use the owner-authenticated `admin-builds` Edge Function instead of direct browser writes/reads against the RLS-protected `cosmetic_drops` table. Added allow-listed `cosmetics` and `publish_cosmetic` actions with server-side field validation and service-role persistence.
