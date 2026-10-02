@@ -395,3 +395,9 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 ## Proposal
 
 None.
+
+### 2026-10-01 Supabase Advisor RLS remediation
+
+- Claimed the 031 RLS migration/documentation, access tests, and this handoff to resolve the Advisor findings for `founding_promo`, `member_daily`, and `page_views`.
+- Applied `20261002022000_enable_advisor_rls.sql` to project `xklkysmakrmgtiztsqug`. The tables keep no direct client policies; their existing SECURITY DEFINER RPCs retain the necessary server-side behavior.
+- Verified anonymous REST reads for all three return `[]`. Added local pgTAP checks that each table has RLS enabled; `git diff --check` passed.
