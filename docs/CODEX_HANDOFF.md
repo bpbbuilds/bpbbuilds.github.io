@@ -552,3 +552,4 @@ None.
 
 - Reworked the narrow Create-board toolbar into a compact single row: the edit controls now align from the left instead of reserving the center, while gold, stamina, and the stamina status stay together at the right.
 - Reduced only the narrow-layout icon, label, and gap sizes. The same rules also apply when the board column itself is narrow on an otherwise wide screen. History-locked boards retain their unlock control in the row.
+- The economy readout itself is now non-wrapping at every board width, which prevents the stamina status from becoming a second toolbar line when a desktop board column is constrained.

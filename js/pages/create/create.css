@@ -739,7 +739,9 @@
 
 .create-board__economy {
   display: inline-flex;
-  flex-wrap: wrap;
+  /* Gold, stamina, and its status are one readout. Keep it intact rather
+     than letting the status fall below the first two values. */
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-end;
   gap: 0.75rem;
