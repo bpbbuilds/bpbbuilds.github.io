@@ -294,7 +294,7 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 
 - Repointed this workspace's `origin` to the public `bpbbuilds/bpbbuilds.github.io` repository, retaining its special name so the site remains at `https://bpbbuilds.github.io/`.
 - Committed the current website as `3f2e6c0`, merged the prior public landing-page history with the `ours` strategy as `3940a4f`, and pushed `main` using the `bpbbuilds` GitHub account. `.env` remained ignored and the staged-content scan found no credential-pattern matches.
-- GitHub Pages is configured for `main` at `/`, HTTPS is enabled, and the Pages API reported a build in progress after the push; the root URL returned HTTP 200.
+- GitHub Pages is configured for `main` at `/` with HTTPS enabled. Added `.nojekyll` to publish this static site without Jekyll processing; the resulting Pages build for `a2084db` completed successfully.
 
 ## Proposal
 
