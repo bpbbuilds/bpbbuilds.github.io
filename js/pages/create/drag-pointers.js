@@ -341,6 +341,9 @@ export function bindDragPointers(ctx) {
   function beginCatalogDrag(itemId, e) {
     // Game InputBlocker while draggedItem — shop/catalog cannot start a pick
     if (dropUnlockPending || getDrag() || getFlyingBack() || !itemsById.has(itemId)) return;
+    // A History picker is a read-only preview. Do not let catalog items alter
+    // the board until the user selects a saved run or closes the picker.
+    if (host.querySelector('.create-board.is-history-open')) return;
     if (document.body.classList.contains('is-bpb-dragging')) return;
     // History lock: allow drag start; unlock only if drop changes board geometry.
     selectionBox?.cancel();

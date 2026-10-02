@@ -534,3 +534,7 @@ None.
 - Replaced the fixed desktop Create board/rail dimensions with bounded fluid sizes: the board scales between 30rem and 56rem, while the Filter/Build rail scales between 21rem and 32rem. The 2560px composition remains unchanged at its maximum size.
 - Added matching desktop clamps for Filter/Build tabs, labels, submit control, and Build-tab item icons so those sections stay visible and proportional at 1080p/1440p widths. The existing mobile layout breakpoint remains unchanged.
 - `git diff --check` passed. The existing browser onboarding layout script could not reach its expected onboarding state in the local static run, so no browser visual assertion was produced.
+
+### 2026-10-02 History picker catalog guard
+
+- Made the Create History picker read-only with respect to catalog drags. Catalog drag starts are ignored while a history database run is being previewed, preventing items from being placed on the board before a run is selected or the picker is closed.
