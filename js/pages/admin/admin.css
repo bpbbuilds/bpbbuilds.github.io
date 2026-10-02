@@ -361,12 +361,18 @@ button.admin-metric:focus-visible {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.75rem 1rem;
   align-items: center;
-  max-width: 46rem;
   margin-top: 1.1rem;
-  padding: 1rem;
+  padding: 0.8rem 0.85rem 0.85rem;
   border-radius: 0.45rem;
-  background: color-mix(in srgb, var(--bpb-parchment-light, #e2c9a8) 78%, #fff);
-  box-shadow: 0 0 0 1px color-mix(in srgb, #3c261d 16%, transparent);
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--bpb-parchment-light, #e2c9a8) 82%, #fff) 0%,
+      color-mix(in srgb, #d4b896 55%, transparent) 100%
+    );
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, #3c261d 16%, transparent),
+    0 6px 14px color-mix(in srgb, #3c261d 8%, transparent);
 }
 
 .admin-site-access__eyebrow,
@@ -400,24 +406,42 @@ button.admin-metric:focus-visible {
 }
 
 .admin-site-access__controls {
-  display: flex;
-  gap: 0.4rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(5.7rem, 1fr));
+  gap: 0.5rem;
 }
 
 .admin-site-access__choice {
-  min-width: 5.2rem;
-  padding: 0.45rem 0.65rem;
-  border: 1px solid color-mix(in srgb, var(--il-ink, #3c261d) 45%, transparent);
-  border-radius: 0.28rem;
-  background: color-mix(in srgb, #3c261d 58%, transparent);
+  min-width: 0;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid color-mix(in srgb, #3c261d 18%, transparent);
+  border-radius: 0.4rem;
+  background: color-mix(in srgb, #3c261d 7%, transparent);
   color: var(--bp-ui-cream);
-  font: 700 0.95rem var(--bpb-font-body);
+  font: 700 0.95rem var(--bpb-font-display);
+  letter-spacing: 0.02em;
+  text-shadow: var(--bp-ui-ring);
   cursor: var(--bpb-cursor-pointer);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 24%, transparent);
+  transition: filter 0.12s ease, box-shadow 0.12s ease;
 }
 
 .admin-site-access__choice.is-active {
   border-color: var(--il-gold, #eac914);
-  background: color-mix(in srgb, var(--il-gold, #eac914) 34%, #3c261d);
+  background: linear-gradient(165deg, color-mix(in srgb, var(--il-gold, #eac914) 52%, #fff), color-mix(in srgb, var(--il-gold, #eac914) 76%, #9a6822));
+  color: #fff8df;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--il-gold, #eac914) 46%, transparent),
+    0 4px 9px color-mix(in srgb, #3c261d 16%, transparent);
+}
+
+.admin-site-access__choice:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.admin-site-access__choice:focus-visible {
+  outline: 2px solid color-mix(in srgb, #3c261d 55%, transparent);
+  outline-offset: 2px;
 }
 
 .admin-site-access__choice:disabled {

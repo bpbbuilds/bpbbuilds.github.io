@@ -6,6 +6,8 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+- `js/pages/admin/admin.css` (Admin Overview site-access KPI-card visual alignment)
+
 - `docs/todo.md` (implementation-status reconciliation)
 
 - `supabase/functions/vote-build/`, `supabase/functions/report-sim/`, `supabase/functions/submit-build/`, `supabase/functions/screenshot-to-build/`, and their deployment configuration (whole-site audit remediation)
@@ -454,3 +456,7 @@ None.
 
 - Reconciled `docs/todo.md` with shipped work recorded by both assistants. Marked the completed mobile navigation/home responsive pass, broader mobile-view pass, subscription/Stripe/Discord-role and Premium-CTA work, Phase 1 launch work (with the current founding cap of 10), and updated the admin/vote descriptions to match the hardened implementation.
 - Kept paused screenshot import, CSS bundling, Cloudflare-dependent dynamic build sharing, simulator parity, Phase 2, and research items open.
+
+### 2026-10-02 Admin site-access visual alignment
+
+- Restyled the Admin Overview Live/Private site-access section with the same layered parchment gradient, border/shadow depth, spacing, and active gold emphasis used by KPI tiles. The two mode choices now read as compact KPI-style controls; behavior and owner-only access are unchanged.
