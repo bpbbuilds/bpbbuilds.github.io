@@ -191,14 +191,14 @@ body.page-admin #main {
   width: 100%;
   border-collapse: collapse;
   font-family: var(--bpb-font-body);
-  color: var(--bpb-ink, #3c261d);
+  color: var(--bp-ui-cream, #fff8df);
 }
 
 .admin-traffic__table th,
 .admin-traffic__table td {
   padding: 0.55rem 0.7rem;
   text-align: left;
-  border-bottom: 1px solid color-mix(in srgb, #3c261d 18%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--bp-ui-cream, #fff8df) 22%, transparent);
 }
 
 .admin-traffic__table thead th {
@@ -217,7 +217,11 @@ body.page-admin #main {
   font-family: var(--bpb-font-body);
   font-size: 0.9rem;
   font-style: italic;
-  color: var(--bpb-ink-muted, #5c4636);
+  color: color-mix(in srgb, var(--bp-ui-cream, #fff8df) 74%, transparent);
+}
+
+.admin-traffic .admin-status {
+  color: var(--bp-ui-cream, #fff8df);
 }
 
 .admin-members__block {
@@ -234,11 +238,36 @@ body.page-admin #main {
   color: var(--bpb-ink, #3c261d);
 }
 
+.admin-members__chart-panel {
+  position: relative;
+  padding: 0.75rem 0.8rem 0.85rem;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.admin-members__chart-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.admin-members__chart-panel .admin-members__title,
+.admin-members__chart-panel .admin-members__legend {
+  color: var(--bp-ui-cream, #ffecdc);
+}
+
 .admin-members__chart {
   display: block;
   width: 100%;
   height: auto;
   font-family: var(--bpb-font-body);
+}
+
+.admin-members__chart text {
+  stroke: #3c261d;
+  stroke-width: 3px;
+  paint-order: stroke fill;
+  stroke-linejoin: round;
 }
 
 .admin-members__legend {
@@ -1189,6 +1218,7 @@ button.admin-metric:focus-visible {
 
 .admin-gate,
 .admin-metric,
+.admin-traffic,
 .admin-site-access,
 .admin-panel,
 .admin-reports-panel,
@@ -1201,6 +1231,7 @@ button.admin-metric:focus-visible {
 
 .admin-gate::before,
 .admin-metric::before,
+.admin-traffic::before,
 .admin-site-access::before,
 .admin-panel::before,
 .admin-reports-panel::before,
@@ -1220,6 +1251,7 @@ button.admin-metric:focus-visible {
 
 .admin-gate > *,
 .admin-metric > *,
+.admin-traffic > *,
 .admin-site-access > *,
 .admin-panel > *,
 .admin-reports-panel > *,

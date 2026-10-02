@@ -481,6 +481,10 @@ None.
 
 - Constrained the Live/Private access panel to `width: 100%` with `box-sizing: border-box` and a matching `max-width`, preventing its padded shadow panel from extending beyond the KPI section.
 
+### 2026-10-02 Admin Analytics styling
+
+- Restyled Analytics traffic tables and empty-state text with white UI text, light table separators, and the shared dark Patch3 shaded panel treatment used by KPI content. Analytics data and RPC behavior are unchanged.
+
 ### 2026-10-02 Security contribution rules
 
 - Added a shared `AGENTS.md` security checklist covering server authorization, secrets, RLS/Storage, input limits, escaping/CSP, payment entitlements, regression coverage, deployment validation, and legal-page review requirements for future changes.
