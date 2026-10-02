@@ -11,6 +11,7 @@ import { DISCORD_INVITE_URL } from './social-links.js';
 let gate = null;
 let gatePromise = null;
 let checking = false;
+let privateModeActive = false;
 
 function configuredMode() {
   return String(config.siteAccessMode || 'live').toLowerCase() === 'private';
@@ -102,7 +103,6 @@ function allowAccess() {
 async function checkAccess() {
   if (checking) return false;
   checking = true;
-  showGate('checking');
   try {
     const mode = await currentMode();
     if (!mode) {
@@ -110,9 +110,12 @@ async function checkAccess() {
       return false;
     }
     if (mode === 'live') {
+      privateModeActive = false;
       allowAccess();
       return true;
     }
+    privateModeActive = true;
+    showGate('checking');
     const session = await getSession();
     if (!session?.access_token) {
       showGate('signin');
@@ -156,7 +159,7 @@ export function initSiteAccess() {
   if (!gatePromise) {
     gatePromise = checkAccess();
     onAuthChange(() => {
-      void checkAccess();
+      if (privateModeActive) void checkAccess();
     });
   }
   return gatePromise;

@@ -347,6 +347,7 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 - Added the owner-only Live / Private control to the Admin Overview. It uses the new `site-access` Edge Function and `site_settings` table instead of requiring a config edit and GitHub Pages redeploy; Live remains the initial database value.
 - Applied `20261002000000_site_access.sql` to project `xklkysmakrmgtiztsqug` and deployed `site-access`. Public GET returned `live`; an unauthenticated mode-change POST returned 401.
 - Updated the shared access gate to read the runtime mode on page load, while preserving the generated config as a local fallback. Private continues to require signed-in Discord server membership.
+- Live mode now resolves without showing a checking screen or registering an auth-change membership recheck; the Discord membership request begins only after the runtime mode resolves to Private.
 - Updated admin/auth/schema documentation and the access wording in About, Terms, and Privacy. Validation: `node --check` passed for changed browser/config scripts and `git diff --check` passed.
 
 ## Proposal
