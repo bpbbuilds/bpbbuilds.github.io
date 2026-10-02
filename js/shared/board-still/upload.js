@@ -21,15 +21,19 @@ export const BOARD_STILLS_BUCKET = 'board-stills';
  * @param {{ projectUrl?: string }} [opts]
  * @returns {string | null}
  */
-export function boardStillPublicUrl(path, opts = {}) {
+export async function boardStillPublicUrl(path, opts = {}) {
   const rel = String(path || '').replace(/^\/+/, '').trim();
   if (!rel) return null;
   if (/^https?:\/\//i.test(rel)) return rel;
-  const base = String(opts.projectUrl || config.supabaseUrl || '')
-    .trim()
-    .replace(/\/+$/, '');
-  if (!base || base.includes('YOUR_')) return null;
-  return `${base}/storage/v1/object/public/${BOARD_STILLS_BUCKET}/${rel}`;
+  const supabase = getSupabase();
+  const { data, error } = await supabase.storage
+    .from(BOARD_STILLS_BUCKET)
+    .createSignedUrl(rel, 60 * 10);
+  if (error) {
+    console.warn('[board-still] signed URL unavailable', error);
+    return null;
+  }
+  return data?.signedUrl || null;
 }
 
 /**

@@ -25,7 +25,7 @@ export {
  *   root?: string,
  *   cellPx: number,
  *   appear?: boolean,
- *   bakedUrl?: string | null,
+ *   bakedUrl?: string | null | Promise<string | null>,
  * }} opts
  * @returns {{ destroy: () => void, stillUrl: Promise<string | null> }}
  */
@@ -43,16 +43,18 @@ export function mountBoardStill(host, opts) {
   still.appendChild(img);
   host.replaceChildren(still);
 
-  const baked = String(opts.bakedUrl || '').trim();
+  const baked = opts.bakedUrl;
   /** @type {Promise<string | null>} */
   const stillUrl = baked
-    ? Promise.resolve().then(() => {
-        if (!img.isConnected) return baked;
-        img.src = baked;
+    ? Promise.resolve(baked).then((url) => {
+        const resolved = String(url || '').trim();
+        if (!resolved) throw new Error('No signed board still URL');
+        if (!img.isConnected) return resolved;
+        img.src = resolved;
         img.decode?.().catch(() => {});
         img.classList.add('is-ready');
         still.classList.add('is-ready');
-        return baked;
+        return resolved;
       })
     : boardStillUrl({
         placements: opts.placements,

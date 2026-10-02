@@ -190,6 +190,21 @@ Deno.serve(async (req) => {
     return json({ error: 'Premium required', code: 'premium_required' }, 403);
   }
 
+  // Cost control for the external vision request. Owners are included so a
+  // compromised owner session cannot create an unbounded bill.
+  const { data: allowed, error: limitErr } = await supabase.rpc(
+    'consume_security_rate_limit',
+    {
+      p_endpoint: 'screenshot-to-build',
+      p_subject_id: userData.user.id,
+      p_limit: 3,
+      p_window: '1 hour',
+    },
+  );
+  if (limitErr || allowed !== true) {
+    return json({ error: 'Screenshot import limit reached. Try again later.' }, 429);
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await req.json();

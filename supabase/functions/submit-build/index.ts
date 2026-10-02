@@ -10,12 +10,12 @@ import { syncPlanRoles } from '../_shared/discord.ts';
 const cors = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers':
-    'authorization, x-client-info, apikey, content-type, x-bpb-submit-secret',
+    'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 type AuthorCtx = {
-  mode: 'jwt' | 'secret';
+  mode: 'jwt';
   author_id: string | null;
   author_name: string;
   discord_id?: string | null;
@@ -174,15 +174,7 @@ Deno.serve(async (req) => {
     return json({ error: 'Server misconfigured' }, 500);
   }
 
-  const secret = Deno.env.get('BPB_SUBMIT_SECRET') || '';
-  const secretHeader = req.headers.get('x-bpb-submit-secret') || '';
-  const secretOk = Boolean(secret && secretHeader === secret);
-
-  let author: AuthorCtx | null = null;
-
-  if (secretOk) {
-    author = { mode: 'secret', author_id: null, author_name: 'Smojo' };
-  } else {
+  let author: AuthorCtx;
     const authHeader = req.headers.get('Authorization') || '';
     const jwt = authHeader.replace(/^Bearer\s+/i, '').trim();
     if (!jwt || !anonKey) {
@@ -215,7 +207,10 @@ Deno.serve(async (req) => {
       author_name: name,
       discord_id: String(profile.discord_id || '').trim() || null,
     };
-  }
+    const { data: allowed, error: limitErr } = await admin.rpc('consume_security_rate_limit', {
+      p_endpoint: 'submit-build', p_subject_id: userData.user.id, p_limit: 12, p_window: '1 hour',
+    });
+    if (limitErr || allowed !== true) return json({ error: 'Build publish limit reached. Try again later.' }, 429);
 
   let body: DraftBody;
   try {

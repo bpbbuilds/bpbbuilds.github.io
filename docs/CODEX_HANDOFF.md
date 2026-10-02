@@ -6,6 +6,10 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+- `supabase/functions/vote-build/`, `supabase/functions/report-sim/`, `supabase/functions/submit-build/`, `supabase/functions/screenshot-to-build/`, and their deployment configuration (whole-site audit remediation)
+- `supabase/migrations/`, `docs/db/sql/`, and `supabase/tests/` for the audit-remediation migration and regression coverage
+- `docs/pages/auth.md`, `docs/pages/admin.md`, `docs/db/tables.md`, and `legal/about/`, `legal/terms/`, `legal/privacy/` for security-behavior maintenance
+
 - `js/shared/nav/`, `js/shared/nav.css` (mobile nav profile footer layout)
 - `js/pages/builds/builds.css` (Builds mobile grid card spacing and vote-control density)
 - `docs/pages/create/feature/imageUpload/` (canonical paused screenshot-import documentation)
@@ -427,3 +431,19 @@ None.
 - `write-config.mjs` no longer reads or emits `BPB_SUBMIT_SECRET`; regenerated `config.js` contains no submit secret. The web admin is owner-Discord-JWT only and no longer offers, stores, or sends a shared secret.
 - Applied `20261002025000_admin_emergency_audit.sql` and deployed `admin-builds` / `admin-reports`. The server-only emergency header is recorded in an RLS-protected table and limited to five uses per endpoint per ten minutes; audit/rate-limit database failures fail closed.
 - Validation: regenerated config has no `submitSecret`; admin gate has no browser secret/session storage; Node syntax checks and `git diff --check` passed.
+
+### 2026-10-01 Whole-site security audit (no implementation)
+
+- Completed a read-only review of the GitHub Pages client, tracked secret exposure, Supabase RLS/migrations and Storage policies, Discord/OAuth, payment entitlements, admin functions, and every deployed Edge Function source. No tracked `.env` file or historical tracked `.env` path was found.
+- Confirmed high-priority abuse paths: unauthenticated callers can create unlimited UUID identities for `vote-build`, so they can manipulate build vote totals; and `report-sim` accepts anonymous, unbounded report submissions including arbitrary session JSON, allowing report/database cost and moderation-queue flooding.
+- Confirmed the Private-mode limitation also includes the public `board-stills` Storage bucket: protected database reads do not make already-published static files or public Storage objects private. This is material if Private mode is expected to hide user build imagery/content.
+- Additional remediation candidates: add per-account/rate controls to `submit-build`; add rate/budget limits before re-enabling costly screenshot inference; remove or audit/rate-limit the `submit-build` shared emergency secret path; migrate legacy SECURITY DEFINER functions from `search_path = public` to an empty, fully-qualified search path; and use an authenticated proxy/CDN for response security headers and true private hosting.
+- No production, database, deployment, or legal-page files changed in this audit.
+
+### 2026-10-01 Whole-site security remediation
+
+- Applied `20261002030000_abuse_controls.sql` to project `xklkysmakrmgtiztsqug` and deployed `vote-build`, `report-sim`, `submit-build`, and `screenshot-to-build`.
+- Votes now require a valid signed-in account and are capped at 30 changes per minute per account; caller-provided anonymous voter UUIDs are no longer accepted. Simulator reports now require sign-in, cap each account at five per hour, and reject oversized request/session snapshots.
+- Build publishing is account-only and capped at 12 per hour; the unlogged/rate-unlimited `submit-build` shared-secret path was removed. Screenshot import remains paused, but will be capped at three requests per hour per account if re-enabled.
+- `board-stills` is now a private Storage bucket. Browser previews request a short-lived signed URL subject to the existing Live/Private Storage policy, so an object URL by itself no longer exposes a board still.
+- Validation: migration push and all four Edge Function deployments completed successfully; JavaScript syntax and targeted whitespace checks passed. Docker was unavailable, so no local Supabase test container ran.

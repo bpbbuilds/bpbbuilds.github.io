@@ -3,7 +3,7 @@
  * Net score from Supabase (vote-build); my_vote cached in localStorage.
  */
 
-import { getLocalVoterKey, getSession } from '../../shared/auth.js';
+import { getSession } from '../../shared/auth.js';
 import { config } from '../../shared/config.js';
 
 const STORAGE_PREFIX = 'bpb-build-vote:';
@@ -14,7 +14,7 @@ const SYNCED_PREFIX = 'bpb-build-vote-synced:';
  * @returns {string}
  */
 export function getVoterKey() {
-  return getLocalVoterKey();
+  return '';
 }
 
 /**
@@ -125,22 +125,11 @@ export async function submitBuildVote(slug, vote) {
   const res = await fetch(url, {
     method: 'POST',
     headers,
-    body: JSON.stringify({
-      slug,
-      vote,
-      voter_key: getVoterKey(),
-    }),
+    body: JSON.stringify({ slug, vote }),
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     throw new Error(data?.error || `Vote failed (${res.status})`);
-  }
-  if (data?.voter_key && isUuid(data.voter_key)) {
-    try {
-      localStorage.setItem('bpb-voter-id', String(data.voter_key).toLowerCase());
-    } catch {
-      /* ignore */
-    }
   }
   const my =
     data.my_vote === 1 || data.my_vote === -1 || data.my_vote === 0
