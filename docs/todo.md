@@ -209,7 +209,6 @@ First attempt at site-wide `zoom` / `--bpb-ui-scale` was reverted — do this pr
 - [ ] **Layout sandbox / dummy page** — wireframe page of outlined boxes for real site regions (nav, board, item picker, filters, parked, sell bin, build info rail, featured stage) to prototype scale + breakpoints before touching production CSS
   - Route lean: `/dev/layout/` or similar; not linked from public nav
   - Boxes labeled + show current breakpoint / scale readout while testing
-- [x] **Create right-rail tabs sandbox** `/dev/create-rail/` — prototype; **shipped on `/create/`** (Filter | Build + meta). Sandbox kept for chrome tweaks.
   - Not linked from public nav
   - Match Itemiary Filter / Item Info tab chrome
 

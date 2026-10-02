@@ -42,6 +42,7 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 - `docs/pages/admin.md`, `docs/pages/auth.md`, `docs/db/tables.md`, and `legal/about/`, `legal/terms/`, `legal/privacy/` (runtime access-mode documentation and legal maintenance)
 - `js/pages/*/index.js` and `js/pages/admin/shell.js` (Private-mode boot gate)
 - `supabase/functions/discord-guild/`, `supabase/migrations/20261002010000_private_access_data.sql`, and `docs/db/sql/029_private_access_data.sql` (Private-mode database read enforcement)
+- `dev/confirm/`, `dev/create-rail/`, `js/pages/create-rail/`, `js/pages/create/rail-chrome.css`, `builds/berserk-bloodline/`, `builds/poison-garden-ranger/`, `builds/pyro-furnace/`, `builds/reaper-harvest/`, and `docs/todo.md` (removal of obsolete public sandboxes and legacy route shells)
 
 Before editing product code, list the folders you are taking in this section. Do not take paths already listed under **Owned paths** in [`CURSOR_HANDOFF.md`](CURSOR_HANDOFF.md). Screenshot import is Codex-owned while listed above.
 
@@ -362,6 +363,11 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 - Added `029_private_access_data.sql`: when the runtime setting is Private, restrictive RLS policies deny anonymous and unverified reads of items, recipes, builds, placements, and profiles. A verified Discord-server membership is recorded for 15 minutes on the user profile by `discord-guild`.
 - Applied migration `20261002010000_private_access_data.sql` and deployed the updated `discord-guild` Edge Function. The runtime setting was Private during validation; the anonymous `private_site_access_allowed` RPC returned `false`, confirming direct public database reads are denied.
 - Updated Auth/schema docs and Terms/Privacy for the short-lived membership-verification timestamp and database enforcement. `node --check` and `git diff --check` passed.
+
+### 2026-10-01 Obsolete route cleanup
+
+- Removed the standalone confirmation and Create rail sandboxes, plus four legacy static build route shells (`berserk-bloodline`, `poison-garden-ranger`, `pyro-furnace`, `reaper-harvest`). The live Create rail keeps its shared chrome; no source links point to the removed routes.
+- Removed the now-stale Create rail sandbox TODO entry. `dev/export-check/` was not touched because Cursor currently owns it; screenshot label/review/import routes and fixtures remain preserved.
 - Updated admin/auth/schema documentation and the access wording in About, Terms, and Privacy. Validation: `node --check` passed for changed browser/config scripts and `git diff --check` passed.
 
 ## Proposal
