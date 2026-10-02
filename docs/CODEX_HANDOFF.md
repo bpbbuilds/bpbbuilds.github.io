@@ -538,3 +538,7 @@ None.
 ### 2026-10-02 History picker catalog guard
 
 - Made the Create History picker read-only with respect to catalog drags. Catalog drag starts are ignored while a history database run is being previewed, preventing items from being placed on the board before a run is selected or the picker is closed.
+
+### 2026-10-02 Create toolbar layout stability
+
+- Moved the Create board toolbar out of normal layout flow and layered it over the top of the board. Its appearance after the first bag/item no longer pushes the board stage or Parked strip downward.

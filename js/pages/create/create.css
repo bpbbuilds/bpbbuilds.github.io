@@ -581,6 +581,12 @@
 }
 
 .create-board__toolbar {
+  /* Controls appear after the first board item. Keep them layered above the
+     board instead of inserting a new layout row that pushes the stage and
+     Parked strip downward. */
+  position: absolute;
+  inset: 0 auto auto 0;
+  z-index: 30;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
