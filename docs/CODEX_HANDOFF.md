@@ -6,6 +6,8 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+- `docs/todo.md` (implementation-status reconciliation)
+
 - `supabase/functions/vote-build/`, `supabase/functions/report-sim/`, `supabase/functions/submit-build/`, `supabase/functions/screenshot-to-build/`, and their deployment configuration (whole-site audit remediation)
 - `supabase/migrations/`, `docs/db/sql/`, and `supabase/tests/` for the audit-remediation migration and regression coverage
 - `docs/pages/auth.md`, `docs/pages/admin.md`, `docs/db/tables.md`, and `legal/about/`, `legal/terms/`, `legal/privacy/` for security-behavior maintenance
@@ -447,3 +449,8 @@ None.
 - Build publishing is account-only and capped at 12 per hour; the unlogged/rate-unlimited `submit-build` shared-secret path was removed. Screenshot import remains paused, but will be capped at three requests per hour per account if re-enabled.
 - `board-stills` is now a private Storage bucket. Browser previews request a short-lived signed URL subject to the existing Live/Private Storage policy, so an object URL by itself no longer exposes a board still.
 - Validation: migration push and all four Edge Function deployments completed successfully; JavaScript syntax and targeted whitespace checks passed. Docker was unavailable, so no local Supabase test container ran.
+
+### 2026-10-02 TODO reconciliation
+
+- Reconciled `docs/todo.md` with shipped work recorded by both assistants. Marked the completed mobile navigation/home responsive pass, broader mobile-view pass, subscription/Stripe/Discord-role and Premium-CTA work, Phase 1 launch work (with the current founding cap of 10), and updated the admin/vote descriptions to match the hardened implementation.
+- Kept paused screenshot import, CSS bundling, Cloudflare-dependent dynamic build sharing, simulator parity, Phase 2, and research items open.

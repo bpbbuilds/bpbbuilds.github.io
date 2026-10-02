@@ -137,10 +137,10 @@ Priority follows `docs/purpose.md` main jobs.
 - [x] **Discord login** — OAuth; nav Sign in / avatar → `/u/{discord_id}/` + Sign out
 - [ ] **Steam login / link** — OpenID + persona; useful for history.db SteamID (link while signed in, not second signup)
 - [x] Publish at Submit requires Discord; draft/create stays anonymous
-- [x] **Votes ↔ account** — bind anonymous `voter_key` on sign-in
+- [x] **Votes ↔ account** — voting now requires a signed-in account; server-side account limits prevent anonymous voter-key manipulation
 - [x] My builds filter + public profile builds list
 - [x] **Legacy author backfill** — `scripts/_backfill-build-authors.mjs` linked null `author_id` seed/test builds to owner profile (`smojowastaken`) so More by / `/u/` / My builds populate
-- [x] Admin prefers owner Discord JWT; `BPB_SUBMIT_SECRET` break-glass
+- [x] Admin uses owner Discord JWT; browser access never receives a shared secret, and the build-submit shared-secret fallback was removed
 - [x] **Nav Login plaque** — shop Inventory sign (`ui-shop-sign.png`) + “Login” (Milonga); signed-in uses same hanging sign (avatar + name + Sign out)
 - [ ] Comments / richer profile stats; history.db attach prefers SteamID when available
 - [ ] Mobile side-nav auth chrome (with full mobile nav pass)
@@ -161,10 +161,10 @@ Channel growth is the north star. Paid features likely need AI + legal green lig
 
 - [ ] Brainstorm options that don’t fight trust (affiliates / cosmetics / tip jar / membership) vs ads
 - [ ] Decide “maybe never” vs a light experiment after build pages + traffic exist
-- [ ] **Membership (~$2–3/mo)** — unlock “everything” (sim full runs, deeper tools, etc.). **Stripe** = source of truth (Checkout + Customer Portal + webhooks → `profiles.plan`). Supabase Auth user → Stripe Customer.
-- [ ] **Discord billing? (secondary only)** — server subscriptions/roles can grant the same perk via bot sync, but don’t rely on Discord alone (smaller funnel, messier entitlements). Prefer Discord as community + login; paid role as a mirror of Stripe.
-- [ ] **Premium gate UX** — when a non-member hits a premium control (Play / sim / future AI), show an upgrade prompt (dialog or soft overlay) instead of a dead click; keep free teaser path where we decide one exists
-- [ ] **Upgrade CTA on promise surfaces** — clear “Upgrade to Premium” entry near premium CTAs (build Play row, create Play, sim entry) that routes to checkout / settings billing
+- [x] **Membership (~$2–3/mo)** — Stripe Checkout, Customer Portal, verified webhooks, and `profiles.plan` entitlement are shipped; Stripe remains source of truth
+- [x] **Discord billing? (secondary only)** — Discord Premium roles mirror website entitlement; Discord does not grant paid access on its own
+- [x] **Premium gate UX** — premium controls show the shared upgrade prompt rather than a dead click
+- [x] **Upgrade CTA on promise surfaces** — Premium upgrade entries route to checkout from the supported Play/export surfaces
 - [ ] **Settings / billing page** — account settings with Stripe Customer Portal (manage plan, cancel, invoices); link from nav / profile when signed in — **nav + profile links shipped**; full settings page still optional
 - [x] **Premium status on profile** — badge / plan label on `/u/{discord_id}/` (and own profile) from `profiles.plan`
 - [x] **Profile page visual polish** — `/u/` Patch3 hierarchy + sticker plan badges (free + Premium)
@@ -198,8 +198,8 @@ DevTools on `/create/` showed weak Core Web Vitals mostly from full-catalog spri
 
 ## Nav / chrome
 
-- [ ] **Mobile: side nav** — drawer on small screens; keep shelf/banner on desktop
-- [ ] Mobile polish pass for homepage once side nav lands
+- [x] **Mobile: side nav** — drawer on small screens with a dedicated large avatar/blob footer; desktop shelf/banner remains separate
+- [x] Mobile polish pass for homepage once side nav landed
 - [x] Wire `/create/` for real when creator exists (link already reserved)
 
 ## Layout / responsive (deep pass)
@@ -207,7 +207,7 @@ DevTools on `/create/` showed weak Core Web Vitals mostly from full-catalog spri
 First attempt at site-wide `zoom` / `--bpb-ui-scale` was reverted — do this properly later, not as a drive-by.
 
 - [ ] **Deep UI scaling** — desktop sizes (1440p → 1080p / scaled Windows) so board, catalog, filters, parked, build chrome shrink **together** without crushing only the item picker; keep OptionsFont proportions
-- [ ] **Mobile view** — full responsive pass for `/`, `/items/`, `/create/`, `/builds/`, `/builds/{slug}/` (beyond side nav); touch targets, stack order, filter rail, board size
+- [x] **Mobile view** — responsive pass shipped for `/`, `/items/`, `/create/`, `/builds/`, `/builds/{slug}/`, and Events: touch drag, filter drawers, build-card layout, nav, and board/grid sizing
 - [ ] **Layout sandbox / dummy page** — wireframe page of outlined boxes for real site regions (nav, board, item picker, filters, parked, sell bin, build info rail, featured stage) to prototype scale + breakpoints before touching production CSS
   - Route lean: `/dev/layout/` or similar; not linked from public nav
   - Boxes labeled + show current breakpoint / scale readout while testing
@@ -226,30 +226,31 @@ First attempt at site-wide `zoom` / `--bpb-ui-scale` was reverted — do this pr
 
 ## Later / research
 
-- [ ] **Patch notes page + home “Latest update”** (parked — see below)
+- [ ] **Patch notes page** — archive + home “Latest update”; backlog and new-note matching from [BPBのビ](https://www.univ-bpb.tech/) (see below)
 - [ ] **Class icons** — Adventurer / Neutral-style art beyond press-kit set
 - [ ] **AI endgame board drafts** (research only — see below)
 - [ ] **Build quality / power score** (parked — see below)
 
-### Patch notes (parked)
+### Patch notes
 
-Game already ships a Patch Notes popup. Source in extract:
+Game popup only keeps the **current** note, not history. Source in extract:
 
 - UI: `tools/game-extract-full/Interface/PatchNotes.gd` + `PatchNotes.tscn`
 - Version: `Game.VERSION` / `SUBVERSION` in `Core/Game.gd` (extract snapshot e.g. `1.1.7`)
-- Body: **one current** BBCode blob on the RichTextLabel in the `.tscn` (EN + exported CN/JA) — **not** a full historical archive
+- Body: **one current** BBCode blob on the RichTextLabel in the `.tscn` (EN + exported CN/JA)
 - Shows once when local “seen patch” &lt; current version; reopen via version click
 
-**Not auto-synced to the site.** Each game update rewrites that scene text; we only see it after re-extract. No public API.
+Each game update rewrites that scene text. We only see it after re-extract. No public API.
 
-Future modular lean (when we want it):
+Historical backlog: [BPBのビ](https://www.univ-bpb.tech/) (Japanese fan site). Its home page lists patch notes from ver1.1.1 through ver1.1.9, plus a balance-adjustment note. Use those pages to fill our archive. Do not copy the site’s wording wholesale; store version, date, and a short summary, and link the source.
 
-- [ ] Manual/curated entries in repo JSON or Supabase (`version`, `title`, `summary`, `body`, `published_at`)
+- [ ] Curated entries (`version`, `title`, `summary`, `body`, `published_at`, source URL) in repo JSON or Supabase
+- [ ] Backfill from [BPBのビ](https://www.univ-bpb.tech/) patch-note list (ver1.1.1 → current)
 - [ ] `/patch-notes/` archive page (newest first)
 - [ ] Home “Latest update” band reads the newest entry (reuse promo-band chrome)
-- [ ] Optional later: script that pulls BBCode from a fresh extract into a draft entry (still human-reviewed)
+- [ ] **Automatch new notes** — detect a new version on BPBのビ and/or a fresh game extract, match it to a version we do not have yet, and open a draft entry for review (not a silent publish)
 
-**Why later:** purpose is OP builds → guides → catalog; patch notes are nice meta, not a main job. Manual curation is the honest MVP — full auto-from-game is extract-pipeline work.
+**Why later:** purpose is OP builds → guides → catalog; patch notes are meta, not a main job. The fan site is the history the game files do not keep. Auto-match should draft, not publish.
 
 ### Build quality / power score (parked)
 
@@ -407,7 +408,7 @@ Goal: propose **last-round / endgame boards** that synergize — not full shop r
 - [ ] Skip for v1: full combat engine / route AI — see **Solo board combat sandbox** above (community history upload is in-product now)
 
 ### added by me
-- [ ] **Phase 1 public launch** — founding 50 Premium forever, Stripe, Discord roles, light blobs: [`docs/product/launch-phase-1.md`](product/launch-phase-1.md)
+- [x] **Phase 1 public launch** — founding Premium, Stripe, Discord-role mirroring, and light blobs are shipped (founding cap is currently 10; see [`docs/product/launch-phase-1.md`](product/launch-phase-1.md))
 - [ ] some form of a promotion for free premium for first x users (see Phase 1 founding 50)
 - [ ] funded contest for specific build type with prize money. event system arqitecture would have to exsist, voting system ect. discord tags, on website tags, discount off website ect. — Phase 2 Events hub: [`launch-phase-2.md`](product/launch-phase-2.md)
 - [ ] **DPS Stone Phase 2:** auto `history.db` → dummy score → leaderboard; then **top‑3 highlight video** from those boards — [`highestDPS.md`](pages/events/eventIdeas/highestDPS.md) (needs accurate sim)
