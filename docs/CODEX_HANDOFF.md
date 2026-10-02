@@ -477,6 +477,10 @@ None.
 
 - Added the Admin Overview Live/Private access panel to the same Patch3 dark shade treatment used by KPI tiles. Its mode controls and behavior are unchanged.
 
+### 2026-10-02 Admin access panel sizing
+
+- Constrained the Live/Private access panel to `width: 100%` with `box-sizing: border-box` and a matching `max-width`, preventing its padded shadow panel from extending beyond the KPI section.
+
 ### 2026-10-02 Security contribution rules
 
 - Added a shared `AGENTS.md` security checklist covering server authorization, secrets, RLS/Storage, input limits, escaping/CSP, payment entitlements, regression coverage, deployment validation, and legal-page review requirements for future changes.
