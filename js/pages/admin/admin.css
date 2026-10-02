@@ -1186,6 +1186,7 @@ button.admin-metric:focus-visible {
 
 .admin-gate,
 .admin-metric,
+.admin-site-access,
 .admin-panel,
 .admin-reports-panel,
 .admin-card {
@@ -1197,6 +1198,7 @@ button.admin-metric:focus-visible {
 
 .admin-gate::before,
 .admin-metric::before,
+.admin-site-access::before,
 .admin-panel::before,
 .admin-reports-panel::before,
 .admin-card::before {
@@ -1215,6 +1217,7 @@ button.admin-metric:focus-visible {
 
 .admin-gate > *,
 .admin-metric > *,
+.admin-site-access > *,
 .admin-panel > *,
 .admin-reports-panel > *,
 .admin-card > * {
