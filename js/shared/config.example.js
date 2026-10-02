@@ -20,5 +20,4 @@ export const config = {
   reportSimUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/report-sim',
   screenshotToBuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/screenshot-to-build',
   discordGuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/discord-guild',
-  submitSecret: '',
 };

@@ -1,0 +1,2 @@
+-- Canonical migration: supabase/migrations/20261002025000_admin_emergency_audit.sql
+-- Server-only break-glass uses are recorded and rate-limited by admin Edge Functions.

@@ -414,3 +414,16 @@ None.
 - Applied `20261002023000_profile_sensitive_columns.sql` and `20261002024000_require_self_profile_auth.sql` to project `xklkysmakrmgtiztsqug`. Public profiles now expose display/cosmetic/plan fields only; Stripe customer ids, vote keys, ownership, and access verification cannot be selected through the Data API. `get_my_profile()` is authenticated and self-only.
 - Deployed `stripe-webhook`. Checkout completion now fetches and verifies an `active`/`trialing` subscription with a valid period end before granting Premium. Paid entitlement now fails closed when the Stripe period end is missing or invalid. Founding remains lifetime access.
 - Verified anonymous profile reads can select safe fields but receive 401 for `stripe_customer_id`, `voter_key`, and `is_owner`; anonymous self-profile RPC calls receive 400. Node syntax checks and `git diff --check` passed. Legal pages were reviewed; this tightening does not change what data is collected or the membership terms.
+
+### 2026-10-01 Admin security audit (no changes)
+
+- JWT-based admin functions (`admin-builds`, `admin-reports`, `site-access`) validate the session with Auth and re-check `profiles.is_owner` using the service role. Their actions are allow-listed; admin data queries and mutations are not controlled by the client-side page gate. `member_stats` and `page_view_stats` independently perform an owner check in SECURITY DEFINER database functions.
+- Found a critical latent secret-exposure path: `scripts/write-config.mjs` copies `BPB_SUBMIT_SECRET` into the public browser `config.js` whenever that environment variable is present. The current committed config is blank, but the local `.env` has a submit secret, so a future config-generation run could publish the shared break-glass credential and grant curation/report access to anyone.
+- Also flag the architectural risk of one long-lived shared submit secret accepted by both admin edge functions and stored in `sessionStorage` after entry. Owner JWT remains the safer normal path. Recommend removing the secret from generated browser config entirely, making it a server-only emergency credential, and adding rate-limit/audit logging for emergency-secret use.
+
+### 2026-10-01 Admin secret remediation
+
+- Claimed public config generation, admin browser auth/gate paths, admin Edge Functions, the emergency-audit migration/docs, and this handoff to remove browser break-glass access and add server-side emergency-use controls.
+- `write-config.mjs` no longer reads or emits `BPB_SUBMIT_SECRET`; regenerated `config.js` contains no submit secret. The web admin is owner-Discord-JWT only and no longer offers, stores, or sends a shared secret.
+- Applied `20261002025000_admin_emergency_audit.sql` and deployed `admin-builds` / `admin-reports`. The server-only emergency header is recorded in an RLS-protected table and limited to five uses per endpoint per ten minutes; audit/rate-limit database failures fail closed.
+- Validation: regenerated config has no `submitSecret`; admin gate has no browser secret/session storage; Node syntax checks and `git diff --check` passed.

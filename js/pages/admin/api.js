@@ -1,6 +1,6 @@
 /**
  * Owner admin API — Edge Functions admin-builds + admin-reports.
- * Prefers Discord owner JWT; secret header is break-glass.
+ * Discord owner JWT only. The break-glass secret is server-only.
  */
 
 import { getProfile, getSession } from '../../shared/auth.js';
@@ -14,7 +14,7 @@ export class AdminAuthError extends Error {
 }
 
 /**
- * @returns {Promise<{ mode: 'jwt' | 'secret', token: string } | null>}
+ * @returns {Promise<{ mode: 'jwt', token: string } | null>}
  */
 export async function resolveAdminAuth() {
   try {
@@ -33,7 +33,7 @@ export async function resolveAdminAuth() {
 
 /**
  * @param {string} url
- * @param {{ mode: 'jwt' | 'secret', token: string }} auth
+ * @param {{ mode: 'jwt', token: string }} auth
  * @param {Record<string, unknown>} body
  */
 async function adminPost(url, auth, body) {
@@ -50,11 +50,7 @@ async function adminPost(url, auth, body) {
     'Content-Type': 'application/json',
     apikey: String(config.supabasePublishableKey || ''),
   };
-  if (auth.mode === 'jwt') {
-    headers.Authorization = `Bearer ${auth.token}`;
-  } else {
-    headers['x-bpb-submit-secret'] = auth.token;
-  }
+  headers.Authorization = `Bearer ${auth.token}`;
 
   const res = await fetch(endpoint, {
     method: 'POST',

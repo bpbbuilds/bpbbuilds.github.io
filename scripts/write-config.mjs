@@ -16,7 +16,6 @@ if (!url || !key) {
   process.exit(1);
 }
 
-const submitSecret = env.BPB_SUBMIT_SECRET || '';
 const baseFn = `${url.replace(/\/$/, '')}/functions/v1`;
 const submitBuildUrl = `${baseFn}/submit-build`;
 const adminBuildsUrl = `${baseFn}/admin-builds`;
@@ -49,14 +48,8 @@ export const config = {
   reportSimUrl: ${JSON.stringify(reportSimUrl)},
   screenshotToBuildUrl: ${JSON.stringify(screenshotToBuildUrl)},
   discordGuildUrl: ${JSON.stringify(discordGuildUrl)},
-  submitSecret: ${JSON.stringify(submitSecret)},
 };
 `;
 
 fs.writeFileSync('js/shared/config.js', out);
-console.log('wrote js/shared/config.js');
-if (!submitSecret) {
-  console.warn(
-    'Note: BPB_SUBMIT_SECRET missing — create Submit and /admin/ will stay blocked until set.',
-  );
-}
+console.log('wrote js/shared/config.js (server secrets are never published)');

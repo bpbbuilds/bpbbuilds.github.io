@@ -93,6 +93,9 @@ Deno.serve(async (req) => {
 
   const action = String(body.action || '').trim();
   const supabase = createClient(supabaseUrl, serviceKey);
+  if (secretOk && !(await recordEmergencyUse(supabase, 'admin-reports', action))) {
+    return json({ error: 'Emergency access rate limit reached' }, 429);
+  }
 
   if (action === 'list') {
     return listReports(supabase, body);
@@ -296,4 +299,22 @@ async function countRows(
   if (apply) q = apply(q);
   const { count, error } = await q;
   return { count: Number(count) || 0, error };
+}
+
+async function recordEmergencyUse(
+  supabase: ReturnType<typeof createClient>,
+  endpoint: string,
+  action: string,
+) {
+  const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+  const { count, error } = await supabase
+    .from('admin_emergency_access_log')
+    .select('id', { count: 'exact', head: true })
+    .eq('endpoint', endpoint)
+    .gte('used_at', since);
+  if (error || (count || 0) >= 5) return false;
+  const { error: insertError } = await supabase
+    .from('admin_emergency_access_log')
+    .insert({ endpoint, action: action.slice(0, 80) });
+  return !insertError;
 }

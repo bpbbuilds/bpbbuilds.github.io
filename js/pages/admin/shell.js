@@ -4,15 +4,7 @@
 
 import { initAuth } from '../../shared/auth.js';
 import { initNav } from '../../shared/nav.js';
-import {
-  clearAdminLock,
-  clearSessionSecret,
-  getSessionSecret,
-  isAdminLocked,
-  lockAdminSession,
-  mountGate,
-  saveSessionSecret,
-} from './gate.js';
+import { mountGate } from './gate.js';
 import { listBuilds, AdminAuthError, resolveAdminAuth } from './api.js';
 import { adminSideNavHtml } from './side-nav.js';
 import { escapeHtml } from './row.js';
@@ -34,7 +26,7 @@ import {
   urlForTab,
 } from './tabs.js';
 
-/** @typedef {{ mode: 'jwt' | 'secret', token: string }} AdminAuth */
+/** @typedef {{ mode: 'jwt', token: string }} AdminAuth */
 /** @typedef {import('./tabs.js').AdminTabId} AdminTabId */
 
 function rootPrefix() {
@@ -81,13 +73,7 @@ async function loadAssets(root) {
  * @returns {Promise<AdminAuth | null>}
  */
 export async function resolveAuth() {
-  if (!isAdminLocked()) {
-    const jwtAuth = await resolveAdminAuth();
-    if (jwtAuth) return jwtAuth;
-  }
-  const secret = getSessionSecret();
-  if (secret) return { mode: 'secret', token: secret };
-  return null;
+  return resolveAdminAuth();
 }
 
 /**
@@ -122,26 +108,14 @@ export async function bootAdminHub() {
 async function paintHub(main, root, state = {}) {
   let auth = await resolveAuth();
 
-  const retry = () => {
-    clearAdminLock();
-    void paintHub(main, root);
-  };
-
   if (!auth) {
-    const ownerReady = Boolean(await resolveAdminAuth());
-    mountGate(main, {
-      error: state.gateError,
-      ownerReady,
-      onOwnerSession: retry,
-      onUnlock: (s) => void unlockWithSecret(main, root, s),
-    });
+    mountGate(main, { error: state.gateError });
     return;
   }
 
   if (auth.mode === 'jwt') {
     try {
       await listBuilds(auth, 'all');
-      clearAdminLock();
     } catch (err) {
       if (err instanceof AdminAuthError) {
         auth = null;
@@ -153,19 +127,11 @@ async function paintHub(main, root, state = {}) {
   }
 
   if (!auth) {
-    const ownerReady = Boolean(await resolveAdminAuth());
-    mountGate(main, {
-      error:
-        state.gateError ||
-        'Sign in with Discord (owner) or enter the break-glass secret.',
-      ownerReady,
-      onOwnerSession: retry,
-      onUnlock: (s) => void unlockWithSecret(main, root, s),
-    });
+    mountGate(main, { error: state.gateError || 'Sign in with the owner Discord account.' });
     return;
   }
 
-  const modeLabel = auth.mode === 'jwt' ? 'Discord owner' : 'Secret unlock';
+  const modeLabel = 'Discord owner';
   let active = tabFromLocation();
 
   /** @type {{
@@ -185,7 +151,6 @@ async function paintHub(main, root, state = {}) {
       sockets: null,
     },
     onUnauthorized: () => {
-      lockAdminSession();
       void paintHub(main, root, {
         gateError: 'Session expired — unlock again.',
       });
@@ -225,7 +190,6 @@ async function paintHub(main, root, state = {}) {
   `;
 
   main.querySelector('[data-admin-lock]')?.addEventListener('click', () => {
-    lockAdminSession();
     void paintHub(main, root);
   });
 
@@ -412,20 +376,3 @@ async function mountStage(stage, tab, ctx) {
  * @param {string} root
  * @param {string} secret
  */
-async function unlockWithSecret(main, root, secret) {
-  try {
-    const next = { mode: /** @type {const} */ ('secret'), token: secret };
-    await listBuilds(next, 'all');
-    clearAdminLock();
-    saveSessionSecret(secret);
-    await paintHub(main, root);
-  } catch (err) {
-    clearSessionSecret();
-    await paintHub(main, root, {
-      gateError:
-        err instanceof AdminAuthError
-          ? 'Wrong secret, or sign in with an owner Discord account.'
-          : err?.message || 'Could not unlock',
-    });
-  }
-}
