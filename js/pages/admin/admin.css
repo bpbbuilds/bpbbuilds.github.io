@@ -356,6 +356,85 @@ button.admin-metric:focus-visible {
   opacity: 0.78;
 }
 
+.admin-site-access {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  max-width: 46rem;
+  margin-top: 1.1rem;
+  padding: 1rem;
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--bpb-parchment-light, #e2c9a8) 78%, #fff);
+  box-shadow: 0 0 0 1px color-mix(in srgb, #3c261d 16%, transparent);
+}
+
+.admin-site-access__eyebrow,
+.admin-site-access h2,
+.admin-site-access p {
+  margin: 0;
+}
+
+.admin-site-access__eyebrow {
+  font-family: var(--bpb-font-body);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: color-mix(in srgb, var(--bp-ui-cream) 75%, transparent);
+}
+
+.admin-site-access h2 {
+  margin-top: 0.1rem;
+  font-family: var(--bpb-font-display);
+  font-size: 1.45rem;
+  color: var(--bp-ui-cream);
+  text-shadow: var(--bp-ui-ring);
+}
+
+.admin-site-access > div:first-child > p:last-child,
+.admin-site-access__status {
+  margin-top: 0.3rem;
+  font-family: var(--bpb-font-body);
+  font-size: 0.84rem;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--bp-ui-cream) 76%, transparent);
+}
+
+.admin-site-access__controls {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.admin-site-access__choice {
+  min-width: 5.2rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--il-ink, #3c261d) 45%, transparent);
+  border-radius: 0.28rem;
+  background: color-mix(in srgb, #3c261d 58%, transparent);
+  color: var(--bp-ui-cream);
+  font: 700 0.95rem var(--bpb-font-body);
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.admin-site-access__choice.is-active {
+  border-color: var(--il-gold, #eac914);
+  background: color-mix(in srgb, var(--il-gold, #eac914) 34%, #3c261d);
+}
+
+.admin-site-access__choice:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.admin-site-access__status {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 540px) {
+  .admin-site-access {
+    grid-template-columns: 1fr;
+  }
+}
+
 .admin-body .admin-panel:last-child {
   margin-bottom: 0;
 }
@@ -2598,4 +2677,3 @@ button.admin-metric.is-active::before {
   line-height: 1.4;
   color: color-mix(in srgb, var(--bp-ui-cream) 84%, transparent);
 }
-

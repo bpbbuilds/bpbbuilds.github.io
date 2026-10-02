@@ -1,8 +1,8 @@
 /**
  * Optional launch gate for the static site.
  *
- * `siteAccessMode: 'private'` requires a Discord session whose account is in
- * the community server. `live` leaves the public site unchanged.
+ * The server-managed mode requires a Discord session whose account is in the
+ * community server when private. The generated config remains a local fallback.
  */
 import { getSession, onAuthChange, signInWithDiscord, signOut } from './auth.js';
 import { config } from './config.js';
@@ -12,8 +12,25 @@ let gate = null;
 let gatePromise = null;
 let checking = false;
 
-function privateMode() {
+function configuredMode() {
   return String(config.siteAccessMode || 'live').toLowerCase() === 'private';
+}
+
+async function currentMode() {
+  const endpoint = String(config.siteAccessUrl || '').trim();
+  if (!endpoint || endpoint.includes('YOUR_')) return configuredMode() ? 'private' : 'live';
+  try {
+    const response = await fetch(endpoint, {
+      headers: { apikey: String(config.supabasePublishableKey || '') },
+      cache: 'no-store',
+    });
+    const body = await response.json().catch(() => null);
+    if (!response.ok || (body?.mode !== 'live' && body?.mode !== 'private')) return null;
+    return body.mode;
+  } catch (error) {
+    console.error('[access-gate] mode check failed', error);
+    return null;
+  }
 }
 
 function showGate(state = 'checking') {
@@ -83,11 +100,19 @@ function allowAccess() {
 }
 
 async function checkAccess() {
-  if (!privateMode()) return true;
   if (checking) return false;
   checking = true;
   showGate('checking');
   try {
+    const mode = await currentMode();
+    if (!mode) {
+      showGate('unavailable');
+      return false;
+    }
+    if (mode === 'live') {
+      allowAccess();
+      return true;
+    }
     const session = await getSession();
     if (!session?.access_token) {
       showGate('signin');
@@ -128,7 +153,6 @@ async function checkAccess() {
 
 /** Start the site-wide gate. Safe to call from every page bootstrap. */
 export function initSiteAccess() {
-  if (!privateMode()) return Promise.resolve(true);
   if (!gatePromise) {
     gatePromise = checkAccess();
     onAuthChange(() => {
@@ -140,5 +164,5 @@ export function initSiteAccess() {
 
 /** @returns {'live' | 'private'} */
 export function siteAccessMode() {
-  return privateMode() ? 'private' : 'live';
+  return configuredMode() ? 'private' : 'live';
 }

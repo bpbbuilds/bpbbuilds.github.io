@@ -55,14 +55,14 @@ where discord_id = 'YOUR_DISCORD_SNOWFLAKE';
    `http://localhost:5500/**`. The live site returns to the page where sign-in began; the local
    entries are only for Live Server development.
 3. Apply `013_profiles.sql`
-4. Deploy Edge Functions: `submit-build`, `vote-build`, `admin-builds`, `admin-reports` (`verify_jwt = false`; functions validate JWT themselves)
+4. Deploy Edge Functions: `submit-build`, `vote-build`, `admin-builds`, `admin-reports`, `site-access` (`verify_jwt = false`; functions validate JWT themselves)
 
 ## Private launch access
 
-- The site defaults to `siteAccessMode: 'live'` (public).
-- Set `BPB_SITE_ACCESS_MODE=private` before running `node scripts/write-config.mjs`, then deploy the
-  resulting browser-safe `js/shared/config.js`, to require Discord sign-in and active membership in
-  the BPB Builds server. Switch the value back to `live` for public launch.
+- The site defaults to **Live** (public). An owner can switch Live / Private from the Admin Overview;
+  that server-managed setting takes effect for visitors when they next load a page. The generated
+  `siteAccessMode` is only the fallback for a local setup without the `site-access` endpoint.
+- Apply `028_site_access.sql` and deploy `site-access` before using the Overview switch.
 - The shared access gate calls `discord-guild` with the signed-in user JWT. It blocks the app with a
   sign-in panel, then a member-only panel with the Discord invite and a recheck button. A failed
   membership check is denied rather than treated as access.
@@ -83,6 +83,8 @@ where discord_id = 'YOUR_DISCORD_SNOWFLAKE';
 | `vote-build` | Optional Bearer → `profiles.voter_key`; else body `voter_key` |
 | `admin-builds` | Owner JWT (`is_owner`) or submit secret |
 | `admin-reports` | Same as `admin-builds` — list / stats / update `sim_reports` |
+
+`site-access` exposes a public GET for the current mode and accepts a Live / Private update only from an owner JWT.
 
 ## Out of scope (v1)
 

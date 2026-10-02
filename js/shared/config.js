@@ -11,6 +11,7 @@ export const config = {
   submitBuildUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/submit-build",
   adminBuildsUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/admin-builds",
   adminReportsUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/admin-reports",
+  siteAccessUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/site-access",
   voteBuildUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/vote-build",
   createCheckoutUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/create-checkout",
   createPortalUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/create-portal",

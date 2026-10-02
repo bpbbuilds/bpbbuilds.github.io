@@ -13,6 +13,7 @@ export const config = {
   submitBuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/submit-build',
   adminBuildsUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/admin-builds',
   adminReportsUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/admin-reports',
+  siteAccessUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/site-access',
   voteBuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/vote-build',
   createCheckoutUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/create-checkout',
   createPortalUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/create-portal',

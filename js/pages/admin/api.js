@@ -141,6 +141,26 @@ export function reportStats(auth) {
   return adminReportsRequest(auth, { action: 'stats' });
 }
 
+/** Get the current public/private mode. */
+export async function getSiteAccessMode() {
+  const endpoint = String(config.siteAccessUrl || '').trim();
+  if (!endpoint || endpoint.includes('YOUR_')) {
+    throw new Error('Site access URL not configured. Run node scripts/write-config.mjs.');
+  }
+  const response = await fetch(endpoint, {
+    headers: { apikey: String(config.supabasePublishableKey || '') },
+    cache: 'no-store',
+  });
+  const data = await response.json().catch(() => null);
+  if (!response.ok) throw new Error(String(data?.error || `Request failed (${response.status})`));
+  return data;
+}
+
+/** @param {{ mode: 'jwt' | 'secret', token: string }} auth @param {'live' | 'private'} mode */
+export function setSiteAccessMode(auth, mode) {
+  return adminPost(String(config.siteAccessUrl || ''), auth, { mode });
+}
+
 /**
  * @param {{ mode: 'jwt' | 'secret', token: string }} auth
  * @param {string} id

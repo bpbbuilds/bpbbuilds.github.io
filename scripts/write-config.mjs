@@ -21,6 +21,7 @@ const baseFn = `${url.replace(/\/$/, '')}/functions/v1`;
 const submitBuildUrl = `${baseFn}/submit-build`;
 const adminBuildsUrl = `${baseFn}/admin-builds`;
 const adminReportsUrl = `${baseFn}/admin-reports`;
+const siteAccessUrl = `${baseFn}/site-access`;
 const voteBuildUrl = `${baseFn}/vote-build`;
 const createCheckoutUrl = `${baseFn}/create-checkout`;
 const createPortalUrl = `${baseFn}/create-portal`;
@@ -41,6 +42,7 @@ export const config = {
   submitBuildUrl: ${JSON.stringify(submitBuildUrl)},
   adminBuildsUrl: ${JSON.stringify(adminBuildsUrl)},
   adminReportsUrl: ${JSON.stringify(adminReportsUrl)},
+  siteAccessUrl: ${JSON.stringify(siteAccessUrl)},
   voteBuildUrl: ${JSON.stringify(voteBuildUrl)},
   createCheckoutUrl: ${JSON.stringify(createCheckoutUrl)},
   createPortalUrl: ${JSON.stringify(createPortalUrl)},

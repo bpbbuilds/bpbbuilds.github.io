@@ -190,6 +190,19 @@ See [sim-reports-table.md](./tables/sim-reports-table.md).
 7. `sim_reports` (`018_sim_reports.sql`)
 8. `builds.event_slug` (`019_builds_event_slug.sql`)
 9. `profiles.cosmetic_grants` (`021_profiles_cosmetic_grants.sql`)
+10. `site_settings` (`028_site_access.sql`)
+
+---
+
+## `site_settings`
+
+**Purpose:** Owner-managed runtime settings for the application.
+
+**Used by:** `site-access` Edge Function and the Admin Overview Live / Private switch.
+
+**Key fields:** `key` (currently `site_access_mode`), `value` (`live` or `private`), `updated_at`, `updated_by`.
+
+**Access:** RLS is enabled with no browser policies. The Edge Function uses its service role for reads; only a verified `profiles.is_owner` JWT may write.
 
 ## Design rules
 

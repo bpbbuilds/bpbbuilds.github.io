@@ -58,6 +58,7 @@ Tokens AND together. Admin **List** (All / Featured / Hidden) still hits `admin-
 # From repo root (CLI logged in + linked)
 supabase functions deploy admin-builds
 supabase functions deploy admin-reports
+supabase functions deploy site-access
 # BPB_SUBMIT_SECRET should already be set for submit-build
 ```
 
@@ -71,9 +72,14 @@ supabase functions deploy admin-reports
 |---|---|
 | `adminBuildsUrl` | `{SUPABASE_PROJECT_URL}/functions/v1/admin-builds` |
 | `adminReportsUrl` | `{SUPABASE_PROJECT_URL}/functions/v1/admin-reports` |
+| `siteAccessUrl` | `{SUPABASE_PROJECT_URL}/functions/v1/site-access` |
 | `submitSecret` | `BPB_SUBMIT_SECRET` (break-glass unlock) |
 
 Never commit real secrets.
+
+## Site access switch
+
+The Overview control persists `site_access_mode` in `public.site_settings` through the `site-access` Edge Function. Only an owner JWT can change it. **Live** leaves the application public. **Private** shows the Discord sign-in and BPB Builds server-membership gate when a visitor next loads a page. This is still a UI gate on static GitHub Pages; it does not make already-published files private.
 
 ## Related
 

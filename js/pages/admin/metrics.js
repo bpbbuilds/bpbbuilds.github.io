@@ -2,7 +2,7 @@
  * Admin overview — metric tiles (report stats + build list caps; rest are placeholders).
  */
 
-import { listBuilds, reportStats, AdminAuthError } from './api.js';
+import { listBuilds, reportStats, getSiteAccessMode, setSiteAccessMode, AdminAuthError } from './api.js';
 import { getSupabase } from '../../shared/supabase.js';
 import { FOUNDING_TOTAL, getFoundingStatus } from '../../shared/entitlements.js';
 import { escapeAttr, escapeHtml } from './row.js';
@@ -28,13 +28,14 @@ export async function mountMetrics(host, opts) {
   );
 
   try {
-    const [repStats, pending, featured, hidden, founding, premiumCount] = await Promise.all([
+    const [repStats, pending, featured, hidden, founding, premiumCount, siteAccess] = await Promise.all([
       reportStats(opts.auth),
       listBuilds(opts.auth, 'pending_op'),
       listBuilds(opts.auth, 'featured'),
       listBuilds(opts.auth, 'hidden'),
       getFoundingStatus(),
       opts.auth.mode === 'jwt' ? paidPremiumCount() : Promise.resolve(null),
+      getSiteAccessMode(),
     ]);
     const tiles = [
       {
@@ -78,7 +79,35 @@ export async function mountMetrics(host, opts) {
         placeholder: premiumCount == null,
       },
     ];
-    host.innerHTML = `<div class="admin-metrics">${tiles.map(tileHtml).join('')}</div>`;
+    const accessMode = siteAccess?.mode === 'private' ? 'private' : 'live';
+    host.innerHTML = `<div class="admin-metrics">${tiles.map(tileHtml).join('')}</div>${siteAccessHtml(accessMode)}`;
+    host.querySelectorAll('[data-site-access-mode]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        if (!(button instanceof HTMLButtonElement)) return;
+        const next = button.dataset.siteAccessMode;
+        if (next !== 'live' && next !== 'private') return;
+        if (next === accessMode) return;
+        if (next === 'private' && !window.confirm('Switch the site to Private? Visitors must sign in with Discord and be in the BPB Builds server after their next page load.')) return;
+        const status = host.querySelector('[data-site-access-status]');
+        host.querySelectorAll('[data-site-access-mode]').forEach((control) => {
+          if (control instanceof HTMLButtonElement) control.disabled = true;
+        });
+        if (status) status.textContent = 'Saving access mode…';
+        try {
+          await setSiteAccessMode(opts.auth, next);
+          await mountMetrics(host, opts);
+        } catch (error) {
+          if (error instanceof AdminAuthError) {
+            opts.onUnauthorized();
+            return;
+          }
+          if (status) status.textContent = error?.message || 'Could not update access mode.';
+          host.querySelectorAll('[data-site-access-mode]').forEach((control) => {
+            if (control instanceof HTMLButtonElement) control.disabled = false;
+          });
+        }
+      });
+    });
     if (opts.onTab) {
       host.addEventListener('click', (e) => {
         const btn =
@@ -151,4 +180,22 @@ function tileHtml(tile) {
     return `<button type="button" class="admin-metric" data-admin-go-tab="${escapeAttr(tile.tab)}">${inner}</button>`;
   }
   return `<div class="admin-metric${tile.placeholder ? ' admin-metric--soon' : ''}">${inner}</div>`;
+}
+
+/** @param {'live' | 'private'} mode */
+function siteAccessHtml(mode) {
+  const privateMode = mode === 'private';
+  return `
+    <section class="admin-site-access" aria-labelledby="admin-site-access-title">
+      <div>
+        <p class="admin-site-access__eyebrow">Site access</p>
+        <h2 id="admin-site-access-title">${privateMode ? 'Private' : 'Live'} mode</h2>
+        <p>Private mode requires Discord sign-in and BPB Builds server membership. The change applies when visitors next load a page.</p>
+      </div>
+      <div class="admin-site-access__controls" role="group" aria-label="Site access mode">
+        <button type="button" class="admin-site-access__choice${!privateMode ? ' is-active' : ''}" data-site-access-mode="live" aria-pressed="${!privateMode}">Live</button>
+        <button type="button" class="admin-site-access__choice${privateMode ? ' is-active' : ''}" data-site-access-mode="private" aria-pressed="${privateMode}">Private</button>
+      </div>
+      <p class="admin-site-access__status" data-site-access-status role="status">Current mode: ${privateMode ? 'Private' : 'Live'}.</p>
+    </section>`;
 }
