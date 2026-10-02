@@ -9,7 +9,6 @@ fixtures/inbox/
 scripts/__pycache__/
 assets/ml/screenshot-detector/**/*.onnx
 yolov8n.pt
-assets/item-sprites/
 tools/gdre/
 tools/gdke/
 tools/keydot/

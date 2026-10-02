@@ -31,6 +31,7 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 - `docs/features/screenshot-detector.md` (compatibility pointer) and `docs/pages/create/feature/imageUpload/` (canonical screenshot-import documentation)
 - `js/pages/create/inventory-preview.js` (mobile Create drag-hover grid positioning)
 - `index.html`, `js/shared/config.js`, and `js/pages/home/` (public Pages bootstrap and homepage first-load diagnostics)
+- `.gitignore` and `assets/item-sprites/` (static item-sprite Pages deployment)
 
 Before editing product code, list the folders you are taking in this section. Do not take paths already listed under **Owned paths** in [`CURSOR_HANDOFF.md`](CURSOR_HANDOFF.md). Screenshot import is Codex-owned while listed above.
 
