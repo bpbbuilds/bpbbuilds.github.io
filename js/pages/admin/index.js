@@ -4,4 +4,4 @@
 
 import { bootAdminHub } from './shell.js';
 
-bootAdminHub();
+void bootAdminHub();

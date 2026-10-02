@@ -12,7 +12,7 @@ function rootPrefix() {
 }
 
 async function boot() {
-  initNav();
+  if (!(await initNav())) return;
   initFooter({ variant: 'slim' });
   const main = document.getElementById('main');
   if (!(main instanceof HTMLElement)) return;

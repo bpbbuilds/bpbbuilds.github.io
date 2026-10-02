@@ -10,10 +10,9 @@ import {
 } from '../../shared/premium-gate.js';
 import { initSimPage } from './page.js';
 
-initNav();
-initFooter({ variant: 'slim' });
-
 void (async () => {
+  if (!(await initNav())) return;
+  initFooter({ variant: 'slim' });
   const resumed = await resumePremiumIntent({
     [SIM_HARD_GATE_INTENT]: () => {
       location.reload();

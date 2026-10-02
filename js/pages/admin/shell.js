@@ -104,9 +104,9 @@ function normalizeLegacyPath(root) {
 /**
  * Boot the admin hub (single page).
  */
-export function bootAdminHub() {
+export async function bootAdminHub() {
   initAuth();
-  initNav();
+  if (!(await initNav())) return;
   const main = document.getElementById('main');
   if (!(main instanceof HTMLElement)) return;
   const root = rootPrefix();

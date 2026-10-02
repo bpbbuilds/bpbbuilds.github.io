@@ -12,6 +12,7 @@ let gate = null;
 let gatePromise = null;
 let checking = false;
 let privateModeActive = false;
+let bootstrapBlocked = false;
 
 function configuredMode() {
   return String(config.siteAccessMode || 'live').toLowerCase() === 'private';
@@ -72,7 +73,7 @@ function showGate(state = 'checking') {
   gate.innerHTML = `
     <div class="bpb-access-gate__backdrop"></div>
     <div class="bpb-access-gate__panel bpb-panel--rewards" role="dialog" aria-modal="true" aria-labelledby="bpb-access-gate-title">
-      <img class="bpb-access-gate__logo" src="${document.body.dataset.root || './'}assets/theme/logo-bpb.png" alt="BPB Builds" />
+      <img class="bpb-access-gate__logo" src="${document.body.dataset.root || './'}assets/brand/logo-bpb.png" alt="BPB Builds" />
       <h1 id="bpb-access-gate-title">${content.title}</h1>
       <div class="bpb-access-gate__rule" aria-hidden="true"><span></span><i></i><span></span></div>
       <p>${content.message}</p>
@@ -144,6 +145,7 @@ async function checkAccess() {
       return false;
     }
     allowAccess();
+    if (bootstrapBlocked) window.location.reload();
     return true;
   } catch (error) {
     console.error('[access-gate] membership check failed', error);
@@ -157,7 +159,10 @@ async function checkAccess() {
 /** Start the site-wide gate. Safe to call from every page bootstrap. */
 export function initSiteAccess() {
   if (!gatePromise) {
-    gatePromise = checkAccess();
+    gatePromise = checkAccess().then((allowed) => {
+      bootstrapBlocked = !allowed;
+      return allowed;
+    });
     onAuthChange(() => {
       if (privateModeActive) void checkAccess();
     });

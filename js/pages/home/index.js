@@ -7,19 +7,23 @@ import { initHomeClassShowcase } from './home-class-showcase.js';
 import { initHomeItemsExplore } from './home-items-explore.js';
 import { initHomeBuildsVault } from './home-builds-vault.js';
 
-initCombatSky();
-initNav();
-initFooter();
-initFeaturedStage();
+async function boot() {
+  if (!(await initNav())) return;
+  initCombatSky();
+  initFooter();
+  initFeaturedStage();
 
-const initBelowFold = () => {
-  initHomePromoBand('#home-promo-band', { variant: 'create' });
-  initHomeClassShowcase();
-  initHomeItemsExplore();
-  initHomeBuildsVault();
-};
-if (typeof requestIdleCallback === 'function') {
-  requestIdleCallback(initBelowFold, { timeout: 900 });
-} else {
-  window.setTimeout(initBelowFold, 1);
+  const initBelowFold = () => {
+    initHomePromoBand('#home-promo-band', { variant: 'create' });
+    initHomeClassShowcase();
+    initHomeItemsExplore();
+    initHomeBuildsVault();
+  };
+  if (typeof requestIdleCallback === 'function') {
+    requestIdleCallback(initBelowFold, { timeout: 900 });
+  } else {
+    window.setTimeout(initBelowFold, 1);
+  }
 }
+
+void boot();

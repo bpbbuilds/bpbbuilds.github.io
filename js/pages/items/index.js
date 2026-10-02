@@ -4,9 +4,13 @@ import { initItemsCatalog } from './catalog.js';
 import { watchItemsCatalogColumns } from './catalog-responsive.js';
 import { initWheelToGrid } from './wheel-to-grid.js';
 
-initNav();
-initFooter({ variant: 'slim' });
-void initItemsCatalog().then(() => {
-  watchItemsCatalogColumns();
-});
-initWheelToGrid();
+async function boot() {
+  if (!(await initNav())) return;
+  initFooter({ variant: 'slim' });
+  void initItemsCatalog().then(() => {
+    watchItemsCatalogColumns();
+  });
+  initWheelToGrid();
+}
+
+void boot();

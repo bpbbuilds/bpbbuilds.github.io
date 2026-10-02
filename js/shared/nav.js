@@ -51,7 +51,8 @@ export async function initNav(selector = '#site-nav') {
 
   const root = rootPrefix();
   initAuth();
-  await initSiteAccess();
+  const allowed = await initSiteAccess();
+  if (!allowed) return false;
 
   // Reserve layout space immediately (nav is fixed / out of flow)
   ensureNavSpace(host);
@@ -110,4 +111,5 @@ export async function initNav(selector = '#site-nav') {
     },
     { passive: true },
   );
+  return true;
 }
