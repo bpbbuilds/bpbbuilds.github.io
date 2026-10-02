@@ -203,6 +203,11 @@
   margin-top: 0.15rem;
 }
 
+/* The panel's flex display overrides the browser default for [hidden]. */
+.home-items__panel[hidden] {
+  display: none !important;
+}
+
 .home-items__blurb {
   margin: 0;
   max-width: 28rem;
