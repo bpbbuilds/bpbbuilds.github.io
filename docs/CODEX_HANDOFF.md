@@ -637,3 +637,7 @@ None.
 
 - Added `js/pages/sim/AGENTS.md` and `docs/sim/sim-1to1-audit.md` for durable simulator-specific source-of-truth, parity, combat-log, and regression rules. Existing Cursor-only rules are now consolidated into a repository-local rule set that applies to future Sim changes regardless of editor.
 - Baseline audit: `sim-log-smoke` and coverage-honesty pass; source audits find 15 hook gaps, 82 shallow ports, and 45 heuristic call candidates that still require `.gd` review. `sim-noop-audit` currently fails its Puzzlebag T combat-start assertion and is recorded as the first actionable parity gate rather than hidden.
+
+### 2026-10-03 Simulator execution roadmap
+
+- Added `docs/sim/sim-1to1-execution-plan.md`: a one-shot-shippable, all-item audit and implementation plan covering source baselining, start-of-battle/lifecycle parity, port waves, logs/meters, paired-board validation, patch drift, and honest near-1:1 release gates. It starts by reconciling the current 553 catalog vs 452 extracted-script denominator before implementation waves.
