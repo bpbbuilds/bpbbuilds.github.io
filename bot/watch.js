@@ -3,9 +3,10 @@
  * Posts public website builds into the builds forum.
  * When someone joins or changes their nickname, the build count is put back on.
  */
+import http from 'node:http';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { startBuildAnnounce } from './announce.js';
-import { loadEnv, requireBotEnv } from './env.js';
+import { loadEnv, requireBotEnv, requireWatcherEnv } from './env.js';
 import { nicknameFor, nicknameBase, discordName } from './roles.js';
 import { isWelcomeMessage, syncWelcome } from './welcome.js';
 import { isRulesMessage, rulesChannelId, syncRules } from './rules.js';
@@ -25,6 +26,7 @@ import { handleVoteButton } from './announce-votes.js';
 
 const env = loadEnv();
 const config = requireBotEnv(env);
+requireWatcherEnv(env);
 const base = String(env.SUPABASE_PROJECT_URL || '').replace(/\/$/, '');
 const key = env.SUPABASE_SERVICE_ROLE_KEY || '';
 
@@ -39,6 +41,89 @@ const client = new Client({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
   ],
+});
+
+const healthPort = Number(env.BOT_HEALTH_PORT || 0);
+if (env.BOT_HEALTH_PORT && (!Number.isInteger(healthPort) || healthPort < 1 || healthPort > 65535)) {
+  throw new Error('BOT_HEALTH_PORT must be an integer between 1 and 65535');
+}
+
+/** @type {import('node:http').Server | null} */
+let healthServer = null;
+if (healthPort) {
+  healthServer = http.createServer((req, res) => {
+    if (req.method !== 'GET' && req.method !== 'HEAD') {
+      res.writeHead(405, { allow: 'GET, HEAD' });
+      res.end();
+      return;
+    }
+    if (req.url !== '/healthz') {
+      res.writeHead(404);
+      res.end();
+      return;
+    }
+    const ready = client.isReady();
+    const body = JSON.stringify({ status: ready ? 'ready' : 'starting' });
+    res.writeHead(ready ? 200 : 503, {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store',
+      'content-length': Buffer.byteLength(body),
+    });
+    if (req.method === 'HEAD') res.end();
+    else res.end(body);
+  });
+  healthServer.on('error', (err) => {
+    console.error(`Health server failed: ${err instanceof Error ? err.message : err}`);
+    process.exitCode = 1;
+  });
+  healthServer.listen(healthPort, '0.0.0.0', () => {
+    console.log(`Health endpoint listening on /healthz (port ${healthPort})`);
+  });
+}
+
+let shuttingDown = false;
+async function shutdown(signal) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  console.log(`Received ${signal}; closing Discord Gateway`);
+  const forceExit = setTimeout(() => process.exit(0), 5000);
+  forceExit.unref();
+  if (healthServer?.listening) {
+    await new Promise((resolve) => healthServer.close(resolve));
+  }
+  await client.destroy();
+  clearTimeout(forceExit);
+  process.exit(0);
+}
+
+for (const signal of ['SIGTERM', 'SIGINT']) {
+  process.once(signal, () => {
+    shutdown(signal).catch((err) => {
+      console.error(`Shutdown failed: ${err instanceof Error ? err.message : err}`);
+      process.exit(1);
+    });
+  });
+}
+
+client.on('error', (err) => console.error(`Discord client error: ${err instanceof Error ? err.message : err}`));
+client.on('shardError', (err, shardId) => {
+  console.error(`Discord shard ${shardId} error: ${err instanceof Error ? err.message : err}`);
+});
+client.on('shardDisconnect', (_event, shardId) => {
+  console.warn(`Discord shard ${shardId} disconnected; discord.js will reconnect`);
+});
+client.on('shardReconnecting', (shardId) => {
+  console.log(`Discord shard ${shardId} reconnecting`);
+});
+client.on('shardReady', (shardId) => {
+  console.log(`Discord shard ${shardId} ready`);
+});
+client.on('invalidated', () => {
+  console.error('Discord session invalidated; restarting the worker');
+  shutdown('DISCORD_INVALIDATED').catch((err) => {
+    console.error(`Invalidated-session shutdown failed: ${err instanceof Error ? err.message : err}`);
+    process.exit(1);
+  });
 });
 
 async function buildCount(discordId) {
@@ -160,6 +245,7 @@ client.on('guildMemberUpdate', (_old, member) => {
 });
 
 client.once('clientReady', () => {
+  console.log(`Discord Gateway ready as ${client.user?.tag}`);
   console.log(`Watching nicknames as ${client.user?.tag}`);
   if (honeypotId) console.log('Honeypot channel is armed');
   if (welcomeId) console.log('Welcome channel is read-only');
