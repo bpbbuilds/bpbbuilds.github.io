@@ -2650,11 +2650,13 @@ body.page-create.is-bpb-dragging .create-sellbin {
  * inside that stage; toolbar and Parked keep their own usable sizes. */
 @media (min-width: 1101px) and (max-height: 1100px) {
   .page-create .create-col--board {
+    height: 100%;
     min-height: 0;
   }
 
   .page-create .create-col--board .create-board {
     flex: 1 1 auto;
+    height: 100%;
     min-height: 0;
     gap: clamp(0.45rem, 1vh, 1.15rem);
   }
