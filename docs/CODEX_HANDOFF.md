@@ -641,3 +641,19 @@ None.
 ### 2026-10-03 Simulator execution roadmap
 
 - Added `docs/sim/sim-1to1-execution-plan.md`: a one-shot-shippable, all-item audit and implementation plan covering source baselining, start-of-battle/lifecycle parity, port waves, logs/meters, paired-board validation, patch drift, and honest near-1:1 release gates. It starts by reconciling the current 553 catalog vs 452 extracted-script denominator before implementation waves.
+
+### 2026-10-03 Simulator roadmap execution (in progress)
+
+- Claimed `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `docs/sim/sim-1to1-execution-plan.md` to execute Package 0: generate a source-versioned, one-row-per-catalog-item fidelity ledger and correct the roadmap's provisional denominator from the actual catalog data.
+- Claimed `scripts/sim-noop-audit.mjs` for Package 1's first gate: repair its false failure by recognizing `onPreCombatStart` as the simulator equivalent of the game bag's `onPrepare`, while retaining the source/coverage assertions.
+- Claimed `js/pages/sim/engine/simulate.js` and new `docs/sim/sim-combat-lifecycle.md` for Package 2's source-backed lifecycle trace and the first confirmed global ordering repairs (cooldown arm before `onPreCombatStart`, then a distinct post-combat-start pass).
+- Claimed `js/pages/sim/engine/gem-sockets.js` and `scripts/sim-socket-split-smoke.mjs` to align socketed-gem preparation and combat-start work with `Items/Item.gd`: gem preparation must run before cooldown arming, and gem combat-start effects before the host item's combat-start hook.
+- Claimed the `ScriptHandler` declaration in `js/pages/sim/engine/scripts/handlers.js` to record the newly exercised `onPostCombatStart` lifecycle hook.
+- Claimed `scripts/audit-sim-gd-parity.mjs` to make its source-hook audit recognize `onPostCombatStart` as its own simulator lifecycle hook instead of treating an earlier start hook as a substitute.
+
+### 2026-10-03 Simulator roadmap execution - Package 0 complete, Package 1/2 started
+
+- Completed Package 0's generated `assets/data/sim-fidelity-ledger.json` and its `--check` gate: exactly 519 catalog rows, with source hashes and explicit 351 source-ported, 92 port-present/incomplete, 49 source-unresolved, 26 source-justified non-combat, and one deferred row. These statuses are not 1:1 claims.
+- Corrected the Puzzlebag T noop-audit lifecycle mapping without weakening source/coverage checks; the full noop audit now passes. Package 1 remains open because the source audit has 16 hook candidates, 82 shallow ports, 40 catalog call-review candidates, and 21 duplicate registrations that need individual classification.
+- Added the source-backed start-of-battle trace, cooldown-before-pre-hook ordering, a distinct post-combat-start pass, and correct socketed-gem phase ordering. The socket smoke now proves Topaz modifies the initial armed cooldown and Coal's combat-start block combines with its host opening effect.
+- Corrected the source audit to require a real simulator `onPostCombatStart` hook for game `onPostCombatStart`. This surfaced the existing Power of the Moon gap instead of silently accepting its earlier `onCombatStart` approximation. Package 2 remains open pending the shared two-sided lifecycle fixture and source-led fatigue/time-advance model.

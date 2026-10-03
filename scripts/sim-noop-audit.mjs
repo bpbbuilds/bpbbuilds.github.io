@@ -57,7 +57,15 @@ ok(
 for (const row of list.portedFalseNoops) {
   ok(!AK_NOOP_IDS.includes(row.id), `${row.id} is not an AK noop`);
   const h = getScriptHandler(row.id);
-  ok(typeof h?.onCombatStart === 'function' || typeof h?.onPrepare === 'function', `${row.id} has combat start`);
+  // Game bag `onPrepare` maps to the engine's pre-combat hook; start-only
+  // checking incorrectly rejected Puzzlebag T even though its listener must
+  // arm before any combat-start stack spend.
+  ok(
+    typeof h?.onPreCombatStart === 'function' ||
+      typeof h?.onCombatStart === 'function' ||
+      typeof h?.onPrepare === 'function',
+    `${row.id} has combat lifecycle hook`,
+  );
   ok(classifyCoverageItem(row.id).reason !== 'noop', `${row.id} coverage not noop`);
 }
 

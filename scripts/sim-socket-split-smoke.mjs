@@ -62,6 +62,20 @@ function speedAfterActivates(run, key) {
     !(Number(run.summary?.player?.combatStats?.stamina_regen) > 0),
     'socketed topaz does not apply prepareInventory stam regen',
   );
+
+  const baseline = simulateEngine({
+    placements: [{ id: 'wooden_sword', key: 'w', x: 0, y: 0, r: 0 }],
+    itemsById: byId,
+    durationSec: 2.51,
+    seed: 2541,
+    dummyAttacks: false,
+  });
+  const initialSocketCd = run.pieceSnapshots.find((s) => Number(s.t) === 2.5)?.byKey?.w?.cooldown;
+  const initialBaseCd = baseline.pieceSnapshots.find((s) => Number(s.t) === 2.5)?.byKey?.w?.cooldown;
+  ok(
+    Number(initialSocketCd) < Number(initialBaseCd),
+    `socketed topaz prepares before initial cooldown arm (${initialSocketCd} < ${initialBaseCd})`,
+  );
 }
 
 {
@@ -88,6 +102,21 @@ function speedAfterActivates(run, key) {
   ok(speeds.length >= 3, `badger socket: sword activated (${speeds.length})`);
   ok(speeds[0] > 0, `badger first hit addSpeed (${speeds[0]})`);
   ok(speeds[speeds.length - 1] > speeds[0], `badger speed stacks per hit (${speeds[0]} → ${speeds[speeds.length - 1]})`);
+}
+
+{
+  const run = simulateEngine({
+    placements: [{ id: 'moon_armor', key: 'moon', x: 0, y: 0, r: 0, gems: ['lump_of_coal'] }],
+    itemsById: byId,
+    durationSec: 2.51,
+    seed: 2544,
+    dummyAttacks: false,
+  });
+  const start = run.snapshots.find((s) => Number(s.t) === 2.5);
+  ok(
+    Number(start?.player?.block) === 58,
+    `coal socket combat-start block combines with host start effect (${start?.player?.block})`,
+  );
 }
 
 if (failed) {

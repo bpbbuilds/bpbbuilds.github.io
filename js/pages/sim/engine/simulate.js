@@ -23,7 +23,7 @@ import { buildCombatPieces, activeLoopPieces } from './pieces.js';
 import { activatePiece } from './combat-activate.js';
 import { runCharacterTick } from './ticks.js';
 import { getScriptHandler } from './scripts/registry.js';
-import { applyGemSockets } from './gem-sockets.js';
+import { combatStartGemSockets, prepareGemSockets } from './gem-sockets.js';
 import { buildCombatStartOrder } from './combat-start-priority.js';
 import { deliverCharge, leaveCharge, processChargeJob, clearChargeTrackers } from './charge-delivery.js';
 import { tickTimedSpeeds } from './timed-speed.js';
@@ -389,14 +389,14 @@ export function simulateEngine(opts) {
   for (let i = 0; i < startOrder.length; i += 1) {
     combatStartOrderMap.set(startOrder[i].placementKey, i);
   }
+  // Item.gd preCombatStart: socket pre-start work, then adjustCooldown /
+  // activateCooldown, then onPreCombatStart. Socket preparation must happen
+  // before arming because it can alter host speed and listeners.
   for (const piece of startOrder) {
-    const script = getScriptHandler(piece.itemId);
     const sc = ctxForPiece(piece, world);
     sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
-    script?.onPreCombatStart?.(piece, sc);
+    prepareGemSockets(piece, sc);
   }
-  // Game activateItems: preCombatStart arms CD (adjustCooldown) in startOrder
-  // before combatStart. Use the same order so CD jitter shares the stream.
   for (const piece of startOrder) {
     armPieceCooldown(piece, ownerStacks(piece, world), rng, {
       opponent: piece.side === 'them',
@@ -406,8 +406,23 @@ export function simulateEngine(opts) {
     const script = getScriptHandler(piece.itemId);
     const sc = ctxForPiece(piece, world);
     sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
+    script?.onPreCombatStart?.(piece, sc);
+  }
+  for (const piece of startOrder) {
+    const script = getScriptHandler(piece.itemId);
+    const sc = ctxForPiece(piece, world);
+    sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
+    combatStartGemSockets(piece, sc);
     script?.onCombatStart?.(piece, sc);
-    applyGemSockets(piece, sc);
+  }
+  // Game Item.postCombatStart is a separate third pass after every item's
+  // combatStart. Keep it explicit so post-start effects cannot accidentally
+  // interleave with start-of-battle grants.
+  for (const piece of startOrder) {
+    const script = getScriptHandler(piece.itemId);
+    const sc = ctxForPiece(piece, world);
+    sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
+    script?.onPostCombatStart?.(piece, sc);
   }
   flushUnloggedHeal(player, events, COMBAT_DELAY);
   flushUnloggedHeal(dummy, events, COMBAT_DELAY);

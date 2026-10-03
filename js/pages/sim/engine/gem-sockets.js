@@ -1,6 +1,7 @@
 /**
- * Socketed gems: Gem.onPrepare match (weapon vs armor) once at combat start.
- * Inventory-only effects stay on loose gems in ports-an-gems.js.
+ * Socketed gems. `Item.gd` runs gem preparation before it arms the host
+ * cooldown, then runs gem combat-start effects before the host combat-start
+ * hook. Inventory-only effects stay on loose gems in ports-an-gems.js.
  */
 
 import { healActor, grantStun } from './actor.js';
@@ -197,38 +198,62 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
       bank %= need;
       if (n) gainStacks(ctx.player, 'block', n * per);
     });
-  } else if (fam === 'coal') {
-    // LumpofCoal.gd combatStartArmor — giveBlock(gemPower * getBlock())
-    const block = Math.max(1, Math.round(Number(gem.block) || getPName(params, 'block', 8)));
-    if (block) gainStacks(ctx.player, 'block', block);
   } else if (fam === 'burning_coal') {
     ctx.player.stackResist = ctx.player.stackResist || {};
     ctx.player.stackResist.cold =
       (Number(ctx.player.stackResist.cold) || 0) +
       Math.round(getPName(params, 'coldresist', getP3(params, 7)));
-    const block = Number(gem.block) || 12;
-    if (block) gainStacks(ctx.player, 'block', block);
   }
 }
 
 /**
  * @param {object} piece
  * @param {object} ctx
+ * @param {(gem: object, params: object, family: string, gemId: string, originKey: string, weapon: boolean) => void} visit
  */
-export function applyGemSockets(piece, ctx) {
+function forEachSocket(piece, ctx, visit) {
   const host = ctx.itemsById?.get?.(piece.itemId);
   if (String(host?.type || '').toLowerCase() === 'gem') return;
   const ids = piece.gemIds;
   if (!Array.isArray(ids) || !ids.length) return;
   const weapon = isWeaponHost(piece);
   for (let i = 0; i < ids.length; i += 1) {
-    const gid = ids[i];
-    const gem = ctx.itemsById.get(gid);
+    const gemId = ids[i];
+    const gem = ctx.itemsById.get(gemId);
     if (!gem) continue;
-    const params = paramsFromItem(gem);
-    const fam = familyOf(gid);
-    const originKey = gemOriginKey(piece, i);
+    visit(gem, paramsFromItem(gem), familyOf(gemId), gemId, gemOriginKey(piece, i), weapon);
+  }
+}
+
+/**
+ * Game `Gem.onPrepare` / host `Item.preCombatStart`: establish socketed
+ * listeners and stats before the host cooldown is armed.
+ *
+ * @param {object} piece
+ * @param {object} ctx
+ */
+export function prepareGemSockets(piece, ctx) {
+  forEachSocket(piece, ctx, (gem, params, fam, gid, originKey, weapon) => {
     if (weapon) prepareWeapon(piece, gem, params, fam, ctx, gid, originKey);
     else prepareArmor(piece, gem, params, fam, ctx, gid, originKey);
-  }
+  });
+}
+
+/**
+ * Game `Gem.combatStart`: combat-start-only socket effects occur before the
+ * host item's `onCombatStart`. Coal's armor block is deliberately here rather
+ * than in preparation; its source gives the Block from `combatStartArmor`.
+ *
+ * @param {object} piece
+ * @param {object} ctx
+ */
+export function combatStartGemSockets(piece, ctx) {
+  forEachSocket(piece, ctx, (gem, params, fam, gid, originKey, weapon) => {
+    if (weapon || (fam !== 'coal' && fam !== 'burning_coal')) return;
+    const block =
+      fam === 'coal'
+        ? Math.max(1, Math.round(Number(gem.block) || getPName(params, 'block', 8)))
+        : Math.max(1, Math.round(Number(gem.block) || getPName(params, 'block', 12)));
+    gainStacks(ctx.player, 'block', block, { originKey, originId: gid });
+  });
 }

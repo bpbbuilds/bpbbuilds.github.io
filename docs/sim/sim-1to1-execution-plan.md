@@ -17,12 +17,15 @@ claiming full 1:1 before its evidence exists.
 
 The 2026-10-03 audit recorded:
 
-- 553 catalog HAND entries: 414 marked deep, 83 shallow, 27 noop.
-- 452 extract-audited item scripts: 15 lifecycle-hook gaps, 21 duplicate
+- 519 catalog items in the imported game catalog; the generated ledger is the
+  authoritative denominator. (The earlier 553 HAND count was a port-list
+  count, not a catalog count.)
+- 452 extract-audited item scripts: 16 lifecycle-hook gaps, 21 duplicate
   registrations, and 82 shallow ports.
 - 45 call-level audit candidates. These are leads, not confirmed defects.
-- Combat-log and coverage-honesty smokes pass. The Puzzlebag T noop audit is
-  currently failing and is the first required repair.
+- Combat-log, coverage-honesty, and the corrected Puzzlebag T noop audit pass.
+  The remaining Package 1 gate is source-led classification of all 16 hook
+  candidates rather than treating the audit output as a defect list.
 
 The two item totals are not yet a trusted denominator comparison. The first
 work package reconciles catalog IDs, extract scripts, base classes, deliberate
@@ -71,7 +74,7 @@ separately so they do not distort the item denominator.
 row per catalog item plus separate rows for base/inherited scripts.
 
 1. Record the game extract revision/hash and catalog import version.
-2. Reconcile the current 553 HAND entries against the 452 audited scripts.
+2. Reconcile all 519 catalog entries against the 452 audited scripts.
 3. Resolve aliases, Exclusive paths, gems, board-only pieces, shop-only items,
    and base classes; each discrepancy gets a reason, never a silent drop.
 4. Capture the runtime handler winner for every item and flag duplicates as
@@ -86,10 +89,11 @@ the denominator and intentional exclusions are machine-checkable.
 
 **Deliverable:** a green, non-weakened baseline audit.
 
-1. Reproduce the Puzzlebag T combat-start failure from its `.gd` source.
-2. Repair its engine/port/fixture mismatch and add a focused regression.
+1. Reproduce the Puzzlebag T audit failure from its `.gd` source.
+2. Repair the audit's lifecycle-hook classification and retain a focused
+   source/handler regression without weakening its assertions.
 3. Re-run noop, log, coverage-honesty, and source audits.
-4. Triage the 15 hook gaps into confirmed gap, inherited/base behavior,
+4. Triage the 16 hook gaps into confirmed gap, inherited/base behavior,
    intentional non-combat, or false-positive extraction; write the result to
    the ledger.
 
@@ -244,7 +248,7 @@ not a deadline.
 
 ## Progress checklist
 
-- [ ] 0. Source baseline and complete fidelity ledger
+- [x] 0. Source baseline and complete fidelity ledger
 - [ ] 1. Existing audit failures and hook-gap triage
 - [ ] 2. Canonical combat/start-of-battle lifecycle trace
 - [ ] 3. Event/log/meter/HUD/export conformance suite

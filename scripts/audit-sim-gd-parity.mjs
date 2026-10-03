@@ -23,7 +23,7 @@ const HOOK_MAP = {
   onPrepare: ['onPreCombatStart', 'onCombatStart'],
   onPreCombatStart: ['onPreCombatStart', 'onCombatStart'],
   onCombatStart: ['onCombatStart', 'onPreCombatStart'],
-  onPostCombatStart: ['onCombatStart'],
+  onPostCombatStart: ['onPostCombatStart'],
   doCooldownEffect: ['onCooldownEffect'],
   onPreDealDamage_early: ['onPreDealDamageEarly', 'onCooldownEffect'],
   onPreDealDamage_late: ['onPreDealDamageEarly', 'onCooldownEffect'],

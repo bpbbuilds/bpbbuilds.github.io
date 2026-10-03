@@ -21,15 +21,21 @@ override it.
 
 ## 2026-10-03 baseline audit
 
+Package 0 reconciled the denominator into
+`assets/data/sim-fidelity-ledger.json`: 519 catalog rows, 351 source-ported,
+92 port-present/incomplete, 49 source-unresolved, 26 source-justified
+non-combat, and one deferred item. These are audit statuses, not parity claims.
+
 Commands run against the current extract and ports:
 
 ```text
 npm run sim-log-smoke                 PASS (8 log sentences; 15 meter metrics)
 node scripts/audit-sim-gd-parity.mjs  452 items; 3 abstract base entries with no handler;
-                                      15 hook gaps; 21 duplicate registrations; 82 shallow ports
+                                      16 hook gaps; 21 duplicate registrations; 82 shallow ports
 node scripts/audit-sim-gd-calls.mjs   45 candidate item/call gaps (heuristic; requires GD review)
 npm run sim-coverage-honesty          PASS
-npm run sim-noop-audit                FAIL: Puzzlebag T combat-start assertion
+npm run sim-noop-audit                PASS after recognizing the pre-combat
+                                      lifecycle hook used by Puzzlebag T
 ```
 
 The three no-handler entries are `bow`, `card`, and `weapon`, which the audit
@@ -38,9 +44,17 @@ Likewise, duplicate registrations and call-audit candidates are investigation
 leads: runtime registration precedence and the actual `.gd` call path must be
 checked before changing a port.
 
-The immediate actionable audit failure is the Puzzlebag T combat-start
-assertion. It must be reproduced and corrected before treating the full audit
-as green. Do not hide it by weakening the noop audit.
+Puzzlebag T's previous audit failure was a false check: its game `onPrepare`
+maps to simulator `onPreCombatStart`, where it must arm before combat-start
+stack spending. The audit now checks the full start lifecycle rather than only
+the later start hook; its source and coverage assertions remain intact.
+
+Package 2's source trace is recorded in
+[`sim-combat-lifecycle.md`](sim-combat-lifecycle.md). The simulator now runs
+socketed gem preparation before initial cooldown arming and socketed
+combat-start effects before the host item, matching `Items/Item.gd`. The
+socket smoke asserts both the initial Topaz cooldown and the combined Coal /
+host opening Block state.
 
 ## What is already structurally in place
 
@@ -60,9 +74,9 @@ audit baseline above:
 
 | Priority | Gap | Evidence needed |
 |---|---|---|
-| P0 | Failing Puzzlebag T audit | Reproduce the source hook against its `.gd`, add a focused regression, then make `sim-noop-audit` pass without relaxing assertions. |
+| Resolved | Puzzlebag T audit classification | `onPrepare` is represented by `onPreCombatStart`; `sim-noop-audit` passes without relaxed source or coverage assertions. |
 | P0 | Event order and log semantics beyond the static sample | Expand focused tests around game `CombatEvent` parent chains, both sides, consume/activation, and each corrected live report. |
-| P1 | 15 hook gaps / 82 shallow ports | Triage each by actual `.gd` effect; port the missing hook or document an intentional non-combat/noop case. |
+| P1 | 16 hook gaps / 82 shallow ports | Triage each by actual `.gd` effect; port the missing hook or document an intentional non-combat/noop case. |
 | P1 | 45 call-audit candidates | Review the `.gd` call and port path; convert confirmed misses into per-item tests. |
 | P1 | Dummy versus a real opposing bag | Add paired-board captures before using PvP end HP or timing as parity evidence. |
 | P2 | Rare EventTypes and full log sentences | Compare `Core/CombatLog.gd`, `Core/CombatEvent.gd`, and `Interface.csv` with a growing live-log corpus. |
