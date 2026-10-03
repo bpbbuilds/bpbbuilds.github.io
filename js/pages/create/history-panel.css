@@ -36,6 +36,8 @@
     0.092em -0.038em 0 var(--il-ink);
 
   position: fixed;
+  container-type: inline-size;
+  container-name: history-picker;
   z-index: 200010;
   box-sizing: border-box;
   overflow: visible;
@@ -52,7 +54,9 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  padding: 0.4rem 0.45rem 0.45rem;
+  padding: clamp(0.25rem, 1.35cqi, 0.4rem)
+    clamp(0.25rem, 1.5cqi, 0.45rem)
+    clamp(0.3rem, 1.5cqi, 0.45rem);
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -64,15 +68,16 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 0.4rem 0.65rem;
-  margin: 0 0 0.35rem;
+  gap: clamp(0.2rem, 1.6cqi, 0.4rem)
+    clamp(0.25rem, 2.2cqi, 0.65rem);
+  margin: 0 0 clamp(0.2rem, 1.2cqi, 0.35rem);
   flex: 0 0 auto;
 }
 
 .create-history__title {
   margin: 0;
   font-family: var(--bpb-font-display);
-  font-size: 1.75rem;
+  font-size: clamp(1.05rem, 5.6cqi, 1.75rem);
   font-weight: 400;
   line-height: 1.1;
   color: var(--il-cream);
@@ -95,8 +100,8 @@
 .create-history__class-grid.il-filter__classes {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 0.1rem;
-  margin: 0 0 0.45rem;
+  gap: clamp(0.03rem, 0.6cqi, 0.1rem);
+  margin: 0 0 clamp(0.2rem, 1.5cqi, 0.45rem);
   width: 100%;
   flex: 0 0 auto;
 }
@@ -104,7 +109,7 @@
 .create-history .create-history__class-grid .il-filter__icon-btn {
   flex: none;
   width: 100%;
-  height: 2.85rem;
+  height: clamp(1.75rem, 9.5cqi, 2.85rem);
   min-width: 0;
   padding: 0.1rem;
 }
@@ -150,7 +155,7 @@
 .create-history__dd-sticker {
   font-family: var(--bpb-font-body);
   font-weight: 400;
-  font-size: 1.15rem;
+  font-size: clamp(0.8rem, 3.6cqi, 1.15rem);
   letter-spacing: var(--il-ui-track);
   line-height: 1.1;
   color: var(--il-sticker);
@@ -165,7 +170,7 @@
   right: 0;
   top: calc(100% + 0.2rem);
   z-index: 5;
-  min-width: 11rem;
+  min-width: min(11rem, calc(100cqi - 1rem));
   padding: 0.2rem 0;
   border: 2px solid var(--il-ink);
   background: var(--il-menu-bg);
@@ -180,14 +185,15 @@
   display: block;
   width: 100%;
   margin: 0;
-  padding: 0.32rem 0.5rem;
+  padding: clamp(0.2rem, 1.2cqi, 0.32rem)
+    clamp(0.3rem, 1.8cqi, 0.5rem);
   border: 2px solid transparent;
   background: transparent;
   text-align: left;
   cursor: var(--bpb-cursor-pointer);
   font-family: var(--bpb-font-body);
   font-weight: 400;
-  font-size: 1.2rem;
+  font-size: clamp(0.82rem, 3.8cqi, 1.2rem);
   letter-spacing: var(--il-ui-track);
   line-height: 1.15;
   color: var(--il-sticker);
@@ -211,9 +217,9 @@
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0.25rem;
-  width: 2rem;
-  height: 2rem;
+  padding: clamp(0.12rem, 0.8cqi, 0.25rem);
+  width: clamp(1.45rem, 7cqi, 2rem);
+  height: clamp(1.45rem, 7cqi, 2rem);
   border: 0;
   border-radius: 0.2rem;
   background: transparent;
@@ -224,8 +230,8 @@
 
 .create-history__close img {
   display: block;
-  width: 1.15rem;
-  height: 1.15rem;
+  width: clamp(0.8rem, 4.2cqi, 1.15rem);
+  height: clamp(0.8rem, 4.2cqi, 1.15rem);
 }
 
 .create-history__close:hover {
@@ -266,7 +272,7 @@
 }
 
 .create-history__search .cr-label--sm {
-  font-size: 1rem;
+  font-size: clamp(0.78rem, 3.2cqi, 1rem);
 }
 
 .bpb-build-search__suggest {
@@ -290,8 +296,8 @@
 }
 
 .create-history__list::-webkit-scrollbar {
-  width: 16px;
-  height: 16px;
+  width: clamp(8px, 2cqi, 16px);
+  height: clamp(8px, 2cqi, 16px);
 }
 
 .create-history__list::-webkit-scrollbar-track {
@@ -325,8 +331,11 @@
    * Patch3 mask-border is 8/7/9/8 — content must stay inside the fill region,
    * not the 9px bottom / 8px side slices (that’s why W/L looked cut off).
    */
-  padding: 0.4rem 0.9rem 1.25rem 0.55rem;
-  min-height: 5.25rem;
+  padding: clamp(0.25rem, 1.8cqi, 0.4rem)
+    clamp(0.35rem, 3cqi, 0.9rem)
+    clamp(0.8rem, 4.2cqi, 1.25rem)
+    clamp(0.35rem, 1.8cqi, 0.55rem);
+  min-height: clamp(4rem, 18cqi, 5.25rem);
   text-align: left;
   border: 0;
   border-radius: 0;
@@ -367,8 +376,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.72rem;
+  gap: clamp(0.25rem, 1.8cqi, 0.5rem);
+  font-size: clamp(0.62rem, 2.4cqi, 0.72rem);
   color: var(--bpb-ink-muted, #5c4636);
 }
 
@@ -390,7 +399,8 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 0.35rem 0.45rem;
+  gap: clamp(0.2rem, 1.2cqi, 0.35rem)
+    clamp(0.25rem, 1.6cqi, 0.45rem);
   min-width: 0;
   overflow: visible;
 }
@@ -402,16 +412,16 @@
 
 .create-history__class-icon {
   display: block;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: clamp(1.6rem, 7.5cqi, 2.25rem);
+  height: clamp(1.6rem, 7.5cqi, 2.25rem);
   object-fit: contain;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.25));
 }
 
 .create-history__class-fallback {
   display: inline-flex;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: clamp(1.6rem, 7.5cqi, 2.25rem);
+  height: clamp(1.6rem, 7.5cqi, 2.25rem);
   align-items: center;
   justify-content: center;
   border: 1px solid color-mix(in srgb, var(--bpb-ink, #3c261d) 35%, transparent);
@@ -422,8 +432,8 @@
   position: absolute;
   right: -0.2rem;
   bottom: -0.15rem;
-  width: 0.95rem;
-  height: 0.95rem;
+  width: clamp(0.7rem, 3.2cqi, 0.95rem);
+  height: clamp(0.7rem, 3.2cqi, 0.95rem);
 }
 
 .create-history__rank-wrap {
@@ -436,8 +446,8 @@
 
 .create-history__rank-badge {
   position: relative;
-  width: 2.15rem;
-  height: 2.15rem;
+  width: clamp(1.55rem, 7.2cqi, 2.15rem);
+  height: clamp(1.55rem, 7.2cqi, 2.15rem);
   flex: 0 0 auto;
 }
 
@@ -486,8 +496,8 @@
 .create-history__stats {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  font-size: 0.85rem;
+  gap: clamp(0.2rem, 1.5cqi, 0.45rem);
+  font-size: clamp(0.68rem, 2.8cqi, 0.85rem);
   font-weight: 700;
   flex: 0 0 auto;
   min-width: 0;
@@ -501,8 +511,8 @@
 }
 
 .create-history__stat-icon {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: clamp(0.8rem, 3.8cqi, 1.1rem);
+  height: clamp(0.8rem, 3.8cqi, 1.1rem);
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -532,7 +542,7 @@
 .create-history__keys {
   display: flex;
   flex-wrap: nowrap;
-  gap: 0.12rem;
+  gap: clamp(0.04rem, 0.5cqi, 0.12rem);
   margin-left: auto;
   min-width: 0;
   max-width: 42%;
@@ -542,8 +552,8 @@
 }
 
 .create-history__key {
-  width: 1.55rem;
-  height: 1.55rem;
+  width: clamp(1rem, 5.2cqi, 1.55rem);
+  height: clamp(1rem, 5.2cqi, 1.55rem);
   object-fit: contain;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.2));
   flex: 0 0 auto;
@@ -618,13 +628,13 @@
 
 .create-history__preview-status {
   font-family: var(--bpb-font-body);
-  font-size: 0.9rem;
+  font-size: clamp(0.72rem, 3cqi, 0.9rem);
   color: var(--il-cream);
   -webkit-text-stroke: 0.08em var(--il-ink);
   paint-order: stroke fill;
   text-shadow: var(--il-ui-ring);
   text-align: center;
-  padding: 0.5rem;
+  padding: clamp(0.25rem, 1.8cqi, 0.5rem);
   flex: 0 0 auto;
 }
 
@@ -637,7 +647,8 @@
   justify-items: center;
   align-content: center;
   /* Room for leather bags to protrude past the fabric */
-  padding: 0.65rem 0.85rem;
+  padding: clamp(0.3rem, 2.4cqi, 0.65rem)
+    clamp(0.35rem, 3cqi, 0.85rem);
   box-sizing: border-box;
   overflow: visible;
 }
@@ -675,9 +686,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.45rem 1rem;
+  gap: clamp(0.2rem, 1.8cqi, 0.45rem)
+    clamp(0.35rem, 4cqi, 1rem);
   font-family: var(--bpb-font-body);
-  font-size: 1.05rem;
+  font-size: clamp(0.75rem, 3.8cqi, 1.05rem);
   flex: 0 0 auto;
   flex-shrink: 0;
 }
@@ -685,19 +697,19 @@
 .create-history__pstat {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: clamp(0.12rem, 1.1cqi, 0.3rem);
 }
 
 .create-history__pstat img {
-  width: 1.45rem;
-  height: 1.45rem;
+  width: clamp(0.9rem, 5cqi, 1.45rem);
+  height: clamp(0.9rem, 5cqi, 1.45rem);
   object-fit: contain;
 }
 
 .create-history__pstat strong {
   color: var(--il-cream);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: clamp(0.8rem, 4cqi, 1.1rem);
   font-variant-numeric: tabular-nums;
   -webkit-text-stroke: 0.08em var(--il-ink);
   paint-order: stroke fill;
@@ -710,32 +722,38 @@
   min-width: 0;
   width: 100%;
   overflow: visible;
-  --build-round-slot: 1.05rem;
-  padding: 0.15rem 0.15rem 0.25rem;
+  container-type: inline-size;
+  container-name: history-round;
+  padding: clamp(0.08rem, 0.8cqi, 0.15rem)
+    clamp(0.05rem, 0.8cqi, 0.15rem)
+    clamp(0.12rem, 1.2cqi, 0.25rem);
   box-sizing: border-box;
 }
 
 .create-history__round-host .build-round-panel {
+  --history-round-slot: clamp(0.55rem, 3.8cqi, 1.05rem);
+  --history-round-control: clamp(0.9rem, 6.3cqi, 1.45rem);
+  --history-round-gap: clamp(0.12rem, 2.5cqi, 0.65rem);
   margin: 0;
-  gap: 0.35rem;
+  gap: clamp(0.18rem, 1.5cqi, 0.35rem);
   padding: 0;
   width: 100%;
   max-width: 100%;
 }
 
 .create-history__round-host .build-round-strip {
-  --build-round-slot: 1.05rem;
+  --build-round-slot: var(--history-round-slot);
   width: 100%;
   max-width: 100%;
-  gap: 0.1rem;
+  gap: clamp(0.03rem, 0.6cqi, 0.1rem);
   padding: 0.1rem 0 0.15rem;
   justify-content: center;
 }
 
 .create-history__round-host .build-round-strip__btn {
-  flex: 0 1 calc(var(--build-round-slot) + 4px);
-  width: calc(var(--build-round-slot) + 4px);
-  min-width: 0;
+  flex: 1 1 0;
+  width: auto;
+  min-width: calc(var(--build-round-slot) + 2px);
   max-width: calc(var(--build-round-slot) + 4px);
   border-width: 2px;
   padding: 0.05rem 0;
@@ -743,19 +761,19 @@
 
 .create-history__round-host .build-round-strip__btn img {
   width: 100%;
-  max-width: 1.2rem;
+  max-width: var(--history-round-slot);
   height: auto;
   margin: 0 auto;
 }
 
 .create-history__round-host .build-round {
-  gap: 0.35rem;
+  gap: clamp(0.12rem, 1.5cqi, 0.35rem);
   min-height: 0;
   align-items: center;
 }
 
 .create-history__round-host .build-round__toggles {
-  gap: 0.45rem;
+  gap: clamp(0.1rem, 2cqi, 0.45rem);
 }
 
 .create-history__round-host .build-round__toggle {
@@ -765,26 +783,30 @@
 }
 
 .create-history__round-host .build-round__toggle img {
-  width: 1.65rem;
+  width: var(--history-round-control);
   height: auto;
 }
 
 .create-history__round-host .build-round__toggle--bags img {
-  width: 1.45rem;
+  width: clamp(0.8rem, 5.5cqi, 1.3rem);
 }
 
 .create-history__round-host .build-round__nav {
-  gap: 0.65rem;
+  gap: var(--history-round-gap);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .create-history__round-host .build-round__label {
-  min-width: 9.5rem;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
 }
 
 .create-history__round-host .build-round__label,
 .create-history__round-host .build-round__nav,
 .create-history__round-host .build-round__text {
-  font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+  font-size: clamp(0.85rem, 4.8cqi, 1.35rem);
   color: var(--il-cream);
   -webkit-text-stroke: 0.08em var(--il-ink);
   paint-order: stroke fill;
@@ -797,23 +819,24 @@
 }
 
 .create-history__round-host .build-round__btn {
-  font-size: clamp(1.75rem, 3vw, 2.15rem);
-  padding: 0.1rem 0.4rem;
+  font-size: clamp(0.85rem, 5.2cqi, 1.7rem);
+  padding: clamp(0.04rem, 0.8cqi, 0.1rem)
+    clamp(0.08rem, 1.5cqi, 0.4rem);
 }
 
 .create-history__round-host .build-round__chev {
-  width: 1.05rem;
-  height: 1.05rem;
+  width: clamp(0.7rem, 4.5cqi, 1.05rem);
+  height: clamp(0.7rem, 4.5cqi, 1.05rem);
 }
 
 .create-history__preview-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: clamp(0.2rem, 1.8cqi, 0.4rem);
   justify-content: center;
   align-items: center;
   margin-top: 0;
-  padding-top: 0.2rem;
+  padding-top: clamp(0.1rem, 0.8cqi, 0.2rem);
   flex: 0 0 auto;
   flex-shrink: 0;
   z-index: 2;
@@ -823,13 +846,14 @@
 .create-history__load,
 .create-history__cancel {
   margin: 0;
-  padding: 0.35rem 0.75rem;
+  padding: clamp(0.22rem, 1.2cqi, 0.35rem)
+    clamp(0.45rem, 2.8cqi, 0.75rem);
   border: 2px solid var(--bpb-ink, #3c261d);
   border-radius: 0.25rem;
   background: transparent;
   color: var(--il-cream);
   font-family: var(--bpb-font-body);
-  font-size: 0.85rem;
+  font-size: clamp(0.68rem, 2.8cqi, 0.85rem);
   -webkit-text-stroke: 0.07em var(--il-ink);
   paint-order: stroke fill;
   text-shadow: var(--il-ui-ring);
@@ -866,7 +890,7 @@
   outline-offset: 2px;
 }
 
-@media (max-width: 900px) {
+@container history-picker (max-width: 58rem) {
   .create-history__head {
     grid-template-columns: 1fr auto;
   }

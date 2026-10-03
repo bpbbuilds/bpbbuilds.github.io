@@ -584,3 +584,10 @@ None.
 ### 2026-10-02 Temporary Premium testing grant
 
 - Granted `glitzi` a seven-day Premium entitlement through `2026-10-10T00:47:38Z` and confirmed the Discord Premium role is present. The entitlement will expire automatically unless renewed.
+
+### 2026-10-02 History picker responsive refactor
+
+- Claimed `js/pages/create/history-picker.js`, `js/pages/create/history-panel.css`, and the related Create history-picker markup/styles for a responsive, modular layout pass.
+- Replaced fixed round-label, arrow, toggle, class-filter, history-row, stats, and action sizing with container-aware `clamp()` values. The round strip now flexes its slots to the available width instead of forcing a fixed desktop slot.
+- Replaced the viewport-only history layout breakpoint with a picker-container query, so the list/preview split responds to the board column width on desktop and mobile. Selection and Load/Cancel behavior are unchanged.
+- Verified the round controls at 293px, 520px, and 900px picker widths with no horizontal overflow; JavaScript syntax and targeted whitespace checks passed. The existing full browser history smoke remains blocked before the picker by the local onboarding/config state.
