@@ -8,7 +8,7 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ### 2026-10-03 Items desktop filter rail sizing
 
-- Claimed `js/pages/items/catalog.css` and `docs/CODEX_HANDOFF.md` for a desktop-only Items filter/catalog geometry pass. The layout will be container-aware above the mobile breakpoint so 1920px screens retain the 1440px composition; existing narrow drawer rules remain unchanged.
+- Claimed `js/pages/items/catalog.css` and `docs/CODEX_HANDOFF.md` for a desktop-only Items filter/catalog geometry pass. The filter rail will be container-aware above the mobile breakpoint while the catalog keeps its existing fluid desktop size; existing narrow drawer rules remain unchanged.
 
 ### 2026-10-03 Package 4 port backlog
 
@@ -283,8 +283,8 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 
 ### 2026-10-03 Items desktop filter rail sizing
 
-- Capped the standalone Items layout at the 1440px design width and made its grid columns derive from that container. At 1920px the layout now centers at 1440px with the same 880px catalog / 512px filter split instead of expanding beyond the viewport; smaller desktop widths continue to contract fluidly. The existing narrow drawer media rules remain unchanged.
-- Validation: Playwright CSS geometry check measured 1920px and 1440px identically (layout 1440px, catalog 880px, filter 512px), with 1280px and 1080px contracting to 720px/520px catalogs; `git diff --check` passed.
+- Restored the standalone Items catalog's fluid desktop width and changed its width calculation to use the actual content container instead of `100vw`. The 512px filter rail now remains inside the viewport at 1920px (catalog 1360px, filter 512px) while the 1440px proportions remain unchanged (880px / 512px); existing narrow drawer media rules remain unchanged.
+- Validation: Playwright CSS geometry check measured the filter rail fully inside the viewport at 1920px, 1440px, 1280px, and 1080px, with catalog widths of 1360px, 880px, 720px, and 520px; `git diff --check` passed.
 
 ### 2026-10-01 Items mobile detail spotlight
 

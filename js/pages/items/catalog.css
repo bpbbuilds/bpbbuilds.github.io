@@ -3,13 +3,16 @@
 /* Fill the viewport under the nav — scroll inside the bag, not the page.
    Bag + filters are centered together so left/right gutters match. */
 .items-main {
-  /* Keep the desktop composition at the same design width as the 1440px view.
-     A wider monitor gets larger page gutters instead of a wider filter rail or
-     catalog that can push the rail outside the viewport. */
-  --items-layout-max-width: 90rem;
   /* Room for Shop/Crafted column + gap + 3×50px buff grid + shade pads */
   --items-filters-width: 32rem;
   --items-side-gap: 1rem;
+  /* Keep the catalog's original fluid desktop size, but calculate it from the
+     content container rather than 100vw so the filter rail cannot fall beyond
+     the scrollbar edge on wide screens. */
+  --items-catalog-width: min(
+    96rem,
+    calc(100% - var(--items-filters-width) - 3 * var(--items-side-gap))
+  );
   width: 100%;
   margin: 0 auto;
   padding: 0.5rem 0 0.5rem;
@@ -38,17 +41,15 @@
 /* 1fr | bag | filters | 1fr — equal side gutters around the whole block */
 .items-layout {
   display: grid;
-  /* Size the two content columns from this capped container, not the viewport.
-     This keeps the 1440px proportions at 1920px and remains fluid below it. */
+  /* Keep the catalog fluid and reserve the full filter rail beside it. */
   grid-template-columns:
     minmax(0, 1fr)
-    minmax(0, calc(100% - var(--items-filters-width) - 3 * var(--items-side-gap)))
+    minmax(0, var(--items-catalog-width))
     var(--items-filters-width)
     minmax(0, 1fr);
   column-gap: var(--items-side-gap, 1rem);
   align-items: stretch;
-  width: min(100%, var(--items-layout-max-width));
-  margin-inline: auto;
+  width: 100%;
   flex: 1 1 auto;
   min-height: 0;
 }
