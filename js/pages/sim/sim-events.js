@@ -148,21 +148,43 @@ function eventTypeOrder(ev) {
  */
 export function compareSimEvents(a, b) {
   if (a.t !== b.t) return a.t - b.t;
+  const causalOrderA = Number(a.meta?.causalLogOrder);
+  const causalOrderB = Number(b.meta?.causalLogOrder);
+  const hasCausalOrderA = Number.isFinite(causalOrderA);
+  const hasCausalOrderB = Number.isFinite(causalOrderB);
+  // Keep fully ordered combat-start chains together ahead of legacy lines
+  // without placement provenance; otherwise those lines create a comparator
+  // cycle that can split a cause from its reaction.
+  if (hasCausalOrderA !== hasCausalOrderB) return hasCausalOrderA ? -1 : 1;
+  if (hasCausalOrderA && hasCausalOrderB && causalOrderA !== causalOrderB) {
+    return causalOrderA - causalOrderB;
+  }
+  const rootA = a.meta?.causalRootId;
+  const rootB = b.meta?.causalRootId;
+  if (rootA != null && rootA === rootB) {
+    const depthA = Number(a.meta?.causalDepth) || 0;
+    const depthB = Number(b.meta?.causalDepth) || 0;
+    if (depthA !== depthB) return depthA - depthB;
+  }
+  // Cause wins over item placement order: a listener's result cannot render
+  // before the buff event that triggered that listener.
+  const idA = a.meta?.eventId;
+  const idB = b.meta?.eventId;
+  const parentA = a.meta?.parentId;
+  const parentB = b.meta?.parentId;
+  if (parentA != null && parentA === idB) return 1;
+  if (parentB != null && parentB === idA) return -1;
   const sideA = logSideRank(a);
   const sideB = logSideRank(b);
   if (sideA !== sideB) return sideA - sideB;
-  const seqA = Number(a.meta?.combatStartSeq);
-  const seqB = Number(b.meta?.combatStartSeq);
+  const seqA = Number(a.meta?.causalStartSeq ?? a.meta?.combatStartSeq);
+  const seqB = Number(b.meta?.causalStartSeq ?? b.meta?.combatStartSeq);
   if (Number.isFinite(seqA) && Number.isFinite(seqB) && seqA !== seqB) {
     return seqA - seqB;
   }
   const pa = eventTypeOrder(a);
   const pb = eventTypeOrder(b);
   if (pa !== pb) return pa - pb;
-  const idA = a.meta?.eventId;
-  const idB = b.meta?.eventId;
-  const parentA = a.meta?.parentId;
-  const parentB = b.meta?.parentId;
   if (parentA != null && parentB == null && idB != null && parentA === idB) return 1;
   if (parentB != null && parentA == null && idA != null && parentB === idA) return -1;
   // Used spend before sibling gain at same type-order (pre-nest).

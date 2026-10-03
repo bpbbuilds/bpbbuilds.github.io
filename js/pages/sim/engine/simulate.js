@@ -846,6 +846,26 @@ export function simulateEngine(opts) {
   }
 
   collapseDuplicateBuffLogs(events);
+  // Reactive buff listeners can belong to an earlier-starting item than the
+  // grant that woke them. Keep each complete causal chain in its source
+  // item's batch after duplicate labels have been collapsed into port lines.
+  const causalStartSeq = new Map();
+  for (const ev of events) {
+    const root = ev.meta?.causalRootId;
+    const depth = Number(ev.meta?.causalDepth) || 0;
+    const seq = Number(ev.meta?.combatStartSeq);
+    if (root == null || depth !== 0 || !Number.isFinite(seq)) continue;
+    causalStartSeq.set(root, seq);
+  }
+  for (const ev of events) {
+    const root = ev.meta?.causalRootId;
+    const baseSeq = root != null ? causalStartSeq.get(root) : Number(ev.meta?.combatStartSeq);
+    if (!Number.isFinite(baseSeq)) continue;
+    const depth = root != null ? Number(ev.meta?.causalDepth) || 0 : 0;
+    // A small fractional tier keeps the source before every listener reaction
+    // while retaining normal placement ordering between independent chains.
+    ev.meta = { ...(ev.meta || {}), causalStartSeq: baseSeq, causalLogOrder: baseSeq + depth / 1000 };
+  }
   events.sort(compareSimEvents);
 
   let endLabel = 'Time cap';

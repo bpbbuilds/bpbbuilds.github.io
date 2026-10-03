@@ -9,6 +9,9 @@ import { scaleByBuffPower, originPieceFromOpts } from './buff-power.js';
 import { rollPercent } from './rng.js';
 import { runWithoutStatSource } from './stat-mods.js';
 
+/** @type {{ eventId?: string | number | null, causalRootId?: string | number | null, causalDepth?: number } | null} */
+let activeBuffChange = null;
+
 /** Game.getBuffs() — Lucky…Heat (not Block). */
 export const BUFF_KEYS = [
   'lucky',
@@ -63,13 +66,32 @@ export function emitBuffChanged(actor, change) {
   // (buff grant) is blamed for Forging Hammer / Burning Sword flat "Bonus" damage.
   runWithoutStatSource(() => {
     for (const fn of list) {
+      const previous = activeBuffChange;
+      activeBuffChange = {
+        eventId: change.eventId ?? null,
+        causalRootId: change.causalRootId ?? change.eventId ?? null,
+        causalDepth: Number(change.causalDepth) || 0,
+      };
       try {
         fn(change);
       } catch (err) {
         console.error('[sim] buff listener', err);
+      } finally {
+        activeBuffChange = previous;
       }
     }
   });
+}
+
+/** Give reactive grants/spends an automatic causal link to the triggering buff. */
+function withReactiveCause(opts) {
+  if (!activeBuffChange?.eventId || opts.parentId != null) return opts;
+  return {
+    ...opts,
+    parentId: activeBuffChange.eventId,
+    causalRootId: activeBuffChange.causalRootId ?? activeBuffChange.eventId,
+    causalDepth: (Number(activeBuffChange.causalDepth) || 0) + 1,
+  };
 }
 
 /**
@@ -80,6 +102,7 @@ export function emitBuffChanged(actor, change) {
  * @param {object} [opts]
  */
 export function grantStacks(actor, stack, amount, opts = {}) {
+  opts = withReactiveCause(opts);
   amount = scaleByBuffPower(amount, stack, opts);
   // EvilCap buffNullifyChance — chance to refuse a buff gain
   if (
@@ -118,13 +141,25 @@ export function grantStacks(actor, stack, amount, opts = {}) {
       actor.stackGrantByOrigin[stack][key] =
         (Number(actor.stackGrantByOrigin[stack][key]) || 0) + g.gained;
     }
+    // Log the source before notifying listeners so a reactive chain can point
+    // back to the exact log line that caused it.
+    const logEvent = logGrantedStacks(actor, stack, g.gained, opts);
+    const eventId = logEvent?.meta?.eventId ?? null;
+    if (logEvent?.meta && eventId && logEvent.meta.causalRootId == null) {
+      logEvent.meta.causalRootId = eventId;
+      logEvent.meta.causalDepth = 0;
+    }
+    const causalRootId = logEvent?.meta?.causalRootId ?? eventId;
+    const causalDepth = Number(logEvent?.meta?.causalDepth) || 0;
     emitBuffChanged(actor, {
       amount: g.gained,
       stack,
       originKey: opts.originKey ?? null,
       originId: opts.originId ?? null,
+      eventId,
+      causalRootId,
+      causalDepth,
     });
-    logGrantedStacks(actor, stack, g.gained, opts);
   }
   return g;
 }
@@ -137,6 +172,7 @@ export function grantStacks(actor, stack, amount, opts = {}) {
  * @param {object} [opts]
  */
 export function spendStacks(actor, stack, amount, opts = {}) {
+  opts = withReactiveCause(opts);
   let need = Math.max(0, Math.round(amount));
   if (need <= 0) return { spent: 0 };
   // Hostile strip (steal / purge): buff-protect consumes instead of removing

@@ -38,6 +38,23 @@ function buffDedupeKey(e, tOverride) {
   return `${e.type}|${t}|${stack}|${amt}|${id}|${e.target || ''}`;
 }
 
+function ensureLogEventId(event) {
+  if (!event) return null;
+  event.meta = event.meta || {};
+  if (event.meta.eventId == null) {
+    bound.nextLogEventId = (Number(bound.nextLogEventId) || 0) + 1;
+    event.meta.eventId = `stack-log-${bound.nextLogEventId}`;
+  }
+  return event;
+}
+
+function applyCausalMeta(meta, opts) {
+  if (opts.parentId != null) meta.parentId = opts.parentId;
+  if (opts.causalRootId != null) meta.causalRootId = opts.causalRootId;
+  if (opts.causalDepth != null) meta.causalDepth = opts.causalDepth;
+  return meta;
+}
+
 /**
  * Drop auto grantStacks lines when a port already logged the same grant.
  * Match within ±0.15s — ports often stamp fireT / fireT+0.004 while auto
@@ -74,6 +91,11 @@ export function collapseDuplicateBuffLogs(events) {
       if (id && p.id && id !== p.id) continue;
       if (target && p.target && target !== p.target) continue;
       if (Math.abs(p.t - t) > 0.15) continue;
+      // Keep causal provenance when preserving a port's better player-facing label.
+      p.e.meta = p.e.meta || {};
+      for (const key of ['eventId', 'parentId', 'causalRootId', 'causalDepth']) {
+        if (p.e.meta[key] == null && e.meta?.[key] != null) p.e.meta[key] = e.meta[key];
+      }
       return false;
     }
     // Exact-bucket fallback (legacy)
@@ -101,9 +123,9 @@ function alreadyLogged(events, row) {
     if (Math.abs((Number(e.t) || 0) - row.t) > 0.05) continue;
     const oid = e.itemId || e.meta?.originId || null;
     if (row.originId && oid && oid !== row.originId) continue;
-    return true;
+    return e;
   }
-  return false;
+  return null;
 }
 
 /**
@@ -121,11 +143,12 @@ export function logGrantedStacks(actor, stack, amount, opts = {}) {
     : Number(bound.getT?.()) || 0;
   const type = DEBUFFS.has(key) ? 'debuff' : 'buff';
   const originId = opts.originId ?? null;
-  if (alreadyLogged(bound.events, { t, type, stack: key, amount, originId })) {
-    return;
+  const duplicate = alreadyLogged(bound.events, { t, type, stack: key, amount, originId });
+  if (duplicate) {
+    return ensureLogEventId(duplicate);
   }
   const target = bound.dummy && actor === bound.dummy ? 'dummy' : 'player';
-  bound.events.push({
+  const event = {
     t,
     type,
     actor: target === 'dummy' ? 'dummy' : 'player',
@@ -134,14 +157,16 @@ export function logGrantedStacks(actor, stack, amount, opts = {}) {
     itemId: originId,
     placementKey: opts.originKey ?? null,
     label: `+${amount} ${key}`,
-    meta: {
+    meta: applyCausalMeta({
       category: type === 'debuff' ? 'debuff' : 'buff',
       stack: key,
       script: true,
       handler: originId || 'grantStacks',
       fromGrantStacks: true,
-    },
-  });
+    }, opts),
+  };
+  bound.events.push(event);
+  return ensureLogEventId(event);
 }
 
 /**
@@ -201,14 +226,15 @@ export function logSpentStacks(actor, stack, amount, opts = {}) {
     : Number(bound.getT?.()) || 0;
   const type = DEBUFFS.has(key) ? 'debuff' : 'buff';
   const originId = opts.originId ?? null;
-  if (alreadyLogged(bound.events, { t, type, stack: key, amount: -spent, originId })) {
-    return;
+  const duplicate = alreadyLogged(bound.events, { t, type, stack: key, amount: -spent, originId });
+  if (duplicate) {
+    return ensureLogEventId(duplicate);
   }
   const target = bound.dummy && actor === bound.dummy ? 'dummy' : 'player';
   const kind = opts.hostileStrip ? 'strip' : opts.cleanse ? 'cleanse' : 'spend';
   // Game LOG_USE_BUFF when used=true; otherwise "Lost".
   const used = opts.used === true || kind === 'spend';
-  bound.events.push({
+  const event = {
     t,
     type,
     actor: target,
@@ -217,7 +243,7 @@ export function logSpentStacks(actor, stack, amount, opts = {}) {
     itemId: originId,
     placementKey: opts.originKey ?? null,
     label: `−${spent} ${key}`,
-    meta: {
+    meta: applyCausalMeta({
       category: type === 'debuff' ? 'dot' : 'buff',
       stack: key,
       script: true,
@@ -225,6 +251,8 @@ export function logSpentStacks(actor, stack, amount, opts = {}) {
       fromSpendStacks: true,
       kind,
       used,
-    },
-  });
+    }, opts),
+  };
+  bound.events.push(event);
+  return ensureLogEventId(event);
 }

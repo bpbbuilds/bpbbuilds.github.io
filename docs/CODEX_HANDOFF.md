@@ -626,3 +626,9 @@ None.
 
 - Completed the Stone Golem repair for the exact reported board (`bpbb-ratmancer-frjdz0`) and seed (`2965184550`). Healing Herbs had bypassed the simulator's shared buff-change bus, so Stone Golem never received its Regeneration threshold event.
 - Stone Golem's granted Block now also uses that shared path, making the activation visible to the combat log/UI. The exact regression run records a `−7 regeneration` event and a `+195 block` event at 2.5 seconds; 195 is the board's buff-power-scaled result of Stone Golem's 150 base Block, followed by its 2.6-second activated cooldown.
+
+### 2026-10-03 Combat-log causal ordering
+
+- Claimed and updated `js/pages/sim/sim-events.js`, `js/pages/sim/engine/simulate.js`, `js/pages/sim/engine/buff-economy.js`, and `js/pages/sim/engine/buff-log.js` to make simultaneous reactive buff chains sort by cause before combat-start placement order.
+- Stack grants now receive a shared event identity before listeners run. Grants and spends performed inside a listener automatically inherit the triggering event as parent/root provenance; duplicate port labels retain that provenance.
+- Combat-start sorting now keeps an entire causal chain in the source item's batch, then orders its source before each reaction. The exact Stone Golem regression replay records Healing Herbsâ€™ Regeneration grant immediately before Stone Golem spends it and grants Block, without an item-specific ordering rule.
