@@ -569,7 +569,7 @@
   /* This reserved row keeps controls above the board without moving it when
      the first placed item reveals the toolbar. */
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   column-gap: 0.75rem;
   row-gap: 0.45rem;
@@ -594,7 +594,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  justify-self: center;
+  justify-self: start;
   /* Let dice-style sparkles / glow paint outside the orb */
   overflow: visible;
 }
