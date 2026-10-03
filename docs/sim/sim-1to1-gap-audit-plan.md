@@ -12,6 +12,20 @@ The goal is to find missing systems and false confidence before any future
 "near-1:1" claim. A passed smoke, deep handler, or matched final HP remains
 insufficient on its own.
 
+## Execution status (2026-10-03)
+
+- **A baseline generated:** `sim-system-surface.json` is source-hash checked
+  and makes 21 shared systems and their 90 reviewed functions explicit. It also
+  inventories 1,349 still-unreviewed functions across the selected core/base
+  source files. Package A's full exit gate remains open.
+- **B fatigue baseline generated:** `sim-scheduler-audit.json` verifies the
+  source-settled 14-second warning, 17-second first fatigue damage, and
+  one-second subsequent cadence. Timer ties, cancellation/re-entry, and
+  `advanceTime` remain open, as required by Package B.
+- **No package is marked 1:1 complete.** The remaining work below still needs
+  source classification, new regression coverage, and—in timing-sensitive
+  cases—retained live-game captures.
+
 Read these before starting any package:
 
 - [`sim-1to1-execution-plan.md`](sim-1to1-execution-plan.md) for the existing

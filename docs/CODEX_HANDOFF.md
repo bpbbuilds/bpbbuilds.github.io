@@ -666,3 +666,17 @@ None.
 
 - Added `docs/sim/sim-1to1-gap-audit-plan.md`, a source-led second-pass plan that does not duplicate the first catalog/port roadmap. It covers the still-unclosed system risks: scheduler/timer semantics, random-stream ownership, complete Character lifecycle, two-sided/dynamic-board behavior, canonical event projection, shared state invariants, data/inheritance/patch drift, evidence-grade live captures, mutation/property testing, and user-visible truthfulness.
 - The plan records current evidence boundaries: the simulator's fixed 0.05-second scheduler, Mulberry32 plus selective balanced RNG, optional SimEvent causality fields, partial paired-board/cross-board coverage, simulator-derived fixture bands, and the source audit's remaining 16 hooks/82 shallow ports/40 call candidates/21 duplicate registrations. These are audit targets, not unverified bug claims.
+
+### 2026-10-03 Second-gap audit Package A (in progress)
+
+- Claimed `scripts/build-sim-system-surface.mjs`, `assets/data/sim-system-surface.json`, and `docs/sim/sim-system-surface-audit.md` for Package A: a generated, source-hash-checked map of the shared combat surface (core lifecycle, character, stack, event/log/snapshot, timer, base item/gem/card) to simulator owners and explicit unresolved states.
+
+### 2026-10-03 Second-gap audit Package B (in progress)
+
+- Claimed `scripts/sim-scheduler-audit.mjs` and `assets/data/sim-scheduler-audit.json` for a source-backed scheduler baseline: combat delay, fatigue warning/first-damage cadence, and timer-advance semantics. This audit will report unproven clocks instead of treating the fixed simulator step as Godot-timer proof.
+
+### 2026-10-03 Second-gap audit baseline execution
+
+- Package A baseline is generated and checkable: `sim-system-surface.json` now tracks 21 shared systems, their simulator owners, source-file/function-body hashes, EventTypes, referenced signals/log constants, and a full inventory of the selected source files. Current extract inventory: 1,439 functions, 90 reviewed and 1,349 explicitly unreviewed. Its full exit gate remains open; no parity label was granted.
+- Package B's source-settled fatigue baseline is generated and checkable: it verifies the extracted 14-second warning, 17-second first damage, and one-second subsequent cadence against an engine run. It explicitly reports unresolved same-time ordering, general timer cancel/re-entry, visual warning projection, and the missing `CombatTimer.advanceTime` equivalent. Power of the Moon therefore remains open.
+- Next step: classify the shared-source inventory by combat relevance, then build the Package B boundary/tie suite and retain live captures where the extract cannot settle behavior. Do not treat either generated audit as a full 1:1 certification.
