@@ -591,3 +591,9 @@ None.
 - Replaced fixed round-label, arrow, toggle, class-filter, history-row, stats, and action sizing with container-aware `clamp()` values. The round strip now flexes its slots to the available width instead of forcing a fixed desktop slot.
 - Replaced the viewport-only history layout breakpoint with a picker-container query, so the list/preview split responds to the board column width on desktop and mobile. Selection and Load/Cancel behavior are unchanged.
 - Verified the round controls at 293px, 520px, and 900px picker widths with no horizontal overflow; JavaScript syntax and targeted whitespace checks passed. The existing full browser history smoke remains blocked before the picker by the local onboarding/config state.
+
+### 2026-10-02 Admin Sim Reports form styling
+
+- Claimed `js/pages/admin/admin.css` and the Sim Reports presentation selectors for a forms-style visual alignment pass.
+- Reused the admin form surface treatment for the Sim Reports KPI strip, report queue, expanded report details, empty/loading states, and filter rail: dark rewards gradient, gold edge, cream/gold text, recessed inputs, and form-style separators.
+- Report filtering, expansion, and moderation actions are unchanged. Browser style smoke verified the dark panel, gold borders, form input, and cream report text; `git diff --check` passed.

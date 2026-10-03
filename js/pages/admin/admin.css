@@ -1647,6 +1647,193 @@ button.admin-metric.is-active::before {
   align-items: center;
 }
 
+/* Sim Reports uses the same dark, gold-edged form surface as admin forms. */
+.admin-reports-col > .admin-kpis,
+.admin-reports-panel,
+.admin-report-filters.items-filters {
+  color: var(--bpb-rewards-cream, #dbc4a1);
+  background-color: var(--bpb-rewards-ink, #3c261d);
+  background-image:
+    radial-gradient(
+      ellipse 95% 80% at 50% 32%,
+      color-mix(in srgb, var(--bpb-rewards-ink-mid, #4a3224) 72%, transparent),
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bpb-rewards-ink-mid, #4a3224) 88%, #6b4a32) 0%,
+      var(--bpb-rewards-ink, #3c261d) 42%,
+      var(--bpb-rewards-ink-deep, #2a1a12) 100%
+    );
+  border: 2px solid var(--bpb-rewards-gold, #c6a567);
+  border-radius: 0.4rem;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 42%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bpb-rewards-gold-bright, #e8c878) 28%, transparent),
+    inset 0 -10px 28px rgba(0, 0, 0, 0.38),
+    0 10px 22px rgba(0, 0, 0, 0.22);
+}
+
+.admin-reports-col > .admin-kpis {
+  margin: 0;
+  padding: 0.65rem;
+}
+
+.admin-reports-col > .admin-kpis .admin-metric {
+  padding: 0.65rem 0.7rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 38%, transparent);
+  border-radius: 0.25rem;
+  background: rgba(18, 8, 4, 0.32);
+  box-shadow: inset 0 0 0 1px rgba(232, 200, 120, 0.08);
+}
+
+.admin-reports-col > .admin-kpis .admin-metric::before,
+.admin-reports-panel::before,
+.admin-report-filters.items-filters::before {
+  display: none;
+}
+
+.admin-reports-col > .admin-kpis .admin-metric__label,
+.admin-reports-col > .admin-kpis .admin-metric__hint {
+  color: color-mix(in srgb, var(--bpb-rewards-cream, #dbc4a1) 78%, transparent);
+  text-shadow: none;
+}
+
+.admin-reports-col > .admin-kpis .admin-metric__value {
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+}
+
+.admin-reports-col > .admin-kpis button.admin-metric.is-active {
+  border-color: var(--bpb-rewards-gold-bright, #e8c878);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--bpb-rewards-gold-bright, #e8c878) 65%, transparent),
+    inset 0 0 0 1px rgba(232, 200, 120, 0.16);
+}
+
+.admin-reports-panel {
+  padding: 0.55rem;
+}
+
+.admin-reports-panel > .admin-empty,
+.admin-reports-panel > .admin-status {
+  color: var(--bpb-rewards-cream, #dbc4a1);
+}
+
+.admin-report {
+  background: rgba(18, 8, 4, 0.24);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 35%, transparent);
+}
+
+.admin-report[open] {
+  background: rgba(18, 8, 4, 0.46);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 48%, transparent);
+}
+
+.admin-report--resolved {
+  background: color-mix(in srgb, #2d5a2a 16%, var(--bpb-rewards-ink, #3c261d));
+}
+
+.admin-report__summary:hover {
+  background: rgba(232, 200, 120, 0.08);
+}
+
+.admin-report__summary::after {
+  color: var(--bpb-rewards-gold, #c6a567);
+}
+
+.admin-report__avatar {
+  background: var(--bpb-rewards-ink-deep, #2a1a12);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 45%, transparent);
+}
+
+.admin-report__avatar--initials,
+.admin-report__who,
+.admin-report__when,
+.admin-report__snippet,
+.admin-report__desc,
+.admin-report__facts dd {
+  color: var(--bpb-rewards-cream, #dbc4a1);
+  text-shadow: none;
+}
+
+.admin-report__when,
+.admin-report__facts dt {
+  color: color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 78%, transparent);
+}
+
+.admin-report__facts {
+  padding-top: 0.55rem;
+  border-top: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 32%, transparent);
+}
+
+.admin-report-filters.items-filters {
+  padding: 0.7rem 0.65rem 0.75rem;
+}
+
+.admin-report-filters .il-filter__shade {
+  border-bottom: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 22%, transparent);
+  padding: 0.35rem 0.25rem 0.55rem;
+}
+
+.admin-report-filters .il-filter__shade:last-child {
+  border-bottom: 0;
+}
+
+.admin-report-filters .il-filter__count,
+.admin-report-filters .il-filter__sticker,
+.admin-report-filters .cr-label--sm {
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+}
+
+.admin-report-filters .il-filter__count {
+  font-size: 1.2rem;
+}
+
+.admin-report-filters .il-filter__check-label {
+  color: var(--bpb-rewards-cream, #dbc4a1);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+
+.admin-report-filters .il-filter__group-trigger {
+  border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 55%, transparent);
+  background: rgba(18, 8, 4, 0.35);
+  padding: 0.3rem 0.4rem;
+}
+
+.admin-report-filters .il-filter__group-option {
+  color: var(--bpb-rewards-cream, #dbc4a1);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  background: var(--bpb-rewards-ink, #3c261d);
+}
+
+.admin-report-filters .il-filter__group-option:hover,
+.admin-report-filters .il-filter__group-option.is-active {
+  border-color: var(--bpb-rewards-gold-bright, #e8c878);
+  background: rgba(232, 200, 120, 0.14);
+}
+
+.admin-report-filters .il-filter__group-menu {
+  border-color: var(--bpb-rewards-gold, #c6a567);
+  background: var(--bpb-rewards-ink, #3c261d);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+.admin-report-filters .cr-input {
+  border-color: var(--bpb-rewards-gold, #c6a567);
+  background: rgba(18, 8, 4, 0.45);
+  color: var(--bpb-rewards-cream, #dbc4a1);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.admin-report-filters .cr-input::placeholder {
+  color: color-mix(in srgb, var(--bpb-rewards-cream, #dbc4a1) 55%, transparent);
+}
+
 @media (max-width: 1240px) {
   .admin-reports-layout {
     display: flex;
