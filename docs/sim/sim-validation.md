@@ -33,6 +33,21 @@ Update this table as you find misses. Family handlers (Band D) are approximate u
 | Combat Log UI | Band Q dual panel (Damage Dealt + log) | Full CombatLog + every DamageMeter metric | Low for chrome; medium for rare `LOG_*` variants |
 | Log sentences | English `LOG_*` subset in `sim-log-sentences.js` | Full Interface.csv + BBCode | Low–medium (Band R) |
 
+## Continuous-audit ownership (Package 6)
+
+Every unexplained simulator mismatch stays in this table until source review,
+a focused regression, and (where required) retained live evidence resolve it.
+The continuous-audit command checks that this disclosure remains present; it
+does not turn a listed gap into a pass.
+
+| Mismatch / evidence gap | Owner | Game source or evidence | Severity | Next evidence |
+|---|---|---|---|---|
+| Power of the Moon has no `CombatTimer.advanceTime` equivalent | Package 4 lifecycle wave | `Items/Exclusive/PoweroftheMoon.gd` → `Interface/CombatTimer/CombatTimer.gd` | P1 | Source-led timer implementation plus two-sided timing/log regression and live capture if extract ordering is ambiguous. |
+| Wand of Dissonance misses its prepare-time affected-Dark effect-damage factor | Package 4 item-port wave | `Items/Exclusive/WandofDissonance.gd` | P1 | Preserve affected-item set and factor in a focused player/opponent fixture with event/log/meter proof. |
+| Rib Saw Blade misses retained enemy-weapon setup for its early damage purge | Package 4 item-port wave | `Items/RibSawBlade.gd` | P1 | Source-led retained-target fixture proving purge order, both sides, and combat-log output. |
+| Four deterministic fixture bands disagree with the current engine | Package 5 fixture matrix | `scripts/fixtures/parity/berserk-bloodline.json`, `infinite-combo-machine.json`, `pyro-furnace.json`; these are sim baselines, not live proof | P1 | Reproduce each from source, preserve the mismatch, and add paired/live evidence before changing a band. |
+| No retained live capture is filled (0/11 fixtures) | Package 5 live-capture matrix | `scripts/fixtures/parity/*.json` `live` blocks; protocol below | P1 | Capture real fights with board/opponent/version/timestamps and retain them only in `live.*`, never in dummy `expect` bands. |
+
 ## AF 194 — Damage / EventBus hooks audit
 
 Doc-only blockers for AG/AH (no pipeline rewrite in AF):

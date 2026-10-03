@@ -6,7 +6,15 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
-### 2026-10-03 Roadmap Package 3 event-contract conformance (in progress)
+### 2026-10-03 Roadmap Package 6 continuous audit and patch-drift workflow
+
+- Claimed `scripts/sim-patch-drift.mjs`, `scripts/sim-continuous-audit.mjs`, `assets/data/sim-patch-baseline.json`, `.github/workflows/sim-continuous-audit.yml`, `docs/sim/sim-patch-drift.md`, `docs/sim/sim-validation.md`, and `docs/sim/sim-1to1-execution-plan.md` to add a source-hash baseline, deterministic changed-item/core-impact report, a non-mutating simulator audit entry point, and its CI check. Existing fixture failures and missing live evidence must remain explicit; this package will not alter fixture bands or grant fidelity status.
+
+- Completed the workflow: the baseline covers 519 catalog rows, full catalog parameter records, resolved item script/function hashes, and the tracked shared combat core. Any patch now reports a sorted review wave; an affected `fixture_validated` or `live_validated` row blocks baseline acknowledgement until downgraded.
+- Added `node scripts/sim-continuous-audit.mjs --check`, a green 13-check source/audit/log/lifecycle/event/socket/two-board gate, with optional family and fixture modes. The fixture-inclusive mode deliberately exposes the four outstanding deterministic band failures and 0/11 retained live captures rather than hiding them.
+- Added the stable GitHub Actions check and the documented patch procedure. `docs/sim/sim-validation.md` now owns every current unexplained fixture/source gap with an owner, evidence, severity, and next-evidence requirement. Package 6 is checked off; this does not complete Packages 4, 5, or 7.
+
+### 2026-10-03 Roadmap Package 3 event-contract conformance
 
 - Claimed `js/pages/sim/sim-events.js`, `js/pages/sim/engine/log-export.js`, `js/pages/sim/log/sim-log-sentences.js`, `js/pages/sim/log/sim-meter-metrics.js`, `js/pages/sim/hud/sim-hud.js`, `js/pages/sim/controls/sim-scrubber.js`, `scripts/sim-event-contract-smoke.mjs`, `docs/sim/sim-event-contract.md`, and `docs/sim/sim-1to1-execution-plan.md` to establish a shared, source-documented event corpus across log, meter, HUD/snapshots, scrubber, and JSON export. The suite must leave unrepresented game EventTypes and the three known item gaps visible rather than treating coverage as parity.
 

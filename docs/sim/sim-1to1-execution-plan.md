@@ -257,5 +257,5 @@ not a deadline.
 - [x] 3. Event/log/meter/HUD/export conformance suite
 - [ ] 4. All source-driven item-port waves
 - [ ] 5. Full fixture and live-capture matrix
-- [ ] 6. Patch-drift and continuous-audit workflow
+- [x] 6. Patch-drift and continuous-audit workflow
 - [ ] 7. Near-1:1 release gate

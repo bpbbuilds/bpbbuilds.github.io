@@ -1,0 +1,39 @@
+name: Simulator continuous audit
+
+on:
+  pull_request:
+    paths:
+      - 'js/pages/sim/**'
+      - 'scripts/sim-*.mjs'
+      - 'scripts/audit-sim-gd-*.mjs'
+      - 'scripts/build-sim-*.mjs'
+      - 'scripts/fixtures/**'
+      - 'assets/data/sim-*.json'
+      - 'tools/game-extract-full/**'
+      - 'docs/sim/**'
+      - '.github/workflows/sim-continuous-audit.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'js/pages/sim/**'
+      - 'scripts/sim-*.mjs'
+      - 'scripts/audit-sim-gd-*.mjs'
+      - 'scripts/build-sim-*.mjs'
+      - 'scripts/fixtures/**'
+      - 'assets/data/sim-*.json'
+      - 'tools/game-extract-full/**'
+      - 'docs/sim/**'
+      - '.github/workflows/sim-continuous-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/sim-continuous-audit.mjs --check
