@@ -597,3 +597,9 @@ None.
 - Claimed `js/pages/admin/admin.css` and the Sim Reports presentation selectors for a forms-style visual alignment pass.
 - Reused the admin form surface treatment for the Sim Reports KPI strip, report queue, expanded report details, empty/loading states, and filter rail: dark rewards gradient, gold edge, cream/gold text, recessed inputs, and form-style separators.
 - Report filtering, expansion, and moderation actions are unchanged. Browser style smoke verified the dark panel, gold borders, form input, and cream report text; `git diff --check` passed.
+
+### 2026-10-02 History picker layout regression
+
+- Reclaimed `js/pages/create/history-panel.css` to correct the responsive picker breakpoint after the new container query stacked the run list and preview at a normal desktop board width.
+- The picker now keeps its side-by-side list and board preview above a 34rem board width; only genuinely narrow boards use the stacked layout. This prevents the preview board from being compressed into a thin strip on desktop columns.
+- Further capped the responsive round label, arrows, and visibility toggles. Style smoke confirmed no horizontal overflow, a 695px board stays two-column, and 520px/390px boards stack as intended; syntax and whitespace checks passed.

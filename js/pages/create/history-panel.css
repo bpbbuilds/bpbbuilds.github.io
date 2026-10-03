@@ -732,7 +732,7 @@
 
 .create-history__round-host .build-round-panel {
   --history-round-slot: clamp(0.55rem, 3.8cqi, 1.05rem);
-  --history-round-control: clamp(0.9rem, 6.3cqi, 1.45rem);
+  --history-round-control: clamp(0.9rem, 6.3cqi, 1.35rem);
   --history-round-gap: clamp(0.12rem, 2.5cqi, 0.65rem);
   margin: 0;
   gap: clamp(0.18rem, 1.5cqi, 0.35rem);
@@ -788,7 +788,7 @@
 }
 
 .create-history__round-host .build-round__toggle--bags img {
-  width: clamp(0.8rem, 5.5cqi, 1.3rem);
+  width: clamp(0.8rem, 5.5cqi, 1.2rem);
 }
 
 .create-history__round-host .build-round__nav {
@@ -806,7 +806,7 @@
 .create-history__round-host .build-round__label,
 .create-history__round-host .build-round__nav,
 .create-history__round-host .build-round__text {
-  font-size: clamp(0.85rem, 4.8cqi, 1.35rem);
+  font-size: clamp(0.85rem, 4.8cqi, 1.15rem);
   color: var(--il-cream);
   -webkit-text-stroke: 0.08em var(--il-ink);
   paint-order: stroke fill;
@@ -819,7 +819,7 @@
 }
 
 .create-history__round-host .build-round__btn {
-  font-size: clamp(0.85rem, 5.2cqi, 1.7rem);
+  font-size: clamp(0.85rem, 5.2cqi, 1.45rem);
   padding: clamp(0.04rem, 0.8cqi, 0.1rem)
     clamp(0.08rem, 1.5cqi, 0.4rem);
 }
@@ -890,7 +890,9 @@
   outline-offset: 2px;
 }
 
-@container history-picker (max-width: 58rem) {
+/* Stack only when the board itself is genuinely narrow. A desktop board column
+   can be narrower than the browser viewport without needing the mobile layout. */
+@container history-picker (max-width: 34rem) {
   .create-history__head {
     grid-template-columns: 1fr auto;
   }
