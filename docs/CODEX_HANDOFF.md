@@ -580,3 +580,7 @@ None.
 
 - Added the shared `https://awerc.github.io` artwork host to `img-src` and `data:` to `font-src` on every page CSP so build previews and item sprites are not blocked.
 - Preserved each page’s existing script policy. The browser-injected `FloatingAssistant` localhost message is extension diagnostic output, not a site request.
+
+### 2026-10-02 Temporary Premium testing grant
+
+- Granted `glitzi` a seven-day Premium entitlement through `2026-10-10T00:47:38Z` and confirmed the Discord Premium role is present. The entitlement will expire automatically unless renewed.
