@@ -632,3 +632,8 @@ None.
 - Claimed and updated `js/pages/sim/sim-events.js`, `js/pages/sim/engine/simulate.js`, `js/pages/sim/engine/buff-economy.js`, and `js/pages/sim/engine/buff-log.js` to make simultaneous reactive buff chains sort by cause before combat-start placement order.
 - Stack grants now receive a shared event identity before listeners run. Grants and spends performed inside a listener automatically inherit the triggering event as parent/root provenance; duplicate port labels retain that provenance.
 - Combat-start sorting now keeps an entire causal chain in the source item's batch, then orders its source before each reaction. The exact Stone Golem regression replay records Healing Herbsâ€™ Regeneration grant immediately before Stone Golem spends it and grants Block, without an item-specific ordering rule.
+
+### 2026-10-03 Simulator 1:1 audit and guardrails
+
+- Added `js/pages/sim/AGENTS.md` and `docs/sim/sim-1to1-audit.md` for durable simulator-specific source-of-truth, parity, combat-log, and regression rules. Existing Cursor-only rules are now consolidated into a repository-local rule set that applies to future Sim changes regardless of editor.
+- Baseline audit: `sim-log-smoke` and coverage-honesty pass; source audits find 15 hook gaps, 82 shallow ports, and 45 heuristic call candidates that still require `.gd` review. `sim-noop-audit` currently fails its Puzzlebag T combat-start assertion and is recorded as the first actionable parity gate rather than hidden.
