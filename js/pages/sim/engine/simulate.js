@@ -121,6 +121,7 @@ function applyPreCombat(placements, itemsById, actor, events, t, pieces) {
  *   playerMaxStamina?: number | null,
  *   opponentMaxHp?: number | null,
  *   opponentMaxStamina?: number | null,
+ *   captureLifecycle?: boolean,
  * }} opts
  * @returns {import('../sim-events.js').SimRun}
  */
@@ -190,6 +191,17 @@ export function simulateEngine(opts) {
 
   /** @type {import('../sim-events.js').SimEvent[]} */
   const events = [];
+  /** Test-only source lifecycle trace; never used as user-facing combat data. */
+  const lifecycle = opts.captureLifecycle ? [] : null;
+  const traceLifecycle = (phase, piece, at = t) => {
+    lifecycle?.push({
+      phase,
+      t: at,
+      side: piece.side === 'them' ? 'dummy' : 'player',
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+    });
+  };
   bindBuffCombatLog({
     events,
     getT: () => (logClockOverride != null ? logClockOverride : t),
@@ -382,6 +394,7 @@ export function simulateEngine(opts) {
   // Game Item.prepare(): chanceRng.reset() before onPrepare / combat-start scripts.
   for (const piece of pieces) {
     piece.chanceRng?.reset?.();
+    traceLifecycle('prepare', piece, 0);
   }
   const startOrder = buildCombatStartOrder(youPieces, themPieces, rng);
   /** @type {Map<string, number>} */
@@ -395,9 +408,11 @@ export function simulateEngine(opts) {
   for (const piece of startOrder) {
     const sc = ctxForPiece(piece, world);
     sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
+    traceLifecycle('socket_prepare', piece, COMBAT_DELAY);
     prepareGemSockets(piece, sc);
   }
   for (const piece of startOrder) {
+    traceLifecycle('cooldown_arm', piece, COMBAT_DELAY);
     armPieceCooldown(piece, ownerStacks(piece, world), rng, {
       opponent: piece.side === 'them',
     });
@@ -406,13 +421,16 @@ export function simulateEngine(opts) {
     const script = getScriptHandler(piece.itemId);
     const sc = ctxForPiece(piece, world);
     sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
+    traceLifecycle('pre_combat_start', piece, COMBAT_DELAY);
     script?.onPreCombatStart?.(piece, sc);
   }
   for (const piece of startOrder) {
     const script = getScriptHandler(piece.itemId);
     const sc = ctxForPiece(piece, world);
     sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
+    traceLifecycle('socket_combat_start', piece, COMBAT_DELAY);
     combatStartGemSockets(piece, sc);
+    traceLifecycle('combat_start', piece, COMBAT_DELAY);
     script?.onCombatStart?.(piece, sc);
   }
   // Game Item.postCombatStart is a separate third pass after every item's
@@ -422,6 +440,7 @@ export function simulateEngine(opts) {
     const script = getScriptHandler(piece.itemId);
     const sc = ctxForPiece(piece, world);
     sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
+    traceLifecycle('post_combat_start', piece, COMBAT_DELAY);
     script?.onPostCombatStart?.(piece, sc);
   }
   flushUnloggedHeal(player, events, COMBAT_DELAY);
@@ -939,6 +958,7 @@ export function simulateEngine(opts) {
     snapshots,
     pieceSnapshots,
     activationAudits: collectPieceActivationAudits(pieces),
+    lifecycle,
     summary,
     coverage,
     dummyStartBlock: dummyBlock,

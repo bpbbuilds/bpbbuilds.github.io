@@ -253,7 +253,7 @@ not a deadline.
 
 - [x] 0. Source baseline and complete fidelity ledger
 - [x] 1. Existing audit failures and hook-gap triage
-- [ ] 2. Canonical combat/start-of-battle lifecycle trace
+- [x] 2. Canonical combat/start-of-battle lifecycle trace
 - [ ] 3. Event/log/meter/HUD/export conformance suite
 - [ ] 4. All source-driven item-port waves
 - [ ] 5. Full fixture and live-capture matrix

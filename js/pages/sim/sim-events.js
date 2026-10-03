@@ -92,6 +92,7 @@
  *   events: SimEvent[],
  *   snapshots?: SimSnapshot[],
  *   pieceSnapshots?: { t: number, byKey: Record<string, object> }[],
+ *   lifecycle?: { phase: string, t: number, side: SimActor, itemId: string, placementKey: string }[] | null,
  *   summary?: Record<string, unknown>,
  *   coverage?: SimCoverage,
  * }} SimRun

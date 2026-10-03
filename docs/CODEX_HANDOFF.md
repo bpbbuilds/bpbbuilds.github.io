@@ -690,3 +690,11 @@ None.
 - Re-ran all baseline gates: noop, log smoke, coverage honesty, source-hook, and source-call audits pass at their intended assertion level. The ledger regenerates and passes `--check`.
 - Every one of the 16 raw hook differences now has a machine-readable source evidence, owner, and disposition. The new `node scripts/audit-sim-gd-parity.mjs --require-triage` gate passes only with zero untriaged and zero stale entries; the ledger records zero untriaged lifecycle-hook gaps.
 - Results: 3 inherited bases (`bow`, `card`, `weapon`), 3 visual-only hooks, 7 equivalent implementations, and 3 confirmed gaps left visible for later packages: Power of the Moon timer advance, Wand of Dissonance prepare-time effect-damage factor, and Rib Saw Blade enemy-weapon purge setup. The 45 call-review candidates, 21 duplicate registrations, and 82 shallow ports are still intentionally open outside Package 1's exit gate.
+
+### 2026-10-03 Roadmap Package 2 lifecycle fixture
+
+- Added the optional, test-only `captureLifecycle` trace to `simulateEngine`; it records the shared start lifecycle by phase, side, item, and placement without becoming combat data or changing a fight.
+- Added `scripts/sim-lifecycle-smoke.mjs`: a fixed, two-sided board proves player-before-opponent batches, prepare/socket/cooldown/pre/start/post order, Topaz-before-first-cooldown behavior, one start consume per side, and a same-timestamp Healing Herbs → Stone Golem spend → Block causal chain with a shared root and nested depth.
+- Updated `docs/sim/sim-combat-lifecycle.md` with the extract-backed trace, simulator entry points, and exact fixture assertions. Package 2 is checked off in `docs/sim/sim-1to1-execution-plan.md`.
+- The three explicit Package 1 gaps remain unresolved, including `PoweroftheMoon.gd`'s item-specific timer advance; the generic post-start pass and its trace are not presented as a port of that behavior.
+- Validation: lifecycle, socket split, versus-board, and log smokes pass; source-hook triage and fidelity-ledger checks pass.
