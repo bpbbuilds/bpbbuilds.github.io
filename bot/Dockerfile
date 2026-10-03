@@ -25,6 +25,7 @@ COPY assets/events ./assets/events
 
 # Shared modules imported by the board still renderer and event catalog.
 COPY js/pages/build/map-item.js ./js/pages/build/
+COPY js/shared/board-still/paint.js ./js/shared/board-still/
 COPY js/pages/events ./js/pages/events
 COPY js/shared/youtube.js ./js/shared/
 COPY js/shared/backpack-grid ./js/shared/backpack-grid
