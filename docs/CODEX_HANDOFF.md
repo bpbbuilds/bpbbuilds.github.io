@@ -6,6 +6,10 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+### 2026-10-03 Items spotlight recipe positioning
+
+- Claimed `js/pages/items/spotlight.js`, `js/pages/items/spotlight-recipes.js`, `js/pages/items/spotlight.css`, and `docs/CODEX_HANDOFF.md` for the item-detail craftable panel positioning fix and desktop responsive layout pass. The narrow stacked detail layout remains in scope for regression validation.
+
 ### 2026-10-03 Items desktop filter rail sizing
 
 - Claimed `js/pages/items/catalog.css` and `docs/CODEX_HANDOFF.md` for a desktop-only Items filter/catalog geometry pass. The filter rail will be container-aware above the mobile breakpoint while the catalog keeps its existing fluid desktop size; existing narrow drawer rules remain unchanged.
@@ -291,6 +295,11 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 - Claimed the Items mobile item-detail layout. Product edits will stay in the Items spotlight and shared tooltip positioning paths; screenshot-import paths remain owned by Cursor.
 - Stacked the focused item, tooltip, swipeable recipe carousel, and builds carousel on screens up to 900px; desktop keeps the existing side/bottom spotlight arrangement. Large focused pieces are scaled to the available top area and panel positions recalculate on resize and async build results.
 - Validation: browser geometry checks passed at 390px, 768px, 900px, and 1440px; mobile recipe scrolling was confirmed (`scrollWidth` exceeded the viewport); no page errors. `node --check` and `git diff --check` passed.
+
+### 2026-10-03 Items spotlight recipe positioning
+
+- Fixed the desktop spotlight open pass from clearing the recipe/build panels' own inline coordinates, which left the craftable panel at the stylesheet default in the top-left corner. The recipe anchor now also accounts for the tooltip's right edge on narrower desktop widths so it does not overlap item details; mobile keeps the stacked sheet behavior.
+- Validation: Playwright geometry checks at 1440px, 1920px, 1280px, 1080px, and 900px confirmed visible craftable panels stay within the viewport and do not overlap the tooltip where recipes are present; `node --check` passed for spotlight modules and `git diff --check` passed.
 
 ### 2026-10-01 Create desktop catalog width
 

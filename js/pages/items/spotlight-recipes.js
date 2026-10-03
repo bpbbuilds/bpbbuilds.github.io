@@ -264,15 +264,24 @@ export function createSpotlightRecipes(opts) {
 
     let gap = 24;
     let stageRight = vw * 0.5;
+    let anchorRight = stageRight;
+    let stageLeft = stageRight;
     if (stage instanceof Element) {
       const sr = stage.getBoundingClientRect();
+      stageLeft = sr.left;
       stageRight = sr.right;
+      anchorRight = stageRight;
     }
     if (tip instanceof HTMLElement) {
       const tr = tip.getBoundingClientRect();
-      if (tr.width > 1 && stage instanceof Element) {
-        const sr = stage.getBoundingClientRect();
-        gap = Math.max(12, Math.round(sr.left - tr.right));
+      if (tr.width > 1) {
+        // The tooltip can extend past the focused piece on narrower desktop
+        // widths. Anchor recipes after whichever element reaches farther right
+        // so the craftable panel never sits on top of the item details card.
+        anchorRight = Math.max(anchorRight, tr.right);
+        if (stage instanceof Element) {
+          gap = Math.max(12, Math.round(stageLeft - tr.right));
+        }
       }
     }
 
@@ -296,7 +305,7 @@ export function createSpotlightRecipes(opts) {
     const rw = rr.width || lockedWidthPx;
     const rh = rr.height || root.offsetHeight || maxH;
 
-    let left = Math.round(sr.right + gap);
+    let left = Math.round(anchorRight + gap);
     if (left + rw > vw - EDGE) {
       left = Math.max(EDGE, vw - rw - EDGE);
     }

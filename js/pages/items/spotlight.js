@@ -144,7 +144,14 @@ export function createSpotlight(opts) {
     parked.clear();
   }
 
-  function clearMobileStackStyles() {
+  /**
+   * Clear inline styles that belong to the narrow stacked sheet. Desktop
+   * recipe/build panels own their own fixed positioning, so do not wipe those
+   * coordinates during the desktop spotlight open pass.
+   * @param {{ resetPanels?: boolean }} [options]
+   */
+  function clearMobileStackStyles(options = {}) {
+    const resetPanels = options.resetPanels !== false;
     restoreParked();
     root.style.removeProperty('--il-spotlight-top');
     if (stage instanceof HTMLElement) {
@@ -161,16 +168,18 @@ export function createSpotlight(opts) {
       tipHost.style.removeProperty('--bpb-tooltip-scale');
     }
 
-    for (const panel of [opts.recipes?.el, opts.builds?.el]) {
-      if (!(panel instanceof HTMLElement)) continue;
-      panel.style.removeProperty('left');
-      panel.style.removeProperty('top');
-      panel.style.removeProperty('right');
-      panel.style.removeProperty('bottom');
-      panel.style.removeProperty('width');
-      panel.style.removeProperty('max-width');
-      panel.style.removeProperty('max-height');
-      panel.style.removeProperty('transform');
+    if (resetPanels) {
+      for (const panel of [opts.recipes?.el, opts.builds?.el]) {
+        if (!(panel instanceof HTMLElement)) continue;
+        panel.style.removeProperty('left');
+        panel.style.removeProperty('top');
+        panel.style.removeProperty('right');
+        panel.style.removeProperty('bottom');
+        panel.style.removeProperty('width');
+        panel.style.removeProperty('max-width');
+        panel.style.removeProperty('max-height');
+        panel.style.removeProperty('transform');
+      }
     }
   }
 
@@ -187,7 +196,10 @@ export function createSpotlight(opts) {
 
   function layoutMobileStack() {
     if (!mobileMq?.matches || (!open && !closing)) {
-      clearMobileStackStyles();
+      // Recipe/build modules position themselves beside/below the stage on
+      // desktop. Clearing their inline coordinates here would put them back
+      // at the stylesheet defaults (top-left) after every item click.
+      clearMobileStackStyles({ resetPanels: mobileMq?.matches === true });
       return;
     }
     if (!(sheet instanceof HTMLElement)) return;
