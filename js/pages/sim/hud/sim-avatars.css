@@ -516,7 +516,7 @@ body.page-sim {
   justify-self: start;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1100px), (min-width: 721px) and (max-height: 1100px) {
   .sim-avatar-stack {
     min-height: 10rem;
     margin-top: auto;
@@ -566,7 +566,11 @@ body.page-sim {
     max-width: min(100%, 11rem);
     --sim-av-base: 1.12;
   }
+}
 
+/* The single-column fight sheet is phone-only. Compact desktop screens keep
+   the opposing bags, avatars, and two HUD cards in their desktop positions. */
+@media (max-width: 720px) {
   .sim-field {
     --sim-avatar-stage-pad: 11rem;
     padding-bottom: 1.25rem;

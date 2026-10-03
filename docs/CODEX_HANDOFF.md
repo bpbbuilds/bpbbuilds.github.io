@@ -6,6 +6,8 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+- `js/pages/sim/sim.css`, `js/pages/sim/hud/sim-hud.css`, `js/pages/sim/hud/sim-avatars.css`, and `js/pages/sim/controls/sim-scrubber.css` (desktop Sim responsive scaling)
+
 - `js/pages/create/meta-drops.js`, `js/pages/create/drag-pointers.js`, and `js/pages/create/editor-state.js` (Build-tab priority drops from history-attached boards and catalog)
 
 - `js/pages/create/create.css` and `js/pages/create/rail-chrome.css` (desktop Create layout scaling for board and Filter/Build rail)
@@ -603,3 +605,9 @@ None.
 - Reclaimed `js/pages/create/history-panel.css` to correct the responsive picker breakpoint after the new container query stacked the run list and preview at a normal desktop board width.
 - The picker now keeps its side-by-side list and board preview above a 34rem board width; only genuinely narrow boards use the stacked layout. This prevents the preview board from being compressed into a thin strip on desktop columns.
 - Further capped the responsive round label, arrows, and visibility toggles. Style smoke confirmed no horizontal overflow, a 695px board stays two-column, and 520px/390px boards stack as intended; syntax and whitespace checks passed.
+
+### 2026-10-02 Sim desktop responsive scaling
+
+- Kept the desktop fight field at three columns for 1080px-wide and 1080px-tall desktop viewports; only phone widths now change it into the single-column composition.
+- Added a compact desktop scale tier for the fight HUD, avatar figures, scrubber, center controls, columns, and navigation clearance. Full 1440p values remain capped at their existing size while 1080p gets vertical room back.
+- Layout smoke confirmed side-by-side bags and an absolute two-card HUD at 1920x1080, 2560x1440, and 1080x900, with no horizontal overflow; the 390px mobile viewport still uses the one-column field.

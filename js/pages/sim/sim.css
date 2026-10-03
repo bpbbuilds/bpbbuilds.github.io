@@ -94,9 +94,11 @@ body.page-sim .site-nav {
 
 /* Clearance for fixed shelves + hanging tabs (host is height:0 so JS measure is useless) */
 body.page-sim #site-nav-space {
-  flex: 0 0 12.75rem;
-  height: 12.75rem !important;
-  max-height: 12.75rem;
+  /* Preserve the full 1440p shelf clearance, while returning vertical room on
+     1080p desktop displays. */
+  flex: 0 0 clamp(9.5rem, 14.2vh, 12.75rem);
+  height: clamp(9.5rem, 14.2vh, 12.75rem) !important;
+  max-height: clamp(9.5rem, 14.2vh, 12.75rem);
   margin-bottom: 0 !important;
   pointer-events: none;
 }
@@ -464,6 +466,42 @@ body.page-sim .site-footer--slim {
 
 .sim-field__hud .sim-hud-row {
   pointer-events: auto;
+}
+
+/* Compact desktop: retain the same fight-field composition at 1080px-wide
+   desktops instead of collapsing it into the phone layout.  The individual
+   regions reduce together, so bags, controls, avatars, and HUD still share
+   the available stage. */
+@media (min-width: 721px) and (max-width: 1100px),
+  (min-width: 721px) and (max-height: 1100px) {
+  .sim-shell--field {
+    padding-inline: 0.2rem;
+  }
+
+  .sim-field {
+    grid-template-columns: minmax(0, 1fr) clamp(6.25rem, 11vw, 9rem) minmax(0, 1fr);
+    column-gap: clamp(0.35rem, 1vw, 0.75rem);
+    padding-bottom: 0.45rem;
+  }
+
+  .sim-field__scrub {
+    width: min(19rem, calc(100% - 1rem));
+  }
+
+  .sim-field__mid {
+    gap: 0.5rem;
+    padding-top: clamp(6.75rem, 10.3vw, 9.25rem);
+  }
+
+  .sim-field__logbook .sim-logbook-btn {
+    width: 7.5rem;
+  }
+
+  .sim-field .sim-hud-row {
+    --hud-s: 1.15;
+    width: min(100%, calc(44rem * var(--hud-s)));
+    gap: 0;
+  }
 }
 
 .sim-field__tools {
@@ -1280,7 +1318,7 @@ body.page-sim .site-footer--slim {
   opacity: 0.8;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 720px) {
   .sim-field {
     grid-template-columns: 1fr;
     grid-template-rows: none;

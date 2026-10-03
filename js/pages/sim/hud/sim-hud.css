@@ -344,7 +344,7 @@
   z-index: 1;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1100px), (min-width: 721px) and (max-height: 1100px) {
   .sim-hud {
     --hud-k: 0.7;
   }
