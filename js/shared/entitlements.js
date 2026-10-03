@@ -7,7 +7,7 @@ import { getSupabase } from './supabase.js';
 /** @typedef {'free' | 'founding' | 'premium'} PlanId */
 
 /** @typedef {{
- *   id: string,
+   10| *   id: string,
  *   discord_id: string,
  *   display_name: string | null,
  *   avatar_url: string | null,
@@ -17,7 +17,7 @@ import { getSupabase } from './supabase.js';
  *   plan: PlanId,
  *   founding_slot: number | null,
  *   premium_until: string | null,
- *   cosmetic_grants?: unknown,
+    20| *   cosmetic_grants?: unknown,
  *   coins?: number,
  * }} Profile */
 
@@ -27,7 +27,7 @@ export const FOUNDING_TOTAL = 10;
 /**
  * @param {string | null | undefined} raw
  * @returns {PlanId}
- */
+    30| */
 export function normalizePlan(raw) {
   const p = String(raw || 'free').toLowerCase();
   if (p === 'founding' || p === 'premium') return p;
@@ -37,7 +37,7 @@ export function normalizePlan(raw) {
 /**
  * @param {Profile | null | undefined} profile
  */
-export function isFounding(profile) {
+    40|export function isFounding(profile) {
   return normalizePlan(profile?.plan) === 'founding';
 }
 
@@ -47,7 +47,7 @@ export function isFounding(profile) {
 export function isPaidPremium(profile) {
   return normalizePlan(profile?.plan) === 'premium';
 }
-
+    50|
 /**
  * @param {Profile | null | undefined} profile
  */
@@ -57,7 +57,7 @@ export function hasPremiumAccess(profile) {
   const plan = normalizePlan(profile.plan);
   if (plan === 'founding') return true;
   if (plan === 'premium') {
-    const until = profile.premium_until ? Date.parse(profile.premium_until) : NaN;
+    60|    const until = profile.premium_until ? Date.parse(profile.premium_until) : NaN;
     // A paid subscription with no Stripe end date is not an entitlement.
     return Number.isFinite(until) && until > Date.now();
   }
@@ -67,7 +67,7 @@ export function hasPremiumAccess(profile) {
 /**
  * @param {Profile | null | undefined} profile
  */
-export function planLabel(profile) {
+    70|export function planLabel(profile) {
   if (!profile) return 'Free';
   if (profile.is_owner) return 'Owner';
   const plan = normalizePlan(profile.plan);
@@ -77,7 +77,7 @@ export function planLabel(profile) {
 }
 
 /**
- * @returns {Promise<{ used: number, total: number, open: boolean, started: boolean }>}
+    80| * @returns {Promise<{ used: number, total: number, open: boolean, started: boolean }>}
  */
 export async function getFoundingStatus() {
   const fallback = { used: 0, total: FOUNDING_TOTAL, open: false, started: false };
@@ -87,7 +87,7 @@ export async function getFoundingStatus() {
     if (error) {
       console.error(error);
       return fallback;
-    }
+    90|    }
     const used = Math.max(0, Math.round(Number(data?.used) || 0));
     const total = Math.max(1, Math.round(Number(data?.total) || FOUNDING_TOTAL));
     const started = data?.started === true;
@@ -97,23 +97,34 @@ export async function getFoundingStatus() {
     console.error(err);
     return fallback;
   }
-}
+   100|}
 
 /**
  * Best-effort auto-grant on sign-in.
- * @returns {Promise<object | null>}
+ * @returns {Promise<{ status: 'granted' | 'error' | 'not_started' | 'full' | 'ineligible',
+ *                       data?: object, reason?: string }>}
  */
 export async function claimFoundingSlot() {
   try {
     const supabase = getSupabase();
     const { data, error } = await supabase.rpc('claim_founding_slot');
     if (error) {
-      console.error(error);
-      return null;
+      console.error('[claimFoundingSlot] RPC error', error);
+      return { status: 'error', reason: error.message || 'RPC failed' };
     }
-    return data && typeof data === 'object' ? data : null;
+    if (data && typeof data === 'object') {
+      const { granted, already_entitled, ineligible, not_started, full, slot, used, total, plan } = data;
+      if (granted) return { status: 'granted', data };
+      if (already_entitled) return { status: 'already_entitled', data };
+      if (ineligible) return { status: 'ineligible', data };
+      if (not_started) return { status: 'not_started', data };
+      if (full) return { status: 'full', data };
+      return { status: 'unknown', data };
+    }
+    return { status: 'no_data', reason: 'Unexpected RPC response' };
   } catch (err) {
-    console.error(err);
-    return null;
+    console.error('[claimFoundingSlot] Unexpected error', err);
+    return { status: 'exception', reason: err.message || 'Unknown error' };
   }
 }
+   120|

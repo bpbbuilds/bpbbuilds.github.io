@@ -7,7 +7,6 @@ import { getSupabase } from './supabase.js';
 import { claimFoundingSlot } from './entitlements.js';
 
 /** @typedef {import('./entitlements.js').Profile} Profile */
-
 const VOTER_KEY = 'bpb-voter-id';
 
 /** @type {Profile | null | undefined} */
@@ -118,6 +117,9 @@ export async function signInWithDiscord(redirectTo) {
   if (error) throw error;
 }
 
+/**
+ * Sign out from the current session.
+ */
 export async function signOut() {
   ensureAuthWiring();
   profileCache = null;
@@ -157,7 +159,6 @@ export function personaFromUser(user) {
       meta.full_name ||
         meta.name ||
         meta.custom_claims?.global_name ||
-        meta.preferred_username ||
         idata.full_name ||
         idata.name ||
         idata.preferred_username ||
@@ -177,7 +178,7 @@ export function personaFromUser(user) {
 function mapProfileRow(data, user) {
   const persona = personaFromUser(user);
   const discordFromRow = String(data.discord_id || '').trim();
-  const discordFromSession = discordIdFromUser(user);
+  const discordFromSession = discordIdFromUser(session.user);
   const coinsRaw = data.coins;
   const coins =
     coinsRaw != null && Number.isFinite(Number(coinsRaw))
@@ -237,7 +238,7 @@ export async function getProfile(opts = {}) {
     }
     const supabase = getSupabase();
     const { data, error } = await supabase.rpc('get_my_profile');
-
+   240|
     if (error) {
       console.error(error);
       profileCache = null;
@@ -247,7 +248,7 @@ export async function getProfile(opts = {}) {
       profileCache = null;
       return null;
     }
-    profileCache = mapProfileRow(/** @type {Record<string, unknown>} */ (data), session.user);
+   250|    profileCache = mapProfileRow(/** @type {Record<string, unknown>} */ (data), session.user);
     return profileCache;
   })();
 
@@ -267,7 +268,7 @@ async function afterSignedIn(session) {
   const supabase = getSupabase();
   const persona = personaFromUser(session.user);
   const discord_id = discordIdFromUser(session.user);
-
+   270|
   const patch = {
     display_name: persona.display_name,
     avatar_url: persona.avatar_url,
@@ -277,7 +278,7 @@ async function afterSignedIn(session) {
   const { error: upErr } = await supabase
     .from('profiles')
     .update(patch)
-    .eq('id', session.user.id);
+   280|    .eq('id', session.user.id);
 
   if (upErr) {
     // Profile may not exist yet if trigger lagged — upsert best-effort
@@ -293,11 +294,27 @@ async function afterSignedIn(session) {
     }
   }
 
-  await bindVoterKeyToProfile();
-  await claimFoundingSlot();
+  // Best-effort auto-grant founding slot on sign-in
+  const foundingResult = await claimFoundingSlot();
+  if (foundingResult.status === 'granted') {
+    console.log('[afterSignedIn] Founding slot granted:', foundingResult.data);
+    // Profile will be refreshed below; nav should pick up the new plan
+  } else if (foundingResult.status === 'error') {
+    console.warn('[afterSignedIn] Founding grant error:', foundingResult.reason);
+    // User will see upgrade prompt instead of dead click
+  } else if (foundingResult.status === 'not_started') {
+    console.log('[afterSignedIn] Founding promo not yet started — Stripe Premium path');
+  } else if (foundingResult.status === 'full') {
+    console.log('[afterSignedIn] All founding slots claimed — Stripe Premium path');
+  } else if (foundingResult.status === 'ineligible') {
+    console.log('[afterSignedIn] Account ineligible for founding (may be owner)');
+  } else if (foundingResult.status === 'already_entitled') {
+    console.log('[afterSignedIn] Already entitled to founding/premium');
+  }
+
   profileCache = undefined;
   await getProfile({ force: true });
-  const { maybePromptDiscordJoin } = await import('./discord-join.js');
+   300|  const { maybePromptDiscordJoin } = await import('./discord-join.js');
   await maybePromptDiscordJoin();
 }
 
@@ -307,7 +324,7 @@ async function afterSignedIn(session) {
  */
 export async function refreshProfile() {
   profileCache = undefined;
-  return getProfile({ force: true });
+   310|  return getProfile({ force: true });
 }
 
 /**
@@ -317,7 +334,7 @@ export async function refreshProfile() {
 export function getLocalVoterKey() {
   try {
     let id = localStorage.getItem(VOTER_KEY);
-    if (id && isUuid(id)) return id.toLowerCase();
+   320|    if (id && isUuid(id)) return id.toLowerCase();
     id = crypto.randomUUID();
     localStorage.setItem(VOTER_KEY, id);
     return id;
@@ -327,7 +344,7 @@ export function getLocalVoterKey() {
 }
 
 /**
- * @param {string} key
+   330| * @param {string} key
  */
 function setLocalVoterKey(key) {
   if (!isUuid(key)) return;
@@ -337,7 +354,7 @@ function setLocalVoterKey(key) {
     /* private mode */
   }
 }
-
+   340|
 /**
  * Bind localStorage bpb-voter-id → profiles.voter_key (RPC).
  * @returns {Promise<string | null>} canonical voter key
@@ -347,7 +364,7 @@ export async function bindVoterKeyToProfile() {
   if (!session?.user) return null;
 
   const localKey = getLocalVoterKey();
-  const supabase = getSupabase();
+   350|  const supabase = getSupabase();
   const { data, error } = await supabase.rpc('bind_my_voter_key', {
     p_key: localKey,
   });
@@ -357,7 +374,7 @@ export async function bindVoterKeyToProfile() {
     return null;
   }
 
-  const bound =
+   360|  const bound =
     data && typeof data === 'object'
       ? String(/** @type {{ voter_key?: string }} */ (data).voter_key || '')
       : '';
@@ -367,7 +384,7 @@ export async function bindVoterKeyToProfile() {
   }
   return localKey;
 }
-
+   370|
 /**
  * @param {(event: string, session: import('https://esm.sh/@supabase/supabase-js@2').Session | null) => void} cb
  * @returns {() => void}
@@ -377,7 +394,7 @@ export function onAuthChange(cb) {
   const supabase = getSupabase();
   const { data } = supabase.auth.onAuthStateChange((event, session) => {
     cb(event, session);
-  });
+   380|  });
   return () => data.subscription.unsubscribe();
 }
 
@@ -387,7 +404,7 @@ function ensureAuthWiring() {
   try {
     const supabase = getSupabase();
     supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
+   390|      if (event === 'SIGNED_IN' && session) {
         afterSignedIn(session).catch((err) => console.error(err));
       }
       if (event === 'SIGNED_OUT') {
@@ -397,7 +414,7 @@ function ensureAuthWiring() {
         profileCache = undefined;
       }
     });
-  } catch (err) {
+   400|  } catch (err) {
     console.error(err);
     authWired = false;
   }
@@ -407,6 +424,6 @@ function ensureAuthWiring() {
 export function initAuth() {
   ensureAuthWiring();
   getSession().then((session) => {
-    if (session) afterSignedIn(session).catch((err) => console.error(err));
+   410|    if (session) afterSignedIn(session).catch((err) => console.error(err));
   });
 }
