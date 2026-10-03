@@ -2,6 +2,8 @@
  * Premium / founding entitlement helpers (profiles.plan).
  */
 
+import { getSupabase } from './supabase.js';
+
 export const PREMIUM_PRICE_LABEL = '$3/mo';
 export const FOUNDING_TOTAL = 10;
 
@@ -71,8 +73,11 @@ export async function getFoundingStatus() {
 
 /**
  * Best-effort auto-grant on sign-in.
- * @returns {Promise<{ status: 'granted' | 'error' | 'not_started' | 'full' | 'ineligible',
- *                       data?: object, reason?: string }>}
+ * @returns {Promise<{
+ *   status: 'granted' | 'already_entitled' | 'ineligible' | 'not_started' | 'full' | 'error' | 'unknown' | 'no_data' | 'exception',
+ *   data?: object,
+ *   reason?: string,
+ * }>}
  */
 export async function claimFoundingSlot() {
   try {

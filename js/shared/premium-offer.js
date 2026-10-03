@@ -392,7 +392,18 @@ export async function openPremiumOffer(mode, opts = {}) {
       btn.disabled = true;
       btn.textContent = 'Claiming…';
       claimFoundingSlot()
-        .then(() => getProfile({ force: true }))
+        .then(async (result) => {
+          // The RPC reports normal outcomes in its JSON payload. Only a
+          // successful/already-entitled request should be treated as a claim;
+          // otherwise the old code silently re-rendered the same button.
+          if (result.status === 'error' || result.status === 'exception') {
+            throw new Error(result.reason || 'Could not claim a founding slot.');
+          }
+          if (result.status === 'unknown' || result.status === 'no_data') {
+            throw new Error('Could not verify the founding claim. Please try again.');
+          }
+          await getProfile({ force: true });
+        })
         .then(() => openPremiumOffer('founding', opts))
         .catch((err) => {
           console.error(err);

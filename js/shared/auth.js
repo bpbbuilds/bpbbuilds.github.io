@@ -309,6 +309,8 @@ async function afterSignedIn(session) {
     console.log('[afterSignedIn] Account ineligible for founding (may be owner)');
   } else if (foundingResult.status === 'already_entitled') {
     console.log('[afterSignedIn] Already entitled to founding/premium');
+  } else {
+    console.warn(`[afterSignedIn] Founding grant did not complete: ${foundingResult.status}`);
   }
 
   profileCache = undefined;
