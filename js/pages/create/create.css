@@ -1923,7 +1923,7 @@ body.page-create.is-bpb-selecting .create-col--catalog * {
 .create-board__park {
   position: relative;
   z-index: 0;
-  /* Full board column width — 9 chips × 3 rows = 27, no scroll */
+  /* Full board column width — 9 chips × 2 rows = 18, no scroll */
   width: 100%;
   max-width: 100%;
   margin-top: 0.35rem;
@@ -1936,7 +1936,7 @@ body.page-create.is-bpb-selecting .create-col--catalog * {
   /* Match essentials / filter recessed bands */
   --build-shade: rgba(14, 15, 16, 0.14);
   --park-cols: 9;
-  --park-rows: 3;
+  --park-rows: 2;
   --park-gap: 0.35rem;
   --park-chip: 4.25rem;
   /* Temporary layout diagnostic: show the exact Parked section bounds. */
@@ -2516,9 +2516,15 @@ body.page-create.is-bpb-dragging .create-sellbin {
   }
 
   .create-board__park-tray {
-    display: flex;
-    flex-wrap: nowrap;
-    height: var(--park-chip);
+    display: grid;
+    grid-template-columns: repeat(var(--park-cols), var(--park-chip));
+    grid-template-rows: repeat(var(--park-rows), var(--park-chip));
+    width: 100%;
+    min-width: 0;
+    height: calc(
+      var(--park-rows) * var(--park-chip) + (var(--park-rows) - 1) * var(--park-gap)
+    );
+    gap: var(--park-gap);
     overflow-x: auto;
     overflow-y: hidden;
     touch-action: pan-x;
@@ -2526,11 +2532,11 @@ body.page-create.is-bpb-dragging .create-sellbin {
   }
 
   .create-board__park-chip {
-    flex: 0 0 var(--park-chip);
+    width: var(--park-chip);
+    max-width: var(--park-chip);
   }
 
   .create-board__park-empty {
-    flex: 1 1 auto;
     width: auto;
   }
 

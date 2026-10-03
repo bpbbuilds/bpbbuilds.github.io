@@ -557,3 +557,7 @@ None.
 ### 2026-10-02 Parked layout diagnostic
 
 - Added a temporary magenta inset outline to the Create page Parked section to make its rendered bounds visible during layout debugging.
+
+### 2026-10-02 Parked capacity reduced
+
+- Reduced the Parked tray from three rows (27 unique stacks) to two rows (18 unique stacks). The mobile tray now uses the same two-row grid with horizontal scrolling for narrow widths, and drag/drop capacity checks use the new 18-item limit.

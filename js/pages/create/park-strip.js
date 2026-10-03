@@ -7,7 +7,7 @@ import { newPlacementKey } from './draft-io.js';
 import { gemCarry } from './socket-place.js';
 
 /** Max distinct item ids in the parked tray (stacks share one slot). */
-export const PARK_UNIQUE_MAX = 27;
+export const PARK_UNIQUE_MAX = 18;
 
 /**
  * @param {object} placement
