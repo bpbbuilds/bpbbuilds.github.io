@@ -551,6 +551,16 @@ a.builds-post__author:hover {
   background: color-mix(in srgb, #8a6a18 75%, #3c261d);
 }
 
+/* Event marks share the tag row but retain the event-gold priority treatment. */
+.builds-post__flair--event {
+  background: color-mix(in srgb, #8a6420 70%, #3c261d);
+}
+
+.builds-post__flair--event:hover,
+.builds-post__flair--event:focus-visible {
+  filter: brightness(1.08);
+}
+
 .builds-post__stage {
   --builds-post-stage-gap: 0.85rem;
   display: grid;

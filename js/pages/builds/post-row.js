@@ -7,7 +7,6 @@ import { faceHtml } from '../../shared/blob-face.js';
 import { profileHref as hrefForProfile } from '../../shared/profile-href.js';
 import { resolveSubclassItem } from '../../shared/subclass-items.js';
 import { getCatalogEvent } from '../events/catalog-data.js';
-import { eventMarkHtml } from '../build/event-banner-tip.js';
 import { postActionsHtml, postVoteHtml } from './post-actions.js';
 
 const LEAGUE_ICONS = {
@@ -127,6 +126,21 @@ export function postRowHtml(build, root, opts = {}) {
   const avatarInner = authorFaceHtml(build, base, author);
 
   const flairs = [];
+  if (opts.eventMark) {
+    const eventSlug = String(build.event_slug || '').trim();
+    const event = eventSlug ? getCatalogEvent(eventSlug) : null;
+    const eventMark = String(event?.mark || '').trim();
+    if (eventSlug && eventMark) {
+      const eventTitle = String(event?.title || eventSlug).trim() || eventSlug;
+      flairs.push({
+        kind: 'event',
+        label: eventMark,
+        href: `${base}events/?e=${encodeURIComponent(eventSlug)}`,
+        eventSlug,
+        eventTitle,
+      });
+    }
+  }
   if (isOp) flairs.push({ kind: 'op', label: 'OP' });
   const authTag =
     build.build_tag === 'theorycraft' ? 'theory' : build.build_tag;
@@ -138,8 +152,13 @@ export function postRowHtml(build, root, opts = {}) {
   const flairHtml = flairs.length
     ? `<span class="builds-post__flairs">${flairs
         .map(
-          (f) =>
-            `<span class="builds-post__flair builds-post__flair--${escapeAttr(f.kind)}">${escapeHtml(f.label)}</span>`,
+          (f) => {
+            const className = `builds-post__flair builds-post__flair--${escapeAttr(f.kind)}`;
+            if (f.href) {
+              return `<a class="${className} build-stage__event" href="${escapeAttr(f.href)}" data-event-slug="${escapeAttr(f.eventSlug)}" aria-label="Entered in ${escapeAttr(f.eventTitle)}">${escapeHtml(f.label)}</a>`;
+            }
+            return `<span class="${className}">${escapeHtml(f.label)}</span>`;
+          },
         )
         .join('')}</span>`
     : '';
@@ -152,9 +171,7 @@ export function postRowHtml(build, root, opts = {}) {
     ? `<a class="builds-post__author" href="${escapeAttr(profileUrl)}">${escapeHtml(author)}</a>`
     : `<span class="builds-post__author">${escapeHtml(author)}</span>`;
 
-  const eventHtml = opts.eventMark
-    ? eventMarkHtml(build.event_slug, base)
-    : eventEntryLinkHtml(build.event_slug, base);
+  const eventHtml = opts.eventMark ? '' : eventEntryLinkHtml(build.event_slug, base);
   const bylineRest = `
       ${authorInner}
       ${when ? `<span class="builds-post__dot" aria-hidden="true">·</span><span class="builds-post__time">${escapeHtml(when)}</span>` : ''}
@@ -185,8 +202,8 @@ export function postRowHtml(build, root, opts = {}) {
               ${bylineHtml}
               <a class="builds-post__compact-text" href="${escapeAttr(href)}">
                 <span class="builds-post__title">${escapeHtml(title)}</span>
-                ${flairHtml}
               </a>
+              ${flairHtml}
             </div>
             ${postVoteHtml(base)}
           </div>
@@ -205,8 +222,8 @@ export function postRowHtml(build, root, opts = {}) {
             ${bylineHtml}
             <a class="builds-post__grid-text" href="${escapeAttr(href)}">
               <span class="builds-post__title" title="${escapeAttr(title)}">${escapeHtml(title)}</span>
-              ${flairHtml}
             </a>
+            ${flairHtml}
           </div>
           ${postVoteHtml(base)}
         </div>
@@ -259,8 +276,8 @@ export function postRowHtml(build, root, opts = {}) {
               <span class="builds-post__byline">${bylineRest}</span>
               <a class="builds-post__head" href="${escapeAttr(href)}">
                 <span class="builds-post__title">${escapeHtml(title)}</span>
-                ${flairHtml}
               </a>
+              ${flairHtml}
             </div>
           </div>
         </div>

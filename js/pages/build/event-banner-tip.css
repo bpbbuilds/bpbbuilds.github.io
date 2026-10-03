@@ -61,7 +61,7 @@
   color: var(--bpb-cream, #ffecdc);
 }
 
-.build-stage__event {
+.build-stage__event:not(.builds-post__flair) {
   flex: 0 0 auto;
   font-family: var(--bpb-font-body);
   font-weight: 400;
@@ -84,8 +84,8 @@
   background: color-mix(in srgb, #8a6420 70%, #3c261d);
 }
 
-.build-stage__event:hover,
-.build-stage__event:focus-visible {
+.build-stage__event:not(.builds-post__flair):hover,
+.build-stage__event:not(.builds-post__flair):focus-visible {
   filter: brightness(1.08);
   outline: none;
 }

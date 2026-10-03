@@ -6,6 +6,10 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+### 2026-10-03 Builds event-tag ordering
+
+- Claimed `js/pages/builds/post-row.js`, `js/pages/builds/builds.css`, `js/pages/build/event-banner-tip.css`, and `docs/CODEX_HANDOFF.md` for merging event marks into the build tag row. Event tags will render first while retaining their event link and hover-card behavior across card, compact, and grid views.
+
 ### 2026-10-03 Items spotlight recipe positioning
 
 - Claimed `js/pages/items/spotlight.js`, `js/pages/items/spotlight-recipes.js`, `js/pages/items/spotlight.css`, and `docs/CODEX_HANDOFF.md` for the item-detail craftable panel positioning fix and desktop responsive layout pass. The narrow stacked detail layout remains in scope for regression validation.
@@ -289,6 +293,11 @@ Keep the launch gates disabled. If work resumes, start from the canonical image-
 
 - Restored the standalone Items catalog's fluid desktop width and changed its width calculation to use the actual content container instead of `100vw`. The 512px filter rail now remains inside the viewport at 1920px (catalog 1360px, filter 512px) while the 1440px proportions remain unchanged (880px / 512px); existing narrow drawer media rules remain unchanged.
 - Validation: Playwright CSS geometry check measured the filter rail fully inside the viewport at 1920px, 1440px, 1280px, and 1080px, with catalog widths of 1360px, 880px, 720px, and 520px; `git diff --check` passed.
+
+### 2026-10-03 Builds event-tag ordering
+
+- Merged event marks into the same flair row as OP, Feasible, Theory, Real, and Featured tags. Event marks are inserted first, retain their event link and hover-card hook, and are kept outside the build-title anchor so all three feed views remain valid HTML.
+- Validation: browser-rendered card, compact, and grid rows confirmed event-first ordering, four combined tags, event link preservation, and no nested anchors; `node --check js/pages/builds/post-row.js` and `git diff --check` passed.
 
 ### 2026-10-01 Items mobile detail spotlight
 
