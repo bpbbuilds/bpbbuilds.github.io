@@ -2645,6 +2645,49 @@ body.page-create.is-bpb-dragging .create-sellbin {
   }
 }
 
+/* Short desktop viewports (notably 1080p) need the board stage to give back
+ * height so the two-row Parked tray remains in view. The board art scales
+ * inside that stage; toolbar and Parked keep their own usable sizes. */
+@media (min-width: 1101px) and (max-height: 1100px) {
+  .page-create .create-col--board {
+    min-height: 0;
+  }
+
+  .page-create .create-col--board .create-board {
+    flex: 1 1 auto;
+    min-height: 0;
+    gap: clamp(0.45rem, 1vh, 1.15rem);
+  }
+
+  .page-create .create-board__stage {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    container-type: size;
+  }
+
+  .page-create .create-board__stage .create-board__bag {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 864px;
+    height: 672px;
+    margin: 0;
+    transform-origin: center center;
+    transform: translate(-50%, -50%) scale(
+      min(
+        calc((100cqw - 0.75rem) / 864px),
+        calc((100cqh - 0.5rem) / 672px)
+      )
+    );
+  }
+
+  .page-create .create-board__park {
+    flex: 0 0 auto;
+  }
+}
+
 @media (max-width: 800px) {
   .create-onboard__upload {
     grid-template-columns: minmax(0, 1fr);

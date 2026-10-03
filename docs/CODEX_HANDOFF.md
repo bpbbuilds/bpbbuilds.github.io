@@ -565,3 +565,7 @@ None.
 ### 2026-10-02 Create toolbar alignment
 
 - Left-aligned the Create toolbar controls (layer toggles, reset, media/export, and Play) while keeping the gold/stamina readout right-aligned. History unlock remains the leftmost control when shown.
+
+### 2026-10-02 Short desktop Create sizing
+
+- Added a short-viewport desktop layout for Create (up to 1100px tall). The board stage now flexes into the available vertical space and scales the 9×7 board art to fit, while the two-row Parked tray remains visible below it.
