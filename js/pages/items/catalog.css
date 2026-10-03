@@ -3,14 +3,13 @@
 /* Fill the viewport under the nav — scroll inside the bag, not the page.
    Bag + filters are centered together so left/right gutters match. */
 .items-main {
+  /* Keep the desktop composition at the same design width as the 1440px view.
+     A wider monitor gets larger page gutters instead of a wider filter rail or
+     catalog that can push the rail outside the viewport. */
+  --items-layout-max-width: 90rem;
   /* Room for Shop/Crafted column + gap + 3×50px buff grid + shade pads */
   --items-filters-width: 32rem;
   --items-side-gap: 1rem;
-  /* Room for filters + 3 column gaps (1fr | bag | filters | 1fr) */
-  --items-catalog-width: min(
-    96rem,
-    calc(100vw - var(--items-filters-width) - 3 * var(--items-side-gap))
-  );
   width: 100%;
   margin: 0 auto;
   padding: 0.5rem 0 0.5rem;
@@ -39,10 +38,17 @@
 /* 1fr | bag | filters | 1fr — equal side gutters around the whole block */
 .items-layout {
   display: grid;
-  grid-template-columns: 1fr auto auto 1fr;
+  /* Size the two content columns from this capped container, not the viewport.
+     This keeps the 1440px proportions at 1920px and remains fluid below it. */
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, calc(100% - var(--items-filters-width) - 3 * var(--items-side-gap)))
+    var(--items-filters-width)
+    minmax(0, 1fr);
   column-gap: var(--items-side-gap, 1rem);
   align-items: stretch;
-  width: 100%;
+  width: min(100%, var(--items-layout-max-width));
+  margin-inline: auto;
   flex: 1 1 auto;
   min-height: 0;
 }
@@ -112,7 +118,7 @@
 .items-bag {
   position: relative;
   grid-column: 2;
-  width: var(--items-catalog-width);
+  width: 100%;
   max-width: 100%;
   max-height: 100%;
   box-sizing: border-box;
@@ -188,10 +194,6 @@
 }
 
 @media (max-width: 900px) {
-  .items-main {
-    --items-catalog-width: 100%;
-  }
-
   .items-layout {
     grid-template-columns: minmax(0, 1fr);
     justify-content: center;
