@@ -4,6 +4,7 @@
  */
 
 import { originName, stackKeyOf } from './sim-log-sentences.js';
+import { conformSimEvents } from '../sim-events.js';
 
 /**
  * @typedef {{
@@ -209,7 +210,7 @@ function contribution(ev, metricId, sectionId) {
       return Math.max(0, Number(ev.amount) || 0);
     case 'stamina-used':
       if (ev.type !== 'stamina' || ev.meta?.starved) return 0;
-      if (ev.meta?.kind === 'used') return Math.max(0, Number(ev.amount) || 0);
+      if (ev.meta?.kind === 'used') return Math.abs(Number(ev.amount) || 0);
       return 0;
     case 'stamina-gained':
       if (ev.type !== 'stamina' || ev.meta?.starved) return 0;
@@ -334,10 +335,11 @@ function collectSection(events, itemsById, metricId, sectionId, side) {
  * @returns {MeterSection[]}
  */
 export function buildMetricSections(events, itemsById, metricId, side = 'player') {
+  const canonical = conformSimEvents(events);
   return sectionSpecs(metricId).map((spec) => ({
     id: spec.id,
     label: spec.label,
-    sources: collectSection(events, itemsById, metricId, spec.id, side),
+    sources: collectSection(canonical, itemsById, metricId, spec.id, side),
   }));
 }
 

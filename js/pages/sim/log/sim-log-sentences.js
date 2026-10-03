@@ -5,7 +5,7 @@
 
 import { ACTOR_STAT_META, actorStatIconUrl } from '../engine/actor-stats.js';
 import { formatCombatLogTime } from '../sim-combat-time.js';
-import { compareSimEvents } from '../sim-events.js';
+import { compareSimEvents, conformSimEvents } from '../sim-events.js';
 
 const STACK_FILES = {
   block: 'Block.png',
@@ -147,12 +147,10 @@ export function isLogNoise(ev) {
     return true;
   }
   if (ev.type === 'cooldown') return true;
-  // Game combat log: stamina spend is not a line (only regen / drain / out of stamina).
+  // Game CombatEvent.asText has distinct Stamina / DrainStamina / OutofStamina
+  // lines. A negative simulator stamina event is the DrainStamina projection,
+  // so it must remain visible instead of disappearing as raw system noise.
   if (ev.meta?.kind === 'block_strip' && ev.type === 'damage') return true;
-  if (ev.type === 'stamina' && !ev.meta?.starved) {
-    const lab = String(ev.label || '');
-    if (!/\+|regenerat|gain/i.test(lab)) return true;
-  }
   return false;
 }
 
@@ -369,12 +367,12 @@ export function formatLogLine(ev, ctx = {}) {
       );
     }
     case 'fight_end': {
-      let text = String(ev.label || '').trim();
-      if (!text || /^fight/i.test(text) || /^time/i.test(text)) {
-        if (ctx.playerWon === true) text = 'Round won.';
-        else if (ctx.playerWon === false) text = 'Round lost.';
-        else text = 'Round ended.';
-      }
+      const text =
+        ctx.playerWon === true
+          ? 'Round won.'
+          : ctx.playerWon === false
+            ? 'Round lost.'
+            : String(ev.label || '').trim() || 'Round ended.';
       return pack(escapeHtml(text), text);
     }
     case 'info': {
@@ -439,7 +437,7 @@ export function prepareLogEvents(events, ctx = {}) {
   const playerWon =
     typeof ctx.dummyEndHp === 'number' ? ctx.dummyEndHp <= 0 : null;
 
-  const sorted = nestLogEventChains([...(events || [])].sort(compareSimEvents));
+  const sorted = nestLogEventChains(conformSimEvents(events).sort(compareSimEvents));
 
   /** Resolve parent/child depth (Band R) from meta.parentId → event index */
   /** @type {Map<string | number, number>} */

@@ -9,6 +9,7 @@ import { summarizeManaOrbAudit } from './report-mana-orb.js';
 import { summarizeUiParity } from './report-ui.js';
 import { summarizeChanceWeaponAudits } from './report-weapon-audit.js';
 import { normalizeParams } from './params.js';
+import { conformSimEvents } from '../sim-events.js';
 
 /**
  * @param {import('../sim-events.js').SimRun} run
@@ -89,7 +90,7 @@ function catalogIndex(itemsById, placements) {
 }
 
 function compactEvents(run) {
-  return (run.events || []).map((e) => ({
+  return conformSimEvents(run.events).map((e) => ({
     t: e.t,
     combatT: toCombatLogTime(Number(e.t) || 0),
     type: e.type,
@@ -102,6 +103,7 @@ function compactEvents(run) {
     category: e.meta?.category || null,
     handler: e.meta?.handler || null,
     stack: e.meta?.stack || null,
+    contract: e.meta?.contract || null,
     meta: e.meta || null,
   }));
 }

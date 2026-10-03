@@ -6,6 +6,10 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+### 2026-10-03 Roadmap Package 3 event-contract conformance (in progress)
+
+- Claimed `js/pages/sim/sim-events.js`, `js/pages/sim/engine/log-export.js`, `js/pages/sim/log/sim-log-sentences.js`, `js/pages/sim/log/sim-meter-metrics.js`, `js/pages/sim/hud/sim-hud.js`, `js/pages/sim/controls/sim-scrubber.js`, `scripts/sim-event-contract-smoke.mjs`, `docs/sim/sim-event-contract.md`, and `docs/sim/sim-1to1-execution-plan.md` to establish a shared, source-documented event corpus across log, meter, HUD/snapshots, scrubber, and JSON export. The suite must leave unrepresented game EventTypes and the three known item gaps visible rather than treating coverage as parity.
+
 - `js/pages/create/create.css` (remove temporary Parked layout diagnostic)
 - `js/pages/sim/engine/scripts/ports.js`, `js/pages/sim/engine/scripts/ports-wave-d-weapons.js`, and `scripts/sim-harness.mjs` (Stone Golem regeneration activation parity repair and regression coverage)
 
@@ -698,3 +702,10 @@ None.
 - Updated `docs/sim/sim-combat-lifecycle.md` with the extract-backed trace, simulator entry points, and exact fixture assertions. Package 2 is checked off in `docs/sim/sim-1to1-execution-plan.md`.
 - The three explicit Package 1 gaps remain unresolved, including `PoweroftheMoon.gd`'s item-specific timer advance; the generic post-start pass and its trace are not presented as a port of that behavior.
 - Validation: lifecycle, socket split, versus-board, and log smokes pass; source-hook triage and fidelity-ledger checks pass.
+
+### 2026-10-03 Roadmap Package 3 event-contract conformance
+
+- Added `conformSimEvents`: the Combat Log, damage meter, scrubber, and debug JSON now consume the same non-mutating CombatEvent-like projection with stable IDs, parent/root/depth, timestamp, side, source/placement, target, and phase. Unknown source fields remain explicitly null rather than invented.
+- Fixed two projection defects found by the corpus: `DrainStamina` now renders and records its absolute spend in the Stamina meter, and a terminal `fight_end` consistently uses the source-style Round won/lost result when outcome data is available.
+- Added `scripts/sim-event-contract-smoke.mjs` and `docs/sim/sim-event-contract.md`. The corpus covers both sides, causal stacks, critical/block/effect/miss damage, Vampirism/Regeneration, stamina, consumed activation, debuff, cooldown, charge, death/outcome, meters, HUD snapshots, and JSON export. Charge intentionally remains an export/scrubber transport record rather than an invented log or meter row.
+- Package 3 is checked off in `docs/sim/sim-1to1-execution-plan.md`. This does not claim all item ports or source EventTypes are fully supported; the three known Package 1 item gaps remain visible.

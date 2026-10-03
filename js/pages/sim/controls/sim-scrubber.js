@@ -10,6 +10,7 @@ import {
   toCombatLogTime,
   toEngineTime,
 } from '../sim-combat-time.js';
+import { conformSimEvents } from '../sim-events.js';
 
 const SPEEDS = [1, 2, 4];
 const SPEED_KEY = 'bpb-sim-speed';
@@ -63,7 +64,7 @@ export function mountSimScrubber(host, opts) {
   const duration = useCombatClock
     ? combatDurationSec(engineDuration)
     : engineDuration;
-  const events = Array.isArray(run.events) ? run.events : [];
+  const events = conformSimEvents(run.events);
   let speed =
     opts.initialSpeed && SPEEDS.includes(opts.initialSpeed)
       ? opts.initialSpeed
