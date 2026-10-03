@@ -7,7 +7,7 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 ## Owned paths
 
 - `js/pages/create/create.css` (remove temporary Parked layout diagnostic)
-- `js/pages/sim/engine/scripts/ports-wave-d-weapons.js` and `scripts/sim-harness.mjs` (Stone Golem regeneration activation parity repair and regression coverage)
+- `js/pages/sim/engine/scripts/ports.js`, `js/pages/sim/engine/scripts/ports-wave-d-weapons.js`, and `scripts/sim-harness.mjs` (Stone Golem regeneration activation parity repair and regression coverage)
 
 - `js/pages/sim/sim.css`, `js/pages/sim/hud/sim-hud.css`, `js/pages/sim/hud/sim-avatars.css`, and `js/pages/sim/controls/sim-scrubber.css` (desktop Sim responsive scaling)
 
@@ -621,3 +621,8 @@ None.
 - Investigated Sim report `eeca47d8-b0fc-4e74-a72d-9cb880d465a0` (seed `2965184550`, build `bpbb-ratmancer-frjdz0`). All items in that board are already engine-backed; Stone Golem was the faulty port.
 - Stone Golem now listens for a positive Regeneration gain at the earliest combat-start hook, consumes its 7-Regeneration threshold immediately, grants its catalog Block value (150), and switches to its 2.6-second activated cooldown. Added a harness unit regression for those values.
 - Targeted syntax checks, focused activation check, and whitespace validation passed. The full harness reaches unrelated pre-existing parity/no-op failures after this unit passes; its generated report artifacts were not staged.
+
+### 2026-10-03 Stone Golem event-path completion
+
+- Completed the Stone Golem repair for the exact reported board (`bpbb-ratmancer-frjdz0`) and seed (`2965184550`). Healing Herbs had bypassed the simulator's shared buff-change bus, so Stone Golem never received its Regeneration threshold event.
+- Stone Golem's granted Block now also uses that shared path, making the activation visible to the combat log/UI. The exact regression run records a `−7 regeneration` event and a `+195 block` event at 2.5 seconds; 195 is the board's buff-power-scaled result of Stone Golem's 150 base Block, followed by its 2.6-second activated cooldown.

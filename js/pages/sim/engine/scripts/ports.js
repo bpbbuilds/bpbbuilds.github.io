@@ -342,7 +342,12 @@ export const healingHerbsPort = {
   onCombatStart(piece, ctx) {
     const { t, player, events } = ctx;
     const amount = Math.max(1, Math.round(getP1(piece.params, 4)));
-    gainStacks(player, 'regeneration', amount);
+    // Use the shared stack bus: listeners such as Stone Golem must receive
+    // this combat-start Regeneration gain immediately.
+    grantStacks(player, 'regeneration', amount, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
     piece.alive = false;
     piece.charges = 0;
     pushActivate(piece, ctx, 'healing_herbs', `Food: ${piece.name}`);

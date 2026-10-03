@@ -324,7 +324,7 @@ function activateStoneGolem(piece, ctx) {
 
   // StoneGolem.gd uses getBlock() (the item's tooltip Block value), not p3.
   const block = Math.max(1, Math.round(Number(piece.blockGrant) || 0));
-  gainStacks(ctx.player, 'block', block, {
+  grantStacks(ctx.player, 'block', block, {
     originKey: piece.placementKey,
     originId: piece.itemId,
   });
