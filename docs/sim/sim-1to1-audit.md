@@ -31,7 +31,9 @@ Commands run against the current extract and ports:
 ```text
 npm run sim-log-smoke                 PASS (8 log sentences; 15 meter metrics)
 node scripts/audit-sim-gd-parity.mjs  452 items; 3 abstract base entries with no handler;
-                                      16 hook gaps; 21 duplicate registrations; 82 shallow ports
+                                      16 raw hook differences; all 16 triaged (3 confirmed gaps,
+                                      7 equivalent implementations, 3 base, 3 visual-only);
+                                      21 duplicate registrations; 82 shallow ports
 node scripts/audit-sim-gd-calls.mjs   45 candidate item/call gaps (heuristic; requires GD review)
 npm run sim-coverage-honesty          PASS
 npm run sim-noop-audit                PASS after recognizing the pre-combat
@@ -48,6 +50,15 @@ Puzzlebag T's previous audit failure was a false check: its game `onPrepare`
 maps to simulator `onPreCombatStart`, where it must arm before combat-start
 stack spending. The audit now checks the full start lifecycle rather than only
 the later start hook; its source and coverage assertions remain intact.
+
+The hook-audit report and generated fidelity ledger now carry an explicit
+owner, source evidence, and disposition for every raw hook difference. Run
+`node scripts/audit-sim-gd-parity.mjs --require-triage` to fail on an
+unclassified or stale disposition. The three confirmed behavior gaps remain
+open and visible: Power of the Moon's `CombatTimer.advanceTime`, Wand of
+Dissonance's prepare-time effect-damage factor, and Rib Saw Blade's retained
+opponent-weapon purge path. Completing triage is not an assertion that those
+ports are fixed.
 
 Package 2's source trace is recorded in
 [`sim-combat-lifecycle.md`](sim-combat-lifecycle.md). The simulator now runs
@@ -76,7 +87,7 @@ audit baseline above:
 |---|---|---|
 | Resolved | Puzzlebag T audit classification | `onPrepare` is represented by `onPreCombatStart`; `sim-noop-audit` passes without relaxed source or coverage assertions. |
 | P0 | Event order and log semantics beyond the static sample | Expand focused tests around game `CombatEvent` parent chains, both sides, consume/activation, and each corrected live report. |
-| P1 | 16 hook gaps / 82 shallow ports | Triage each by actual `.gd` effect; port the missing hook or document an intentional non-combat/noop case. |
+| P1 | 3 confirmed hook gaps / 82 shallow ports | Hook triage is complete; port Power of the Moon, Wand of Dissonance, and Rib Saw Blade, then review shallow ports in source-driven waves. |
 | P1 | 45 call-audit candidates | Review the `.gd` call and port path; convert confirmed misses into per-item tests. |
 | P1 | Dummy versus a real opposing bag | Add paired-board captures before using PvP end HP or timing as parity evidence. |
 | P2 | Rare EventTypes and full log sentences | Compare `Core/CombatLog.gd`, `Core/CombatEvent.gd`, and `Interface.csv` with a growing live-log corpus. |

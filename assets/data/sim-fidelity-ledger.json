@@ -16,6 +16,7 @@
     "noCombat": 26,
     "deferred": 1,
     "lifecycleHookGap": 13,
+    "untriagedLifecycleHookGap": 0,
     "callReviewCandidate": 40,
     "duplicateRegistration": 21
   },
@@ -1368,6 +1369,11 @@
             "why": "no JS hook among onPreCombatStart/onCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "equivalent_implementation",
+          "owner": "js/pages/sim/engine/scripts/ports-wave-d-unique.js",
+          "evidence": "Items/Exclusive/Bewitchment.gd:onPrepare caches affected type counts; port derives the same static-board count at cooldown execution."
+        },
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -2901,6 +2907,11 @@
             "why": "no JS hook among onPreCombatStart/onCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "intentional_noncombat",
+          "owner": "js/pages/sim/engine/scripts/ports-pet.js",
+          "evidence": "Items/CarrotGoobert.gd:onPrepare only resets visual state/particles; the gameplay cooldown effect is ported."
+        },
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -3054,6 +3065,11 @@
             "why": "no JS hook among onPreCombatStart/onCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "intentional_noncombat",
+          "owner": "js/pages/sim/engine/scripts/ports-ai-a.js",
+          "evidence": "Items/Exclusive/Chainsaw.gd:onPrepare only sets animation state; its early damage hook and charge behavior are separate port hooks."
+        },
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -3661,6 +3677,11 @@
             "why": "no JS hook among onPreCombatStart/onCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "equivalent_implementation",
+          "owner": "js/pages/sim/engine/scripts/ports-an-gadgets.js",
+          "evidence": "Items/Exclusive/Coil.gd:onPrepare resets an activation counter; every simulator run creates a fresh piece and _coilN starts absent/zero."
+        },
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -5186,6 +5207,11 @@
             "why": "no JS hook among onPreCombatStart/onCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "equivalent_implementation",
+          "owner": "js/pages/sim/engine/combat-activate.js",
+          "evidence": "Items/Exclusive/DragonKnight.gd:onPrepare registers affected activated listeners; notifyPeerActivations filters affected placements before onPeerActivated."
+        },
         "callReviewCandidates": [
           {
             "call": "advanceCooldownPercent",
@@ -12355,6 +12381,11 @@
             "why": "no JS hook among onPostCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "confirmed_gap",
+          "owner": "Package 2 scheduler/timer model",
+          "evidence": "Items/Exclusive/PoweroftheMoon.gd:onPostCombatStart calls CombatTimer.advanceTime; simulator has no equivalent and must not model it as generic cooldown advance."
+        },
         "callReviewCandidates": [
           {
             "call": "inflictBlind",
@@ -13697,6 +13728,11 @@
             "why": "no JS hook among onPreCombatStart/onCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "confirmed_gap",
+          "owner": "Package 4 item-port wave",
+          "evidence": "Items/RibSawBlade.gd:onPrepare retains enemy weapons for onPreDealDamage_early purgeDamage; current port adds damage but does not retain/purge that set."
+        },
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -13817,6 +13853,11 @@
             "why": "no JS hook among onPreCombatStart/onCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "equivalent_implementation",
+          "owner": "js/pages/sim/engine/scripts/ports-ap-basic.js",
+          "evidence": "Items/RubyChonk.gd:onPrepare registers a Heat visual-state listener; port checks the current Heat threshold at the source on-dealt-damage transition."
+        },
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -13860,6 +13901,11 @@
             "why": "no JS hook among onCooldownEffect"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "equivalent_implementation",
+          "owner": "js/pages/sim/engine/scripts/ports-am-eggs.js",
+          "evidence": "Items/RubyEgg.gd start effect is routed through inherited egg/item lifecycle; port explicitly applies reflect pre-start and heat/activate at combat start."
+        },
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -16078,6 +16124,11 @@
             "why": "no JS hook among onPreCombatStart/onCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "equivalent_implementation",
+          "owner": "js/pages/sim/engine/scripts/ports-aura.js",
+          "evidence": "Items/SteelGoobert.gd:onPrepare caches affected weapons; port evaluates the same static affected set when its cooldown fires."
+        },
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -17633,6 +17684,11 @@
             "why": "no JS hook among onPreCombatStart/onCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "equivalent_implementation",
+          "owner": "js/pages/sim/engine/combat-activate.js",
+          "evidence": "Items/Exclusive/Twine.gd:onPrepare registers affected activated listeners; notifyPeerActivations performs the same affected-placement filter."
+        },
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -17958,6 +18014,11 @@
             "why": "no JS hook among onPreCombatStart/onCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "intentional_noncombat",
+          "owner": "js/pages/sim/engine/scripts/ports-outliers.js",
+          "evidence": "Items/VampiricGloves.gd:onPrepare only resets visual state; cooldown gameplay is ported."
+        },
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -18214,6 +18275,11 @@
             "why": "no JS hook among onPreCombatStart/onCombatStart"
           }
         ],
+        "lifecycleHookTriage": {
+          "status": "confirmed_gap",
+          "owner": "Package 4 item-port wave",
+          "evidence": "Items/Exclusive/WandofDissonance.gd:onPrepare changes Character effect-damage factor from affected Dark items; port only applies a local activation calculation."
+        },
         "callReviewCandidates": [
           {
             "call": "dealEffectDamage",

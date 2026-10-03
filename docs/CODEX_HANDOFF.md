@@ -680,3 +680,13 @@ None.
 - Package A baseline is generated and checkable: `sim-system-surface.json` now tracks 21 shared systems, their simulator owners, source-file/function-body hashes, EventTypes, referenced signals/log constants, and a full inventory of the selected source files. Current extract inventory: 1,439 functions, 90 reviewed and 1,349 explicitly unreviewed. Its full exit gate remains open; no parity label was granted.
 - Package B's source-settled fatigue baseline is generated and checkable: it verifies the extracted 14-second warning, 17-second first damage, and one-second subsequent cadence against an engine run. It explicitly reports unresolved same-time ordering, general timer cancel/re-entry, visual warning projection, and the missing `CombatTimer.advanceTime` equivalent. Power of the Moon therefore remains open.
 - Next step: classify the shared-source inventory by combat relevance, then build the Package B boundary/tie suite and retain live captures where the extract cannot settle behavior. Do not treat either generated audit as a full 1:1 certification.
+
+### 2026-10-03 Roadmap Package 1 hook-gap triage (in progress)
+
+- Claimed `scripts/audit-sim-gd-parity.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `docs/sim/sim-1to1-execution-plan.md` to add source-backed owner/evidence dispositions for every existing hook-audit result. The target is auditable triage only: confirmed behavior gaps stay open rather than being hidden by hook aliases.
+
+### 2026-10-03 Roadmap Package 1 complete
+
+- Re-ran all baseline gates: noop, log smoke, coverage honesty, source-hook, and source-call audits pass at their intended assertion level. The ledger regenerates and passes `--check`.
+- Every one of the 16 raw hook differences now has a machine-readable source evidence, owner, and disposition. The new `node scripts/audit-sim-gd-parity.mjs --require-triage` gate passes only with zero untriaged and zero stale entries; the ledger records zero untriaged lifecycle-hook gaps.
+- Results: 3 inherited bases (`bow`, `card`, `weapon`), 3 visual-only hooks, 7 equivalent implementations, and 3 confirmed gaps left visible for later packages: Power of the Moon timer advance, Wand of Dissonance prepare-time effect-damage factor, and Rib Saw Blade enemy-weapon purge setup. The 45 call-review candidates, 21 duplicate registrations, and 82 shallow ports are still intentionally open outside Package 1's exit gate.

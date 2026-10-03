@@ -20,12 +20,15 @@ The 2026-10-03 audit recorded:
 - 519 catalog items in the imported game catalog; the generated ledger is the
   authoritative denominator. (The earlier 553 HAND count was a port-list
   count, not a catalog count.)
-- 452 extract-audited item scripts: 16 lifecycle-hook gaps, 21 duplicate
-  registrations, and 82 shallow ports.
+- 452 extract-audited item scripts: 16 raw lifecycle-hook differences, all
+  triaged (3 confirmed gaps, 7 equivalent implementations, 3 base behaviors,
+  and 3 visual-only behaviors), plus 21 duplicate registrations and 82 shallow
+  ports.
 - 45 call-level audit candidates. These are leads, not confirmed defects.
 - Combat-log, coverage-honesty, and the corrected Puzzlebag T noop audit pass.
-  The remaining Package 1 gate is source-led classification of all 16 hook
-  candidates rather than treating the audit output as a defect list.
+  Package 1 is complete: `--require-triage` ensures every raw hook difference
+  has a current source-led disposition instead of treating audit output as a
+  defect list.
 
 The two item totals are not yet a trusted denominator comparison. The first
 work package reconciles catalog IDs, extract scripts, base classes, deliberate
@@ -249,7 +252,7 @@ not a deadline.
 ## Progress checklist
 
 - [x] 0. Source baseline and complete fidelity ledger
-- [ ] 1. Existing audit failures and hook-gap triage
+- [x] 1. Existing audit failures and hook-gap triage
 - [ ] 2. Canonical combat/start-of-battle lifecycle trace
 - [ ] 3. Event/log/meter/HUD/export conformance suite
 - [ ] 4. All source-driven item-port waves

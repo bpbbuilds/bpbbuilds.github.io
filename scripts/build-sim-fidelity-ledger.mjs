@@ -170,6 +170,7 @@ const rows = catalog
       },
       audit: {
         lifecycleHookGaps: hookGaps,
+        ...(hook?.hookTriage ? { lifecycleHookTriage: hook.hookTriage } : {}),
         callReviewCandidates: callCandidates,
         duplicateRegistration: hook?.duplicateModules || null,
       },
@@ -205,6 +206,9 @@ const ledger = {
     noCombat: count((row) => row.status === 'no_combat'),
     deferred: count((row) => row.status === 'deferred'),
     lifecycleHookGap: count((row) => row.audit.lifecycleHookGaps.length > 0),
+    untriagedLifecycleHookGap: count(
+      (row) => row.audit.lifecycleHookGaps.length > 0 && !row.audit.lifecycleHookTriage,
+    ),
     callReviewCandidate: count((row) => row.audit.callReviewCandidates.length > 0),
     duplicateRegistration: count((row) => row.audit.duplicateRegistration?.length > 1),
   },
