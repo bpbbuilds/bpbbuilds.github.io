@@ -657,3 +657,12 @@ None.
 - Corrected the Puzzlebag T noop-audit lifecycle mapping without weakening source/coverage checks; the full noop audit now passes. Package 1 remains open because the source audit has 16 hook candidates, 82 shallow ports, 40 catalog call-review candidates, and 21 duplicate registrations that need individual classification.
 - Added the source-backed start-of-battle trace, cooldown-before-pre-hook ordering, a distinct post-combat-start pass, and correct socketed-gem phase ordering. The socket smoke now proves Topaz modifies the initial armed cooldown and Coal's combat-start block combines with its host opening effect.
 - Corrected the source audit to require a real simulator `onPostCombatStart` hook for game `onPostCombatStart`. This surfaced the existing Power of the Moon gap instead of silently accepting its earlier `onCombatStart` approximation. Package 2 remains open pending the shared two-sided lifecycle fixture and source-led fatigue/time-advance model.
+
+### 2026-10-03 Second simulator gap-audit plan (in progress)
+
+- Claimed new `docs/sim/sim-1to1-gap-audit-plan.md` to document a second, non-duplicative audit plan for simulator risks not fully covered by the original item/lifecycle roadmap: core timing/RNG, data fidelity, UI/export consistency, harness quality, unsupported modes, and retained live evidence.
+
+### 2026-10-03 Second simulator gap-audit plan complete
+
+- Added `docs/sim/sim-1to1-gap-audit-plan.md`, a source-led second-pass plan that does not duplicate the first catalog/port roadmap. It covers the still-unclosed system risks: scheduler/timer semantics, random-stream ownership, complete Character lifecycle, two-sided/dynamic-board behavior, canonical event projection, shared state invariants, data/inheritance/patch drift, evidence-grade live captures, mutation/property testing, and user-visible truthfulness.
+- The plan records current evidence boundaries: the simulator's fixed 0.05-second scheduler, Mulberry32 plus selective balanced RNG, optional SimEvent causality fields, partial paired-board/cross-board coverage, simulator-derived fixture bands, and the source audit's remaining 16 hooks/82 shallow ports/40 call candidates/21 duplicate registrations. These are audit targets, not unverified bug claims.
