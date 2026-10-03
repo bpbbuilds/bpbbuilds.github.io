@@ -22,7 +22,6 @@ import { requirePremium, resumePremiumIntent } from '../../shared/premium-gate.j
 import { isBoardAndParkEmpty, mountBoardOnboard } from './board-onboard.js?v=place-back';
 import { mountBoardImport } from './board-import.js?v=bags2u';
 import { mountLabelTool, wantLabelTool } from './label-tool.js?v=shells1';
-import { createHistoryScrubberController } from './history-scrubber.js';
 import { mountHistoryEditGuard } from './history-edit-guard.js';
 import { exportBoardPng } from './export-board-png.js';
 import { isTypingTarget } from '../../shared/is-typing-target.js';
@@ -231,21 +230,15 @@ export function mountBoardEditor(host, opts) {
         <div class="build-bag create-board__bag" data-board-bag aria-label="Build backpack"></div>
         <div class="create-board__ghost" data-board-ghost hidden aria-hidden="true"></div>
       </div>
-      <div
-        class="create-board__round build-round-host"
-        data-create-round
-        hidden
-        aria-label="Run history rounds"
-      ></div>
       <section
         class="create-board__park is-empty"
         data-board-park
-        aria-label="Parked bags and items, 0 of 27 unique"
+        aria-label="Parked bags and items, 0 of 18 unique"
       >
         <div class="create-board__park-head">
           <h3 class="create-board__park-label">Parked</h3>
           <div class="create-board__park-meta">
-            <span class="create-board__park-count" data-park-count aria-live="polite">0/27</span>
+            <span class="create-board__park-count" data-park-count aria-live="polite">0/18</span>
             <button
               type="button"
               class="create-board__park-clear"
@@ -266,7 +259,6 @@ export function mountBoardEditor(host, opts) {
   const bagHost = host.querySelector('[data-board-bag]');
   const ghostEl = host.querySelector('[data-board-ghost]');
   const stageEl = host.querySelector('[data-board-stage]');
-  const roundHost = host.querySelector('[data-create-round]');
   const parkEl = host.querySelector('[data-board-park]');
   const boardRoot = host.querySelector('.create-board');
   const unlockBtn = host.querySelector('[data-act="unlock-history"]');
@@ -470,9 +462,9 @@ export function mountBoardEditor(host, opts) {
     cellPx: CELL_PX,
   });
 
-  /** Placements currently painted on the bag (history scrubber frame or draft). */
+  /** Placements currently painted on the bag from the active draft. */
   function getVisiblePlacements() {
-    return historyViewPlacements || state.getDraft().placements || [];
+    return state.getDraft().placements || [];
   }
 
   function stampKeys() {
@@ -523,34 +515,13 @@ export function mountBoardEditor(host, opts) {
     paintLayerDim();
   }
 
-  /** @type {object[] | null} placements shown by history scrubber (not written to draft) */
-  let historyViewPlacements = null;
-
   function paintEconomy() {
     paintEconomyReadout(host, {
-      placements: historyViewPlacements || state.getDraft().placements,
+      placements: state.getDraft().placements,
       itemsById,
       rootBase,
     });
   }
-
-  /** @type {ReturnType<typeof createHistoryScrubberController> | null} */
-  let historyScrubber =
-    roundHost instanceof HTMLElement
-      ? createHistoryScrubberController({
-          host: roundHost,
-          bagHost,
-          grid,
-          itemsById,
-          root: rootBase,
-          getPlacements: () => state.getDraft().placements,
-          onFrame: (placements) => {
-            historyViewPlacements = placements || null;
-            paintEconomy();
-            paintModeChrome();
-          },
-        })
-      : null;
 
   function paintLayerDim() {
     const mode = state.getEditMode();
@@ -568,14 +539,6 @@ export function mountBoardEditor(host, opts) {
   }
 
   function syncBoard() {
-    // History scrubber owns the bag paint while attached (preview frames).
-    if (historyScrubber?.active && historyViewPlacements) {
-      stampKeys();
-      paintModeChrome();
-      paintEconomy();
-      syncPlaySimChrome();
-      return;
-    }
     const faceKeys = pendingFaceAnimKeys;
     pendingFaceAnimKeys = null;
     const cont = pendingFaceContinue;
@@ -866,10 +829,9 @@ export function mountBoardEditor(host, opts) {
 
     if (history !== prevHistory) {
       prevHistory = history;
-      if (!history) historyViewPlacements = null;
-      historyScrubber?.sync(history || null);
       syncHistoryLockChrome(Boolean(history));
-      // History attach paints the bag via scrubber; still refresh Play / Export.
+      // History attach keeps the selected preview round in the draft; refresh
+      // the lock and toolbar without adding a second round picker below.
       syncPlaySimChrome();
     }
 
@@ -890,10 +852,6 @@ export function mountBoardEditor(host, opts) {
     }
   });
 
-  // Initial attach (draft restored from localStorage with history)
-  if (prevHistory) {
-    historyScrubber?.sync(prevHistory);
-  }
   syncHistoryLockChrome(Boolean(prevHistory));
 
   const historyLock =
@@ -921,8 +879,6 @@ export function mountBoardEditor(host, opts) {
       unsub();
       unbindParkFly();
       historyLock?.destroy();
-      historyScrubber?.destroy();
-      historyScrubber = null;
       onboard?.destroy();
       boardImport?.destroy();
       labelTool?.destroy();
