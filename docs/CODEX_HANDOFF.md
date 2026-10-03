@@ -6,6 +6,12 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+### 2026-10-03 Package 4 port backlog
+
+- Claimed `docs/sim/sim-port-wave-backlog.md` and `docs/CODEX_HANDOFF.md` to record the current 142 incomplete simulator ledger rows as an evidence-first, source-driven backlog. This is planning inventory only; no port status or Package 4 completion claim changes.
+
+- Added the 142-row checkbox backlog grouped into 49 source-resolution rows, 92 existing-but-incomplete ports, and one deferred supported-mode item. It also calls out the three source-confirmed behavior gaps that must lead the work. The list is derived from the ledger and has exactly 142 actionable checkboxes; Package 4 remains open.
+
 ### 2026-10-03 Roadmap Package 6 continuous audit and patch-drift workflow
 
 - Claimed `scripts/sim-patch-drift.mjs`, `scripts/sim-continuous-audit.mjs`, `assets/data/sim-patch-baseline.json`, `.github/workflows/sim-continuous-audit.yml`, `docs/sim/sim-patch-drift.md`, `docs/sim/sim-validation.md`, and `docs/sim/sim-1to1-execution-plan.md` to add a source-hash baseline, deterministic changed-item/core-impact report, a non-mutating simulator audit entry point, and its CI check. Existing fixture failures and missing live evidence must remain explicit; this package will not alter fixture bands or grant fidelity status.
