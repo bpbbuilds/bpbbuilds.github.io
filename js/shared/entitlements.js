@@ -2,32 +2,15 @@
  * Premium / founding entitlement helpers (profiles.plan).
  */
 
-import { getSupabase } from './supabase.js';
-
-/** @typedef {'free' | 'founding' | 'premium'} PlanId */
-
-/** @typedef {{
-   10| *   id: string,
- *   discord_id: string,
- *   display_name: string | null,
- *   avatar_url: string | null,
- *   equipped_avatar: string | null,
- *   is_owner: boolean,
- *   voter_key: string | null,
- *   plan: PlanId,
- *   founding_slot: number | null,
- *   premium_until: string | null,
-    20| *   cosmetic_grants?: unknown,
- *   coins?: number,
- * }} Profile */
-
 export const PREMIUM_PRICE_LABEL = '$3/mo';
 export const FOUNDING_TOTAL = 10;
+
+/** @typedef {'free' | 'founding' | 'premium'} PlanId */
 
 /**
  * @param {string | null | undefined} raw
  * @returns {PlanId}
-    30| */
+ */
 export function normalizePlan(raw) {
   const p = String(raw || 'free').toLowerCase();
   if (p === 'founding' || p === 'premium') return p;
@@ -36,48 +19,35 @@ export function normalizePlan(raw) {
 
 /**
  * @param {Profile | null | undefined} profile
+ * @returns {boolean}
  */
-    40|export function isFounding(profile) {
+export function isFounding(profile) {
   return normalizePlan(profile?.plan) === 'founding';
 }
 
 /**
  * @param {Profile | null | undefined} profile
+ * @returns {boolean}
  */
 export function isPaidPremium(profile) {
   return normalizePlan(profile?.plan) === 'premium';
 }
-    50|
-/**
- * @param {Profile | null | undefined} profile
- */
-export function hasPremiumAccess(profile) {
-  if (!profile) return false;
-  if (profile.is_owner) return true;
-  const plan = normalizePlan(profile.plan);
-  if (plan === 'founding') return true;
-  if (plan === 'premium') {
-    60|    const until = profile.premium_until ? Date.parse(profile.premium_until) : NaN;
-    // A paid subscription with no Stripe end date is not an entitlement.
-    return Number.isFinite(until) && until > Date.now();
-  }
-  return false;
-}
 
 /**
  * @param {Profile | null | undefined} profile
+ * @returns {string}
  */
-    70|export function planLabel(profile) {
+export function planLabel(profile) {
   if (!profile) return 'Free';
-  if (profile.is_owner) return 'Owner';
-  const plan = normalizePlan(profile.plan);
+  if (profile?.is_owner) return 'Owner';
+  const plan = normalizePlan(profile?.plan);
   if (plan === 'founding') return 'Founding';
   if (plan === 'premium') return 'Premium';
   return 'Free';
 }
 
 /**
-    80| * @returns {Promise<{ used: number, total: number, open: boolean, started: boolean }>}
+ * @returns {Promise<{ used: number, total: number, open: boolean, started: boolean }>}
  */
 export async function getFoundingStatus() {
   const fallback = { used: 0, total: FOUNDING_TOTAL, open: false, started: false };
@@ -87,7 +57,7 @@ export async function getFoundingStatus() {
     if (error) {
       console.error(error);
       return fallback;
-    90|    }
+    }
     const used = Math.max(0, Math.round(Number(data?.used) || 0));
     const total = Math.max(1, Math.round(Number(data?.total) || FOUNDING_TOTAL));
     const started = data?.started === true;
@@ -97,7 +67,7 @@ export async function getFoundingStatus() {
     console.error(err);
     return fallback;
   }
-   100|}
+}
 
 /**
  * Best-effort auto-grant on sign-in.
@@ -127,4 +97,19 @@ export async function claimFoundingSlot() {
     return { status: 'exception', reason: err.message || 'Unknown error' };
   }
 }
-   120|
+
+/**
+ * @param {Profile | null | undefined} profile
+ * @returns {boolean}
+ */
+export function hasPremiumAccess(profile) {
+  if (!profile) return false;
+  if (profile?.is_owner) return true;
+  const plan = normalizePlan(profile?.plan);
+  if (plan === 'founding') return true;
+  if (plan === 'premium') {
+    const until = profile?.premium_until ? Date.parse(profile.premium_until) : NaN;
+    return Number.isFinite(until) && until > Date.now();
+  }
+  return false;
+}
