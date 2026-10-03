@@ -1939,9 +1939,6 @@ body.page-create.is-bpb-selecting .create-col--catalog * {
   --park-rows: 2;
   --park-gap: 0.35rem;
   --park-chip: 4.25rem;
-  /* Temporary layout diagnostic: show the exact Parked section bounds. */
-  outline: 2px solid #ff00c8;
-  outline-offset: -2px;
 }
 
 .create-board__park::before {

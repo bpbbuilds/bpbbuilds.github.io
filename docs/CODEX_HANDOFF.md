@@ -6,6 +6,9 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+- `js/pages/create/create.css` (remove temporary Parked layout diagnostic)
+- `js/pages/sim/engine/scripts/ports-wave-d-weapons.js` and `scripts/sim-harness.mjs` (Stone Golem regeneration activation parity repair and regression coverage)
+
 - `js/pages/sim/sim.css`, `js/pages/sim/hud/sim-hud.css`, `js/pages/sim/hud/sim-avatars.css`, and `js/pages/sim/controls/sim-scrubber.css` (desktop Sim responsive scaling)
 
 - `js/pages/create/meta-drops.js`, `js/pages/create/drag-pointers.js`, and `js/pages/create/editor-state.js` (Build-tab priority drops from history-attached boards and catalog)
@@ -611,3 +614,10 @@ None.
 - Kept the desktop fight field at three columns for 1080px-wide and 1080px-tall desktop viewports; only phone widths now change it into the single-column composition.
 - Added a compact desktop scale tier for the fight HUD, avatar figures, scrubber, center controls, columns, and navigation clearance. Full 1440p values remain capped at their existing size while 1080p gets vertical room back.
 - Layout smoke confirmed side-by-side bags and an absolute two-card HUD at 1920x1080, 2560x1440, and 1080x900, with no horizontal overflow; the 390px mobile viewport still uses the one-column field.
+
+### 2026-10-03 Parked diagnostic removal and Stone Golem repair
+
+- Removed the temporary magenta Parked-section diagnostic outline from Create.
+- Investigated Sim report `eeca47d8-b0fc-4e74-a72d-9cb880d465a0` (seed `2965184550`, build `bpbb-ratmancer-frjdz0`). All items in that board are already engine-backed; Stone Golem was the faulty port.
+- Stone Golem now listens for a positive Regeneration gain at the earliest combat-start hook, consumes its 7-Regeneration threshold immediately, grants its catalog Block value (150), and switches to its 2.6-second activated cooldown. Added a harness unit regression for those values.
+- Targeted syntax checks, focused activation check, and whitespace validation passed. The full harness reaches unrelated pre-existing parity/no-op failures after this unit passes; its generated report artifacts were not staged.

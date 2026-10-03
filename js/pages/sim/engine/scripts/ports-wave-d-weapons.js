@@ -7,6 +7,7 @@ import {
   grantStacks,
   grantTemporaryStacks,
   inflictRandomDebuffs,
+  onBuffChanged,
   spendStacks,
   stealRandomBuff,
   useMana,
@@ -308,32 +309,54 @@ export const prismaticSwordPort = {
 };
 
 /** StoneGolem.gd */
+function activateStoneGolem(piece, ctx) {
+  if (piece._stoneRegenDone) return;
+  const need = Math.max(
+    1,
+    Math.round(getPName(piece.params, 'regen', getPName(piece.params, 'regent', getP2(piece.params, 3)))),
+  );
+  if (getStackAmount(ctx.player, 'regeneration') < need) return;
+  const used = spendStacks(ctx.player, 'regeneration', need, {
+    originKey: piece.placementKey,
+    originId: piece.itemId,
+  });
+  if (used.spent < need) return;
+
+  // StoneGolem.gd uses getBlock() (the item's tooltip Block value), not p3.
+  const block = Math.max(1, Math.round(Number(piece.blockGrant) || 0));
+  gainStacks(ctx.player, 'block', block, {
+    originKey: piece.placementKey,
+    originId: piece.itemId,
+  });
+  const cd = getP4(piece.params, 0);
+  if (cd > 0) {
+    piece.baseCooldown = cd;
+    piece.cooldown = cd;
+  }
+  piece._stoneRegenDone = true;
+}
+
 /** @type {ScriptHandler} */
 export const stoneGolemPort = {
   handlerId: 'stone_golem',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPreCombatStart(piece, ctx) {
+    // StoneGolem.gd connects during onPrepare, before any combat-start effects
+    // can grant Regeneration. This is the earliest equivalent engine hook.
     piece._stoneRegenDone = false;
+    onBuffChanged(ctx.player, (change) => {
+      if (change.stack === 'regeneration' && change.amount > 0) {
+        activateStoneGolem(piece, ctx);
+      }
+    });
+  },
+  onCombatStart(piece, ctx) {
     const bags = countPred(ctx, piece, (id) => /bag_of_stones|stone_bag/i.test(id));
     const n = bags || countType(ctx, piece, 'stone');
     const per = Math.max(1, Math.round(getPName(piece.params, 'bonusdam', getP1(piece.params, 1))));
     if (n) addBonusDamage(piece, n * per);
   },
   onCooldownEffect(piece, ctx) {
-    const need = Math.max(1, Math.round(getPName(piece.params, 'regen', getPName(piece.params, 'regent', getP2(piece.params, 3)))));
-    if (!piece._stoneRegenDone && (ctx.player.stacks.regeneration || 0) >= need) {
-      spendStacks(ctx.player, 'regeneration', need, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      gainStacks(ctx.player, 'block', Math.max(1, Math.round(getP3(piece.params, 6))));
-      const cd = getP4(piece.params, 0);
-      if (cd > 0) {
-        piece.baseCooldown = cd;
-        piece.cooldown = cd;
-      }
-      piece._stoneRegenDone = true;
-    }
     return weaponStrike(piece, ctx, 'stone_golem');
   },
   onDealtDamage(piece, ctx, hit) {

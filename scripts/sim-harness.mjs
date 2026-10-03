@@ -18,6 +18,7 @@ import {
   unbindBuffPowerPieces,
 } from '../js/pages/sim/engine/buff-power.js';
 import { grantStacks } from '../js/pages/sim/engine/buff-economy.js';
+import { stoneGolemPort } from '../js/pages/sim/engine/scripts/ports-wave-d-weapons.js';
 
 const coverage = JSON.parse(
   fs.readFileSync('assets/data/sim-item-coverage.json', 'utf8'),
@@ -160,6 +161,46 @@ function unitChecks() {
   if (getP1({ p1: 7, poisont: 7 }) !== 7) {
     console.error('FAIL unit: getP1 p1 key');
     ok = false;
+  }
+  {
+    const player = createActor('player');
+    const piece = {
+      itemId: 'stone_golem',
+      placementKey: 'golem',
+      blockGrant: 150,
+      baseCooldown: 5.5,
+      cooldown: 5.5,
+      params: { regen: 7, p3: 7, buffedcd: 2.6, p4: 2.6 },
+    };
+    const ctx = {
+      player,
+      dummy: createActor('dummy'),
+      pieces: [],
+      events: [],
+      rng: makeRng(3),
+      graph: {
+        pieces: new Map([['golem', { id: 'stone_golem', affectCells: [], cells: [] }]]),
+        filled: new Map(),
+      },
+      itemsById: new Map([['stone_golem', { id: 'stone_golem', type: 'Ranged Weapon' }]]),
+      canAffect: null,
+    };
+    stoneGolemPort.onPreCombatStart(piece, ctx);
+    grantStacks(player, 'regeneration', 7, { originKey: 'test-regen' });
+    if (
+      player.block !== 150 ||
+      player.stacks.regeneration !== 0 ||
+      piece.baseCooldown !== 2.6 ||
+      piece.cooldown !== 2.6
+    ) {
+      console.error('FAIL unit: Stone Golem regeneration activation', {
+        block: player.block,
+        regeneration: player.stacks.regeneration,
+        baseCooldown: piece.baseCooldown,
+        cooldown: piece.cooldown,
+      });
+      ok = false;
+    }
   }
   if (getP({ a: 1, b: 2 }, 1) !== 2) {
     console.error('FAIL unit: getP named order');
