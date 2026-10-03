@@ -2569,6 +2569,11 @@ body.page-create.is-bpb-dragging .create-sellbin {
        than keeping the board and rail at their largest fixed widths. */
     --create-rail-width: clamp(21rem, 20vw, 32rem);
     --items-side-gap: clamp(0.5rem, 0.625vw, 1rem);
+    /* Match the bottom clearance to the screen-frame inset used at the sides. */
+    padding-bottom: max(
+      0.75rem,
+      calc(var(--bpb-frame-edge-y, 0px) + var(--items-side-gap))
+    );
   }
 
   .page-create .bpb-filter-drawer {

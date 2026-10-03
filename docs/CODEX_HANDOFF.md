@@ -570,3 +570,4 @@ None.
 
 - Added a short-viewport desktop layout for Create (up to 1100px tall). The board stage now flexes into the available vertical space and scales the 9×7 board art to fit, while the two-row Parked tray remains visible below it.
 - Tightened the flex chain with explicit full-height board column/editor sizing so the fixed navigation’s reserved space is included in the available height. A local 1920×1080 layout check measured Parked ending at the editor bottom rather than below the viewport.
+- Matched desktop Create’s bottom frame clearance to the left/right frame inset. The Parked section now ends with the same visual border spacing instead of sitting against the bottom edge.
