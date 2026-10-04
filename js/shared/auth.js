@@ -17,6 +17,10 @@ let profileInflight = null;
 let authWired = false;
 /** @type {Promise<void> | null} */
 let oauthCallbackInflight = null;
+/** @type {string} */
+let afterSignedInUserId = '';
+/** @type {Promise<void> | null} */
+let afterSignedInInflight = null;
 
 /**
  * @param {string} s
@@ -320,6 +324,34 @@ async function afterSignedIn(session) {
 }
 
 /**
+ * Run the post-sign-in side effects once for each signed-in user session.
+ * Nav and page shells can both call initAuth(), and Supabase may also emit a
+ * SIGNED_IN event; duplicate calls would otherwise repeat the founding claim
+ * RPC and profile sync without changing the result.
+ * @param {import('https://esm.sh/@supabase/supabase-js@2').Session | null} session
+ * @returns {Promise<void>}
+ */
+function runAfterSignedIn(session) {
+  const userId = String(session?.user?.id || '').trim();
+  if (!userId) return Promise.resolve();
+  if (afterSignedInUserId === userId) {
+    return afterSignedInInflight || Promise.resolve();
+  }
+
+  afterSignedInUserId = userId;
+  const work = afterSignedIn(session).catch((error) => {
+    // Permit a retry if a transient post-sign-in failure occurs.
+    if (afterSignedInUserId === userId) afterSignedInUserId = '';
+    throw error;
+  });
+  const settled = work.finally(() => {
+    if (afterSignedInInflight === settled) afterSignedInInflight = null;
+  });
+  afterSignedInInflight = settled;
+  return settled;
+}
+
+/**
  * Force-refresh cached profile (e.g. after founding grant).
  * @returns {Promise<Profile | null>}
  */
@@ -406,9 +438,11 @@ function ensureAuthWiring() {
     const supabase = getSupabase();
     supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        afterSignedIn(session).catch((err) => console.error(err));
+        runAfterSignedIn(session).catch((err) => console.error(err));
       }
       if (event === 'SIGNED_OUT') {
+        afterSignedInUserId = '';
+        afterSignedInInflight = null;
         profileCache = null;
       }
       if (event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
@@ -425,6 +459,6 @@ function ensureAuthWiring() {
 export function initAuth() {
   ensureAuthWiring();
   getSession().then((session) => {
-    if (session) afterSignedIn(session).catch((err) => console.error(err));
+    if (session) runAfterSignedIn(session).catch((err) => console.error(err));
   });
 }
