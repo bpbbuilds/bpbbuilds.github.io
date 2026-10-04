@@ -315,7 +315,7 @@ export function attachDragSession(opts) {
     const overCatalog = mainOverCatalog(cursorEl);
     // Sellbox.isHovered — mouse in sell rect
     const overSell = pointerOverSell(sellEl, p.x, p.y);
-    const overMeta = !!metaDrop?.isOverBuildPanel?.(p.x, p.y);
+    const overMeta = !!metaDrop?.engagesMeta?.(p.x, p.y, heldItemRect());
     // Park: unique-id cap (27); stacking an existing id still allowed when “full”
     const capacityOk = canParkDrag({
       cur: drag,
@@ -339,7 +339,7 @@ export function attachDragSession(opts) {
       sellEl.classList.toggle('is-drop-hover', overSell);
     }
     view.setSellHover?.(overSell);
-    metaDrop?.updateDropHover?.(drag, p.x, p.y);
+    metaDrop?.updateDropHover?.(drag, p.x, p.y, heldItemRect());
     if (overStorage || overSell || overMeta || overCatalog) {
       preview.hidePreview?.();
     } else {
@@ -608,8 +608,8 @@ export function attachDragSession(opts) {
       return false;
     }
     // Build meta panel wins over park (zones + gaps between them).
-    if (metaDrop?.isOverBuildPanel?.(clientX, clientY)) return false;
-    if (metaDrop?.getDropTarget?.(clientX, clientY)) return false;
+    if (metaDrop?.engagesMeta?.(clientX, clientY, heldItemRect())) return false;
+    if (metaDrop?.getDropTarget?.(clientX, clientY, heldItemRect())) return false;
     // Prefer main-bag storage hover (game); fall back to pointer for pre-lift.
     if (mainOverStorage(cursorEl, parkEl)) return true;
     return pointerOverPark(parkEl, clientX, clientY);
@@ -618,8 +618,8 @@ export function attachDragSession(opts) {
   /** Catalog column drop → delete (same commit as sell chest). */
   function isPointerOverCatalog(clientX, clientY) {
     if (pointerOverSell(sellEl, clientX, clientY)) return false;
-    if (metaDrop?.isOverBuildPanel?.(clientX, clientY)) return false;
-    if (metaDrop?.getDropTarget?.(clientX, clientY)) return false;
+    if (metaDrop?.engagesMeta?.(clientX, clientY, heldItemRect())) return false;
+    if (metaDrop?.getDropTarget?.(clientX, clientY, heldItemRect())) return false;
     if (mainOverCatalog(cursorEl)) return true;
     // The held item is lifted above a coarse pointer. The finger stays in the
     // catalog strip while that item is already over the board.
@@ -631,8 +631,15 @@ export function attachDragSession(opts) {
     return pointerOverSell(sellEl, clientX, clientY);
   }
 
+  function heldItemRect() {
+    if (!(cursorImg instanceof HTMLElement) || cursorEl.hidden) return null;
+    const r = cursorImg.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return null;
+    return r;
+  }
+
   function isPointerOverMeta(clientX, clientY) {
-    return !!metaDrop?.isOverBuildPanel?.(clientX, clientY);
+    return !!metaDrop?.engagesMeta?.(clientX, clientY, heldItemRect());
   }
 
   /**
@@ -644,7 +651,7 @@ export function attachDragSession(opts) {
   function commitToMeta(cur, clientX, clientY) {
     if (!metaDrop?.tryCommitDrop) return 'miss';
     onFaceContinue?.(null);
-    return metaDrop.tryCommitDrop(cur, clientX, clientY);
+    return metaDrop.tryCommitDrop(cur, clientX, clientY, heldItemRect());
   }
 
   /**

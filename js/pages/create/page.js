@@ -306,12 +306,12 @@ export async function initCreatePage() {
     });
     if (rail?.buildHost) {
       tip.bind(rail.buildHost, {
-        selector: '.bpb-mention[data-item-id]',
+        selector: '[data-notes-composer] .bpb-mention[data-item-id]',
         getItem: (el) =>
           el instanceof HTMLElement
             ? catalog.itemsById.get(el.dataset.itemId)
             : null,
-        place: 'itemRight',
+        place: 'itemLeft',
       });
     }
 

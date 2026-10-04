@@ -17,7 +17,7 @@ import { foundingStatsChannelId } from './stats.js';
 
 const API = 'https://discord.com/api/v10';
 const GOLD = 0xeac914;
-const SITE = 'https://bpbbuilds.github.io';
+const SITE = 'https://bpbbuilds.com';
 const YOUTUBE = 'https://www.youtube.com/@SmojoWasTaken';
 const INVITE = 'https://discord.gg/s5WghmrFSp';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -44,6 +44,9 @@ export function isWelcomeMessage(id) {
 function remember(id) {
   if (id) kept.add(String(id));
 }
+
+/** @type {Map<string, string>} */
+const savedMessageMap = new Map();
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -126,7 +129,6 @@ function lines(parts) {
 }
 
 /**
- * Discord draws up to three inline fields on a row.
  * @param {string} name
  * @param {string} value
  */
@@ -221,12 +223,29 @@ function readState() {
  * @param {string[]} ids
  */
 function writeState(ids) {
+  ids = ids.filter(Boolean).map(String);
   fs.mkdirSync(path.dirname(statePath), { recursive: true });
-  fs.writeFileSync(statePath, JSON.stringify({ ids }, null, 2));
+  // Save only the IDs we need to track (last posted message per payload slot)
+  const stateIds = ids.slice(0, 2); // We track up to 2 messages max
+  fs.writeFileSync(statePath, JSON.stringify({ ids: stateIds }, null, 2));
   for (const id of ids) remember(id);
 }
 
-const LOGO = 'assets/brand/logo-bpb.png';
+/** @type {Set<string>} */
+const keptIds = new Set();
+
+/**
+ * @param {string} id
+ * @param {string} [channelId]
+ */
+function rememberId(id, channelId) {
+  if (id) {
+    keptIds.add(id);
+    // Also track in a map keyed by channel for cross-restart safety
+    savedMessageMap.set(channelId || 'welcome', id);
+  }
+}
+
 
 /**
  * @param {Record<string, string>} env
@@ -243,29 +262,46 @@ export async function syncWelcome(env) {
   }
 
   remember(legacyId);
-  const saved = readState();
-  for (const id of saved.ids) remember(id);
+  const { ids: savedIds } = readState();
+
+  // Build a map of saved message IDs by channel for cross-restart safety
+  for (const id of savedIds) {
+    savedMessageMap.set(channelId || 'welcome', id);
+  }
+
+  // Track the legacy/message ID we always want to keep
+  const idsToTrack = new Set();
+  if (savedIds.length > 0) {
+    for (const id of savedIds) {
+      idsToTrack.add(id);
+    }
+  }
+  idsToTrack.add(legacyId);
 
   const logo = await hostImage({ base, key }, 'welcome', LOGO, '24b');
   const payloads = [{ embeds: [guide(logo)] }];
   /** @type {string[]} */
-  const ids = saved.ids.length ? [...saved.ids] : [legacyId];
+  const ids = new Array(payloads.length).fill('');
 
   for (let i = 0; i < payloads.length; i += 1) {
     const body = { content: null, embeds: payloads[i].embeds };
-    const existing = ids[i];
-    if (existing) {
-      const patched = await discord(token, `/channels/${channelId}/messages/${existing}`, 'PATCH', body);
+    const existingId = savedIds[i] || savedMessageMap.get(channelId || 'welcome') || '';
+
+    // Try to patch the existing message first
+    if (existingId) {
+      const patched = await discord(token, `/channels/${channelId}/messages/${existingId}`, 'PATCH', body);
       if (patched.ok) {
-        remember(existing);
+        rememberId(existingId, channelId);
+        ids[i] = existingId;
         continue;
       }
       if (patched.status !== 404) {
         const detail = await patched.text();
         console.error(`Welcome edit failed (${patched.status}): ${detail.slice(0, 180)}`);
-        continue;
       }
     }
+
+    // Post new message if patch failed or no existing ID
     const posted = await discord(token, `/channels/${channelId}/messages`, 'POST', body);
     if (!posted.ok) {
       const detail = await posted.text();
@@ -274,15 +310,24 @@ export async function syncWelcome(env) {
     }
     const row = await posted.json();
     ids[i] = String(row.id || '');
-    remember(ids[i]);
-    writeState(ids.filter(Boolean));
-    await sleep(400);
+    rememberId(ids[i], channelId);
   }
 
-  const keptIds = ids.slice(0, payloads.length).filter(Boolean);
-  const keepId = keptIds[0] || '';
-  writeState(keptIds);
-  if (keepId) await deleteOtherMessages(token, channelId, keepId);
+  // Write state: track up to 2 messages for cross-restart safety
+  const stateIds = [...new Set([...savedIds, ...ids])].slice(0, 2);
+  writeState(stateIds);
+
+  // Delete any other messages in the welcome channel that aren't our tracked ones
+  if (ids.length > 0) {
+    const keepId = ids[0] || '';
+    await deleteOtherMessages(token, channelId, keepId);
+  }
+
+  // Update the kept set for isWelcomeMessage checks
+  keptIds.clear();
+  for (const id of savedIds) keptIds.add(id);
+  for (const id of ids) keptIds.add(id);
+
   console.log('Welcome guide updated (1 message)');
 }
 

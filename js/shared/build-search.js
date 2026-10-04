@@ -23,6 +23,13 @@ export function parseBuildSearchQuery(raw) {
   let s = String(raw || '').replace(/\u200b/g, ' ').trim();
   if (!s) return out;
 
+  // Picked author chips: {@Display Name}
+  s = s.replace(/\{@([^{}]+)\}/g, (_, user) => {
+    const u = String(user).replace(/[{}]/g, '').trim().toLowerCase();
+    if (u && !out.users.includes(u)) out.users.push(u);
+    return ' ';
+  });
+
   // Resolved chips: [[item_id]]
   s = s.replace(/\[\[([a-z0-9_]+)\]\]/gi, (_, id) => {
     const key = String(id).toLowerCase();
@@ -168,6 +175,56 @@ export function buildMatchesSearch(build, parsed, items = []) {
   }
 
   return true;
+}
+
+/**
+ * Unique authors on the loaded builds, for @user suggestions.
+ * @param {object[]} builds
+ * @returns {{ name: string, avatar_url: string | null, equipped_avatar: string | null }[]}
+ */
+export function usersFromBuilds(builds) {
+  /** @type {Map<string, { name: string, avatar_url: string | null, equipped_avatar: string | null }>} */
+  const by = new Map();
+  for (const b of builds || []) {
+    const name = String(b?.author_name || '').trim();
+    if (!name || /^unknown$/i.test(name)) continue;
+    const key = name.toLowerCase();
+    if (by.has(key)) continue;
+    by.set(key, {
+      name,
+      avatar_url: b?.author_avatar_url ? String(b.author_avatar_url) : null,
+      equipped_avatar:
+        b?.author_equipped_avatar != null ? String(b.author_equipped_avatar) : null,
+    });
+  }
+  return [...by.values()].sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * @param {string} query text after @
+ * @param {{ name: string }[]} users
+ * @param {number} [limit]
+ */
+export function matchSearchUsers(query, users, limit = 8) {
+  const q = String(query || '').trim().toLowerCase();
+  /** @type {{ user: { name: string }, score: number }[]} */
+  const hits = [];
+  for (const user of users || []) {
+    const name = String(user?.name || '').trim();
+    if (!name) continue;
+    const key = name.toLowerCase();
+    let score = 0;
+    if (!q) score = 1;
+    else if (key === q) score = 100;
+    else if (key.startsWith(q)) score = 80;
+    else if (key.includes(q)) score = 45;
+    else continue;
+    hits.push({ user, score });
+  }
+  hits.sort(
+    (a, b) => b.score - a.score || a.user.name.localeCompare(b.user.name),
+  );
+  return hits.slice(0, limit).map((h) => h.user);
 }
 
 /**

@@ -30,6 +30,7 @@ const checks = [
   ['coverage honesty', ['scripts/sim-coverage-honesty.mjs']],
   ['combat log', ['scripts/sim-log-smoke.mjs']],
   ['wand/rib source ports', ['scripts/sim-wand-rib-smoke.mjs']],
+  ['ace/armored puppy source ports', ['scripts/sim-ace-puppy-smoke.mjs']],
   ['lifecycle', ['scripts/sim-lifecycle-smoke.mjs']],
   ['event contract', ['scripts/sim-event-contract-smoke.mjs']],
   ['socket ordering', ['scripts/sim-socket-split-smoke.mjs']],

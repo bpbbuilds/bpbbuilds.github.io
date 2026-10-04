@@ -5,7 +5,7 @@ import { AttachmentBuilder, EmbedBuilder } from 'discord.js';
 import { loadEnv } from '../env.js';
 import { equippedBlobPng } from './blob.js';
 
-const SITE = 'https://bpbbuilds.github.io';
+const SITE = 'https://bpbbuilds.com';
 const GOLD = 0xeac914;
 
 export const profileCommand = {

@@ -11,6 +11,7 @@ import {
   itemSpriteUrl,
   itemsFromBuilds,
   parseBuildSearchQuery,
+  usersFromBuilds,
 } from '../../shared/build-search.js';
 import { mountBuildSearchInput } from '../../shared/build-search-input.js';
 import { readMyVote } from '../build/vote.js';
@@ -136,6 +137,8 @@ export async function initBuildsFeed(main, opts) {
   catalogItems = itemsFromBuilds(all);
   searchInput = mountBuildSearchInput(rail, {
     items: catalogItems,
+    users: usersFromBuilds(all),
+    root,
     getSpriteUrl: (item) => itemSpriteUrl(root, item),
     initialQuery: state.q,
     onChange(q) {
@@ -298,6 +301,9 @@ async function fetchMyHeldEntries(authorId) {
       slug, title, hero_class, blurb, is_op, is_featured, build_tag, vote_score,
       author_id, author_name, rank, gold_count, youtube_url, event_slug, board_still_path,
       created_at, updated_at,
+      profile:profiles!builds_author_id_fkey (
+        discord_id, display_name, avatar_url, equipped_avatar
+      ),
       placements:build_placements (
         id, x, y, r, gems,
         item:items ( ${ITEM_SELECT} )

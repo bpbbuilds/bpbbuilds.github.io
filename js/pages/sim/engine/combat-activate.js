@@ -219,12 +219,15 @@ function activatePieceBody(piece, ctx) {
       onPreDealDamageEarly: (res) => ctx.notifyPreDealDamageEarly?.(piece, ctx, res),
       accuracy,
       canMiss: true,
-      canCrit: critChance > 0,
+      // All attack damage sources carry CanCrit; actor crit tokens can force
+      // a crit even when the item's natural chance is zero.
+      canCrit: true,
       critChance,
       isAttack: true,
       isMelee: piece.damageKind !== 'ranged',
       vampiricItem: piece.vampiric,
       nowT: t,
+      events,
       bus: ctx.bus,
       rng,
     });

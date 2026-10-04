@@ -11,9 +11,10 @@ import { getP1, getP2, getP3, getP4, getPName, paramsFromItem } from './params.j
 import { addSpeed } from './piece-stats.js';
 import { withStatSource } from './stat-mods.js';
 import { gainStacks } from './stacks.js';
-import { grantTimedResistancePct } from './timed-resistance.js';
+import { isBattleRaging } from './battle-rage.js';
 import { rollPercent } from './rng.js';
 import { removeRandomBuffs } from './scripts/ports-wave-c-util.js';
+import { grantTimedDebuffResistance } from './timed-resistance.js';
 
 function familyOf(gid) {
   const id = String(gid || '');
@@ -178,13 +179,37 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
     ctx.player.stunResistance = (Number(ctx.player.stunResistance) || 0) + gemChance(gem);
     ctx.player.critResistance =
       (Number(ctx.player.critResistance) || 0) + gemChance(gem, 'chance2', 5);
+  } else if (fam === 'elephant') {
+    // ElephantRune.gd changes debuff resistance during prepareArmor. The
+    // combat-start timer only controls when that prepared resistance is
+    // removed; it must not be granted twice at combat start.
+    const ch = gemChance(gem, 'chance2', 0);
+    if (ch > 0) {
+      ctx.player.stackResist = ctx.player.stackResist || {};
+      for (const stack of ['poison', 'blind', 'cold']) {
+        ctx.player.stackResist[stack] = (Number(ctx.player.stackResist[stack]) || 0) + ch;
+      }
+    }
   } else if (fam === 'skull') {
     ctx.player.critResistance = (Number(ctx.player.critResistance) || 0) + gemChance(gem);
   } else if (fam === 'badger') {
     const dr = getPName(params, 'damreduction', 8);
-    ctx.bus?.on?.('player_damaged', () => {
-      if (ctx.player._battleRageUntil && ctx.t < ctx.player._battleRageUntil && dr) {
-        grantTimedResistancePct(ctx.player, dr, ctx.t + 0.05, gid);
+    ctx.bus?.on?.('pre_take_damage', (payload) => {
+      const damage = payload?.damage;
+      const source = payload?.source;
+      if (payload?.defender !== ctx.player || !damage?.hit) return;
+      if (source?.isAttack === false || source?.canTriggerItems === false) return;
+      if (!isBattleRaging(ctx.player, Number(payload?.t) || ctx.t) || !(dr > 0)) return;
+      const amount = Math.max(0, Math.round(dr));
+      const left = Math.max(0, (Number(damage.damage) || 0) - (Number(damage.damageReduction) || 0));
+      const actual = Math.min(amount, left);
+      damage.damageReduction = (Number(damage.damageReduction) || 0) + amount;
+      if (actual > 0) {
+        damage.reductionSources?.push?.({
+          itemId: gid,
+          placementKey: piece.placementKey,
+          amount: actual,
+        });
       }
     });
   } else if (fam === 'tiger') {
@@ -249,6 +274,21 @@ export function prepareGemSockets(piece, ctx) {
  */
 export function combatStartGemSockets(piece, ctx) {
   forEachSocket(piece, ctx, (gem, params, fam, gid, originKey, weapon) => {
+    if (fam === 'elephant' && !weapon) {
+      const chance = gemChance(gem, 'chance2', 0);
+      const duration = Math.max(0, getPName(params, 'dur_resist', getP2(params, 4)));
+      if (chance > 0 && duration > 0) {
+        grantTimedDebuffResistance(
+          ctx.player,
+          chance,
+          ctx.t + duration,
+          `elephant:${gid}`,
+          ['poison', 'blind', 'cold'],
+          { alreadyGranted: true },
+        );
+      }
+      return;
+    }
     if (weapon || (fam !== 'coal' && fam !== 'burning_coal')) return;
     const block =
       fam === 'coal'

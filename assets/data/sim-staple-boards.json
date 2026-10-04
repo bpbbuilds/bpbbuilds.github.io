@@ -1,12 +1,12 @@
 {
-  "builtAt": "2026-08-25T22:00:23.085Z",
+  "builtAt": "2026-10-03T03:52:41.943Z",
   "note": "Phase 264: ui.mismatches required empty on these boards. Empty flags are not a live pass. paramChecks may remain.",
   "dumps": [
     {
       "heroClass": "Ranger",
       "slug": "poison-garden-ranger",
       "dummyEndHp": 755,
-      "playerEndHp": 5,
+      "playerEndHp": 18,
       "eventCount": 231,
       "emptyFlagsAreNotALivePass": true,
       "paramCheckCount": 0,
@@ -18,8 +18,8 @@
       "heroClass": "Pyromancer",
       "slug": "pyro-furnace",
       "dummyEndHp": 1133,
-      "playerEndHp": 131,
-      "eventCount": 122,
+      "playerEndHp": 71,
+      "eventCount": 119,
       "emptyFlagsAreNotALivePass": true,
       "paramCheckCount": 0,
       "mismatchCount": 0,
@@ -29,21 +29,100 @@
     {
       "heroClass": "Berserker",
       "slug": "berserk-bloodline",
-      "dummyEndHp": 0,
-      "playerEndHp": 320,
-      "eventCount": 941,
-      "emptyFlagsAreNotALivePass": true,
-      "paramCheckCount": 0,
-      "mismatchCount": 0,
-      "paramChecks": [],
-      "mismatches": []
+      "dummyEndHp": 147,
+      "playerEndHp": 420,
+      "eventCount": 849,
+      "emptyFlagsAreNotALivePass": false,
+      "paramCheckCount": 7,
+      "mismatchCount": 7,
+      "paramChecks": [
+        {
+          "itemId": "hero_sword",
+          "expectedKey": "meleeVampirismLimit",
+          "stack": "vampirism",
+          "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.69s Hero Sword heal 4 with 7 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 127 over 14 vamp heal(s)."
+        },
+        {
+          "itemId": "bloodthorne",
+          "expectedKey": "meleeVampirismLimit",
+          "stack": "vampirism",
+          "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.78s Bloodthorne heal 4 with 7 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 4 over 1 vamp heal(s)."
+        },
+        {
+          "itemId": "claws_of_attack",
+          "expectedKey": "meleeVampirismLimit",
+          "stack": "vampirism",
+          "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.85s Claws of Attack heal 4 with 7 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 141 over 15 vamp heal(s)."
+        },
+        {
+          "itemId": "bloody_dagger",
+          "expectedKey": "meleeVampirismLimit",
+          "stack": "vampirism",
+          "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=4.14s Bloody Dagger heal 6 with 8 vamp stack(s), hit 6 → game min(stacks, round(dmg×1)) then heal amp → 7. Sim logged 154 over 15 vamp heal(s)."
+        },
+        {
+          "itemId": "burning_torch",
+          "expectedKey": "meleeVampirismLimit",
+          "stack": "vampirism",
+          "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=4.79s Burning Torch heal 4 with 8 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 35 over 5 vamp heal(s)."
+        },
+        {
+          "itemId": "dagger",
+          "expectedKey": "meleeVampirismLimit",
+          "stack": "vampirism",
+          "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=5.37s Dagger heal 4 with 8 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 79 over 9 vamp heal(s)."
+        },
+        {
+          "itemId": "wooden_sword",
+          "expectedKey": "meleeVampirismLimit",
+          "stack": "vampirism",
+          "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=11.65s Wooden Sword heal 4 with 12 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 37 over 4 vamp heal(s)."
+        }
+      ],
+      "mismatches": [
+        {
+          "itemId": "hero_sword",
+          "stack": "vampirism",
+          "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.69s Hero Sword heal 4 with 7 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 127 over 14 vamp heal(s)."
+        },
+        {
+          "itemId": "bloodthorne",
+          "stack": "vampirism",
+          "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.78s Bloodthorne heal 4 with 7 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 4 over 1 vamp heal(s)."
+        },
+        {
+          "itemId": "claws_of_attack",
+          "stack": "vampirism",
+          "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.85s Claws of Attack heal 4 with 7 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 141 over 15 vamp heal(s)."
+        },
+        {
+          "itemId": "bloody_dagger",
+          "stack": "vampirism",
+          "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=4.14s Bloody Dagger heal 6 with 8 vamp stack(s), hit 6 → game min(stacks, round(dmg×1)) then heal amp → 7. Sim logged 154 over 15 vamp heal(s)."
+        },
+        {
+          "itemId": "burning_torch",
+          "stack": "vampirism",
+          "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=4.79s Burning Torch heal 4 with 8 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 35 over 5 vamp heal(s)."
+        },
+        {
+          "itemId": "dagger",
+          "stack": "vampirism",
+          "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=5.37s Dagger heal 4 with 8 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 79 over 9 vamp heal(s)."
+        },
+        {
+          "itemId": "wooden_sword",
+          "stack": "vampirism",
+          "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=11.65s Wooden Sword heal 4 with 12 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 37 over 4 vamp heal(s)."
+        }
+      ]
     },
     {
       "heroClass": "Reaper",
       "slug": "reaper-harvest",
       "dummyEndHp": 858,
-      "playerEndHp": 170,
-      "eventCount": 236,
+      "playerEndHp": 167,
+      "eventCount": 248,
       "emptyFlagsAreNotALivePass": true,
       "paramCheckCount": 0,
       "mismatchCount": 0,
@@ -53,24 +132,36 @@
     {
       "heroClass": "Adventurer",
       "slug": "history-3705",
-      "dummyEndHp": 0,
-      "playerEndHp": 113,
-      "eventCount": 574,
+      "dummyEndHp": 120,
+      "playerEndHp": 0,
+      "eventCount": 414,
       "emptyFlagsAreNotALivePass": false,
-      "paramCheckCount": 4,
+      "paramCheckCount": 9,
       "mismatchCount": 0,
       "paramChecks": [
+        {
+          "itemId": "poison_spear",
+          "expectedKey": "poison",
+          "stack": "poison",
+          "note": "grant 4 ≠ catalog poison=3"
+        },
+        {
+          "itemId": "mercury_elemental",
+          "expectedKey": "block",
+          "stack": "block",
+          "note": "no catalog key for block; grant 2 equals poison=2, poison2=2"
+        },
+        {
+          "itemId": "mercury_elemental",
+          "expectedKey": "poison",
+          "stack": "poison",
+          "note": "grant 4 ≠ catalog poison=2"
+        },
         {
           "itemId": "chipped_emerald",
           "expectedKey": "poison",
           "stack": "poison",
           "note": "no catalog key for poison; grant 1 equals poisononhit=1, regen=1"
-        },
-        {
-          "itemId": "perfect_emerald",
-          "expectedKey": "poison",
-          "stack": "poison",
-          "note": "no catalog key for poison; grant 4 equals poisononhit=4"
         },
         {
           "itemId": "frog_prince",
@@ -83,6 +174,24 @@
           "expectedKey": "mana",
           "stack": "mana",
           "note": "grant 1 is catalog blind=1, not mana=5"
+        },
+        {
+          "itemId": "perfect_emerald",
+          "expectedKey": "poison",
+          "stack": "poison",
+          "note": "no catalog key for poison; grant 4 equals poisononhit=4"
+        },
+        {
+          "itemId": "hyper_hedgehog",
+          "expectedKey": "spikes",
+          "stack": "spikes",
+          "note": "grant 70 is catalog healtht=70, not spikes=4"
+        },
+        {
+          "itemId": "hyper_hedgehog",
+          "expectedKey": "empower",
+          "stack": "empower",
+          "note": "grant 1 is catalog dam_empower=1, not empower=3"
         }
       ],
       "mismatches": []
@@ -92,11 +201,24 @@
       "slug": "history-3703",
       "dummyEndHp": 0,
       "playerEndHp": 200,
-      "eventCount": 423,
-      "emptyFlagsAreNotALivePass": true,
-      "paramCheckCount": 0,
+      "eventCount": 501,
+      "emptyFlagsAreNotALivePass": false,
+      "paramCheckCount": 2,
       "mismatchCount": 0,
-      "paramChecks": [],
+      "paramChecks": [
+        {
+          "itemId": "charge_splitter",
+          "expectedKey": "cd_then_consume",
+          "stack": "activations",
+          "note": "game: doCooldownEffect → onAfterEffectFinished() stops the CD and consume()s (one post-delay Activations tick). Sim had 5 CD activate(s) for Charge Splitter at t=4.50, 4.50, 6.44, 6.76, 6.95"
+        },
+        {
+          "itemId": "fancy_fencing_rapier",
+          "expectedKey": "luck",
+          "stack": "lucky",
+          "note": "grant -3 ≠ catalog luck=3"
+        }
+      ],
       "mismatches": []
     }
   ]

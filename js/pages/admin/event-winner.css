@@ -1,19 +1,98 @@
-/* Owner-selected winner controls in the Events desk. */
+/* Manual event-winner controls. Keep this module in the same visual language as
+ * the admin event form while leaving authorization in the owner-only API. */
 .admin-event-desk__winner {
-  margin-top: 0.85rem;
-  padding: 0.7rem;
-  border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 48%, transparent);
-  border-radius: 0.28rem;
-  background: color-mix(in srgb, #20130e 34%, transparent);
+  position: relative;
+  z-index: 0;
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.85rem 0 0.95rem;
+  padding: 0.78rem 0.85rem 0.82rem;
+  border: 1px solid var(--bpb-rewards-gold, #c6a567);
+  border-radius: 0.35rem;
+  background: rgba(18, 8, 4, 0.38);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bpb-rewards-gold-bright, #e8c878) 18%, transparent);
+  transition: border-color 0.16s ease, background 0.16s ease, opacity 0.16s ease;
 }
 
-.admin-event-desk__winner .admin-event-desk__section { margin-top: 0; }
+.admin-event-desk__winner::before {
+  opacity: 0.42;
+}
+
+.admin-event-desk__winner.is-saving {
+  border-color: color-mix(in srgb, var(--bpb-rewards-gold-bright, #e8c878) 72%, transparent);
+  background: rgba(18, 8, 4, 0.52);
+}
+
+.admin-event-desk__winner.has-error {
+  border-color: color-mix(in srgb, #f2a08b 72%, var(--bpb-rewards-gold, #c6a567));
+}
+
+.admin-event-desk__winner-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.admin-event-desk__winner-kicker {
+  margin: 0 0 0.1rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bpb-rewards-gold, #c6a567);
+}
+
+.admin-event-desk__winner .admin-event-desk__section {
+  margin: 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+
+.admin-event-desk__winner-state {
+  flex: 0 0 auto;
+  margin-top: 0.05rem;
+  padding: 0.2rem 0.42rem;
+  border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 72%, transparent);
+  border-radius: 0.25rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+}
+
 .admin-event-desk__winner-status {
-  margin: 0.2rem 0 0.6rem;
+  min-height: 1.25rem;
+  margin: 0;
   font-family: var(--bpb-font-body, Georgia, serif);
   font-size: 0.88rem;
   line-height: 1.35;
   color: var(--bpb-rewards-cream, #dbc4a1);
+}
+
+.admin-event-desk__winner.has-error .admin-event-desk__winner-status {
+  color: #ffd0c4;
+}
+
+.admin-event-desk__winner-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.45rem;
+}
+
+.admin-event-desk__winner-clear {
+  padding: 0.35rem 0.7rem;
+  border-color: color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 76%, transparent);
+  font-size: 0.86rem;
+}
+
+.admin-event-desk__winner-clear[hidden] {
+  display: none;
 }
 
 .admin-event-desk__btn--winner {
@@ -21,13 +100,53 @@
   color: var(--bpb-rewards-gold-bright, #e8c878);
 }
 
-.admin-event-desk__btn--winner-clear { margin-top: 0.35rem; }
 .admin-event-desk__entry-actions {
   display: flex;
   flex: 0 0 auto;
   flex-wrap: wrap;
   justify-content: flex-end;
+  align-items: center;
   gap: 0.4rem;
 }
 
-.admin-event-desk__flag--winner { color: var(--bpb-rewards-gold-bright, #e8c878); }
+.admin-event-desk__entry-actions .admin-event-desk__btn--inline {
+  width: auto;
+  min-width: 7rem;
+  flex: 0 1 auto;
+}
+
+.admin-event-desk__entry.is-winner {
+  margin-inline: -0.25rem;
+  padding: 0.55rem 0.25rem 0.65rem;
+  border-bottom-color: var(--bpb-rewards-gold-bright, #e8c878);
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 9%, transparent);
+}
+
+.admin-event-desk__entry.is-winner .admin-event-desk__entry-board {
+  border-color: var(--bpb-rewards-gold-bright, #e8c878);
+}
+
+.admin-event-desk__flag--winner {
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+}
+
+@media (max-width: 38rem) {
+  .admin-event-desk__winner-head {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .admin-event-desk__winner-state {
+    justify-self: start;
+  }
+
+  .admin-event-desk__entry-actions {
+    justify-content: stretch;
+  }
+
+  .admin-event-desk__entry-actions .admin-event-desk__btn--inline {
+    min-width: 0;
+    flex: 1 1 8rem;
+  }
+}

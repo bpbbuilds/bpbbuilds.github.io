@@ -388,7 +388,7 @@ async function mountStage(stage, tab, ctx) {
   }
 
   if (tab === 'cosmetics') {
-    await mountCosmeticsPanel(stage, { root: ctx.root });
+    await mountCosmeticsPanel(stage, { root: ctx.root, auth: ctx.auth });
     return;
   }
 

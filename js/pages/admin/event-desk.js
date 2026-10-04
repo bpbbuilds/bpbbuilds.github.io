@@ -101,10 +101,18 @@ function createEventDesk() {
           </div>
           ${
             manualWinner
-              ? `<section class="admin-event-desk__winner" aria-label="Manual winner selection">
-                  <h3 class="admin-event-desk__section">Winner</h3>
-                  <p class="admin-event-desk__winner-status" data-event-desk-winner-status>Choose the verified winning entry below. You can replace or clear this choice until results are announced.</p>
-                  <button type="button" class="admin-event-desk__btn admin-event-desk__btn--winner-clear" data-event-desk-winner-clear hidden>Clear winner</button>
+              ? `<section class="admin-event-desk__winner il-filter__shade cr-field-shade" data-event-desk-winner-panel aria-label="Manual winner selection" aria-busy="false">
+                  <div class="admin-event-desk__winner-head">
+                    <div>
+                      <p class="admin-event-desk__winner-kicker">Manual judging</p>
+                      <h3 class="admin-event-desk__section">Select a winner</h3>
+                    </div>
+                    <span class="admin-event-desk__winner-state" data-event-desk-winner-state>Awaiting selection</span>
+                  </div>
+                  <p class="admin-event-desk__winner-status" data-event-desk-winner-status role="status" aria-live="polite">Choose the verified winning entry below. You can replace or clear this choice until results are announced.</p>
+                  <div class="admin-event-desk__winner-actions">
+                    <button type="button" class="cr-btn-quiet admin-event-desk__winner-clear" data-event-desk-winner-clear hidden>Clear winner</button>
+                  </div>
                 </section>`
               : ''
           }
@@ -161,18 +169,28 @@ function createEventDesk() {
 
   /** @param {object[]} builds */
   function paintWinnerState(builds) {
+    const panel = root.querySelector('[data-event-desk-winner-panel]');
     const status = root.querySelector('[data-event-desk-winner-status]');
+    const state = root.querySelector('[data-event-desk-winner-state]');
     const clear = root.querySelector('[data-event-desk-winner-clear]');
     if (!(status instanceof HTMLElement)) return;
     const selectedId = Number(winner?.build_id);
     const selected = builds.find((row) => Number(row.id) === selectedId);
+    panel?.classList.toggle('is-saving', winnerBusy);
+    panel?.classList.toggle('has-error', Boolean(winnerError));
+    panel?.classList.toggle('has-winner', Boolean(selected));
+    if (panel instanceof HTMLElement) panel.setAttribute('aria-busy', winnerBusy ? 'true' : 'false');
     if (winnerError) {
+      if (state instanceof HTMLElement) state.textContent = 'Save failed';
       status.textContent = winnerError;
-    } else if (selected) {
-      status.textContent = `Selected winner: ${String(selected.title || selected.slug || 'Untitled build')}.`;
     } else if (winnerBusy) {
+      if (state instanceof HTMLElement) state.textContent = 'Saving…';
       status.textContent = 'Saving winner selection…';
+    } else if (selected) {
+      if (state instanceof HTMLElement) state.textContent = 'Winner selected';
+      status.textContent = `Selected winner: ${String(selected.title || selected.slug || 'Untitled build')}.`;
     } else {
+      if (state instanceof HTMLElement) state.textContent = 'Awaiting selection';
       status.textContent = 'Choose the verified winning entry below. You can replace or clear this choice until results are announced.';
     }
     if (clear instanceof HTMLButtonElement) {
@@ -200,9 +218,8 @@ function createEventDesk() {
     try {
       const data = await setEventWinner(auth, event.slug, buildId);
       winner = data?.winner && typeof data.winner === 'object' ? data.winner : { build_id: buildId };
-      paintList(entries, siteRoot);
     } catch (err) {
-      paintWinnerError(err);
+      winnerError = err instanceof Error ? err.message : 'Could not save the winner.';
     } finally {
       winnerBusy = false;
       paintList(entries, siteRoot);
@@ -226,21 +243,11 @@ function createEventDesk() {
     try {
       await clearEventWinner(auth, event.slug);
       winner = null;
-      paintList(entries, siteRoot);
     } catch (err) {
-      paintWinnerError(err);
+      winnerError = err instanceof Error ? err.message : 'Could not save the winner.';
     } finally {
       winnerBusy = false;
       paintList(entries, siteRoot);
-    }
-  }
-
-  /** @param {unknown} err */
-  function paintWinnerError(err) {
-    const status = root.querySelector('[data-event-desk-winner-status]');
-    winnerError = err instanceof Error ? err.message : 'Could not save the winner.';
-    if (status instanceof HTMLElement) {
-      status.textContent = winnerError;
     }
   }
 
@@ -358,10 +365,10 @@ function entryHtml(build, base, manualWinner, selectedWinner, winnerBusy) {
     : '';
   const pick =
     manualWinner && Number.isSafeInteger(id) && id > 0
-      ? `<button type="button" class="admin-event-desk__btn admin-event-desk__btn--winner" data-event-desk-winner="${id}" ${selectedWinner || winnerBusy ? 'disabled' : ''}>${selectedWinner ? 'Winner selected' : 'Select winner'}</button>`
+      ? `<button type="button" class="admin-event-desk__btn admin-event-desk__btn--winner admin-event-desk__btn--inline" data-event-desk-winner="${id}" aria-pressed="${selectedWinner ? 'true' : 'false'}" ${selectedWinner || winnerBusy ? 'disabled' : ''}>${selectedWinner ? 'Winner selected' : 'Select winner'}</button>`
       : '';
   return `
-    <li class="admin-event-desk__entry">
+    <li class="admin-event-desk__entry${selectedWinner ? ' is-winner' : ''}">
       <div class="admin-event-desk__entry-board" data-event-entry-board="${escapeAttr(slug)}" aria-label="${escapeAttr(`${build.title || slug} board preview`)}"></div>
       <div class="admin-event-desk__entry-main">
         <p class="admin-event-desk__entry-title">${escapeHtml(build.title || slug)} ${winner} ${hidden}</p>
@@ -370,7 +377,7 @@ function entryHtml(build, base, manualWinner, selectedWinner, winnerBusy) {
       </div>
       <div class="admin-event-desk__entry-actions">
         ${pick}
-        <a class="admin-event-desk__btn" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">View build</a>
+        <a class="admin-event-desk__btn admin-event-desk__btn--inline" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">View build</a>
       </div>
     </li>`;
 }

@@ -5,10 +5,11 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ensureGuildChannel } from './channel-reconcile.js';
 
 const API = 'https://discord.com/api/v10';
 const GOLD = 0xeac914;
-const SITE = 'https://bpbbuilds.github.io';
+const SITE = 'https://bpbbuilds.com';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'premium.json');
 const HEADER = path.join(ROOT, 'assets', 'brand', 'logo-bpb.png');
@@ -95,7 +96,7 @@ async function hostHeader(config) {
  */
 function payload(imageUrl) {
   const description = [
-    'Premium on [BPB Builds](https://bpbbuilds.github.io/) is **$3 a month**. Founding members keep it forever.',
+    'Premium on [BPB Builds](https://bpbbuilds.com/) is **$3 a month**. Founding members keep it forever.',
     'You can\'t type in this channel.',
     '',
     '**Free**',
@@ -103,7 +104,6 @@ function payload(imageUrl) {
     '',
     '**Premium**',
     '• Combat sandbox, log, and damage meters',
-    '• Screenshot to build',
     '• Export board image',
     '• Premium Crown',
     '',
@@ -137,18 +137,15 @@ async function ensureChannel(token, guildId, existingId) {
     ...(newsRow?.parent_id ? { parent_id: newsRow.parent_id } : {}),
     ...(Number.isFinite(newsRow?.position) ? { position: newsRow.position + 1 } : {}),
   };
-  if (existingId) {
-    const patched = await discord(token, `/channels/${existingId}`, 'PATCH', body);
-    if (patched.ok) return existingId;
-  }
-  const created = await discord(token, `/guilds/${guildId}/channels`, 'POST', { ...body, type: 0 });
-  if (!created.ok) {
-    const detail = await created.text();
-    console.error(`Premium channel failed (${created.status}): ${detail.slice(0, 180)}`);
-    return '';
-  }
-  const row = await created.json();
-  return String(row.id || '');
+  return ensureGuildChannel({
+    token,
+    guildId,
+    existingId,
+    type: 0,
+    name: CHANNEL_NAME,
+    body,
+    label: 'Premium channel',
+  });
 }
 
 /**

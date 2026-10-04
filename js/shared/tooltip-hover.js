@@ -13,7 +13,7 @@ const GAP = 12;
 const EDGE = 8;
 const FILTERS_INSET = -28;
 
-/** @typedef {'near' | 'overFilters' | 'cursor' | 'itemRight' | 'center'} PlaceMode */
+/** @typedef {'near' | 'overFilters' | 'cursor' | 'itemRight' | 'itemLeft' | 'center'} PlaceMode */
 
 /**
  * @typedef {{
@@ -232,6 +232,39 @@ function placeItemRight(tip, anchor) {
   tip.style.top = `${Math.round(top)}px`;
 }
 
+/** Card sits just left of the chip; sidecar continues further left. */
+function placeItemLeft(tip, anchor) {
+  const rect = anchor.getBoundingClientRect();
+  const vh = window.innerHeight;
+  const cluster = tip.querySelector('.bpb-tooltip-cluster');
+  if (cluster instanceof HTMLElement) {
+    cluster.classList.add('bpb-tooltip-cluster--flip');
+  }
+
+  tip.style.setProperty('--bpb-tooltip-scale', '1');
+  const layoutW =
+    (cluster instanceof HTMLElement ? cluster.offsetWidth : 0) ||
+    tip.offsetWidth ||
+    584;
+  const space = Math.max(160, rect.left - GAP - EDGE);
+  const scale = Math.min(1, space / layoutW);
+  tip.style.setProperty('--bpb-tooltip-scale', String(scale));
+
+  const tipRect = tip.getBoundingClientRect();
+  const tw = tipRect.width || layoutW * scale;
+  const th = tipRect.height || tip.offsetHeight;
+
+  let left = rect.left - GAP - tw;
+  if (left < EDGE) left = EDGE;
+
+  let top = rect.top;
+  if (top + th > vh - EDGE) top = Math.max(EDGE, vh - th - EDGE);
+  if (top < EDGE) top = EDGE;
+
+  tip.style.left = `${Math.round(left)}px`;
+  tip.style.top = `${Math.round(top)}px`;
+}
+
 function placeOverFilters(tip, anchor, panel) {
   fitTooltipScale(tip);
   const panelRect = panel.getBoundingClientRect();
@@ -404,12 +437,17 @@ export function createTooltipHover(options = {}) {
     }
 
     const mode = activePlace.mode;
+    if (mode !== 'itemLeft') {
+      host.querySelector('.bpb-tooltip-cluster')?.classList.remove('bpb-tooltip-cluster--flip');
+    }
     if (mode === 'center') {
       placeCenter(host);
     } else if (mode === 'cursor') {
       placeAtCursor(host, anchor, pointer);
     } else if (mode === 'itemRight' && anchor) {
       placeItemRight(host, anchor);
+    } else if (mode === 'itemLeft' && anchor) {
+      placeItemLeft(host, anchor);
     } else if (mode === 'overFilters' && anchor) {
       const scope = activePlace.filtersScope || document;
       const panel = scope.querySelector?.(activePlace.filtersSelector);
@@ -576,6 +614,7 @@ export function createTooltipHover(options = {}) {
         opts.place === 'overFilters' ||
         opts.place === 'cursor' ||
         opts.place === 'itemRight' ||
+        opts.place === 'itemLeft' ||
         opts.place === 'center'
           ? opts.place
           : 'near',

@@ -37,7 +37,7 @@ function hasBagtacular(ctx) {
 export const staminaSackPort = {
   handlerId: 'stamina_sack',
   family: 'unique',
-  onPreCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     if (!hasBagtacular(ctx)) return;
     const bag = ctx.itemsById.get('bagtacular');
     const pct =
@@ -67,7 +67,7 @@ export const vineweaveBasketPort = {
 export const potionBeltPort = {
   handlerId: 'potion_belt',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._beltN = 0;
     ctx.bus?.on?.('potion_emptied', () => {
       piece._beltN = (Number(piece._beltN) || 0) + 1;
@@ -80,7 +80,14 @@ export const potionBeltPort = {
           ctx.rng,
         );
       }
-      if (hasBagtacular(ctx)) buffs += 1;
+      if (hasBagtacular(ctx)) {
+        const bag = ctx.pieces?.find((p) => p.itemId === 'bagtacular' && p.alive !== false);
+        const catalog = ctx.itemsById.get('bagtacular');
+        buffs += Math.max(
+          0,
+          Math.round(getPName(bag?.params || catalog?.params, 'buffs', 2)),
+        );
+      }
       if (buffs) {
         giveRandomBuffs(ctx.player, buffs, ctx.rng, {
           originKey: piece.placementKey,

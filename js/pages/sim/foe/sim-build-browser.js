@@ -10,7 +10,7 @@ import { syncEventBuildVisibility } from '../../events/event-gallery-sync.js';
 import { classIconPath } from '../../../shared/class-icons.js';
 import { faceHtml, hydrateFaces } from '../../../shared/blob-face.js';
 import { skelBar, skelBlock, skelRegion } from '../../../shared/skeleton.js';
-import { itemSpriteUrl, itemsFromBuilds } from '../../../shared/build-search.js';
+import { itemSpriteUrl, itemsFromBuilds, usersFromBuilds } from '../../../shared/build-search.js';
 import { mountBuildSearchInput } from '../../../shared/build-search-input.js';
 import { mountFeedBoardThumbs } from '../../builds/board-thumbs.js';
 import { filterBuilds, sortBuilds } from '../../builds/feed.js';
@@ -105,7 +105,6 @@ async function fetchPublicBuilds(root) {
     data = retry.data;
   }
 
-  const base = root.endsWith('/') ? root : `${root}/`;
   return (data ?? []).map((row) => {
     const raw = row?.profile;
     const profile =
@@ -118,6 +117,52 @@ async function fetchPublicBuilds(root) {
     return {
       ...row,
       author_name: liveName || row.author_name || 'Unknown',
+      author_avatar_url: String(profile?.avatar_url || '').trim() || null,
+      author_equipped_avatar:
+        profile?.equipped_avatar != null ? String(profile.equipped_avatar) : null,
+    };
+  });
+}
+
+/**
+ * The signed-in author's event entries that are still held from the public
+ * gallery. RLS limits this query to the current author; the event_held filter
+ * keeps private non-event builds out of the simulator picker.
+ *
+ * @param {string} authorId
+ */
+async function fetchMyHeldBuilds(authorId) {
+  const supabase = getSupabase();
+  const placementSelect = `
+      placements:build_placements (
+        id, x, y, r, gems,
+        item:items ( ${ITEM_SELECT} )
+      )`;
+  const { data, error } = await supabase
+    .from('builds')
+    .select(`
+      slug, title, hero_class, vote_score, author_id, author_name, created_at,
+      is_op, is_featured, build_tag, rank, gold_count, event_slug, event_held,
+      profile:profiles!builds_author_id_fkey (
+        discord_id, display_name, avatar_url, equipped_avatar
+      ),
+      ${placementSelect}`)
+    .eq('author_id', authorId)
+    .eq('event_held', true)
+    .order('created_at', { ascending: false })
+    .limit(20);
+  if (error) throw error;
+  return (data || []).map((row) => {
+    const raw = row?.profile;
+    const profile =
+      raw && typeof raw === 'object' && !Array.isArray(raw)
+        ? raw
+        : Array.isArray(raw)
+          ? raw[0]
+          : null;
+    return {
+      ...row,
+      author_name: String(profile?.display_name || '').trim() || row.author_name || 'You',
       author_avatar_url: String(profile?.avatar_url || '').trim() || null,
       author_equipped_avatar:
         profile?.equipped_avatar != null ? String(profile.equipped_avatar) : null,
@@ -168,6 +213,9 @@ function cardHtml(root, b) {
   const classInner = classSrc
     ? `<img class="sim-bb__card-class" src="${escapeAttr(classSrc)}" alt="${escapeAttr(hero)}" title="${escapeAttr(hero)}" width="36" height="36" draggable="false" />`
     : `<span class="sim-bb__card-class sim-bb__card-class--empty" aria-hidden="true"></span>`;
+  const privateLabel = b.event_held === true
+    ? '<span class="sim-bb__private">Only visible to you</span>'
+    : '';
 
   return `
     <button
@@ -191,7 +239,10 @@ function cardHtml(root, b) {
         aria-hidden="true"
       ></span>
       <span class="sim-bb__card-foot">
-        <span class="sim-bb__card-title">${escapeHtml(title)}</span>
+        <span class="sim-bb__card-title-wrap">
+          <span class="sim-bb__card-title">${escapeHtml(title)}</span>
+          ${privateLabel}
+        </span>
         ${classInner}
       </span>
     </button>
@@ -236,12 +287,12 @@ export function openSimBuildBrowser(fieldEl, opts) {
   overlay.setAttribute('data-sim-build-browser', '');
   overlay.setAttribute('role', 'dialog');
   overlay.setAttribute('aria-modal', 'true');
-  overlay.setAttribute('aria-label', 'Choose public build');
+  overlay.setAttribute('aria-label', 'Choose a build');
   overlay.innerHTML = `
     <button type="button" class="sim-bb__backdrop" data-sim-bb-close aria-label="Dismiss"></button>
     <div class="sim-bb__panel">
       <header class="sim-bb__head">
-        <h2 class="sim-bb__title">Public build</h2>
+        <h2 class="sim-bb__title">Choose a build</h2>
         <button type="button" class="sim-bb__close" data-sim-bb-close aria-label="Close">Close</button>
       </header>
       <div class="sim-bb__body">
@@ -360,6 +411,8 @@ export function openSimBuildBrowser(fieldEl, opts) {
     });
     searchInput = mountBuildSearchInput(rail, {
       items: [],
+      users: [],
+      root,
       getSpriteUrl: (item) => itemSpriteUrl(root, item),
       onChange(q) {
         if (q === feed.q) return;
@@ -384,11 +437,20 @@ export function openSimBuildBrowser(fieldEl, opts) {
       ]);
       if (closed) return;
       all = builds;
+      if (profile?.id) {
+        const held = await fetchMyHeldBuilds(profile.id).catch(() => []);
+        if (closed) return;
+        const seen = new Set(all.map((b) => String(b.slug || '')));
+        for (const row of held) {
+          if (!seen.has(String(row.slug || ''))) all.push(row);
+        }
+      }
       spriteDisplay = sprite;
       shapes = shapeData;
       sockets = socketData;
       myAuthorId = profile?.id || null;
       searchInput?.setItems(itemsFromBuilds(all));
+      searchInput?.setUsers(usersFromBuilds(all));
       const mineBtn = rail?.querySelector('[data-feed-mine]');
       if (mineBtn instanceof HTMLElement && myAuthorId) {
         mineBtn.removeAttribute('disabled');

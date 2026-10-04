@@ -37,6 +37,7 @@ import { applyBonusDamageFactor } from '../piece-stats.js';
  * @typedef {{
  *   handlerId: string,
  *   family: string,
+ *   presenceOnly?: boolean,
  *   onPrepare?: (piece: CombatPiece, ctx: ScriptCtx) => void,
  *   onPreCombatStart?: (piece: CombatPiece, ctx: ScriptCtx) => void,
  *   onCombatStart?: (piece: CombatPiece, ctx: ScriptCtx) => void,
@@ -74,10 +75,11 @@ import { applyBonusDamageFactor } from '../piece-stats.js';
  * @param {ScriptCtx} ctx
  * @param {number} raw
  * @param {string} [extraLabel]
- * @param {{ ignoreBlock?: boolean, critChance?: number, skipSpikes?: boolean, canMiss?: boolean, isAttack?: boolean, isMelee?: boolean, vampiricItem?: boolean, canTriggerVampirism?: boolean }} [opts]
+ * @param {{ ignoreBlock?: boolean, critChance?: number, skipSpikes?: boolean, canMiss?: boolean, isAttack?: boolean, isMelee?: boolean, vampiricItem?: boolean, canTriggerVampirism?: boolean, canTriggerItems?: boolean }} [opts]
  */
 export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
   const { t, player, dummy, rng, events } = ctx;
+  const canTriggerItems = opts.canTriggerItems !== false;
   let accuracy = piece.accuracy;
   const lucky = Number(player.stacks?.lucky) || 0;
   const blind = Number(player.stacks?.blind) || 0;
@@ -113,7 +115,7 @@ export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
     onPreDealDamageEarly: (res) => ctx.notifyPreDealDamageEarly?.(piece, ctx, res),
     accuracy,
     canMiss: opts.canMiss !== false && !opts.ignoreBlock,
-    canCrit: critChance > 0,
+    canCrit: isAttack,
     critChance,
     isAttack,
     isMelee: opts.isMelee != null ? !!opts.isMelee : piece.damageKind !== 'ranged',
@@ -124,6 +126,7 @@ export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
     canTriggerVampirism:
       opts.canTriggerVampirism != null ? !!opts.canTriggerVampirism : isAttack,
     nowT: t,
+    events,
     bus: ctx.bus,
     rng,
   });
@@ -143,11 +146,13 @@ export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
     });
     const missResult = { hit: false, healthDamage: 0, raw: 0, critical: false, missed: true };
     const n = res.attackEffectCount || 1;
-    if (typeof ctx.notifyDealtDamage === 'function') {
+    if (canTriggerItems && typeof ctx.notifyDealtDamage === 'function') {
       for (let i = 0; i < n; i += 1) ctx.notifyDealtDamage(piece, ctx, missResult);
     }
-    ctx.bus?.emit?.('piece_dealt_damage', { piece, hit: missResult, t });
-    ctx.bus?.emit?.('item_attacked', { piece, hit: missResult, t });
+    if (canTriggerItems) {
+      ctx.bus?.emit?.('piece_dealt_damage', { piece, hit: missResult, t });
+      ctx.bus?.emit?.('item_attacked', { piece, hit: missResult, t });
+    }
     return missResult;
   }
 
@@ -174,15 +179,17 @@ export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
     missed: false,
   };
   const n = res.attackEffectCount || 1;
-  if (typeof ctx.notifyDealtDamage === 'function') {
+  if (canTriggerItems && typeof ctx.notifyDealtDamage === 'function') {
     for (let i = 0; i < n; i += 1) ctx.notifyDealtDamage(piece, ctx, hitResult);
   }
-  ctx.bus?.emit?.('piece_dealt_damage', {
-    piece,
-    hit: hitResult,
-    t,
-  });
-  ctx.bus?.emit?.('item_attacked', { piece, hit: hitResult, t });
+  if (canTriggerItems) {
+    ctx.bus?.emit?.('piece_dealt_damage', {
+      piece,
+      hit: hitResult,
+      t,
+    });
+    ctx.bus?.emit?.('item_attacked', { piece, hit: hitResult, t });
+  }
   return hitResult;
 }
 
@@ -233,6 +240,7 @@ export function dealEffectDamage(piece, ctx, raw, opts = {}) {
     skipSpikes: true,
     ignoreBlock: !!opts.ignoreBlock,
     nowT: t,
+    events,
     bus: ctx.bus,
     rng,
   });

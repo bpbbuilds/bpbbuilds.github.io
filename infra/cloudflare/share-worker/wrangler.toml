@@ -1,0 +1,14 @@
+name = "bpbbuilds-share-preview"
+main = "src/index.js"
+compatibility_date = "2026-10-03"
+workers_dev = false
+
+# This route is intentionally limited to the share hostname. It does not
+# proxy the production site and does not overlap ai.bpbbuilds.com.
+routes = [
+  { pattern = "share.bpbbuilds.com/*", zone_name = "bpbbuilds.com" }
+]
+
+[vars]
+SITE_URL = "https://bpbbuilds.com"
+SUPABASE_URL = "https://xklkysmakrmgtiztsqug.supabase.co"

@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
   const anonKey = Deno.env.get('SUPABASE_ANON_KEY') || '';
   const stripeKey = Deno.env.get('STRIPE_SECRET_KEY') || '';
   const priceId = Deno.env.get('STRIPE_PRICE_ID_PREMIUM') || '';
-  const siteUrl = (Deno.env.get('SITE_URL') || 'https://bpbbuilds.github.io').replace(
+  const siteUrl = (Deno.env.get('SITE_URL') || 'https://bpbbuilds.com').replace(
     /\/$/,
     '',
   );

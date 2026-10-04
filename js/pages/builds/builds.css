@@ -528,6 +528,7 @@ a.builds-post__author:hover {
   paint-order: stroke fill;
   text-shadow: var(--bp-ui-ring);
   background: color-mix(in srgb, #3c261d 72%, #8a5a2b);
+  text-decoration: none;
 }
 
 .builds-post__flair--op {

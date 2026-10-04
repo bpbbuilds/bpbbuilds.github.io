@@ -1,53 +1,84 @@
 {
-  "builtAt": "2026-08-25T22:00:28.261Z",
+  "builtAt": "2026-10-03T03:52:45.765Z",
   "note": "Phase 266: not the 260 staple set. Flags logged; empty flags ≠ live pass. Dummy expect not required.",
   "dumps": [
     {
       "label": "Create demo",
       "slug": "infinite-combo-machine",
-      "dummyEndHp": 95,
-      "playerEndHp": 300,
-      "eventCount": 590,
-      "emptyFlagsAreNotALivePass": true,
-      "paramCheckCount": 0,
-      "mismatchCount": 0,
-      "paramChecks": [],
-      "mismatches": []
+      "dummyEndHp": 157,
+      "playerEndHp": 296,
+      "eventCount": 576,
+      "emptyFlagsAreNotALivePass": false,
+      "paramCheckCount": 1,
+      "mismatchCount": 1,
+      "paramChecks": [
+        {
+          "itemId": "wooden_sword",
+          "expectedKey": "meleeVampirismLimit",
+          "stack": "vampirism",
+          "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=5.73s Wooden Sword heal 4 with 5 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 30 over 7 vamp heal(s)."
+        }
+      ],
+      "mismatches": [
+        {
+          "itemId": "wooden_sword",
+          "stack": "vampirism",
+          "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=5.73s Wooden Sword heal 4 with 5 vamp stack(s), hit 4 → game min(stacks, round(dmg×1)) then heal amp → 5. Sim logged 30 over 7 vamp heal(s)."
+        }
+      ]
     },
     {
       "label": "History Ranger",
       "slug": "history-3708",
       "dummyEndHp": 0,
       "playerEndHp": 240,
-      "eventCount": 462,
+      "eventCount": 549,
       "emptyFlagsAreNotALivePass": false,
-      "paramCheckCount": 3,
+      "paramCheckCount": 6,
       "mismatchCount": 1,
       "paramChecks": [
+        {
+          "itemId": "charge_splitter",
+          "expectedKey": "cd_then_consume",
+          "stack": "activations",
+          "note": "game: doCooldownEffect → onAfterEffectFinished() stops the CD and consume()s (one post-delay Activations tick). Sim had 2 CD activate(s) for Charge Splitter at t=7.20, 7.22"
+        },
         {
           "itemId": "bloodthorne",
           "expectedKey": "meleeVampirismLimit",
           "stack": "vampirism",
-          "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.81s Bloodthorne heal 13 with 8 vamp stack(s), hit 16 → game min(stacks, round(dmg×1)) then heal amp → 19. Sim logged 901 over 12 vamp heal(s)."
+          "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.74s Bloodthorne heal 13 with 8 vamp stack(s), hit 13 → game min(stacks, round(dmg×1)) then heal amp → 19. Sim logged 656 over 10 vamp heal(s)."
         },
         {
-          "itemId": "mecha_bat",
-          "expectedKey": "vampirism",
-          "stack": "vampirism",
-          "note": "grant 6 ≠ catalog vampirism=3"
+          "itemId": "wisp",
+          "expectedKey": "spikes",
+          "stack": "spikes",
+          "note": "grant 2 ≠ catalog spikes=1"
         },
         {
           "itemId": "rat_chef",
           "expectedKey": "empower",
           "stack": "empower",
           "note": "grant 2 is catalog stamina=2, not empower=1"
+        },
+        {
+          "itemId": "crown",
+          "expectedKey": "mana",
+          "stack": "mana",
+          "note": "grant -10 ≠ catalog mana=10"
+        },
+        {
+          "itemId": "mecha_bat",
+          "expectedKey": "luck",
+          "stack": "lucky",
+          "note": "grant -1 ≠ catalog luck=1"
         }
       ],
       "mismatches": [
         {
           "itemId": "bloodthorne",
           "stack": "vampirism",
-          "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.81s Bloodthorne heal 13 with 8 vamp stack(s), hit 16 → game min(stacks, round(dmg×1)) then heal amp → 19. Sim logged 901 over 12 vamp heal(s)."
+          "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.74s Bloodthorne heal 13 with 8 vamp stack(s), hit 13 → game min(stacks, round(dmg×1)) then heal amp → 19. Sim logged 656 over 10 vamp heal(s)."
         }
       ]
     },
@@ -55,18 +86,12 @@
       "label": "History Pyromancer",
       "slug": "history-3709",
       "dummyEndHp": 0,
-      "playerEndHp": 323,
-      "eventCount": 475,
+      "playerEndHp": 306,
+      "eventCount": 453,
       "emptyFlagsAreNotALivePass": false,
-      "paramCheckCount": 2,
-      "mismatchCount": 1,
+      "paramCheckCount": 1,
+      "mismatchCount": 0,
       "paramChecks": [
-        {
-          "itemId": "amulet_of_darkness",
-          "expectedKey": "meleeVampirismLimit",
-          "stack": "vampirism",
-          "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=8.71s Amulet of Darkness heal 1 with 2 vamp stack(s), hit 28 → game min(stacks, round(dmg×1)) then heal amp → 2. Sim logged 9 over 6 vamp heal(s)."
-        },
         {
           "itemId": "enchanted_weapons",
           "expectedKey": "vampirism",
@@ -74,29 +99,23 @@
           "note": "no catalog key for vampirism; grant 1 equals buffs=1"
         }
       ],
-      "mismatches": [
-        {
-          "itemId": "amulet_of_darkness",
-          "stack": "vampirism",
-          "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=8.71s Amulet of Darkness heal 1 with 2 vamp stack(s), hit 28 → game min(stacks, round(dmg×1)) then heal amp → 2. Sim logged 9 over 6 vamp heal(s)."
-        }
-      ]
+      "mismatches": []
     },
     {
       "label": "History Berserker",
       "slug": "history-3706",
       "dummyEndHp": 0,
-      "playerEndHp": 232,
-      "eventCount": 501,
+      "playerEndHp": 227,
+      "eventCount": 506,
       "emptyFlagsAreNotALivePass": false,
       "paramCheckCount": 1,
       "mismatchCount": 0,
       "paramChecks": [
         {
           "itemId": "amulet_of_fortune",
-          "expectedKey": "regeneration",
-          "stack": "regeneration",
-          "note": "no catalog key for regeneration; grant 2 equals buffs=2"
+          "expectedKey": "heat",
+          "stack": "heat",
+          "note": "no catalog key for heat; grant 2 equals buffs=2"
         }
       ],
       "mismatches": []
@@ -105,18 +124,12 @@
       "label": "History Mage",
       "slug": "history-3704",
       "dummyEndHp": 0,
-      "playerEndHp": 29,
-      "eventCount": 408,
+      "playerEndHp": 6,
+      "eventCount": 464,
       "emptyFlagsAreNotALivePass": false,
       "paramCheckCount": 4,
       "mismatchCount": 0,
       "paramChecks": [
-        {
-          "itemId": "wand",
-          "expectedKey": "regeneration",
-          "stack": "regeneration",
-          "note": "no catalog key for regeneration; grant 1 equals empower=1, use=1"
-        },
         {
           "itemId": "wand",
           "expectedKey": "lucky",
@@ -124,16 +137,22 @@
           "note": "no catalog key for lucky; grant 1 equals empower=1, use=1"
         },
         {
+          "itemId": "wand",
+          "expectedKey": "regeneration",
+          "stack": "regeneration",
+          "note": "no catalog key for regeneration; grant 1 equals empower=1, use=1"
+        },
+        {
+          "itemId": "serpent_staff",
+          "expectedKey": "mana",
+          "stack": "mana",
+          "note": "grant -4 ≠ catalog mana=4"
+        },
+        {
           "itemId": "serpent_staff",
           "expectedKey": "poison",
           "stack": "poison",
-          "note": "grant 4 is catalog mana=4, not poison=1"
-        },
-        {
-          "itemId": "wand",
-          "expectedKey": "mana",
-          "stack": "mana",
-          "note": "no catalog key for mana; grant 1 equals empower=1, use=1"
+          "note": "grant 5 ≠ catalog poison=1"
         }
       ],
       "mismatches": []

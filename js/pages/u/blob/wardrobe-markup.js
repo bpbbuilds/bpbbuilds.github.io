@@ -44,18 +44,24 @@ export function equippedInSlot(loadout, slotId, catalog) {
 }
 
 /**
- * Slot / inventory tile — item overlay only (same PNG as equip, 1:1 canvas).
- * @param {BlobCosmetic | null} item
+ * Site-root path for a cosmetic image. Remote URLs stay as they are.
  * @param {string} root
- * @param {string} [extraClass]
+ * @param {string | null | undefined} path
  */
+function cosmeticAssetSrc(root, path) {
+  const value = String(path || '').trim();
+  if (!value) return '';
+  if (/^(https?:|data:|blob:)/i.test(value)) return value;
+  const base = root.endsWith('/') ? root : `${root}/`;
+  return `${base}${value.replace(/^\//, '')}`;
+}
+
 export function itemIconHtml(item, root, extraClass = '') {
-  void root;
   if (!item) {
     return `<span class="blob-item-icon blob-item-icon--empty ${extraClass}" aria-hidden="true"></span>`;
   }
   // Always the aligned overlay (`image`) — same size/placement as Photoshop vs blob-base.
-  const src = String(item.image || item.icon || '').trim();
+  const src = cosmeticAssetSrc(root, item.image || item.icon);
   if (src) {
     return `<img class="blob-item-icon ${extraClass}" src="${escapeAttr(src)}" alt="" draggable="false" width="64" height="64" />`;
   }
@@ -75,7 +81,7 @@ export function compositeTileHtml(item, root, extraClass = '') {
   if (!item) {
     return `<span class="blob-tile-preview blob-tile-preview--empty ${extraClass}" aria-hidden="true"></span>`;
   }
-  const overlaySrc = String(item.image || '').trim();
+  const overlaySrc = cosmeticAssetSrc(root, item.image);
   const overlay = overlaySrc
     ? `<img class="blob-tile-preview__layer" src="${escapeAttr(overlaySrc)}" alt="" draggable="false" />`
     : `<span class="blob-tile-preview__swatch" style="--blob-swatch:${escapeAttr(item.swatch || '#8a5a2b')}" aria-hidden="true">${escapeHtml((item.name || '?').slice(0, 1).toUpperCase())}</span>`;

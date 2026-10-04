@@ -1134,3 +1134,134 @@ None.
 - The public event detail now removes the Enter event button once entries are closed, shows a judging/closed status message, and the wizard refuses both late opens and a submit if the schedule crosses into judging while it is open.
 - Overview Schedule facts now render from the normalized event schedule, including admin-edited entry-close/end dates, instead of the original hard-coded catalog dates.
 - Validation: schedule/status regression test, entry-open gate assertions, JavaScript syntax checks, and targeted whitespace checks passed. Published in the next commit; existing unrelated worktree changes remain untouched.
+
+### 2026-10-04 held event build avatar claim (in progress)
+
+- Codex owns `js/pages/builds/feed.js`, the focused held-entry avatar regression check, and this handoff for restoring profile/blob data on the Builds feed's owner-only event entries.
+- Scope: make the private event-entry query hydrate the same Discord avatar/blob loadout fields as public build rows. No visibility, RLS, or event release behavior changes are in scope.
+
+### 2026-10-04 held event build avatar complete
+
+- The Builds feed's owner-only held-entry query now selects the author profile relation (`discord_id`, `display_name`, `avatar_url`, and `equipped_avatar`), so the existing face renderer can show the user's Discord picture or blob instead of falling back to initials.
+- Validation: `node --check js/pages/builds/feed.js` and targeted `git diff --check` pass. No visibility, RLS, event-release, or database behavior changed. No commit/push was made.
+
+### 2026-10-04 simulator held-build privacy claim (in progress)
+
+- Codex owns `js/pages/sim/foe/sim-build-browser.js`, `js/pages/sim/shell/board-load.js`, `js/pages/sim/foe/sim-build-browser.css`, focused simulator privacy checks, and this handoff for allowing an entrant to use their own held event build without exposing it to other simulator users.
+- Scope: add owner-only held entries to the picker with a private indicator and make direct simulator slug loading follow Supabase/RLS ownership. Public-build behavior and event release timing remain unchanged.
+
+### 2026-10-04 simulator held-build privacy complete
+
+- The simulator build picker continues to load public builds for everyone, and now adds the signed-in author's `event_held` entries through an author-scoped query. Those cards show `Only visible to you`; private non-event builds are not added to the picker.
+- Direct `?oppSlug=` loading now tries the public row first, then the current author's own row. Supabase RLS remains the authorization boundary, so another user cannot load a held entry by guessing its slug.
+- Validation: simulator/browser-loader syntax checks, targeted source privacy assertions, and `git diff --check` pass. The existing Playwright picker audit could not reach the simulator HUD within 30 seconds in this environment, so no browser screenshot smoke result is claimed. No database or event schedule behavior changed. No commit/push was made.
+
+### 2026-10-04 admin winner desk UX claim (in progress)
+
+- Codex owns `js/pages/admin/event-desk.js`, `js/pages/admin/event-winner.css`, `admin/index.html`, and this handoff for repairing the manual event-winner selection interaction and aligning its module with the existing admin form visual system.
+- Scope: preserve the owner-only winner API and authorization, remove selection-state flicker, expose clear saving/error/selected states accessibly, and make the winner controls responsive and form-styled. No backend, RLS, event lifecycle, or unrelated admin behavior changes are in scope.
+
+### 2026-10-04 admin winner desk UX complete
+
+- The no-vote Events desk now renders a form-style manual judging well with an explicit state badge, live status, accessible busy/error state, and a responsive clear action. Selected entries receive a highlighted row and winner badge; winner/view actions remain usable on narrow panels.
+- Winner selection and clearing now repaint once before saving and once after the request settles, removing the previous intermediate repaint/flicker that made the module appear broken while preserving the existing owner-only `set_event_winner`/`clear_event_winner` API path.
+- Validation: `node --check js/pages/admin/event-desk.js`, focused source/CSS assertions, cache-bust verification, and targeted `git diff --check` passed. No backend, RLS, event lifecycle, or unrelated admin behavior changed. No commit/push was made.
+
+### 2026-10-04 Badger Rune and Bagtacular simulator port claim (in progress)
+
+- Codex owns `js/pages/sim/engine/damage.js`, `js/pages/sim/engine/gem-sockets.js`, `js/pages/sim/engine/pieces.js`, `js/pages/sim/engine/scripts/ports-an-gems.js`, `js/pages/sim/engine/scripts/ports-ao-skills.js`, `js/pages/sim/engine/scripts/ports-ak-bags.js`, `js/pages/sim/engine/scripts/ports-consumable.js`, `js/pages/sim/engine/scripts/ports.js`, `scripts/extract-sim-item-inventory.mjs`, the focused Badger/Bagtacular regression script, the generated simulator inventory/ledger artifacts, the simulator port backlog/validation notes, and this handoff for this task.
+- Scope: resolve the authoritative `Exclusive/BadgerRune.gd` and `Exclusive/Bagtacular.gd` source records, align Badger Rune's mode-specific prepare/attack/pre-damage behavior and Bagtacular's bag modifier lifecycle, add player/opponent regression coverage, and update the backlog only after the source and runtime audits pass. No unrelated simulator ports or website behavior are in scope.
+
+### 2026-10-04 Badger Rune and Bagtacular simulator port complete
+
+- Source inventory now records the exact `Exclusive/BadgerRune.gd` and `Exclusive/Bagtacular.gd` inheritance/method surfaces. Badger Rune is ported for inventory stamina reduction, socketed weapon hit-speed growth, and battle-rage armor flat reduction at the `pre_take_damage` phase. Bagtacular is represented as a presence-only global modifier with the source values for Fanny Pack speed, Stamina Sack regeneration, Potion Belt buffs, and Protective Purse block; it no longer emits a fabricated activation.
+- Added `scripts/sim-badger-bagtacular-smoke.mjs` covering source records, loose/socketed gems, both actor sides, bag modifier deltas, and absence of a standalone Bagtacular activation. Checked both backlog rows and added the source/evidence notes to `docs/sim/sim-validation.md`; regenerated the simulator inventory and fidelity ledger artifacts.
+- Validation: focused smoke passed; all touched-module syntax checks and targeted whitespace checks passed; GDScript parity audit passed with zero untriaged/stale hook gaps; fidelity ledger check passed. The broader continuous audit is 15/16 because the existing worktree still has an unacknowledged patch-drift baseline covering 24 source-script changes (including unrelated prior work); that baseline was not rewritten here. No commit or push was made.
+
+### 2026-10-04 Book of Ice New and Chipped Amethyst simulator port claim (in progress)
+
+- Codex owns `js/pages/sim/engine/scripts/ports-ao-spells.js`, `js/pages/sim/engine/scripts/ports-an-gems.js`, `js/pages/sim/engine/gem-sockets.js`, `scripts/extract-sim-item-inventory.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the focused Book/Amethyst regression script, generated simulator inventory/ledger artifacts, the simulator port backlog/validation notes, and this handoff for this task.
+- Scope: resolve the scene-to-script source aliases for `BookofIceNew.tscn` and `ChippedAmethyst.tscn`, verify inherited Book of Ice and Amethyst behavior, correct any lifecycle/causal ordering gaps, add player/opponent regression coverage, and update the backlog only after source/runtime audits pass. No other gem tiers or unrelated spell ports are in scope.
+
+### 2026-10-04 Book of Ice New and Chipped Amethyst simulator port complete
+
+- Source inventory now resolves `BookofIceNew.tscn` → `Exclusive/BookofIce.gd` and `ChippedAmethyst.tscn` → `Gems/Amethyst.gd`, including their inherited `Item`/`Gem` surfaces. The fidelity ledger now records the scene aliases and both rows are source-ported/deep with no lifecycle or call-audit gaps.
+- Book of Ice ports now run linked-spell speed in `onPrepare` before the first cooldown arm, preserve the mana gate, apply Cold with source attribution, and activate after the effect (including insufficient-mana and opponent paths). Chipped Amethyst preserves inherited inventory cleanse-before-activation ordering and socketed weapon/armor behavior for both sides.
+- Added `scripts/sim-book-amethyst-smoke.mjs`, checked both backlog rows, and documented the source/evidence closure in `docs/sim/sim-validation.md`. Focused Book/Amethyst, loose-gem, and prior Badger/Bagtacular smokes passed; syntax and whitespace checks passed; GDScript hook and call audits plus ledger check passed. The broader continuous audit remains 15/16 because patch drift is still unacknowledged for a 26-row wave (24 pre-existing rows plus these two); the baseline was not rewritten. No commit or push was made.
+
+### 2026-10-04 Chipped gem, Darkest Lotus, and Elephant Rune simulator port claim (in progress)
+
+- Codex owns `js/pages/sim/engine/scripts/ports-an-gems.js`, the narrow family module for the requested gem/rune handlers, `scripts/extract-sim-item-inventory.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the focused regression script, generated simulator inventory/ledger artifacts, the simulator port backlog/validation notes, and this handoff for this task.
+- Scope: audit `chipped_emerald`, `chipped_ruby`, `chipped_sapphire`, `chipped_topaz`, `darkest_lotus`, and `elephant_rune` against the authoritative scene/script sources, correct only source-proven lifecycle or event gaps, add player/opponent regression coverage, and update the backlog only after audits pass. No unrelated simulator or website paths are in scope.
+
+### 2026-10-04 Chipped gem, Darkest Lotus, and Elephant Rune simulator port complete
+
+- Source inventory now resolves all six requested rows, including the Chipped
+  gem scene aliases, `DarkestLotus.tscn`, and `Exclusive/ElephantRune.tscn`.
+  The fidelity ledger records all six as deep, source-ported handlers with no
+  lifecycle or call-review candidates.
+- Loose Chipped Emerald/Ruby/Sapphire inventory effects now preserve source
+  effect/consume order and opponent-side event attribution. Chipped Topaz uses
+  the source `prepareInventory` stamina-regeneration phase. Shared socket
+  handling covers the four gem prepare modes and Elephant Rune's weapon stun,
+  while Elephant armor debuff resistance is timed to `dur_resist` and expires.
+- Darkest Lotus now follows the Card trigger order: next-card state, then
+  chain-scaled mana and hostile buff removal, then activation. The shared
+  socket call audit now includes `gem-sockets.js` for Gem source-call evidence;
+  the extractor also records the Elephant lifecycle methods without duplicating
+  Ace of Spades overrides.
+- Added `scripts/sim-chipped-gems-lotus-elephant-smoke.mjs` with player and
+  opponent, inventory and socket, state, causal-order, and timed-resistance
+  assertions. Checked all six backlog rows and documented the evidence in
+  `docs/sim/sim-validation.md`.
+- Validation passed: focused family smoke, loose-gem, Book/Amethyst,
+  Badger/Bagtacular, Ace/Puppy, socket split, two-board, and event-contract
+  smokes; syntax checks; GDScript parity (`untriagedHookGaps: 0`); call audit;
+  and `sim-fidelity-ledger.mjs --check`. The broader continuous audit is
+  15/16 because the existing worktree still has an unacknowledged patch-drift
+  baseline across prior source changes; it was not rewritten here. No commit
+  or push was made.
+
+### 2026-10-04 admin winner module mount and form styling claim (in progress)
+
+- Codex owns `js/pages/admin/event-desk.js`, `js/pages/admin/event-winner.css`,
+  `admin/index.html`, `js/shared/confirm-dialog.css`,
+  `supabase/functions/event-winner/index.ts`, `supabase/config.toml`,
+  `events/index.html`, and this handoff for
+  repairing the Select Winner action's module target, unstyled controls, and
+  public winner-result refresh.
+- Scope: keep winner selection owner-gated and preserve the existing winner API;
+  ensure the judging UI mounts inside the event detail module, styles all
+  controls with the admin form system, and keeps the public Events winner
+  rendering path separate. Authorization, RLS, and winner persistence remain
+  unchanged; only the public read response gains a privacy-safe pending state.
+
+### 2026-10-04 admin winner module mount and form styling complete
+
+- The admin confirmation layer now loads its shared form CSS and sits above
+  the event desk modal, so Select winner/Clear winner confirmations no longer
+  render behind the admin module as unstyled page controls. The admin and
+  Events entry scripts received fresh cache-bust stamps.
+- The public winner endpoint now acknowledges a selected winner while the
+  event entry is still held private, without returning the entrant/build
+  identity. The Events detail adds the Winner tab for that acknowledged result
+  and shows a pending-publication state; once SQL visibility releases the
+  entry, the existing face/build card renders normally.
+- Validation: admin/events JavaScript syntax checks, static source assertions,
+  targeted `git diff --check`, and winner-module cache-bust checks passed. The
+  Supabase Edge Function source/config was updated but not deployed from this
+  workspace; the next Supabase deploy must include `event-winner` before the
+  pending Winner tab can appear live. No commit or push was made.
+
+### 2026-10-04 glitzi and freeq_45422 premium entitlement reset complete
+
+- Cleared only the two requested profiles' website entitlement fields: both
+  now have `plan = free` and `premium_until = null`; their founding slots were
+  already null and were left untouched. Existing Stripe customer metadata was
+  preserved; the matching customer had no active subscriptions.
+- Reconciled both Discord members against the free plan, removing the Premium
+  and Founding roles where present. Both members were found in the guild and
+  the role sync succeeded.
+- Verification: both profiles remain founding-eligible, the founding promo is
+  started/open, and the founding counter remains `1 / 10`. No product files,
+  migrations, or deployment configuration were changed.

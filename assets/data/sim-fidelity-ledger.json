@@ -5,19 +5,19 @@
     "catalog": "scripts/_cache/game-items.json",
     "catalogSha256": "56cd189aab0be25e626651b168d55401a7abe6f5b2735fe68740edd027bdae13",
     "extractItemsSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
-    "inventoryExtractedAt": "2026-09-24T16:53:39.392Z",
+    "inventoryExtractedAt": "2026-10-04T20:27:56.306Z",
     "catalogItems": 519
   },
   "totals": {
     "catalogItems": 519,
-    "sourcePorted": 353,
+    "sourcePorted": 373,
     "portPresentIncomplete": 90,
-    "sourceUnresolved": 49,
+    "sourceUnresolved": 29,
     "noCombat": 26,
     "deferred": 1,
     "lifecycleHookGap": 10,
     "untriagedLifecycleHookGap": 0,
-    "callReviewCandidate": 36,
+    "callReviewCandidate": 47,
     "duplicateRegistration": 21
   },
   "rows": [
@@ -28,10 +28,23 @@
       "class": "Neutral",
       "gameVersion": "0.3.4",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "AceofSpades.gd",
+        "extends": "Card",
+        "family": "unique",
+        "overrides": [
+          "doRevealEffect"
+        ],
+        "directOverrides": [
+          "doRevealEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Card.gd",
+          "Item.gd"
+        ],
+        "sourceMethods": [
+          "cardSecondaryEffectActive"
+        ]
       },
       "sim": {
         "runtimeHandler": "ace_of_spades",
@@ -46,9 +59,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -551,9 +564,9 @@
       "class": "Neutral",
       "gameVersion": "0.9.12",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/AmuletUnidentified.gd",
+        "extends": "Item",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -734,10 +747,30 @@
       "class": "Neutral",
       "gameVersion": "0.9.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Exclusive/ArmoredCouragePuppy.gd",
+        "extends": "CouragePuppy",
+        "family": "unique",
+        "overrides": [
+          "doCooldownEffect",
+          "onPreCombatStart"
+        ],
+        "directOverrides": [],
+        "inheritedOverrides": [
+          "doCooldownEffect",
+          "onPreCombatStart"
+        ],
+        "inheritedFiles": [
+          "Exclusive/CouragePuppy.gd",
+          "Item.gd"
+        ],
+        "sourceSetup": [
+          "CanTriggerItems",
+          "CanTriggerSpikes"
+        ],
+        "sourceMethods": [
+          "_ready",
+          "canAffect"
+        ]
       },
       "sim": {
         "runtimeHandler": "armored_courage_puppy",
@@ -752,9 +785,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1022,14 +1055,29 @@
       "class": "Neutral",
       "gameVersion": "0.9.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Exclusive/BadgerRune.gd",
+        "extends": "Gem",
+        "family": "unique",
+        "overrides": [],
+        "directOverrides": [],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor",
+          "hasCooldown",
+          "prepareInventory",
+          "onHotSwapHoverWithGemEnd"
+        ]
       },
       "sim": {
         "runtimeHandler": "badger_rune",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -1038,9 +1086,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1167,10 +1215,18 @@
       "class": "Neutral",
       "gameVersion": "0.9.24",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Exclusive/Bagtacular.gd",
+        "extends": "Item",
+        "family": "unique",
+        "overrides": [],
+        "directOverrides": [],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sourceMethods": [
+          "canAffect_global"
+        ]
       },
       "sim": {
         "runtimeHandler": "bagtacular",
@@ -1185,9 +1241,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1504,9 +1560,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/BlackBishop.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -1517,12 +1573,17 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "inflictRandomDebuffs",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: inflictRandomDebuffs.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1536,9 +1597,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/BlackKing.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -1549,12 +1610,21 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "addSpeed",
+            "why": "no port block found"
+          },
+          {
+            "call": "removeRandomBuffs",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: addSpeed, removeRandomBuffs.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1568,9 +1638,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/BlackKnight.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -1581,12 +1651,21 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "giveVampirism",
+            "why": "no port block found"
+          },
+          {
+            "call": "drainStamina",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: giveVampirism, drainStamina.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1600,9 +1679,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/BlackPawn.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -1613,12 +1692,21 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "giveMana",
+            "why": "no port block found"
+          },
+          {
+            "call": "inflictPoison",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: giveMana, inflictPoison.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1632,9 +1720,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/BlackQueen.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -1645,12 +1733,21 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "stealRandomBuff",
+            "why": "no port block found"
+          },
+          {
+            "call": "stun",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: stealRandomBuff, stun.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1664,9 +1761,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/BlackRook.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -1677,12 +1774,21 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "giveSpikes",
+            "why": "no port block found"
+          },
+          {
+            "call": "changeAllItemsCritRate",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: giveSpikes, changeAllItemsCritRate.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -2059,10 +2165,24 @@
       "class": "Neutral",
       "gameVersion": "10.0.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Exclusive/BookofIce.gd",
+        "extends": "Item",
+        "family": "unique",
+        "overrides": [
+          "doCooldownEffect",
+          "onPrepare"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/BookofIceNew.tscn",
+        "sourceMethods": [
+          "canAffect"
+        ]
       },
       "sim": {
         "runtimeHandler": "book_of_ice_new",
@@ -2077,9 +2197,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -2605,17 +2725,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveBlock",
-            "why": "no token of block"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "port_present",
       "fidelity": "incomplete",
-      "knownDelta": "Source-call review candidate: giveBlock.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -3345,14 +3460,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.8",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Amethyst.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/ChippedAmethyst.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "chipped_amethyst",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -3361,9 +3493,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -3377,14 +3509,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Emerald.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/ChippedEmerald.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "chipped_emerald",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -3393,9 +3542,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -3409,14 +3558,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Ruby.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/ChippedRuby.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "chipped_ruby",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -3425,9 +3591,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -3441,14 +3607,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Sapphire.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/ChippedSapphire.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "chipped_sapphire",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -3457,9 +3640,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -3473,14 +3656,28 @@
       "class": "Neutral",
       "gameVersion": "0.3.8",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Topaz.gd",
+        "extends": "Gem",
+        "family": "unique",
+        "overrides": [],
+        "directOverrides": [],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/ChippedTopaz.tscn",
+        "sourceMethods": [
+          "prepareInventory",
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "chipped_topaz",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -3489,9 +3686,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -4590,10 +4787,21 @@
       "class": "Neutral",
       "gameVersion": "0.3.4",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "DarkestLotus.gd",
+        "extends": "Card",
+        "family": "unique",
+        "overrides": [
+          "doRevealEffect"
+        ],
+        "directOverrides": [
+          "doRevealEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Card.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "DarkestLotus.tscn"
       },
       "sim": {
         "runtimeHandler": "darkest_lotus",
@@ -4608,9 +4816,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -5564,14 +5772,36 @@
       "class": "Neutral",
       "gameVersion": "0.9.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Exclusive/ElephantRune.gd",
+        "extends": "Gem",
+        "family": "unique",
+        "overrides": [
+          "combatStartInventory"
+        ],
+        "directOverrides": [
+          "combatStartInventory"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/ElephantRune.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor",
+          "combatStartArmor",
+          "removeDebuffResistance",
+          "combatEndArmor",
+          "hasCooldown",
+          "onHotSwapHoverWithGemEnd"
+        ]
       },
       "sim": {
         "runtimeHandler": "elephant_rune",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -5580,9 +5810,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -7160,9 +7390,9 @@
       "class": "Neutral",
       "gameVersion": "1.1.0",
       "source": {
-        "script": "Items/Exclusive/FurciferPrime.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/FurciferPrime.gd",
+        "extends": "Item",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -7763,21 +7993,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "addCritChancePercent",
-            "why": "no token of crit"
-          },
-          {
-            "call": "changeResistChance",
-            "why": "no token of resist"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: addCritChancePercent, changeResistChance.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -8316,10 +8537,12 @@
       "class": "Neutral",
       "gameVersion": "0.3.4",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "HoloFireLizard.gd",
+        "extends": "Card",
+        "family": "unique",
+        "overrides": [
+          "doRevealEffect"
+        ]
       },
       "sim": {
         "runtimeHandler": "holo_fire_lizard",
@@ -8334,9 +8557,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -8534,9 +8757,9 @@
       "class": "Engineer",
       "gameVersion": "1.1.0",
       "source": {
-        "script": "Items/Exclusive/Hypercube.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Hypercube.gd",
+        "extends": "Item",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -8754,10 +8977,12 @@
       "class": "Neutral",
       "gameVersion": "0.9.2",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Exclusive/Joker.gd",
+        "extends": "Card",
+        "family": "unique",
+        "overrides": [
+          "doRevealEffect"
+        ]
       },
       "sim": {
         "runtimeHandler": "joker",
@@ -8769,12 +8994,17 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "changeStaminaFactor",
+            "why": "no token of stamina"
+          }
+        ],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": "Source-call review candidate: changeStaminaFactor.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -9597,9 +9827,9 @@
       "class": "Adventurer",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/Lootbox.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Lootbox.gd",
+        "extends": "Item",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -9829,17 +10059,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveBlock",
-            "why": "no token of block"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: giveBlock.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -13235,9 +13460,9 @@
       "class": "Neutral",
       "gameVersion": "0.9.16",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/RandomLoadoutBag.gd",
+        "extends": "Bag",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -13642,10 +13867,12 @@
       "class": "Neutral",
       "gameVersion": "0.9.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Exclusive/Reverse.gd",
+        "extends": "Card",
+        "family": "unique",
+        "overrides": [
+          "doRevealEffect"
+        ]
       },
       "sim": {
         "runtimeHandler": "reverse",
@@ -13660,9 +13887,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -14632,9 +14859,9 @@
       "class": "Neutral",
       "gameVersion": "0.5.5",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
+        "script": "Gems/Skull.gd",
+        "extends": "Gem",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -14648,9 +14875,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -15071,9 +15298,9 @@
       "class": "Neutral",
       "gameVersion": "0.9.24",
       "source": {
-        "script": "Items/Exclusive/Snowman.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Snowman.gd",
+        "extends": "Item",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -16914,10 +17141,12 @@
       "class": "Neutral",
       "gameVersion": "0.8.2",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "TheFool.gd",
+        "extends": "Card",
+        "family": "unique",
+        "overrides": [
+          "doRevealEffect"
+        ]
       },
       "sim": {
         "runtimeHandler": "the_fool",
@@ -16932,9 +17161,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -16948,10 +17177,12 @@
       "class": "Neutral",
       "gameVersion": "0.3.4",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "TheLovers.gd",
+        "extends": "Card",
+        "family": "unique",
+        "overrides": [
+          "doRevealEffect"
+        ]
       },
       "sim": {
         "runtimeHandler": "the_lovers",
@@ -16966,9 +17197,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -17290,9 +17521,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/TigerRune.gd",
+        "extends": "Gem",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -17303,12 +17534,21 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "giveVampirism",
+            "why": "no port block found"
+          },
+          {
+            "call": "giveBlock",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": "Source-call review candidate: giveVampirism, giveBlock.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -17779,9 +18019,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/UnidentifiedSkill.gd",
+        "extends": "Item",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -18430,9 +18670,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/WhiteBishop.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -18443,12 +18683,17 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "cleanseRandomDebuffs",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: cleanseRandomDebuffs.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -18462,10 +18707,12 @@
       "class": "Neutral",
       "gameVersion": "0.3.4",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "White-EyesBlueDragon.gd",
+        "extends": "Card",
+        "family": "pet_like",
+        "overrides": [
+          "doRevealEffect"
+        ]
       },
       "sim": {
         "runtimeHandler": "white_eyes_blue_dragon",
@@ -18480,9 +18727,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -18496,9 +18743,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/WhiteKing.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -18509,12 +18756,21 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "giveEmpower",
+            "why": "no port block found"
+          },
+          {
+            "call": "giveRandomBuffs",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: giveEmpower, giveRandomBuffs.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -18528,9 +18784,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/WhiteKnight.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -18541,12 +18797,21 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "addSpeed",
+            "why": "no port block found"
+          },
+          {
+            "call": "giveMaxStaminaTemporary",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: addSpeed, giveMaxStaminaTemporary.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -18560,9 +18825,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/WhitePawn.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -18573,12 +18838,21 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "giveRegeneration",
+            "why": "no port block found"
+          },
+          {
+            "call": "giveLucky",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: giveRegeneration, giveLucky.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -18592,9 +18866,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/WhiteQueen.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -18605,12 +18879,17 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "giveHeat",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: giveHeat.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -18624,9 +18903,9 @@
       "class": "Neutral",
       "gameVersion": "1.0.0",
       "source": {
-        "script": "Items/Exclusive/ChessBoard.gd",
-        "extends": null,
-        "family": null,
+        "script": "Exclusive/Chess/WhiteRook.gd",
+        "extends": "ChessPiece",
+        "family": "unique",
         "overrides": []
       },
       "sim": {
@@ -18637,12 +18916,17 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "giveBlock",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
+      "knownDelta": "Source-call review candidate: giveBlock.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,

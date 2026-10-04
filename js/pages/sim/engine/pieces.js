@@ -116,6 +116,10 @@ export function buildCombatPieces(placements, itemsById) {
     let kind = bagHost ? 'bag' : itemKind(item);
     const script = getScriptHandler(item.id);
     const listenOnly = typeof script?.onPeerActivated === 'function';
+    // Source items such as Bagtacular and loose Badger Rune have no cooldown
+    // of their own: they remain in the inventory as global/passive modifiers
+    // and must still participate in prepare-time scans.
+    const presenceOnly = script?.presenceOnly === true;
     // Bags are combat hosts (insides / Fanny Pack). Other gem/passive skip rules unchanged.
     if (bagHost) {
       // keep kind bag
@@ -123,7 +127,8 @@ export function buildCombatPieces(placements, itemsById) {
       (kind === 'gem' || kind === 'passive') &&
       !script?.onCombatStart &&
       !script?.onCooldownEffect &&
-      !listenOnly
+      !listenOnly &&
+      !presenceOnly
     ) {
       continue;
     } else if (
@@ -137,7 +142,7 @@ export function buildCombatPieces(placements, itemsById) {
     // Socket-only gems stay out of the board loop; CD / start gems (e.g. Lump of Coal) participate.
     if (kind === 'gem' && (script?.onCooldownEffect || script?.onCombatStart)) {
       kind = script?.onCooldownEffect ? 'gadget' : 'consumable';
-    } else if (kind === 'gem') {
+    } else if (kind === 'gem' && !presenceOnly) {
       continue;
     }
 
@@ -204,6 +209,7 @@ export function buildCombatPieces(placements, itemsById) {
             : 0;
 
     const startOnly =
+      presenceOnly ||
       petStartOnly ||
       (Boolean(script?.onCombatStart) &&
         !script?.onCooldownEffect &&

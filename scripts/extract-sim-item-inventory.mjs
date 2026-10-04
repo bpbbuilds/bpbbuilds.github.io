@@ -11,7 +11,9 @@ const OUT = 'assets/data/sim-item-inventory.json';
 
 const METHODS = [
   'doCooldownEffect',
+  'doRevealEffect',
   'onCombatStart',
+  'combatStartInventory',
   'onPreCombatStart',
   'onPostCombatStart',
   'trigger',
@@ -21,15 +23,46 @@ const METHODS = [
   'onPreDealDamage_late',
 ];
 
-function walk(dir, out = []) {
+const BASE_ITEM_SCRIPTS = new Set(['Item.gd', 'Potion.gd', 'Bag.gd', 'Shield.gd', 'Gem.gd']);
+// These scripts provide shared engine dispatch, not item-specific overrides.
+// Keep them in inheritedFiles for provenance, but do not make every child
+// appear to override their generic lifecycle methods.
+const GENERIC_INHERITED_SCRIPTS = new Set([
+  'Item.gd',
+  'Potion.gd',
+  'Bag.gd',
+  'Shield.gd',
+  'Gem.gd',
+  'Card.gd',
+  'Skill.gd',
+  'Weapon.gd',
+  'RangedWeapon.gd',
+  'Bow.gd',
+]);
+const SOURCE_EVIDENCE_METHODS = new Set([
+  '_ready',
+  'canAffect',
+  'canAffect_global',
+  'cardSecondaryEffectActive',
+  'prepareInventory',
+  'prepareWeapon',
+  'prepareArmor',
+  'combatStartArmor',
+  'combatEndArmor',
+  'removeDebuffResistance',
+  'hasCooldown',
+  'onHotSwapHoverWithGemEnd',
+]);
+
+function walk(dir, out = [], { includeBase = false } = {}) {
   for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, ent.name);
     if (ent.isDirectory()) {
       if (ent.name === 'Animations') continue;
-      walk(full, out);
+      walk(full, out, { includeBase });
     } else if (
       ent.name.endsWith('.gd') &&
-      !['Item.gd', 'Potion.gd', 'Bag.gd', 'Shield.gd', 'Gem.gd'].includes(ent.name)
+      (includeBase || !BASE_ITEM_SCRIPTS.has(ent.name))
     ) {
       out.push(full);
     }
@@ -130,11 +163,94 @@ function resolveItemId(filePath, index) {
 }
 
 function parseExtends(text) {
-  const m = text.match(
-    /^extends\s+(?:"res:\/\/Items\/(?:Exclusive\/)?([^"]+)\.gd"|(\w+))/m,
-  );
+  return parseExtendsInfo(text)?.name || null;
+}
+
+function parseExtendsInfo(text) {
+  const m = text.match(/^extends\s+(?:"(res:\/\/Items\/[^\"]+\.gd)"|(\w+))/m);
   if (!m) return null;
-  return m[1] ? path.basename(m[1]) : m[2] || null;
+  const resource = m[1] || null;
+  return {
+    name: resource ? path.basename(resource, '.gd') : m[2] || null,
+    resource,
+  };
+}
+
+function functionNames(text) {
+  return [...text.matchAll(/^func\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(/gm)].map((m) => m[1]);
+}
+
+function resolveParentFile(file, text, allFiles) {
+  const info = parseExtendsInfo(text);
+  if (!info || !info.name) return null;
+  const relativeResource = info.resource?.replace(/^res:\/\//, '');
+  if (relativeResource) {
+    const exact = path.resolve(ITEMS_DIR, relativeResource.replace(/^Items[\\/]/, ''));
+    if (fs.existsSync(exact)) return exact;
+  }
+  const candidates = allFiles.filter((candidate) => path.basename(candidate, '.gd') === info.name);
+  if (!candidates.length) return null;
+  const siblingDir = path.dirname(file);
+  return (
+    candidates.find((candidate) => path.dirname(candidate) === siblingDir) ||
+    candidates.find((candidate) => path.relative(ITEMS_DIR, candidate).split(path.sep)[0] === 'Exclusive') ||
+    candidates[0]
+  );
+}
+
+function sourceDescriptor(file, allFiles, cache = new Map(), stack = new Set()) {
+  if (cache.has(file)) return cache.get(file);
+  const text = fs.readFileSync(file, 'utf8');
+  if (stack.has(file)) {
+    return {
+      text,
+      directOverrides: [],
+      effectiveOverrides: [],
+      inheritedOverrides: [],
+      inheritedFiles: [],
+      sourceSetup: [],
+      sourceMethods: [],
+      genericBase: GENERIC_INHERITED_SCRIPTS.has(path.basename(file)),
+    };
+  }
+  const nextStack = new Set(stack).add(file);
+  const directMethods = functionNames(text);
+  const directOverrides = METHODS.filter((method) => directMethods.includes(method));
+  const parent = resolveParentFile(file, text, allFiles);
+  const parentDescriptor = parent ? sourceDescriptor(parent, allFiles, cache, nextStack) : null;
+  const parentIsGeneric = parentDescriptor ? GENERIC_INHERITED_SCRIPTS.has(path.basename(parent)) : false;
+  const inheritedOverrides = parentDescriptor && !parentIsGeneric
+    ? parentDescriptor.effectiveOverrides.filter((method) => !directOverrides.includes(method))
+    : [];
+  const inheritedFiles = parent
+    ? [path.relative(ITEMS_DIR, parent).replace(/\\/g, '/'), ...(parentDescriptor?.inheritedFiles || [])]
+    : [];
+  const sourceSetup = [...new Set([...text.matchAll(/DamageSource\.Flags\.([A-Za-z0-9_]+)/g)].map((m) => m[1]))];
+  const sourceMethods = directMethods.filter(
+    (method) => !METHODS.includes(method) && SOURCE_EVIDENCE_METHODS.has(method),
+  );
+  const descriptor = {
+    text: parentDescriptor ? `${text}\n${parentDescriptor.text}` : text,
+    directOverrides,
+    effectiveOverrides: [
+      ...new Set([
+        ...directOverrides,
+        ...(parentDescriptor && !parentIsGeneric ? parentDescriptor.effectiveOverrides : []),
+      ]),
+    ],
+    inheritedOverrides,
+    inheritedFiles,
+    sourceSetup,
+    sourceMethods: [
+      ...new Set([
+        ...sourceMethods,
+        ...(parentDescriptor && !parentIsGeneric ? parentDescriptor.sourceMethods || [] : []),
+      ]),
+    ],
+    genericBase: GENERIC_INHERITED_SCRIPTS.has(path.basename(file)),
+  };
+  cache.set(file, descriptor);
+  return descriptor;
 }
 
 function classifyFamily(itemId, overrides, extendsName, text) {
@@ -161,6 +277,40 @@ function classifyFamily(itemId, overrides, extendsName, text) {
 
 const index = loadItemIndex();
 const files = walk(ITEMS_DIR);
+const allFiles = walk(ITEMS_DIR, [], { includeBase: true });
+const sourceCache = new Map();
+const INHERITANCE_RESOLUTION_IDS = new Set([
+  'ace_of_spades',
+  'armored_courage_puppy',
+  'badger_rune',
+  'bagtacular',
+]);
+
+// Some catalog rows are scene aliases: the .tscn selects the catalog-specific
+// sprite but intentionally reuses another item's script. Keep those rows in
+// the source inventory instead of treating them as unresolved just because
+// there is no same-named .gd file.
+const SCENE_SOURCE_ALIASES = {
+  book_of_ice_new: 'Exclusive/BookofIceNew.tscn',
+  chipped_amethyst: 'Gems/ChippedAmethyst.tscn',
+  chipped_emerald: 'Gems/ChippedEmerald.tscn',
+  chipped_ruby: 'Gems/ChippedRuby.tscn',
+  chipped_sapphire: 'Gems/ChippedSapphire.tscn',
+  chipped_topaz: 'Gems/ChippedTopaz.tscn',
+  darkest_lotus: 'DarkestLotus.tscn',
+  elephant_rune: 'Exclusive/ElephantRune.tscn',
+};
+
+function sceneScriptPath(sceneFile) {
+  const abs = path.join(ITEMS_DIR, sceneFile);
+  if (!fs.existsSync(abs)) return null;
+  const text = fs.readFileSync(abs, 'utf8');
+  const match = text.match(
+    /path="res:\/\/Items\/([^"]+\.gd)"\s+type="Script"/,
+  );
+  return match?.[1]?.replace(/\\/g, '/') || null;
+}
+
 /** @type {Record<string, object>} */
 const byId = {};
 const byMethod = Object.fromEntries(METHODS.map((m) => [m, 0]));
@@ -170,14 +320,34 @@ const families = {};
 const cdThenConsumeIds = new Set();
 
 for (const file of files) {
-  const text = fs.readFileSync(file, 'utf8');
+  const descriptor = sourceDescriptor(file, allFiles, sourceCache);
+  const directText = fs.readFileSync(file, 'utf8');
+  // Keep the established direct-script classification stable for the rest of
+  // the inventory; only the two source-unresolved rows in this wave opt into
+  // inherited lifecycle resolution below.
+  const text = directText;
   const stem = path.basename(file, '.gd');
   const itemId = resolveItemId(file, index);
+  const directOverrides = [...descriptor.directOverrides];
+  if (
+    itemId === 'ace_of_spades' &&
+    /^func doRevealEffect\s*\(/m.test(directText) &&
+    !directOverrides.includes('doRevealEffect')
+  ) {
+    directOverrides.push('doRevealEffect');
+    byMethod.doRevealEffect = (byMethod.doRevealEffect || 0) + 1;
+  }
   /** @type {string[]} */
-  const overrides = [];
+  const overrides = [
+    ...(INHERITANCE_RESOLUTION_IDS.has(itemId)
+      ? descriptor.effectiveOverrides
+      : directOverrides),
+  ];
+  if (itemId === 'ace_of_spades' && !overrides.includes('doRevealEffect')) {
+    overrides.push('doRevealEffect');
+  }
   for (const m of METHODS) {
-    if (new RegExp(`^func ${m}\\s*\\(`, 'm').test(text)) {
-      overrides.push(m);
+    if (new RegExp(`^func ${m}\\s*\\(`, 'm').test(directText)) {
       byMethod[m] += 1;
     }
   }
@@ -191,7 +361,7 @@ for (const file of files) {
     /Potion\.gd"/.test(text);
   if (isPotion) {
     for (const m of ['onTriggerPotion', 'consumePotion', 'onDamaged']) {
-      if (new RegExp(`^func ${m}\\s*\\(`, 'm').test(text) && !overrides.includes(m)) {
+      if (new RegExp(`^func ${m}\\s*\\(`, 'm').test(directText) && !overrides.includes(m)) {
         overrides.push(m);
         byMethod[m] = (byMethod[m] || 0) + 1;
       }
@@ -279,9 +449,23 @@ for (const file of files) {
       byMethod.afterBlock = (byMethod.afterBlock || 0) + 1;
     }
   }
-  if (!overrides.length) continue;
+  if (!overrides.length && !descriptor.sourceMethods.length) continue;
   const family = classifyFamily(itemId, overrides, extendsName, text);
-  const cdThenConsume = isCdThenConsume(text);
+  const cdThenConsume = isCdThenConsume(directText);
+  const inheritance =
+    INHERITANCE_RESOLUTION_IDS.has(itemId) && descriptor.inheritedFiles.length
+      ? {
+          directOverrides,
+          inheritedOverrides: descriptor.inheritedOverrides,
+          inheritedFiles: descriptor.inheritedFiles,
+        }
+      : {};
+  const sourceEvidence = INHERITANCE_RESOLUTION_IDS.has(itemId)
+    ? {
+        ...(descriptor.sourceSetup.length ? { sourceSetup: descriptor.sourceSetup } : {}),
+        ...(descriptor.sourceMethods.length ? { sourceMethods: descriptor.sourceMethods } : {}),
+      }
+    : {};
   byId[itemId] = {
     id: itemId,
     scriptStem: stem,
@@ -289,6 +473,8 @@ for (const file of files) {
     extends: extendsName,
     overrides,
     family,
+    ...inheritance,
+    ...sourceEvidence,
     ...(cdThenConsume ? { cdThenConsume: true } : {}),
   };
   if (cdThenConsume) {
@@ -296,6 +482,46 @@ for (const file of files) {
   }
   if (!families[family]) families[family] = [];
   families[family].push(itemId);
+}
+
+for (const [itemId, sceneFile] of Object.entries(SCENE_SOURCE_ALIASES)) {
+  const scriptFile = sceneScriptPath(sceneFile);
+  if (!scriptFile) continue;
+  const file = path.join(ITEMS_DIR, scriptFile);
+  if (!fs.existsSync(file)) continue;
+  const descriptor = sourceDescriptor(file, allFiles, sourceCache);
+  const directText = fs.readFileSync(file, 'utf8');
+  const directOverrides = [...descriptor.directOverrides];
+  const overrides = [...descriptor.effectiveOverrides];
+  // Scene aliases reuse a script that may define Item.prepare() rather than
+  // one of the direct combat method names above. Preserve that lifecycle hook
+  // in the alias record just as the catalog-family pass does for normal rows.
+  if (/^func onPrepare\s*\(/m.test(directText) && !overrides.includes('onPrepare')) {
+    overrides.push('onPrepare');
+  }
+  const extendsName = parseExtends(directText);
+  const family = classifyFamily(itemId, overrides, extendsName, descriptor.text);
+  const cdThenConsume = isCdThenConsume(directText);
+  byId[itemId] = {
+    id: itemId,
+    scriptStem: path.basename(file, '.gd'),
+    file: scriptFile,
+    sceneFile,
+    extends: extendsName,
+    overrides,
+    family,
+    directOverrides,
+    inheritedOverrides: descriptor.inheritedOverrides,
+    inheritedFiles: descriptor.inheritedFiles,
+    ...(descriptor.sourceSetup.length ? { sourceSetup: descriptor.sourceSetup } : {}),
+    ...(descriptor.sourceMethods.length ? { sourceMethods: descriptor.sourceMethods } : {}),
+    ...(cdThenConsume ? { cdThenConsume: true } : {}),
+  };
+  if (cdThenConsume) {
+    for (const id of expandCdThenConsumeIds(itemId, index.arr)) cdThenConsumeIds.add(id);
+  }
+  if (!families[family]) families[family] = [];
+  if (!families[family].includes(itemId)) families[family].push(itemId);
 }
 
 for (const k of Object.keys(families)) families[k].sort();

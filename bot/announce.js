@@ -23,7 +23,7 @@ import {
 
 const API = 'https://discord.com/api/v10';
 const FORUM_ID_DEFAULT = '1553880481001644062';
-const SITE_DEFAULT = 'https://bpbbuilds.github.io';
+const SITE_DEFAULT = 'https://bpbbuilds.com';
 const POLL_MS = 60_000;
 const POST_GAP_MS = 1500;
 const MAX_POSTS_PER_POLL = 10;

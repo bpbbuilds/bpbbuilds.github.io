@@ -8,6 +8,7 @@ import { skelBar, skelBlock, skelRegion } from '../../shared/skeleton.js';
 import {
   itemSpriteUrl,
   itemsFromBuilds,
+  usersFromBuilds,
 } from '../../shared/build-search.js';
 import { mountBuildSearchInput } from '../../shared/build-search-input.js';
 import { listUpvotedBuildSlugs } from '../build/vote.js';
@@ -326,6 +327,8 @@ export async function mountBuildsTab(stage, ctx) {
 
     searchInput = mountBuildSearchInput(rail, {
       items: itemsFromBuilds(authored),
+      users: usersFromBuilds(authored),
+      root,
       getSpriteUrl: (item) => itemSpriteUrl(root, item),
       initialQuery: state.q,
       onChange(q) {

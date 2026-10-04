@@ -226,6 +226,7 @@ First attempt at site-wide `zoom` / `--bpb-ui-scale` was reverted — do this pr
 
 ## Later / research
 
+- [ ] **Item ideas page** — a public page for player item ideas, the same pile as the Discord item-ideas forum. Not built.
 - [ ] **Patch notes page** — archive + home “Latest update”; backlog and new-note matching from [BPBのビ](https://www.univ-bpb.tech/) (see below)
 - [ ] **Class icons** — Adventurer / Neutral-style art beyond press-kit set
 - [ ] **AI endgame board drafts** (research only — see below)
@@ -415,3 +416,5 @@ Goal: propose **last-round / endgame boards** that synergize — not full shop r
 - [ ] **Create filters: Alt-click = only this** — Alt-click a filter (rarity / shop / crafted / gated / etc.) to select that one alone (clear the rest of that group)
 - [ ] **Builds reverse / forward** — game-style back and forward buttons on build pages (round / history navigation like the in-game UI)
 - [ ] **Create drag lag** — fix the slight delay when moving items (board ↔ board and Parked ↔ board) 
+
+when user enters event, get dm from bot basically saying thansk for entering. your entered build is private until the event ends. However you can still view it on the website in the builds page, profile page, events page. Only your able to see your build on these pages until the event is over.

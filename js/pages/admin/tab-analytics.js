@@ -104,7 +104,7 @@ function tableHtml(rows) {
 
   const ordered = [...byPath.entries()].sort((a, b) => b[1].month - a[1].month || a[0].localeCompare(b[0]));
   if (!ordered.length) {
-    return `<p class="admin-status">No visits yet. A count is saved the first time someone opens a public page in a browser session.</p>`;
+    return plate(`<p class="admin-traffic__note">No visits yet. A count is saved the first time someone opens a public page in a browser session.</p>`);
   }
 
   const body = ordered
@@ -120,8 +120,7 @@ function tableHtml(rows) {
     })
     .join('');
 
-  return `
-    <div class="admin-traffic">
+  return plate(`
       <table class="admin-traffic__table">
         <thead>
           <tr>
@@ -133,6 +132,19 @@ function tableHtml(rows) {
         </thead>
         <tbody>${body}</tbody>
       </table>
-      <p class="admin-traffic__note">One visit per page per browser session. Build guides are grouped. Admin and dev pages are not counted.</p>
-    </div>`;
+      <p class="admin-traffic__note">One visit per page per browser session. Build guides are grouped. Admin and dev pages are not counted.</p>`);
+}
+
+/**
+ * @param {string} inner
+ */
+function plate(inner) {
+  return `
+    <section class="admin-traffic bpb-panel bpb-panel--rewards" aria-labelledby="admin-traffic-title">
+      <header class="admin-traffic__intro">
+        <h2 class="admin-traffic__title" id="admin-traffic-title">Visits</h2>
+        <div class="admin-traffic__rule" aria-hidden="true"><span></span><i></i><span></span><i></i><span></span></div>
+      </header>
+      ${inner}
+    </section>`;
 }

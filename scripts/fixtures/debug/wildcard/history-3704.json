@@ -1,12 +1,12 @@
 {
   "kind": "bpb-sim-debug",
-  "v": 5,
+  "v": 6,
   "slug": "history-3704",
   "seed": 42,
-  "durationSec": 24.500000000000213,
+  "durationSec": 23.200000000000195,
   "dummyEndHp": 0,
-  "playerEndHp": 29,
-  "eventCount": 408,
+  "playerEndHp": 6,
+  "eventCount": 464,
   "catalog": [
     {
       "id": "puzzlebox",
@@ -243,31 +243,9 @@
     {
       "itemId": "wand",
       "name": "Wand",
-      "stack": "regeneration",
-      "granted": 1,
-      "grants": 8,
-      "expected": null,
-      "expectedKey": "regeneration",
-      "alsoMatches": [
-        {
-          "key": "empower",
-          "value": 1,
-          "how": "exact"
-        },
-        {
-          "key": "use",
-          "value": 1,
-          "how": "exact"
-        }
-      ],
-      "note": "no catalog key for regeneration; grant 1 equals empower=1, use=1"
-    },
-    {
-      "itemId": "wand",
-      "name": "Wand",
       "stack": "lucky",
       "granted": 1,
-      "grants": 6,
+      "grants": 7,
       "expected": null,
       "expectedKey": "lucky",
       "alsoMatches": [
@@ -285,35 +263,13 @@
       "note": "no catalog key for lucky; grant 1 equals empower=1, use=1"
     },
     {
-      "itemId": "serpent_staff",
-      "name": "Serpent Staff",
-      "stack": "poison",
-      "granted": 4,
-      "grants": 20,
-      "expected": 1,
-      "expectedKey": "poison",
-      "alsoMatches": [
-        {
-          "key": "mana",
-          "value": 4,
-          "how": "exact"
-        },
-        {
-          "key": "damforpoison",
-          "value": 4,
-          "how": "exact"
-        }
-      ],
-      "note": "grant 4 is catalog mana=4, not poison=1"
-    },
-    {
       "itemId": "wand",
       "name": "Wand",
-      "stack": "mana",
+      "stack": "regeneration",
       "granted": 1,
-      "grants": 3,
+      "grants": 6,
       "expected": null,
-      "expectedKey": "mana",
+      "expectedKey": "regeneration",
       "alsoMatches": [
         {
           "key": "empower",
@@ -326,13 +282,35 @@
           "how": "exact"
         }
       ],
-      "note": "no catalog key for mana; grant 1 equals empower=1, use=1"
+      "note": "no catalog key for regeneration; grant 1 equals empower=1, use=1"
+    },
+    {
+      "itemId": "serpent_staff",
+      "name": "Serpent Staff",
+      "stack": "mana",
+      "granted": -4,
+      "grants": 20,
+      "expected": 4,
+      "expectedKey": "mana",
+      "alsoMatches": [],
+      "note": "grant -4 ≠ catalog mana=4"
+    },
+    {
+      "itemId": "serpent_staff",
+      "name": "Serpent Staff",
+      "stack": "poison",
+      "granted": 5,
+      "grants": 20,
+      "expected": 1,
+      "expectedKey": "poison",
+      "alsoMatches": [],
+      "note": "grant 5 ≠ catalog poison=1"
     }
   ],
   "unhealingMath": {
     "rate": 0,
-    "healLogged": 46,
-    "healGrants": 10,
+    "healLogged": 29,
+    "healGrants": 9,
     "exactFloat": 0,
     "expectedCeil": 0,
     "actual": 0,
@@ -344,7 +322,12 @@
         "ceil": 0
       },
       {
-        "heal": 1,
+        "heal": 2,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 2,
         "exact": 0,
         "ceil": 0
       },
@@ -364,17 +347,12 @@
         "ceil": 0
       },
       {
-        "heal": 6,
+        "heal": 4,
         "exact": 0,
         "ceil": 0
       },
       {
-        "heal": 6,
-        "exact": 0,
-        "ceil": 0
-      },
-      {
-        "heal": 7,
+        "heal": 5,
         "exact": 0,
         "ceil": 0
       }
@@ -385,7 +363,7 @@
     "buffs": {
       "block": {
         "player": {
-          "end": 7,
+          "end": 0,
           "sources": [
             {
               "gained": 40,
@@ -415,45 +393,45 @@
       },
       "mana": {
         "player": {
-          "end": 9,
+          "end": 8,
           "sources": [
             {
-              "gained": 81,
+              "gained": 78,
               "lost": 0,
-              "grants": 27,
-              "firstT": 4.8,
-              "lastT": 24.4,
+              "grants": 26,
+              "firstT": 4.753,
+              "lastT": 22.879,
               "samples": [
                 {
-                  "t": 4.8,
+                  "t": 4.753,
                   "amount": 3
                 },
                 {
-                  "t": 4.95,
+                  "t": 4.809,
                   "amount": 3
                 },
                 {
-                  "t": 7.15,
+                  "t": 7.13,
                   "amount": 3
                 },
                 {
-                  "t": 7.2,
+                  "t": 7.19,
                   "amount": 3
                 },
                 {
-                  "t": 8.7,
+                  "t": 8.598,
                   "amount": 3
                 },
                 {
-                  "t": 8.75,
+                  "t": 8.723,
                   "amount": 3
                 },
                 {
-                  "t": 10.1,
+                  "t": 10.074,
                   "amount": 3
                 },
                 {
-                  "t": 10.2,
+                  "t": 10.23,
                   "amount": 3
                 }
               ],
@@ -464,38 +442,42 @@
               "systemOrigin": null
             },
             {
-              "gained": 7,
+              "gained": 11,
               "lost": 0,
-              "grants": 7,
-              "firstT": 5.702,
-              "lastT": 19.952,
+              "grants": 11,
+              "firstT": 4.857,
+              "lastT": 21.534,
               "samples": [
                 {
-                  "t": 5.702,
+                  "t": 4.857,
                   "amount": 1
                 },
                 {
-                  "t": 8.302,
+                  "t": 7.179,
                   "amount": 1
                 },
                 {
-                  "t": 12.152,
+                  "t": 8.85,
                   "amount": 1
                 },
                 {
-                  "t": 14.002,
+                  "t": 10.406,
                   "amount": 1
                 },
                 {
-                  "t": 16.002,
+                  "t": 11.989,
                   "amount": 1
                 },
                 {
-                  "t": 18.002,
+                  "t": 13.644,
                   "amount": 1
                 },
                 {
-                  "t": 19.952,
+                  "t": 15.296,
+                  "amount": 1
+                },
+                {
+                  "t": 16.837,
                   "amount": 1
                 }
               ],
@@ -503,178 +485,46 @@
               "itemId": "blueberries",
               "name": "Blueberries",
               "handler": "blueberries",
-              "systemOrigin": null
-            },
-            {
-              "gained": 2,
-              "lost": 1,
-              "grants": 3,
-              "firstT": 17.76,
-              "lastT": 22.752,
-              "samples": [
-                {
-                  "t": 17.76,
-                  "amount": -1
-                },
-                {
-                  "t": 22.652,
-                  "amount": 1
-                },
-                {
-                  "t": 22.752,
-                  "amount": 1
-                }
-              ],
-              "id": "wand",
-              "itemId": "wand",
-              "name": "Wand",
-              "handler": "wand",
-              "systemOrigin": null
-            }
-          ],
-          "gained": 90
-        }
-      },
-      "regeneration": {
-        "player": {
-          "end": 8,
-          "sources": [
-            {
-              "gained": 8,
-              "lost": 0,
-              "grants": 8,
-              "firstT": 5.002,
-              "lastT": 20.252,
-              "samples": [
-                {
-                  "t": 5.002,
-                  "amount": 1
-                },
-                {
-                  "t": 7.602,
-                  "amount": 1
-                },
-                {
-                  "t": 10.002,
-                  "amount": 1
-                },
-                {
-                  "t": 12.652,
-                  "amount": 1
-                },
-                {
-                  "t": 15.252,
-                  "amount": 1
-                },
-                {
-                  "t": 15.302,
-                  "amount": 1
-                },
-                {
-                  "t": 17.802,
-                  "amount": 1
-                },
-                {
-                  "t": 20.252,
-                  "amount": 1
-                }
-              ],
-              "id": "wand",
-              "itemId": "wand",
-              "name": "Wand",
-              "handler": "wand",
-              "systemOrigin": null
-            }
-          ],
-          "gained": 8
-        }
-      },
-      "lucky": {
-        "player": {
-          "end": 9,
-          "sources": [
-            {
-              "gained": 6,
-              "lost": 0,
-              "grants": 6,
-              "firstT": 5.102,
-              "lastT": 20.252,
-              "samples": [
-                {
-                  "t": 5.102,
-                  "amount": 1
-                },
-                {
-                  "t": 7.402,
-                  "amount": 1
-                },
-                {
-                  "t": 10.052,
-                  "amount": 1
-                },
-                {
-                  "t": 12.702,
-                  "amount": 1
-                },
-                {
-                  "t": 17.752,
-                  "amount": 1
-                },
-                {
-                  "t": 20.252,
-                  "amount": 1
-                }
-              ],
-              "id": "wand",
-              "itemId": "wand",
-              "name": "Wand",
-              "handler": "wand",
               "systemOrigin": null
             },
             {
               "gained": 3,
-              "lost": 0,
-              "grants": 3,
-              "firstT": 10.254,
-              "lastT": 23.804,
+              "lost": 8,
+              "grants": 11,
+              "firstT": 7.352,
+              "lastT": 22.447,
               "samples": [
                 {
-                  "t": 10.254,
+                  "t": 7.352,
+                  "amount": -1
+                },
+                {
+                  "t": 7.362,
+                  "amount": -1
+                },
+                {
+                  "t": 10.005,
                   "amount": 1
                 },
                 {
-                  "t": 21.904,
+                  "t": 10.028,
                   "amount": 1
                 },
                 {
-                  "t": 23.804,
-                  "amount": 1
-                }
-              ],
-              "id": "blueberries",
-              "itemId": "blueberries",
-              "name": "Blueberries",
-              "handler": "blueberries",
-              "systemOrigin": null
-            }
-          ],
-          "gained": 9
-        }
-      },
-      "empower": {
-        "player": {
-          "end": 1,
-          "sources": [
-            {
-              "gained": 1,
-              "lost": 0,
-              "grants": 1,
-              "firstT": 17.762,
-              "lastT": 17.762,
-              "samples": [
+                  "t": 17.497,
+                  "amount": -1
+                },
                 {
-                  "t": 17.762,
-                  "amount": 1
+                  "t": 17.507,
+                  "amount": -1
+                },
+                {
+                  "t": 17.645,
+                  "amount": -1
+                },
+                {
+                  "t": 17.655,
+                  "amount": -1
                 }
               ],
               "id": "wand",
@@ -682,161 +532,45 @@
               "name": "Wand",
               "handler": "wand",
               "systemOrigin": null
-            }
-          ],
-          "gained": 1
-        }
-      }
-    },
-    "debuffs": {
-      "blind": {
-        "dummy": {
-          "end": 27,
-          "sources": [
+            },
             {
-              "gained": 27,
-              "lost": 0,
-              "grants": 27,
-              "firstT": 4.8,
-              "lastT": 24.4,
-              "samples": [
-                {
-                  "t": 4.8,
-                  "amount": 1
-                },
-                {
-                  "t": 4.95,
-                  "amount": 1
-                },
-                {
-                  "t": 7.15,
-                  "amount": 1
-                },
-                {
-                  "t": 7.2,
-                  "amount": 1
-                },
-                {
-                  "t": 8.7,
-                  "amount": 1
-                },
-                {
-                  "t": 8.75,
-                  "amount": 1
-                },
-                {
-                  "t": 10.1,
-                  "amount": 1
-                },
-                {
-                  "t": 10.2,
-                  "amount": 1
-                }
-              ],
-              "id": "grantStacks",
-              "itemId": null,
-              "name": "grantStacks",
-              "handler": "grantStacks",
-              "systemOrigin": null
-            }
-          ],
-          "gained": 27
-        }
-      },
-      "poison": {
-        "player": {
-          "end": 0,
-          "sources": [
-            {
-              "gained": 601,
-              "lost": 0,
-              "grants": 10,
-              "firstT": 6.5,
-              "lastT": 24.5,
-              "samples": [
-                {
-                  "t": 6.5,
-                  "amount": 3
-                },
-                {
-                  "t": 8.5,
-                  "amount": 6
-                },
-                {
-                  "t": 10.5,
-                  "amount": 14
-                },
-                {
-                  "t": 12.5,
-                  "amount": 29
-                },
-                {
-                  "t": 14.5,
-                  "amount": 43
-                },
-                {
-                  "t": 16.5,
-                  "amount": 58
-                },
-                {
-                  "t": 18.5,
-                  "amount": 75
-                },
-                {
-                  "t": 20.5,
-                  "amount": 94
-                }
-              ],
-              "id": "Poison",
-              "itemId": null,
-              "name": "Poison",
-              "handler": null,
-              "systemOrigin": "Poison"
-            }
-          ],
-          "gained": 601
-        },
-        "dummy": {
-          "end": 152,
-          "sources": [
-            {
-              "gained": 152,
-              "lost": 0,
+              "gained": 0,
+              "lost": 80,
               "grants": 20,
-              "firstT": 5.4,
-              "lastT": 24.15,
+              "firstT": 5.269,
+              "lastT": 23.154,
               "samples": [
                 {
-                  "t": 5.4,
-                  "amount": 3
+                  "t": 5.269,
+                  "amount": -4
                 },
                 {
-                  "t": 7.95,
-                  "amount": 3
+                  "t": 7.561,
+                  "amount": -4
                 },
                 {
-                  "t": 8.8,
-                  "amount": 4
+                  "t": 8.347,
+                  "amount": -4
                 },
                 {
-                  "t": 9.7,
-                  "amount": 4
+                  "t": 9.115,
+                  "amount": -4
                 },
                 {
-                  "t": 10.6,
-                  "amount": 4
+                  "t": 9.885,
+                  "amount": -4
                 },
                 {
-                  "t": 11.5,
-                  "amount": 5
+                  "t": 10.708,
+                  "amount": -4
                 },
                 {
-                  "t": 12.45,
-                  "amount": 6
+                  "t": 11.644,
+                  "amount": -4
                 },
                 {
-                  "t": 13.25,
-                  "amount": 7
+                  "t": 12.507,
+                  "amount": -4
                 }
               ],
               "id": "serpent_staff",
@@ -846,7 +580,303 @@
               "systemOrigin": null
             }
           ],
-          "gained": 152
+          "gained": 92
+        }
+      },
+      "lucky": {
+        "player": {
+          "end": 7,
+          "sources": [
+            {
+              "gained": 7,
+              "lost": 0,
+              "grants": 7,
+              "firstT": 4.929,
+              "lastT": 22.787,
+              "samples": [
+                {
+                  "t": 4.929,
+                  "amount": 1
+                },
+                {
+                  "t": 7.581,
+                  "amount": 1
+                },
+                {
+                  "t": 12.502,
+                  "amount": 1
+                },
+                {
+                  "t": 15.111,
+                  "amount": 1
+                },
+                {
+                  "t": 17.499,
+                  "amount": 1
+                },
+                {
+                  "t": 20.144,
+                  "amount": 1
+                },
+                {
+                  "t": 22.787,
+                  "amount": 1
+                }
+              ],
+              "id": "wand",
+              "itemId": "wand",
+              "name": "Wand",
+              "handler": "wand",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 7
+        }
+      },
+      "regeneration": {
+        "player": {
+          "end": 6,
+          "sources": [
+            {
+              "gained": 6,
+              "lost": 0,
+              "grants": 6,
+              "firstT": 5.112,
+              "lastT": 20.021,
+              "samples": [
+                {
+                  "t": 5.112,
+                  "amount": 1
+                },
+                {
+                  "t": 7.354,
+                  "amount": 1
+                },
+                {
+                  "t": 12.522,
+                  "amount": 1
+                },
+                {
+                  "t": 15.034,
+                  "amount": 1
+                },
+                {
+                  "t": 17.647,
+                  "amount": 1
+                },
+                {
+                  "t": 20.021,
+                  "amount": 1
+                }
+              ],
+              "id": "wand",
+              "itemId": "wand",
+              "name": "Wand",
+              "handler": "wand",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 6
+        }
+      },
+      "empower": {
+        "player": {
+          "end": 4,
+          "sources": [
+            {
+              "gained": 4,
+              "lost": 0,
+              "grants": 4,
+              "firstT": 7.364,
+              "lastT": 20.154,
+              "samples": [
+                {
+                  "t": 7.364,
+                  "amount": 1
+                },
+                {
+                  "t": 17.509,
+                  "amount": 1
+                },
+                {
+                  "t": 17.657,
+                  "amount": 1
+                },
+                {
+                  "t": 20.154,
+                  "amount": 1
+                }
+              ],
+              "id": "wand",
+              "itemId": "wand",
+              "name": "Wand",
+              "handler": "wand",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 4
+        }
+      }
+    },
+    "debuffs": {
+      "blind": {
+        "dummy": {
+          "end": 26,
+          "sources": [
+            {
+              "gained": 26,
+              "lost": 0,
+              "grants": 26,
+              "firstT": 4.753,
+              "lastT": 22.879,
+              "samples": [
+                {
+                  "t": 4.753,
+                  "amount": 1
+                },
+                {
+                  "t": 4.809,
+                  "amount": 1
+                },
+                {
+                  "t": 7.13,
+                  "amount": 1
+                },
+                {
+                  "t": 7.19,
+                  "amount": 1
+                },
+                {
+                  "t": 8.598,
+                  "amount": 1
+                },
+                {
+                  "t": 8.723,
+                  "amount": 1
+                },
+                {
+                  "t": 10.074,
+                  "amount": 1
+                },
+                {
+                  "t": 10.23,
+                  "amount": 1
+                }
+              ],
+              "id": "grantStacks",
+              "itemId": null,
+              "name": "grantStacks",
+              "handler": "grantStacks",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 26
+        }
+      },
+      "poison": {
+        "player": {
+          "end": 0,
+          "sources": [
+            {
+              "gained": 538,
+              "lost": 0,
+              "grants": 9,
+              "firstT": 6.5,
+              "lastT": 22.5,
+              "samples": [
+                {
+                  "t": 6.5,
+                  "amount": 2
+                },
+                {
+                  "t": 8.5,
+                  "amount": 10
+                },
+                {
+                  "t": 10.5,
+                  "amount": 20
+                },
+                {
+                  "t": 12.5,
+                  "amount": 31
+                },
+                {
+                  "t": 14.5,
+                  "amount": 52
+                },
+                {
+                  "t": 16.5,
+                  "amount": 69
+                },
+                {
+                  "t": 18.5,
+                  "amount": 88
+                },
+                {
+                  "t": 20.5,
+                  "amount": 120
+                }
+              ],
+              "id": "Poison",
+              "itemId": null,
+              "name": "Poison",
+              "handler": null,
+              "systemOrigin": "Poison"
+            }
+          ],
+          "gained": 538
+        },
+        "dummy": {
+          "end": 159,
+          "sources": [
+            {
+              "gained": 159,
+              "lost": 0,
+              "grants": 20,
+              "firstT": 5.269,
+              "lastT": 23.154,
+              "samples": [
+                {
+                  "t": 5.269,
+                  "amount": 2
+                },
+                {
+                  "t": 7.561,
+                  "amount": 4
+                },
+                {
+                  "t": 8.347,
+                  "amount": 4
+                },
+                {
+                  "t": 9.115,
+                  "amount": 5
+                },
+                {
+                  "t": 9.885,
+                  "amount": 5
+                },
+                {
+                  "t": 10.708,
+                  "amount": 5
+                },
+                {
+                  "t": 11.644,
+                  "amount": 6
+                },
+                {
+                  "t": 12.507,
+                  "amount": 6
+                }
+              ],
+              "id": "serpent_staff",
+              "itemId": "serpent_staff",
+              "name": "Serpent Staff",
+              "handler": "serpent_staff",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 159
         }
       }
     },
@@ -856,11 +886,11 @@
     },
     "heals": {
       "player": {
-        "total": 46,
+        "total": 29,
         "byKind": {
           "regeneration": {
-            "total": 46,
-            "grants": 10
+            "total": 29,
+            "grants": 9
           },
           "maxHp": {
             "total": 20,
@@ -869,11 +899,11 @@
         },
         "sources": [
           {
-            "gained": 46,
+            "gained": 29,
             "lost": 0,
-            "grants": 10,
+            "grants": 9,
             "firstT": 5.5,
-            "lastT": 23.5,
+            "lastT": 21.5,
             "samples": [
               {
                 "t": 5.5,
@@ -881,7 +911,7 @@
               },
               {
                 "t": 7.5,
-                "amount": 1
+                "amount": 2
               },
               {
                 "t": 9.5,
@@ -889,23 +919,23 @@
               },
               {
                 "t": 11.5,
-                "amount": 3
+                "amount": 2
               },
               {
                 "t": 13.5,
-                "amount": 4
+                "amount": 3
               },
               {
                 "t": 15.5,
-                "amount": 6
+                "amount": 4
               },
               {
                 "t": 17.5,
-                "amount": 6
+                "amount": 4
               },
               {
                 "t": 19.5,
-                "amount": 7
+                "amount": 5
               }
             ],
             "id": "Regeneration",
@@ -938,7 +968,7 @@
             "name": "Puzzlebag L (max HP — not Heal tab)",
             "handler": "puzzlebag_l",
             "kind": "maxHp",
-            "label": "Puzzlebag L: +7 max HP",
+            "label": "Puzzlebag of Love: +7 max HP",
             "byItem": {}
           },
           {
@@ -970,56 +1000,56 @@
     },
     "damage": {
       "toDummy": {
-        "total": 650,
+        "total": 667,
         "byKind": {
           "item": {
-            "total": 629,
+            "total": 657,
             "grants": 22
           },
           "fatigue": {
-            "total": 21,
-            "grants": 6
+            "total": 10,
+            "grants": 4
           }
         },
         "sources": [
           {
-            "gained": 629,
+            "gained": 657,
             "lost": 0,
             "grants": 22,
-            "firstT": 3.957,
-            "lastT": 24.157,
+            "firstT": 3.931,
+            "lastT": 23.154,
             "samples": [
               {
-                "t": 3.957,
-                "amount": 9
+                "t": 3.931,
+                "amount": 8
               },
               {
-                "t": 5.407,
-                "amount": 12
+                "t": 5.269,
+                "amount": 11
               },
               {
-                "t": 6.807,
-                "amount": 10
+                "t": 6.485,
+                "amount": 11
               },
               {
-                "t": 7.957,
-                "amount": 13
+                "t": 7.561,
+                "amount": 15
               },
               {
-                "t": 8.807,
+                "t": 8.347,
                 "amount": 16
               },
               {
-                "t": 9.707,
-                "amount": 16
-              },
-              {
-                "t": 10.607,
+                "t": 9.115,
                 "amount": 18
               },
               {
-                "t": 11.507,
+                "t": 9.885,
                 "amount": 20
+              },
+              {
+                "t": 10.708,
+                "amount": 23
               }
             ],
             "id": "serpent_staff",
@@ -1030,11 +1060,11 @@
             "crits": 0
           },
           {
-            "gained": 21,
+            "gained": 10,
             "lost": 0,
-            "grants": 6,
+            "grants": 4,
             "firstT": 19.5,
-            "lastT": 24.5,
+            "lastT": 22.5,
             "samples": [
               {
                 "t": 19.5,
@@ -1051,14 +1081,6 @@
               {
                 "t": 22.5,
                 "amount": 4
-              },
-              {
-                "t": 23.5,
-                "amount": 5
-              },
-              {
-                "t": 24.5,
-                "amount": 6
               }
             ],
             "id": "Fatigue",
@@ -1071,24 +1093,59 @@
         ]
       },
       "toPlayer": {
-        "total": 21,
+        "total": 35,
         "byKind": {
-          "fatigue": {
-            "total": 21,
-            "grants": 6
-          },
           "dummy": {
-            "total": 0,
-            "grants": 3
+            "total": 25,
+            "grants": 5
+          },
+          "fatigue": {
+            "total": 10,
+            "grants": 4
           }
         },
         "sources": [
           {
-            "gained": 21,
+            "gained": 25,
             "lost": 0,
-            "grants": 6,
+            "grants": 5,
+            "firstT": 4.652,
+            "lastT": 15.402,
+            "samples": [
+              {
+                "t": 4.652,
+                "amount": 0
+              },
+              {
+                "t": 6.802,
+                "amount": 0
+              },
+              {
+                "t": 11.102,
+                "amount": 0
+              },
+              {
+                "t": 13.252,
+                "amount": 12
+              },
+              {
+                "t": 15.402,
+                "amount": 13
+              }
+            ],
+            "id": "Training Dummy",
+            "itemId": null,
+            "name": "Training Dummy",
+            "handler": null,
+            "kind": "dummy",
+            "crits": 0
+          },
+          {
+            "gained": 10,
+            "lost": 0,
+            "grants": 4,
             "firstT": 19.5,
-            "lastT": 24.5,
+            "lastT": 22.5,
             "samples": [
               {
                 "t": 19.5,
@@ -1105,14 +1162,6 @@
               {
                 "t": 22.5,
                 "amount": 4
-              },
-              {
-                "t": 23.5,
-                "amount": 5
-              },
-              {
-                "t": 24.5,
-                "amount": 6
               }
             ],
             "id": "Fatigue",
@@ -1121,82 +1170,100 @@
             "handler": null,
             "kind": "fatigue",
             "crits": 0
-          },
-          {
-            "gained": 0,
-            "lost": 0,
-            "grants": 3,
-            "firstT": 4.652,
-            "lastT": 8.952,
-            "samples": [
-              {
-                "t": 4.652,
-                "amount": 0
-              },
-              {
-                "t": 6.802,
-                "amount": 0
-              },
-              {
-                "t": 8.952,
-                "amount": 0
-              }
-            ],
-            "id": "Training Dummy",
-            "itemId": null,
-            "name": "Training Dummy",
-            "handler": null,
-            "kind": "dummy",
-            "crits": 0
           }
         ]
       }
     },
     "misses": {
       "player": 0,
-      "dummy": 7
+      "dummy": 4
     },
     "activations": {
       "player": {
-        "total": 82,
+        "total": 100,
         "sources": [
           {
-            "gained": 27,
+            "gained": 32,
             "lost": 0,
-            "grants": 27,
-            "firstT": 4.8,
-            "lastT": 24.4,
+            "grants": 32,
+            "firstT": 4.927,
+            "lastT": 22.785,
             "samples": [
               {
-                "t": 4.8,
+                "t": 4.927,
                 "amount": 1
               },
               {
-                "t": 4.95,
+                "t": 4.927,
                 "amount": 1
               },
               {
-                "t": 7.15,
+                "t": 5.11,
                 "amount": 1
               },
               {
-                "t": 7.2,
+                "t": 5.11,
                 "amount": 1
               },
               {
-                "t": 8.7,
+                "t": 7.352,
                 "amount": 1
               },
               {
-                "t": 8.75,
+                "t": 7.352,
                 "amount": 1
               },
               {
-                "t": 10.1,
+                "t": 7.579,
                 "amount": 1
               },
               {
-                "t": 10.2,
+                "t": 7.579,
+                "amount": 1
+              }
+            ],
+            "id": "wand",
+            "itemId": "wand",
+            "name": "Wand",
+            "handler": "wand"
+          },
+          {
+            "gained": 26,
+            "lost": 0,
+            "grants": 26,
+            "firstT": 4.753,
+            "lastT": 22.879,
+            "samples": [
+              {
+                "t": 4.753,
+                "amount": 1
+              },
+              {
+                "t": 4.809,
+                "amount": 1
+              },
+              {
+                "t": 7.13,
+                "amount": 1
+              },
+              {
+                "t": 7.19,
+                "amount": 1
+              },
+              {
+                "t": 8.598,
+                "amount": 1
+              },
+              {
+                "t": 8.723,
+                "amount": 1
+              },
+              {
+                "t": 10.074,
+                "amount": 1
+              },
+              {
+                "t": 10.23,
                 "amount": 1
               }
             ],
@@ -1209,39 +1276,39 @@
             "gained": 22,
             "lost": 0,
             "grants": 22,
-            "firstT": 3.95,
-            "lastT": 24.15,
+            "firstT": 3.931,
+            "lastT": 23.154,
             "samples": [
               {
-                "t": 3.95,
+                "t": 3.931,
                 "amount": 1
               },
               {
-                "t": 5.4,
+                "t": 5.269,
                 "amount": 1
               },
               {
-                "t": 6.8,
+                "t": 6.485,
                 "amount": 1
               },
               {
-                "t": 7.95,
+                "t": 7.561,
                 "amount": 1
               },
               {
-                "t": 8.8,
+                "t": 8.347,
                 "amount": 1
               },
               {
-                "t": 9.7,
+                "t": 9.115,
                 "amount": 1
               },
               {
-                "t": 10.6,
+                "t": 9.885,
                 "amount": 1
               },
               {
-                "t": 11.5,
+                "t": 10.708,
                 "amount": 1
               }
             ],
@@ -1251,87 +1318,42 @@
             "handler": "serpent_staff"
           },
           {
-            "gained": 16,
+            "gained": 11,
             "lost": 0,
-            "grants": 16,
-            "firstT": 5,
-            "lastT": 22.75,
+            "grants": 11,
+            "firstT": 4.855,
+            "lastT": 21.532,
             "samples": [
               {
-                "t": 5,
+                "t": 4.855,
                 "amount": 1
               },
               {
-                "t": 5.1,
+                "t": 7.177,
                 "amount": 1
               },
               {
-                "t": 7.4,
+                "t": 8.848,
                 "amount": 1
               },
               {
-                "t": 7.6,
+                "t": 10.404,
                 "amount": 1
               },
               {
-                "t": 10,
+                "t": 11.987,
                 "amount": 1
               },
               {
-                "t": 10.05,
+                "t": 13.642,
                 "amount": 1
               },
               {
-                "t": 12.65,
+                "t": 15.294,
                 "amount": 1
               },
               {
-                "t": 12.7,
-                "amount": 1
-              }
-            ],
-            "id": "wand",
-            "itemId": "wand",
-            "name": "Wand",
-            "handler": "wand"
-          },
-          {
-            "gained": 10,
-            "lost": 0,
-            "grants": 10,
-            "firstT": 5.7,
-            "lastT": 23.8,
-            "samples": [
-              {
-                "t": 5.7,
-                "amount": 1
-              },
-              {
-                "t": 8.3,
-                "amount": 1
-              },
-              {
-                "t": 10.25,
-                "amount": 1
-              },
-              {
-                "t": 12.15,
-                "amount": 1
-              },
-              {
-                "t": 14,
-                "amount": 1
-              },
-              {
-                "t": 16,
-                "amount": 1
-              },
-              {
-                "t": 18,
-                "amount": 1
-              },
-              {
-                "t": 19.95,
+                "t": 16.835,
                 "amount": 1
               }
             ],
@@ -1339,6 +1361,27 @@
             "itemId": "blueberries",
             "name": "Blueberries",
             "handler": "blueberries"
+          },
+          {
+            "gained": 2,
+            "lost": 0,
+            "grants": 2,
+            "firstT": 2.5,
+            "lastT": 2.5,
+            "samples": [
+              {
+                "t": 2.5,
+                "amount": 1
+              },
+              {
+                "t": 2.5,
+                "amount": 1
+              }
+            ],
+            "id": "cog",
+            "itemId": "cog",
+            "name": "Cog",
+            "handler": "cog"
           },
           {
             "gained": 2,
@@ -1403,11 +1446,11 @@
             "gained": 1,
             "lost": 0,
             "grants": 1,
-            "firstT": 6.55,
-            "lastT": 6.55,
+            "firstT": 6.32,
+            "lastT": 6.32,
             "samples": [
               {
-                "t": 6.55,
+                "t": 6.32,
                 "amount": 1
               }
             ],
@@ -1420,11 +1463,11 @@
             "gained": 1,
             "lost": 0,
             "grants": 1,
-            "firstT": 7.5,
-            "lastT": 7.5,
+            "firstT": 7.343,
+            "lastT": 7.343,
             "samples": [
               {
-                "t": 7.5,
+                "t": 7.343,
                 "amount": 1
               }
             ],
@@ -1436,14 +1479,14 @@
         ]
       },
       "dummy": {
-        "total": 10,
+        "total": 9,
         "sources": [
           {
-            "gained": 10,
+            "gained": 9,
             "lost": 0,
-            "grants": 10,
+            "grants": 9,
             "firstT": 4.65,
-            "lastT": 24,
+            "lastT": 21.85,
             "samples": [
               {
                 "t": 4.65,
@@ -1488,14 +1531,13 @@
     },
     "end": {
       "player": {
-        "hp": 29,
+        "hp": 6,
         "maxHp": 220,
         "stacks": {
-          "lucky": 9,
-          "regeneration": 8,
-          "empower": 1,
-          "block": 7,
-          "mana": 9
+          "lucky": 7,
+          "regeneration": 6,
+          "empower": 4,
+          "mana": 8
         },
         "healAmp": 0,
         "unhealing": 0
@@ -1504,33 +1546,33 @@
         "hp": 0,
         "maxHp": 1200,
         "stacks": {
-          "blind": 27,
-          "poison": 152
+          "blind": 26,
+          "poison": 159
         }
       }
     }
   },
   "ui": {
     "combatLog": {
-      "lineCount": 267,
+      "lineCount": 325,
       "byType": {
-        "activate": 92,
-        "buff": 57,
-        "heal": 14,
-        "info": 2,
-        "damage": 37,
-        "debuff": 57,
-        "miss": 7,
+        "activate": 109,
+        "buff": 87,
+        "heal": 13,
+        "damage": 35,
+        "debuff": 55,
+        "info": 21,
+        "miss": 4,
         "fight_end": 1
       },
       "stackGained": {
         "block": 40,
-        "mana": 90,
-        "blind": 27,
-        "regeneration": 8,
-        "lucky": 9,
-        "poison": 753,
-        "empower": 1
+        "mana": 92,
+        "blind": 26,
+        "lucky": 7,
+        "regeneration": 6,
+        "poison": 697,
+        "empower": 4
       },
       "sample": [
         {
@@ -1545,33 +1587,9 @@
           "t": 2.5,
           "type": "activate",
           "stack": null,
-          "itemId": "puzzlebag_l",
+          "itemId": "cog",
           "amount": null,
-          "label": "Bag: Puzzlebag L"
-        },
-        {
-          "t": 2.5,
-          "type": "activate",
-          "stack": null,
-          "itemId": "puzzlebag_l",
-          "amount": null,
-          "label": "Bag: Puzzlebag L"
-        },
-        {
-          "t": 2.5,
-          "type": "activate",
-          "stack": null,
-          "itemId": "piggybank",
-          "amount": null,
-          "label": "Accessory: Piggybank"
-        },
-        {
-          "t": 2.5,
-          "type": "activate",
-          "stack": null,
-          "itemId": "piggybank",
-          "amount": null,
-          "label": "Accessory: Piggybank"
+          "label": "Accessory: Cog"
         },
         {
           "t": 2.5,
@@ -1583,11 +1601,11 @@
         },
         {
           "t": 2.5,
-          "type": "buff",
-          "stack": "block",
-          "itemId": "cog",
-          "amount": 20,
-          "label": "Cog: +20 Block (4 crafted)"
+          "type": "activate",
+          "stack": null,
+          "itemId": "puzzlebag_l",
+          "amount": null,
+          "label": "Bag: Puzzlebag of Love"
         },
         {
           "t": 2.5,
@@ -1595,7 +1613,15 @@
           "stack": null,
           "itemId": "puzzlebag_l",
           "amount": 7,
-          "label": "Puzzlebag L: +7 max HP"
+          "label": "Puzzlebag of Love: +7 max HP"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "puzzlebag_l",
+          "amount": null,
+          "label": "Bag: Puzzlebag of Love"
         },
         {
           "t": 2.5,
@@ -1603,7 +1629,15 @@
           "stack": null,
           "itemId": "puzzlebag_l",
           "amount": 7,
-          "label": "Puzzlebag L: +7 max HP"
+          "label": "Puzzlebag of Love: +7 max HP"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "piggybank",
+          "amount": null,
+          "label": "Accessory: Piggybank"
         },
         {
           "t": 2.5,
@@ -1615,6 +1649,14 @@
         },
         {
           "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "piggybank",
+          "amount": null,
+          "label": "Accessory: Piggybank"
+        },
+        {
+          "t": 2.5,
           "type": "heal",
           "stack": null,
           "itemId": "piggybank",
@@ -1622,15 +1664,23 @@
           "label": "Piggybank: +2 max HP (2×1 start-of-battle)"
         },
         {
-          "t": 2.525,
-          "type": "info",
+          "t": 2.5,
+          "type": "activate",
           "stack": null,
-          "itemId": null,
+          "itemId": "cog",
           "amount": null,
-          "label": "Armor DR 2"
+          "label": "Accessory: Cog"
         },
         {
-          "t": 3.95,
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "cog",
+          "amount": 20,
+          "label": "Cog: +20 Block (4 crafted)"
+        },
+        {
+          "t": 3.931,
           "type": "activate",
           "stack": null,
           "itemId": "serpent_staff",
@@ -1638,12 +1688,12 @@
           "label": "Weapon: Serpent Staff"
         },
         {
-          "t": 3.957,
+          "t": 3.931,
           "type": "damage",
           "stack": null,
           "itemId": "serpent_staff",
-          "amount": 9,
-          "label": "Serpent Staff hit for 9"
+          "amount": 8,
+          "label": "Serpent Staff hit for 8"
         },
         {
           "t": 4.65,
@@ -1662,15 +1712,15 @@
           "label": "Training Dummy: hit 13 (DR/block) → 0"
         },
         {
-          "t": 4.8,
+          "t": 4.753,
           "type": "activate",
           "stack": null,
           "itemId": "book_of_darkness",
           "amount": null,
-          "label": "Book: Book of Darkness"
+          "label": "Book: Encyclopspedia of Darkness"
         },
         {
-          "t": 4.8,
+          "t": 4.753,
           "type": "buff",
           "stack": "mana",
           "itemId": null,
@@ -1678,7 +1728,7 @@
           "label": "+3 mana"
         },
         {
-          "t": 4.8,
+          "t": 4.753,
           "type": "debuff",
           "stack": "blind",
           "itemId": null,
@@ -1686,15 +1736,15 @@
           "label": "+1 blind"
         },
         {
-          "t": 4.95,
+          "t": 4.809,
           "type": "activate",
           "stack": null,
           "itemId": "book_of_darkness",
           "amount": null,
-          "label": "Book: Book of Darkness"
+          "label": "Book: Encyclopspedia of Darkness"
         },
         {
-          "t": 4.95,
+          "t": 4.809,
           "type": "buff",
           "stack": "mana",
           "itemId": null,
@@ -1702,7 +1752,7 @@
           "label": "+3 mana"
         },
         {
-          "t": 4.95,
+          "t": 4.809,
           "type": "debuff",
           "stack": "blind",
           "itemId": null,
@@ -1710,39 +1760,79 @@
           "label": "+1 blind"
         },
         {
-          "t": 5,
+          "t": 4.855,
           "type": "activate",
           "stack": null,
-          "itemId": "wand",
+          "itemId": "blueberries",
           "amount": null,
-          "label": "Accessory: Wand"
+          "label": "Food: Blueberries"
         },
         {
-          "t": 5.002,
+          "t": 4.857,
           "type": "buff",
-          "stack": "regeneration",
-          "itemId": "wand",
+          "stack": "mana",
+          "itemId": "blueberries",
           "amount": 1,
-          "label": "Wand: +1 regeneration"
+          "label": "Blueberries: +1 Mana"
         },
         {
-          "t": 5.1,
+          "t": 4.927,
           "type": "activate",
           "stack": null,
           "itemId": "wand",
           "amount": null,
-          "label": "Accessory: Wand"
+          "label": "Accessory: Wand of Equilibrium"
         },
         {
-          "t": 5.102,
+          "t": 4.927,
+          "type": "activate",
+          "stack": null,
+          "itemId": "wand",
+          "amount": null,
+          "label": "Wand of Equilibrium"
+        },
+        {
+          "t": 4.929,
           "type": "buff",
           "stack": "lucky",
           "itemId": "wand",
           "amount": 1,
-          "label": "Wand: +1 lucky"
+          "label": "Wand of Equilibrium: +1 lucky"
         },
         {
-          "t": 5.4,
+          "t": 5.11,
+          "type": "activate",
+          "stack": null,
+          "itemId": "wand",
+          "amount": null,
+          "label": "Accessory: Wand of Equilibrium"
+        },
+        {
+          "t": 5.11,
+          "type": "activate",
+          "stack": null,
+          "itemId": "wand",
+          "amount": null,
+          "label": "Wand of Equilibrium"
+        },
+        {
+          "t": 5.112,
+          "type": "buff",
+          "stack": "regeneration",
+          "itemId": "wand",
+          "amount": 1,
+          "label": "Wand of Equilibrium: +1 regeneration"
+        },
+        {
+          "t": 5.269,
+          "type": "info",
+          "stack": null,
+          "itemId": "serpent_staff",
+          "amount": 2,
+          "label": "+2 damage"
+        },
+        {
+          "t": 5.269,
           "type": "activate",
           "stack": null,
           "itemId": "serpent_staff",
@@ -1750,20 +1840,28 @@
           "label": "Weapon: Serpent Staff"
         },
         {
-          "t": 5.4,
-          "type": "debuff",
-          "stack": "poison",
+          "t": 5.269,
+          "type": "buff",
+          "stack": "mana",
           "itemId": "serpent_staff",
-          "amount": 3,
-          "label": "+3 poison"
+          "amount": -4,
+          "label": "−4 mana"
         },
         {
-          "t": 5.407,
+          "t": 5.269,
           "type": "damage",
           "stack": null,
           "itemId": "serpent_staff",
-          "amount": 12,
-          "label": "Serpent Staff hit for 12"
+          "amount": 11,
+          "label": "Serpent Staff hit for 11"
+        },
+        {
+          "t": 5.269,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "serpent_staff",
+          "amount": 2,
+          "label": "+2 poison"
         },
         {
           "t": 5.5,
@@ -1774,31 +1872,7 @@
           "label": "Regeneration: +1 health"
         },
         {
-          "t": 5.7,
-          "type": "activate",
-          "stack": null,
-          "itemId": "blueberries",
-          "amount": null,
-          "label": "Food: Blueberries"
-        },
-        {
-          "t": 5.702,
-          "type": "buff",
-          "stack": "mana",
-          "itemId": "blueberries",
-          "amount": 1,
-          "label": "Blueberries: +1 Mana"
-        },
-        {
-          "t": 6.5,
-          "type": "debuff",
-          "stack": "poison",
-          "itemId": null,
-          "amount": 3,
-          "label": "Poison: 3 damage"
-        },
-        {
-          "t": 6.55,
+          "t": 6.32,
           "type": "activate",
           "stack": null,
           "itemId": "cog_badge",
@@ -1806,7 +1880,7 @@
           "label": "Badge: Cog Badge"
         },
         {
-          "t": 6.8,
+          "t": 6.485,
           "type": "activate",
           "stack": null,
           "itemId": "serpent_staff",
@@ -1814,44 +1888,12 @@
           "label": "Weapon: Serpent Staff"
         },
         {
-          "t": 6.8,
-          "type": "activate",
-          "stack": null,
-          "itemId": null,
-          "amount": null,
-          "label": "Training Dummy: swing"
-        },
-        {
-          "t": 6.802,
-          "type": "damage",
-          "stack": "block",
-          "itemId": null,
-          "amount": 0,
-          "label": "Training Dummy: hit 13 (DR/block) → 0"
-        },
-        {
-          "t": 6.807,
+          "t": 6.485,
           "type": "damage",
           "stack": null,
           "itemId": "serpent_staff",
-          "amount": 10,
-          "label": "Serpent Staff hit for 10"
-        },
-        {
-          "t": 7.15,
-          "type": "activate",
-          "stack": null,
-          "itemId": "book_of_darkness",
-          "amount": null,
-          "label": "Book: Book of Darkness"
-        },
-        {
-          "t": 7.15,
-          "type": "buff",
-          "stack": "mana",
-          "itemId": null,
-          "amount": 3,
-          "label": "+3 mana"
+          "amount": 11,
+          "label": "Serpent Staff hit for 11"
         }
       ]
     },
@@ -1874,98 +1916,78 @@
           ]
         },
         "lucky": {
-          "gained": 9,
+          "gained": 7,
           "empty": false,
           "sources": [
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
               "itemId": "wand",
-              "name": "Wand",
-              "amount": 1
-            },
-            {
-              "itemId": "blueberries",
-              "name": "Blueberries",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
-              "itemId": "blueberries",
-              "name": "Blueberries",
-              "amount": 1
-            },
-            {
-              "itemId": "blueberries",
-              "name": "Blueberries",
+              "itemId": "wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             }
           ]
         },
         "regeneration": {
-          "gained": 8,
+          "gained": 6,
           "empty": false,
           "sources": [
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
               "itemId": "wand",
-              "name": "Wand",
-              "amount": 1
-            },
-            {
-              "itemId": "wand",
-              "name": "Wand",
-              "amount": 1
-            },
-            {
-              "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             }
           ]
@@ -1981,7 +2003,7 @@
           "sources": []
         },
         "mana": {
-          "gained": 90,
+          "gained": 92,
           "empty": false,
           "sources": [
             {
@@ -2005,11 +2027,6 @@
               "amount": 3
             },
             {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
               "itemId": "blueberries",
               "name": "Blueberries",
               "amount": 1
@@ -2030,129 +2047,154 @@
               "amount": 3
             },
             {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
               "itemId": "blueberries",
               "name": "Blueberries",
-              "amount": 1
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": "blueberries",
-              "name": "Blueberries",
-              "amount": 1
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": "blueberries",
-              "name": "Blueberries",
-              "amount": 1
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": "blueberries",
-              "name": "Blueberries",
-              "amount": 1
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": "blueberries",
-              "name": "Blueberries",
-              "amount": 1
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "+3 mana",
-              "amount": 3
-            },
-            {
-              "itemId": "wand",
-              "name": "Wand",
               "amount": 1
             },
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
+              "amount": 1
+            },
+            {
+              "itemId": "wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             },
             {
               "itemId": null,
               "name": "+3 mana",
               "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": null,
+              "name": "+3 mana",
+              "amount": 3
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": "wand",
+              "name": "Wand of Equilibrium",
+              "amount": 1
             },
             {
               "itemId": null,
@@ -2167,12 +2209,27 @@
           ]
         },
         "empower": {
-          "gained": 1,
+          "gained": 4,
           "empty": false,
           "sources": [
             {
               "itemId": "wand",
-              "name": "Wand",
+              "name": "Wand of Equilibrium",
+              "amount": 1
+            },
+            {
+              "itemId": "wand",
+              "name": "Wand of Equilibrium",
+              "amount": 1
+            },
+            {
+              "itemId": "wand",
+              "name": "Wand of Equilibrium",
+              "amount": 1
+            },
+            {
+              "itemId": "wand",
+              "name": "Wand of Equilibrium",
               "amount": 1
             }
           ]
@@ -2183,28 +2240,18 @@
           "sources": []
         },
         "poison": {
-          "gained": 753,
+          "gained": 697,
           "empty": false,
           "sources": [
             {
               "itemId": "serpent_staff",
-              "name": "+3 poison",
-              "amount": 3
+              "name": "+2 poison",
+              "amount": 2
             },
             {
               "itemId": null,
               "name": "Poison",
-              "amount": 3
-            },
-            {
-              "itemId": "serpent_staff",
-              "name": "+3 poison",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "Poison",
-              "amount": 6
+              "amount": 2
             },
             {
               "itemId": "serpent_staff",
@@ -2219,12 +2266,22 @@
             {
               "itemId": null,
               "name": "Poison",
-              "amount": 14
+              "amount": 10
             },
             {
               "itemId": "serpent_staff",
-              "name": "+4 poison",
-              "amount": 4
+              "name": "+5 poison",
+              "amount": 5
+            },
+            {
+              "itemId": "serpent_staff",
+              "name": "+5 poison",
+              "amount": 5
+            },
+            {
+              "itemId": null,
+              "name": "Poison",
+              "amount": 20
             },
             {
               "itemId": "serpent_staff",
@@ -2239,22 +2296,12 @@
             {
               "itemId": null,
               "name": "Poison",
-              "amount": 29
+              "amount": 31
             },
             {
               "itemId": "serpent_staff",
-              "name": "+7 poison",
-              "amount": 7
-            },
-            {
-              "itemId": "serpent_staff",
-              "name": "+7 poison",
-              "amount": 7
-            },
-            {
-              "itemId": null,
-              "name": "Poison",
-              "amount": 43
+              "name": "+6 poison",
+              "amount": 6
             },
             {
               "itemId": "serpent_staff",
@@ -2269,7 +2316,7 @@
             {
               "itemId": null,
               "name": "Poison",
-              "amount": 58
+              "amount": 52
             },
             {
               "itemId": "serpent_staff",
@@ -2284,7 +2331,7 @@
             {
               "itemId": null,
               "name": "Poison",
-              "amount": 75
+              "amount": 69
             },
             {
               "itemId": "serpent_staff",
@@ -2299,12 +2346,12 @@
             {
               "itemId": null,
               "name": "Poison",
-              "amount": 94
+              "amount": 88
             },
             {
               "itemId": "serpent_staff",
-              "name": "+11 poison",
-              "amount": 11
+              "name": "+10 poison",
+              "amount": 10
             },
             {
               "itemId": "serpent_staff",
@@ -2319,12 +2366,12 @@
             {
               "itemId": null,
               "name": "Poison",
-              "amount": 127
+              "amount": 120
             },
             {
               "itemId": "serpent_staff",
-              "name": "+12 poison",
-              "amount": 12
+              "name": "+13 poison",
+              "amount": 13
             },
             {
               "itemId": "serpent_staff",
@@ -2334,19 +2381,19 @@
             {
               "itemId": null,
               "name": "Poison",
-              "amount": 152
+              "amount": 146
+            },
+            {
+              "itemId": "serpent_staff",
+              "name": "+13 poison",
+              "amount": 13
             }
           ]
         },
         "blind": {
-          "gained": 27,
+          "gained": 26,
           "empty": false,
           "sources": [
-            {
-              "itemId": null,
-              "name": "+1 blind",
-              "amount": 1
-            },
             {
               "itemId": null,
               "name": "+1 blind",

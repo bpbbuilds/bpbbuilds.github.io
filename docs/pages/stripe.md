@@ -16,7 +16,7 @@ Related: [`launch-phase-1.md`](../product/launch-phase-1.md) · [`monetization-i
 
 **Progress snapshot:** ~**92%** — live Checkout + Portal + cancel smoke; Privacy/Terms; IP go-no-go; founding promo start gate documented ([`016_founding_promo_start.sql`](../db/sql/016_founding_promo_start.sql)). Left: Discord roles, ops watch, apply `016` + flip `started_at` at announce.
 
-**Public business URL (Stripe account / landing):** https://bpbbuilds.github.io  
+**Public business URL (Stripe account / landing):** https://bpbbuilds.com
 (Full app stays in private [`bpbbuilds/website`](https://github.com/bpbbuilds/website) until launch. Pages site repo: [`bpbbuilds/bpbbuilds.github.io`](https://github.com/bpbbuilds/bpbbuilds.github.io).)
 
 **Mode:** **Live** Stripe keys in local `.env` and Supabase secrets (not committed).
@@ -28,7 +28,7 @@ Related: [`launch-phase-1.md`](../product/launch-phase-1.md) · [`monetization-i
 | `STRIPE_SECRET_KEY` | Supabase secrets |
 | `STRIPE_WEBHOOK_SECRET` | Supabase secrets (per webhook endpoint in Dashboard) |
 | `STRIPE_PRICE_ID_PREMIUM` | Supabase secrets (`price_…`) |
-| `SITE_URL` | Supabase secrets — `https://bpbbuilds.github.io` (Checkout return URLs) |
+| `SITE_URL` | Supabase secrets — `https://bpbbuilds.com` (Checkout return URLs) |
 | `SUPABASE_*` | Already used by Edge Functions |
 
 Client: `node scripts/write-config.mjs` → `createCheckoutUrl` + `createPortalUrl` in `js/shared/config.js`.
@@ -124,7 +124,7 @@ Source of truth for paid entitlement.
 - [x] Live webhook registered and delivering
 - [x] Smoke: real $3 checkout (refund OK) → `plan = premium` within a minute
 - [x] Smoke: Portal cancel → entitlement drops for non-founding
-- [x] Founding promo start timestamp / public URL policy aligned ([`launch-phase-1.md`](../product/launch-phase-1.md) · [`016_founding_promo_start.sql`](../db/sql/016_founding_promo_start.sql) — apply SQL; leave `started_at` null until `https://bpbbuilds.github.io` is public)
+- [x] Founding promo start timestamp / public URL policy aligned ([`launch-phase-1.md`](../product/launch-phase-1.md) · [`016_founding_promo_start.sql`](../db/sql/016_founding_promo_start.sql) — apply SQL; leave `started_at` null until `https://bpbbuilds.com` is public)
 - [ ] Watch entitlements a few days before cosmetics / more paid surfaces
 - [ ] Check off Stripe bullets in [`launch-phase-1.md`](../product/launch-phase-1.md) + [`sim-product.md`](../sim/sim-product.md)
 

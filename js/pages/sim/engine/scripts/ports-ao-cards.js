@@ -2,7 +2,7 @@
  * Band AO — leftover cards + deck_of_cards chain (Card.gd reveal).
  */
 
-import { applyEffectDmgFactor, applyHealEfficiency } from '../actor-stats.js';
+import { applyEffectDmgFactor, applyHealEfficiency, changeCritStacks } from '../actor-stats.js';
 import { giveRandomBuffs, grantStacks, stealRandomBuff } from '../buff-economy.js';
 import { getP1, getP2, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
@@ -75,11 +75,14 @@ function logStackGrants(piece, ctx, handler, picked) {
 
 function revealCard(piece, ctx, fn) {
   if (piece._revealed) return true;
-  pushActivate(piece, ctx, piece.itemId, `Card: ${piece.name}`);
-  fn();
   const next = getNextCard(ctx, piece);
   pauseCard(piece);
   startCardReveal(next);
+  // Card.trigger starts the next card and changes state before calling the
+  // concrete doRevealEffect.  The concrete script then calls activate() after
+  // its effects, so keep the activation event at the end of this causal chain.
+  fn();
+  pushActivate(piece, ctx, piece.itemId, `Card: ${piece.name}`);
   return true;
 }
 
@@ -101,13 +104,19 @@ const deckOfCardsPort = {
 const aceOfSpadesPort = {
   handlerId: 'ace_of_spades',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    // Card.prepare() resets the reveal state before the shared deck chain is
+    // armed.  Keep this explicit so a reused simulation cannot stay revealed.
+    piece._revealing = false;
+    piece._revealed = false;
+    piece._secondaryActive = secondaryOn(piece, ctx);
+  },
   onCooldownEffect(piece, ctx) {
     return revealCard(piece, ctx, () => {
-      for (const o of ctx.pieces || []) {
-        if (o.kind === 'weapon' || (Number(o.damageMax) || 0) > 0) {
-          o.critChance = (Number(o.critChance) || 0) + 1;
-        }
-      }
+      // AceofSpades.gd: giveCritTokens(1) delegates to character(), so this
+      // is an actor token consumed by the next eligible attack—not +1% crit
+      // chance on every weapon.
+      changeCritStacks(ctx.player, 1, ctx, piece);
       if (secondaryOn(piece, ctx)) {
         const luck = Math.max(0, Math.round(getPName(piece.params, 'luck', 1)));
         const spikes = Math.max(0, Math.round(getPName(piece.params, 'spikes', 1)));
@@ -128,11 +137,12 @@ const darkestLotusPort = {
       const mana = Math.round(getP1(piece.params, 1) * pos);
       const strip = Math.round(getP2(piece.params, 1) * pos);
       if (mana > 0) {
-        grantStacks(ctx.player, 'mana', mana, {
+        const gained = grantStacks(ctx.player, 'mana', mana, {
           originKey: piece.placementKey,
           originId: piece.itemId,
+          rng: ctx.rng,
         });
-        logStackGrants(piece, ctx, 'darkest_lotus', { mana });
+        logStackGrants(piece, ctx, 'darkest_lotus', { mana: gained.gained });
       }
       // Item.removeRandomBuffs → opponent(), not the wearer.
       if (strip > 0) {

@@ -4,6 +4,7 @@
  */
 
 import { healActor, isInvulnerable, consumeInvulnHit, requestedHealAmount } from './actor.js';
+import { changeCritStacks } from './actor-stats.js';
 import { attackEffectCount } from './attack-effects.js';
 import { loseStacks } from './stacks.js';
 import { rollPercent } from './rng.js';
@@ -18,6 +19,7 @@ function resolveDamageAmount(src) {
  * @typedef {{
  *   hit: boolean,
  *   critical: boolean,
+ *   criticalSource?: 'chance' | 'token',
  *   raw: number,
  *   damage: number,
  *   healthDamage: number,
@@ -27,6 +29,7 @@ function resolveDamageAmount(src) {
  *   spikeDamage: number,
  *   vampHeal: number,
  *   attackEffectCount?: number,
+ *   reductionSources?: { itemId?: string, placementKey?: string, amount: number }[],
  * }} DamageResult
  */
 
@@ -47,12 +50,14 @@ function resolveDamageAmount(src) {
  *   canBlock?: boolean,
  *   ignoreBlock?: boolean,
  *   isAttack?: boolean,
+ *   canTriggerItems?: boolean,
  *   isMelee?: boolean,
  *   isPoison?: boolean,
  *   isSpikes?: boolean,
  *   skipSpikes?: boolean,
  *   vampiricItem?: boolean,
  *   nowT?: number,
+ *   events?: import('../sim-events.js').SimEvent[],
  *   bus?: { emit?: (type: string, payload?: object) => void },
  *   rng: () => number,
  * }} src
@@ -72,6 +77,7 @@ export function takeDamage(defender, attacker, src) {
     spikeDamage: 0,
     vampHeal: 0,
     attackEffectCount: 1,
+    reductionSources: [],
   };
 
   if (defender.dead) {
@@ -115,9 +121,22 @@ export function takeDamage(defender, attacker, src) {
   let critChance = Number(src.critChance) || 0;
   const critRes = Number(defender.critResistance) || 0;
   if (critRes > 0) critChance = Math.max(0, critChance - critRes);
-  if (src.canCrit && critChance > 0 && rollPercent(critChance, src.rng)) {
-    res.critical = true;
-    dmg = Math.round(dmg * 2);
+  if (src.canCrit) {
+    // Character.gd checks a natural crit first, then consumes one crit token
+    // granted to the attacking character (Ace of Spades, Draconic Orb, ...).
+    // Tokens are guaranteed crits and must not be converted into a chance
+    // increase on every weapon.
+    if (critChance > 0 && rollPercent(critChance, src.rng)) {
+      res.critical = true;
+      res.criticalSource = 'chance';
+    } else if ((Number(attacker.critStacks) || 0) > 0) {
+      changeCritStacks(attacker, -1, { t: src.nowT ?? 0, events: src.events }, src.originPiece ?? null);
+      res.critical = true;
+      res.criticalSource = 'token';
+    }
+    if (res.critical) {
+      dmg = Math.round(dmg * 2);
+    }
   }
 
   // Shield.gd — chance melee block → beforeBlock (DR + spikes) → afterBlock
@@ -184,6 +203,31 @@ export function takeDamage(defender, attacker, src) {
 
   dmg = Math.max(0, dmg);
   res.damage = dmg;
+
+  // Character.takeDamage emits pre_take_damage after percentage/flat
+  // resistance but before DamageResult.damageReduction is applied. Socketed
+  // defensive gems (Badger Rune) use this exact phase to add conditional
+  // flat reduction without waiting for the already-applied damage event.
+  src.bus?.emit?.('pre_take_damage', {
+    t: src.nowT ?? 0,
+    defender,
+    attacker,
+    damage: res,
+    source: src,
+  });
+
+  const beforeDynamicReduction = Math.max(0, Math.round(Number(res.damage) || 0));
+  const dynamicReduction = Math.min(
+    beforeDynamicReduction,
+    Math.max(0, Math.round(Number(res.damageReduction) || 0)),
+  );
+  if (dynamicReduction > 0) {
+    res.reduced = (res.reduced || 0) + dynamicReduction;
+    dmg = beforeDynamicReduction - dynamicReduction;
+  } else {
+    dmg = beforeDynamicReduction;
+  }
+  res.damage = Math.max(0, dmg);
   res.healthDamage = dmg;
 
   const canBlock = src.canBlock !== false && !src.ignoreBlock && !src.isPoison;

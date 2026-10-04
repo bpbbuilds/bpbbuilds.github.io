@@ -61,6 +61,8 @@ export function beginBoardMoveDrag(args) {
     mode: 'move',
     itemId: p.id,
     moveKey: key,
+    homeX: Number(p.x),
+    homeY: Number(p.y),
     r: p.r,
     pickupR: p.r,
     pointerId: e.pointerId,

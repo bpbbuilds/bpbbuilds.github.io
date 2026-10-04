@@ -7,7 +7,9 @@ import {
   mentionChipEl,
   serializeMentions,
 } from './item-mentions.js';
+import { faceHtml, hydrateFaces } from './blob-face.js';
 import {
+  matchSearchUsers,
   parseBuildSearchQuery,
   resolveBuildSearchItems,
 } from './build-search.js';
@@ -43,6 +45,8 @@ function textBeforeCaret(el) {
  * @param {{
  *   items: object[],
  *   getSpriteUrl: (item: object) => string,
+ *   users?: { name: string, avatar_url?: string | null, equipped_avatar?: string | null }[],
+ *   root?: string,
  *   initialQuery?: string,
  *   placeholder?: string,
  *   debounceMs?: number,
@@ -76,7 +80,10 @@ export function mountBuildSearchInput(host, opts) {
 
   /** @type {object[]} */
   let items = Array.isArray(opts.items) ? opts.items : [];
+  /** @type {{ name: string, avatar_url?: string | null, equipped_avatar?: string | null }[]} */
+  let users = Array.isArray(opts.users) ? opts.users : [];
   const getSpriteUrl = opts.getSpriteUrl;
+  const root = opts.root || '';
   const debounceMs = opts.debounceMs ?? 220;
 
   const suggest = document.createElement('ul');
@@ -87,12 +94,15 @@ export function mountBuildSearchInput(host, opts) {
 
   /** @type {object[]} */
   let suggestions = [];
+  /** @type {'item' | 'user' | null} */
+  let suggestKind = null;
   let suggestIndex = 0;
   let timer = 0;
 
   function hideSuggest() {
     suggest.hidden = true;
     suggestions = [];
+    suggestKind = null;
   }
 
   function syncEmpty() {
@@ -164,33 +174,130 @@ export function mountBuildSearchInput(host, opts) {
     return true;
   }
 
+  /**
+   * @param {number} eat
+   */
+  function cutBeforeCaret(eat) {
+    const sel = window.getSelection();
+    if (!sel?.rangeCount || eat < 1) return false;
+    const range = sel.getRangeAt(0);
+    const node = range.startContainer;
+    const offset = range.startOffset;
+    if (node.nodeType !== Node.TEXT_NODE || offset < eat) return false;
+    const text = node.textContent || '';
+    node.textContent = text.slice(0, offset - eat) + text.slice(offset);
+    range.setStart(node, offset - eat);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    return true;
+  }
+
+  /**
+   * @param {{ name: string, avatar_url?: string | null, equipped_avatar?: string | null }} user
+   */
+  function userFaceHtml(user, className) {
+    const face = faceHtml(
+      {
+        avatar_url: user.avatar_url || null,
+        equipped_avatar: user.equipped_avatar || null,
+      },
+      root,
+      { size: 22, className, alt: '' },
+    );
+    if (face) return face;
+    const parts = String(user.name || '').split(/\s+/).filter(Boolean);
+    const letters =
+      parts.length >= 2
+        ? `${parts[0][0]}${parts[1][0]}`
+        : String(user.name || '?').slice(0, 2);
+    return `<span class="cr-mention-suggest__initials" aria-hidden="true">${letters
+      .toUpperCase()
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')}</span>`;
+  }
+
+  /**
+   * @param {{ name: string, avatar_url?: string | null, equipped_avatar?: string | null }} user
+   */
+  function insertUser(user) {
+    const name = String(user?.name || '').replace(/[{}]/g, '').trim();
+    if (!name) return false;
+    el.focus();
+    const sel = window.getSelection();
+    if (!sel) return false;
+    if (!caretIn(el)) {
+      const end = document.createRange();
+      end.selectNodeContents(el);
+      end.collapse(false);
+      sel.removeAllRanges();
+      sel.addRange(end);
+    }
+    const pre = textBeforeCaret(el);
+    const typed = pre.match(/@([^\s@[\]{}]*)$/);
+    if (!typed || !cutBeforeCaret(typed[0].length)) return false;
+    const range = sel.getRangeAt(0);
+    range.deleteContents();
+    const chip = document.createElement('span');
+    chip.className = 'bpb-user-mention';
+    chip.contentEditable = 'false';
+    chip.dataset.userName = name;
+    chip.innerHTML = userFaceHtml(user, 'bpb-user-mention__face');
+    const label = document.createElement('span');
+    label.className = 'bpb-user-mention__name';
+    label.textContent = name;
+    chip.appendChild(label);
+    range.insertNode(chip);
+    const after = document.createTextNode(ZWSP + ' ');
+    chip.after(after);
+    range.setStart(after, after.length);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    hideSuggest();
+    void hydrateFaces(el, root);
+    emit();
+    return true;
+  }
+
   function paintSuggest() {
     suggest.replaceChildren();
     if (!suggestions.length) {
       hideSuggest();
       return;
     }
-    suggestions.forEach((item, i) => {
+    suggestions.forEach((entry, i) => {
       const li = document.createElement('li');
       li.setAttribute('role', 'option');
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = `cr-mention-suggest__item${i === suggestIndex ? ' is-on' : ''}`;
-      const src = getSpriteUrl(item);
-      btn.innerHTML = `${
-        src
-          ? `<img class="cr-mention-suggest__img" src="${src.replace(/"/g, '&quot;')}" alt="" width="22" height="22" />`
-          : ''
-      }<span>${String(item.name || item.id)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')}</span>`;
-      btn.addEventListener('mousedown', (ev) => {
-        ev.preventDefault();
-        insertChip(item, { eatBracket: true });
-      });
+      if (suggestKind === 'user') {
+        btn.innerHTML = `${userFaceHtml(entry, 'cr-mention-suggest__face')}<span class="cr-mention-suggest__name"></span>`;
+        const nameEl = btn.querySelector('.cr-mention-suggest__name');
+        if (nameEl) nameEl.textContent = String(entry.name || '');
+        btn.addEventListener('mousedown', (ev) => {
+          ev.preventDefault();
+          insertUser(entry);
+        });
+      } else {
+        const src = getSpriteUrl(entry);
+        btn.innerHTML = `${
+          src
+            ? `<img class="cr-mention-suggest__img" src="${src.replace(/"/g, '&quot;')}" alt="" width="22" height="22" />`
+            : ''
+        }<span>${String(entry.name || entry.id)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')}</span>`;
+        btn.addEventListener('mousedown', (ev) => {
+          ev.preventDefault();
+          insertChip(entry, { eatBracket: true });
+        });
+      }
       li.appendChild(btn);
       suggest.appendChild(li);
     });
+    if (suggestKind === 'user') void hydrateFaces(suggest, root);
     suggest.hidden = false;
     const rect = el.getBoundingClientRect();
     suggest.style.left = `${Math.round(rect.left)}px`;
@@ -206,7 +313,22 @@ export function mountBuildSearchInput(host, opts) {
       return;
     }
     const q = open[1];
+    suggestKind = 'item';
     suggestions = matchMentionItems(q, items, { limit: 8 });
+    suggestIndex = 0;
+    paintSuggest();
+    return;
+  }
+
+  function updateUserSuggest() {
+    const pre = textBeforeCaret(el);
+    const open = pre.match(/(?:^|\s)@([^\s@[\]{}]*)$/);
+    if (!open || !users.length) {
+      hideSuggest();
+      return;
+    }
+    suggestKind = 'user';
+    suggestions = matchSearchUsers(open[1], users, 8);
     suggestIndex = 0;
     paintSuggest();
   }
@@ -242,7 +364,11 @@ export function mountBuildSearchInput(host, opts) {
 
   el.addEventListener('input', () => {
     syncEmpty();
-    if (!tryCloseBracket()) updateSuggest();
+    if (!tryCloseBracket()) {
+      const pre = textBeforeCaret(el);
+      if (/\[([^\[\]]*)$/.test(pre)) updateSuggest();
+      else updateUserSuggest();
+    }
     scheduleEmit();
   });
 
@@ -262,7 +388,8 @@ export function mountBuildSearchInput(host, opts) {
       }
       if (e.key === 'Enter' || e.key === 'Tab') {
         e.preventDefault();
-        insertChip(suggestions[suggestIndex], { eatBracket: true });
+        if (suggestKind === 'user') insertUser(suggestions[suggestIndex]);
+        else insertChip(suggestions[suggestIndex], { eatBracket: true });
         return;
       }
       if (e.key === 'Escape') {
@@ -302,6 +429,9 @@ export function mountBuildSearchInput(host, opts) {
       resolveBuildSearchItems(parseBuildSearchQuery(serializeMentions(el)), items),
     setItems(next) {
       items = Array.isArray(next) ? next : [];
+    },
+    setUsers(next) {
+      users = Array.isArray(next) ? next : [];
     },
     setQuery(q) {
       el.textContent = String(q || '');

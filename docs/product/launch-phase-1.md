@@ -105,7 +105,7 @@ Nice if they ship with launch; do not block Stripe if sim + screenshot are the p
 
 Rules: first 10 **eligible** Discord sign-ins **after** promo start. Atomic slot 1–10 (no race). Exclude `is_owner` + test Discord IDs. Grant does **not** expire and is **not** removed by Stripe cancel. After 10, sign-in still works; paid path is Stripe.
 
-**Public URL:** `https://bpbbuilds.github.io`  
+**Public URL:** `https://bpbbuilds.com`
 **Gate:** `public.founding_promo.started_at` ([`docs/db/sql/016_founding_promo_start.sql`](../db/sql/016_founding_promo_start.sql)) — leave `null` until that URL is advertised; then:
 
 ```sql
@@ -168,7 +168,7 @@ Original art only. No shop / trade / coins. Profile hub: [`profile/profile.md`](
 
 ## Site go-live
 
-- [ ] Public host URL is the real one (GitHub Pages or chosen host) — target **`https://bpbbuilds.github.io`**
+- [ ] Public host URL is the real one (GitHub Pages or chosen host) — target **`https://bpbbuilds.com`**
 - [ ] Enough real OP / catalog builds that a new visitor is not on an empty site
 - [ ] Thin launch event page live + prize cosmetic ready to grant
 - [ ] Un-hide URL in videos / Discord / YouTube **after** Stripe + founding grants work

@@ -31,7 +31,8 @@ body.bpb-confirm-open {
   --bpb-confirm-shade: rgba(14, 15, 16, 0.42);
   position: fixed;
   inset: 0;
-  z-index: 90;
+  /* Confirmations must sit above page modals (including the admin event desk). */
+  z-index: 200;
   display: flex;
   align-items: center;
   justify-content: center;

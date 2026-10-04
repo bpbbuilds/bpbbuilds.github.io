@@ -20,7 +20,7 @@ Deno.serve(async (req) => {
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
   const anonKey = Deno.env.get('SUPABASE_ANON_KEY') || '';
   const stripeKey = Deno.env.get('STRIPE_SECRET_KEY') || '';
-  const siteUrl = (Deno.env.get('SITE_URL') || 'https://bpbbuilds.github.io').replace(
+  const siteUrl = (Deno.env.get('SITE_URL') || 'https://bpbbuilds.com').replace(
     /\/$/,
     '',
   );

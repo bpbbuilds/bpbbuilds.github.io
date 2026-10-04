@@ -407,9 +407,17 @@ body.page-sim .build-more-tip {
   height: 0;
 }
 
-.sim-bb__card-title {
+.sim-bb__card-title-wrap {
   min-width: 0;
   flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.08rem;
+}
+
+.sim-bb__card-title {
+  min-width: 0;
   font-family: var(--bpb-font-body, Georgia, serif);
   font-weight: 400;
   font-size: 1.05rem;
@@ -422,6 +430,21 @@ body.page-sim .build-more-tip {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.sim-bb__private {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.68rem;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: #ffe08a;
+  -webkit-text-stroke: 0.045em var(--il-ink);
+  paint-order: stroke fill;
+  text-shadow: 0 1px 0 rgba(60, 38, 29, 0.45);
 }
 
 .sim-bb__card-class {

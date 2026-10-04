@@ -147,6 +147,11 @@ export function serializeMentions(root) {
       if (id) out += `[[${id}]]`;
       return;
     }
+    if (node.matches?.('span.bpb-user-mention')) {
+      const name = String(node.dataset.userName || '').replace(/[{}]/g, '').trim();
+      if (name) out += `{@${name}}`;
+      return;
+    }
     if (node.tagName === 'BR') {
       out += '\n';
       return;

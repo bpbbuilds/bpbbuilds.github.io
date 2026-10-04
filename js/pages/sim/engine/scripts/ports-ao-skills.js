@@ -38,9 +38,10 @@ function chanceOf(piece, ctx, fb = 20) {
 const bagtacularPort = {
   handlerId: 'bagtacular',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    pushActivate(piece, ctx, 'bagtacular', `Skill: ${piece.name}`);
-  },
+  // Bagtacular has no combat hook of its own. Its canAffect_global hook is
+  // represented by a presence-only piece so the four affected bag handlers
+  // can discover it during prepare/start-of-battle scans.
+  presenceOnly: true,
 };
 
 const acornAcePort = {

@@ -306,6 +306,21 @@ export function applyEffectDmgFactor(actor, deltaFrac, ctx, origin = null) {
 }
 
 /**
+ * Character.gainCritTokens / useCritToken — update the actor HUD stat and
+ * retain the same stat event contract as the other combat-stat mutations.
+ * @param {import('./actor.js').SimActor} actor
+ * @param {number} delta
+ * @param {{ t?: number, events?: import('../sim-events.js').SimEvent[] }} ctx
+ * @param {{ itemId?: string, placementKey?: string, name?: string } | null} origin
+ */
+export function changeCritStacks(actor, delta, ctx, origin = null) {
+  const d = Math.round(Number(delta) || 0);
+  if (!d) return;
+  actor.critStacks = Math.max(0, (Number(actor.critStacks) || 0) + d);
+  pushStatEvent(actor, ctx, origin, 'crit_stacks', d);
+}
+
+/**
  * @param {import('./actor.js').SimActor} actor
  * @param {{ t?: number, events?: import('../sim-events.js').SimEvent[] }} ctx
  * @param {{ itemId?: string, placementKey?: string, name?: string } | null} origin

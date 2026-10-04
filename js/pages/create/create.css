@@ -1275,7 +1275,7 @@
 
 .create-onboard__upload {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.65rem;
   align-items: stretch;
   width: 100%;
@@ -1370,81 +1370,6 @@
 .create-onboard__path-copy:focus-visible {
   outline: 2px solid var(--bpb-ink, #3c261d);
   outline-offset: 2px;
-}
-
-.create-onboard__btn--media {
-  position: relative;
-  z-index: 0;
-  isolation: isolate;
-  overflow: hidden;
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  min-height: 5.5rem;
-  margin-top: 0;
-  padding: 0.55rem 0.75rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  line-height: 1.15;
-  font-size: 1rem;
-  color: var(--bpb-ink, #3c261d);
-  border-color: transparent;
-  background: transparent;
-}
-
-/* Soft rainbow wash + dashed hue, same palette as the premium play glow. */
-.create-onboard__btn--media::before {
-  content: "";
-  position: absolute;
-  inset: 8px;
-  z-index: -1;
-  border-radius: inherit;
-  background: conic-gradient(
-    from 0deg,
-    #fce871,
-    #ff9a3c,
-    #ff4d6a,
-    #c44dff,
-    #4d7cff,
-    #3ce8ff,
-    #5dff7a,
-    #fce871
-  );
-  opacity: 0.55;
-  filter: blur(12px);
-  animation: bpb-orb-spin 3.7s linear infinite;
-  pointer-events: none;
-}
-
-.create-onboard__btn--media::after {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border-radius: inherit;
-  border: 2px dashed #ff7ad9;
-  pointer-events: none;
-  animation: create-onboard-media-hue 7s linear infinite;
-}
-
-.create-onboard__btn--media:hover::before {
-  opacity: 0.5;
-}
-
-.create-onboard__media-icon {
-  position: relative;
-  z-index: 1;
-  width: 4.25rem;
-  height: 4.25rem;
-  object-fit: contain;
-  pointer-events: none;
-}
-
-@keyframes create-onboard-media-hue {
-  to {
-    filter: hue-rotate(360deg);
-  }
 }
 
 .create-onboard__btn:focus-visible {
@@ -1813,11 +1738,6 @@
 @media (prefers-reduced-motion: reduce) {
   .create-board__rotate-sparks {
     display: none;
-  }
-
-  .create-onboard__btn--media::before,
-  .create-onboard__btn--media::after {
-    animation: none;
   }
 }
 
@@ -2421,13 +2341,6 @@ body.page-create.is-bpb-dragging .create-sellbin {
     overscroll-behavior: none;
   }
 
-  /* Keep the upload target clear of the centered Filters / Build tab. */
-  .create-onboard__upload {
-    align-self: flex-start;
-    width: calc(100% - 3rem);
-    max-width: calc(100% - 3rem);
-  }
-
   /* Keep the item board full width. Inset only the scrollbar: the same gap
      from the left screen edge and from the chest's left edge. */
   .page-create .create-col--catalog .items-bag__stage > .bpb-bg::-webkit-scrollbar {
@@ -2548,13 +2461,10 @@ body.page-create.is-bpb-dragging .create-sellbin {
     margin-top: 0;
   }
 
-  .create-onboard__upload-col {
+  /* history.db upload is intentionally desktop-only; avoid leaving an empty
+     "or upload" block in the mobile onboarding overlay. */
+  .create-onboard__actions {
     display: none;
-  }
-
-  .create-onboard__upload {
-    grid-template-columns: minmax(0, 1fr);
-    justify-items: center;
   }
 }
 
@@ -2689,12 +2599,6 @@ body.page-create.is-bpb-dragging .create-sellbin {
 
   .page-create .create-board__park {
     flex: 0 0 auto;
-  }
-}
-
-@media (max-width: 800px) {
-  .create-onboard__upload {
-    grid-template-columns: minmax(0, 1fr);
   }
 }
 

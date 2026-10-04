@@ -1,11 +1,11 @@
 {
   "kind": "bpb-sim-debug",
-  "v": 5,
+  "v": 6,
   "slug": "poison-garden-ranger",
   "seed": 42,
   "durationSec": 30,
   "dummyEndHp": 755,
-  "playerEndHp": 5,
+  "playerEndHp": 18,
   "eventCount": 231,
   "catalog": [
     {
@@ -103,8 +103,8 @@
         "p1": 4,
         "poison": 2,
         "p2": 2,
-        "maxhealth": 40,
-        "p3": 40
+        "maxhealth": 38,
+        "p3": 38
       }
     },
     {
@@ -202,6 +202,32 @@
   },
   "status": {
     "buffs": {
+      "regeneration": {
+        "player": {
+          "end": 2,
+          "sources": [
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 2
+                }
+              ],
+              "id": "healing_herbs",
+              "itemId": "healing_herbs",
+              "name": "Healing Herbs",
+              "handler": "healing_herbs",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 2
+        }
+      },
       "lucky": {
         "player": {
           "end": 16,
@@ -210,39 +236,39 @@
               "gained": 12,
               "lost": 0,
               "grants": 12,
-              "firstT": 4.75,
-              "lastT": 28.65,
+              "firstT": 4.78,
+              "lastT": 28.645,
               "samples": [
                 {
-                  "t": 4.75,
+                  "t": 4.78,
                   "amount": 1
                 },
                 {
-                  "t": 6.9,
+                  "t": 6.914,
                   "amount": 1
                 },
                 {
-                  "t": 9.05,
+                  "t": 9.005,
                   "amount": 1
                 },
                 {
-                  "t": 11.2,
+                  "t": 11.106,
                   "amount": 1
                 },
                 {
-                  "t": 13.3,
+                  "t": 13.21,
                   "amount": 1
                 },
                 {
-                  "t": 15.4,
+                  "t": 15.416,
                   "amount": 1
                 },
                 {
-                  "t": 17.55,
+                  "t": 17.684,
                   "amount": 1
                 },
                 {
-                  "t": 19.75,
+                  "t": 19.785,
                   "amount": 1
                 }
               ],
@@ -274,32 +300,6 @@
           "gained": 16
         }
       },
-      "regeneration": {
-        "player": {
-          "end": 2,
-          "sources": [
-            {
-              "gained": 2,
-              "lost": 0,
-              "grants": 1,
-              "firstT": 2.5,
-              "lastT": 2.5,
-              "samples": [
-                {
-                  "t": 2.5,
-                  "amount": 2
-                }
-              ],
-              "id": "healing_herbs",
-              "itemId": "healing_herbs",
-              "name": "Healing Herbs",
-              "handler": "healing_herbs",
-              "systemOrigin": null
-            }
-          ],
-          "gained": 2
-        }
-      },
       "mana": {
         "player": {
           "end": 13,
@@ -308,39 +308,39 @@
               "gained": 13,
               "lost": 0,
               "grants": 13,
-              "firstT": 4.7,
-              "lastT": 29.95,
+              "firstT": 4.547,
+              "lastT": 29.708,
               "samples": [
                 {
-                  "t": 4.7,
+                  "t": 4.547,
                   "amount": 1
                 },
                 {
-                  "t": 6.8,
+                  "t": 6.728,
                   "amount": 1
                 },
                 {
-                  "t": 8.95,
+                  "t": 8.828,
                   "amount": 1
                 },
                 {
-                  "t": 11.1,
+                  "t": 10.922,
                   "amount": 1
                 },
                 {
-                  "t": 13.2,
+                  "t": 12.923,
                   "amount": 1
                 },
                 {
-                  "t": 15.3,
+                  "t": 15.083,
                   "amount": 1
                 },
                 {
-                  "t": 17.3,
+                  "t": 17.255,
                   "amount": 1
                 },
                 {
-                  "t": 19.45,
+                  "t": 19.344,
                   "amount": 1
                 }
               ],
@@ -416,39 +416,39 @@
               "gained": 26,
               "lost": 0,
               "grants": 13,
-              "firstT": 4.7,
-              "lastT": 29.95,
+              "firstT": 4.547,
+              "lastT": 29.708,
               "samples": [
                 {
-                  "t": 4.7,
+                  "t": 4.547,
                   "amount": 2
                 },
                 {
-                  "t": 6.8,
+                  "t": 6.728,
                   "amount": 2
                 },
                 {
-                  "t": 8.95,
+                  "t": 8.828,
                   "amount": 2
                 },
                 {
-                  "t": 11.1,
+                  "t": 10.922,
                   "amount": 2
                 },
                 {
-                  "t": 13.2,
+                  "t": 12.923,
                   "amount": 2
                 },
                 {
-                  "t": 15.3,
+                  "t": 15.083,
                   "amount": 2
                 },
                 {
-                  "t": 17.3,
+                  "t": 17.255,
                   "amount": 2
                 },
                 {
-                  "t": 19.45,
+                  "t": 19.344,
                   "amount": 2
                 }
               ],
@@ -462,39 +462,39 @@
               "gained": 24,
               "lost": 0,
               "grants": 12,
-              "firstT": 4.7,
-              "lastT": 28.6,
+              "firstT": 4.694,
+              "lastT": 28.714,
               "samples": [
                 {
-                  "t": 4.7,
+                  "t": 4.694,
                   "amount": 2
                 },
                 {
-                  "t": 6.85,
+                  "t": 6.851,
                   "amount": 2
                 },
                 {
-                  "t": 9.05,
+                  "t": 9.076,
                   "amount": 2
                 },
                 {
-                  "t": 11.15,
+                  "t": 11.296,
                   "amount": 2
                 },
                 {
-                  "t": 13.4,
+                  "t": 13.427,
                   "amount": 2
                 },
                 {
-                  "t": 15.6,
+                  "t": 15.555,
                   "amount": 2
                 },
                 {
-                  "t": 17.75,
+                  "t": 17.715,
                   "amount": 2
                 },
                 {
-                  "t": 19.85,
+                  "t": 19.928,
                   "amount": 2
                 }
               ],
@@ -635,11 +635,11 @@
         ]
       },
       "toPlayer": {
-        "total": 223,
+        "total": 210,
         "byKind": {
           "dummy": {
-            "total": 156,
-            "grants": 12
+            "total": 143,
+            "grants": 11
           },
           "fatigue": {
             "total": 67,
@@ -648,11 +648,11 @@
         },
         "sources": [
           {
-            "gained": 156,
+            "gained": 143,
             "lost": 0,
-            "grants": 12,
+            "grants": 11,
             "firstT": 4.652,
-            "lastT": 28.302,
+            "lastT": 26.152,
             "samples": [
               {
                 "t": 4.652,
@@ -746,7 +746,7 @@
     },
     "misses": {
       "player": 0,
-      "dummy": 0
+      "dummy": 1
     },
     "activations": {
       "player": {
@@ -756,39 +756,39 @@
             "gained": 13,
             "lost": 0,
             "grants": 13,
-            "firstT": 4.7,
-            "lastT": 29.95,
+            "firstT": 4.547,
+            "lastT": 29.708,
             "samples": [
               {
-                "t": 4.7,
+                "t": 4.547,
                 "amount": 1
               },
               {
-                "t": 6.8,
+                "t": 6.728,
                 "amount": 1
               },
               {
-                "t": 8.95,
+                "t": 8.828,
                 "amount": 1
               },
               {
-                "t": 11.1,
+                "t": 10.922,
                 "amount": 1
               },
               {
-                "t": 13.2,
+                "t": 12.923,
                 "amount": 1
               },
               {
-                "t": 15.3,
+                "t": 15.083,
                 "amount": 1
               },
               {
-                "t": 17.3,
+                "t": 17.255,
                 "amount": 1
               },
               {
-                "t": 19.45,
+                "t": 19.344,
                 "amount": 1
               }
             ],
@@ -802,38 +802,38 @@
             "lost": 0,
             "grants": 13,
             "firstT": 2.5,
-            "lastT": 28.6,
+            "lastT": 28.714,
             "samples": [
               {
                 "t": 2.5,
                 "amount": 1
               },
               {
-                "t": 4.7,
+                "t": 4.694,
                 "amount": 1
               },
               {
-                "t": 6.85,
+                "t": 6.851,
                 "amount": 1
               },
               {
-                "t": 9.05,
+                "t": 9.076,
                 "amount": 1
               },
               {
-                "t": 11.15,
+                "t": 11.296,
                 "amount": 1
               },
               {
-                "t": 13.4,
+                "t": 13.427,
                 "amount": 1
               },
               {
-                "t": 15.6,
+                "t": 15.555,
                 "amount": 1
               },
               {
-                "t": 17.75,
+                "t": 17.715,
                 "amount": 1
               }
             ],
@@ -846,39 +846,39 @@
             "gained": 12,
             "lost": 0,
             "grants": 12,
-            "firstT": 4.75,
-            "lastT": 28.65,
+            "firstT": 4.78,
+            "lastT": 28.645,
             "samples": [
               {
-                "t": 4.75,
+                "t": 4.78,
                 "amount": 1
               },
               {
-                "t": 6.9,
+                "t": 6.914,
                 "amount": 1
               },
               {
-                "t": 9.05,
+                "t": 9.005,
                 "amount": 1
               },
               {
-                "t": 11.2,
+                "t": 11.106,
                 "amount": 1
               },
               {
-                "t": 13.3,
+                "t": 13.21,
                 "amount": 1
               },
               {
-                "t": 15.4,
+                "t": 15.416,
                 "amount": 1
               },
               {
-                "t": 17.55,
+                "t": 17.684,
                 "amount": 1
               },
               {
-                "t": 19.75,
+                "t": 19.785,
                 "amount": 1
               }
             ],
@@ -970,8 +970,8 @@
     ],
     "end": {
       "player": {
-        "hp": 5,
-        "maxHp": 240,
+        "hp": 18,
+        "maxHp": 238,
         "stacks": {
           "lucky": 16,
           "regeneration": 2,
@@ -997,26 +997,19 @@
         "buff": 27,
         "stat": 1,
         "heal": 14,
-        "damage": 34,
         "debuff": 37,
+        "damage": 33,
         "info": 1,
+        "miss": 1,
         "fight_end": 1
       },
       "stackGained": {
-        "lucky": 16,
         "regeneration": 2,
+        "lucky": 16,
         "mana": 13,
         "poison": 428
       },
       "sample": [
-        {
-          "t": 2.5,
-          "type": "activate",
-          "stack": null,
-          "itemId": "snake",
-          "amount": null,
-          "label": "Pet: Snake"
-        },
         {
           "t": 2.5,
           "type": "activate",
@@ -1028,18 +1021,26 @@
         {
           "t": 2.5,
           "type": "buff",
-          "stack": "lucky",
-          "itemId": "snake",
-          "amount": 4,
-          "label": "+4 lucky"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
           "stack": "regeneration",
           "itemId": "healing_herbs",
           "amount": 2,
           "label": "Healing Herbs: +2 Regeneration"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "snake",
+          "amount": null,
+          "label": "Pet: Snake"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "snake",
+          "amount": 4,
+          "label": "+4 lucky"
         },
         {
           "t": 2.502,
@@ -1058,6 +1059,30 @@
           "label": "Regeneration: +2 health"
         },
         {
+          "t": 4.547,
+          "type": "activate",
+          "stack": "poison",
+          "itemId": "poison_frog",
+          "amount": null,
+          "label": "Pet: Poison Frog"
+        },
+        {
+          "t": 4.547,
+          "type": "buff",
+          "stack": "mana",
+          "itemId": "poison_frog",
+          "amount": 1,
+          "label": "+1 mana"
+        },
+        {
+          "t": 4.547,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "poison_frog",
+          "amount": 2,
+          "label": "+2 poison"
+        },
+        {
           "t": 4.65,
           "type": "activate",
           "stack": null,
@@ -1074,7 +1099,7 @@
           "label": "Training Dummy: hit for 13"
         },
         {
-          "t": 4.7,
+          "t": 4.694,
           "type": "activate",
           "stack": null,
           "itemId": "snake",
@@ -1082,23 +1107,7 @@
           "label": "Pet: Snake"
         },
         {
-          "t": 4.7,
-          "type": "activate",
-          "stack": "poison",
-          "itemId": "poison_frog",
-          "amount": null,
-          "label": "Pet: Poison Frog"
-        },
-        {
-          "t": 4.7,
-          "type": "buff",
-          "stack": "mana",
-          "itemId": "poison_frog",
-          "amount": 1,
-          "label": "+1 mana"
-        },
-        {
-          "t": 4.7,
+          "t": 4.694,
           "type": "debuff",
           "stack": "poison",
           "itemId": "snake",
@@ -1106,15 +1115,7 @@
           "label": "+2 poison"
         },
         {
-          "t": 4.7,
-          "type": "debuff",
-          "stack": "poison",
-          "itemId": "poison_frog",
-          "amount": 2,
-          "label": "+2 poison"
-        },
-        {
-          "t": 4.75,
+          "t": 4.78,
           "type": "activate",
           "stack": null,
           "itemId": "leaf_badge",
@@ -1122,12 +1123,12 @@
           "label": "Accessory: Leaf Badge"
         },
         {
-          "t": 4.75,
+          "t": 4.78,
           "type": "buff",
           "stack": "lucky",
           "itemId": "leaf_badge",
           "amount": 1,
-          "label": "Leaf Badge: +1 lucky"
+          "label": "+1 lucky"
         },
         {
           "t": 5.5,
@@ -1146,12 +1147,28 @@
           "label": "Poison: 4 damage"
         },
         {
-          "t": 6.8,
+          "t": 6.728,
           "type": "activate",
           "stack": "poison",
           "itemId": "poison_frog",
           "amount": null,
           "label": "Pet: Poison Frog"
+        },
+        {
+          "t": 6.728,
+          "type": "buff",
+          "stack": "mana",
+          "itemId": "poison_frog",
+          "amount": 1,
+          "label": "+1 mana"
+        },
+        {
+          "t": 6.728,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "poison_frog",
+          "amount": 2,
+          "label": "+2 poison"
         },
         {
           "t": 6.8,
@@ -1162,22 +1179,6 @@
           "label": "Training Dummy: swing"
         },
         {
-          "t": 6.8,
-          "type": "buff",
-          "stack": "mana",
-          "itemId": "poison_frog",
-          "amount": 1,
-          "label": "+1 mana"
-        },
-        {
-          "t": 6.8,
-          "type": "debuff",
-          "stack": "poison",
-          "itemId": "poison_frog",
-          "amount": 2,
-          "label": "+2 poison"
-        },
-        {
           "t": 6.802,
           "type": "damage",
           "stack": null,
@@ -1186,7 +1187,7 @@
           "label": "Training Dummy: hit for 13"
         },
         {
-          "t": 6.85,
+          "t": 6.851,
           "type": "activate",
           "stack": null,
           "itemId": "snake",
@@ -1194,7 +1195,7 @@
           "label": "Pet: Snake"
         },
         {
-          "t": 6.85,
+          "t": 6.851,
           "type": "debuff",
           "stack": "poison",
           "itemId": "snake",
@@ -1202,7 +1203,7 @@
           "label": "+2 poison"
         },
         {
-          "t": 6.9,
+          "t": 6.914,
           "type": "activate",
           "stack": null,
           "itemId": "leaf_badge",
@@ -1210,12 +1211,12 @@
           "label": "Accessory: Leaf Badge"
         },
         {
-          "t": 6.9,
+          "t": 6.914,
           "type": "buff",
           "stack": "lucky",
           "itemId": "leaf_badge",
           "amount": 1,
-          "label": "Leaf Badge: +1 lucky"
+          "label": "+1 lucky"
         },
         {
           "t": 7.5,
@@ -1234,12 +1235,28 @@
           "label": "Poison: 8 damage"
         },
         {
-          "t": 8.95,
+          "t": 8.828,
           "type": "activate",
           "stack": "poison",
           "itemId": "poison_frog",
           "amount": null,
           "label": "Pet: Poison Frog"
+        },
+        {
+          "t": 8.828,
+          "type": "buff",
+          "stack": "mana",
+          "itemId": "poison_frog",
+          "amount": 1,
+          "label": "+1 mana"
+        },
+        {
+          "t": 8.828,
+          "type": "debuff",
+          "stack": "poison",
+          "itemId": "poison_frog",
+          "amount": 2,
+          "label": "+2 poison"
         },
         {
           "t": 8.95,
@@ -1250,22 +1267,6 @@
           "label": "Training Dummy: swing"
         },
         {
-          "t": 8.95,
-          "type": "buff",
-          "stack": "mana",
-          "itemId": "poison_frog",
-          "amount": 1,
-          "label": "+1 mana"
-        },
-        {
-          "t": 8.95,
-          "type": "debuff",
-          "stack": "poison",
-          "itemId": "poison_frog",
-          "amount": 2,
-          "label": "+2 poison"
-        },
-        {
           "t": 8.952,
           "type": "damage",
           "stack": null,
@@ -1274,7 +1275,7 @@
           "label": "Training Dummy: hit for 13"
         },
         {
-          "t": 9.05,
+          "t": 9.005,
           "type": "activate",
           "stack": null,
           "itemId": "leaf_badge",
@@ -1282,7 +1283,15 @@
           "label": "Accessory: Leaf Badge"
         },
         {
-          "t": 9.05,
+          "t": 9.005,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "leaf_badge",
+          "amount": 1,
+          "label": "+1 lucky"
+        },
+        {
+          "t": 9.076,
           "type": "activate",
           "stack": null,
           "itemId": "snake",
@@ -1290,15 +1299,7 @@
           "label": "Pet: Snake"
         },
         {
-          "t": 9.05,
-          "type": "buff",
-          "stack": "lucky",
-          "itemId": "leaf_badge",
-          "amount": 1,
-          "label": "Leaf Badge: +1 lucky"
-        },
-        {
-          "t": 9.05,
+          "t": 9.076,
           "type": "debuff",
           "stack": "poison",
           "itemId": "snake",
@@ -1322,7 +1323,7 @@
           "label": "Poison: 12 damage"
         },
         {
-          "t": 11.1,
+          "t": 10.922,
           "type": "activate",
           "stack": "poison",
           "itemId": "poison_frog",
@@ -1349,62 +1350,62 @@
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
               "itemId": "leaf_badge",
-              "name": "Leaf Badge",
+              "name": "+1 lucky",
               "amount": 1
             }
           ]
@@ -1516,12 +1517,12 @@
           "empty": false,
           "sources": [
             {
-              "itemId": "snake",
+              "itemId": "poison_frog",
               "name": "+2 poison",
               "amount": 2
             },
             {
-              "itemId": "poison_frog",
+              "itemId": "snake",
               "name": "+2 poison",
               "amount": 2
             },

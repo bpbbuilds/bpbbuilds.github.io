@@ -1,12 +1,12 @@
 {
   "kind": "bpb-sim-debug",
-  "v": 5,
+  "v": 6,
   "slug": "pyro-furnace",
   "seed": 42,
   "durationSec": 30,
   "dummyEndHp": 1133,
-  "playerEndHp": 131,
-  "eventCount": 122,
+  "playerEndHp": 71,
+  "eventCount": 119,
   "catalog": [
     {
       "id": "fire_pit",
@@ -249,35 +249,35 @@
               "gained": 14,
               "lost": 0,
               "grants": 7,
-              "firstT": 6.1,
-              "lastT": 27.75,
+              "firstT": 6.104,
+              "lastT": 27.841,
               "samples": [
                 {
-                  "t": 6.1,
+                  "t": 6.104,
                   "amount": 2
                 },
                 {
-                  "t": 9.55,
+                  "t": 9.799,
                   "amount": 2
                 },
                 {
-                  "t": 13.25,
+                  "t": 13.359,
                   "amount": 2
                 },
                 {
-                  "t": 16.95,
+                  "t": 16.908,
                   "amount": 2
                 },
                 {
-                  "t": 20.55,
+                  "t": 20.5,
                   "amount": 2
                 },
                 {
-                  "t": 24.25,
+                  "t": 24.16,
                   "amount": 2
                 },
                 {
-                  "t": 27.75,
+                  "t": 27.841,
                   "amount": 2
                 }
               ],
@@ -292,38 +292,7 @@
         }
       }
     },
-    "debuffs": {
-      "cold": {
-        "dummy": {
-          "end": 3,
-          "sources": [
-            {
-              "gained": 3,
-              "lost": 0,
-              "grants": 2,
-              "firstT": 2.5,
-              "lastT": 2.5,
-              "samples": [
-                {
-                  "t": 2.5,
-                  "amount": 2
-                },
-                {
-                  "t": 2.5,
-                  "amount": 1
-                }
-              ],
-              "id": "frozen_flame",
-              "itemId": "frozen_flame",
-              "name": "Frozen Flame",
-              "handler": "frozen_flame",
-              "systemOrigin": null
-            }
-          ],
-          "gained": 3
-        }
-      }
-    },
+    "debuffs": {},
     "itemBuffs": {
       "player": [],
       "dummy": []
@@ -450,10 +419,10 @@
         ]
       },
       "toPlayer": {
-        "total": 163,
+        "total": 223,
         "byKind": {
           "dummy": {
-            "total": 96,
+            "total": 156,
             "grants": 12
           },
           "fatigue": {
@@ -463,7 +432,7 @@
         },
         "sources": [
           {
-            "gained": 96,
+            "gained": 156,
             "lost": 0,
             "grants": 12,
             "firstT": 4.652,
@@ -471,35 +440,35 @@
             "samples": [
               {
                 "t": 4.652,
-                "amount": 8
+                "amount": 13
               },
               {
                 "t": 6.802,
-                "amount": 8
+                "amount": 13
               },
               {
                 "t": 8.952,
-                "amount": 8
+                "amount": 13
               },
               {
                 "t": 11.102,
-                "amount": 8
+                "amount": 13
               },
               {
                 "t": 13.252,
-                "amount": 8
+                "amount": 13
               },
               {
                 "t": 15.402,
-                "amount": 8
+                "amount": 13
               },
               {
                 "t": 17.552,
-                "amount": 8
+                "amount": 13
               },
               {
                 "t": 19.702,
-                "amount": 8
+                "amount": 13
               }
             ],
             "id": "Training Dummy",
@@ -571,39 +540,39 @@
             "gained": 10,
             "lost": 0,
             "grants": 10,
-            "firstT": 2.51,
-            "lastT": 28.05,
+            "firstT": 2.5,
+            "lastT": 28.174,
             "samples": [
               {
-                "t": 2.51,
+                "t": 2.5,
                 "amount": 1
               },
               {
-                "t": 5.4,
+                "t": 5.487,
                 "amount": 1
               },
               {
-                "t": 8.3,
+                "t": 8.296,
                 "amount": 1
               },
               {
-                "t": 11.15,
+                "t": 11.122,
                 "amount": 1
               },
               {
-                "t": 13.95,
+                "t": 14.035,
                 "amount": 1
               },
               {
-                "t": 16.75,
+                "t": 17.013,
                 "amount": 1
               },
               {
-                "t": 19.65,
+                "t": 19.76,
                 "amount": 1
               },
               {
-                "t": 22.4,
+                "t": 22.551,
                 "amount": 1
               }
             ],
@@ -616,35 +585,35 @@
             "gained": 7,
             "lost": 0,
             "grants": 7,
-            "firstT": 6.1,
-            "lastT": 27.75,
+            "firstT": 6.104,
+            "lastT": 27.841,
             "samples": [
               {
-                "t": 6.1,
+                "t": 6.104,
                 "amount": 1
               },
               {
-                "t": 9.55,
+                "t": 9.799,
                 "amount": 1
               },
               {
-                "t": 13.25,
+                "t": 13.359,
                 "amount": 1
               },
               {
-                "t": 16.95,
+                "t": 16.908,
                 "amount": 1
               },
               {
-                "t": 20.55,
+                "t": 20.5,
                 "amount": 1
               },
               {
-                "t": 24.25,
+                "t": 24.16,
                 "amount": 1
               },
               {
-                "t": 27.75,
+                "t": 27.841,
                 "amount": 1
               }
             ],
@@ -742,7 +711,7 @@
     },
     "end": {
       "player": {
-        "hp": 131,
+        "hp": 71,
         "maxHp": 200,
         "stacks": {
           "regeneration": 14,
@@ -754,27 +723,23 @@
       "dummy": {
         "hp": 1133,
         "maxHp": 1200,
-        "stacks": {
-          "cold": 3
-        }
+        "stacks": {}
       }
     }
   },
   "ui": {
     "combatLog": {
-      "lineCount": 92,
+      "lineCount": 89,
       "byType": {
         "activate": 31,
         "buff": 10,
-        "debuff": 2,
-        "info": 2,
         "damage": 34,
         "heal": 12,
+        "info": 1,
         "fight_end": 1
       },
       "stackGained": {
         "heat": 9,
-        "cold": 3,
         "regeneration": 14
       },
       "sample": [
@@ -788,14 +753,6 @@
         },
         {
           "t": 2.5,
-          "type": "activate",
-          "stack": null,
-          "itemId": "flame",
-          "amount": null,
-          "label": "Flame"
-        },
-        {
-          "t": 2.5,
           "type": "buff",
           "stack": "heat",
           "itemId": "flame_badge",
@@ -804,11 +761,11 @@
         },
         {
           "t": 2.5,
-          "type": "buff",
-          "stack": "heat",
-          "itemId": "oil_lamp",
-          "amount": 2,
-          "label": "Oil Lamp: +2 Heat"
+          "type": "activate",
+          "stack": null,
+          "itemId": "flame",
+          "amount": null,
+          "label": "Flame"
         },
         {
           "t": 2.5,
@@ -820,22 +777,6 @@
         },
         {
           "t": 2.5,
-          "type": "debuff",
-          "stack": "cold",
-          "itemId": "frozen_flame",
-          "amount": 2,
-          "label": "+2 cold"
-        },
-        {
-          "t": 2.5,
-          "type": "debuff",
-          "stack": "cold",
-          "itemId": "frozen_flame",
-          "amount": 1,
-          "label": "+1 cold"
-        },
-        {
-          "t": 2.51,
           "type": "activate",
           "stack": null,
           "itemId": "oil_lamp",
@@ -843,12 +784,12 @@
           "label": "Accessory: Oil Lamp"
         },
         {
-          "t": 2.525,
-          "type": "info",
-          "stack": null,
-          "itemId": null,
-          "amount": null,
-          "label": "Armor DR 5"
+          "t": 2.5,
+          "type": "buff",
+          "stack": "heat",
+          "itemId": "oil_lamp",
+          "amount": 2,
+          "label": "Oil Lamp: +2 Heat"
         },
         {
           "t": 4.65,
@@ -861,13 +802,13 @@
         {
           "t": 4.652,
           "type": "damage",
-          "stack": "block",
+          "stack": null,
           "itemId": null,
-          "amount": 8,
-          "label": "Training Dummy: hit 13 (DR/block) → 8"
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
         },
         {
-          "t": 5.4,
+          "t": 5.487,
           "type": "activate",
           "stack": null,
           "itemId": "oil_lamp",
@@ -875,7 +816,7 @@
           "label": "Accessory: Oil Lamp"
         },
         {
-          "t": 6.1,
+          "t": 6.104,
           "type": "activate",
           "stack": null,
           "itemId": "burning_banner",
@@ -883,7 +824,7 @@
           "label": "Accessory: Burning Banner"
         },
         {
-          "t": 6.1,
+          "t": 6.104,
           "type": "buff",
           "stack": "regeneration",
           "itemId": "burning_banner",
@@ -901,10 +842,10 @@
         {
           "t": 6.802,
           "type": "damage",
-          "stack": "block",
+          "stack": null,
           "itemId": null,
-          "amount": 8,
-          "label": "Training Dummy: hit 13 (DR/block) → 8"
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
         },
         {
           "t": 7.5,
@@ -915,7 +856,7 @@
           "label": "Regeneration: +2 health"
         },
         {
-          "t": 8.3,
+          "t": 8.296,
           "type": "activate",
           "stack": null,
           "itemId": "oil_lamp",
@@ -933,10 +874,10 @@
         {
           "t": 8.952,
           "type": "damage",
-          "stack": "block",
+          "stack": null,
           "itemId": null,
-          "amount": 8,
-          "label": "Training Dummy: hit 13 (DR/block) → 8"
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
         },
         {
           "t": 9.5,
@@ -947,7 +888,7 @@
           "label": "Regeneration: +2 health"
         },
         {
-          "t": 9.55,
+          "t": 9.799,
           "type": "activate",
           "stack": null,
           "itemId": "burning_banner",
@@ -955,7 +896,7 @@
           "label": "Accessory: Burning Banner"
         },
         {
-          "t": 9.55,
+          "t": 9.799,
           "type": "buff",
           "stack": "regeneration",
           "itemId": "burning_banner",
@@ -973,13 +914,13 @@
         {
           "t": 11.102,
           "type": "damage",
-          "stack": "block",
+          "stack": null,
           "itemId": null,
-          "amount": 8,
-          "label": "Training Dummy: hit 13 (DR/block) → 8"
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
         },
         {
-          "t": 11.15,
+          "t": 11.122,
           "type": "activate",
           "stack": null,
           "itemId": "oil_lamp",
@@ -998,33 +939,33 @@
           "t": 13.25,
           "type": "activate",
           "stack": null,
-          "itemId": "burning_banner",
-          "amount": null,
-          "label": "Accessory: Burning Banner"
-        },
-        {
-          "t": 13.25,
-          "type": "activate",
-          "stack": null,
           "itemId": null,
           "amount": null,
           "label": "Training Dummy: swing"
         },
         {
-          "t": 13.25,
+          "t": 13.252,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
+        },
+        {
+          "t": 13.359,
+          "type": "activate",
+          "stack": null,
+          "itemId": "burning_banner",
+          "amount": null,
+          "label": "Accessory: Burning Banner"
+        },
+        {
+          "t": 13.359,
           "type": "buff",
           "stack": "regeneration",
           "itemId": "burning_banner",
           "amount": 2,
           "label": "+2 regeneration"
-        },
-        {
-          "t": 13.252,
-          "type": "damage",
-          "stack": "block",
-          "itemId": null,
-          "amount": 8,
-          "label": "Training Dummy: hit 13 (DR/block) → 8"
         },
         {
           "t": 13.5,
@@ -1035,7 +976,7 @@
           "label": "Regeneration: +6 health"
         },
         {
-          "t": 13.95,
+          "t": 14.035,
           "type": "activate",
           "stack": null,
           "itemId": "oil_lamp",
@@ -1053,10 +994,10 @@
         {
           "t": 15.402,
           "type": "damage",
-          "stack": "block",
+          "stack": null,
           "itemId": null,
-          "amount": 8,
-          "label": "Training Dummy: hit 13 (DR/block) → 8"
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
         },
         {
           "t": 15.5,
@@ -1067,15 +1008,7 @@
           "label": "Regeneration: +6 health"
         },
         {
-          "t": 16.75,
-          "type": "activate",
-          "stack": null,
-          "itemId": "oil_lamp",
-          "amount": null,
-          "label": "Accessory: Oil Lamp"
-        },
-        {
-          "t": 16.95,
+          "t": 16.908,
           "type": "activate",
           "stack": null,
           "itemId": "burning_banner",
@@ -1083,12 +1016,20 @@
           "label": "Accessory: Burning Banner"
         },
         {
-          "t": 16.95,
+          "t": 16.908,
           "type": "buff",
           "stack": "regeneration",
           "itemId": "burning_banner",
           "amount": 2,
           "label": "+2 regeneration"
+        },
+        {
+          "t": 17.013,
+          "type": "activate",
+          "stack": null,
+          "itemId": "oil_lamp",
+          "amount": null,
+          "label": "Accessory: Oil Lamp"
         },
         {
           "t": 17.5,
@@ -1097,6 +1038,30 @@
           "itemId": null,
           "amount": 8,
           "label": "Regeneration: +8 health"
+        },
+        {
+          "t": 17.55,
+          "type": "activate",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Training Dummy: swing"
+        },
+        {
+          "t": 17.552,
+          "type": "damage",
+          "stack": null,
+          "itemId": null,
+          "amount": 13,
+          "label": "Training Dummy: hit for 13"
+        },
+        {
+          "t": 19.5,
+          "type": "info",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Fatigue starts"
         }
       ]
     },
@@ -1183,14 +1148,14 @@
               "amount": 6
             },
             {
-              "itemId": "oil_lamp",
-              "name": "Oil Lamp",
-              "amount": 2
-            },
-            {
               "itemId": "flame",
               "name": "+1 heat",
               "amount": 1
+            },
+            {
+              "itemId": "oil_lamp",
+              "name": "Oil Lamp",
+              "amount": 2
             }
           ]
         },
@@ -1205,20 +1170,9 @@
           "sources": []
         },
         "cold": {
-          "gained": 3,
-          "empty": false,
-          "sources": [
-            {
-              "itemId": "frozen_flame",
-              "name": "+2 cold",
-              "amount": 2
-            },
-            {
-              "itemId": "frozen_flame",
-              "name": "+1 cold",
-              "amount": 1
-            }
-          ]
+          "gained": 0,
+          "empty": true,
+          "sources": []
         }
       }
     },

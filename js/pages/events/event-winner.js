@@ -1,7 +1,8 @@
 /**
  * Public winner result for events that are judged by an owner instead of a
- * community vote. The endpoint only returns a winner after its build is
- * public; the private event_winners table is never queried from the browser.
+ * community vote. The endpoint acknowledges a selection during judging but
+ * only returns build details after the entry is public; the private
+ * event_winners table is never queried from the browser.
  */
 
 import { config } from '../../shared/config.js';
@@ -44,12 +45,21 @@ export async function hydrateEventWinner(scope, event, root) {
     status.innerHTML = emptyWinnerHtml(event, 'The winner could not be loaded right now. Please try again shortly.');
     return;
   }
-  if (!result.winner?.build) {
+  if (!result.winner) {
     status.innerHTML = emptyWinnerHtml(
       event,
       event.status === 'ended'
         ? 'The official result has not been announced yet.'
         : 'Judging is still in progress. The winning build will appear here once it is public.',
+    );
+    return;
+  }
+  if (!result.winner.build) {
+    status.innerHTML = pendingWinnerHtml(
+      event,
+      event.status === 'ended'
+        ? 'The winner has been selected. The board is being made public and will appear here shortly.'
+        : 'The winner has been selected. The winning build will appear here once the event results are public.',
     );
     return;
   }
@@ -133,6 +143,12 @@ export async function fetchEventWinner(slug) {
 function emptyWinnerHtml(event, message) {
   return `
     <p class="events-detail-stage__empty-title">Winner not announced yet</p>
+    <p class="events-detail-stage__blurb">${escapeHtml(message)} <strong>${escapeHtml(event.title)}</strong> updates will appear here.</p>`;
+}
+
+function pendingWinnerHtml(event, message) {
+  return `
+    <p class="events-detail-stage__empty-title">Winner selected</p>
     <p class="events-detail-stage__blurb">${escapeHtml(message)} <strong>${escapeHtml(event.title)}</strong> updates will appear here.</p>`;
 }
 

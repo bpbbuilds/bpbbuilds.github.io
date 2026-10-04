@@ -1,7 +1,9 @@
 /**
- * Load a sim board from ?slug= (published build) or create draft localStorage.
+ * Load a sim board from ?slug= (published build or the signed-in author's
+ * held event build) or create draft localStorage.
  */
 
+import { getProfile } from '../../../shared/auth.js';
 import { getSupabase } from '../../../shared/supabase.js';
 import { loadDraft } from '../../create/draft-io.js';
 import {
@@ -105,22 +107,33 @@ async function fetchBuildBySlug(slug) {
     const { syncEventBuildVisibility } = await import('../../events/event-gallery-sync.js');
     await syncEventBuildVisibility();
     const supabase = getSupabase();
-    const { data, error } = await supabase
-      .from('builds')
-      .select(
-        `
+    const viewer = await getProfile().catch(() => null);
+    const select = `
       id, slug, title, hero_class, author_id, author_name, history, youtube_url,
+      event_held,
       profile:profiles!builds_author_id_fkey ( avatar_url, equipped_avatar ),
       placements:build_placements (
         id, x, y, r, gems,
         item:items ( ${ITEM_SELECT} )
       )
-    `,
-      )
+    `;
+    let { data, error } = await supabase
+      .from('builds')
+      .select(select)
       .eq('slug', slug)
       .eq('is_public', true)
       .maybeSingle();
     if (error) throw error;
+    if (!data && viewer?.id) {
+      const own = await supabase
+        .from('builds')
+        .select(select)
+        .eq('slug', slug)
+        .eq('author_id', viewer.id)
+        .maybeSingle();
+      if (own.error) throw own.error;
+      data = own.data;
+    }
     return data || null;
   } catch {
     return null;

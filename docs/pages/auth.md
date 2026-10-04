@@ -50,8 +50,8 @@ where discord_id = 'YOUR_DISCORD_SNOWFLAKE';
 ## Dashboard (manual)
 
 1. Authentication → Providers → enable **Discord** (Client ID / Secret from Discord Developer Portal)
-2. URL Configuration: set **Site URL** to `https://bpbbuilds.github.io/`. Allow these redirect URLs:
-   `https://bpbbuilds.github.io/**`, `http://127.0.0.1:5500/**`, and
+2. URL Configuration: set **Site URL** to `https://bpbbuilds.com/`. Allow these redirect URLs:
+   `https://bpbbuilds.com/**`, `http://127.0.0.1:5500/**`, and
    `http://localhost:5500/**`. The live site returns to the page where sign-in began; the local
    entries are only for Live Server development.
 3. Apply `013_profiles.sql`

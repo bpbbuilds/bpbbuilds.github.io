@@ -284,7 +284,7 @@ function panelHtml(mode, ctx) {
     ${offerRuleHtml()}
     ${reason}
     <p class="bpb-premium-offer__lede">
-      Unlock the combat sandbox, screenshot to build, and board export for <strong>${PREMIUM_PRICE_LABEL}</strong>.
+      Unlock the combat sandbox and board export for <strong>${PREMIUM_PRICE_LABEL}</strong>.
     </p>
     ${premiumCompareHtml()}
     <p class="bpb-premium-offer__meta">${foundingMeta}</p>

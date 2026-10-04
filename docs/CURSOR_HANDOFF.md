@@ -82,6 +82,15 @@ Held-out (never train): real-001, 003, 007, 008, 010, 013. Train split of the 15
 
 ## Confirmed — recent changes
 
+- Todo lists an Item ideas page under Later / research. It is not built.
+- Admin Cosmetics catalog images open the cosmetic tooltip. The tooltip adds Obtained by for starter, Premium, Founding, and event cosmetics. A plain market buy keeps the gold worth and skips that line.
+- Create Build tab “Why it works” item chips open their tooltip to the left of the chip.
+- A history-locked create board can still drag items onto Needs, Wants, and Good to have. That only sets priority. Moving, parking, or selling the item still asks to clear the run. Dropping it back on the same cell does not.
+- Cosmetics Publish now sends the owner session. Missing wardrobe PNGs no longer request broken image URLs; Premium Crown still uses its file. The local preview script is allowed by the page policy hash.
+- Admin Members uses the rewards plate. The three charts sit in one row, one chart per column.
+- Admin Analytics visits sit on the rewards plate. Page rows use the form well: gold name, cream counts.
+- Admin Members charts sit on the Patch3 shade. Lines, dates, and counts are cream, with a gold Premium line.
+- Admin build tooltips get the creator’s Discord picture or blob. The admin-builds list now includes `avatar_url` and `equipped_avatar` from the author’s profile.
 - Page CSP `frame-src` now allows this site, so the admin blob-cast preview can load `/overlay/blobs/`. YouTube embeds stay allowed. `frame-ancestors` is already absent from the live meta policy, and `font-src` already allows the Google font host. The Permissions-Policy ad-auction warnings are not sent by GitHub Pages.
 - Events catalog is only DPS Stone (`highest-dps`). The six filler events were removed. Discord already posted only DPS Stone.
 - Discord Community info has a read-only Cosmetic drops channel. Admin catalog rows have Publish. Upload still only saves. Publish records the cosmetic and the bot posts it once. Quest and event cosmetics stay quiet until published.

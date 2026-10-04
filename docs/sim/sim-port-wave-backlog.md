@@ -5,49 +5,47 @@ Generated from `assets/data/sim-fidelity-ledger.json` on 2026-10-04. This is the
 ## Current audited state
 
 - Catalog items: **519**
-- Source-ported (not fixture/live certified): **353**
+- Source-ported (not fixture/live certified): **373**
 - Runtime port present but incomplete: **90**
-- Source unresolved: **49**
+- Source unresolved: **29**
 - Deferred supported-mode gap: **1**
 - Intentional no-combat rows: **26** (not backlog work)
-- Lifecycle-hook gaps: **10**; call-review candidates: **36**; duplicate registrations: **21**.
+- Lifecycle-hook gaps: **10**; call-review candidates: **47**; duplicate registrations: **21**.
 
 ## Completion rule for every row
 
 Before checking a row off: resolve the exact game source and inherited behavior, implement both player and opponent paths, add a focused regression for state and causal event order, and verify applicable Combat Log, Damage Meter, HUD, scrubber, and export behavior. Keep uncertainty in `sim-validation.md`; a handler alone is not completion.
 
 ## Start first - confirmed behavior gaps
-
-- [ ] `power_of_the_moon` - Exclusive/PoweroftheMoon.gd; current handler: power_of_the_moon; depth: deep; Lifecycle hook audit: onPostCombatStart.
+- [x] `power_of_the_moon` - Exclusive/PoweroftheMoon.gd; current handler: power_of_the_moon; depth: deep; Lifecycle hook audit: onPostCombatStart.
 - [x] `wand_of_dissonance` - Exclusive/WandofDissonance.gd; current handler: wand_of_dissonance; depth: deep; Lifecycle hook audit: onPrepare.
 - [x] `rib_saw_blade` - RibSawBlade.gd; current handler: rib_saw_blade; depth: shallow; Lifecycle hook audit: onPrepare.
 
-## Source unresolved (49)
+## Source unresolved (29)
 
 These rows need the exact extract script/inheritance resolved before a port can be assessed.
 
-- [ ] `ace_of_spades`
-- [ ] `armored_courage_puppy`
-- [ ] `badger_rune`
-- [ ] `bagtacular`
-- [ ] `book_of_ice_new`
-- [ ] `chipped_amethyst`
-- [ ] `chipped_emerald`
-- [ ] `chipped_ruby`
-- [ ] `chipped_sapphire`
-- [ ] `chipped_topaz`
-- [ ] `darkest_lotus`
-- [ ] `elephant_rune`
+- [x] `ace_of_spades` - `AceofSpades.gd` extends `Card`; direct `doRevealEffect` and inherited card-chain behavior resolved; handler: `ace_of_spades`.
+- [x] `armored_courage_puppy` - `Exclusive/ArmoredCouragePuppy.gd` extends `CouragePuppy`; inherited `onPreCombatStart`/`doCooldownEffect` and `_ready` DamageSource flags resolved; handler: `armored_courage_puppy`.
+- [x] `badger_rune` - `Exclusive/BadgerRune.gd` extends `Gem`; mode-dispatched `prepareInventory`/`prepareWeapon`/`prepareArmor` resolved; handler: `badger_rune`; focused regression: `scripts/sim-badger-bagtacular-smoke.mjs`.
+- [x] `bagtacular` - `Exclusive/Bagtacular.gd` extends `Item`; `canAffect_global` presence-only bag modifier resolved across Fanny Pack/Stamina Sack/Potion Belt/Protective Purse; handler: `bagtacular`; focused regression: `scripts/sim-badger-bagtacular-smoke.mjs`.
+- [x] `book_of_ice_new` - `Exclusive/BookofIceNew.tscn` reuses `Exclusive/BookofIce.gd` (`Item`); `onPrepare` linked-spell speed and mana-gated Cold/activation behavior resolved; handler: `book_of_ice_new`; focused regression: `scripts/sim-book-amethyst-smoke.mjs`.
+- [x] `chipped_amethyst` - `Gems/ChippedAmethyst.tscn` reuses `Gems/Amethyst.gd` (`Gem`); inherited inventory cleanse/activation plus socketed weapon/armor modes resolved; handler: `chipped_amethyst`; focused regression: `scripts/sim-book-amethyst-smoke.mjs`.
+- [x] `chipped_emerald` - `Gems/ChippedEmerald.tscn` reuses `Gems/Emerald.gd` (`Gem`); inventory regeneration/consume plus socketed poison and resistance modes resolved; handler: `chipped_emerald`; focused regression: `scripts/sim-chipped-gems-lotus-elephant-smoke.mjs`.
+- [x] `chipped_ruby` - `Gems/ChippedRuby.tscn` reuses `Gems/Ruby.gd` (`Gem`); inventory steal-life/consume plus socketed lifesteal and healing-efficiency modes resolved; handler: `chipped_ruby`; focused regression: `scripts/sim-chipped-gems-lotus-elephant-smoke.mjs`.
+- [x] `chipped_sapphire` - `Gems/ChippedSapphire.tscn` reuses `Gems/Sapphire.gd` (`Gem`); inventory cold/consume plus socketed mana, cold, and mana-to-block modes resolved; handler: `chipped_sapphire`; focused regression: `scripts/sim-chipped-gems-lotus-elephant-smoke.mjs`.
+- [x] `chipped_topaz` - `Gems/ChippedTopaz.tscn` reuses `Gems/Topaz.gd` (`Gem`); prepare-inventory stamina regeneration plus socketed speed, stun-resistance, and crit-resistance modes resolved; handler: `chipped_topaz`; focused regression: `scripts/sim-chipped-gems-lotus-elephant-smoke.mjs`.
+- [x] `darkest_lotus` - `DarkestLotus.tscn`/`DarkestLotus.gd` (`Card`); chain-position mana and hostile buff removal now occur before card activation; handler: `darkest_lotus`; focused regression: `scripts/sim-chipped-gems-lotus-elephant-smoke.mjs`.
+- [x] `elephant_rune` - `Exclusive/ElephantRune.tscn`/`Exclusive/ElephantRune.gd` (`Gem`); inventory max-health consume, socketed stun, and timed armor debuff resistance resolved; handler: `elephant_rune`; focused regression: `scripts/sim-chipped-gems-lotus-elephant-smoke.mjs`.
 - [ ] `flawed_amethyst`
 - [ ] `flawed_emerald`
 - [ ] `flawed_ruby`
 - [ ] `flawed_sapphire`
-- [ ] `flawed_topaz`
 - [ ] `flawless_amethyst`
 - [ ] `flawless_emerald`
 - [ ] `flawless_ruby`
 - [ ] `flawless_sapphire`
-- [ ] `flawless_topaz`
+    50|- [ ] `flawless_topaz`
 - [ ] `goobling`
 - [ ] `holo_fire_lizard`
 - [ ] `joker`
@@ -57,7 +55,7 @@ These rows need the exact extract script/inheritance resolved before a port can 
 - [ ] `perfect_sapphire`
 - [ ] `perfect_topaz`
 - [ ] `regular_amethyst`
-- [ ] `regular_emerald`
+    60|- [ ] `regular_emerald`
 - [ ] `regular_ruby`
 - [ ] `regular_sapphire`
 - [ ] `regular_topaz`
@@ -67,7 +65,7 @@ These rows need the exact extract script/inheritance resolved before a port can 
 - [ ] `skull`
 - [ ] `stable_recombobulator`
 - [ ] `strong_heroic_potion`
-- [ ] `strong_mana_potion`
+    70|- [ ] `strong_mana_potion`
 - [ ] `superior_ring`
 - [ ] `the_fool`
 - [ ] `the_lovers`
@@ -76,8 +74,8 @@ These rows need the exact extract script/inheritance resolved before a port can 
 - [ ] `whetstone2`
 - [ ] `white_eyes_blue_dragon`
 
-## Runtime port present but incomplete (92)
-
+## Runtime port present but incomplete (90)
+    80|
 These rows have a registered handler but still need source/lifecycle/evidence completion.
 
 - [ ] `axe`
@@ -87,7 +85,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `broccoli`
 - [ ] `broccotree`
 - [ ] `burning_banner`
-- [ ] `burning_coal`
+    90|- [ ] `burning_coal`
 - [ ] `burning_sword`
 - [ ] `burning_torch`
 - [ ] `carrot_goobert`
@@ -97,7 +95,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `chili_pepper`
 - [ ] `coil`
 - [ ] `crossblades`
-- [ ] `cursed_hair_comb`
+   100|- [ ] `cursed_hair_comb`
 - [ ] `dark_lantern`
 - [ ] `darksaber`
 - [ ] `death_lotus`
@@ -107,7 +105,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `double_axe`
 - [ ] `draconic_orb`
 - [ ] `dragon_knight`
-- [ ] `dragon_set`
+   110|- [ ] `dragon_set`
 - [ ] `emerald_whelp`
 - [ ] `energy_conversion`
 - [ ] `everburning`
@@ -117,7 +115,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `flute`
 - [ ] `fly_agaric`
 - [ ] `fortunas_kiss`
-- [ ] `gingerbread_man`
+   120|- [ ] `gingerbread_man`
 - [ ] `halberd`
 - [ ] `heart_container`
 - [ ] `hero_sword`
@@ -127,7 +125,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `leaf_badge`
 - [ ] `level_up`
 - [ ] `light_flower`
-- [ ] `lucky_bow`
+   130|- [ ] `lucky_bow`
 - [ ] `lucky_clover`
 - [ ] `magic_torch`
 - [ ] `mananana`
@@ -137,7 +135,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `more_stats`
 - [ ] `null_blade`
 - [ ] `pan`
-- [ ] `phoenix`
+   140|- [ ] `phoenix`
 - [ ] `piggy_of_riches`
 - [ ] `piggybank`
 - [ ] `poison_dagger`
@@ -147,7 +145,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `power_of_the_moon`
 - [ ] `pumpkin`
 - [ ] `puzzlebag_l`
-- [x] `rib_saw_blade`
+   150|- [x] `rib_saw_blade`
 - [ ] `ruby_chonk`
 - [ ] `ruby_egg`
 - [ ] `ruby_whelp`
@@ -157,7 +155,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `shepherds_crook`
 - [ ] `shovel`
 - [ ] `slice_of_toast`
-- [ ] `snowcake`
+   160|- [ ] `snowcake`
 - [ ] `spin_to_win`
 - [ ] `squirrel_archer`
 - [ ] `steel_goobert`
@@ -167,7 +165,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `torch`
 - [ ] `twine`
 - [ ] `ukulele`
-- [ ] `ultima`
+   170|- [ ] `ultima`
 - [ ] `vampiric_gloves`
 - [ ] `walrus_tusk`
 - [x] `wand_of_dissonance`
@@ -177,6 +175,6 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 
 - [ ] `chess_board`
 
-## Maintenance
+   180|## Maintenance
 
 After a completed wave, run `node scripts/build-sim-fidelity-ledger.mjs`, `node scripts/build-sim-fidelity-ledger.mjs --check`, `node scripts/sim-continuous-audit.mjs --check`, and the narrow family smoke. Run the fixtures variant when fixture work changes.

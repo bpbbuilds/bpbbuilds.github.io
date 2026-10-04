@@ -14,7 +14,7 @@ import {
 import { createCanvas, loadImage } from '@napi-rs/canvas';
 import { loadEnv } from '../env.js';
 
-const SITE = 'https://bpbbuilds.github.io';
+const SITE = 'https://bpbbuilds.com';
 const GOLD = 0xeac914;
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const BLOB_BASE = path.join(ROOT, 'assets', 'blob', 'blob-base.png');

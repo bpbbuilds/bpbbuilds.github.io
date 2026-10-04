@@ -83,7 +83,8 @@ function bookPort(id, bonusType, onCd) {
   return {
     handlerId: id,
     family: 'unique',
-    onCombatStart(piece, ctx) {
+    // BookofIce.gd uses onPrepare, before the first cooldown is armed.
+    onPrepare(piece, ctx) {
       spellSpeed(ctx, piece, bonusType);
     },
     onCooldownEffect: onCd,
@@ -92,10 +93,19 @@ function bookPort(id, bonusType, onCd) {
 
 const bookOfIcePort = bookPort('book_of_ice', 'ice', (piece, ctx) => {
   const need = Math.max(1, Math.round(getPName(piece.params, 'mana', 3)));
-  pushActivate(piece, ctx, 'book_of_ice', `Book: ${piece.name}`);
-  if (getStackAmount(ctx.player, 'mana') < need) return true;
-  useMana(ctx.player, need, { originKey: piece.placementKey, originId: piece.itemId });
-  grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getPName(piece.params, 'cold', 2))), {});
+  // BookofIce.gd calls activate() after the mana gate. The activation still
+  // happens when mana is insufficient, but its source/handler is the concrete
+  // catalog row (important for the scene alias Book of Ice New).
+  if (getStackAmount(ctx.player, 'mana') >= need) {
+    useMana(ctx.player, need, { originKey: piece.placementKey, originId: piece.itemId });
+    grantStacks(
+      ctx.dummy,
+      'cold',
+      Math.max(1, Math.round(getPName(piece.params, 'cold', 2))),
+      { originKey: piece.placementKey, originId: piece.itemId },
+    );
+  }
+  pushActivate(piece, ctx, piece.itemId, `Book: ${piece.name}`);
   return true;
 });
 

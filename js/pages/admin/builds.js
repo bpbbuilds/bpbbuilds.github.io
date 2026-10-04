@@ -7,6 +7,7 @@ import {
   itemSpriteUrl,
   itemsFromBuilds,
   parseBuildSearchQuery,
+  usersFromBuilds,
 } from '../../shared/build-search.js';
 import { mountBuildSearchInput } from '../../shared/build-search-input.js';
 import { listBuilds, mutateBuild, AdminAuthError } from './api.js';
@@ -106,6 +107,8 @@ export async function mountBuildsPanel(host, opts) {
 
   searchInput = mountBuildSearchInput(rail, {
     items: [],
+    users: [],
+    root: opts.root,
     getSpriteUrl: (item) => itemSpriteUrl(opts.root, item),
     onChange(q) {
       if (q === filters.q) return;
@@ -138,6 +141,7 @@ export async function mountBuildsPanel(host, opts) {
     const builds = visibleBuilds(all);
     syncAdminBuildsFiltersUi(rail, filters, builds.length);
     searchInput?.setItems(itemsFromBuilds(all));
+    searchInput?.setUsers(usersFromBuilds(all));
 
     if (!builds.length) {
       body.innerHTML = `<p class="admin-empty">No builds match these filters.</p>`;

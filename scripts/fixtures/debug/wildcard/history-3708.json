@@ -1,12 +1,12 @@
 {
   "kind": "bpb-sim-debug",
-  "v": 5,
+  "v": 6,
   "slug": "history-3708",
   "seed": 42,
-  "durationSec": 14.35000000000007,
+  "durationSec": 13.700000000000061,
   "dummyEndHp": 0,
   "playerEndHp": 240,
-  "eventCount": 462,
+  "eventCount": 549,
   "catalog": [
     {
       "id": "fanny_pack",
@@ -466,8 +466,8 @@
         "p3": 10,
         "maxhealth": 35,
         "p4": 35,
-        "dam": 30,
-        "p5": 30,
+        "dam": 32,
+        "p5": 32,
         "spikes": 1,
         "p6": 1
       }
@@ -475,33 +475,44 @@
   ],
   "paramChecks": [
     {
+      "itemId": "charge_splitter",
+      "name": "Charge Splitter",
+      "stack": "activations",
+      "granted": 2,
+      "grants": 2,
+      "expected": 1,
+      "expectedKey": "cd_then_consume",
+      "alsoMatches": [],
+      "note": "game: doCooldownEffect → onAfterEffectFinished() stops the CD and consume()s (one post-delay Activations tick). Sim had 2 CD activate(s) for Charge Splitter at t=7.20, 7.22"
+    },
+    {
       "itemId": "bloodthorne",
       "name": "Bloodthorne",
       "stack": "vampirism",
-      "granted": 901,
-      "grants": 12,
+      "granted": 656,
+      "grants": 10,
       "expected": null,
       "expectedKey": "meleeVampirismLimit",
       "alsoMatches": [],
-      "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.81s Bloodthorne heal 13 with 8 vamp stack(s), hit 16 → game min(stacks, round(dmg×1)) then heal amp → 19. Sim logged 901 over 12 vamp heal(s)."
+      "note": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.74s Bloodthorne heal 13 with 8 vamp stack(s), hit 13 → game min(stacks, round(dmg×1)) then heal amp → 19. Sim logged 656 over 10 vamp heal(s)."
     },
     {
-      "itemId": "mecha_bat",
-      "name": "Mecha Bat",
-      "stack": "vampirism",
-      "granted": 6,
-      "grants": 19,
-      "expected": 3,
-      "expectedKey": "vampirism",
+      "itemId": "wisp",
+      "name": "Wisp",
+      "stack": "spikes",
+      "granted": 2,
+      "grants": 20,
+      "expected": 1,
+      "expectedKey": "spikes",
       "alsoMatches": [],
-      "note": "grant 6 ≠ catalog vampirism=3"
+      "note": "grant 2 ≠ catalog spikes=1"
     },
     {
       "itemId": "rat_chef",
       "name": "Rat Chef",
       "stack": "empower",
       "granted": 2,
-      "grants": 8,
+      "grants": 4,
       "expected": 1,
       "expectedKey": "empower",
       "alsoMatches": [
@@ -512,11 +523,33 @@
         }
       ],
       "note": "grant 2 is catalog stamina=2, not empower=1"
+    },
+    {
+      "itemId": "crown",
+      "name": "Crown",
+      "stack": "mana",
+      "granted": -10,
+      "grants": 1,
+      "expected": 10,
+      "expectedKey": "mana",
+      "alsoMatches": [],
+      "note": "grant -10 ≠ catalog mana=10"
+    },
+    {
+      "itemId": "mecha_bat",
+      "name": "Mecha Bat",
+      "stack": "lucky",
+      "granted": -1,
+      "grants": 4,
+      "expected": 1,
+      "expectedKey": "luck",
+      "alsoMatches": [],
+      "note": "grant -1 ≠ catalog luck=1"
     }
   ],
   "unhealingMath": {
     "rate": 0,
-    "healLogged": 1684,
+    "healLogged": 1854,
     "healGrants": 34,
     "exactFloat": 0,
     "expectedCeil": 0,
@@ -534,11 +567,6 @@
         "ceil": 0
       },
       {
-        "heal": 7,
-        "exact": 0,
-        "ceil": 0
-      },
-      {
         "heal": 13,
         "exact": 0,
         "ceil": 0
@@ -549,7 +577,7 @@
         "ceil": 0
       },
       {
-        "heal": 33,
+        "heal": 31,
         "exact": 0,
         "ceil": 0
       },
@@ -559,7 +587,12 @@
         "ceil": 0
       },
       {
-        "heal": 9,
+        "heal": 7,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 34,
         "exact": 0,
         "ceil": 0
       }
@@ -568,47 +601,189 @@
   },
   "status": {
     "buffs": {
+      "regeneration": {
+        "player": {
+          "end": 0,
+          "sources": [
+            {
+              "gained": 5,
+              "lost": 0,
+              "grants": 5,
+              "firstT": 7.455,
+              "lastT": 12.776,
+              "samples": [
+                {
+                  "t": 7.455,
+                  "amount": 1
+                },
+                {
+                  "t": 7.79,
+                  "amount": 1
+                },
+                {
+                  "t": 10.39,
+                  "amount": 1
+                },
+                {
+                  "t": 11.234,
+                  "amount": 1
+                },
+                {
+                  "t": 12.776,
+                  "amount": 1
+                }
+              ],
+              "id": "holy_collar",
+              "itemId": "holy_collar",
+              "name": "Holy Collar",
+              "handler": "holy_collar",
+              "systemOrigin": null
+            },
+            {
+              "gained": 4,
+              "lost": 0,
+              "grants": 2,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 3
+                },
+                {
+                  "t": 2.5,
+                  "amount": 1
+                }
+              ],
+              "id": "rat_chef",
+              "itemId": "rat_chef",
+              "name": "Rat Chef",
+              "handler": "rat_chef",
+              "systemOrigin": null
+            },
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 2
+                }
+              ],
+              "id": "healing_herbs",
+              "itemId": "healing_herbs",
+              "name": "Healing Herbs",
+              "handler": "healing_herbs",
+              "systemOrigin": null
+            },
+            {
+              "gained": 1,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 6.419,
+              "lastT": 6.419,
+              "samples": [
+                {
+                  "t": 6.419,
+                  "amount": 1
+                }
+              ],
+              "id": "bowl_of_treats",
+              "itemId": "bowl_of_treats",
+              "name": "Bowl of Treats",
+              "handler": "bowl_of_treats",
+              "systemOrigin": null
+            },
+            {
+              "gained": 0,
+              "lost": 12,
+              "grants": 12,
+              "firstT": 3.745,
+              "lastT": 13.661,
+              "samples": [
+                {
+                  "t": 3.745,
+                  "amount": -1
+                },
+                {
+                  "t": 5.011,
+                  "amount": -1
+                },
+                {
+                  "t": 6.158,
+                  "amount": -1
+                },
+                {
+                  "t": 7.108,
+                  "amount": -1
+                },
+                {
+                  "t": 8.04,
+                  "amount": -1
+                },
+                {
+                  "t": 8.927,
+                  "amount": -1
+                },
+                {
+                  "t": 9.788,
+                  "amount": -1
+                },
+                {
+                  "t": 10.651,
+                  "amount": -1
+                }
+              ],
+              "id": "bloodthorne",
+              "itemId": "bloodthorne",
+              "name": "Bloodthorne",
+              "handler": "bloodthorne",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 12
+        }
+      },
       "lucky": {
         "player": {
           "end": 11,
           "sources": [
             {
-              "gained": 12,
+              "gained": 7,
               "lost": 0,
-              "grants": 12,
-              "firstT": 4,
-              "lastT": 12.5,
+              "grants": 7,
+              "firstT": 3.992,
+              "lastT": 12.47,
               "samples": [
                 {
-                  "t": 4,
+                  "t": 3.992,
                   "amount": 1
                 },
                 {
-                  "t": 4,
+                  "t": 5.824,
                   "amount": 1
                 },
                 {
-                  "t": 5.75,
+                  "t": 8.032,
                   "amount": 1
                 },
                 {
-                  "t": 5.75,
+                  "t": 10.165,
                   "amount": 1
                 },
                 {
-                  "t": 7.7,
+                  "t": 10.165,
                   "amount": 1
                 },
                 {
-                  "t": 7.7,
+                  "t": 11.333,
                   "amount": 1
                 },
                 {
-                  "t": 8,
-                  "amount": 1
-                },
-                {
-                  "t": 8,
+                  "t": 12.47,
                   "amount": 1
                 }
               ],
@@ -619,34 +794,30 @@
               "systemOrigin": null
             },
             {
-              "gained": 6,
+              "gained": 5,
               "lost": 0,
-              "grants": 6,
-              "firstT": 5.2,
-              "lastT": 13.6,
+              "grants": 5,
+              "firstT": 7.455,
+              "lastT": 12.776,
               "samples": [
                 {
-                  "t": 5.2,
+                  "t": 7.455,
                   "amount": 1
                 },
                 {
-                  "t": 7.15,
+                  "t": 7.79,
                   "amount": 1
                 },
                 {
-                  "t": 9.65,
+                  "t": 10.39,
                   "amount": 1
                 },
                 {
-                  "t": 9.7,
+                  "t": 11.234,
                   "amount": 1
                 },
                 {
-                  "t": 10.7,
-                  "amount": 1
-                },
-                {
-                  "t": 13.6,
+                  "t": 12.776,
                   "amount": 1
                 }
               ],
@@ -696,11 +867,11 @@
               "gained": 1,
               "lost": 0,
               "grants": 1,
-              "firstT": 9.602,
-              "lastT": 9.602,
+              "firstT": 9.551,
+              "lastT": 9.551,
               "samples": [
                 {
-                  "t": 9.602,
+                  "t": 9.551,
                   "amount": 1
                 }
               ],
@@ -709,132 +880,44 @@
               "name": "Bowl of Treats",
               "handler": "bowl_of_treats",
               "systemOrigin": null
-            }
-          ],
-          "gained": 23
-        }
-      },
-      "empower": {
-        "player": {
-          "end": 17,
-          "sources": [
-            {
-              "gained": 16,
-              "lost": 0,
-              "grants": 8,
-              "firstT": 8.6,
-              "lastT": 13.604,
-              "samples": [
-                {
-                  "t": 8.6,
-                  "amount": 2
-                },
-                {
-                  "t": 8.604,
-                  "amount": 2
-                },
-                {
-                  "t": 8.85,
-                  "amount": 2
-                },
-                {
-                  "t": 8.854,
-                  "amount": 2
-                },
-                {
-                  "t": 12.35,
-                  "amount": 2
-                },
-                {
-                  "t": 12.354,
-                  "amount": 2
-                },
-                {
-                  "t": 13.6,
-                  "amount": 2
-                },
-                {
-                  "t": 13.604,
-                  "amount": 2
-                }
-              ],
-              "id": "rat_chef",
-              "itemId": "rat_chef",
-              "name": "Rat Chef",
-              "handler": "rat_chef",
-              "systemOrigin": null
             },
             {
-              "gained": 9,
-              "lost": 0,
-              "grants": 9,
-              "firstT": 5.15,
-              "lastT": 13.254,
+              "gained": 0,
+              "lost": 4,
+              "grants": 4,
+              "firstT": 9.978,
+              "lastT": 12.917,
               "samples": [
                 {
-                  "t": 5.15,
-                  "amount": 1
+                  "t": 9.978,
+                  "amount": -1
                 },
                 {
-                  "t": 5.154,
-                  "amount": 1
+                  "t": 11.234,
+                  "amount": -1
                 },
                 {
-                  "t": 5.154,
-                  "amount": 1
+                  "t": 12.314,
+                  "amount": -1
                 },
                 {
-                  "t": 7.604,
-                  "amount": 1
-                },
-                {
-                  "t": 7.804,
-                  "amount": 1
-                },
-                {
-                  "t": 9.704,
-                  "amount": 1
-                },
-                {
-                  "t": 11.454,
-                  "amount": 1
-                },
-                {
-                  "t": 12.704,
-                  "amount": 1
+                  "t": 12.917,
+                  "amount": -1
                 }
               ],
-              "id": "carrot",
-              "itemId": "carrot",
-              "name": "Carrot",
-              "handler": "carrot",
-              "systemOrigin": null
-            },
-            {
-              "gained": 1,
-              "lost": 0,
-              "grants": 1,
-              "firstT": 2.5,
-              "lastT": 2.5,
-              "samples": [
-                {
-                  "t": 2.5,
-                  "amount": 1
-                }
-              ],
-              "id": "inner_power",
-              "itemId": "inner_power",
-              "name": "Inner Power",
-              "handler": "inner_power",
+              "id": "mecha_bat",
+              "itemId": "mecha_bat",
+              "name": "Mecha Bat",
+              "handler": "mecha_bat",
               "systemOrigin": null
             }
           ],
-          "gained": 26
+          "gained": 17
         }
       },
       "block": {
         "player": {
-          "end": 88,
+          "end": 44,
           "sources": [
             {
               "gained": 90,
@@ -880,45 +963,45 @@
       },
       "vampirism": {
         "player": {
-          "end": 68,
+          "end": 81,
           "sources": [
             {
-              "gained": 90,
+              "gained": 60,
               "lost": 0,
-              "grants": 19,
-              "firstT": 5,
-              "lastT": 13.403,
+              "grants": 14,
+              "firstT": 5.064,
+              "lastT": 12.917,
               "samples": [
                 {
-                  "t": 5,
+                  "t": 5.064,
                   "amount": 3
                 },
                 {
-                  "t": 5.003,
+                  "t": 5.287,
                   "amount": 3
                 },
                 {
-                  "t": 5.2,
+                  "t": 5.287,
                   "amount": 3
                 },
                 {
-                  "t": 5.203,
+                  "t": 7.455,
                   "amount": 3
                 },
                 {
-                  "t": 7.5,
+                  "t": 7.455,
                   "amount": 3
                 },
                 {
-                  "t": 7.503,
+                  "t": 7.539,
                   "amount": 3
                 },
                 {
-                  "t": 7.7,
+                  "t": 9.46,
                   "amount": 3
                 },
                 {
-                  "t": 7.703,
+                  "t": 9.46,
                   "amount": 3
                 }
               ],
@@ -932,39 +1015,39 @@
               "gained": 12,
               "lost": 0,
               "grants": 12,
-              "firstT": 3.8,
-              "lastT": 14.35,
+              "firstT": 3.745,
+              "lastT": 13.661,
               "samples": [
                 {
-                  "t": 3.8,
+                  "t": 3.745,
                   "amount": 1
                 },
                 {
-                  "t": 4.95,
+                  "t": 5.011,
                   "amount": 1
                 },
                 {
-                  "t": 6.15,
+                  "t": 6.158,
                   "amount": 1
                 },
                 {
-                  "t": 7.25,
+                  "t": 7.108,
                   "amount": 1
                 },
                 {
-                  "t": 8.35,
+                  "t": 8.04,
                   "amount": 1
                 },
                 {
-                  "t": 9.3,
+                  "t": 8.927,
                   "amount": 1
                 },
                 {
-                  "t": 10.2,
+                  "t": 9.788,
                   "amount": 1
                 },
                 {
-                  "t": 11.1,
+                  "t": 10.651,
                   "amount": 1
                 }
               ],
@@ -1011,14 +1094,18 @@
               "systemOrigin": null
             },
             {
-              "gained": 1,
+              "gained": 2,
               "lost": 0,
-              "grants": 1,
-              "firstT": 12.352,
-              "lastT": 12.352,
+              "grants": 2,
+              "firstT": 9.553,
+              "lastT": 11.971,
               "samples": [
                 {
-                  "t": 12.352,
+                  "t": 9.553,
+                  "amount": 1
+                },
+                {
+                  "t": 11.971,
                   "amount": 1
                 }
               ],
@@ -1029,35 +1116,35 @@
               "systemOrigin": null
             }
           ],
-          "gained": 110
+          "gained": 81
         }
       },
-      "regeneration": {
+      "empower": {
         "player": {
-          "end": 0,
+          "end": 16,
           "sources": [
             {
               "gained": 8,
               "lost": 0,
               "grants": 4,
-              "firstT": 2.5,
-              "lastT": 2.5,
+              "firstT": 8.189,
+              "lastT": 13.344,
               "samples": [
                 {
-                  "t": 2.5,
-                  "amount": 3
+                  "t": 8.189,
+                  "amount": 2
                 },
                 {
-                  "t": 2.5,
-                  "amount": 3
+                  "t": 8.876,
+                  "amount": 2
                 },
                 {
-                  "t": 2.5,
-                  "amount": 1
+                  "t": 11.771,
+                  "amount": 2
                 },
                 {
-                  "t": 2.5,
-                  "amount": 1
+                  "t": 13.344,
+                  "amount": 2
                 }
               ],
               "id": "rat_chef",
@@ -1067,45 +1154,49 @@
               "systemOrigin": null
             },
             {
-              "gained": 6,
+              "gained": 7,
               "lost": 0,
-              "grants": 6,
-              "firstT": 5.2,
-              "lastT": 13.6,
+              "grants": 7,
+              "firstT": 5.071,
+              "lastT": 12.78,
               "samples": [
                 {
-                  "t": 5.2,
+                  "t": 5.071,
                   "amount": 1
                 },
                 {
-                  "t": 7.15,
+                  "t": 5.077,
                   "amount": 1
                 },
                 {
-                  "t": 9.65,
+                  "t": 5.084,
                   "amount": 1
                 },
                 {
-                  "t": 9.7,
+                  "t": 7.363,
                   "amount": 1
                 },
                 {
-                  "t": 10.7,
+                  "t": 7.734,
                   "amount": 1
                 },
                 {
-                  "t": 13.6,
+                  "t": 10.26,
+                  "amount": 1
+                },
+                {
+                  "t": 12.78,
                   "amount": 1
                 }
               ],
-              "id": "holy_collar",
-              "itemId": "holy_collar",
-              "name": "Holy Collar",
-              "handler": "holy_collar",
+              "id": "carrot",
+              "itemId": "carrot",
+              "name": "Carrot",
+              "handler": "carrot",
               "systemOrigin": null
             },
             {
-              "gained": 2,
+              "gained": 1,
               "lost": 0,
               "grants": 1,
               "firstT": 2.5,
@@ -1113,13 +1204,13 @@
               "samples": [
                 {
                   "t": 2.5,
-                  "amount": 2
+                  "amount": 1
                 }
               ],
-              "id": "healing_herbs",
-              "itemId": "healing_herbs",
-              "name": "Healing Herbs",
-              "handler": "healing_herbs",
+              "id": "inner_power",
+              "itemId": "inner_power",
+              "name": "Inner Power",
+              "handler": "inner_power",
               "systemOrigin": null
             }
           ],
@@ -1128,46 +1219,46 @@
       },
       "spikes": {
         "player": {
-          "end": 75,
+          "end": 70,
           "sources": [
             {
-              "gained": 58,
+              "gained": 54,
               "lost": 0,
-              "grants": 22,
-              "firstT": 4.95,
-              "lastT": 14.35,
+              "grants": 20,
+              "firstT": 6.158,
+              "lastT": 13.661,
               "samples": [
                 {
-                  "t": 4.95,
+                  "t": 6.158,
                   "amount": 1
                 },
                 {
-                  "t": 4.95,
+                  "t": 6.158,
                   "amount": 1
                 },
                 {
-                  "t": 6.15,
+                  "t": 7.108,
                   "amount": 1
                 },
                 {
-                  "t": 6.15,
+                  "t": 7.108,
                   "amount": 1
                 },
                 {
-                  "t": 7.25,
-                  "amount": 1
+                  "t": 8.04,
+                  "amount": 2
                 },
                 {
-                  "t": 7.25,
-                  "amount": 1
+                  "t": 8.04,
+                  "amount": 2
                 },
                 {
-                  "t": 8.35,
-                  "amount": 1
+                  "t": 8.927,
+                  "amount": 2
                 },
                 {
-                  "t": 8.35,
-                  "amount": 1
+                  "t": 8.927,
+                  "amount": 2
                 }
               ],
               "id": "wisp",
@@ -1180,39 +1271,39 @@
               "gained": 12,
               "lost": 0,
               "grants": 12,
-              "firstT": 3.8,
-              "lastT": 14.35,
+              "firstT": 3.745,
+              "lastT": 13.661,
               "samples": [
                 {
-                  "t": 3.8,
+                  "t": 3.745,
                   "amount": 1
                 },
                 {
-                  "t": 4.95,
+                  "t": 5.011,
                   "amount": 1
                 },
                 {
-                  "t": 6.15,
+                  "t": 6.158,
                   "amount": 1
                 },
                 {
-                  "t": 7.25,
+                  "t": 7.108,
                   "amount": 1
                 },
                 {
-                  "t": 8.35,
+                  "t": 8.04,
                   "amount": 1
                 },
                 {
-                  "t": 9.3,
+                  "t": 8.927,
                   "amount": 1
                 },
                 {
-                  "t": 10.2,
+                  "t": 9.788,
                   "amount": 1
                 },
                 {
-                  "t": 11.1,
+                  "t": 10.651,
                   "amount": 1
                 }
               ],
@@ -1223,18 +1314,14 @@
               "systemOrigin": null
             },
             {
-              "gained": 8,
+              "gained": 4,
               "lost": 0,
-              "grants": 2,
-              "firstT": 7.7,
-              "lastT": 7.702,
+              "grants": 1,
+              "firstT": 7.509,
+              "lastT": 7.509,
               "samples": [
                 {
-                  "t": 7.7,
-                  "amount": 4
-                },
-                {
-                  "t": 7.702,
+                  "t": 7.509,
                   "amount": 4
                 }
               ],
@@ -1243,62 +1330,48 @@
               "name": "Amulet of the Wild",
               "handler": "amulet_of_the_wild",
               "systemOrigin": null
-            },
-            {
-              "gained": 1,
-              "lost": 0,
-              "grants": 1,
-              "firstT": 12.354,
-              "lastT": 12.354,
-              "samples": [
-                {
-                  "t": 12.354,
-                  "amount": 1
-                }
-              ],
-              "id": "bowl_of_treats",
-              "itemId": "bowl_of_treats",
-              "name": "Bowl of Treats",
-              "handler": "bowl_of_treats",
-              "systemOrigin": null
             }
           ],
-          "gained": 79
+          "gained": 70
         }
       },
       "heat": {
         "player": {
-          "end": 8,
+          "end": 7,
           "sources": [
             {
-              "gained": 6,
+              "gained": 7,
               "lost": 0,
-              "grants": 6,
-              "firstT": 4,
-              "lastT": 12.5,
+              "grants": 7,
+              "firstT": 3.992,
+              "lastT": 12.47,
               "samples": [
                 {
-                  "t": 4,
+                  "t": 3.992,
                   "amount": 1
                 },
                 {
-                  "t": 5.75,
+                  "t": 5.824,
                   "amount": 1
                 },
                 {
-                  "t": 7.7,
+                  "t": 8.032,
                   "amount": 1
                 },
                 {
-                  "t": 8,
+                  "t": 10.165,
                   "amount": 1
                 },
                 {
-                  "t": 10.8,
+                  "t": 10.165,
                   "amount": 1
                 },
                 {
-                  "t": 12.5,
+                  "t": 11.333,
+                  "amount": 1
+                },
+                {
+                  "t": 12.47,
                   "amount": 1
                 }
               ],
@@ -1307,78 +1380,52 @@
               "name": "Robodog",
               "handler": "robodog",
               "systemOrigin": null
-            },
-            {
-              "gained": 3,
-              "lost": 0,
-              "grants": 3,
-              "firstT": 6.45,
-              "lastT": 9.604,
-              "samples": [
-                {
-                  "t": 6.45,
-                  "amount": 1
-                },
-                {
-                  "t": 6.454,
-                  "amount": 1
-                },
-                {
-                  "t": 9.604,
-                  "amount": 1
-                }
-              ],
-              "id": "bowl_of_treats",
-              "itemId": "bowl_of_treats",
-              "name": "Bowl of Treats",
-              "handler": "bowl_of_treats",
-              "systemOrigin": null
             }
           ],
-          "gained": 9
+          "gained": 7
         }
       },
       "mana": {
         "player": {
-          "end": 4,
+          "end": 8,
           "sources": [
             {
-              "gained": 13,
+              "gained": 16,
               "lost": 0,
-              "grants": 13,
-              "firstT": 5.802,
-              "lastT": 12.802,
+              "grants": 16,
+              "firstT": 4.993,
+              "lastT": 12.842,
               "samples": [
                 {
-                  "t": 5.802,
+                  "t": 4.993,
                   "amount": 1
                 },
                 {
-                  "t": 5.952,
+                  "t": 5.064,
                   "amount": 1
                 },
                 {
-                  "t": 6.002,
+                  "t": 5.067,
                   "amount": 1
                 },
                 {
-                  "t": 6.152,
+                  "t": 5.097,
                   "amount": 1
                 },
                 {
-                  "t": 7.702,
+                  "t": 7.423,
                   "amount": 1
                 },
                 {
-                  "t": 8.852,
+                  "t": 7.459,
                   "amount": 1
                 },
                 {
-                  "t": 9.202,
+                  "t": 7.617,
                   "amount": 1
                 },
                 {
-                  "t": 9.302,
+                  "t": 7.79,
                   "amount": 1
                 }
               ],
@@ -1392,15 +1439,15 @@
               "gained": 2,
               "lost": 0,
               "grants": 2,
-              "firstT": 6.45,
-              "lastT": 6.452,
+              "firstT": 6.421,
+              "lastT": 11.969,
               "samples": [
                 {
-                  "t": 6.45,
+                  "t": 6.421,
                   "amount": 1
                 },
                 {
-                  "t": 6.452,
+                  "t": 11.969,
                   "amount": 1
                 }
               ],
@@ -1409,9 +1456,27 @@
               "name": "Bowl of Treats",
               "handler": "bowl_of_treats",
               "systemOrigin": null
+            },
+            {
+              "gained": 0,
+              "lost": 10,
+              "grants": 1,
+              "firstT": 9.9,
+              "lastT": 9.9,
+              "samples": [
+                {
+                  "t": 9.9,
+                  "amount": -10
+                }
+              ],
+              "id": "crown",
+              "itemId": "crown",
+              "name": "Crown",
+              "handler": "crown",
+              "systemOrigin": null
             }
           ],
-          "gained": 15
+          "gained": 18
         }
       },
       "invuln": {
@@ -1422,11 +1487,11 @@
               "gained": 1,
               "lost": 0,
               "grants": 1,
-              "firstT": 9.653,
-              "lastT": 9.653,
+              "firstT": 9.903,
+              "lastT": 9.903,
               "samples": [
                 {
-                  "t": 9.653,
+                  "t": 9.903,
                   "amount": 1
                 }
               ],
@@ -1448,19 +1513,19 @@
     },
     "heals": {
       "player": {
-        "total": 1682,
+        "total": 1852,
         "byKind": {
           "vampirism": {
-            "total": 901,
+            "total": 1016,
             "grants": 12
           },
           "heal": {
-            "total": 744,
-            "grants": 16
+            "total": 800,
+            "grants": 15
           },
           "regeneration": {
-            "total": 37,
-            "grants": 5
+            "total": 36,
+            "grants": 6
           },
           "maxHp": {
             "total": 40,
@@ -1469,43 +1534,43 @@
         },
         "sources": [
           {
-            "gained": 901,
+            "gained": 1016,
             "lost": 0,
             "grants": 12,
-            "firstT": 3.807,
-            "lastT": 14.358,
+            "firstT": 3.745,
+            "lastT": 13.661,
             "samples": [
               {
-                "t": 3.807,
+                "t": 3.745,
                 "amount": 13
               },
               {
-                "t": 4.957,
+                "t": 5.011,
                 "amount": 15
               },
               {
-                "t": 6.157,
-                "amount": 29
+                "t": 6.158,
+                "amount": 34
               },
               {
-                "t": 7.257,
-                "amount": 32
+                "t": 7.108,
+                "amount": 35
               },
               {
-                "t": 8.357,
-                "amount": 47
+                "t": 8.04,
+                "amount": 58
               },
               {
-                "t": 9.308,
-                "amount": 49
+                "t": 8.927,
+                "amount": 60
               },
               {
-                "t": 10.208,
-                "amount": 68
+                "t": 9.788,
+                "amount": 77
               },
               {
-                "t": 11.108,
-                "amount": 87
+                "t": 10.651,
+                "amount": 98
               }
             ],
             "id": "Vampirism",
@@ -1516,47 +1581,47 @@
             "kind": "vampirism",
             "label": "Bloodthorne: vampirism +13",
             "byItem": {
-              "bloodthorne": 901
+              "bloodthorne": 1016
             }
           },
           {
-            "gained": 744,
+            "gained": 800,
             "lost": 0,
-            "grants": 16,
-            "firstT": 3.8,
-            "lastT": 14,
+            "grants": 15,
+            "firstT": 4.866,
+            "lastT": 13.427,
             "samples": [
               {
-                "t": 3.8,
-                "amount": 7
-              },
-              {
-                "t": 4.95,
+                "t": 4.866,
                 "amount": 9
               },
               {
-                "t": 4.95,
-                "amount": 33
+                "t": 4.946,
+                "amount": 31
               },
               {
-                "t": 7.15,
+                "t": 6.893,
                 "amount": 9
               },
               {
-                "t": 7.25,
-                "amount": 15
+                "t": 7.039,
+                "amount": 51
               },
               {
-                "t": 7.25,
-                "amount": 50
+                "t": 7.108,
+                "amount": 12
               },
               {
-                "t": 7.7,
-                "amount": 62
+                "t": 7.507,
+                "amount": 66
               },
               {
-                "t": 8.35,
-                "amount": 22
+                "t": 8.04,
+                "amount": 21
+              },
+              {
+                "t": 8.735,
+                "amount": 10
               }
             ],
             "id": "unknown",
@@ -1564,15 +1629,15 @@
             "name": "unknown",
             "handler": null,
             "kind": "heal",
-            "label": "Heal +7",
+            "label": "Heal +9",
             "byItem": {}
           },
           {
-            "gained": 37,
+            "gained": 36,
             "lost": 0,
-            "grants": 5,
+            "grants": 6,
             "firstT": 3.5,
-            "lastT": 11.5,
+            "lastT": 13.5,
             "samples": [
               {
                 "t": 3.5,
@@ -1580,7 +1645,7 @@
               },
               {
                 "t": 5.5,
-                "amount": 9
+                "amount": 7
               },
               {
                 "t": 7.5,
@@ -1588,11 +1653,15 @@
               },
               {
                 "t": 9.5,
-                "amount": 4
+                "amount": 6
               },
               {
                 "t": 11.5,
-                "amount": 7
+                "amount": 4
+              },
+              {
+                "t": 13.5,
+                "amount": 2
               }
             ],
             "id": "Regeneration",
@@ -1649,52 +1718,52 @@
     },
     "damage": {
       "toDummy": {
-        "total": 1212,
+        "total": 1272,
         "byKind": {
           "item": {
-            "total": 1212,
-            "grants": 22
+            "total": 1272,
+            "grants": 24
           }
         },
         "sources": [
           {
-            "gained": 890,
+            "gained": 873,
             "lost": 0,
             "grants": 12,
-            "firstT": 3.807,
-            "lastT": 14.357,
+            "firstT": 3.745,
+            "lastT": 13.661,
             "samples": [
               {
-                "t": 3.807,
-                "amount": 16
+                "t": 3.745,
+                "amount": 13
               },
               {
-                "t": 4.957,
-                "amount": 16
+                "t": 5.011,
+                "amount": 15
               },
               {
-                "t": 6.157,
+                "t": 6.158,
+                "amount": 26
+              },
+              {
+                "t": 7.108,
                 "amount": 29
               },
               {
-                "t": 7.257,
-                "amount": 33
-              },
-              {
-                "t": 8.357,
+                "t": 8.04,
                 "amount": 49
               },
               {
-                "t": 9.307,
+                "t": 8.927,
                 "amount": 60
               },
               {
-                "t": 10.207,
+                "t": 9.788,
                 "amount": 73
               },
               {
-                "t": 11.107,
-                "amount": 86
+                "t": 10.651,
+                "amount": 88
               }
             ],
             "id": "bloodthorne",
@@ -1705,43 +1774,43 @@
             "crits": 0
           },
           {
-            "gained": 320,
+            "gained": 367,
             "lost": 0,
             "grants": 8,
-            "firstT": 4.954,
-            "lastT": 14.004,
+            "firstT": 4.95,
+            "lastT": 13.321,
             "samples": [
               {
-                "t": 4.954,
-                "amount": 19
+                "t": 4.95,
+                "amount": 18
               },
               {
-                "t": 4.955,
-                "amount": 19
+                "t": 7.043,
+                "amount": 29
               },
               {
-                "t": 7.254,
-                "amount": 27
+                "t": 7.044,
+                "amount": 29
               },
               {
-                "t": 7.704,
-                "amount": 33
+                "t": 7.511,
+                "amount": 36
               },
               {
-                "t": 9.254,
-                "amount": 34
+                "t": 8.948,
+                "amount": 41
               },
               {
-                "t": 10.904,
-                "amount": 48
+                "t": 10.429,
+                "amount": 55
               },
               {
-                "t": 12.504,
-                "amount": 63
+                "t": 11.85,
+                "amount": 69
               },
               {
-                "t": 14.004,
-                "amount": 77
+                "t": 13.321,
+                "amount": 90
               }
             ],
             "id": "blood_goobert",
@@ -1752,19 +1821,27 @@
             "crits": 0
           },
           {
-            "gained": 2,
+            "gained": 32,
             "lost": 0,
-            "grants": 2,
-            "firstT": 8.953,
+            "grants": 4,
+            "firstT": 4.653,
             "lastT": 13.253,
             "samples": [
               {
-                "t": 8.953,
+                "t": 4.653,
                 "amount": 1
               },
               {
+                "t": 6.803,
+                "amount": 5
+              },
+              {
+                "t": 8.953,
+                "amount": 13
+              },
+              {
                 "t": 13.253,
-                "amount": 1
+                "amount": 13
               }
             ],
             "id": "Spikes",
@@ -1781,19 +1858,23 @@
         "byKind": {
           "dummy": {
             "total": 0,
-            "grants": 4
+            "grants": 5
           }
         },
         "sources": [
           {
             "gained": 0,
             "lost": 0,
-            "grants": 4,
+            "grants": 5,
             "firstT": 4.652,
             "lastT": 13.252,
             "samples": [
               {
                 "t": 4.652,
+                "amount": 0
+              },
+              {
+                "t": 6.802,
                 "amount": 0
               },
               {
@@ -1821,94 +1902,49 @@
     },
     "misses": {
       "player": 0,
-      "dummy": 1
+      "dummy": 0
     },
     "activations": {
       "player": {
-        "total": 82,
+        "total": 101,
         "sources": [
           {
-            "gained": 14,
+            "gained": 16,
             "lost": 0,
-            "grants": 14,
-            "firstT": 5.15,
-            "lastT": 13.25,
+            "grants": 16,
+            "firstT": 4.991,
+            "lastT": 12.84,
             "samples": [
               {
-                "t": 5.15,
+                "t": 4.991,
                 "amount": 1
               },
               {
-                "t": 5.15,
+                "t": 5.062,
                 "amount": 1
               },
               {
-                "t": 5.2,
+                "t": 5.065,
                 "amount": 1
               },
               {
-                "t": 7.5,
+                "t": 5.095,
                 "amount": 1
               },
               {
-                "t": 7.6,
+                "t": 7.421,
                 "amount": 1
               },
               {
-                "t": 7.8,
+                "t": 7.457,
                 "amount": 1
               },
               {
-                "t": 9.6,
+                "t": 7.615,
                 "amount": 1
               },
               {
-                "t": 9.7,
-                "amount": 1
-              }
-            ],
-            "id": "carrot",
-            "itemId": "carrot",
-            "name": "Carrot",
-            "handler": "carrot"
-          },
-          {
-            "gained": 13,
-            "lost": 0,
-            "grants": 13,
-            "firstT": 5.8,
-            "lastT": 12.8,
-            "samples": [
-              {
-                "t": 5.8,
-                "amount": 1
-              },
-              {
-                "t": 5.95,
-                "amount": 1
-              },
-              {
-                "t": 6,
-                "amount": 1
-              },
-              {
-                "t": 6.15,
-                "amount": 1
-              },
-              {
-                "t": 7.7,
-                "amount": 1
-              },
-              {
-                "t": 8.85,
-                "amount": 1
-              },
-              {
-                "t": 9.2,
-                "amount": 1
-              },
-              {
-                "t": 9.3,
+                "t": 7.788,
                 "amount": 1
               }
             ],
@@ -1918,87 +1954,42 @@
             "handler": "blueberries"
           },
           {
-            "gained": 12,
+            "gained": 14,
             "lost": 0,
-            "grants": 12,
-            "firstT": 3.8,
-            "lastT": 14.35,
+            "grants": 14,
+            "firstT": 5.064,
+            "lastT": 12.917,
             "samples": [
               {
-                "t": 3.8,
+                "t": 5.064,
                 "amount": 1
               },
               {
-                "t": 4.95,
+                "t": 5.287,
                 "amount": 1
               },
               {
-                "t": 6.15,
+                "t": 5.288,
                 "amount": 1
               },
               {
-                "t": 7.25,
+                "t": 7.455,
                 "amount": 1
               },
               {
-                "t": 8.35,
+                "t": 7.456,
                 "amount": 1
               },
               {
-                "t": 9.3,
+                "t": 7.539,
                 "amount": 1
               },
               {
-                "t": 10.2,
+                "t": 9.46,
                 "amount": 1
               },
               {
-                "t": 11.1,
-                "amount": 1
-              }
-            ],
-            "id": "bloodthorne",
-            "itemId": "bloodthorne",
-            "name": "Bloodthorne",
-            "handler": "bloodthorne"
-          },
-          {
-            "gained": 10,
-            "lost": 0,
-            "grants": 10,
-            "firstT": 5,
-            "lastT": 13.4,
-            "samples": [
-              {
-                "t": 5,
-                "amount": 1
-              },
-              {
-                "t": 5.2,
-                "amount": 1
-              },
-              {
-                "t": 7.5,
-                "amount": 1
-              },
-              {
-                "t": 7.7,
-                "amount": 1
-              },
-              {
-                "t": 9.65,
-                "amount": 1
-              },
-              {
-                "t": 10.3,
-                "amount": 1
-              },
-              {
-                "t": 11.6,
-                "amount": 1
-              },
-              {
-                "t": 11.601,
+                "t": 9.461,
                 "amount": 1
               }
             ],
@@ -2008,42 +1999,132 @@
             "handler": "mecha_bat"
           },
           {
+            "gained": 13,
+            "lost": 0,
+            "grants": 13,
+            "firstT": 5.067,
+            "lastT": 12.776,
+            "samples": [
+              {
+                "t": 5.067,
+                "amount": 1
+              },
+              {
+                "t": 5.073,
+                "amount": 1
+              },
+              {
+                "t": 5.08,
+                "amount": 1
+              },
+              {
+                "t": 7.359,
+                "amount": 1
+              },
+              {
+                "t": 7.73,
+                "amount": 1
+              },
+              {
+                "t": 7.79,
+                "amount": 1
+              },
+              {
+                "t": 9.347,
+                "amount": 1
+              },
+              {
+                "t": 10.256,
+                "amount": 1
+              }
+            ],
+            "id": "carrot",
+            "itemId": "carrot",
+            "name": "Carrot",
+            "handler": "carrot"
+          },
+          {
+            "gained": 12,
+            "lost": 0,
+            "grants": 12,
+            "firstT": 3.745,
+            "lastT": 13.661,
+            "samples": [
+              {
+                "t": 3.745,
+                "amount": 1
+              },
+              {
+                "t": 5.011,
+                "amount": 1
+              },
+              {
+                "t": 6.158,
+                "amount": 1
+              },
+              {
+                "t": 7.108,
+                "amount": 1
+              },
+              {
+                "t": 8.04,
+                "amount": 1
+              },
+              {
+                "t": 8.927,
+                "amount": 1
+              },
+              {
+                "t": 9.788,
+                "amount": 1
+              },
+              {
+                "t": 10.651,
+                "amount": 1
+              }
+            ],
+            "id": "bloodthorne",
+            "itemId": "bloodthorne",
+            "name": "Bloodthorne",
+            "handler": "bloodthorne"
+          },
+          {
             "gained": 9,
             "lost": 0,
             "grants": 9,
             "firstT": 2.5,
-            "lastT": 14,
+            "lastT": 13.317,
             "samples": [
               {
                 "t": 2.5,
                 "amount": 1
               },
               {
-                "t": 4.95,
+                "t": 4.946,
                 "amount": 1
               },
               {
-                "t": 4.951,
+                "t": 7.039,
                 "amount": 1
               },
               {
-                "t": 7.25,
+                "t": 7.04,
                 "amount": 1
               },
               {
-                "t": 7.7,
+                "t": 7.507,
                 "amount": 1
               },
               {
-                "t": 9.25,
+                "t": 8.944,
                 "amount": 1
               },
               {
-                "t": 10.9,
+                "t": 10.425,
                 "amount": 1
               },
               {
-                "t": 12.5,
+                "t": 11.846,
                 "amount": 1
               }
             ],
@@ -2056,35 +2137,35 @@
             "gained": 7,
             "lost": 0,
             "grants": 7,
-            "firstT": 4.95,
-            "lastT": 13.7,
+            "firstT": 4.866,
+            "lastT": 13.427,
             "samples": [
               {
-                "t": 4.95,
+                "t": 4.866,
                 "amount": 1
               },
               {
-                "t": 7.15,
+                "t": 6.893,
                 "amount": 1
               },
               {
-                "t": 9.1,
+                "t": 8.735,
                 "amount": 1
               },
               {
-                "t": 9.65,
+                "t": 9.9,
                 "amount": 1
               },
               {
-                "t": 10.7,
+                "t": 10.39,
                 "amount": 1
               },
               {
-                "t": 12.3,
+                "t": 11.901,
                 "amount": 1
               },
               {
-                "t": 13.7,
+                "t": 13.427,
                 "amount": 1
               }
             ],
@@ -2094,26 +2175,129 @@
             "handler": "crown"
           },
           {
+            "gained": 6,
+            "lost": 0,
+            "grants": 6,
+            "firstT": 6.417,
+            "lastT": 11.967,
+            "samples": [
+              {
+                "t": 6.417,
+                "amount": 1
+              },
+              {
+                "t": 6.417,
+                "amount": 1
+              },
+              {
+                "t": 9.549,
+                "amount": 1
+              },
+              {
+                "t": 9.549,
+                "amount": 1
+              },
+              {
+                "t": 11.967,
+                "amount": 1
+              },
+              {
+                "t": 11.967,
+                "amount": 1
+              }
+            ],
+            "id": "bowl_of_treats",
+            "itemId": "bowl_of_treats",
+            "name": "Bowl of Treats",
+            "handler": "bowl_of_treats"
+          },
+          {
+            "gained": 6,
+            "lost": 0,
+            "grants": 6,
+            "firstT": 3.992,
+            "lastT": 12.47,
+            "samples": [
+              {
+                "t": 3.992,
+                "amount": 1
+              },
+              {
+                "t": 5.824,
+                "amount": 1
+              },
+              {
+                "t": 8.032,
+                "amount": 1
+              },
+              {
+                "t": 10.165,
+                "amount": 1
+              },
+              {
+                "t": 11.333,
+                "amount": 1
+              },
+              {
+                "t": 12.47,
+                "amount": 1
+              }
+            ],
+            "id": "robodog",
+            "itemId": "robodog",
+            "name": "Robodog",
+            "handler": "robodog"
+          },
+          {
             "gained": 4,
             "lost": 0,
             "grants": 4,
-            "firstT": 8.6,
-            "lastT": 13.6,
+            "firstT": 2.5,
+            "lastT": 7.219,
             "samples": [
               {
-                "t": 8.6,
+                "t": 2.5,
                 "amount": 1
               },
               {
-                "t": 8.85,
+                "t": 2.5,
                 "amount": 1
               },
               {
-                "t": 12.35,
+                "t": 7.2,
                 "amount": 1
               },
               {
-                "t": 13.6,
+                "t": 7.219,
+                "amount": 1
+              }
+            ],
+            "id": "charge_splitter",
+            "itemId": "charge_splitter",
+            "name": "Charge Splitter",
+            "handler": "charge_splitter"
+          },
+          {
+            "gained": 4,
+            "lost": 0,
+            "grants": 4,
+            "firstT": 8.185,
+            "lastT": 13.34,
+            "samples": [
+              {
+                "t": 8.185,
+                "amount": 1
+              },
+              {
+                "t": 8.872,
+                "amount": 1
+              },
+              {
+                "t": 11.767,
+                "amount": 1
+              },
+              {
+                "t": 13.34,
                 "amount": 1
               }
             ],
@@ -2126,44 +2310,19 @@
             "gained": 3,
             "lost": 0,
             "grants": 3,
-            "firstT": 6.45,
-            "lastT": 12.35,
-            "samples": [
-              {
-                "t": 6.45,
-                "amount": 1
-              },
-              {
-                "t": 9.6,
-                "amount": 1
-              },
-              {
-                "t": 12.35,
-                "amount": 1
-              }
-            ],
-            "id": "bowl_of_treats",
-            "itemId": "bowl_of_treats",
-            "name": "Bowl of Treats",
-            "handler": "bowl_of_treats"
-          },
-          {
-            "gained": 3,
-            "lost": 0,
-            "grants": 3,
             "firstT": 2.5,
-            "lastT": 11.2,
+            "lastT": 11.273,
             "samples": [
               {
                 "t": 2.5,
                 "amount": 1
               },
               {
-                "t": 7.1,
+                "t": 7.105,
                 "amount": 1
               },
               {
-                "t": 11.2,
+                "t": 11.273,
                 "amount": 1
               }
             ],
@@ -2214,11 +2373,11 @@
             "gained": 1,
             "lost": 0,
             "grants": 1,
-            "firstT": 7.7,
-            "lastT": 7.7,
+            "firstT": 7.507,
+            "lastT": 7.507,
             "samples": [
               {
-                "t": 7.7,
+                "t": 7.507,
                 "amount": 1
               }
             ],
@@ -2248,11 +2407,11 @@
             "gained": 1,
             "lost": 0,
             "grants": 1,
-            "firstT": 6.5,
-            "lastT": 6.5,
+            "firstT": 6.253,
+            "lastT": 6.253,
             "samples": [
               {
-                "t": 6.5,
+                "t": 6.253,
                 "amount": 1
               }
             ],
@@ -2320,24 +2479,6 @@
       }
     },
     "stats": [
-      {
-        "t": 2.502,
-        "itemId": "vineweave_basket",
-        "name": "Vineweave Basket",
-        "label": "Healing increased by 47%",
-        "amount": 47,
-        "stat": "heal_efficiency",
-        "total": 47
-      },
-      {
-        "t": 2.502,
-        "itemId": "amulet_of_life",
-        "name": "Amulet of Life",
-        "label": "Healing increased by 20%",
-        "amount": 20,
-        "stat": "heal_efficiency",
-        "total": 67
-      },
       {
         "t": 2.502,
         "itemId": "inner_power",
@@ -2454,6 +2595,24 @@
         "amount": 5,
         "stat": "heal_efficiency",
         "total": 132
+      },
+      {
+        "t": 2.502,
+        "itemId": "amulet_of_life",
+        "name": "Amulet of Life",
+        "label": "Healing increased by 20%",
+        "amount": 20,
+        "stat": "heal_efficiency",
+        "total": 20
+      },
+      {
+        "t": 2.502,
+        "itemId": "vineweave_basket",
+        "name": "Vineweave Basket",
+        "label": "Healing increased by 47%",
+        "amount": 47,
+        "stat": "heal_efficiency",
+        "total": 67
       }
     ],
     "end": {
@@ -2462,12 +2621,12 @@
         "maxHp": 240,
         "stacks": {
           "lucky": 11,
-          "vampirism": 68,
-          "heat": 8,
-          "spikes": 75,
-          "empower": 17,
-          "block": 88,
-          "mana": 4
+          "vampirism": 81,
+          "heat": 7,
+          "spikes": 70,
+          "empower": 16,
+          "block": 44,
+          "mana": 8
         },
         "healAmp": 1.3200000000000005,
         "unhealing": 0
@@ -2481,26 +2640,25 @@
   },
   "ui": {
     "combatLog": {
-      "lineCount": 320,
+      "lineCount": 405,
       "byType": {
-        "activate": 87,
-        "buff": 152,
+        "activate": 106,
         "heal": 35,
+        "buff": 148,
+        "info": 71,
         "stat": 15,
-        "info": 3,
-        "damage": 26,
-        "miss": 1,
+        "damage": 29,
         "fight_end": 1
       },
       "stackGained": {
-        "lucky": 23,
-        "empower": 26,
+        "regeneration": 12,
+        "lucky": 17,
         "block": 90,
-        "vampirism": 110,
-        "regeneration": 16,
-        "spikes": 79,
-        "heat": 9,
-        "mana": 15,
+        "vampirism": 81,
+        "empower": 16,
+        "spikes": 70,
+        "heat": 7,
+        "mana": 18,
         "invuln": 1
       },
       "sample": [
@@ -2516,9 +2674,57 @@
           "t": 2.5,
           "type": "activate",
           "stack": null,
-          "itemId": "blood_amulet",
+          "itemId": "charge_splitter",
           "amount": null,
-          "label": "Accessory: Blood Amulet"
+          "label": "Accessory: Charge Splitter"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 20,
+          "label": "Amulet of Life: +20 max HP"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "regeneration",
+          "itemId": null,
+          "amount": 3,
+          "label": "Rat Chef: +3 Regen"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "lucky",
+          "itemId": "lucky_piggy",
+          "amount": 2,
+          "label": "Lucky Piggy: +2 Lucky"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "leather_helm",
+          "amount": null,
+          "label": "Armor: Cap of Resilience"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "regeneration",
+          "itemId": null,
+          "amount": 1,
+          "label": "Rat Chef: +1 Regen"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
         },
         {
           "t": 2.5,
@@ -2530,43 +2736,11 @@
         },
         {
           "t": 2.5,
-          "type": "activate",
-          "stack": null,
-          "itemId": "leather_helm",
-          "amount": null,
-          "label": "Armor: Leather Helm"
-        },
-        {
-          "t": 2.5,
-          "type": "activate",
-          "stack": null,
-          "itemId": "leather_helm",
-          "amount": null,
-          "label": "Armor: Leather Helm"
-        },
-        {
-          "t": 2.5,
-          "type": "activate",
-          "stack": null,
-          "itemId": "amulet_of_life",
-          "amount": null,
-          "label": "Accessory: Amulet of Life"
-        },
-        {
-          "t": 2.5,
-          "type": "activate",
-          "stack": null,
-          "itemId": "healing_herbs",
-          "amount": null,
-          "label": "Food: Healing Herbs"
-        },
-        {
-          "t": 2.5,
           "type": "buff",
-          "stack": "lucky",
-          "itemId": "lucky_piggy",
-          "amount": 2,
-          "label": "Lucky Piggy: +2 Lucky"
+          "stack": "vampirism",
+          "itemId": "blood_goobert",
+          "amount": 5,
+          "label": "+5 vampirism"
         },
         {
           "t": 2.5,
@@ -2586,11 +2760,11 @@
         },
         {
           "t": 2.5,
-          "type": "buff",
-          "stack": "block",
-          "itemId": "protective_purse",
-          "amount": 15,
-          "label": "Protective Purse: +15 Block"
+          "type": "activate",
+          "stack": null,
+          "itemId": "amulet_of_life",
+          "amount": null,
+          "label": "Accessory: Amulet of Life"
         },
         {
           "t": 2.5,
@@ -2602,91 +2776,19 @@
         },
         {
           "t": 2.5,
-          "type": "buff",
-          "stack": "block",
-          "itemId": "protective_purse",
-          "amount": 15,
-          "label": "Protective Purse: +15 Block"
+          "type": "info",
+          "stack": null,
+          "itemId": "bloodthorne",
+          "amount": 2,
+          "label": "+2 damage"
         },
         {
           "t": 2.5,
-          "type": "buff",
-          "stack": "block",
-          "itemId": "protective_purse",
-          "amount": 15,
-          "label": "Protective Purse: +15 Block"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "block",
-          "itemId": "protective_purse",
-          "amount": 15,
-          "label": "Protective Purse: +15 Block"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "block",
-          "itemId": "protective_purse",
-          "amount": 15,
-          "label": "Protective Purse: +15 Block"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "vampirism",
+          "type": "activate",
+          "stack": null,
           "itemId": "blood_amulet",
-          "amount": 2,
-          "label": "+2 vampirism"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "vampirism",
-          "itemId": "blood_goobert",
-          "amount": 5,
-          "label": "+5 vampirism"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "regeneration",
-          "itemId": "rat_chef",
-          "amount": 3,
-          "label": "+3 regeneration"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "regeneration",
-          "itemId": null,
-          "amount": 3,
-          "label": "Rat Chef: +3 Regen"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "regeneration",
-          "itemId": "rat_chef",
-          "amount": 1,
-          "label": "+1 regeneration"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "regeneration",
-          "itemId": null,
-          "amount": 1,
-          "label": "Rat Chef: +1 Regen"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "regeneration",
-          "itemId": "healing_herbs",
-          "amount": 2,
-          "label": "Healing Herbs: +2 Regeneration"
+          "amount": null,
+          "label": "Accessory: Blood Amulet"
         },
         {
           "t": 2.5,
@@ -2698,19 +2800,179 @@
         },
         {
           "t": 2.5,
-          "type": "heal",
+          "type": "buff",
+          "stack": "vampirism",
+          "itemId": "blood_amulet",
+          "amount": 2,
+          "label": "+2 vampirism"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
           "stack": null,
-          "itemId": null,
-          "amount": 20,
-          "label": "Amulet of Life: +20 max HP"
+          "itemId": "healing_herbs",
+          "amount": null,
+          "label": "Food: Healing Herbs"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "regeneration",
+          "itemId": "healing_herbs",
+          "amount": 2,
+          "label": "Healing Herbs: +2 Regeneration"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "leather_helm",
+          "amount": null,
+          "label": "Armor: Cap of Resilience"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "activate",
+          "stack": null,
+          "itemId": "charge_splitter",
+          "amount": null,
+          "label": "Accessory: Charge Splitter"
         },
         {
           "t": 2.502,
           "type": "stat",
           "stack": null,
-          "itemId": "vineweave_basket",
-          "amount": 47,
-          "label": "Healing increased by 47%"
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
+        },
+        {
+          "t": 2.502,
+          "type": "stat",
+          "stack": null,
+          "itemId": "inner_power",
+          "amount": 5,
+          "label": "Healing increased by 5%"
         },
         {
           "t": 2.502,
@@ -2719,110 +2981,6 @@
           "itemId": "amulet_of_life",
           "amount": 20,
           "label": "Healing increased by 20%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
-        },
-        {
-          "t": 2.502,
-          "type": "stat",
-          "stack": null,
-          "itemId": "inner_power",
-          "amount": 5,
-          "label": "Healing increased by 5%"
         }
       ]
     },
@@ -2865,7 +3023,7 @@
           ]
         },
         "lucky": {
-          "gained": 23,
+          "gained": 17,
           "empty": false,
           "sources": [
             {
@@ -2884,8 +3042,13 @@
               "amount": 1
             },
             {
-              "itemId": null,
-              "name": "Robodog",
+              "itemId": "robodog",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "holy_collar",
+              "name": "+1 lucky",
               "amount": 1
             },
             {
@@ -2896,45 +3059,20 @@
             {
               "itemId": "robodog",
               "name": "+1 lucky",
-              "amount": 1
-            },
-            {
-              "itemId": null,
-              "name": "Robodog",
-              "amount": 1
-            },
-            {
-              "itemId": "holy_collar",
-              "name": "+1 lucky",
-              "amount": 1
-            },
-            {
-              "itemId": "robodog",
-              "name": "+1 lucky",
-              "amount": 1
-            },
-            {
-              "itemId": null,
-              "name": "Robodog",
-              "amount": 1
-            },
-            {
-              "itemId": "robodog",
-              "name": "+1 lucky",
-              "amount": 1
-            },
-            {
-              "itemId": null,
-              "name": "Robodog",
               "amount": 1
             },
             {
               "itemId": "bowl_of_treats",
-              "name": "Bowl of Treats",
+              "name": "Big Bowl of Treats",
               "amount": 1
             },
             {
-              "itemId": "holy_collar",
+              "itemId": "robodog",
+              "name": "+1 lucky",
+              "amount": 1
+            },
+            {
+              "itemId": "robodog",
               "name": "+1 lucky",
               "amount": 1
             },
@@ -2954,18 +3092,8 @@
               "amount": 1
             },
             {
-              "itemId": null,
-              "name": "Robodog",
-              "amount": 1
-            },
-            {
               "itemId": "robodog",
               "name": "+1 lucky",
-              "amount": 1
-            },
-            {
-              "itemId": null,
-              "name": "Robodog",
               "amount": 1
             },
             {
@@ -2976,23 +3104,13 @@
           ]
         },
         "regeneration": {
-          "gained": 16,
+          "gained": 12,
           "empty": false,
           "sources": [
-            {
-              "itemId": "rat_chef",
-              "name": "+3 regeneration",
-              "amount": 3
-            },
             {
               "itemId": null,
               "name": "Rat Chef",
               "amount": 3
-            },
-            {
-              "itemId": "rat_chef",
-              "name": "+1 regeneration",
-              "amount": 1
             },
             {
               "itemId": null,
@@ -3005,8 +3123,8 @@
               "amount": 2
             },
             {
-              "itemId": "holy_collar",
-              "name": "+1 regeneration",
+              "itemId": "bowl_of_treats",
+              "name": "Big Bowl of Treats",
               "amount": 1
             },
             {
@@ -3037,48 +3155,18 @@
           ]
         },
         "vampirism": {
-          "gained": 110,
+          "gained": 81,
           "empty": false,
           "sources": [
-            {
-              "itemId": "blood_amulet",
-              "name": "+2 vampirism",
-              "amount": 2
-            },
             {
               "itemId": "blood_goobert",
               "name": "+5 vampirism",
               "amount": 5
             },
             {
-              "itemId": "bloodthorne",
-              "name": "+1 vampirism",
-              "amount": 1
-            },
-            {
-              "itemId": "bloodthorne",
-              "name": "+1 vampirism",
-              "amount": 1
-            },
-            {
-              "itemId": "mecha_bat",
-              "name": "+3 vampirism",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "Mecha Bat",
-              "amount": 3
-            },
-            {
-              "itemId": "mecha_bat",
-              "name": "+3 vampirism",
-              "amount": 3
-            },
-            {
-              "itemId": null,
-              "name": "Mecha Bat",
-              "amount": 3
+              "itemId": "blood_amulet",
+              "name": "+2 vampirism",
+              "amount": 2
             },
             {
               "itemId": "bloodthorne",
@@ -3096,8 +3184,8 @@
               "amount": 3
             },
             {
-              "itemId": null,
-              "name": "Mecha Bat",
+              "itemId": "mecha_bat",
+              "name": "+3 vampirism",
               "amount": 3
             },
             {
@@ -3106,13 +3194,53 @@
               "amount": 3
             },
             {
-              "itemId": null,
-              "name": "Mecha Bat",
+              "itemId": "bloodthorne",
+              "name": "+1 vampirism",
+              "amount": 1
+            },
+            {
+              "itemId": "bloodthorne",
+              "name": "+1 vampirism",
+              "amount": 1
+            },
+            {
+              "itemId": "mecha_bat",
+              "name": "+3 vampirism",
+              "amount": 3
+            },
+            {
+              "itemId": "mecha_bat",
+              "name": "+3 vampirism",
+              "amount": 3
+            },
+            {
+              "itemId": "mecha_bat",
+              "name": "+3 vampirism",
               "amount": 3
             },
             {
               "itemId": "bloodthorne",
               "name": "+1 vampirism",
+              "amount": 1
+            },
+            {
+              "itemId": "bloodthorne",
+              "name": "+1 vampirism",
+              "amount": 1
+            },
+            {
+              "itemId": "mecha_bat",
+              "name": "+3 vampirism",
+              "amount": 3
+            },
+            {
+              "itemId": "mecha_bat",
+              "name": "+3 vampirism",
+              "amount": 3
+            },
+            {
+              "itemId": "bowl_of_treats",
+              "name": "Big Bowl of Treats",
               "amount": 1
             },
             {
@@ -3126,11 +3254,6 @@
               "amount": 6
             },
             {
-              "itemId": null,
-              "name": "Mecha Bat",
-              "amount": 6
-            },
-            {
               "itemId": "bloodthorne",
               "name": "+1 vampirism",
               "amount": 1
@@ -3141,28 +3264,8 @@
               "amount": 6
             },
             {
-              "itemId": null,
-              "name": "Mecha Bat",
-              "amount": 6
-            },
-            {
-              "itemId": "bloodthorne",
-              "name": "+1 vampirism",
-              "amount": 1
-            },
-            {
               "itemId": "mecha_bat",
               "name": "+6 vampirism",
-              "amount": 6
-            },
-            {
-              "itemId": null,
-              "name": "Mecha Bat",
-              "amount": 6
-            },
-            {
-              "itemId": null,
-              "name": "Mecha Bat",
               "amount": 6
             },
             {
@@ -3172,18 +3275,8 @@
             },
             {
               "itemId": "bowl_of_treats",
-              "name": "Bowl of Treats",
+              "name": "Big Bowl of Treats",
               "amount": 1
-            },
-            {
-              "itemId": "mecha_bat",
-              "name": "+6 vampirism",
-              "amount": 6
-            },
-            {
-              "itemId": null,
-              "name": "Mecha Bat",
-              "amount": 6
             },
             {
               "itemId": "bloodthorne",
@@ -3196,14 +3289,19 @@
               "amount": 6
             },
             {
-              "itemId": null,
-              "name": "Mecha Bat",
+              "itemId": "mecha_bat",
+              "name": "+6 vampirism",
               "amount": 6
             },
             {
               "itemId": "bloodthorne",
               "name": "+1 vampirism",
               "amount": 1
+            },
+            {
+              "itemId": "mecha_bat",
+              "name": "+6 vampirism",
+              "amount": 6
             },
             {
               "itemId": "bloodthorne",
@@ -3213,7 +3311,7 @@
           ]
         },
         "spikes": {
-          "gained": 79,
+          "gained": 70,
           "empty": false,
           "sources": [
             {
@@ -3227,16 +3325,6 @@
               "amount": 1
             },
             {
-              "itemId": "wisp",
-              "name": "+1 spikes",
-              "amount": 1
-            },
-            {
-              "itemId": "wisp",
-              "name": "+1 spikes",
-              "amount": 1
-            },
-            {
               "itemId": "bloodthorne",
               "name": "+1 spikes",
               "amount": 1
@@ -3265,11 +3353,6 @@
               "itemId": "wisp",
               "name": "+1 spikes",
               "amount": 1
-            },
-            {
-              "itemId": "amulet_of_the_wild",
-              "name": "+4 spikes",
-              "amount": 4
             },
             {
               "itemId": null,
@@ -3283,13 +3366,28 @@
             },
             {
               "itemId": "wisp",
+              "name": "+2 spikes",
+              "amount": 2
+            },
+            {
+              "itemId": "wisp",
+              "name": "+2 spikes",
+              "amount": 2
+            },
+            {
+              "itemId": "bloodthorne",
               "name": "+1 spikes",
               "amount": 1
             },
             {
               "itemId": "wisp",
-              "name": "+1 spikes",
-              "amount": 1
+              "name": "+2 spikes",
+              "amount": 2
+            },
+            {
+              "itemId": "wisp",
+              "name": "+2 spikes",
+              "amount": 2
             },
             {
               "itemId": "bloodthorne",
@@ -3343,26 +3441,6 @@
             },
             {
               "itemId": "wisp",
-              "name": "+3 spikes",
-              "amount": 3
-            },
-            {
-              "itemId": "wisp",
-              "name": "+3 spikes",
-              "amount": 3
-            },
-            {
-              "itemId": "bowl_of_treats",
-              "name": "Bowl of Treats",
-              "amount": 1
-            },
-            {
-              "itemId": "bloodthorne",
-              "name": "+1 spikes",
-              "amount": 1
-            },
-            {
-              "itemId": "wisp",
               "name": "+4 spikes",
               "amount": 4
             },
@@ -3378,13 +3456,13 @@
             },
             {
               "itemId": "wisp",
-              "name": "+5 spikes",
-              "amount": 5
+              "name": "+4 spikes",
+              "amount": 4
             },
             {
               "itemId": "wisp",
-              "name": "+5 spikes",
-              "amount": 5
+              "name": "+4 spikes",
+              "amount": 4
             },
             {
               "itemId": "bloodthorne",
@@ -3404,7 +3482,7 @@
           ]
         },
         "mana": {
-          "gained": 15,
+          "gained": 18,
           "empty": false,
           "sources": [
             {
@@ -3429,37 +3507,52 @@
             },
             {
               "itemId": "bowl_of_treats",
-              "name": "+1 mana",
+              "name": "Big Bowl of Treats",
+              "amount": 1
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
+              "amount": 1
+            },
+            {
+              "itemId": "blueberries",
+              "name": "Blueberries",
               "amount": 1
             },
             {
               "itemId": "bowl_of_treats",
-              "name": "Bowl of Treats",
-              "amount": 1
-            },
-            {
-              "itemId": "blueberries",
-              "name": "Blueberries",
-              "amount": 1
-            },
-            {
-              "itemId": "blueberries",
-              "name": "Blueberries",
-              "amount": 1
-            },
-            {
-              "itemId": "blueberries",
-              "name": "Blueberries",
-              "amount": 1
-            },
-            {
-              "itemId": "blueberries",
-              "name": "Blueberries",
-              "amount": 1
-            },
-            {
-              "itemId": "blueberries",
-              "name": "Blueberries",
+              "name": "Big Bowl of Treats",
               "amount": 1
             },
             {
@@ -3485,7 +3578,7 @@
           ]
         },
         "empower": {
-          "gained": 26,
+          "gained": 16,
           "empty": false,
           "sources": [
             {
@@ -3495,11 +3588,6 @@
             },
             {
               "itemId": "carrot",
-              "name": "+1 empower",
-              "amount": 1
-            },
-            {
-              "itemId": "carrot",
               "name": "Carrot",
               "amount": 1
             },
@@ -3519,18 +3607,13 @@
               "amount": 1
             },
             {
-              "itemId": "rat_chef",
-              "name": "+2 empower",
-              "amount": 2
+              "itemId": "carrot",
+              "name": "Carrot",
+              "amount": 1
             },
             {
               "itemId": null,
               "name": "Rat Chef",
-              "amount": 2
-            },
-            {
-              "itemId": "rat_chef",
-              "name": "+2 empower",
               "amount": 2
             },
             {
@@ -3544,16 +3627,6 @@
               "amount": 1
             },
             {
-              "itemId": "carrot",
-              "name": "Carrot",
-              "amount": 1
-            },
-            {
-              "itemId": "rat_chef",
-              "name": "+2 empower",
-              "amount": 2
-            },
-            {
               "itemId": null,
               "name": "Rat Chef",
               "amount": 2
@@ -3562,16 +3635,6 @@
               "itemId": "carrot",
               "name": "Carrot",
               "amount": 1
-            },
-            {
-              "itemId": "carrot",
-              "name": "Carrot",
-              "amount": 1
-            },
-            {
-              "itemId": "rat_chef",
-              "name": "+2 empower",
-              "amount": 2
             },
             {
               "itemId": null,
@@ -3581,7 +3644,7 @@
           ]
         },
         "heat": {
-          "gained": 9,
+          "gained": 7,
           "empty": false,
           "sources": [
             {
@@ -3595,16 +3658,6 @@
               "amount": 1
             },
             {
-              "itemId": "bowl_of_treats",
-              "name": "+1 heat",
-              "amount": 1
-            },
-            {
-              "itemId": "bowl_of_treats",
-              "name": "Bowl of Treats",
-              "amount": 1
-            },
-            {
               "itemId": "robodog",
               "name": "+1 heat",
               "amount": 1
@@ -3615,8 +3668,8 @@
               "amount": 1
             },
             {
-              "itemId": "bowl_of_treats",
-              "name": "Bowl of Treats",
+              "itemId": "robodog",
+              "name": "+1 heat",
               "amount": 1
             },
             {
@@ -3712,7 +3765,7 @@
         ],
         "stack": "vampirism",
         "itemId": "bloodthorne",
-        "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.81s Bloodthorne heal 13 with 8 vamp stack(s), hit 16 → game min(stacks, round(dmg×1)) then heal amp → 19. Sim logged 901 over 12 vamp heal(s)."
+        "hint": "game: applyVampirism is min(vampirism stacks, round(damage × meleeVampirismLimit=1)); Vampiric items do not extra-heal. t=3.74s Bloodthorne heal 13 with 8 vamp stack(s), hit 13 → game min(stacks, round(dmg×1)) then heal amp → 19. Sim logged 656 over 10 vamp heal(s)."
       }
     ]
   }

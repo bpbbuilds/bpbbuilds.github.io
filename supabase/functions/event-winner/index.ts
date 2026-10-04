@@ -53,10 +53,22 @@ Deno.serve(async (req) => {
     `)
     .eq('id', selected.build_id)
     .eq('event_slug', slug)
-    .eq('is_public', true)
     .maybeSingle();
   if (buildError) return json({ error: 'Could not load winning build' }, 500);
   if (!build) return json({ winner: null });
+
+  // The selection itself is safe to acknowledge while judging, but the
+  // entrant/build identity remains private until the SQL visibility job
+  // releases the event entry. This lets the Events module show that a winner
+  // was selected without leaking the held build early.
+  if (build.is_public !== true) {
+    return json({
+      winner: {
+        selected_at: selected.selected_at,
+        build: null,
+      },
+    });
+  }
 
   const raw = Array.isArray(build.profile) ? build.profile[0] : build.profile;
   const profile = raw && typeof raw === 'object' ? raw as Record<string, unknown> : {};

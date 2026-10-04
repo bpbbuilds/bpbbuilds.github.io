@@ -161,6 +161,12 @@ const rows = catalog
         extends: source?.extends || null,
         family: source?.family || null,
         overrides: source?.overrides || [],
+        ...(source?.directOverrides ? { directOverrides: source.directOverrides } : {}),
+        ...(source?.inheritedOverrides ? { inheritedOverrides: source.inheritedOverrides } : {}),
+        ...(source?.inheritedFiles ? { inheritedFiles: source.inheritedFiles } : {}),
+        ...(source?.sceneFile ? { sceneFile: source.sceneFile } : {}),
+        ...(source?.sourceSetup ? { sourceSetup: source.sourceSetup } : {}),
+        ...(source?.sourceMethods ? { sourceMethods: source.sourceMethods } : {}),
       },
       sim: {
         runtimeHandler: handlerId,

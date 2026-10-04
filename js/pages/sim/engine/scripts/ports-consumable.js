@@ -301,7 +301,17 @@ export const protectivePursePort = {
   family: 'unique',
   onCombatStart(piece, ctx) {
     const { t, player, events } = ctx;
-    const block = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 8)));
+    let block = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 8)));
+    const bagtacular = (ctx.pieces || []).find(
+      (other) => other.itemId === 'bagtacular' && other.alive !== false,
+    );
+    if (bagtacular) {
+      const catalog = ctx.itemsById.get('bagtacular');
+      block += Math.max(
+        0,
+        Math.round(getP1(bagtacular.params || catalog?.params, 15)),
+      );
+    }
     gainStacks(player, 'block', block);
     events.push({
       t,

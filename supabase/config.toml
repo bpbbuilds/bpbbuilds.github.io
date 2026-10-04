@@ -40,8 +40,9 @@ verify_jwt = false
 [functions.cosmetic-catalog]
 verify_jwt = false
 
-# Public result reader validates the event slug and only returns a build after
-# the database visibility job marks the selected entry public.
+# Public result reader validates the event slug, acknowledges a selected
+# winner during judging, and only returns build details after the visibility
+# job marks the selected entry public.
 [functions.event-winner]
 verify_jwt = false
 

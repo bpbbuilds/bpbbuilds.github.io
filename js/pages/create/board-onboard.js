@@ -76,14 +76,11 @@ export function shouldShowOnboard(draft) {
  *   getSpriteUrl: (item: object) => string,
  *   root: string,
  *   onRequestHistoryFile?: () => void,
- *   onRequestMedia?: () => void,
- *   mediaEnabled?: boolean,
  * }} opts
  */
 export function mountBoardOnboard(stageEl, opts) {
   const { state, itemsById, getSpriteUrl } = opts;
   const root = opts.root.endsWith('/') ? opts.root : `${opts.root}/`;
-  const mediaEnabled = opts.mediaEnabled === true;
 
   /** @type {'class' | 'bag'} */
   let step = 'class';
@@ -119,9 +116,6 @@ export function mountBoardOnboard(stageEl, opts) {
             </button>
             <button type="button" class="create-onboard__path-copy" data-onboard-copy-path>Copy path</button>
           </div>
-          <button type="button" class="create-onboard__btn create-onboard__btn--dashed create-onboard__btn--media" data-onboard-media aria-label="Media" title="Media"${mediaEnabled ? '' : ' hidden'}>
-            <img class="create-onboard__media-icon" src="${root}assets/icons/create/GalleryOrb.png" alt="" width="72" height="72" draggable="false" />
-          </button>
         </div>
       </div>
     </div>
@@ -440,10 +434,6 @@ export function mountBoardOnboard(stageEl, opts) {
       e.preventDefault();
       opts.onRequestHistoryFile?.();
       return;
-    }
-    if (t.closest('[data-onboard-media]')) {
-      e.preventDefault();
-      if (mediaEnabled) opts.onRequestMedia?.();
     }
   }
 

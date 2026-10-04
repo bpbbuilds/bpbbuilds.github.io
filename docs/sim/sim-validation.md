@@ -45,6 +45,12 @@ does not turn a listed gap into a pass.
 | Power of the Moon has no `CombatTimer.advanceTime` equivalent | Package 4 lifecycle wave | `Items/Exclusive/PoweroftheMoon.gd` → `Interface/CombatTimer/CombatTimer.gd` | P1 | Source-led timer implementation plus two-sided timing/log regression and live capture if extract ordering is ambiguous. |
 | Wand of Dissonance prepare/effect chain | Resolved 2026-10-04 | `Items/Exclusive/WandofDissonance.gd` + `scripts/sim-wand-rib-smoke.mjs` | Closed | Prepare factor, health gate, effect damage, max-stack random buff, causal parent IDs, log, and damage-meter exclusion are covered. |
 | Rib Saw Blade retained enemy-weapon purge | Resolved 2026-10-04 | `Items/RibSawBlade.gd` + `scripts/sim-wand-rib-smoke.mjs` | Closed | Prepare-time opponent weapon snapshot, removable-only purge, hit bonus, and permanent/base damage preservation are covered. |
+| Ace of Spades card reveal / crit token chain | Resolved 2026-10-04 | `Items/AceofSpades.gd` → `Items/Card.gd` + `scripts/sim-ace-puppy-smoke.mjs` | Closed | Direct reveal hook, inherited card chain, odd-position Lucky/Spikes, actor-token consumption, and player/opponent paths are covered. |
+| Armored Courage Puppy inherited strike flags | Resolved 2026-10-04 | `Items/Exclusive/ArmoredCouragePuppy.gd` → `Items/Exclusive/CouragePuppy.gd` + `scripts/sim-ace-puppy-smoke.mjs` | Closed | Inherited start bonus/cooldown strike plus `_ready` removal of item-trigger and spike flags are covered. |
+| Badger Rune mode-dispatched gem behavior | Resolved 2026-10-04 | `Items/Exclusive/BadgerRune.gd` → `Items/Gems/Gem.gd` + `scripts/sim-badger-bagtacular-smoke.mjs` | Closed | `prepareInventory` stamina factor, socketed weapon hit speed, raging armor `pre_take_damage` flat reduction, reduction attribution, and player/opponent paths are covered. |
+| Bagtacular global bag modifiers | Resolved 2026-10-04 | `Items/Exclusive/Bagtacular.gd` + Fanny Pack/Stamina Sack/Potion Belt/Protective Purse sources + `scripts/sim-badger-bagtacular-smoke.mjs` | Closed | Presence-only global item, named `speed`/`stamina`/`buffs`/`block` params, no fabricated activation, and player/opponent bag paths are covered. |
+| Book of Ice New scene alias and lifecycle | Resolved 2026-10-04 | `Items/Exclusive/BookofIceNew.tscn` → `Items/Exclusive/BookofIce.gd` + `scripts/sim-book-amethyst-smoke.mjs` | Closed | Scene-script alias is recorded; `onPrepare` linked-Ice speed, mana gate, Cold grant, activation order, and player/opponent paths are covered. |
+| Chipped Amethyst scene alias and inherited gem modes | Resolved 2026-10-04 | `Items/Gems/ChippedAmethyst.tscn` → `Items/Gems/Amethyst.gd` + `scripts/sim-book-amethyst-smoke.mjs` | Closed | Inventory cleanse-before-activation, repeat/no-consume behavior, socketed weapon buff removal, armor healing reduction, and player/opponent paths are covered. |
 | Four deterministic fixture bands disagree with the current engine | Package 5 fixture matrix | `scripts/fixtures/parity/berserk-bloodline.json`, `infinite-combo-machine.json`, `pyro-furnace.json`; these are sim baselines, not live proof | P1 | Reproduce each from source, preserve the mismatch, and add paired/live evidence before changing a band. |
 | No retained live capture is filled (0/11 fixtures) | Package 5 live-capture matrix | `scripts/fixtures/parity/*.json` `live` blocks; protocol below | P1 | Capture real fights with board/opponent/version/timestamps and retain them only in `live.*`, never in dummy `expect` bands. |
 
@@ -179,6 +185,25 @@ npm run sim-live-bands                   # capture schema + apply (does not inve
 ```
 
 ## Parity harness
+
+## Chipped gem / Darkest Lotus / Elephant Rune source-port audit (2026-10-04)
+
+Focused source review and player/opponent smoke coverage now pass in
+`scripts/sim-chipped-gems-lotus-elephant-smoke.mjs`:
+
+- Chipped Emerald, Ruby, Sapphire, and Topaz resolve their scene aliases and
+  inherited `Gem` lifecycle. Loose inventory effects consume in source order;
+  socketed weapon/armor effects remain in `gem-sockets.js`.
+- Darkest Lotus follows `Card.trigger`: next-card state is prepared first,
+  then chain-position mana and hostile buff removal, then activation.
+- Elephant Rune grants max health before consuming from inventory. Socketed
+  weapon stun and armor debuff resistance are modeled for both board sides;
+  armor resistance expires after the source `dur_resist` window.
+
+The call audit includes the shared socket lifecycle for `Gem` rows, so these
+source calls are not reported as missing merely because they live outside the
+loose-gem handler module. This is source-port evidence, not a live capture or
+claim of complete game parity.
 
 Band AH: `npm run sim-parity-fixtures` + harness `PARITY_PCT_FLOOR`. Inventory `depth` ≠ coverage `fidelity: parity` — parity ids are fixture-backed (`parityIds` in `sim-parity-inventory.json`).
 

@@ -455,7 +455,9 @@ export const armoredCouragePuppyPort = {
       Math.max(2, piece.damageMax || 8),
       ctx.rng,
     );
-    dealHit(piece, ctx, raw, undefined, { skipSpikes: true });
+    // ArmoredCouragePuppy.gd removes CanTriggerItems and CanTriggerSpikes
+    // from its DamageSource in _ready; keep both flags disabled here.
+    dealHit(piece, ctx, raw, undefined, { skipSpikes: true, canTriggerItems: false });
     return true;
   },
 };

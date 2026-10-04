@@ -1,12 +1,12 @@
 {
-  "builtAt": "2026-08-25T22:00:28.906Z",
+  "builtAt": "2026-10-03T03:52:46.260Z",
   "phase": 270,
   "claimEngine11": false,
   "engine11Achieved": false,
   "gates": {
     "252": true,
     "258": true,
-    "264": true,
+    "264": false,
     "265": false
   },
   "legal": {
@@ -19,7 +19,7 @@
     "chessBoardAi": true,
     "leftoverStapleParamChecks": true
   },
-  "leftoverStapleParamChecks": 4,
-  "bannerTitle": "Engine — fixture-validated subset",
+  "leftoverStapleParamChecks": 18,
+  "bannerTitle": "Engine (partial)",
   "note": "AP–AS numbered ladder closed. Engine 1:1 is not claimed: need live staple captures, Phase 38 counsel, chess AI, leftover staple paramChecks."
 }

@@ -164,6 +164,14 @@ for (const file of portFiles) {
   }
 }
 
+// Gem scripts have two runtime owners: the loose-gem family handler and the
+// shared socket lifecycle in gem-sockets.js. Include that shared module when
+// auditing source calls for a Gem so prepareWeapon/prepareArmor call evidence
+// is not incorrectly reported as missing from the inventory handler.
+const GEM_SOCKET_MODULE = 'js/pages/sim/engine/gem-sockets.js';
+const gemSocketPath = path.join(ROOT, GEM_SOCKET_MODULE);
+const gemSocketSource = fs.existsSync(gemSocketPath) ? fs.readFileSync(gemSocketPath, 'utf8') : '';
+
 /**
  * Ports built by a factory (potions, bags, socket gems) have no literal
  * `handlerId:` block — fall back to whichever module registers the id as a key
@@ -204,9 +212,13 @@ for (const [id, entry] of Object.entries(inv.byId || {})) {
     if (CALL_MAP[name]) calls.add(name);
   }
   const ports = portsById.get(id) || moduleFallback(id);
-  const blob = ports.map((p) => p.text).join('\n') +
+  const auditPorts = [...ports];
+  if (entry.extends === 'Gem' && gemSocketSource) {
+    auditPorts.push({ file: GEM_SOCKET_MODULE, text: gemSocketSource });
+  }
+  const blob = auditPorts.map((p) => p.text).join('\n') +
     // count helpers in the owning module too (weaponStrike etc. live there)
-    ports.map((p) => helperSrc.get(p.file) || '').join('\n');
+    auditPorts.map((p) => helperSrc.get(p.file) || '').join('\n');
   const missing = [];
   for (const call of calls) {
     const tokens = CALL_MAP[call];
@@ -221,7 +233,7 @@ for (const [id, entry] of Object.entries(inv.byId || {})) {
   rows.push({
     id,
     file: entry.file,
-    ports: ports.map((p) => p.file),
+    ports: auditPorts.map((p) => p.file),
     calls: [...calls],
     missing,
   });

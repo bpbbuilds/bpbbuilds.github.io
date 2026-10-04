@@ -25,8 +25,13 @@ const HOOK_MAP = {
   onPrepare: ['onPrepare', 'onPreCombatStart', 'onCombatStart'],
   onPreCombatStart: ['onPreCombatStart', 'onCombatStart'],
   onCombatStart: ['onCombatStart', 'onPreCombatStart'],
+  combatStartInventory: ['onCombatStart', 'onPreCombatStart'],
   onPostCombatStart: ['onPostCombatStart'],
   doCooldownEffect: ['onCooldownEffect'],
+  // Card.gd dispatches doRevealEffect from trigger(); cards are scheduled by
+  // the simulator's cooldown/reveal queue, so the resolved card port exposes
+  // that lifecycle through onCooldownEffect.
+  doRevealEffect: ['onCooldownEffect'],
   onPreDealDamage_early: ['onPreDealDamageEarly', 'onCooldownEffect'],
   onPreDealDamage_late: ['onPreDealDamageEarly', 'onCooldownEffect'],
   onDealtDamage: ['onDealtDamage', 'onCooldownEffect'],

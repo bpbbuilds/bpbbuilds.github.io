@@ -1,12 +1,12 @@
 {
   "kind": "bpb-sim-debug",
-  "v": 5,
+  "v": 6,
   "slug": "history-3706",
   "seed": 42,
-  "durationSec": 22.90000000000019,
+  "durationSec": 20.400000000000155,
   "dummyEndHp": 0,
-  "playerEndHp": 232,
-  "eventCount": 501,
+  "playerEndHp": 227,
+  "eventCount": 506,
   "catalog": [
     {
       "id": "fanny_pack",
@@ -103,7 +103,7 @@
       "name": "Wolf Emblem",
       "type": "Accessory",
       "extraTypes": [],
-      "cooldown": 2.3,
+      "cooldown": 2.5,
       "chance": 10,
       "params": {
         "empower": 1,
@@ -344,11 +344,11 @@
     {
       "itemId": "amulet_of_fortune",
       "name": "Amulet of Fortune",
-      "stack": "regeneration",
+      "stack": "heat",
       "granted": 2,
-      "grants": 2,
+      "grants": 1,
       "expected": null,
-      "expectedKey": "regeneration",
+      "expectedKey": "heat",
       "alsoMatches": [
         {
           "key": "buffs",
@@ -356,45 +356,30 @@
           "how": "exact"
         }
       ],
-      "note": "no catalog key for regeneration; grant 2 equals buffs=2"
+      "note": "no catalog key for heat; grant 2 equals buffs=2"
     }
   ],
   "unhealingMath": {
     "rate": 0,
-    "healLogged": 222,
-    "healGrants": 45,
+    "healLogged": 193,
+    "healGrants": 35,
     "exactFloat": 0,
     "expectedCeil": 0,
     "actual": 0,
     "actualGrants": 0,
     "samples": [
       {
-        "heal": 6,
+        "heal": 11,
         "exact": 0,
         "ceil": 0
       },
       {
-        "heal": 5,
+        "heal": 11,
         "exact": 0,
         "ceil": 0
       },
       {
-        "heal": 5,
-        "exact": 0,
-        "ceil": 0
-      },
-      {
-        "heal": 8,
-        "exact": 0,
-        "ceil": 0
-      },
-      {
-        "heal": 6,
-        "exact": 0,
-        "ceil": 0
-      },
-      {
-        "heal": 8,
+        "heal": 11,
         "exact": 0,
         "ceil": 0
       },
@@ -404,7 +389,22 @@
         "ceil": 0
       },
       {
-        "heal": 6,
+        "heal": 12,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 8,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 12,
+        "exact": 0,
+        "ceil": 0
+      },
+      {
+        "heal": 10,
         "exact": 0,
         "ceil": 0
       }
@@ -415,46 +415,46 @@
     "buffs": {
       "block": {
         "player": {
-          "end": 1555,
+          "end": 1153,
           "sources": [
             {
-              "gained": 631,
+              "gained": 545,
               "lost": 0,
-              "grants": 25,
-              "firstT": 4.903,
-              "lastT": 22.603,
+              "grants": 22,
+              "firstT": 4.755,
+              "lastT": 19.957,
               "samples": [
                 {
-                  "t": 4.903,
+                  "t": 4.755,
+                  "amount": 19
+                },
+                {
+                  "t": 4.916,
                   "amount": 26
                 },
                 {
-                  "t": 5.003,
+                  "t": 5.163,
                   "amount": 19
                 },
                 {
-                  "t": 5.303,
-                  "amount": 19
+                  "t": 7.167,
+                  "amount": 20
                 },
                 {
-                  "t": 7.253,
+                  "t": 7.277,
                   "amount": 27
                 },
                 {
-                  "t": 7.353,
+                  "t": 8.012,
                   "amount": 20
                 },
                 {
-                  "t": 8.103,
-                  "amount": 20
-                },
-                {
-                  "t": 9.553,
-                  "amount": 28
-                },
-                {
-                  "t": 9.703,
+                  "t": 9.394,
                   "amount": 21
+                },
+                {
+                  "t": 9.499,
+                  "amount": 28
                 }
               ],
               "id": "armored_wisdom_puppy",
@@ -464,25 +464,49 @@
               "systemOrigin": null
             },
             {
-              "gained": 110,
+              "gained": 126,
               "lost": 0,
-              "grants": 2,
-              "firstT": 2.5,
-              "lastT": 2.5,
+              "grants": 9,
+              "firstT": 4.791,
+              "lastT": 19.691,
               "samples": [
                 {
-                  "t": 2.5,
-                  "amount": 55
+                  "t": 4.791,
+                  "amount": 14
                 },
                 {
-                  "t": 2.5,
-                  "amount": 55
+                  "t": 6.932,
+                  "amount": 14
+                },
+                {
+                  "t": 8.894,
+                  "amount": 14
+                },
+                {
+                  "t": 10.79,
+                  "amount": 14
+                },
+                {
+                  "t": 12.731,
+                  "amount": 14
+                },
+                {
+                  "t": 14.5,
+                  "amount": 14
+                },
+                {
+                  "t": 16.278,
+                  "amount": 14
+                },
+                {
+                  "t": 18.009,
+                  "amount": 14
                 }
               ],
-              "id": "amulet_of_steel",
-              "itemId": "amulet_of_steel",
-              "name": "Amulet of Steel",
-              "handler": "amulet_of_steel",
+              "id": "wolf_emblem",
+              "itemId": "wolf_emblem",
+              "name": "Wolf Emblem",
+              "handler": "wolf_emblem",
               "systemOrigin": null
             },
             {
@@ -527,27 +551,27 @@
               "gained": 70,
               "lost": 0,
               "grants": 5,
-              "firstT": 6.503,
-              "lastT": 20.653,
+              "firstT": 6.529,
+              "lastT": 20.152,
               "samples": [
                 {
-                  "t": 6.503,
+                  "t": 6.529,
                   "amount": 14
                 },
                 {
-                  "t": 10.353,
+                  "t": 10.233,
                   "amount": 14
                 },
                 {
-                  "t": 14.003,
+                  "t": 13.783,
                   "amount": 14
                 },
                 {
-                  "t": 17.503,
+                  "t": 17.033,
                   "amount": 14
                 },
                 {
-                  "t": 20.653,
+                  "t": 20.152,
                   "amount": 14
                 }
               ],
@@ -558,30 +582,48 @@
               "systemOrigin": null
             },
             {
+              "gained": 55,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 2.5,
+              "lastT": 2.5,
+              "samples": [
+                {
+                  "t": 2.5,
+                  "amount": 55
+                }
+              ],
+              "id": "amulet_of_steel",
+              "itemId": "amulet_of_steel",
+              "name": "Amulet of Steel",
+              "handler": "amulet_of_steel",
+              "systemOrigin": null
+            },
+            {
               "gained": 50,
               "lost": 0,
               "grants": 5,
-              "firstT": 6.4,
-              "lastT": 20.15,
+              "firstT": 6.275,
+              "lastT": 19.385,
               "samples": [
                 {
-                  "t": 6.4,
+                  "t": 6.275,
                   "amount": 10
                 },
                 {
-                  "t": 10.1,
+                  "t": 9.852,
                   "amount": 10
                 },
                 {
-                  "t": 13.6,
+                  "t": 13.194,
                   "amount": 10
                 },
                 {
-                  "t": 16.95,
+                  "t": 16.248,
                   "amount": 10
                 },
                 {
-                  "t": 20.15,
+                  "t": 19.385,
                   "amount": 10
                 }
               ],
@@ -592,13 +634,31 @@
               "systemOrigin": null
             }
           ],
-          "gained": 951
+          "gained": 936
         }
       },
       "heat": {
         "player": {
-          "end": 2,
+          "end": 4,
           "sources": [
+            {
+              "gained": 2,
+              "lost": 0,
+              "grants": 1,
+              "firstT": 7.13,
+              "lastT": 7.13,
+              "samples": [
+                {
+                  "t": 7.13,
+                  "amount": 2
+                }
+              ],
+              "id": "amulet_of_fortune",
+              "itemId": "amulet_of_fortune",
+              "name": "Amulet of Fortune",
+              "handler": "amulet_of_fortune",
+              "systemOrigin": null
+            },
             {
               "gained": 2,
               "lost": 0,
@@ -618,7 +678,7 @@
               "systemOrigin": null
             }
           ],
-          "gained": 2
+          "gained": 4
         }
       },
       "empower": {
@@ -630,14 +690,14 @@
               "lost": 0,
               "grants": 2,
               "firstT": 2.5,
-              "lastT": 16.95,
+              "lastT": 16.248,
               "samples": [
                 {
                   "t": 2.5,
                   "amount": 1
                 },
                 {
-                  "t": 16.95,
+                  "t": 16.248,
                   "amount": 1
                 }
               ],
@@ -653,45 +713,45 @@
       },
       "regeneration": {
         "player": {
-          "end": 14,
+          "end": 9,
           "sources": [
             {
-              "gained": 12,
+              "gained": 9,
               "lost": 0,
-              "grants": 12,
-              "firstT": 4.911,
-              "lastT": 20.761,
+              "grants": 9,
+              "firstT": 6.286,
+              "lastT": 19.965,
               "samples": [
                 {
-                  "t": 4.911,
+                  "t": 6.286,
                   "amount": 1
                 },
                 {
-                  "t": 5.261,
+                  "t": 9.402,
                   "amount": 1
                 },
                 {
-                  "t": 5.411,
+                  "t": 12.965,
                   "amount": 1
                 },
                 {
-                  "t": 9.561,
+                  "t": 15.345,
                   "amount": 1
                 },
                 {
-                  "t": 10.911,
+                  "t": 15.941,
                   "amount": 1
                 },
                 {
-                  "t": 11.861,
+                  "t": 16.545,
                   "amount": 1
                 },
                 {
-                  "t": 13.611,
+                  "t": 17.596,
                   "amount": 1
                 },
                 {
-                  "t": 16.411,
+                  "t": 17.68,
                   "amount": 1
                 }
               ],
@@ -700,68 +760,26 @@
               "name": "Amulet of Light",
               "handler": "amulet_of_light",
               "systemOrigin": null
-            },
-            {
-              "gained": 4,
-              "lost": 0,
-              "grants": 2,
-              "firstT": 7.35,
-              "lastT": 7.352,
-              "samples": [
-                {
-                  "t": 7.35,
-                  "amount": 2
-                },
-                {
-                  "t": 7.352,
-                  "amount": 2
-                }
-              ],
-              "id": "amulet_of_fortune",
-              "itemId": "amulet_of_fortune",
-              "name": "Amulet of Fortune",
-              "handler": "amulet_of_fortune",
-              "systemOrigin": null
             }
           ],
-          "gained": 16
+          "gained": 9
         }
       }
     },
     "debuffs": {
-      "blind": {
+      "cold": {
         "dummy": {
-          "end": 6,
+          "end": 1,
           "sources": [
             {
-              "gained": 6,
+              "gained": 1,
               "lost": 0,
-              "grants": 6,
-              "firstT": 3.45,
-              "lastT": 18.45,
+              "grants": 1,
+              "firstT": 3.444,
+              "lastT": 3.444,
               "samples": [
                 {
-                  "t": 3.45,
-                  "amount": 1
-                },
-                {
-                  "t": 8.15,
-                  "amount": 1
-                },
-                {
-                  "t": 9.55,
-                  "amount": 1
-                },
-                {
-                  "t": 10,
-                  "amount": 1
-                },
-                {
-                  "t": 17.1,
-                  "amount": 1
-                },
-                {
-                  "t": 18.45,
+                  "t": 3.444,
                   "amount": 1
                 }
               ],
@@ -772,7 +790,41 @@
               "systemOrigin": null
             }
           ],
-          "gained": 6
+          "gained": 1
+        }
+      },
+      "blind": {
+        "dummy": {
+          "end": 3,
+          "sources": [
+            {
+              "gained": 3,
+              "lost": 0,
+              "grants": 3,
+              "firstT": 5.428,
+              "lastT": 9.496,
+              "samples": [
+                {
+                  "t": 5.428,
+                  "amount": 1
+                },
+                {
+                  "t": 6.399,
+                  "amount": 1
+                },
+                {
+                  "t": 9.496,
+                  "amount": 1
+                }
+              ],
+              "id": "amulet_of_darkness",
+              "itemId": "amulet_of_darkness",
+              "name": "Amulet of Darkness",
+              "handler": "amulet_of_darkness",
+              "systemOrigin": null
+            }
+          ],
+          "gained": 3
         }
       },
       "poison": {
@@ -780,27 +832,19 @@
           "end": 0,
           "sources": [
             {
-              "gained": 31,
+              "gained": 14,
               "lost": 0,
-              "grants": 10,
-              "firstT": 4.5,
-              "lastT": 22.5,
+              "grants": 6,
+              "firstT": 8.5,
+              "lastT": 18.5,
               "samples": [
                 {
-                  "t": 4.5,
+                  "t": 8.5,
                   "amount": 1
                 },
                 {
-                  "t": 6.5,
-                  "amount": 2
-                },
-                {
-                  "t": 8.5,
-                  "amount": 2
-                },
-                {
                   "t": 10.5,
-                  "amount": 2
+                  "amount": 1
                 },
                 {
                   "t": 12.5,
@@ -826,44 +870,32 @@
               "systemOrigin": "Poison"
             }
           ],
-          "gained": 31
+          "gained": 14
         },
         "dummy": {
-          "end": 7,
+          "end": 4,
           "sources": [
             {
-              "gained": 7,
+              "gained": 4,
               "lost": 0,
-              "grants": 7,
-              "firstT": 4.45,
-              "lastT": 22.15,
+              "grants": 4,
+              "firstT": 6.526,
+              "lastT": 16.145,
               "samples": [
                 {
-                  "t": 4.45,
+                  "t": 6.526,
                   "amount": 1
                 },
                 {
-                  "t": 5.35,
+                  "t": 11.768,
                   "amount": 1
                 },
                 {
-                  "t": 15.4,
+                  "t": 15.93,
                   "amount": 1
                 },
                 {
-                  "t": 16.25,
-                  "amount": 1
-                },
-                {
-                  "t": 20.15,
-                  "amount": 1
-                },
-                {
-                  "t": 20.55,
-                  "amount": 1
-                },
-                {
-                  "t": 22.15,
+                  "t": 16.145,
                   "amount": 1
                 }
               ],
@@ -874,41 +906,7 @@
               "systemOrigin": null
             }
           ],
-          "gained": 7
-        }
-      },
-      "cold": {
-        "dummy": {
-          "end": 3,
-          "sources": [
-            {
-              "gained": 3,
-              "lost": 0,
-              "grants": 3,
-              "firstT": 6.3,
-              "lastT": 8.4,
-              "samples": [
-                {
-                  "t": 6.3,
-                  "amount": 1
-                },
-                {
-                  "t": 6.5,
-                  "amount": 1
-                },
-                {
-                  "t": 8.4,
-                  "amount": 1
-                }
-              ],
-              "id": "amulet_of_darkness",
-              "itemId": "amulet_of_darkness",
-              "name": "Amulet of Darkness",
-              "handler": "amulet_of_darkness",
-              "systemOrigin": null
-            }
-          ],
-          "gained": 3
+          "gained": 4
         }
       }
     },
@@ -918,11 +916,11 @@
           "gained": 5.5,
           "lost": 0,
           "grants": 1,
-          "firstT": 7.504,
-          "lastT": 7.504,
+          "firstT": 7.38,
+          "lastT": 7.38,
           "samples": [
             {
-              "t": 7.504,
+              "t": 7.38,
               "amount": 5.5
             }
           ],
@@ -930,59 +928,47 @@
           "itemId": "toolbox",
           "name": "Toolbox",
           "handler": "toolbox",
-          "label": "Toolbox: battle rage 5.5s"
+          "label": "Utility Pouch: battle rage 5.5s"
         }
       ],
       "dummy": []
     },
     "heals": {
       "player": {
-        "total": 210,
+        "total": 184,
         "byKind": {
           "lifesteal": {
-            "total": 114,
-            "grants": 18
+            "total": 138,
+            "grants": 14
           },
           "regeneration": {
-            "total": 72,
-            "grants": 9
+            "total": 26,
+            "grants": 7
           },
           "heal": {
-            "total": 24,
-            "grants": 6
+            "total": 20,
+            "grants": 5
           }
         },
         "sources": [
           {
-            "gained": 114,
+            "gained": 138,
             "lost": 0,
-            "grants": 18,
+            "grants": 14,
             "firstT": 2.5,
             "lastT": 2.5,
             "samples": [
               {
                 "t": 2.5,
-                "amount": 6
+                "amount": 11
               },
               {
                 "t": 2.5,
-                "amount": 5
+                "amount": 11
               },
               {
                 "t": 2.5,
-                "amount": 5
-              },
-              {
-                "t": 2.5,
-                "amount": 8
-              },
-              {
-                "t": 2.5,
-                "amount": 6
-              },
-              {
-                "t": 2.5,
-                "amount": 8
+                "amount": 11
               },
               {
                 "t": 2.5,
@@ -990,7 +976,19 @@
               },
               {
                 "t": 2.5,
-                "amount": 6
+                "amount": 12
+              },
+              {
+                "t": 2.5,
+                "amount": 8
+              },
+              {
+                "t": 2.5,
+                "amount": 12
+              },
+              {
+                "t": 2.5,
+                "amount": 10
               }
             ],
             "id": "toolbox",
@@ -998,47 +996,43 @@
             "name": "Toolbox",
             "handler": "toolbox",
             "kind": "lifesteal",
-            "label": "Toolbox: rage lifesteal 6",
+            "label": "Utility Pouch: rage lifesteal 11",
             "byItem": {}
           },
           {
-            "gained": 72,
+            "gained": 26,
             "lost": 0,
-            "grants": 9,
-            "firstT": 5.5,
-            "lastT": 21.5,
+            "grants": 7,
+            "firstT": 7.5,
+            "lastT": 19.5,
             "samples": [
               {
-                "t": 5.5,
-                "amount": 3
-              },
-              {
                 "t": 7.5,
-                "amount": 5
+                "amount": 1
               },
               {
                 "t": 9.5,
-                "amount": 5
+                "amount": 2
               },
               {
                 "t": 11.5,
-                "amount": 7
+                "amount": 2
               },
               {
                 "t": 13.5,
-                "amount": 8
+                "amount": 3
               },
               {
                 "t": 15.5,
-                "amount": 9
+                "amount": 4
               },
               {
                 "t": 17.5,
-                "amount": 10
+                "amount": 6
               },
               {
                 "t": 19.5,
-                "amount": 11
+                "amount": 8
               }
             ],
             "id": "Regeneration",
@@ -1047,38 +1041,34 @@
             "handler": null,
             "systemOrigin": "Regeneration",
             "kind": "regeneration",
-            "label": "Regeneration: +3 health",
+            "label": "Regeneration: +1 health",
             "byItem": {}
           },
           {
-            "gained": 24,
+            "gained": 20,
             "lost": 0,
-            "grants": 6,
-            "firstT": 10.75,
-            "lastT": 18.4,
+            "grants": 5,
+            "firstT": 6.928,
+            "lastT": 18.951,
             "samples": [
               {
-                "t": 10.75,
+                "t": 6.928,
                 "amount": 4
               },
               {
-                "t": 10.8,
+                "t": 10.042,
                 "amount": 4
               },
               {
-                "t": 10.9,
+                "t": 12.727,
                 "amount": 4
               },
               {
-                "t": 18.25,
+                "t": 16.274,
                 "amount": 4
               },
               {
-                "t": 18.3,
-                "amount": 4
-              },
-              {
-                "t": 18.4,
+                "t": 18.951,
                 "amount": 4
               }
             ],
@@ -1095,103 +1085,56 @@
     },
     "damage": {
       "toDummy": {
-        "total": 1177,
+        "total": 1207,
         "byKind": {
           "item": {
-            "total": 1167,
-            "grants": 61
+            "total": 1206,
+            "grants": 45
           },
           "fatigue": {
-            "total": 10,
-            "grants": 4
+            "total": 1,
+            "grants": 1
           }
         },
         "sources": [
           {
-            "gained": 438,
-            "lost": 0,
-            "grants": 19,
-            "firstT": 3.457,
-            "lastT": 22.157,
-            "samples": [
-              {
-                "t": 3.457,
-                "amount": 8
-              },
-              {
-                "t": 4.457,
-                "amount": 9
-              },
-              {
-                "t": 5.357,
-                "amount": 9
-              },
-              {
-                "t": 7.207,
-                "amount": 13
-              },
-              {
-                "t": 8.157,
-                "amount": 13
-              },
-              {
-                "t": 9.107,
-                "amount": 17
-              },
-              {
-                "t": 10.007,
-                "amount": 18
-              },
-              {
-                "t": 10.907,
-                "amount": 18
-              }
-            ],
-            "id": "halberd",
-            "itemId": "halberd",
-            "name": "Halberd",
-            "handler": null,
-            "kind": "item",
-            "crits": 0
-          },
-          {
-            "gained": 372,
+            "gained": 648,
             "lost": 0,
             "grants": 26,
-            "firstT": 5.257,
-            "lastT": 22.907,
+            "firstT": 5.317,
+            "lastT": 19.91,
             "samples": [
               {
-                "t": 5.257,
-                "amount": 14
+                "t": 5.317,
+                "amount": 26
               },
               {
-                "t": 5.307,
-                "amount": 14
+                "t": 5.374,
+                "amount": 30
               },
               {
-                "t": 5.407,
-                "amount": 17
+                "t": 5.446,
+                "amount": 9
               },
               {
-                "t": 5.607,
+                "t": 7.906,
+                "amount": 30
+              },
+              {
+                "t": 7.921,
+                "amount": 30
+              },
+              {
+                "t": 7.992,
+                "amount": 30
+              },
+              {
+                "t": 8.205,
                 "amount": 11
               },
               {
-                "t": 8.057,
-                "amount": 15
-              },
-              {
-                "t": 8.107,
-                "amount": 13
-              },
-              {
-                "t": 8.207,
-                "amount": 15
-              },
-              {
-                "t": 8.757,
-                "amount": 9
+                "t": 10.389,
+                "amount": 34
               }
             ],
             "id": "armored_courage_puppy",
@@ -1199,45 +1142,92 @@
             "name": "Armored Courage Puppy",
             "handler": null,
             "kind": "item",
-            "crits": 0
+            "crits": 19
           },
           {
-            "gained": 357,
+            "gained": 382,
             "lost": 0,
-            "grants": 16,
-            "firstT": 3.457,
-            "lastT": 22.157,
+            "grants": 11,
+            "firstT": 4.442,
+            "lastT": 20.359,
             "samples": [
               {
-                "t": 3.457,
+                "t": 4.442,
+                "amount": 16
+              },
+              {
+                "t": 5.428,
+                "amount": 20
+              },
+              {
+                "t": 6.399,
+                "amount": 26
+              },
+              {
+                "t": 7.329,
+                "amount": 24
+              },
+              {
+                "t": 9.187,
+                "amount": 34
+              },
+              {
+                "t": 10.998,
+                "amount": 32
+              },
+              {
+                "t": 12.738,
+                "amount": 34
+              },
+              {
+                "t": 15.306,
+                "amount": 42
+              }
+            ],
+            "id": "halberd",
+            "itemId": "halberd",
+            "name": "Halberd",
+            "handler": null,
+            "kind": "item",
+            "crits": 11
+          },
+          {
+            "gained": 176,
+            "lost": 0,
+            "grants": 8,
+            "firstT": 3.444,
+            "lastT": 16.145,
+            "samples": [
+              {
+                "t": 3.444,
                 "amount": 22
               },
               {
-                "t": 4.457,
+                "t": 5.428,
                 "amount": 22
               },
               {
-                "t": 5.357,
+                "t": 6.399,
                 "amount": 22
               },
               {
-                "t": 6.307,
+                "t": 6.526,
                 "amount": 22
               },
               {
-                "t": 6.507,
+                "t": 9.496,
                 "amount": 22
               },
               {
-                "t": 8.157,
+                "t": 11.768,
                 "amount": 22
               },
               {
-                "t": 8.407,
+                "t": 15.93,
                 "amount": 22
               },
               {
-                "t": 9.557,
+                "t": 16.145,
                 "amount": 22
               }
             ],
@@ -1249,27 +1239,15 @@
             "crits": 0
           },
           {
-            "gained": 10,
+            "gained": 1,
             "lost": 0,
-            "grants": 4,
+            "grants": 1,
             "firstT": 19.5,
-            "lastT": 22.5,
+            "lastT": 19.5,
             "samples": [
               {
                 "t": 19.5,
                 "amount": 1
-              },
-              {
-                "t": 20.5,
-                "amount": 2
-              },
-              {
-                "t": 21.5,
-                "amount": 3
-              },
-              {
-                "t": 22.5,
-                "amount": 4
               }
             ],
             "id": "Fatigue",
@@ -1282,40 +1260,28 @@
         ]
       },
       "toPlayer": {
-        "total": 10,
+        "total": 1,
         "byKind": {
           "fatigue": {
-            "total": 10,
-            "grants": 4
+            "total": 1,
+            "grants": 1
           },
           "dummy": {
             "total": 0,
-            "grants": 5
+            "grants": 7
           }
         },
         "sources": [
           {
-            "gained": 10,
+            "gained": 1,
             "lost": 0,
-            "grants": 4,
+            "grants": 1,
             "firstT": 19.5,
-            "lastT": 22.5,
+            "lastT": 19.5,
             "samples": [
               {
                 "t": 19.5,
                 "amount": 1
-              },
-              {
-                "t": 20.5,
-                "amount": 2
-              },
-              {
-                "t": 21.5,
-                "amount": 3
-              },
-              {
-                "t": 22.5,
-                "amount": 4
               }
             ],
             "id": "Fatigue",
@@ -1328,7 +1294,7 @@
           {
             "gained": 0,
             "lost": 0,
-            "grants": 5,
+            "grants": 7,
             "firstT": 4.652,
             "lastT": 19.702,
             "samples": [
@@ -1337,11 +1303,19 @@
                 "amount": 0
               },
               {
+                "t": 6.802,
+                "amount": 0
+              },
+              {
                 "t": 8.952,
                 "amount": 0
               },
               {
                 "t": 11.102,
+                "amount": 0
+              },
+              {
+                "t": 15.402,
                 "amount": 0
               },
               {
@@ -1364,50 +1338,95 @@
       }
     },
     "misses": {
-      "player": 5,
-      "dummy": 4
+      "player": 9,
+      "dummy": 1
     },
     "activations": {
       "player": {
-        "total": 93,
+        "total": 120,
         "sources": [
           {
-            "gained": 25,
+            "gained": 28,
             "lost": 0,
-            "grants": 25,
-            "firstT": 4.9,
-            "lastT": 22.6,
+            "grants": 28,
+            "firstT": 5.206,
+            "lastT": 19.91,
             "samples": [
               {
-                "t": 4.9,
+                "t": 5.206,
                 "amount": 1
               },
               {
-                "t": 5,
+                "t": 5.317,
                 "amount": 1
               },
               {
-                "t": 5.3,
+                "t": 5.374,
                 "amount": 1
               },
               {
-                "t": 7.25,
+                "t": 5.446,
                 "amount": 1
               },
               {
-                "t": 7.35,
+                "t": 7.906,
                 "amount": 1
               },
               {
-                "t": 8.1,
+                "t": 7.921,
                 "amount": 1
               },
               {
-                "t": 9.55,
+                "t": 7.992,
                 "amount": 1
               },
               {
-                "t": 9.7,
+                "t": 8.205,
+                "amount": 1
+              }
+            ],
+            "id": "armored_courage_puppy",
+            "itemId": "armored_courage_puppy",
+            "name": "Armored Courage Puppy",
+            "handler": "armored_courage_puppy"
+          },
+          {
+            "gained": 22,
+            "lost": 0,
+            "grants": 22,
+            "firstT": 4.752,
+            "lastT": 19.954,
+            "samples": [
+              {
+                "t": 4.752,
+                "amount": 1
+              },
+              {
+                "t": 4.913,
+                "amount": 1
+              },
+              {
+                "t": 5.16,
+                "amount": 1
+              },
+              {
+                "t": 7.164,
+                "amount": 1
+              },
+              {
+                "t": 7.274,
+                "amount": 1
+              },
+              {
+                "t": 8.009,
+                "amount": 1
+              },
+              {
+                "t": 9.391,
+                "amount": 1
+              },
+              {
+                "t": 9.496,
                 "amount": 1
               }
             ],
@@ -1417,42 +1436,42 @@
             "handler": "armored_wisdom_puppy"
           },
           {
-            "gained": 22,
+            "gained": 17,
             "lost": 0,
-            "grants": 22,
-            "firstT": 3.45,
-            "lastT": 22.15,
+            "grants": 17,
+            "firstT": 3.444,
+            "lastT": 20.359,
             "samples": [
               {
-                "t": 3.45,
+                "t": 3.444,
                 "amount": 1
               },
               {
-                "t": 4.45,
+                "t": 4.442,
                 "amount": 1
               },
               {
-                "t": 5.35,
+                "t": 5.428,
                 "amount": 1
               },
               {
-                "t": 6.3,
+                "t": 6.399,
                 "amount": 1
               },
               {
-                "t": 7.2,
+                "t": 7.329,
                 "amount": 1
               },
               {
-                "t": 8.15,
+                "t": 8.26,
                 "amount": 1
               },
               {
-                "t": 9.1,
+                "t": 9.187,
                 "amount": 1
               },
               {
-                "t": 10,
+                "t": 10.115,
                 "amount": 1
               }
             ],
@@ -1462,42 +1481,42 @@
             "handler": "halberd"
           },
           {
-            "gained": 13,
+            "gained": 12,
             "lost": 0,
-            "grants": 13,
-            "firstT": 5.5,
-            "lastT": 22.65,
+            "grants": 12,
+            "firstT": 5.325,
+            "lastT": 19.374,
             "samples": [
               {
-                "t": 5.5,
+                "t": 5.325,
                 "amount": 1
               },
               {
-                "t": 5.5,
+                "t": 5.512,
                 "amount": 1
               },
               {
-                "t": 8.25,
+                "t": 8.067,
                 "amount": 1
               },
               {
-                "t": 8.4,
+                "t": 8.314,
                 "amount": 1
               },
               {
-                "t": 11.1,
+                "t": 10.96,
                 "amount": 1
               },
               {
-                "t": 11.4,
+                "t": 11.125,
                 "amount": 1
               },
               {
-                "t": 14,
+                "t": 13.743,
                 "amount": 1
               },
               {
-                "t": 14.35,
+                "t": 13.838,
                 "amount": 1
               }
             ],
@@ -1507,38 +1526,83 @@
             "handler": "jynx_torquilla"
           },
           {
+            "gained": 9,
+            "lost": 0,
+            "grants": 9,
+            "firstT": 4.787,
+            "lastT": 19.687,
+            "samples": [
+              {
+                "t": 4.787,
+                "amount": 1
+              },
+              {
+                "t": 6.928,
+                "amount": 1
+              },
+              {
+                "t": 8.89,
+                "amount": 1
+              },
+              {
+                "t": 10.786,
+                "amount": 1
+              },
+              {
+                "t": 12.727,
+                "amount": 1
+              },
+              {
+                "t": 14.496,
+                "amount": 1
+              },
+              {
+                "t": 16.274,
+                "amount": 1
+              },
+              {
+                "t": 18.005,
+                "amount": 1
+              }
+            ],
+            "id": "wolf_emblem",
+            "itemId": "wolf_emblem",
+            "name": "Wolf Emblem",
+            "handler": "wolf_emblem"
+          },
+          {
             "gained": 7,
             "lost": 0,
             "grants": 7,
-            "firstT": 2.51,
-            "lastT": 20.8,
+            "firstT": 2.5,
+            "lastT": 19.931,
             "samples": [
               {
-                "t": 2.51,
+                "t": 2.5,
                 "amount": 1
               },
               {
-                "t": 5.4,
+                "t": 5.374,
                 "amount": 1
               },
               {
-                "t": 8.55,
+                "t": 8.291,
                 "amount": 1
               },
               {
-                "t": 11.65,
+                "t": 11.286,
                 "amount": 1
               },
               {
-                "t": 14.75,
+                "t": 14.176,
                 "amount": 1
               },
               {
-                "t": 17.7,
+                "t": 17.162,
                 "amount": 1
               },
               {
-                "t": 20.8,
+                "t": 19.931,
                 "amount": 1
               }
             ],
@@ -1551,35 +1615,35 @@
             "gained": 7,
             "lost": 0,
             "grants": 7,
-            "firstT": 5.15,
-            "lastT": 20.7,
+            "firstT": 5.248,
+            "lastT": 18.951,
             "samples": [
               {
-                "t": 5.15,
+                "t": 5.248,
                 "amount": 1
               },
               {
-                "t": 7.75,
+                "t": 7.712,
                 "amount": 1
               },
               {
-                "t": 10.25,
+                "t": 10.042,
                 "amount": 1
               },
               {
-                "t": 12.85,
+                "t": 12.415,
                 "amount": 1
               },
               {
-                "t": 15.6,
+                "t": 14.554,
                 "amount": 1
               },
               {
-                "t": 18.15,
+                "t": 16.807,
                 "amount": 1
               },
               {
-                "t": 20.7,
+                "t": 18.951,
                 "amount": 1
               }
             ],
@@ -1589,67 +1653,30 @@
             "handler": "speak_with_animals"
           },
           {
-            "gained": 6,
-            "lost": 0,
-            "grants": 6,
-            "firstT": 10.75,
-            "lastT": 18.4,
-            "samples": [
-              {
-                "t": 10.75,
-                "amount": 1
-              },
-              {
-                "t": 10.8,
-                "amount": 1
-              },
-              {
-                "t": 10.9,
-                "amount": 1
-              },
-              {
-                "t": 18.25,
-                "amount": 1
-              },
-              {
-                "t": 18.3,
-                "amount": 1
-              },
-              {
-                "t": 18.4,
-                "amount": 1
-              }
-            ],
-            "id": "goobling",
-            "itemId": "goobling",
-            "name": "Goobling",
-            "handler": "goobert"
-          },
-          {
             "gained": 5,
             "lost": 0,
             "grants": 5,
-            "firstT": 6.4,
-            "lastT": 20.15,
+            "firstT": 6.275,
+            "lastT": 19.385,
             "samples": [
               {
-                "t": 6.4,
+                "t": 6.275,
                 "amount": 1
               },
               {
-                "t": 10.1,
+                "t": 9.852,
                 "amount": 1
               },
               {
-                "t": 13.6,
+                "t": 13.194,
                 "amount": 1
               },
               {
-                "t": 16.95,
+                "t": 16.248,
                 "amount": 1
               },
               {
-                "t": 20.15,
+                "t": 19.385,
                 "amount": 1
               }
             ],
@@ -1662,27 +1689,60 @@
             "gained": 5,
             "lost": 0,
             "grants": 5,
-            "firstT": 6.5,
-            "lastT": 20.65,
+            "firstT": 6.928,
+            "lastT": 18.951,
             "samples": [
               {
-                "t": 6.5,
+                "t": 6.928,
                 "amount": 1
               },
               {
-                "t": 10.35,
+                "t": 10.042,
                 "amount": 1
               },
               {
-                "t": 14,
+                "t": 12.727,
                 "amount": 1
               },
               {
-                "t": 17.5,
+                "t": 16.274,
                 "amount": 1
               },
               {
-                "t": 20.65,
+                "t": 18.951,
+                "amount": 1
+              }
+            ],
+            "id": "goobling",
+            "itemId": "goobling",
+            "name": "Goobling",
+            "handler": "goobert"
+          },
+          {
+            "gained": 5,
+            "lost": 0,
+            "grants": 5,
+            "firstT": 6.526,
+            "lastT": 20.149,
+            "samples": [
+              {
+                "t": 6.526,
+                "amount": 1
+              },
+              {
+                "t": 10.23,
+                "amount": 1
+              },
+              {
+                "t": 13.78,
+                "amount": 1
+              },
+              {
+                "t": 17.03,
+                "amount": 1
+              },
+              {
+                "t": 20.149,
                 "amount": 1
               }
             ],
@@ -1696,14 +1756,14 @@
             "lost": 0,
             "grants": 2,
             "firstT": 2.5,
-            "lastT": 7.5,
+            "lastT": 7.376,
             "samples": [
               {
                 "t": 2.5,
                 "amount": 1
               },
               {
-                "t": 7.5,
+                "t": 7.376,
                 "amount": 1
               }
             ],
@@ -1716,11 +1776,11 @@
             "gained": 1,
             "lost": 0,
             "grants": 1,
-            "firstT": 7.35,
-            "lastT": 7.35,
+            "firstT": 7.128,
+            "lastT": 7.128,
             "samples": [
               {
-                "t": 7.35,
+                "t": 7.128,
                 "amount": 1
               }
             ],
@@ -1732,14 +1792,14 @@
         ]
       },
       "dummy": {
-        "total": 9,
+        "total": 8,
         "sources": [
           {
-            "gained": 9,
+            "gained": 8,
             "lost": 0,
-            "grants": 9,
+            "grants": 8,
             "firstT": 4.65,
-            "lastT": 21.85,
+            "lastT": 19.7,
             "samples": [
               {
                 "t": 4.65,
@@ -1795,13 +1855,13 @@
     ],
     "end": {
       "player": {
-        "hp": 232,
-        "maxHp": 236,
+        "hp": 227,
+        "maxHp": 227,
         "stacks": {
-          "regeneration": 14,
-          "heat": 2,
+          "regeneration": 9,
+          "heat": 4,
           "empower": 1,
-          "block": 1555
+          "block": 1153
         },
         "healAmp": 0,
         "unhealing": 0
@@ -1810,52 +1870,45 @@
         "hp": 0,
         "maxHp": 1200,
         "stacks": {
-          "blind": 6,
-          "poison": 7,
-          "cold": 3
+          "blind": 3,
+          "poison": 4,
+          "cold": 1
         }
       }
     }
   },
   "ui": {
     "combatLog": {
-      "lineCount": 311,
+      "lineCount": 326,
       "byType": {
-        "info": 4,
-        "activate": 102,
-        "buff": 61,
-        "heal": 33,
+        "buff": 62,
+        "activate": 128,
+        "info": 24,
+        "heal": 26,
         "stat": 1,
-        "debuff": 26,
-        "damage": 74,
-        "miss": 9,
+        "damage": 54,
+        "debuff": 14,
+        "miss": 10,
+        "stamina": 6,
         "fight_end": 1
       },
       "stackGained": {
-        "block": 951,
-        "heat": 2,
+        "block": 936,
+        "heat": 4,
         "empower": 2,
-        "blind": 6,
-        "poison": 38,
-        "regeneration": 16,
-        "cold": 3
+        "cold": 1,
+        "blind": 3,
+        "regeneration": 9,
+        "poison": 18
       },
       "sample": [
         {
           "t": 2.5,
-          "type": "info",
-          "stack": null,
-          "itemId": "amulet_of_light",
-          "amount": null,
-          "label": "Amulet of Light: listening for activations"
-        },
-        {
-          "t": 2.5,
-          "type": "info",
-          "stack": null,
-          "itemId": "amulet_of_light",
-          "amount": null,
-          "label": "Amulet of Light: listening for activations"
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
         },
         {
           "t": 2.5,
@@ -1863,7 +1916,47 @@
           "stack": null,
           "itemId": "toolbox",
           "amount": null,
-          "label": "Bag: Toolbox"
+          "label": "Bag: Utility Pouch"
+        },
+        {
+          "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "armored_courage_puppy",
+          "amount": 6,
+          "label": "+6 damage"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "amulet_of_light",
+          "amount": null,
+          "label": "Amulet of Light: listening for activations"
+        },
+        {
+          "t": 2.5,
+          "type": "buff",
+          "stack": "block",
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "armored_courage_puppy",
+          "amount": 8,
+          "label": "+8 damage"
         },
         {
           "t": 2.5,
@@ -1883,35 +1976,11 @@
         },
         {
           "t": 2.5,
-          "type": "buff",
-          "stack": "block",
-          "itemId": "protective_purse",
-          "amount": 15,
-          "label": "Protective Purse: +15 Block"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "block",
-          "itemId": "protective_purse",
-          "amount": 15,
-          "label": "Protective Purse: +15 Block"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "block",
-          "itemId": "protective_purse",
-          "amount": 15,
-          "label": "Protective Purse: +15 Block"
-        },
-        {
-          "t": 2.5,
-          "type": "buff",
-          "stack": "block",
-          "itemId": "protective_purse",
-          "amount": 15,
-          "label": "Protective Purse: +15 Block"
+          "type": "activate",
+          "stack": null,
+          "itemId": "oil_lamp",
+          "amount": null,
+          "label": "Accessory: Oil Lamp"
         },
         {
           "t": 2.5,
@@ -1923,11 +1992,147 @@
         },
         {
           "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "armored_courage_puppy",
+          "amount": 2,
+          "label": "+2 damage"
+        },
+        {
+          "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "amulet_of_light",
+          "amount": null,
+          "label": "Amulet of Light: listening for activations"
+        },
+        {
+          "t": 2.5,
           "type": "buff",
           "stack": "block",
-          "itemId": "amulet_of_steel",
-          "amount": 55,
-          "label": "+55 block"
+          "itemId": "protective_purse",
+          "amount": 15,
+          "label": "Protective Purse: +15 Block"
+        },
+        {
+          "t": 2.5,
+          "type": "info",
+          "stack": null,
+          "itemId": "armored_courage_puppy",
+          "amount": 6,
+          "label": "+6 damage"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 11,
+          "label": "Utility Pouch: rage lifesteal 11"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 11,
+          "label": "Utility Pouch: rage lifesteal 11"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 11,
+          "label": "Utility Pouch: rage lifesteal 11"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 4,
+          "label": "Utility Pouch: rage lifesteal 4"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 12,
+          "label": "Utility Pouch: rage lifesteal 12"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 8,
+          "label": "Utility Pouch: rage lifesteal 8"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 12,
+          "label": "Utility Pouch: rage lifesteal 12"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 10,
+          "label": "Utility Pouch: rage lifesteal 10"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 11,
+          "label": "Utility Pouch: rage lifesteal 11"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 4,
+          "label": "Utility Pouch: rage lifesteal 4"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 12,
+          "label": "Utility Pouch: rage lifesteal 12"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 8,
+          "label": "Utility Pouch: rage lifesteal 8"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 12,
+          "label": "Utility Pouch: rage lifesteal 12"
+        },
+        {
+          "t": 2.5,
+          "type": "heal",
+          "stack": null,
+          "itemId": null,
+          "amount": 12,
+          "label": "Utility Pouch: rage lifesteal 12"
         },
         {
           "t": 2.5,
@@ -1946,150 +2151,6 @@
           "label": "Amulet of Steel: +1 Empower"
         },
         {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 6,
-          "label": "Toolbox: rage lifesteal 6"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 5,
-          "label": "Toolbox: rage lifesteal 5"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 5,
-          "label": "Toolbox: rage lifesteal 5"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 8,
-          "label": "Toolbox: rage lifesteal 8"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 6,
-          "label": "Toolbox: rage lifesteal 6"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 8,
-          "label": "Toolbox: rage lifesteal 8"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 4,
-          "label": "Toolbox: rage lifesteal 4"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 6,
-          "label": "Toolbox: rage lifesteal 6"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 8,
-          "label": "Toolbox: rage lifesteal 8"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 7,
-          "label": "Toolbox: rage lifesteal 7"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 8,
-          "label": "Toolbox: rage lifesteal 8"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 5,
-          "label": "Toolbox: rage lifesteal 5"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 5,
-          "label": "Toolbox: rage lifesteal 5"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 6,
-          "label": "Toolbox: rage lifesteal 6"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 7,
-          "label": "Toolbox: rage lifesteal 7"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 4,
-          "label": "Toolbox: rage lifesteal 4"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 7,
-          "label": "Toolbox: rage lifesteal 7"
-        },
-        {
-          "t": 2.5,
-          "type": "heal",
-          "stack": null,
-          "itemId": null,
-          "amount": 9,
-          "label": "Toolbox: rage lifesteal 9"
-        },
-        {
           "t": 2.502,
           "type": "stat",
           "stack": null,
@@ -2098,23 +2159,7 @@
           "label": "Healing reduced by 25%"
         },
         {
-          "t": 2.51,
-          "type": "activate",
-          "stack": null,
-          "itemId": "oil_lamp",
-          "amount": null,
-          "label": "Accessory: Oil Lamp"
-        },
-        {
-          "t": 2.525,
-          "type": "info",
-          "stack": null,
-          "itemId": null,
-          "amount": null,
-          "label": "Armor DR 8"
-        },
-        {
-          "t": 3.45,
+          "t": 3.444,
           "type": "activate",
           "stack": null,
           "itemId": "halberd",
@@ -2122,23 +2167,7 @@
           "label": "Weapon: Halberd"
         },
         {
-          "t": 3.45,
-          "type": "debuff",
-          "stack": "blind",
-          "itemId": "amulet_of_darkness",
-          "amount": 1,
-          "label": "+1 blind"
-        },
-        {
-          "t": 3.457,
-          "type": "damage",
-          "stack": null,
-          "itemId": "halberd",
-          "amount": 8,
-          "label": "Halberd hit for 8"
-        },
-        {
-          "t": 3.457,
+          "t": 3.444,
           "type": "damage",
           "stack": null,
           "itemId": "amulet_of_darkness",
@@ -2146,7 +2175,31 @@
           "label": "Amulet of Darkness hit for 22"
         },
         {
-          "t": 4.45,
+          "t": 3.444,
+          "type": "debuff",
+          "stack": "cold",
+          "itemId": "amulet_of_darkness",
+          "amount": 1,
+          "label": "+1 cold"
+        },
+        {
+          "t": 3.448,
+          "type": "miss",
+          "stack": null,
+          "itemId": "halberd",
+          "amount": null,
+          "label": "Halberd missed"
+        },
+        {
+          "t": 4.442,
+          "type": "info",
+          "stack": null,
+          "itemId": "halberd",
+          "amount": 1,
+          "label": "+1 damage"
+        },
+        {
+          "t": 4.442,
           "type": "activate",
           "stack": null,
           "itemId": "halberd",
@@ -2154,19 +2207,27 @@
           "label": "Weapon: Halberd"
         },
         {
-          "t": 4.45,
-          "type": "debuff",
-          "stack": "poison",
-          "itemId": "amulet_of_darkness",
-          "amount": 1,
-          "label": "+1 poison"
+          "t": 4.442,
+          "type": "damage",
+          "stack": null,
+          "itemId": "halberd",
+          "amount": 16,
+          "label": "Halberd hit crit for 16"
+        },
+        {
+          "t": 4.65,
+          "type": "activate",
+          "stack": null,
+          "itemId": null,
+          "amount": null,
+          "label": "Training Dummy: swing"
         }
       ]
     },
     "damageMeter": {
       "stackTabs": {
         "block": {
-          "gained": 951,
+          "gained": 936,
           "empty": false,
           "sources": [
             {
@@ -2200,11 +2261,6 @@
               "amount": 15
             },
             {
-              "itemId": "amulet_of_steel",
-              "name": "+55 block",
-              "amount": 55
-            },
-            {
               "itemId": null,
               "name": "Amulet of Steel",
               "amount": 55
@@ -2212,12 +2268,17 @@
             {
               "itemId": null,
               "name": "Armored Wisdom Puppy",
-              "amount": 26
+              "amount": 19
+            },
+            {
+              "itemId": null,
+              "name": "Wolf Emblem",
+              "amount": 14
             },
             {
               "itemId": null,
               "name": "Armored Wisdom Puppy",
-              "amount": 19
+              "amount": 26
             },
             {
               "itemId": null,
@@ -2233,6 +2294,16 @@
               "itemId": null,
               "name": "Wisdom Puppy",
               "amount": 14
+            },
+            {
+              "itemId": null,
+              "name": "Wolf Emblem",
+              "amount": 14
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 20
             },
             {
               "itemId": null,
@@ -2246,18 +2317,18 @@
             },
             {
               "itemId": null,
-              "name": "Armored Wisdom Puppy",
-              "amount": 20
-            },
-            {
-              "itemId": null,
-              "name": "Armored Wisdom Puppy",
-              "amount": 28
+              "name": "Wolf Emblem",
+              "amount": 14
             },
             {
               "itemId": null,
               "name": "Armored Wisdom Puppy",
               "amount": 21
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 28
             },
             {
               "itemId": "full_body_protection",
@@ -2276,13 +2347,23 @@
             },
             {
               "itemId": null,
-              "name": "Armored Wisdom Puppy",
-              "amount": 29
+              "name": "Wolf Emblem",
+              "amount": 14
             },
             {
               "itemId": null,
               "name": "Armored Wisdom Puppy",
               "amount": 22
+            },
+            {
+              "itemId": null,
+              "name": "Armored Wisdom Puppy",
+              "amount": 29
+            },
+            {
+              "itemId": null,
+              "name": "Wolf Emblem",
+              "amount": 14
             },
             {
               "itemId": "full_body_protection",
@@ -2311,6 +2392,11 @@
             },
             {
               "itemId": null,
+              "name": "Wolf Emblem",
+              "amount": 14
+            },
+            {
+              "itemId": null,
               "name": "Armored Wisdom Puppy",
               "amount": 24
             },
@@ -2331,6 +2417,11 @@
             },
             {
               "itemId": null,
+              "name": "Wolf Emblem",
+              "amount": 14
+            },
+            {
+              "itemId": null,
               "name": "Wisdom Puppy",
               "amount": 14
             },
@@ -2343,6 +2434,11 @@
               "itemId": null,
               "name": "Armored Wisdom Puppy",
               "amount": 32
+            },
+            {
+              "itemId": null,
+              "name": "Wolf Emblem",
+              "amount": 14
             },
             {
               "itemId": null,
@@ -2361,6 +2457,11 @@
             },
             {
               "itemId": null,
+              "name": "Wolf Emblem",
+              "amount": 14
+            },
+            {
+              "itemId": null,
               "name": "Armored Wisdom Puppy",
               "amount": 33
             },
@@ -2368,21 +2469,6 @@
               "itemId": null,
               "name": "Wisdom Puppy",
               "amount": 14
-            },
-            {
-              "itemId": null,
-              "name": "Armored Wisdom Puppy",
-              "amount": 25
-            },
-            {
-              "itemId": null,
-              "name": "Armored Wisdom Puppy",
-              "amount": 27
-            },
-            {
-              "itemId": null,
-              "name": "Armored Wisdom Puppy",
-              "amount": 34
             }
           ]
         },
@@ -2392,34 +2478,9 @@
           "sources": []
         },
         "regeneration": {
-          "gained": 16,
+          "gained": 9,
           "empty": false,
           "sources": [
-            {
-              "itemId": "amulet_of_light",
-              "name": "Amulet of Light",
-              "amount": 1
-            },
-            {
-              "itemId": "amulet_of_light",
-              "name": "Amulet of Light",
-              "amount": 1
-            },
-            {
-              "itemId": "amulet_of_light",
-              "name": "Amulet of Light",
-              "amount": 1
-            },
-            {
-              "itemId": "amulet_of_fortune",
-              "name": "+2 regeneration",
-              "amount": 2
-            },
-            {
-              "itemId": "amulet_of_fortune",
-              "name": "Amulet of Fortune",
-              "amount": 2
-            },
             {
               "itemId": "amulet_of_light",
               "name": "Amulet of Light",
@@ -2499,18 +2560,23 @@
           ]
         },
         "heat": {
-          "gained": 2,
+          "gained": 4,
           "empty": false,
           "sources": [
             {
               "itemId": "oil_lamp",
               "name": "Oil Lamp",
               "amount": 2
+            },
+            {
+              "itemId": "amulet_of_fortune",
+              "name": "Amulet of Fortune",
+              "amount": 2
             }
           ]
         },
         "poison": {
-          "gained": 38,
+          "gained": 18,
           "empty": false,
           "sources": [
             {
@@ -2524,24 +2590,14 @@
               "amount": 1
             },
             {
-              "itemId": "amulet_of_darkness",
-              "name": "+1 poison",
+              "itemId": null,
+              "name": "Poison",
               "amount": 1
             },
             {
-              "itemId": null,
-              "name": "Poison",
-              "amount": 2
-            },
-            {
-              "itemId": null,
-              "name": "Poison",
-              "amount": 2
-            },
-            {
-              "itemId": null,
-              "name": "Poison",
-              "amount": 2
+              "itemId": "amulet_of_darkness",
+              "name": "+1 poison",
+              "amount": 1
             },
             {
               "itemId": null,
@@ -2572,53 +2628,13 @@
               "itemId": null,
               "name": "Poison",
               "amount": 4
-            },
-            {
-              "itemId": "amulet_of_darkness",
-              "name": "+1 poison",
-              "amount": 1
-            },
-            {
-              "itemId": null,
-              "name": "Poison",
-              "amount": 5
-            },
-            {
-              "itemId": "amulet_of_darkness",
-              "name": "+1 poison",
-              "amount": 1
-            },
-            {
-              "itemId": "amulet_of_darkness",
-              "name": "+1 poison",
-              "amount": 1
-            },
-            {
-              "itemId": null,
-              "name": "Poison",
-              "amount": 7
             }
           ]
         },
         "blind": {
-          "gained": 6,
+          "gained": 3,
           "empty": false,
           "sources": [
-            {
-              "itemId": "amulet_of_darkness",
-              "name": "+1 blind",
-              "amount": 1
-            },
-            {
-              "itemId": "amulet_of_darkness",
-              "name": "+1 blind",
-              "amount": 1
-            },
-            {
-              "itemId": "amulet_of_darkness",
-              "name": "+1 blind",
-              "amount": 1
-            },
             {
               "itemId": "amulet_of_darkness",
               "name": "+1 blind",
@@ -2637,19 +2653,9 @@
           ]
         },
         "cold": {
-          "gained": 3,
+          "gained": 1,
           "empty": false,
           "sources": [
-            {
-              "itemId": "amulet_of_darkness",
-              "name": "+1 cold",
-              "amount": 1
-            },
-            {
-              "itemId": "amulet_of_darkness",
-              "name": "+1 cold",
-              "amount": 1
-            },
             {
               "itemId": "amulet_of_darkness",
               "name": "+1 cold",

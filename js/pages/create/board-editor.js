@@ -421,8 +421,6 @@ export function mountBoardEditor(host, opts) {
       getSpriteUrl,
       root: rootBase,
       onRequestHistoryFile: () => boardImport?.openFilePicker(),
-      onRequestMedia: SCREENSHOT_IMPORT_ENABLED ? () => boardImport?.openMediaPicker?.() : undefined,
-      mediaEnabled: SCREENSHOT_IMPORT_ENABLED,
     });
     if (labelTool) {
       // Inbox (?shot=) re-runs import. A label-check edit (?fix=real-NNN) loads the saved board.

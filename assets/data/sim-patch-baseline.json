@@ -548,11 +548,14 @@
   "rows": {
     "ace_of_spades": {
       "catalogSha256": "95168a71b2207842220cce9ec75cc7e73ba7f591d2579506f8de2a6171827b7d",
-      "sourcePath": null,
-      "sourceSha256": null,
-      "hooks": [],
-      "status": "source_unresolved",
-      "fidelity": "incomplete"
+      "sourcePath": "AceofSpades.gd",
+      "sourceSha256": "2a49c37e69e16a46bdbf510b59a38b3a7bd74b2405dd20c96a25abd117a3485e",
+      "hooks": [
+        "cardSecondaryEffectActive",
+        "doRevealEffect"
+      ],
+      "status": "source_ported",
+      "fidelity": "source_ported"
     },
     "acorn_ace": {
       "catalogSha256": "265985dbd64a39c3ef94674b7d295981d8ad1092ca9f99a5d5667f7d172c171a",
@@ -806,11 +809,13 @@
     },
     "armored_courage_puppy": {
       "catalogSha256": "2fff4418a3345aed88a07b232930a8643a6a59718594d2dbfa71bd01614e7c4e",
-      "sourcePath": null,
-      "sourceSha256": null,
-      "hooks": [],
-      "status": "source_unresolved",
-      "fidelity": "incomplete"
+      "sourcePath": "Exclusive/ArmoredCouragePuppy.gd",
+      "sourceSha256": "57ac233174b737be76e204d868b18ace8e144bb7dadc590d72ac8dabc75a7b37",
+      "hooks": [
+        "_ready"
+      ],
+      "status": "source_ported",
+      "fidelity": "source_ported"
     },
     "armored_power_puppy": {
       "catalogSha256": "f1b17fa6ef85cf3f7f2bb35b96ebcda6ad11f28372bfdaa33c81ab6a710adb61",
@@ -5030,8 +5035,8 @@
         "onPrepare",
         "setData"
       ],
-      "status": "port_present",
-      "fidelity": "incomplete"
+      "status": "source_ported",
+      "fidelity": "source_ported"
     },
     "power_puppy": {
       "catalogSha256": "9304c9893409187091ff11459530841ae711fcd968fb4300757d7fce76f975f8",
@@ -7029,8 +7034,8 @@
         "doCooldownEffect",
         "onPrepare"
       ],
-      "status": "port_present",
-      "fidelity": "incomplete"
+      "status": "source_ported",
+      "fidelity": "source_ported"
     },
     "war_scythe": {
       "catalogSha256": "df2dd95584a1411e58bf95e019e512831bcf19d07ee6053b2396f0565a159686",

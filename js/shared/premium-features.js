@@ -32,12 +32,6 @@ export const PREMIUM_FEATURES = [
     icon: 'assets/icons/sim/hud/Sword.png',
   },
   {
-    name: 'Screenshot to build',
-    free: false,
-    premium: true,
-    icon: 'assets/icons/create/GalleryOrb.png',
-  },
-  {
     name: 'Export board image',
     free: false,
     premium: true,

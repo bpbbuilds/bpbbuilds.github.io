@@ -1,11 +1,13 @@
 {
-  "extractedAt": "2026-09-24T16:53:39.392Z",
+  "extractedAt": "2026-10-04T20:27:56.306Z",
   "source": "tools/game-extract-full/Items",
   "scriptFileCount": 509,
-  "withCombatOverrides": 452,
+  "withCombatOverrides": 502,
   "byMethod": {
     "doCooldownEffect": 204,
+    "doRevealEffect": 9,
     "onCombatStart": 98,
+    "combatStartInventory": 1,
     "onPreCombatStart": 18,
     "onPostCombatStart": 1,
     "trigger": 4,
@@ -21,6 +23,7 @@
   },
   "families": {
     "unique": [
+      "ace_of_spades",
       "acorn_ace",
       "acorn_collar",
       "amethyst_egg",
@@ -29,25 +32,37 @@
       "amulet_of_fortune",
       "amulet_of_light",
       "amulet_of_the_wild",
+      "amulet_unidentified",
       "anvil",
       "arcane_boots",
       "arcane_intellect",
+      "armored_courage_puppy",
       "armored_power_puppy",
       "armored_wisdom_puppy",
       "artifact_stone_cold",
       "artifact_stone_death",
       "artifact_stone_heat",
+      "badger_rune",
       "badger_spirit",
       "bag_of_giving",
       "bag_of_stones",
+      "bagborder",
+      "bagtacular",
       "battery",
       "berserker_bag",
       "bewitchment",
       "bismuth_cube",
+      "black_bishop",
+      "black_king",
+      "black_knight",
+      "black_pawn",
+      "black_queen",
+      "black_rook",
       "blood_manipulation",
       "book_of_basics",
       "book_of_darkness",
       "book_of_ice",
+      "book_of_ice_new",
       "book_of_light",
       "book_of_nature",
       "bow_and_arrow",
@@ -60,6 +75,8 @@
       "charge_splitter",
       "chess_board",
       "chess_master",
+      "chesspiece",
+      "chipped_topaz",
       "chrome_cube",
       "cog",
       "coil",
@@ -71,6 +88,7 @@
       "cthulhu",
       "cubert",
       "dark_ritual",
+      "darkest_lotus",
       "death_lotus",
       "deer_totem",
       "devouring_sphere",
@@ -82,6 +100,7 @@
       "eat_o_matic",
       "echoing_battlecry",
       "electric_torch",
+      "elephant_rune",
       "emerald_egg",
       "enchanted_weapons",
       "energy_conversion",
@@ -97,17 +116,21 @@
       "flame",
       "flame_badge",
       "flute",
+      "forestfriend",
       "fortunas_kiss",
       "friendly_fire",
       "frog_prince",
       "frozen_buckler",
       "frozen_flame",
       "full_body_protection",
+      "furcifer_prime",
+      "gemsocket",
       "generator",
       "ghost",
       "gigawatz",
       "girl_power",
       "gold_cube",
+      "goldcounter",
       "heart_container",
       "heart_of_darkness",
       "heart_of_the_cards",
@@ -116,10 +139,14 @@
       "hedgehog",
       "hogus_bogus",
       "holdall",
+      "holo_fire_lizard",
       "holy_collar",
+      "hypercube",
       "ice_armor",
       "ice_flower",
       "investment_opportunity",
+      "itempushzone",
+      "joker",
       "jynx_torquilla",
       "king_of_the_bling",
       "knife_to_meet_you",
@@ -131,6 +158,7 @@
       "level_up",
       "light_flower",
       "little_mimic",
+      "lootbox",
       "lucky_bow",
       "lucky_cat",
       "lucky_clover",
@@ -173,9 +201,12 @@
       "puzzlebag_t",
       "puzzlebag_z",
       "puzzlebox",
+      "random_loadout_bag",
       "ranger_bag",
+      "reverse",
       "robodog",
       "rope",
+      "rotationspring",
       "ruby_egg",
       "sandbag",
       "sapphire_egg",
@@ -187,8 +218,11 @@
       "shield_of_valor",
       "shielded",
       "shiny_mantle",
+      "skull",
       "smelly_barrier",
+      "snowman",
       "snowmaster",
+      "socketsnode",
       "solaris",
       "spell_scroll_dark",
       "spell_scroll_frostbolt",
@@ -207,15 +241,20 @@
       "storage_coffin",
       "sun_shield",
       "tesla_coil",
+      "the_fool",
+      "the_lovers",
       "thorn_elemental",
       "thornburst",
+      "tiger_rune",
       "time_dilator",
       "toad",
+      "topaz",
       "turtle",
       "twine",
       "twine_badge",
       "ukulele",
       "ultima",
+      "unidentified_skill",
       "uniquely_unique",
       "vampiric_collar",
       "vampiric_gloves",
@@ -223,6 +262,12 @@
       "walrus_tusk",
       "wand_of_dissonance",
       "whetstone3",
+      "white_bishop",
+      "white_king",
+      "white_knight",
+      "white_pawn",
+      "white_queen",
+      "white_rook",
       "winged_boots",
       "wisdom_puppy",
       "wolf_badge",
@@ -244,6 +289,10 @@
       "cheese_goobert",
       "chili_goobert",
       "chili_pepper",
+      "chipped_amethyst",
+      "chipped_emerald",
+      "chipped_ruby",
+      "chipped_sapphire",
       "cog_badge",
       "corrupted_crystal",
       "crown",
@@ -319,12 +368,14 @@
       "carrot_goobert",
       "dragon_claws",
       "dragon_set",
+      "dragonegg",
       "dragonscale_armor",
       "dragonskin_boots",
       "goobert",
       "king_goobert",
       "light_goobert",
-      "steel_goobert"
+      "steel_goobert",
+      "white_eyes_blue_dragon"
     ],
     "on_hit": [
       "amethyst_whelp",
@@ -469,6 +520,7 @@
     "food": [
       "demonic_flask",
       "divine_potion",
+      "food",
       "health_potion",
       "heroic_potion",
       "lightning_potion",
@@ -492,6 +544,27 @@
     ]
   },
   "byId": {
+    "ace_of_spades": {
+      "id": "ace_of_spades",
+      "scriptStem": "AceofSpades",
+      "file": "AceofSpades.gd",
+      "extends": "Card",
+      "overrides": [
+        "doRevealEffect"
+      ],
+      "family": "unique",
+      "directOverrides": [
+        "doRevealEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Card.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "cardSecondaryEffectActive"
+      ]
+    },
     "acorn_collar": {
       "id": "acorn_collar",
       "scriptStem": "AcornCollar",
@@ -654,6 +727,7 @@
       "file": "Card.gd",
       "extends": "Item",
       "overrides": [
+        "doRevealEffect",
         "trigger"
       ],
       "family": "unique"
@@ -776,6 +850,25 @@
       ],
       "family": "weapon_base"
     },
+    "darkest_lotus": {
+      "id": "darkest_lotus",
+      "scriptStem": "DarkestLotus",
+      "file": "DarkestLotus.gd",
+      "sceneFile": "DarkestLotus.tscn",
+      "extends": "Card",
+      "overrides": [
+        "doRevealEffect"
+      ],
+      "family": "unique",
+      "directOverrides": [
+        "doRevealEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Card.gd",
+        "Item.gd"
+      ]
+    },
     "darksaber": {
       "id": "darksaber",
       "scriptStem": "Darksaber",
@@ -829,6 +922,14 @@
         "onPrepare"
       ],
       "family": "unique"
+    },
+    "dragonegg": {
+      "id": "dragonegg",
+      "scriptStem": "DragonEgg",
+      "file": "DragonEgg.gd",
+      "extends": "Item",
+      "overrides": [],
+      "family": "pet_like"
     },
     "eggscalibur": {
       "id": "eggscalibur",
@@ -980,6 +1081,14 @@
       ],
       "family": "unique"
     },
+    "amulet_unidentified": {
+      "id": "amulet_unidentified",
+      "scriptStem": "AmuletUnidentified",
+      "file": "Exclusive/AmuletUnidentified.gd",
+      "extends": "Item",
+      "overrides": [],
+      "family": "unique"
+    },
     "angel_crystal": {
       "id": "angel_crystal",
       "scriptStem": "AngelCrystal",
@@ -1022,6 +1131,34 @@
         "onPrepare"
       ],
       "family": "unique"
+    },
+    "armored_courage_puppy": {
+      "id": "armored_courage_puppy",
+      "scriptStem": "ArmoredCouragePuppy",
+      "file": "Exclusive/ArmoredCouragePuppy.gd",
+      "extends": "CouragePuppy",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart"
+      ],
+      "family": "unique",
+      "directOverrides": [],
+      "inheritedOverrides": [
+        "doCooldownEffect",
+        "onPreCombatStart"
+      ],
+      "inheritedFiles": [
+        "Exclusive/CouragePuppy.gd",
+        "Item.gd"
+      ],
+      "sourceSetup": [
+        "CanTriggerItems",
+        "CanTriggerSpikes"
+      ],
+      "sourceMethods": [
+        "_ready",
+        "canAffect"
+      ]
     },
     "armored_power_puppy": {
       "id": "armored_power_puppy",
@@ -1075,6 +1212,27 @@
       ],
       "family": "on_hit"
     },
+    "badger_rune": {
+      "id": "badger_rune",
+      "scriptStem": "BadgerRune",
+      "file": "Exclusive/BadgerRune.gd",
+      "extends": "Gem",
+      "overrides": [],
+      "family": "unique",
+      "directOverrides": [],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor",
+        "hasCooldown",
+        "prepareInventory",
+        "onHotSwapHoverWithGemEnd"
+      ]
+    },
     "badger_spirit": {
       "id": "badger_spirit",
       "scriptStem": "BadgerSpirit",
@@ -1095,6 +1253,22 @@
         "onPrepare"
       ],
       "family": "unique"
+    },
+    "bagtacular": {
+      "id": "bagtacular",
+      "scriptStem": "Bagtacular",
+      "file": "Exclusive/Bagtacular.gd",
+      "extends": "Item",
+      "overrides": [],
+      "family": "unique",
+      "directOverrides": [],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect_global"
+      ]
     },
     "battery": {
       "id": "battery",
@@ -1456,6 +1630,110 @@
         "doCooldownEffect"
       ],
       "family": "custom_cd"
+    },
+    "black_bishop": {
+      "id": "black_bishop",
+      "scriptStem": "BlackBishop",
+      "file": "Exclusive/Chess/BlackBishop.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
+    },
+    "black_king": {
+      "id": "black_king",
+      "scriptStem": "BlackKing",
+      "file": "Exclusive/Chess/BlackKing.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
+    },
+    "black_knight": {
+      "id": "black_knight",
+      "scriptStem": "BlackKnight",
+      "file": "Exclusive/Chess/BlackKnight.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
+    },
+    "black_pawn": {
+      "id": "black_pawn",
+      "scriptStem": "BlackPawn",
+      "file": "Exclusive/Chess/BlackPawn.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
+    },
+    "black_queen": {
+      "id": "black_queen",
+      "scriptStem": "BlackQueen",
+      "file": "Exclusive/Chess/BlackQueen.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
+    },
+    "black_rook": {
+      "id": "black_rook",
+      "scriptStem": "BlackRook",
+      "file": "Exclusive/Chess/BlackRook.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
+    },
+    "chesspiece": {
+      "id": "chesspiece",
+      "scriptStem": "ChessPiece",
+      "file": "Exclusive/Chess/ChessPiece.gd",
+      "extends": "Item",
+      "overrides": [],
+      "family": "unique"
+    },
+    "white_bishop": {
+      "id": "white_bishop",
+      "scriptStem": "WhiteBishop",
+      "file": "Exclusive/Chess/WhiteBishop.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
+    },
+    "white_king": {
+      "id": "white_king",
+      "scriptStem": "WhiteKing",
+      "file": "Exclusive/Chess/WhiteKing.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
+    },
+    "white_knight": {
+      "id": "white_knight",
+      "scriptStem": "WhiteKnight",
+      "file": "Exclusive/Chess/WhiteKnight.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
+    },
+    "white_pawn": {
+      "id": "white_pawn",
+      "scriptStem": "WhitePawn",
+      "file": "Exclusive/Chess/WhitePawn.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
+    },
+    "white_queen": {
+      "id": "white_queen",
+      "scriptStem": "WhiteQueen",
+      "file": "Exclusive/Chess/WhiteQueen.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
+    },
+    "white_rook": {
+      "id": "white_rook",
+      "scriptStem": "WhiteRook",
+      "file": "Exclusive/Chess/WhiteRook.gd",
+      "extends": "ChessPiece",
+      "overrides": [],
+      "family": "unique"
     },
     "chess_board": {
       "id": "chess_board",
@@ -1880,6 +2158,34 @@
       "family": "unique",
       "cdThenConsume": true
     },
+    "elephant_rune": {
+      "id": "elephant_rune",
+      "scriptStem": "ElephantRune",
+      "file": "Exclusive/ElephantRune.gd",
+      "sceneFile": "Exclusive/ElephantRune.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "combatStartInventory"
+      ],
+      "family": "unique",
+      "directOverrides": [
+        "combatStartInventory"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor",
+        "combatStartArmor",
+        "removeDebuffResistance",
+        "combatEndArmor",
+        "hasCooldown",
+        "onHotSwapHoverWithGemEnd"
+      ]
+    },
     "emerald_egg": {
       "id": "emerald_egg",
       "scriptStem": "EmeraldEgg",
@@ -2061,6 +2367,14 @@
       ],
       "family": "on_hit"
     },
+    "forestfriend": {
+      "id": "forestfriend",
+      "scriptStem": "ForestFriend",
+      "file": "Exclusive/ForestFriend.gd",
+      "extends": "Item",
+      "overrides": [],
+      "family": "unique"
+    },
     "forging_hammer": {
       "id": "forging_hammer",
       "scriptStem": "ForgingHammer",
@@ -2147,6 +2461,14 @@
       ],
       "family": "unique"
     },
+    "furcifer_prime": {
+      "id": "furcifer_prime",
+      "scriptStem": "FurciferPrime",
+      "file": "Exclusive/FurciferPrime.gd",
+      "extends": "Item",
+      "overrides": [],
+      "family": "unique"
+    },
     "generator": {
       "id": "generator",
       "scriptStem": "Generator",
@@ -2202,6 +2524,14 @@
         "onPrepare"
       ],
       "family": "start_buff"
+    },
+    "goldcounter": {
+      "id": "goldcounter",
+      "scriptStem": "GoldCounter",
+      "file": "Exclusive/GoldCounter.gd",
+      "extends": "Node2D",
+      "overrides": [],
+      "family": "unique"
     },
     "gold_cube": {
       "id": "gold_cube",
@@ -2331,6 +2661,14 @@
       ],
       "family": "unique"
     },
+    "hypercube": {
+      "id": "hypercube",
+      "scriptStem": "Hypercube",
+      "file": "Exclusive/Hypercube.gd",
+      "extends": "Item",
+      "overrides": [],
+      "family": "unique"
+    },
     "hyper_hedgehog": {
       "id": "hyper_hedgehog",
       "scriptStem": "HyperHedgehog",
@@ -2391,6 +2729,16 @@
       "extends": "Item",
       "overrides": [
         "onPrepare"
+      ],
+      "family": "unique"
+    },
+    "joker": {
+      "id": "joker",
+      "scriptStem": "Joker",
+      "file": "Exclusive/Joker.gd",
+      "extends": "Card",
+      "overrides": [
+        "doRevealEffect"
       ],
       "family": "unique"
     },
@@ -2557,6 +2905,14 @@
         "onPrepare"
       ],
       "family": "on_hit"
+    },
+    "lootbox": {
+      "id": "lootbox",
+      "scriptStem": "Lootbox",
+      "file": "Exclusive/Lootbox.gd",
+      "extends": "Item",
+      "overrides": [],
+      "family": "unique"
     },
     "lucky_cat": {
       "id": "lucky_cat",
@@ -3241,6 +3597,14 @@
       ],
       "family": "start_buff"
     },
+    "random_loadout_bag": {
+      "id": "random_loadout_bag",
+      "scriptStem": "RandomLoadoutBag",
+      "file": "Exclusive/RandomLoadoutBag.gd",
+      "extends": "Bag",
+      "overrides": [],
+      "family": "unique"
+    },
     "rat": {
       "id": "rat",
       "scriptStem": "Rat",
@@ -3292,6 +3656,16 @@
       ],
       "family": "custom_cd"
     },
+    "reverse": {
+      "id": "reverse",
+      "scriptStem": "Reverse",
+      "file": "Exclusive/Reverse.gd",
+      "extends": "Card",
+      "overrides": [
+        "doRevealEffect"
+      ],
+      "family": "unique"
+    },
     "robodog": {
       "id": "robodog",
       "scriptStem": "Robodog",
@@ -3311,6 +3685,14 @@
       "overrides": [
         "onPrepare"
       ],
+      "family": "unique"
+    },
+    "rotationspring": {
+      "id": "rotationspring",
+      "scriptStem": "RotationSpring",
+      "file": "Exclusive/RotationSpring.gd",
+      "extends": "Sprite",
+      "overrides": [],
       "family": "unique"
     },
     "sandbag": {
@@ -3591,6 +3973,14 @@
         "doCooldownEffect"
       ],
       "family": "custom_cd"
+    },
+    "snowman": {
+      "id": "snowman",
+      "scriptStem": "Snowman",
+      "file": "Exclusive/Snowman.gd",
+      "extends": "Item",
+      "overrides": [],
+      "family": "unique"
     },
     "snowmaster": {
       "id": "snowmaster",
@@ -3996,6 +4386,14 @@
       ],
       "family": "on_hit"
     },
+    "tiger_rune": {
+      "id": "tiger_rune",
+      "scriptStem": "TigerRune",
+      "file": "Exclusive/TigerRune.gd",
+      "extends": "Gem",
+      "overrides": [],
+      "family": "unique"
+    },
     "time_dilator": {
       "id": "time_dilator",
       "scriptStem": "TimeDilator",
@@ -4115,6 +4513,14 @@
       ],
       "family": "unique",
       "cdThenConsume": true
+    },
+    "unidentified_skill": {
+      "id": "unidentified_skill",
+      "scriptStem": "UnidentifiedSkill",
+      "file": "Exclusive/UnidentifiedSkill.gd",
+      "extends": "Item",
+      "overrides": [],
+      "family": "unique"
     },
     "uniquely_unique": {
       "id": "uniquely_unique",
@@ -4335,6 +4741,14 @@
       ],
       "family": "custom_cd"
     },
+    "food": {
+      "id": "food",
+      "scriptStem": "Food",
+      "file": "Food.gd",
+      "extends": "Item",
+      "overrides": [],
+      "family": "food"
+    },
     "garlic": {
       "id": "garlic",
       "scriptStem": "Garlic",
@@ -4408,6 +4822,30 @@
       ],
       "family": "custom_cd",
       "cdThenConsume": true
+    },
+    "skull": {
+      "id": "skull",
+      "scriptStem": "Skull",
+      "file": "Gems/Skull.gd",
+      "extends": "Gem",
+      "overrides": [],
+      "family": "unique"
+    },
+    "topaz": {
+      "id": "topaz",
+      "scriptStem": "Topaz",
+      "file": "Gems/Topaz.gd",
+      "extends": "Gem",
+      "overrides": [],
+      "family": "unique"
+    },
+    "gemsocket": {
+      "id": "gemsocket",
+      "scriptStem": "GemSocket",
+      "file": "GemSocket.gd",
+      "extends": "Node2D",
+      "overrides": [],
+      "family": "unique"
     },
     "gingerbread_man": {
       "id": "gingerbread_man",
@@ -4534,6 +4972,16 @@
       ],
       "family": "synergy_aura"
     },
+    "holo_fire_lizard": {
+      "id": "holo_fire_lizard",
+      "scriptStem": "HoloFireLizard",
+      "file": "HoloFireLizard.gd",
+      "extends": "Card",
+      "overrides": [
+        "doRevealEffect"
+      ],
+      "family": "unique"
+    },
     "holy_armor": {
       "id": "holy_armor",
       "scriptStem": "HolyArmor",
@@ -4567,6 +5015,14 @@
         "onPrepare"
       ],
       "family": "start_buff"
+    },
+    "itempushzone": {
+      "id": "itempushzone",
+      "scriptStem": "ItemPushZone",
+      "file": "ItemPushZone.gd",
+      "extends": "Area2D",
+      "overrides": [],
+      "family": "unique"
     },
     "jynx_torquilla": {
       "id": "jynx_torquilla",
@@ -5000,6 +5456,14 @@
       ],
       "family": "on_hit"
     },
+    "socketsnode": {
+      "id": "socketsnode",
+      "scriptStem": "SocketsNode",
+      "file": "SocketsNode.gd",
+      "extends": "Node2D",
+      "overrides": [],
+      "family": "unique"
+    },
     "spear": {
       "id": "spear",
       "scriptStem": "Spear",
@@ -5147,6 +5611,26 @@
       ],
       "family": "food"
     },
+    "the_fool": {
+      "id": "the_fool",
+      "scriptStem": "TheFool",
+      "file": "TheFool.gd",
+      "extends": "Card",
+      "overrides": [
+        "doRevealEffect"
+      ],
+      "family": "unique"
+    },
+    "the_lovers": {
+      "id": "the_lovers",
+      "scriptStem": "TheLovers",
+      "file": "TheLovers.gd",
+      "extends": "Card",
+      "overrides": [
+        "doRevealEffect"
+      ],
+      "family": "unique"
+    },
     "thorn_bow": {
       "id": "thorn_bow",
       "scriptStem": "ThornBow",
@@ -5169,6 +5653,14 @@
         "onPrepare"
       ],
       "family": "on_hit"
+    },
+    "bagborder": {
+      "id": "bagborder",
+      "scriptStem": "BagBorder",
+      "file": "Tiles/BagBorder.gd",
+      "extends": "Sprite",
+      "overrides": [],
+      "family": "unique"
     },
     "torch": {
       "id": "torch",
@@ -5253,6 +5745,16 @@
       ],
       "family": "synergy_aura"
     },
+    "white_eyes_blue_dragon": {
+      "id": "white_eyes_blue_dragon",
+      "scriptStem": "White-EyesBlueDragon",
+      "file": "White-EyesBlueDragon.gd",
+      "extends": "Card",
+      "overrides": [
+        "doRevealEffect"
+      ],
+      "family": "pet_like"
+    },
     "wolpertinger": {
       "id": "wolpertinger",
       "scriptStem": "Wolpertinger",
@@ -5294,6 +5796,143 @@
         "onPrepare"
       ],
       "family": "synergy_aura"
+    },
+    "book_of_ice_new": {
+      "id": "book_of_ice_new",
+      "scriptStem": "BookofIce",
+      "file": "Exclusive/BookofIce.gd",
+      "sceneFile": "Exclusive/BookofIceNew.tscn",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
+      ]
+    },
+    "chipped_amethyst": {
+      "id": "chipped_amethyst",
+      "scriptStem": "Amethyst",
+      "file": "Gems/Amethyst.gd",
+      "sceneFile": "Gems/ChippedAmethyst.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ]
+    },
+    "chipped_emerald": {
+      "id": "chipped_emerald",
+      "scriptStem": "Emerald",
+      "file": "Gems/Emerald.gd",
+      "sceneFile": "Gems/ChippedEmerald.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "chipped_ruby": {
+      "id": "chipped_ruby",
+      "scriptStem": "Ruby",
+      "file": "Gems/Ruby.gd",
+      "sceneFile": "Gems/ChippedRuby.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "chipped_sapphire": {
+      "id": "chipped_sapphire",
+      "scriptStem": "Sapphire",
+      "file": "Gems/Sapphire.gd",
+      "sceneFile": "Gems/ChippedSapphire.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "chipped_topaz": {
+      "id": "chipped_topaz",
+      "scriptStem": "Topaz",
+      "file": "Gems/Topaz.gd",
+      "sceneFile": "Gems/ChippedTopaz.tscn",
+      "extends": "Gem",
+      "overrides": [],
+      "family": "unique",
+      "directOverrides": [],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareInventory",
+        "prepareWeapon",
+        "prepareArmor"
+      ]
     }
   }
 }

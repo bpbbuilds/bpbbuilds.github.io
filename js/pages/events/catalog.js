@@ -174,8 +174,9 @@ export async function initEventsCatalog(main, opts) {
   }
 
   /**
-   * Resolve the public winner before adding the Winner tab. A selected winner
-   * remains hidden until its build is public, matching the endpoint contract.
+   * Resolve the winner before adding the Winner tab. A selected winner may be
+   * acknowledged during judging, while its build details remain private until
+   * the endpoint releases the public entry.
    * @param {import('./catalog-data.js').CatalogEvent | null} event
    */
   function ensureDetailWinner(event) {
@@ -188,7 +189,7 @@ export async function initEventsCatalog(main, opts) {
         detailWinner = {
           slug: event.slug,
           status: 'ready',
-          hasWinner: Boolean(result.ok && result.winner?.build),
+          hasWinner: Boolean(result.ok && result.winner),
         };
         paint();
       })
