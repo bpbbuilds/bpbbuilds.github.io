@@ -27,7 +27,12 @@ function rarityKey(r) {
 function formatAdded(iso) {
   const raw = String(iso || '').trim();
   if (!raw) return '';
-  const d = new Date(raw);
+  // Catalog dates are calendar dates, not UTC instants. Parsing YYYY-MM-DD
+  // with `new Date(raw)` shifts them back one day in western time zones.
+  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
+  const d = dateOnly
+    ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+    : new Date(raw);
   if (Number.isNaN(d.getTime())) return raw;
   return d.toLocaleDateString(undefined, {
     year: 'numeric',
@@ -51,6 +56,25 @@ function warmPreviewCrops(catalog) {
 }
 
 /**
+ * How a player gets this cosmetic. Market buys skip the line — the gold worth is enough.
+ * @param {BlobCosmetic} c
+ */
+function obtainedBy(c) {
+  const grant = String(c.grant || (c.starter ? 'starter' : '')).toLowerCase();
+  const cost = Number(c.cost);
+  const marketBuy = !grant && Number.isFinite(cost) && cost > 0;
+  if (marketBuy) return '';
+  if (grant === 'starter') return 'Comes with every blob.';
+  if (grant === 'premium') return 'Included with Premium or Founding.';
+  if (grant === 'founding') return 'Founding members only.';
+  if (grant === 'event') {
+    if (c.id === 'grant_event_trophy') return 'Awarded for winning the DPS Stone event.';
+    return 'Awarded from an event.';
+  }
+  return '';
+}
+
+/**
  * Build the game tooltip payload for a cosmetic.
  * @param {BlobCosmetic} c
  */
@@ -58,10 +82,20 @@ export function cosmeticToTooltipItem(c) {
   const slotLabel = BLOB_SLOTS.find((s) => s.id === c.slot)?.label || String(c.slot);
   const parts = [];
   const desc = String(c.description || '').trim();
-  if (desc) parts.push(desc);
+  parts.push(desc || 'Cosmetic wardrobe piece.');
 
-  const artist = String(c.artist || c.owner || '').trim();
-  if (artist) parts.push(`Created by: ${artist}`);
+  const id = String(c.id || '').trim();
+  if (id) parts.push(`Cosmetic ID: ${id}`);
+
+  if (slotLabel) parts.push(`Slot: ${slotLabel}`);
+
+  const artist = String(c.artist || '').trim();
+  const owner = String(c.owner || '').trim();
+  if (artist && owner && artist !== owner) {
+    parts.push(`Artist: ${artist}`, `Owner: ${owner}`);
+  } else if (artist || owner) {
+    parts.push(`Created by: ${artist || owner}`);
+  }
 
   const added = formatAdded(c.added);
   if (added) parts.push(`Added: ${added}`);
@@ -81,6 +115,7 @@ export function cosmeticToTooltipItem(c) {
     cost: hasCost ? Number(costRaw) : undefined,
     /** Compact gold row: coin icon + value (no "Item cost" label). */
     costDisplay: hasCost ? 'worth' : undefined,
+    obtainedBy: obtainedBy(c) || undefined,
     effect: parts.join('\n\n') || '—',
     previewImage,
   };

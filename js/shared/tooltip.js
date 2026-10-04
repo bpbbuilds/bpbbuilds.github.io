@@ -1283,6 +1283,16 @@
       );
     }
 
+    const obtainedBy = String(item.obtainedBy || "").trim();
+    if (obtainedBy) {
+      sections.push(sectionDiv);
+      sections.push(
+        `<div class="bpb-tooltip__block bpb-tooltip__block--small"><div class="bpb-tooltip__effect">` +
+          `<span class="bpb-tooltip__label">Obtained by</span>: ${escapeHtml(obtainedBy)}` +
+          `</div></div>`,
+      );
+    }
+
     // Type glossary (Playing Card / Gem) — game addReferenceExplanations before keywords
     const typeDescrHtml = formatTypeDescriptionLine(item);
     if (typeDescrHtml) {
