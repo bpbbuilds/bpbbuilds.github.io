@@ -6,6 +6,14 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+### 2026-10-04 admin-selected event winners (in progress)
+
+- Claimed `js/pages/admin/event-desk.js`, `js/pages/admin/api.js`, `js/pages/admin/admin.css`, `supabase/functions/admin-builds/index.ts`, a new event-winner migration, `docs/pages/admin.md`, the affected legal pages, and this handoff. The feature will let an owner select or replace one winner only for an event whose configured voting is off; persistence and authorization remain server-side, while public event configuration and unrelated admin functions stay unchanged.
+
+### 2026-10-04 disabled screenshot UI removal (in progress)
+
+- Claimed the Create-page onboarding/import UI, Premium comparison copy, and the Discord Premium feature list for this cleanup. Product edits are limited to removing the disabled screenshot entry point and its Premium feature row/copy; the paused screenshot detector implementation, assets, server function, and research documentation remain preserved and unchanged.
+
 ### 2026-10-03 Northflank Discord bot deployment preparation (in progress)
 
 - Claimed `bot/env.js`, `bot/watch.js`, `bot/Dockerfile`, `.dockerignore`, `scripts/check-bot-board-thumb-deps.mjs`, `docs/features/northflank-discord-bot.md`, `docs/sim/sim-port-wave-backlog.md`, `assets/data/sim-fidelity-ledger.json`, `js/shared/auth.js`, `js/shared/entitlements.js`, `js/shared/premium-offer.js`, `js/pages/sim/engine/scripts/ports-wave-d-unique.js`, `supabase/migrations/20261003010000_fix_founding_claim_trigger.sql`, and this handoff to prepare the existing Discord Gateway watcher for a Northflank Combined Service, repair the founding Premium claim flow, fix the simulator Wave D module import, and reconcile the simulator port backlog with live source/ledger state. The change is limited to environment loading, process lifecycle/health handling, a production image definition, build-context secret/file exclusion, deployment documentation, the client-side founding claim result handling, the secured founding-claim database path, one invalid simulator import, and simulator backlog documentation/data; no Discord behavior or website code is being redesigned.
@@ -980,3 +988,95 @@ None.
 - Rib Saw Blade now snapshots only the opposing empowerable weapons during `onPrepare`, purges only removable `addBonusDamage` damage on a hit, and adds its own removable hit bonus. Base and permanent/catalog damage are preserved. Katana's inherited Rib Saw prepare behavior now uses the same target snapshot.
 - Added `scripts/sim-wand-rib-smoke.mjs`, registered it in the continuous simulator audit, and updated the source parity hook map to recognize the simulator's explicit `onPrepare` lifecycle. The two backlog rows and validation disclosure are marked complete.
 - Validation: focused Wand/Rib smoke (including both player/opponent Wand paths and Katana inheritance), `node scripts/sim-wave-d-smoke.mjs`, `node scripts/sim-log-smoke.mjs`, full `node scripts/sim-continuous-audit.mjs --check` (14/14), syntax checks, and ledger regeneration/check all pass. No live game capture was available; source extract behavior is the authority for these ports.
+
+### 2026-10-04 Ace of Spades and Armored Courage Puppy source-resolution claim (in progress)
+
+- Codex owns the source-resolution and simulator-port paths for `ace_of_spades` and `armored_courage_puppy`: the exact extracted item scripts and inherited bases are read-only evidence, while any implementation work is limited to the corresponding simulator script module(s), a focused regression smoke, `scripts/sim-continuous-audit.mjs` registration if needed, the fidelity ledger/backlog, and this handoff.
+- The audit will resolve each GDScript inheritance chain and lifecycle hook before changing coverage status. Existing unrelated simulator and worktree changes remain protected; no source extracts, shared package files, or other item ports will be rewritten.
+
+### 2026-10-04 Ace of Spades and Armored Courage Puppy source-resolution complete
+
+- Resolved `AceofSpades.gd` → `Card.gd` and `Exclusive/ArmoredCouragePuppy.gd` → `Exclusive/CouragePuppy.gd` in the simulator inventory. The ledger now records direct/inherited hooks, source helper methods, and Armored Puppy’s `CanTriggerItems`/`CanTriggerSpikes` setup flags; both rows are source-ported with deep coverage and no lifecycle gaps.
+- Corrected Ace of Spades to grant one actor crit token per reveal (with the source odd-chain Lucky/Spikes secondary), reset card reveal state during prepare, emit HUD stat updates, and consume crit tokens as guaranteed next-attack criticals. Armored Courage Puppy now suppresses spikes and item-listener reactions on its strike, matching its extracted `DamageSource` flag removal; its focused smoke also runs the inherited linked-pet bonus through the real engine.
+- Added `scripts/sim-ace-puppy-smoke.mjs` and registered it in the continuous audit. It covers source inheritance metadata, card-chain/secondary behavior, token consumption, and Armored Puppy damage flags.
+- Updated the two backlog rows and regenerated the fidelity ledger/baseline. Validation: focused smoke, `node scripts/sim-continuous-audit.mjs --check` (15/15), ledger `--check`, patch-drift check, syntax/import checks, and touched-path diff checks pass. A repository-wide `git diff --check` still reports pre-existing whitespace in unrelated dirty bot/docs files; no such whitespace was introduced in the touched simulator paths. No live game capture was available; extracted source remains the authority for these rows.
+
+### 2026-10-04 disabled screenshot UI removal complete
+
+- Removed the disabled screenshot/media button and its onboarding event/options from the Create page. The desktop `history.db` loader remains available; mobile onboarding no longer leaves an empty upload block behind. Screenshot detector code, assets, feature flag, and paused server path were intentionally preserved.
+- Removed `Screenshot to build` from the shared Premium comparison, updated the Premium offer copy, and removed the same stale feature from the Discord Premium announcement.
+- Validation: `node --check` passes for the touched Create, Premium, and bot modules; targeted `git diff --check` passes; repository search finds no remaining `Screenshot to build` Premium copy or removed media UI selectors. No commit or push was requested.
+
+### 2026-10-04 admin-selected event winners complete
+
+- Added a manual winner panel to the Admin Events desk only when that event has Voting turned off. Owners can select a verified entry, replace the selection with another entry, or clear it; vote-enabled events never render these controls.
+- Added private `event_winners` persistence. The deployed owner-only `admin-builds` actions validate the owner session, a bounded event slug, and that the selected build is an entry for that same event before upserting. The table has RLS enabled with no anon/authenticated grants; it records the selected build, timestamp, and verified selecting owner.
+- Applied migration `20261004030000_event_winners.sql` to the linked project and deployed `admin-builds`. Validation: JavaScript syntax checks, targeted diff check, remote migration dry run (up to date), deployed unauthenticated winner-write rejection (`401`), and anonymous direct-table read rejection (`401`/permission denied) all pass. The user-facing admin control still needs the normal site GitHub Pages commit/publish before it appears live; no commit or push was requested.
+- Reviewed and updated About, Terms, and Privacy for the owner-selected no-vote event result record; their October 4, 2026 dates remain current.
+
+### 2026-10-04 public event winner display claim (in progress)
+
+- Codex owns the public event winner display paths for this task: `js/pages/events/detail-tabs.js`, `js/pages/events/event-features.js`, `js/pages/events/event-detail.js`, the new public winner client module and event CSS additions, `js/pages/admin/event-winner.css`, the read-only `event-winner` Edge Function/config entries, `docs/pages/events/launch-event.md`, and this handoff. The existing private winner table and owner-only write endpoint remain unchanged.
+
+### 2026-10-04 public event winner display complete
+
+- Added a Winner tab to no-vote event details. It loads a read-only, slug-validated `event-winner` function and shows the selected public build, creator avatar/blob, selection date, and a link to the full build; private or unreleased entries remain hidden.
+- Added the public function/config route without granting browser access to `event_winners` or exposing `selected_by`; the endpoint only returns a result after the selected build is `is_public = true`. Deployed `event-winner` and verified the live endpoint returns a safe `{ winner: null }` response for `highest-dps` before a public winner exists.
+- Added the admin winner stylesheet link and event-page cache bump. Validation: touched JavaScript syntax checks, source assertions, `git diff --cached --check`, live Edge Function smoke, and secret-pattern scan passed. Published in commit `3bd68b9` on `main`; the owner-authenticated selection path still needs the owner to exercise it in the browser after Pages deploy.
+
+### 2026-10-04 blob walk-names claim (in progress)
+
+- Codex owns `js/pages/overlay/blobs.js`, `js/pages/overlay/blobs.css`, the focused overlay smoke check, and this handoff for repairing the Walk Names browser-source view. The existing row/low/pop/walk/grid/float behavior remains unchanged.
+
+### 2026-10-04 blob walk-names complete
+
+- Walk Names now uses the same absolute walking/turning animation as Walk while retaining each player's caption. Captions are raised into the transparent frame instead of being clipped below the viewport, and reduced-motion selectors cover both walking variants.
+- Validation: JavaScript syntax checks, CSS/source assertions, and targeted `git diff --check` pass. Published in commit `d04e38e` on `main`; no database or profile behavior changed.
+
+### 2026-10-04 seamless blob cast loop claim (in progress)
+
+- Codex owns `js/pages/overlay/blobs.js`, `js/pages/overlay/blobs.css`, the focused overlay animation validation, and this handoff for making animated blob cast views safe for seamless video loops. The existing view selection, profile loading, captions, and reduced-motion behavior remain protected.
+
+### 2026-10-04 seamless blob cast loop complete
+
+- Float and Walk/Walk Names overlay views now loop cleanly for video capture. Float uses a closed bob cycle with stable negative phase offsets; walkers enter from beyond the left edge and leave beyond the right edge, so the animation reset occurs while they are invisible instead of visibly teleporting or flipping at the boundary. Reduced-motion positioning and existing captions remain unchanged.
+- Validation: `node --check js/pages/overlay/blobs.js`, focused CSS/source assertions, and staged `git diff --check` pass. Published in commit `7e7d97c` on `main`; no database, profile, or website behavior changed.
+
+### 2026-10-04 blob cast video export claim (in progress)
+
+- Codex owns `js/pages/overlay/blob-video.js`, `js/pages/overlay/blobs.js`, `js/pages/admin/tab-overlay.js`, `js/pages/admin/admin.css`, `admin/index.html`, focused overlay export validation, and this handoff for adding one-loop transparent WebM downloads beside the view controls. Existing browser-source URLs and live overlay rendering remain protected.
+
+### 2026-10-04 blob cast video export complete
+
+- Added a download icon beside every Blob Cast view. Each action renders the current cast to a transparent 2560×1440 canvas and downloads a VP9 WebM loop; Pop/Walk/Walk Names/Float use their animation duration, while static Row/Low/Grid views use a one-second loop. The renderer preserves blob cosmetics and Walk Names captions without recording the admin iframe or adding a background.
+- Added VP9 capability detection, progress/error status, accessible labels, disabled-state feedback, and a cache-busted Admin stylesheet. Validation: touched-module syntax checks, staged diff checks, and focused export/source assertions pass. A browser with VP9 MediaRecorder support is required for transparent WebM export. Published in commit `75a26e5` on `main`.
+
+### 2026-10-04 blob walk caption orientation claim (in progress)
+
+- Codex owns `js/pages/overlay/blobs.css`, `js/pages/overlay/blob-video.js`, focused overlay animation validation, and this handoff for keeping Walk Names captions upright when a walker turns at an edge. The existing seamless loop, caption placement, and video export behavior remain protected.
+
+### 2026-10-04 blob walk caption orientation complete
+
+- Walk and Walk Names now turn only while outside the visible frame. The animated walker exposes its facing direction through a CSS variable, and Walk Names captions apply the synchronized counter-scale so names remain readable instead of mirroring. The transparent video renderer follows the same back-and-forth path and blob facing state.
+- Validation: `node --check js/pages/overlay/blob-video.js`, focused CSS/source assertions, and staged `git diff --check` pass. Published in commit `a58d50d` on `main`.
+
+### 2026-10-04 event winner tab visibility claim (in progress)
+
+- Codex owns `js/pages/events/event-features.js`, `js/pages/events/event-winner.js`, `js/pages/events/catalog.js`, focused event-tab validation, and this handoff for hiding the public Winner tab until a public winner result exists. Existing owner selection, private winner persistence, and winner rendering remain protected.
+
+### 2026-10-04 event winner tab visibility complete
+
+- Event details now query the public winner endpoint before adding the Winner rail tab. Until a public winning build is returned, the tab is omitted; once a result exists, the detail view refreshes and exposes the existing winner card. Voting events remain unaffected, and private/unpublished selections stay hidden by the endpoint contract.
+- Validation: event-module syntax checks and focused diff checks pass. Published in commit `2f0decf` on `main`.
+
+### 2026-10-04 history item recovery claim (in progress)
+
+- Codex owns the history decode catalog builder/data, history decoder, history run list/preview/apply paths, event history submission validation, a focused history recovery check, and this handoff for the missing-item investigation.
+- Scope: preserve unreleased-item policy while allowing history.db items that are absent from the live catalog to decode and render.
+- Next step: add a catalog fallback and regression checks after confirming the exact game/catalog gap.
+
+### 2026-10-04 history item recovery complete
+
+- Traced the history.db path from bit decoding through run rows, preview grid, draft apply, and event submission. The generated catalog was stale: it omitted game gid `331` (`book_of_ice_new`) and did not include the current gid `518` mapping for `time_pendant`; the live DB intentionally excludes the unreleased Book of Ice row, so the decoder silently dropped it.
+- Rebuilt `assets/data/history-decode-catalog.json` from the current game extract and added a `historyOnly` fallback for game items absent from the published layout. History flows now hydrate those fallback records into the runtime map before list/search/preview/apply/submit, without adding them to the normal Items catalog or bypassing publish validation. Unknown gids are now reported instead of silently disappearing.
+- Added `scripts/test-history-catalog-recovery.mjs`, covering the game-only fallback, gid 331 synthetic bit-frame decode, and runtime map hydration. Validation: catalog regeneration, focused recovery check, history-picker Playwright smoke, touched-module syntax checks, and targeted diff checks pass. No secrets or database rows were changed.
