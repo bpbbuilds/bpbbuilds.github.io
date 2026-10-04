@@ -1095,3 +1095,9 @@ None.
 
 - Codex owns `js/pages/admin/event-desk.js`, `js/pages/admin/admin.css`, `js/pages/builds/board-thumbs.js`, `supabase/functions/admin-builds/index.ts`, `js/pages/events/event-drafts.js`, `js/pages/events/catalog-data.js`, `scripts/test-event-schedule-draft.mjs`, and this handoff for this task.
 - Scope: render submitted board previews in the owner event desk (including baked stills from older entries) and propagate edited event schedule fields into live status/countdowns. No public authorization or winner persistence changes are in scope.
+
+### 2026-10-04 admin event entry previews and schedule draft complete
+
+- The Admin Events detail desk now renders each submitted build's board from its stored placements, with a baked `board_still_path` fallback for older entries that have no placement rows. The owner-gated `admin-builds` function returns the placements and still path; it was redeployed after the change.
+- Event-form edits now flow through the catalog/list/featured/detail event paths before live status and countdown calculation, so changing an entry-close date immediately changes Accepting entries/Judging/Ended state and its timer target.
+- Validation: focused schedule-draft recovery test, JavaScript syntax checks for all touched modules, targeted `git diff --check`, and Supabase `admin-builds` deployment passed. Published in commit `c52fcd0`; the GitHub Pages site still needs its normal Pages build to serve the browser changes.
