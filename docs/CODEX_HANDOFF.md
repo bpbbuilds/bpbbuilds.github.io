@@ -908,3 +908,12 @@ None.
 - Cosmetics now always normalize missing cost metadata to `0`, the catalog's established “not buyable/sellable” value, so every cosmetic tooltip renders the gold value row. A real server-assigned numeric value continues to win unchanged.
 - Live catalog merges now preserve bundled artist, owner, date, and numeric value when an older server catalog row leaves them blank/null. This restores both Premium Crown's `0` gold value and its `Created by` credit without fabricating metadata for new server-only cosmetics.
 - Validation: `node --check` passes and an isolated module assertion confirms zero-value fallback plus artist/owner retention.
+
+### 2026-10-04 Premium Crown rarity change claim (in progress)
+
+- Codex owns the Premium Crown catalog metadata for this task: `assets/data/blob-cosmetics.json`, the new Supabase rarity migration, and this handoff. The change is metadata-only; no entitlement, grant, inventory, or tooltip behavior is being altered.
+
+### 2026-10-04 Premium Crown rarity change complete
+
+- Updated the bundled Premium Crown rarity to `Unique` and applied `20261004010000_premium_crown_unique.sql` to Supabase.
+- Live `cosmetic-catalog` verification returns `premium_crown.rarity = Unique`; grants, ownership, value, artist, and inventory behavior were unchanged.
