@@ -26,6 +26,7 @@ Detailed setup docs live under `docs/db/tables/`.
 | `sim_reports` | Combat sandbox issue reports | Live | [sim-reports-table.md](./tables/sim-reports-table.md) |
 | `page_views` | Anonymous daily counts of public page sections | Live | [`sql/026_page_views.sql`](./sql/026_page_views.sql) |
 | `member_daily` | Daily account, paid Premium, founding, and revenue totals | Live | [`sql/027_member_daily.sql`](./sql/027_member_daily.sql) |
+| `cosmetic_submissions` | Private player blob-art moderation queue | Live | [cosmetic-submissions-table.md](./tables/cosmetic-submissions-table.md) |
 
 ## How tables interact
 
@@ -73,6 +74,7 @@ profiles                items ◄──── build_placements.gems[]
 | `build_votes` | No (service role) | Edge Function `vote-build` only |
 | `profiles` | Yes | Own display/profile fields only; identity, access verification, roles, grants, currency, and membership are server-managed |
 | `sim_reports` | No | Edge `report-sim` insert; Edge `admin-reports` owner list/stats/status |
+| `cosmetic_submissions` | No | Edge `cosmetic-submissions` signed-in submit; verified-owner list/review |
 
 ---
 
@@ -192,6 +194,7 @@ See [sim-reports-table.md](./tables/sim-reports-table.md).
 9. `profiles.cosmetic_grants` (`021_profiles_cosmetic_grants.sql`)
 10. `site_settings` (`028_site_access.sql`)
 11. Private-mode profile verification and restrictive read policies (`029_private_access_data.sql`)
+12. Cosmetic submission queue (`20261004000000_cosmetic_submissions.sql`)
 
 ---
 

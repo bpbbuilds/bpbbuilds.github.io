@@ -26,7 +26,7 @@ Grant another trusted Discord the same way if you ever need a second admin. The 
 | `/admin/?tab=reports` | Sim issue queue — KPI counts, compact expandable rows, Patch3 filter rail (search / date / class / opponent) |
 | `/admin/?tab=builds` | Pending OP + Builds list with right **filter rail** (search / All·Featured·Hidden / character) |
 | `/admin/?tab=events` | Create / edit community contests in one shared form (DPS Stone knobs). A row opens the event desk: submitted builds and a history.db of those runs for judging in the game. That file adds a high-health bomb dummy as the top run. A save applies on `/events/` in that browser tab. The catalog file is still the default after the tab closes. |
-| `/admin/?tab=cosmetics` | Review player cosmetic submissions + upload official blob art. The right rail filters the live catalog by search, slot, rarity, and grant. |
+| `/admin/?tab=cosmetics` | Review private player cosmetic submissions (approval publishes a Starter cosmetic; rejection keeps it private) + upload official blob art. The right rail filters the live catalog by search, slot, rarity, and grant. |
 | `/admin/?tab=overlay` | Blob cast studio. Middle is a preview of `/overlay/blobs/` plus the browser-source link. The right panel switches Row, Low, Pop, Walk, Grid, and Float. The copied link omits the preview flag so OBS stays transparent. |
 | `/admin/?tab=marketplace` | Cosmetics marketplace moderation — coming soon stub |
 
@@ -61,6 +61,7 @@ Tokens AND together. Admin **List** (All / Featured / Hidden) still hits `admin-
 supabase functions deploy admin-builds
 supabase functions deploy admin-reports
 supabase functions deploy site-access
+supabase functions deploy cosmetic-submissions
 # BPB_SUBMIT_SECRET should already be set for submit-build
 ```
 
@@ -75,6 +76,7 @@ supabase functions deploy site-access
 | `adminBuildsUrl` | `{SUPABASE_PROJECT_URL}/functions/v1/admin-builds` |
 | `adminReportsUrl` | `{SUPABASE_PROJECT_URL}/functions/v1/admin-reports` |
 | `siteAccessUrl` | `{SUPABASE_PROJECT_URL}/functions/v1/site-access` |
+| `cosmeticSubmissionsUrl` | `{SUPABASE_PROJECT_URL}/functions/v1/cosmetic-submissions` |
 | `submitSecret` | `BPB_SUBMIT_SECRET` (break-glass unlock) |
 
 Never commit real secrets.

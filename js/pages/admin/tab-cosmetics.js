@@ -17,8 +17,10 @@ import {
 import { escapeHtml } from './row.js';
 import {
   listCosmeticCatalog,
+  listCosmeticSubmissions,
   listPublishedCosmetics,
   publishCosmetic,
+  reviewCosmeticSubmission,
   resolveAdminAuth,
   uploadCosmetic,
 } from './api.js';
@@ -359,30 +361,126 @@ async function loadPublishedIds(auth) {
   return ids;
 }
 
-function bindQueueFilters(rootEl) {
+/** @param {unknown} raw */
+function queueWhen(raw) {
+  const date = new Date(String(raw || ''));
+  return Number.isNaN(date.getTime()) ? 'Unknown date' : date.toLocaleString();
+}
+
+/** @param {Record<string, unknown>} submission */
+function submissionRowHtml(submission) {
+  const status = String(submission.status || 'pending');
+  const image = String(submission.image_url || '').trim();
+  const thumb = image
+    ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(String(submission.name || 'Submitted cosmetic'))}" width="56" height="56" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated" />`
+    : '<span aria-hidden="true">?</span>';
+  const action = status === 'pending'
+    ? `<button type="button" class="cr-btn-quiet" data-admin-cos-review="approve" data-admin-cos-submission="${escapeHtml(String(submission.id || ''))}">Approve</button>
+       <button type="button" class="cr-btn-quiet" data-admin-cos-review="reject" data-admin-cos-submission="${escapeHtml(String(submission.id || ''))}">Reject</button>`
+    : `<span class="admin-cosmetics__grant">${escapeHtml(status)}</span>`;
+  const published = String(submission.published_cosmetic_id || '').trim();
+  return `
+    <li class="admin-cosmetics__row">
+      <div class="admin-cosmetics__thumb">${thumb}</div>
+      <div class="admin-cosmetics__row-main">
+        <p class="admin-cosmetics__name">${escapeHtml(String(submission.name || 'Untitled cosmetic'))}</p>
+        <p class="admin-cosmetics__meta">
+          <code class="admin-cosmetics__id">${escapeHtml(String(submission.cosmetic_id || ''))}</code>
+          · ${escapeHtml(String(submission.slot || '—'))}
+          · ${escapeHtml(String(submission.rarity || 'Common'))}
+          · by ${escapeHtml(String(submission.submitter_label || 'Discord member'))}
+          · ${escapeHtml(queueWhen(submission.created_at))}
+        </p>
+        ${submission.description ? `<p class="admin-cosmetics__meta">${escapeHtml(String(submission.description))}</p>` : ''}
+        ${published ? `<p class="admin-cosmetics__meta">Published as <code class="admin-cosmetics__id">${escapeHtml(published)}</code></p>` : ''}
+      </div>
+      <div class="admin-cosmetics__row-actions">${action}</div>
+    </li>`;
+}
+
+/** @param {HTMLElement} rootEl @param {'pending' | 'approved' | 'rejected'} status @param {{ mode: 'jwt', token: string } | null | undefined} auth */
+async function refreshSubmissionQueue(rootEl, status, auth) {
   const list = rootEl.querySelector('[data-admin-cos-queue-list]');
+  if (!(list instanceof HTMLElement)) return;
+  list.innerHTML = '<li class="admin-cosmetics__row admin-cosmetics__row--empty"><div class="admin-cosmetics__row-main"><p class="admin-cosmetics__name">Loading submissions…</p></div></li>';
+  const liveAuth = (await resolveAdminAuth()) || auth;
+  if (!liveAuth?.token) throw new Error('Sign in as the site owner to review submissions.');
+  const result = await listCosmeticSubmissions(liveAuth, status);
+  const rows = Array.isArray(result?.submissions) ? result.submissions : [];
+  if (rows.length) {
+    list.innerHTML = rows.map(submissionRowHtml).join('');
+    return;
+  }
+  list.innerHTML = `
+    <li class="admin-cosmetics__row admin-cosmetics__row--empty">
+      <div class="admin-cosmetics__row-main">
+        <p class="admin-cosmetics__name">No ${escapeHtml(status)} submissions</p>
+        <p class="admin-cosmetics__meta">Submitted art stays private until an owner approves it.</p>
+      </div>
+    </li>`;
+}
+
+/**
+ * @param {HTMLElement} rootEl
+ * @param {{ auth?: { mode: 'jwt', token: string }, catalog: BlobCosmetic[], published: Set<string>, state: import('./cosmetics-filters.js').AdminCosmeticFilterState, root: string }} opts
+ */
+function bindSubmissionQueue(rootEl, opts) {
+  /** @type {'pending' | 'approved' | 'rejected'} */
+  let active = 'pending';
+  const select = async (next) => {
+    active = next;
+    rootEl.querySelectorAll('[data-admin-cos-queue]').forEach((el) => {
+      if (!(el instanceof HTMLElement)) return;
+      const on = el.getAttribute('data-admin-cos-queue') === active;
+      el.classList.toggle('is-on', on);
+      el.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    try {
+      await refreshSubmissionQueue(rootEl, active, opts.auth);
+    } catch (err) {
+      const list = rootEl.querySelector('[data-admin-cos-queue-list]');
+      if (list instanceof HTMLElement) {
+        list.innerHTML = `<li class="admin-cosmetics__row admin-cosmetics__row--empty"><div class="admin-cosmetics__row-main"><p class="admin-cosmetics__name">Could not load submissions</p><p class="admin-cosmetics__meta">${escapeHtml(err instanceof Error ? err.message : 'Try again.')}</p></div></li>`;
+      }
+    }
+  };
   rootEl.querySelectorAll('[data-admin-cos-queue]').forEach((btn) => {
     btn.addEventListener('click', () => {
-      if (!(btn instanceof HTMLElement)) return;
-      const key = btn.getAttribute('data-admin-cos-queue') || 'pending';
-      rootEl.querySelectorAll('[data-admin-cos-queue]').forEach((el) => {
-        if (!(el instanceof HTMLElement)) return;
-        const on = el === btn;
-        el.classList.toggle('is-on', on);
-        el.setAttribute('aria-pressed', on ? 'true' : 'false');
-      });
-      if (!(list instanceof HTMLElement)) return;
-      const label =
-        key === 'approved' ? 'approved' : key === 'rejected' ? 'rejected' : 'pending';
-      list.innerHTML = `
-        <li class="admin-cosmetics__row admin-cosmetics__row--empty">
-          <div class="admin-cosmetics__row-main">
-            <p class="admin-cosmetics__name">No ${escapeHtml(label)} submissions</p>
-            <p class="admin-cosmetics__meta">Queue is empty until players submit art (or you wire storage).</p>
-          </div>
-        </li>`;
+      const value = btn.getAttribute('data-admin-cos-queue');
+      if (value === 'approved' || value === 'rejected' || value === 'pending') void select(value);
     });
   });
+  rootEl.addEventListener('click', async (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const button = target.closest('[data-admin-cos-review]');
+    if (!(button instanceof HTMLButtonElement) || !rootEl.contains(button) || button.disabled) return;
+    const id = String(button.getAttribute('data-admin-cos-submission') || '');
+    const decision = String(button.getAttribute('data-admin-cos-review') || '');
+    if (!id || (decision !== 'approve' && decision !== 'reject')) return;
+    button.disabled = true;
+    button.textContent = decision === 'approve' ? 'Approving…' : 'Rejecting…';
+    try {
+      const liveAuth = await resolveAdminAuth();
+      if (!liveAuth?.token) throw new Error('Sign in as the site owner to review submissions.');
+      const result = await reviewCosmeticSubmission(liveAuth, id, decision);
+      if (decision === 'approve' && result?.cosmetic?.id) {
+        mergeCatalogRows(opts.catalog, [result.cosmetic]);
+        opts.published.add(String(result.cosmetic.id));
+        paintCatalog(rootEl, opts.root, opts.catalog, opts.state, opts.published);
+      }
+      await select(active);
+    } catch (err) {
+      button.disabled = false;
+      button.textContent = decision === 'approve' ? 'Approve' : 'Reject';
+      const list = rootEl.querySelector('[data-admin-cos-queue-list]');
+      if (list instanceof HTMLElement) {
+        const message = err instanceof Error ? err.message : 'Review failed.';
+        list.insertAdjacentHTML('beforebegin', `<p class="admin-status">${escapeHtml(message)}</p>`);
+      }
+    }
+  });
+  void select(active);
 }
 
 /** @type {() => void} */
@@ -434,7 +532,13 @@ export async function mountCosmeticsPanel(host, opts) {
       published,
     });
     bindPublish(host, catalog, published, opts.auth);
-    bindQueueFilters(host);
+    bindSubmissionQueue(host, {
+      auth: opts.auth,
+      catalog,
+      published,
+      state: filters,
+      root,
+    });
     const rail = host.querySelector('.admin-cosmetics-filters');
     if (rail instanceof HTMLElement) {
       unbindCosmeticsFilters = bindAdminCosmeticFilters(rail, {

@@ -863,3 +863,28 @@ None.
 
 - The publish click now resolves the current owner-authenticated JWT immediately before submitting, instead of reusing the Admin shell's older token after a Supabase refresh. This removes the false “only owners can submit” state without weakening the Edge Function owner check.
 - Verified the live profile row and Auth user mapping: `smojowastaken` is Discord `524654511722332181`, profile `is_owner` is already true, and it maps to the expected Discord Auth account. `tab-cosmetics.js` and `api.js` pass `node --check`; the change is ready to publish.
+-
+### 2026-10-04 Discord channel reconciliation complete
+
+- Codex owns the bot channel/category reconciliation paths (`bot/channel-reconcile.js`, `bot/layout.js`, the bot channel sync modules, and their focused tests/docs) for this task. The goal is restart-safe, name/type-aware reuse when local state files are missing or stale; existing Discord resources will not be deleted automatically.
+- Added `ensureGuildChannel`, which validates saved IDs, reuses exact type/name matches from Discord when state is missing or stale, selects a deterministic existing match, and fails closed instead of creating a duplicate when the guild listing fails. Applied it to managed categories, text channels, and the past-events forum; Website Stats category reconciliation now uses the same helper.
+- Added `scripts/bot-channel-reconcile-smoke.mjs`; it covers saved-ID reuse, stale-ID recovery, existing-name reuse, creation, and fail-closed lookup errors. All touched bot modules pass `node --check` and import smoke. The user authorized cleanup: 11 newer exact-name/type duplicates were deleted, the state-referenced originals were kept, and a fresh guild listing reports zero duplicate groups. Changes remain uncommitted pending the user's deployment/push decision.
+
+### 2026-10-04 Cosmetic submission queue diagnosis
+
+- Traced the user-facing submit flow in `js/pages/u/blob/submit-cosmetic-modal.js` and `js/shared/cosmetic-upload-modal.js`: it only logs the payload in the browser and displays “saved locally for now”; it does not call Supabase, upload Storage, or create a submission row.
+- The Admin Cosmetics “Review submissions” panel in `js/pages/admin/tab-cosmetics.js` is currently placeholder markup with static empty states for pending/approved/rejected; no submissions table or approval action is wired.
+- Owner status is not the cause: the player flow uses the same local-only path for every signed-in user. `cosmetic_drops` is reserved for owner-uploaded catalog drafts/published cosmetics via `admin-builds`, not player submissions.
+- Blocker/next step: implement a real authenticated player-submissions table/Storage path plus owner review actions if the queue is required. No product code was changed for this diagnosis.
+
+### 2026-10-04 Cosmetic submission queue claim (in progress)
+
+- Codex owns the cosmetic submission workflow for this task: `js/pages/u/blob/submit-cosmetic-modal.js`, `js/pages/admin/api.js`, `js/pages/admin/tab-cosmetics.js`, `supabase/functions/cosmetic-submissions/`, `supabase/config.toml`, the new cosmetic-submission migration/detail documentation, affected legal pages, and this handoff. The existing official-catalog `admin-builds` pipeline remains owner-gated and will not be weakened.
+- Codex also owns the associated public endpoint entries in `js/shared/config.js`, `js/shared/config.example.js`, and `scripts/write-config.mjs` for this task. The publishable Supabase key remains the only browser-visible credential.
+
+### 2026-10-04 Cosmetic submission queue complete
+
+- Applied `20261004000000_cosmetic_submissions.sql` to the linked Supabase project and deployed `cosmetic-submissions`. It creates the private `cosmetic_submissions` table and `cosmetic-submissions` Storage bucket, extends the server-only rate-limit allow-list, and grants no direct browser table/object access.
+- Player submits now require a valid Discord JWT, PNG/WebP magic bytes, bounded metadata and a 2 MB image, and have a three-per-24-hour account limit. Artist credit comes from the server-side profile, not the browser.
+- The Admin Cosmetics pending/approved/rejected queue is live. Only a fresh verified-owner JWT can list, approve, or reject. Approval copies the asset to public `cosmetic-assets`, creates a published Starter `cosmetic_drops` row, and leaves the existing bot announcement flow intact; rejection stays private.
+- Validation: all touched browser modules pass `node --check`; Supabase accepted the migration/function deployment; unauthenticated Edge calls and direct `cosmetic_submissions` REST reads both return 401. A full signed-in submit/owner-approve UI smoke still requires the owner to exercise it in the browser after the Pages deploy.

@@ -21,4 +21,5 @@ export const config = {
   screenshotToBuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/screenshot-to-build',
   discordGuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/discord-guild',
   cosmeticCatalogUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/cosmetic-catalog',
+  cosmeticSubmissionsUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/cosmetic-submissions',
 };

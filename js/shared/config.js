@@ -16,4 +16,5 @@ export const config = {
   screenshotToBuildUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/screenshot-to-build",
   discordGuildUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/discord-guild",
   cosmeticCatalogUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/cosmetic-catalog",
+  cosmeticSubmissionsUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/cosmetic-submissions",
 };

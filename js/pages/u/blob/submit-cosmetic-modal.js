@@ -3,6 +3,7 @@
  */
 
 import { openCosmeticUploadModal } from '../../../shared/cosmetic-upload-modal.js';
+import { submitCosmeticSubmission } from './cosmetic-submissions-api.js';
 
 /**
  * @param {{ displayName?: string, root?: string }} [opts]
@@ -17,12 +18,6 @@ export function openSubmitCosmeticModal(opts = {}) {
     role: 'player',
     displayName: opts.displayName,
     root,
-    onSubmit: (payload) => {
-      console.info('[cosmetic-submit]', {
-        ...payload,
-        file: payload.file.name,
-        bytes: payload.file.size,
-      });
-    },
+    onSubmit: submitCosmeticSubmission,
   });
 }

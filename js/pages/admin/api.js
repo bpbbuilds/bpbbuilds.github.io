@@ -120,6 +120,21 @@ export function publishCosmetic(auth, cosmetic) {
   return adminRequest(auth, { action: 'publish_cosmetic', cosmetic });
 }
 
+/** Owner-only player cosmetic moderation queue. */
+export function cosmeticSubmissionRequest(auth, body) {
+  return adminPost(String(config.cosmeticSubmissionsUrl || ''), auth, body);
+}
+
+/** @param {{ mode: 'jwt', token: string }} auth @param {'pending' | 'approved' | 'rejected'} status */
+export function listCosmeticSubmissions(auth, status = 'pending') {
+  return cosmeticSubmissionRequest(auth, { action: 'list', status });
+}
+
+/** @param {{ mode: 'jwt', token: string }} auth @param {string} id @param {'approve' | 'reject'} decision */
+export function reviewCosmeticSubmission(auth, id, decision) {
+  return cosmeticSubmissionRequest(auth, { action: 'review', id, decision });
+}
+
 /**
  * @param {{ mode: 'jwt' | 'secret', token: string }} auth
  * @param {string} eventSlug

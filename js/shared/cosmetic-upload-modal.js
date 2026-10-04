@@ -401,7 +401,7 @@ function createCosmeticUploadModal() {
           status.textContent =
             role === 'admin'
               ? 'Saved to the live catalog as a draft. Publish its catalog row when it is ready.'
-              : 'Thanks — saved locally for now. Review / upload pipeline comes later.';
+              : 'Thanks — submitted for review. Your art stays private until it is approved.';
         }
         window.setTimeout(() => close(), 1400);
       } catch (err) {

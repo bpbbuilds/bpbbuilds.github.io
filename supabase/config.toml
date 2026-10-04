@@ -39,3 +39,8 @@ verify_jwt = false
 
 [functions.cosmetic-catalog]
 verify_jwt = false
+
+# Authenticated player submissions and owner-only moderation. The function
+# validates the JWT and owner role itself so it can send CORS-safe errors.
+[functions.cosmetic-submissions]
+verify_jwt = false
