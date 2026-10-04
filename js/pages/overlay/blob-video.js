@@ -84,9 +84,18 @@ function popOffset(seconds, phase) {
  * @param {number} x
  * @param {number} y
  * @param {number} size
+ * @param {number} [facing]
  */
-function drawFace(ctx, image, x, y, size) {
-  ctx.drawImage(image, Math.round(x), Math.round(y), Math.round(size), Math.round(size));
+function drawFace(ctx, image, x, y, size, facing = 1) {
+  ctx.save();
+  if (facing < 0) {
+    ctx.translate(Math.round(x + size), 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(image, 0, Math.round(y), Math.round(size), Math.round(size));
+  } else {
+    ctx.drawImage(image, Math.round(x), Math.round(y), Math.round(size), Math.round(size));
+  }
+  ctx.restore();
 }
 
 /**
@@ -156,9 +165,11 @@ function renderFrame(ctx, view, rows, faces, seconds) {
     const fontSize = Math.max(12, Math.min(24, 1.5 * vh));
     for (let i = 0; i < count; i += 1) {
       const phase = ((seconds / 22 + i / count) % 1 + 1) % 1;
-      const x = start + travel * phase;
+      const goingRight = phase < 0.5;
+      const path = phase < 0.44 ? phase / 0.44 : phase < 0.5 ? 1 : phase < 0.94 ? 1 - (phase - 0.5) / 0.44 : 0;
+      const x = start + travel * path;
       const y = bottom - size;
-      drawFace(ctx, faces[i], x, y, size);
+      drawFace(ctx, faces[i], x, y, size, goingRight ? 1 : -1);
       if (view === 'walk-names') {
         drawName(ctx, rows[i].name, x + size / 2, height - 0.8 * vh, size, fontSize);
       }

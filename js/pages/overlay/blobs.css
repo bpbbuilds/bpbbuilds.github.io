@@ -99,7 +99,8 @@ body.page-blob-overlay #blob-overlay {
   position: absolute;
   bottom: -2vh;
   left: 50%;
-  transform: translateX(-50%);
+  /* Counter the walker's horizontal flip so captions never render backwards. */
+  transform: translateX(-50%) scaleX(var(--blob-cast-walk-facing, 1));
   max-width: calc(var(--blob-cast-face) - 4px);
   font-family: var(--bpb-font-body, Georgia, serif);
   font-size: clamp(12px, 1.5vh, 24px);
@@ -184,9 +185,25 @@ body.page-blob-overlay #blob-overlay {
   0% {
     /* Both loop boundaries are outside the frame, so the reset is invisible. */
     transform: translate3d(calc(0px - var(--blob-cast-face) - 2vw), 0, 0) scaleX(1);
+    --blob-cast-walk-facing: 1;
+  }
+  44% {
+    transform: translate3d(calc(100vw + 2vw), 0, 0) scaleX(1);
+    --blob-cast-walk-facing: 1;
+  }
+  50% {
+    /* Turn while fully outside the right edge. */
+    transform: translate3d(calc(100vw + 2vw), 0, 0) scaleX(-1);
+    --blob-cast-walk-facing: -1;
+  }
+  94% {
+    transform: translate3d(calc(0px - var(--blob-cast-face) - 2vw), 0, 0) scaleX(-1);
+    --blob-cast-walk-facing: -1;
   }
   100% {
-    transform: translate3d(calc(100vw + 2vw), 0, 0) scaleX(1);
+    /* Turn again outside the left edge before the next loop. */
+    transform: translate3d(calc(0px - var(--blob-cast-face) - 2vw), 0, 0) scaleX(1);
+    --blob-cast-walk-facing: 1;
   }
 }
 
