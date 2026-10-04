@@ -10,6 +10,7 @@ import {
 } from './catalog-data.js';
 import { eventCardsHtml, featuredEventHtml } from './event-card.js';
 import { eventDetailHtml, bindEventDetailHub } from './event-detail.js';
+import { fetchEventWinner } from './event-winner.js';
 import {
   bindEventFilters,
   defaultEventFilterState,
@@ -77,6 +78,8 @@ export async function initEventsCatalog(main, opts) {
   let cosmeticTips = null;
   /** @type {import('../u/blob/catalog.js').BlobCosmetic[] | null} */
   let blobCatalog = null;
+  /** @type {{ slug: string | null, status: 'idle' | 'loading' | 'ready', hasWinner: boolean }} */
+  let detailWinner = { slug: null, status: 'idle', hasWinner: false };
 
   main.addEventListener('click', onMainClick);
   void loadBlobCatalog(root).then((items) => {
@@ -108,7 +111,14 @@ export async function initEventsCatalog(main, opts) {
     const listSource = listCatalogEvents().filter((e) => !e.featured);
     const filtered = filterCatalogEvents(listSource, state);
     const shownCount = filtered.length + (featured ? 1 : 0);
-    const detail = detailSlug ? getCatalogEvent(detailSlug) : null;
+    const detailBase = detailSlug ? getCatalogEvent(detailSlug) : null;
+    ensureDetailWinner(detailBase);
+    const detail = detailBase && detailWinner.slug === detailBase.slug && detailWinner.status === 'ready'
+      ? {
+          ...detailBase,
+          features: { ...(detailBase.features || {}), hasWinner: detailWinner.hasWinner },
+        }
+      : detailBase;
 
     if (detail) {
       main.innerHTML = `
@@ -161,6 +171,32 @@ export async function initEventsCatalog(main, opts) {
     }
     unbindTimers = bindEventTimers(main);
     bindPrizeTips();
+  }
+
+  /**
+   * Resolve the public winner before adding the Winner tab. A selected winner
+   * remains hidden until its build is public, matching the endpoint contract.
+   * @param {import('./catalog-data.js').CatalogEvent | null} event
+   */
+  function ensureDetailWinner(event) {
+    if (!event || event.features?.hasVoting) return;
+    if (detailWinner.slug === event.slug && detailWinner.status !== 'idle') return;
+    detailWinner = { slug: event.slug, status: 'loading', hasWinner: false };
+    void fetchEventWinner(event.slug)
+      .then((result) => {
+        if (detailSlug !== event.slug) return;
+        detailWinner = {
+          slug: event.slug,
+          status: 'ready',
+          hasWinner: Boolean(result.ok && result.winner?.build),
+        };
+        paint();
+      })
+      .catch(() => {
+        if (detailSlug !== event.slug) return;
+        detailWinner = { slug: event.slug, status: 'ready', hasWinner: false };
+        paint();
+      });
   }
 
   function paintList() {

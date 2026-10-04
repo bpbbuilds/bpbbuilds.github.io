@@ -57,7 +57,7 @@ export const EVENT_STATUS_LABELS = {
  *   prizeDetail?: string,
  *   prizePlaces?: { place: string, label?: string, icon?: string, prizes: (string | { icon?: string, amount?: number, label?: string, kind?: string, cosmeticId?: string, title?: string })[] }[],
  *   discordHref?: string,
- *   features?: { hasVoting?: boolean, hasBuilds?: boolean },
+ *   features?: { hasVoting?: boolean, hasBuilds?: boolean, hasWinner?: boolean },
  *   entry?: {
  *     judgeWindowSec?: number,
  *     minGameVersion?: string,

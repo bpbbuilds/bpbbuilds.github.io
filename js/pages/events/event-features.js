@@ -13,6 +13,16 @@ export function eventHasVoting(event) {
 }
 
 /**
+ * The public Winner tab is only useful after the selected build is available
+ * to visitors. The catalog is static, so detail loading stamps this flag onto
+ * the event after checking the read-only winner endpoint.
+ * @param {CatalogEvent | null | undefined} event
+ */
+export function eventHasWinner(event) {
+  return Boolean(event?.features?.hasWinner);
+}
+
+/**
  * Builds tab — on by default; set features.hasBuilds: false to hide.
  * @param {CatalogEvent | null | undefined} event
  */
@@ -34,10 +44,7 @@ export function tabsForEvent(event) {
   const tabs = ['overview', 'rules'];
   if (eventHasBuilds(event)) tabs.push('builds');
   if (eventHasVoting(event)) tabs.push('voting');
-  // Manual winners are published for scored/no-vote events. Keep the tab
-  // visible before a result exists so the page can say when judging is still
-  // in progress instead of changing the rail after an owner selects a build.
-  if (!eventHasVoting(event)) tabs.push('winner');
+  if (!eventHasVoting(event) && eventHasWinner(event)) tabs.push('winner');
   tabs.push('rewards');
   return tabs;
 }

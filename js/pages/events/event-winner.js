@@ -38,7 +38,7 @@ export async function hydrateEventWinner(scope, event, root) {
   const status = host.querySelector('[data-event-winner-status]');
   if (!(status instanceof HTMLElement)) return;
 
-  const result = await fetchWinner(event.slug);
+  const result = await fetchEventWinner(event.slug);
   if (!host.isConnected) return;
   if (!result.ok) {
     status.innerHTML = emptyWinnerHtml(event, 'The winner could not be loaded right now. Please try again shortly.');
@@ -106,7 +106,7 @@ export async function hydrateEventWinner(scope, event, root) {
   board.innerHTML = `<img src="${escapeAttr(still)}" alt="${escapeAttr(title)} board preview" loading="lazy" decoding="async" />`;
 }
 
-async function fetchWinner(slug) {
+export async function fetchEventWinner(slug) {
   const endpoint = String(
     config.eventWinnerUrl ||
       (config.supabaseUrl ? `${String(config.supabaseUrl).replace(/\/$/, '')}/functions/v1/event-winner` : ''),
