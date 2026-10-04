@@ -950,3 +950,13 @@ None.
 - Added owner-only draft editing for name, slot, acquisition grant, rarity, artist, original owner, value, description, and optional replacement art. Publishing is server-validated and only allowed for an existing unpublished draft; direct unauthenticated admin/submission calls still return 401.
 - Replaced the Admin Cosmetics Live catalog line list with an inventory-style responsive grid, added Draft/Published state and Edit controls, and matched the catalog/queue surfaces to the existing dark gold-edged admin form treatment. Browser modal smoke confirmed metadata-only draft edits submit without requiring a replacement image.
 - Validation: browser module smoke, `node --check` for all touched JS modules, JSON parse, `git diff --check`, Supabase migration push, and deployment of `admin-builds` and `cosmetic-submissions` completed successfully.
+
+### 2026-10-04 Admin tab navigation race claim (in progress)
+
+- Codex owns `js/pages/admin/shell.js` and this handoff to prevent stale asynchronous tab mounts from committing into the currently selected Admin tab. Existing cosmetic auth context changes in `shell.js` will be preserved.
+
+### 2026-10-04 Admin tab navigation race complete
+
+- Admin stage mounts now use a fresh stage element for each tab request. The previous stage is detached before its async loader runs, so a slower Overview/Reports/etc. request can only finish in its detached node and cannot overwrite the newer tab's live content.
+- Reload, unauthorized, and panel-driven tab-change callbacks are scoped to the latest request as well; stale requests cannot trigger a second repaint after the user has switched tabs.
+- Preserved the existing cosmetic upload auth context change in `shell.js`. Validation: `node --check js/pages/admin/shell.js` and `git diff --check` pass.

@@ -224,11 +224,42 @@ async function paintHub(main, root, state = {}) {
     document.title = `${meta.title} — Admin — Smojo Builds`;
   };
 
+  // Every tab request gets its own stage node. Async panel loaders keep a
+  // reference to the node they were given, so replacing it before starting
+  // the next request prevents a slower, stale loader from painting over the
+  // tab the user selected most recently.
+  let stageRequest = 0;
+
   const remountStage = async () => {
+    const requestId = ++stageRequest;
+    const requestedTab = active;
     paintHead();
-    const stage = main.querySelector('[data-admin-stage]');
-    if (!(stage instanceof HTMLElement)) return;
-    await mountStage(stage, active, ctx);
+    const currentStage = main.querySelector('[data-admin-stage]');
+    if (!(currentStage instanceof HTMLElement)) return;
+
+    const requestStage = currentStage.cloneNode(false);
+    currentStage.replaceWith(requestStage);
+
+    // Panel callbacks can fire after their fetch completes. Scope the
+    // callbacks to this request too, so a stale panel cannot trigger a reload,
+    // tab change, or auth repaint after the user has moved on.
+    const requestCtx = {
+      ...ctx,
+      onUnauthorized: () => {
+        if (requestId !== stageRequest) return;
+        ctx.onUnauthorized();
+      },
+      reload: () => {
+        if (requestId !== stageRequest) return;
+        void remountStage();
+      },
+      goTab: (tab) => {
+        if (requestId !== stageRequest) return;
+        void setTab(tab, true);
+      },
+    };
+
+    await mountStage(requestStage, requestedTab, requestCtx);
   };
 
   /**
