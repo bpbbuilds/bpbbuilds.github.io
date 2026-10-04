@@ -11,7 +11,7 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
-import { addBonusDamage, addSpeed } from '../piece-stats.js';
+import { addBonusDamage, addSpeed, purgeBonusDamage } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import {
@@ -179,16 +179,35 @@ const nullBladePort = {
   },
 };
 
-/** RibSawBlade.gd — purge foe weapons (empty vs dummy); perm bonusdam. */
+/** RibSawBlade.gd — retain foe weapons in prepare; purge removable damage on hit. */
 const ribSawBladePort = {
   handlerId: 'rib_saw_blade',
   family: 'weapon_base',
+  onPrepare(piece, ctx) {
+    piece._ribOppWeapons = (ctx.allPieces || []).filter((other) => {
+      if (!other || other === piece || other.side === piece.side) return false;
+      return (
+        other.kind === 'weapon' &&
+        canBeEmpoweredPiece(other)
+      );
+    });
+  },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'rib_saw_blade');
   },
   onPreDealDamageEarly(piece, _ctx, res) {
     if (res && !res.hit) return;
-    addBonusDamage(piece, getPName(piece.params, 'bonusdam', getP2(piece.params, 0.5)));
+    const removeDam = Math.max(
+      0,
+      Number(getPName(piece.params, 'dam', getP1(piece.params, 1))) || 0,
+    );
+    for (const weapon of piece._ribOppWeapons || []) {
+      purgeBonusDamage(weapon, removeDam);
+    }
+    addBonusDamage(
+      piece,
+      getPName(piece.params, 'bonusdam', getP2(piece.params, 0.5)),
+    );
   },
 };
 

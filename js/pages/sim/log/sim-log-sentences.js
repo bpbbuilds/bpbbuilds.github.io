@@ -230,6 +230,12 @@ export function formatLogLine(ev, ctx = {}) {
     case 'damage': {
       const amt = Number(ev.amount);
       const dmg = Number.isFinite(amt) ? String(Math.round(amt)) : '?';
+      if (ev.meta?.kind === 'self_health_cost') {
+        return pack(
+          `Lost ${escapeHtml(dmg)} health (${escapeHtml(origin)}).`,
+          `Lost ${dmg} health (${origin}).`,
+        );
+      }
       if (ev.meta?.critical) {
         const colored = `<strong class="sim-clog__crit">${escapeHtml(dmg)}</strong>`;
         return pack(

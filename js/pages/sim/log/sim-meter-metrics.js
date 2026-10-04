@@ -189,6 +189,7 @@ function contribution(ev, metricId, sectionId) {
   switch (sectionId) {
     case 'damage':
       if (ev.type !== 'damage') return 0;
+      if (ev.meta?.kind === 'self_health_cost') return 0;
       return Math.max(0, Number(ev.amount) || 0);
     case 'misses':
       if (ev.type !== 'miss') return 0;

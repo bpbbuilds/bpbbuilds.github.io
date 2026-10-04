@@ -969,3 +969,14 @@ None.
 
 - Restored the complete ten-handler Wave D registry and removed the accidental source-line prefixes/partial rewrite that caused `Unexpected number` at the `useMana` import. No event-page behavior was changed beyond making the existing valid module loadable.
 - Validation: `node --check`, a real ESM import with all ten registry entries, `node scripts/sim-wave-d-smoke.mjs`, and `git diff --check` pass.
+
+### 2026-10-04 Wand of Dissonance and Rib Saw Blade port claim (in progress)
+
+- Codex owns `js/pages/sim/engine/scripts/ports-wave-d-unique.js`, `js/pages/sim/engine/scripts/ports-ap-perm.js`, the focused item smoke, the simulator validation note/backlog status for these two rows, and this handoff. The source-led work will cover Wand of Dissonance's prepare-time effect factor and effect-damage lifecycle, plus Rib Saw Blade's retained opponent-weapon purge and on-hit bonus. Existing unrelated simulator work remains protected.
+
+### 2026-10-04 Wand of Dissonance and Rib Saw Blade port complete
+
+- Wand of Dissonance now runs its source `onPrepare` behavior against the affected Dark items, applying the spell double-factor to the owner's effect damage. Its cooldown chain uses the source health gate, base descriptor damage, effect-damage scaling, max-stack random selection among Mana/Lucky/Regeneration, and causal parent IDs for the health → effect → buff chain. Self-health costs have a dedicated Combat Log sentence and are excluded from Damage Dealt totals.
+- Rib Saw Blade now snapshots only the opposing empowerable weapons during `onPrepare`, purges only removable `addBonusDamage` damage on a hit, and adds its own removable hit bonus. Base and permanent/catalog damage are preserved. Katana's inherited Rib Saw prepare behavior now uses the same target snapshot.
+- Added `scripts/sim-wand-rib-smoke.mjs`, registered it in the continuous simulator audit, and updated the source parity hook map to recognize the simulator's explicit `onPrepare` lifecycle. The two backlog rows and validation disclosure are marked complete.
+- Validation: focused Wand/Rib smoke (including both player/opponent Wand paths and Katana inheritance), `node scripts/sim-wave-d-smoke.mjs`, `node scripts/sim-log-smoke.mjs`, full `node scripts/sim-continuous-audit.mjs --check` (14/14), syntax checks, and ledger regeneration/check all pass. No live game capture was available; source extract behavior is the authority for these ports.

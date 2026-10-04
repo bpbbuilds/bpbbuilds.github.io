@@ -1,16 +1,16 @@
 # Simulator Package 4 port backlog
 
-Generated from `assets/data/sim-fidelity-ledger.json` on 2026-10-03. This is the evidence-first inventory of every simulator row that is not yet source-ported; it is not a parity claim.
+Generated from `assets/data/sim-fidelity-ledger.json` on 2026-10-04. This is the evidence-first inventory of every simulator row that is not yet source-ported; it is not a parity claim.
 
 ## Current audited state
 
 - Catalog items: **519**
-- Source-ported (not fixture/live certified): **351**
-- Runtime port present but incomplete: **92**
+- Source-ported (not fixture/live certified): **353**
+- Runtime port present but incomplete: **90**
 - Source unresolved: **49**
 - Deferred supported-mode gap: **1**
 - Intentional no-combat rows: **26** (not backlog work)
-- Lifecycle-hook gaps: **13**; call-review candidates: **40**; duplicate registrations: **21**.
+- Lifecycle-hook gaps: **10**; call-review candidates: **36**; duplicate registrations: **21**.
 
 ## Completion rule for every row
 
@@ -19,8 +19,8 @@ Before checking a row off: resolve the exact game source and inherited behavior,
 ## Start first - confirmed behavior gaps
 
 - [ ] `power_of_the_moon` - Exclusive/PoweroftheMoon.gd; current handler: power_of_the_moon; depth: deep; Lifecycle hook audit: onPostCombatStart.
-- [ ] `wand_of_dissonance` - Exclusive/WandofDissonance.gd; current handler: wand_of_dissonance; depth: deep; Lifecycle hook audit: onPrepare.
-- [ ] `rib_saw_blade` - RibSawBlade.gd; current handler: rib_saw_blade; depth: shallow; Lifecycle hook audit: onPrepare.
+- [x] `wand_of_dissonance` - Exclusive/WandofDissonance.gd; current handler: wand_of_dissonance; depth: deep; Lifecycle hook audit: onPrepare.
+- [x] `rib_saw_blade` - RibSawBlade.gd; current handler: rib_saw_blade; depth: shallow; Lifecycle hook audit: onPrepare.
 
 ## Source unresolved (49)
 
@@ -147,7 +147,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `power_of_the_moon`
 - [ ] `pumpkin`
 - [ ] `puzzlebag_l`
-- [ ] `rib_saw_blade`
+- [x] `rib_saw_blade`
 - [ ] `ruby_chonk`
 - [ ] `ruby_egg`
 - [ ] `ruby_whelp`
@@ -170,7 +170,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `ultima`
 - [ ] `vampiric_gloves`
 - [ ] `walrus_tusk`
-- [ ] `wand_of_dissonance`
+- [x] `wand_of_dissonance`
 - [ ] `wisp`
 
 ## Deferred supported-mode gap (1)

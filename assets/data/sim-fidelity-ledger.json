@@ -10,14 +10,14 @@
   },
   "totals": {
     "catalogItems": 519,
-    "sourcePorted": 351,
-    "portPresentIncomplete": 92,
+    "sourcePorted": 353,
+    "portPresentIncomplete": 90,
     "sourceUnresolved": 49,
     "noCombat": 26,
     "deferred": 1,
-    "lifecycleHookGap": 13,
+    "lifecycleHookGap": 10,
     "untriagedLifecycleHookGap": 0,
-    "callReviewCandidate": 40,
+    "callReviewCandidate": 36,
     "duplicateRegistration": 21
   },
   "rows": [
@@ -1366,7 +1366,7 @@
         "lifecycleHookGaps": [
           {
             "hook": "onPrepare",
-            "why": "no JS hook among onPreCombatStart/onCombatStart"
+            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
           }
         ],
         "lifecycleHookTriage": {
@@ -2904,7 +2904,7 @@
         "lifecycleHookGaps": [
           {
             "hook": "onPrepare",
-            "why": "no JS hook among onPreCombatStart/onCombatStart"
+            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
           }
         ],
         "lifecycleHookTriage": {
@@ -3062,7 +3062,7 @@
         "lifecycleHookGaps": [
           {
             "hook": "onPrepare",
-            "why": "no JS hook among onPreCombatStart/onCombatStart"
+            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
           }
         ],
         "lifecycleHookTriage": {
@@ -3674,7 +3674,7 @@
         "lifecycleHookGaps": [
           {
             "hook": "onPrepare",
-            "why": "no JS hook among onPreCombatStart/onCombatStart"
+            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
           }
         ],
         "lifecycleHookTriage": {
@@ -5204,7 +5204,7 @@
         "lifecycleHookGaps": [
           {
             "hook": "onPrepare",
-            "why": "no JS hook among onPreCombatStart/onCombatStart"
+            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
           }
         ],
         "lifecycleHookTriage": {
@@ -7320,17 +7320,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "dealEffectDamage",
-            "why": "no token of dealEffectDamage/effectDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: dealEffectDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -8520,17 +8515,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "dealEffectDamage",
-            "why": "no token of dealEffectDamage/effectDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: dealEffectDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -12375,32 +12365,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPostCombatStart",
-            "why": "no JS hook among onPostCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "confirmed_gap",
-          "owner": "Package 2 scheduler/timer model",
-          "evidence": "Items/Exclusive/PoweroftheMoon.gd:onPostCombatStart calls CombatTimer.advanceTime; simulator has no equivalent and must not model it as generic cooldown advance."
-        },
-        "callReviewCandidates": [
-          {
-            "call": "inflictBlind",
-            "why": "no token of blind"
-          },
-          {
-            "call": "giveReflectStacks",
-            "why": "no token of reflect"
-          }
-        ],
+        "lifecycleHookGaps": [],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPostCombatStart.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -13722,23 +13693,13 @@
         "depth": "shallow"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPrepare",
-            "why": "no JS hook among onPreCombatStart/onCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "confirmed_gap",
-          "owner": "Package 4 item-port wave",
-          "evidence": "Items/RibSawBlade.gd:onPrepare retains enemy weapons for onPreDealDamage_early purgeDamage; current port adds damage but does not retain/purge that set."
-        },
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "port_present",
       "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPrepare.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -13850,7 +13811,7 @@
         "lifecycleHookGaps": [
           {
             "hook": "onPrepare",
-            "why": "no JS hook among onPreCombatStart/onCombatStart"
+            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
           }
         ],
         "lifecycleHookTriage": {
@@ -16121,7 +16082,7 @@
         "lifecycleHookGaps": [
           {
             "hook": "onPrepare",
-            "why": "no JS hook among onPreCombatStart/onCombatStart"
+            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
           }
         ],
         "lifecycleHookTriage": {
@@ -17681,7 +17642,7 @@
         "lifecycleHookGaps": [
           {
             "hook": "onPrepare",
-            "why": "no JS hook among onPreCombatStart/onCombatStart"
+            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
           }
         ],
         "lifecycleHookTriage": {
@@ -18011,7 +17972,7 @@
         "lifecycleHookGaps": [
           {
             "hook": "onPrepare",
-            "why": "no JS hook among onPreCombatStart/onCombatStart"
+            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
           }
         ],
         "lifecycleHookTriage": {
@@ -18269,32 +18230,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPrepare",
-            "why": "no JS hook among onPreCombatStart/onCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "confirmed_gap",
-          "owner": "Package 4 item-port wave",
-          "evidence": "Items/Exclusive/WandofDissonance.gd:onPrepare changes Character effect-damage factor from affected Dark items; port only applies a local activation calculation."
-        },
-        "callReviewCandidates": [
-          {
-            "call": "dealEffectDamage",
-            "why": "no token of dealEffectDamage/effectDamage"
-          },
-          {
-            "call": "changeEffectDamageFactor",
-            "why": "no token of effectDmgFactor/effectDamageFactor"
-          }
-        ],
+        "lifecycleHookGaps": [],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPrepare.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,

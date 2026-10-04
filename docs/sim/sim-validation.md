@@ -43,8 +43,8 @@ does not turn a listed gap into a pass.
 | Mismatch / evidence gap | Owner | Game source or evidence | Severity | Next evidence |
 |---|---|---|---|---|
 | Power of the Moon has no `CombatTimer.advanceTime` equivalent | Package 4 lifecycle wave | `Items/Exclusive/PoweroftheMoon.gd` → `Interface/CombatTimer/CombatTimer.gd` | P1 | Source-led timer implementation plus two-sided timing/log regression and live capture if extract ordering is ambiguous. |
-| Wand of Dissonance misses its prepare-time affected-Dark effect-damage factor | Package 4 item-port wave | `Items/Exclusive/WandofDissonance.gd` | P1 | Preserve affected-item set and factor in a focused player/opponent fixture with event/log/meter proof. |
-| Rib Saw Blade misses retained enemy-weapon setup for its early damage purge | Package 4 item-port wave | `Items/RibSawBlade.gd` | P1 | Source-led retained-target fixture proving purge order, both sides, and combat-log output. |
+| Wand of Dissonance prepare/effect chain | Resolved 2026-10-04 | `Items/Exclusive/WandofDissonance.gd` + `scripts/sim-wand-rib-smoke.mjs` | Closed | Prepare factor, health gate, effect damage, max-stack random buff, causal parent IDs, log, and damage-meter exclusion are covered. |
+| Rib Saw Blade retained enemy-weapon purge | Resolved 2026-10-04 | `Items/RibSawBlade.gd` + `scripts/sim-wand-rib-smoke.mjs` | Closed | Prepare-time opponent weapon snapshot, removable-only purge, hit bonus, and permanent/base damage preservation are covered. |
 | Four deterministic fixture bands disagree with the current engine | Package 5 fixture matrix | `scripts/fixtures/parity/berserk-bloodline.json`, `infinite-combo-machine.json`, `pyro-furnace.json`; these are sim baselines, not live proof | P1 | Reproduce each from source, preserve the mismatch, and add paired/live evidence before changing a band. |
 | No retained live capture is filled (0/11 fixtures) | Package 5 live-capture matrix | `scripts/fixtures/parity/*.json` `live` blocks; protocol below | P1 | Capture real fights with board/opponent/version/timestamps and retain them only in `live.*`, never in dummy `expect` bands. |
 

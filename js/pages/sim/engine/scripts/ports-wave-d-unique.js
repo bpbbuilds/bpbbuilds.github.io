@@ -12,13 +12,13 @@ import {
   DEBUFF_KEYS,
 } from '../buff-economy.js';
 import { grantStun, healActor, tryUseStamina, gainMaxStaminaTemporary, giveStamina } from '../actor.js';
-import { applyHealEfficiency } from '../actor-stats.js';
+import { applyEffectDmgFactor, applyHealEfficiency } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addAccuracy, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedSpeed } from '../timed-speed.js';
-import { dealHit } from './handlers.js';
+import { dealEffectDamage, dealHit, loseHealth } from './handlers.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { randInt } from '../rng.js';
 import { emitChargePulse } from '../charge-delivery.js';
@@ -314,28 +314,59 @@ export const innerPowerPort = {
 /** @type {ScriptHandler} */
 export const wandOfDissonancePort = {
   handlerId: 'wand_of_dissonance',
-  family: 'pet_like',
-  onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'wand_of_dissonance', `Weapon: ${piece.name}`);
-    const hpCost = Math.max(1, Math.round(getP1(piece.params, 5)));
-    ctx.player.hp = Math.max(1, ctx.player.hp - hpCost);
-    let raw = randInt(piece.damageMin || 6, piece.damageMax || 12, ctx.rng);
+  family: 'unique',
+  onPrepare(piece, ctx) {
+    const effectDmg = getPName(piece.params, 'dam', 5) / 100;
+    if (!(effectDmg > 0)) return;
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-    for (const other of ctx.pieces || []) {
-      if (!links.some((l) => l.key === other.placementKey)) continue;
-      if (itemHasType(ctx.itemsById.get(other.itemId), 'dark')) raw = Math.round(raw * 1.25);
+    let bonusEffectDmg = 0;
+    for (const link of links) {
+      const item = ctx.itemsById.get(link.id);
+      bonusEffectDmg += effectDmg * (itemHasType(item, 'spell') ? 2 : 1);
     }
-    dealHit(piece, ctx, raw);
-    const subset = ['mana', 'lucky', 'regeneration'];
-    const have = subset
-      .map((k) => ({ k, n: getStackAmount(ctx.player, /** @type {any} */ (k)) }))
-      .sort((a, b) => b.n - a.n);
-    if (have[0]) {
-      grantStacks(ctx.player, have[0].k, 1, {
+    applyEffectDmgFactor(ctx.player, bonusEffectDmg, ctx, piece);
+    piece._wandEffectDmgFactor = bonusEffectDmg;
+  },
+  onCooldownEffect(piece, ctx) {
+    const healthUsed = Math.max(
+      0,
+      Math.trunc(getPName(piece.params, 'healtht', getP1(piece.params, 7))),
+    );
+    const healthEvent = loseHealth(piece, ctx, healthUsed);
+    if (healthEvent) {
+      // WandofDissonance.gd uses descriptor.minDam, not the mutable item
+      // damage range (socketed/gem bonuses must not change this raw effect).
+      const catalog = ctx.itemsById?.get(piece.itemId);
+      const raw = Math.max(0, Number(catalog?.damageMin) || Number(piece.damageMin) || 0);
+      dealEffectDamage(piece, ctx, raw, { parentId: healthEvent.eventId });
+
+      const available = [
+        ['mana', getPName(piece.params, 'mana', getP2(piece.params, 4))],
+        ['lucky', getPName(piece.params, 'luck', getP3(piece.params, 3))],
+        ['regeneration', getPName(piece.params, 'regen', getP4(piece.params, 3))],
+      ];
+      let maxStacks = 0;
+      let maxBuffs = [];
+      for (const [stack, amount] of available) {
+        const stacks = getStackAmount(ctx.player, /** @type {any} */ (stack));
+        if (stacks > maxStacks) {
+          maxStacks = stacks;
+          maxBuffs = [[stack, amount]];
+        } else if (stacks === maxStacks) {
+          maxBuffs.push([stack, amount]);
+        }
+      }
+      const picked = maxBuffs[Math.floor(ctx.rng() * maxBuffs.length)] || available[0];
+      const [stack, amount] = picked;
+      grantStacks(ctx.player, /** @type {any} */ (stack), Math.max(0, Math.trunc(amount)), {
         originKey: piece.placementKey,
         originId: piece.itemId,
+        parentId: healthEvent.eventId,
       });
     }
+    // Source calls Item.activate() after the effect chain, even when the
+    // health gate prevents the damage/buff branch.
+    pushActivate(piece, ctx, 'wand_of_dissonance', `Accessory: ${piece.name}`);
     return true;
   },
 };

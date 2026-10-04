@@ -8,7 +8,12 @@ import {
 } from '../buff-economy.js';
 import { getItemsInside } from '../board-graph.js';
 import { getP1, getP2, getPName } from '../params.js';
-import { addBonusDamage, addBonusDamageFactor, multiplyStaminaCost } from '../piece-stats.js';
+import {
+  addBonusDamage,
+  addBonusDamageFactor,
+  multiplyStaminaCost,
+  purgeBonusDamage,
+} from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { weaponStrike } from './ports-wave-c-util.js';
@@ -38,42 +43,19 @@ function getBuffStacks(actor) {
 }
 
 /**
- * RibSawBlade.gd purge — shrink removable / bonus damage on a piece.
- * @param {object} weapon
- * @param {number} amount
- */
-function purgeDamage(weapon, amount) {
-  const need = Math.max(0, Math.round(amount));
-  if (!need) return 0;
-  let left = need;
-  const bonus = Number(weapon.damageBonus) || 0;
-  if (bonus > 0 && left > 0) {
-    const cut = Math.min(bonus, left);
-    weapon.damageBonus = bonus - cut;
-    left -= cut;
-  }
-  if (left > 0 && (Number(weapon.damageMin) || 0) > 0) {
-    const cut = Math.min(Number(weapon.damageMin) || 0, left);
-    weapon.damageMin = Math.max(0, (Number(weapon.damageMin) || 0) - cut);
-    weapon.damageMax = Math.max(
-      Number(weapon.damageMin) || 0,
-      (Number(weapon.damageMax) || 0) - cut,
-    );
-    left -= cut;
-  }
-  return need - left;
-}
-
-/**
  * Katana.gd — RibSaw on-hit purge + self bonusdam; if opp buffs ≥ buffst, strip most.
  * @type {ScriptHandler}
  */
 export const katanaPort = {
   handlerId: 'katana',
   family: 'on_hit',
-  onCombatStart(piece) {
-    // Solo dummy has no opp inventory; RibSaw purge list stays empty until dual-board.
-    piece._ribOppWeapons = [];
+  onPrepare(piece, ctx) {
+    // Katana extends RibSawBlade.gd, so it inherits the same prepare-time
+    // opponent weapon snapshot before its own buff-strip reaction runs.
+    piece._ribOppWeapons = (ctx.allPieces || []).filter((other) => {
+      if (!other || other === piece || other.side === piece.side) return false;
+      return other.kind === 'weapon' && canBeEmpoweredPiece(other);
+    });
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'katana');
@@ -91,7 +73,7 @@ export const katanaPort = {
     );
     let purged = 0;
     for (const w of piece._ribOppWeapons || []) {
-      purged += purgeDamage(w, removeDam);
+      purged += purgeBonusDamage(w, removeDam);
     }
     if (bonusDam) addBonusDamage(piece, bonusDam);
     if (purged > 0 || bonusDam > 0) {

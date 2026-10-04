@@ -20,7 +20,9 @@ const GAME = path.join(ROOT, 'tools/game-extract-full');
 
 /** gd hook → JS hooks that can legitimately carry it. */
 const HOOK_MAP = {
-  onPrepare: ['onPreCombatStart', 'onCombatStart'],
+  // The simulator runs an explicit prepare pass before combat-start hooks;
+  // keep direct onPrepare ports visible instead of treating them as gaps.
+  onPrepare: ['onPrepare', 'onPreCombatStart', 'onCombatStart'],
   onPreCombatStart: ['onPreCombatStart', 'onCombatStart'],
   onCombatStart: ['onCombatStart', 'onPreCombatStart'],
   onPostCombatStart: ['onPostCombatStart'],
@@ -83,25 +85,10 @@ const HOOK_TRIAGE = {
     owner: 'js/pages/sim/engine/combat-activate.js',
     evidence: 'Items/Exclusive/DragonKnight.gd:onPrepare registers affected activated listeners; notifyPeerActivations filters affected placements before onPeerActivated.',
   },
-  power_of_the_moon: {
-    status: 'confirmed_gap',
-    owner: 'Package 2 scheduler/timer model',
-    evidence: 'Items/Exclusive/PoweroftheMoon.gd:onPostCombatStart calls CombatTimer.advanceTime; simulator has no equivalent and must not model it as generic cooldown advance.',
-  },
   twine: {
     status: 'equivalent_implementation',
     owner: 'js/pages/sim/engine/combat-activate.js',
     evidence: 'Items/Exclusive/Twine.gd:onPrepare registers affected activated listeners; notifyPeerActivations performs the same affected-placement filter.',
-  },
-  wand_of_dissonance: {
-    status: 'confirmed_gap',
-    owner: 'Package 4 item-port wave',
-    evidence: 'Items/Exclusive/WandofDissonance.gd:onPrepare changes Character effect-damage factor from affected Dark items; port only applies a local activation calculation.',
-  },
-  rib_saw_blade: {
-    status: 'confirmed_gap',
-    owner: 'Package 4 item-port wave',
-    evidence: 'Items/RibSawBlade.gd:onPrepare retains enemy weapons for onPreDealDamage_early purgeDamage; current port adds damage but does not retain/purge that set.',
   },
   ruby_chonk: {
     status: 'equivalent_implementation',

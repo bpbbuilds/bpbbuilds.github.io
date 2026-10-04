@@ -200,6 +200,7 @@ export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
  *   ignoreBlock?: boolean,
  *   stealLife?: boolean,
  *   deferUnheal?: boolean,
+ *   parentId?: string | number,
  * }} [opts]
  */
 export function dealEffectDamage(piece, ctx, raw, opts = {}) {
@@ -268,6 +269,7 @@ export function dealEffectDamage(piece, ctx, raw, opts = {}) {
         blocked: res.blocked,
         reduced: res.reduced,
         critical: res.critical,
+        ...(opts.parentId != null ? { parentId: opts.parentId } : {}),
         dummyHp: dummy.hp,
         playerHp: player.hp,
       },
@@ -294,6 +296,42 @@ export function dealEffectDamage(piece, ctx, raw, opts = {}) {
     missed: false,
     damageId,
   };
+}
+
+/**
+ * Character.loseHealth(amount, item) — direct self-health cost that must leave
+ * the actor alive when the source item checks `currentHealth > amount`.
+ * The event is kept in the shared damage stream for Combat Log/export/HUD
+ * consumers, but is marked so the Damage Dealt meter does not count it.
+ *
+ * @param {CombatPiece} piece
+ * @param {ScriptCtx} ctx
+ * @param {number} amount
+ * @returns {{ eventId: string | number | null, amount: number } | null}
+ */
+export function loseHealth(piece, ctx, amount) {
+  const n = Math.max(0, Math.round(Number(amount) || 0));
+  if (!(n > 0) || !(ctx.player.hp > n)) return null;
+  ctx.player.hp -= n;
+  const eventId = ctx.logChain?.nextId?.() ?? null;
+  ctx.events.push({
+    t: ctx.t,
+    type: 'damage',
+    actor: ctx.player.id,
+    target: ctx.player.id,
+    itemId: piece.itemId,
+    placementKey: piece.placementKey,
+    amount: n,
+    label: `${piece.name}: lost ${n} health`,
+    meta: {
+      category: 'damage',
+      kind: 'self_health_cost',
+      eventId,
+      healthDamage: n,
+      playerHp: ctx.player.hp,
+    },
+  });
+  return { eventId, amount: n };
 }
 
 /**

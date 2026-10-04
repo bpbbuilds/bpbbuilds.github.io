@@ -115,6 +115,36 @@ export function addBonusDamage(piece, amount, opts = {}) {
 }
 
 /**
+ * Item.purgeDamage — remove only the removable damage accumulated through
+ * addBonusDamage. Catalog/gem damage (`damageBonus`) and base damage remain
+ * intact, matching Item.removableDam rather than shrinking the weapon itself.
+ *
+ * @param {CombatPiece} piece
+ * @param {number} amount
+ * @returns {number} amount actually removed
+ */
+export function purgeBonusDamage(piece, amount) {
+  const want = Math.max(0, Number(amount) || 0);
+  const current = Math.max(0, Number(piece.bonusDamage) || 0);
+  const removed = Math.min(current, want);
+  if (!(removed > 0)) return 0;
+  piece.bonusDamage = current - removed;
+  recordPieceMod(piece, {
+    stat: 'damage',
+    amount: -removed,
+    unit: 'flat',
+    via: 'purgeDamage',
+  });
+  pushItemOverlayEvent(piece, {
+    type: 'info',
+    amount: -removed,
+    label: `${-removed} damage`,
+    meta: { category: 'item_label', kind: 'damage_buff_purge' },
+  });
+  return removed;
+}
+
+/**
  * Bloodthorne-style: +damage when a buff stack changes (attribute to stack + grant origin).
  * @param {CombatPiece} piece
  * @param {import('./buff-economy.js').BuffChange} ch
