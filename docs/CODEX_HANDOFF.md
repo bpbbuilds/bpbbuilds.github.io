@@ -1090,3 +1090,8 @@ None.
 - Traced the history.db path from bit decoding through run rows, preview grid, draft apply, and event submission. The generated catalog was stale: it omitted game gid `331` (`book_of_ice_new`) and did not include the current gid `518` mapping for `time_pendant`; the live DB intentionally excludes the unreleased Book of Ice row, so the decoder silently dropped it.
 - Rebuilt `assets/data/history-decode-catalog.json` from the current game extract and added a `historyOnly` fallback for game items absent from the published layout. History flows now hydrate those fallback records into the runtime map before list/search/preview/apply/submit, without adding them to the normal Items catalog or bypassing publish validation. Unknown gids are now reported instead of silently disappearing.
 - Added `scripts/test-history-catalog-recovery.mjs`, covering the game-only fallback, gid 331 synthetic bit-frame decode, and runtime map hydration. Validation: catalog regeneration, focused recovery check, history-picker Playwright smoke, touched-module syntax checks, and targeted diff checks pass. No secrets or database rows were changed.
+
+### 2026-10-04 admin event entry previews and schedule draft claim (in progress)
+
+- Codex owns `js/pages/admin/event-desk.js`, `js/pages/admin/admin.css`, `js/pages/builds/board-thumbs.js`, `supabase/functions/admin-builds/index.ts`, `js/pages/events/event-drafts.js`, `js/pages/events/catalog-data.js`, `scripts/test-event-schedule-draft.mjs`, and this handoff for this task.
+- Scope: render submitted board previews in the owner event desk (including baked stills from older entries) and propagate edited event schedule fields into live status/countdowns. No public authorization or winner persistence changes are in scope.

@@ -496,8 +496,8 @@ body.page-admin #main {
 .admin-members__person a { overflow: hidden; color: inherit; text-overflow: ellipsis; text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 48%, transparent); text-underline-offset: 0.14em; }
 .admin-members__person a:hover { color: var(--bpb-rewards-gold-bright, #e8c878); }
 
-.admin-members__badge { display: inline-grid; place-items: center; width: 2rem; height: 2rem; padding: 0.22rem; border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 45%, transparent); border-radius: 999px; background: transparent; color: var(--bpb-rewards-cream, #dbc4a1); text-align: center; font-size: 0.82rem; }
-.admin-members__badge img { width: 1.35rem; height: 1.35rem; object-fit: contain; filter: grayscale(1); opacity: 0.42; }
+.admin-members__badge { display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: 999px; background: transparent; color: var(--bpb-rewards-cream, #dbc4a1); text-align: center; font-size: 0.82rem; }
+.admin-members__badge img { width: 1.5rem; height: 1.5rem; object-fit: contain; }
 .admin-members__badge.is-active img { filter: none; opacity: 1; }
 .admin-members__badge.is-active { color: #b8f0c2; border-color: color-mix(in srgb, #b8f0c2 55%, #2a1a12); }
 .admin-members__badge--premium.is-active { color: var(--bpb-rewards-gold-bright, #e8c878); border-color: color-mix(in srgb, var(--bpb-rewards-gold-bright, #e8c878) 65%, #2a1a12); }
@@ -2402,6 +2402,35 @@ button.admin-metric.is-active::before {
   margin: 0.75rem 0 0.2rem;
 }
 
+.admin-event-desk__winner {
+  margin-top: 0.85rem;
+  padding: 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 48%, transparent);
+  border-radius: 0.28rem;
+  background: color-mix(in srgb, #20130e 34%, transparent);
+}
+
+.admin-event-desk__winner .admin-event-desk__section {
+  margin-top: 0;
+}
+
+.admin-event-desk__winner-status {
+  margin: 0.2rem 0 0.6rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: var(--bpb-rewards-cream, #dbc4a1);
+}
+
+.admin-event-desk__btn--winner {
+  border-color: var(--bpb-rewards-gold-bright, #e8c878);
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+}
+
+.admin-event-desk__btn--winner-clear {
+  margin-top: 0.35rem;
+}
+
 .admin-event-desk__btn {
   display: block;
   width: 100%;
@@ -2462,14 +2491,39 @@ button.admin-metric.is-active::before {
 
 .admin-event-desk__entry {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 0.75rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 35%, transparent);
 }
 
+.admin-event-desk__entry-board {
+  --bpb-still-cell: 24px;
+  display: grid;
+  flex: 0 0 11rem;
+  min-height: 8.25rem;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 35%, transparent);
+  border-radius: 0.2rem;
+  background: color-mix(in srgb, #20130e 38%, transparent);
+}
+
+.admin-event-desk__entry-board .bpb-board-still {
+  margin: 0;
+}
+
+.admin-event-desk__entry-board-empty {
+  padding: 0.6rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--bpb-rewards-cream, #dbc4a1);
+}
+
 .admin-event-desk__entry-main {
+  flex: 1 1 auto;
   min-width: 0;
 }
 
@@ -2497,12 +2551,40 @@ button.admin-metric.is-active::before {
   width: auto;
 }
 
+.admin-event-desk__entry-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+
 .admin-event-desk__flag {
   margin-left: 0.35rem;
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--bpb-rewards-gold, #c6a567);
+}
+
+.admin-event-desk__flag--winner {
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+}
+
+@media (max-width: 38rem) {
+  .admin-event-desk__entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-event-desk__entry-board {
+    width: 100%;
+    min-height: 7rem;
+  }
+
+  .admin-event-desk__entry-actions {
+    justify-content: flex-start;
+  }
 }
 
 .admin-event-form__step[hidden] {

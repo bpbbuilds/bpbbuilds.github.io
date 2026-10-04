@@ -283,6 +283,18 @@ function withLiveStatus(event) {
 }
 
 /**
+ * Apply the browser-session admin draft before calculating status. Keeping
+ * this in one path prevents cards, featured content, and detail pages from
+ * using different schedules after an edit.
+ * @param {CatalogEvent} event
+ * @returns {CatalogEvent}
+ */
+function eventWithDraft(event) {
+  const draft = eventDraftForSlug(event.slug);
+  return withLiveStatus(draft ? applyEventDraft(event, draft) : event);
+}
+
+/**
  * @param {string | null | undefined} slug
  * @returns {CatalogEvent | null}
  */
@@ -291,19 +303,18 @@ export function getCatalogEvent(slug) {
   if (!id) return null;
   const event = CATALOG_EVENTS.find((e) => e.slug === id) || null;
   if (!event) return null;
-  const draft = eventDraftForSlug(id);
-  return withLiveStatus(draft ? applyEventDraft(event, draft) : event);
+  return eventWithDraft(event);
 }
 
 /** @returns {CatalogEvent[]} */
 export function listCatalogEvents() {
-  return CATALOG_EVENTS.map((event) => withLiveStatus(event));
+  return CATALOG_EVENTS.map(eventWithDraft);
 }
 
 /** @returns {CatalogEvent | null} */
 export function getFeaturedEvent() {
   const event = CATALOG_EVENTS.find((e) => e.featured) || null;
-  return event ? withLiveStatus(event) : null;
+  return event ? eventWithDraft(event) : null;
 }
 
 /**

@@ -6,7 +6,7 @@
 const KEY = 'bpb-admin-event-drafts';
 
 /**
- * @typedef {{
+ * @typedef {Record<string, unknown> & {
  *   slug?: string,
  *   requiredItemIds?: string,
  * }} EventDraft
@@ -83,12 +83,62 @@ function requirementCopy(html, ids) {
  */
 export function applyEventDraft(event, draft) {
   const ids = itemIds(draft.requiredItemIds);
-  const entry = { ...(event.entry || {}), requiredItemIds: ids };
+  const schedule = { ...(event.schedule || {}) };
+  for (const key of [
+    'startsAt',
+    'endsAt',
+    'entriesOpenAt',
+    'entriesCloseAt',
+    'votingStartsAt',
+    'votingEndsAt',
+  ]) {
+    if (Object.prototype.hasOwnProperty.call(draft, key)) {
+      const value = String(draft[key] || '').trim();
+      schedule[key] = value || null;
+    }
+  }
+
+  const entry = {
+    ...(event.entry || {}),
+    requiredItemIds: ids,
+  };
+  if (typeof draft.judgeWindowSec === 'number') entry.judgeWindowSec = draft.judgeWindowSec;
+  if (typeof draft.minGameVersion === 'string') entry.minGameVersion = draft.minGameVersion;
+  if (typeof draft.maxEntriesPerUser === 'number') entry.maxEntriesPerUser = draft.maxEntriesPerUser;
+  if (typeof draft.showSimDpsOnEntry === 'boolean') entry.showSimDpsOnEntry = draft.showSimDpsOnEntry;
+  if (typeof draft.leaderboardVisibility === 'string') entry.leaderboardVisibility = draft.leaderboardEnabled === false
+    ? 'off'
+    : draft.leaderboardVisibility;
+  if (typeof draft.modeRanked === 'boolean' || typeof draft.modeUnranked === 'boolean') {
+    entry.allowedModes = [
+      draft.modeRanked === true ? 'ranked' : '',
+      draft.modeUnranked === true ? 'unranked' : '',
+    ].filter(Boolean);
+  }
   const sections = (event.sections || []).map((section) => ({
     ...section,
     html: requirementCopy(section.html, ids),
   }));
-  return { ...event, entry, sections };
+  return {
+    ...event,
+    ...(typeof draft.title === 'string' ? { title: draft.title } : {}),
+    ...(typeof draft.type === 'string' ? { type: draft.type } : {}),
+    ...(typeof draft.featured === 'boolean' ? { featured: draft.featured } : {}),
+    ...(typeof draft.tag === 'string' ? { tag: draft.tag } : {}),
+    ...(typeof draft.blurb === 'string' ? { blurb: draft.blurb } : {}),
+    ...(typeof draft.image === 'string' ? { image: draft.image } : {}),
+    ...(typeof draft.titleIcon === 'string' ? { titleIcon: draft.titleIcon } : {}),
+    ...(typeof draft.discordHref === 'string' ? { discordHref: draft.discordHref } : {}),
+    ...(typeof draft.prize === 'string' ? { prize: draft.prize } : {}),
+    schedule,
+    features: {
+      ...(event.features || {}),
+      ...(typeof draft.votingEnabled === 'boolean' ? { hasVoting: draft.votingEnabled } : {}),
+      ...(typeof draft.entriesEnabled === 'boolean' ? { hasBuilds: draft.entriesEnabled } : {}),
+    },
+    entry,
+    sections,
+  };
 }
 
 /**

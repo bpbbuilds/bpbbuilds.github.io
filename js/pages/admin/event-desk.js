@@ -3,6 +3,7 @@
  */
 
 import { buildEventHistoryDb } from '../create/history-encode.js';
+import { mountFeedBoardThumbs } from '../builds/board-thumbs.js';
 import {
   AdminAuthError,
   clearEventWinner,
@@ -55,6 +56,8 @@ function createEventDesk() {
   let winner = null;
   let winnerBusy = false;
   let winnerError = '';
+  /** @type {(() => void) | null} */
+  let unmountEntryBoards = null;
   /** @type {(() => void) | null} */
   let onKey = null;
   let siteRoot = '../';
@@ -122,6 +125,12 @@ function createEventDesk() {
    * @param {string} [message]
    */
   function paintList(builds, base, message) {
+    try {
+      unmountEntryBoards?.();
+    } catch {
+      /* ignore stale board cleanup */
+    }
+    unmountEntryBoards = null;
     const list = root.querySelector('[data-event-desk-list]');
     const download = root.querySelector('[data-event-desk-download]');
     if (download instanceof HTMLButtonElement) download.disabled = !builds.length;
@@ -140,6 +149,14 @@ function createEventDesk() {
     list.innerHTML = `<ul class="admin-event-desk__entries">${builds
       .map((b) => entryHtml(b, base, manualWinner, Number(b.id) === selectedId, winnerBusy))
       .join('')}</ul>`;
+    unmountEntryBoards = mountFeedBoardThumbs(list, {
+      builds,
+      root: base,
+      view: 'card',
+      boardAttr: 'data-event-entry-board',
+      cellPx: 18,
+      emptyHtml: '<span class="admin-event-desk__entry-board-empty">No board image</span>',
+    });
   }
 
   /** @param {object[]} builds */
@@ -234,6 +251,12 @@ function createEventDesk() {
       document.removeEventListener('keydown', onKey);
       onKey = null;
     }
+    try {
+      unmountEntryBoards?.();
+    } catch {
+      /* ignore stale board cleanup */
+    }
+    unmountEntryBoards = null;
     lastFocus?.focus();
   }
 
@@ -339,6 +362,7 @@ function entryHtml(build, base, manualWinner, selectedWinner, winnerBusy) {
       : '';
   return `
     <li class="admin-event-desk__entry">
+      <div class="admin-event-desk__entry-board" data-event-entry-board="${escapeAttr(slug)}" aria-label="${escapeAttr(`${build.title || slug} board preview`)}"></div>
       <div class="admin-event-desk__entry-main">
         <p class="admin-event-desk__entry-title">${escapeHtml(build.title || slug)} ${winner} ${hidden}</p>
         <p class="admin-event-desk__entry-meta">${escapeHtml(bits.join(' · '))}</p>

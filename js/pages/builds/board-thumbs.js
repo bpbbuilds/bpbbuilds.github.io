@@ -65,7 +65,11 @@ export function mountFeedBoardThumbs(listEl, opts) {
       getSpriteUrl,
     });
 
-    if (!placements.length) {
+    // A submitted build may have a baked board still without live placement
+    // rows (older builds and privacy-filtered entries). Keep that image
+    // usable instead of replacing it with a misleading "No board" state.
+    const hasBakedStill = String(build.board_still_path || '').trim().length > 0;
+    if (!placements.length && !hasBakedStill) {
       host.classList.add('is-empty');
       host.innerHTML =
         opts.emptyHtml || `<span class="builds-post__board-empty">No board</span>`;

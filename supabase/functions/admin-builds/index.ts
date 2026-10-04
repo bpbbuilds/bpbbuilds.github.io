@@ -496,7 +496,7 @@ async function listBuilds(
 }
 
 const ENTRY_COLS =
-  'id, slug, title, hero_class, author_name, rank, gold_count, created_at, notes, youtube_url, is_public, event_slug, history, starting_bag_id, route_r3_item_id, route_r10_item_id';
+  'id, slug, title, hero_class, author_name, rank, gold_count, created_at, notes, youtube_url, is_public, event_slug, board_still_path, history, starting_bag_id, route_r3_item_id, route_r10_item_id';
 
 /**
  * Submitted builds for one event, including the stored run history for the judging file.
@@ -521,6 +521,34 @@ async function listEventEntries(
     console.error(error);
     return json({ error: 'List failed', detail: error.message }, 500);
   }
+  const ids = (data || []).map((build) => build.id);
+  const { data: placements, error: placementError } = ids.length
+    ? await supabase
+      .from('build_placements')
+      .select(PLACEMENT_SELECT)
+      .in('build_id', ids)
+    : { data: [], error: null };
+  if (placementError) {
+    console.error(placementError);
+    return json({ error: 'List placements failed', detail: placementError.message }, 500);
+  }
+
+  /** @type {Map<number, object[]>} */
+  const byBuild = new Map();
+  for (const placement of placements || []) {
+    const buildId = Number(placement.build_id);
+    const row = {
+      id: placement.id,
+      x: placement.x,
+      y: placement.y,
+      r: placement.r,
+      gems: placement.gems,
+      item: placement.item,
+    };
+    const list = byBuild.get(buildId);
+    if (list) list.push(row);
+    else byBuild.set(buildId, [row]);
+  }
   const { data: winner, error: winnerError } = await supabase
     .from('event_winners')
     .select('event_slug,build_id,selected_at')
@@ -530,7 +558,13 @@ async function listEventEntries(
     console.error(winnerError);
     return json({ error: 'Could not load selected winner', detail: winnerError.message }, 500);
   }
-  return json({ builds: data || [], winner: winner || null }, 200);
+  return json({
+    builds: (data || []).map((build) => ({
+      ...build,
+      placements: byBuild.get(Number(build.id)) || [],
+    })),
+    winner: winner || null,
+  }, 200);
 }
 
 /** @param {string | undefined} eventSlug */
