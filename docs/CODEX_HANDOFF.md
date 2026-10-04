@@ -893,3 +893,8 @@ None.
 
 - Audited every cosmetic-tooltip entry point: Blob wardrobe, Inventory, Premium comparison, and Admin Cosmetics all use `bindCosmeticTooltips` / `cosmeticToTooltipItem` in `js/pages/u/blob/cosmetic-tooltip.js`. Catalog normalization preserves both `artist` and `owner`; the static catalog, public catalog Edge Function, owner drafts, and approved player-submission path all supply artist data.
 - The local tooltip change correctly removes the cosmetic-ID line and renders `Created by: <artist>` (falling back to owner only when artist is absent), but it is an unpushed working-tree change. The public site still serves the older tooltip containing `Cosmetic ID`, so this task is publishing that focused renderer change only.
+
+### 2026-10-04 Cosmetic tooltip audit and publish complete
+
+- Published the shared renderer in commit `c5d3320` (`Show cosmetic artist credit in tooltips`). A deterministic renderer assertion confirms no `Cosmetic ID` line, artist-first `Created by`, and no owner leakage when an artist exists.
+- GitHub Pages deployment for `c5d3320` completed successfully. Public verification of `https://bpbbuilds.com/js/pages/u/blob/cosmetic-tooltip.js` confirms `Cosmetic ID` is absent and `Created by:` is present.
