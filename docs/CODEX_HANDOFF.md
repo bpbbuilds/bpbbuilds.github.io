@@ -1070,6 +1070,15 @@ None.
 - Walk and Walk Names now turn only while outside the visible frame. The animated walker exposes its facing direction through a CSS variable, and Walk Names captions apply the synchronized counter-scale so names remain readable instead of mirroring. The transparent video renderer follows the same back-and-forth path and blob facing state.
 - Validation: `node --check js/pages/overlay/blob-video.js`, focused CSS/source assertions, and staged `git diff --check` pass. Published in commit `a58d50d` on `main`.
 
+### 2026-10-04 blob cast walk animation restore claim (in progress)
+
+- Codex owns `overlay/blobs/index.html`, `js/pages/overlay/blobs.css`, the focused overlay check, and this handoff for restoring the current Walk and Walk Names animation in the Admin Blob Cast preview and browser-source URL. The existing transparent layout, view controls, caption orientation, and reduced-motion preference behavior remain unchanged.
+
+### 2026-10-04 blob cast walk animation restore complete
+
+- The overlay source already contained the Walk and Walk Names pace/step animations, but its fixed asset URLs still used an old cache stamp. Updated the overlay CSS and module stamps so the Admin iframe and copied browser-source URL fetch the current walk animation instead of retaining an older cached overlay asset.
+- Validation: overlay module syntax checks, a headless-browser computed-style check for both `blob-cast-walk` and `blob-cast-step`, and targeted `git diff --check` passed. No database or profile behavior changed; no commit or push was requested.
+
 ### 2026-10-04 event winner tab visibility claim (in progress)
 
 - Codex owns `js/pages/events/event-features.js`, `js/pages/events/event-winner.js`, `js/pages/events/catalog.js`, focused event-tab validation, and this handoff for hiding the public Winner tab until a public winner result exists. Existing owner selection, private winner persistence, and winner rendering remain protected.
