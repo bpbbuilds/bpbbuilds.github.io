@@ -1,177 +1,182 @@
 # Simulator Package 4 port backlog
 
-Generated from `assets/data/sim-fidelity-ledger.json` on 2026-10-03. This is the working list for completing Package 4 over time. It is an inventory of incomplete rows, **not** a claim that an item is correctly ported.
+Generated from `assets/data/sim-fidelity-ledger.json` on 2026-10-03. This is the evidence-first inventory of every simulator row that is not yet source-ported; it is not a parity claim.
+
+## Current audited state
+
+- Catalog items: **519**
+- Source-ported (not fixture/live certified): **351**
+- Runtime port present but incomplete: **92**
+- Source unresolved: **49**
+- Deferred supported-mode gap: **1**
+- Intentional no-combat rows: **26** (not backlog work)
+- Lifecycle-hook gaps: **13**; call-review candidates: **40**; duplicate registrations: **21**.
 
 ## Completion rule for every row
 
-Before checking a row off, record the exact game source (including inherited behavior), implement the player and opponent path, add a focused regression for state and causal event order, and verify applicable Combat Log, Damage Meter, HUD, scrubber/export behavior. Keep any remaining uncertainty in `sim-validation.md`; do not promote a row merely because it has a handler.
+Before checking a row off: resolve the exact game source and inherited behavior, implement both player and opponent paths, add a focused regression for state and causal event order, and verify applicable Combat Log, Damage Meter, HUD, scrubber, and export behavior. Keep uncertainty in `sim-validation.md`; a handler alone is not completion.
 
 ## Start first - confirmed behavior gaps
 
-- `power_of_the_moon` - source: `Items/Exclusive/PoweroftheMoon.gd`; exact `CombatTimer.advanceTime` semantics, fatigue transition, both sides, and log/snapshot timing.
-- `wand_of_dissonance` - source: `Items/Exclusive/WandofDissonance.gd`; affected-Dark prepare factor, effect-damage path, health cost, most-stack selection, and both sides.
-- `rib_saw_blade` - source: `Items/RibSawBlade.gd`; capture opposing empowerable weapons at prepare, purge only removable damage on hit, and both sides.
+- [ ] `power_of_the_moon` - Exclusive/PoweroftheMoon.gd; current handler: power_of_the_moon; depth: deep; Lifecycle hook audit: onPostCombatStart.
+- [ ] `wand_of_dissonance` - Exclusive/WandofDissonance.gd; current handler: wand_of_dissonance; depth: deep; Lifecycle hook audit: onPrepare.
+- [ ] `rib_saw_blade` - RibSawBlade.gd; current handler: rib_saw_blade; depth: shallow; Lifecycle hook audit: onPrepare.
 
-## Source resolution (49)
+## Source unresolved (49)
 
-These catalog IDs have a simulator handler but no resolved extract-script row. First establish the exact script or inherited/base alias; only then assess the port.
+These rows need the exact extract script/inheritance resolved before a port can be assessed.
 
-- [ ] `ace_of_spades` - source mapping required; current depth `deep`.
-- [ ] `armored_courage_puppy` - source mapping required; current depth `deep`.
-- [ ] `badger_rune` - source mapping required; current depth `deep`.
-- [ ] `bagtacular` - source mapping required; current depth `deep`.
-- [ ] `book_of_ice_new` - source mapping required; current depth `deep`.
-- [ ] `chipped_amethyst` - source mapping required; current depth `deep`.
-- [ ] `chipped_emerald` - source mapping required; current depth `deep`.
-- [ ] `chipped_ruby` - source mapping required; current depth `deep`.
-- [ ] `chipped_sapphire` - source mapping required; current depth `deep`.
-- [ ] `chipped_topaz` - source mapping required; current depth `deep`.
-- [ ] `darkest_lotus` - source mapping required; current depth `deep`.
-- [ ] `elephant_rune` - source mapping required; current depth `deep`.
-- [ ] `flawed_amethyst` - source mapping required; current depth `deep`.
-- [ ] `flawed_emerald` - source mapping required; current depth `deep`.
-- [ ] `flawed_ruby` - source mapping required; current depth `deep`.
-- [ ] `flawed_sapphire` - source mapping required; current depth `deep`.
-- [ ] `flawed_topaz` - source mapping required; current depth `deep`.
-- [ ] `flawless_amethyst` - source mapping required; current depth `deep`.
-- [ ] `flawless_emerald` - source mapping required; current depth `deep`.
-- [ ] `flawless_ruby` - source mapping required; current depth `deep`.
-- [ ] `flawless_sapphire` - source mapping required; current depth `deep`.
-- [ ] `flawless_topaz` - source mapping required; current depth `deep`.
-- [ ] `goobling` - source mapping required; current depth `deep`.
-- [ ] `holo_fire_lizard` - source mapping required; current depth `deep`.
-- [ ] `joker` - source mapping required; current depth `deep`.
-- [ ] `perfect_amethyst` - source mapping required; current depth `deep`.
-- [ ] `perfect_emerald` - source mapping required; current depth `deep`.
-- [ ] `perfect_ruby` - source mapping required; current depth `deep`.
-- [ ] `perfect_sapphire` - source mapping required; current depth `deep`.
-- [ ] `perfect_topaz` - source mapping required; current depth `deep`.
-- [ ] `regular_amethyst` - source mapping required; current depth `deep`.
-- [ ] `regular_emerald` - source mapping required; current depth `deep`.
-- [ ] `regular_ruby` - source mapping required; current depth `deep`.
-- [ ] `regular_sapphire` - source mapping required; current depth `deep`.
-- [ ] `regular_topaz` - source mapping required; current depth `deep`.
-- [ ] `resistor` - source mapping required; current depth `deep`.
-- [ ] `reverse` - source mapping required; current depth `deep`.
-- [ ] `shortbow` - source mapping required; current depth `deep`.
-- [ ] `skull` - source mapping required; current depth `deep`.
-- [ ] `stable_recombobulator` - source mapping required; current depth `deep`.
-- [ ] `strong_heroic_potion` - source mapping required; current depth `deep`.
-- [ ] `strong_mana_potion` - source mapping required; current depth `deep`.
-- [ ] `superior_ring` - source mapping required; current depth `deep`.
-- [ ] `the_fool` - source mapping required; current depth `deep`.
-- [ ] `the_lovers` - source mapping required; current depth `deep`.
-- [ ] `tiger_rune` - source mapping required; current depth `deep`.
-- [ ] `unstable_recombobulator` - source mapping required; current depth `deep`.
-- [ ] `whetstone2` - source mapping required; current depth `deep`.
-- [ ] `white_eyes_blue_dragon` - source mapping required; current depth `deep`.
+- [ ] `ace_of_spades`
+- [ ] `armored_courage_puppy`
+- [ ] `badger_rune`
+- [ ] `bagtacular`
+- [ ] `book_of_ice_new`
+- [ ] `chipped_amethyst`
+- [ ] `chipped_emerald`
+- [ ] `chipped_ruby`
+- [ ] `chipped_sapphire`
+- [ ] `chipped_topaz`
+- [ ] `darkest_lotus`
+- [ ] `elephant_rune`
+- [ ] `flawed_amethyst`
+- [ ] `flawed_emerald`
+- [ ] `flawed_ruby`
+- [ ] `flawed_sapphire`
+- [ ] `flawed_topaz`
+- [ ] `flawless_amethyst`
+- [ ] `flawless_emerald`
+- [ ] `flawless_ruby`
+- [ ] `flawless_sapphire`
+- [ ] `flawless_topaz`
+- [ ] `goobling`
+- [ ] `holo_fire_lizard`
+- [ ] `joker`
+- [ ] `perfect_amethyst`
+- [ ] `perfect_emerald`
+- [ ] `perfect_ruby`
+- [ ] `perfect_sapphire`
+- [ ] `perfect_topaz`
+- [ ] `regular_amethyst`
+- [ ] `regular_emerald`
+- [ ] `regular_ruby`
+- [ ] `regular_sapphire`
+- [ ] `regular_topaz`
+- [ ] `resistor`
+- [ ] `reverse`
+- [ ] `shortbow`
+- [ ] `skull`
+- [ ] `stable_recombobulator`
+- [ ] `strong_heroic_potion`
+- [ ] `strong_mana_potion`
+- [ ] `superior_ring`
+- [ ] `the_fool`
+- [ ] `the_lovers`
+- [ ] `tiger_rune`
+- [ ] `unstable_recombobulator`
+- [ ] `whetstone2`
+- [ ] `white_eyes_blue_dragon`
 
-## Existing port, incomplete evidence or behavior (92)
+## Runtime port present but incomplete (92)
 
-These rows have a resolved source and runtime port but are still shallow, have an open hook/call finding, or otherwise lack the required evidence. Work in source-driven family waves, not by changing the ledger label.
+These rows have a registered handler but still need source/lifecycle/evidence completion.
 
-- [ ] `axe` - source `Exclusive/Axe.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `bewitchment` - source `Exclusive/Bewitchment.gd`; extends `Item`; family `unique`; current depth `deep`.
-- [ ] `blood_amulet` - source `BloodAmulet.gd`; extends `Item`; family `start_buff`; current depth `shallow`.
-- [ ] `bloody_dagger` - source `BloodyDagger.gd`; extends `Dagger`; family `on_hit`; current depth `shallow`.
-- [ ] `broccoli` - source `Exclusive/Broccoli.gd`; extends `Food`; family `custom_cd`; current depth `shallow`.
-- [ ] `broccotree` - source `Exclusive/Broccotree.gd`; extends `Food`; family `custom_cd`; current depth `shallow`.
-- [ ] `burning_banner` - source `Exclusive/BurningBanner.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `burning_coal` - source `BurningCoal.gd`; extends `Gem`; family `custom_cd`; current depth `shallow`.
-- [ ] `burning_sword` - source `Exclusive/BurningSword.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `burning_torch` - source `BurningTorch.gd`; extends `Weapon`; family `synergy_aura`; current depth `shallow`.
-- [ ] `carrot_goobert` - source `CarrotGoobert.gd`; extends `Goobert`; family `pet_like`; current depth `deep`.
-- [ ] `cauldron` - source `Exclusive/Cauldron.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `chainsaw` - source `Exclusive/Chainsaw.gd`; extends `Weapon`; family `on_hit`; current depth `deep`.
-- [ ] `charge_splitter` - source `Exclusive/ChargeSplitter.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `chili_pepper` - source `Exclusive/ChiliPepper.gd`; extends `Food`; family `custom_cd`; current depth `shallow`.
-- [ ] `coil` - source `Exclusive/Coil.gd`; extends `Item`; family `unique`; current depth `deep`.
-- [ ] `crossblades` - source `Crossblades.gd`; extends `Weapon`; family `synergy_aura`; current depth `shallow`.
-- [ ] `cursed_hair_comb` - source `CursedHairComb.gd`; extends `Item`; family `synergy_aura`; current depth `shallow`.
-- [ ] `dark_lantern` - source `Exclusive/DarkLantern.gd`; extends `Item`; family `start_buff`; current depth `shallow`.
-- [ ] `darksaber` - source `Darksaber.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `death_lotus` - source `Exclusive/DeathLotus.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `deer_totem` - source `Exclusive/DeerTotem.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `djinn_lamp` - source `DjinnLamp.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `doom_cap` - source `Exclusive/DoomCap.gd`; extends `Food`; family `custom_cd`; current depth `shallow`.
-- [ ] `double_axe` - source `Exclusive/DoubleAxe.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `draconic_orb` - source `Exclusive/DraconicOrb.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `dragon_knight` - source `Exclusive/DragonKnight.gd`; extends `RubyWhelp`; family `on_hit`; current depth `deep`.
-- [ ] `dragon_set` - source `Exclusive/DragonSet.gd`; extends `Item`; family `pet_like`; current depth `shallow`.
-- [ ] `emerald_whelp` - source `Exclusive/EmeraldWhelp.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `energy_conversion` - source `Exclusive/EnergyConversion.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `everburning` - source `Exclusive/Everburning.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `fanfare` - source `Fanfare.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `flame_badge` - source `Exclusive/FlameBadge.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `flame_whip` - source `Exclusive/FlameWhip.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `flute` - source `Flute.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `fly_agaric` - source `FlyAgaric.gd`; extends `Food`; family `custom_cd`; current depth `shallow`.
-- [ ] `fortunas_kiss` - source `Exclusive/FortunasKiss.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `gingerbread_man` - source `GingerbreadMan.gd`; extends `Food`; family `synergy_aura`; current depth `shallow`.
-- [ ] `halberd` - source `Exclusive/Halberd.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `heart_container` - source `HeartContainer.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `hero_sword` - source `HeroSword.gd`; extends `Weapon`; family `synergy_aura`; current depth `shallow`.
-- [ ] `ice_armor` - source `Exclusive/IceArmor.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `just_stats` - source `Exclusive/JustStats.gd`; extends `Item`; family `start_buff`; current depth `shallow`.
-- [ ] `laboratory` - source `Exclusive/Laboratory.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `leaf_badge` - source `Exclusive/LeafBadge.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `level_up` - source `Exclusive/LevelUp.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `light_flower` - source `Exclusive/LightFlower.gd`; extends `Food`; family `unique`; current depth `shallow`.
-- [ ] `lucky_bow` - source `LuckyBow.gd`; extends `Bow`; family `unique`; current depth `shallow`.
-- [ ] `lucky_clover` - source `LuckyClover.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `magic_torch` - source `MagicTorch.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `mananana` - source `Exclusive/Mananana.gd`; extends `Food`; family `custom_cd`; current depth `shallow`.
-- [ ] `molten_dagger` - source `Exclusive/MoltenDagger.gd`; extends `Dagger`; family `on_hit`; current depth `shallow`.
-- [ ] `molten_spear2` - source `Exclusive/MoltenSpear2.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `moon_armor` - source `Exclusive/MoonArmor.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `more_stats` - source `Exclusive/MoreStats.gd`; extends `Item`; family `synergy_aura`; current depth `shallow`.
-- [ ] `null_blade` - source `Exclusive/NullBlade.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `pan` - source `Pan.gd`; extends `Weapon`; family `weapon_base`; current depth `shallow`.
-- [ ] `phoenix` - source `Exclusive/Phoenix.gd`; extends `Weapon`; family `weapon_base`; current depth `shallow`.
-- [ ] `piggy_of_riches` - source `Exclusive/PiggyofRiches.gd`; extends `BoxofRiches`; family `start_buff`; current depth `shallow`.
-- [ ] `piggybank` - source `Piggybank.gd`; extends `Item`; family `start_buff`; current depth `shallow`.
-- [ ] `poison_dagger` - source `PoisonDagger.gd`; extends `Dagger`; family `on_hit`; current depth `shallow`.
-- [ ] `poison_grenade` - source `Exclusive/PoisonGrenade.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `poison_shortbow` - source `Exclusive/PoisonShortbow.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `pot` - source `Exclusive/Pot.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `power_of_the_moon` - source `Exclusive/PoweroftheMoon.gd`; extends `Item`; family `unique`; current depth `deep`. - P0 confirmed gap: `onPostCombatStart` must advance the combat timer.
-- [ ] `pumpkin` - source `Pumpkin.gd`; extends `Food`; family `on_hit`; current depth `shallow`.
-- [ ] `puzzlebag_l` - source `Exclusive/PuzzlebagL.gd`; extends `Bag`; family `synergy_aura`; current depth `shallow`.
-- [ ] `rib_saw_blade` - source `RibSawBlade.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`. - P0 confirmed gap: retain/purge opposing empowerable weapons before damage.
-- [ ] `ruby_chonk` - source `RubyChonk.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `ruby_egg` - source `RubyEgg.gd`; extends `DragonEgg`; family `unique`; current depth `deep`.
-- [ ] `ruby_whelp` - source `RubyWhelp.gd`; extends `Weapon`; family `weapon_base`; current depth `shallow`.
-- [ ] `sapphire_whelp` - source `Exclusive/SapphireWhelp.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `scale` - source `Exclusive/Scale.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `serpent_staff` - source `Exclusive/SerpentStaff.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `shepherds_crook` - source `Exclusive/ShepherdsCrook.gd`; extends `Item`; family `synergy_aura`; current depth `shallow`.
-- [ ] `shovel` - source `Shovel.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `slice_of_toast` - source `Exclusive/SliceofToast.gd`; extends `Food`; family `custom_cd`; current depth `shallow`.
-- [ ] `snowcake` - source `Exclusive/Snowcake.gd`; extends `Food`; family `custom_cd`; current depth `shallow`.
-- [ ] `spin_to_win` - source `Exclusive/SpintoWin.gd`; extends `Item`; family `custom_cd`; current depth `shallow`.
-- [ ] `squirrel_archer` - source `Exclusive/SquirrelArcher.gd`; extends `Squirrel`; family `on_hit`; current depth `shallow`.
-- [ ] `steel_goobert` - source `SteelGoobert.gd`; extends `Goobert`; family `pet_like`; current depth `deep`.
-- [ ] `stone` - source `Stone.gd`; extends `Item`; family `on_hit`; current depth `shallow`.
-- [ ] `thorn_bow` - source `ThornBow.gd`; extends `Bow`; family `synergy_aura`; current depth `shallow`.
-- [ ] `time_pendant` - source `Exclusive/TimePendant.gd`; extends `Item`; family `custom_cd`.
-- [ ] `torch` - source `Torch.gd`; extends `Weapon`; family `on_hit`; current depth `shallow`.
-- [ ] `twine` - source `Exclusive/Twine.gd`; extends `Item`; family `unique`; current depth `deep`.
-- [ ] `ukulele` - source `Exclusive/Ukulele.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `ultima` - source `Exclusive/Ultima.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `vampiric_gloves` - source `VampiricGloves.gd`; extends `Item`; family `unique`; current depth `deep`.
-- [ ] `walrus_tusk` - source `WalrusTusk.gd`; extends `Item`; family `unique`; current depth `shallow`.
-- [ ] `wand_of_dissonance` - source `Exclusive/WandofDissonance.gd`; extends `Item`; family `unique`; current depth `deep`. - P0 confirmed gap: prepare-time affected-Dark effect-damage factor is missing.
-- [ ] `wisp` - source `Exclusive/Wisp.gd`; extends `Gem`; family `custom_cd`; current depth `shallow`.
+- [ ] `axe`
+- [ ] `bewitchment`
+- [ ] `blood_amulet`
+- [ ] `bloody_dagger`
+- [ ] `broccoli`
+- [ ] `broccotree`
+- [ ] `burning_banner`
+- [ ] `burning_coal`
+- [ ] `burning_sword`
+- [ ] `burning_torch`
+- [ ] `carrot_goobert`
+- [ ] `cauldron`
+- [ ] `chainsaw`
+- [ ] `charge_splitter`
+- [ ] `chili_pepper`
+- [ ] `coil`
+- [ ] `crossblades`
+- [ ] `cursed_hair_comb`
+- [ ] `dark_lantern`
+- [ ] `darksaber`
+- [ ] `death_lotus`
+- [ ] `deer_totem`
+- [ ] `djinn_lamp`
+- [ ] `doom_cap`
+- [ ] `double_axe`
+- [ ] `draconic_orb`
+- [ ] `dragon_knight`
+- [ ] `dragon_set`
+- [ ] `emerald_whelp`
+- [ ] `energy_conversion`
+- [ ] `everburning`
+- [ ] `fanfare`
+- [ ] `flame_badge`
+- [ ] `flame_whip`
+- [ ] `flute`
+- [ ] `fly_agaric`
+- [ ] `fortunas_kiss`
+- [ ] `gingerbread_man`
+- [ ] `halberd`
+- [ ] `heart_container`
+- [ ] `hero_sword`
+- [ ] `ice_armor`
+- [ ] `just_stats`
+- [ ] `laboratory`
+- [ ] `leaf_badge`
+- [ ] `level_up`
+- [ ] `light_flower`
+- [ ] `lucky_bow`
+- [ ] `lucky_clover`
+- [ ] `magic_torch`
+- [ ] `mananana`
+- [ ] `molten_dagger`
+- [ ] `molten_spear2`
+- [ ] `moon_armor`
+- [ ] `more_stats`
+- [ ] `null_blade`
+- [ ] `pan`
+- [ ] `phoenix`
+- [ ] `piggy_of_riches`
+- [ ] `piggybank`
+- [ ] `poison_dagger`
+- [ ] `poison_grenade`
+- [ ] `poison_shortbow`
+- [ ] `pot`
+- [ ] `power_of_the_moon`
+- [ ] `pumpkin`
+- [ ] `puzzlebag_l`
+- [ ] `rib_saw_blade`
+- [ ] `ruby_chonk`
+- [ ] `ruby_egg`
+- [ ] `ruby_whelp`
+- [ ] `sapphire_whelp`
+- [ ] `scale`
+- [ ] `serpent_staff`
+- [ ] `shepherds_crook`
+- [ ] `shovel`
+- [ ] `slice_of_toast`
+- [ ] `snowcake`
+- [ ] `spin_to_win`
+- [ ] `squirrel_archer`
+- [ ] `steel_goobert`
+- [ ] `stone`
+- [ ] `thorn_bow`
+- [ ] `time_pendant`
+- [ ] `torch`
+- [ ] `twine`
+- [ ] `ukulele`
+- [ ] `ultima`
+- [ ] `vampiric_gloves`
+- [ ] `walrus_tusk`
+- [ ] `wand_of_dissonance`
+- [ ] `wisp`
 
 ## Deferred supported-mode gap (1)
 
-- [ ] `chess_board` - source `Exclusive/ChessBoard.gd`; extends `Item`; family `unique`; current depth `noop`.
+- [ ] `chess_board`
 
-## Totals
+## Maintenance
 
-- Total incomplete rows: **142**
-- Source resolution: **49**
-- Existing port incomplete: **92**
-- Deferred: **1**
-
-Rebuild/check the ledger after a completed wave with `node scripts/build-sim-fidelity-ledger.mjs --check`, then run `node scripts/sim-continuous-audit.mjs --check` and the narrow family smoke. Fixture work also runs `node scripts/sim-continuous-audit.mjs --check --fixtures`.
+After a completed wave, run `node scripts/build-sim-fidelity-ledger.mjs`, `node scripts/build-sim-fidelity-ledger.mjs --check`, `node scripts/sim-continuous-audit.mjs --check`, and the narrow family smoke. Run the fixtures variant when fixture work changes.
