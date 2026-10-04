@@ -573,14 +573,33 @@ export async function mountCosmeticsPanel(host, opts) {
   const status = host.querySelector('[data-admin-cosmetics-status]');
 
   try {
-    const catalog = [...(await loadBlobCatalog(root))];
+    // Bundled cosmetics are already public fallback catalog entries. Mark
+    // them published locally, then let an authoritative owner-catalog row
+    // override that state when it explicitly says `published: false`.
+    const catalog = (await loadBlobCatalog(root)).map((item) => ({
+      ...item,
+      published: true,
+    }));
+    /** @type {any[]} */
+    let ownerRows = [];
     try {
       const ownerCatalog = await listCosmeticCatalog(opts.auth);
-      mergeCatalogRows(catalog, Array.isArray(ownerCatalog?.items) ? ownerCatalog.items : []);
+      ownerRows = Array.isArray(ownerCatalog?.items) ? ownerCatalog.items : [];
+      mergeCatalogRows(catalog, ownerRows);
     } catch {
       /* static catalog remains available if the owner catalog is unavailable */
     }
     const published = await loadPublishedIds(opts.auth);
+    // The owner-catalog response is authoritative and also lets the panel
+    // recover when the separate published-ID request is unavailable. A
+    // bundled fallback remains published unless a live row explicitly marks
+    // that same id as a draft.
+    for (const item of catalog) {
+      if (item.published === true) published.add(item.id);
+    }
+    for (const row of ownerRows) {
+      if (row?.published === true && row?.id) published.add(String(row.id));
+    }
     const filters = defaultAdminCosmeticFilters();
     paintBody(host, root, catalog, filters, published);
     const tips = bindCosmeticTooltips(host, { catalog });

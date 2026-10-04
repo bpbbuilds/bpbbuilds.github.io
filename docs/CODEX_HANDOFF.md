@@ -1112,3 +1112,14 @@ None.
 - Cosmetic tooltip rendering now defaults to catalog-safe metadata: Admin Cosmetics, Premium comparison, and event prize/catalog views show creator details but omit `Original owner`. The profile Inventory and Blob wardrobe explicitly enable the ownership line for the user-owned/equipped context.
 - No ownership data model or catalog values changed; this only prevents catalog-level pages from implying that their rows are owned instances.
 - Validation: owner-context renderer assertion, `node --check` for all touched modules, and targeted `git diff --check` passed. Changes are local and ready for the normal Pages commit/publish; no push was requested.
+
+### 2026-10-04 official cosmetic publication-state claim (in progress)
+
+- Codex owns `js/pages/admin/tab-cosmetics.js` and this handoff for repairing the Admin Cosmetics Published/Draft indicator.
+- Scope: trust the authoritative `published` flag returned by the owner catalog and treat bundled official fallback rows as published until a live owner row explicitly marks them as drafts. No cosmetic grants, database rows, or publish authorization rules will be weakened.
+
+### 2026-10-04 official cosmetic publication-state complete
+
+- Confirmed the live public catalog already returns both `premium_crown` (`grant: premium`) and `cool_shades` (`grant: founding`) as published rows. The Admin indicator was relying only on a separate published-ID request, so a failed/stale response made valid catalog items appear as drafts.
+- Admin Cosmetics now trusts the owner catalog's explicit `published` field and treats bundled official fallback rows as published unless a live row explicitly marks them as drafts. This keeps the Publish action disabled for both official cosmetics while preserving draft handling for new uploads/submissions.
+- Validation: `node --check js/pages/admin/tab-cosmetics.js`, targeted diff check, and live public `cosmetic-catalog` verification passed. Published in the next commit; existing unrelated worktree changes remain untouched.
