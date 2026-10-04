@@ -16,7 +16,7 @@ import { mountBuildsPanel } from './builds.js';
 import { mountEventsPanel } from './tab-events.js';
 import { mountCosmeticsPanel } from './tab-cosmetics.js';
 import { mountMarketplacePanel } from './tab-marketplace.js';
-import { mountOverlayPanel } from './tab-overlay.js';
+import { mountOverlayPanel } from './tab-overlay.js?v=premiere-alpha-20261004';
 import { mountAnalyticsPanel } from './tab-analytics.js';
 import { mountMembersPanel } from './tab-members.js';
 import {

@@ -208,6 +208,88 @@ function renderFrame(ctx, view, rows, faces, seconds) {
 }
 
 /**
+ * @param {HTMLCanvasElement} canvas
+ * @returns {Promise<Blob>}
+ */
+function canvasPng(canvas) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error('A transparent PNG frame could not be created.'));
+    }, 'image/png');
+  });
+}
+
+/**
+ * @param {string} root
+ */
+async function prepareBlobCastCanvas(root) {
+  const rows = await loadBlobCast();
+  if (!rows.length) throw new Error('There are no blob looks to export yet.');
+  const baked = await Promise.all(
+    rows.map((row) => bakeBlobFaceUrl({ equipped_avatar: row.equipped }, root, FACE_BAKE_SIZE)),
+  );
+  const faces = await Promise.all(baked.map((src) => loadImage(src)));
+  const canvas = document.createElement('canvas');
+  canvas.width = EXPORT_WIDTH;
+  canvas.height = EXPORT_HEIGHT;
+  const ctx = canvas.getContext('2d', { alpha: true });
+  if (!ctx) throw new Error('This browser cannot create a transparent export canvas.');
+  ctx.imageSmoothingEnabled = false;
+  return { rows, faces, canvas, ctx };
+}
+
+/**
+ * Export a Premiere-compatible transparent image sequence without retaining
+ * hundreds of full-resolution PNGs in browser memory. Chrome/Edge asks for a
+ * destination folder, then creates a new, safely named subfolder inside it.
+ *
+ * @param {{ root: string, view: string, onProgress?: (value: number) => void }} opts
+ */
+export async function exportBlobCastPngSequence({ root, view, onProgress }) {
+  const normalizedView = normalizeOverlayView(view);
+  if (typeof window.showDirectoryPicker !== 'function') {
+    throw new Error('Premiere PNG sequence export needs current Chrome or Edge so you can choose an output folder.');
+  }
+  const directory = await window.showDirectoryPicker({ mode: 'readwrite' });
+  const output = await directory.getDirectoryHandle(
+    `bpb-blob-cast-${normalizedView}-png-sequence`,
+    { create: true },
+  );
+  const { rows, faces, canvas, ctx } = await prepareBlobCastCanvas(root);
+  const duration = blobLoopSeconds(normalizedView);
+  const frames = Math.max(1, Math.round(duration * FPS));
+  const prefix = `bpb-blob-cast-${normalizedView}`;
+
+  for (let frame = 0; frame < frames; frame += 1) {
+    // Omit the duplicate loop-boundary frame: Premiere repeats frame 1 after
+    // the last frame when the sequence is looped.
+    renderFrame(ctx, normalizedView, rows, faces, frame / FPS);
+    const handle = await output.getFileHandle(
+      `${prefix}-${String(frame + 1).padStart(5, '0')}.png`,
+      { create: true },
+    );
+    const writable = await handle.createWritable();
+    await writable.write(await canvasPng(canvas));
+    await writable.close();
+    onProgress?.((frame + 1) / frames);
+  }
+
+  const manifest = await output.getFileHandle('README.txt', { create: true });
+  const writable = await manifest.createWritable();
+  await writable.write(
+    `BPB Blob Cast transparent PNG sequence\n\n` +
+      `View: ${normalizedView}\n` +
+      `Frames: ${frames}\n` +
+      `Frame rate: ${FPS} fps\n` +
+      `Duration: ${duration} seconds\n\n` +
+      `Premiere Pro: Import the first PNG and enable Image Sequence. Set the clip to ${FPS} fps if Premiere does not detect it automatically. PNG frames preserve alpha.\n`,
+  );
+  await writable.close();
+  return { directory: output.name, frames, duration, fps: FPS };
+}
+
+/**
  * Render and download one transparent WebM loop.
  * @param {{ root: string, view: string, onProgress?: (value: number) => void }} opts
  */
@@ -221,17 +303,8 @@ export async function downloadBlobCastVideo({ root, view, onProgress }) {
     throw new Error('Video export is only available in a browser.');
   }
 
-  const rows = await loadBlobCast();
-  if (!rows.length) throw new Error('There are no blob looks to export yet.');
-  const baked = await Promise.all(
-    rows.map((row) => bakeBlobFaceUrl({ equipped_avatar: row.equipped }, root, FACE_BAKE_SIZE)),
-  );
-  const faces = await Promise.all(baked.map((src) => loadImage(src)));
-  const canvas = document.createElement('canvas');
-  canvas.width = EXPORT_WIDTH;
-  canvas.height = EXPORT_HEIGHT;
-  const ctx = canvas.getContext('2d', { alpha: true });
-  if (!ctx || typeof canvas.captureStream !== 'function') {
+  const { rows, faces, canvas, ctx } = await prepareBlobCastCanvas(root);
+  if (typeof canvas.captureStream !== 'function') {
     throw new Error('This browser cannot capture a transparent video canvas.');
   }
   ctx.imageSmoothingEnabled = false;

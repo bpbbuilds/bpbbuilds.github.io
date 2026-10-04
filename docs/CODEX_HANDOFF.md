@@ -1079,6 +1079,16 @@ None.
 - The overlay source already contained the Walk and Walk Names pace/step animations, but its fixed asset URLs still used an old cache stamp. Updated the overlay CSS and module stamps so the Admin iframe and copied browser-source URL fetch the current walk animation instead of retaining an older cached overlay asset.
 - Validation: overlay module syntax checks, a headless-browser computed-style check for both `blob-cast-walk` and `blob-cast-step`, and targeted `git diff --check` passed. No database or profile behavior changed; no commit or push was requested.
 
+### 2026-10-04 Premiere-compatible blob cast transparency claim (in progress)
+
+- Codex owns `js/pages/overlay/blob-video.js`, `js/pages/admin/tab-overlay.js`, `js/pages/admin/admin.css`, `admin/index.html`, the focused export validation, and this handoff for giving Blob Cast downloads a Premiere-compatible transparent export path. Existing WebM downloads, alpha canvas rendering, view timing, and browser-source overlay behavior remain protected.
+
+### 2026-10-04 Premiere-compatible blob cast transparency complete
+
+- Confirmed that the existing VP9 WebM canvas capture declares `AlphaMode=1`; the black rectangle in Premiere is its WebM alpha-import limitation, not a painted canvas background.
+- Kept the compact WebM arrow for browser/OBS use and added a clearly labelled PNG action beside every Blob Cast view. It writes the exact one-loop, 2560×1440, 30 fps RGBA PNG sequence into a user-selected `bpb-blob-cast-<view>-png-sequence` folder without retaining the full sequence in memory. The folder contains an import README; Premiere should import the first file as a 30 fps Image Sequence, which preserves transparency.
+- Added the required Admin cache stamps so the updated control/module/CSS load immediately. Validation: touched JavaScript syntax checks, a headless VP9 alpha-mode capture check, static export/control assertions, and targeted `git diff --check` passed. No database or profile behavior changed; no commit or push was requested.
+
 ### 2026-10-04 event winner tab visibility claim (in progress)
 
 - Codex owns `js/pages/events/event-features.js`, `js/pages/events/event-winner.js`, `js/pages/events/catalog.js`, focused event-tab validation, and this handoff for hiding the public Winner tab until a public winner result exists. Existing owner selection, private winner persistence, and winner rendering remain protected.

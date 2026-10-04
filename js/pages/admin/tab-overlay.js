@@ -3,7 +3,11 @@
  */
 
 import { blobOverlayHref, OVERLAY_VIEWS, normalizeOverlayView } from '../overlay/blobs.js';
-import { blobLoopSeconds, downloadBlobCastVideo } from '../overlay/blob-video.js';
+import {
+  blobLoopSeconds,
+  downloadBlobCastVideo,
+  exportBlobCastPngSequence,
+} from '../overlay/blob-video.js?v=premiere-alpha-20261004';
 
 /** @type {import('../overlay/blobs.js').OverlayViewId} */
 let activeView = 'row';
@@ -44,11 +48,18 @@ export function mountOverlayPanel(host, opts) {
           type="button"
           class="admin-overlay__download"
           data-overlay-download="${item.id}"
-          aria-label="Download ${escapeHtml(item.label)} transparent WebM loop"
-          title="Download ${escapeHtml(item.label)} transparent WebM loop (${blobLoopSeconds(item.id)}s)"
+          aria-label="Download ${escapeHtml(item.label)} WebM loop"
+          title="Download ${escapeHtml(item.label)} WebM loop (${blobLoopSeconds(item.id)}s; browser and OBS alpha)"
         >
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 19h14" /></svg>
         </button>
+        <button
+          type="button"
+          class="admin-overlay__download admin-overlay__download--premiere"
+          data-overlay-premiere="${item.id}"
+          aria-label="Export ${escapeHtml(item.label)} transparent PNG sequence for Premiere"
+          title="Export ${escapeHtml(item.label)} transparent PNG sequence for Premiere (${blobLoopSeconds(item.id)}s at 30 fps)"
+        >PNG</button>
       </div>`;
   }).join('');
 
@@ -76,6 +87,7 @@ export function mountOverlayPanel(host, opts) {
           ${tabs}
         </div>
         <p class="cr-hint" data-overlay-hint>${escapeHtml(hint)}</p>
+        <p class="cr-hint">Arrow = WebM for browser/OBS. PNG = Premiere sequence with true transparency; choose a folder, then import the first PNG as a 30 fps image sequence.</p>
         <p class="cr-hint admin-overlay__download-status" data-overlay-download-status aria-live="polite"></p>
       </aside>
     </div>
@@ -138,6 +150,33 @@ export function mountOverlayPanel(host, opts) {
       })
       .catch((error) => {
         if (downloadStatus) downloadStatus.textContent = error instanceof Error ? error.message : 'Video export failed.';
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.classList.remove('is-busy');
+      });
+  });
+
+  host.querySelector('[data-overlay-views], .admin-overlay__tabs')?.addEventListener('click', (e) => {
+    const btn = e.target instanceof Element ? e.target.closest('[data-overlay-premiere]') : null;
+    if (!(btn instanceof HTMLButtonElement)) return;
+    const next = normalizeOverlayView(btn.getAttribute('data-overlay-premiere'));
+    btn.disabled = true;
+    btn.classList.add('is-busy');
+    if (downloadStatus) downloadStatus.textContent = `Choose a folder for ${next} Premiere frames…`;
+    void exportBlobCastPngSequence({
+      root,
+      view: next,
+      onProgress: (progress) => {
+        if (downloadStatus) downloadStatus.textContent = `Exporting ${next} Premiere frames (${Math.round(progress * 100)}%)…`;
+      },
+    })
+      .then((result) => {
+        if (downloadStatus) downloadStatus.textContent = `${result.frames} transparent PNG frames saved to ${result.directory}.`;
+      })
+      .catch((error) => {
+        const message = error instanceof Error ? error.message : 'Premiere frame export failed.';
+        if (downloadStatus) downloadStatus.textContent = message === 'The user aborted a request.' ? 'Premiere frame export canceled.' : message;
       })
       .finally(() => {
         btn.disabled = false;

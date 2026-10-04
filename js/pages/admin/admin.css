@@ -3253,7 +3253,7 @@ button.admin-metric.is-active::before {
 
 .admin-overlay__view-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   gap: 0.35rem;
   min-width: 0;
 }
@@ -3310,6 +3310,15 @@ button.admin-metric.is-active::before {
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.8;
+}
+
+.admin-overlay__download--premiere {
+  min-width: 2.7rem;
+  padding: 0 0.28rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .admin-overlay__download:hover,
