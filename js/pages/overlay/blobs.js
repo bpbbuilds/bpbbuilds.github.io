@@ -117,7 +117,9 @@ function floatStyle(i, n) {
   const row = Math.floor(i / cols);
   const left = ((col + 0.5) / cols) * 86 + 4 + ((i * 17) % 5) - 2;
   const top = ((row + 0.5) / rows) * 70 + 8 + ((i * 13) % 5) - 2;
-  const delay = ((i % 8) * 0.35).toFixed(2);
+  // Start each floater at a stable phase so a recording can begin on any frame
+  // without every blob waiting through the same first beat.
+  const delay = (-((i % 8) * 0.35)).toFixed(2);
   return `left:${left.toFixed(2)}%;top:${top.toFixed(2)}%;animation-delay:${delay}s`;
 }
 

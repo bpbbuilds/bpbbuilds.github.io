@@ -91,6 +91,7 @@ body.page-blob-overlay #blob-overlay {
   bottom: 0;
   left: 0;
   animation: blob-cast-walk 22s linear infinite;
+  will-change: transform;
 }
 
 .blob-cast--walk .blob-cast__name,
@@ -155,7 +156,8 @@ body.page-blob-overlay #blob-overlay {
 .blob-cast--float .blob-cast__person {
   position: absolute;
   width: var(--blob-cast-face);
-  animation: blob-cast-drift 7s ease-in-out infinite alternate;
+  animation: blob-cast-drift 7s ease-in-out infinite;
+  will-change: transform;
 }
 
 .blob-cast__empty {
@@ -169,29 +171,22 @@ body.page-blob-overlay #blob-overlay {
 }
 
 @keyframes blob-cast-drift {
-  from {
+  0%,
+  100% {
     transform: translate3d(0, 0, 0);
   }
-  to {
+  50% {
     transform: translate3d(0, -1.6vh, 0);
   }
 }
 
 @keyframes blob-cast-walk {
   0% {
-    transform: translate3d(2vw, 0, 0) scaleX(1);
-  }
-  45% {
-    transform: translate3d(calc(100vw - var(--blob-cast-face) - 2vw), 0, 0) scaleX(1);
-  }
-  50% {
-    transform: translate3d(calc(100vw - var(--blob-cast-face) - 2vw), 0, 0) scaleX(-1);
-  }
-  95% {
-    transform: translate3d(2vw, 0, 0) scaleX(-1);
+    /* Both loop boundaries are outside the frame, so the reset is invisible. */
+    transform: translate3d(calc(0px - var(--blob-cast-face) - 2vw), 0, 0) scaleX(1);
   }
   100% {
-    transform: translate3d(2vw, 0, 0) scaleX(1);
+    transform: translate3d(calc(100vw + 2vw), 0, 0) scaleX(1);
   }
 }
 
