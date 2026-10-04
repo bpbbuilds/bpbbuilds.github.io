@@ -30,3 +30,9 @@ verify_jwt = false
 
 [functions.site-access]
 verify_jwt = false
+
+# The function validates the caller JWT itself so it can return CORS-safe,
+# application-level access outcomes. Gateway verification would reject the
+# request before that signed-user check runs.
+[functions.discord-guild]
+verify_jwt = false
