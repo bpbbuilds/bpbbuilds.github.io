@@ -107,14 +107,37 @@ function normalizeCatalogItem(raw, base) {
     image,
     icon: resolveAsset(raw?.icon) || image,
     rarity: String(raw?.rarity || 'Common').trim() || 'Common',
+    // Cosmetics always have a display value. Zero is the established catalog
+    // meaning for a cosmetic that is not currently buyable/sellable.
     cost:
       raw?.cost != null && Number.isFinite(Number(raw.cost))
         ? Number(raw.cost)
-        : null,
+        : 0,
     description: String(raw?.description || '').trim(),
     owner: String(raw?.owner || '').trim(),
     artist: String(raw?.artist || '').trim(),
     added: String(raw?.added || '').trim(),
+  };
+}
+
+/**
+ * Live catalog rows are authoritative when populated, but older rows can be
+ * missing optional metadata that the bundled catalog already knows. Do not
+ * turn a known value or artist into an empty tooltip line merely because an
+ * old database row contains null/empty data.
+ * @param {BlobCosmetic | undefined} existing
+ * @param {BlobCosmetic} live
+ * @returns {BlobCosmetic}
+ */
+export function mergeLiveCosmetic(existing, live) {
+  if (!existing) return { ...live, cost: live.cost == null ? 0 : live.cost };
+  return {
+    ...existing,
+    ...live,
+    cost: live.cost == null ? (existing.cost == null ? 0 : existing.cost) : live.cost,
+    artist: live.artist || existing.artist || '',
+    owner: live.owner || existing.owner || '',
+    added: live.added || existing.added || '',
   };
 }
 
@@ -143,7 +166,7 @@ export function loadBlobCatalog(root) {
           const merged = new Map(catalog.map((item) => [item.id, item]));
           for (const raw of Array.isArray(live?.items) ? live.items : []) {
             const item = normalizeCatalogItem(raw, base);
-            if (item) merged.set(item.id, item);
+            if (item) merged.set(item.id, mergeLiveCosmetic(merged.get(item.id), item));
           }
           catalog = [...merged.values()];
           return catalog;

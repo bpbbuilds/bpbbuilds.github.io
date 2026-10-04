@@ -898,3 +898,13 @@ None.
 
 - Published the shared renderer in commit `c5d3320` (`Show cosmetic artist credit in tooltips`). A deterministic renderer assertion confirms no `Cosmetic ID` line, artist-first `Created by`, and no owner leakage when an artist exists.
 - GitHub Pages deployment for `c5d3320` completed successfully. Public verification of `https://bpbbuilds.com/js/pages/u/blob/cosmetic-tooltip.js` confirms `Cosmetic ID` is absent and `Created by:` is present.
+
+### 2026-10-04 Cosmetic tooltip value restoration claim (in progress)
+
+- Codex owns `js/pages/u/blob/catalog.js`, the focused tooltip-value validation, and this handoff for this task. Audit found the shared tooltip renderer already supports a gold worth row, but the public `cosmetic-catalog` response has `cost: null` for both current rows; remote merge currently overwrites a bundled numeric fallback such as Premium Crown's `0` with that null. The fix will preserve a known numeric bundled value when live catalog metadata omits it, without inventing values for server-only cosmetics.
+
+### 2026-10-04 Cosmetic tooltip value restoration complete
+
+- Cosmetics now always normalize missing cost metadata to `0`, the catalog's established “not buyable/sellable” value, so every cosmetic tooltip renders the gold value row. A real server-assigned numeric value continues to win unchanged.
+- Live catalog merges now preserve bundled artist, owner, date, and numeric value when an older server catalog row leaves them blank/null. This restores both Premium Crown's `0` gold value and its `Created by` credit without fabricating metadata for new server-only cosmetics.
+- Validation: `node --check` passes and an isolated module assertion confirms zero-value fallback plus artist/owner retention.
