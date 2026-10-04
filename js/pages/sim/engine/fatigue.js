@@ -16,6 +16,9 @@ export const FATIGUE_TICK_INTERVAL = 1;
  *   started: boolean,
  *   counter: number,
  *   nextTickAt: number,
+ *   startAt: number,
+ *   advancedBy: number,
+ *   advanceTime: (amount: number) => number,
  * }} FatigueState
  */
 
@@ -23,7 +26,38 @@ export const FATIGUE_TICK_INTERVAL = 1;
  * @returns {FatigueState}
  */
 export function createFatigueState() {
-  return { started: false, counter: 0, nextTickAt: Infinity };
+  /** @type {FatigueState} */
+  const state = {
+    started: false,
+    counter: 0,
+    nextTickAt: Infinity,
+    // CombatTimer.gd owns this timer. Keep the source threshold mutable so
+    // item scripts can call the game's advanceTime() equivalent without
+    // shifting unrelated item cooldowns.
+    startAt: FATIGUE_TIME,
+    advancedBy: 0,
+    advanceTime: (amount) => advanceFatigueTime(state, amount),
+  };
+  return state;
+}
+
+/**
+ * CombatTimer.advanceTime(amount) — move the fatigue timer forward only.
+ * The game clamps an already-expired timer at the current clock; the
+ * simulator keeps the threshold non-negative and lets the normal scheduler
+ * emit fatigue_start on its next step.
+ *
+ * @param {FatigueState} state
+ * @param {number} amount seconds
+ * @returns {number} applied advance
+ */
+export function advanceFatigueTime(state, amount) {
+  const seconds = Math.max(0, Number(amount) || 0);
+  if (!(seconds > 0) || state.started) return 0;
+  const applied = Math.min(seconds, Math.max(0, Number(state.startAt) || 0));
+  state.startAt = Math.max(0, (Number(state.startAt) || 0) - applied);
+  state.advancedBy = (Number(state.advancedBy) || 0) + applied;
+  return applied;
 }
 
 /**

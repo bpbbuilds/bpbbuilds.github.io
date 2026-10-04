@@ -43,6 +43,7 @@ export function pieceIsThem(piece) {
  *   canAffect: object | null,
  *   activatePiece: Function,
  *   bus: object,
+ *   fatigue: object,
  *   notifyDealtDamage: Function,
  *   notifyPreDealDamageEarly: Function,
  * }} world
@@ -65,6 +66,7 @@ export function ctxForPiece(piece, world) {
     cardKeys: them ? world.themCardKeys : world.youCardKeys,
     activatePiece: world.activatePiece,
     bus: world.bus,
+    fatigue: world.fatigue,
     notifyDealtDamage: world.notifyDealtDamage,
     notifyPreDealDamageEarly: world.notifyPreDealDamageEarly,
     logChain: world.logChain,

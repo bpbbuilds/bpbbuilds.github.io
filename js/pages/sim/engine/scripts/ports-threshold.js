@@ -119,48 +119,83 @@ export const bloodManipulationPort = {
 export const powerOfTheMoonPort = {
   handlerId: 'power_of_the_moon',
   family: 'unique',
+  onPostCombatStart(piece, ctx) {
+    const seconds = Math.max(0, getPName(piece.params, 'time', getP1(piece.params, 6)));
+    ctx.fatigue?.advanceTime?.(seconds);
+  },
+  onPrepare(piece, ctx) {
+    // PoweroftheMoon.gd connects only to the affected Moon Armor/Shield
+    // instances during Item.prepare. Snapshot those keys so a later board
+    // mutation cannot make an unrelated item trigger this listener.
+    const links = affectedTargets(
+      ctx.graph,
+      piece.placementKey,
+      ctx.itemsById,
+      ctx.canAffect,
+    );
+    piece._moonLinkedKeys = new Set(links.map((link) => link.key));
+  },
   onCombatStart(piece, ctx) {
-    pushActivate(piece, ctx, 'power_of_the_moon', `Skill: ${piece.name}`);
     // Band Z 150 — listen for fatigue via combat bus
     ctx.bus?.on?.('fatigue_start', (payload) => {
-      const hp = Math.max(1, Math.round(getP2(piece.params, 3)));
+      const pct = Math.max(
+        0,
+        getPName(piece.params, 'maxhealth', getP3(piece.params, 70)),
+      ) / 100;
+      const hp = Math.round(ctx.player.maxHp * pct);
+      if (!(hp > 0)) return;
       ctx.player.maxHp += hp;
       ctx.player.hp = Math.min(ctx.player.maxHp, ctx.player.hp + hp);
+      const side = eventSideForPiece(piece);
       ctx.events.push({
         t: payload?.t ?? ctx.t,
         type: 'heal',
-        target: 'player',
+        actor: side,
+        target: side,
         amount: hp,
         itemId: piece.itemId,
         placementKey: piece.placementKey,
         label: `${piece.name}: +${hp} max HP (fatigue)`,
-        meta: { category: 'heal', script: true, handler: 'power_of_the_moon', fatigue: true },
+        meta: {
+          category: 'heal',
+          script: true,
+          handler: 'power_of_the_moon',
+          kind: 'temp_max_hp',
+          fatigue: true,
+        },
       });
     });
   },
   onPeerActivated(listener, activated, ctx) {
-    const { t, player, events, itemsById } = ctx;
-    const item = itemsById.get(activated.itemId);
-    if (!itemHasType(item, 'moon') && !itemHasType(item, 'armor') && !itemHasType(item, 'shield')) {
+    if (
+      listener._moonLinkedKeys instanceof Set &&
+      !listener._moonLinkedKeys.has(activated?.placementKey)
+    ) {
       return;
     }
-    const hp = Math.max(1, Math.round(getP1(listener.params, 5)));
-    player.maxHp += hp;
-    player.hp = Math.min(player.maxHp, player.hp + hp);
-    events.push({
-      t,
-      type: 'heal',
-      target: 'player',
-      amount: hp,
-      itemId: listener.itemId,
-      placementKey: listener.placementKey,
-      label: `${listener.name}: +${hp} max HP (moon)`,
-      meta: { category: 'heal', script: true, handler: 'power_of_the_moon' },
-    });
-  },
-  onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'power_of_the_moon', `Skill: ${piece.name}`);
-    return true;
+    const activatedId = String(activated?.itemId || '');
+    const origin = {
+      originKey: listener.placementKey,
+      originId: listener.itemId,
+      t: ctx.t,
+      rng: ctx.rng,
+      opponent: ctx.player,
+    };
+    if (activatedId === 'moon_armor') {
+      const blind = Math.max(
+        0,
+        Math.round(getPName(listener.params, 'blind', getP2(listener.params, 2))),
+      );
+      if (blind > 0) grantStacks(ctx.dummy, 'blind', blind, origin);
+      return;
+    }
+    if (activatedId === 'moon_shield') {
+      const reflect = Math.max(0, Math.round(getPName(listener.params, 'reflect', 1)));
+      if (reflect > 0) {
+        ctx.player.debuffReflectStacks =
+          (Number(ctx.player.debuffReflectStacks) || 0) + reflect;
+      }
+    }
   },
 };
 

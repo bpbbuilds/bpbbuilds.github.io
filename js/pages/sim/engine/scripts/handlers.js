@@ -28,6 +28,7 @@ import { applyBonusDamageFactor } from '../piece-stats.js';
  *   deckIndex?: { i: number },
  *   cardKeys?: string[],
  *   bus?: { on: Function, emit: Function, reset: Function },
+ *   fatigue?: { startAt: number, started: boolean, advanceTime?: Function },
  *   activatePiece?: Function,
  * }} ScriptCtx
  */
@@ -36,6 +37,7 @@ import { applyBonusDamageFactor } from '../piece-stats.js';
  * @typedef {{
  *   handlerId: string,
  *   family: string,
+ *   onPrepare?: (piece: CombatPiece, ctx: ScriptCtx) => void,
  *   onPreCombatStart?: (piece: CombatPiece, ctx: ScriptCtx) => void,
  *   onCombatStart?: (piece: CombatPiece, ctx: ScriptCtx) => void,
  *   onPostCombatStart?: (piece: CombatPiece, ctx: ScriptCtx) => void,

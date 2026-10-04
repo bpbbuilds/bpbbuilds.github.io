@@ -38,7 +38,6 @@ import { tickTemporaryStacks } from './buff-economy.js';
 import { bindBuffCombatLog, unbindBuffCombatLog, collapseDuplicateBuffLogs } from './buff-log.js';
 import { bindBuffPowerPieces, unbindBuffPowerPieces } from './buff-power.js';
 import {
-  FATIGUE_TIME,
   FATIGUE_TICK_INTERVAL,
   advanceFatigueCounter,
   applyFatigueDamage,
@@ -381,6 +380,7 @@ export function simulateEngine(opts) {
     canAffect,
     activatePiece,
     bus,
+    fatigue,
     logChain,
     notifyDealtDamage,
     notifyPreDealDamageEarly,
@@ -395,6 +395,9 @@ export function simulateEngine(opts) {
   for (const piece of pieces) {
     piece.chanceRng?.reset?.();
     traceLifecycle('prepare', piece, 0);
+    const script = getScriptHandler(piece.itemId);
+    const prepareCtx = { ...ctxForPiece(piece, world), t: 0 };
+    script?.onPrepare?.(piece, prepareCtx);
   }
   const startOrder = buildCombatStartOrder(youPieces, themPieces, rng);
   /** @type {Map<string, number>} */
@@ -515,7 +518,7 @@ export function simulateEngine(opts) {
 
     if (itemsLive) {
       const combatTime = t - COMBAT_DELAY;
-      if (!fatigue.started && combatTime + 1e-9 >= FATIGUE_TIME) {
+      if (!fatigue.started && combatTime + 1e-9 >= fatigue.startAt) {
         fatigue.started = true;
         fatigue.nextTickAt = t;
         bus.emit('fatigue_start', { t, combatTime });
