@@ -79,19 +79,51 @@ body.page-blob-overlay #blob-overlay {
   --blob-cast-face: 12vh;
 }
 
-.blob-cast--walk {
+.blob-cast--walk,
+.blob-cast--walk-names {
   position: relative;
   --blob-cast-face: min(16vh, 14vw);
 }
 
-.blob-cast--walk .blob-cast__person {
+.blob-cast--walk .blob-cast__person,
+.blob-cast--walk-names .blob-cast__person {
   position: absolute;
   bottom: 0;
   left: 0;
   animation: blob-cast-walk 22s linear infinite;
 }
 
-.blob-cast--walk .blob-cast__face {
+.blob-cast--walk .blob-cast__name,
+.blob-cast--walk-names .blob-cast__name {
+  position: absolute;
+  bottom: -2vh;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(var(--blob-cast-face) - 4px);
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: clamp(12px, 1.5vh, 24px);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.15;
+  text-align: center;
+  color: #ffecdc;
+  text-shadow:
+    0 0.08em 0 #3c261d,
+    0.08em 0 0 #3c261d,
+    -0.08em 0 0 #3c261d,
+    0 -0.08em 0 #3c261d;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.blob-cast--walk-names .blob-cast__person {
+  /* Keep the caption inside the transparent browser-source frame. */
+  bottom: 2.8vh;
+}
+
+.blob-cast--walk .blob-cast__face,
+.blob-cast--walk-names .blob-cast__face {
   transform-origin: 50% 100%;
   animation: blob-cast-step 0.42s ease-in-out infinite;
 }
@@ -192,11 +224,14 @@ body.page-blob-overlay #blob-overlay {
   .blob-cast--float .blob-cast__person,
   .blob-cast--pop .blob-cast__person,
   .blob-cast--walk .blob-cast__person,
-  .blob-cast--walk .blob-cast__face {
+  .blob-cast--walk-names .blob-cast__person,
+  .blob-cast--walk .blob-cast__face,
+  .blob-cast--walk-names .blob-cast__face {
     animation: none;
   }
 
-  .blob-cast--walk .blob-cast__person {
+  .blob-cast--walk .blob-cast__person,
+  .blob-cast--walk-names .blob-cast__person {
     left: var(--blob-cast-walk-x, 2vw);
   }
 }

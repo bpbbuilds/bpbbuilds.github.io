@@ -6,7 +6,7 @@
 import { faceHtml, hydrateFaces, parseFaceLoadout } from '../../shared/blob-face.js';
 import { getSupabase } from '../../shared/supabase.js';
 
-/** @typedef {'row' | 'low' | 'pop' | 'walk' | 'grid' | 'float'} OverlayViewId */
+/** @typedef {'row' | 'low' | 'pop' | 'walk' | 'walk-names' | 'grid' | 'float'} OverlayViewId */
 
 /** @type {readonly { id: OverlayViewId, label: string, hint: string }[]} */
 export const OVERLAY_VIEWS = Object.freeze([
@@ -29,6 +29,11 @@ export const OVERLAY_VIEWS = Object.freeze([
     id: 'walk',
     label: 'Walk',
     hint: 'No names. Blobs pace along the bottom, turning as they go left and right.',
+  },
+  {
+    id: 'walk-names',
+    label: 'Walk Names',
+    hint: 'Blobs pace along the bottom with names displayed below each one.',
   },
   {
     id: 'grid',
@@ -181,7 +186,7 @@ export async function mountBlobOverlay(host, opts) {
           ? ` style="${floatStyle(i, rows.length)}"`
           : view === 'pop'
             ? ` style="${popStyle(i)}"`
-            : view === 'walk'
+            : view === 'walk' || view === 'walk-names'
               ? ` style="${walkStyle(i, rows.length)}"`
               : '';
       const name =
