@@ -115,6 +115,11 @@ export function uploadCosmetic(auth, cosmetic) {
   return adminRequest(auth, { action: 'upload_cosmetic', cosmetic });
 }
 
+/** Owner-only unpublished cosmetic draft update. */
+export function updateCosmetic(auth, cosmetic) {
+  return adminRequest(auth, { action: 'update_cosmetic', cosmetic });
+}
+
 /** Owner-only cosmetic catalog publish. */
 export function publishCosmetic(auth, cosmetic) {
   return adminRequest(auth, { action: 'publish_cosmetic', cosmetic });

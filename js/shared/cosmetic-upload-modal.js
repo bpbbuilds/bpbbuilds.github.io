@@ -40,8 +40,10 @@ const RARITIES = Object.freeze([
  *   grant: string,
  *   rarity: string,
  *   artist: string,
+ *   owner: string,
+ *   cost: string,
  *   description: string,
- *   file: File,
+ *   file: File | null,
  *   source: CosmeticUploadRole,
  * }} CosmeticUploadPayload
  */
@@ -93,6 +95,8 @@ function assetRoot(root) {
 /**
  * @param {{
  *   role?: CosmeticUploadRole,
+ *   mode?: 'new' | 'edit',
+ *   values?: Partial<CosmeticUploadPayload> & { image?: string },
  *   displayName?: string,
  *   root?: string,
  *   onSubmit?: (payload: CosmeticUploadPayload) => void | Promise<void>,
@@ -107,6 +111,8 @@ export function openCosmeticUploadModal(opts = {}) {
  * @returns {{
  *   open: (opts?: {
  *     role?: CosmeticUploadRole,
+ *     mode?: 'new' | 'edit',
+ *     values?: Partial<CosmeticUploadPayload> & { image?: string },
  *     displayName?: string,
  *     root?: string,
  *     onSubmit?: (payload: CosmeticUploadPayload) => void | Promise<void>,
@@ -131,6 +137,7 @@ function createCosmeticUploadModal() {
   let role = 'player';
   let displayName = '';
   let siteRoot = '../';
+  let editMode = false;
   /** @type {((payload: CosmeticUploadPayload) => void | Promise<void>) | null} */
   let onSubmitCb = null;
   let idOverride = false;
@@ -148,22 +155,24 @@ function createCosmeticUploadModal() {
   /**
    * @param {CosmeticUploadRole} nextRole
    * @param {string} blobSrc
+   * @param {'new' | 'edit'} [nextMode]
    */
-  function paintShell(nextRole, blobSrc) {
+  function paintShell(nextRole, blobSrc, nextMode = 'new') {
     const isAdmin = nextRole === 'admin';
-    const title = isAdmin ? 'Upload cosmetic' : 'Submit cosmetic';
-    const submitLabel = isAdmin ? 'Save cosmetic' : 'Submit';
+    const isEdit = isAdmin && nextMode === 'edit';
+    const title = isEdit ? 'Edit cosmetic draft' : isAdmin ? 'Upload cosmetic' : 'Submit cosmetic';
+    const submitLabel = isEdit ? 'Save draft' : isAdmin ? 'Save cosmetic' : 'Submit';
     const blurb = isAdmin
-      ? 'Official Smojo cosmetic. PNG/WebP aligned to the blob base.'
+      ? isEdit
+        ? 'Edit catalog details and acquisition before publishing. Leave art blank to keep the current image.'
+        : 'Official Smojo cosmetic. PNG/WebP aligned to the blob base.'
       : 'Share original blob art for review. Ownership is Starter (everyone).';
 
     const idBlock = isAdmin
       ? `<div class="cosmetic-upload__field">
           <div class="cosmetic-upload__id-row">
             <label class="cosmetic-upload__label" for="cosmetic-upload-id">Id</label>
-            <button type="button" class="cosmetic-upload__id-edit" data-cos-upload-id-edit>
-              Edit id
-            </button>
+            ${isEdit ? '' : '<button type="button" class="cosmetic-upload__id-edit" data-cos-upload-id-edit>Edit id</button>'}
           </div>
           <input
             id="cosmetic-upload-id"
@@ -172,13 +181,13 @@ function createCosmeticUploadModal() {
             type="text"
             maxlength="48"
             required
-            readonly
+            ${isEdit ? 'readonly' : 'readonly'}
             autocomplete="off"
             pattern="[a-z0-9_]+"
             title="lowercase letters, numbers, underscores"
             data-cos-upload-id
           />
-          <p class="cosmetic-upload__hint" data-cos-upload-id-hint>Auto from name. Use Edit id only if you must override.</p>
+          <p class="cosmetic-upload__hint" data-cos-upload-id-hint>${isEdit ? 'Draft ids cannot be changed.' : 'Auto from name. Use Edit id only if you must override.'}</p>
         </div>`
       : `<input type="hidden" name="id" value="" data-cos-upload-id />`;
 
@@ -190,6 +199,22 @@ function createCosmeticUploadModal() {
           </select>
         </div>`
       : `<input type="hidden" name="grant" value="starter" />`;
+
+    const adminMetaBlock = isAdmin
+      ? `<div class="cosmetic-upload__field">
+          <label class="cosmetic-upload__label" for="cosmetic-upload-artist">Artist</label>
+          <input id="cosmetic-upload-artist" class="cosmetic-upload__input" name="artist" type="text" maxlength="120" autocomplete="off" placeholder="Artist credit" />
+        </div>
+        <div class="cosmetic-upload__field">
+          <label class="cosmetic-upload__label" for="cosmetic-upload-owner">Original owner</label>
+          <input id="cosmetic-upload-owner" class="cosmetic-upload__input" name="owner" type="text" maxlength="120" autocomplete="off" placeholder="Original owner" />
+        </div>
+        <div class="cosmetic-upload__field">
+          <label class="cosmetic-upload__label" for="cosmetic-upload-cost">Value</label>
+          <input id="cosmetic-upload-cost" class="cosmetic-upload__input" name="cost" type="number" min="0" max="999999" step="1" inputmode="numeric" placeholder="0" />
+          <p class="cosmetic-upload__hint">Gold worth. Use 0 when it is not buyable or sellable.</p>
+        </div>`
+      : '';
 
     root.innerHTML = `
       <div class="cosmetic-upload__backdrop" data-cos-upload-close tabindex="-1"></div>
@@ -234,18 +259,19 @@ function createCosmeticUploadModal() {
                   ${rarityOptions}
                 </select>
               </div>
+              ${adminMetaBlock}
               <div class="cosmetic-upload__field">
                 <span class="cosmetic-upload__label" id="cosmetic-upload-image-label">Art</span>
                 <label class="cosmetic-upload__file">
                   <span class="cosmetic-upload__file-name" data-cos-upload-file-name>PNG / WebP</span>
-                  <span class="cosmetic-upload__file-meta">Same canvas size and placement as the blob.</span>
+                  <span class="cosmetic-upload__file-meta">${isEdit ? 'Optional: replace the current blob-aligned art.' : 'Same canvas size and placement as the blob.'}</span>
                   <input
                     id="cosmetic-upload-image"
                     class="cosmetic-upload__file-input"
                     name="image"
                     type="file"
                     accept="image/png,image/webp"
-                    required
+                    ${isEdit ? '' : 'required'}
                     aria-labelledby="cosmetic-upload-image-label"
                     data-cos-upload-image
                   />
@@ -312,6 +338,7 @@ function createCosmeticUploadModal() {
     const idHint = form.querySelector('[data-cos-upload-id-hint]');
 
     const syncIdFromName = () => {
+      if (editMode) return;
       if (!(nameInput instanceof HTMLInputElement)) return;
       if (!(idInput instanceof HTMLInputElement)) return;
       if (idOverride && !idInput.readOnly) return;
@@ -372,7 +399,8 @@ function createCosmeticUploadModal() {
           ? String(data.get('grant') || 'starter').trim() || 'starter'
           : 'starter';
       const file = data.get('image');
-      if (!name || !id || !slot || !(file instanceof File) || !file.size) return;
+      const hasFile = file instanceof File && file.size > 0;
+      if (!name || !id || !slot || (!editMode && !hasFile)) return;
 
       /** @type {CosmeticUploadPayload} */
       const payload = {
@@ -381,9 +409,11 @@ function createCosmeticUploadModal() {
         slot,
         grant,
         rarity: String(data.get('rarity') || 'Common').trim() || 'Common',
-        artist: displayName || 'Unknown',
+        artist: String(data.get('artist') || displayName || 'Unknown').trim(),
+        owner: String(data.get('owner') || '').trim(),
+        cost: String(data.get('cost') || '').trim(),
         description: String(data.get('description') || '').trim(),
-        file,
+        file: hasFile ? file : null,
         source: role,
       };
 
@@ -392,15 +422,17 @@ function createCosmeticUploadModal() {
         else {
           console.info('[cosmetic-upload]', {
             ...payload,
-            file: payload.file.name,
-            bytes: payload.file.size,
+            file: payload.file?.name || null,
+            bytes: payload.file?.size || 0,
           });
         }
         if (status instanceof HTMLElement) {
           status.hidden = false;
           status.textContent =
             role === 'admin'
-              ? 'Saved to the live catalog as a draft. Publish its catalog row when it is ready.'
+              ? editMode
+                ? 'Draft updated. Publish it when the details and acquisition method are ready.'
+                : 'Saved to the live catalog as a draft. Publish its catalog row when it is ready.'
               : 'Thanks — submitted for review. Your art stays private until it is approved.';
         }
         window.setTimeout(() => close(), 1400);
@@ -417,6 +449,8 @@ function createCosmeticUploadModal() {
   /**
    * @param {{
    *   role?: CosmeticUploadRole,
+   *   mode?: 'new' | 'edit',
+   *   values?: Partial<CosmeticUploadPayload> & { image?: string },
    *   displayName?: string,
    *   root?: string,
    *   onSubmit?: (payload: CosmeticUploadPayload) => void | Promise<void>,
@@ -424,13 +458,15 @@ function createCosmeticUploadModal() {
    */
   function open(opts = {}) {
     role = opts.role === 'admin' ? 'admin' : 'player';
+    editMode = role === 'admin' && opts.mode === 'edit';
     displayName = String(opts.displayName || '').trim();
     siteRoot = assetRoot(opts.root);
     onSubmitCb = typeof opts.onSubmit === 'function' ? opts.onSubmit : null;
     idOverride = false;
+    const values = opts.values && typeof opts.values === 'object' ? opts.values : {};
 
     const blobSrc = `${siteRoot}assets/blob/blob-base.png`;
-    paintShell(role, blobSrc);
+    paintShell(role, blobSrc, editMode ? 'edit' : 'new');
     bindForm();
     clearPreview();
 
@@ -439,8 +475,36 @@ function createCosmeticUploadModal() {
 
     const idInput = root.querySelector('[data-cos-upload-id]');
     if (idInput instanceof HTMLInputElement) {
-      idInput.value = '';
-      if (role === 'admin') idInput.readOnly = true;
+      idInput.value = String(values.id || '');
+      if (role === 'admin') idInput.readOnly = editMode;
+    }
+
+    const setValue = (selector, value) => {
+      const field = root.querySelector(selector);
+      if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement || field instanceof HTMLSelectElement) {
+        field.value = String(value ?? '');
+      }
+    };
+    setValue('[data-cos-upload-name]', values.name || '');
+    setValue('#cosmetic-upload-slot', values.slot || 'hat');
+    setValue('#cosmetic-upload-grant', values.grant || 'starter');
+    setValue('#cosmetic-upload-rarity', values.rarity || 'Common');
+    setValue('#cosmetic-upload-artist', values.artist || displayName || '');
+    setValue('#cosmetic-upload-owner', values.owner || (role === 'admin' ? displayName : ''));
+    setValue('#cosmetic-upload-cost', values.cost ?? '');
+    setValue('#cosmetic-upload-desc', values.description || '');
+
+    const initialImage = String(values.image || '').trim();
+    if (editMode && initialImage) {
+      const layer = root.querySelector('[data-cos-upload-layer]');
+      const hint = root.querySelector('[data-cos-upload-preview-hint]');
+      const fileName = root.querySelector('[data-cos-upload-file-name]');
+      if (layer instanceof HTMLImageElement) {
+        layer.src = initialImage;
+        layer.hidden = false;
+      }
+      if (hint instanceof HTMLElement) hint.textContent = 'Current artwork. Choose a file only if it needs replacing.';
+      if (fileName instanceof HTMLElement) fileName.textContent = 'Current artwork (unchanged)';
     }
 
     const status = root.querySelector('[data-cos-upload-status]');

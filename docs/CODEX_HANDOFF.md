@@ -937,3 +937,16 @@ None.
 
 - Cosmetic tooltips now render `Created by: <artist>` plus `Original owner: <owner>` whenever catalog owner metadata exists. The owner line is preserved even when the creator and owner are the same, so provenance is never hidden; rows without owner metadata keep the existing artist credit.
 - The public catalog response supplies owner metadata for Cool Shades, and the bundled Premium Crown metadata supplies it as well. `cosmetic-tooltip.js` passes `node --check` and a focused renderer assertion confirms both lines are included and escaped by the existing tooltip renderer.
+
+### 2026-10-04 Cosmetic catalog workflow and admin grid claim (in progress)
+
+- Codex owns the cosmetic catalog/admin paths for this batch: `assets/data/blob-cosmetics.json`, `assets/blob/cosmetics/cool-shades.png`, `js/pages/admin/tab-cosmetics.js`, `js/pages/admin/admin.css`, `js/pages/admin/api.js`, `js/shared/cosmetic-upload-modal.js`, `js/shared/cosmetic-upload-modal.css`, `supabase/functions/admin-builds/`, `supabase/functions/cosmetic-submissions/`, the catalog migration, and this handoff.
+- The requested workflow is: approval copies player art into the owner-visible catalog as `published = false`; an owner can edit metadata/acquisition before publishing; only `published = true` rows reach the public catalog and Discord announcement. Cool Shades will be Founding-only in both static fallback and live database metadata. Premium Crown's existing `Unique` rarity remains unchanged.
+
+### 2026-10-04 Cosmetic catalog workflow and admin grid complete
+
+- Added Cool Shades to the tracked static catalog/art assets as a Founding-only Unique cosmetic and applied the live database update (`20261004020000_cool_shades_founding.sql`). Public catalog verification returns `cool_shades.grant = founding` and `starter = false`; Premium Crown remains Unique.
+- Player submission approval now creates an unpublished catalog draft. The public catalog Edge Function and Discord bot continue to consume only `published = true` rows, so approval no longer announces or exposes the cosmetic through the live wardrobe until the owner publishes it.
+- Added owner-only draft editing for name, slot, acquisition grant, rarity, artist, original owner, value, description, and optional replacement art. Publishing is server-validated and only allowed for an existing unpublished draft; direct unauthenticated admin/submission calls still return 401.
+- Replaced the Admin Cosmetics Live catalog line list with an inventory-style responsive grid, added Draft/Published state and Edit controls, and matched the catalog/queue surfaces to the existing dark gold-edged admin form treatment. Browser modal smoke confirmed metadata-only draft edits submit without requiring a replacement image.
+- Validation: browser module smoke, `node --check` for all touched JS modules, JSON parse, `git diff --check`, Supabase migration push, and deployment of `admin-builds` and `cosmetic-submissions` completed successfully.

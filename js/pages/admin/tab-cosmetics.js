@@ -22,6 +22,7 @@ import {
   publishCosmetic,
   reviewCosmeticSubmission,
   resolveAdminAuth,
+  updateCosmetic,
   uploadCosmetic,
 } from './api.js';
 
@@ -81,7 +82,9 @@ function catalogRowHtml(c, root, published) {
         </p>
         <p class="admin-cosmetics__grant ${grantClass(c)}">${escapeHtml(grant)}</p>
       </div>
-      <div class="admin-cosmetics__row-actions">
+      <div class="admin-cosmetics__card-status ${published ? 'is-published' : 'is-draft'}">${published ? 'Published' : 'Draft'}</div>
+      <div class="admin-cosmetics__card-actions">
+        ${published ? '' : `<button type="button" class="cr-btn-quiet" data-admin-cos-edit="${escapeHtml(c.id)}">Edit</button>`}
         <button
           type="button"
           class="cr-btn-quiet"
@@ -108,7 +111,7 @@ function matchingCosmetics(catalog, state) {
 function catalogListHtml(rows, root, total, published) {
   if (rows.length) return rows.map((c) => catalogRowHtml(c, root, published.has(c.id))).join('');
   const empty = total ? 'No cosmetics match these filters.' : 'Catalog is empty.';
-  return `<li class="admin-empty">${empty}</li>`;
+  return `<li class="admin-empty admin-cosmetics__grid-empty">${empty}</li>`;
 }
 
 /**
@@ -122,7 +125,7 @@ function paintCatalog(host, root, catalog, state, published) {
   const list = host.querySelector('[data-admin-cos-catalog]');
   if (list instanceof HTMLElement) list.innerHTML = catalogListHtml(rows, root, catalog.length, published);
   const hint = host.querySelector('[data-admin-cos-catalog-hint]');
-  if (hint) hint.textContent = `${rows.length} shown · ${catalog.length} in the catalog.`;
+  if (hint) hint.textContent = `${rows.length} shown · ${catalog.length} catalog entries (published and drafts).`;
   const rail = host.querySelector('.admin-cosmetics-filters');
   if (rail instanceof HTMLElement) syncAdminCosmeticFilters(rail, state, rows.length);
 }
@@ -158,7 +161,7 @@ function paintBody(host, root, catalog, state, published) {
         </div>
       </div>
       <p class="admin-cosmetics__hint">
-        Player submits from profile Blob / Inventory land here. Approve publishes into the wardrobe catalog.
+        Player submits from profile Blob / Inventory land here. Approve adds the art to the owner catalog as an unpublished draft.
       </p>
       <ul class="admin-cosmetics__list" data-admin-cos-queue-list role="list">
         <li class="admin-cosmetics__row admin-cosmetics__row--empty">
@@ -188,7 +191,7 @@ function paintBody(host, root, catalog, state, published) {
       <h3 class="admin-cosmetics__section-title" id="admin-cosmetics-live-h">Live catalog</h3>
       <p class="admin-cosmetics__hint" data-admin-cos-catalog-hint>${rows.length} shown · ${catalog.length} in the catalog.</p>
       <p class="admin-status" data-admin-cos-publish-status hidden></p>
-      <ul class="admin-cosmetics__list" data-admin-cos-catalog role="list">
+      <ul class="admin-cosmetics__list admin-cosmetics__catalog-grid" data-admin-cos-catalog role="list">
         ${catalogListHtml(rows, root, catalog.length, published)}
       </ul>
     </section>
@@ -240,6 +243,7 @@ function mergeCatalogRows(catalog, rows) {
       owner: String(raw?.owner || existing?.owner || ''),
       artist: String(raw?.artist || existing?.artist || ''),
       added: String(raw?.added || existing?.added || ''),
+      published: raw?.published == null ? existing?.published : raw.published === true,
     };
     if (existing) Object.assign(existing, item);
     else catalog.push(/** @type {BlobCosmetic} */ (item));
@@ -270,6 +274,8 @@ function bindUploadButton(rootEl, opts) {
           grant: payload.grant,
           rarity: payload.rarity,
           artist: payload.artist,
+          owner: payload.owner,
+          cost: payload.cost,
           description: payload.description,
           imageData,
         });
@@ -283,14 +289,63 @@ function bindUploadButton(rootEl, opts) {
 }
 
 /**
+ * Drafts stay owner-editable until publish. Reuse the same rewards-form
+ * surface as uploads, but keep the id/art optional so metadata-only edits are
+ * cheap and do not replace the stored image accidentally.
+ * @param {HTMLElement} rootEl
+ * @param {{ root: string, displayName?: string, auth?: { mode: 'jwt', token: string }, catalog: BlobCosmetic[], state: import('./cosmetics-filters.js').AdminCosmeticFilterState, published: Set<string> }} opts
+ */
+function bindEditButton(rootEl, opts) {
+  rootEl.addEventListener('click', (e) => {
+    const t = e.target;
+    if (!(t instanceof Element)) return;
+    const btn = t.closest('[data-admin-cos-edit]');
+    if (!(btn instanceof HTMLElement) || !rootEl.contains(btn)) return;
+    const id = String(btn.getAttribute('data-admin-cos-edit') || '').trim();
+    const item = opts.catalog.find((row) => row.id === id);
+    if (!item || opts.published.has(id)) return;
+    openCosmeticUploadModal({
+      role: 'admin',
+      mode: 'edit',
+      values: item,
+      displayName: opts.displayName || 'Smojo Builds',
+      root: opts.root,
+      onSubmit: async (payload) => {
+        const liveAuth = await resolveAdminAuth();
+        if (!liveAuth?.token) throw new Error('Sign in as the site owner to edit a draft.');
+        const imageData = payload.file ? await fileAsDataUrl(payload.file) : undefined;
+        const result = await updateCosmetic(liveAuth, {
+          id: payload.id,
+          name: payload.name,
+          slot: payload.slot,
+          grant: payload.grant,
+          rarity: payload.rarity,
+          artist: payload.artist,
+          owner: payload.owner,
+          cost: payload.cost,
+          description: payload.description,
+          ...(imageData ? { imageData } : {}),
+        });
+        const updated = result?.cosmetic;
+        if (!updated?.id) throw new Error('The updated cosmetic was not returned by the server.');
+        mergeCatalogRows(opts.catalog, [updated]);
+        paintCatalog(rootEl, opts.root, opts.catalog, opts.state, opts.published);
+      },
+    });
+  });
+}
+
+/**
  * @param {HTMLElement} rootEl
  */
 /**
  * @param {HTMLElement} host
  * @param {BlobCosmetic[]} catalog
  * @param {Set<string>} published
+ * @param {string} root
+ * @param {import('./cosmetics-filters.js').AdminCosmeticFilterState} state
  */
-function bindPublish(host, catalog, published, auth) {
+function bindPublish(host, catalog, published, auth, root, state) {
   host.addEventListener('click', async (e) => {
     const t = e.target;
     if (!(t instanceof Element)) return;
@@ -315,7 +370,7 @@ function bindPublish(host, catalog, published, auth) {
       if (!session?.access_token || liveAuth?.mode !== 'jwt') {
         throw new Error('Sign in as the site owner to publish.');
       }
-      await publishCosmetic(liveAuth, {
+      const result = await publishCosmetic(liveAuth, {
         id: item.id,
         name: item.name || item.id,
         slot: item.slot || '',
@@ -323,8 +378,16 @@ function bindPublish(host, catalog, published, auth) {
         grant: item.grant || (item.starter ? 'starter' : ''),
         description: item.description || '',
         image: item.image || '',
+        artist: item.artist || '',
+        owner: item.owner || '',
+        cost: item.cost,
+        kind: item.kind || 'part',
+        swatch: item.swatch || '#8a5a2b',
+        added: item.added || '',
       });
+      if (result?.cosmetic) Object.assign(item, result.cosmetic);
       published.add(item.id);
+      paintCatalog(host, root, catalog, state, published);
       btn.textContent = 'Published';
       if (status instanceof HTMLElement) {
         status.textContent = `${item.name || item.id} will show in Cosmetic drops.`;
@@ -380,9 +443,9 @@ function submissionRowHtml(submission) {
     : `<span class="admin-cosmetics__grant">${escapeHtml(status)}</span>`;
   const published = String(submission.published_cosmetic_id || '').trim();
   return `
-    <li class="admin-cosmetics__row">
+    <li class="admin-cosmetics__card">
       <div class="admin-cosmetics__thumb">${thumb}</div>
-      <div class="admin-cosmetics__row-main">
+      <div class="admin-cosmetics__card-main">
         <p class="admin-cosmetics__name">${escapeHtml(String(submission.name || 'Untitled cosmetic'))}</p>
         <p class="admin-cosmetics__meta">
           <code class="admin-cosmetics__id">${escapeHtml(String(submission.cosmetic_id || ''))}</code>
@@ -392,7 +455,7 @@ function submissionRowHtml(submission) {
           · ${escapeHtml(queueWhen(submission.created_at))}
         </p>
         ${submission.description ? `<p class="admin-cosmetics__meta">${escapeHtml(String(submission.description))}</p>` : ''}
-        ${published ? `<p class="admin-cosmetics__meta">Published as <code class="admin-cosmetics__id">${escapeHtml(published)}</code></p>` : ''}
+        ${published ? `<p class="admin-cosmetics__meta">Catalog draft: <code class="admin-cosmetics__id">${escapeHtml(published)}</code></p>` : ''}
       </div>
       <div class="admin-cosmetics__row-actions">${action}</div>
     </li>`;
@@ -466,7 +529,6 @@ function bindSubmissionQueue(rootEl, opts) {
       const result = await reviewCosmeticSubmission(liveAuth, id, decision);
       if (decision === 'approve' && result?.cosmetic?.id) {
         mergeCatalogRows(opts.catalog, [result.cosmetic]);
-        opts.published.add(String(result.cosmetic.id));
         paintCatalog(rootEl, opts.root, opts.catalog, opts.state, opts.published);
       }
       await select(active);
@@ -531,7 +593,15 @@ export async function mountCosmeticsPanel(host, opts) {
       state: filters,
       published,
     });
-    bindPublish(host, catalog, published, opts.auth);
+    bindEditButton(host, {
+      root,
+      displayName: opts.displayName,
+      auth: opts.auth,
+      catalog,
+      state: filters,
+      published,
+    });
+    bindPublish(host, catalog, published, opts.auth, root, filters);
     bindSubmissionQueue(host, {
       auth: opts.auth,
       catalog,

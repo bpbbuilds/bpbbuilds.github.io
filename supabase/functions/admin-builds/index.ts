@@ -28,6 +28,7 @@ const PLACEMENT_SELECT = `
 const LIST_LIMIT = 100;
 const COSMETIC_SLOTS = new Set(['hat', 'face', 'neck', 'head', 'body', 'hand']);
 const COSMETIC_GRANTS = new Set(['starter', 'premium', 'founding', 'event']);
+const COSMETIC_RARITIES = new Set(['Common', 'Rare', 'Epic', 'Legendary', 'Godly', 'Unique']);
 
 type Filter = 'all' | 'pending_op' | 'featured' | 'hidden';
 
@@ -120,6 +121,9 @@ Deno.serve(async (req) => {
   if (action === 'upload_cosmetic') {
     return uploadCosmetic(supabase, body.cosmetic);
   }
+  if (action === 'update_cosmetic') {
+    return updateCosmetic(supabase, body.cosmetic);
+  }
   if (action === 'publish_cosmetic') {
     return publishCosmetic(supabase, body.cosmetic);
   }
@@ -172,32 +176,154 @@ function authorFace(row: Record<string, unknown>) {
 async function publishCosmetic(supabase: ReturnType<typeof createClient>, raw: Record<string, unknown> | undefined) {
   const id = String(raw?.id || '').trim();
   const name = String(raw?.name || '').trim();
-  if (!/^[a-z0-9][a-z0-9_-]{1,80}$/i.test(id) || !name || name.length > 120) {
+  const slot = String(raw?.slot || '').trim().toLowerCase();
+  const grant = String(raw?.grant || '').trim().toLowerCase();
+  const rarity = String(raw?.rarity || '').trim();
+  if (
+    !/^[a-z0-9][a-z0-9_-]{1,80}$/i.test(id) ||
+    !name ||
+    name.length > 120 ||
+    !COSMETIC_SLOTS.has(slot) ||
+    !COSMETIC_GRANTS.has(grant) ||
+    !COSMETIC_RARITIES.has(rarity)
+  ) {
     return json({ error: 'Invalid cosmetic.' }, 400);
   }
+  const { data: existing, error: existingError } = await supabase
+    .from('cosmetic_drops')
+    .select('published')
+    .eq('id', id)
+    .maybeSingle();
+  if (existingError) return json({ error: 'Could not check cosmetic draft.', detail: existingError.message }, 500);
+  if (!existing) return json({ error: 'Cosmetic draft not found.' }, 404);
+  if (existing.published === true) return json({ error: 'Cosmetic is already published.' }, 409);
+
+  const cost =
+    raw?.cost == null || raw?.cost === '' || !Number.isFinite(Number(raw.cost))
+      ? null
+      : Math.max(0, Math.min(999999, Math.round(Number(raw.cost))));
   const row = {
     id,
     name,
-    slot: String(raw?.slot || '').trim().slice(0, 40),
-    rarity: String(raw?.rarity || '').trim().slice(0, 40),
-    grant: String(raw?.grant || '').trim().slice(0, 40),
+    slot,
+    rarity,
+    grant,
     description: String(raw?.description || '').trim().slice(0, 500),
     image: String(raw?.image || '').trim().slice(0, 500),
     artist: String(raw?.artist || '').trim().slice(0, 120),
     owner: String(raw?.owner || '').trim().slice(0, 120),
     kind: String(raw?.kind || 'part').trim().slice(0, 30) || 'part',
-    starter: raw?.starter === true,
+    starter: grant === 'starter',
     swatch: String(raw?.swatch || '#8a5a2b').trim().slice(0, 32) || '#8a5a2b',
-    cost:
-      raw?.cost == null || raw?.cost === '' || !Number.isFinite(Number(raw.cost))
-        ? null
-        : Math.max(0, Math.round(Number(raw.cost))),
+    cost,
     added: String(raw?.added || '').trim() || new Date().toISOString().slice(0, 10),
     published: true,
   };
   const { error } = await supabase.from('cosmetic_drops').upsert(row, { onConflict: 'id' });
   if (error) return json({ error: 'Could not publish cosmetic', detail: error.message }, 500);
-  return json({ ok: true, id });
+  return json({ ok: true, cosmetic: row });
+}
+
+/** Update an owner-visible draft without making it public. */
+async function updateCosmetic(
+  supabase: ReturnType<typeof createClient>,
+  raw: Record<string, unknown> | undefined,
+) {
+  const id = String(raw?.id || '').trim();
+  const name = String(raw?.name || '').trim();
+  const slot = String(raw?.slot || '').trim().toLowerCase();
+  const grant = String(raw?.grant || '').trim().toLowerCase();
+  const rarity = String(raw?.rarity || '').trim();
+  if (
+    !/^[a-z0-9][a-z0-9_-]{1,80}$/i.test(id) ||
+    !name ||
+    name.length > 120 ||
+    !COSMETIC_SLOTS.has(slot) ||
+    !COSMETIC_GRANTS.has(grant) ||
+    !COSMETIC_RARITIES.has(rarity)
+  ) {
+    return json({ error: 'Invalid cosmetic draft.' }, 400);
+  }
+
+  const { data: existing, error: existingError } = await supabase
+    .from('cosmetic_drops')
+    .select('published,image,added')
+    .eq('id', id)
+    .maybeSingle();
+  if (existingError) return json({ error: 'Could not load cosmetic draft.', detail: existingError.message }, 500);
+  if (!existing) return json({ error: 'Cosmetic draft not found.' }, 404);
+  if (existing.published === true) return json({ error: 'Published cosmetics cannot be edited here.' }, 409);
+
+  let image = String(existing.image || '').trim();
+  const dataUrl = String(raw?.imageData || '').trim();
+  if (dataUrl) {
+    const match = /^data:(image\/(?:png|webp));base64,([A-Za-z0-9+/=\s]+)$/i.exec(dataUrl);
+    if (!match) return json({ error: 'Choose a PNG or WebP image.' }, 400);
+    const mime = match[1].toLowerCase();
+    const encoded = match[2].replace(/\s+/g, '');
+    if (encoded.length > 4 * 1024 * 1024) return json({ error: 'Cosmetic image is too large.' }, 413);
+    let bytes: Uint8Array;
+    try {
+      const binary = atob(encoded);
+      bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    } catch {
+      return json({ error: 'Cosmetic image data is invalid.' }, 400);
+    }
+    if (!bytes.length || bytes.length > 2 * 1024 * 1024) {
+      return json({ error: 'Cosmetic image must be 2 MB or smaller.' }, 413);
+    }
+    const png =
+      bytes.length >= 8 &&
+      bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47 &&
+      bytes[4] === 0x0d && bytes[5] === 0x0a && bytes[6] === 0x1a && bytes[7] === 0x0a;
+    const webp =
+      bytes.length >= 12 &&
+      bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
+      bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50;
+    if ((mime === 'image/png' && !png) || (mime === 'image/webp' && !webp)) {
+      return json({ error: 'Cosmetic image data is invalid.' }, 400);
+    }
+    const extension = mime === 'image/webp' ? 'webp' : 'png';
+    const objectPath = `cosmetic-drops/${id}.${extension}`;
+    const { error: storageError } = await supabase.storage.from('cosmetic-assets').upload(objectPath, bytes, {
+      contentType: mime,
+      cacheControl: '31536000',
+      upsert: true,
+    });
+    if (storageError) return json({ error: 'Could not save cosmetic image.', detail: storageError.message }, 500);
+    image = `${Deno.env.get('SUPABASE_URL') || ''}/storage/v1/object/public/cosmetic-assets/${objectPath}`;
+  }
+
+  const cost =
+    raw?.cost == null || raw?.cost === '' || !Number.isFinite(Number(raw.cost))
+      ? null
+      : Math.max(0, Math.min(999999, Math.round(Number(raw.cost))));
+  const row = {
+    name,
+    slot,
+    rarity,
+    grant,
+    description: String(raw?.description || '').trim().slice(0, 500),
+    image,
+    artist: String(raw?.artist || '').trim().slice(0, 120),
+    owner: String(raw?.owner || '').trim().slice(0, 120),
+    kind: String(raw?.kind || 'part').trim().slice(0, 30) || 'part',
+    starter: grant === 'starter',
+    swatch: String(raw?.swatch || '#8a5a2b').trim().slice(0, 32) || '#8a5a2b',
+    cost,
+    added: String(raw?.added || existing.added || '').trim() || new Date().toISOString().slice(0, 10),
+    published: false,
+  };
+  const { data, error } = await supabase
+    .from('cosmetic_drops')
+    .update(row)
+    .eq('id', id)
+    .eq('published', false)
+    .select('id,name,slot,rarity,grant,description,image,artist,owner,kind,starter,swatch,cost,added,published')
+    .maybeSingle();
+  if (error) return json({ error: 'Could not update cosmetic draft.', detail: error.message }, 500);
+  if (!data) return json({ error: 'Cosmetic draft was changed or published already.' }, 409);
+  return json({ ok: true, cosmetic: data });
 }
 
 async function listCosmeticCatalog(supabase: ReturnType<typeof createClient>) {
@@ -221,6 +347,7 @@ async function uploadCosmetic(
   const name = String(raw?.name || '').trim();
   const slot = String(raw?.slot || '').trim();
   const grant = String(raw?.grant || 'starter').trim().toLowerCase() || 'starter';
+  const rarity = String(raw?.rarity || 'Common').trim();
   const dataUrl = String(raw?.imageData || '').trim();
   const match = /^data:(image\/(?:png|webp));base64,([A-Za-z0-9+/=\s]+)$/i.exec(dataUrl);
   if (
@@ -229,6 +356,7 @@ async function uploadCosmetic(
     name.length > 120 ||
     !COSMETIC_SLOTS.has(slot.toLowerCase()) ||
     !COSMETIC_GRANTS.has(grant) ||
+    !COSMETIC_RARITIES.has(rarity) ||
     !match
   ) {
     return json({ error: 'Invalid cosmetic upload.' }, 400);
@@ -271,7 +399,7 @@ async function uploadCosmetic(
     id,
     name,
     slot: slot.slice(0, 40),
-    rarity: String(raw?.rarity || 'Common').trim().slice(0, 40),
+    rarity,
     grant,
     description: String(raw?.description || '').trim().slice(0, 500),
     image: `${supabaseUrl}/storage/v1/object/public/${bucket}/${objectPath}`,

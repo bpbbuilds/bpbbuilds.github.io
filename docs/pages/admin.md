@@ -26,7 +26,7 @@ Grant another trusted Discord the same way if you ever need a second admin. The 
 | `/admin/?tab=reports` | Sim issue queue — KPI counts, compact expandable rows, Patch3 filter rail (search / date / class / opponent) |
 | `/admin/?tab=builds` | Pending OP + Builds list with right **filter rail** (search / All·Featured·Hidden / character) |
 | `/admin/?tab=events` | Create / edit community contests in one shared form (DPS Stone knobs). A row opens the event desk: submitted builds and a history.db of those runs for judging in the game. That file adds a high-health bomb dummy as the top run. A save applies on `/events/` in that browser tab. The catalog file is still the default after the tab closes. |
-| `/admin/?tab=cosmetics` | Review private player cosmetic submissions (approval publishes a Starter cosmetic; rejection keeps it private) + upload official blob art. The right rail filters the live catalog by search, slot, rarity, and grant. |
+| `/admin/?tab=cosmetics` | Review private player cosmetic submissions (approval adds an unpublished catalog draft; rejection keeps it private), edit draft details/acquisition, and publish only when ready. Upload official blob art. The live catalog uses an inventory-style grid and the right rail filters by search, slot, rarity, and grant. |
 | `/admin/?tab=overlay` | Blob cast studio. Middle is a preview of `/overlay/blobs/` plus the browser-source link. The right panel switches Row, Low, Pop, Walk, Grid, and Float. The copied link omits the preview flag so OBS stays transparent. |
 | `/admin/?tab=marketplace` | Cosmetics marketplace moderation — coming soon stub |
 

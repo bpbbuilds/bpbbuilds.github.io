@@ -17,6 +17,22 @@
       "swatch": "#eac914",
       "image": "assets/blob/cosmetics/premium-crown.png",
       "kind": "part"
+    },
+    {
+      "id": "cool_shades",
+      "name": "Cool Shades",
+      "slot": "face",
+      "starter": false,
+      "grant": "founding",
+      "rarity": "Unique",
+      "cost": 0,
+      "description": "COOOOOOOOOL SHADES BRO",
+      "owner": "smojowastaken",
+      "artist": "smojowastaken",
+      "added": "2026-10-04",
+      "swatch": "#8a5a2b",
+      "image": "assets/blob/cosmetics/cool-shades.png",
+      "kind": "part"
     }
   ]
 }

@@ -5,8 +5,8 @@
  * - Player art is stored in a private bucket and never made public from a
  *   browser request.
  * - Only profiles.is_owner may list or decide queue entries.
- * - Approval copies the validated image into the existing public catalog and
- *   creates a published cosmetic_drops row for the established bot announcer.
+ * - Approval copies the validated image into the owner-visible catalog as an
+ *   unpublished draft. The owner edits metadata before publishing it.
  */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.1';
 
@@ -277,7 +277,7 @@ async function review(
     cacheControl: '31536000',
     upsert: false,
   });
-  if (uploadError) return json(req, { error: 'Could not publish submitted art.' }, 500);
+  if (uploadError) return json(req, { error: 'Could not save approved art.' }, 500);
 
   const publicImage = `${Deno.env.get('SUPABASE_URL') || ''}/storage/v1/object/public/${CATALOG_BUCKET}/${catalogPath}`;
   const catalogRow = {
@@ -295,7 +295,9 @@ async function review(
     swatch: '#8a5a2b',
     cost: null,
     added: new Date().toISOString().slice(0, 10),
-    published: true,
+    // Approval adds the art to the owner-visible catalog only. It must not
+    // become public or announce through Discord until the owner publishes it.
+    published: false,
   };
   const { data: cosmetic, error: catalogError } = await supabase
     .from('cosmetic_drops')

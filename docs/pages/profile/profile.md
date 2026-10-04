@@ -53,7 +53,7 @@ Related: [`auth.md`](../auth.md) · [`launch-phase-1.md`](../../product/launch-p
 - [x] Owner: edit / equip cosmetics (inventory rail — search, slot filter, drag or click-to-equip)
 - [x] Visitor: view equipped only (no edit chrome)
 - [x] Write equip to same path sim uses (`profiles.equipped_avatar` JSON v1 loadout; sim still resolves face → Discord until blob art) — [`profile-avatar.js`](../../../js/shared/profile-avatar.js)
-- [x] Cosmetic **tooltips** (BPB frame): name, description, fiscal **worth** (gold coin + value; `cost` in catalog, `0` = not buyable/sellable), rarity (`Common|Rare|Epic|Legendary|Godly|Unique`), **Created by** (`artist` or `owner`), date added — inventory tiles + filled slots
+- [x] Cosmetic **tooltips** (BPB frame): name, description, fiscal **worth** (gold coin + value; `cost` in catalog, `0` = not buyable/sellable), rarity (`Common|Rare|Epic|Legendary|Godly|Unique`), **Created by** (`artist`) and **Original owner** (`owner`), date added — inventory tiles + filled slots
 
 Placeholder cosmetics in [`assets/data/blob-cosmetics.json`](../../../assets/data/blob-cosmetics.json): **starters free for every profile**; Premium / Founding / event pieces stay exclusive flair (`cost: 0`). Ownership: `starter` | plan | `cosmetic_grants`. Inventory tiles composite blob + item. Art / ingest: [`blob-cosmetics-pipeline.md`](blob-cosmetics-pipeline.md) · launch event: [`../events/launch-event.md`](../events/launch-event.md).
 

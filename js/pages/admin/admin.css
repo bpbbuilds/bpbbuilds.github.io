@@ -2970,6 +2970,113 @@ button.admin-metric.is-active::before {
   margin-top: 0.35rem;
 }
 
+/* Cosmetic management uses the same dark, gold-edged surface as the admin
+   forms. The catalog itself is an inventory-style card grid; the review
+   queue remains a readable line-item list. */
+.admin-cosmetics__section {
+  padding: 0.9rem;
+  border: 2px solid var(--bpb-rewards-gold, #c6a567);
+  border-radius: 0.35rem;
+  background:
+    radial-gradient(
+      ellipse 95% 80% at 50% 32%,
+      color-mix(in srgb, var(--bpb-rewards-ink-mid, #4a3224) 72%, transparent),
+      transparent 68%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bpb-rewards-ink-mid, #4a3224) 88%, #6b4a32) 0%,
+      var(--bpb-rewards-ink, #3c261d) 42%,
+      var(--bpb-rewards-ink-deep, #2a1a12) 100%
+    );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--bpb-rewards-gold-bright, #e8c878) 28%, transparent),
+    inset 0 -10px 24px rgba(0, 0, 0, 0.3),
+    0 5px 12px rgba(0, 0, 0, 0.18);
+}
+
+.admin-cosmetics__section--catalog {
+  padding-top: 0.9rem;
+  border-top: 2px solid var(--bpb-rewards-gold, #c6a567);
+}
+
+.admin-cosmetics__catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+  align-items: stretch;
+  gap: 0.7rem;
+}
+
+.admin-cosmetics__card {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.55rem;
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 62%, transparent);
+  border-radius: 0.25rem;
+  background: rgba(12, 8, 6, 0.32);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff1dc 10%, transparent);
+}
+
+.admin-cosmetics__card .admin-cosmetics__thumb {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  flex: none;
+  border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 38%, transparent);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.admin-cosmetics__card-main {
+  min-width: 0;
+}
+
+.admin-cosmetics__card-status {
+  justify-self: start;
+  padding: 0.12rem 0.38rem 0.1rem;
+  border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 42%, transparent);
+  border-radius: 0.2rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.74rem;
+  line-height: 1.2;
+  color: var(--bpb-rewards-cream, #dbc4a1);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.admin-cosmetics__card-status.is-published {
+  color: #b8f0c2;
+  border-color: color-mix(in srgb, #b8f0c2 48%, transparent);
+}
+
+.admin-cosmetics__card-status.is-draft {
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+}
+
+.admin-cosmetics__card-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.admin-cosmetics__card-actions .cr-btn-quiet {
+  min-width: 0;
+  width: 100%;
+  padding-inline: 0.35rem;
+  white-space: nowrap;
+}
+
+.admin-cosmetics__grid-empty {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 520px) {
+  .admin-cosmetics__catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* —— Marketplace tab —— */
 
 .admin-marketplace__soon {
