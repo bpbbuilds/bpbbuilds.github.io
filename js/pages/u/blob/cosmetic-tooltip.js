@@ -82,8 +82,9 @@ function obtainedBy(c) {
 /**
  * Build the game tooltip payload for a cosmetic.
  * @param {BlobCosmetic} c
+ * @param {{ showOriginalOwner?: boolean }} [opts]
  */
-export function cosmeticToTooltipItem(c) {
+export function cosmeticToTooltipItem(c, opts = {}) {
   const slotLabel = BLOB_SLOTS.find((s) => s.id === c.slot)?.label || String(c.slot);
   const parts = [];
   const desc = String(c.description || '').trim();
@@ -96,7 +97,7 @@ export function cosmeticToTooltipItem(c) {
   if (artist) {
     parts.push(`Created by: ${artist}`);
   }
-  if (owner) {
+  if (opts.showOriginalOwner === true && owner) {
     // Keep uploader/ownership provenance visible even when it matches the
     // artist. This is useful for re-shared or player-submitted cosmetics,
     // where the creator and original owner are separate pieces of metadata.
@@ -132,10 +133,11 @@ export function cosmeticToTooltipItem(c) {
  * @param {{
  *   catalog: BlobCosmetic[],
  *   getEquippedId?: (slotId: string) => string | null | undefined,
+ *   showOriginalOwner?: boolean,
  * }} opts
  */
 export function bindCosmeticTooltips(root, opts) {
-  const { catalog, getEquippedId } = opts;
+  const { catalog, getEquippedId, showOriginalOwner = false } = opts;
   const tip = createTooltipHover({ pinOnAlt: true });
 
   const getCosmeticForElement = (el) => {
@@ -143,13 +145,13 @@ export function bindCosmeticTooltips(root, opts) {
     const itemId = el.getAttribute('data-blob-item');
     if (itemId) {
       const c = catalog.find((x) => x.id === itemId);
-      return c ? cosmeticToTooltipItem(c) : null;
+      return c ? cosmeticToTooltipItem(c, { showOriginalOwner }) : null;
     }
     const slotId = el.getAttribute('data-blob-slot') || '';
     const equipped = getEquippedId?.(slotId);
     if (!equipped) return null;
     const c = catalog.find((x) => x.id === equipped);
-    return c ? cosmeticToTooltipItem(c) : null;
+    return c ? cosmeticToTooltipItem(c, { showOriginalOwner }) : null;
   };
 
   warmPreviewCrops(catalog, () => tip.refresh(getCosmeticForElement));

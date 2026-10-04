@@ -1101,3 +1101,14 @@ None.
 - The Admin Events detail desk now renders each submitted build's board from its stored placements, with a baked `board_still_path` fallback for older entries that have no placement rows. The owner-gated `admin-builds` function returns the placements and still path; it was redeployed after the change.
 - Event-form edits now flow through the catalog/list/featured/detail event paths before live status and countdown calculation, so changing an entry-close date immediately changes Accepting entries/Judging/Ended state and its timer target.
 - Validation: focused schedule-draft recovery test, JavaScript syntax checks for all touched modules, targeted `git diff --check`, and Supabase `admin-builds` deployment passed. Published in commit `c52fcd0`; the GitHub Pages site still needs its normal Pages build to serve the browser changes.
+
+### 2026-10-04 cosmetic original-owner context claim (in progress)
+
+- Codex owns `js/pages/u/blob/cosmetic-tooltip.js`, `js/pages/u/blob/wardrobe.js`, `js/pages/u/tab-inventory.js`, and this handoff for this focused tooltip-context change.
+- Scope: keep creator/artist metadata available everywhere, but render `Original owner` only for user-owned inventory/equipped cosmetic views. Catalog, Admin Cosmetics, Premium comparison, and event prize views remain catalog-only and omit ownership provenance.
+
+### 2026-10-04 cosmetic original-owner context complete
+
+- Cosmetic tooltip rendering now defaults to catalog-safe metadata: Admin Cosmetics, Premium comparison, and event prize/catalog views show creator details but omit `Original owner`. The profile Inventory and Blob wardrobe explicitly enable the ownership line for the user-owned/equipped context.
+- No ownership data model or catalog values changed; this only prevents catalog-level pages from implying that their rows are owned instances.
+- Validation: owner-context renderer assertion, `node --check` for all touched modules, and targeted `git diff --check` passed. Changes are local and ready for the normal Pages commit/publish; no push was requested.

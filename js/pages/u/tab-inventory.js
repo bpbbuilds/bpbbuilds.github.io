@@ -239,7 +239,7 @@ export async function mountInventoryTab(stage, ctx) {
     });
     syncViewChrome();
     if (!showBlob) fitBlobItemIcons(list);
-    bindCosmeticTooltips(stage, { catalog });
+    bindCosmeticTooltips(stage, { catalog, showOriginalOwner: true });
   }
 
   function paint() {
@@ -285,7 +285,7 @@ export async function mountInventoryTab(stage, ctx) {
       const list = stage.querySelector('[data-inv-list]');
       if (list) fitBlobItemIcons(list);
     }
-    bindCosmeticTooltips(stage, { catalog });
+    bindCosmeticTooltips(stage, { catalog, showOriginalOwner: true });
     bindFilterDrawer(stage.querySelector('.profile-inv__body'));
   }
 

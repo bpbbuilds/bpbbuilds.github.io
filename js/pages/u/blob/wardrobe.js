@@ -203,6 +203,7 @@ export async function mountBlobWardrobe(stage, ctx) {
 
   bindCosmeticTooltips(stage, {
     catalog,
+    showOriginalOwner: true,
     getEquippedId: (slotId) => {
       if (isBlobSlotId(slotId)) return loadout.slots[slotId] || null;
       return null;
