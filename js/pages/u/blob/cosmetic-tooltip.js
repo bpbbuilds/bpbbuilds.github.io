@@ -84,17 +84,14 @@ export function cosmeticToTooltipItem(c) {
   const desc = String(c.description || '').trim();
   parts.push(desc || 'Cosmetic wardrobe piece.');
 
-  const id = String(c.id || '').trim();
-  if (id) parts.push(`Cosmetic ID: ${id}`);
-
   if (slotLabel) parts.push(`Slot: ${slotLabel}`);
 
   const artist = String(c.artist || '').trim();
   const owner = String(c.owner || '').trim();
-  if (artist && owner && artist !== owner) {
-    parts.push(`Artist: ${artist}`, `Owner: ${owner}`);
-  } else if (artist || owner) {
-    parts.push(`Created by: ${artist || owner}`);
+  if (artist) {
+    parts.push(`Created by: ${artist}`);
+  } else if (owner) {
+    parts.push(`Created by: ${owner}`);
   }
 
   const added = formatAdded(c.added);

@@ -888,3 +888,8 @@ None.
 - Player submits now require a valid Discord JWT, PNG/WebP magic bytes, bounded metadata and a 2 MB image, and have a three-per-24-hour account limit. Artist credit comes from the server-side profile, not the browser.
 - The Admin Cosmetics pending/approved/rejected queue is live. Only a fresh verified-owner JWT can list, approve, or reject. Approval copies the asset to public `cosmetic-assets`, creates a published Starter `cosmetic_drops` row, and leaves the existing bot announcement flow intact; rejection stays private.
 - Validation: all touched browser modules pass `node --check`; Supabase accepted the migration/function deployment; unauthenticated Edge calls and direct `cosmetic_submissions` REST reads both return 401. A full signed-in submit/owner-approve UI smoke still requires the owner to exercise it in the browser after the Pages deploy.
+
+### 2026-10-04 Cosmetic tooltip audit and publish (in progress)
+
+- Audited every cosmetic-tooltip entry point: Blob wardrobe, Inventory, Premium comparison, and Admin Cosmetics all use `bindCosmeticTooltips` / `cosmeticToTooltipItem` in `js/pages/u/blob/cosmetic-tooltip.js`. Catalog normalization preserves both `artist` and `owner`; the static catalog, public catalog Edge Function, owner drafts, and approved player-submission path all supply artist data.
+- The local tooltip change correctly removes the cosmetic-ID line and renders `Created by: <artist>` (falling back to owner only when artist is absent), but it is an unpushed working-tree change. The public site still serves the older tooltip containing `Cosmetic ID`, so this task is publishing that focused renderer change only.
