@@ -1123,3 +1123,14 @@ None.
 - Confirmed the live public catalog already returns both `premium_crown` (`grant: premium`) and `cool_shades` (`grant: founding`) as published rows. The Admin indicator was relying only on a separate published-ID request, so a failed/stale response made valid catalog items appear as drafts.
 - Admin Cosmetics now trusts the owner catalog's explicit `published` field and treats bundled official fallback rows as published unless a live row explicitly marks them as drafts. This keeps the Publish action disabled for both official cosmetics while preserving draft handling for new uploads/submissions.
 - Validation: `node --check js/pages/admin/tab-cosmetics.js`, targeted diff check, and live public `cosmetic-catalog` verification passed. Published in the next commit; existing unrelated worktree changes remain untouched.
+
+### 2026-10-04 event judging entry gate and dynamic schedule claim (in progress)
+
+- Codex owns `js/pages/events/event-detail.js`, `js/pages/events/enter-wizard.js`, `js/pages/events/event-drafts.js`, `js/pages/events/events.css`, `scripts/test-event-schedule-draft.mjs`, and this handoff for this event lifecycle fix.
+- Scope: hide the Enter event CTA and refuse the onboarding/submit path once the live event schedule reaches judging, and render the Overview Schedule section from `event.schedule` rather than fixed prose. Admin session-draft behavior remains unchanged.
+
+### 2026-10-04 event judging entry gate and dynamic schedule complete
+
+- The public event detail now removes the Enter event button once entries are closed, shows a judging/closed status message, and the wizard refuses both late opens and a submit if the schedule crosses into judging while it is open.
+- Overview Schedule facts now render from the normalized event schedule, including admin-edited entry-close/end dates, instead of the original hard-coded catalog dates.
+- Validation: schedule/status regression test, entry-open gate assertions, JavaScript syntax checks, and targeted whitespace checks passed. Published in the next commit; existing unrelated worktree changes remain untouched.

@@ -16,6 +16,7 @@ import { fillMyEventEntries, clearMyEventEntries } from './event-my-entries.js';
 import { eventTimerHtml } from './event-meta.js';
 import { hydrateEventWinner, winnerStageHtml } from './event-winner.js';
 import { openEnterWizard, resumeEnterWizardIfNeeded } from './enter-wizard.js';
+import { scheduleSectionHtml } from './event-drafts.js';
 import {
   EVENT_DETAIL_TAB_LABELS,
   eventDetailTabFromLocation,
@@ -57,9 +58,25 @@ function railHtml(event, active) {
 function sectionsForTab(event, tab) {
   const all = Array.isArray(event.sections) ? event.sections : [];
   const tagged = all.filter((s) => (s.tab || 'overview') === tab);
-  if (tagged.length) return tagged;
-  if (tab === 'overview' && all.length && all.every((s) => !s.tab)) return all;
+  if (tagged.length) return decorateSections(event, tagged);
+  if (tab === 'overview' && all.length && all.every((s) => !s.tab)) {
+    return decorateSections(event, all);
+  }
   return [];
+}
+
+/**
+ * Schedule copy is derived from the normalized event instead of the original
+ * catalog prose, so edited dates cannot leave the Overview tab stale.
+ * @param {CatalogEvent} event
+ * @param {{ heading: string, html: string }[]} sections
+ */
+function decorateSections(event, sections) {
+  return sections.map((section) =>
+    String(section.heading || '').trim().toLowerCase() === 'schedule'
+      ? { ...section, html: scheduleSectionHtml(event.schedule) || section.html }
+      : section,
+  );
 }
 
 /**
@@ -345,6 +362,15 @@ function asideHtml(event, root) {
  * @param {CatalogEvent} event
  */
 function enterCtaHtml(_event) {
+  if (!eventBuildEntriesOpen(_event)) {
+    const label =
+      _event.status === 'judging'
+        ? 'Entries closed — judging is in progress.'
+        : _event.status === 'ended'
+          ? 'Entries are closed.'
+          : 'Entries are not open yet.';
+    return `<div class="events-detail-join__enter"><p class="events-detail-join__closed" role="status">${escapeHtml(label)}</p></div>`;
+  }
   return `
     <div class="events-detail-join__enter">
       <button type="button" class="events-cta events-detail-join__cta" data-event-enter>

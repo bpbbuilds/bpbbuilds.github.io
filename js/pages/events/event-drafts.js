@@ -117,7 +117,10 @@ export function applyEventDraft(event, draft) {
   }
   const sections = (event.sections || []).map((section) => ({
     ...section,
-    html: requirementCopy(section.html, ids),
+    html:
+      String(section.heading || '').trim().toLowerCase() === 'schedule'
+        ? scheduleSectionHtml(schedule) || requirementCopy(section.html, ids)
+        : requirementCopy(section.html, ids),
   }));
   return {
     ...event,
@@ -139,6 +142,47 @@ export function applyEventDraft(event, draft) {
     entry,
     sections,
   };
+}
+
+/**
+ * Render the schedule fact list from the event's actual schedule. The catalog
+ * keeps the surrounding prose, but dates must never drift from an admin edit.
+ * @param {Record<string, unknown> | null | undefined} schedule
+ * @returns {string}
+ */
+export function scheduleSectionHtml(schedule) {
+  const rows = [
+    ['Opens', schedule?.startsAt],
+    ['Entries close', schedule?.entriesCloseAt],
+    ['Voting opens', schedule?.votingStartsAt],
+    ['Voting closes', schedule?.votingEndsAt],
+    ['Closes', schedule?.endsAt],
+  ]
+    .map(([label, value]) => {
+      const date = formatScheduleDate(value);
+      return date ? `<li><strong>${label}:</strong> ${date}</li>` : '';
+    })
+    .filter(Boolean)
+    .join('');
+  return rows
+    ? `<ul>${rows}</ul><p>Exact times are pinned in Discord when the event goes live.</p>`
+    : '';
+}
+
+/**
+ * @param {unknown} value
+ * @returns {string}
+ */
+function formatScheduleDate(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  const date = new Date(raw);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleDateString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
 }
 
 /**

@@ -8,6 +8,7 @@ import { mountPlacedGrid } from '../../shared/backpack-grid/index.js';
 import { loadCreateCatalog } from '../create/load-catalog.js';
 import { getCachedCanAffect, warmBoardLiveCanAffect } from '../create/board-live-stats.js';
 import { BOARD_COLS, BOARD_ROWS } from '../create/collision.js';
+import { eventBuildEntriesOpen } from './event-builds-privacy.js';
 import { entryRulesForEvent } from './event-entry-config.js';
 import { validateEventBoard } from './event-entry-gates.js';
 import { computeEventSimDps } from './enter-sim-dps.js';
@@ -64,6 +65,9 @@ export async function resumeEnterWizardIfNeeded(event, opts) {
  * }} opts
  */
 export async function openEnterWizard(event, opts) {
+  if (!eventBuildEntriesOpen(event)) {
+    return { destroy() {} };
+  }
   if (openByEvent.has(event) || document.querySelector(`[data-event-enter="${event.slug}"]`)) {
     return { destroy() {} };
   }
@@ -528,6 +532,11 @@ export async function openEnterWizard(event, opts) {
 
   async function doSubmit() {
     if (submitting || !catalog || !selectedRun) return;
+    if (!eventBuildEntriesOpen(event)) {
+      statusMsg = 'Entries are closed for this event.';
+      paint();
+      return;
+    }
     const gate = gateState();
     if (!gate.ok) {
       statusMsg = gate.errors[0] || 'Gates failed.';

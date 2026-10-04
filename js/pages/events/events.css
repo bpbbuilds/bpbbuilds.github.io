@@ -2425,6 +2425,21 @@ body.page-events #main {
   width: 100%;
 }
 
+.events-detail-join__closed {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--bpb-gold, #eac914) 42%, transparent);
+  background: color-mix(in srgb, #2a1a13 86%, transparent);
+  color: var(--bpb-label-fill, #ffecdc);
+  font-family: var(--bpb-font-display, Georgia, serif);
+  font-size: 1rem;
+  line-height: 1.25;
+  text-align: center;
+  text-shadow: var(--bpb-label-stroke, none);
+}
+
 /* Crimson fabric banner — same family as home Watch / Create CTAs */
 .events-detail-join__cta.events-cta {
   display: inline-flex;

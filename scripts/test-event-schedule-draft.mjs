@@ -1,7 +1,8 @@
 /** Regression check for edited event dates flowing into public status/timers. */
 import assert from 'node:assert/strict';
-import { applyEventDraft } from '../js/pages/events/event-drafts.js';
+import { applyEventDraft, scheduleSectionHtml } from '../js/pages/events/event-drafts.js';
 import { statusForCatalogEvent } from '../js/pages/events/catalog-data.js';
+import { eventBuildEntriesOpen } from '../js/pages/events/event-builds-privacy.js';
 
 const base = {
   slug: 'test-event',
@@ -14,7 +15,7 @@ const base = {
     endsAt: '2026-10-20T00:00:00.000Z',
     entriesCloseAt: '2026-10-19T00:00:00.000Z',
   },
-  sections: [],
+  sections: [{ tab: 'overview', heading: 'Schedule', html: '<ul><li>old date</li></ul>' }],
 };
 const edited = applyEventDraft(base, {
   slug: 'test-event',
@@ -27,6 +28,7 @@ const edited = applyEventDraft(base, {
 });
 
 assert.equal(edited.schedule.entriesCloseAt, '2026-10-02T00:00');
+assert.match(edited.sections[0].html, /Oct 2, 2026/);
 assert.equal(
   statusForCatalogEvent(edited, new Date('2026-10-04T00:00:00Z')),
   'judging',
@@ -35,4 +37,6 @@ assert.equal(
   statusForCatalogEvent(edited, new Date('2026-10-21T00:00:00Z')),
   'ended',
 );
+assert.equal(eventBuildEntriesOpen(edited, Date.parse('2026-10-04T00:00:00Z')), false);
+assert.match(scheduleSectionHtml(edited.schedule), /Oct 20, 2026/);
 console.log('event schedule draft recovery passed');
