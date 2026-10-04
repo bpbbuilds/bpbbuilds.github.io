@@ -2530,6 +2530,34 @@ body.page-create.is-bpb-dragging .create-sellbin {
     overflow: hidden;
   }
 
+  /* The catalog is the height reference. Keep the Filter|Build rail on that
+     same floor; the sell chest is hidden while this rail is active below. */
+  .page-create .create-col--catalog .items-filters.create-rail {
+    zoom: 1;
+    height: 100%;
+    max-height: 100%;
+  }
+
+  /* The shared Items desktop density rule also matches this rail. Scale only
+     panel contents so the responsive rail column stays usable at 1080p. */
+  .page-create .create-col--catalog .items-filters.create-rail .cr-panel {
+    zoom: clamp(0.66, calc(100vw / 2560px), 1);
+  }
+
+  /* A focused/hovered rail is the active drop area. Remove the fixed delete
+     target from hit testing while it is active so the extra rail height is
+     usable for Build fields instead of becoming an accidental trash zone. */
+  .page-create:has(.items-filters.create-rail:hover, .items-filters.create-rail:focus-within)
+    .create-sellbin {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .page-create:has(.items-filters.create-rail:hover, .items-filters.create-rail:focus-within)
+    .create-col--catalog .items-filters.create-rail .cr-panel--build {
+    padding-bottom: 1rem;
+  }
+
   /* Prevent the Build/Filter rail contents from clipping as the rail narrows
      on 1080p and 1440p desktops. */
   .page-create .cr-tab {
@@ -2599,6 +2627,50 @@ body.page-create.is-bpb-dragging .create-sellbin {
 
   .page-create .create-board__park {
     flex: 0 0 auto;
+  }
+}
+
+/* Desktop Parked is a compact horizontal storage carousel. The mobile layout
+ * below intentionally keeps its two-row strip for touch scanning. */
+@media (min-width: 1101px) {
+  .page-create .create-board__park {
+    --park-rows: 1;
+    --park-cols: auto;
+  }
+
+  .page-create .create-board__park-tray {
+    grid-auto-flow: column;
+    grid-auto-columns: var(--park-chip);
+    grid-template-columns: none;
+    grid-template-rows: var(--park-chip);
+    height: var(--park-chip);
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #eac914 #472a24;
+  }
+
+  .page-create .create-board__park-tray::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  .page-create .create-board__park-tray::-webkit-scrollbar-track {
+    border: 2px solid #472a24;
+    border-radius: 12px;
+    background: #816230;
+  }
+
+  .page-create .create-board__park-tray::-webkit-scrollbar-thumb {
+    border: 2px solid #472a24;
+    border-radius: 12px;
+    background: #eac914;
+  }
+
+  .page-create .create-board__park-chip {
+    width: var(--park-chip);
+    max-width: var(--park-chip);
   }
 }
 

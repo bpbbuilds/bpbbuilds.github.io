@@ -194,6 +194,26 @@
   width: 100%;
 }
 
+/*
+ * Desktop filter rail: keep the 1440p composition, but densify it when the
+ * viewport is shorter. The page shell is intentionally locked to the viewport
+ * so an internal rail scrollbar would compete with the catalog; `zoom` scales
+ * the existing game-sized controls as one unit without changing their layout
+ * or the catalog grid. The 410px reserve covers the nav/frame chrome and the
+ * 713px content height is the current full OptionsFont stack.
+ */
+@media (min-width: 1241px) {
+  .items-filters {
+    --items-filter-zoom: clamp(
+      0.64,
+      calc((100dvh - 410px) / 713px),
+      1
+    );
+    zoom: var(--items-filter-zoom);
+    overflow: hidden;
+  }
+}
+
 @media (max-width: 900px) {
   .items-layout {
     grid-template-columns: minmax(0, 1fr);

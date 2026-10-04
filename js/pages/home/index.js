@@ -13,17 +13,14 @@ async function boot() {
   initFooter();
   initFeaturedStage();
 
-  const initBelowFold = () => {
-    initHomePromoBand('#home-promo-band', { variant: 'create' });
-    initHomeClassShowcase();
-    initHomeItemsExplore();
-    initHomeBuildsVault();
-  };
-  if (typeof requestIdleCallback === 'function') {
-    requestIdleCallback(initBelowFold, { timeout: 900 });
-  } else {
-    window.setTimeout(initBelowFold, 1);
-  }
+  // Each section owns a page-shaped loading state (catalog stamp, board,
+  // class rail, item orbit, and build cards). Mount that chrome now instead
+  // of waiting for idle time, so a first visit never shows blank bands while
+  // the deferred data work is pending.
+  initHomePromoBand('#home-promo-band', { variant: 'create' });
+  initHomeClassShowcase();
+  initHomeItemsExplore();
+  initHomeBuildsVault();
 }
 
 void boot();

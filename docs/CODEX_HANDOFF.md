@@ -1306,3 +1306,76 @@ None.
 - Goobling, Holo Fire Lizard, Perfect Amethyst/Emerald/Ruby/Topaz, and Regular Amethyst are source-resolved and source-ported with explicit handler/source ownership. Holo's factor -> effect damage -> Heat -> activation order and Joker's pair/triplet branches have focused regression coverage.
 - Joker remains incomplete for its direct quadruple `doRevealEffect()` calls because the engine only provides state-changing `Card.trigger`; Perfect Sapphire remains incomplete for the existing `pre_deal_damage_late` spectral socket gap. Both are retained as named source constraints in the ledger/backlog/validation notes.
 - Validation: focused gem and Goobling/card smoke tests, changed-module syntax checks, source audits, ledger regeneration/check, and `git diff --check` passed. Published in commit `6e58f32` (`Port simulator gem and card source waves`).
+
+### 2026-10-04 home loading skeleton claim (in progress)
+
+- Codex owns `js/pages/home/index.js` and this handoff for the home loading-state timing repair.
+- Scope: mount the existing page-shaped promo, class, items, and build-vault loading content immediately so the home page does not leave below-fold sections blank while deferred work waits. No visual redesign, data query, or shared stylesheet changes are in scope.
+
+### 2026-10-04 home loading skeleton complete
+
+- Home now mounts its existing page-shaped promo catalog/board, class rail, item orbit, and build-vault placeholders immediately after navigation boot instead of waiting up to 900ms for idle time. Async item/build hydration still runs through the same sections; only the previously blank loading interval was removed.
+- Validation: `node --check js/pages/home/index.js` and targeted `git diff --check` passed. No commit/push was requested.
+
+### 2026-10-04 cross-browser root scrollbar claim (in progress)
+
+- Codex owns `css/theme.css` and this handoff for the root scrollbar compatibility repair.
+- Scope: provide the established BPB gold/brown scrollbar on WebKit roots and a Firefox/non-WebKit standards fallback, without changing existing specialized internal scrollers or their dimensions.
+
+### 2026-10-04 cross-browser root scrollbar complete
+
+- `css/theme.css` now gives every page root the established 16px BPB gold/brown framed scrollbar in Chromium/Safari. Browsers without `::-webkit-scrollbar` receive the closest standards-supported gold/brown fallback through `scrollbar-color`.
+- The home page retains its larger image-based scrollbar in WebKit. Its standard scrollbar value is now `auto` there, avoiding Chromium/Windows replacing it with native arrow chrome; its Firefox fallback keeps the branded palette.
+- Validation: targeted CSS review and `git diff --check` passed. No commit/push was requested.
+
+### 2026-10-04 Items catalog scroll-performance claim (in progress)
+
+- Codex owns `js/shared/backpack-grid/item-pool.js`, `js/shared/backpack-grid/item-virtual.js`, `js/pages/items/catalog/index.js`, and this handoff for the Items catalog scroll-performance repair.
+- Scope: keep the catalog’s native compositor scroll path smooth by reducing scroll-time DOM/layout work and avoiding repeated entrance animation/reflow while the viewport is moving. Preserve catalog placement, filtering, tooltip, live-art, and spotlight behavior. No website-wide scrollbar or unrelated page changes are in scope.
+
+### 2026-10-04 Items catalog scroll-performance complete
+
+- The Itemiary pool now reuses the visible placement slice rather than scanning it twice per paint, defers virtualization paints until a short scroll settle (with a bounded long-fling refresh), and disables entrance/reflow animation during active scrubbing. The standalone Items catalog uses a wider prefetch band so fast wheel/trackpad movement keeps populated cells on-screen; the shared grid default is unchanged for other surfaces.
+- Validation: `node --check` passed for `js/shared/backpack-grid/item-pool.js`, `js/pages/items/catalog/index.js`, and `js/shared/backpack-grid/item-virtual.js`; `git diff --check` passed. Local Playwright smoke loaded `/items/`, scrolled the full catalog, confirmed populated cells at the bottom and during fast wheel movement, and reduced observed scroll long tasks from repeated per-frame work to three to five sampled long tasks in the final run. No commit/push was requested.
+
+### 2026-10-04 Items desktop filter-density claim (in progress)
+
+- Codex owns `js/pages/items/catalog.css` and this handoff for the desktop Items filter-panel viewport repair.
+- Scope: keep the existing 1440p filter composition, scale the desktop rail to the available viewport height on shorter desktop screens, and remove only the desktop rail’s internal scrollbar. Mobile/tablet drawer behavior and the catalog grid remain unchanged.
+
+### 2026-10-04 Items desktop filter-density complete
+
+- The desktop filter rail now uses a viewport-height-aware density scale above the existing 1240px desktop breakpoint. At 1440p it remains unchanged; at 1080p and shorter desktop heights the same filter composition scales as one unit and clips no controls, so the rail no longer creates an internal scrollbar. The mobile/tablet drawer keeps its existing scroll behavior.
+- Validation: local Playwright checks at 2560×1440, 1920×1080, 1600×900, and 1366×768 confirmed the desktop rail has no overflow scrollbar and remains fully within its viewport slot; 1024×768 remained on the mobile drawer path. `git diff --check` passed. No commit/push was requested.
+### 2026-10-04 Builds desktop density claim (in progress)
+
+- Codex owns `js/pages/builds/builds.css` and this handoff for the desktop Builds viewport repair.
+- Scope: preserve the existing 1440p Builds composition, scale desktop-only content for shorter/lower-resolution desktop viewports, and remove the filter rail's internal scrollbar without changing mobile behavior or feed data/interaction logic.
+
+### 2026-10-04 Builds desktop density complete
+
+- The desktop Builds filter rail now uses a viewport-height-aware scale above the 1240px desktop breakpoint. Its existing scroll behavior remains available to the layout, but the scaled controls fit their rail at 1920×1080, 1600×900, 1440×900, and 1366×768, so the filter no longer presents an internal scrollbar from the full control stack. The mobile/tablet fixed drawer remains unchanged.
+- On wide, shorter desktop viewports (1501px and wider), the feed list uses the same density approach so board cards, metadata, and action controls shrink in proportion to the available height while the 2560×1440 reference remains unchanged. Grid view was checked at 1920×1080 and 1600×900 for right-edge clipping.
+- Validation: Playwright loaded `/builds/` at 2560×1440, 1920×1080, 1600×900, 1440×900, 1366×768, and 1024×768 with no page errors; filter descendants stayed inside their rails at desktop sizes, and the mobile drawer path remained active at 1024px. `git diff --check` and the existing Builds CSS review remain clean. No commit/push was requested.
+
+### 2026-10-04 Create catalog tooltip boundary claim (in progress)
+
+- Codex owns `js/shared/tooltip-hover.js` and this handoff for the create-catalog hover tooltip boundary repair.
+- Scope: keep the existing over-filters placement and tooltip scale, but clamp the floating card to the viewport's horizontal safe area so its right edge cannot be clipped on 1080p and other desktop widths. No catalog, board, or mobile layout changes are in scope.
+
+### 2026-10-04 Create catalog tooltip boundary complete
+
+- `placeOverFilters()` now measures the rendered card after scaling and clamps its left coordinate to the viewport safe area (`8px` on either side). The create catalog keeps the existing rail-relative placement when there is room, but shifts the card left when the rail is near the right edge.
+- Validation: Playwright hovered a real create-catalog item at 1920×1080, 2560×1440, 1440×900, and 1366×768; every tooltip right edge stayed at least 8px inside the viewport, with no page errors. The change is shared placement logic used by the existing item catalog tooltip and does not alter mobile drawer/catalog layout. `git diff --check` passed. No commit/push was requested.
+
+### 2026-10-04 Create parked rail and desktop build panel claim (in progress)
+
+- Codex owns `js/pages/create/create.css` and this handoff for the create-page parked-tray and Filter|Build rail layout repair.
+- Scope: reduce the desktop Parked strip to a one-row horizontal carousel, let the desktop rail use the catalog's full height, density-scale its panel contents for narrower desktop widths, and hide/disable the fixed sell chest only while the rail is hovered or focused. The mobile two-row parked carousel, catalog behavior, and drag/state logic remain unchanged.
+
+### 2026-10-04 Create parked rail and desktop build panel complete
+
+- Desktop Parked is now a compact one-row horizontal carousel with themed scrolling, preserving all existing parked stacks and leaving the mobile two-row touch strip unchanged.
+- The desktop Filter|Build rail now fills the catalog's usable height instead of stopping above the fixed sell chest. Its panel contents scale responsively (including the shorter 1366x768 case) so controls stay inside the rail; the Build panel remains independently scrollable for its full item groups.
+- While the rail is hovered or focused, the fixed sell chest fades out and is removed from hit testing, preventing accidental drops while the expanded Filter|Build area is active. Moving focus away restores it.
+- Validation: local Playwright checks at 2560x1440, 1920x1080, 1600x900, 1440x900, and 1366x768 showed matching catalog/rail floors, no Filter-panel descendant clipping, one desktop Parked row, and no page errors. 1024x768 and 390x844 retained the mobile two-row Parked layout. `git diff --check` passed. No commit/push was requested.

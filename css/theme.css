@@ -207,11 +207,49 @@ body.page-home #main {
   min-height: 0;
 }
 
+/* Root scrollbar baseline. Chromium/Safari use the established WebKit chrome
+   below; Firefox has no image-track API, so it receives the same gold/brown
+   palette through the standard scrollbar properties. Keeping those properties
+   `auto` in WebKit avoids reviving Windows' native arrow scrollbar. */
+html {
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+
+html::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+html::-webkit-scrollbar-track {
+  border: 3px solid #472a24;
+  border-radius: 16px;
+  background: #816230;
+}
+
+html::-webkit-scrollbar-thumb {
+  border: 2px solid #472a24;
+  border-radius: 20px;
+  background: #eac914;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: #eac914 #816230;
+  }
+}
+
 /* Homepage: signature gold scrollbar (game track/thumb) */
 html:has(body.page-home) {
   overflow-x: clip;
   scrollbar-width: auto;
-  scrollbar-color: #eac914 #472a24;
+  scrollbar-color: auto;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  html:has(body.page-home) {
+    scrollbar-color: #eac914 #472a24;
+  }
 }
 
 html:has(body.page-home)::-webkit-scrollbar {

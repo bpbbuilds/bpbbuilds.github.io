@@ -471,6 +471,9 @@ function ensureItemiary(stage) {
       cellPx: CELL_PX,
       cols: catalogCols,
       fillWidth: catalogFillWidth,
+      // Keep a wider prefetch band for fast trackpad/wheel scrolling; the
+      // shared board default remains unchanged for create/build surfaces.
+      virtualPadEm: 24,
     });
   }
   itemiaryGrid.setPackFlow?.(

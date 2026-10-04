@@ -1856,3 +1856,35 @@ a.builds-post__author:hover {
     --builds-feed-cell: 42px;
   }
 }
+
+/*
+ * Desktop viewport density: 1440p is the reference composition.  Shorter
+ * desktop viewports otherwise keep the same board/filter dimensions even
+ * though the page frame has much less vertical room, which makes the rail
+ * scroll and makes the feed feel oversized.  CSS zoom scales the rendered
+ * composition without changing the feed's data or the mobile drawer path.
+ */
+@media (min-width: 1241px) {
+  .page-builds .builds-feed-filters.items-filters {
+    --builds-filter-scale: clamp(
+      0.56,
+      calc((100dvh - 373px) / 804px),
+      1
+    );
+    zoom: var(--builds-filter-scale);
+  }
+}
+
+@media (min-width: 1501px) and (max-height: 1300px) {
+  .page-builds .builds-layout {
+    --builds-content-scale: clamp(
+      0.78,
+      calc((100dvh - 250px) / 920px),
+      1
+    );
+  }
+
+  .page-builds .builds-feed__list-host {
+    zoom: var(--builds-content-scale);
+  }
+}

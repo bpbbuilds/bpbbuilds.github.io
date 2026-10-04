@@ -211,6 +211,14 @@ const SCROLLBAR_PX = 16;
 const HOST_RESIZE_EPS_PX = 2;
 /** Appear stagger cap + duration + buffer — ignore ResizeObserver during the wave. */
 const APPEAR_LAYOUT_GUARD_MS = 1200;
+/**
+ * The catalog uses native scrolling.  Repainting the virtual window on every
+ * scroll event makes Chromium spend the scroll frame doing DOM/layout work;
+ * keep the compositor moving and refresh the window after a short settle.
+ */
+const ITEMIARY_SCROLL_SETTLE_MS = 64;
+/** Keep a long trackpad fling from outrunning the virtual window entirely. */
+const ITEMIARY_SCROLL_MAX_WAIT_MS = 320;
 
 /**
  * @param {HTMLElement} el
@@ -623,6 +631,7 @@ export function ensurePoolEntries(pool, root, items, getSpriteUrl) {
  *   promo?: boolean,
  *   spriteRoot?: Element | null,
  *   virtualize?: boolean,
+ *   virtualPadEm?: number,
  * }} options
  */
 export function mountItemiaryGrid(container, options) {
@@ -642,6 +651,9 @@ export function mountItemiaryGrid(container, options) {
   let fillWidth = options.fillWidth !== false;
   const getSpriteUrl = options.getSpriteUrl;
   const virtualize = options.promo !== true && options.virtualize !== false;
+  const virtualPadEm = Number.isFinite(options.virtualPadEm)
+    ? Math.max(0, Number(options.virtualPadEm))
+    : VIRTUAL_PAD_EM;
 
   /** @type {Map<string, PoolEntry>} */
   const pool = new Map();
@@ -788,7 +800,7 @@ export function mountItemiaryGrid(container, options) {
         scrollLeft: el.scrollLeft,
         clientWidth: el.clientWidth,
       },
-      VIRTUAL_PAD_EM,
+      virtualPadEm,
     );
   }
 
@@ -843,7 +855,15 @@ export function mountItemiaryGrid(container, options) {
    * @param {number} [hostW]
    * @returns {Promise<void>}
    */
-  async function paintNow(cellPx, cols, nextRows, nextPlacements, nextMap, hostW) {
+  async function paintNow(
+    cellPx,
+    cols,
+    nextRows,
+    nextPlacements,
+    nextMap,
+    hostW,
+    visiblePlacements = null,
+  ) {
     const appear = appearNext;
     const appearLayer = appearLayerNext;
     const newOnly = appearNewOnly;
@@ -858,7 +878,11 @@ export function mountItemiaryGrid(container, options) {
     }
     el.classList.toggle('bpb-bg--preview', previewMode);
 
-    const slice = visibleSlice(cellPx, nextRows, nextPlacements, nextMap);
+    // render() already calculated this slice for the paint key. Reusing it
+    // avoids a second full placement scan in the same scroll frame.
+    const slice = virtualize && Array.isArray(visiblePlacements)
+      ? visiblePlacements
+      : visibleSlice(cellPx, nextRows, nextPlacements, nextMap);
 
     // Keep-alive: off-window nodes cool+park in paintPooled (no destroy / leave
     // wave). Scrubbing back reuses the pool entry instead of rebuilding DOM.
@@ -976,10 +1000,11 @@ export function mountItemiaryGrid(container, options) {
       : cols;
     const layoutKey = `${avail}:${paintCols}:${cellPx}:${mode}:${packFlow}`;
 
-    const visKey = virtualize
+    const visible = virtualize
       ? visibleSlice(cellPx, rows, placements, itemsById)
-          .map((p) => `${p.id}:${p.x},${p.y}`)
-          .join(';')
+      : placements;
+    const visKey = virtualize
+      ? visible.map((p) => `${p.id}:${p.x},${p.y}`).join(';')
       : '*';
     const paintKey = `${layoutKey}|${lastPackKey}|${rows}|${visKey}|${mode}`;
     if (paintKey === lastPaintKey && el.childElementCount) {
@@ -989,7 +1014,15 @@ export function mountItemiaryGrid(container, options) {
     }
     lastPaintKey = paintKey;
 
-    return paintNow(cellPx, paintCols, rows, placements, itemsById, hostW);
+    return paintNow(
+      cellPx,
+      paintCols,
+      rows,
+      placements,
+      itemsById,
+      hostW,
+      visible,
+    );
   }
 
   const ro = new ResizeObserver(() => {
@@ -1004,16 +1037,57 @@ export function mountItemiaryGrid(container, options) {
   ro.observe(host);
 
   let scrollRaf = 0;
+  let scrollTimer = 0;
+  let scrollMaxTimer = 0;
+
+  function cancelScrollSchedule() {
+    if (scrollRaf) cancelAnimationFrame(scrollRaf);
+    scrollRaf = 0;
+    if (scrollTimer) clearTimeout(scrollTimer);
+    scrollTimer = 0;
+    if (scrollMaxTimer) clearTimeout(scrollMaxTimer);
+    scrollMaxTimer = 0;
+  }
+
+  function queueScrollPaint() {
+    if (scrollRaf) return;
+    scrollRaf = requestAnimationFrame(flushScrollPaint);
+  }
+
+  function flushScrollPaint() {
+    scrollRaf = 0;
+    if (scrollMaxTimer) {
+      clearTimeout(scrollMaxTimer);
+      scrollMaxTimer = 0;
+    }
+    appearNewOnly = true;
+    // Entrance animations force a layout flush (`offsetWidth`) and are not
+    // useful while the user is actively scrubbing through the catalog.
+    appearNext = false;
+    void render();
+  }
+
   function onScroll() {
     if (!virtualize || mode == null) return;
-    if (scrollRaf) return;
-    scrollRaf = requestAnimationFrame(() => {
-      scrollRaf = 0;
-      appearNewOnly = true;
-      appearNext =
-        window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches !== true;
-      void render();
-    });
+    // Let native/compositor scrolling run without a DOM paint competing in
+    // the same frame.  A short trailing debounce keeps the virtual window
+    // filled after the user pauses, while still handling slow wheel/keyboard
+    // scrolling promptly.
+    if (scrollTimer) clearTimeout(scrollTimer);
+    scrollTimer = window.setTimeout(() => {
+      scrollTimer = 0;
+      queueScrollPaint();
+    }, ITEMIARY_SCROLL_SETTLE_MS);
+    if (!scrollMaxTimer) {
+      scrollMaxTimer = window.setTimeout(() => {
+        scrollMaxTimer = 0;
+        if (scrollTimer) {
+          clearTimeout(scrollTimer);
+          scrollTimer = 0;
+        }
+        queueScrollPaint();
+      }, ITEMIARY_SCROLL_MAX_WAIT_MS);
+    }
   }
   if (virtualize) {
     el.addEventListener('scroll', onScroll, { passive: true });
@@ -1042,6 +1116,7 @@ export function mountItemiaryGrid(container, options) {
      * @returns {Promise<void>}
      */
     showPlaced(nextPlacements, nextItemsById, nextRows, opts = {}) {
+      cancelScrollSchedule();
       mode = 'placed';
       previewMode = opts.preview === true;
       el.className =
@@ -1087,6 +1162,7 @@ export function mountItemiaryGrid(container, options) {
      * @returns {Promise<void>}
      */
     showPacked(items, opts = {}) {
+      cancelScrollSchedule();
       mode = 'packed';
       previewMode = opts.preview === true;
       el.className =
@@ -1207,8 +1283,7 @@ export function mountItemiaryGrid(container, options) {
       el.removeEventListener('pointerout', onLivePointerOut);
       el.removeEventListener('focusin', onLiveFocusIn);
       el.removeEventListener('focusout', onLiveFocusOut);
-      if (scrollRaf) cancelAnimationFrame(scrollRaf);
-      scrollRaf = 0;
+      cancelScrollSchedule();
       if (roRaf) cancelAnimationFrame(roRaf);
       roRaf = 0;
       ro.disconnect();

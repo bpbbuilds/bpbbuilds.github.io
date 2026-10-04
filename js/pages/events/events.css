@@ -7,6 +7,49 @@
 @import url('../build/build.css');
 @import url('./enter-wizard.css');
 
+/* Events uses the same signature scrollbar chrome as the home page. Keep the
+ * document track and the How-to-join scroller visually consistent, including
+ * the non-WebKit fallback where image scrollbars are not available. */
+html:has(body.page-events) {
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  html:has(body.page-events),
+  .page-events .events-detail-join .events-detail-aside {
+    scrollbar-color: #eac914 #472a24;
+  }
+}
+
+html:has(body.page-events)::-webkit-scrollbar {
+  width: 18px;
+  background: transparent;
+}
+
+html:has(body.page-events)::-webkit-scrollbar-track {
+  background: url('../../../assets/icons/scrollbar/track.png') center / 18px 100% no-repeat;
+  border-radius: 0;
+}
+
+html:has(body.page-events)::-webkit-scrollbar-thumb {
+  min-height: 42px;
+  background: none;
+  border-radius: 0;
+  border-style: solid;
+  border-width: 12px 7px;
+  border-image-source: url('../../../assets/icons/scrollbar/thumb.png');
+  border-image-slice: 18 11 fill;
+  border-image-width: 12px 7px;
+  border-image-repeat: stretch;
+}
+
+html:has(body.page-events)::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 body.page-events #main {
   flex: 1 1 auto;
   min-height: 0;
@@ -2492,6 +2535,37 @@ body.page-events #main {
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+
+.events-detail-join .events-detail-aside::-webkit-scrollbar {
+  width: 18px;
+  height: 18px;
+  background: transparent;
+}
+
+.events-detail-join .events-detail-aside::-webkit-scrollbar-track {
+  background: url('../../../assets/icons/scrollbar/track.png') center / 18px 100% no-repeat;
+  border-radius: 0;
+}
+
+.events-detail-join .events-detail-aside::-webkit-scrollbar-thumb {
+  min-height: 42px;
+  background: none;
+  border-radius: 0;
+  border-style: solid;
+  border-width: 12px 7px;
+  border-image-source: url('../../../assets/icons/scrollbar/thumb.png');
+  border-image-slice: 18 11 fill;
+  border-image-width: 12px 7px;
+  border-image-repeat: stretch;
+}
+
+.events-detail-join .events-detail-aside::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .events-detail-aside__head {

@@ -270,10 +270,17 @@ function placeOverFilters(tip, anchor, panel) {
   const panelRect = panel.getBoundingClientRect();
   const anchorRect = anchor.getBoundingClientRect();
   const tipRect = tip.getBoundingClientRect();
+  const tw = tipRect.width || tip.offsetWidth;
   const th = tipRect.height || tip.offsetHeight;
+  const vw = window.innerWidth;
   const vh = window.innerHeight;
 
-  const left = panelRect.left + FILTERS_INSET;
+  // The filters rail is often close to the right edge on desktop create. Keep
+  // the tooltip's intended rail-relative placement, then pull it left into
+  // the viewport safe area when the card would run past the screen edge.
+  let left = panelRect.left + FILTERS_INSET;
+  if (left + tw > vw - EDGE) left = vw - EDGE - tw;
+  if (left < EDGE) left = EDGE;
   let top = anchorRect.top + anchorRect.height / 2 - th / 2;
   if (top + th > vh - EDGE) top = Math.max(EDGE, vh - th - EDGE);
   if (top < EDGE) top = EDGE;
