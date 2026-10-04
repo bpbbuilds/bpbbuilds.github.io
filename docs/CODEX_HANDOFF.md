@@ -917,3 +917,14 @@ None.
 
 - Updated the bundled Premium Crown rarity to `Unique` and applied `20261004010000_premium_crown_unique.sql` to Supabase.
 - Live `cosmetic-catalog` verification returns `premium_crown.rarity = Unique`; grants, ownership, value, artist, and inventory behavior were unchanged.
+
+### 2026-10-04 Cosmetic tooltip item-only preview claim (in progress)
+
+- Codex owns `js/pages/u/blob/fit-item-icon.js`, `js/pages/u/blob/cosmetic-tooltip.js`, the focused preview smoke check, and this handoff for this task. The wardrobe/equip renderer remains unchanged: blob-aligned full-canvas images are still required there; only tooltip previews will be cropped to the cosmetic's visible pixels.
+- Audit found the existing crop helper fails for Supabase-hosted cosmetic images because it does not request anonymous CORS access before drawing to a canvas. That makes remote Cool Shades fall back to its full blob-aligned canvas while same-origin Premium Crown already appears item-only. The fix will enable CORS-safe loading for remote images and refresh an active tooltip when its asynchronous crop becomes available.
+
+### 2026-10-04 Cosmetic tooltip item-only preview complete
+
+- `cropSrcToContent` now requests anonymous CORS access for HTTP(S) cosmetic assets before canvas inspection, so Supabase-hosted uploads can be cropped instead of falling back to their blob-aligned source canvas.
+- Tooltip crop warming now refreshes an active hover when the asynchronous crop finishes. This makes the first hover converge to the item-only preview, while later uploads receive the same behavior automatically. Wardrobe/equip previews remain unchanged and continue using their full blob-aligned images.
+- Browser smoke verification against the live Cool Shades asset produced a cropped 28x8 PNG from its 128x128 source canvas; Premium Crown also produced a cropped item-only preview. Both touched modules pass `node --check`.

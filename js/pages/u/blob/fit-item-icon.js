@@ -18,6 +18,11 @@ export function cropSrcToContent(src) {
 
   const job = new Promise((resolve) => {
     const img = new Image();
+    // Cosmetic assets normally live in Supabase Storage, while the page is
+    // served from bpbbuilds.com. Request anonymous CORS access before drawing
+    // the image to a canvas; otherwise getImageData() is blocked and the
+    // caller has to fall back to the full blob-aligned canvas.
+    if (/^https?:\/\//i.test(key)) img.crossOrigin = 'anonymous';
     img.decoding = 'async';
     img.onload = () => {
       try {

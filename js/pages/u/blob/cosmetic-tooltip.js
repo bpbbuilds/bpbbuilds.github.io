@@ -44,13 +44,18 @@ function formatAdded(iso) {
 /**
  * Prefetch cropped item-only previews (no blob base).
  * @param {BlobCosmetic[]} catalog
+ * @param {() => void} [onReady]
  */
-function warmPreviewCrops(catalog) {
+function warmPreviewCrops(catalog, onReady) {
   for (const c of catalog) {
     const src = String(c.image || c.icon || '').trim();
     if (!src || previewCropBySrc.has(src)) continue;
     void cropSrcToContent(src).then((cropped) => {
       if (cropped) previewCropBySrc.set(src, cropped);
+      // A pointer can enter a tile before an image/canvas crop finishes. Ask
+      // the active tooltip to render again so the first hover also gets the
+      // item-only preview instead of the blob-aligned source image.
+      onReady?.();
     });
   }
 }
@@ -127,24 +132,27 @@ export function cosmeticToTooltipItem(c) {
  */
 export function bindCosmeticTooltips(root, opts) {
   const { catalog, getEquippedId } = opts;
-  warmPreviewCrops(catalog);
   const tip = createTooltipHover({ pinOnAlt: true });
+
+  const getCosmeticForElement = (el) => {
+    if (!(el instanceof HTMLElement)) return null;
+    const itemId = el.getAttribute('data-blob-item');
+    if (itemId) {
+      const c = catalog.find((x) => x.id === itemId);
+      return c ? cosmeticToTooltipItem(c) : null;
+    }
+    const slotId = el.getAttribute('data-blob-slot') || '';
+    const equipped = getEquippedId?.(slotId);
+    if (!equipped) return null;
+    const c = catalog.find((x) => x.id === equipped);
+    return c ? cosmeticToTooltipItem(c) : null;
+  };
+
+  warmPreviewCrops(catalog, () => tip.refresh(getCosmeticForElement));
 
   const unbind = tip.bind(root, {
     selector: '[data-blob-item], [data-blob-slot].is-filled',
-    getItem: (el) => {
-      if (!(el instanceof HTMLElement)) return null;
-      const itemId = el.getAttribute('data-blob-item');
-      if (itemId) {
-        const c = catalog.find((x) => x.id === itemId);
-        return c ? cosmeticToTooltipItem(c) : null;
-      }
-      const slotId = el.getAttribute('data-blob-slot') || '';
-      const equipped = getEquippedId?.(slotId);
-      if (!equipped) return null;
-      const c = catalog.find((x) => x.id === equipped);
-      return c ? cosmeticToTooltipItem(c) : null;
-    },
+    getItem: getCosmeticForElement,
   });
 
   return {
