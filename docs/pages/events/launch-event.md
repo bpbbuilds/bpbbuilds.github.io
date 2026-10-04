@@ -29,6 +29,7 @@ Thin v1 entry (pin in Discord + site when upload lands):
 - [ ] Prize art final (event winner cosmetic) — placeholders OK until then
 - [x] Nav **Events** → `/events/`
 - [ ] After close: announce winner; grant `grant_event_trophy` via SQL (see below)
+- [x] Owner-selected no-vote winners appear on the event detail's **Winner** tab once the selected build is public, with the creator face and a link to the winning build.
 
 ## Prize + other launch cosmetics
 

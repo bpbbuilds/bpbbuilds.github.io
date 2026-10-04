@@ -3006,3 +3006,140 @@ body.page-events #main {
     gap: 0.35rem;
   }
 }
+
+/* Official owner-selected result for no-vote events. */
+.events-winner-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.events-winner-card__heading {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.events-winner-card__body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.events-winner-card__face {
+  position: relative;
+  display: block;
+  width: clamp(4.5rem, 12vw, 7rem);
+  height: clamp(4.5rem, 12vw, 7rem);
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 2px solid color-mix(in srgb, var(--bpb-gold, #eac914) 72%, transparent);
+  border-radius: 0.55rem;
+  background: var(--bpb-ink, #3c261d);
+  box-shadow: 0 0.2rem 0.55rem rgba(0, 0, 0, 0.28);
+}
+
+.events-winner-card__face > .events-winner__face {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.events-winner-card__face > .events-winner__face.bpb-face--blob .bpb-face__base,
+.events-winner-card__face > .events-winner__face.bpb-face--blob .bpb-face__overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.events-winner__face--initials {
+  display: grid !important;
+  place-items: center;
+  color: var(--bpb-cream, #f6e6c8);
+  font-size: clamp(1.35rem, 4vw, 2rem);
+  font-weight: 700;
+}
+
+.events-winner-card__copy {
+  display: grid;
+  gap: 0.28rem;
+  min-width: 0;
+}
+
+.events-winner-card__eyebrow {
+  margin: 0;
+  color: var(--bpb-gold-bright, #e8c878);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.events-winner-card__title {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--build-ink, #3c261d);
+  font-size: clamp(1.2rem, 3vw, 1.75rem);
+}
+
+.events-winner-card__byline,
+.events-winner-card__meta {
+  margin: 0;
+  color: var(--build-ink, #3c261d);
+}
+
+.events-winner__author {
+  color: inherit;
+  font-weight: 700;
+}
+
+.events-winner__author:hover {
+  color: var(--bpb-gold-deep, #8d6812);
+}
+
+.events-winner-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.45rem;
+  opacity: 0.82;
+  font-size: 0.85rem;
+}
+
+.events-winner-card__link {
+  justify-self: start;
+  margin-top: 0.35rem;
+}
+
+.events-winner-card__board {
+  min-height: 2rem;
+  overflow: hidden;
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--build-ink, #3c261d) 14%, transparent);
+}
+
+.events-winner-card__board:empty {
+  display: none;
+}
+
+.events-winner-card__board img {
+  display: block;
+  width: 100%;
+  max-height: 22rem;
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (max-width: 560px) {
+  .events-winner-card__body {
+    grid-template-columns: 1fr;
+  }
+
+  .events-winner-card__face {
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+}

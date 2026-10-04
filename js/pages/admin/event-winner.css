@@ -1,0 +1,33 @@
+/* Owner-selected winner controls in the Events desk. */
+.admin-event-desk__winner {
+  margin-top: 0.85rem;
+  padding: 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--bpb-rewards-gold, #c6a567) 48%, transparent);
+  border-radius: 0.28rem;
+  background: color-mix(in srgb, #20130e 34%, transparent);
+}
+
+.admin-event-desk__winner .admin-event-desk__section { margin-top: 0; }
+.admin-event-desk__winner-status {
+  margin: 0.2rem 0 0.6rem;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: var(--bpb-rewards-cream, #dbc4a1);
+}
+
+.admin-event-desk__btn--winner {
+  border-color: var(--bpb-rewards-gold-bright, #e8c878);
+  color: var(--bpb-rewards-gold-bright, #e8c878);
+}
+
+.admin-event-desk__btn--winner-clear { margin-top: 0.35rem; }
+.admin-event-desk__entry-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+
+.admin-event-desk__flag--winner { color: var(--bpb-rewards-gold-bright, #e8c878); }

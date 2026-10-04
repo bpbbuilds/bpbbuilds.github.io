@@ -148,6 +148,16 @@ export function listEventEntries(auth, eventSlug) {
   return adminRequest(auth, { action: 'event_entries', eventSlug });
 }
 
+/** Select or replace the one admin-judged winner for a no-vote event. */
+export function setEventWinner(auth, eventSlug, buildId) {
+  return adminRequest(auth, { action: 'set_event_winner', eventSlug, buildId });
+}
+
+/** Remove an event's admin-selected winner so judging can continue. */
+export function clearEventWinner(auth, eventSlug) {
+  return adminRequest(auth, { action: 'clear_event_winner', eventSlug });
+}
+
 /**
  * @param {{ mode: 'jwt' | 'secret', token: string }} auth
  * @param {string} action

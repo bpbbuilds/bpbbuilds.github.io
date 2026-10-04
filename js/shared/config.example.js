@@ -22,4 +22,5 @@ export const config = {
   discordGuildUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/discord-guild',
   cosmeticCatalogUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/cosmetic-catalog',
   cosmeticSubmissionsUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/cosmetic-submissions',
+  eventWinnerUrl: 'YOUR_SUPABASE_PROJECT_URL/functions/v1/event-winner',
 };

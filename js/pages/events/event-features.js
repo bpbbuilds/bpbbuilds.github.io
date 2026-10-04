@@ -34,6 +34,10 @@ export function tabsForEvent(event) {
   const tabs = ['overview', 'rules'];
   if (eventHasBuilds(event)) tabs.push('builds');
   if (eventHasVoting(event)) tabs.push('voting');
+  // Manual winners are published for scored/no-vote events. Keep the tab
+  // visible before a result exists so the page can say when judging is still
+  // in progress instead of changing the rail after an owner selects a build.
+  if (!eventHasVoting(event)) tabs.push('winner');
   tabs.push('rewards');
   return tabs;
 }

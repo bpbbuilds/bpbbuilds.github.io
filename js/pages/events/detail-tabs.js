@@ -2,7 +2,7 @@
  * Event detail hub tabs (?e=slug&tab=).
  */
 
-/** @typedef {'overview' | 'rules' | 'builds' | 'voting' | 'rewards'} EventDetailTabId */
+/** @typedef {'overview' | 'rules' | 'builds' | 'voting' | 'winner' | 'rewards'} EventDetailTabId */
 
 /** @type {readonly EventDetailTabId[]} */
 export const EVENT_DETAIL_TABS = Object.freeze([
@@ -10,6 +10,7 @@ export const EVENT_DETAIL_TABS = Object.freeze([
   'rules',
   'builds',
   'voting',
+  'winner',
   'rewards',
 ]);
 
@@ -19,6 +20,7 @@ export const EVENT_DETAIL_TAB_LABELS = Object.freeze({
   rules: 'Rules',
   builds: 'Builds',
   voting: 'Voting',
+  winner: 'Winner',
   rewards: 'Rewards',
 });
 

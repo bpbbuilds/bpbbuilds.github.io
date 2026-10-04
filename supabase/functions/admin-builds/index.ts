@@ -37,6 +37,7 @@ type Body = {
   slug?: string;
   filter?: Filter;
   eventSlug?: string;
+  buildId?: number | string;
   cosmetic?: Record<string, unknown>;
 };
 
@@ -60,6 +61,7 @@ Deno.serve(async (req) => {
   const secretOk = Boolean(secret && secretHeader === secret);
 
   let authorized = secretOk;
+  let actorId: string | null = null;
   if (!authorized) {
     const authHeader = req.headers.get('Authorization') || '';
     const jwt = authHeader.replace(/^Bearer\s+/i, '').trim();
@@ -76,6 +78,7 @@ Deno.serve(async (req) => {
           .eq('id', userData.user.id)
           .maybeSingle();
         authorized = profile?.is_owner === true;
+        if (authorized) actorId = userData.user.id;
       }
     }
   }
@@ -102,6 +105,12 @@ Deno.serve(async (req) => {
   }
   if (action === 'event_entries') {
     return listEventEntries(supabase, body.eventSlug);
+  }
+  if (action === 'set_event_winner') {
+    return setEventWinner(supabase, body.eventSlug, body.buildId, actorId);
+  }
+  if (action === 'clear_event_winner') {
+    return clearEventWinner(supabase, body.eventSlug);
   }
   if (action === 'members') {
     return listMembers(supabase);
@@ -512,7 +521,78 @@ async function listEventEntries(
     console.error(error);
     return json({ error: 'List failed', detail: error.message }, 500);
   }
-  return json({ builds: data || [] }, 200);
+  const { data: winner, error: winnerError } = await supabase
+    .from('event_winners')
+    .select('event_slug,build_id,selected_at')
+    .eq('event_slug', slug)
+    .maybeSingle();
+  if (winnerError) {
+    console.error(winnerError);
+    return json({ error: 'Could not load selected winner', detail: winnerError.message }, 500);
+  }
+  return json({ builds: data || [], winner: winner || null }, 200);
+}
+
+/** @param {string | undefined} eventSlug */
+function eventSlug(eventSlug: string | undefined) {
+  const slug = String(eventSlug || '').trim().toLowerCase();
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) ? slug : '';
+}
+
+/**
+ * Persist a manual winner only after proving the submitted build belongs to
+ * the same event. The UI exposes this only for no-vote events; ownership and
+ * the build/event relationship are enforced here rather than in the browser.
+ */
+async function setEventWinner(
+  supabase: ReturnType<typeof createClient>,
+  eventSlugRaw: string | undefined,
+  buildIdRaw: number | string | undefined,
+  actorId: string | null,
+) {
+  const slug = eventSlug(eventSlugRaw);
+  const buildId = Number(buildIdRaw);
+  if (!slug) return json({ error: 'Valid eventSlug is required' }, 400);
+  if (!Number.isSafeInteger(buildId) || buildId < 1) {
+    return json({ error: 'Valid buildId is required' }, 400);
+  }
+
+  const { data: build, error: buildError } = await supabase
+    .from('builds')
+    .select('id,event_slug')
+    .eq('id', buildId)
+    .maybeSingle();
+  if (buildError) return json({ error: 'Could not validate event entry', detail: buildError.message }, 500);
+  if (!build || String(build.event_slug || '').trim().toLowerCase() !== slug) {
+    return json({ error: 'Build is not an entry for this event' }, 400);
+  }
+
+  const { data: winner, error } = await supabase
+    .from('event_winners')
+    .upsert(
+      {
+        event_slug: slug,
+        build_id: buildId,
+        selected_at: new Date().toISOString(),
+        selected_by: actorId,
+      },
+      { onConflict: 'event_slug' },
+    )
+    .select('event_slug,build_id,selected_at')
+    .maybeSingle();
+  if (error) return json({ error: 'Could not select winner', detail: error.message }, 500);
+  return json({ winner }, 200);
+}
+
+async function clearEventWinner(
+  supabase: ReturnType<typeof createClient>,
+  eventSlugRaw: string | undefined,
+) {
+  const slug = eventSlug(eventSlugRaw);
+  if (!slug) return json({ error: 'Valid eventSlug is required' }, 400);
+  const { error } = await supabase.from('event_winners').delete().eq('event_slug', slug);
+  if (error) return json({ error: 'Could not clear winner', detail: error.message }, 500);
+  return json({ ok: true }, 200);
 }
 
 /** Owner-only merge of website profiles and Discord guild members. */

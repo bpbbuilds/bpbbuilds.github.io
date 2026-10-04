@@ -14,6 +14,7 @@ import {
 import { tabsForEvent } from './event-features.js';
 import { fillMyEventEntries, clearMyEventEntries } from './event-my-entries.js';
 import { eventTimerHtml } from './event-meta.js';
+import { hydrateEventWinner, winnerStageHtml } from './event-winner.js';
 import { openEnterWizard, resumeEnterWizardIfNeeded } from './enter-wizard.js';
 import {
   EVENT_DETAIL_TAB_LABELS,
@@ -294,6 +295,7 @@ function stageHtml(tab, event, root) {
   if (tab === 'overview') return overviewStageHtml(event, root);
   if (tab === 'builds') return buildsStageHtml(event, root);
   if (tab === 'voting') return votingStageHtml(event, root);
+  if (tab === 'winner') return winnerStageHtml(event);
   if (tab === 'rewards') return rewardsStageHtml(event, root);
 
   const sections = sectionsForTab(event, tab);
@@ -431,6 +433,7 @@ export function bindEventDetailHub(rootEl, event, opts = {}) {
     opts.onStage?.();
     if (active === 'builds') void fillMyEventEntries(hub, event.slug, siteRoot);
     else clearMyEventEntries(hub);
+    if (active === 'winner') void hydrateEventWinner(hub, event, siteRoot);
   };
 
   /** @param {EventDetailTabId} next */

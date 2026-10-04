@@ -17,4 +17,5 @@ export const config = {
   discordGuildUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/discord-guild",
   cosmeticCatalogUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/cosmetic-catalog",
   cosmeticSubmissionsUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/cosmetic-submissions",
+  eventWinnerUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/event-winner",
 };

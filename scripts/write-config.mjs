@@ -29,6 +29,7 @@ const screenshotToBuildUrl = `${baseFn}/screenshot-to-build`;
 const discordGuildUrl = `${baseFn}/discord-guild`;
 const cosmeticCatalogUrl = `${baseFn}/cosmetic-catalog`;
 const cosmeticSubmissionsUrl = `${baseFn}/cosmetic-submissions`;
+const eventWinnerUrl = `${baseFn}/event-winner`;
 const siteAccessMode = String(env.BPB_SITE_ACCESS_MODE || 'live').toLowerCase() === 'private'
   ? 'private'
   : 'live';
@@ -52,6 +53,7 @@ export const config = {
   discordGuildUrl: ${JSON.stringify(discordGuildUrl)},
   cosmeticCatalogUrl: ${JSON.stringify(cosmeticCatalogUrl)},
   cosmeticSubmissionsUrl: ${JSON.stringify(cosmeticSubmissionsUrl)},
+  eventWinnerUrl: ${JSON.stringify(eventWinnerUrl)},
 };
 `;
 
