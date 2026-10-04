@@ -126,7 +126,7 @@ function floatStyle(i, n) {
 /**
  * @returns {Promise<{ name: string, equipped: string }[]>}
  */
-async function loadBlobCast() {
+export async function loadBlobCast() {
   const { data, error } = await getSupabase()
     .from('profiles')
     .select('display_name, equipped_avatar')
