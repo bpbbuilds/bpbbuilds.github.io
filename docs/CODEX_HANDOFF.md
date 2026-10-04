@@ -854,3 +854,12 @@ None.
 - Added the mutable fatigue threshold to the shared scheduler and passed it through the per-piece context; the timer advance does not shift ordinary item cooldowns. Added `onPrepare` to the lifecycle contract and execute it in the existing prepare pass before cooldown arming.
 - Added `scripts/sim-power-moon-smoke.mjs`. It passes source-linked handler guardrails and deterministic timer tests (single and additive advances, clamp, and no-op after fatigue starts). Touched modules pass `node --check`.
 - Full simulator ESM/lifecycle import remains blocked by the unrelated pre-existing syntax corruption in dirty `js/pages/sim/engine/scripts/ports-wave-d-unique.js` (`10| useMana`); that file was not restored or included in this task so another agent's Wave D work is preserved. The Power Moon handler itself parses cleanly and the focused smoke passes.
+
+### 2026-10-03 Admin cosmetics publish claim (in progress)
+
+- Codex owns `js/pages/admin/tab-cosmetics.js`, `js/pages/admin/api.js`, and this handoff for the publish-session refresh fix. Supabase profile `smojowastaken` / Discord `524654511722332181` already has `is_owner = true`; the server-side owner gate will remain unchanged.
+
+### 2026-10-03 Admin cosmetics publish fix complete
+
+- The publish click now resolves the current owner-authenticated JWT immediately before submitting, instead of reusing the Admin shell's older token after a Supabase refresh. This removes the false “only owners can submit” state without weakening the Edge Function owner check.
+- Verified the live profile row and Auth user mapping: `smojowastaken` is Discord `524654511722332181`, profile `is_owner` is already true, and it maps to the expected Discord Auth account. `tab-cosmetics.js` and `api.js` pass `node --check`; the change is ready to publish.

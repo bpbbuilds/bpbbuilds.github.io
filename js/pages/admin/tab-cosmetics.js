@@ -19,6 +19,7 @@ import {
   listCosmeticCatalog,
   listPublishedCosmetics,
   publishCosmetic,
+  resolveAdminAuth,
   uploadCosmetic,
 } from './api.js';
 
@@ -305,8 +306,14 @@ function bindPublish(host, catalog, published, auth) {
     }
     try {
       const session = await getSession();
-      if (!session?.access_token || auth?.mode !== 'jwt') throw new Error('Sign in as the site owner to publish.');
-      await publishCosmetic(auth, {
+      // The shell's auth object can outlive a refreshed Supabase session while
+      // an admin is reviewing a draft. Resolve the current owner JWT at the
+      // point of publish so we do not reject an owner with a stale token.
+      const liveAuth = await resolveAdminAuth();
+      if (!session?.access_token || liveAuth?.mode !== 'jwt') {
+        throw new Error('Sign in as the site owner to publish.');
+      }
+      await publishCosmetic(liveAuth, {
         id: item.id,
         name: item.name || item.id,
         slot: item.slot || '',
