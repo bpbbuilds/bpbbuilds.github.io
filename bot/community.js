@@ -6,6 +6,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ensureGuildChannel } from './channel-reconcile.js';
 
 const API = 'https://discord.com/api/v10';
 const GOLD = 0xeac914;
@@ -190,18 +191,15 @@ async function ensureChannel(token, guildId, adminId, existingId) {
       { id: adminId, type: 0, allow: ADMIN_ALLOW, deny: '0' },
     ],
   };
-  if (existingId) {
-    const patched = await discord(token, `/channels/${existingId}`, 'PATCH', body);
-    if (patched.ok) return existingId;
-  }
-  const created = await discord(token, `/guilds/${guildId}/channels`, 'POST', { ...body, type: 0 });
-  if (!created.ok) {
-    const detail = await created.text();
-    console.error(`Community channel failed (${created.status}): ${detail.slice(0, 180)}`);
-    return '';
-  }
-  const row = await created.json();
-  return String(row.id || '');
+  return ensureGuildChannel({
+    token,
+    guildId,
+    existingId,
+    type: 0,
+    name: CHANNEL_NAME,
+    body,
+    label: 'Community channel',
+  });
 }
 
 /**

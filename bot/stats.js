@@ -6,6 +6,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ensureGuildChannel } from './channel-reconcile.js';
 
 const API = 'https://discord.com/api/v10';
 const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'stats.json');
@@ -139,10 +140,11 @@ const STATS_CATEGORY_NAME = '📊 Website Stats';
  * @param {string} guildId
  * @param {number} type
  * @param {string} [parentId]
+ * @returns {Promise<string | null>}
  */
 async function findExisting(token, guildId, type, parentId = '', prefix = '') {
   const res = await discord(token, `/guilds/${guildId}/channels`);
-  if (!res.ok) return '';
+  if (!res.ok) return null;
   const rows = await res.json();
   const found = (Array.isArray(rows) ? rows : []).find((row) => {
     if (row?.type !== type) return false;
@@ -169,7 +171,11 @@ async function ensureCounter(token, guildId, category, existingId, prefix, name,
     if (!current.ok) id = '';
   }
   const created = !id;
-  if (!id) id = await findExisting(token, guildId, 2, category, prefix);
+  if (!id) {
+    const found = await findExisting(token, guildId, 2, category, prefix);
+    if (found === null) return { id: '', created: false, renamed: false };
+    id = found;
+  }
   if (!id) {
     id = await ensureChannel(token, guildId, '', 2, {
       name: name || `${prefix}: 0`,
@@ -245,16 +251,17 @@ export async function syncStats(env) {
   const anchorRes = await discord(token, `/channels/${anchorId}`);
   const anchor = anchorRes.ok ? await anchorRes.json() : null;
   const state = readState();
-  let nextCategory = state.categoryId
-    ? await ensureChannel(token, guildId, state.categoryId, 4, { name: STATS_CATEGORY_NAME })
-    : '';
-  if (!nextCategory) nextCategory = await findExisting(token, guildId, 4);
-  if (!nextCategory) {
-    nextCategory = await ensureChannel(token, guildId, '', 4, {
-      name: STATS_CATEGORY_NAME,
+  const nextCategory = await ensureGuildChannel({
+    token,
+    guildId,
+    existingId: state.categoryId,
+    type: 4,
+    name: STATS_CATEGORY_NAME,
+    body: {
       ...(Number.isFinite(anchor?.position) ? { position: anchor.position + 1 } : {}),
-    });
-  }
+    },
+    label: 'Website stats category',
+  });
   if (!nextCategory) return;
 
   const count = await uploadedBuildCount(base, key);

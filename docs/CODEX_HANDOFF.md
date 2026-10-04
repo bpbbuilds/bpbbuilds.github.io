@@ -878,6 +878,16 @@ None.
 - Added `ensureGuildChannel`, which validates saved IDs, reuses exact type/name matches from Discord when state is missing or stale, selects a deterministic existing match, and fails closed instead of creating a duplicate when the guild listing fails. Applied it to managed categories, text channels, and the past-events forum; Website Stats category reconciliation now uses the same helper.
 - Added `scripts/bot-channel-reconcile-smoke.mjs`; it covers saved-ID reuse, stale-ID recovery, existing-name reuse, creation, and fail-closed lookup errors. All touched bot modules pass `node --check` and import smoke. The user authorized cleanup: 11 newer exact-name/type duplicates were deleted, the state-referenced originals were kept, and a fresh guild listing reports zero duplicate groups. Changes remain uncommitted pending the user's deployment/push decision.
 
+### 2026-10-04 Discord rules channel deployment follow-up (in progress)
+
+- Codex owns the pending bot channel-reconciliation changes and this handoff for the duplicate-channel report. The supplied Rules channel ID `1555345682678943829` is the canonical existing resource; the fix must prefer it when the runtime state file is missing or points at a duplicate, while preserving the no-automatic-deletion rule.
+
+### 2026-10-04 Discord rules channel deployment follow-up complete
+
+- The bot now prefers Rules channel `1555345682678943829` on every sync, validates that it belongs to the configured guild and has the expected type/name, and only falls back to exact-name discovery before creation. This repairs deployments with missing/stale `bot/data` state and prevents an old duplicate ID from becoming authoritative.
+- Published the previously pending restart-safe reconciliation changes for categories, managed channels, forums, and Website Stats counters. Existing duplicates are not deleted by the runtime.
+- Validation: channel reconciliation smoke (saved-ID reuse, stale-ID recovery, exact-name reuse, creation, and fail-closed lookup), syntax checks for all touched bot modules, and Rules module import passed. Changes are ready for Northflank redeploy; no Discord resources were deleted in this task.
+
 ### 2026-10-04 Cosmetic submission queue diagnosis
 
 - Traced the user-facing submit flow in `js/pages/u/blob/submit-cosmetic-modal.js` and `js/shared/cosmetic-upload-modal.js`: it only logs the payload in the browser and displays “saved locally for now”; it does not call Supabase, upload Storage, or create a submission row.

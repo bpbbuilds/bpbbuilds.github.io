@@ -5,8 +5,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ensureGuildChannel } from './channel-reconcile.js';
 
-const API = 'https://discord.com/api/v10';
 const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'layout.json');
 
 const CHAT = '1555401802663592097';
@@ -55,7 +55,7 @@ function writeState(state) {
  * @param {object | null} [body]
  */
 async function discord(token, apiPath, method = 'GET', body) {
-  return fetch(`${API}${apiPath}`, {
+  return fetch(`https://discord.com/api/v10${apiPath}`, {
     method,
     headers: {
       Authorization: `Bot ${token}`,
@@ -79,22 +79,15 @@ async function discord(token, apiPath, method = 'GET', body) {
  * @param {object} [extra]
  */
 async function ensureCategory(token, guildId, existingId, name, extra = {}) {
-  const body = { name, ...extra };
-  if (existingId) {
-    const current = await discord(token, `/channels/${existingId}`);
-    if (current.ok) {
-      await discord(token, `/channels/${existingId}`, 'PATCH', body);
-      return existingId;
-    }
-  }
-  const created = await discord(token, `/guilds/${guildId}/channels`, 'POST', { ...body, type: 4 });
-  if (!created.ok) {
-    const detail = await created.text();
-    console.error(`Channel category failed (${created.status}): ${detail.slice(0, 160)}`);
-    return '';
-  }
-  const row = await created.json();
-  return String(row.id || '');
+  return ensureGuildChannel({
+    token,
+    guildId,
+    existingId,
+    type: 4,
+    name,
+    body: extra,
+    label: `${name} category`,
+  });
 }
 
 /**

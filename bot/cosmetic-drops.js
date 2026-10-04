@@ -5,6 +5,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ensureGuildChannel } from './channel-reconcile.js';
 
 const API = 'https://discord.com/api/v10';
 const GOLD = 0xeac914;
@@ -211,22 +212,15 @@ async function ensureChannel(token, guildId, existingId) {
     permission_overwrites: [{ id: guildId, type: 0, allow: '0', deny: READ_ONLY_DENY }],
     ...(parent ? { parent_id: parent } : {}),
   };
-  if (existingId) {
-    const patched = await discord(token, `/channels/${existingId}`, 'PATCH', body);
-    if (patched.ok) return existingId;
-    const detail = await patched.text();
-    console.error(`Cosmetic drops channel update failed (${patched.status}): ${detail.slice(0, 160)}`);
-    const current = await discord(token, `/channels/${existingId}`);
-    if (current.ok) return existingId;
-  }
-  const created = await discord(token, `/guilds/${guildId}/channels`, 'POST', { ...body, type: 0 });
-  if (!created.ok) {
-    const detail = await created.text();
-    console.error(`Cosmetic drops channel failed (${created.status}): ${detail.slice(0, 180)}`);
-    return '';
-  }
-  const row = await created.json();
-  return String(row.id || '');
+  return ensureGuildChannel({
+    token,
+    guildId,
+    existingId,
+    type: 0,
+    name: CHANNEL_NAME,
+    body,
+    label: 'Cosmetic drops channel',
+  });
 }
 
 /**

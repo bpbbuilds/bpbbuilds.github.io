@@ -5,10 +5,11 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ensureGuildChannel } from './channel-reconcile.js';
 
 const API = 'https://discord.com/api/v10';
 const GOLD = 0xeac914;
-const SITE = 'https://bpbbuilds.github.io';
+const SITE = 'https://bpbbuilds.com';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'market.json');
 const HEADER = path.join(ROOT, 'assets', 'brand', 'logo-bpb.png');
@@ -125,18 +126,15 @@ async function ensureChannel(token, guildId, existingId) {
     topic: 'Market listings, buys, and sales. Messages here are turned off.',
     permission_overwrites: overwrites,
   };
-  if (existingId) {
-    const patched = await discord(token, `/channels/${existingId}`, 'PATCH', body);
-    if (patched.ok) return existingId;
-  }
-  const created = await discord(token, `/guilds/${guildId}/channels`, 'POST', { ...body, type: 0 });
-  if (!created.ok) {
-    const detail = await created.text();
-    console.error(`Market channel failed (${created.status}): ${detail.slice(0, 180)}`);
-    return '';
-  }
-  const row = await created.json();
-  return String(row.id || '');
+  return ensureGuildChannel({
+    token,
+    guildId,
+    existingId,
+    type: 0,
+    name: CHANNEL_NAME,
+    body,
+    label: 'Market channel',
+  });
 }
 
 /**

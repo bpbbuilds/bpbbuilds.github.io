@@ -5,10 +5,10 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ensureGuildChannel } from './channel-reconcile.js';
 
-const API = 'https://discord.com/api/v10';
 const GOLD = 0xeac914;
-const SITE = 'https://bpbbuilds.github.io';
+const SITE = 'https://bpbbuilds.com';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'news.json');
 const HEADER = path.join(ROOT, 'assets', 'brand', 'logo-bpb.png');
@@ -56,7 +56,7 @@ channelId = saved.channelId;
  * @param {object | null} [body]
  */
 async function discord(token, apiPath, method = 'GET', body) {
-  return fetch(`${API}${apiPath}`, {
+  return fetch(`https://discord.com/api/v10${apiPath}`, {
     method,
     headers: {
       Authorization: `Bot ${token}`,
@@ -128,18 +128,15 @@ async function ensureChannel(token, guildId, existingId) {
     ...(rulesRow?.parent_id ? { parent_id: rulesRow.parent_id } : {}),
     ...(Number.isFinite(rulesRow?.position) ? { position: rulesRow.position + 1 } : {}),
   };
-  if (existingId) {
-    const patched = await discord(token, `/channels/${existingId}`, 'PATCH', body);
-    if (patched.ok) return existingId;
-  }
-  const created = await discord(token, `/guilds/${guildId}/channels`, 'POST', { ...body, type: 0 });
-  if (!created.ok) {
-    const detail = await created.text();
-    console.error(`Announcements channel failed (${created.status}): ${detail.slice(0, 180)}`);
-    return '';
-  }
-  const row = await created.json();
-  return String(row.id || '');
+  return ensureGuildChannel({
+    token,
+    guildId,
+    existingId,
+    type: 0,
+    name: CHANNEL_NAME,
+    body,
+    label: 'Announcements channel',
+  });
 }
 
 /**

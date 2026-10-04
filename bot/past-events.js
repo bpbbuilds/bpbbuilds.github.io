@@ -5,6 +5,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ensureGuildChannel } from './channel-reconcile.js';
 
 const API = 'https://discord.com/api/v10';
 const FORUMS = '1554348111340511315';
@@ -75,18 +76,15 @@ async function ensureForum(token, guildId, existingId) {
     default_sort_order: 1,
     default_auto_archive_duration: 10080,
   };
-  if (existingId) {
-    const patched = await discord(token, `/channels/${existingId}`, 'PATCH', body);
-    if (patched.ok) return existingId;
-  }
-  const created = await discord(token, `/guilds/${guildId}/channels`, 'POST', { ...body, type: 15 });
-  if (!created.ok) {
-    const detail = await created.text();
-    console.error(`Past events forum failed (${created.status}): ${detail.slice(0, 180)}`);
-    return '';
-  }
-  const row = await created.json();
-  return String(row.id || '');
+  return ensureGuildChannel({
+    token,
+    guildId,
+    existingId,
+    type: 15,
+    name: CHANNEL_NAME,
+    body,
+    label: 'Past events forum',
+  });
 }
 
 /**

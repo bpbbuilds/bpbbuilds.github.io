@@ -6,12 +6,13 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ensureGuildChannel } from './channel-reconcile.js';
 import { listCatalogEvents } from '../js/pages/events/catalog-data.js';
 import { tabsForEvent } from '../js/pages/events/event-features.js';
 
 const API = 'https://discord.com/api/v10';
 const GOLD = 0xeac914;
-const SITE = 'https://bpbbuilds.github.io';
+const SITE = 'https://bpbbuilds.com';
 const READ_ONLY_DENY = '380104611840';
 const CHANNEL_NAME = '🏆│ᴇᴠᴇɴᴛꜱ™';
 const POLL_MS = 60_000;
@@ -298,18 +299,15 @@ async function ensureChannel(token, guildId, existingId) {
     topic: 'New events, starting soon, endings, and results. Messages here are turned off.',
     permission_overwrites: overwrites,
   };
-  if (existingId) {
-    const patched = await discord(token, `/channels/${existingId}`, 'PATCH', body);
-    if (patched.ok) return existingId;
-  }
-  const created = await discord(token, `/guilds/${guildId}/channels`, 'POST', { ...body, type: 0 });
-  if (!created.ok) {
-    const detail = await created.text();
-    console.error(`Events channel failed (${created.status}): ${detail.slice(0, 180)}`);
-    return '';
-  }
-  const row = await created.json();
-  return String(row.id || '');
+  return ensureGuildChannel({
+    token,
+    guildId,
+    existingId,
+    type: 0,
+    name: CHANNEL_NAME,
+    body,
+    label: 'Events channel',
+  });
 }
 
 /**
