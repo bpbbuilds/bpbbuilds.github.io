@@ -1379,3 +1379,14 @@ None.
 - The desktop Filter|Build rail now fills the catalog's usable height instead of stopping above the fixed sell chest. Its panel contents scale responsively (including the shorter 1366x768 case) so controls stay inside the rail; the Build panel remains independently scrollable for its full item groups.
 - While the rail is hovered or focused, the fixed sell chest fades out and is removed from hit testing, preventing accidental drops while the expanded Filter|Build area is active. Moving focus away restores it.
 - Validation: local Playwright checks at 2560x1440, 1920x1080, 1600x900, 1440x900, and 1366x768 showed matching catalog/rail floors, no Filter-panel descendant clipping, one desktop Parked row, and no page errors. 1024x768 and 390x844 retained the mobile two-row Parked layout. `git diff --check` passed. No commit/push was requested.
+
+### 2026-10-04 Events signature scrollbar claim (in progress)
+
+- Codex owns `js/pages/events/events.css` and this handoff for the Events scrollbar styling repair.
+- Scope: apply the existing image-based signature scrollbar to the Events document and the detail page's How-to-join scroller, with a standards fallback. No event content or interaction behavior is in scope.
+
+### 2026-10-04 Events signature scrollbar complete
+
+- Events now uses the same image-based track/thumb as the home page for the document scrollbar and the scrollable How-to-join panel. Non-WebKit browsers receive the matching gold/brown `scrollbar-color` fallback; mobile's non-scrolling How-to-join layout is unchanged.
+- Validation: Playwright loaded the Events detail page at 1440x900, 1920x1080, and 390x844 with no page errors. Both the root and How-to-join scrollbar pseudo-elements resolved to the signature track/thumb assets. `git diff --check` passed.
+- Pushed in commit `bd47bcb` (`Apply signature scrollbars and responsive page polish`).
