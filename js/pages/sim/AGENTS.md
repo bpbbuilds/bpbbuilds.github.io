@@ -23,6 +23,10 @@ or meters:
 Read `docs/sim/sim-1to1-audit.md`, `docs/sim/sim-validation.md`, and
 `docs/sim/sim-debug-protocol.md` before changing engine behavior. For an item
 report, also open that item's `.gd` file and every shared core file it calls.
+For every new or deepened item port, follow
+[`docs/sim/sim-item-porting.md`](../../../docs/sim/sim-item-porting.md) in
+full. It is the required evidence, implementation, regression, ledger, and
+handoff procedure; it exists specifically so a port task is safe to delegate.
 
 ## Implementation rules
 
@@ -46,6 +50,14 @@ report, also open that item's `.gd` file and every shared core file it calls.
 - Do not remove `paramChecks`, `ui.mismatches`, or widen expected fixture bands
   to make a report pass. A clean report is evidence only when its game source
   and fixture/capture support it.
+- Do not treat a handler registration, a green syntax check, or a plausible
+  end-HP total as a completed port. A port remains incomplete until its source
+  lifecycle, state/reset behavior, both-side path, event/UI projections, and
+  focused regression have been verified.
+- Keep combat state per placement (`piece`) or per correct-side actor. Never
+  use module-global state for an item or merge distinct copies by catalog id.
+- If an item calls a game operation that has no clearly matching shared helper,
+  stop and record a shared-engine gap instead of approximating it in one port.
 
 ## Required evidence
 
@@ -66,6 +78,10 @@ For every simulator behavior fix:
 5. Do not run artifact-writing full harnesses casually. If `sim-harness` or a
    fixture generator changes baseline files, inspect and stage only intended
    outputs; never overwrite a baseline just to pass.
+6. Run `node scripts/sim-continuous-audit.mjs --check --family <relevant-smoke>`
+   after the focused regression. Run the fixture mode when modifying the
+   harness or fixture data. Regenerate/check the fidelity ledger when an item's
+   source or completeness status changes.
 
 ## Honesty and maintenance
 

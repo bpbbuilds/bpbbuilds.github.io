@@ -1,0 +1,47 @@
+---
+description: Required evidence-first workflow for Backpack Battles simulator item ports
+globs: js/pages/sim/engine/**/*.js
+alwaysApply: true
+---
+
+# Simulator item-port rule
+
+Before adding or changing an item handler, read:
+
+- `js/pages/sim/AGENTS.md`
+- `docs/sim/sim-item-porting.md`
+- the exact `tools/game-extract-full/Items/**/*.gd` source and its inheritance
+- the called shared `tools/game-extract-full/Core/` behavior
+
+Do not begin from a tooltip, catalog field, another handler, or an audit count.
+The game extract is authoritative.
+
+## Hard requirements
+
+- Work one item or a source-proven tight family at a time. Do not rewrite a
+  whole port-wave module to add a single item.
+- Map every lifecycle hook, parameter, target/geometry rule, consume/reset,
+  and source call before coding. If any is unknown, leave the row incomplete
+  and report it; do not guess.
+- Use shared engine helpers for damage, stacks, cooldowns, board targeting,
+  events, and seeded RNG. Do not directly mutate visible actor state or add
+  item-specific event/log ordering hacks.
+- Keep per-copy state on `piece`, not module globals or an item-id map. Test
+  player and opponent paths.
+- Register a catalog id exactly once. Never leave an undefined import/export
+  or duplicate registry entry.
+- Visible behavior must emit the canonical event data required by Combat Log,
+  Damage Meter, HUD, scrubber, and JSON export.
+- Add a focused regression that checks source behavior, causal order, both
+  sides, and applicable UI projections.
+- Run `node --check` on changed modules, the focused family smoke,
+  `node scripts/audit-sim-gd-parity.mjs --require-triage`,
+  `node scripts/audit-sim-gd-calls.mjs`, and
+  `node scripts/sim-continuous-audit.mjs --check --family <smoke>`.
+- Never make a test pass by deleting checks, widening fixture bands, clearing
+  mismatch fields, or marking the ledger/backlog complete from handler presence.
+
+When source semantics require a missing shared helper or core behavior, stop
+the item port and create a named shared-engine follow-up with the source path
+and minimal reproduction. An explicitly incomplete port is safer than a
+plausible approximation.
