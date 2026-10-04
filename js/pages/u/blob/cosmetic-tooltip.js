@@ -95,8 +95,12 @@ export function cosmeticToTooltipItem(c) {
   const owner = String(c.owner || '').trim();
   if (artist) {
     parts.push(`Created by: ${artist}`);
-  } else if (owner) {
-    parts.push(`Created by: ${owner}`);
+  }
+  if (owner) {
+    // Keep uploader/ownership provenance visible even when it matches the
+    // artist. This is useful for re-shared or player-submitted cosmetics,
+    // where the creator and original owner are separate pieces of metadata.
+    parts.push(`Original owner: ${owner}`);
   }
 
   const added = formatAdded(c.added);

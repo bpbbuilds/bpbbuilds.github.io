@@ -928,3 +928,12 @@ None.
 - `cropSrcToContent` now requests anonymous CORS access for HTTP(S) cosmetic assets before canvas inspection, so Supabase-hosted uploads can be cropped instead of falling back to their blob-aligned source canvas.
 - Tooltip crop warming now refreshes an active hover when the asynchronous crop finishes. This makes the first hover converge to the item-only preview, while later uploads receive the same behavior automatically. Wardrobe/equip previews remain unchanged and continue using their full blob-aligned images.
 - Browser smoke verification against the live Cool Shades asset produced a cropped 28x8 PNG from its 128x128 source canvas; Premium Crown also produced a cropped item-only preview. Both touched modules pass `node --check`.
+
+### 2026-10-04 Original cosmetic owner tooltip credit claim (in progress)
+
+- Codex owns `js/pages/u/blob/cosmetic-tooltip.js` and this handoff for this focused renderer change. The existing catalog `owner` field is the original uploader/owner metadata, while `artist` is the creator credit; the tooltip will show both when they are different and avoid duplicating the same name.
+
+### 2026-10-04 Original cosmetic owner tooltip credit complete
+
+- Cosmetic tooltips now render `Created by: <artist>` plus `Original owner: <owner>` whenever catalog owner metadata exists. The owner line is preserved even when the creator and owner are the same, so provenance is never hidden; rows without owner metadata keep the existing artist credit.
+- The public catalog response supplies owner metadata for Cool Shades, and the bundled Premium Crown metadata supplies it as well. `cosmetic-tooltip.js` passes `node --check` and a focused renderer assertion confirms both lines are included and escaped by the existing tooltip renderer.
