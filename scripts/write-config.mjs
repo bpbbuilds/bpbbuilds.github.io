@@ -27,6 +27,7 @@ const createPortalUrl = `${baseFn}/create-portal`;
 const reportSimUrl = `${baseFn}/report-sim`;
 const screenshotToBuildUrl = `${baseFn}/screenshot-to-build`;
 const discordGuildUrl = `${baseFn}/discord-guild`;
+const cosmeticCatalogUrl = `${baseFn}/cosmetic-catalog`;
 const siteAccessMode = String(env.BPB_SITE_ACCESS_MODE || 'live').toLowerCase() === 'private'
   ? 'private'
   : 'live';
@@ -48,6 +49,7 @@ export const config = {
   reportSimUrl: ${JSON.stringify(reportSimUrl)},
   screenshotToBuildUrl: ${JSON.stringify(screenshotToBuildUrl)},
   discordGuildUrl: ${JSON.stringify(discordGuildUrl)},
+  cosmeticCatalogUrl: ${JSON.stringify(cosmeticCatalogUrl)},
 };
 `;
 

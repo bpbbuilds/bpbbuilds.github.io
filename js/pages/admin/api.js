@@ -105,6 +105,16 @@ export function listPublishedCosmetics(auth) {
   return adminRequest(auth, { action: 'cosmetics' });
 }
 
+/** Owner-only full catalog, including unpublished upload drafts. */
+export function listCosmeticCatalog(auth) {
+  return adminRequest(auth, { action: 'cosmetics_catalog' });
+}
+
+/** Owner-only image + metadata upload. The imageData field is a bounded data URL. */
+export function uploadCosmetic(auth, cosmetic) {
+  return adminRequest(auth, { action: 'upload_cosmetic', cosmetic });
+}
+
 /** Owner-only cosmetic catalog publish. */
 export function publishCosmetic(auth, cosmetic) {
   return adminRequest(auth, { action: 'publish_cosmetic', cosmetic });

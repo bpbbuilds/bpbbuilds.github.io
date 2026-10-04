@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 
 const API = 'https://discord.com/api/v10';
 const GOLD = 0xeac914;
-const SITE = 'https://bpbbuilds.github.io';
+const SITE = 'https://bpbbuilds.com';
 const READ_ONLY_DENY = '380104611840';
 const CHANNEL_NAME = '🎀│ᴄᴏꜱᴍᴇᴛɪᴄ ᴅʀᴏᴘꜱ™';
 const POLL_MS = 60_000;
@@ -240,7 +240,7 @@ async function postPending(config, forumId) {
     'Content-Type': 'application/json',
   };
   const listed = await fetch(
-    `${config.base}/rest/v1/cosmetic_drops?select=id,name,slot,rarity,grant,description,image&discord_message_id=is.null&order=published_at.asc&limit=5`,
+    `${config.base}/rest/v1/cosmetic_drops?select=id,name,slot,rarity,grant,description,image&published=eq.true&discord_message_id=is.null&order=published_at.asc&limit=5`,
     { headers },
   );
   if (!listed.ok) return;

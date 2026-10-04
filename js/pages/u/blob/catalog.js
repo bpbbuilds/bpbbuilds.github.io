@@ -4,6 +4,7 @@
 
 import { isBlobSlotId } from './slots.js';
 import { normalizePlan } from '../../../shared/entitlements.js';
+import { config } from '../../../shared/config.js';
 
 /** @typedef {import('./slots.js').BlobSlotId} BlobSlotId */
 
@@ -78,6 +79,46 @@ function resolveGrant(raw, starter) {
 }
 
 /**
+ * @param {any} raw
+ * @param {string} base
+ * @returns {BlobCosmetic | null}
+ */
+function normalizeCatalogItem(raw, base) {
+  const id = String(raw?.id || '').trim();
+  if (!id) return null;
+  const slotRaw = String(raw?.slot || '').trim();
+  if (!isBlobSlotId(slotRaw)) return null;
+  const starter = raw?.starter === true;
+  const resolveAsset = (rawPath) => {
+    const p = String(rawPath || '').trim();
+    if (!p) return '';
+    if (p.startsWith('http') || p.startsWith('data:')) return p;
+    return `${base}${p.replace(/^\//, '')}`;
+  };
+  const image = resolveAsset(raw?.image);
+  return {
+    id,
+    name: String(raw?.name || id).trim() || id,
+    slot: /** @type {BlobSlotId} */ (slotRaw),
+    kind: /** @type {BlobCosmeticKind} */ ('part'),
+    starter,
+    grant: resolveGrant(raw?.grant, starter),
+    swatch: String(raw?.swatch || '').trim() || '#8a5a2b',
+    image,
+    icon: resolveAsset(raw?.icon) || image,
+    rarity: String(raw?.rarity || 'Common').trim() || 'Common',
+    cost:
+      raw?.cost != null && Number.isFinite(Number(raw.cost))
+        ? Number(raw.cost)
+        : null,
+    description: String(raw?.description || '').trim(),
+    owner: String(raw?.owner || '').trim(),
+    artist: String(raw?.artist || '').trim(),
+    added: String(raw?.added || '').trim(),
+  };
+}
+
+/**
  * @param {string} root
  */
 export function loadBlobCatalog(root) {
@@ -90,44 +131,24 @@ export function loadBlobCatalog(root) {
     .then((r) => (r.ok ? r.json() : { items: [] }))
     .then((j) => {
       const items = Array.isArray(j?.items) ? j.items : [];
-      catalog = items
-        .map((raw) => {
-          const id = String(raw?.id || '').trim();
-          if (!id) return null;
-          const slotRaw = String(raw?.slot || '').trim();
-          if (!isBlobSlotId(slotRaw)) return null;
-          const starter = raw?.starter === true;
-          const resolveAsset = (rawPath) => {
-            const p = String(rawPath || '').trim();
-            if (!p) return '';
-            if (p.startsWith('http') || p.startsWith('data:')) return p;
-            return `${base}${p.replace(/^\//, '')}`;
-          };
-          const image = resolveAsset(raw?.image);
-          const icon = resolveAsset(raw?.icon) || image;
-          return {
-            id,
-            name: String(raw?.name || id).trim() || id,
-            slot: /** @type {BlobSlotId} */ (slotRaw),
-            kind: /** @type {BlobCosmeticKind} */ ('part'),
-            starter,
-            grant: resolveGrant(raw?.grant, starter),
-            swatch: String(raw?.swatch || '').trim() || '#8a5a2b',
-            image,
-            icon,
-            rarity: String(raw?.rarity || 'Common').trim() || 'Common',
-            cost:
-              raw?.cost != null && Number.isFinite(Number(raw.cost))
-                ? Number(raw.cost)
-                : null,
-            description: String(raw?.description || '').trim(),
-            owner: String(raw?.owner || '').trim(),
-            artist: String(raw?.artist || '').trim(),
-            added: String(raw?.added || '').trim(),
-          };
+      catalog = items.map((raw) => normalizeCatalogItem(raw, base)).filter(Boolean);
+      const endpoint = String(config.cosmeticCatalogUrl || '').trim();
+      if (!endpoint || endpoint.includes('YOUR_')) return catalog;
+      return fetch(endpoint, {
+        headers: { apikey: String(config.supabasePublishableKey || '') },
+        signal: AbortSignal.timeout(8000),
+      })
+        .then((res) => (res.ok ? res.json() : { items: [] }))
+        .then((live) => {
+          const merged = new Map(catalog.map((item) => [item.id, item]));
+          for (const raw of Array.isArray(live?.items) ? live.items : []) {
+            const item = normalizeCatalogItem(raw, base);
+            if (item) merged.set(item.id, item);
+          }
+          catalog = [...merged.values()];
+          return catalog;
         })
-        .filter(Boolean);
-      return catalog;
+        .catch(() => catalog);
     })
     .catch(() => {
       catalog = [];

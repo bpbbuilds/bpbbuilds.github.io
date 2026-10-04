@@ -5,6 +5,7 @@
 import { getSession } from '../../shared/auth.js';
 import { openCosmeticUploadModal } from '../../shared/cosmetic-upload-modal.js';
 import { loadBlobCatalog } from '../u/blob/catalog.js';
+import { bindCosmeticTooltips } from '../u/blob/cosmetic-tooltip.js';
 import { compositeTileHtml } from '../u/blob/wardrobe-markup.js';
 import {
   adminCosmeticFiltersHtml,
@@ -14,7 +15,12 @@ import {
   syncAdminCosmeticFilters,
 } from './cosmetics-filters.js';
 import { escapeHtml } from './row.js';
-import { listPublishedCosmetics, publishCosmetic } from './api.js';
+import {
+  listCosmeticCatalog,
+  listPublishedCosmetics,
+  publishCosmetic,
+  uploadCosmetic,
+} from './api.js';
 
 /** @typedef {import('../u/blob/catalog.js').BlobCosmetic} BlobCosmetic */
 
@@ -62,7 +68,7 @@ function catalogRowHtml(c, root, published) {
   const grant = grantLabel(c.grant || (c.starter ? 'starter' : null));
   return `
     <li class="admin-cosmetics__row">
-      <div class="admin-cosmetics__thumb" aria-hidden="true">${compositeTileHtml(c, root)}</div>
+      <div class="admin-cosmetics__thumb" data-blob-item="${escapeHtml(c.id)}" aria-label="${escapeHtml(c.name || c.id)}">${compositeTileHtml(c, root)}</div>
       <div class="admin-cosmetics__row-main">
         <p class="admin-cosmetics__name">${escapeHtml(c.name || c.id)}</p>
         <p class="admin-cosmetics__meta">
@@ -168,7 +174,7 @@ function paintBody(host, root, catalog, state, published) {
     <section class="admin-cosmetics__section" aria-labelledby="admin-cosmetics-upload-h">
       <h3 class="admin-cosmetics__section-title" id="admin-cosmetics-upload-h">Upload ours</h3>
       <p class="admin-cosmetics__hint">
-        Official Smojo cosmetics. Saving one does not announce it. Publish a catalog row when it should go out.
+        Official Smojo cosmetics. Upload saves a draft to the live catalog; Publish makes it public and announces it through the cosmetic drops channel.
       </p>
       <button type="button" class="cr-submit is-ready" data-admin-cos-upload-open>
         Upload cosmetic
@@ -190,9 +196,56 @@ function paintBody(host, root, catalog, state, published) {
   `;
 }
 
+/** @param {File} file @returns {Promise<string>} */
+function fileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      const value = String(reader.result || '');
+      if (!value.startsWith('data:image/')) reject(new Error('Choose a PNG or WebP image.'));
+      else resolve(value);
+    });
+    reader.addEventListener('error', () => reject(new Error('Could not read the cosmetic image.')));
+    reader.readAsDataURL(file);
+  });
+}
+
+/**
+ * Merge owner catalog rows without discarding the static catalog fallback.
+ * @param {BlobCosmetic[]} catalog
+ * @param {any[]} rows
+ */
+function mergeCatalogRows(catalog, rows) {
+  for (const raw of rows) {
+    const id = String(raw?.id || '').trim();
+    if (!id) continue;
+    const existing = catalog.find((item) => item.id === id);
+    const item = {
+      ...(existing || {}),
+      id,
+      name: String(raw?.name || existing?.name || id),
+      slot: String(raw?.slot || existing?.slot || 'hat'),
+      kind: 'part',
+      starter: raw?.starter === true || existing?.starter === true,
+      grant: String(raw?.grant || existing?.grant || '').trim() || null,
+      swatch: String(raw?.swatch || existing?.swatch || '#8a5a2b'),
+      image: String(raw?.image || existing?.image || ''),
+      icon: String(raw?.icon || raw?.image || existing?.icon || existing?.image || ''),
+      rarity: String(raw?.rarity || existing?.rarity || 'Common'),
+      cost: raw?.cost == null ? (existing?.cost ?? null) : Number(raw.cost),
+      description: String(raw?.description || existing?.description || ''),
+      owner: String(raw?.owner || existing?.owner || ''),
+      artist: String(raw?.artist || existing?.artist || ''),
+      added: String(raw?.added || existing?.added || ''),
+    };
+    if (existing) Object.assign(existing, item);
+    else catalog.push(/** @type {BlobCosmetic} */ (item));
+  }
+}
+
 /**
  * @param {HTMLElement} rootEl
- * @param {{ root: string, displayName?: string }} opts
+ * @param {{ root: string, displayName?: string, auth?: { mode: 'jwt', token: string }, catalog: BlobCosmetic[], state: import('./cosmetics-filters.js').AdminCosmeticFilterState, published: Set<string> }} opts
  */
 function bindUploadButton(rootEl, opts) {
   rootEl.addEventListener('click', (e) => {
@@ -204,12 +257,23 @@ function bindUploadButton(rootEl, opts) {
       role: 'admin',
       displayName: opts.displayName || 'Smojo Builds',
       root: opts.root,
-      onSubmit: (payload) => {
-        console.info('[admin-cosmetic-upload]', {
-          ...payload,
-          file: payload.file.name,
-          bytes: payload.file.size,
+      onSubmit: async (payload) => {
+        if (!opts.auth?.token) throw new Error('Sign in as the site owner to save a cosmetic.');
+        const imageData = await fileAsDataUrl(payload.file);
+        const result = await uploadCosmetic(opts.auth, {
+          id: payload.id,
+          name: payload.name,
+          slot: payload.slot,
+          grant: payload.grant,
+          rarity: payload.rarity,
+          artist: payload.artist,
+          description: payload.description,
+          imageData,
         });
+        const item = result?.cosmetic;
+        if (!item?.id) throw new Error('The cosmetic was not returned by the server.');
+        mergeCatalogRows(opts.catalog, [item]);
+        paintCatalog(rootEl, opts.root, opts.catalog, opts.state, opts.published);
       },
     });
   });
@@ -317,14 +381,19 @@ function bindQueueFilters(rootEl) {
 /** @type {() => void} */
 let unbindCosmeticsFilters = () => {};
 
+/** @type {() => void} */
+let unbindCosTips = () => {};
+
 /**
  * @param {HTMLElement} host
- * @param {{ root: string, displayName?: string }} opts
+ * @param {{ root: string, displayName?: string, auth?: { mode: 'jwt' | 'secret', token: string } }} opts
  */
 export async function mountCosmeticsPanel(host, opts) {
   const root = opts.root.endsWith('/') ? opts.root : `${opts.root}/`;
   unbindCosmeticsFilters();
   unbindCosmeticsFilters = () => {};
+  unbindCosTips();
+  unbindCosTips = () => {};
 
   host.innerHTML = `
     <section class="admin-panel admin-cosmetics" aria-label="Cosmetics">
@@ -337,13 +406,25 @@ export async function mountCosmeticsPanel(host, opts) {
   const status = host.querySelector('[data-admin-cosmetics-status]');
 
   try {
-    const catalog = await loadBlobCatalog(root);
+    const catalog = [...(await loadBlobCatalog(root))];
+    try {
+      const ownerCatalog = await listCosmeticCatalog(opts.auth);
+      mergeCatalogRows(catalog, Array.isArray(ownerCatalog?.items) ? ownerCatalog.items : []);
+    } catch {
+      /* static catalog remains available if the owner catalog is unavailable */
+    }
     const published = await loadPublishedIds(opts.auth);
     const filters = defaultAdminCosmeticFilters();
     paintBody(host, root, catalog, filters, published);
+    const tips = bindCosmeticTooltips(host, { catalog });
+    unbindCosTips = () => tips.destroy();
     bindUploadButton(host, {
       root,
       displayName: opts.displayName,
+      auth: opts.auth,
+      catalog,
+      state: filters,
+      published,
     });
     bindPublish(host, catalog, published, opts.auth);
     bindQueueFilters(host);

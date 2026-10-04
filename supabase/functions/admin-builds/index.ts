@@ -26,6 +26,8 @@ const PLACEMENT_SELECT = `
 `;
 
 const LIST_LIMIT = 100;
+const COSMETIC_SLOTS = new Set(['hat', 'face', 'neck', 'head', 'body', 'hand']);
+const COSMETIC_GRANTS = new Set(['starter', 'premium', 'founding', 'event']);
 
 type Filter = 'all' | 'pending_op' | 'featured' | 'hidden';
 
@@ -34,6 +36,7 @@ type Body = {
   slug?: string;
   filter?: Filter;
   eventSlug?: string;
+  cosmetic?: Record<string, unknown>;
 };
 
 Deno.serve(async (req) => {
@@ -102,6 +105,24 @@ Deno.serve(async (req) => {
   if (action === 'members') {
     return listMembers(supabase);
   }
+  if (action === 'cosmetics') {
+    const { data, error } = await supabase
+      .from('cosmetic_drops')
+      .select('id')
+      .eq('published', true)
+      .order('id');
+    if (error) return json({ error: 'Could not load published cosmetics' }, 500);
+    return json({ ids: (data || []).map((row) => String(row.id || '')).filter(Boolean) });
+  }
+  if (action === 'cosmetics_catalog') {
+    return listCosmeticCatalog(supabase);
+  }
+  if (action === 'upload_cosmetic') {
+    return uploadCosmetic(supabase, body.cosmetic);
+  }
+  if (action === 'publish_cosmetic') {
+    return publishCosmetic(supabase, body.cosmetic);
+  }
 
   const slug = String(body.slug || '').trim();
   if (!slug) return json({ error: 'slug is required' }, 400);
@@ -126,6 +147,152 @@ Deno.serve(async (req) => {
 });
 
 /**
+ * Public creator face for the build tooltip. Snapshot author_name stays if the profile is gone.
+ * @param {Record<string, unknown>} row
+ */
+function authorFace(row: Record<string, unknown>) {
+  const raw = row.profile;
+  const profile = Array.isArray(raw) ? raw[0] : raw;
+  const face =
+    profile && typeof profile === 'object'
+      ? (profile as Record<string, unknown>)
+      : null;
+  const avatar = String(face?.avatar_url || '').trim();
+  const equipped = face?.equipped_avatar != null ? String(face.equipped_avatar) : null;
+  const liveName = String(face?.display_name || '').trim();
+  const { profile: _profile, ...rest } = row;
+  return {
+    ...rest,
+    author_avatar_url: avatar || null,
+    author_equipped_avatar: equipped,
+    author_name: liveName || rest.author_name,
+  };
+}
+
+async function publishCosmetic(supabase: ReturnType<typeof createClient>, raw: Record<string, unknown> | undefined) {
+  const id = String(raw?.id || '').trim();
+  const name = String(raw?.name || '').trim();
+  if (!/^[a-z0-9][a-z0-9_-]{1,80}$/i.test(id) || !name || name.length > 120) {
+    return json({ error: 'Invalid cosmetic.' }, 400);
+  }
+  const row = {
+    id,
+    name,
+    slot: String(raw?.slot || '').trim().slice(0, 40),
+    rarity: String(raw?.rarity || '').trim().slice(0, 40),
+    grant: String(raw?.grant || '').trim().slice(0, 40),
+    description: String(raw?.description || '').trim().slice(0, 500),
+    image: String(raw?.image || '').trim().slice(0, 500),
+    artist: String(raw?.artist || '').trim().slice(0, 120),
+    owner: String(raw?.owner || '').trim().slice(0, 120),
+    kind: String(raw?.kind || 'part').trim().slice(0, 30) || 'part',
+    starter: raw?.starter === true,
+    swatch: String(raw?.swatch || '#8a5a2b').trim().slice(0, 32) || '#8a5a2b',
+    cost:
+      raw?.cost == null || raw?.cost === '' || !Number.isFinite(Number(raw.cost))
+        ? null
+        : Math.max(0, Math.round(Number(raw.cost))),
+    added: String(raw?.added || '').trim() || new Date().toISOString().slice(0, 10),
+    published: true,
+  };
+  const { error } = await supabase.from('cosmetic_drops').upsert(row, { onConflict: 'id' });
+  if (error) return json({ error: 'Could not publish cosmetic', detail: error.message }, 500);
+  return json({ ok: true, id });
+}
+
+async function listCosmeticCatalog(supabase: ReturnType<typeof createClient>) {
+  const { data, error } = await supabase
+    .from('cosmetic_drops')
+    .select('id,name,slot,rarity,grant,description,image,artist,owner,kind,starter,swatch,cost,added,published')
+    .order('name', { ascending: true });
+  if (error) return json({ error: 'Could not load cosmetic catalog', detail: error.message }, 500);
+  return json({ items: data || [] });
+}
+
+/**
+ * Save an owner-uploaded image and catalog metadata as an unpublished draft.
+ * The browser sends a bounded data URL so the service role never reaches the client.
+ */
+async function uploadCosmetic(
+  supabase: ReturnType<typeof createClient>,
+  raw: Record<string, unknown> | undefined,
+) {
+  const id = String(raw?.id || '').trim();
+  const name = String(raw?.name || '').trim();
+  const slot = String(raw?.slot || '').trim();
+  const grant = String(raw?.grant || 'starter').trim().toLowerCase() || 'starter';
+  const dataUrl = String(raw?.imageData || '').trim();
+  const match = /^data:(image\/(?:png|webp));base64,([A-Za-z0-9+/=\s]+)$/i.exec(dataUrl);
+  if (
+    !/^[a-z0-9][a-z0-9_-]{1,80}$/i.test(id) ||
+    !name ||
+    name.length > 120 ||
+    !COSMETIC_SLOTS.has(slot.toLowerCase()) ||
+    !COSMETIC_GRANTS.has(grant) ||
+    !match
+  ) {
+    return json({ error: 'Invalid cosmetic upload.' }, 400);
+  }
+  const mime = match[1].toLowerCase();
+  const encoded = match[2].replace(/\s+/g, '');
+  if (encoded.length > 4 * 1024 * 1024) return json({ error: 'Cosmetic image is too large.' }, 413);
+  let bytes: Uint8Array;
+  try {
+    const binary = atob(encoded);
+    bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+  } catch {
+    return json({ error: 'Cosmetic image data is invalid.' }, 400);
+  }
+  if (!bytes.length || bytes.length > 2 * 1024 * 1024) {
+    return json({ error: 'Cosmetic image must be 2 MB or smaller.' }, 413);
+  }
+
+  const bucket = 'cosmetic-assets';
+  const extension = mime === 'image/webp' ? 'webp' : 'png';
+  const objectPath = `cosmetic-drops/${id}.${extension}`;
+  const { data: existing, error: existingError } = await supabase
+    .from('cosmetic_drops')
+    .select('published')
+    .eq('id', id)
+    .maybeSingle();
+  if (existingError) return json({ error: 'Could not check cosmetic id', detail: existingError.message }, 500);
+  if (existing?.published === true) {
+    return json({ error: 'That cosmetic is already published. Choose a new id.' }, 409);
+  }
+  const { error: storageError } = await supabase.storage.from(bucket).upload(objectPath, bytes, {
+    contentType: mime,
+    cacheControl: '31536000',
+    upsert: true,
+  });
+  if (storageError) return json({ error: 'Could not save cosmetic image', detail: storageError.message }, 500);
+
+  const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
+  const row = {
+    id,
+    name,
+    slot: slot.slice(0, 40),
+    rarity: String(raw?.rarity || 'Common').trim().slice(0, 40),
+    grant,
+    description: String(raw?.description || '').trim().slice(0, 500),
+    image: `${supabaseUrl}/storage/v1/object/public/${bucket}/${objectPath}`,
+    artist: String(raw?.artist || '').trim().slice(0, 120),
+    owner: String(raw?.owner || '').trim().slice(0, 120),
+    kind: 'part',
+    starter: String(raw?.grant || '').trim().toLowerCase() === 'starter',
+    swatch: '#8a5a2b',
+    cost: null,
+    added: new Date().toISOString().slice(0, 10),
+    published: false,
+  };
+  const { error: rowError } = await supabase.from('cosmetic_drops').upsert(row, { onConflict: 'id' });
+  if (rowError) {
+    await supabase.storage.from(bucket).remove([objectPath]);
+    return json({ error: 'Could not save cosmetic catalog row', detail: rowError.message }, 500);
+  }
+  return json({ ok: true, cosmetic: row });
+}
+
+/**
  * @param {import('https://esm.sh/@supabase/supabase-js@2.49.1').SupabaseClient} supabase
  * @param {Filter | undefined} filter
  */
@@ -135,7 +302,9 @@ async function listBuilds(
 ) {
   let q = supabase
     .from('builds')
-    .select(BUILD_COLS)
+    .select(
+      `${BUILD_COLS}, author_id, profile:profiles!builds_author_id_fkey(discord_id, display_name, avatar_url, equipped_avatar)`,
+    )
     .order('created_at', { ascending: false })
     .limit(LIST_LIMIT);
 
@@ -183,7 +352,7 @@ async function listBuilds(
   }
 
   const out = builds.map((b) => ({
-    ...b,
+    ...authorFace(b),
     placements: byBuild.get(Number(b.id)) || [],
   }));
   return json({ builds: out }, 200);

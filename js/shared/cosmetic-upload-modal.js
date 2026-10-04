@@ -400,7 +400,7 @@ function createCosmeticUploadModal() {
           status.hidden = false;
           status.textContent =
             role === 'admin'
-              ? 'Saved locally for now — Storage + catalog publish lands with the review pipeline.'
+              ? 'Saved to the live catalog as a draft. Publish its catalog row when it is ready.'
               : 'Thanks — saved locally for now. Review / upload pipeline comes later.';
         }
         window.setTimeout(() => close(), 1400);

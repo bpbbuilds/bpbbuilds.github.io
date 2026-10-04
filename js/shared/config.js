@@ -15,4 +15,5 @@ export const config = {
   reportSimUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/report-sim",
   screenshotToBuildUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/screenshot-to-build",
   discordGuildUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/discord-guild",
+  cosmeticCatalogUrl: "https://xklkysmakrmgtiztsqug.supabase.co/functions/v1/cosmetic-catalog",
 };

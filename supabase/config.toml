@@ -36,3 +36,6 @@ verify_jwt = false
 # request before that signed-user check runs.
 [functions.discord-guild]
 verify_jwt = false
+
+[functions.cosmetic-catalog]
+verify_jwt = false
