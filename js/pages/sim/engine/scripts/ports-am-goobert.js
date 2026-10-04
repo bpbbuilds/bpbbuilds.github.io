@@ -176,7 +176,9 @@ const rainbowGoobertEngineerPort = variantGoobert('rainbow_goobert_engineer', (p
 });
 
 export const AM_GOOBERT_PORTS = {
-  goobling: goobertPort,
+  // Goobling.tscn reuses Goobert.gd; retain its catalog identity for source
+  // inventory/ledger ownership instead of reporting the generic base id.
+  goobling: { ...goobertPort, handlerId: 'goobling' },
   poison_goobert: poisonGoobertPort,
   chili_goobert: chiliGoobertPort,
   broccoli_goobert: broccoliGoobertPort,

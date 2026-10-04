@@ -1284,3 +1284,25 @@ None.
 - Verification: both profiles remain founding-eligible, the founding promo is
   started/open, and the founding counter remains `1 / 10`. No product files,
   migrations, or deployment configuration were changed.
+
+### 2026-10-04 flawed and flawless gem simulator port claim (in progress)
+
+- Codex owns `js/pages/sim/engine/scripts/ports-an-gems.js`, `js/pages/sim/engine/gem-sockets.js`, `scripts/extract-sim-item-inventory.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the focused flawed/flawless gem regression script, generated simulator inventory/ledger artifacts, the simulator port backlog/validation notes, and this handoff for this source-port task.
+- Scope: resolve `flawed_*` and `flawless_*` gem scene aliases/inheritance, port every source-proven inventory and socket lifecycle for both sides, add focused state/event/UI regressions, and update the ledger/backlog only after the required audits pass. No unrelated simulator or website behavior is in scope.
+
+### 2026-10-04 flawed and flawless gem simulator port complete (partial by source constraint)
+
+- Source records and explicit runtime handlers now cover `flawed_amethyst`, `flawed_emerald`, `flawed_ruby`, `flawless_amethyst`, `flawless_emerald`, `flawless_ruby`, and `flawless_topaz`. Their focused smoke verifies source aliases, parameters, inventory order, supported socket modes, event order, HUD stat output, and the Emerald opponent path.
+- `flawed_sapphire` and `flawless_sapphire` are source-resolved but intentionally remain incomplete. `Gems/Sapphire.gd` needs a shared `pre_deal_damage_late` dispatch to make the host strike spectral before damage; the existing after-hit approximation cannot be marked faithful. The ledger, backlog, and validation notes retain this named shared-engine follow-up.
+- Validation: focused smoke, module syntax checks, GDScript hook audit with zero untriaged gaps, call audit, ledger regeneration/check, and targeted whitespace check passed. Continuous audit is 15/16 only because the existing patch-drift baseline has not yet acknowledged this 42-item source review wave; it was not rewritten. No commit/push was made.
+
+### 2026-10-04 Goobling, card, and next gem simulator wave claim (in progress)
+
+- Codex owns `js/pages/sim/engine/scripts/ports-am-goobert.js`, `js/pages/sim/engine/scripts/ports-ao-cards.js`, `js/pages/sim/engine/scripts/ports-an-gems.js`, `scripts/extract-sim-item-inventory.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, focused smoke coverage, generated simulator inventory/ledger artifacts, the simulator port backlog/validation notes, and this handoff for `goobling`, `holo_fire_lizard`, `joker`, `perfect_*`, and `regular_amethyst`.
+- Scope: resolve source aliases/inheritance, validate or repair the exact named source lifecycle, preserve unresolved shared-core dependencies, and add focused evidence before changing any backlog state. No unrelated simulator or website behavior is in scope.
+
+### 2026-10-04 Goobling, card, and next gem simulator wave complete (partial by source constraint)
+
+- Goobling, Holo Fire Lizard, Perfect Amethyst/Emerald/Ruby/Topaz, and Regular Amethyst are source-resolved and source-ported with explicit handler/source ownership. Holo's factor -> effect damage -> Heat -> activation order and Joker's pair/triplet branches have focused regression coverage.
+- Joker remains incomplete for its direct quadruple `doRevealEffect()` calls because the engine only provides state-changing `Card.trigger`; Perfect Sapphire remains incomplete for the existing `pre_deal_damage_late` spectral socket gap. Both are retained as named source constraints in the ledger/backlog/validation notes.
+- Validation: focused gem and Goobling/card smoke tests, changed-module syntax checks, source audits, ledger regeneration/check, and `git diff --check` passed. Published in commit `6e58f32` (`Port simulator gem and card source waves`).

@@ -205,6 +205,38 @@ source calls are not reported as missing merely because they live outside the
 loose-gem handler module. This is source-port evidence, not a live capture or
 claim of complete game parity.
 
+## Flawed / Flawless gem source-port audit (2026-10-04)
+
+`Flawed*.tscn` and `Flawless*.tscn` are scene aliases over the base Gem
+scripts, not separate behavior scripts. The source inventory now records the
+exact scene-to-script mapping. `scripts/sim-flawed-flawless-gems-smoke.mjs`
+covers the requested tiers' parameters, inventory order, both-side Emerald
+path, effect-damage/lifesteal causal order, Topaz HUD stat event, and supported
+socket modes.
+
+Flawed and Flawless Sapphire remain deliberately incomplete: `Sapphire.gd`
+rolls at `pre_deal_damage_late`, calls `DamageSource.makeSpectral()` before the
+host strike resolves, then grants Mana/Cold only after a spectral hit. The
+engine has no late pre-deal dispatch, so its existing post-hit approximation
+cannot be called source-faithful. Shared-engine follow-up: add canonical
+late-pre-deal dispatch with source/placement/causal-event preservation, then
+port the Sapphire socket path and add a two-sided spectral/block regression.
+
+## Goobling, Holo Fire Lizard, Joker, and next gem source audit (2026-10-04)
+
+The source inventory now resolves Goobling's `Exclusive/Goobling.tscn` alias
+to `Goobert.gd`, the five Perfect gem aliases, and Regular Amethyst. The
+focused smoke retains Holo Fire Lizard's source order (effect-damage factor,
+effect damage, Heat, activation) and Joker's pair/triplet duplicate branches.
+
+Joker remains incomplete for its source quadruple branch: `Joker.gd` invokes
+another card's `doRevealEffect()` directly without changing its card reveal
+state. The simulator only has state-changing `Card.trigger`/cooldown dispatch,
+so using it would be an invented timing change. Shared-engine follow-up: add a
+causal, source-attributed doRevealEffect-only dispatch, then test seeded
+quadruple selection for both sides. Perfect Sapphire inherits the existing
+Sapphire late-pre-deal spectral gap.
+
 Band AH: `npm run sim-parity-fixtures` + harness `PARITY_PCT_FLOOR`. Inventory `depth` ≠ coverage `fidelity: parity` — parity ids are fixture-backed (`parityIds` in `sim-parity-inventory.json`).
 
 Combat log smoke: `npm run sim-log-smoke`.

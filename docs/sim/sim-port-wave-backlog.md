@@ -5,9 +5,9 @@ Generated from `assets/data/sim-fidelity-ledger.json` on 2026-10-04. This is the
 ## Current audited state
 
 - Catalog items: **519**
-- Source-ported (not fixture/live certified): **373**
-- Runtime port present but incomplete: **90**
-- Source unresolved: **29**
+- Source-ported (not fixture/live certified): **385**
+- Runtime port present but incomplete: **94**
+- Source unresolved: **13**
 - Deferred supported-mode gap: **1**
 - Intentional no-combat rows: **26** (not backlog work)
 - Lifecycle-hook gaps: **10**; call-review candidates: **47**; duplicate registrations: **21**.
@@ -37,24 +37,24 @@ These rows need the exact extract script/inheritance resolved before a port can 
 - [x] `chipped_topaz` - `Gems/ChippedTopaz.tscn` reuses `Gems/Topaz.gd` (`Gem`); prepare-inventory stamina regeneration plus socketed speed, stun-resistance, and crit-resistance modes resolved; handler: `chipped_topaz`; focused regression: `scripts/sim-chipped-gems-lotus-elephant-smoke.mjs`.
 - [x] `darkest_lotus` - `DarkestLotus.tscn`/`DarkestLotus.gd` (`Card`); chain-position mana and hostile buff removal now occur before card activation; handler: `darkest_lotus`; focused regression: `scripts/sim-chipped-gems-lotus-elephant-smoke.mjs`.
 - [x] `elephant_rune` - `Exclusive/ElephantRune.tscn`/`Exclusive/ElephantRune.gd` (`Gem`); inventory max-health consume, socketed stun, and timed armor debuff resistance resolved; handler: `elephant_rune`; focused regression: `scripts/sim-chipped-gems-lotus-elephant-smoke.mjs`.
-- [ ] `flawed_amethyst`
-- [ ] `flawed_emerald`
-- [ ] `flawed_ruby`
-- [ ] `flawed_sapphire`
-- [ ] `flawless_amethyst`
-- [ ] `flawless_emerald`
-- [ ] `flawless_ruby`
-- [ ] `flawless_sapphire`
-    50|- [ ] `flawless_topaz`
-- [ ] `goobling`
-- [ ] `holo_fire_lizard`
-- [ ] `joker`
-- [ ] `perfect_amethyst`
-- [ ] `perfect_emerald`
-- [ ] `perfect_ruby`
-- [ ] `perfect_sapphire`
-- [ ] `perfect_topaz`
-- [ ] `regular_amethyst`
+- [x] `flawed_amethyst` - `Gems/FlawedAmethyst.tscn` reuses `Gems/Amethyst.gd` (`Gem`); repeating inventory cleanse/activation and socketed buff removal/healing reduction resolved; handler: `flawed_amethyst`; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
+- [x] `flawed_emerald` - `Gems/FlawedEmerald.tscn` reuses `Gems/Emerald.gd` (`Gem`); inventory regeneration/consume and socketed poison/resistance modes resolved; handler: `flawed_emerald`; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
+- [x] `flawed_ruby` - `Gems/FlawedRuby.tscn` reuses `Gems/Ruby.gd` (`Gem`); inventory effect-damage lifesteal/consume and socketed lifesteal/healing-efficiency modes resolved; handler: `flawed_ruby`; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
+- [ ] `flawed_sapphire` - source resolved: `Gems/FlawedSapphire.tscn` -> `Gems/Sapphire.gd` (`Gem`). Inventory Cold/consume is covered, but socketed source behavior requires the missing core `pre_deal_damage_late` spectral dispatch; keep incomplete until that shared-engine gap is closed.
+- [x] `flawless_amethyst` - `Gems/FlawlessAmethyst.tscn` reuses `Gems/Amethyst.gd` (`Gem`); repeating inventory cleanse/activation and socketed buff removal/healing reduction resolved; handler: `flawless_amethyst`; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
+- [x] `flawless_emerald` - `Gems/FlawlessEmerald.tscn` reuses `Gems/Emerald.gd` (`Gem`); inventory regeneration/consume and socketed poison/resistance modes resolved; handler: `flawless_emerald`; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
+- [x] `flawless_ruby` - `Gems/FlawlessRuby.tscn` reuses `Gems/Ruby.gd` (`Gem`); inventory effect-damage lifesteal/consume and socketed lifesteal/healing-efficiency modes resolved; handler: `flawless_ruby`; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
+- [ ] `flawless_sapphire` - source resolved: `Gems/FlawlessSapphire.tscn` -> `Gems/Sapphire.gd` (`Gem`). Inventory Cold/consume is covered, but socketed source behavior requires the missing core `pre_deal_damage_late` spectral dispatch; keep incomplete until that shared-engine gap is closed.
+- [x] `flawless_topaz` - `Gems/FlawlessTopaz.tscn` reuses `Gems/Topaz.gd` (`Gem`); prepare-inventory stamina regeneration and socketed speed/stun/crit resistance modes resolved; handler: `flawless_topaz`; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
+- [x] `goobling` - `Exclusive/Goobling.tscn` reuses `Goobert.gd` (`Item`); peer-activation counter/heal lifecycle resolved under its own handler id; focused regression: `scripts/sim-goobling-cards-gems-smoke.mjs`.
+- [x] `holo_fire_lizard` - `HoloFireLizard.gd` (`Card`); effect-damage factor, effect damage, Heat, and activation order resolved; focused regression: `scripts/sim-goobling-cards-gems-smoke.mjs`.
+- [ ] `joker` - source resolved: `Exclusive/Joker.gd` (`Card`). Base random buffs plus pair Crit resistance and triplet stamina reduction are covered; the quadruple branch needs a safe `doRevealEffect`-only card dispatch rather than the state-changing `Card.trigger` path.
+- [x] `perfect_amethyst` - `Gems/PerfectAmethyst.tscn` reuses `Gems/Amethyst.gd` (`Gem`); inventory and supported socket paths resolved; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
+- [x] `perfect_emerald` - `Gems/PerfectEmerald.tscn` reuses `Gems/Emerald.gd` (`Gem`); inventory and supported socket paths resolved; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
+- [x] `perfect_ruby` - `Gems/PerfectRuby.tscn` reuses `Gems/Ruby.gd` (`Gem`); inventory and supported socket paths resolved; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
+- [ ] `perfect_sapphire` - source resolved: `Gems/PerfectSapphire.tscn` -> `Gems/Sapphire.gd` (`Gem`). Inventory Cold/consume is covered, but the socketed source path still requires core `pre_deal_damage_late` spectral dispatch.
+- [x] `perfect_topaz` - `Gems/PerfectTopaz.tscn` reuses `Gems/Topaz.gd` (`Gem`); inventory and supported socket paths resolved; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
+- [x] `regular_amethyst` - `Gems/RegularAmethyst.tscn` reuses `Gems/Amethyst.gd` (`Gem`); inventory and supported socket paths resolved; focused regression: `scripts/sim-flawed-flawless-gems-smoke.mjs`.
     60|- [ ] `regular_emerald`
 - [ ] `regular_ruby`
 - [ ] `regular_sapphire`

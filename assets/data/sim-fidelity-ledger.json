@@ -5,19 +5,19 @@
     "catalog": "scripts/_cache/game-items.json",
     "catalogSha256": "56cd189aab0be25e626651b168d55401a7abe6f5b2735fe68740edd027bdae13",
     "extractItemsSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
-    "inventoryExtractedAt": "2026-10-04T20:27:56.306Z",
+    "inventoryExtractedAt": "2026-10-04T21:19:52.354Z",
     "catalogItems": 519
   },
   "totals": {
     "catalogItems": 519,
-    "sourcePorted": 373,
-    "portPresentIncomplete": 90,
-    "sourceUnresolved": 29,
+    "sourcePorted": 385,
+    "portPresentIncomplete": 94,
+    "sourceUnresolved": 13,
     "noCombat": 26,
     "deferred": 1,
     "lifecycleHookGap": 10,
     "untriagedLifecycleHookGap": 0,
-    "callReviewCandidate": 47,
+    "callReviewCandidate": 46,
     "duplicateRegistration": 21
   },
   "rows": [
@@ -6662,14 +6662,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.8",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Amethyst.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/FlawedAmethyst.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "flawed_amethyst",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -6678,9 +6695,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -6694,14 +6711,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Emerald.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/FlawedEmerald.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "flawed_emerald",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -6710,9 +6744,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -6726,14 +6760,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Ruby.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/FlawedRuby.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "flawed_ruby",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -6742,9 +6793,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -6758,14 +6809,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Sapphire.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/FlawedSapphire.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "flawed_sapphire",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -6774,9 +6842,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
+      "status": "port_present",
       "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "knownDelta": "Socketed Sapphire requires Core pre_deal_damage_late spectral dispatch before damage resolution.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -6822,14 +6890,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.8",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Amethyst.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/FlawlessAmethyst.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "flawless_amethyst",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -6838,9 +6923,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -6854,14 +6939,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Emerald.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/FlawlessEmerald.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "flawless_emerald",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -6870,9 +6972,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -6886,14 +6988,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Ruby.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/FlawlessRuby.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "flawless_ruby",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -6902,9 +7021,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -6918,14 +7037,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Sapphire.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/FlawlessSapphire.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "flawless_sapphire",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -6934,9 +7070,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
+      "status": "port_present",
       "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "knownDelta": "Socketed Sapphire requires Core pre_deal_damage_late spectral dispatch before damage resolution.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -6950,14 +7086,28 @@
       "class": "Neutral",
       "gameVersion": "0.3.8",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Topaz.gd",
+        "extends": "Gem",
+        "family": "unique",
+        "overrides": [],
+        "directOverrides": [],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/FlawlessTopaz.tscn",
+        "sourceMethods": [
+          "prepareInventory",
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "flawless_topaz",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -6966,9 +7116,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -7795,15 +7945,28 @@
       "class": "Neutral",
       "gameVersion": "0.9.20",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Goobert.gd",
+        "extends": "Item",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/Goobling.tscn",
+        "sourceMethods": [
+          "canAffect"
+        ]
       },
       "sim": {
-        "runtimeHandler": "goobert",
+        "runtimeHandler": "goobling",
         "handlerModules": [
-          "js/pages/sim/engine/scripts/ports-wave-d-goobert.js"
+          "js/pages/sim/engine/scripts/ports-am-goobert.js"
         ],
         "coverageStatus": "dedicated",
         "depth": "deep"
@@ -7813,9 +7976,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -8994,17 +9157,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "changeStaminaFactor",
-            "why": "no token of stamina"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_ported",
-      "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: changeStaminaFactor.",
+      "status": "port_present",
+      "fidelity": "incomplete",
+      "knownDelta": "Joker quadruple branch requires Card.doRevealEffect-only dispatch; the engine currently only exposes state-changing Card.trigger.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -11493,14 +11651,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.8",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Amethyst.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/PerfectAmethyst.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "perfect_amethyst",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -11509,9 +11684,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -11525,14 +11700,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Emerald.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/PerfectEmerald.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "perfect_emerald",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -11541,9 +11733,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -11557,14 +11749,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Ruby.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/PerfectRuby.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "perfect_ruby",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -11573,9 +11782,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -11589,14 +11798,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Sapphire.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/PerfectSapphire.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "perfect_sapphire",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -11605,9 +11831,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
+      "status": "port_present",
       "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "knownDelta": "Socketed Sapphire requires Core pre_deal_damage_late spectral dispatch before damage resolution.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -11621,14 +11847,28 @@
       "class": "Neutral",
       "gameVersion": "0.3.8",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Topaz.gd",
+        "extends": "Gem",
+        "family": "unique",
+        "overrides": [],
+        "directOverrides": [],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/PerfectTopaz.tscn",
+        "sourceMethods": [
+          "prepareInventory",
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "perfect_topaz",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -11637,9 +11877,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -13601,14 +13841,31 @@
       "class": "Neutral",
       "gameVersion": "0.3.8",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Amethyst.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/RegularAmethyst.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "regular_amethyst",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
@@ -13617,9 +13874,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,

@@ -5,7 +5,7 @@
 import { applyEffectDmgFactor, applyHealEfficiency, changeCritStacks } from '../actor-stats.js';
 import { giveRandomBuffs, grantStacks, stealRandomBuff } from '../buff-economy.js';
 import { getP1, getP2, getPName } from '../params.js';
-import { addSpeed } from '../piece-stats.js';
+import { addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
 import { dealEffectDamage, stealLife } from './handlers.js';
 import {
@@ -199,12 +199,42 @@ const holoFireLizardPort = {
   },
 };
 
+function jokerChainCounts(piece, ctx) {
+  const before = chainCards(ctx, piece).slice(0, Math.max(0, chainIndex(piece)));
+  const counts = new Map();
+  for (const card of before) {
+    const id = String(card?.itemId || '');
+    if (id) counts.set(id, (counts.get(id) || 0) + 1);
+  }
+  let pairs = 0;
+  let triplets = 0;
+  let quads = 0;
+  for (const count of counts.values()) {
+    quads += Math.floor(count / 4);
+    const rest = count % 4;
+    triplets += Math.floor(rest / 3);
+    pairs += Math.floor((rest % 3) / 2);
+  }
+  return { pairs, triplets, quads };
+}
+
 const jokerPort = {
   handlerId: 'joker',
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     return revealCard(piece, ctx, () => {
       giveRandomBuffs(ctx.player, Math.max(1, Math.round(getPName(piece.params, 'buffs', 2))), ctx.rng, {});
+      const { pairs, triplets } = jokerChainCounts(piece, ctx);
+      if (pairs > 0) changeCritStacks(ctx.player, pairs, ctx, piece);
+      if (triplets > 0) {
+        const reduction = -getPName(piece.params, 'stamina', 0) * triplets / 100;
+        for (const other of ctx.pieces || []) multiplyStaminaCost(other, reduction);
+      }
+      // Joker.gd also directly invokes randomly selected non-Joker cards once
+      // per prior quadruple. The engine currently exposes only Card.trigger,
+      // which changes reveal/cooldown state; it has no safe doRevealEffect-only
+      // dispatch. Keep the quadruple branch visible in the ledger instead of
+      // substituting a trigger and changing source timing.
     });
   },
 };

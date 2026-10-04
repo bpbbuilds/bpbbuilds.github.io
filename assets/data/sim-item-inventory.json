@@ -1,8 +1,8 @@
 {
-  "extractedAt": "2026-10-04T20:27:56.306Z",
+  "extractedAt": "2026-10-04T21:19:52.354Z",
   "source": "tools/game-extract-full/Items",
   "scriptFileCount": 509,
-  "withCombatOverrides": 502,
+  "withCombatOverrides": 518,
   "byMethod": {
     "doCooldownEffect": 204,
     "doRevealEffect": 9,
@@ -115,6 +115,7 @@
       "fire_pit",
       "flame",
       "flame_badge",
+      "flawless_topaz",
       "flute",
       "forestfriend",
       "fortunas_kiss",
@@ -179,6 +180,7 @@
       "no_rush_please",
       "owl_spirit",
       "paradise_birb",
+      "perfect_topaz",
       "perpetuum_mobile",
       "phoenix2",
       "piercing_arrow",
@@ -301,8 +303,17 @@
       "doom_cap",
       "emerald",
       "fire_shelly",
+      "flawed_amethyst",
+      "flawed_emerald",
+      "flawed_ruby",
+      "flawed_sapphire",
+      "flawless_amethyst",
+      "flawless_emerald",
+      "flawless_ruby",
+      "flawless_sapphire",
       "fly_agaric",
       "garlic",
+      "goobling",
       "hawk_rune",
       "hyper_hedgehog",
       "king_crown",
@@ -310,6 +321,10 @@
       "mana_crystal",
       "mananana",
       "miss_fortune",
+      "perfect_amethyst",
+      "perfect_emerald",
+      "perfect_ruby",
+      "perfect_sapphire",
       "pineapple",
       "plastic_cube",
       "poison_goobert",
@@ -324,6 +339,7 @@
       "rainbow_goobert_ranger",
       "rat",
       "recombobulator",
+      "regular_amethyst",
       "relic_case",
       "repeater",
       "ruby",
@@ -5932,6 +5948,375 @@
         "prepareInventory",
         "prepareWeapon",
         "prepareArmor"
+      ]
+    },
+    "flawed_amethyst": {
+      "id": "flawed_amethyst",
+      "scriptStem": "Amethyst",
+      "file": "Gems/Amethyst.gd",
+      "sceneFile": "Gems/FlawedAmethyst.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ]
+    },
+    "flawed_emerald": {
+      "id": "flawed_emerald",
+      "scriptStem": "Emerald",
+      "file": "Gems/Emerald.gd",
+      "sceneFile": "Gems/FlawedEmerald.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "flawed_ruby": {
+      "id": "flawed_ruby",
+      "scriptStem": "Ruby",
+      "file": "Gems/Ruby.gd",
+      "sceneFile": "Gems/FlawedRuby.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "flawed_sapphire": {
+      "id": "flawed_sapphire",
+      "scriptStem": "Sapphire",
+      "file": "Gems/Sapphire.gd",
+      "sceneFile": "Gems/FlawedSapphire.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "flawless_amethyst": {
+      "id": "flawless_amethyst",
+      "scriptStem": "Amethyst",
+      "file": "Gems/Amethyst.gd",
+      "sceneFile": "Gems/FlawlessAmethyst.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ]
+    },
+    "flawless_emerald": {
+      "id": "flawless_emerald",
+      "scriptStem": "Emerald",
+      "file": "Gems/Emerald.gd",
+      "sceneFile": "Gems/FlawlessEmerald.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "flawless_ruby": {
+      "id": "flawless_ruby",
+      "scriptStem": "Ruby",
+      "file": "Gems/Ruby.gd",
+      "sceneFile": "Gems/FlawlessRuby.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "flawless_sapphire": {
+      "id": "flawless_sapphire",
+      "scriptStem": "Sapphire",
+      "file": "Gems/Sapphire.gd",
+      "sceneFile": "Gems/FlawlessSapphire.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "flawless_topaz": {
+      "id": "flawless_topaz",
+      "scriptStem": "Topaz",
+      "file": "Gems/Topaz.gd",
+      "sceneFile": "Gems/FlawlessTopaz.tscn",
+      "extends": "Gem",
+      "overrides": [],
+      "family": "unique",
+      "directOverrides": [],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareInventory",
+        "prepareWeapon",
+        "prepareArmor"
+      ]
+    },
+    "perfect_amethyst": {
+      "id": "perfect_amethyst",
+      "scriptStem": "Amethyst",
+      "file": "Gems/Amethyst.gd",
+      "sceneFile": "Gems/PerfectAmethyst.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ]
+    },
+    "perfect_emerald": {
+      "id": "perfect_emerald",
+      "scriptStem": "Emerald",
+      "file": "Gems/Emerald.gd",
+      "sceneFile": "Gems/PerfectEmerald.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "perfect_ruby": {
+      "id": "perfect_ruby",
+      "scriptStem": "Ruby",
+      "file": "Gems/Ruby.gd",
+      "sceneFile": "Gems/PerfectRuby.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "perfect_sapphire": {
+      "id": "perfect_sapphire",
+      "scriptStem": "Sapphire",
+      "file": "Gems/Sapphire.gd",
+      "sceneFile": "Gems/PerfectSapphire.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "perfect_topaz": {
+      "id": "perfect_topaz",
+      "scriptStem": "Topaz",
+      "file": "Gems/Topaz.gd",
+      "sceneFile": "Gems/PerfectTopaz.tscn",
+      "extends": "Gem",
+      "overrides": [],
+      "family": "unique",
+      "directOverrides": [],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareInventory",
+        "prepareWeapon",
+        "prepareArmor"
+      ]
+    },
+    "regular_amethyst": {
+      "id": "regular_amethyst",
+      "scriptStem": "Amethyst",
+      "file": "Gems/Amethyst.gd",
+      "sceneFile": "Gems/RegularAmethyst.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ]
+    },
+    "goobling": {
+      "id": "goobling",
+      "scriptStem": "Goobert",
+      "file": "Goobert.gd",
+      "sceneFile": "Exclusive/Goobling.tscn",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
       ]
     }
   }

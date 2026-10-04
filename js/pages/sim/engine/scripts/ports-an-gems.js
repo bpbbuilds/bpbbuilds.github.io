@@ -324,7 +324,48 @@ const elephantRunePort = {
   handlerId: 'elephant_rune',
 };
 
+// These scene aliases reuse one of the five base Gem scripts. Keep each
+// requested tier explicit: source audits can then tie its scene and handler
+// together without turning the generic family fallback into false evidence.
+const flawedAmethystPort = { ...amethystInventory('flawed_amethyst'), handlerId: 'flawed_amethyst' };
+const flawedEmeraldPort = { ...emeraldInventory('flawed_emerald'), handlerId: 'flawed_emerald' };
+const flawedRubyPort = { ...rubyInventory('flawed_ruby'), handlerId: 'flawed_ruby' };
+const flawedSapphirePort = { ...sapphireInventory('flawed_sapphire'), handlerId: 'flawed_sapphire' };
+const flawlessAmethystPort = {
+  ...amethystInventory('flawless_amethyst'),
+  handlerId: 'flawless_amethyst',
+};
+const flawlessEmeraldPort = {
+  ...emeraldInventory('flawless_emerald'),
+  handlerId: 'flawless_emerald',
+};
+const flawlessRubyPort = { ...rubyInventory('flawless_ruby'), handlerId: 'flawless_ruby' };
+const flawlessSapphirePort = {
+  ...sapphireInventory('flawless_sapphire'),
+  handlerId: 'flawless_sapphire',
+};
+const flawlessTopazPort = { ...topazInventory('flawless_topaz'), handlerId: 'flawless_topaz' };
+
+const EXPLICIT_TIER_PORTS = {
+  flawed_amethyst: flawedAmethystPort,
+  flawed_emerald: flawedEmeraldPort,
+  flawed_ruby: flawedRubyPort,
+  flawed_sapphire: flawedSapphirePort,
+  flawless_amethyst: flawlessAmethystPort,
+  flawless_emerald: flawlessEmeraldPort,
+  flawless_ruby: flawlessRubyPort,
+  flawless_sapphire: flawlessSapphirePort,
+  flawless_topaz: flawlessTopazPort,
+  perfect_amethyst: { ...amethystInventory('perfect_amethyst'), handlerId: 'perfect_amethyst' },
+  perfect_emerald: { ...emeraldInventory('perfect_emerald'), handlerId: 'perfect_emerald' },
+  perfect_ruby: { ...rubyInventory('perfect_ruby'), handlerId: 'perfect_ruby' },
+  perfect_sapphire: { ...sapphireInventory('perfect_sapphire'), handlerId: 'perfect_sapphire' },
+  perfect_topaz: { ...topazInventory('perfect_topaz'), handlerId: 'perfect_topaz' },
+  regular_amethyst: { ...amethystInventory('regular_amethyst'), handlerId: 'regular_amethyst' },
+};
+
 function portFor(id) {
+  if (EXPLICIT_TIER_PORTS[id]) return EXPLICIT_TIER_PORTS[id];
   switch (familyOf(id)) {
     case 'ruby':
       return id === 'chipped_ruby' ? chippedRubyPort : rubyInventory(id);
