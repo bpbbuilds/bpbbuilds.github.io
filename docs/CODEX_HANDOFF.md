@@ -960,3 +960,12 @@ None.
 - Admin stage mounts now use a fresh stage element for each tab request. The previous stage is detached before its async loader runs, so a slower Overview/Reports/etc. request can only finish in its detached node and cannot overwrite the newer tab's live content.
 - Reload, unauthorized, and panel-driven tab-change callbacks are scoped to the latest request as well; stale requests cannot trigger a second repaint after the user has switched tabs.
 - Preserved the existing cosmetic upload auth context change in `shell.js`. Validation: `node --check js/pages/admin/shell.js` and `git diff --check` pass.
+
+### 2026-10-04 Wave D syntax repair claim (in progress)
+
+- Codex owns `js/pages/sim/engine/scripts/ports-wave-d-unique.js` and this handoff to repair the malformed uncommitted Wave D module that blocks the Events/Simulator page at parse time. Existing simulator behavior will be restored from the last valid complete registry rather than replaced with a partial workaround.
+
+### 2026-10-04 Wave D syntax repair complete
+
+- Restored the complete ten-handler Wave D registry and removed the accidental source-line prefixes/partial rewrite that caused `Unexpected number` at the `useMana` import. No event-page behavior was changed beyond making the existing valid module loadable.
+- Validation: `node --check`, a real ESM import with all ten registry entries, `node scripts/sim-wave-d-smoke.mjs`, and `git diff --check` pass.
