@@ -8,7 +8,10 @@ import { buildSearchFieldHtml, mountBuildSearchInput } from '../../../shared/bui
 import { historyRunMatchesSearch, historyRunSearchRank, indexHistoryItemIds } from './history-search.js';
 import { buildRowModel } from './run-model.js';
 import { createRunRow, setRunRowSelected } from './run-row.js';
-import { loadHistoryCatalog } from '../history-decode.js';
+import {
+  ensureHistoryCatalogItems,
+  loadHistoryCatalog,
+} from '../history-decode.js';
 import { mountFilterDropdown } from './filter-dropdown.js';
 
 /**
@@ -194,6 +197,8 @@ export function mountHistoryRunList(opts) {
     listEl.replaceChildren();
     rowEls = [];
     const cat = await loadHistoryCatalog(base);
+    ensureHistoryCatalogItems(itemsById, cat);
+    searchInput.setItems([...itemsById.values()]);
     const list = filteredSummaries();
     if (!list.length) {
       const empty = document.createElement('p');

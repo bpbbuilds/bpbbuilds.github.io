@@ -190,6 +190,7 @@ export async function decodeHistoryRun(db, summary, root) {
   /** @type {HistoryDecodedRun['rounds']} */
   const rounds = [];
   let skipped = 0;
+  const unresolvedGids = new Set();
   while (stmt.step()) {
     const row = stmt.getAsObject();
     const buildInfo = String(row.buildInfo || '');
@@ -201,7 +202,10 @@ export async function decodeHistoryRun(db, summary, root) {
     /** @type {import('./draft-io.js').DraftPlacement[]} */
     const placements = [];
     data.items.forEach((it, i) => {
-      if (!it.id) return;
+      if (!it.id) {
+        unresolvedGids.add(String(it.gid));
+        return;
+      }
       const gems = resolveSocketGems(it.gems || [], cat);
       /** @type {import('./draft-io.js').DraftPlacement} */
       const p = {
@@ -239,6 +243,13 @@ export async function decodeHistoryRun(db, summary, root) {
   if (skipped > 0) {
     console.warn(
       `[history] run ${summary.runId}: skipped ${skipped} undecodable round(s); kept ${rounds.length}`,
+    );
+  }
+  if (unresolvedGids.size) {
+    console.warn(
+      `[history] run ${summary.runId}: unresolved item gid(s) ${[
+        ...unresolvedGids,
+      ].join(', ')}; those placements were omitted`,
     );
   }
 

@@ -5,7 +5,10 @@
 import { newPlacementKey, normalizeDraftHistory } from './draft-io.js';
 import { sumBoardGold } from './draft-gold.js';
 import { startingBagIdForLoadout } from '../../shared/starting-bags.js';
-import { loadHistoryCatalog } from './history-decode.js';
+import {
+  ensureHistoryCatalogItems,
+  loadHistoryCatalog,
+} from './history-decode.js';
 
 /**
  * @param {Map<string, object>} itemsById
@@ -35,6 +38,7 @@ function idFromGid(itemsById, gid, cat) {
 export async function applyHistoryRunToDraft(opts) {
   const { state, itemsById, run, root } = opts;
   const cat = await loadHistoryCatalog(root);
+  ensureHistoryCatalogItems(itemsById, cat);
 
   /** @type {import('./draft-io.js').DraftPlacement[] | undefined} */
   let source = Array.isArray(opts.placements) ? opts.placements : undefined;

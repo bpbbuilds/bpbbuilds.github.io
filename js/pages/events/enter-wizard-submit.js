@@ -3,7 +3,10 @@
  */
 
 import { startingBagIdForLoadout } from '../../shared/starting-bags.js';
-import { loadHistoryCatalog } from '../create/history-decode.js';
+import {
+  ensureHistoryCatalogItems,
+  loadHistoryCatalog,
+} from '../create/history-decode.js';
 import { normalizeDraftHistory } from '../create/draft-io.js';
 import { sumBoardGold } from '../create/draft-gold.js';
 import { publishDraft } from '../create/publish.js';
@@ -30,6 +33,7 @@ export async function submitEventEntry(opts) {
   const cat = await loadHistoryCatalog(opts.root);
   const run = opts.selectedRun;
   const catalog = opts.catalog;
+  ensureHistoryCatalogItems(catalog.itemsById, cat);
 
   /**
    * @param {number} gid

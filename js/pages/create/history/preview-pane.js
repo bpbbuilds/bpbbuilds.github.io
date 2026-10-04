@@ -10,6 +10,10 @@ import {
 import { BOARD_COLS, BOARD_ROWS } from '../collision.js';
 import { sumBoardGold } from '../draft-gold.js';
 import { decodeHistoryRun } from '../history-db.js';
+import {
+  ensureHistoryCatalogItems,
+  loadHistoryCatalog,
+} from '../history-decode.js';
 import { skelBar, skelBlock, skelRegion } from '../../../shared/skeleton.js';
 
 /**
@@ -208,6 +212,8 @@ export function mountHistoryPreview(opts) {
       setStatus('Decoding board…', true);
       busy = true;
       try {
+        const cat = await loadHistoryCatalog(base);
+        ensureHistoryCatalogItems(itemsById, cat);
         run = await decodeHistoryRun(db, summary, base);
         decodeCache.set(summary.runId, run);
       } catch (err) {

@@ -194,7 +194,26 @@ export function classToIndex(name) {
  *   emptySocket: number,
  *   magicRingGid: number | null,
  *   magicRingPersistBits: number,
+ *   historyOnly?: Record<string, HistoryHistoryOnlyItem>,
  * }} HistoryDecodeCatalog
+ */
+
+/**
+ * @typedef {{
+ *   id: string,
+ *   gid: number,
+ *   name: string,
+ *   rarity?: string | null,
+ *   type?: string | null,
+ *   class?: string | null,
+ *   extraTypes?: string[],
+ *   cost?: number | null,
+ *   image?: string | null,
+ *   shape?: number[][] | null,
+ *   sockets?: unknown,
+ *   params?: Record<string, unknown> | null,
+ *   releaseState?: string,
+ * }} HistoryHistoryOnlyItem
  */
 
 /** @type {HistoryDecodeCatalog | null} */
@@ -211,6 +230,26 @@ export async function loadHistoryCatalog(root) {
   if (!res.ok) throw new Error('Could not load history decode catalog.');
   catalogCache = /** @type {HistoryDecodeCatalog} */ (await res.json());
   return catalogCache;
+}
+
+/**
+ * Add items present in the game history encoding but intentionally absent from
+ * the live Supabase catalog. This keeps history imports lossless without
+ * publishing or exposing unreleased items in the normal catalog.
+ *
+ * @param {Map<string, object>} itemsById
+ * @param {HistoryDecodeCatalog} cat
+ * @returns {number}
+ */
+export function ensureHistoryCatalogItems(itemsById, cat) {
+  if (!(itemsById instanceof Map) || !cat?.historyOnly) return 0;
+  let added = 0;
+  for (const item of Object.values(cat.historyOnly)) {
+    if (!item?.id || itemsById.has(item.id)) continue;
+    itemsById.set(item.id, { ...item });
+    added += 1;
+  }
+  return added;
 }
 
 /**

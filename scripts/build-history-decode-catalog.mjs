@@ -1,6 +1,9 @@
 /**
  * Build assets/data/history-decode-catalog.json for client history.db decode.
- * Sources: scripts/_cache/ItemData.csv, library-layout.json, socket-offsets.json
+ * Sources: scripts/_cache/ItemData.csv, game-items.json, library-layout.json,
+ * socket-offsets.json. The game extract is also used for history-only items
+ * that are intentionally excluded from the live catalog (for example an
+ * unreleased item that can still occur in an older/newer history.db).
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -55,16 +58,56 @@ function splitCsvLine(line) {
 const csvPath = path.join(ROOT, 'scripts/_cache/ItemData.csv');
 const layoutPath = path.join(ROOT, 'assets/data/library-layout.json');
 const sockPath = path.join(ROOT, 'assets/data/socket-offsets.json');
+const gameItemsPath = path.join(ROOT, 'scripts/_cache/game-items.json');
 const outPath = path.join(ROOT, 'assets/data/history-decode-catalog.json');
 
 const rows = parseCsv(fs.readFileSync(csvPath, 'utf8'));
 const layout = JSON.parse(fs.readFileSync(layoutPath, 'utf8'));
 const sock = JSON.parse(fs.readFileSync(sockPath, 'utf8'));
+const gameItems = fs.existsSync(gameItemsPath)
+  ? JSON.parse(fs.readFileSync(gameItemsPath, 'utf8'))
+  : { items: [] };
 
 /** @type {Record<string, string>} */
 const gidToId = {};
 for (const o of layout.order || []) {
   if (o?.gid != null && o?.id) gidToId[String(o.gid)] = String(o.id);
+}
+
+// Keep the published layout as the authority for normal catalog IDs, then
+// fill any game IDs that are absent from that layout so history decoding does
+// not turn a valid game item into a null placement.
+for (const item of gameItems.items || []) {
+  if (item?.gid != null && item?.id && !gidToId[String(item.gid)]) {
+    gidToId[String(item.gid)] = String(item.id);
+  }
+}
+
+const layoutIds = new Set(
+  (layout.order || []).map((o) => String(o?.id || '')).filter(Boolean),
+);
+/** @type {Record<string, object>} */
+const historyOnly = {};
+for (const item of gameItems.items || []) {
+  if (!item?.id || item.gid == null || layoutIds.has(String(item.id))) continue;
+  // This metadata is deliberately scoped to history decoding. It is not a
+  // replacement for the live Supabase catalog and therefore does not make an
+  // unreleased item appear in the Items page or become publishable.
+  historyOnly[String(item.id)] = {
+    id: String(item.id),
+    gid: Number(item.gid),
+    name: String(item.name || item.displayName || item.id),
+    rarity: item.rarity || null,
+    type: item.type || null,
+    class: item.class || null,
+    extraTypes: Array.isArray(item.extraTypes) ? item.extraTypes : [],
+    cost: item.cost == null ? null : Number(item.cost),
+    image: item.image || null,
+    shape: Array.isArray(item.shape) ? item.shape : null,
+    sockets: item.sockets ?? null,
+    params: item.params && typeof item.params === 'object' ? item.params : null,
+    releaseState: item.releaseState || 'unreleased',
+  };
 }
 
 /** @type {Record<string, number>} */
@@ -96,6 +139,7 @@ if (magicRing) {
 const catalog = {
   numItems: rows.length,
   gidToId,
+  historyOnly,
   socketsById,
   gems,
   totalNumGems,
