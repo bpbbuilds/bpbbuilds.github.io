@@ -42,11 +42,11 @@ async function json(response) {
 }
 
 /**
- * Reuse or create one managed guild channel.
+ * Reuse one managed guild channel.
  *
  * The list request intentionally fails closed. If Discord cannot tell us what
- * already exists, creating another channel would be the least safe choice.
- * Existing resources are never deleted by this helper.
+ * already exists, changing the server would be the least safe choice.
+ * Existing resources are never created or deleted by this helper.
  *
  * @param {{
  *   token: string,
@@ -117,18 +117,6 @@ export async function ensureGuildChannel(options) {
     return id;
   }
 
-  const created = await request(
-    token,
-    `/guilds/${encodeURIComponent(guildId)}/channels`,
-    'POST',
-    { ...body, name, type },
-    fetchImpl,
-  );
-  if (!created.ok) {
-    const detail = await created.text().catch(() => '');
-    console.error(`${label} creation failed (${created.status}): ${detail.slice(0, 180)}`);
-    return '';
-  }
-  const row = await json(created);
-  return String(row?.id || '');
+  console.error(`${label} is missing; channel creation is disabled`);
+  return '';
 }

@@ -72,11 +72,10 @@ const base = {
     ...base,
     fetchImpl: fakeFetch([
       { method: 'GET', path: '/guilds/guild-1/channels', body: [{ id: 'other', type: 4, name: 'Other' }] },
-      { method: 'POST', path: '/guilds/guild-1/channels', body: { id: 'new-category' } },
     ], calls),
   });
-  assert.equal(id, 'new-category');
-  assert.deepEqual(calls.at(-1).body, { position: 2, name: 'Information', type: 4 });
+  assert.equal(id, '');
+  assert.equal(calls.some((call) => call.method === 'POST'), false);
 }
 
 {

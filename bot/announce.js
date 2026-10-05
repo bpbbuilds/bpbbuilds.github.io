@@ -9,7 +9,7 @@ import { moveCreatorIcons, useHostedCreatorIcon } from './announce-icon.js';
 import { embedDescription, fieldsWithLinks, foldLinksIntoPosts, showBuildInEmbeds, applyLinkColumns } from './announce-links.js';
 import { refreshItemMentions, withItemEmoji } from './announce-mentions.js';
 import { applyVoteButtons, voteComponentsFor } from './announce-votes.js';
-import { buildThumbPng, hostBoardImage, stillUrl } from './board-thumb.js';
+import { buildThumbPng, stillUrl } from './board-thumb.js';
 import {
   classEmojiId,
   classFieldValue,
@@ -381,7 +381,7 @@ async function postBody(config, build, tagIds, credit) {
     ? { name: clip(String(build.author_name || '').trim(), 256) }
     : null);
   const image = stillUrl(config, build);
-  const boardImage = credit?.boardUrl || (credit?.thumb ? '' : image);
+  const boardImage = credit?.thumb ? 'attachment://build.png' : image;
   const faceUrl = String(credit?.author?.icon_url || '');
   const faceThumb = /^https?:\/\//i.test(faceUrl) ? faceUrl : '';
   const applied = [];
@@ -426,15 +426,13 @@ async function postPending(config, known, tagIds, linked, creditState, thumbDone
     const credit = await creatorCredit(config, build);
     await useHostedCreatorIcon(config, build, credit);
     const thumb = await buildThumbPng(config, build);
-    credit.boardUrl = thumb ? await hostBoardImage(config, slug, thumb) : '';
-    credit.thumb = false;
-    const files = [];
+    credit.thumb = Boolean(thumb);
     const res = await postDiscord(
       config.token,
       `/channels/${config.forumId}/threads`,
       'POST',
       await postBody(config, build, tagIds, credit),
-      files.length ? files : null,
+      thumb ? [{ filename: 'build.png', bytes: thumb }] : null,
     );
     if (!res.ok) {
       const detail = await res.text();
@@ -511,4 +509,23 @@ export function startBuildAnnounce(env) {
     }
   };
   loop().catch((err) => console.error(err instanceof Error ? err.message : err));
+}
+
+/** Rebuild every public build thread after an intentional forum reset. */
+export async function repostBuilds(env) {
+  const config = announceConfig(env);
+  if (!config.token || !config.guildId || !config.base || !config.key) {
+    throw new Error('Build repost skipped: missing Discord or Supabase env');
+  }
+  await loadClassEmojis(config.token, config.guildId);
+  const tagIds = await ensureForum(config);
+  const known = {};
+  const linked = new Set();
+  const credit = {};
+  const thumbs = new Set();
+  let posted = 0;
+  do {
+    posted = await postPending(config, known, tagIds, linked, credit, thumbs);
+  } while (posted);
+  return Object.keys(known).length;
 }

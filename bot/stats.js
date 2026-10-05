@@ -11,7 +11,6 @@ import { ensureGuildChannel } from './channel-reconcile.js';
 const API = 'https://discord.com/api/v10';
 const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'stats.json');
 const NEWS = '1555345920000000000';
-const CONNECT_DENY = '1048576';
 const POLL_MS = 60_000;
 
 let categoryId = '';
@@ -170,22 +169,16 @@ async function ensureCounter(token, guildId, category, existingId, prefix, name,
     const current = await discord(token, `/channels/${id}`);
     if (!current.ok) id = '';
   }
-  const created = !id;
   if (!id) {
     const found = await findExisting(token, guildId, 2, category, prefix);
     if (found === null) return { id: '', created: false, renamed: false };
     id = found;
   }
   if (!id) {
-    id = await ensureChannel(token, guildId, '', 2, {
-      name: name || `${prefix}: 0`,
-      parent_id: category,
-      position,
-      permission_overwrites: [{ id: guildId, type: 0, allow: '0', deny: CONNECT_DENY }],
-    });
-    return { id, created: true, renamed: false };
+    console.error(`Website stats counter ${prefix} is missing; channel creation is disabled`);
+    return { id: '', created: false, renamed: false };
   }
-  if (!name) return { id, created, renamed: false };
+  if (!name) return { id, created: false, renamed: false };
   const current = await discord(token, `/channels/${id}`);
   if (!current.ok) return { id, created, renamed: false };
   const row = await current.json();
@@ -195,29 +188,7 @@ async function ensureCounter(token, guildId, category, existingId, prefix, name,
     const detail = await patched.text();
     console.error(`Stats rename failed (${patched.status}): ${detail.slice(0, 160)}`);
   }
-  return { id, created, renamed: patched.ok };
-}
-
-/**
- * @param {string} token
- * @param {string} guildId
- * @param {string} existingId
- * @param {number} type
- * @param {object} body
- */
-async function ensureChannel(token, guildId, existingId, type, body) {
-  if (existingId) {
-    const current = await discord(token, `/channels/${existingId}`);
-    if (current.ok) return existingId;
-  }
-  const created = await discord(token, `/guilds/${guildId}/channels`, 'POST', { ...body, type });
-  if (!created.ok) {
-    const detail = await created.text();
-    console.error(`Stats channel failed (${created.status}): ${detail.slice(0, 180)}`);
-    return '';
-  }
-  const row = await created.json();
-  return String(row.id || '');
+  return { id, created: false, renamed: patched.ok };
 }
 
 /**
