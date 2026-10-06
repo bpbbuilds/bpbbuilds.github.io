@@ -310,7 +310,7 @@ const poisonShortbowPort = {
 const serpentStaffPort = {
   handlerId: 'serpent_staff',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._serpAcc = 0;
     piece._serpMana = false;
     const chance = Number(piece.chance) || Number(ctx.itemsById.get(piece.itemId)?.chance) || 40;

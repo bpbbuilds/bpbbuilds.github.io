@@ -68,15 +68,14 @@ export const stonePort = {
       return true;
     }
     pushActivate(piece, ctx, 'stone', `Weapon: ${piece.name}`);
-    const strip = Math.max(
-      0,
-      Math.round(getPName(piece.params, 'blockremoval', getP1(piece.params, 4))),
-    );
-    if (strip) removeBlock(ctx.dummy, strip, ctx, piece);
     const raw = randInt(piece.damageMin, piece.damageMax, rng);
     dealHit(piece, ctx, raw);
     spendStoneAmmo(piece);
     return true;
+  },
+  onPreDealDamageLate(piece, ctx) {
+    const strip = Math.max(0, Math.round(getPName(piece.params, 'blockremoval', getP1(piece.params, 4))));
+    if (strip) removeBlock(ctx.dummy, strip, ctx, piece);
   },
 };
 

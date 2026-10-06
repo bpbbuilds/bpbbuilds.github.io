@@ -572,6 +572,14 @@ const WAVE_AU_DEEP = new Set([
   'ruby_whelp', 'sapphire_whelp', 'scale',
 ]);
 
+/** Band AV — final source-backed runtime backlog closure. */
+const WAVE_AV_DEEP = new Set([
+  'axe', 'blood_amulet', 'bloody_dagger', 'broccoli', 'broccotree',
+  'rib_saw_blade', 'serpent_staff', 'shepherds_crook', 'shovel', 'slice_of_toast',
+  'snowcake', 'spin_to_win', 'squirrel_archer', 'stone', 'thorn_bow', 'time_pendant',
+  'torch', 'ukulele', 'ultima', 'walrus_tusk', 'wisp',
+]);
+
 const DEEP = new Set([
   'broom',
   'banana',
@@ -616,6 +624,7 @@ const DEEP = new Set([
   ...WAVE_AS_DEEP,
   ...WAVE_AT_DEEP,
   ...WAVE_AU_DEEP,
+  ...WAVE_AV_DEEP,
 ]);
 
 /** @type {Record<string, { depth: string, notes: string }>} */
@@ -632,7 +641,9 @@ for (const id of ids) {
         : 'AK noop — shop/chess (not fake deep)';
   } else if (DEEP.has(id)) {
     depth = 'deep';
-    notes = WAVE_AT_DEEP.has(id)
+    notes = WAVE_AV_DEEP.has(id)
+      ? 'AV final runtime backlog source port from .gd'
+      : WAVE_AT_DEEP.has(id)
       ? 'AT source-port wave from .gd'
       : WAVE_AS_DEEP.has(id)
       ? 'AS source-port wave from .gd'

@@ -167,8 +167,10 @@ const squirrelArcherPort = {
 const thornBowPort = {
   handlerId: 'thorn_bow',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece) {
     piece._thornBonusN = 0;
+  },
+  onCombatStart(piece, ctx) {
     grantStacks(
       ctx.player,
       'spikes',

@@ -10,8 +10,8 @@
   },
   "totals": {
     "catalogItems": 519,
-    "sourcePorted": 470,
-    "portPresentIncomplete": 21,
+    "sourcePorted": 491,
+    "portPresentIncomplete": 0,
     "sourceUnresolved": 1,
     "noCombat": 26,
     "deferred": 1,
@@ -1041,15 +1041,15 @@
           "js/pages/sim/engine/scripts/ports-ap-perm.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -1833,15 +1833,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -1994,15 +1994,15 @@
           "js/pages/sim/engine/scripts/ports-ap-onhit.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -2548,15 +2548,15 @@
           "js/pages/sim/engine/scripts/ports-ap-lucky.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -2631,15 +2631,15 @@
           "js/pages/sim/engine/scripts/ports-ap-lucky.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -14362,15 +14362,15 @@
           "js/pages/sim/engine/scripts/ports-ap-perm.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -14861,15 +14861,15 @@
           "js/pages/sim/engine/scripts/ports-ap-onhit.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -15045,15 +15045,15 @@
           "js/pages/sim/engine/scripts/ports-ap-aura.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -15274,15 +15274,15 @@
           "js/pages/sim/engine/scripts/ports-ap-onhit.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -15427,15 +15427,15 @@
           "js/pages/sim/engine/scripts/ports-ap-regen.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -15721,7 +15721,7 @@
           "js/pages/sim/engine/scripts/ports-ap-cold.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
@@ -15733,8 +15733,8 @@
         ],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": "Source-call review candidate: dealEffectDamage.",
       "evidence": {
         "focusedRegression": null,
@@ -16345,15 +16345,15 @@
           "js/pages/sim/engine/scripts/ports-ap-mana.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -16495,15 +16495,15 @@
           "js/pages/sim/engine/scripts/ports-ap-basic.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -16806,7 +16806,7 @@
           "js/pages/sim/engine/scripts/ports-al-stones.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
@@ -16818,8 +16818,8 @@
         ],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": "Source-call review candidate: consume.",
       "evidence": {
         "focusedRegression": null,
@@ -17730,15 +17730,15 @@
           "js/pages/sim/engine/scripts/ports-ap-basic.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -18144,15 +18144,15 @@
           "js/pages/sim/engine/scripts/ports-an-accessories.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -18290,7 +18290,7 @@
           "js/pages/sim/engine/scripts/ports-ap-perm.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
@@ -18300,8 +18300,8 @@
           "js/pages/sim/engine/scripts/ports-ap-perm.js"
         ]
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -18444,15 +18444,15 @@
           "js/pages/sim/engine/scripts/ports-ap-cold.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -18481,15 +18481,15 @@
           "js/pages/sim/engine/scripts/ports-ap-lucky.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -18883,15 +18883,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -19533,7 +19533,7 @@
           "js/pages/sim/engine/scripts/ports-ap-lucky.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
@@ -19545,8 +19545,8 @@
         ],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": "Source-call review candidate: giveMaxHealth.",
       "evidence": {
         "focusedRegression": null,

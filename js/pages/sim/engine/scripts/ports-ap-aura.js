@@ -80,7 +80,7 @@ const crossbladesPort = {
 const shepherdsCrookPort = {
   handlerId: 'shepherds_crook',
   family: 'synergy_aura',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const prot = Number(piece.chance) || Number(ctx.itemsById.get(piece.itemId)?.chance) || 35;
     ctx.player.buffCleanseProtectChance = (Number(ctx.player.buffCleanseProtectChance) || 0) + prot;
     const resist =
@@ -88,6 +88,8 @@ const shepherdsCrookPort = {
     ctx.player.stackResist = ctx.player.stackResist || {};
     ctx.player.stackResist.blind = (Number(ctx.player.stackResist.blind) || 0) + resist;
     ctx.player.stackResist.cold = (Number(ctx.player.stackResist.cold) || 0) + resist;
+  },
+  onCombatStart(piece, ctx) {
     auraDamage(ctx, piece, getPName(piece.params, 'dam', getP1(piece.params, 2)), (o) =>
       canBeEmpoweredPiece(o),
     );

@@ -117,7 +117,7 @@ const snowcakePort = {
 const ukulelePort = {
   handlerId: 'ukulele',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const n = linked(ctx, piece).length;
     const spd = getPName(piece.params, 'speed', getPName(piece.params, 'p5', 10)) / 100;
     if (n && spd) addSpeed(piece, spd * n);

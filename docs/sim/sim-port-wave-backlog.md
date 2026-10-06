@@ -1,12 +1,12 @@
 # Simulator Package 4 port backlog
 
-Generated from `assets/data/sim-fidelity-ledger.json` on 2026-10-05. This is the evidence-first inventory of every simulator row that is not yet source-ported; it is not a parity claim.
+Generated from `assets/data/sim-fidelity-ledger.json` on 2026-10-06. This is the evidence-first inventory of every simulator row that is not yet source-ported; it is not a parity claim.
 
 ## Current audited state
 
 - Catalog items: **519**
-- Source-ported (not fixture/live certified): **470**
-- Runtime port present but incomplete: **21**
+- Source-ported (not fixture/live certified): **491**
+- Runtime port present but incomplete: **0**
 - Source unresolved: **1**
 - Deferred supported-mode gap: **1**
 - Intentional no-combat rows: **26** (not backlog work)
@@ -74,7 +74,7 @@ These rows need the exact extract script/inheritance resolved before a port can 
 - [x] `whetstone2` - `Exclusive/Whetstone2.tscn` reuses `Whetstone.gd`; start-of-battle linked empowerable weapons gain source-configured damage; handler: `whetstone2`; focused regression: `scripts/sim-lovers-tiger-unstable-whetstone-white-eyes-smoke.mjs`.
 - [x] `white_eyes_blue_dragon` - `White-EyesBlueDragon.gd` (`Card`); reveal grants chain-scaled Block, Cold, and opponent effect-damage reduction; handler: `white_eyes_blue_dragon`; focused regression: `scripts/sim-lovers-tiger-unstable-whetstone-white-eyes-smoke.mjs`.
 
-## Runtime port present but incomplete (57)
+## Runtime port completion history (0 incomplete)
     80|
 These rows have a registered handler but still need source/lifecycle/evidence completion.
 
@@ -151,38 +151,24 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [x] `ruby_whelp` - `RubyWhelp.gd`; pre-start reflect, combat-start Heat/activation, and inherited weapon path are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
 - [x] `sapphire_whelp` - `Exclusive/SapphireWhelp.gd`; start Mana and early successful-hit Mana spend into Block/non-Mana random buff are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
 - [x] `scale` - `Exclusive/Scale.gd`; prepare-time gold-linked speed/equilibrium and least-stack cooldown grant are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
-- [ ] `serpent_staff`
-- [ ] `shepherds_crook`
-- [ ] `shovel`
-- [ ] `slice_of_toast`
-   160|- [ ] `snowcake`
-- [ ] `spin_to_win`
-- [ ] `squirrel_archer`
+- [x] `serpent_staff`, `shepherds_crook`, `shovel`, `slice_of_toast`, `snowcake`, `spin_to_win`, and `squirrel_archer` - source lifecycle and cooldown paths reviewed; Serpent Staff and Shepherd's Crook now prepare source state before combat.
 - [x] `steel_goobert` - `SteelGoobert.gd`; caches source secondary empowerable targets in prepare before its cooldown damage/Block effect; focused regression: `scripts/sim-lifecycle-hook-closure-smoke.mjs`.
-- [ ] `stone`
-- [ ] `thorn_bow`
-- [ ] `time_pendant`
-- [ ] `torch`
+- [x] `stone`, `thorn_bow`, `time_pendant`, and `torch` - source timing and cooldown paths reviewed; Stone now strips Block at its source late-damage hook and Thorn Bow resets during prepare.
 - [x] `twine` - `Exclusive/Twine.gd`; prepares only source primary activation listeners and caches secondary chance count; focused regression: `scripts/sim-lifecycle-hook-closure-smoke.mjs`.
-- [ ] `ukulele`
-   170|- [ ] `ultima`
+- [x] `ukulele` and `ultima` - source prepare caches/lifecycle reviewed; Ukulele setup and Ultima's affected-type snapshot now run during prepare.
 - [x] `vampiric_gloves` - `VampiricGloves.gd`; resets source active state in prepare before cooldown Vampirism/speed work; focused regression: `scripts/sim-lifecycle-hook-closure-smoke.mjs`.
-- [ ] `walrus_tusk`
+- [x] `walrus_tusk` - source combat-start spikes and consume lifecycle reviewed.
 - [x] `wand_of_dissonance`
-- [ ] `wisp`
+- [x] `wisp` - inventory, weapon-socket, and armor-socket source modes reviewed; inventory nature speed now prepares before combat.
 
-## Next source audit list (2026-10-05)
+## Next source audit list (2026-10-06)
 
 Prioritized from the current source audit; base classes (`bow`, `card`, and
 `weapon`) stay shared-engine work, not item rows.
 
-1. `serpent_staff`, `shepherds_crook`, `shovel`, `slice_of_toast`,
-   `snowcake`, `spin_to_win`, `squirrel_archer`, `stone`, `thorn_bow`,
-   `time_pendant`, `torch`, `ukulele`, `ultima`, `walrus_tusk`, and `wisp`:
-   registered runtime handlers still lack focused source-port completion.
-2. Re-review call candidates after those waves, starting with `snowcake`
-   (`dealEffectDamage`) and `wisp` (`giveMaxHealth`); the remaining candidate
-   rows include intentional no-combat chess and generic shared-script entries.
+1. Re-review the 44 call-review candidates, beginning with shared generic
+   scripts and intentional no-combat chess rows; no item runtime port remains
+   incomplete.
 
 ## Deferred supported-mode gap (1)
 

@@ -1,11 +1,11 @@
 {
-  "builtAt": "2026-10-06T03:55:03.703Z",
+  "builtAt": "2026-10-06T22:45:51.927Z",
   "note": "Band AO — skills / spells / books / leftover catalog",
   "parityIds": [],
   "totals": {
     "hand": 554,
-    "deep": 474,
-    "shallow": 24,
+    "deep": 495,
+    "shallow": 3,
     "noop": 27
   },
   "byId": {
@@ -1526,8 +1526,8 @@
       "notes": "AN accessory/armor port from .gd"
     },
     "time_pendant": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "twine": {
       "depth": "deep",
@@ -1782,12 +1782,12 @@
       "notes": "AO skill/card/shield/spell port from .gd"
     },
     "broccoli": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "broccotree": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "charge_splitter": {
       "depth": "deep",
@@ -1810,12 +1810,12 @@
       "notes": "AS source-port wave from .gd"
     },
     "ultima": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "wisp": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "cauldron": {
       "depth": "deep",
@@ -1850,8 +1850,8 @@
       "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
     },
     "spin_to_win": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "burning_banner": {
       "depth": "deep",
@@ -1878,8 +1878,8 @@
       "notes": "AT source-port wave from .gd"
     },
     "slice_of_toast": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "burning_coal": {
       "depth": "deep",
@@ -1914,12 +1914,12 @@
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "snowcake": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "ukulele": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "doom_cap": {
       "depth": "deep",
@@ -1946,20 +1946,20 @@
       "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
     },
     "squirrel_archer": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "thorn_bow": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "stone": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "blood_amulet": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "cursed_hair_comb": {
       "depth": "deep",
@@ -2014,12 +2014,12 @@
       "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
     },
     "walrus_tusk": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "axe": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "double_axe": {
       "depth": "deep",
@@ -2042,16 +2042,16 @@
       "notes": "AS source-port wave from .gd"
     },
     "rib_saw_blade": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "torch": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "bloody_dagger": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "burning_sword": {
       "depth": "deep",
@@ -2070,8 +2070,8 @@
       "notes": "AS source-port wave from .gd"
     },
     "shovel": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "lucky_bow": {
       "depth": "deep",
@@ -2086,8 +2086,8 @@
       "notes": "AT source-port wave from .gd"
     },
     "serpent_staff": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "hero_sword": {
       "depth": "deep",
@@ -2098,8 +2098,8 @@
       "notes": "AQ source-port wave from .gd"
     },
     "shepherds_crook": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AV final runtime backlog source port from .gd"
     },
     "mananana": {
       "depth": "deep",

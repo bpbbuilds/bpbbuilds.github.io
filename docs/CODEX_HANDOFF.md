@@ -1757,3 +1757,12 @@ None.
 
 - Twine now caches only its source primary activation listeners and its secondary chance count during prepare; Steel Goobert caches secondary empowerable weapons; Vampiric Gloves initializes its source active state before combat. The source audit now reports zero item-level lifecycle-hook gaps.
 - Added `scripts/sim-lifecycle-hook-closure-smoke.mjs`, regenerated the fidelity ledger, and moved it to 470 source-ported rows with 21 incomplete runtime ports remaining. The next item wave starts with Serpent Staff through Wisp; generic Bow/Card/Weapon base classes remain shared-engine work.
+
+### 2026-10-06 final simulator runtime backlog claim (in progress)
+
+- Codex owns the 21 explicit runtime-port rows (`axe` through `wisp`) in their existing narrow simulator handler modules, the focused source-port smoke checks, `scripts/build-sim-parity-inventory.mjs`, generated simulator ledger/backlog artifacts, and this handoff. Scope is faithful completion of source-backed item handlers only; shared generic base classes remain out of scope.
+
+### 2026-10-06 final simulator runtime backlog complete
+
+- Completed all 21 runtime rows: 491 source-ported and zero runtime-incomplete rows. Source review corrected Serpent Staff and Shepherd's Crook prepare timing, Stone's late Block removal, Thorn Bow/Ukulele/Wisp prepare state, and Ultima's prepared affected-type snapshot; the remaining reviewed handlers already matched their source paths.
+- Added `scripts/sim-final-runtime-backlog-smoke.mjs`, regenerated the parity inventory and fidelity ledger, and updated the backlog. Targeted syntax checks, the new smoke, ledger check, and diff check pass. The audit now leaves only one source-unresolved row, one deferred supported-mode gap, and 44 call-review candidates—not incomplete runtime ports.

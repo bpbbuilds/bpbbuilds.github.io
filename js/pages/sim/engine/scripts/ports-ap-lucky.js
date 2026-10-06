@@ -427,13 +427,13 @@ const lightFlowerPort = {
 const ultimaPort = {
   handlerId: 'ultima',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const types = countTypes(ctx, piece);
+  onPrepare(piece, ctx) {
+    const types = piece._ultimaTypes = countTypes(ctx, piece);
     const spd = getPName(piece.params, 'speed', getPName(piece.params, 'p5', 75)) / 100;
     if (types.spell > 0 && spd) addSpeed(piece, spd * types.spell);
   },
   onCooldownEffect(piece, ctx) {
-    const types = countTypes(ctx, piece);
+    const types = piece._ultimaTypes || countTypes(ctx, piece);
     const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP1(piece.params, 2))));
     const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP2(piece.params, 2))));
     const cold = Math.max(1, Math.round(getPName(piece.params, 'cold', getP3(piece.params, 2))));
@@ -462,7 +462,7 @@ const ultimaPort = {
 const wispPort = {
   handlerId: 'wisp',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const n = linked(ctx, piece).filter((o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'nature'),
     ).length;
