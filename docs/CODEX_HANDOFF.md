@@ -1834,3 +1834,12 @@ None.
 - Added the explicit Card lifecycle: reset reveal state during prepare, deactivate every card before combat, and start the next card before deactivating/revealing the current one.
 - Routed every card port through the shared trigger helper, registered the `card` base handler, and removed the resolved Card hook-audit triage.
 - Added `scripts/sim-card-base-smoke.mjs`; it proves star-chain order and reveal/trigger/deactivation order.
+
+### 2026-10-06 support-class decision claim (in progress)
+
+- Codex owns the support-class decision record, its focused source-evidence audit, and the matching simulator TODO entry for `dragonegg`, `chesspiece`, `forestfriend`, `goldcounter`, `rotationspring`, `food`, `gemsocket`, `itempushzone`, `socketsnode`, and `bagborder`.
+
+### 2026-10-06 support-class decisions complete
+
+- Documented every extracted support class in `docs/sim/sim-base-support-classes.md`: Food, ForestFriend, and socketed combat behavior are supported; DragonEgg is shop progression with derived egg ports; ChessPiece remains the existing explicit board-AI boundary; the rest are UI/render/title-screen support.
+- Added `scripts/sim-base-support-classes-audit.mjs` to pin the source evidence and the relevant derived ports.
