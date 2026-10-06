@@ -33,6 +33,7 @@ import { snapshotPieceStats } from './piece-stats.js';
 import { collectPieceActivationAudits } from './report-weapon-audit.js';
 import { assignAllDeckChains } from './scripts/card-chain.js';
 import { armPieceCooldown, rearmAfterTrigger, rollIterationCooldown } from './cooldown.js';
+import { runWeaponInheritedHook } from './scripts/ports-wave-c-util.js';
 import { pieceSpeed } from './piece-stats.js';
 import { tickTemporaryStacks } from './buff-economy.js';
 import { bindBuffCombatLog, unbindBuffCombatLog, collapseDuplicateBuffLogs } from './buff-log.js';
@@ -399,11 +400,15 @@ export function simulateEngine(opts) {
   dummy._simT = COMBAT_DELAY;
   // Game Item.prepare(): chanceRng.reset() before onPrepare / combat-start scripts.
   for (const piece of pieces) {
-    piece.chanceRng?.reset?.();
     traceLifecycle('prepare', piece, 0);
     const script = getScriptHandler(piece.itemId);
     const prepareCtx = { ...ctxForPiece(piece, world), t: 0 };
-    script?.onPrepare?.(piece, prepareCtx);
+    if (piece.kind === 'weapon') {
+      runWeaponInheritedHook(piece, prepareCtx, 'prepare', script?.onPrepare);
+    } else {
+      piece.chanceRng?.reset?.();
+      script?.onPrepare?.(piece, prepareCtx);
+    }
   }
   const startOrder = buildCombatStartOrder(youPieces, themPieces, rng);
   /** @type {Map<string, number>} */
@@ -431,7 +436,11 @@ export function simulateEngine(opts) {
     const sc = ctxForPiece(piece, world);
     sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
     traceLifecycle('pre_combat_start', piece, COMBAT_DELAY);
-    script?.onPreCombatStart?.(piece, sc);
+    if (piece.kind === 'weapon') {
+      runWeaponInheritedHook(piece, sc, 'pre_combat_start', script?.onPreCombatStart);
+    } else {
+      script?.onPreCombatStart?.(piece, sc);
+    }
   }
   for (const piece of startOrder) {
     const script = getScriptHandler(piece.itemId);
@@ -440,7 +449,11 @@ export function simulateEngine(opts) {
     traceLifecycle('socket_combat_start', piece, COMBAT_DELAY);
     combatStartGemSockets(piece, sc);
     traceLifecycle('combat_start', piece, COMBAT_DELAY);
-    script?.onCombatStart?.(piece, sc);
+    if (piece.kind === 'weapon') {
+      runWeaponInheritedHook(piece, sc, 'combat_start', script?.onCombatStart);
+    } else {
+      script?.onCombatStart?.(piece, sc);
+    }
   }
   // Game Item.postCombatStart is a separate third pass after every item's
   // combatStart. Keep it explicit so post-start effects cannot accidentally

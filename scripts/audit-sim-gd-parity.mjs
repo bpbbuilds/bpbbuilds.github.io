@@ -111,11 +111,6 @@ const HOOK_TRIAGE = {
     owner: 'js/pages/sim/engine/scripts/ports-outliers.js',
     evidence: 'Items/VampiricGloves.gd:onPrepare only resets visual state; cooldown gameplay is ported.',
   },
-  weapon: {
-    status: 'inherited_base',
-    owner: 'js/pages/sim/engine/scripts/ports-wave-c-util.js',
-    evidence: 'Items/Weapon.gd:doCooldownEffect is the abstract stamina/attack base; concrete weapon ports call shared weaponStrike instead of registering Weapon itself.',
-  },
 };
 
 function loadJson(rel) {

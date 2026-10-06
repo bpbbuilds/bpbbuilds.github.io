@@ -10,6 +10,7 @@ import { randInt, rollPercent } from '../rng.js';
 import { rollItemChance } from '../chance.js';
 import { basicCd, doubleStrike, dealHit } from './handlers.js';
 import { pushActivate } from './ports-util.js';
+import { weaponBasePort } from './ports-wave-c-util.js';
 import { eventFoeSide, eventSideForPiece } from '../vs-board.js';
 import { MECH_PORTS } from './ports-mech.js';
 import { BUFF_PORTS } from './ports-buff.js';
@@ -816,6 +817,7 @@ export const oilLampPort = {
 
 /** @type {Record<string, ScriptHandler>} */
 export const PORT_HANDLERS = {
+  weapon: weaponBasePort,
   broom: broomPort,
   banana: bananaPort,
   hero_longsword: heroLongswordPort,

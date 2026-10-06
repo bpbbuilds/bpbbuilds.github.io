@@ -25,7 +25,7 @@ The simulator reaches 100% coverage only when every catalog item is classified a
 
 ## 3. Close shared-system coverage
 
-- [ ] Implement and test the shared `Weapon` behavior as an explicit engine surface, including stamina, attack, hit result, activation, and inherited hooks.
+- [x] Implement and test the shared `Weapon` behavior as an explicit engine surface: `weapon` now resolves to the shared stamina-gated strike handler, preserves source attack-then-activation order, and runs inherited prepare/pre-combat/combat-start hooks. Verified by `scripts/sim-weapon-base-smoke.mjs` on both board sides.
 - [ ] Implement and test the shared `Bow` prepare behavior and every derived bow path that depends on it.
 - [ ] Implement and test shared `Card` reveal/trigger/deactivation behavior and chain ordering.
 - [ ] Decide and document support for the remaining extracted base/support classes: `dragonegg`, `chesspiece`, `forestfriend`, `goldcounter`, `rotationspring`, `food`, `gemsocket`, `itempushzone`, `socketsnode`, and `bagborder`.

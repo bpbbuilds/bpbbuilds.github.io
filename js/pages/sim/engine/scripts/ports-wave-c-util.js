@@ -12,6 +12,24 @@ import { pushActivate } from './ports-util.js';
 export { rollItemChance, rollItemChance2 } from '../chance.js';
 
 /**
+ * Weapon.gd inherits Item's prepare/pre-combat/combat-start lifecycle. Keep
+ * that base path explicit even though concrete weapon ports supply their own
+ * item hooks.
+ *
+ * @param {object} piece
+ * @param {object} ctx
+ * @param {'prepare'|'pre_combat_start'|'combat_start'} phase
+ * @param {((piece: object, ctx: object) => void) | undefined} hook
+ */
+export function runWeaponInheritedHook(piece, ctx, phase, hook) {
+  if (phase === 'prepare') {
+    piece.chanceRng?.reset?.();
+    piece.damageRangeRng?.reset?.();
+  }
+  return hook?.(piece, ctx);
+}
+
+/**
  * @param {object} piece
  * @param {object} ctx
  * @param {string} handler
@@ -38,7 +56,6 @@ export function weaponStrike(piece, ctx, handler, opts = {}) {
       return false;
     }
   }
-  pushActivate(piece, ctx, handler, opts.label || `Weapon: ${piece.name}`);
   /** @type {{ ignoreBlock?: boolean, critChance?: number }} */
   let hitOpts = {};
   /** @type {((raw: number) => number) | null} */
@@ -72,9 +89,20 @@ export function weaponStrike(piece, ctx, handler, opts = {}) {
       onPreDealDamageEarly: opts.onPreDealDamageEarly,
     },
   );
+  // Weapon.gd.attack(): dealDamage() returns the hit result before activate().
+  pushActivate(piece, ctx, handler, opts.label || `Weapon: ${piece.name}`);
   if (typeof opts.afterHit === 'function') opts.afterHit(hit, piece, ctx);
   return true;
 }
+
+/** Weapon.gd's inherited cooldown implementation. */
+export const weaponBasePort = {
+  handlerId: 'weapon',
+  family: 'basic_weapon',
+  onCooldownEffect(piece, ctx) {
+    return weaponStrike(piece, ctx, 'weapon');
+  },
+};
 
 /**
  * Empty affect cells for spear-style block strip.

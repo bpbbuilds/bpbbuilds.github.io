@@ -1804,3 +1804,13 @@ None.
 - Audited all 14 shop/wearable rows against their extracted sources: direct scripts contain no independent `doCooldownEffect` or `onCombatStart`, and each reason is recorded in `assets/data/sim-intentional-noops.json`; catalog-only rows have explicit inventory evidence.
 - Audited all 12 ChessPiece rows: each extends `ChessPiece`, has no independent cooldown, and only exposes board-invoked capture/elimination effects. Added `scripts/sim-no-combat-source-audit.mjs`; source audit, noop audit, Flawed Topaz/Chess boundary smoke, ledger check, and diff check pass.
 - The roadmap's final unresolved/deferred/no-combat classification gate is now checked off: 0 unresolved, 0 deferred, and 26 individually evidenced no-combat rows.
+
+### 2026-10-06 shared Weapon engine claim (in progress)
+
+- Codex owns the shared simulator Weapon surface, its focused smoke test, the simulator coverage roadmap, and this handoff while making the extracted `Weapon.gd` lifecycle explicit: stamina gate, attack/damage result, activation, and inherited Item hooks. Scope is shared engine behavior only; Bow/Card systems and item-specific ports remain separate roadmap items.
+
+### 2026-10-06 shared Weapon engine complete
+
+- Registered the extracted `weapon` base with the shared `weaponStrike` surface. It now spends stamina before striking, returns the source hit result, then logs activation in `Weapon.gd.attack()` order.
+- Weapon pieces now route their inherited prepare, pre-combat-start, and combat-start hooks through the same explicit surface. The generic base is no longer a handlerless parity row; the audit now has 12 no-handler base/support rows, two hook gaps (`bow`, `card`), and zero untriaged hook gaps.
+- Added `scripts/sim-weapon-base-smoke.mjs`, covering source method shape, both board sides, starvation, attack-before-activation order, and inherited lifecycle calls. Focused weapon, final-backlog, noop, and ledger checks pass.
