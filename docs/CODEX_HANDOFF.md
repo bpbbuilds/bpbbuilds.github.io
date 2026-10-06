@@ -1738,3 +1738,4 @@ None.
 
 - The owner-gated Edge Function now mints a signed upload URL after validating only the event slug, asset kind, and allowed image MIME type. The browser uploads the already-bounded image directly to the existing `discord-builds` bucket, so image bytes no longer cross the Edge Function JSON limit.
 - Deployed `admin-builds` to project `xklkysmakrmgtiztsqug`. Changed browser modules pass `node --check`; the deployed simulator release's focused smokes and `git diff --check` pass. The full continuous simulator audit remains 13/15 only because its pre-existing 61-row patch-drift baseline and four stale hook-triage entries are intentionally unacknowledged.
+- Release commit `ed43204` (`Ship local simulator and create fixes`) is pushed to `main`; GitHub Pages verification found the Create CSS and priority-drop fix live, and the Northflank bot build completed successfully.
