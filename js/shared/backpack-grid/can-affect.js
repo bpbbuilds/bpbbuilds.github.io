@@ -382,6 +382,8 @@ export function evalRule(rule, target, ctx = {}) {
       return false;
     }
     case 'hasInventoryDuration':
+      if (target?.params?.dur != null) return true;
+      return Boolean(target?.hasInventoryDuration);
     case 'canStartNewRecipe':
       return Boolean(target?.[rule.op]);
     case 'colorIs':

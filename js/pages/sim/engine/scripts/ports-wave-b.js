@@ -298,24 +298,18 @@ export const mageHatPort = {
 export const timeMeltingPort = {
   handlerId: 'time_melting',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const bonusDur = getPName(piece.params, 'bonusdur', 10) / 100;
     const { graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
       if (!other.params) continue;
-      const hasDur =
-        other.params.dur != null ||
-        other.params.dur_cold != null ||
-        other.params.dur_blind != null ||
-        other.params.dur_unhealing != null;
-      if (!hasDur || !bonusDur) continue;
-      for (const key of Object.keys(other.params)) {
-        if (!/^dur/i.test(key)) continue;
-        other.params[key] = Number(other.params[key]) * (1 + bonusDur);
-      }
+      if (other.params.dur == null || !bonusDur) continue;
+      other.params.dur = Number(other.params.dur) * (1 + bonusDur);
     }
+  },
+  onCombatStart(piece, ctx) {
     const heat = Math.max(1, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 2))));
     grantStacks(ctx.player, 'heat', heat, {
       originKey: piece.placementKey,

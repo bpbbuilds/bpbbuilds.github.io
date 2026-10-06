@@ -651,6 +651,7 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
       data-block="${escapeAttr(item.block ?? '')}"
       data-chance="${escapeAttr(item.chance ?? '')}"
       data-stamina-cost="${escapeAttr(item.staminaCost ?? '')}"
+      data-has-inventory-duration="${item.params?.dur != null ? '1' : ''}"
       data-effect="${escapeAttr(item.effect ?? '')}"
       data-face="${r}"
       data-rarity="${escapeAttr(rarity)}"

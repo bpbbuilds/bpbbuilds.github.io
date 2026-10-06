@@ -192,6 +192,7 @@ export function bindRarityHover(root) {
       block: num(el.dataset.block),
       chance: num(el.dataset.chance),
       staminaCost: num(el.dataset.staminaCost),
+      hasInventoryDuration: el.dataset.hasInventoryDuration === '1',
       effect: el.dataset.effect || '',
     };
   }

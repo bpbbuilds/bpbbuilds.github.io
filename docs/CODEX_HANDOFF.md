@@ -1766,3 +1766,12 @@ None.
 
 - Completed all 21 runtime rows: 491 source-ported and zero runtime-incomplete rows. Source review corrected Serpent Staff and Shepherd's Crook prepare timing, Stone's late Block removal, Thorn Bow/Ukulele/Wisp prepare state, and Ultima's prepared affected-type snapshot; the remaining reviewed handlers already matched their source paths.
 - Added `scripts/sim-final-runtime-backlog-smoke.mjs`, regenerated the parity inventory and fidelity ledger, and updated the backlog. Targeted syntax checks, the new smoke, ledger check, and diff check pass. The audit now leaves only one source-unresolved row, one deferred supported-mode gap, and 44 call-review candidates—not incomplete runtime ports.
+
+### 2026-10-06 Time Melting star and lifecycle claim (in progress)
+
+- Codex owns `js/shared/backpack-grid/item-pieces.js`, `js/shared/backpack-grid/rarity-hover.js`, `js/pages/sim/engine/scripts/ports-wave-b.js`, a focused Time Melting regression, and this handoff while correcting Time Melting's duration-only star predicate and source prepare timing. Scope is the extracted `hasInventoryDuration()` rule (`descriptor.hasParam("dur")`) only.
+
+### 2026-10-06 Time Melting star and lifecycle complete
+
+- Root cause: board-item DOM omitted the source `hasInventoryDuration()` fact, so Time Melting’s valid `dur` targets failed the same CanAffect predicate used to light stars. Board pieces now stamp that fact, and the shared predicate also recognizes simulator item params.
+- Time Melting now modifies only source `dur` during prepare, then grants Heat at combat start. Added `scripts/sim-time-melting-smoke.mjs`; focused smoke, syntax checks, ledger check, and diff check pass.
