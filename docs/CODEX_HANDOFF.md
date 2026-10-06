@@ -1775,3 +1775,11 @@ None.
 
 - Root cause: board-item DOM omitted the source `hasInventoryDuration()` fact, so Time Melting’s valid `dur` targets failed the same CanAffect predicate used to light stars. Board pieces now stamp that fact, and the shared predicate also recognizes simulator item params.
 - Time Melting now modifies only source `dur` during prepare, then grants Heat at combat start. Added `scripts/sim-time-melting-smoke.mjs`; focused smoke, syntax checks, ledger check, and diff check pass.
+
+### 2026-10-06 simulator 100-percent coverage roadmap claim (in progress)
+
+- Codex owns `docs/sim/sim-100-coverage-todo.md` and this handoff while converting the latest fidelity-ledger audit into an ordered, verifiable completion checklist. This is documentation only; it does not claim unimplemented work as complete.
+
+### 2026-10-06 simulator 100-percent coverage roadmap complete
+
+- Added `docs/sim/sim-100-coverage-todo.md`: an ordered, evidence-first path from the current 491 source-ported rows through unresolved/deferred classifications, shared systems, static-call review, fixture/live validation, and an explicit 100-percent release gate.
