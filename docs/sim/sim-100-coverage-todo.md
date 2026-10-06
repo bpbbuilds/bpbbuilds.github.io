@@ -18,9 +18,9 @@ The simulator reaches 100% coverage only when every catalog item is classified a
 
 - [x] Resolve `flawed_topaz`: `FlawedTopaz.tscn` inherits `Gems/Topaz.gd`; inventory, weapon-socket, and armor-socket behavior are now represented by the explicit Topaz scene alias and smoke-tested.
 - [x] Resolve Chess Board: the simulator's supported-mode boundary is explicit—placement and cooldown visibility remain supported, while in-combat ChessPiece movement/capture AI is intentionally unsupported until board-state simulation exists. It is no longer an ambiguous deferred row.
-- [ ] Audit the 26 no-combat rows against their source and record why each has no simulator combat action:
-  - [ ] `amulet_unidentified`, `box_of_prosperity`, `box_of_riches`, `coins`, `customer_card`, `employee_uniform`, `engineer_bag_2`, `furcifer_prime`, `hypercube`, `leather_bag`, `lootbox`, `random_loadout_bag`, `snowman`, `unidentified_skill`.
-  - [ ] Chess-piece rows: `black_bishop`, `black_king`, `black_knight`, `black_pawn`, `black_queen`, `black_rook`, `white_bishop`, `white_king`, `white_knight`, `white_pawn`, `white_queen`, `white_rook`.
+- [x] Audit the 26 no-combat rows against their source and record why each has no simulator combat action; source evidence is captured in `assets/data/sim-intentional-noops.json` and verified by `scripts/sim-no-combat-source-audit.mjs`:
+  - [x] `amulet_unidentified`, `box_of_prosperity`, `box_of_riches`, `coins`, `customer_card`, `employee_uniform`, `engineer_bag_2`, `furcifer_prime`, `hypercube`, `leather_bag`, `lootbox`, `random_loadout_bag`, `snowman`, `unidentified_skill`.
+- [x] Chess-piece rows: `black_bishop`, `black_king`, `black_knight`, `black_pawn`, `black_queen`, `black_rook`, `white_bishop`, `white_king`, `white_knight`, `white_pawn`, `white_queen`, `white_rook`; each extends `ChessPiece`, has no independent cooldown, and exposes only board-invoked capture/elimination effects.
 - [ ] Change every remaining unresolved/deferred/no-combat decision into a tested final classification; unresolved and deferred are now zero, while the 26 no-combat classifications remain to be evidenced individually.
 
 ## 3. Close shared-system coverage

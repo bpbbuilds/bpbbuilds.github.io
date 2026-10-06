@@ -1794,3 +1794,12 @@ None.
 
 - Added the missing `FlawedTopaz.tscn` scene alias to the extracted inventory; it now resolves to inherited `Gems/Topaz.gd` with `prepareInventory`, `prepareWeapon`, and `prepareArmor`, and the ledger moved from 1 unresolved row to 0.
 - Reclassified Chess Board from `deferred` to an explicit `unsupported_mode`: placement and cooldown visibility remain supported, while in-combat ChessPiece movement/capture AI is documented as outside the simulator's supported mode. Added `scripts/sim-flawed-topaz-chess-boundary-smoke.mjs`; focused smoke, noop audit, syntax checks, ledger check, and final-backlog smoke pass. Current ledger: 492 source-ported, 0 unresolved, 0 deferred, 1 explicit unsupported mode.
+
+### 2026-10-06 no-combat source audit claim (in progress)
+
+- Codex owns the 26-row no-combat source audit, `scripts/sim-no-combat-source-audit.mjs`, `assets/data/sim-intentional-noops.json`, `docs/sim/sim-100-coverage-todo.md`, and this handoff while verifying every listed shop/wearable and ChessPiece source has no independent combat cooldown and recording the board-owned capture-effect boundary.
+
+### 2026-10-06 no-combat source audit complete
+
+- Audited all 14 shop/wearable rows against their extracted sources: direct scripts contain no independent `doCooldownEffect` or `onCombatStart`, and each reason is recorded in `assets/data/sim-intentional-noops.json`; catalog-only rows have explicit inventory evidence.
+- Audited all 12 ChessPiece rows: each extends `ChessPiece`, has no independent cooldown, and only exposes board-invoked capture/elimination effects. Added `scripts/sim-no-combat-source-audit.mjs`; source audit, noop audit, Flawed Topaz/Chess boundary smoke, ledger check, and diff check pass.

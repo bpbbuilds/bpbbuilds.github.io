@@ -1,6 +1,6 @@
 {
   "phase": 267,
-  "note": "Shop/wearable noops match GD (shop/drop only). Chess pieces have no own CD; board AI is deferred. Puzzlebags were false noops and are ported.",
+  "note": "Shop/wearable noops match GD (shop/drop only). Chess pieces have no own CD; board-owned capture/elimination effects require Chess Board movement AI, which is outside the simulator supported mode. Puzzlebags were false noops and are ported.",
   "shopNoCombat": [
     { "id": "coins", "gd": null, "why": "currency; no Item combat script in extract" },
     { "id": "customer_card", "gd": "Items/CustomerCard.gd", "why": "onCalcTradeChance only" },
