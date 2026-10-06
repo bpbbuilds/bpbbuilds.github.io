@@ -222,7 +222,7 @@ body.page-events #main {
   z-index: 0;
   isolation: isolate;
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.72fr);
   gap: 0;
   align-items: center;
   box-sizing: border-box;
@@ -251,6 +251,9 @@ body.page-events #main {
 
 .events-featured > .events-featured__body {
   z-index: 1;
+  align-self: center;
+  height: 90%;
+  overflow-y: auto;
 }
 
 /* OptionsFont chrome — same recipe as Build Info */
@@ -2793,6 +2796,8 @@ body.page-events #main {
   .events-featured__body {
     width: 100%;
     margin-left: 0;
+    height: auto;
+    overflow-y: hidden;
     padding: 1.15rem 1.2rem 1.25rem;
   }
 
