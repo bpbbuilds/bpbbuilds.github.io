@@ -14,6 +14,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'premium.json');
 const HEADER = path.join(ROOT, 'assets', 'brand', 'logo-bpb.png');
 const NEWS = '1555346068298924052';
+const ORIGINAL_MESSAGE_ID = '1555374705970516002';
 const READ_ONLY_DENY = '380104611840';
 const CHANNEL_NAME = '👑│ᴘʀᴇᴍɪᴜᴍ™';
 
@@ -166,7 +167,7 @@ export async function syncPremium(env) {
   channelId = nextChannel;
   const imageUrl = await hostHeader({ base, key });
   const body = payload(imageUrl);
-  let messageId = state.messageId;
+  let messageId = ORIGINAL_MESSAGE_ID;
   if (messageId) {
     const patched = await discord(token, `/channels/${nextChannel}/messages/${messageId}`, 'PATCH', body);
     if (!patched.ok && patched.status !== 404) {

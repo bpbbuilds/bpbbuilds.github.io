@@ -13,6 +13,7 @@ const SITE = 'https://bpbbuilds.com';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'quest.json');
 const HEADER = path.join(ROOT, 'assets', 'brand', 'logo-bpb.png');
+const ORIGINAL_MESSAGE_ID = '1555379010844762124';
 const READ_ONLY_DENY = '380104611840';
 const CHANNEL_NAME = '🧭│ǫᴜᴇꜱᴛ™';
 
@@ -169,7 +170,7 @@ export async function syncQuest(env) {
   channelId = nextChannel;
   const imageUrl = await hostHeader({ base, key });
   const body = payload(imageUrl);
-  let messageId = state.messageId;
+  let messageId = ORIGINAL_MESSAGE_ID;
   if (messageId) {
     const patched = await discord(token, `/channels/${nextChannel}/messages/${messageId}`, 'PATCH', body);
     if (!patched.ok && patched.status !== 404) {

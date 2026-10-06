@@ -17,6 +17,7 @@ const WELCOME = '1554348212423368835';
 // when a deployment has lost bot/data/rules.json or that state points at a
 // duplicate created by an older bot image.
 const CANONICAL_RULES_CHANNEL_ID = '1555345682678943829';
+const ORIGINAL_MESSAGE_ID = '1555345685203779666';
 const READ_ONLY_DENY = '380104611840';
 const CHANNEL_NAME = '📜│ʀᴜʟᴇꜱ™';
 const SCREENING_DESCRIPTION = 'Unofficial fan server for Backpack Battles. It is not affiliated with the game or its developers and publishers.';
@@ -194,7 +195,7 @@ export async function syncRules(env) {
   channelId = nextChannel;
   const imageUrl = await hostHeader({ base, key });
   const body = payload(imageUrl);
-  let messageId = state.messageId;
+  let messageId = ORIGINAL_MESSAGE_ID;
   if (messageId) {
     const patched = await discord(token, `/channels/${nextChannel}/messages/${messageId}`, 'PATCH', body);
     if (!patched.ok && patched.status !== 404) {
