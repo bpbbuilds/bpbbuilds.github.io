@@ -48,60 +48,8 @@ const HOOK_MAP = {
 /** Hooks that only matter out of combat — never a parity gap. */
 const OUT_OF_COMBAT = new Set(['addToInventory', 'onShopEntered', 'combatEnd']);
 
-/**
- * Source-reviewed dispositions for every current hook-audit finding.
- *
- * A disposition never suppresses `missing`: the raw hook difference remains
- * visible. It records why that difference is harmless, already carried by a
- * different simulator mechanism, or a real behavior gap with an owner.
- */
-const HOOK_TRIAGE = {
-  carrot_goobert: {
-    status: 'intentional_noncombat',
-    owner: 'js/pages/sim/engine/scripts/ports-pet.js',
-    evidence: 'Items/CarrotGoobert.gd:onPrepare only resets visual state/particles; the gameplay cooldown effect is ported.',
-  },
-  chainsaw: {
-    status: 'intentional_noncombat',
-    owner: 'js/pages/sim/engine/scripts/ports-ai-a.js',
-    evidence: 'Items/Exclusive/Chainsaw.gd:onPrepare only sets animation state; its early damage hook and charge behavior are separate port hooks.',
-  },
-  coil: {
-    status: 'equivalent_implementation',
-    owner: 'js/pages/sim/engine/scripts/ports-an-gadgets.js',
-    evidence: 'Items/Exclusive/Coil.gd:onPrepare resets an activation counter; every simulator run creates a fresh piece and _coilN starts absent/zero.',
-  },
-  dragon_knight: {
-    status: 'equivalent_implementation',
-    owner: 'js/pages/sim/engine/combat-activate.js',
-    evidence: 'Items/Exclusive/DragonKnight.gd:onPrepare registers affected activated listeners; notifyPeerActivations filters affected placements before onPeerActivated.',
-  },
-  twine: {
-    status: 'equivalent_implementation',
-    owner: 'js/pages/sim/engine/combat-activate.js',
-    evidence: 'Items/Exclusive/Twine.gd:onPrepare registers affected activated listeners; notifyPeerActivations performs the same affected-placement filter.',
-  },
-  ruby_chonk: {
-    status: 'equivalent_implementation',
-    owner: 'js/pages/sim/engine/scripts/ports-ap-basic.js',
-    evidence: 'Items/RubyChonk.gd:onPrepare registers a Heat visual-state listener; port checks the current Heat threshold at the source on-dealt-damage transition.',
-  },
-  ruby_egg: {
-    status: 'equivalent_implementation',
-    owner: 'js/pages/sim/engine/scripts/ports-am-eggs.js',
-    evidence: 'Items/RubyEgg.gd start effect is routed through inherited egg/item lifecycle; port explicitly applies reflect pre-start and heat/activate at combat start.',
-  },
-  steel_goobert: {
-    status: 'equivalent_implementation',
-    owner: 'js/pages/sim/engine/scripts/ports-aura.js',
-    evidence: 'Items/SteelGoobert.gd:onPrepare caches affected weapons; port evaluates the same static affected set when its cooldown fires.',
-  },
-  vampiric_gloves: {
-    status: 'intentional_noncombat',
-    owner: 'js/pages/sim/engine/scripts/ports-outliers.js',
-    evidence: 'Items/VampiricGloves.gd:onPrepare only resets visual state; cooldown gameplay is ported.',
-  },
-};
+/** Source-review records exist only for currently missing hooks. */
+const HOOK_TRIAGE = {};
 
 function loadJson(rel) {
   return JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));

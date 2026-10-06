@@ -1843,3 +1843,11 @@ None.
 
 - Documented every extracted support class in `docs/sim/sim-base-support-classes.md`: Food, ForestFriend, and socketed combat behavior are supported; DragonEgg is shop progression with derived egg ports; ChessPiece remains the existing explicit board-AI boundary; the rest are UI/render/title-screen support.
 - Added `scripts/sim-base-support-classes-audit.mjs` to pin the source evidence and the relevant derived ports.
+
+### 2026-10-06 hook-gap cleanup claim (in progress)
+
+- Codex owns the strict hook-gap audit cleanup and its matching simulator TODO/handoff update. Scope is removing obsolete triage records only; no unrelated port behavior is being changed.
+
+### 2026-10-06 hook-gap cleanup complete
+
+- Removed all stale hook-triage suppressions now that the raw GDScript-to-JS audit is zero-gap. Strict `audit-sim-gd-parity.mjs --require-triage` now passes with zero raw, untriaged, and stale gaps.

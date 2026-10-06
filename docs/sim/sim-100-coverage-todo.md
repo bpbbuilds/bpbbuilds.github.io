@@ -29,7 +29,7 @@ The simulator reaches 100% coverage only when every catalog item is classified a
 - [x] Implement and test the shared `Bow` prepare behavior and every derived bow path that depends on it: `Bow.gd` now selects/caches its first affected weapon during prepare, and `bow_and_arrow`, `lucky_bow`, `poison_bow`, and `thorn_bow` listen only to that target. Verified by `scripts/sim-bow-base-smoke.mjs`.
 - [x] Implement and test shared `Card` reveal/trigger/deactivation behavior and chain ordering: the shared Card lifecycle now resets reveal state, deactivates all cards before the Deck starts its first card, and starts the next card before applying the current reveal effect. Verified by `scripts/sim-card-base-smoke.mjs`.
 - [x] Decide and document support for the remaining extracted base/support classes: `dragonegg`, `chesspiece`, `forestfriend`, `goldcounter`, `rotationspring`, `food`, `gemsocket`, `itempushzone`, `socketsnode`, and `bagborder`; decisions and evidence are in `docs/sim/sim-base-support-classes.md`, verified by `scripts/sim-base-support-classes-audit.mjs`.
-- [ ] Remove all untriaged hook gaps; generic-base gaps may only close when their derived items run through the implemented base behavior.
+- [x] Remove all untriaged hook gaps; `node scripts/audit-sim-gd-parity.mjs --require-triage` now reports zero raw, untriaged, and stale gaps. Generic Weapon and Card bases run through explicit engine inheritance, with Bow behavior covered by its base prepare path.
 
 ## 4. Review the static call candidates
 
