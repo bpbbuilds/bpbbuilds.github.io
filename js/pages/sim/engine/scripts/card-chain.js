@@ -3,6 +3,7 @@
  */
 
 import { affectedTargets } from '../board-graph.js';
+import { deactivateCooldown } from '../cooldown.js';
 import { itemHasType } from './ports-util.js';
 
 /**
@@ -129,4 +130,49 @@ export function assignAllDeckChains(ctx) {
   for (const piece of ctx.pieces || []) {
     if (piece.itemId === 'deck_of_cards') assignChain(ctx, piece);
   }
+}
+
+/** Card.prepare() resets per-combat reveal state. */
+export function prepareCard(piece, ctx) {
+  piece._revealing = false;
+  piece._revealed = false;
+  piece._secondaryActive = cardSecondaryEffectActive(piece, []);
+}
+
+/** Card.preCombatStart() keeps every card idle until its chain predecessor fires. */
+export function deactivateCard(piece) {
+  deactivateCooldown(piece);
+}
+
+/** Card.startActivation() arms exactly one face-down card. */
+export function startCardActivation(piece) {
+  if (!piece || piece._revealing || piece._revealed) return false;
+  const cd = Number(piece.baseCooldown);
+  const delay = Number.isFinite(cd) && cd > 0 && cd < 500 ? Math.max(0.35, cd) : 1.5;
+  piece._cdLocked = false;
+  piece._revealing = true;
+  piece.cooldown = delay;
+  piece.triggerTime = delay;
+  return true;
+}
+
+/**
+ * Card.trigger(): start the next card, reveal/deactivate this card, then run
+ * the concrete doRevealEffect. Keeping this order makes chained cards stable.
+ */
+export function triggerCard(piece, ctx, revealEffect) {
+  if (!piece || piece._revealed) return true;
+  startCardActivation(getNextCard(ctx, piece));
+  piece._revealing = false;
+  piece._revealed = true;
+  deactivateCooldown(piece);
+  revealEffect?.(piece, ctx);
+  return true;
+}
+
+/** Explicit inherited Card lifecycle used by every derived card port. */
+export function runCardInheritedHook(piece, ctx, hook, derived) {
+  if (hook === 'prepare') prepareCard(piece, ctx);
+  if (hook === 'pre_combat_start') deactivateCard(piece);
+  derived?.(piece, ctx);
 }

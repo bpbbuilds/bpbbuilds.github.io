@@ -56,11 +56,6 @@ const OUT_OF_COMBAT = new Set(['addToInventory', 'onShopEntered', 'combatEnd']);
  * different simulator mechanism, or a real behavior gap with an owner.
  */
 const HOOK_TRIAGE = {
-  card: {
-    status: 'inherited_base',
-    owner: 'js/pages/sim/engine/scripts/card-chain.js',
-    evidence: 'Items/Card.gd:trigger is shared card-chain behavior; simulator builds and advances card chains without a catalog Card base handler.',
-  },
   carrot_goobert: {
     status: 'intentional_noncombat',
     owner: 'js/pages/sim/engine/scripts/ports-pet.js',

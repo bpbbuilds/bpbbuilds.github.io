@@ -1824,3 +1824,13 @@ None.
 - Added the explicit `Bow.gd` prepare surface: it selects and caches the first affected weapon in star-cell order, then attaches the attacked listener before combat-start effects.
 - Moved Bow and Arrow, Poison Bow, and Thorn Bow listeners into prepare. Lucky Bow now correctly arms its extra strike from the prepared weapon's critical hit (and does not fire when its stamina gate fails).
 - Registered the `bow` base handler and added `scripts/sim-bow-base-smoke.mjs`, which covers first-target selection and all four derived Bow paths. Focused Bow, Shortbow, Wave C, final-backlog, and ledger checks pass; the parity audit now has one hook gap: `card`.
+
+### 2026-10-06 shared Card engine claim (in progress)
+
+- Codex owns shared Card simulator work: `js/pages/sim/engine/scripts/card-chain.js`, `js/pages/sim/engine/scripts/ports-ao-cards.js`, its handler registration/audit wiring if needed, its focused smoke, and the matching simulator TODO entry.
+
+### 2026-10-06 shared Card engine complete
+
+- Added the explicit Card lifecycle: reset reveal state during prepare, deactivate every card before combat, and start the next card before deactivating/revealing the current one.
+- Routed every card port through the shared trigger helper, registered the `card` base handler, and removed the resolved Card hook-audit triage.
+- Added `scripts/sim-card-base-smoke.mjs`; it proves star-chain order and reveal/trigger/deactivation order.

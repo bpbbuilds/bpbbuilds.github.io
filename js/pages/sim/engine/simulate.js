@@ -31,7 +31,7 @@ import { tickTimedResistances } from './timed-resistance.js';
 import { tickBattleRage } from './battle-rage.js';
 import { snapshotPieceStats } from './piece-stats.js';
 import { collectPieceActivationAudits } from './report-weapon-audit.js';
-import { assignAllDeckChains } from './scripts/card-chain.js';
+import { assignAllDeckChains, runCardInheritedHook } from './scripts/card-chain.js';
 import { armPieceCooldown, rearmAfterTrigger, rollIterationCooldown } from './cooldown.js';
 import { runWeaponInheritedHook } from './scripts/ports-wave-c-util.js';
 import { pieceSpeed } from './piece-stats.js';
@@ -405,6 +405,8 @@ export function simulateEngine(opts) {
     const prepareCtx = { ...ctxForPiece(piece, world), t: 0 };
     if (piece.kind === 'weapon') {
       runWeaponInheritedHook(piece, prepareCtx, 'prepare', script?.onPrepare);
+    } else if (piece.kind === 'card') {
+      runCardInheritedHook(piece, prepareCtx, 'prepare', script?.onPrepare);
     } else {
       piece.chanceRng?.reset?.();
       script?.onPrepare?.(piece, prepareCtx);
@@ -438,6 +440,8 @@ export function simulateEngine(opts) {
     traceLifecycle('pre_combat_start', piece, COMBAT_DELAY);
     if (piece.kind === 'weapon') {
       runWeaponInheritedHook(piece, sc, 'pre_combat_start', script?.onPreCombatStart);
+    } else if (piece.kind === 'card') {
+      runCardInheritedHook(piece, sc, 'pre_combat_start', script?.onPreCombatStart);
     } else {
       script?.onPreCombatStart?.(piece, sc);
     }

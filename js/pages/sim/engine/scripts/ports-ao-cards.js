@@ -18,7 +18,9 @@ import {
   assignChain,
   cardSecondaryEffectActive,
   chainPos,
-  getNextCard,
+  prepareCard,
+  startCardActivation,
+  triggerCard,
 } from './card-chain.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { removeRandomBuffs as stripBuffs } from './ports-wave-c-util.js';
@@ -27,30 +29,6 @@ import { removeRandomBuffs as stripBuffs } from './ports-wave-c-util.js';
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
  * @typedef {import('../pieces.js').CombatPiece} CombatPiece
  */
-
-function cardRevealCd(piece) {
-  const base = Number(piece.baseCooldown);
-  if (Number.isFinite(base) && base > 0 && base < 500) return Math.max(0.35, base);
-  const cd = Number(piece.cooldown);
-  if (Number.isFinite(cd) && cd > 0 && cd < 500) return Math.max(0.35, cd);
-  return 1.5;
-}
-
-function startCardReveal(card) {
-  if (!card || card._revealing || card._revealed) return;
-  card._revealing = true;
-  const cd = cardRevealCd(card);
-  card.baseCooldown = cd;
-  card.cooldown = cd;
-  card.triggerTime = cd;
-}
-
-function pauseCard(piece) {
-  piece._revealing = false;
-  piece._revealed = true;
-  piece.cooldown = 999;
-  piece.triggerTime = 999;
-}
 
 function chainCards(ctx, piece) {
   const key = piece._deckKey;
@@ -79,18 +57,15 @@ function logStackGrants(piece, ctx, handler, picked) {
   pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, handler, filtered);
 }
 
-function revealCard(piece, ctx, fn) {
-  if (piece._revealed) return true;
-  const next = getNextCard(ctx, piece);
-  pauseCard(piece);
-  startCardReveal(next);
-  // Card.trigger starts the next card and changes state before calling the
-  // concrete doRevealEffect. The effect itself owns its activation event;
-  // Joker must be able to call that effect without touching the target's
-  // reveal/cooldown state.
-  fn();
-  return true;
-}
+const cardBasePort = {
+  handlerId: 'card',
+  family: 'unique',
+  onPrepare: prepareCard,
+  onPreCombatStart() {},
+  onCooldownEffect(piece, ctx) {
+    return triggerCard(piece, ctx);
+  },
+};
 
 const deckOfCardsPort = {
   handlerId: 'deck_of_cards',
@@ -102,7 +77,7 @@ const deckOfCardsPort = {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    if (cards[0]) startCardReveal(cards[0]);
+    if (cards[0]) startCardActivation(cards[0]);
     pushActivate(piece, ctx, 'deck_of_cards', `Deck: ${piece.name}`);
   },
 };
@@ -110,13 +85,6 @@ const deckOfCardsPort = {
 const aceOfSpadesPort = {
   handlerId: 'ace_of_spades',
   family: 'unique',
-  onPrepare(piece, ctx) {
-    // Card.prepare() resets the reveal state before the shared deck chain is
-    // armed.  Keep this explicit so a reused simulation cannot stay revealed.
-    piece._revealing = false;
-    piece._revealed = false;
-    piece._secondaryActive = secondaryOn(piece, ctx);
-  },
   onRevealEffect(piece, ctx) {
       // AceofSpades.gd: giveCritTokens(1) delegates to character(), so this
       // is an actor token consumed by the next eligible attack—not +1% crit
@@ -132,7 +100,7 @@ const aceOfSpadesPort = {
     pushActivate(piece, ctx, 'ace_of_spades', `Card: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => aceOfSpadesPort.onRevealEffect(piece, ctx));
+    return triggerCard(piece, ctx, aceOfSpadesPort.onRevealEffect);
   },
 };
 
@@ -161,7 +129,7 @@ const darkestLotusPort = {
     pushActivate(piece, ctx, 'darkest_lotus', `Card: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => darkestLotusPort.onRevealEffect(piece, ctx));
+    return triggerCard(piece, ctx, darkestLotusPort.onRevealEffect);
   },
 };
 
@@ -177,7 +145,7 @@ const reversePort = {
     pushActivate(piece, ctx, 'reverse', `Card: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => reversePort.onRevealEffect(piece, ctx));
+    return triggerCard(piece, ctx, reversePort.onRevealEffect);
   },
 };
 
@@ -209,7 +177,7 @@ const holoFireLizardPort = {
     pushActivate(piece, ctx, 'holo_fire_lizard', `Card: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => holoFireLizardPort.onRevealEffect(piece, ctx));
+    return triggerCard(piece, ctx, holoFireLizardPort.onRevealEffect);
   },
 };
 
@@ -277,7 +245,7 @@ const jokerPort = {
     pushActivate(piece, ctx, 'joker', `Card: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => jokerPort.onRevealEffect(piece, ctx));
+    return triggerCard(piece, ctx, jokerPort.onRevealEffect);
   },
 };
 
@@ -297,7 +265,7 @@ const theFoolPort = {
     pushActivate(piece, ctx, 'the_fool', `Card: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => theFoolPort.onRevealEffect(piece, ctx));
+    return triggerCard(piece, ctx, theFoolPort.onRevealEffect);
   },
 };
 
@@ -330,7 +298,7 @@ const theLoversPort = {
     pushActivate(piece, ctx, 'the_lovers', `Card: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => theLoversPort.onRevealEffect(piece, ctx));
+    return triggerCard(piece, ctx, theLoversPort.onRevealEffect);
   },
 };
 
@@ -354,12 +322,13 @@ const whiteEyesPort = {
     pushActivate(piece, ctx, 'white_eyes_blue_dragon', `Card: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => whiteEyesPort.onRevealEffect(piece, ctx));
+    return triggerCard(piece, ctx, whiteEyesPort.onRevealEffect);
   },
 };
 
 /** @type {Record<string, ScriptHandler>} */
 export const AO_CARD_PORTS = {
+  card: cardBasePort,
   deck_of_cards: deckOfCardsPort,
   ace_of_spades: aceOfSpadesPort,
   darkest_lotus: darkestLotusPort,
