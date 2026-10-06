@@ -179,7 +179,7 @@ export async function creatorCredit(config, build) {
   return {
     author,
     file,
-    key: `${mode}|${name}|${mode === 'blob' ? `v2|${String(profile.equipped_avatar || '')}` : iconUrl}`,
+    key: `${mode}|${name}|${mode === 'blob' ? `v3|${String(profile.equipped_avatar || '')}` : iconUrl}`,
   };
 }
 
@@ -259,6 +259,8 @@ export async function refreshAuthorCredit(config, known, saved, builds, persist,
     const embed = message.embeds?.[0];
     if (!embed) continue;
     const next = withAuthor(embed, credit.author);
+    if (/^https?:\/\//i.test(String(credit.author.icon_url || ''))) next.thumbnail = { url: credit.author.icon_url };
+    else delete next.thumbnail;
     const kept = (message.attachments || [])
       .filter((file) => file.filename === 'build.png' && file.id)
       .map((file) => ({ id: file.id }));

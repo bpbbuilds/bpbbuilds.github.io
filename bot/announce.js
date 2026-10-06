@@ -405,7 +405,6 @@ async function postBody(config, build, tagIds, credit) {
         footer: { text: slug },
       }],
       components: await voteComponentsFor(config.token, slug, build.vote_score),
-      ...(credit?.thumb ? { attachments: [{ id: 0, filename: 'build.png' }] } : {}),
     },
   };
 }
