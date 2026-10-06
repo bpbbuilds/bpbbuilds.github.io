@@ -5,12 +5,12 @@ Generated from `assets/data/sim-fidelity-ledger.json` on 2026-10-05. This is the
 ## Current audited state
 
 - Catalog items: **519**
-- Source-ported (not fixture/live certified): **460**
-- Runtime port present but incomplete: **31**
+- Source-ported (not fixture/live certified): **467**
+- Runtime port present but incomplete: **24**
 - Source unresolved: **1**
 - Deferred supported-mode gap: **1**
 - Intentional no-combat rows: **26** (not backlog work)
-- Lifecycle-hook gaps: **5**; call-review candidates: **44**; duplicate registrations: **19**.
+- Lifecycle-hook gaps: **3**; call-review candidates: **44**; duplicate registrations: **19**.
 
 ## Completion rule for every row
 
@@ -142,15 +142,15 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [x] `poison_grenade` - `Exclusive/PoisonGrenade.tscn` / `Exclusive/PoisonGrenade.gd` (`Item`); prepare-time Lucky poison-crit listener, charge cooldown advance, Poison effects, and consume lifecycle resolved; focused regression: `scripts/sim-pan-pot-wave-smoke.mjs`.
 - [x] `poison_shortbow` - `Exclusive/PoisonShortbow.tscn` / `Exclusive/PoisonShortbow.gd` (`Weapon`); hit/chance-gated Poison plus random-debuff branch and inherited weapon cooldown resolved; focused regression: `scripts/sim-pan-pot-wave-smoke.mjs`.
 - [x] `pot` - `Exclusive/Pot.tscn` / `Exclusive/Pot.gd` (`Item`); prepare-time Food/Potion speed and linked-potion listener, Heat/Regeneration cooldown effects, heal reaction, and consume lifecycle resolved; focused regression: `scripts/sim-pan-pot-wave-smoke.mjs`.
-- [ ] `power_of_the_moon`
-- [ ] `pumpkin`
-- [ ] `puzzlebag_l`
+- [x] `power_of_the_moon` - `Exclusive/PoweroftheMoon.gd`; timer advance, fatigue max-health, and Moon Armor/Shield peer effects are source-ported; focused regression: `scripts/sim-power-moon-smoke.mjs`.
+- [x] `pumpkin` - `Pumpkin.gd`; prepare-time fatigue listener, inherited Food weapon strike, hit/chance stun, and fatigue Heat activation are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
+- [x] `puzzlebag_l` - `Exclusive/PuzzlebagL.gd`; cargo-specific heal/lifesteal amplification prepares before combat-start max-health and activation; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
    150|- [x] `rib_saw_blade`
-- [ ] `ruby_chonk`
-- [ ] `ruby_egg`
-- [ ] `ruby_whelp`
-- [ ] `sapphire_whelp`
-- [ ] `scale`
+- [x] `ruby_chonk` - `RubyChonk.gd`; prepare-time Heat threshold state, hit Heat, conditional stun, and inherited weapon activation are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
+- [x] `ruby_egg` - `RubyEgg.gd`; pre-start reflect plus exact `doCooldownEffect(false)` start behavior and full cooldown effect are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
+- [x] `ruby_whelp` - `RubyWhelp.gd`; pre-start reflect, combat-start Heat/activation, and inherited weapon path are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
+- [x] `sapphire_whelp` - `Exclusive/SapphireWhelp.gd`; start Mana and early successful-hit Mana spend into Block/non-Mana random buff are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
+- [x] `scale` - `Exclusive/Scale.gd`; prepare-time gold-linked speed/equilibrium and least-stack cooldown grant are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
 - [ ] `serpent_staff`
 - [ ] `shepherds_crook`
 - [ ] `shovel`
@@ -170,6 +170,21 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [ ] `walrus_tusk`
 - [x] `wand_of_dissonance`
 - [ ] `wisp`
+
+## Next source audit list (2026-10-05)
+
+Prioritized from the current source audit; base classes (`bow`, `card`, and
+`weapon`) stay shared-engine work, not item rows.
+
+1. `twine`, `steel_goobert`, and `vampiric_gloves`: concrete missing
+   `onPrepare` source lifecycle hooks.
+2. `serpent_staff`, `shepherds_crook`, `shovel`, `slice_of_toast`,
+   `snowcake`, `spin_to_win`, `squirrel_archer`, `stone`, `thorn_bow`,
+   `time_pendant`, `torch`, `ukulele`, `ultima`, `walrus_tusk`, and `wisp`:
+   registered runtime handlers still lack focused source-port completion.
+3. Re-review call candidates after those waves, starting with `snowcake`
+   (`dealEffectDamage`) and `wisp` (`giveMaxHealth`); the remaining candidate
+   rows include intentional no-combat chess and generic shared-script entries.
 
 ## Deferred supported-mode gap (1)
 

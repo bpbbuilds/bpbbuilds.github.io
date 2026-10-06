@@ -566,6 +566,12 @@ const WAVE_AT_DEEP = new Set([
   'pot',
 ]);
 
+/** Band AU — source-backed Pumpkin through Scale lifecycle ports. */
+const WAVE_AU_DEEP = new Set([
+  'pumpkin', 'puzzlebag_l', 'ruby_chonk', 'ruby_egg',
+  'ruby_whelp', 'sapphire_whelp', 'scale',
+]);
+
 const DEEP = new Set([
   'broom',
   'banana',
@@ -609,6 +615,7 @@ const DEEP = new Set([
   ...WAVE_AR_DEEP,
   ...WAVE_AS_DEEP,
   ...WAVE_AT_DEEP,
+  ...WAVE_AU_DEEP,
 ]);
 
 /** @type {Record<string, { depth: string, notes: string }>} */

@@ -1739,3 +1739,12 @@ None.
 - The owner-gated Edge Function now mints a signed upload URL after validating only the event slug, asset kind, and allowed image MIME type. The browser uploads the already-bounded image directly to the existing `discord-builds` bucket, so image bytes no longer cross the Edge Function JSON limit.
 - Deployed `admin-builds` to project `xklkysmakrmgtiztsqug`. Changed browser modules pass `node --check`; the deployed simulator release's focused smokes and `git diff --check` pass. The full continuous simulator audit remains 13/15 only because its pre-existing 61-row patch-drift baseline and four stale hook-triage entries are intentionally unacknowledged.
 - Release commit `ed43204` (`Ship local simulator and create fixes`) is pushed to `main`; GitHub Pages verification found the Create CSS and priority-drop fix live, and the Northflank bot build completed successfully.
+
+### 2026-10-05 Pumpkin through Scale simulator wave claim (in progress)
+
+- Codex owns the narrow simulator handler paths for `pumpkin`, `puzzlebag_l`, `ruby_chonk`, `ruby_egg`, `ruby_whelp`, `sapphire_whelp`, and `scale`; their focused regression, generated ledger/backlog artifacts, simulator validation notes, and this handoff. Scope is source-backed lifecycle and event-order completion on both boards; no unrelated simulator systems or commercial 1:1 claim is authorized.
+
+### 2026-10-05 Pumpkin through Scale simulator wave complete
+
+- Source-ported Pumpkin, Puzzlebag L, Ruby Chonk/Egg/Whelp, Sapphire Whelp, and Scale. Corrections move source prepare/pre-combat work to its actual lifecycle (including Pumpkin fatigue, Puzzlebag cargo amp, Ruby Chonk heat state, Ruby Whelp reflect, and Scale gold speed); Ruby Egg now exposes its source cooldown path.
+- Added `scripts/sim-pumpkin-scale-wave-smoke.mjs`, regenerated parity/ledger artifacts, and moved the ledger from 460 to 467 source-ported rows (24 incomplete remain). Focused smoke, syntax checks, ledger check, and diff check pass. Full audit remains 13/15 because of the existing 61-row patch-drift baseline; its hook-triage report now identifies the next concrete lifecycle work as Twine, Steel Goobert, and Vampiric Gloves.

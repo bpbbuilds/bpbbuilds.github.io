@@ -10,12 +10,12 @@
   },
   "totals": {
     "catalogItems": 519,
-    "sourcePorted": 460,
-    "portPresentIncomplete": 31,
+    "sourcePorted": 467,
+    "portPresentIncomplete": 24,
     "sourceUnresolved": 1,
     "noCombat": 26,
     "deferred": 1,
-    "lifecycleHookGap": 5,
+    "lifecycleHookGap": 3,
     "untriagedLifecycleHookGap": 0,
     "callReviewCandidate": 44,
     "duplicateRegistration": 19
@@ -13137,15 +13137,15 @@
           "js/pages/sim/engine/scripts/ports-ap-basic.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -13247,15 +13247,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -14477,26 +14477,16 @@
           "js/pages/sim/engine/scripts/ports-ap-basic.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPrepare",
-            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "equivalent_implementation",
-          "owner": "js/pages/sim/engine/scripts/ports-ap-basic.js",
-          "evidence": "Items/RubyChonk.gd:onPrepare registers a Heat visual-state listener; port checks the current Heat threshold at the source on-dealt-damage transition."
-        },
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPrepare.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -14528,23 +14518,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "doCooldownEffect",
-            "why": "no JS hook among onCooldownEffect"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "equivalent_implementation",
-          "owner": "js/pages/sim/engine/scripts/ports-am-eggs.js",
-          "evidence": "Items/RubyEgg.gd start effect is routed through inherited egg/item lifecycle; port explicitly applies reflect pre-start and heat/activate at combat start."
-        },
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: doCooldownEffect.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -14572,15 +14552,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -14684,15 +14664,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -14721,15 +14701,15 @@
           "js/pages/sim/engine/scripts/ports-ap-mana.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,

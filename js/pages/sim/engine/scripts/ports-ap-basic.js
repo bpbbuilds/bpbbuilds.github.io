@@ -3,7 +3,7 @@
  */
 
 import { grantStun, tryUseStamina } from '../actor.js';
-import { grantStacks, spendStacks, stealRandomBuff } from '../buff-economy.js';
+import { grantStacks, onBuffChanged, spendStacks, stealRandomBuff } from '../buff-economy.js';
 import { dealDamage } from '../damage.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getPName } from '../params.js';
@@ -93,7 +93,7 @@ const phoenixPort = {
 const pumpkinPort = {
   handlerId: 'pumpkin',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     ctx.bus?.on?.('fatigue_start', () => {
       grantStacks(
         ctx.player,
@@ -120,13 +120,19 @@ const pumpkinPort = {
 const rubyChonkPort = {
   handlerId: 'ruby_chonk',
   family: 'weapon_base',
+  onPrepare(piece, ctx) {
+    const threshold = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP1(piece.params, 12))));
+    piece._rubyChonkHeatReady = getStackAmount(ctx.player, 'heat') >= threshold;
+    onBuffChanged(ctx.player, (change) => {
+      if (change.stack === 'heat') piece._rubyChonkHeatReady = getStackAmount(ctx.player, 'heat') >= threshold;
+    });
+  },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'ruby_chonk', {
       afterHit(hit) {
         if (!hit?.hit) return;
         grantStacks(ctx.player, 'heat', 1, origin(piece));
-        const th = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP1(piece.params, 12))));
-        if ((getStackAmount(ctx.player, 'heat') || 0) < th) return;
+        if (!piece._rubyChonkHeatReady) return;
         if (!rollItemChance(piece, ctx.rng)) return;
         grantStun(ctx.dummy, getPName(piece.params, 'dur_stun', 0.4), ctx.t, { rng: ctx.rng });
       },

@@ -184,10 +184,12 @@ const flameBadgePort = {
 const rubyWhelpPort = {
   handlerId: 'ruby_whelp',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPreCombatStart(piece, ctx) {
     ctx.player.debuffReflectStacks =
       (Number(ctx.player.debuffReflectStacks) || 0) +
       Math.max(0, Math.round(getPName(piece.params, 'reflect', getP2(piece.params, 3))));
+  },
+  onCombatStart(piece, ctx) {
     grantStacks(
       ctx.player,
       'heat',
@@ -321,7 +323,7 @@ const piggyOfRichesPort = {
 const puzzlebagLPort = {
   handlerId: 'puzzlebag_l',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const amp = 1 + getPName(piece.params, 'healamp', getP1(piece.params, 20)) / 100;
     const byKey = new Map((ctx.pieces || []).map((o) => [o.placementKey, o]));
     for (const key of getItemsInside(ctx.graph, piece.placementKey)) {
@@ -343,6 +345,8 @@ const puzzlebagLPort = {
           (Number(cargo.params.lifesteal ?? cat.params.lifesteal) || 0) * amp;
       }
     }
+  },
+  onCombatStart(piece, ctx) {
     giveTempMaxHp(
       piece,
       ctx,

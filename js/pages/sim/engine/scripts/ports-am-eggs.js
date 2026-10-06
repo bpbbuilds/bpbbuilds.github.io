@@ -31,6 +31,16 @@ export const rubyEggPort = {
     });
     petActivate(piece, ctx, 'ruby_egg');
   },
+  onCooldownEffect(piece, ctx) {
+    const reflects = Math.max(1, Math.round(getP1(piece.params, 3)));
+    ctx.player.debuffReflectStacks = (ctx.player.debuffReflectStacks || 0) + reflects;
+    grantStacks(ctx.player, 'heat', Math.max(1, Math.round(getP3(piece.params, 4))), {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+    petActivate(piece, ctx, 'ruby_egg');
+    return true;
+  },
 };
 
 /** EmeraldEgg.gd */

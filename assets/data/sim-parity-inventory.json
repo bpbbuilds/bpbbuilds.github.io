@@ -1,11 +1,11 @@
 {
-  "builtAt": "2026-10-05T22:29:24.978Z",
+  "builtAt": "2026-10-06T03:55:03.703Z",
   "note": "Band AO — skills / spells / books / leftover catalog",
   "parityIds": [],
   "totals": {
     "hand": 554,
-    "deep": 468,
-    "shallow": 30,
+    "deep": 474,
+    "shallow": 24,
     "noop": 27
   },
   "byId": {
@@ -1846,8 +1846,8 @@
       "notes": "AS source-port wave from .gd"
     },
     "scale": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
     },
     "spin_to_win": {
       "depth": "shallow",
@@ -1938,12 +1938,12 @@
       "notes": "AT source-port wave from .gd"
     },
     "pumpkin": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
     },
     "ruby_chonk": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
     },
     "squirrel_archer": {
       "depth": "shallow",
@@ -1974,8 +1974,8 @@
       "notes": "AR source-port wave from .gd"
     },
     "ruby_whelp": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
     },
     "dark_lantern": {
       "depth": "deep",
@@ -1998,8 +1998,8 @@
       "notes": "AT source-port wave from .gd"
     },
     "puzzlebag_l": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
     },
     "emerald_whelp": {
       "depth": "deep",
@@ -2010,8 +2010,8 @@
       "notes": "AS source-port wave from .gd"
     },
     "sapphire_whelp": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
     },
     "walrus_tusk": {
       "depth": "shallow",

@@ -343,7 +343,7 @@ const moonArmorPort = {
 const scalePort = {
   handlerId: 'scale',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const c1 = linkedByColor(ctx, piece, 'primary').reduce((s, o) => s + goldOf(ctx, o), 0);
     const c2 = linkedByColor(ctx, piece, 'secondary').reduce((s, o) => s + goldOf(ctx, o), 0);
     const per = getPName(piece.params, 'speed', getP3(piece.params, 2)) / 100;
