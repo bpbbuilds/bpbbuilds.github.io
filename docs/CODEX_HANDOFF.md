@@ -1803,3 +1803,4 @@ None.
 
 - Audited all 14 shop/wearable rows against their extracted sources: direct scripts contain no independent `doCooldownEffect` or `onCombatStart`, and each reason is recorded in `assets/data/sim-intentional-noops.json`; catalog-only rows have explicit inventory evidence.
 - Audited all 12 ChessPiece rows: each extends `ChessPiece`, has no independent cooldown, and only exposes board-invoked capture/elimination effects. Added `scripts/sim-no-combat-source-audit.mjs`; source audit, noop audit, Flawed Topaz/Chess boundary smoke, ledger check, and diff check pass.
+- The roadmap's final unresolved/deferred/no-combat classification gate is now checked off: 0 unresolved, 0 deferred, and 26 individually evidenced no-combat rows.
