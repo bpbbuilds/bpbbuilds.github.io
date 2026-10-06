@@ -10,12 +10,12 @@
   },
   "totals": {
     "catalogItems": 519,
-    "sourcePorted": 467,
-    "portPresentIncomplete": 24,
+    "sourcePorted": 470,
+    "portPresentIncomplete": 21,
     "sourceUnresolved": 1,
     "noCombat": 26,
     "deferred": 1,
-    "lifecycleHookGap": 3,
+    "lifecycleHookGap": 0,
     "untriagedLifecycleHookGap": 0,
     "callReviewCandidate": 44,
     "duplicateRegistration": 19
@@ -16771,23 +16771,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPrepare",
-            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "equivalent_implementation",
-          "owner": "js/pages/sim/engine/scripts/ports-aura.js",
-          "evidence": "Items/SteelGoobert.gd:onPrepare caches affected weapons; port evaluates the same static affected set when its cooldown fires."
-        },
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPrepare.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -18384,23 +18374,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPrepare",
-            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "equivalent_implementation",
-          "owner": "js/pages/sim/engine/combat-activate.js",
-          "evidence": "Items/Exclusive/Twine.gd:onPrepare registers affected activated listeners; notifyPeerActivations performs the same affected-placement filter."
-        },
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPrepare.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -18728,23 +18708,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPrepare",
-            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "intentional_noncombat",
-          "owner": "js/pages/sim/engine/scripts/ports-outliers.js",
-          "evidence": "Items/VampiricGloves.gd:onPrepare only resets visual state; cooldown gameplay is ported."
-        },
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPrepare.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,

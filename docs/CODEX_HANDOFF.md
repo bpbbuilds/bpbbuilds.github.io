@@ -1748,3 +1748,12 @@ None.
 
 - Source-ported Pumpkin, Puzzlebag L, Ruby Chonk/Egg/Whelp, Sapphire Whelp, and Scale. Corrections move source prepare/pre-combat work to its actual lifecycle (including Pumpkin fatigue, Puzzlebag cargo amp, Ruby Chonk heat state, Ruby Whelp reflect, and Scale gold speed); Ruby Egg now exposes its source cooldown path.
 - Added `scripts/sim-pumpkin-scale-wave-smoke.mjs`, regenerated parity/ledger artifacts, and moved the ledger from 460 to 467 source-ported rows (24 incomplete remain). Focused smoke, syntax checks, ledger check, and diff check pass. Full audit remains 13/15 because of the existing 61-row patch-drift baseline; its hook-triage report now identifies the next concrete lifecycle work as Twine, Steel Goobert, and Vampiric Gloves.
+
+### 2026-10-05 lifecycle-hook closure wave claim (in progress)
+
+- Codex owns the narrow simulator paths for `twine`, `steel_goobert`, and `vampiric_gloves`, their focused regression, generated ledger/backlog artifacts, simulator validation notes, and this handoff. Scope is closing the explicit source `onPrepare` gaps with cached affected-item behavior; no unrelated port wave is in scope.
+
+### 2026-10-05 lifecycle-hook closure wave complete
+
+- Twine now caches only its source primary activation listeners and its secondary chance count during prepare; Steel Goobert caches secondary empowerable weapons; Vampiric Gloves initializes its source active state before combat. The source audit now reports zero item-level lifecycle-hook gaps.
+- Added `scripts/sim-lifecycle-hook-closure-smoke.mjs`, regenerated the fidelity ledger, and moved it to 470 source-ported rows with 21 incomplete runtime ports remaining. The next item wave starts with Serpent Staff through Wisp; generic Bow/Card/Weapon base classes remain shared-engine work.

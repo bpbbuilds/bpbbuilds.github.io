@@ -5,12 +5,12 @@ Generated from `assets/data/sim-fidelity-ledger.json` on 2026-10-05. This is the
 ## Current audited state
 
 - Catalog items: **519**
-- Source-ported (not fixture/live certified): **467**
-- Runtime port present but incomplete: **24**
+- Source-ported (not fixture/live certified): **470**
+- Runtime port present but incomplete: **21**
 - Source unresolved: **1**
 - Deferred supported-mode gap: **1**
 - Intentional no-combat rows: **26** (not backlog work)
-- Lifecycle-hook gaps: **3**; call-review candidates: **44**; duplicate registrations: **19**.
+- Lifecycle-hook gaps: **0**; call-review candidates: **44**; duplicate registrations: **19**.
 
 ## Completion rule for every row
 
@@ -158,15 +158,15 @@ These rows have a registered handler but still need source/lifecycle/evidence co
    160|- [ ] `snowcake`
 - [ ] `spin_to_win`
 - [ ] `squirrel_archer`
-- [ ] `steel_goobert`
+- [x] `steel_goobert` - `SteelGoobert.gd`; caches source secondary empowerable targets in prepare before its cooldown damage/Block effect; focused regression: `scripts/sim-lifecycle-hook-closure-smoke.mjs`.
 - [ ] `stone`
 - [ ] `thorn_bow`
 - [ ] `time_pendant`
 - [ ] `torch`
-- [ ] `twine`
+- [x] `twine` - `Exclusive/Twine.gd`; prepares only source primary activation listeners and caches secondary chance count; focused regression: `scripts/sim-lifecycle-hook-closure-smoke.mjs`.
 - [ ] `ukulele`
    170|- [ ] `ultima`
-- [ ] `vampiric_gloves`
+- [x] `vampiric_gloves` - `VampiricGloves.gd`; resets source active state in prepare before cooldown Vampirism/speed work; focused regression: `scripts/sim-lifecycle-hook-closure-smoke.mjs`.
 - [ ] `walrus_tusk`
 - [x] `wand_of_dissonance`
 - [ ] `wisp`
@@ -176,13 +176,11 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 Prioritized from the current source audit; base classes (`bow`, `card`, and
 `weapon`) stay shared-engine work, not item rows.
 
-1. `twine`, `steel_goobert`, and `vampiric_gloves`: concrete missing
-   `onPrepare` source lifecycle hooks.
-2. `serpent_staff`, `shepherds_crook`, `shovel`, `slice_of_toast`,
+1. `serpent_staff`, `shepherds_crook`, `shovel`, `slice_of_toast`,
    `snowcake`, `spin_to_win`, `squirrel_archer`, `stone`, `thorn_bow`,
    `time_pendant`, `torch`, `ukulele`, `ultima`, `walrus_tusk`, and `wisp`:
    registered runtime handlers still lack focused source-port completion.
-3. Re-review call candidates after those waves, starting with `snowcake`
+2. Re-review call candidates after those waves, starting with `snowcake`
    (`dealEffectDamage`) and `wisp` (`giveMaxHealth`); the remaining candidate
    rows include intentional no-combat chess and generic shared-script entries.
 

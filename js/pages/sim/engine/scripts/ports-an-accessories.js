@@ -369,8 +369,14 @@ const megaCloverPort = {
 const twinePort = {
   handlerId: 'twine',
   family: 'unique',
-  onPeerActivated(listener, _a, ctx) {
-    const n2 = linked(ctx, listener).length;
+  onPrepare(piece, ctx) {
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    piece._twineTriggers = new Set(links.filter((link) => link.color !== 'secondary').map((link) => link.key));
+    piece._twineSecondaryCount = links.filter((link) => link.color === 'secondary').length;
+  },
+  onPeerActivated(listener, activated, ctx) {
+    if (!listener._twineTriggers?.has(activated?.placementKey)) return;
+    const n2 = Number(listener._twineSecondaryCount) || 0;
     const ch = chanceOf(listener, ctx) + n2 * chanceOf(listener, ctx, 'chance2', 5);
     if (!rollPercent(ch, ctx.rng)) return;
     const hp = Math.max(1, Math.round(getPName(listener.params, 'health', 4)));

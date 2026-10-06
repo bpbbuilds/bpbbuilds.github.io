@@ -331,9 +331,13 @@ export const mercuryElementalPort = {
 export const vampiricGlovesPort = {
   handlerId: 'vampiric_gloves',
   family: 'unique',
+  onPrepare(piece) {
+    piece._vampiricGlovesActive = false;
+  },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
     pushActivate(piece, ctx, 'vampiric_gloves', `Accessory: ${piece.name}`);
+    piece._vampiricGlovesActive = true;
     const vamp = Math.max(1, Math.round(getP1(piece.params, 1)));
     grantStacks(player, 'vampirism', vamp, {
       originKey: piece.placementKey,

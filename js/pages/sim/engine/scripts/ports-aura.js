@@ -108,13 +108,18 @@ export const scissorswordsPort = {
 export const steelGoobertPort = {
   handlerId: 'steel_goobert',
   family: 'pet_like',
+  onPrepare(piece, ctx) {
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    piece._steelGoobertWeapons = new Set(
+      links.filter((link) => link.color === 'secondary').map((link) => link.key),
+    );
+  },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
     pushActivate(piece, ctx, 'steel_goobert', `Pet: ${piece.name}`);
     const dam = Math.max(1, Math.round(getP2(piece.params, 2)));
-    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     for (const other of pieces || []) {
-      if (!links.some((l) => l.key === other.placementKey)) continue;
+      if (!piece._steelGoobertWeapons?.has(other.placementKey)) continue;
       if (!(other.damageMax > 0 || other.kind === 'weapon')) continue;
       addBonusDamage(other, dam);
     }
