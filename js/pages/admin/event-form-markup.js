@@ -87,18 +87,25 @@ export function bindImageDrops(root) {
     if (!(fileInput instanceof HTMLInputElement) || !(hidden instanceof HTMLInputElement)) return;
     if (!(preview instanceof HTMLImageElement) || !(hint instanceof HTMLElement)) return;
 
-    const apply = (file) => {
+    const apply = async (file) => {
       if (!file) return;
       if (!String(file.type || '').startsWith('image/')) {
         setEventFormStatus('Use a PNG, WebP, JPEG, or GIF.', true);
         return;
       }
+      if (file.size > 5 * 1024 * 1024) return setEventFormStatus('Event images must be 5 MB or smaller.', true);
+      const data = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ''));
+        reader.onerror = () => reject(new Error('Could not read image.'));
+        reader.readAsDataURL(file);
+      });
       const url = URL.createObjectURL(file);
       urls.push(url);
       preview.src = url;
       preview.hidden = false;
       hint.textContent = file.name;
-      hidden.value = file.name;
+      hidden.value = data;
       zone.classList.add('has-image');
       setEventFormStatus('', false);
     };
@@ -110,7 +117,7 @@ export function bindImageDrops(root) {
       fileInput.click();
     });
     fileInput.addEventListener('click', (e) => e.stopPropagation());
-    fileInput.addEventListener('change', () => apply(fileInput.files?.[0]));
+    fileInput.addEventListener('change', () => apply(fileInput.files?.[0]).catch((err) => setEventFormStatus(err.message, true)));
     zone.addEventListener('dragover', (e) => {
       e.preventDefault();
       zone.classList.add('is-over');
@@ -119,7 +126,7 @@ export function bindImageDrops(root) {
     zone.addEventListener('drop', (e) => {
       e.preventDefault();
       zone.classList.remove('is-over');
-      apply(e.dataTransfer?.files?.[0]);
+      apply(e.dataTransfer?.files?.[0]).catch((err) => setEventFormStatus(err.message, true));
     });
     if (preview.getAttribute('src')) zone.classList.add('has-image');
   });

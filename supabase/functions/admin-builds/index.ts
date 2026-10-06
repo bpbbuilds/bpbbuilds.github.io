@@ -39,6 +39,7 @@ type Body = {
   eventSlug?: string;
   buildId?: number | string;
   cosmetic?: Record<string, unknown>;
+  asset?: Record<string, unknown>;
 };
 
 Deno.serve(async (req) => {
@@ -130,6 +131,7 @@ Deno.serve(async (req) => {
   if (action === 'upload_cosmetic') {
     return uploadCosmetic(supabase, body.cosmetic);
   }
+  if (action === 'upload_event_asset') return uploadEventAsset(supabase, body.asset);
   if (action === 'update_cosmetic') {
     return updateCosmetic(supabase, body.cosmetic);
   }
@@ -348,6 +350,21 @@ async function listCosmeticCatalog(supabase: ReturnType<typeof createClient>) {
  * Save an owner-uploaded image and catalog metadata as an unpublished draft.
  * The browser sends a bounded data URL so the service role never reaches the client.
  */
+async function uploadEventAsset(supabase: ReturnType<typeof createClient>, raw: Record<string, unknown> | undefined) {
+  const slug = String(raw?.slug || '').trim();
+  const kind = String(raw?.kind || '').trim();
+  const match = /^data:(image\/(?:png|webp|jpeg));base64,([A-Za-z0-9+/=\s]+)$/i.exec(String(raw?.imageData || '').trim());
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || !['banner', 'icon'].includes(kind) || !match) return json({ error: 'Invalid event image.' }, 400);
+  const bytes = Uint8Array.from(atob(match[2].replace(/\s+/g, '')), (char) => char.charCodeAt(0));
+  if (!bytes.length || bytes.length > 5 * 1024 * 1024) return json({ error: 'Event image must be 5 MB or smaller.' }, 413);
+  const mime = match[1].toLowerCase();
+  const ext = mime === 'image/jpeg' ? 'jpg' : mime.slice(6);
+  const path = `event-assets/${slug}/${kind}-${crypto.randomUUID()}.${ext}`;
+  const { error } = await supabase.storage.from('discord-builds').upload(path, bytes, { contentType: mime, cacheControl: '31536000' });
+  if (error) return json({ error: 'Could not save event image.', detail: error.message }, 500);
+  return json({ url: `${Deno.env.get('SUPABASE_URL') || ''}/storage/v1/object/public/discord-builds/${path}` });
+}
+
 async function uploadCosmetic(
   supabase: ReturnType<typeof createClient>,
   raw: Record<string, unknown> | undefined,

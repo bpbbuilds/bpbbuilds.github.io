@@ -6,6 +6,7 @@ import { CATALOG_EVENTS, EVENT_STATUS_LABELS, getCatalogEvent } from '../events/
 import { EVENT_TYPE_LABELS } from '../events/event-filters.js';
 import { catalogEventToForm, statusFromSchedule } from './event-form-model.js';
 import { openEventForm } from './event-form.js';
+import { uploadEventAsset } from './api.js';
 import { openEventDesk } from './event-desk.js';
 import { escapeAttr, escapeHtml } from './row.js';
 import { loadEventDrafts, saveEventDrafts } from '../events/event-drafts.js';
@@ -147,6 +148,17 @@ export function mountEventsPanel(host, opts) {
     paint();
   };
 
+  const uploadImages = async (values) => {
+    const next = { ...values };
+    for (const [field, kind] of [['image', 'banner'], ['titleIcon', 'icon']]) {
+      if (!String(next[field] || '').startsWith('data:image/')) continue;
+      const result = await uploadEventAsset(opts.auth, { slug: next.slug, kind, imageData: next[field] });
+      next[field] = String(result?.url || '');
+      if (!next[field]) throw new Error('Could not save event image.');
+    }
+    return next;
+  };
+
   host.onclick = (e) => {
     const t = e.target;
     if (!(t instanceof Element) || !host.contains(t)) return;
@@ -154,7 +166,7 @@ export function mountEventsPanel(host, opts) {
       openEventForm({
         mode: 'new',
         root: base,
-        onSubmit: (values) => commit(null, values),
+        onSubmit: async (values) => commit(null, await uploadImages(values)),
       });
       return;
     }
@@ -167,7 +179,7 @@ export function mountEventsPanel(host, opts) {
         mode: 'edit',
         root: base,
         values: { ...row, status: statusFromSchedule(row) },
-        onSubmit: (values) => commit(slug, values),
+        onSubmit: async (values) => commit(slug, await uploadImages(values)),
       });
       return;
     }
@@ -187,7 +199,7 @@ export function mountEventsPanel(host, opts) {
           mode: 'edit',
           root: base,
           values: event,
-          onSubmit: (next) => commit(event.slug, next),
+          onSubmit: async (next) => commit(event.slug, await uploadImages(next)),
         });
       },
     });

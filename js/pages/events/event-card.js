@@ -41,6 +41,7 @@ export function eventStatusBarHtml(event, className = 'events-status-bar') {
 function eventImageUrl(event, root) {
   const base = root.endsWith('/') ? root : `${root}/`;
   const path = String(event.image || '').replace(/^\//, '');
+  if (/^(data:|https?:)/i.test(path)) return path;
   return `${base}${path}`;
 }
 

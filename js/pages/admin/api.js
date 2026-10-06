@@ -115,6 +115,10 @@ export function uploadCosmetic(auth, cosmetic) {
   return adminRequest(auth, { action: 'upload_cosmetic', cosmetic });
 }
 
+export function uploadEventAsset(auth, asset) {
+  return adminRequest(auth, { action: 'upload_event_asset', asset });
+}
+
 /** Owner-only unpublished cosmetic draft update. */
 export function updateCosmetic(auth, cosmetic) {
   return adminRequest(auth, { action: 'update_cosmetic', cosmetic });
