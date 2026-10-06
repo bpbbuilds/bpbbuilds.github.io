@@ -21,6 +21,7 @@ const SITE = 'https://bpbbuilds.com';
 const YOUTUBE = 'https://www.youtube.com/@SmojoWasTaken';
 const INVITE = 'https://discord.gg/s5WghmrFSp';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const LOGO = 'assets/brand/logo-bpb.png';
 const statePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data', 'welcome-ids.json');
 
 const MAIN = '1554346073974243448';
