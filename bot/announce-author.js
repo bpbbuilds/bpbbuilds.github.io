@@ -179,7 +179,7 @@ export async function creatorCredit(config, build) {
   return {
     author,
     file,
-    key: `${mode}|${name}|${mode === 'blob' ? String(profile.equipped_avatar || '') : iconUrl}`,
+    key: `${mode}|${name}|${mode === 'blob' ? `v2|${String(profile.equipped_avatar || '')}` : iconUrl}`,
   };
 }
 

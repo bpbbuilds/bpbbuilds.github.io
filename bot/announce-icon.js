@@ -13,7 +13,7 @@ export async function hostCreatorIcon(config, build, png) {
   const profile = build.profiles && typeof build.profiles === 'object' ? build.profiles : {};
   const id = String(profile.discord_id || build.slug || 'creator').replace(/[^\w.-]/g, '') || 'creator';
   const objectPath = `discord-creators/${id}.png`;
-  const res = await fetch(`${config.base}/storage/v1/object/board-stills/${objectPath}`, {
+  const res = await fetch(`${config.base}/storage/v1/object/discord-builds/${objectPath}`, {
     method: 'POST',
     headers: {
       apikey: config.key,
@@ -28,7 +28,7 @@ export async function hostCreatorIcon(config, build, png) {
     console.error(`Creator icon upload failed (${res.status}): ${detail.slice(0, 160)}`);
     return '';
   }
-  return `${config.base}/storage/v1/object/public/board-stills/${objectPath}`;
+  return `${config.base}/storage/v1/object/public/discord-builds/${objectPath}`;
 }
 
 /**
