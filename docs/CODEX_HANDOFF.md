@@ -1783,3 +1783,4 @@ None.
 ### 2026-10-06 simulator 100-percent coverage roadmap complete
 
 - Added `docs/sim/sim-100-coverage-todo.md`: an ordered, evidence-first path from the current 491 source-ported rows through unresolved/deferred classifications, shared systems, static-call review, fixture/live validation, and an explicit 100-percent release gate.
+- Verified and checked off the ledger gate: `node scripts/build-sim-fidelity-ledger.mjs --check` returns `OK sim-fidelity-ledger: 519 catalog rows`.

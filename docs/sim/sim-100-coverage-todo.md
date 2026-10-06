@@ -11,7 +11,7 @@ The simulator reaches 100% coverage only when every catalog item is classified a
 - [x] Clear the runtime-item backlog: 491 source-ported; zero runtime-port-incomplete rows.
 - [x] Clear item-level lifecycle-hook gaps.
 - [x] Port Time Melting's duration-only stars and prepare-time effect.
-- [ ] Run the ledger check after every simulator change: `node scripts/build-sim-fidelity-ledger.mjs --check`.
+- [x] Run the ledger check after every simulator change: `node scripts/build-sim-fidelity-ledger.mjs --check` — verified 2026-10-06: `OK sim-fidelity-ledger: 519 catalog rows`.
 - [ ] Keep a focused smoke check for every new or corrected source behavior.
 
 ## 2. Resolve every remaining catalog classification
