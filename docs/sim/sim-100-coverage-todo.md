@@ -1,6 +1,6 @@
 # Simulator 100% Coverage TODO
 
-This is the completion roadmap for the simulator, not a claim that it already matches the game. It starts from the audited state on 2026-10-06: 519 catalog items, 491 source-ported items, no runtime-port-incomplete rows, one unresolved source row, one deferred system row, 26 intentional no-combat rows, and 44 static call-review candidates.
+This is the completion roadmap for the simulator, not a claim that it already matches the game. It starts from the audited state on 2026-10-06: 519 catalog items, 492 source-ported items, no runtime-port-incomplete rows, zero unresolved source rows, zero deferred rows, one explicit unsupported-mode boundary, 26 intentional no-combat rows, and 45 static call-review candidates.
 
 ## Definition of 100%
 
@@ -8,7 +8,7 @@ The simulator reaches 100% coverage only when every catalog item is classified a
 
 ## 1. Keep the current port baseline healthy
 
-- [x] Clear the runtime-item backlog: 491 source-ported; zero runtime-port-incomplete rows.
+- [x] Clear the runtime-item backlog: 492 source-ported; zero runtime-port-incomplete rows.
 - [x] Clear item-level lifecycle-hook gaps.
 - [x] Port Time Melting's duration-only stars and prepare-time effect.
 - [x] Run the ledger check after every simulator change: `node scripts/build-sim-fidelity-ledger.mjs --check` — verified 2026-10-06: `OK sim-fidelity-ledger: 519 catalog rows`.
@@ -16,12 +16,12 @@ The simulator reaches 100% coverage only when every catalog item is classified a
 
 ## 2. Resolve every remaining catalog classification
 
-- [ ] Resolve `flawed_topaz`: trace its exact source/inheritance and replace the `source_unresolved` ledger status with tested behavior or an evidenced no-combat classification.
-- [ ] Resolve Chess Board: implement supported chess movement/capture combat AI, or remove simulator support for it and record the supported-mode boundary. The current deferred item is `chess_board`.
+- [x] Resolve `flawed_topaz`: `FlawedTopaz.tscn` inherits `Gems/Topaz.gd`; inventory, weapon-socket, and armor-socket behavior are now represented by the explicit Topaz scene alias and smoke-tested.
+- [x] Resolve Chess Board: the simulator's supported-mode boundary is explicit—placement and cooldown visibility remain supported, while in-combat ChessPiece movement/capture AI is intentionally unsupported until board-state simulation exists. It is no longer an ambiguous deferred row.
 - [ ] Audit the 26 no-combat rows against their source and record why each has no simulator combat action:
   - [ ] `amulet_unidentified`, `box_of_prosperity`, `box_of_riches`, `coins`, `customer_card`, `employee_uniform`, `engineer_bag_2`, `furcifer_prime`, `hypercube`, `leather_bag`, `lootbox`, `random_loadout_bag`, `snowman`, `unidentified_skill`.
   - [ ] Chess-piece rows: `black_bishop`, `black_king`, `black_knight`, `black_pawn`, `black_queen`, `black_rook`, `white_bishop`, `white_king`, `white_knight`, `white_pawn`, `white_queen`, `white_rook`.
-- [ ] Change every remaining unresolved/deferred/no-combat decision into a tested final classification.
+- [ ] Change every remaining unresolved/deferred/no-combat decision into a tested final classification; unresolved and deferred are now zero, while the 26 no-combat classifications remain to be evidenced individually.
 
 ## 3. Close shared-system coverage
 

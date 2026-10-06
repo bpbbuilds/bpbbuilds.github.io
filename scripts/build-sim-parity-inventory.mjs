@@ -120,7 +120,7 @@ const WAVE_B = new Set([
   'bomb',
 ]);
 
-/** Band AI — HAND shallow → deep (chess_board stays noop; HARD gaps stay shallow). */
+/** Band AI — HAND shallow → deep (chess_board stays an explicit unsupported-mode boundary; HARD gaps stay shallow). */
 const WAVE_AI_A = new Set([
   'blueberries',
   'bowl_of_treats',
@@ -635,7 +635,7 @@ for (const id of ids) {
   if (id === 'chess_board' || WAVE_AK_NOOP.has(id) || WAVE_AN_NOOP.has(id)) {
     depth = 'noop';
     notes = id === 'chess_board'
-      ? 'game ChessBoard.gd has combat CD AI; sim defers piece move/capture (Phase 267)'
+      ? 'game ChessBoard.gd has combat CD AI; simulator explicitly excludes piece movement/capture from supported mode'
       : WAVE_AN_NOOP.has(id)
         ? 'AN shop-only combat noop'
         : 'AK noop — shop/chess (not fake deep)';

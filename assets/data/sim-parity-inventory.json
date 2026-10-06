@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-06T22:45:51.927Z",
+  "builtAt": "2026-10-06T23:14:44.306Z",
   "note": "Band AO — skills / spells / books / leftover catalog",
   "parityIds": [],
   "totals": {
@@ -827,7 +827,7 @@
     },
     "chess_board": {
       "depth": "noop",
-      "notes": "game ChessBoard.gd has combat CD AI; sim defers piece move/capture (Phase 267)"
+      "notes": "game ChessBoard.gd has combat CD AI; simulator explicitly excludes piece movement/capture from supported mode"
     },
     "magic_ring": {
       "depth": "deep",

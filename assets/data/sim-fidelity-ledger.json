@@ -5,19 +5,20 @@
     "catalog": "scripts/_cache/game-items.json",
     "catalogSha256": "56cd189aab0be25e626651b168d55401a7abe6f5b2735fe68740edd027bdae13",
     "extractItemsSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
-    "inventoryExtractedAt": "2026-10-05T04:28:23.650Z",
+    "inventoryExtractedAt": "2026-10-06T23:14:44.247Z",
     "catalogItems": 519
   },
   "totals": {
     "catalogItems": 519,
-    "sourcePorted": 491,
+    "sourcePorted": 492,
     "portPresentIncomplete": 0,
-    "sourceUnresolved": 1,
+    "sourceUnresolved": 0,
     "noCombat": 26,
-    "deferred": 1,
+    "deferred": 0,
+    "unsupportedMode": 1,
     "lifecycleHookGap": 0,
     "untriagedLifecycleHookGap": 0,
-    "callReviewCandidate": 44,
+    "callReviewCandidate": 45,
     "duplicateRegistration": 19
   },
   "rows": [
@@ -3458,9 +3459,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "deferred",
-      "fidelity": "incomplete",
-      "knownDelta": "doCooldownEffect captures/moves ChessPiece; dummy sim does not run that AI",
+      "status": "unsupported_mode",
+      "fidelity": "unsupported_mode",
+      "knownDelta": "Simulator supports Chess Board placement and cooldown visibility, but intentionally excludes in-combat ChessPiece movement/capture AI; the supported combat mode boundary is explicit until board-state simulation exists.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -6956,10 +6957,22 @@
       "class": "Neutral",
       "gameVersion": "0.3.8",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Topaz.gd",
+        "extends": "Gem",
+        "family": "unique",
+        "overrides": [],
+        "directOverrides": [],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/FlawedTopaz.tscn",
+        "sourceMethods": [
+          "prepareInventory",
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "flawed_topaz",
@@ -6969,12 +6982,17 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "addSpeed",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": "Source-call review candidate: addSpeed.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,

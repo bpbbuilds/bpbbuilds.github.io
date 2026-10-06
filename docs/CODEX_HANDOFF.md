@@ -1785,3 +1785,12 @@ None.
 - Added `docs/sim/sim-100-coverage-todo.md`: an ordered, evidence-first path from the current 491 source-ported rows through unresolved/deferred classifications, shared systems, static-call review, fixture/live validation, and an explicit 100-percent release gate.
 - Verified and checked off the ledger gate: `node scripts/build-sim-fidelity-ledger.mjs --check` returns `OK sim-fidelity-ledger: 519 catalog rows`.
 - Verified and checked off the focused-smoke gate: final backlog, Time Melting, lifecycle, Pumpkin-through-Scale, Axe/Broccoli, and Wand/Rib smoke scripts all pass.
+
+### 2026-10-06 Flawed Topaz and Chess Board resolution claim (in progress)
+
+- Codex owns the extracted inventory alias for `flawed_topaz`, its explicit gem smoke coverage, the Chess Board supported-mode classification and audit smoke, the generated inventory/parity/ledger artifacts, `docs/sim/sim-100-coverage-todo.md`, and this handoff. Scope is resolving the missing Topaz scene inheritance and replacing Chess Board's ambiguous deferred label with an explicit simulator-supported boundary; full chess movement AI is not being claimed.
+
+### 2026-10-06 Flawed Topaz and Chess Board resolution complete
+
+- Added the missing `FlawedTopaz.tscn` scene alias to the extracted inventory; it now resolves to inherited `Gems/Topaz.gd` with `prepareInventory`, `prepareWeapon`, and `prepareArmor`, and the ledger moved from 1 unresolved row to 0.
+- Reclassified Chess Board from `deferred` to an explicit `unsupported_mode`: placement and cooldown visibility remain supported, while in-combat ChessPiece movement/capture AI is documented as outside the simulator's supported mode. Added `scripts/sim-flawed-topaz-chess-boundary-smoke.mjs`; focused smoke, noop audit, syntax checks, ledger check, and final-backlog smoke pass. Current ledger: 492 source-ported, 0 unresolved, 0 deferred, 1 explicit unsupported mode.

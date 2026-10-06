@@ -1,8 +1,8 @@
 {
-  "extractedAt": "2026-10-05T04:28:23.650Z",
+  "extractedAt": "2026-10-06T23:14:44.247Z",
   "source": "tools/game-extract-full/Items",
   "scriptFileCount": 509,
-  "withCombatOverrides": 530,
+  "withCombatOverrides": 531,
   "byMethod": {
     "doCooldownEffect": 204,
     "doRevealEffect": 9,
@@ -117,6 +117,7 @@
       "fire_pit",
       "flame",
       "flame_badge",
+      "flawed_topaz",
       "flawless_topaz",
       "flute",
       "forestfriend",
@@ -6367,6 +6368,26 @@
       "scriptStem": "Topaz",
       "file": "Gems/Topaz.gd",
       "sceneFile": "Gems/FlawlessTopaz.tscn",
+      "extends": "Gem",
+      "overrides": [],
+      "family": "unique",
+      "directOverrides": [],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareInventory",
+        "prepareWeapon",
+        "prepareArmor"
+      ]
+    },
+    "flawed_topaz": {
+      "id": "flawed_topaz",
+      "scriptStem": "Topaz",
+      "file": "Gems/Topaz.gd",
+      "sceneFile": "Gems/FlawedTopaz.tscn",
       "extends": "Gem",
       "overrides": [],
       "family": "unique",

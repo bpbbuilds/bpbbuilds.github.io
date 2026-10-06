@@ -62,7 +62,7 @@ function noCombatIndex(noops) {
   }
   if (noops.chessBoard?.id) {
     byId.set(noops.chessBoard.id, {
-      kind: 'deferred',
+      kind: 'unsupported_mode',
       reason: noops.chessBoard.why,
       source: noops.chessBoard.gd || null,
     });
@@ -129,9 +129,9 @@ const rows = catalog
       status = 'no_combat';
       fidelity = 'no_combat';
       knownDelta = exception.reason;
-    } else if (exception?.kind === 'deferred') {
-      status = 'deferred';
-      fidelity = 'incomplete';
+    } else if (exception?.kind === 'unsupported_mode') {
+      status = 'unsupported_mode';
+      fidelity = 'unsupported_mode';
       knownDelta = exception.reason;
     } else if (explicitFalseNoops.has(id)) {
       status = 'source_ported';
@@ -211,6 +211,7 @@ const ledger = {
     sourceUnresolved: count((row) => row.status === 'source_unresolved'),
     noCombat: count((row) => row.status === 'no_combat'),
     deferred: count((row) => row.status === 'deferred'),
+    unsupportedMode: count((row) => row.status === 'unsupported_mode'),
     lifecycleHookGap: count((row) => row.audit.lifecycleHookGaps.length > 0),
     untriagedLifecycleHookGap: count(
       (row) => row.audit.lifecycleHookGaps.length > 0 && !row.audit.lifecycleHookTriage,

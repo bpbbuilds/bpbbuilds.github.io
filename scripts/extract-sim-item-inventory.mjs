@@ -322,6 +322,7 @@ const SCENE_SOURCE_ALIASES = {
   flawless_ruby: 'Gems/FlawlessRuby.tscn',
   flawless_sapphire: 'Gems/FlawlessSapphire.tscn',
   flawless_topaz: 'Gems/FlawlessTopaz.tscn',
+  flawed_topaz: 'Gems/FlawedTopaz.tscn',
   perfect_amethyst: 'Gems/PerfectAmethyst.tscn',
   perfect_emerald: 'Gems/PerfectEmerald.tscn',
   perfect_ruby: 'Gems/PerfectRuby.tscn',

@@ -37,8 +37,8 @@
     "id": "chess_board",
     "gd": "Items/Exclusive/ChessBoard.gd",
     "gameCombat": true,
-    "sim": "deferred_ai",
-    "why": "doCooldownEffect captures/moves ChessPiece; dummy sim does not run that AI"
+    "sim": "unsupported_mode",
+    "why": "Simulator supports Chess Board placement and cooldown visibility, but intentionally excludes in-combat ChessPiece movement/capture AI; the supported combat mode boundary is explicit until board-state simulation exists."
   },
   "portedFalseNoops": [
     { "id": "puzzlebag_s", "gd": "Items/Exclusive/PuzzlebagS.gd" },
