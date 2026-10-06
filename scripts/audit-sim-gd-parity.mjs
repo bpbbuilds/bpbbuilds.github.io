@@ -56,11 +56,6 @@ const OUT_OF_COMBAT = new Set(['addToInventory', 'onShopEntered', 'combatEnd']);
  * different simulator mechanism, or a real behavior gap with an owner.
  */
 const HOOK_TRIAGE = {
-  bow: {
-    status: 'inherited_base',
-    owner: 'base-item audit',
-    evidence: 'Items/Bow.gd:prepare is an abstract Bow base; concrete bow ports own attacked-listener behavior.',
-  },
   card: {
     status: 'inherited_base',
     owner: 'js/pages/sim/engine/scripts/card-chain.js',

@@ -26,7 +26,7 @@ The simulator reaches 100% coverage only when every catalog item is classified a
 ## 3. Close shared-system coverage
 
 - [x] Implement and test the shared `Weapon` behavior as an explicit engine surface: `weapon` now resolves to the shared stamina-gated strike handler, preserves source attack-then-activation order, and runs inherited prepare/pre-combat/combat-start hooks. Verified by `scripts/sim-weapon-base-smoke.mjs` on both board sides.
-- [ ] Implement and test the shared `Bow` prepare behavior and every derived bow path that depends on it.
+- [x] Implement and test the shared `Bow` prepare behavior and every derived bow path that depends on it: `Bow.gd` now selects/caches its first affected weapon during prepare, and `bow_and_arrow`, `lucky_bow`, `poison_bow`, and `thorn_bow` listen only to that target. Verified by `scripts/sim-bow-base-smoke.mjs`.
 - [ ] Implement and test shared `Card` reveal/trigger/deactivation behavior and chain ordering.
 - [ ] Decide and document support for the remaining extracted base/support classes: `dragonegg`, `chesspiece`, `forestfriend`, `goldcounter`, `rotationspring`, `food`, `gemsocket`, `itempushzone`, `socketsnode`, and `bagborder`.
 - [ ] Remove all untriaged hook gaps; generic-base gaps may only close when their derived items run through the implemented base behavior.

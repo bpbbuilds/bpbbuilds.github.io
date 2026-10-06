@@ -13,7 +13,7 @@ import { dealHit } from './handlers.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { itemHasType } from './ports-util.js';
 import { weaponStrike } from './ports-wave-c-util.js';
-import { forAttackEffects, listenLinkedWeaponAttacked } from '../attack-effects.js';
+import { forAttackEffects, prepareBow } from '../attack-effects.js';
 import { randInt } from '../rng.js';
 import { rollItemChance } from '../chance.js';
 import { pushActivationAudit } from '../report-weapon-audit.js';
@@ -44,6 +44,15 @@ export const shortbowPort = {
   },
 };
 
+/** Bow.gd — prepare and cache its first affected weapon. */
+export const bowBasePort = {
+  handlerId: 'bow',
+  family: 'weapon_base',
+  onPrepare(piece, ctx) {
+    prepareBow(piece, ctx);
+  },
+};
+
 /** Dagger.gd — extra attack on opponent stun (no second stamina). */
 /** @type {ScriptHandler} */
 export const daggerPort = {
@@ -66,9 +75,9 @@ export const daggerPort = {
 export const bowAndArrowPort = {
   handlerId: 'bow_and_arrow',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._bowBonus = 0;
-    listenLinkedWeaponAttacked(piece, ctx, (payload) => {
+    prepareBow(piece, ctx, (payload) => {
       if (!payload?.hit?.hit) return;
       const per = Math.max(1, Math.round(getP1(piece.params, 1)));
       const cap = Math.max(per, Math.round(getP2(piece.params, 20)));
@@ -90,9 +99,9 @@ export const bowAndArrowPort = {
 export const poisonBowPort = {
   handlerId: 'poison_bow',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._poisonAcc = 0;
-    listenLinkedWeaponAttacked(piece, ctx, (payload) => {
+    prepareBow(piece, ctx, (payload) => {
       if (!payload?.hit?.hit) return;
       const dmg = Number(payload.hit.damage ?? payload.hit.raw) || 0;
       forAttackEffects(piece, ctx.rng, () => {
@@ -497,6 +506,7 @@ export const torchPort = {
 /** MagicTorch.gd — on hit, spend mana then addBonusDamage(p2) to self + star empowerables. */
 /** @type {ScriptHandler} */
 export const AL_WEAPON_PORTS = {
+  bow: bowBasePort,
   shortbow: shortbowPort,
   dagger: daggerPort,
   bow_and_arrow: bowAndArrowPort,

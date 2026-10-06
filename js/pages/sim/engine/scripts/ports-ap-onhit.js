@@ -17,6 +17,7 @@ import { getStackAmount } from '../stacks.js';
 import { itemHasType, pushActivate } from './ports-util.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { dealHit } from './handlers.js';
+import { prepareBow } from '../attack-effects.js';
 import {
   countEmptyAffectCells,
   removeBlock,
@@ -236,8 +237,11 @@ const shovelPort = {
 const luckyBowPort = {
   handlerId: 'lucky_bow',
   family: 'weapon_base',
-  onPrepare(piece) {
+  onPrepare(piece, ctx) {
     piece._luckyExtra = false;
+    prepareBow(piece, ctx, (payload) => {
+      if (payload?.hit?.critical) piece._luckyExtra = true;
+    });
   },
   onCombatStart(piece, ctx) {
     grantStacks(
@@ -249,15 +253,12 @@ const luckyBowPort = {
     pushActivate(piece, ctx, 'lucky_bow', `Weapon: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    weaponStrike(piece, ctx, 'lucky_bow');
+    if (!weaponStrike(piece, ctx, 'lucky_bow')) return false;
     if (piece._luckyExtra) {
       piece._luckyExtra = false;
       weaponStrike(piece, ctx, 'lucky_bow', { skipStamina: true, label: `Weapon: ${piece.name} (extra)` });
     }
     return true;
-  },
-  onDealtDamage(piece, _ctx, hit) {
-    if (hit?.critical) piece._luckyExtra = true;
   },
 };
 

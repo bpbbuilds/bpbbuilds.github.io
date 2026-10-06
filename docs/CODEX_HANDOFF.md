@@ -1814,3 +1814,13 @@ None.
 - Registered the extracted `weapon` base with the shared `weaponStrike` surface. It now spends stamina before striking, returns the source hit result, then logs activation in `Weapon.gd.attack()` order.
 - Weapon pieces now route their inherited prepare, pre-combat-start, and combat-start hooks through the same explicit surface. The generic base is no longer a handlerless parity row; the audit now has 12 no-handler base/support rows, two hook gaps (`bow`, `card`), and zero untriaged hook gaps.
 - Added `scripts/sim-weapon-base-smoke.mjs`, covering source method shape, both board sides, starvation, attack-before-activation order, and inherited lifecycle calls. Focused weapon, final-backlog, noop, and ledger checks pass.
+
+### 2026-10-06 shared Bow engine claim (in progress)
+
+- Codex owns the shared simulator Bow prepare surface, the Bow-derived handler paths (`bow_and_arrow`, `lucky_bow`, `poison_bow`, `thorn_bow`), its focused smoke test, the simulator coverage roadmap, and this handoff. Scope is the source Bow target selection and attacked-listener lifecycle only; Card and unrelated weapon work remain separate.
+
+### 2026-10-06 shared Bow engine complete
+
+- Added the explicit `Bow.gd` prepare surface: it selects and caches the first affected weapon in star-cell order, then attaches the attacked listener before combat-start effects.
+- Moved Bow and Arrow, Poison Bow, and Thorn Bow listeners into prepare. Lucky Bow now correctly arms its extra strike from the prepared weapon's critical hit (and does not fire when its stamina gate fails).
+- Registered the `bow` base handler and added `scripts/sim-bow-base-smoke.mjs`, which covers first-target selection and all four derived Bow paths. Focused Bow, Shortbow, Wave C, final-backlog, and ledger checks pass; the parity audit now has one hook gap: `card`.

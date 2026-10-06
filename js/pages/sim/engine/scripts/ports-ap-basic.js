@@ -11,7 +11,7 @@ import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { dealHit } from './handlers.js';
 import { itemHasType, pushActivate } from './ports-util.js';
-import { forAttackEffects, listenLinkedWeaponAttacked } from '../attack-effects.js';
+import { forAttackEffects, prepareBow } from '../attack-effects.js';
 import { rollItemChance, weaponStrike } from './ports-wave-c-util.js';
 import { randInt } from '../rng.js';
 
@@ -167,8 +167,18 @@ const squirrelArcherPort = {
 const thornBowPort = {
   handlerId: 'thorn_bow',
   family: 'weapon_base',
-  onPrepare(piece) {
+  onPrepare(piece, ctx) {
     piece._thornBonusN = 0;
+    const per = Math.max(1, Math.round(getPName(piece.params, 'bonusdam', getP2(piece.params, 9))));
+    prepareBow(piece, ctx, (payload) => {
+      if (!payload?.hit?.hit) return;
+      forAttackEffects(piece, ctx.rng, () => {
+        if ((getStackAmount(ctx.player, 'spikes') || 0) < 1) return;
+        spendStacks(ctx.player, 'spikes', 1, origin(piece));
+        piece._thornBonusN = (Number(piece._thornBonusN) || 0) + 1;
+        addBonusDamage(piece, per);
+      });
+    });
   },
   onCombatStart(piece, ctx) {
     grantStacks(
@@ -178,16 +188,6 @@ const thornBowPort = {
       origin(piece),
     );
     pushActivate(piece, ctx, 'thorn_bow', `${piece.name}: spikes`);
-    const per = Math.max(1, Math.round(getPName(piece.params, 'bonusdam', getP2(piece.params, 9))));
-    listenLinkedWeaponAttacked(piece, ctx, (payload) => {
-      if (!payload?.hit?.hit) return;
-      forAttackEffects(piece, ctx.rng, () => {
-        if ((getStackAmount(ctx.player, 'spikes') || 0) < 1) return;
-        spendStacks(ctx.player, 'spikes', 1, origin(piece));
-        piece._thornBonusN = (Number(piece._thornBonusN) || 0) + 1;
-        addBonusDamage(piece, per);
-      });
-    });
   },
   onCooldownEffect(piece, ctx) {
     const n = Number(piece._thornBonusN) || 0;

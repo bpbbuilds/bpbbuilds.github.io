@@ -48,9 +48,9 @@ export function firstAffectedWeapon(ctx, bow) {
     ctx.itemsById,
     ctx.canAffect,
   );
-  for (const o of ctx.pieces || []) {
-    if (o.placementKey === bow.placementKey) continue;
-    if (!links.some((l) => l.key === o.placementKey)) continue;
+  for (const link of links) {
+    const o = (ctx.pieces || []).find((piece) => piece.placementKey === link.key);
+    if (!o || o.placementKey === bow.placementKey) continue;
     const item = ctx.itemsById.get(o.itemId);
     const isW =
       o.kind === 'weapon' || /weapon/i.test(String(item?.type || ''));
@@ -63,14 +63,16 @@ export function firstAffectedWeapon(ctx, bow) {
  * Item.dealDamage emits "attacked" once; Bow scripts roll their own attackEffectCount.
  * @param {object} bow
  * @param {import('./scripts/handlers.js').ScriptCtx} ctx
- * @param {(payload: { piece: object, hit: object, t?: number }) => void} onAttacked
+ * @param {((payload: { piece: object, hit: object, t?: number }) => void) | undefined} [onAttacked]
  */
-export function listenLinkedWeaponAttacked(bow, ctx, onAttacked) {
+export function prepareBow(bow, ctx, onAttacked) {
   const w = firstAffectedWeapon(ctx, bow);
-  if (!w || typeof ctx.bus?.on !== 'function') return;
+  bow._bowAffectedWeapon = w?.placementKey || null;
+  if (!w || typeof onAttacked !== 'function' || typeof ctx.bus?.on !== 'function') return w;
   const key = w.placementKey;
   ctx.bus.on('item_attacked', (payload) => {
     if (payload?.piece?.placementKey !== key) return;
     onAttacked(payload);
   });
+  return w;
 }
