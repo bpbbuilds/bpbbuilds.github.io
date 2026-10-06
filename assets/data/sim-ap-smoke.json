@@ -1,5 +1,5 @@
 {
-  "builtAt": "2026-10-03T03:52:44.283Z",
+  "builtAt": "2026-10-05T13:33:01.053Z",
   "dumps": [
     {
       "wave": 244,
@@ -78,7 +78,7 @@
       "handlerId": "torch",
       "dummyEndHp": 1182,
       "playerEndHp": 161,
-      "eventCount": 37,
+      "eventCount": 39,
       "eventHandlers": [
         "torch"
       ],

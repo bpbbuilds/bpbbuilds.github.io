@@ -361,6 +361,11 @@ export function simulateEngine(opts) {
     const script = getScriptHandler(piece.itemId);
     script?.onPreDealDamageEarly?.(piece, hitCtx, damageRes);
   };
+  const notifyPreDealDamageLate = (piece, hitCtx, damageRes) => {
+    const script = getScriptHandler(piece.itemId);
+    script?.onPreDealDamageLate?.(piece, hitCtx, damageRes);
+    for (const fn of piece._preDealLate || []) fn?.(damageRes);
+  };
 
   const world = {
     you: player,
@@ -384,6 +389,7 @@ export function simulateEngine(opts) {
     logChain,
     notifyDealtDamage,
     notifyPreDealDamageEarly,
+    notifyPreDealDamageLate,
     chargeJobs: [],
   };
 

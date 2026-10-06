@@ -496,39 +496,6 @@ export const torchPort = {
 
 /** MagicTorch.gd — on hit, spend mana then addBonusDamage(p2) to self + star empowerables. */
 /** @type {ScriptHandler} */
-export const magicTorchPort = {
-  handlerId: 'magic_torch',
-  family: 'on_hit',
-  onCooldownEffect(piece, ctx) {
-    return weaponStrike(piece, ctx, 'magic_torch', {
-      afterHit(hit) {
-        if (!hit?.hit) return;
-        const need = Math.max(1, Math.round(getP1(piece.params, 1)));
-        const spent = useMana(ctx.player, need, {
-          originKey: piece.placementKey,
-          originId: piece.itemId,
-        });
-        if (!(spent?.spent > 0)) return;
-        const grow = Math.max(1, Math.round(getP2(piece.params, 1)));
-        addBonusDamage(piece, grow);
-        for (const o of linked(ctx, piece)) {
-          if (o.placementKey === piece.placementKey) continue;
-          if (canBeEmpoweredPiece(o)) addBonusDamage(o, grow);
-        }
-        ctx.events.push({
-          t: ctx.t + 0.008,
-          type: 'buff',
-          amount: grow,
-          itemId: piece.itemId,
-          placementKey: piece.placementKey,
-          label: `${piece.name}: +${grow} damage (mana)`,
-          meta: { category: 'weapon', script: true, handler: 'magic_torch' },
-        });
-      },
-    });
-  },
-};
-
 export const AL_WEAPON_PORTS = {
   shortbow: shortbowPort,
   dagger: daggerPort,
@@ -546,5 +513,4 @@ export const AL_WEAPON_PORTS = {
   phoenix2: phoenix2Port,
   armored_courage_puppy: armoredCouragePuppyPort,
   torch: torchPort,
-  magic_torch: magicTorchPort,
 };

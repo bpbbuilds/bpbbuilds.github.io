@@ -10,10 +10,12 @@ import {
   stealRandomBuff,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
+import { eventSideForPiece } from '../vs-board.js';
+import { goobertPeerTick } from './ports-wave-d-goobert.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -158,36 +160,52 @@ export const bloodGoobertPort = {
 export const carrotGoobertPort = {
   handlerId: 'carrot_goobert',
   family: 'pet_like',
-  onCooldownEffect(piece, ctx) {
-    const { t, player, events, rng } = ctx;
-    pushActivate(piece, ctx, 'carrot_goobert', `Pet: ${piece.name}`);
-    const cleanse = Math.max(1, Math.round(getP2(piece.params, 1)));
-    cleanseRandomDebuffs(player, cleanse, rng, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
+  onPrepare(piece) {
+    piece._goobertActs = 0;
+    piece._carrotActive = false;
+  },
+  // Goobert.gd is peer-activation driven; it must not run as a timed CD.
+  onCooldownEffect() {
+    return false;
+  },
+  onPeerActivated(piece, _activated, ctx) {
+    goobertPeerTick(piece, ctx, () => {
+      const { t, player, events, rng } = ctx;
+      piece._carrotActive = true;
+      const originData = {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+        rng,
+        opponent: ctx.dummy,
+      };
+      const cleanse = Math.max(1, Math.round(getP2(piece.params, 4)));
+      cleanseRandomDebuffs(player, cleanse, rng, originData);
+      const emp = Math.max(1, Math.round(getP3(piece.params, 2)));
+      const dur = Math.max(0.5, getPName(piece.params, 'dur', getP4(piece.params, 8)));
+      grantTemporaryStacks(player, 'empower', emp, dur, t, originData);
+      const side = eventSideForPiece(piece);
+      events.push({
+        t: t + 0.004,
+        type: 'buff',
+        actor: side,
+        target: side,
+        amount: emp,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: +${emp} Empower (${dur}s)`,
+        meta: {
+          category: 'buff',
+          stack: 'empower',
+          script: true,
+          handler: 'carrot_goobert',
+          temp: true,
+          duration: dur,
+        },
+      });
+      // Goobert.doCooldownEffect() calls activate() after its effects.
+      pushActivate(piece, ctx, 'carrot_goobert', `Pet: ${piece.name}`);
+      piece._carrotActive = false;
     });
-    const emp = Math.max(1, Math.round(getPName(piece.params, 'empower', getP1(piece.params, 2))));
-    const dur = Math.max(0.5, getPName(piece.params, 'dur', getP3(piece.params, 3)));
-    grantTemporaryStacks(player, 'empower', emp, dur, t, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    events.push({
-      t: t + 0.004,
-      type: 'buff',
-      target: 'player',
-      amount: emp,
-      label: `${piece.name}: +${emp} Empower (${dur}s)`,
-      meta: {
-        category: 'buff',
-        stack: 'empower',
-        script: true,
-        handler: 'carrot_goobert',
-        temp: true,
-        duration: dur,
-      },
-    });
-    return true;
   },
 };
 

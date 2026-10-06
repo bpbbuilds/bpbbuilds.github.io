@@ -44,6 +44,7 @@ import { applyBonusDamageFactor } from '../piece-stats.js';
  *   onPostCombatStart?: (piece: CombatPiece, ctx: ScriptCtx) => void,
  *   emitCharge?: (piece: CombatPiece, ctx: ScriptCtx, speedFactor?: number) => void,
  *   onQueuedChargeTimeout?: (piece: CombatPiece, ctx: ScriptCtx) => void,
+ *   onRevealEffect?: (piece: CombatPiece, ctx: ScriptCtx) => void,
  *   onCooldownEffect?: (piece: CombatPiece, ctx: ScriptCtx) => boolean,
  *   onPeerActivated?: (
  *     listener: CombatPiece,
@@ -55,7 +56,8 @@ import { applyBonusDamageFactor } from '../piece-stats.js';
  *     ctx: ScriptCtx,
  *     meta?: { pathId?: string, cellIndex?: number, emitterKey?: string },
  *   ) => void,
- *   onPreDealDamageEarly?: (piece: CombatPiece, ctx: ScriptCtx) => void,
+ *   onPreDealDamageEarly?: (piece: CombatPiece, ctx: ScriptCtx, res: object) => void,
+ *   onPreDealDamageLate?: (piece: CombatPiece, ctx: ScriptCtx, res: object) => void,
  *   onDealtDamage?: (
  *     piece: CombatPiece,
  *     ctx: ScriptCtx,
@@ -75,7 +77,7 @@ import { applyBonusDamageFactor } from '../piece-stats.js';
  * @param {ScriptCtx} ctx
  * @param {number} raw
  * @param {string} [extraLabel]
- * @param {{ ignoreBlock?: boolean, critChance?: number, skipSpikes?: boolean, canMiss?: boolean, isAttack?: boolean, isMelee?: boolean, vampiricItem?: boolean, canTriggerVampirism?: boolean, canTriggerItems?: boolean }} [opts]
+ * @param {{ ignoreBlock?: boolean, critChance?: number, skipSpikes?: boolean, canMiss?: boolean, isAttack?: boolean, isMelee?: boolean, vampiricItem?: boolean, canTriggerVampirism?: boolean, canTriggerItems?: boolean, onPreDealDamageEarly?: (res: object) => void }} [opts]
  */
 export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
   const { t, player, dummy, rng, events } = ctx;
@@ -110,10 +112,14 @@ export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
   player._deferUnhealLog = true;
   dummy._deferUnhealLog = true;
   const res = dealDamage(player, dummy, {
-    amount: rollAmount,
-    originPiece: piece,
-    onPreDealDamageEarly: (res) => ctx.notifyPreDealDamageEarly?.(piece, ctx, res),
-    accuracy,
+  amount: rollAmount,
+  originPiece: piece,
+  onPreDealDamageEarly: (res) => {
+    ctx.notifyPreDealDamageEarly?.(piece, ctx, res);
+    opts.onPreDealDamageEarly?.(res);
+  },
+  onPreDealDamageLate: (res) => ctx.notifyPreDealDamageLate?.(piece, ctx, res),
+  accuracy,
     canMiss: opts.canMiss !== false && !opts.ignoreBlock,
     canCrit: isAttack,
     critChance,

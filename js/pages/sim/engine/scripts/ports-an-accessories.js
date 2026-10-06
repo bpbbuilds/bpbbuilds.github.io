@@ -145,7 +145,7 @@ const vampiricCollarPort = {
 const leafBadgePort = {
   handlerId: 'leaf_badge',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     if (!linked(ctx, piece).length) return;
     const per = chanceOf(piece, ctx, 'chance', 2) / 100;
     onBuffChanged(ctx.player, (ch) => {

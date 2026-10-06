@@ -217,6 +217,7 @@ function activatePieceBody(piece, ctx) {
       amount: applyBonusDamageFactor(piece, raw + (player.stacks.empower || 0)),
       originPiece: piece,
       onPreDealDamageEarly: (res) => ctx.notifyPreDealDamageEarly?.(piece, ctx, res),
+      onPreDealDamageLate: (res) => ctx.notifyPreDealDamageLate?.(piece, ctx, res),
       accuracy,
       canMiss: true,
       // All attack damage sources carry CanCrit; actor crit tokens can force
@@ -279,7 +280,8 @@ function activatePieceBody(piece, ctx) {
         const hitResult = {
           hit: true,
           healthDamage: res.healthDamage,
-          raw,
+          damage: res.damage,
+          raw: res.raw,
           critical: res.critical,
           missed: false,
         };
@@ -289,7 +291,14 @@ function activatePieceBody(piece, ctx) {
       }
       ctx.bus?.emit?.('piece_dealt_damage', {
         piece,
-        hit: { hit: true, healthDamage: res.healthDamage },
+        hit: {
+          hit: true,
+          healthDamage: res.healthDamage,
+          damage: res.damage,
+          raw: res.raw,
+          critical: res.critical,
+          missed: false,
+        },
         t,
       });
       ctx.bus?.emit?.('item_attacked', {

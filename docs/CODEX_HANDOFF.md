@@ -1390,3 +1390,351 @@ None.
 - Events now uses the same image-based track/thumb as the home page for the document scrollbar and the scrollable How-to-join panel. Non-WebKit browsers receive the matching gold/brown `scrollbar-color` fallback; mobile's non-scrolling How-to-join layout is unchanged.
 - Validation: Playwright loaded the Events detail page at 1440x900, 1920x1080, and 390x844 with no page errors. Both the root and How-to-join scrollbar pseudo-elements resolved to the signature track/thumb assets. `git diff --check` passed.
 - Pushed in commit `bd47bcb` (`Apply signature scrollbars and responsive page polish`).
+
+### 2026-10-04 Create sell chest and parked empty-state correction claim (in progress)
+
+- Codex owns `js/pages/create/create.css` and this handoff for the follow-up create rail correction.
+- Scope: restore the Filter|Build rail's clearance above the fixed sell chest, remove the hover/focus hide state, and center the desktop Parked empty-state label without changing the carousel or drag behavior.
+
+### 2026-10-04 Create sell chest and parked empty-state correction complete
+
+- The sell chest is now continuously visible again; the Filter|Build rail ends above its reserved clearance, so scrolling the rail cannot run underneath or trigger the chest. The previous hover/focus opacity and pointer-event override was removed.
+- Desktop Parked's “Drop items here to stash” message is centered across the entire carousel tray. The desktop one-row carousel and mobile two-row layout remain intact.
+- Validation: Playwright checks at 1920x1080, 1440x900, 1366x768, and 390x844 confirmed the chest remains visible, build-panel wheel scrolling still advances normally, the desktop rail stops before the chest, the empty label is centered, and no page errors occurred. No commit/push was requested.
+
+### 2026-10-04 Create desktop nav breathing-room claim (in progress)
+
+- Codex owns `js/pages/create/create.css` and this handoff for the create-page navigation spacing adjustment.
+- Scope: reduce only the desktop Create nav's bottom padding so its measured spacer gives the workspace more vertical room. Mobile/tablet navigation and shared nav behavior remain unchanged.
+
+### 2026-10-04 Create desktop nav breathing-room complete
+
+- Desktop Create now uses a smaller bottom nav pad (`3.8rem`, `3.2rem` through 1366px), and the existing measured nav spacer follows it automatically. The workspace starts about 29px higher on 1440p/1080p-sized desktops and about 18px higher at 1366x768.
+- Validation: Playwright checks at 2560x1440, 1920x1080, 1440x900, and 1366x768 confirmed the reduced nav/spacer and expanded workspace; 1024x768 and 390x844 retained the original mobile nav height. No page errors occurred. No commit/push was requested.
+
+### 2026-10-04 Create nested-scroll cursor sync claim (in progress)
+
+- Codex owns `js/shared/game-cursor.js` and this handoff for the Create Filter|Build cursor-follow repair.
+- Scope: resample the game hand after nested panel scroll events so a stationary mouse over Filter|Build keeps the same visible cursor/follower state as the catalog. Drag placement and cursor artwork remain unchanged.
+
+### 2026-10-04 Create nested-scroll cursor sync complete
+
+- The game cursor now remembers the last mouse position and re-evaluates the element under that position whenever any nested scroller fires a scroll event. This keeps the full hand synchronized over the Filter|Build panel without requiring a fresh pointer move; the existing catalog behavior is preserved.
+- Validation: `node --check js/shared/game-cursor.js`; Playwright scrolled the Create Build panel with the pointer held stationary, confirmed the nested scroll event path fired and the full cursor follower remained active, and recorded no page errors. No commit/push was requested.
+
+### 2026-10-04 Joker and Sapphire shared combat-lifecycle claim (in progress)
+
+- Codex owns `js/pages/sim/engine/actor-stats.js`, `js/pages/sim/engine/damage.js`, `js/pages/sim/engine/simulate.js`, `js/pages/sim/engine/combat-activate.js`, `js/pages/sim/engine/scripts/handlers.js`, `js/pages/sim/engine/gem-sockets.js`, `js/pages/sim/engine/scripts/ports-ao-cards.js`, focused simulator smoke coverage, generated simulator ledger/backlog artifacts, simulator validation notes, and this handoff for `joker`, `perfect_sapphire`, and `flawless_sapphire`.
+- Scope: add the exact source-order `pre_deal_damage_late` lifecycle dispatch, use it to make socketed Sapphire attacks spectral before Block, and add a direct `Card.doRevealEffect()`-only Joker dispatch that never changes the selected card's reveal or cooldown state. Preserve existing inventory, pair/triplet, and normal Card.trigger paths; no unrelated simulator or website behavior is in scope.
+
+### 2026-10-04 Joker and Sapphire shared combat-lifecycle complete
+
+- `damage.js` now exposes the canonical late pre-deal phase after defender reductions and before Block, passes the live damage source to handlers, and preserves late-handler damage edits. The scheduler and both normal attack paths forward that phase; socketed Sapphire uses it to make the current host strike spectral, then awards Mana/Cold only for the resulting hit.
+- All source Card ports now separate `doRevealEffect()` behavior from `Card.trigger`. Joker's quadruple branch picks non-Joker prior cards using the source removal rule, invokes only their reveal effect, and leaves their reveal/cooldown state untouched while preserving their activation events. Its pair branch now grants/consumes actual CritResist stacks instead of outbound Crit tokens. `joker`, `perfect_sapphire`, `flawless_sapphire`, and the identically unblocked `flawed_sapphire` are now source-ported in the generated ledger/backlog.
+- Added `scripts/sim-joker-sapphire-smoke.mjs`: direct reveal-state/cooldown and activation-order coverage for Joker; both-side Perfect/Flawless Sapphire spectral 999-Block checks; and a scheduled `simulateEngine` route check. Syntax checks, focused new/adjacent gem/card smokes, ledger regeneration/check, hook triage, call audit, combat-log smoke, and `git diff --check` passed.
+- `sim-continuous-audit --check --family sim-joker-sapphire-smoke` reached 15/16: every check except patch drift passed. The remaining failure is the pre-existing unacknowledged 49-row source-review baseline; it was intentionally not overwritten because this task did not re-review the other rows. No commit/push was requested.
+
+### 2026-10-04 Regular gems and Resistor/Reverse claim (in progress)
+
+- Codex owns the narrow simulator handler/registry paths for `regular_emerald`, `regular_ruby`, `regular_sapphire`, `regular_topaz`, `resistor`, and `reverse`, plus focused regression coverage, generated simulator ledger/backlog artifacts, simulator validation notes, and this handoff while this claim is active.
+- Scope: trace each exact extracted lifecycle and parameters, reuse shared gem/socket and card/charge helpers where they are source-equivalent, and leave any shared-engine gap explicitly incomplete rather than approximating behavior. No unrelated simulator or website behavior is in scope.
+
+### 2026-10-04 Regular gems and Resistor/Reverse complete
+
+- Source inventory now resolves the Regular Emerald/Ruby/Sapphire/Topaz scene aliases and Resistor's charge hook. Existing shared Gem socket lifecycle plus explicit per-item inventory handlers cover the extracted source behavior.
+- Resistor grants Heat below `heatt` with a VFX-only mini activation; the threshold/failure path has no state or combat-log effect. Reverse now grants Reflect stacks (not a percentage chance) and performs the source duplicate-gated random buff steal.
+- Added `scripts/sim-regular-gems-resistor-reverse-smoke.mjs`; both-side inventory, socket, charge, and card regressions pass. Updated the source backlog, validation notes, generated inventory/ledger artifacts, and parity hook map.
+- Validation: changed-module syntax checks, focused smoke, adjacent gem/card smokes, `npm run sim-log-smoke`, parity/call audits, ledger check, and `git diff --check` pass. `sim-continuous-audit --check --family sim-regular-gems-resistor-reverse-smoke` reaches 15/16: only the repository's pre-existing patch-drift baseline fails (54 source rows are currently reported against a stale baseline); it was not overwritten without reviewing unrelated rows. No commit/push was requested.
+
+### 2026-10-04 Shortbow, Skull, potion, ring, and Fool claim (in progress)
+
+- Codex owns the narrow simulator source-alias/registry paths for `shortbow`, `skull`, `stable_recombobulator`, `strong_heroic_potion`, `strong_mana_potion`, `superior_ring`, and `the_fool`, plus focused regression coverage, generated simulator inventory/ledger artifacts, simulator validation notes, the simulator port backlog, and this handoff while this claim is active.
+- Scope: resolve each scene's inherited script, verify the existing weapon/gem/gadget/potion/ring/card handlers against the extracted lifecycle and parameters, correct only source-backed deltas, and leave any shared-engine gap explicitly incomplete rather than approximating it. No unrelated simulator or website behavior is in scope.
+
+### 2026-10-04 Shortbow, Skull, potion, ring, and Fool complete
+
+- Added exact scene aliases for Shortbow/Skull/Stable Recombobulator/Strong Heroic Potion/Strong Mana Potion/Superior Ring/The Fool. The source rows now resolve to their inherited `Weapon.gd`, `Skull.gd`, `Recombobulator.gd`, `HeroicPotion.gd`, `ManaPotion.gd`, `MagicRing.gd`, and `TheFool.gd` scripts.
+- Corrected Skull armor sockets to apply its source debuff-resistance chance to poison, blind, and cold as well as crit resistance; corrected Superior Ring's opponent-low trigger to ignore misses; corrected The Fool to buff only its own `deck.cards`; and removed the unsupported Strong Heroic p3 Lucky grant because its scene inherits HeroicPotion.gd, which only consumes p1/p2.
+- Added `scripts/sim-shortbow-skull-potions-ring-fool-smoke.mjs` with both-side weapon, gem inventory/socket, recombobulator, potion, ring trigger, and deck-local card regressions. Updated the backlog, validation notes, generated inventory/ledger, and parity/call reports.
+- Validation: changed-module syntax checks, focused/adjacent simulator smokes, `npm run sim-log-smoke`, parity/call audits, ledger check, and `git diff --check` pass. `sim-continuous-audit --check --family sim-shortbow-skull-potions-ring-fool-smoke` reaches 15/16; only the repository's pre-existing patch-drift baseline fails (59 source rows are currently reported against a stale baseline), and it was not overwritten without reviewing unrelated rows. No commit/push was requested.
+
+### 2026-10-04 The Lovers, Tiger Rune, Unstable Recombobulator, Whetstone II, and White Eyes Blue Dragon claim (in progress)
+
+- Codex owns the narrow simulator source-alias/registry paths for `the_lovers`, `tiger_rune`, `unstable_recombobulator`, `whetstone2`, and `white_eyes_blue_dragon`, plus focused regression coverage, generated simulator ledger/backlog artifacts, simulator validation notes, the simulator port backlog, and this handoff while this claim is active.
+- Scope: resolve each exact extracted scene/script and lifecycle, verify existing card/gem/gadget/weapon handlers against source behavior on both sides, correct only source-backed deltas, and leave any shared-engine gap explicitly incomplete rather than approximating behavior. No unrelated simulator or website behavior is in scope.
+
+### 2026-10-04 The Lovers, Tiger Rune, Unstable Recombobulator, Whetstone2, and White-Eyes Blue Dragon complete
+
+- Resolved `Exclusive/UnstableRecombobulator.tscn` → `Exclusive/Recombobulator.gd` and `Exclusive/Whetstone2.tscn` → `Whetstone.gd` scene aliases. The Lovers and White-Eyes Blue Dragon remain on their exact card scripts; Tiger Rune remains on `Exclusive/TigerRune.gd`.
+- Corrected Tiger Rune from the unused `buffChance` field to the simulator's `buffAmpChance` surface, preserved source prepare ordering, and kept a literal `tigerRunePort` for source/call audits. Existing card/recombobulator/whetstone handlers now have focused coverage.
+- Added `scripts/sim-lovers-tiger-unstable-whetstone-white-eyes-smoke.mjs` with both-side The Lovers, White-Eyes Blue Dragon, Unstable Recombobulator, Whetstone2, and Tiger Rune (loose/armor-socket/weapon-socket) regressions. Updated backlog, validation notes, inventory, ledger, and parity/call reports.
+- Validation: syntax checks, focused and adjacent simulator smokes, `npm run sim-log-smoke`, parity audit, call audit, ledger check, and `git diff --check` pass. Continuous audit reached 15/16; every check except the repository's pre-existing patch-drift baseline passed (61 source rows remain against a stale baseline), so the baseline was not overwritten without reviewing unrelated rows. No commit/push was requested.
+
+### 2026-10-04 Axe, Bewitchment, Blood Amulet, Bloody Dagger, Broccoli, and Broccotree claim (in progress)
+
+- Codex owns the narrow simulator source-alias/handler paths for `axe`, `bewitchment`, `blood_amulet`, `bloody_dagger`, `broccoli`, and `broccotree`, plus focused regression coverage, generated simulator inventory/ledger artifacts, simulator validation notes, the simulator port backlog, and this handoff while this claim is active.
+- Scope: resolve each exact extracted script/scene and lifecycle, verify inherited weapon/dagger/food behavior and item-specific parameters on both board owners, correct only source-backed deltas, and leave any shared-engine gap explicitly incomplete rather than approximating behavior. No unrelated simulator or website behavior is in scope.
+
+### 2026-10-04 Axe, Bewitchment, Blood Amulet, Bloody Dagger, Broccoli, and Broccotree complete
+
+- Added exact scene aliases for all six rows and source-backed handler corrections. Bewitchment now caches source type counts during prepare, respects the Mana gate, uses random least-debuff selection, and applies per-type chance bonuses. Broccoli now applies inherited Food preparation speed; Broccotree uses its source `onPrepare` override/base stamina rate; Bloody Dagger resets its cap at prepare.
+- Added `scripts/sim-axe-bewitchment-blood-broccoli-smoke.mjs`; both-side state/lifecycle regressions pass. Updated the backlog, validation notes, generated inventory/ledger, and parity/call reports.
+- Validation: focused/adjacent smokes, `npm run sim-log-smoke`, syntax checks, parity/call audits, ledger check, and `git diff --check` pass. Continuous audit reached 15/16; only the pre-existing 61-row patch-drift baseline fails and was not overwritten without reviewing unrelated rows. No commit/push was requested.
+
+### 2026-10-04 Burning Banner, Burning Coal, Burning Sword, Burning Torch, Carrot Goobert, Cauldron, Chainsaw, Charge Splitter, Chili Pepper, and Coil claim (in progress)
+
+- Codex owns the narrow simulator source-alias/handler paths for `burning_banner`, `burning_coal`, `burning_sword`, `burning_torch`, `carrot_goobert`, `cauldron`, `chainsaw`, `charge_splitter`, `chili_pepper`, and `coil`, plus focused regression coverage, generated simulator inventory/ledger/parity artifacts, simulator validation notes, the simulator port backlog, and this handoff while this claim is active.
+- Scope: resolve exact extracted scripts/scenes and inherited lifecycles, verify heat/charge/weapon/pet/food behavior on both board owners, correct only source-backed deltas, and leave shared-engine gaps explicitly incomplete rather than approximating behavior. No unrelated simulator or website behavior is in scope.
+
+### 2026-10-04 Burning Banner, Burning Coal, Burning Sword, Burning Torch, Carrot Goobert, Cauldron, Chainsaw, Charge Splitter, Chili Pepper, and Coil complete
+
+- Added exact scene aliases and source-backed lifecycle ports for all ten rows. Burning Banner/Sword/Cauldron/Charge Splitter/Carrot/Coil now initialize in `onPrepare`; Carrot uses inherited Goobert peer activations; Chainsaw uses source fractional buff remove/steal in early pre-deal; Charge Splitter uses both source charge paths; Chili activation order and Burning Coal socket modes match source.
+- Added `scripts/sim-burning-heat-charge-smoke.mjs` with both-side lifecycle/state/activation checks. Updated backlog, validation notes, generated inventory/ledger/parity artifacts, and parity/call reports.
+- Validation: focused/adjacent smokes, `npm run sim-log-smoke`, syntax checks, ledger check, and `git diff --check` pass; parity/call reports regenerate with zero untriaged gaps. Continuous audit reached 14/16 because the existing patch-drift baseline and three stale hook-triage entries fail; neither baseline nor unrelated triage was overwritten. No commit/push was requested.
+
+### 2026-10-05 Crossblades through Dragon Set claim (in progress)
+
+- Codex owns the narrow simulator handler/registry paths for `crossblades`, `cursed_hair_comb`, `dark_lantern`, `darksaber`, `death_lotus`, `deer_totem`, `djinn_lamp`, `doom_cap`, `double_axe`, `draconic_orb`, `dragon_knight`, and `dragon_set`, plus focused regression coverage, generated simulator inventory/ledger/parity artifacts, simulator validation notes, the simulator port backlog, and this handoff while this claim is active.
+- Scope: trace each extracted source lifecycle and effect call, correct only source-backed deltas (including Dragon Knight's percent cooldown advance and Dark Lantern's effect-damage path), prove both board owners, and leave any shared-engine ambiguity explicitly incomplete rather than approximating it. No unrelated simulator or website behavior is in scope.
+
+### 2026-10-05 Crossblades through Dragon Set complete
+
+- Added the AQ source-port wave for `crossblades`, `cursed_hair_comb`,
+  `dark_lantern`, `darksaber`, `death_lotus`, `deer_totem`, `djinn_lamp`,
+  `doom_cap`, `double_axe`, `draconic_orb`, `dragon_knight`, and `dragon_set`.
+  Source lifecycle ordering now covers prepare-time listeners, Rage cooldown
+  locks, Dark Lantern reincarnation/effect damage, Dragon Knight inherited
+  Reflect/Heat and percent cooldown advance, and Dragon Set full-set lifesteal.
+- Added `scripts/sim-crossblades-dragon-wave-smoke.mjs` with both-side,
+  source-order assertions for all twelve rows. The parity inventory/backlog/
+  fidelity ledger and `docs/sim/sim-validation.md` now identify this as the AQ
+  source-port wave.
+- Validation passed: changed-module syntax checks, AQ smoke, adjacent AP/gem/
+  potion smokes, Rib Saw regression, `npm run sim-log-smoke`, parity/call
+  audits, ledger check, and `git diff --check`. Continuous audit ran the AQ
+  family successfully but remains non-zero on the repository's pre-existing
+  61-row patch-drift baseline and four stale hook-triage entries; those
+  unrelated baselines were not overwritten. No commit/push was requested.
+
+### 2026-10-05 Emerald Whelp through Gingerbread Man claim (in progress)
+
+- Codex owns the narrow simulator source-alias/handler paths for `emerald_whelp`,
+  `energy_conversion`, `everburning`, `fanfare`, `flame_badge`, `flame_whip`,
+  `flute`, `fly_agaric`, `fortunas_kiss`, and `gingerbread_man`, plus focused
+  regression coverage, generated simulator ledger/parity artifacts, simulator
+  validation notes, the simulator port backlog, and this handoff while this
+  claim is active.
+- Scope: trace each exact extracted lifecycle and inherited script, correct only
+  source-backed deltas (including activation ordering, resource gates, and
+  listener reset/side semantics), prove both board owners, and leave shared
+  engine ambiguity explicitly incomplete rather than approximating behavior.
+  No unrelated simulator or website behavior is in scope.
+
+### 2026-10-05 Emerald Whelp through Gingerbread Man complete
+
+- Completed the AR source-port wave for `emerald_whelp`, `energy_conversion`,
+  `everburning`, `fanfare`, `flame_badge`, `flame_whip`, `flute`, `fly_agaric`,
+  `fortunas_kiss`, and `gingerbread_man`. Prepare-time listeners/stats now run
+  in the engine's prepare phase, including inherited Food.prepare link speed
+  for Fly Agaric and Gingerbread Man; effects and consume/activation ordering follow
+  the extracted `.gd` scripts, including Fanfare's opponent Mana/Stamina drain
+  and Fortuna's `canModifyChance` target filter.
+- Corrected the shared early damage surface so `DamageResult.damage` is rolled
+  before `onPreDealDamage_early`; Flame Whip now spends Spikes and adds its
+  unrounded bonus only after a successful hit, preserving Spikes on misses.
+  Added source-shaped stamina-drain logging and temporary max-health gain
+  projection (including MaxHealthGain amplification) for these paths.
+- Added `scripts/sim-emerald-ginger-wave-smoke.mjs`, asserting source aliases,
+  handler registration, state, event ordering, and both board owners. Updated
+  `docs/sim/sim-validation.md`, `docs/sim/sim-port-wave-backlog.md`, and the
+  generated simulator inventory/parity/fidelity artifacts with the AR wave.
+- Validation passed: AR smoke, AP milestone smoke, core-leftover smoke,
+  Crossblades/Dragon, Burning heat/charge, Goobling/Joker/Sapphire smokes,
+  `npm run sim-log-smoke`, changed-module syntax checks, and `git diff --check`.
+  The continuous audit remains 14/16 because the existing 61-row patch-drift
+  baseline and four stale hook-triage entries are unrelated; no baseline or
+  unrelated triage was overwritten. No commit/push was requested.
+
+### 2026-10-05 Halberd through Null Blade claim (in progress)
+
+- Codex owns the narrow simulator source-alias/handler paths for `halberd`,
+  `heart_container`, `hero_sword`, `ice_armor`, `just_stats`, `laboratory`,
+  `leaf_badge`, `level_up`, `light_flower`, `lucky_bow`, `lucky_clover`,
+  `magic_torch`, `mananana`, `molten_dagger`, `molten_spear2`, `moon_armor`,
+  `more_stats`, and `null_blade`, plus focused regression coverage, generated
+  simulator ledger/parity artifacts, simulator validation notes, the simulator
+  port backlog, and this handoff while this claim is active.
+- Scope: trace each exact extracted lifecycle and inheritance chain, correct
+  only source-backed deltas with both-board evidence, and leave any shared
+  engine uncertainty explicitly incomplete rather than approximating behavior.
+  No unrelated simulator or website behavior is in scope.
+
+### 2026-10-05 Halberd through Null Blade complete
+
+- Completed the AS source-port wave for `halberd`, `heart_container`,
+  `hero_sword`, `ice_armor`, `just_stats`, `laboratory`, `leaf_badge`,
+  `level_up`, `light_flower`, `lucky_bow`, `lucky_clover`, `magic_torch`,
+  `mananana`, `molten_dagger`, `molten_spear2`, `moon_armor`, `more_stats`,
+  and `null_blade`.
+- Corrected prepare/pre-combat lifecycle work, late Block removal, source
+  effect-before-activation order, inherited Food preparation speed, and
+  early current-hit plus permanent damage behavior. Removed Magic Torch's
+  obsolete duplicate handler registration; the audit now reports 19 remaining
+  pre-existing duplicate registrations.
+- Added `scripts/sim-halberd-null-blade-wave-smoke.mjs` with both-side source
+  alias, lifecycle, state, damage, target, and event-order assertions. Updated
+  the simulator backlog, validation notes, parity inventory, and fidelity
+  ledger (452 source-ported, 39 runtime-incomplete rows).
+- Validation passed: AS and adjacent AR source-port smokes, AP milestone and
+  combat-log smokes, syntax checks, parity/call audits, fidelity-ledger check,
+  and `git diff --check`. Continuous audit runs the AS family successfully but
+  remains 14/16 because the repository has a 61-row patch-drift baseline and
+  four stale hook-triage entries; neither unrelated baseline was overwritten.
+  No commit/push was requested.
+
+### 2026-10-05 Pan through Pot claim (in progress)
+
+- Codex owns the narrow simulator source-alias/handler paths for `pan`,
+  `phoenix`, `piggy_of_riches`, `piggybank`, `poison_dagger`,
+  `poison_grenade`, `poison_shortbow`, and `pot`, plus focused regression
+  coverage, generated simulator ledger/parity artifacts, simulator validation
+  notes, the simulator port backlog, and this handoff while this claim is
+  active.
+- Scope: trace each exact extracted lifecycle and inheritance chain, correct
+  only source-backed deltas with both-board evidence, and leave any shared
+  engine uncertainty explicitly incomplete rather than approximating behavior.
+  No unrelated simulator or website behavior is in scope.
+
+### 2026-10-05 Pan through Pot complete
+
+- Completed the AT source-port wave for `pan`, `phoenix`, `piggy_of_riches`,
+  `piggybank`, `poison_dagger`, `poison_grenade`, `poison_shortbow`, and
+  `pot`. Phoenix, Poison Grenade, and Pot now install their source listeners
+  during prepare; Poison Dagger also covers the inherited Dagger stun attack.
+- Added `scripts/sim-pan-pot-wave-smoke.mjs` with exact source aliases,
+  lifecycle, state, activation order, and both-board assertions. Updated the
+  backlog, validation notes, parity inventory, and fidelity ledger (460
+  source-ported, 31 runtime-incomplete rows).
+- Validation passed: changed-module syntax checks, AT and adjacent AS smokes,
+  combat-log smoke, ledger check, and `git diff --check`. The continuous audit
+  runs the AT family successfully but remains non-zero on pre-existing
+  patch-drift/hook-triage findings; those unrelated baselines were not
+  overwritten. No commit/push was requested.
+
+### 2026-10-05 Power of the Moon through Scale claim (in progress)
+
+- Codex owns the narrow simulator source-alias/handler paths for
+  `power_of_the_moon`, `pumpkin`, `puzzlebag_l`, `ruby_chonk`, `ruby_egg`,
+  `ruby_whelp`, `sapphire_whelp`, and `scale`, plus focused regression
+  coverage, generated simulator ledger/parity artifacts, simulator validation
+  notes, the simulator port backlog, and this handoff while this claim is
+  active.
+- Scope: trace each exact extracted lifecycle and inheritance chain, correct
+  only source-backed deltas with both-board evidence, and leave any shared
+  engine uncertainty explicitly incomplete rather than approximating behavior.
+  No unrelated simulator or website behavior is in scope.
+
+### 2026-10-05 Create Build-tab priority drop repair claim (in progress)
+
+- Codex owns `js/pages/create/meta-drops.js`, `js/pages/create/drag-session.js`, `js/pages/create/drag-pointers.js`, `js/pages/create/create.css`, and this handoff for repairing manual item drops onto Why it works, Needs, Wants, and Good to have. Scope is limited to restoring the existing priority/mention drop behavior without changing history-lock, board placement, park, sell, or catalog rules.
+
+### 2026-10-05 Create Build-tab priority drop repair complete
+
+- Removed the redundant pointer-only meta-drop preflight. Drag release now delegates directly to the existing held-sprite-aware `tryCommitDrop`, which is the authoritative resolver for Why it works, Needs, Wants, and Good to have. Removed the unused session callback; `meta-drops.js` and `create.css` were inspected but unchanged.
+- Validation: a Playwright drag flow placed a Leather Bag and Wooden Sword, added the Sword mention to Why it works, then moved that board item through Needs, Wants, and Good to have; each target accepted it with no page errors. Both changed modules pass `node --check` and `git diff --check`.
+
+### 2026-10-05 Discord channel-creation lockout claim (in progress)
+
+- Codex owns `bot/channel-reconcile.js`, `bot/stats.js`, `scripts/bot-channel-reconcile-smoke.mjs`, and this handoff for stopping recurring bot-created Discord channel/category duplicates. Scope is reuse and update of existing channels only; the bot will not create or delete Discord channels/categories, while its existing messages, roles, stats renames, and layout updates remain intact.
+
+### 2026-10-05 Discord channel-creation lockout complete
+
+- Channel reconciliation is now reuse-only: a missing category/channel logs and aborts that sync instead of POSTing a new Discord resource. Website Stats no longer bypasses that rule for its two periodic voice counters. Existing channels still receive bot messages, role handling, stat renames, and layout updates; the bot never creates or deletes channels/categories.
+- Validation: the reconciliation smoke now asserts a missing target performs no POST; it passes. Changed bot modules and layout parse cleanly, the complete bot source has no guild-channel POST route, and targeted `git diff --check` passes. No local `bot:watch` process was running at the audit; deploy/restart the active bot service to apply this lockout.
+
+### 2026-10-05 Discord duplicate channel cleanup complete
+
+- Read the live guild and bot state references before mutation. Deleted 41 unreferenced, exact type/name duplicate channels/categories created by the bot; canonical state-referenced resources were preserved, and child channels were deleted before their duplicate categories.
+- Live verification after deletion reports 25 remaining guild channels and zero duplicate type/name groups. The code-level creation lockout remains required on the active bot service to prevent recurrence.
+
+### 2026-10-05 Discord Builds forum image repair claim (in progress)
+
+- Codex owns `bot/announce.js`, `bot/announce-author.js`, the existing build-thumbnail repair path, and this handoff for replacing fragile external board-image embeds with Discord-hosted build attachments. Scope includes repairing the current bot-posted Builds forum messages after the attachment path is verified; build visibility, forum structure, and website Storage policy remain unchanged.
+
+### 2026-10-05 Discord Builds forum image repair complete
+
+- New build forum posts now embed `attachment://build.png` and upload the generated board PNG directly to Discord, avoiding unreliable external-image proxying. The generated image sample was 5.8 MB, within Discord's 10 MB upload limit.
+- Repaired all 18 existing bot-posted Build forum threads in place: each now has a Discord-hosted `build.png` attachment and no external embed image URL. Seven boards were rebuilt from their current placements; the remaining eleven reused their verified hosted PNG before being attached. Live verification reports `{ posts: 18, attached: 18, external: 0 }`. `node --check` and targeted diff validation pass. Deploy/restart the active bot service to apply the new-post path.
+
+### 2026-10-05 Discord bot deploy and Builds forum repost complete
+
+- Committed and pushed the Discord fixes as `e3a1c8b` (`Fix Discord build images and channel duplication`) to `main`, which is the configured Northflank service deployment trigger. Northflank status is not available from this workspace, so service health was not asserted locally.
+- Deleted exactly 18 bot-tracked Builds forum threads, then re-ran the current publish source. It returned 11 current publishable builds and recreated those 11 threads. Each replacement embed resolves to a Discord CDN `build.png` URL; no external Supabase image URLs remain in the recreated set.
+
+### 2026-10-05 Main-channel Discord links claim (in progress)
+
+- Codex owns `bot/welcome.js` and this handoff while tracing the main-channel message whose channel hyperlinks resolve as Unknown. Scope is limited to resolving live channel IDs and repairing the bot-owned message; no channel/category creation, deletion, or layout changes are authorized.
+
+### 2026-10-05 Main-channel Discord links complete
+
+- The bot-owned welcome guide contained seven stale IDs from deleted duplicate channels. Its sync was also crashing before it could repair them because `LOGO` was undefined. Restored the existing relative logo asset constant, refreshed the live guide, and verified all 16 Discord channel mentions resolve to live guild channels with zero Unknown links.
+- Pushed `2403f8a` (`Fix Discord welcome channel links`) to `main`, triggering the configured Northflank deployment path. `node --check bot/welcome.js` and targeted `git diff --check` pass.
+
+### 2026-10-05 Information message deduplication claim (in progress)
+
+- Codex owns `bot/rules.js`, `bot/news.js`, `bot/premium.js`, `bot/quest.js`, and this handoff while retaining the original bot messages in Information and removing only newer duplicates. Scope includes a minimal restart-safe original-message preference; no channel/category mutation is authorized.
+
+### 2026-10-05 Information message deduplication complete
+
+- Preserved the original Rules, Announcements, Premium, and Quest bot messages and deleted exactly four newer duplicate bot messages. Live verification confirms each affected Information channel now contains only its original bot post.
+- The four sync modules now prefer their original message IDs, so a stale persistent state cannot replace them with duplicates at the next restart. Pushed `93467d2` (`Keep original information messages`) to `main`; syntax and targeted diff checks pass.
+
+### 2026-10-05 Discord Builds blob creator icon claim (in progress)
+
+- Codex owns `bot/announce-author.js`, `bot/announce-icon.js`, and this handoff while repairing broken generated blob creator icons in the Builds forum. Scope is limited to storing generated blob PNGs in existing public bot image Storage and refreshing affected bot posts; Discord avatars and board images are unchanged.
+
+### 2026-10-05 Discord Builds blob creator icon complete
+
+- Root cause: generated blob icons were written to private `board-stills` but embedded through its public URL, which returned HTTP 400. The existing Discord avatars returned HTTP 200.
+- Generated blob icons now use the existing public `discord-builds` bucket. The key version changed to refresh cached blob credits; all four affected forum posts were updated and verified as `image/png` through their live embed URLs. Pushed `b7cb96e` (`Fix Discord build blob icons`) to `main`; syntax and diff checks pass.
+
+### 2026-10-05 Events featured layout claim (in progress)
+
+- Codex owns `js/pages/events/events.css` and this handoff while aligning the Events featured event banner/details proportions with the Home featured-build card. Scope is desktop layout only; event content, mobile stacking, and shared theme files remain unchanged.
+
+### 2026-10-05 Events featured layout complete
+
+- Matched the desktop Events featured card to the Home featured-build proportion: the banner lane is now `1.5fr` versus the details lane at `0.72fr`; the details sheet is vertically centered at 90% of banner height and scrolls only if content exceeds it. The existing mobile stacked layout resets to automatic height.
+- Pushed `42493ab` (`Match featured event layout to home`) to `main`. Targeted diff validation passes.
+
+### 2026-10-05 Events featured layout correction
+
+- Reverted the over-compressed banner/details ratio and fixed 90% details height after it squashed event copy. The featured event is back to its balanced `1.35fr` banner / `1fr` details layout with its existing overlap styling intact.
+- Pushed `b1bcc42` (`Restore featured event detail space`) to `main`; targeted diff validation passes.
+
+### 2026-10-05 Admin event banner upload claim (in progress)
+
+- Codex owns `js/pages/admin/event-form-markup.js`, `js/pages/admin/event-form.js`, `js/pages/admin/api.js`, `js/pages/admin/tab-events.js`, `js/pages/events/event-card.js`, `js/pages/events/event-drafts.js`, `supabase/functions/admin-builds/index.ts`, the three legal pages, and this handoff while repairing missing uploads from the owner Event editor. Scope is owner-authenticated event image upload to existing public Storage plus a rendered fallback for a missing image; event data remains browser-session draft state.
+
+### 2026-10-05 Admin event banner upload complete
+
+- Root cause: the Event editor saved the selected image filename into its browser-session draft without uploading its bytes, so the public page requested a nonexistent file and returned 404. Event image selections now become bounded data URLs and are sent only to the existing owner-gated `admin-builds` function, which writes a unique public `discord-builds/event-assets/<slug>/...` object and returns its URL.
+- Deployed the updated `admin-builds` Edge Function to project `xklkysmakrmgtiztsqug` and pushed site changes as `b183a6c` (`Fix admin event image uploads`). Legal pages were updated for the new owner-uploaded public event art. Existing missing filenames cannot be recovered; reselect and save the banner once to upload it.
+
+### 2026-10-05 Discord build attachment and thumbnail claim (in progress)
+
+- Codex owns `bot/announce.js`, `bot/announce-author.js`, and this handoff while ensuring new Builds forum posts show the board only inside the embed and generated blob creators appear as the embed thumbnail. Scope excludes channel/category resources and existing unrelated Discord layout.
+
+### 2026-10-05 Discord build attachment and thumbnail complete
+
+- Root cause: new forum-thread payloads declared the uploaded board twice: once as the embed's `attachment://build.png` and again as a normal message attachment. New posts now rely on the multipart file for the embed reference alone, so the board is not rendered as a second loose image.
+- Blob creator credits use a refreshed key and explicitly assign the hosted blob URL to the embed thumbnail. Refreshed all four current blob-authored posts live and verified each thumbnail URL returns an image. Pushed `8dc585d` (`Keep Discord build image in embed`) to `main`, triggering the configured deployment path; both bot files pass `node --check` and the targeted regression check.
+
+### 2026-10-05 Admin event image upload transport claim (in progress)
+
+- Codex owns `js/pages/admin/event-form-markup.js`, `js/pages/admin/api.js`, `js/pages/admin/tab-events.js`, `supabase/functions/admin-builds/index.ts`, and this handoff while moving owner event image bytes off the Edge Function JSON request limit. Scope remains owner-authenticated uploads to the existing public `discord-builds` bucket; no event-data model or access expansion is authorized.
+
+### 2026-10-05 Admin event image upload transport complete
+
+- The owner-gated Edge Function now mints a signed upload URL after validating only the event slug, asset kind, and allowed image MIME type. The browser uploads the already-bounded image directly to the existing `discord-builds` bucket, so image bytes no longer cross the Edge Function JSON limit.
+- Deployed `admin-builds` to project `xklkysmakrmgtiztsqug`. Changed browser modules pass `node --check`; the deployed simulator release's focused smokes and `git diff --check` pass. The full continuous simulator audit remains 13/15 only because its pre-existing 61-row patch-drift baseline and four stale hook-triage entries are intentionally unacknowledged.

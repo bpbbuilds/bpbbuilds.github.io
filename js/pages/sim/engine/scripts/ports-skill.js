@@ -8,11 +8,15 @@ import {
   inflictRandomDebuffs,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
+import { changeReflectStacks } from '../actor-stats.js';
 import { gainStacks } from '../stacks.js';
+import { advanceCooldownPercent } from '../cooldown.js';
 import { itemHasType, afterEffectFinished, pushActivate } from './ports-util.js';
 import { getScriptHandler } from './registry.js';
+import { weaponStrike } from './ports-wave-c-util.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -100,21 +104,68 @@ export const spellScrollDarkPort = {
 export const dragonKnightPort = {
   handlerId: 'dragon_knight',
   family: 'unique',
-  onPeerActivated(listener, activated, ctx) {
-    const { t, events } = ctx;
-    addSpeed(activated, getP1(listener.params, 5) / 100);
-    events.push({
-      t,
-      type: 'info',
-      itemId: listener.itemId,
-      placementKey: listener.placementKey,
-      label: `${listener.name}: haste → ${activated.name}`,
-      meta: { category: 'adjacency', script: true, handler: 'dragon_knight' },
+  onPrepare(piece, ctx) {
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    piece._dragonKnightKeys = new Set(
+      (ctx.pieces || [])
+        .filter((other) =>
+          other.placementKey !== piece.placementKey &&
+          links.some((link) => link.key === other.placementKey) &&
+          (getScriptHandler(other.itemId)?.onCooldownEffect ||
+            (Number(other.cooldown) > 0 && Number(other.cooldown) < 500)),
+        )
+        .map((other) => other.placementKey),
+    );
+  },
+  onPreCombatStart(piece, ctx) {
+    changeReflectStacks(
+      ctx.player,
+      Math.max(0, Math.round(getPName(piece.params, 'reflect', getP2(piece.params, 4)))),
+      ctx,
+      piece,
+    );
+  },
+  onCombatStart(piece, ctx) {
+    grantStacks(ctx.player, 'heat', Math.max(0, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 5)))), {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
     });
+    pushActivate(piece, ctx, 'dragon_knight', `Weapon: ${piece.name}`);
+  },
+  onPeerActivated(listener, activated, ctx) {
+    if (
+      listener._dragonKnightKeys instanceof Set &&
+      !listener._dragonKnightKeys.has(activated?.placementKey)
+    ) {
+      return;
+    }
+    advanceCooldownPercent(
+      listener,
+      getPName(listener.params, 'advance', getP4(listener.params, 15)),
+      ctx,
+    );
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'dragon_knight', `Skill: ${piece.name}`);
-    return true;
+    return weaponStrike(piece, ctx, 'dragon_knight');
+  },
+  onDealtDamage(piece, ctx, hit) {
+    if (!hit?.hit) return;
+    const heal = Math.max(0, Math.round(getPName(piece.params, 'heal', getP3(piece.params, 7))));
+    if (!heal) return;
+    const got = healActor(ctx.player, heal);
+    if (got <= 0) return;
+    const side = eventSideForPiece(piece);
+    ctx.events.push({
+      t: ctx.t + 0.002,
+      type: 'heal',
+      actor: side,
+      target: side,
+      amount: got,
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `${piece.name}: +${got} HP`,
+      meta: { category: 'heal', script: true, handler: 'dragon_knight' },
+    });
   },
 };
 

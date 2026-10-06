@@ -59,7 +59,6 @@ import { isTypingTarget } from '../../shared/is-typing-target.js';
  *   isPointerOverPark: (x: number, y: number) => boolean,
  *   isPointerOverCatalog?: (x: number, y: number) => boolean,
  *   isPointerOverSell: (x: number, y: number) => boolean,
- *   isPointerOverMeta?: (x: number, y: number) => boolean,
  *   beginHotswapFromPlacement: (p: object, x: number, y: number) => boolean,
  *   syncPendingPointer: () => void,
  *   scheduleMove: (x: number, y: number) => void,
@@ -112,7 +111,6 @@ export function bindDragPointers(ctx) {
     isPointerOverPark,
     isPointerOverCatalog,
     isPointerOverSell,
-    isPointerOverMeta,
     beginHotswapFromPlacement,
     syncPendingPointer,
     scheduleMove,
@@ -810,9 +808,11 @@ export function bindDragPointers(ctx) {
     const cx = e.clientX;
     const cy = e.clientY;
 
-    // Build tab: skill slots + essentials tiers (no history unlock)
-    if (getMoved() && isPointerOverMeta?.(cx, cy)) {
-      const result = commitToMeta?.(cur, cx, cy);
+    // Build tab: skill slots + essentials tiers (no history unlock).
+    // tryCommitDrop is the source of truth: it accounts for the held sprite's
+    // rect as well as the pointer, unlike a separate preflight hit check.
+    if (getMoved()) {
+      const result = commitToMeta?.(cur, cx, cy) ?? 'miss';
       if (result === 'done') {
         setMultiMoveKeys(null);
         // Catalog place: consume float. Board move: snap item home (still on board).

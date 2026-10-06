@@ -3,7 +3,7 @@
  */
 
 import { tryUseStamina } from '../actor.js';
-import { BUFF_KEYS, spendStacks } from '../buff-economy.js';
+import { BUFF_KEYS, spendStacks, stealStack } from '../buff-economy.js';
 import { getStackAmount } from '../stacks.js';
 import { dealHit } from './handlers.js';
 import { randInt } from '../rng.js';
@@ -18,6 +18,7 @@ export { rollItemChance, rollItemChance2 } from '../chance.js';
  * @param {{
  *   beforeDeal?: (raw: number, piece: object, ctx: object) =>
  *     number | { raw?: number, ignoreBlock?: boolean, critChance?: number } | void,
+   * onPreDealDamageEarly?: (res: object) => void,
    * afterHit?: (hit: object, piece: object, ctx: object) => void,
    *   label?: string,
  * }} [opts]
@@ -65,7 +66,11 @@ export function weaponStrike(piece, ctx, handler, opts = {}) {
       return raw;
     },
     undefined,
-    { ...hitOpts, skipSpikes: !!opts.skipSpikes },
+    {
+      ...hitOpts,
+      skipSpikes: !!opts.skipSpikes,
+      onPreDealDamageEarly: opts.onPreDealDamageEarly,
+    },
   );
   if (typeof opts.afterHit === 'function') opts.afterHit(hit, piece, ctx);
   return true;
@@ -105,6 +110,56 @@ export function removeRandomBuffs(actor, num, rng, opts = {}) {
     if (spent > 0) removed[choice] = (removed[choice] || 0) + spent;
   }
   return removed;
+}
+
+/**
+ * Item.getStackFraction() — choose a rounded fraction of every available
+ * buff, capped by `limit`, then remove the distributed integer amount.  The
+ * remainder ordering follows the game's BUFF_KEYS order for deterministic
+ * ties.
+ */
+function fractionPlan(actor, fraction, limit) {
+  const rows = BUFF_KEYS.map((stack, index) => {
+    const amount = Math.max(0, Number(getStackAmount(actor, /** @type {any} */ (stack))) || 0);
+    const exact = amount * Math.max(0, Number(fraction) || 0);
+    return { stack, index, exact, base: Math.floor(exact), remainder: exact - Math.floor(exact) };
+  }).filter((row) => row.base > 0 || row.remainder > 0);
+  const roundedTotal = Math.round(rows.reduce((sum, row) => sum + row.exact, 0));
+  let total = Math.min(Math.max(0, Math.round(limit)), roundedTotal);
+  if (!total) return [];
+  for (const row of rows) {
+    row.take = Math.min(row.base, Math.max(0, Number(getStackAmount(actor, /** @type {any} */ (row.stack))) || 0));
+    total -= row.take;
+  }
+  rows.sort((a, b) => b.remainder - a.remainder || a.index - b.index);
+  for (const row of rows) {
+    if (total <= 0) break;
+    const available = Math.max(0, Math.floor(Number(getStackAmount(actor, /** @type {any} */ (row.stack))) || 0) - row.take);
+    if (available <= 0) continue;
+    row.take += 1;
+    total -= 1;
+  }
+  return rows.filter((row) => row.take > 0).map(({ stack, take }) => ({ stack, take }));
+}
+
+/** Remove a source-accurate fraction of an actor's buffs. */
+export function removeBuffsFraction(actor, fraction, limit, rng, opts = {}) {
+  const removed = {};
+  for (const { stack, take } of fractionPlan(actor, fraction, limit)) {
+    const result = spendStacks(actor, stack, take, { ...opts, hostileStrip: true, rng });
+    if (result.spent > 0) removed[stack] = result.spent;
+  }
+  return removed;
+}
+
+/** Steal a source-accurate fraction of buffs from `from` to `to`. */
+export function stealBuffsFraction(from, to, fraction, limit, rng, opts = {}) {
+  const stolen = {};
+  for (const { stack, take } of fractionPlan(from, fraction, limit)) {
+    const result = stealStack(from, to, stack, take, { ...opts, rng });
+    if (result.stolen > 0) stolen[stack] = result.stolen;
+  }
+  return stolen;
 }
 
 /**

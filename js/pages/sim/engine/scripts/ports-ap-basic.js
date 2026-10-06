@@ -42,9 +42,13 @@ function starve(piece, ctx, handler) {
 const phoenixPort = {
   handlerId: 'phoenix',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._phxUsed = false;
-    ctx.bus?.on?.('player_damaged', () => {
+    // Phoenix.gd connects to its own Character during Item.prepare(), not
+    // after combat-start. Listen to the source-level damage signal and keep
+    // the owner filter so the same handler works on either board.
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor !== ctx.player) return;
       if (piece._phxUsed) return;
       const p = ctx.player;
       if (p.hp > 0 && !p.dead) return;
@@ -77,8 +81,9 @@ const phoenixPort = {
         rng,
       });
     }
-    pushActivate(piece, ctx, 'phoenix', `Weapon: ${piece.name}`);
     dealHit(piece, ctx, () => randInt(piece.damageMin, piece.damageMax, rng));
+    // Weapon.attack() activates only after dealDamage has produced its result.
+    pushActivate(piece, ctx, 'phoenix', `Weapon: ${piece.name}`);
     return true;
   },
 };

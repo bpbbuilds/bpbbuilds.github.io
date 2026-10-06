@@ -15,6 +15,7 @@ import { advanceCooldownSeconds } from '../cooldown.js';
 import { dealDamage } from '../damage.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
+import { applyFoodPrepareSpeed } from './food-helpers.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { itemHasType, afterEffectFinished, pushActivate } from './ports-util.js';
 
@@ -56,13 +57,13 @@ const iceArmorPort = {
     pushActivate(piece, ctx, 'ice_armor', `Armor: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'ice_armor', `Armor: ${piece.name}`);
     const need = Math.max(1, Math.round(getP2(piece.params, 1)));
     if (getStackAmount(ctx.player, 'heat') >= need) {
       spendStacks(ctx.player, 'heat', need, origin(piece));
       grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getP3(piece.params, 2))), origin(piece));
       gainStacks(ctx.player, 'block', Math.max(1, Math.round(getP4(piece.params, 10))));
     }
+    pushActivate(piece, ctx, 'ice_armor', `Armor: ${piece.name}`);
     return true;
   },
 };
@@ -203,7 +204,6 @@ const doomCapPort = {
   handlerId: 'doom_cap',
   family: 'food',
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'doom_cap', `Food: ${piece.name}`);
     grantStacks(
       ctx.dummy,
       'poison',
@@ -216,6 +216,8 @@ const doomCapPort = {
       ctx,
       piece,
     );
+    // DoomCap.gd performs its effects before the cooldown activation is logged.
+    pushActivate(piece, ctx, 'doom_cap', `Food: ${piece.name}`);
     return true;
   },
 };
@@ -224,9 +226,15 @@ const doomCapPort = {
 const flyAgaricPort = {
   handlerId: 'fly_agaric',
   family: 'food',
+  // FlyAgaric.gd extends Food without overriding prepare(). Preserve the
+  // inherited Food.prepare food-link haste before its cooldown effect runs.
+  onPrepare(piece, ctx) {
+    applyFoodPrepareSpeed(piece, ctx);
+  },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'fly_agaric', `Food: ${piece.name}`);
     grantStacks(ctx.dummy, 'poison', Math.max(1, Math.round(getP1(piece.params, 1))), origin(piece));
+    // FlyAgaric.gd inflicts Poison before activate().
+    pushActivate(piece, ctx, 'fly_agaric', `Food: ${piece.name}`);
     return true;
   },
 };
@@ -235,7 +243,7 @@ const flyAgaricPort = {
 const poisonGrenadePort = {
   handlerId: 'poison_grenade',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._grenadeCrit = false;
     const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP4(piece.params, 5))));
     const ch = Number(ctx.itemsById.get(piece.itemId)?.chance) || 30;

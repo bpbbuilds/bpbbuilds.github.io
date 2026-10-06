@@ -65,7 +65,7 @@ export function imageDropField(id, name, label, value, assetBase, opts = {}) {
     <div class="admin-event-form__drop${wide}" data-event-drop tabindex="0" role="button" aria-labelledby="${id}-label">
       <img class="admin-event-form__drop-preview" alt="" ${src ? `src="${escapeAttr(src)}"` : 'hidden'} draggable="false" />
       <p class="admin-event-form__drop-hint">${escapeHtml(hint)}</p>
-      <input id="${id}-file" class="admin-event-form__drop-file" type="file" accept="image/png,image/webp,image/jpeg,image/gif" tabindex="-1" />
+      <input id="${id}-file" class="admin-event-form__drop-file" type="file" accept="image/png,image/webp,image/jpeg" tabindex="-1" />
     </div>
     <input id="${id}" type="hidden" name="${name}" value="${escapeAttr(value)}" />
   </div>`;
@@ -90,7 +90,7 @@ export function bindImageDrops(root) {
     const apply = async (file) => {
       if (!file) return;
       if (!String(file.type || '').startsWith('image/')) {
-        setEventFormStatus('Use a PNG, WebP, JPEG, or GIF.', true);
+        setEventFormStatus('Use a PNG, WebP, or JPEG image.', true);
         return;
       }
       if (file.size > 5 * 1024 * 1024) return setEventFormStatus('Event images must be 5 MB or smaller.', true);

@@ -17,9 +17,16 @@ import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
-import { itemHasType, afterEffectFinished, pushActivate } from './ports-util.js';
+import {
+  itemHasType,
+  afterEffectFinished,
+  pushActivate,
+  pieceHasCombatCooldown,
+} from './ports-util.js';
 import { removeRandomBuffs } from './ports-wave-c-util.js';
 import { rollPercent } from '../rng.js';
+import { giveTempMaxHp } from './ports-ap-start.js';
+import { applyFoodPrepareSpeed } from './food-helpers.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -69,7 +76,7 @@ function labTypes(ctx, piece) {
 const burningBannerPort = {
   handlerId: 'burning_banner',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const ch2 = Number(ctx.itemsById.get(piece.itemId)?.chance2) || 25;
     ctx.dummy.debuffCleanseProtectChance =
       (Number(ctx.dummy.debuffCleanseProtectChance) || 0) + ch2;
@@ -77,18 +84,22 @@ const burningBannerPort = {
       (Number(ctx.player.buffCleanseProtectChance) || 0) + ch2;
     const dur = getPName(piece.params, 'dur_blind', getP1(piece.params, 5));
     const chance = Number(ctx.itemsById.get(piece.itemId)?.chance) || 80;
+    // BurningBanner.gd caches getAffectedItems() and connects only to holy
+    // items which can activate.  Do the same during prepare so later board
+    // mutations cannot change the listener set.
+    piece._burningBannerTargets = linked(ctx, piece).filter((other) =>
+      itemHasType(ctx.itemsById.get(other.itemId), 'holy') &&
+      (other.kind === 'weapon' || pieceHasCombatCooldown(other)),
+    );
     ctx.bus?.on?.('piece_activated', (payload) => {
       const other = payload?.piece;
       if (!other || other === piece) return;
-      if (!linked(ctx, piece).some((o) => o === other)) return;
-      if (!itemHasType(ctx.itemsById.get(other.itemId), 'holy')) return;
-      if (!(other.cooldown > 0 && other.cooldown < 500) && other.kind !== 'weapon') return;
+      if (!(piece._burningBannerTargets || []).some((o) => o === other)) return;
       if (!rollPercent(chance, ctx.rng)) return;
       grantTemporaryStacks(ctx.dummy, 'blind', 1, dur, ctx.t, origin(piece));
     });
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'burning_banner', `Accessory: ${piece.name}`);
     removeRandomBuffs(
       ctx.dummy,
       Math.max(1, Math.round(getPName(piece.params, 'buffs', getP2(piece.params, 2)))),
@@ -101,6 +112,8 @@ const burningBannerPort = {
       Math.max(1, Math.round(getPName(piece.params, 'regen', getP3(piece.params, 2)))),
       origin(piece),
     );
+    // Item.doCooldownEffect applies both effects before activating.
+    pushActivate(piece, ctx, 'burning_banner', `Accessory: ${piece.name}`);
     return true;
   },
 };
@@ -109,17 +122,20 @@ const burningBannerPort = {
 const gingerbreadManPort = {
   handlerId: 'gingerbread_man',
   family: 'food',
+  // GingerbreadMan.gd extends Food without overriding prepare(). Keep the
+  // inherited Food.prepare food-link haste in the dedicated handler.
+  onPrepare(piece, ctx) {
+    applyFoodPrepareSpeed(piece, ctx);
+  },
   onCombatStart(piece, ctx) {
     const hp = Math.max(1, Math.round(getPName(piece.params, 'maxhealth', getP1(piece.params, 40))));
-    ctx.player.maxHp += hp;
-    ctx.player.hp += hp;
+    giveTempMaxHp(piece, ctx, 'gingerbread_man', hp);
     pushActivate(piece, ctx, 'gingerbread_man', `Food: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
     const luckN = Math.max(1, Math.round(getP2(piece.params, 1)));
     const heatN = Math.max(1, Math.round(getP3(piece.params, 1)));
     const manaN = Math.max(1, Math.round(getP4(piece.params, 1)));
-    pushActivate(piece, ctx, 'gingerbread_man', `Food: ${piece.name}`);
     if (
       getStackAmount(ctx.player, 'lucky') >= luckN &&
       getStackAmount(ctx.player, 'heat') >= heatN &&
@@ -144,9 +160,10 @@ const gingerbreadManPort = {
         1,
         Math.round(getPName(piece.params, 'maxhealth_use', 20)),
       );
-      ctx.player.maxHp += extra;
-      ctx.player.hp += extra;
+      giveTempMaxHp(piece, ctx, 'gingerbread_man', extra);
     }
+    // GingerbreadMan.gd always activates, after its gated effects.
+    pushActivate(piece, ctx, 'gingerbread_man', `Food: ${piece.name}`);
     return true;
   },
 };
@@ -155,24 +172,24 @@ const gingerbreadManPort = {
 const heartContainerPort = {
   handlerId: 'heart_container',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._heartOn = false;
     const need = Math.max(1, Math.round(getP2(piece.params, 7)));
     onBuffChanged(ctx.player, (ch) => {
       if (piece._heartOn || ch.stack !== 'regeneration' || !(ch.amount > 0)) return;
       if (getStackAmount(ctx.player, 'regeneration') < need) return;
       piece._heartOn = true;
+      const reactionCtx = { ...ctx, t: Number(ctx.player._simT) || ctx.t };
       useRegeneration(ctx.player, need, origin(piece));
       const hp = Math.max(1, Math.round(getPName(piece.params, 'maxhealth', getP3(piece.params, 100))));
-      ctx.player.maxHp += hp;
-      ctx.player.hp += hp;
+      giveTempMaxHp(piece, reactionCtx, 'heart_container', hp);
       grantStacks(
         ctx.player,
         'empower',
         Math.max(1, Math.round(getPName(piece.params, 'empower', getP4(piece.params, 2)))),
         origin(piece),
       );
-      applyHealEfficiency(ctx.player, getPName(piece.params, 'healamp', 15) / 100, ctx, piece);
+      applyHealEfficiency(ctx.player, getPName(piece.params, 'healamp', 15) / 100, reactionCtx, piece);
     });
   },
   onCooldownEffect(piece, ctx) {
@@ -191,7 +208,7 @@ const heartContainerPort = {
 const laboratoryPort = {
   handlerId: 'laboratory',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPreCombatStart(piece, ctx) {
     piece._labPhase = 0;
     piece._labTypes = labTypes(ctx, piece);
   },
@@ -230,7 +247,7 @@ const laboratoryPort = {
 const potPort = {
   handlerId: 'pot',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const potions = linked(ctx, piece).filter((o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'potion'),
     );

@@ -21,6 +21,7 @@ import { getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { itemHasType, pushActivate } from './ports-util.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -251,15 +252,30 @@ const bismuthCubePort = {
 const coilPort = {
   handlerId: 'coil',
   family: 'unique',
+  onPrepare(piece) {
+    piece._coilN = 0;
+  },
   onChargeReceived(piece, ctx) {
-    piece._coilN = (piece._coilN || 0) + 1;
     const max = Math.max(1, Math.round(getPName(piece.params, 'max', 4)));
-    if (piece._coilN > max) return;
+    if (piece._coilN >= max) return;
+    piece._coilN += 1;
     stealRandomBuff(ctx.dummy, ctx.player, Math.max(1, Math.round(getPName(piece.params, 'buffs', 1))), ctx.rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    if (piece._coilN >= max) piece.alive = false;
+    ctx.events.push({
+      t: ctx.t,
+      type: 'activate',
+      actor: eventSideForPiece(piece),
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `${piece.name}: mini activate`,
+      meta: { category: 'system', script: true, handler: 'coil', miniActivate: true },
+    });
+    if (piece._coilN >= max) {
+      piece.consumed = true;
+      piece.alive = false;
+    }
   },
 };
 

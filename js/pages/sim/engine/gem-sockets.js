@@ -12,6 +12,7 @@ import { addSpeed } from './piece-stats.js';
 import { withStatSource } from './stat-mods.js';
 import { gainStacks } from './stacks.js';
 import { isBattleRaging } from './battle-rage.js';
+import { makeDamageSpectral } from './damage.js';
 import { rollPercent } from './rng.js';
 import { removeRandomBuffs } from './scripts/ports-wave-c-util.js';
 import { grantTimedDebuffResistance } from './timed-resistance.js';
@@ -107,6 +108,30 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
     });
     return;
   }
+  if (fam === 'sapphire') {
+    // Sapphire.gd registers both hooks on the weapon: pre_deal_damage_late
+    // rolls and makes the live DamageSource spectral; attacked then pays Mana
+    // and Cold only when that final roll was spectral and the strike hit.
+    // Keep `spectral` local to this socket exactly like the source field.
+    let spectral = false;
+    piece._preDealLate = piece._preDealLate || [];
+    piece._preDealLate.push((damageRes) => {
+      spectral = rollPercent(gemChance(gem), ctx.rng);
+      if (spectral) makeDamageSpectral(damageRes);
+    });
+    onHostHit(ctx, piece, () => {
+      if (!spectral) return;
+      grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getP1(params, 1))), {
+        originKey,
+        originId: gid,
+      });
+      grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getP4(params, 1))), {
+        originKey,
+        originId: gid,
+      });
+    });
+    return;
+  }
   if (fam === 'stat') return;
 
   onHostHit(ctx, piece, (hit) => {
@@ -118,15 +143,6 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
       if (pct && dmg) healActor(ctx.player, Math.ceil(dmg * pct));
     } else if (fam === 'emerald' && rollPercent(gemChance(gem), ctx.rng)) {
       grantStacks(ctx.dummy, 'poison', Math.max(1, Math.round(getP1(params, 1))), {
-        originKey,
-        originId: gid,
-      });
-    } else if (fam === 'sapphire' && rollPercent(gemChance(gem), ctx.rng)) {
-      grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getP1(params, 1))), {
-        originKey,
-        originId: gid,
-      });
-      grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getP4(params, 1))), {
         originKey,
         originId: gid,
       });
@@ -191,7 +207,15 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
       }
     }
   } else if (fam === 'skull') {
-    ctx.player.critResistance = (Number(ctx.player.critResistance) || 0) + gemChance(gem);
+    // Skull.gd prepareArmor applies its gem-power chance to every debuff,
+    // then separately applies the same amount to crit resistance.
+    ctx.player.stackResist = ctx.player.stackResist || {};
+    const ch = gemChance(gem);
+    for (const stack of ['poison', 'blind', 'cold']) {
+      ctx.player.stackResist[stack] =
+        (Number(ctx.player.stackResist[stack]) || 0) + ch;
+    }
+    ctx.player.critResistance = (Number(ctx.player.critResistance) || 0) + ch;
   } else if (fam === 'badger') {
     const dr = getPName(params, 'damreduction', 8);
     ctx.bus?.on?.('pre_take_damage', (payload) => {

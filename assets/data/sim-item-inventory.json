@@ -1,8 +1,8 @@
 {
-  "extractedAt": "2026-10-04T21:19:52.354Z",
+  "extractedAt": "2026-10-05T04:28:23.650Z",
   "source": "tools/game-extract-full/Items",
   "scriptFileCount": 509,
-  "withCombatOverrides": 518,
+  "withCombatOverrides": 530,
   "byMethod": {
     "doCooldownEffect": 204,
     "doRevealEffect": 9,
@@ -19,6 +19,7 @@
     "onTriggerPotion": 16,
     "onDamaged": 3,
     "afterBlock": 7,
+    "onChargeReceived": 1,
     "addToInventory": 1
   },
   "families": {
@@ -66,6 +67,7 @@
       "book_of_light",
       "book_of_nature",
       "bow_and_arrow",
+      "broccotree",
       "burning_banner",
       "busted_blade",
       "buy_the_holy_light",
@@ -205,6 +207,8 @@
       "puzzlebox",
       "random_loadout_bag",
       "ranger_bag",
+      "regular_topaz",
+      "resistor",
       "reverse",
       "robodog",
       "rope",
@@ -340,6 +344,9 @@
       "rat",
       "recombobulator",
       "regular_amethyst",
+      "regular_emerald",
+      "regular_ruby",
+      "regular_sapphire",
       "relic_case",
       "repeater",
       "ruby",
@@ -355,9 +362,11 @@
       "spin_to_win",
       "spirit_bells",
       "squirrel",
+      "stable_recombobulator",
       "stone_badge",
       "time_pendant",
       "toast_goobert",
+      "unstable_recombobulator",
       "wand",
       "wisp"
     ],
@@ -493,6 +502,7 @@
       "amulet_of_steel",
       "angel_crystal",
       "bionic_armor",
+      "blood_amulet",
       "burning_spikes",
       "burning_torch",
       "cap_of_brilliance",
@@ -527,10 +537,12 @@
       "steel_dragon",
       "stone_armor",
       "stone_gloves",
+      "superior_ring",
       "thorn_bow",
       "time_melting",
       "toolbox",
       "whetstone",
+      "whetstone2",
       "yggdrasil_leaf"
     ],
     "food": [
@@ -548,6 +560,8 @@
       "strong_demonic_flask",
       "strong_divine_potion",
       "strong_health_potion",
+      "strong_heroic_potion",
+      "strong_mana_potion",
       "strong_pestilence_flask",
       "strong_stone_skin_potion",
       "strong_vampiric_potion",
@@ -555,6 +569,7 @@
     ],
     "basic_weapon": [
       "bomb",
+      "shortbow",
       "weapon",
       "wooden_sword"
     ]
@@ -635,11 +650,19 @@
       "id": "blood_amulet",
       "scriptStem": "BloodAmulet",
       "file": "BloodAmulet.gd",
+      "sceneFile": "BloodAmulet.tscn",
       "extends": "Item",
       "overrides": [
         "onCombatStart"
       ],
-      "family": "start_buff"
+      "family": "synergy_aura",
+      "directOverrides": [
+        "onCombatStart"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ]
     },
     "blood_goobert": {
       "id": "blood_goobert",
@@ -667,12 +690,25 @@
       "id": "bloody_dagger",
       "scriptStem": "BloodyDagger",
       "file": "BloodyDagger.gd",
+      "sceneFile": "BloodyDagger.tscn",
       "extends": "Dagger",
       "overrides": [
         "onPreDealDamage_early",
         "onPrepare"
       ],
-      "family": "on_hit"
+      "family": "on_hit",
+      "directOverrides": [
+        "onPreDealDamage_early"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Dagger.gd",
+        "Weapon.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
+      ]
     },
     "blueberries": {
       "id": "blueberries",
@@ -719,23 +755,48 @@
       "id": "burning_coal",
       "scriptStem": "BurningCoal",
       "file": "BurningCoal.gd",
+      "sceneFile": "Gems/BurningCoal.tscn",
       "extends": "Gem",
       "overrides": [
         "doCooldownEffect"
       ],
       "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor",
+        "combatStartArmor",
+        "onHotSwapHoverWithGemEnd"
+      ],
       "cdThenConsume": true
     },
     "burning_torch": {
       "id": "burning_torch",
       "scriptStem": "BurningTorch",
       "file": "BurningTorch.gd",
+      "sceneFile": "BurningTorch.tscn",
       "extends": "Weapon",
       "overrides": [
         "onCombatStart",
         "onPreDealDamage_early"
       ],
-      "family": "synergy_aura"
+      "family": "synergy_aura",
+      "directOverrides": [
+        "onCombatStart",
+        "onPreDealDamage_early"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Weapon.gd",
+        "Item.gd"
+      ]
     },
     "card": {
       "id": "card",
@@ -762,12 +823,24 @@
       "id": "carrot_goobert",
       "scriptStem": "CarrotGoobert",
       "file": "CarrotGoobert.gd",
+      "sceneFile": "CarrotGoobert.tscn",
       "extends": "Goobert",
       "overrides": [
         "doCooldownEffect",
         "onPrepare"
       ],
-      "family": "pet_like"
+      "family": "pet_like",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Goobert.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
+      ]
     },
     "claws_of_attack": {
       "id": "claws_of_attack",
@@ -1222,11 +1295,20 @@
       "id": "axe",
       "scriptStem": "Axe",
       "file": "Exclusive/Axe.gd",
+      "sceneFile": "Exclusive/Axe.tscn",
       "extends": "Weapon",
       "overrides": [
         "onPreDealDamage_early"
       ],
-      "family": "on_hit"
+      "family": "on_hit",
+      "directOverrides": [
+        "onPreDealDamage_early"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Weapon.gd",
+        "Item.gd"
+      ]
     },
     "badger_rune": {
       "id": "badger_rune",
@@ -1321,12 +1403,23 @@
       "id": "bewitchment",
       "scriptStem": "Bewitchment",
       "file": "Exclusive/Bewitchment.gd",
+      "sceneFile": "Exclusive/Bewitchment.tscn",
       "extends": "Item",
       "overrides": [
         "doCooldownEffect",
         "onPrepare"
       ],
-      "family": "unique"
+      "family": "unique",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
+      ]
     },
     "big_bloodthorne": {
       "id": "big_bloodthorne",
@@ -1472,11 +1565,23 @@
       "id": "broccoli",
       "scriptStem": "Broccoli",
       "file": "Exclusive/Broccoli.gd",
+      "sceneFile": "Exclusive/Broccoli.tscn",
       "extends": "Food",
       "overrides": [
         "doCooldownEffect"
       ],
-      "family": "custom_cd"
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Food.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
+      ]
     },
     "broccoli_goobert": {
       "id": "broccoli_goobert",
@@ -1492,22 +1597,46 @@
       "id": "broccotree",
       "scriptStem": "Broccotree",
       "file": "Exclusive/Broccotree.gd",
+      "sceneFile": "Exclusive/Broccotree.tscn",
       "extends": "Food",
       "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ],
+      "family": "unique",
+      "directOverrides": [
         "doCooldownEffect"
       ],
-      "family": "custom_cd"
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Food.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
+      ]
     },
     "burning_banner": {
       "id": "burning_banner",
       "scriptStem": "BurningBanner",
       "file": "Exclusive/BurningBanner.gd",
+      "sceneFile": "Exclusive/BurningBanner.tscn",
       "extends": "Item",
       "overrides": [
         "doCooldownEffect",
         "onPrepare"
       ],
-      "family": "unique"
+      "family": "unique",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
+      ]
     },
     "burning_blade": {
       "id": "burning_blade",
@@ -1534,12 +1663,24 @@
       "id": "burning_sword",
       "scriptStem": "BurningSword",
       "file": "Exclusive/BurningSword.gd",
+      "sceneFile": "Exclusive/BurningSword.tscn",
       "extends": "Weapon",
       "overrides": [
         "onPreDealDamage_early",
         "onPrepare"
       ],
-      "family": "on_hit"
+      "family": "on_hit",
+      "directOverrides": [
+        "onPreDealDamage_early"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Weapon.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
+      ]
     },
     "busted_blade": {
       "id": "busted_blade",
@@ -1586,23 +1727,43 @@
       "id": "cauldron",
       "scriptStem": "Cauldron",
       "file": "Exclusive/Cauldron.gd",
+      "sceneFile": "Exclusive/Cauldron.tscn",
       "extends": "Item",
       "overrides": [
         "doCooldownEffect",
         "onPrepare"
       ],
-      "family": "unique"
+      "family": "unique",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
+      ]
     },
     "chainsaw": {
       "id": "chainsaw",
       "scriptStem": "Chainsaw",
       "file": "Exclusive/Chainsaw.gd",
+      "sceneFile": "Exclusive/Chainsaw.tscn",
       "extends": "Weapon",
       "overrides": [
         "onPreDealDamage_early",
         "onPrepare"
       ],
-      "family": "on_hit"
+      "family": "on_hit",
+      "directOverrides": [
+        "onPreDealDamage_early"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Weapon.gd",
+        "Item.gd"
+      ]
     },
     "chain_whip": {
       "id": "chain_whip",
@@ -1619,12 +1780,20 @@
       "id": "charge_splitter",
       "scriptStem": "ChargeSplitter",
       "file": "Exclusive/ChargeSplitter.gd",
+      "sceneFile": "Exclusive/ChargeSplitter.tscn",
       "extends": "Item",
       "overrides": [
         "doCooldownEffect",
         "onPrepare"
       ],
       "family": "unique",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
       "cdThenConsume": true
     },
     "cheese": {
@@ -1786,11 +1955,23 @@
       "id": "chili_pepper",
       "scriptStem": "ChiliPepper",
       "file": "Exclusive/ChiliPepper.gd",
+      "sceneFile": "Exclusive/ChiliPepper.tscn",
       "extends": "Food",
       "overrides": [
         "doCooldownEffect"
       ],
-      "family": "custom_cd"
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Food.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
+      ]
     },
     "chrome_cube": {
       "id": "chrome_cube",
@@ -1827,11 +2008,17 @@
       "id": "coil",
       "scriptStem": "Coil",
       "file": "Exclusive/Coil.gd",
+      "sceneFile": "Exclusive/Coil.tscn",
       "extends": "Item",
       "overrides": [
         "onPrepare"
       ],
-      "family": "unique"
+      "family": "unique",
+      "directOverrides": [],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ]
     },
     "con_trap_tron": {
       "id": "con_trap_tron",
@@ -3672,6 +3859,16 @@
       ],
       "family": "custom_cd"
     },
+    "resistor": {
+      "id": "resistor",
+      "scriptStem": "Resistor",
+      "file": "Exclusive/Resistor.gd",
+      "extends": "Item",
+      "overrides": [
+        "onChargeReceived"
+      ],
+      "family": "unique"
+    },
     "reverse": {
       "id": "reverse",
       "scriptStem": "Reverse",
@@ -4843,9 +5040,22 @@
       "id": "skull",
       "scriptStem": "Skull",
       "file": "Gems/Skull.gd",
+      "sceneFile": "Gems/Skull.tscn",
       "extends": "Gem",
       "overrides": [],
-      "family": "unique"
+      "family": "unique",
+      "directOverrides": [],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareInventory",
+        "prepareWeapon",
+        "prepareArmor",
+        "hasCooldown"
+      ]
     },
     "topaz": {
       "id": "topaz",
@@ -5631,11 +5841,23 @@
       "id": "the_fool",
       "scriptStem": "TheFool",
       "file": "TheFool.gd",
+      "sceneFile": "TheFool.tscn",
       "extends": "Card",
       "overrides": [
         "doRevealEffect"
       ],
-      "family": "unique"
+      "family": "unique",
+      "directOverrides": [
+        "doRevealEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Card.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "cardSecondaryEffectActive"
+      ]
     },
     "the_lovers": {
       "id": "the_lovers",
@@ -6296,6 +6518,243 @@
       "sourceMethods": [
         "prepareWeapon",
         "prepareArmor"
+      ]
+    },
+    "regular_emerald": {
+      "id": "regular_emerald",
+      "scriptStem": "Emerald",
+      "file": "Gems/Emerald.gd",
+      "sceneFile": "Gems/RegularEmerald.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "regular_ruby": {
+      "id": "regular_ruby",
+      "scriptStem": "Ruby",
+      "file": "Gems/Ruby.gd",
+      "sceneFile": "Gems/RegularRuby.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "regular_sapphire": {
+      "id": "regular_sapphire",
+      "scriptStem": "Sapphire",
+      "file": "Gems/Sapphire.gd",
+      "sceneFile": "Gems/RegularSapphire.tscn",
+      "extends": "Gem",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareWeapon",
+        "prepareArmor"
+      ],
+      "cdThenConsume": true
+    },
+    "regular_topaz": {
+      "id": "regular_topaz",
+      "scriptStem": "Topaz",
+      "file": "Gems/Topaz.gd",
+      "sceneFile": "Gems/RegularTopaz.tscn",
+      "extends": "Gem",
+      "overrides": [],
+      "family": "unique",
+      "directOverrides": [],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Gems/Gem.gd",
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "prepareInventory",
+        "prepareWeapon",
+        "prepareArmor"
+      ]
+    },
+    "shortbow": {
+      "id": "shortbow",
+      "scriptStem": "Weapon",
+      "file": "Weapon.gd",
+      "sceneFile": "Exclusive/Shortbow.tscn",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "basic_weapon",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "_ready"
+      ]
+    },
+    "stable_recombobulator": {
+      "id": "stable_recombobulator",
+      "scriptStem": "Recombobulator",
+      "file": "Exclusive/Recombobulator.gd",
+      "sceneFile": "Exclusive/StableRecombobulator.tscn",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "_ready",
+        "canAffect"
+      ]
+    },
+    "strong_heroic_potion": {
+      "id": "strong_heroic_potion",
+      "scriptStem": "HeroicPotion",
+      "file": "HeroicPotion.gd",
+      "sceneFile": "StrongHeroicPotion.tscn",
+      "extends": "Potion",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "food",
+      "directOverrides": [],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Potion.gd",
+        "Item.gd"
+      ]
+    },
+    "strong_mana_potion": {
+      "id": "strong_mana_potion",
+      "scriptStem": "ManaPotion",
+      "file": "ManaPotion.gd",
+      "sceneFile": "Exclusive/StrongManaPotion.tscn",
+      "extends": "Potion",
+      "overrides": [
+        "onPrepare"
+      ],
+      "family": "food",
+      "directOverrides": [],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Potion.gd",
+        "Item.gd"
+      ]
+    },
+    "superior_ring": {
+      "id": "superior_ring",
+      "scriptStem": "MagicRing",
+      "file": "Exclusive/MagicRing.gd",
+      "sceneFile": "Exclusive/SuperiorRing.tscn",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ],
+      "family": "synergy_aura",
+      "directOverrides": [
+        "doCooldownEffect",
+        "onCombatStart"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "hasCooldown",
+        "_ready"
+      ]
+    },
+    "unstable_recombobulator": {
+      "id": "unstable_recombobulator",
+      "scriptStem": "Recombobulator",
+      "file": "Exclusive/Recombobulator.gd",
+      "sceneFile": "Exclusive/UnstableRecombobulator.tscn",
+      "extends": "Item",
+      "overrides": [
+        "doCooldownEffect"
+      ],
+      "family": "custom_cd",
+      "directOverrides": [
+        "doCooldownEffect"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "_ready",
+        "canAffect"
+      ]
+    },
+    "whetstone2": {
+      "id": "whetstone2",
+      "scriptStem": "Whetstone",
+      "file": "Whetstone.gd",
+      "sceneFile": "Exclusive/Whetstone2.tscn",
+      "extends": "Item",
+      "overrides": [
+        "onCombatStart"
+      ],
+      "family": "synergy_aura",
+      "directOverrides": [
+        "onCombatStart"
+      ],
+      "inheritedOverrides": [],
+      "inheritedFiles": [
+        "Item.gd"
+      ],
+      "sourceMethods": [
+        "canAffect"
       ]
     },
     "goobling": {

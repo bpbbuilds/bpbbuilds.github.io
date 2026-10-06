@@ -12,6 +12,7 @@ import {
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { addBonusDamage, addSpeed, purgeBonusDamage } from '../piece-stats.js';
+import { giveBuffPower } from '../buff-power.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import {
@@ -53,7 +54,11 @@ const axePort = {
   },
   onPreDealDamageEarly(piece, _ctx, res) {
     if (res && !res.hit) return;
-    addBonusDamage(piece, Math.max(1, Math.round(getP1(piece.params, 1))));
+    const bonus = Math.max(1, Math.round(getP1(piece.params, 1)));
+    addBonusDamage(piece, bonus);
+    // Axe.gd applies its permanent bonus before the active hit resolves.
+    // The shared damage pipeline has already rolled this hit, so update it too.
+    if (res) res.damage = (Number(res.damage) || 0) + bonus;
   },
 };
 
@@ -61,7 +66,7 @@ const axePort = {
 const doubleAxePort = {
   handlerId: 'double_axe',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._axeRaged = false;
     ctx.bus?.on?.('battle_rage_started', () => {
       if (piece._axeRaged) return;
@@ -86,32 +91,35 @@ const doubleAxePort = {
 const halberdPort = {
   handlerId: 'halberd',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const fac = getPName(piece.params, 'blockfactor', getP3(piece.params, 35)) / 100;
-    for (const o of linked(ctx, piece)) {
-      if ((Number(o.blockGrant) || 0) <= 0) continue;
-      o.blockGrant = Math.max(1, Math.round((Number(o.blockGrant) || 0) * (1 + fac)));
+    const blockers = linked(ctx, piece).filter((o) =>
+      (Number(o.blockGrant) || 0) > 0 || o.kind === 'armor' || o.kind === 'shield',
+    );
+    for (const o of blockers) {
+      giveBuffPower(o, 'block', fac);
     }
     const per = Math.max(0, Math.round(getPName(piece.params, 'blockremoval', getP2(piece.params, 4))));
     piece._blockStrip =
-      per * (linked(ctx, piece).length + countEmptyAffectCells(ctx, piece));
+      per * (blockers.length + countEmptyAffectCells(ctx, piece));
   },
   onCooldownEffect(piece, ctx) {
-    return weaponStrike(piece, ctx, 'halberd', {
-      beforeDeal() {
-        const want = Number(piece._blockStrip) || 0;
-        if (want <= 0) return;
-        const have = Number(ctx.dummy.block) || 0;
-        const take = Math.min(have, want);
-        if (take) removeBlock(ctx.dummy, take, ctx, piece);
-        const leftover = want - take;
-        if (leftover > 0) gainStacks(ctx.player, 'block', leftover);
-      },
-    });
+    return weaponStrike(piece, ctx, 'halberd');
   },
   onPreDealDamageEarly(piece, _ctx, res) {
     if (res && !res.hit) return;
-    addBonusDamage(piece, Math.max(1, Math.round(getPName(piece.params, 'dam', getP1(piece.params, 1)))));
+    const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', getP1(piece.params, 1))));
+    if (res) res.damage = (Number(res.damage) || 0) + dam;
+    addBonusDamage(piece, dam);
+  },
+  onPreDealDamageLate(piece, ctx) {
+    const want = Number(piece._blockStrip) || 0;
+    if (want <= 0) return;
+    const have = Number(ctx.dummy.block) || 0;
+    const take = Math.min(have, want);
+    if (take) removeBlock(ctx.dummy, take, ctx, piece);
+    const leftover = want - take;
+    if (leftover > 0) gainStacks(ctx.player, 'block', leftover);
   },
 };
 
@@ -127,6 +135,7 @@ const magicTorchPort = {
     const need = Math.max(1, Math.round(getP1(piece.params, 1)));
     if (!(useMana(ctx.player, need, origin(piece)).spent > 0)) return;
     const dam = Math.max(1, Math.round(getP2(piece.params, 1)));
+    if (res) res.damage = (Number(res.damage) || 0) + dam;
     addBonusDamage(piece, dam);
     for (const o of linked(ctx, piece)) {
       if (canBeEmpoweredPiece(o)) addBonusDamage(o, dam);
@@ -145,7 +154,9 @@ const moltenDaggerPort = {
     if (res && !res.hit) return;
     const need = Math.max(1, Math.round(getP1(piece.params, 1)));
     if ((getStackAmount(ctx.player, 'heat') || 0) < need) return;
-    addBonusDamage(piece, Math.max(1, Math.round(getP2(piece.params, 2))));
+    const dam = Math.max(1, Math.round(getP2(piece.params, 2)));
+    if (res) res.damage = (Number(res.damage) || 0) + dam;
+    addBonusDamage(piece, dam);
     spendStacks(ctx.player, 'heat', need, origin(piece));
   },
 };
@@ -162,6 +173,7 @@ const nullBladePort = {
     const luckNeed = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP1(piece.params, 1))));
     const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 2))));
     if (useLucky(ctx.player, luckNeed, origin(piece)).spent > 0) {
+      if (res) res.damage = (Number(res.damage) || 0) + dam;
       addBonusDamage(piece, dam);
     }
     const regenNeed = Math.max(1, Math.round(getPName(piece.params, 'regent', getP3(piece.params, 1))));

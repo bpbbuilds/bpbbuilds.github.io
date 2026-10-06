@@ -3,6 +3,7 @@
  * Socketed gems stay on the host via gem-sockets.js (prepareWeapon / prepareArmor).
  */
 
+import { healActor } from '../actor.js';
 import { applyStaminaRegeneration } from '../actor-stats.js';
 import { cleanseRandomDebuffs, grantStacks } from '../buff-economy.js';
 import { getP1, getP3, getP5, getPName } from '../params.js';
@@ -250,21 +251,29 @@ function badgerInventory(id) {
 // gem families still use the shared factory below).
 const badgerRunePort = { ...badgerInventory('badger_rune'), handlerId: 'badger_rune' };
 
-/** TigerRune.gd prepareInventory — buff chance on items/gems (socketed = host). */
+/** TigerRune.gd prepareInventory — amplify every inventory item's buff chance. */
 function tigerInventory(id) {
   /** @type {ScriptHandler} */
   return {
     handlerId: id,
     family: 'unique',
-    onCombatStart(piece, ctx) {
-      const ch = Number(ctx.itemsById.get(piece.itemId)?.chance) || 0;
+    presenceOnly: true,
+    onPrepare(piece, ctx) {
+      // Item.gd stores this as one amplification value per buff type. The
+      // simulator's buffAmpChance is the equivalent all-buffs surface and is
+      // consumed by grantStacks before the actor's resistance roll.
+      const ch = Number(piece.chance) || Number(ctx.itemsById.get(piece.itemId)?.chance) || 0;
       if (!ch) return;
       for (const o of ctx.pieces || []) {
-        o.buffChance = (Number(o.buffChance) || 0) + ch;
+        o.buffAmpChance = (Number(o.buffAmpChance) || 0) + ch;
       }
     },
   };
 }
+
+// Keep a literal source owner for the call/ledger audits; the factory above
+// remains the shared implementation for the same Gem lifecycle on both sides.
+const tigerRunePort = { ...tigerInventory('tiger_rune'), handlerId: 'tiger_rune' };
 
 /** ElephantRune.gd combatStartInventory — giveMaxHealth then consume. */
 function elephantInventory(id) {
@@ -382,7 +391,7 @@ function portFor(id) {
     case 'badger':
       return id === 'badger_rune' ? badgerRunePort : badgerInventory(id);
     case 'tiger':
-      return tigerInventory(id);
+      return id === 'tiger_rune' ? tigerRunePort : tigerInventory(id);
     case 'elephant':
       return elephantRunePort;
     default:

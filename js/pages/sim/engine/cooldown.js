@@ -161,6 +161,81 @@ export function advanceCooldownSeconds(piece, amount, ctx) {
 }
 
 /**
+ * Game Item.advanceCooldownPercent — reduce the current iteration cooldown by
+ * a percentage of the item's armed iteration cooldown, then run any due
+ * activation through the canonical scheduler. `amount` is expressed in the
+ * source's percent units (15 means 15%), not a fraction.
+ *
+ * @param {import('./pieces.js').CombatPiece} piece
+ * @param {number} amount
+ * @param {import('./scripts/handlers.js').ScriptCtx & {
+ *   activatePiece?: typeof import('./combat-activate.js').activatePiece,
+ * }} ctx
+ * @returns {boolean} whether an advance was applied
+ */
+export function advanceCooldownPercent(piece, amount, ctx) {
+  if (!piece?.alive || !(piece.cooldown > 0) || piece.cooldown >= 500) {
+    return false;
+  }
+  const pct = Number(amount);
+  const iteration = Number(piece._iterationCd ?? piece.baseCooldown ?? piece.cooldown);
+  if (!(Number.isFinite(pct) && pct > 0) || !(Number.isFinite(iteration) && iteration > 0)) {
+    return false;
+  }
+  if (piece._cdAdvanceDepth) return false;
+  const reduction = (pct / 100) * iteration;
+  if (!(reduction > 0)) return false;
+  piece.triggerTime -= reduction;
+  piece._cdAdvanceDepth = (piece._cdAdvanceDepth || 0) + 1;
+  try {
+    const activate = ctx.activatePiece;
+    const stacks = ctx.player?.stacks;
+    let guard = 0;
+    while (
+      piece.triggerTime <= 0 &&
+      piece.alive &&
+      !ctx.player?.dead &&
+      !ctx.dummy?.dead &&
+      guard < 32
+    ) {
+      guard += 1;
+      if (typeof activate !== 'function') break;
+      const ok = activate(piece, ctx);
+      rearmAfterTrigger(piece, stacks, ctx.rng, {
+        opponent: piece.side === 'them',
+      });
+      if (!ok && piece.charges == null) break;
+    }
+  } finally {
+    piece._cdAdvanceDepth = Math.max(0, (piece._cdAdvanceDepth || 1) - 1);
+  }
+  if (isCooldownActive(piece)) {
+    pushItemOverlayEvent(piece, {
+      type: 'cooldown',
+      amount: reduction,
+      label: `${reduction}s cooldown`,
+      meta: { category: 'item_label', kind: 'advance_percent', percent: pct },
+    });
+  }
+  return true;
+}
+
+/**
+ * Game Item.deactivateCooldown — stop the current CD loop without consuming
+ * the item. The paired activation path can restore it by setting a fresh
+ * cooldown/triggerTime, as Rage does for Deer Totem and Dragon Set.
+ * @param {import('./pieces.js').CombatPiece} piece
+ * @returns {boolean}
+ */
+export function deactivateCooldown(piece) {
+  if (!piece) return false;
+  piece._cdLocked = true;
+  piece.cooldown = 999;
+  piece.triggerTime = 999;
+  return true;
+}
+
+/**
  * Game isCooldownActive — piece is on the combat CD loop.
  * @param {import('./pieces.js').CombatPiece} piece
  */

@@ -93,6 +93,8 @@ let following = false;
 /** @type {EventTarget | null} */
 let lastTarget = null;
 let lastKind = 'default';
+/** @type {{ x: number, y: number, target: EventTarget | null } | null} */
+let lastPointer = null;
 
 function ensureFollower() {
   if (follower) return follower;
@@ -148,6 +150,11 @@ function syncFollower(event) {
     hideFollower();
     return;
   }
+  lastPointer = {
+    x: event.clientX,
+    y: event.clientY,
+    target: event.target,
+  };
   const kind = kindFor(event.target);
   if (kind === 'native') {
     hideFollower();
@@ -188,11 +195,29 @@ function syncFollower(event) {
   }
 }
 
+/**
+ * Native scrolling can move the element under a stationary mouse without
+ * producing a pointermove. Re-sample the cursor at the last pointer position
+ * so the clipped hand follows nested scrollers such as Create's Filter|Build
+ * rail just like it follows the catalog scroller.
+ */
+function syncFollowerAfterScroll() {
+  if (!following || !lastPointer) return;
+  const target = document.elementFromPoint(lastPointer.x, lastPointer.y) || lastPointer.target;
+  syncFollower({
+    pointerType: 'mouse',
+    clientX: lastPointer.x,
+    clientY: lastPointer.y,
+    target,
+  });
+}
+
 export function bindGameCursor() {
   if (document.documentElement.dataset.bpbCursor === '1') return;
   document.documentElement.dataset.bpbCursor = '1';
 
   document.addEventListener('pointermove', syncFollower, { passive: true });
+  window.addEventListener('scroll', syncFollowerAfterScroll, { passive: true, capture: true });
   document.addEventListener('pointerdown', (event) => {
     if (event.pointerType === 'touch') return;
     if (event.button !== 0) return;

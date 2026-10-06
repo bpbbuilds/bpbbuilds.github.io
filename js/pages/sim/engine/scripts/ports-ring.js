@@ -102,7 +102,11 @@ export function makeRingPort(id) {
           applyTrigger(piece, ctx, 2);
         }
       });
-      ctx.bus?.on?.('piece_dealt_damage', () => {
+      ctx.bus?.on?.('piece_dealt_damage', (payload) => {
+        // MagicRing.gd listens to opponent.character_damaged, not an attack
+        // attempt. A miss does not damage the opponent and must not satisfy
+        // the low-health trigger.
+        if (!payload?.hit?.hit) return;
         if (piece._ringOppoLow) return;
         const rel = ctx.dummy.maxHp > 0 ? ctx.dummy.hp / ctx.dummy.maxHp : 1;
         if (rel < healthtOpp) {

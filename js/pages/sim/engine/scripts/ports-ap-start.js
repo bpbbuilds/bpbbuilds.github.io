@@ -4,6 +4,7 @@
  */
 
 import { dealDamage } from '../damage.js';
+import { dealEffectDamage } from './handlers.js';
 import { grantInvuln, healActor } from '../actor.js';
 import { applyHealEfficiency } from '../actor-stats.js';
 import {
@@ -20,6 +21,7 @@ import { gainStacks } from '../stacks.js';
 import { itemHasType, pushActivate } from './ports-util.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { rollItemChance, weaponStrike } from './ports-wave-c-util.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -42,15 +44,20 @@ function consumeStart(piece, ctx, handler) {
   piece.charges = 0;
 }
 
-function giveTempMaxHp(piece, ctx, handler, amount) {
-  const gain = Math.max(0, Math.round(amount));
+export function giveTempMaxHp(piece, ctx, handler, amount) {
+  // Character.applyTemporaryMaxHealthGain applies the owner's accumulated
+  // MaxHealthGain factor before changing temporary max health.
+  const amp = Number(ctx.player._maxHealthGain) || 0;
+  const gain = Math.max(0, Math.round(Number(amount) * (1 + amp)));
   if (!gain) return;
+  const side = eventSideForPiece(piece);
   ctx.player.maxHp += gain;
   ctx.player.hp += gain;
   ctx.events.push({
     t: ctx.t,
     type: 'heal',
-    target: 'player',
+    actor: side,
+    target: side,
     amount: gain,
     itemId: piece.itemId,
     placementKey: piece.placementKey,
@@ -90,15 +97,8 @@ const bloodAmuletPort = {
 const cursedHairCombPort = {
   handlerId: 'cursed_hair_comb',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     applyHealEfficiency(ctx.player, getP3(piece.params, 30) / 100, ctx, piece);
-    grantStacks(
-      ctx.player,
-      'vampirism',
-      Math.max(1, Math.round(getPName(piece.params, 'vampirism', getP1(piece.params, 6)))),
-      origin(piece),
-    );
-    pushActivate(piece, ctx, 'cursed_hair_comb', `Accessory: ${piece.name}`);
     const keys = new Set(
       linked(ctx, piece, 'primary')
         .filter((o) => canBeEmpoweredPiece(o))
@@ -116,10 +116,12 @@ const cursedHairCombPort = {
       const dmg = Number(payload.hit.damage ?? payload.hit.healthDamage) || 0;
       const got = healActor(ctx.player, Math.ceil((dmg * pct) / 100));
       if (got > 0) {
+        const side = eventSideForPiece(piece);
         ctx.events.push({
           t: ctx.t + 0.002,
           type: 'heal',
-          target: 'player',
+          actor: side,
+          target: side,
           amount: got,
           itemId: piece.itemId,
           placementKey: piece.placementKey,
@@ -128,6 +130,15 @@ const cursedHairCombPort = {
         });
       }
     });
+  },
+  onCombatStart(piece, ctx) {
+    grantStacks(
+      ctx.player,
+      'vampirism',
+      Math.max(1, Math.round(getPName(piece.params, 'vampirism', getP1(piece.params, 6)))),
+      origin(piece),
+    );
+    pushActivate(piece, ctx, 'cursed_hair_comb', `Accessory: ${piece.name}`);
   },
 };
 
@@ -194,8 +205,53 @@ const rubyWhelpPort = {
 const darkLanternPort = {
   handlerId: 'dark_lantern',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._lanternUsed = false;
+    const onDamaged = (payload = {}) => {
+      if (piece._lanternUsed) return;
+      const p = ctx.player;
+      if (payload.actor && payload.actor !== p) return;
+      if (p.hp > 0 && !p.dead) return;
+      piece._lanternUsed = true;
+      const hp = Math.max(1, Math.round((getP2(piece.params, 50) / 100) * p.maxHp));
+      p.dead = false;
+      p.hp = hp;
+      grantInvuln(p, getPName(piece.params, 'dur_invu', 1.3), ctx.t, {
+        bus: ctx.bus,
+        sourceId: piece.itemId,
+      });
+      const side = p.id;
+      ctx.events.push({
+        t: ctx.t,
+        type: 'heal',
+        actor: side,
+        target: side,
+        amount: hp,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: reincarnate to ${hp} HP`,
+        meta: { category: 'heal', script: true, handler: 'dark_lantern', reincarnate: true, playerHp: p.hp },
+      });
+      const fires = linked(ctx, piece, 'primary').filter((o) =>
+        itemHasType(ctx.itemsById.get(o.itemId), 'fire'),
+      ).length;
+      const dam = Math.max(0, Math.round(Number(piece.damageMin) || 5)) * fires;
+      if (dam) {
+        dealEffectDamage(piece, ctx, dam);
+      }
+      const darks = linked(ctx, piece, 'secondary').filter((o) =>
+        itemHasType(ctx.itemsById.get(o.itemId), 'dark'),
+      ).length;
+      const n = Math.max(0, Math.round(getPName(piece.params, 'debuffs', getP5(piece.params, 7)))) * darks;
+      if (n) inflictRandomDebuffs(ctx.dummy, n, ctx.rng, origin(piece));
+      pushActivate(piece, ctx, 'dark_lantern', `${piece.name}: reincarnate`);
+    };
+    // Source connects during onPrepare, before the opening self-health loss.
+    ctx.bus?.on?.('character_damaged', onDamaged);
+    // The training-dummy/fatigue paths use this legacy convenience event.
+    ctx.bus?.on?.('player_damaged', onDamaged);
+  },
+  onCombatStart(piece, ctx) {
     const pct = getP1(piece.params, 50) / 100;
     const loss = Math.max(0, Math.round(pct * ctx.player.maxHp));
     if (loss) {
@@ -206,44 +262,11 @@ const darkLanternPort = {
         isAttack: false,
         skipSpikes: true,
         nowT: ctx.t,
+        bus: ctx.bus,
         rng: ctx.rng,
       });
     }
     pushActivate(piece, ctx, 'dark_lantern', `Accessory: ${piece.name}`);
-    ctx.bus?.on?.('player_damaged', () => {
-      if (piece._lanternUsed) return;
-      const p = ctx.player;
-      if (p.hp > 0 && !p.dead) return;
-      piece._lanternUsed = true;
-      const hp = Math.max(1, Math.round((getP2(piece.params, 50) / 100) * p.maxHp));
-      p.dead = false;
-      p.hp = hp;
-      grantInvuln(p, getPName(piece.params, 'dur_invu', 1.3), ctx.t, {
-        bus: ctx.bus,
-        sourceId: piece.itemId,
-      });
-      pushActivate(piece, ctx, 'dark_lantern', `${piece.name}: reincarnate`);
-      const fires = linked(ctx, piece, 'primary').filter((o) =>
-        itemHasType(ctx.itemsById.get(o.itemId), 'fire'),
-      ).length;
-      const dam = Math.max(0, Math.round(Number(piece.damageMin) || 5)) * fires;
-      if (dam) {
-        dealDamage(ctx.player, ctx.dummy, {
-          amount: dam,
-          canMiss: false,
-          canCrit: false,
-          isAttack: false,
-          skipSpikes: true,
-          nowT: ctx.t,
-          rng: ctx.rng,
-        });
-      }
-      const darks = linked(ctx, piece, 'secondary').filter((o) =>
-        itemHasType(ctx.itemsById.get(o.itemId), 'dark'),
-      ).length;
-      const n = Math.max(0, Math.round(getPName(piece.params, 'debuffs', getP5(piece.params, 7)))) * darks;
-      if (n) inflictRandomDebuffs(ctx.dummy, n, ctx.rng, origin(piece));
-    });
   },
 };
 

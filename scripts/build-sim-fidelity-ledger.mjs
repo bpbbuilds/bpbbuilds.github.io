@@ -104,29 +104,6 @@ const noCombat = noCombatIndex(noops);
 const explicitFalseNoops = setFromEntries(noops.portedFalseNoops);
 const owners = portModuleOwners();
 
-// Sapphire's inventory cooldown is represented, but its socketed source path
-// rolls in `pre_deal_damage_late` before making the host strike spectral. The
-// engine has no late pre-deal dispatch yet (see sim-validation); do not let a
-// source alias plus a post-hit approximation promote either tier to complete.
-const SOURCE_PORT_BLOCKERS = new Map([
-  [
-    'flawed_sapphire',
-    'Socketed Sapphire requires Core pre_deal_damage_late spectral dispatch before damage resolution.',
-  ],
-  [
-    'flawless_sapphire',
-    'Socketed Sapphire requires Core pre_deal_damage_late spectral dispatch before damage resolution.',
-  ],
-  [
-    'perfect_sapphire',
-    'Socketed Sapphire requires Core pre_deal_damage_late spectral dispatch before damage resolution.',
-  ],
-  [
-    'joker',
-    'Joker quadruple branch requires Card.doRevealEffect-only dispatch; the engine currently only exposes state-changing Card.trigger.',
-  ],
-]);
-
 const registry = await import(
   pathToFileURL(path.join(ROOT, 'js/pages/sim/engine/scripts/registry.js')).href,
 );
@@ -142,7 +119,6 @@ const rows = catalog
     const exception = noCombat.get(id) || null;
     const handler = registry.getScriptHandler(id);
     const handlerId = handler?.handlerId || cov?.handlerId || null;
-    const portBlocker = SOURCE_PORT_BLOCKERS.get(id) || null;
     const hookGaps = hook?.missing || [];
     const callCandidates = call?.missing || [];
 
@@ -160,10 +136,6 @@ const rows = catalog
     } else if (explicitFalseNoops.has(id)) {
       status = 'source_ported';
       fidelity = 'source_ported';
-    } else if (source && handlerId && portBlocker) {
-      status = 'port_present';
-      fidelity = 'incomplete';
-      knownDelta = portBlocker;
     } else if (source && depth === 'deep' && handlerId && hookGaps.length === 0) {
       status = 'source_ported';
       fidelity = 'source_ported';

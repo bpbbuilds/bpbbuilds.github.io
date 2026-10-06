@@ -14,12 +14,13 @@ import { getItemsInside, affectedTargets } from '../board-graph.js';
 import { startBattleRage, isBattleRaging } from '../battle-rage.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { addBonusDamageFactor, addSpeed } from '../piece-stats.js';
-import { gainStacks } from '../stacks.js';
+import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedResistancePct } from '../timed-resistance.js';
 import { grantTimedSpeed } from '../timed-speed.js';
 import { armPieceCooldown } from '../cooldown.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { pushActivate } from './ports-util.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -39,17 +40,48 @@ export const resistorPort = {
       1,
       Math.round(getPName(piece.params, 'heat', getP2(piece.params, 3))),
     );
-    const cur = Number(ctx.player.stacks.heat) || 0;
+    const cur = getStackAmount(ctx.player, 'heat');
     if (cur < heatT) {
-      gainStacks(ctx.player, 'heat', heat);
+      gainStacks(ctx.player, 'heat', heat, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+        rng: ctx.rng,
+      });
+      // Item.miniActivate() is a VFX-only activation: it must not increment
+      // the normal Activations metric or arm/consume the Resistor cooldown.
       ctx.events.push({
         t: ctx.t,
         type: 'buff',
-        target: 'player',
+        target: eventSideForPiece(piece),
+        actor: eventSideForPiece(piece),
         amount: heat,
         itemId: piece.itemId,
         label: `${piece.name}: +${heat} Heat (charge)`,
-        meta: { category: 'buff', stack: 'heat', script: true, handler: 'resistor' },
+        meta: {
+          category: 'buff',
+          stack: 'heat',
+          script: true,
+          handler: 'resistor',
+          // The canonical grantStacks combat-log line is retained; this
+          // explicit line is collapsed when the shared logger has already
+          // emitted the same causal grant.
+          source: 'resistor_charge',
+        },
+      });
+      ctx.events.push({
+        t: ctx.t + 0.001,
+        type: 'activate',
+        actor: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: charge response`,
+        meta: {
+          category: 'system',
+          script: true,
+          handler: 'resistor',
+          phase: 'charge_received',
+          miniActivate: true,
+        },
       });
     }
   },

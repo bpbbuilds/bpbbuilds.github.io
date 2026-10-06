@@ -90,11 +90,14 @@ export function addSpeed(piece, frac) {
  *   originKey?: string | null,
  *   originId?: string | null,
  *   originName?: string | null,
+ *   removable?: boolean,
  * }} [opts]
  */
 export function addBonusDamage(piece, amount, opts = {}) {
   const n = Number(amount) || 0;
   if (!n) return;
+  const removable = opts.removable !== false;
+  piece._removableBonusDamageInitialized = true;
   recordPieceMod(piece, {
     stat: 'damage',
     amount: n,
@@ -105,6 +108,14 @@ export function addBonusDamage(piece, amount, opts = {}) {
     originName: opts.originName,
   });
   piece.bonusDamage = (Number(piece.bonusDamage) || 0) + n;
+  // Item.changeVaryingDamage(...), unlike addBonusDamage(...), deliberately
+  // marks the change as non-removable. Keep both totals so purge/strip effects
+  // remove only the game's `removableDam` pool while damage still includes the
+  // full accumulated bonus.
+  if (removable) {
+    piece.removableBonusDamage =
+      (Number(piece.removableBonusDamage) || 0) + n;
+  }
   if (opts.silentLabel) return;
   pushItemOverlayEvent(piece, {
     type: 'info',
@@ -125,10 +136,15 @@ export function addBonusDamage(piece, amount, opts = {}) {
  */
 export function purgeBonusDamage(piece, amount) {
   const want = Math.max(0, Number(amount) || 0);
-  const current = Math.max(0, Number(piece.bonusDamage) || 0);
+  const tracked = piece._removableBonusDamageInitialized === true;
+  const current = Math.max(
+    0,
+    tracked ? Number(piece.removableBonusDamage) || 0 : Number(piece.bonusDamage) || 0,
+  );
   const removed = Math.min(current, want);
   if (!(removed > 0)) return 0;
-  piece.bonusDamage = current - removed;
+  piece.removableBonusDamage = current - removed;
+  piece.bonusDamage = Math.max(0, (Number(piece.bonusDamage) || 0) - removed);
   recordPieceMod(piece, {
     stat: 'damage',
     amount: -removed,

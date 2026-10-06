@@ -15,14 +15,18 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { PLAYER_STAMINA_REGEN } from '../actor.js';
+import { PLAYER_STAMINA_REGEN, giveStamina } from '../actor.js';
 import { applyStaminaRegeneration } from '../actor-stats.js';
-import { emitChargePulse } from '../charge-delivery.js';
+import { scheduleStatChargePath } from '../charge-delivery.js';
+import { buildScriptChargePath, chargeEnterSchedule } from '../charge-path.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
+import { applyFoodPrepareSpeed } from './food-helpers.js';
 import { recordPieceMod, withStatSource } from '../stat-mods.js';
+import { eventSideForPiece } from '../vs-board.js';
+import { canAffectColor } from '../../../../shared/backpack-grid/can-affect.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -67,6 +71,11 @@ function countTypes(ctx, piece) {
 const broccoliPort = {
   handlerId: 'broccoli',
   family: 'food',
+  onPrepare(piece, ctx) {
+    // Broccoli inherits Food.prepare(), which grants +10% speed per linked
+    // food item before cooldowns are armed.
+    applyFoodPrepareSpeed(piece, ctx);
+  },
   onCooldownEffect(piece, ctx) {
     const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP1(piece.params, 2))));
     const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP2(piece.params, 5))));
@@ -105,8 +114,11 @@ const broccoliPort = {
 const broccotreePort = {
   handlerId: 'broccotree',
   family: 'food',
-  onCombatStart(piece, ctx) {
-    const baseStam = Number(ctx.player.staminaRegen) || PLAYER_STAMINA_REGEN;
+  onPrepare(piece, ctx) {
+    // Broccotree overrides Food.onPrepare in the source and therefore does
+    // not inherit Food.prepare's food-speed aura. It uses baseStaminaRegen,
+    // not any already-modified runtime stamina rate.
+    const baseStam = PLAYER_STAMINA_REGEN;
     const perRegen =
       (getPName(piece.params, 'stamina', getPName(piece.params, 'p4', 1)) / 100) *
       baseStam;
@@ -157,22 +169,91 @@ const broccotreePort = {
  * ChargeSplitter.gd — CD: if heat ≥ heatt spend+lucky+block; always onAfterEffectFinished.
  * First charge received: activate + split pulse; cells amp buff chance.
  */
+const CHARGE_SPLITTER_CELLS_1 = [
+  { x: -1, y: -1 }, { x: -2, y: -1 }, { x: -2, y: 0 },
+  { x: -2, y: 1 }, { x: -3, y: 1 }, { x: -4, y: 1 }, { x: -4, y: 0 },
+];
+const CHARGE_SPLITTER_CELLS_2 = [
+  { x: -1, y: -1 }, { x: 0, y: -1 }, { x: 0, y: -2 },
+  { x: 0, y: -3 }, { x: 1, y: -3 }, { x: 2, y: -3 }, { x: 2, y: -2 },
+];
+
+/** ChargeSplitter.gd's two explicit sendCharge paths. */
+function emitChargeSplitterCharges(piece, ctx) {
+  const item = ctx.itemsById.get(piece.itemId);
+  const boardPiece = ctx.graph?.pieces?.get(piece.placementKey);
+  if (!item || !boardPiece) return;
+  const durPerTile = Math.max(0.01, getPName(piece.params, 'dur', 2));
+  const flat = Number(piece.chance) || getPName(piece.params, 'chance', 10);
+  const perTile = Number(piece.chance2) || getPName(piece.params, 'chance2', 5);
+  const placement = { x: boardPiece.x, y: boardPiece.y, r: boardPiece.r, key: piece.placementKey };
+  const paths = [CHARGE_SPLITTER_CELLS_1, CHARGE_SPLITTER_CELLS_2];
+  for (let i = 0; i < paths.length; i += 1) {
+    const pathId = `charge-splitter:${piece.placementKey}:${ctx.t}:${i}`;
+    const path = buildScriptChargePath({ pathId, item, placement, startT: ctx.t, collisionCells: paths[i], durPerTile });
+    if (!path) continue;
+    for (const cell of path.cells) {
+      const targetKey = ctx.graph.filled.get(cell.cell) || null;
+      const targetPiece = targetKey ? ctx.graph.pieces.get(targetKey) : null;
+      const targetItem = targetPiece ? ctx.itemsById.get(targetPiece.id) : null;
+      const accepts = targetItem && canAffectColor(
+        ctx.canAffect?.rulesById || null,
+        item,
+        targetItem,
+        'lightning',
+        ctx.canAffect || {},
+      );
+      cell.targetKey = targetKey && targetKey !== piece.placementKey && accepts ? targetKey : null;
+    }
+    const actor = eventSideForPiece(piece);
+    ctx.events.push({
+      t: ctx.t,
+      type: 'charge',
+      actor,
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `${piece.name}: sendCharge`,
+      meta: { category: 'charge', phase: 'start', pathId, chargePath: path, handler: 'charge_splitter' },
+    });
+    scheduleStatChargePath(piece, ctx, { path, flat, perTile, mode: 'buffAmp' });
+    let lastKey = null;
+    for (const step of chargeEnterSchedule(path.cells.length, durPerTile)) {
+      const cell = path.cells[step.cellIndex];
+      const targetKey = cell?.targetKey || null;
+      const targetPiece = targetKey ? (ctx.pieces || []).find((p) => p.placementKey === targetKey) : null;
+      const enterT = ctx.t + step.enterT;
+      if (targetKey !== lastKey) {
+        if (targetPiece) {
+          targetPiece.pendingCharges = targetPiece.pendingCharges || [];
+          targetPiece.pendingCharges.push({ at: enterT, meta: { pathId, cellIndex: step.cellIndex, emitterKey: piece.placementKey } });
+        }
+        lastKey = targetKey;
+      }
+      ctx.events.push({
+        t: enterT,
+        type: 'charge',
+        actor,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: targetPiece ? `${piece.name}: charge → ${targetPiece.name}` : `${piece.name}: charge cell`,
+        meta: { category: 'charge', phase: 'cell', pathId, cellIndex: step.cellIndex, cell: cell?.cell, targetKey: targetKey || undefined, handler: 'charge_splitter' },
+      });
+    }
+  }
+}
+
 const chargeSplitterPort = {
   handlerId: 'charge_splitter',
   family: 'unique',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._splitterFired = false;
   },
   onChargeReceived(piece, ctx) {
     if (piece._splitterFired) return;
     piece._splitterFired = true;
     pushActivate(piece, ctx, 'charge_splitter', `Accessory: ${piece.name}`);
-    const ch = Number(ctx.itemsById.get(piece.itemId)?.chance) || 10;
-    const ch2 = Number(ctx.itemsById.get(piece.itemId)?.chance2) || 5;
-    emitChargePulse(piece, ctx, { label: `${piece.name}: emitCharge` });
-    for (const o of linked(ctx, piece)) {
-      o.buffAmpChance = (Number(o.buffAmpChance) || 0) + ch + ch2;
-    }
+    emitChargeSplitterCharges(piece, ctx);
+    ctx.bus?.emit?.('charge_emitted', { piece, t: ctx.t });
   },
   onCooldownEffect(piece, ctx) {
     const need = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP1(piece.params, 3))));
@@ -183,7 +264,7 @@ const chargeSplitterPort = {
       const block =
         Number(ctx.itemsById.get(piece.itemId)?.block) ||
         Math.max(1, Math.round(getPName(piece.params, 'block', 30)));
-      gainStacks(ctx.player, 'block', block);
+      grantStacks(ctx.player, 'block', block, origin(piece));
       ctx.events.push({
         t: ctx.t + 0.002,
         type: 'buff',
@@ -204,7 +285,7 @@ const chargeSplitterPort = {
 const flutePort = {
   handlerId: 'flute',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const n = linked(ctx, piece).length;
     const spd = getP3(piece.params, 10) / 100;
     if (n && spd) addSpeed(piece, spd * n);
@@ -214,15 +295,26 @@ const flutePort = {
     let opts = piece._fluteOpts;
     if (!Array.isArray(opts) || !opts.length) opts = [0, 1, 2];
     const pick = opts[Math.floor(ctx.rng() * opts.length)] ?? 0;
-    pushActivate(piece, ctx, 'flute', `Accessory: ${piece.name}`);
     if (pick === 0) {
       const block = Number(ctx.itemsById.get(piece.itemId)?.block) || 14;
       gainStacks(ctx.player, 'block', block);
     } else if (pick === 1) {
       const stam = Math.max(1, Math.round(getP1(piece.params, 2)));
-      const next = (Number(ctx.player.stamina) || 0) + stam;
-      const cap = Number(ctx.player.maxStamina);
-      ctx.player.stamina = cap > 0 ? Math.min(cap, next) : next;
+      const before = Number(ctx.player.stamina) || 0;
+      giveStamina(ctx.player, stam);
+      const gained = Math.max(0, (Number(ctx.player.stamina) || 0) - before);
+      if (gained > 0) {
+        ctx.events.push({
+          t: ctx.t,
+          type: 'stamina',
+          actor: eventSideForPiece(piece),
+          amount: gained,
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          label: `${piece.name}: +${gained} stamina`,
+          meta: { category: 'stamina', kind: 'gained', script: true, handler: 'flute' },
+        });
+      }
     } else {
       const luck = Math.max(1, Math.round(getP2(piece.params, 2)));
       grantStacks(ctx.player, 'lucky', luck, origin(piece));
@@ -237,6 +329,8 @@ const flutePort = {
         meta: { category: 'buff', script: true, handler: 'flute', stack: 'lucky' },
       });
     }
+    // Flute.gd activates after the selected grant.
+    pushActivate(piece, ctx, 'flute', `Accessory: ${piece.name}`);
     piece._fluteOpts = [0, 1, 2].filter((x) => x !== pick);
     return true;
   },
@@ -246,10 +340,14 @@ const flutePort = {
 const fortunasKissPort = {
   handlerId: 'fortunas_kiss',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const bonus = getPName(piece.params, 'chance', getP1(piece.params, 35));
     withStatSource(piece, () => {
-      for (const o of linked(ctx, piece)) {
+      for (const o of linked(ctx, piece).filter((other) => {
+        const item = ctx.itemsById.get(other.itemId);
+        const chance = Number(other.chance ?? item?.chance);
+        return Number.isFinite(chance) && chance > 0;
+      })) {
         o.bonusChanceMult = (Number(o.bonusChanceMult) || 0) + bonus;
         recordPieceMod(o, { stat: 'chance', amount: Number(bonus) / 100, unit: 'factor' });
       }
@@ -257,7 +355,6 @@ const fortunasKissPort = {
   },
   onCooldownEffect(piece, ctx) {
     const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP2(piece.params, 5))));
-    pushActivate(piece, ctx, 'fortunas_kiss', `Skill: ${piece.name}`);
     if (getStackAmount(ctx.player, 'lucky') >= need) {
       const picked = giveRandomBuffs(ctx.player, 1, ctx.rng, {
         ...origin(piece),
@@ -277,6 +374,8 @@ const fortunasKissPort = {
         meta: { category: 'buff', script: true, handler: 'fortunas_kiss', stack: 'lucky' },
       });
     }
+    // FortunasKiss.gd activates after its lucky/random-buff branch.
+    pushActivate(piece, ctx, 'fortunas_kiss', `Skill: ${piece.name}`);
     return true;
   },
 };
@@ -285,7 +384,7 @@ const fortunasKissPort = {
 const lightFlowerPort = {
   handlerId: 'light_flower',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const item = ctx.itemsById.get(piece.itemId);
     const ch = Number(item?.chance) || 20;
     const ch2 = Number(item?.chance2) || 5;
@@ -300,7 +399,6 @@ const lightFlowerPort = {
     const debuffs = Math.max(1, Math.round(getPName(piece.params, 'debuffs', getP2(piece.params, 3))));
     const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP3(piece.params, 1))));
     const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', getPName(piece.params, 'p4', 1))));
-    pushActivate(piece, ctx, 'light_flower', `Spell: ${piece.name}`);
     if (getStackAmount(ctx.player, 'mana') >= need) {
       useMana(ctx.player, need, origin(piece));
       cleanseRandomDebuffs(ctx.player, debuffs, ctx.rng, origin(piece));
@@ -310,7 +408,8 @@ const lightFlowerPort = {
         ctx.events.push({
           t: ctx.t + 0.002,
           type: 'buff',
-          target: 'player',
+          actor: eventSideForPiece(piece),
+          target: eventSideForPiece(piece),
           amount: luck,
           itemId: piece.itemId,
           placementKey: piece.placementKey,
@@ -319,6 +418,7 @@ const lightFlowerPort = {
         });
       }
     }
+    pushActivate(piece, ctx, 'light_flower', `Spell: ${piece.name}`);
     return true;
   },
 };
@@ -374,10 +474,11 @@ const wispPort = {
     const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', getP2(piece.params, 10))));
     grantStacks(ctx.player, 'lucky', luck, origin(piece));
     grantStacks(ctx.player, 'regeneration', regen, origin(piece));
-    ctx.events.push({
-      t: ctx.t + 0.002,
-      type: 'buff',
-      target: 'player',
+      ctx.events.push({
+        t: ctx.t + 0.002,
+        type: 'buff',
+        actor: eventSideForPiece(piece),
+        target: eventSideForPiece(piece),
       amount: luck,
       itemId: piece.itemId,
       placementKey: piece.placementKey,

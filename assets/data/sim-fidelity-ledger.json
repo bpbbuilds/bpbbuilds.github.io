@@ -5,20 +5,20 @@
     "catalog": "scripts/_cache/game-items.json",
     "catalogSha256": "56cd189aab0be25e626651b168d55401a7abe6f5b2735fe68740edd027bdae13",
     "extractItemsSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
-    "inventoryExtractedAt": "2026-10-04T21:19:52.354Z",
+    "inventoryExtractedAt": "2026-10-05T04:28:23.650Z",
     "catalogItems": 519
   },
   "totals": {
     "catalogItems": 519,
-    "sourcePorted": 385,
-    "portPresentIncomplete": 94,
-    "sourceUnresolved": 13,
+    "sourcePorted": 460,
+    "portPresentIncomplete": 31,
+    "sourceUnresolved": 1,
     "noCombat": 26,
     "deferred": 1,
-    "lifecycleHookGap": 10,
+    "lifecycleHookGap": 5,
     "untriagedLifecycleHookGap": 0,
-    "callReviewCandidate": 46,
-    "duplicateRegistration": 21
+    "callReviewCandidate": 44,
+    "duplicateRegistration": 19
   },
   "rows": [
     {
@@ -1024,7 +1024,16 @@
         "family": "on_hit",
         "overrides": [
           "onPreDealDamage_early"
-        ]
+        ],
+        "directOverrides": [
+          "onPreDealDamage_early"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Weapon.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/Axe.tscn"
       },
       "sim": {
         "runtimeHandler": "axe",
@@ -1408,6 +1417,17 @@
         "overrides": [
           "doCooldownEffect",
           "onPrepare"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/Bewitchment.tscn",
+        "sourceMethods": [
+          "canAffect"
         ]
       },
       "sim": {
@@ -1419,23 +1439,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPrepare",
-            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "equivalent_implementation",
-          "owner": "js/pages/sim/engine/scripts/ports-wave-d-unique.js",
-          "evidence": "Items/Exclusive/Bewitchment.gd:onPrepare caches affected type counts; port derives the same static-board count at cooldown execution."
-        },
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPrepare.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1804,10 +1814,18 @@
       "source": {
         "script": "BloodAmulet.gd",
         "extends": "Item",
-        "family": "start_buff",
+        "family": "synergy_aura",
         "overrides": [
           "onCombatStart"
-        ]
+        ],
+        "directOverrides": [
+          "onCombatStart"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "BloodAmulet.tscn"
       },
       "sim": {
         "runtimeHandler": "blood_amulet",
@@ -1955,6 +1973,19 @@
         "overrides": [
           "onPreDealDamage_early",
           "onPrepare"
+        ],
+        "directOverrides": [
+          "onPreDealDamage_early"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Dagger.gd",
+          "Weapon.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "BloodyDagger.tscn",
+        "sourceMethods": [
+          "canAffect"
         ]
       },
       "sim": {
@@ -2497,6 +2528,18 @@
         "family": "custom_cd",
         "overrides": [
           "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Food.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/Broccoli.tscn",
+        "sourceMethods": [
+          "canAffect"
         ]
       },
       "sim": {
@@ -2564,9 +2607,22 @@
       "source": {
         "script": "Exclusive/Broccotree.gd",
         "extends": "Food",
-        "family": "custom_cd",
+        "family": "unique",
         "overrides": [
+          "doCooldownEffect",
+          "onPrepare"
+        ],
+        "directOverrides": [
           "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Food.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/Broccotree.tscn",
+        "sourceMethods": [
+          "canAffect"
         ]
       },
       "sim": {
@@ -2641,6 +2697,17 @@
         "overrides": [
           "doCooldownEffect",
           "onPrepare"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/BurningBanner.tscn",
+        "sourceMethods": [
+          "canAffect"
         ]
       },
       "sim": {
@@ -2649,15 +2716,15 @@
           "js/pages/sim/engine/scripts/ports-ap-regen.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -2713,6 +2780,21 @@
         "family": "custom_cd",
         "overrides": [
           "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/BurningCoal.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor",
+          "combatStartArmor",
+          "onHotSwapHoverWithGemEnd"
         ]
       },
       "sim": {
@@ -2721,15 +2803,15 @@
           "js/pages/sim/engine/scripts/ports-ap-heat.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -2787,6 +2869,18 @@
         "overrides": [
           "onPreDealDamage_early",
           "onPrepare"
+        ],
+        "directOverrides": [
+          "onPreDealDamage_early"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Weapon.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/BurningSword.tscn",
+        "sourceMethods": [
+          "canAffect"
         ]
       },
       "sim": {
@@ -2795,15 +2889,15 @@
           "js/pages/sim/engine/scripts/ports-ap-onhit.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -2824,7 +2918,17 @@
         "overrides": [
           "onCombatStart",
           "onPreDealDamage_early"
-        ]
+        ],
+        "directOverrides": [
+          "onCombatStart",
+          "onPreDealDamage_early"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Weapon.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "BurningTorch.tscn"
       },
       "sim": {
         "runtimeHandler": "burning_torch",
@@ -2832,15 +2936,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -3005,6 +3109,18 @@
         "overrides": [
           "doCooldownEffect",
           "onPrepare"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Goobert.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "CarrotGoobert.tscn",
+        "sourceMethods": [
+          "canAffect"
         ]
       },
       "sim": {
@@ -3016,23 +3132,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPrepare",
-            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "intentional_noncombat",
-          "owner": "js/pages/sim/engine/scripts/ports-pet.js",
-          "evidence": "Items/CarrotGoobert.gd:onPrepare only resets visual state/particles; the gameplay cooldown effect is ported."
-        },
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPrepare.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -3089,6 +3195,17 @@
         "overrides": [
           "doCooldownEffect",
           "onPrepare"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/Cauldron.tscn",
+        "sourceMethods": [
+          "canAffect"
         ]
       },
       "sim": {
@@ -3097,15 +3214,15 @@
           "js/pages/sim/engine/scripts/ports-ap-mana.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -3163,7 +3280,16 @@
         "overrides": [
           "onPreDealDamage_early",
           "onPrepare"
-        ]
+        ],
+        "directOverrides": [
+          "onPreDealDamage_early"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Weapon.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/Chainsaw.tscn"
       },
       "sim": {
         "runtimeHandler": "chainsaw",
@@ -3174,23 +3300,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPrepare",
-            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "intentional_noncombat",
-          "owner": "js/pages/sim/engine/scripts/ports-ai-a.js",
-          "evidence": "Items/Exclusive/Chainsaw.gd:onPrepare only sets animation state; its early damage hook and charge behavior are separate port hooks."
-        },
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPrepare.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -3210,7 +3326,15 @@
         "overrides": [
           "doCooldownEffect",
           "onPrepare"
-        ]
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/ChargeSplitter.tscn"
       },
       "sim": {
         "runtimeHandler": "charge_splitter",
@@ -3218,15 +3342,15 @@
           "js/pages/sim/engine/scripts/ports-ap-lucky.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -3425,27 +3549,35 @@
         "family": "custom_cd",
         "overrides": [
           "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Food.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/ChiliPepper.tscn",
+        "sourceMethods": [
+          "canAffect"
         ]
       },
       "sim": {
         "runtimeHandler": "chili_pepper",
         "handlerModules": [
-          "js/pages/sim/engine/scripts/ports-ap-heat.js",
-          "js/pages/sim/engine/scripts/ports-heat.js"
+          "js/pages/sim/engine/scripts/ports-ap-heat.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
-        "duplicateRegistration": [
-          "js/pages/sim/engine/scripts/ports-ap-heat.js",
-          "js/pages/sim/engine/scripts/ports-heat.js"
-        ]
+        "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -3719,17 +3851,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "consume",
-            "why": "no token of consume"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: consume.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -3857,7 +3984,13 @@
         "family": "unique",
         "overrides": [
           "onPrepare"
-        ]
+        ],
+        "directOverrides": [],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/Coil.tscn"
       },
       "sim": {
         "runtimeHandler": "coil",
@@ -3868,23 +4001,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPrepare",
-            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "equivalent_implementation",
-          "owner": "js/pages/sim/engine/scripts/ports-an-gadgets.js",
-          "evidence": "Items/Exclusive/Coil.gd:onPrepare resets an activation counter; every simulator run creates a fresh piece and _coilN starts absent/zero."
-        },
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPrepare.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -4163,15 +4286,15 @@
           "js/pages/sim/engine/scripts/ports-ap-aura.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -4539,15 +4662,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -4722,21 +4845,16 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "dealEffectDamage",
-            "why": "no token of dealEffectDamage/effectDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Source-call review candidate: dealEffectDamage.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -4846,15 +4964,15 @@
           "js/pages/sim/engine/scripts/ports-ap-onhit.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -4883,15 +5001,15 @@
           "js/pages/sim/engine/scripts/ports-ap-mana.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -4993,21 +5111,16 @@
           "js/pages/sim/engine/scripts/ports-ap-mana.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "deactivateCooldown",
-            "why": "no token of consume/deactivateCooldown/cdThenConsume"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Source-call review candidate: deactivateCooldown.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -5182,15 +5295,15 @@
           "js/pages/sim/engine/scripts/ports-ap-mana.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -5218,15 +5331,15 @@
           "js/pages/sim/engine/scripts/ports-ap-cold.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -5255,15 +5368,15 @@
           "js/pages/sim/engine/scripts/ports-ap-perm.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -5333,15 +5446,15 @@
           "js/pages/sim/engine/scripts/ports-ap-heat.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -5409,28 +5522,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "onPrepare",
-            "why": "no JS hook among onPrepare/onPreCombatStart/onCombatStart"
-          }
-        ],
-        "lifecycleHookTriage": {
-          "status": "equivalent_implementation",
-          "owner": "js/pages/sim/engine/combat-activate.js",
-          "evidence": "Items/Exclusive/DragonKnight.gd:onPrepare registers affected activated listeners; notifyPeerActivations filters affected placements before onPeerActivated."
-        },
-        "callReviewCandidates": [
-          {
-            "call": "advanceCooldownPercent",
-            "why": "no token of advanceCooldown/cdAdvance/advance"
-          }
-        ],
+        "lifecycleHookGaps": [],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: onPrepare.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -5495,15 +5593,15 @@
           "js/pages/sim/engine/scripts/ports-ap-heat.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -5877,15 +5975,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -5983,15 +6081,15 @@
           "js/pages/sim/engine/scripts/ports-ap-heat.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -6088,15 +6186,15 @@
           "js/pages/sim/engine/scripts/ports-ap-heat.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -6386,15 +6484,15 @@
           "js/pages/sim/engine/scripts/ports-ap-mana.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -6603,15 +6701,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -6639,15 +6737,15 @@
           "js/pages/sim/engine/scripts/ports-ap-onhit.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -6842,9 +6940,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Socketed Sapphire requires Core pre_deal_damage_late spectral dispatch before damage resolution.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -7070,9 +7168,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Socketed Sapphire requires Core pre_deal_damage_late spectral dispatch before damage resolution.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -7146,15 +7244,15 @@
           "js/pages/sim/engine/scripts/ports-ap-lucky.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -7182,15 +7280,15 @@
           "js/pages/sim/engine/scripts/ports-ap-cold.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -7292,15 +7390,15 @@
           "js/pages/sim/engine/scripts/ports-ap-lucky.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -7733,15 +7831,15 @@
           "js/pages/sim/engine/scripts/ports-ap-regen.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -7884,17 +7982,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "consume",
-            "why": "no token of consume"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: consume.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -8043,15 +8136,15 @@
           "js/pages/sim/engine/scripts/ports-ap-perm.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -8262,15 +8355,15 @@
           "js/pages/sim/engine/scripts/ports-ap-regen.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -8567,15 +8660,15 @@
           "js/pages/sim/engine/scripts/ports-ap-aura.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -8966,15 +9059,15 @@
           "js/pages/sim/engine/scripts/ports-ap-cold.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -9160,9 +9253,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Joker quadruple branch requires Card.doRevealEffect-only dispatch; the engine currently only exposes state-changing Card.trigger.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -9189,15 +9282,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -9483,15 +9576,15 @@
           "js/pages/sim/engine/scripts/ports-ap-regen.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -9520,15 +9613,15 @@
           "js/pages/sim/engine/scripts/ports-an-accessories.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -9699,15 +9792,15 @@
           "js/pages/sim/engine/scripts/ports-ap-mana.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -9736,15 +9829,15 @@
           "js/pages/sim/engine/scripts/ports-ap-lucky.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -10032,15 +10125,15 @@
           "js/pages/sim/engine/scripts/ports-ap-onhit.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -10104,15 +10197,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -10469,22 +10562,18 @@
       "sim": {
         "runtimeHandler": "magic_torch",
         "handlerModules": [
-          "js/pages/sim/engine/scripts/ports-al-weapons.js",
           "js/pages/sim/engine/scripts/ports-ap-perm.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
-        "duplicateRegistration": [
-          "js/pages/sim/engine/scripts/ports-al-weapons.js",
-          "js/pages/sim/engine/scripts/ports-ap-perm.js"
-        ]
+        "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -10699,15 +10788,15 @@
           "js/pages/sim/engine/scripts/ports-ap-aura.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -10958,15 +11047,15 @@
           "js/pages/sim/engine/scripts/ports-ap-perm.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -11070,15 +11159,15 @@
           "js/pages/sim/engine/scripts/ports-ap-onhit.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -11107,15 +11196,15 @@
           "js/pages/sim/engine/scripts/ports-ap-mana.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -11180,15 +11269,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -11368,15 +11457,15 @@
           "js/pages/sim/engine/scripts/ports-ap-perm.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -11551,15 +11640,15 @@
           "js/pages/sim/engine/scripts/ports-ap-aura.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -11831,9 +11920,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Socketed Sapphire requires Core pre_deal_damage_late spectral dispatch before damage resolution.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -11979,15 +12068,15 @@
           "js/pages/sim/engine/scripts/ports-ap-basic.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -12092,15 +12181,15 @@
           "js/pages/sim/engine/scripts/ports-ap-start.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -12164,15 +12253,15 @@
           "js/pages/sim/engine/scripts/ports-threshold.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -12428,15 +12517,15 @@
           "js/pages/sim/engine/scripts/ports-ap-onhit.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -12536,15 +12625,15 @@
           "js/pages/sim/engine/scripts/ports-ap-cold.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -12608,15 +12697,15 @@
           "js/pages/sim/engine/scripts/ports-ap-onhit.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -12754,15 +12843,15 @@
           "js/pages/sim/engine/scripts/ports-ap-regen.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "shallow"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
+      "status": "source_ported",
+      "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
@@ -13890,10 +13979,25 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Emerald.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/RegularEmerald.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "regular_emerald",
@@ -13903,12 +14007,25 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "giveRegeneration",
+            "why": "no port block found"
+          },
+          {
+            "call": "inflictPoison",
+            "why": "no port block found"
+          },
+          {
+            "call": "changeResistChance",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": "Source-call review candidate: giveRegeneration, inflictPoison, changeResistChance.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -13922,10 +14039,25 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Ruby.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/RegularRuby.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "regular_ruby",
@@ -13935,12 +14067,21 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "stealLife",
+            "why": "no port block found"
+          },
+          {
+            "call": "heal",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": "Source-call review candidate: stealLife, heal.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -13954,10 +14095,25 @@
       "class": "Neutral",
       "gameVersion": "0.3.7",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Sapphire.gd",
+        "extends": "Gem",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/RegularSapphire.tscn",
+        "sourceMethods": [
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "regular_sapphire",
@@ -13967,12 +14123,25 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "inflictCold",
+            "why": "no port block found"
+          },
+          {
+            "call": "giveMana",
+            "why": "no port block found"
+          },
+          {
+            "call": "giveBlock",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": "Source-call review candidate: inflictCold, giveMana, giveBlock.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -13986,10 +14155,22 @@
       "class": "Neutral",
       "gameVersion": "0.3.8",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Gems/Topaz.gd",
+        "extends": "Gem",
+        "family": "unique",
+        "overrides": [],
+        "directOverrides": [],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/RegularTopaz.tscn",
+        "sourceMethods": [
+          "prepareInventory",
+          "prepareWeapon",
+          "prepareArmor"
+        ]
       },
       "sim": {
         "runtimeHandler": "regular_topaz",
@@ -13999,12 +14180,17 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [],
+        "callReviewCandidates": [
+          {
+            "call": "addSpeed",
+            "why": "no port block found"
+          }
+        ],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": "Source-call review candidate: addSpeed.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -14090,10 +14276,12 @@
       "class": "Engineer",
       "gameVersion": "1.1.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Exclusive/Resistor.gd",
+        "extends": "Item",
+        "family": "unique",
+        "overrides": [
+          "onChargeReceived"
+        ]
       },
       "sim": {
         "runtimeHandler": "resistor",
@@ -14108,9 +14296,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -15046,10 +15234,23 @@
       "class": "Ranger",
       "gameVersion": "0.9.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Weapon.gd",
+        "extends": "Item",
+        "family": "basic_weapon",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/Shortbow.tscn",
+        "sourceMethods": [
+          "_ready"
+        ]
       },
       "sim": {
         "runtimeHandler": "shortbow",
@@ -15064,9 +15265,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -15119,7 +15320,20 @@
         "script": "Gems/Skull.gd",
         "extends": "Gem",
         "family": "unique",
-        "overrides": []
+        "overrides": [],
+        "directOverrides": [],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Gems/Gem.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Gems/Skull.tscn",
+        "sourceMethods": [
+          "prepareInventory",
+          "prepareWeapon",
+          "prepareArmor",
+          "hasCooldown"
+        ]
       },
       "sim": {
         "runtimeHandler": "skull",
@@ -16324,10 +16538,24 @@
       "class": "Neutral",
       "gameVersion": "0.9.16",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Exclusive/Recombobulator.gd",
+        "extends": "Item",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/StableRecombobulator.tscn",
+        "sourceMethods": [
+          "_ready",
+          "canAffect"
+        ]
       },
       "sim": {
         "runtimeHandler": "stable_recombobulator",
@@ -16340,9 +16568,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -17082,10 +17310,19 @@
       "class": "Neutral",
       "gameVersion": "0.3.1",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "HeroicPotion.gd",
+        "extends": "Potion",
+        "family": "food",
+        "overrides": [
+          "onPrepare"
+        ],
+        "directOverrides": [],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Potion.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "StrongHeroicPotion.tscn"
       },
       "sim": {
         "runtimeHandler": "strong_heroic_potion",
@@ -17100,9 +17337,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -17116,10 +17353,19 @@
       "class": "Neutral",
       "gameVersion": "0.9.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "ManaPotion.gd",
+        "extends": "Potion",
+        "family": "food",
+        "overrides": [
+          "onPrepare"
+        ],
+        "directOverrides": [],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Potion.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/StrongManaPotion.tscn"
       },
       "sim": {
         "runtimeHandler": "strong_mana_potion",
@@ -17132,9 +17378,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -17329,10 +17575,27 @@
       "class": "Neutral",
       "gameVersion": "1.1.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Exclusive/MagicRing.gd",
+        "extends": "Item",
+        "family": "synergy_aura",
+        "overrides": [
+          "doCooldownEffect",
+          "onCombatStart",
+          "onPrepare"
+        ],
+        "directOverrides": [
+          "doCooldownEffect",
+          "onCombatStart"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/SuperiorRing.tscn",
+        "sourceMethods": [
+          "hasCooldown",
+          "_ready"
+        ]
       },
       "sim": {
         "runtimeHandler": "superior_ring",
@@ -17345,9 +17608,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -17403,6 +17666,18 @@
         "family": "unique",
         "overrides": [
           "doRevealEffect"
+        ],
+        "directOverrides": [
+          "doRevealEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Card.gd",
+          "Item.gd"
+        ],
+        "sceneFile": "TheFool.tscn",
+        "sourceMethods": [
+          "cardSecondaryEffectActive"
         ]
       },
       "sim": {
@@ -17785,27 +18060,20 @@
       },
       "sim": {
         "runtimeHandler": "tiger_rune",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-an-gems.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveVampirism",
-            "why": "no port block found"
-          },
-          {
-            "call": "giveBlock",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: giveVampirism, giveBlock.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -17906,7 +18174,7 @@
           "js/pages/sim/engine/scripts/ports-an-accessories.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": null
+        "depth": "shallow"
       },
       "audit": {
         "lifecycleHookGaps": [],
@@ -18344,10 +18612,24 @@
       "class": "Neutral",
       "gameVersion": "0.9.16",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Exclusive/Recombobulator.gd",
+        "extends": "Item",
+        "family": "custom_cd",
+        "overrides": [
+          "doCooldownEffect"
+        ],
+        "directOverrides": [
+          "doCooldownEffect"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/UnstableRecombobulator.tscn",
+        "sourceMethods": [
+          "_ready",
+          "canAffect"
+        ]
       },
       "sim": {
         "runtimeHandler": "unstable_recombobulator",
@@ -18360,9 +18642,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -18857,10 +19139,23 @@
       "class": "Neutral",
       "gameVersion": "1.1.0",
       "source": {
-        "script": null,
-        "extends": null,
-        "family": null,
-        "overrides": []
+        "script": "Whetstone.gd",
+        "extends": "Item",
+        "family": "synergy_aura",
+        "overrides": [
+          "onCombatStart"
+        ],
+        "directOverrides": [
+          "onCombatStart"
+        ],
+        "inheritedOverrides": [],
+        "inheritedFiles": [
+          "Item.gd"
+        ],
+        "sceneFile": "Exclusive/Whetstone2.tscn",
+        "sourceMethods": [
+          "canAffect"
+        ]
       },
       "sim": {
         "runtimeHandler": "whetstone2",
@@ -18875,9 +19170,9 @@
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_unresolved",
-      "fidelity": "incomplete",
-      "knownDelta": "Catalog item has no resolved combat-script inventory row.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,

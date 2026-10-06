@@ -274,6 +274,47 @@ export function tryUseStamina(actor, amount) {
 }
 
 /**
+ * Character.drainStamina — remove up to the requested amount from the
+ * opponent without the sufficient-stamina gate used by tryUseStamina.
+ *
+ * @param {SimActor} actor
+ * @param {number} amount
+ * @param {{ events?: object[], t?: number, actorSide?: string, itemId?: string, placementKey?: string, label?: string, handler?: string }} [opts]
+ * @returns {number} amount actually removed
+ */
+export function drainStamina(actor, amount, opts = {}) {
+  const want = Math.max(0, Number(amount) || 0);
+  if (!(want > 0)) return 0;
+  const drained = Math.min(Math.max(0, Number(actor.stamina) || 0), want);
+  actor.stamina = Math.max(0, (Number(actor.stamina) || 0) - drained);
+  actor._combatBus?.emit?.('stamina_drained', {
+    actor,
+    amount: drained,
+    t: opts.t ?? actor._simT,
+    itemId: opts.itemId ?? null,
+    placementKey: opts.placementKey ?? null,
+  });
+  if (Array.isArray(opts.events) && drained > 0) {
+    opts.events.push({
+      t: Number(opts.t ?? actor._simT) || 0,
+      type: 'stamina',
+      actor: opts.actorSide ?? actor.id,
+      amount: drained,
+      itemId: opts.itemId ?? null,
+      placementKey: opts.placementKey ?? null,
+      label: opts.label || `Removed ${drained} stamina`,
+      meta: {
+        category: 'stamina',
+        kind: 'drain',
+        script: true,
+        ...(opts.handler ? { handler: opts.handler } : {}),
+      },
+    });
+  }
+  return drained;
+}
+
+/**
  * Game Character.getMaxStamina — permanent + temporary fight bonus.
  * @param {SimActor} actor
  */

@@ -321,6 +321,36 @@ export function changeCritStacks(actor, delta, ctx, origin = null) {
 }
 
 /**
+ * Character.gainCritResistStacks / critResisted. These are guaranteed
+ * one-use crit cancels, distinct from normal critical-hit tokens.
+ * @param {import('./actor.js').SimActor} actor
+ * @param {number} delta
+ * @param {{ t?: number, events?: import('../sim-events.js').SimEvent[] }} ctx
+ * @param {{ itemId?: string, placementKey?: string, name?: string } | null} origin
+ */
+export function changeCritResistStacks(actor, delta, ctx, origin = null) {
+  const d = Math.round(Number(delta) || 0);
+  if (!d) return;
+  actor.critResistStacks = Math.max(0, (Number(actor.critResistStacks) || 0) + d);
+  pushStatEvent(actor, ctx, origin, 'crit_resist_stacks', d);
+}
+
+/**
+ * Character.changeDebuffReflectStacks — consumable debuff-reflection stacks,
+ * distinct from the percentage reflect chance used by other effects.
+ * @param {import('./actor.js').SimActor} actor
+ * @param {number} delta
+ * @param {{ t?: number, events?: import('../sim-events.js').SimEvent[] }} ctx
+ * @param {{ itemId?: string, placementKey?: string, name?: string } | null} origin
+ */
+export function changeReflectStacks(actor, delta, ctx, origin = null) {
+  const d = Math.round(Number(delta) || 0);
+  if (!d) return;
+  actor.debuffReflectStacks = Math.max(0, (Number(actor.debuffReflectStacks) || 0) + d);
+  pushStatEvent(actor, ctx, origin, 'reflect_stacks', d);
+}
+
+/**
  * @param {import('./actor.js').SimActor} actor
  * @param {{ t?: number, events?: import('../sim-events.js').SimEvent[] }} ctx
  * @param {{ itemId?: string, placementKey?: string, name?: string } | null} origin
@@ -333,7 +363,7 @@ function pushStatEvent(actor, ctx, origin, key, deltaPct) {
   const meta = ACTOR_STAT_META[key];
   const abs = Math.abs(deltaPct);
   const verb = deltaPct < 0 ? 'reduced' : 'increased';
-  const suffix = meta?.suffix || '%';
+  const suffix = meta?.suffix ?? '%';
   events.push({
     t: (Number(ctx.t) || 0) + 0.0015,
     type: 'stat',

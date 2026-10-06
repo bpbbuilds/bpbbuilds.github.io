@@ -2,7 +2,13 @@
  * Band AO — leftover cards + deck_of_cards chain (Card.gd reveal).
  */
 
-import { applyEffectDmgFactor, applyHealEfficiency, changeCritStacks } from '../actor-stats.js';
+import {
+  applyEffectDmgFactor,
+  applyHealEfficiency,
+  changeCritResistStacks,
+  changeCritStacks,
+  changeReflectStacks,
+} from '../actor-stats.js';
 import { giveRandomBuffs, grantStacks, stealRandomBuff } from '../buff-economy.js';
 import { getP1, getP2, getPName } from '../params.js';
 import { addSpeed, multiplyStaminaCost } from '../piece-stats.js';
@@ -79,10 +85,10 @@ function revealCard(piece, ctx, fn) {
   pauseCard(piece);
   startCardReveal(next);
   // Card.trigger starts the next card and changes state before calling the
-  // concrete doRevealEffect.  The concrete script then calls activate() after
-  // its effects, so keep the activation event at the end of this causal chain.
+  // concrete doRevealEffect. The effect itself owns its activation event;
+  // Joker must be able to call that effect without touching the target's
+  // reveal/cooldown state.
   fn();
-  pushActivate(piece, ctx, piece.itemId, `Card: ${piece.name}`);
   return true;
 }
 
@@ -111,8 +117,7 @@ const aceOfSpadesPort = {
     piece._revealed = false;
     piece._secondaryActive = secondaryOn(piece, ctx);
   },
-  onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => {
+  onRevealEffect(piece, ctx) {
       // AceofSpades.gd: giveCritTokens(1) delegates to character(), so this
       // is an actor token consumed by the next eligible attack—not +1% crit
       // chance on every weapon.
@@ -124,16 +129,18 @@ const aceOfSpadesPort = {
         if (spikes) grantStacks(ctx.player, 'spikes', spikes, { originKey: piece.placementKey, originId: piece.itemId });
         logStackGrants(piece, ctx, 'ace_of_spades', { lucky: luck, spikes });
       }
-    });
+    pushActivate(piece, ctx, 'ace_of_spades', `Card: ${piece.name}`);
+  },
+  onCooldownEffect(piece, ctx) {
+    return revealCard(piece, ctx, () => aceOfSpadesPort.onRevealEffect(piece, ctx));
   },
 };
 
 const darkestLotusPort = {
   handlerId: 'darkest_lotus',
   family: 'unique',
-  onCooldownEffect(piece, ctx) {
+  onRevealEffect(piece, ctx) {
     const pos = chainIndex(piece);
-    return revealCard(piece, ctx, () => {
       const mana = Math.round(getP1(piece.params, 1) * pos);
       const strip = Math.round(getP2(piece.params, 1) * pos);
       if (mana > 0) {
@@ -151,30 +158,34 @@ const darkestLotusPort = {
           originId: piece.itemId,
         });
       }
-    });
+    pushActivate(piece, ctx, 'darkest_lotus', `Card: ${piece.name}`);
+  },
+  onCooldownEffect(piece, ctx) {
+    return revealCard(piece, ctx, () => darkestLotusPort.onRevealEffect(piece, ctx));
   },
 };
 
 const reversePort = {
   handlerId: 'reverse',
   family: 'unique',
-  onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => {
-      ctx.player.debuffReflectChance =
-        (Number(ctx.player.debuffReflectChance) || 0) + getPName(piece.params, 'reflect', 20);
+  onRevealEffect(piece, ctx) {
+      const reflect = Math.max(0, Math.round(getPName(piece.params, 'reflect', 3)));
+      changeReflectStacks(ctx.player, reflect, ctx, piece);
       if (secondaryOn(piece, ctx)) {
         stealRandomBuff(ctx.dummy, ctx.player, Math.max(1, Math.round(getPName(piece.params, 'steal', 1))), ctx.rng, {});
       }
-    });
+    pushActivate(piece, ctx, 'reverse', `Card: ${piece.name}`);
+  },
+  onCooldownEffect(piece, ctx) {
+    return revealCard(piece, ctx, () => reversePort.onRevealEffect(piece, ctx));
   },
 };
 
 const holoFireLizardPort = {
   handlerId: 'holo_fire_lizard',
   family: 'unique',
-  onCooldownEffect(piece, ctx) {
+  onRevealEffect(piece, ctx) {
     const pos = chainIndex(piece);
-    return revealCard(piece, ctx, () => {
       // HoloFireLizard.gd: changeEffectDamageFactor → dealEffectDamage → giveHeat.
       // Effect flags: no vamp / no spikes (Item.dealEffectDamage → takeDamage only).
       applyEffectDmgFactor(
@@ -195,7 +206,10 @@ const holoFireLizardPort = {
         });
         logStackGrants(piece, ctx, 'holo_fire_lizard', { heat });
       }
-    });
+    pushActivate(piece, ctx, 'holo_fire_lizard', `Card: ${piece.name}`);
+  },
+  onCooldownEffect(piece, ctx) {
+    return revealCard(piece, ctx, () => holoFireLizardPort.onRevealEffect(piece, ctx));
   },
 };
 
@@ -218,48 +232,79 @@ function jokerChainCounts(piece, ctx) {
   return { pairs, triplets, quads };
 }
 
+/**
+ * Joker.gd calls `revealedCard.doRevealEffect()` directly. This intentionally
+ * bypasses Card.trigger: the chosen card stays face-down and retains its
+ * pending cooldown, while its own reveal effects and activation event still
+ * occur. All source Card subclasses live in this module.
+ */
+function revealCardEffectOnly(card, ctx) {
+  const handler = AO_CARD_PORTS[card?.itemId];
+  if (typeof handler?.onRevealEffect !== 'function') return false;
+  handler.onRevealEffect(card, ctx);
+  return true;
+}
+
+function pickCard(cards, rng) {
+  if (!cards.length) return null;
+  const roll = Math.max(0, Math.min(0.999999999, Number(rng?.()) || 0));
+  return cards[Math.floor(roll * cards.length)] || null;
+}
+
 const jokerPort = {
   handlerId: 'joker',
   family: 'unique',
+  onRevealEffect(piece, ctx) {
+    giveRandomBuffs(ctx.player, Math.max(1, Math.round(getPName(piece.params, 'buffs', 2))), ctx.rng, {});
+    const { pairs, triplets, quads } = jokerChainCounts(piece, ctx);
+    if (pairs > 0) changeCritResistStacks(ctx.player, pairs, ctx, piece);
+    if (triplets > 0) {
+      const reduction = -getPName(piece.params, 'stamina', 0) * triplets / 100;
+      for (const other of ctx.pieces || []) multiplyStaminaCost(other, reduction);
+    }
+    const eligible = chainCards(ctx, piece)
+      .slice(0, Math.max(0, chainIndex(piece)))
+      .filter((card) => card?.itemId !== piece.itemId);
+    const reveals = Math.max(0, quads * Math.round(getPName(piece.params, 'cards', 1)));
+    for (let i = 0; i < reveals && eligible.length; i += 1) {
+      const card = pickCard(eligible, ctx.rng);
+      if (!card) break;
+      revealCardEffectOnly(card, ctx);
+      // Joker.gd only removes the pick while alternatives exist, allowing the
+      // final remaining card to be selected again for later quad reveals.
+      if (eligible.length > 1) eligible.splice(eligible.indexOf(card), 1);
+    }
+    pushActivate(piece, ctx, 'joker', `Card: ${piece.name}`);
+  },
   onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => {
-      giveRandomBuffs(ctx.player, Math.max(1, Math.round(getPName(piece.params, 'buffs', 2))), ctx.rng, {});
-      const { pairs, triplets } = jokerChainCounts(piece, ctx);
-      if (pairs > 0) changeCritStacks(ctx.player, pairs, ctx, piece);
-      if (triplets > 0) {
-        const reduction = -getPName(piece.params, 'stamina', 0) * triplets / 100;
-        for (const other of ctx.pieces || []) multiplyStaminaCost(other, reduction);
-      }
-      // Joker.gd also directly invokes randomly selected non-Joker cards once
-      // per prior quadruple. The engine currently exposes only Card.trigger,
-      // which changes reveal/cooldown state; it has no safe doRevealEffect-only
-      // dispatch. Keep the quadruple branch visible in the ledger instead of
-      // substituting a trigger and changing source timing.
-    });
+    return revealCard(piece, ctx, () => jokerPort.onRevealEffect(piece, ctx));
   },
 };
 
 const theFoolPort = {
   handlerId: 'the_fool',
   family: 'unique',
+  onRevealEffect(piece, ctx) {
+    const spd = getPName(piece.params, 'revealspeed', 8) / 100;
+    // TheFool.gd iterates `deck.cards`, not every card on the board. Keep
+    // unrelated decks/cards untouched when multiple card groups are present.
+    for (const o of chainCards(ctx, piece)) {
+      addSpeed(o, spd);
+    }
+    if (secondaryOn(piece, ctx)) {
+      grantStacks(ctx.player, 'empower', Math.max(1, Math.round(getPName(piece.params, 'empower', 1))), {});
+    }
+    pushActivate(piece, ctx, 'the_fool', `Card: ${piece.name}`);
+  },
   onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => {
-      const spd = getPName(piece.params, 'revealspeed', 8) / 100;
-      for (const o of ctx.pieces || []) {
-        if (itemHasType(ctx.itemsById.get(o.itemId), 'card')) addSpeed(o, spd);
-      }
-      if (secondaryOn(piece, ctx)) {
-        grantStacks(ctx.player, 'empower', Math.max(1, Math.round(getPName(piece.params, 'empower', 1))), {});
-      }
-    });
+    return revealCard(piece, ctx, () => theFoolPort.onRevealEffect(piece, ctx));
   },
 };
 
 const theLoversPort = {
   handlerId: 'the_lovers',
   family: 'unique',
-  onCooldownEffect(piece, ctx) {
-    return revealCard(piece, ctx, () => {
+  onRevealEffect(piece, ctx) {
       // TheLovers.gd: heal amp → stealLife → regen (secondary only on even chain).
       if (secondaryOn(piece, ctx)) {
         applyHealEfficiency(
@@ -282,29 +327,34 @@ const theLoversPort = {
           t: ctx.t,
         });
       }
-    });
+    pushActivate(piece, ctx, 'the_lovers', `Card: ${piece.name}`);
+  },
+  onCooldownEffect(piece, ctx) {
+    return revealCard(piece, ctx, () => theLoversPort.onRevealEffect(piece, ctx));
   },
 };
 
 const whiteEyesPort = {
   handlerId: 'white_eyes_blue_dragon',
   family: 'unique',
-  onCooldownEffect(piece, ctx) {
+  onRevealEffect(piece, ctx) {
     const pos = chainPos(piece);
-    return revealCard(piece, ctx, () => {
-      gainStacks(
-        ctx.player,
-        'block',
-        Math.max(1, Math.round((Number(piece.blockGrant) || 2) + getP1(piece.params, 1) * pos)),
-      );
-      grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getP2(piece.params, 1))), {});
-      applyEffectDmgFactor(
-        ctx.dummy,
-        -getPName(piece.params, 'damfactor', 10) / 100,
-        ctx,
-        piece,
-      );
-    });
+    gainStacks(
+      ctx.player,
+      'block',
+      Math.max(1, Math.round((Number(piece.blockGrant) || 2) + getP1(piece.params, 1) * pos)),
+    );
+    grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getP2(piece.params, 1))), {});
+    applyEffectDmgFactor(
+      ctx.dummy,
+      -getPName(piece.params, 'damfactor', 10) / 100,
+      ctx,
+      piece,
+    );
+    pushActivate(piece, ctx, 'white_eyes_blue_dragon', `Card: ${piece.name}`);
+  },
+  onCooldownEffect(piece, ctx) {
+    return revealCard(piece, ctx, () => whiteEyesPort.onRevealEffect(piece, ctx));
   },
 };
 

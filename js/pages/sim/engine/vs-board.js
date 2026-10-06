@@ -46,6 +46,7 @@ export function pieceIsThem(piece) {
  *   fatigue: object,
  *   notifyDealtDamage: Function,
  *   notifyPreDealDamageEarly: Function,
+ *   notifyPreDealDamageLate: Function,
  * }} world
  */
 export function ctxForPiece(piece, world) {
@@ -69,6 +70,7 @@ export function ctxForPiece(piece, world) {
     fatigue: world.fatigue,
     notifyDealtDamage: world.notifyDealtDamage,
     notifyPreDealDamageEarly: world.notifyPreDealDamageEarly,
+    notifyPreDealDamageLate: world.notifyPreDealDamageLate,
     logChain: world.logChain,
     chargeJobs: world.chargeJobs,
   };

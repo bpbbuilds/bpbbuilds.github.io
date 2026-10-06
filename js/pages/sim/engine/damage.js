@@ -4,7 +4,7 @@
  */
 
 import { healActor, isInvulnerable, consumeInvulnHit, requestedHealAmount } from './actor.js';
-import { changeCritStacks } from './actor-stats.js';
+import { changeCritResistStacks, changeCritStacks } from './actor-stats.js';
 import { attackEffectCount } from './attack-effects.js';
 import { loseStacks } from './stacks.js';
 import { rollPercent } from './rng.js';
@@ -13,6 +13,20 @@ import { rollPercent } from './rng.js';
 function resolveDamageAmount(src) {
   const a = typeof src.amount === 'function' ? src.amount() : src.amount;
   return Math.max(0, Math.round(Number(a) || 0));
+}
+
+/**
+ * DamageSource.makeSpectral(): retain every ordinary attack flag except
+ * CanBeBlocked. Late source hooks receive the live source through the result,
+ * so this affects the same strike before Block is applied.
+ * @param {DamageResult | { damageSource?: object } | null | undefined} res
+ */
+export function makeDamageSpectral(res) {
+  const source = res?.damageSource;
+  if (!source) return false;
+  source.ignoreBlock = true;
+  source.spectral = true;
+  return true;
 }
 
 /**
@@ -42,6 +56,7 @@ function resolveDamageAmount(src) {
  * @param {{
  *   amount: number | (() => number),
  *   onPreDealDamageEarly?: (res: DamageResult) => void,
+ *   onPreDealDamageLate?: (res: DamageResult) => void,
  *   originPiece?: object,
  *   accuracy?: number,
  *   canMiss?: boolean,
@@ -78,6 +93,7 @@ export function takeDamage(defender, attacker, src) {
     vampHeal: 0,
     attackEffectCount: 1,
     reductionSources: [],
+    damageSource: src,
   };
 
   if (defender.dead) {
@@ -109,14 +125,18 @@ export function takeDamage(defender, attacker, src) {
     res.attackEffectCount = attackEffectCount(src.originPiece, src.rng);
   }
   const earlyN = src.isAttack !== false ? res.attackEffectCount || 1 : 1;
+  // DamageResult.damage is already rolled when the game's early hook runs.
+  // Keep that observable value live so source scripts can mutate this strike
+  // without changing a miss.
+  res.raw = resolveDamageAmount(src);
+  res.damage = res.raw;
   for (let i = 0; i < earlyN; i += 1) {
     src.onPreDealDamageEarly?.(res);
   }
 
   if (!res.hit) return res;
 
-  let dmg = resolveDamageAmount(src);
-  res.raw = dmg;
+  let dmg = Math.max(0, Number(res.damage) || 0);
 
   let critChance = Number(src.critChance) || 0;
   const critRes = Number(defender.critResistance) || 0;
@@ -135,7 +155,16 @@ export function takeDamage(defender, attacker, src) {
       res.criticalSource = 'token';
     }
     if (res.critical) {
-      dmg = Math.round(dmg * 2);
+      // Character.critResisted consumes a guaranteed resist stack only after
+      // an actual critical roll/token succeeds. This is separate from flat
+      // critical resistance and is used by Joker's pair branch.
+      if ((Number(defender.critResistStacks) || 0) > 0) {
+        changeCritResistStacks(defender, -1, { t: src.nowT ?? 0, events: src.events });
+        res.critical = false;
+        delete res.criticalSource;
+      } else {
+        dmg = Math.round(dmg * 2);
+      }
     }
   }
 
@@ -228,6 +257,17 @@ export function takeDamage(defender, attacker, src) {
     dmg = beforeDynamicReduction;
   }
   res.damage = Math.max(0, dmg);
+
+  // Character.takeDamage: pre_deal_damage_late runs after the defender's
+  // pre-take-damage reductions, but before pre_take_damage_late and Block.
+  // It is deliberately a distinct phase from the early hook: Sapphire.gd
+  // changes DamageSource blockability here, not after the host hit lands.
+  if (src.isAttack !== false) {
+    const lateN = res.attackEffectCount || 1;
+    for (let i = 0; i < lateN; i += 1) src.onPreDealDamageLate?.(res);
+  }
+  dmg = Math.max(0, Math.round(Number(res.damage) || 0));
+  res.damage = dmg;
   res.healthDamage = dmg;
 
   const canBlock = src.canBlock !== false && !src.ignoreBlock && !src.isPoison;
@@ -310,6 +350,21 @@ export function takeDamage(defender, attacker, src) {
  */
 export function dealDamage(attacker, defender, src) {
   const res = takeDamage(defender, attacker, src);
+  // Character.connect("character_damaged", ...) is a source-level signal,
+  // distinct from the simulator's player_damaged convenience event. Emit it
+  // for every Character.dealDamage path so reactive items (Dark Lantern,
+  // Phoenix-family, etc.) also see item/effect damage and self-health costs.
+  if (res.hit) {
+    src.bus?.emit?.('character_damaged', {
+      actor: defender,
+      attacker,
+      t: src.nowT ?? 0,
+      hit: res.hit,
+      healthDamage: res.healthDamage,
+      blocked: res.blocked,
+      damage: res,
+    });
+  }
   if (!res.hit || res.damage <= 0) return res;
 
   // Character.applyVampirism — only if DamageSource.CanTriggerVampirism.

@@ -638,10 +638,6 @@ export function attachDragSession(opts) {
     return r;
   }
 
-  function isPointerOverMeta(clientX, clientY) {
-    return !!metaDrop?.engagesMeta?.(clientX, clientY, heldItemRect());
-  }
-
   /**
    * @param {any} cur
    * @param {number} clientX
@@ -732,7 +728,6 @@ export function attachDragSession(opts) {
     isPointerOverPark,
     isPointerOverCatalog,
     isPointerOverSell,
-    isPointerOverMeta,
     beginHotswapFromPlacement,
     syncPendingPointer,
     scheduleMove(x, y) {

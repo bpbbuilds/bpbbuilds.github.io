@@ -121,6 +121,16 @@ export function gainStacks(actor, stack, amount, opts = {}) {
   const before = getStackAmount(actor, stack);
   setStackAmount(actor, stack, before + left);
   const gained = getStackAmount(actor, stack) - before;
+  if (gained > 0) {
+    // Item.gd exposes character_*_changed signals for Block and the combat
+    // buffs. Keep those signals on the shared bus so source listeners (for
+    // example Djinn Lamp) see every grant, including direct gainStacks calls.
+    actor._combatBus?.emit?.(`character_${stack}_changed`, {
+      actor,
+      stack,
+      amount: gained,
+    });
+  }
   return { gained, resisted, reflected };
 }
 
@@ -132,5 +142,13 @@ export function gainStacks(actor, stack, amount, opts = {}) {
 export function loseStacks(actor, stack, amount) {
   const before = getStackAmount(actor, stack);
   setStackAmount(actor, stack, before - Math.max(0, Math.round(amount)));
-  return before - getStackAmount(actor, stack);
+  const spent = before - getStackAmount(actor, stack);
+  if (spent > 0) {
+    actor._combatBus?.emit?.(`character_${stack}_changed`, {
+      actor,
+      stack,
+      amount: -spent,
+    });
+  }
+  return spent;
 }

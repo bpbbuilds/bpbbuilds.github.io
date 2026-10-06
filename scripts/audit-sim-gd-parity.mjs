@@ -35,6 +35,7 @@ const HOOK_MAP = {
   onPreDealDamage_early: ['onPreDealDamageEarly', 'onCooldownEffect'],
   onPreDealDamage_late: ['onPreDealDamageEarly', 'onCooldownEffect'],
   onDealtDamage: ['onDealtDamage', 'onCooldownEffect'],
+  onChargeReceived: ['onChargeReceived'],
   onDamaged: ['onCombatStart', 'onPreCombatStart', 'onDealtDamage'],
   afterBlock: ['onCombatStart', 'onPreCombatStart', 'onDealtDamage'],
   onTriggerPotion: ['onCombatStart', 'onCooldownEffect', 'onDrink'],
@@ -69,11 +70,6 @@ const HOOK_TRIAGE = {
     status: 'intentional_noncombat',
     owner: 'js/pages/sim/engine/scripts/ports-pet.js',
     evidence: 'Items/CarrotGoobert.gd:onPrepare only resets visual state/particles; the gameplay cooldown effect is ported.',
-  },
-  bewitchment: {
-    status: 'equivalent_implementation',
-    owner: 'js/pages/sim/engine/scripts/ports-wave-d-unique.js',
-    evidence: 'Items/Exclusive/Bewitchment.gd:onPrepare caches affected type counts; port derives the same static-board count at cooldown execution.',
   },
   chainsaw: {
     status: 'intentional_noncombat',

@@ -24,9 +24,11 @@ import { deliverCharge } from '../charge-delivery.js';
 import { itemHasType } from './ports-util.js';
 import {
   countEmptyAffectCells,
+  removeBuffsFraction,
   removeBlock,
   removeRandomBuffs,
   rollItemChance,
+  stealBuffsFraction,
   weaponStrike,
 } from './ports-wave-c-util.js';
 import { rollPercent } from '../rng.js';
@@ -208,25 +210,30 @@ export const chainsawPort = {
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'chainsaw');
   },
+  onPrepare(piece) {
+    piece._chainsawCharged = false;
+  },
   onChargeReceived(piece) {
     piece._chainsawCharged = true;
   },
-  onDealtDamage(piece, ctx, hit) {
-    if (!hit?.hit) return;
-    const buffsFrac = getPName(piece.params, 'buffs', 100) / 100;
-    const n = Math.max(1, Math.round(buffsFrac * 3));
-    if (piece._chainsawCharged || (piece.numCharges || 0) > 0) {
-      stealRandomBuff(ctx.dummy, ctx.player, n, ctx.rng, {
+  onPreDealDamageEarly(piece, ctx, damageRes) {
+    if (!damageRes?.hit) return;
+    const fraction = Math.max(0, getPName(piece.params, 'buffs', 5) / 100);
+    const limit = 1000;
+    if ((piece.numCharges || 0) > 0) {
+      stealBuffsFraction(ctx.dummy, ctx.player, fraction, limit, ctx.rng, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
     } else {
-      removeRandomBuffs(ctx.dummy, n, ctx.rng, {
+      removeBuffsFraction(ctx.dummy, fraction, limit, ctx.rng, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
     }
-    addSpeed(ctx.dummy, -getPName(piece.params, 'slow', 5) / 100);
+    // Item.reduceSpeed() mutates the saw's own speed scale, not the
+    // opponent actor. The modifier persists after the successful hit.
+    addSpeed(piece, -getPName(piece.params, 'slow', 5) / 100);
   },
 };
 

@@ -291,6 +291,22 @@ const INHERITANCE_RESOLUTION_IDS = new Set([
 // the source inventory instead of treating them as unresolved just because
 // there is no same-named .gd file.
 const SCENE_SOURCE_ALIASES = {
+  axe: 'Exclusive/Axe.tscn',
+  bewitchment: 'Exclusive/Bewitchment.tscn',
+  blood_amulet: 'BloodAmulet.tscn',
+  bloody_dagger: 'BloodyDagger.tscn',
+  broccoli: 'Exclusive/Broccoli.tscn',
+  broccotree: 'Exclusive/Broccotree.tscn',
+  burning_banner: 'Exclusive/BurningBanner.tscn',
+  burning_coal: 'Gems/BurningCoal.tscn',
+  burning_sword: 'Exclusive/BurningSword.tscn',
+  burning_torch: 'BurningTorch.tscn',
+  carrot_goobert: 'CarrotGoobert.tscn',
+  cauldron: 'Exclusive/Cauldron.tscn',
+  chainsaw: 'Exclusive/Chainsaw.tscn',
+  charge_splitter: 'Exclusive/ChargeSplitter.tscn',
+  chili_pepper: 'Exclusive/ChiliPepper.tscn',
+  coil: 'Exclusive/Coil.tscn',
   book_of_ice_new: 'Exclusive/BookofIceNew.tscn',
   chipped_amethyst: 'Gems/ChippedAmethyst.tscn',
   chipped_emerald: 'Gems/ChippedEmerald.tscn',
@@ -312,6 +328,19 @@ const SCENE_SOURCE_ALIASES = {
   perfect_sapphire: 'Gems/PerfectSapphire.tscn',
   perfect_topaz: 'Gems/PerfectTopaz.tscn',
   regular_amethyst: 'Gems/RegularAmethyst.tscn',
+  regular_emerald: 'Gems/RegularEmerald.tscn',
+  regular_ruby: 'Gems/RegularRuby.tscn',
+  regular_sapphire: 'Gems/RegularSapphire.tscn',
+  regular_topaz: 'Gems/RegularTopaz.tscn',
+  shortbow: 'Exclusive/Shortbow.tscn',
+  skull: 'Gems/Skull.tscn',
+  stable_recombobulator: 'Exclusive/StableRecombobulator.tscn',
+  strong_heroic_potion: 'StrongHeroicPotion.tscn',
+  strong_mana_potion: 'Exclusive/StrongManaPotion.tscn',
+  superior_ring: 'Exclusive/SuperiorRing.tscn',
+  the_fool: 'TheFool.tscn',
+  unstable_recombobulator: 'Exclusive/UnstableRecombobulator.tscn',
+  whetstone2: 'Exclusive/Whetstone2.tscn',
   goobling: 'Exclusive/Goobling.tscn',
   darkest_lotus: 'DarkestLotus.tscn',
   elephant_rune: 'Exclusive/ElephantRune.tscn',
@@ -345,6 +374,18 @@ for (const file of files) {
   const stem = path.basename(file, '.gd');
   const itemId = resolveItemId(file, index);
   const directOverrides = [...descriptor.directOverrides];
+  // Resistor is the one source row in this wave whose only combat hook is
+  // Item.gd's charge callback. Keep the inventory focused: other charge
+  // callbacks are already represented by their existing lifecycle rows until
+  // their own source-backed ports are reviewed.
+  if (
+    itemId === 'resistor' &&
+    /^func onChargeReceived\s*\(/m.test(directText) &&
+    !directOverrides.includes('onChargeReceived')
+  ) {
+    directOverrides.push('onChargeReceived');
+    byMethod.onChargeReceived = (byMethod.onChargeReceived || 0) + 1;
+  }
   if (
     itemId === 'ace_of_spades' &&
     /^func doRevealEffect\s*\(/m.test(directText) &&

@@ -86,7 +86,7 @@ Walk of AF 194 + Core math. **Close** = in engine + report/smoke. **Ticket** = d
 | `Character.takeDamage` `attackEffectCount` | **Closed** | `attack-effects.js` + loop in `takeDamage` / `dealHit` / `combat-activate` |
 | Bow `onWeaponAttacked` (Thorn spikes / Bow and Arrow bonus / Poison Bow acc) | **Closed** | `item_attacked` bus; ports in `ports-ap-basic.js` / `ports-al-weapons.js`. Smoke: `npm run sim-core-leftover-smoke` |
 | Lucky Bow extra from **linked** crit | **Ticket** | still `onDealtDamage` on self (`ports-ap-onhit.js`) — needs a live dump vs star-linked weapon |
-| `onPreDealDamage_late` loop | **Ticket** | stones/spears still `weaponStrike` `beforeDeal`; not a second Core loop |
+| `onPreDealDamage_late` loop | **Closed for host spectral hooks** | `damage.js` runs the late source phase after defender reductions and before Block; `gem-sockets.js` wires Sapphire's socket listener. Other source-specific late handlers remain separately audited. |
 | Generic `applyOnHitStacks` × double chance | **Ticket** | catalog hint path in `combat-activate.js`, independent of HAND `onDealtDamage` |
 | `preDeal` token spends / armor `onHitReceived` | **Ticket** | AF 194 AG — dump per item |
 | Crit tokens / Lucky spend economy | **Ticket** | AF 194 AG |
@@ -214,13 +214,13 @@ covers the requested tiers' parameters, inventory order, both-side Emerald
 path, effect-damage/lifesteal causal order, Topaz HUD stat event, and supported
 socket modes.
 
-Flawed and Flawless Sapphire remain deliberately incomplete: `Sapphire.gd`
-rolls at `pre_deal_damage_late`, calls `DamageSource.makeSpectral()` before the
-host strike resolves, then grants Mana/Cold only after a spectral hit. The
-engine has no late pre-deal dispatch, so its existing post-hit approximation
-cannot be called source-faithful. Shared-engine follow-up: add canonical
-late-pre-deal dispatch with source/placement/causal-event preservation, then
-port the Sapphire socket path and add a two-sided spectral/block regression.
+Flawed, Flawless, and Perfect Sapphire now use the canonical late pre-deal
+dispatch. `damage.js` runs it after defender reductions but before Block, and
+the socket handler applies `DamageSource.makeSpectral()` semantics to the live
+source before the host strike resolves. Mana/Cold are then granted only after
+the spectral hit. `scripts/sim-joker-sapphire-smoke.mjs` covers Perfect and
+Flawless Sapphire on both boards against 999 Block; the shared source path also
+closes Flawed Sapphire.
 
 ## Goobling, Holo Fire Lizard, Joker, and next gem source audit (2026-10-04)
 
@@ -229,17 +229,222 @@ to `Goobert.gd`, the five Perfect gem aliases, and Regular Amethyst. The
 focused smoke retains Holo Fire Lizard's source order (effect-damage factor,
 effect damage, Heat, activation) and Joker's pair/triplet duplicate branches.
 
-Joker remains incomplete for its source quadruple branch: `Joker.gd` invokes
-another card's `doRevealEffect()` directly without changing its card reveal
-state. The simulator only has state-changing `Card.trigger`/cooldown dispatch,
-so using it would be an invented timing change. Shared-engine follow-up: add a
-causal, source-attributed doRevealEffect-only dispatch, then test seeded
-quadruple selection for both sides. Perfect Sapphire inherits the existing
-Sapphire late-pre-deal spectral gap.
+Joker's source quadruple branch is now complete. `ports-ao-cards.js` separates
+each Card subclass's reveal effect from state-changing `Card.trigger`, then
+Joker calls the selected card's effect directly. The selected card keeps its
+face-down/reveal and cooldown state while still emitting its own source-order
+effects and activation event. `scripts/sim-joker-sapphire-smoke.mjs` verifies
+the seeded quadruple branch and the no-state-change contract. Perfect Sapphire
+is covered by the shared late-pre-deal Sapphire regression above.
+
+## Regular gems, Resistor, and Reverse source-port audit (2026-10-04)
+
+The source inventory now records the four Regular Gem scene aliases and their
+inherited scripts (`RegularEmerald/Ruby/Sapphire/Topaz.tscn` → the matching
+`Gems/*.gd` script). `scripts/sim-regular-gems-resistor-reverse-smoke.mjs`
+covers both board sides and the source lifecycle split: loose inventory
+effects/consume, socketed weapon/armor behavior, Sapphire's late spectral
+dispatch, and Topaz's prepare-time stamina/speed/resistance changes.
+
+`Exclusive/Resistor.gd` is ported through the shared charge-delivery path. It
+grants `heat` only while the actor is below `heatt`, emits a VFX-only
+`miniActivate` after the grant, and intentionally produces no combat-log state
+change when the source only plays its failed animation at the threshold.
+
+`Exclusive/Reverse.gd` now uses the source's consumable
+`changeDebuffReflectStacks` operation (not the unrelated percentage reflect
+chance). Its secondary `stealRandomBuff` branch is gated by the source card
+duplicate rule; the focused smoke checks Reflect HUD/stat output, buff transfer,
+duplicate suppression, and activation ordering. This is source-port evidence,
+not live-capture or complete 1:1 parity evidence.
 
 Band AH: `npm run sim-parity-fixtures` + harness `PARITY_PCT_FLOOR`. Inventory `depth` ≠ coverage `fidelity: parity` — parity ids are fixture-backed (`parityIds` in `sim-parity-inventory.json`).
 
 Combat log smoke: `npm run sim-log-smoke`.
+
+## Shortbow, Skull, potion, ring, and Fool source-port audit (2026-10-04)
+
+The source inventory now records the seven scene aliases and exact inherited
+scripts. `scripts/sim-shortbow-skull-potions-ring-fool-smoke.mjs` exercises both
+board sides:
+
+- Shortbow uses the inherited `Weapon.gd` stamina-gated ranged attack.
+- Skull covers its one-shot opponent-health threshold heal/Empower path plus
+  socketed weapon buff steal and all-debuff/crit resistance.
+- Stable Recombobulator covers one random buff, one random debuff cleanse, and
+  combat activation; shop fusion remains out of combat scope.
+- Strong Heroic and Strong Mana use their inherited HeroicPotion/ManaPotion
+  hooks and exact catalog parameters. Strong Heroic's unused catalog p3 is not
+  treated as an invented Lucky effect.
+- Superior Ring covers generated trigger/stack scaling for Start, Every,
+  owner-low, and opponent-low events. Misses do not satisfy the source's
+  opponent `character_damaged` listener.
+- The Fool buffs only its own `deck.cards` and grants Empower at chain position
+  zero; unrelated decks remain unchanged.
+
+This is source-port evidence, not live-capture or complete 1:1 parity evidence.
+
+## The Lovers, Tiger Rune, Unstable Recombobulator, Whetstone2, and White-Eyes Blue Dragon source-port audit (2026-10-05)
+
+The source inventory now resolves the Unstable Recombobulator and Whetstone2
+scene aliases. `scripts/sim-lovers-tiger-unstable-whetstone-white-eyes-smoke.mjs`
+covers both board sides and the source lifecycle split:
+
+- The Lovers steals its configured damage/lifesteal every reveal and adds the
+  even-chain healing-efficiency and Regeneration effects.
+- Tiger Rune amplifies inventory buff gains during prepare, converts ten
+  gained buffs to five Block in armor sockets, and grants one Vampirism on a
+  successful weapon-socket roll. The implementation uses the simulator's
+  `buffAmpChance` surface rather than an unused display-only field.
+- Unstable Recombobulator shares the inherited Recombobulator combat cooldown
+  (one random buff plus one debuff cleanse); shop recombination remains out of
+  combat scope.
+- Whetstone2 inherits Whetstone's start-of-battle linked-weapon damage bonus.
+- White-Eyes Blue Dragon grants chain-scaled Block, Cold, and the opponent's
+  effect-damage reduction in source order.
+
+This is source-port evidence, not live-capture or complete 1:1 parity evidence.
+
+## Axe, Bewitchment, Blood Amulet, Bloody Dagger, Broccoli, and Broccotree source-port audit (2026-10-04)
+
+`scripts/sim-axe-bewitchment-blood-broccoli-smoke.mjs` covers both board owners
+and the inherited/source lifecycle for all six rows:
+
+- Axe uses the inherited Weapon cooldown path and applies its p1 permanent
+  damage bonus on each successful early hit, including the current strike.
+- Bewitchment caches affected Nature/Dark/Ice counts during `onPrepare`, spends
+  one Mana only when available, distributes its base debuffs through the
+  source's random least-stack selection, and rolls each affected type's
+  configured poison/blind/cold bonus. It does not activate when the Mana gate
+  fails.
+- Blood Amulet grants source Vampirism and temporary maximum health at combat
+  start. Bloody Dagger resets its Vampirism cap in `onPrepare`, adds source
+  Vampirism on successful hits up to p2, and heals from linked Vampiric items.
+- Broccoli inherits Food's +10% speed per linked food during preparation, then
+  chooses Lucky or Regeneration from the source threshold. Broccotree keeps its
+  source `onPrepare` override (no inherited Food speed), listens for positive
+  Regeneration changes using base stamina regen, and checks Lucky after its
+  per-cooldown grant.
+
+The source inventory now records the exact six scenes/scripts. Hook parity,
+call audit, and the focused smoke pass; this remains source-port evidence,
+not live-capture or complete 1:1 parity evidence.
+
+## Burning heat/charge wave source-port audit (2026-10-04)
+
+`scripts/sim-burning-heat-charge-smoke.mjs` covers both board owners and the
+source lifecycle for Burning Banner, Burning Coal, Burning Sword, Burning
+Torch, Carrot Goobert, Cauldron, Chainsaw, Charge Splitter, Chili Pepper, and
+Coil. The source inventory records the exact scene/script aliases.
+
+- Burning Banner and Burning Sword cache their affected sets in `onPrepare`;
+  Banner applies protection before combat and activates after strip/Regeneration,
+  while Sword banks Heat into permanent damage for cached Empowerable targets.
+- Burning Coal keeps its loose consume path and socketed weapon/armor hooks;
+  Torch grants start Heat before activation and permanent damage only on a hit.
+- Carrot Goobert uses the inherited peer-activation threshold rather than a
+  timed cooldown, then cleanses, grants temporary Empower, and activates.
+- Cauldron prepares linked Food/Potion speed and selects a non-repeating
+  heal/Mana/Heat result. Chainsaw now uses the source fractional buff
+  remove/steal operation in `onPreDealDamageEarly`, not a random three-stack
+  approximation.
+- Charge Splitter emits both explicit source charge paths and applies the
+  per-cell buff-amplification stat. Chili Pepper's activation follows its
+  Heat/heal/cleanse effects, and Coil resets on prepare, steals on each
+  received charge, emits a VFX-only mini activation, and consumes at its cap.
+
+This is source-port evidence, not live-capture or complete 1:1 parity evidence.
+
+## Crossblades through Dragon Set source-port audit (2026-10-05)
+
+`scripts/sim-crossblades-dragon-wave-smoke.mjs` now exercises both board owners
+for all twelve AQ rows and asserts the extracted source files, registered
+handlers, lifecycle hooks, effect values, and activation ordering:
+
+- Crossblades, Cursed Hair Comb, Dark Lantern, Darksaber, Death Lotus, Deer
+  Totem, Djinn Lamp, and Doom Cap use source-backed prepare/listener and
+  cooldown sequencing, including actor-side filtering and lethal/reincarnation
+  behavior where applicable.
+- Double Axe, Draconic Orb, Dragon Knight, and Dragon Set cover their Rage,
+  Heat, Crit, Reflect, cooldown-advance, weapon-strike, and full-set lifesteal
+  paths. Dragon Knight's inherited `RubyWhelp.gd` lifecycle is represented
+  explicitly rather than flattened into a generic skill port.
+- Doom Cap, Djinn Lamp, and Dragon Set assertions verify that effects are
+  applied before the source activation event. Dragon Set and Deer Totem also
+  verify cooldown locking outside Rage.
+
+The parity inventory records these rows as the AQ source-port wave. This is
+source-port evidence from the extracted scripts and focused deterministic
+fixtures, not live-capture or complete commercial 1:1 evidence.
+
+## Emerald Whelp through Gingerbread Man source-port audit (2026-10-05)
+
+`scripts/sim-emerald-ginger-wave-smoke.mjs` exercises both board owners for
+all ten AR rows and asserts the exact extracted source aliases, registered
+handlers, prepare/combat-start lifecycle, resource gates, effect ordering,
+activation/consume state, and event-visible damage or stamina changes.
+
+- Emerald Whelp, Flame Badge, Fly Agaric, and Gingerbread Man now follow their
+  source start/cooldown ordering and inherited Food.prepare link speed.
+  Gingerbread uses the existing temporary max health projection and always
+  activates even when its Luck/Heat/Mana gate is closed.
+- Energy Conversion, Everburning, Fanfare, Flute, and Fortuna's Kiss perform
+  prepare-time listener/stat work. Fanfare's Mana/Stamina operations target the
+  opponent as `Item.gd` does, while Fortuna filters to `canModifyChance`
+  targets rather than granting chance to every linked item.
+- Flame Whip now mutates the live early `DamageResult` only after a successful
+  hit roll, preserving Spikes on misses and retaining the source's unrounded
+  bonus. The shared damage path now exposes the rolled amount to early hooks;
+  the change is covered by the focused miss/hit regression.
+
+The parity inventory records these rows as the AR source-port wave. This is
+source-port evidence from the extracted scripts and focused deterministic
+fixtures, not live-capture or complete commercial 1:1 evidence.
+
+## Halberd through Null Blade source-port audit (2026-10-05)
+
+`scripts/sim-halberd-null-blade-wave-smoke.mjs` validates both board owners,
+the exact resolved extracted scripts, handler registration, source lifecycle,
+and visible state/event ordering for all eighteen AS rows.
+
+- Halberd now performs its Block-power and affected-cell cache work during
+  prepare, then removes opponent Block in the source late-damage phase before
+  granting any unused amount to its owner. Magic Torch, Molten Dagger, Molten
+  Spear2, and Null Blade apply their source early-damage bonus to the current
+  successful hit as well as the persistent item stat.
+- Heart Container, Leaf Badge, Light Flower, Lucky Bow, Mananana, Level Up,
+  Laboratory, and Molten Spear2 use their source prepare/pre-combat hooks.
+  Ice Armor, Light Flower, Level Up, and Moon Armor activate after their
+  corresponding source effects rather than before them.
+- Hero Sword, Just Stats, Lucky Clover, and More Stats retain their source
+  combat-start semantics. Existing start-priority support keeps Just Stats and
+  More Stats at the source Low priority.
+
+This is deterministic source-port evidence from the extracted GDScript and
+focused simulator regression, not live-capture or commercial 1:1 evidence.
+
+## Pan through Pot source-port audit (2026-10-05)
+
+`scripts/sim-pan-pot-wave-smoke.mjs` exercises both board owners for Pan,
+Phoenix, Piggy of Riches, Piggybank, Poison Dagger, Poison Grenade, Poison
+Shortbow, and Pot. It asserts each extracted source alias, handler resolution,
+lifecycle timing, source-visible state, and event order.
+
+- Pan applies its Food-affect damage during `onPreCombatStart`; Phoenix now
+  registers its own-character damage listener during `onPrepare`, reincarnates
+  only once, spends all Heat, and logs the weapon activation after its strike.
+- Piggy of Riches counts socketed gems while Piggybank counts affected
+  start-of-battle items; both grant maximum health and consume at combat start.
+- Poison Dagger retains its source Poison hook and now inherits Dagger's
+  prepare-time free attack when the opponent is stunned. Poison Shortbow keeps
+  the source chance/random-debuff branch.
+- Poison Grenade and Pot set up their Lucky/potion listeners in `onPrepare`,
+  before cooldown arming. Grenade advances from received charge and consumes
+  after its two Poison grants; Pot prepares Food/Potion speed, heals on a
+  linked potion trigger, then grants Heat/Regeneration and consumes.
+
+This is deterministic source-port evidence from the extracted GDScript and
+focused simulator regression, not live-capture or commercial 1:1 evidence.
 
 ## Remaining sandbox gaps (AH 220)
 

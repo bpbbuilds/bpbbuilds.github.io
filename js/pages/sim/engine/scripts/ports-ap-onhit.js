@@ -16,12 +16,14 @@ import { addBonusDamage } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { itemHasType, pushActivate } from './ports-util.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
+import { dealHit } from './handlers.js';
 import {
   countEmptyAffectCells,
   removeBlock,
   rollItemChance,
   weaponStrike,
 } from './ports-wave-c-util.js';
+import { randInt } from '../rng.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -46,7 +48,9 @@ function debuffCount(actor) {
 const bloodyDaggerPort = {
   handlerId: 'bloody_dagger',
   family: 'weapon_base',
-  onCombatStart(piece) {
+  onPrepare(piece) {
+    // BloodyDagger.gd resets this in onPrepare, before any combat-start
+    // effects can trigger its first attack.
     piece._vampGiven = 0;
   },
   onCooldownEffect(piece, ctx) {
@@ -76,10 +80,13 @@ const bloodyDaggerPort = {
 const burningSwordPort = {
   handlerId: 'burning_sword',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._heatBank = 0;
     const need = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP2(piece.params, 7))));
     const bonus = Math.max(1, Math.round(getPName(piece.params, 'bonusdam', getP3(piece.params, 1))));
+    // BurningSword.gd caches getAffectedItems() in onPrepare.  Keep the
+    // empowered target set stable for the whole combat.
+    piece._burningSwordTargets = linked(ctx, piece).filter((o) => canBeEmpoweredPiece(o));
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'heat' || !(ch.amount > 0)) return;
       piece._heatBank = (Number(piece._heatBank) || 0) + ch.amount;
@@ -95,9 +102,7 @@ const burningSwordPort = {
         via: 'heat',
       };
       addBonusDamage(piece, amt, src);
-      for (const o of linked(ctx, piece)) {
-        if (canBeEmpoweredPiece(o)) addBonusDamage(o, amt, src);
-      }
+      for (const o of piece._burningSwordTargets || []) addBonusDamage(o, amt, src);
     });
   },
   onCooldownEffect(piece, ctx) {
@@ -120,19 +125,17 @@ const flameWhipPort = {
   handlerId: 'flame_whip',
   family: 'weapon_base',
   onCooldownEffect(piece, ctx) {
-    const extra = Math.max(0, Math.round(getPName(piece.params, 'bonusdam', getP3(piece.params, 8))));
+    const extra = Math.max(0, Number(getPName(piece.params, 'bonusdam', getP3(piece.params, 8))) || 0);
+    const need = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 1))));
+    const heat = Math.max(1, Math.round(getPName(piece.params, 'heat', getP2(piece.params, 4))));
     return weaponStrike(piece, ctx, 'flame_whip', {
-      beforeDeal(raw) {
-        const need = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 1))));
-        if ((getStackAmount(ctx.player, 'spikes') || 0) < need) return raw;
+      // FlameWhip.gd mutates DamageResult after the hit roll. This must not
+      // spend Spikes on an accuracy miss or alter the pre-roll amount.
+      onPreDealDamageEarly(res) {
+        if (!res?.hit || (getStackAmount(ctx.player, 'spikes') || 0) < need) return;
         spendStacks(ctx.player, 'spikes', need, origin(piece));
-        grantStacks(
-          ctx.player,
-          'heat',
-          Math.max(1, Math.round(getPName(piece.params, 'heat', getP2(piece.params, 4)))),
-          origin(piece),
-        );
-        return raw + extra;
+        res.damage = (Number(res.damage) || 0) + extra;
+        grantStacks(ctx.player, 'heat', heat, origin(piece));
       },
     });
   },
@@ -142,12 +145,14 @@ const flameWhipPort = {
 const darksaberPort = {
   handlerId: 'darksaber',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._dsDebuffs = debuffCount(ctx.dummy);
     const per = getPName(piece.params, 'damperdebuff', getP1(piece.params, 0.5));
     const apply = () => {
       const n = debuffCount(ctx.dummy);
-      addBonusDamage(piece, per * (n - (Number(piece._dsDebuffs) || 0)));
+      addBonusDamage(piece, per * (n - (Number(piece._dsDebuffs) || 0)), {
+        removable: false,
+      });
       piece._dsDebuffs = n;
     };
     onBuffChanged(ctx.dummy, (ch) => {
@@ -173,7 +178,7 @@ const darksaberPort = {
 const moltenSpear2Port = {
   handlerId: 'molten_spear2',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const per = Math.max(0, Math.round(getPName(piece.params, 'blockremoval', getP5(piece.params, 5))));
     const fires = linked(ctx, piece).filter((o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'fire'),
@@ -181,19 +186,16 @@ const moltenSpear2Port = {
     piece._blockStrip = per * (fires + countEmptyAffectCells(ctx, piece));
   },
   onCooldownEffect(piece, ctx) {
-    return weaponStrike(piece, ctx, 'molten_spear2', {
-      beforeDeal() {
-        const strip = Number(piece._blockStrip) || 0;
-        if (strip) removeBlock(ctx.dummy, strip, ctx, piece);
-      },
-    });
+    return weaponStrike(piece, ctx, 'molten_spear2');
   },
   onPreDealDamageEarly(piece, ctx, res) {
     if (!res) return;
     if (!res.hit) {
       const need = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP1(piece.params, 2))));
       if ((getStackAmount(ctx.player, 'heat') || 0) < need) return;
-      addBonusDamage(piece, Math.max(1, Math.round(getPName(piece.params, 'missdam', getP2(piece.params, 3)))));
+      const dam = Math.max(1, Math.round(getPName(piece.params, 'missdam', getP2(piece.params, 3))));
+      res.damage = (Number(res.damage) || 0) + dam;
+      addBonusDamage(piece, dam);
       spendStacks(ctx.player, 'heat', need, origin(piece));
       res.hit = true;
     }
@@ -210,6 +212,10 @@ const moltenSpear2Port = {
       Math.max(1, Math.round(getPName(piece.params, 'blind_self', getP4(piece.params, 1)))),
       origin(piece),
     );
+  },
+  onPreDealDamageLate(piece, ctx) {
+    const strip = Number(piece._blockStrip) || 0;
+    if (strip) removeBlock(ctx.dummy, strip, ctx, piece);
   },
 };
 
@@ -230,6 +236,9 @@ const shovelPort = {
 const luckyBowPort = {
   handlerId: 'lucky_bow',
   family: 'weapon_base',
+  onPrepare(piece) {
+    piece._luckyExtra = false;
+  },
   onCombatStart(piece, ctx) {
     grantStacks(
       ctx.player,
@@ -238,7 +247,6 @@ const luckyBowPort = {
       origin(piece),
     );
     pushActivate(piece, ctx, 'lucky_bow', `Weapon: ${piece.name}`);
-    piece._luckyExtra = false;
   },
   onCooldownEffect(piece, ctx) {
     weaponStrike(piece, ctx, 'lucky_bow');
@@ -257,6 +265,17 @@ const luckyBowPort = {
 const poisonDaggerPort = {
   handlerId: 'poison_dagger',
   family: 'weapon_base',
+  onPrepare(piece, ctx) {
+    // PoisonDagger.gd inherits Dagger.prepare(): an opponent stun produces
+    // one free Weapon.attack(triggerEvent), with no second stamina spend.
+    ctx.bus?.on?.('actor_stunned', (payload) => {
+      if (!piece.alive || payload?.actor !== ctx.dummy) return;
+      dealHit(piece, ctx, () => randInt(piece.damageMin, piece.damageMax, ctx.rng));
+      // Weapon.attack activates after dealDamage, preserving the source
+      // damage -> activation event order for the free Dagger strike.
+      pushActivate(piece, ctx, 'poison_dagger', `Weapon: ${piece.name}`);
+    });
+  },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'poison_dagger');
   },

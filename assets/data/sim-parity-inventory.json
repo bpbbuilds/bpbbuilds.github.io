@@ -1,11 +1,11 @@
 {
-  "builtAt": "2026-08-25T18:51:24.198Z",
+  "builtAt": "2026-10-05T22:29:24.978Z",
   "note": "Band AO — skills / spells / books / leftover catalog",
   "parityIds": [],
   "totals": {
-    "hand": 553,
-    "deep": 414,
-    "shallow": 83,
+    "hand": 554,
+    "deep": 468,
+    "shallow": 30,
     "noop": 27
   },
   "byId": {
@@ -343,7 +343,7 @@
     },
     "carrot_goobert": {
       "depth": "deep",
-      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+      "notes": "AP source-port wave from .gd"
     },
     "spirit_bells": {
       "depth": "deep",
@@ -367,7 +367,7 @@
     },
     "dragon_knight": {
       "depth": "deep",
-      "notes": "AI deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+      "notes": "AQ source-port wave from .gd"
     },
     "echoing_battlecry": {
       "depth": "deep",
@@ -759,7 +759,7 @@
     },
     "chainsaw": {
       "depth": "deep",
-      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
+      "notes": "AP source-port wave from .gd"
     },
     "cupcake_dragon": {
       "depth": "deep",
@@ -1463,7 +1463,7 @@
     },
     "coil": {
       "depth": "deep",
-      "notes": "AN accessory/armor port from .gd"
+      "notes": "AP source-port wave from .gd"
     },
     "con_trap_tron": {
       "depth": "deep",
@@ -1524,6 +1524,10 @@
     "superior_ring": {
       "depth": "deep",
       "notes": "AN accessory/armor port from .gd"
+    },
+    "time_pendant": {
+      "depth": "shallow",
+      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "twine": {
       "depth": "deep",
@@ -1786,24 +1790,24 @@
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "charge_splitter": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AP source-port wave from .gd"
     },
     "flute": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AR source-port wave from .gd"
     },
     "fortunas_kiss": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AR source-port wave from .gd"
     },
     "leaf_badge": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "light_flower": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "ultima": {
       "depth": "shallow",
@@ -1814,32 +1818,32 @@
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "cauldron": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AP source-port wave from .gd"
     },
     "death_lotus": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AQ source-port wave from .gd"
     },
     "deer_totem": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AQ source-port wave from .gd"
     },
     "djinn_lamp": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AQ source-port wave from .gd"
     },
     "fanfare": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AR source-port wave from .gd"
     },
     "level_up": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "moon_armor": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "scale": {
       "depth": "shallow",
@@ -1850,60 +1854,60 @@
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "burning_banner": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AP source-port wave from .gd"
     },
     "emerald": {
       "depth": "shallow",
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "gingerbread_man": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AR source-port wave from .gd"
     },
     "heart_container": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "laboratory": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "pot": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AT source-port wave from .gd"
     },
     "slice_of_toast": {
       "depth": "shallow",
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "burning_coal": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AP source-port wave from .gd"
     },
     "chili_pepper": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AP source-port wave from .gd"
     },
     "draconic_orb": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AQ source-port wave from .gd"
     },
     "dragon_set": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AQ source-port wave from .gd"
     },
     "energy_conversion": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AR source-port wave from .gd"
     },
     "everburning": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AR source-port wave from .gd"
     },
     "ice_armor": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "sapphire": {
       "depth": "shallow",
@@ -1918,20 +1922,20 @@
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "doom_cap": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AQ source-port wave from .gd"
     },
     "fly_agaric": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AR source-port wave from .gd"
     },
     "poison_grenade": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AT source-port wave from .gd"
     },
     "phoenix": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AT source-port wave from .gd"
     },
     "pumpkin": {
       "depth": "shallow",
@@ -1958,52 +1962,52 @@
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "cursed_hair_comb": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AQ source-port wave from .gd"
     },
     "burning_torch": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AP source-port wave from .gd"
     },
     "flame_badge": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AR source-port wave from .gd"
     },
     "ruby_whelp": {
       "depth": "shallow",
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "dark_lantern": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AQ source-port wave from .gd"
     },
     "just_stats": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "more_stats": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "piggy_of_riches": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AT source-port wave from .gd"
     },
     "piggybank": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AT source-port wave from .gd"
     },
     "puzzlebag_l": {
       "depth": "shallow",
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "emerald_whelp": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AR source-port wave from .gd"
     },
     "lucky_clover": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "sapphire_whelp": {
       "depth": "shallow",
@@ -2018,24 +2022,24 @@
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "double_axe": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AQ source-port wave from .gd"
     },
     "halberd": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "magic_torch": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "molten_dagger": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "null_blade": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "rib_saw_blade": {
       "depth": "shallow",
@@ -2050,60 +2054,60 @@
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "burning_sword": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AP source-port wave from .gd"
     },
     "flame_whip": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AR source-port wave from .gd"
     },
     "darksaber": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AQ source-port wave from .gd"
     },
     "molten_spear2": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "shovel": {
       "depth": "shallow",
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "lucky_bow": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "poison_dagger": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AT source-port wave from .gd"
     },
     "poison_shortbow": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AT source-port wave from .gd"
     },
     "serpent_staff": {
       "depth": "shallow",
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "hero_sword": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "crossblades": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AQ source-port wave from .gd"
     },
     "shepherds_crook": {
       "depth": "shallow",
       "notes": "HAND port; remaining shallow after AG — AH fixtures next"
     },
     "mananana": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AS source-port wave from .gd"
     },
     "pan": {
-      "depth": "shallow",
-      "notes": "HAND port; remaining shallow after AG — AH fixtures next"
+      "depth": "deep",
+      "notes": "AT source-port wave from .gd"
     }
   }
 }

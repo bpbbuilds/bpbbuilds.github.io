@@ -2,7 +2,7 @@
  * Band AP 245 — leftover `cd_mana` MAP items → `.gd` ports.
  */
 
-import { healActor } from '../actor.js';
+import { drainStamina, giveStamina, healActor } from '../actor.js';
 import { isBattleRaging } from '../battle-rage.js';
 import {
   grantStacks,
@@ -15,7 +15,11 @@ import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
+import { loseHealth } from './handlers.js';
+import { deactivateCooldown } from '../cooldown.js';
+import { eventSideForPiece } from '../vs-board.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
+import { giveTempMaxHp } from './ports-ap-start.js';
 import { itemHasType, pushActivate } from './ports-util.js';
 import { removeRandomBuffs } from './ports-wave-c-util.js';
 
@@ -69,7 +73,7 @@ function checkDjinn(piece, ctx) {
   spendStacks(p, 'spikes', need, origin(piece));
   useMana(p, need, origin(piece));
   useLucky(p, need, origin(piece));
-  p.hp = Math.max(1, (Number(p.hp) || 1) - hpNeed);
+  loseHealth(piece, ctx, hpNeed);
   addBonusDamage(piece._djinnWeapon, getP3(piece.params, 27));
   pushActivate(piece, ctx, 'djinn_lamp', `Accessory: ${piece.name}`);
 }
@@ -78,7 +82,7 @@ function checkDjinn(piece, ctx) {
 const cauldronPort = {
   handlerId: 'cauldron',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const n = linked(ctx, piece).length;
     const spd = getPName(piece.params, 'speedbonus', getP4(piece.params, 15)) / 100;
     if (n && spd) addSpeed(piece, spd * n);
@@ -86,7 +90,6 @@ const cauldronPort = {
   },
   onCooldownEffect(piece, ctx) {
     const pick = pickNoRepeat(piece, '_cauldronOpts', ctx.rng);
-    pushActivate(piece, ctx, 'cauldron', `Accessory: ${piece.name}`);
     if (pick === 0) {
       const heal = Math.max(1, Math.round(getPName(piece.params, 'heal', getP1(piece.params, 20))));
       const got = healActor(ctx.player, heal);
@@ -117,6 +120,8 @@ const cauldronPort = {
         origin(piece),
       );
     }
+    // Cauldron.gd activates after the selected effect has completed.
+    pushActivate(piece, ctx, 'cauldron', `Accessory: ${piece.name}`);
     return true;
   },
 };
@@ -125,7 +130,7 @@ const cauldronPort = {
 const deathLotusPort = {
   handlerId: 'death_lotus',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const n = linked(ctx, piece).filter((o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'dark'),
     ).length;
@@ -136,16 +141,13 @@ const deathLotusPort = {
     const mana = Math.max(1, Math.round(getPName(piece.params, 'mana', getP1(piece.params, 4))));
     const buffs = Math.max(1, Math.round(getPName(piece.params, 'buffs', getP2(piece.params, 3))));
     const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP3(piece.params, 1))));
-    pushActivate(piece, ctx, 'death_lotus', `Spell: ${piece.name}`);
     grantStacks(ctx.player, 'mana', mana, origin(piece));
     removeRandomBuffs(ctx.dummy, buffs, ctx.rng, origin(piece));
     if (getStackAmount(ctx.player, 'lucky') >= need) {
       useLucky(ctx.player, need, origin(piece));
-      const stam = getPName(piece.params, 'stamina', 1.5);
-      const next = (Number(ctx.player.stamina) || 0) + stam;
-      const cap = Number(ctx.player.maxStamina);
-      ctx.player.stamina = cap > 0 ? Math.min(cap, next) : next;
+      giveStamina(ctx.player, getPName(piece.params, 'stamina', 1.5));
     }
+    pushActivate(piece, ctx, 'death_lotus', `Spell: ${piece.name}`);
     return true;
   },
 };
@@ -154,7 +156,7 @@ const deathLotusPort = {
 const deerTotemPort = {
   handlerId: 'deer_totem',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const dr = getPName(piece.params, 'damreduction', getP1(piece.params, 15));
     ctx.player.damageResistancePct = (Number(ctx.player.damageResistancePct) || 0) + dr;
     const n = linked(ctx, piece).filter((o) =>
@@ -162,8 +164,6 @@ const deerTotemPort = {
     ).length;
     const extra = getPName(piece.params, 'dur_rage', getP2(piece.params, 0.8)) * n;
     ctx.player._battleRageDur = (Number(ctx.player._battleRageDur) || 0) + extra;
-    piece._cdLocked = true;
-    piece.triggerTime = 1e9;
     ctx.bus?.on?.('battle_rage_started', () => {
       piece._cdLocked = false;
       const period = Math.max(0.35, Number(piece.baseCooldown) || 1);
@@ -176,16 +176,20 @@ const deerTotemPort = {
       piece.triggerTime = 999;
     });
   },
+  onPreCombatStart(piece) {
+    deactivateCooldown(piece);
+  },
   onCooldownEffect(piece, ctx) {
     if (!isBattleRaging(ctx.player, ctx.t)) return true;
-    pushActivate(piece, ctx, 'deer_totem', `Accessory: ${piece.name}`);
     const heal = Math.max(1, Math.round(getPName(piece.params, 'heal', getP3(piece.params, 8))));
     const got = healActor(ctx.player, heal);
     if (got > 0) {
+      const side = eventSideForPiece(piece);
       ctx.events.push({
         t: ctx.t + 0.002,
         type: 'heal',
-        target: 'player',
+        actor: side,
+        target: side,
         amount: got,
         itemId: piece.itemId,
         placementKey: piece.placementKey,
@@ -199,6 +203,7 @@ const deerTotemPort = {
       Math.max(1, Math.round(getPName(piece.params, 'mana', getP4(piece.params, 3)))),
       origin(piece),
     );
+    pushActivate(piece, ctx, 'deer_totem', `Accessory: ${piece.name}`);
     return true;
   },
 };
@@ -207,22 +212,31 @@ const deerTotemPort = {
 const djinnLampPort = {
   handlerId: 'djinn_lamp',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._djinnOn = false;
     piece._djinnWeapon = linked(ctx, piece).find((o) => canBeEmpoweredPiece(o)) || null;
     onBuffChanged(ctx.player, () => checkDjinn(piece, ctx));
-    ctx.bus?.on?.('player_damaged', () => checkDjinn(piece, ctx));
-    ctx.bus?.on?.('player_healed', () => checkDjinn(piece, ctx));
+    const own = (payload = {}) => {
+      if (!payload.actor || payload.actor === ctx.player) checkDjinn(piece, ctx);
+    };
+    ctx.bus?.on?.('character_block_changed', own);
+    ctx.bus?.on?.('character_spikes_changed', own);
+    ctx.bus?.on?.('character_mana_changed', own);
+    ctx.bus?.on?.('character_lucky_changed', own);
+    ctx.bus?.on?.('character_damaged', own);
+    ctx.bus?.on?.('player_damaged', own);
+    ctx.bus?.on?.('actor_healed', own);
   },
   onCooldownEffect(piece, ctx) {
     const L = getStackAmount(ctx.player, 'lucky');
     const S = getStackAmount(ctx.player, 'spikes');
     const M = getStackAmount(ctx.player, 'mana');
-    pushActivate(piece, ctx, 'djinn_lamp', `Accessory: ${piece.name}`);
     let stack = 'mana';
     if (L < S) stack = L < M ? 'lucky' : 'mana';
     else stack = S < M ? 'spikes' : 'mana';
     grantStacks(ctx.player, stack, 1, origin(piece));
+    // DjinnLamp.gd grants the selected resource before activating.
+    pushActivate(piece, ctx, 'djinn_lamp', `Accessory: ${piece.name}`);
     return true;
   },
 };
@@ -231,7 +245,7 @@ const djinnLampPort = {
 const fanfarePort = {
   handlerId: 'fanfare',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const n = linked(ctx, piece).length;
     const spd = getPName(piece.params, 'p5', 10) / 100;
     if (n && spd) addSpeed(piece, spd * n);
@@ -239,7 +253,6 @@ const fanfarePort = {
   },
   onCooldownEffect(piece, ctx) {
     const pick = pickNoRepeat(piece, '_fanfareOpts', ctx.rng);
-    pushActivate(piece, ctx, 'fanfare', `Accessory: ${piece.name}`);
     if (pick === 0) {
       grantStacks(ctx.player, 'empower', Math.max(1, Math.round(getP1(piece.params, 1))), origin(piece));
     } else if (pick === 1) {
@@ -247,8 +260,18 @@ const fanfarePort = {
       spendStacks(ctx.dummy, 'mana', Math.max(1, Math.round(getP3(piece.params, 2))), origin(piece));
     } else {
       const drain = getP4(piece.params, 1);
-      ctx.dummy.stamina = Math.max(0, (Number(ctx.dummy.stamina) || 0) - drain);
+      drainStamina(ctx.dummy, drain, {
+        events: ctx.events,
+        t: ctx.t,
+        actorSide: ctx.dummy.id,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: Removed ${drain} stamina`,
+        handler: 'fanfare',
+      });
     }
+    // Fanfare.gd applies its selected effect before activate().
+    pushActivate(piece, ctx, 'fanfare', `Accessory: ${piece.name}`);
     return true;
   },
 };
@@ -257,18 +280,16 @@ const fanfarePort = {
 const levelUpPort = {
   handlerId: 'level_up',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const per = getPName(piece.params, 'speed', 10) / 100;
     const bought = Math.max(0, Math.round(getPName(piece.params, 'skillround', 3)));
     const round = Number(ctx.round) || bought;
-    const passed = Math.max(0, round - bought);
+    const passed = round - bought;
     if (passed && per) addSpeed(piece, passed * per);
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'level_up', `Skill: ${piece.name}`);
     const hp = Math.max(1, Math.round(getPName(piece.params, 'maxhealth', getP1(piece.params, 10))));
-    ctx.player.maxHp += hp;
-    ctx.player.hp += hp;
+    giveTempMaxHp(piece, ctx, 'level_up', hp);
     const stam = getPName(piece.params, 'stamina', getP2(piece.params, 1));
     const next = (Number(ctx.player.stamina) || 0) + stam;
     const cap = Number(ctx.player.maxStamina);
@@ -285,6 +306,7 @@ const levelUpPort = {
       Math.max(1, Math.round(getPName(piece.params, 'luck', getP4(piece.params, 1)))),
       origin(piece),
     );
+    pushActivate(piece, ctx, 'level_up', `Skill: ${piece.name}`);
     return true;
   },
 };
@@ -303,7 +325,6 @@ const moonArmorPort = {
     pushActivate(piece, ctx, 'moon_armor', `Armor: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'moon_armor', `Armor: ${piece.name}`);
     grantStacks(
       ctx.player,
       'mana',
@@ -313,6 +334,7 @@ const moonArmorPort = {
     ctx.player.debuffReflectStacks =
       (Number(ctx.player.debuffReflectStacks) || 0) +
       Math.max(1, Math.round(getPName(piece.params, 'reflect', getP3(piece.params, 2))));
+    pushActivate(piece, ctx, 'moon_armor', `Armor: ${piece.name}`);
     return true;
   },
 };

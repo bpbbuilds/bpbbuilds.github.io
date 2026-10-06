@@ -37,7 +37,7 @@ assert.equal(inventory.byId.joker.file, 'Exclusive/Joker.gd');
   const deck = { placementKey: 'deck', _cards: [...same, ...pair, joker] };
   const player = createActor('player'); const events = [];
   getScriptHandler('joker').onCooldownEffect(joker, { player, dummy: createActor('dummy'), events, rng: () => 0, t: 5, pieces: [deck, ...same, ...pair, joker, target] });
-  assert.equal(player.critStacks, 1); assert.equal(target.staminaCost, 7.5); assert.equal(events.at(-1)?.type, 'activate');
+  assert.equal(player.critResistStacks, 1); assert.equal(target.staminaCost, 7.5); assert.equal(events.at(-1)?.type, 'activate');
 }
 
 console.log('OK Goobling source alias, Holo Fire Lizard order, and Joker pair/triplet source paths');

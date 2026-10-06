@@ -102,7 +102,7 @@ const shepherdsCrookPort = {
 const manananaPort = {
   handlerId: 'mananana',
   family: 'food',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     applyFoodPrepareSpeed(piece, ctx);
   },
   onCooldownEffect(piece, ctx) {

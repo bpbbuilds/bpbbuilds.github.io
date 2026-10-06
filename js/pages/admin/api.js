@@ -5,6 +5,7 @@
 
 import { getProfile, getSession } from '../../shared/auth.js';
 import { config } from '../../shared/config.js';
+import { getSupabase } from '../../shared/supabase.js';
 
 export class AdminAuthError extends Error {
   constructor(message = 'Unauthorized') {
@@ -115,8 +116,23 @@ export function uploadCosmetic(auth, cosmetic) {
   return adminRequest(auth, { action: 'upload_cosmetic', cosmetic });
 }
 
-export function uploadEventAsset(auth, asset) {
-  return adminRequest(auth, { action: 'upload_event_asset', asset });
+export async function uploadEventAsset(auth, asset) {
+  const imageData = String(asset?.imageData || '');
+  const match = /^data:(image\/(?:png|webp|jpeg));base64,/i.exec(imageData);
+  if (!match) throw new Error('Choose a PNG, WebP, or JPEG image.');
+  const upload = await adminRequest(auth, {
+    action: 'event_upload_url',
+    asset: { slug: asset?.slug, kind: asset?.kind, mime: match[1].toLowerCase() },
+  });
+  const blob = await (await fetch(imageData)).blob();
+  const { error } = await getSupabase().storage.from('discord-builds').uploadToSignedUrl(
+    String(upload.path || ''),
+    String(upload.token || ''),
+    blob,
+    { contentType: match[1].toLowerCase(), cacheControl: '31536000' },
+  );
+  if (error) throw new Error(error.message || 'Could not save event image.');
+  return { url: String(upload.url || '') };
 }
 
 /** Owner-only unpublished cosmetic draft update. */

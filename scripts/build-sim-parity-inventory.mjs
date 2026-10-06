@@ -488,6 +488,84 @@ const WAVE_AO_DEEP = new Set([
   'girl_power',
 ]);
 
+/** Band AP — source-backed heat/charge/activation lifecycle ports. */
+const WAVE_AP_DEEP = new Set([
+  'burning_banner',
+  'burning_coal',
+  'burning_sword',
+  'burning_torch',
+  'carrot_goobert',
+  'cauldron',
+  'chainsaw',
+  'charge_splitter',
+  'chili_pepper',
+  'coil',
+]);
+
+/** Band AQ — source-backed crossblades/dragon lifecycle ports. */
+const WAVE_AQ_DEEP = new Set([
+  'crossblades',
+  'cursed_hair_comb',
+  'dark_lantern',
+  'darksaber',
+  'death_lotus',
+  'deer_totem',
+  'djinn_lamp',
+  'doom_cap',
+  'double_axe',
+  'draconic_orb',
+  'dragon_knight',
+  'dragon_set',
+]);
+
+/** Band AR — source-backed Emerald/activation/food lifecycle ports. */
+const WAVE_AR_DEEP = new Set([
+  'emerald_whelp',
+  'energy_conversion',
+  'everburning',
+  'fanfare',
+  'flame_badge',
+  'flame_whip',
+  'flute',
+  'fly_agaric',
+  'fortunas_kiss',
+  'gingerbread_man',
+]);
+
+/** Band AS — source-backed weapon/start/unique lifecycle ports. */
+const WAVE_AS_DEEP = new Set([
+  'halberd',
+  'heart_container',
+  'hero_sword',
+  'ice_armor',
+  'just_stats',
+  'laboratory',
+  'leaf_badge',
+  'level_up',
+  'light_flower',
+  'lucky_bow',
+  'lucky_clover',
+  'magic_torch',
+  'mananana',
+  'molten_dagger',
+  'molten_spear2',
+  'moon_armor',
+  'more_stats',
+  'null_blade',
+]);
+
+/** Band AT â€” source-backed Pan/Phoenix/Piggy/Poison/Pot lifecycle ports. */
+const WAVE_AT_DEEP = new Set([
+  'pan',
+  'phoenix',
+  'piggy_of_riches',
+  'piggybank',
+  'poison_dagger',
+  'poison_grenade',
+  'poison_shortbow',
+  'pot',
+]);
+
 const DEEP = new Set([
   'broom',
   'banana',
@@ -526,6 +604,11 @@ const DEEP = new Set([
   ...WAVE_AN_DEEP,
   ...WAVE_AN_SOCKET,
   ...WAVE_AO_DEEP,
+  ...WAVE_AP_DEEP,
+  ...WAVE_AQ_DEEP,
+  ...WAVE_AR_DEEP,
+  ...WAVE_AS_DEEP,
+  ...WAVE_AT_DEEP,
 ]);
 
 /** @type {Record<string, { depth: string, notes: string }>} */
@@ -542,7 +625,17 @@ for (const id of ids) {
         : 'AK noop — shop/chess (not fake deep)';
   } else if (DEEP.has(id)) {
     depth = 'deep';
-    notes = WAVE_AO_DEEP.has(id)
+    notes = WAVE_AT_DEEP.has(id)
+      ? 'AT source-port wave from .gd'
+      : WAVE_AS_DEEP.has(id)
+      ? 'AS source-port wave from .gd'
+      : WAVE_AR_DEEP.has(id)
+      ? 'AR source-port wave from .gd'
+      : WAVE_AQ_DEEP.has(id)
+      ? 'AQ source-port wave from .gd'
+      : WAVE_AP_DEEP.has(id)
+      ? 'AP source-port wave from .gd'
+      : WAVE_AO_DEEP.has(id)
       ? 'AO skill/card/shield/spell port from .gd'
       : WAVE_AN_SOCKET.has(id)
       ? 'AN socket apply on host, not a board piece'

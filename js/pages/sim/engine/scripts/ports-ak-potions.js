@@ -120,7 +120,11 @@ function manaPotionPort(handlerId) {
   };
 }
 
-/** StrongHeroicPotion — same starve trigger as heroic; extra p3 Lucky. */
+/** StrongHeroicPotion — HeroicPotion.gd inherited starvation trigger.
+ *
+ * The scene reuses HeroicPotion.gd directly: only p1 stamina and p2 Empower
+ * are consumed by the source script. Its catalog p3 is not a Lucky grant.
+ */
 /** @type {ScriptHandler} */
 export const strongHeroicPotionPort = {
   handlerId: 'strong_heroic_potion',
@@ -136,7 +140,6 @@ export const strongHeroicPotionPort = {
       drinkPotion(piece, ctx, t, () => {
         const stam = Math.max(1, Math.round(getP1(piece.params, 4)));
         const emp = Math.max(1, Math.round(getP2(piece.params, 1)));
-        const luck = Math.max(0, Math.round(getP3(piece.params, 1)));
         ctx.player.stamina = Math.min(
           ctx.player.maxStamina || 20,
           (ctx.player.stamina || 0) + stam,
@@ -145,12 +148,6 @@ export const strongHeroicPotionPort = {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
-        if (luck) {
-          grantStacks(ctx.player, 'lucky', luck, {
-            originKey: piece.placementKey,
-            originId: piece.itemId,
-          });
-        }
       });
     });
   },

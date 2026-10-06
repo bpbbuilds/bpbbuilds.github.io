@@ -12,11 +12,14 @@ import {
   onBuffChanged,
   spendStacks,
 } from '../buff-economy.js';
+import { changeCritStacks } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
+import { deactivateCooldown } from '../cooldown.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { itemHasType, afterEffectFinished, pushActivate } from './ports-util.js';
+import { eventFoeSide, eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -57,7 +60,6 @@ const chiliPepperPort = {
   handlerId: 'chili_pepper',
   family: 'food',
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'chili_pepper', `Food: ${piece.name}`);
     grantStacks(
       ctx.player,
       'heat',
@@ -82,6 +84,8 @@ const chiliPepperPort = {
     if (getStackAmount(ctx.player, 'heat') >= need) {
       cleanseRandomDebuffs(ctx.player, 1, ctx.rng, origin(piece));
     }
+    // ChiliPepper.gd activates after heat, heal, and threshold cleanse.
+    pushActivate(piece, ctx, 'chili_pepper', `Food: ${piece.name}`);
     return true;
   },
 };
@@ -90,7 +94,7 @@ const chiliPepperPort = {
 const draconicOrbPort = {
   handlerId: 'draconic_orb',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._orbHeat = 0;
     const th = Math.max(1, Math.round(getP1(piece.params, 15)));
     const crits = Math.max(1, Math.round(getPName(piece.params, 'crits', getP2(piece.params, 3))));
@@ -98,12 +102,11 @@ const draconicOrbPort = {
       if (ch.stack !== 'heat' || !(ch.amount > 0) || piece._orbHeat >= th) return;
       piece._orbHeat += ch.amount;
       if (piece._orbHeat >= th) {
-        ctx.player.critStacks = (Number(ctx.player.critStacks) || 0) + crits;
+        changeCritStacks(ctx.player, crits, ctx, origin(piece));
       }
     });
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'draconic_orb', `Accessory: ${piece.name}`);
     const take = Math.max(1, Math.round(getP3(piece.params, 1)));
     const per = Math.max(1, Math.round(getP4(piece.params, 1)));
     const have = getStackAmount(ctx.dummy, 'spikes');
@@ -112,6 +115,7 @@ const draconicOrbPort = {
       spendStacks(ctx.dummy, 'spikes', lost, origin(piece));
       grantStacks(ctx.player, 'heat', lost * per, origin(piece));
     }
+    pushActivate(piece, ctx, 'draconic_orb', `Accessory: ${piece.name}`);
     return true;
   },
 };
@@ -120,9 +124,8 @@ const draconicOrbPort = {
 const dragonSetPort = {
   handlerId: 'dragon_set',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    piece._cdLocked = true;
-    piece.triggerTime = 1e9;
+  onPrepare(piece, ctx) {
+    deactivateCooldown(piece);
     ctx.bus?.on?.('battle_rage_started', () => {
       piece._cdLocked = false;
       const period = Math.max(0.35, Number(piece.baseCooldown) || 0.7);
@@ -143,16 +146,19 @@ const dragonSetPort = {
     const cap = getPName(piece.params, 'max', getP3(piece.params, 30)) / 100;
     ctx.bus?.on?.('piece_dealt_damage', (payload) => {
       if (!payload?.hit?.hit) return;
+      if (eventSideForPiece(payload.piece) !== eventFoeSide(piece)) return;
       const dmg = Number(payload.hit.damage) || Number(payload.hit.healthDamage) || 0;
       if (!(dmg > 0)) return;
       const heat = getStackAmount(ctx.player, 'heat');
       const fac = Math.min(cap, ls * heat);
       const got = healActor(ctx.player, Math.ceil(fac * dmg));
       if (got > 0) {
+        const side = eventSideForPiece(piece);
         ctx.events.push({
           t: ctx.t,
           type: 'heal',
-          target: 'player',
+          actor: side,
+          target: side,
           amount: got,
           itemId: piece.itemId,
           placementKey: piece.placementKey,
@@ -162,15 +168,19 @@ const dragonSetPort = {
       }
     });
   },
+  onPreCombatStart(piece) {
+    deactivateCooldown(piece);
+  },
   onCooldownEffect(piece, ctx) {
     if (!isBattleRaging(ctx.player, ctx.t)) return true;
-    pushActivate(piece, ctx, 'dragon_set', `Skill: ${piece.name}`);
     grantStacks(
       ctx.player,
       'heat',
       Math.max(1, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 1)))),
       origin(piece),
     );
+    // DragonSet.gd gives Heat before its activation event.
+    pushActivate(piece, ctx, 'dragon_set', `Skill: ${piece.name}`);
     return true;
   },
 };
@@ -180,7 +190,7 @@ const energyConversionPort = {
   handlerId: 'energy_conversion',
   family: 'unique',
   // Game onPrepare — before first CD arm.
-  onPreCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const foods = linked(ctx, piece).filter((o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'food'),
     );
@@ -190,8 +200,7 @@ const energyConversionPort = {
   },
   onCooldownEffect(piece, ctx) {
     const cost = Number(piece.staminaCost) || 0.7;
-    if (tryUseStamina(ctx.player, cost) === 'starve') return true;
-    pushActivate(piece, ctx, 'energy_conversion', `Skill: ${piece.name}`);
+    if (tryUseStamina(ctx.player, cost) === 'starve') return false;
     const need = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP2(piece.params, 20))));
     if (getStackAmount(ctx.player, 'heat') >= need) {
       giveRandomBuffs(
@@ -208,6 +217,7 @@ const energyConversionPort = {
         origin(piece),
       );
     }
+    pushActivate(piece, ctx, 'energy_conversion', `Skill: ${piece.name}`);
     return true;
   },
 };
@@ -216,7 +226,7 @@ const energyConversionPort = {
 const everburningPort = {
   handlerId: 'everburning',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._everFlames = countId(ctx, 'flame');
     const stam = -getPName(piece.params, 'stamina', getP2(piece.params, 60)) / 100;
     for (const o of ctx.pieces || []) {
@@ -226,7 +236,9 @@ const everburningPort = {
     }
   },
   onCooldownEffect(piece, ctx) {
-    const n = Number(piece._everFlames) || countId(ctx, 'flame');
+    const n = Number.isFinite(Number(piece._everFlames))
+      ? Number(piece._everFlames)
+      : countId(ctx, 'flame');
     if (n > 0) {
       const heat = Math.max(1, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 1))));
       grantStacks(ctx.player, 'heat', heat * n, origin(piece));

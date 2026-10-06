@@ -14,13 +14,14 @@ import {
 import { grantStun, healActor, tryUseStamina, gainMaxStaminaTemporary, giveStamina } from '../actor.js';
 import { applyEffectDmgFactor, applyHealEfficiency } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addAccuracy, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedSpeed } from '../timed-speed.js';
 import { dealEffectDamage, dealHit, loseHealth } from './handlers.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { randInt } from '../rng.js';
+import { rollItemChance } from '../chance.js';
 import { emitChargePulse } from '../charge-delivery.js';
 
 /**
@@ -107,34 +108,63 @@ export const amuletOfAgilityPort = {
 export const bewitchmentPort = {
   handlerId: 'bewitchment',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    const counts = { nature: 0, dark: 0, ice: 0 };
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    for (const link of links) {
+      const item = ctx.itemsById.get(link.id);
+      if (itemHasType(item, 'nature')) counts.nature += 1;
+      if (itemHasType(item, 'dark')) counts.dark += 1;
+      if (itemHasType(item, 'ice')) counts.ice += 1;
+    }
+    // Bewitchment.gd caches getAffectedItems() in onPrepare. The cached type
+    // counts must not change when a later combat mutation changes the board.
+    piece._bewitchmentTypeCounts = counts;
+  },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'bewitchment', `Accessory: ${piece.name}`);
     const cost = Math.max(1, Math.round(getPName(piece.params, 'manat', getPName(piece.params, 'mana', 3))));
-    if ((ctx.player.stacks.mana || 0) < cost) return true;
-    useMana(ctx.player, cost, {
+    const spent = useMana(ctx.player, cost, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    let n = Math.max(1, Math.round(getPName(piece.params, 'debuffs', getP2(piece.params, 1))));
-    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-    for (const other of ctx.pieces || []) {
-      if (!links.some((l) => l.key === other.placementKey)) continue;
-      const it = ctx.itemsById.get(other.itemId);
-      if (itemHasType(it, 'nature') || itemHasType(it, 'dark') || itemHasType(it, 'ice')) n += 1;
-    }
-    // Least: prefer debuffs opponent already has few of
-    const sorted = [...DEBUFF_KEYS].sort(
-      (a, b) => getStackAmount(ctx.dummy, /** @type {any} */ (a)) - getStackAmount(ctx.dummy, /** @type {any} */ (b)),
+    if (!(spent?.spent > 0)) return true;
+
+    const counts = piece._bewitchmentTypeCounts || { nature: 0, dark: 0, ice: 0 };
+    const chance = Number(ctx.itemsById.get(piece.itemId)?.chance) || Number(piece.chance) || 0;
+    const leastStacks = Object.fromEntries(
+      DEBUFF_KEYS.map((key) => [key, getStackAmount(ctx.dummy, /** @type {any} */ (key))]),
     );
-    for (let i = 0; i < n; i++) {
-      const stack = sorted[i % sorted.length];
-      grantStacks(ctx.dummy, stack, 1, {
+    const picked = { poison: 0, blind: 0, cold: 0 };
+    const base = Math.max(1, Math.round(getPName(piece.params, 'debuffs', getP2(piece.params, 1))));
+    for (let i = 0; i < base; i += 1) {
+      const least = Math.min(...DEBUFF_KEYS.map((key) => leastStacks[key]));
+      const pool = DEBUFF_KEYS.filter((key) => leastStacks[key] === least);
+      const stack = pool[Math.floor(ctx.rng() * pool.length)] || pool[0];
+      leastStacks[stack] += 1;
+      picked[stack] += 1;
+    }
+    const bonusRules = [
+      ['nature', 'poison', getPName(piece.params, 'poison', getP3(piece.params, 2))],
+      ['dark', 'blind', getPName(piece.params, 'blind', getP4(piece.params, 1))],
+      ['ice', 'cold', getPName(piece.params, 'cold', getP5(piece.params, 1))],
+    ];
+    for (const [type, debuff, amount] of bonusRules) {
+      if (counts[type] > 0 && rollItemChance(piece, ctx.rng, chance * counts[type])) {
+        picked[debuff] += Math.max(0, Math.round(amount));
+      }
+    }
+    for (const [stack, amount] of Object.entries(picked)) {
+      if (!(amount > 0)) continue;
+      // The source gives the complete least-stack map after its type bonuses
+      // are added, preserving one causal origin per debuff type.
+      grantStacks(ctx.dummy, stack, amount, {
         originKey: piece.placementKey,
         originId: piece.itemId,
         rng: ctx.rng,
         opponent: ctx.player,
       });
     }
+    pushActivate(piece, ctx, 'bewitchment', `Accessory: ${piece.name}`);
     return true;
   },
 };

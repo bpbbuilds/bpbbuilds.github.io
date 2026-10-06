@@ -303,6 +303,7 @@ export function formatLogLine(ev, ctx = {}) {
       // = "Removed {stamina} stamina" — the game has no "Used … stamina" line.
       const used =
         ev.meta?.kind === 'used' ||
+        ev.meta?.kind === 'drain' ||
         amt < 0 ||
         (/−|-/.test(String(ev.label || '')) && !/regenerat|\+/i.test(String(ev.label || '')));
       if (used) {

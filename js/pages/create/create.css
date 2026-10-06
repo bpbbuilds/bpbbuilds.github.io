@@ -2530,32 +2530,17 @@ body.page-create.is-bpb-dragging .create-sellbin {
     overflow: hidden;
   }
 
-  /* The catalog is the height reference. Keep the Filter|Build rail on that
-     same floor; the sell chest is hidden while this rail is active below. */
+  /* Keep the Filter|Build rail above the fixed sell chest. */
   .page-create .create-col--catalog .items-filters.create-rail {
     zoom: 1;
-    height: 100%;
-    max-height: 100%;
+    height: calc(100% - var(--create-sellbin-clearance));
+    max-height: calc(100% - var(--create-sellbin-clearance));
   }
 
   /* The shared Items desktop density rule also matches this rail. Scale only
      panel contents so the responsive rail column stays usable at 1080p. */
   .page-create .create-col--catalog .items-filters.create-rail .cr-panel {
     zoom: clamp(0.66, calc(100vw / 2560px), 1);
-  }
-
-  /* A focused/hovered rail is the active drop area. Remove the fixed delete
-     target from hit testing while it is active so the extra rail height is
-     usable for Build fields instead of becoming an accidental trash zone. */
-  .page-create:has(.items-filters.create-rail:hover, .items-filters.create-rail:focus-within)
-    .create-sellbin {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .page-create:has(.items-filters.create-rail:hover, .items-filters.create-rail:focus-within)
-    .create-col--catalog .items-filters.create-rail .cr-panel--build {
-    padding-bottom: 1rem;
   }
 
   /* Prevent the Build/Filter rail contents from clipping as the rail narrows
@@ -2633,12 +2618,25 @@ body.page-create.is-bpb-dragging .create-sellbin {
 /* Desktop Parked is a compact horizontal storage carousel. The mobile layout
  * below intentionally keeps its two-row strip for touch scanning. */
 @media (min-width: 1101px) {
+  /* The create workspace needs a little more vertical breathing room. The
+     fixed nav's in-flow spacer follows this measured height automatically. */
+  .page-create .site-nav {
+    padding-bottom: 3.8rem;
+  }
+
+  @media (max-width: 1366px) {
+    .page-create .site-nav {
+      padding-bottom: 3.2rem;
+    }
+  }
+
   .page-create .create-board__park {
     --park-rows: 1;
     --park-cols: auto;
   }
 
   .page-create .create-board__park-tray {
+    position: relative;
     grid-auto-flow: column;
     grid-auto-columns: var(--park-chip);
     grid-template-columns: none;
@@ -2671,6 +2669,15 @@ body.page-create.is-bpb-dragging .create-sellbin {
   .page-create .create-board__park-chip {
     width: var(--park-chip);
     max-width: var(--park-chip);
+  }
+
+  .page-create .create-board__park-empty {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

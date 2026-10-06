@@ -344,67 +344,6 @@ export const lumpOfCoalPort = {
   },
 };
 
-/** ChiliPepper.gd — every CD: +getP1 Heat, heal getP2; if Heat ≥ getP3 cleanse 1. */
-/** @type {ScriptHandler} */
-export const chiliPepperPort = {
-  handlerId: 'chili_pepper',
-  family: 'custom_cd',
-  onCooldownEffect(piece, ctx) {
-    const { t, player, events, rng } = ctx;
-    pushActivate(piece, ctx, 'chili_pepper', `Food: ${piece.name}`);
-    const heat = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'heat', getP1(piece.params, 1))),
-    );
-    grantStacks(player, 'heat', heat, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    events.push({
-      t: t + 0.001,
-      type: 'buff',
-      target: 'player',
-      amount: heat,
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `${piece.name}: +${heat} Heat`,
-      meta: { category: 'buff', stack: 'heat', script: true, handler: 'chili_pepper' },
-    });
-    const healAmt = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'heal', getP2(piece.params, 5))),
-    );
-    const healed = healActor(player, healAmt);
-    events.push({
-      t: t + 0.002,
-      type: 'heal',
-      target: 'player',
-      amount: healed,
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `${piece.name}: heal ${healed}`,
-      meta: { category: 'heal', script: true, handler: 'chili_pepper' },
-    });
-    const need = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'heatt', getP3(piece.params, 10))),
-    );
-    if ((Number(player.stacks?.heat) || 0) >= need) {
-      cleanseRandomDebuffs(player, 1, rng, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      events.push({
-        t: t + 0.003,
-        type: 'info',
-        label: `${piece.name}: cleanse 1 debuff`,
-        meta: { category: 'system', script: true, handler: 'chili_pepper' },
-      });
-    }
-    return true;
-  },
-};
-
 /** @type {Record<string, ScriptHandler>} */
 export const HEAT_PORTS = {
   devouring_sphere: devouringSpherePort,
@@ -414,5 +353,4 @@ export const HEAT_PORTS = {
   molten_greatsword: moltenGreatswordPort,
   pocket_sand: pocketSandPort,
   lump_of_coal: lumpOfCoalPort,
-  chili_pepper: chiliPepperPort,
 };
