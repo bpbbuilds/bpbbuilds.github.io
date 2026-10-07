@@ -17,6 +17,7 @@ import { addAccuracy, addBonusDamage, addBonusDamageFromBuffChange, addSpeed } f
 import { gainStacks, loseStacks } from '../stacks.js';
 import { eventSideForPiece } from '../vs-board.js';
 import { itemHasType } from './ports-util.js';
+import { applyEffectDmgFactor } from '../actor-stats.js';
 import { rollItemChance, weaponStrike } from './ports-wave-c-util.js';
 
 /**
@@ -191,10 +192,7 @@ export const iceDragonPort = {
       const block = Math.max(1, Math.round(piece.blockGrant || getP3(piece.params, 10)));
       gainStacks(ctx.player, 'block', block);
       if (damF) {
-        ctx.dummy.damageResistancePct = Math.max(
-          0,
-          (Number(ctx.dummy.damageResistancePct) || 0) - damF * 100,
-        );
+        applyEffectDmgFactor(ctx.dummy, -damF, ctx, piece);
       }
       ctx.events.push({
         t: ctx.t + 0.008,

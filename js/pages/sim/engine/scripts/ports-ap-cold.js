@@ -12,7 +12,7 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { advanceCooldownSeconds } from '../cooldown.js';
-import { dealDamage } from '../damage.js';
+import { dealEffectDamage } from './handlers.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { applyFoodPrepareSpeed } from './food-helpers.js';
@@ -89,25 +89,7 @@ const snowcakePort = {
         piece,
       );
       const dam = Math.max(1, Math.round(Number(ctx.itemsById.get(piece.itemId)?.damageMin) || 10));
-      const res = dealDamage(ctx.player, ctx.dummy, {
-        amount: dam,
-        canMiss: false,
-        canCrit: false,
-        isAttack: false,
-        nowT: ctx.t,
-        rng: ctx.rng,
-      });
-      ctx.events.push({
-        t: ctx.t + 0.003,
-        type: 'damage',
-        actor: 'player',
-        target: 'dummy',
-        amount: res.healthDamage,
-        itemId: piece.itemId,
-        placementKey: piece.placementKey,
-        label: `${piece.name}: ${res.healthDamage} effect dmg`,
-        meta: { category: 'damage', script: true, handler: 'snowcake', effect: true },
-      });
+      dealEffectDamage(piece, ctx, dam);
     }
     return true;
   },

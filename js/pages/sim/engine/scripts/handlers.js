@@ -238,6 +238,7 @@ export function dealEffectDamage(piece, ctx, raw, opts = {}) {
   const res = dealDamage(player, dummy, {
     amount,
     originPiece: piece,
+    isEffectDamage: true,
     canMiss: false,
     canCrit: critChance > 0,
     critChance,

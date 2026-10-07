@@ -18,7 +18,7 @@ import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { grantTimedResistancePct } from '../timed-resistance.js';
-import { dealHit } from './handlers.js';
+import { dealEffectDamage } from './handlers.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { superiorRingPort } from './ports-ring.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
@@ -175,9 +175,10 @@ const amuletOfDarknessPort = {
   onCombatStart(piece, ctx) {
     piece._darkAcc = 0;
     const th = Math.max(1, Math.round(getPName(piece.params, 'damt', getP1(piece.params, 20))));
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
-      if (!payload?.hit?.hit || payload.piece !== piece) return;
-      piece._darkAcc += payload.hit.healthDamage || 0;
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      const damage = payload?.damage;
+      if (payload?.actor !== ctx.dummy || !payload?.hit || damage?.damageSource?.isEffectDamage !== true) return;
+      piece._darkAcc += damage.damage || 0;
       const n = Math.floor(piece._darkAcc / th);
       if (n <= 0) return;
       piece._darkAcc %= th;
@@ -193,7 +194,8 @@ const amuletOfDarknessPort = {
   onPeerActivated(listener, _activated, ctx) {
     if (!rollPercent(chanceOf(listener, ctx), ctx.rng)) return;
     const dam = Math.max(1, Math.round(getPName(listener.params, 'dam', getP1(listener.params, 4))));
-    dealHit(listener, ctx, dam, '', { ignoreBlock: true });
+    dealEffectDamage(listener, ctx, dam);
+    pushActivate(listener, ctx, 'amulet_of_darkness', `Accessory: ${listener.name}`);
   },
 };
 

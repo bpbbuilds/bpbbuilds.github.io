@@ -1851,3 +1851,13 @@ None.
 ### 2026-10-06 hook-gap cleanup complete
 
 - Removed all stale hook-triage suppressions now that the raw GDScript-to-JS audit is zero-gap. Strict `audit-sim-gd-parity.mjs --require-triage` now passes with zero raw, untriaged, and stale gaps.
+
+### 2026-10-06 effect-damage candidate claim (in progress)
+
+- Codex owns the seven effect-damage candidate ports and focused smoke: `amulet_of_darkness`, `demonic_flask`, `ice_dragon`, `lightning_potion`, `snowcake`, `sun_shield`, and `thors_hammer`, plus the matching simulator TODO entry.
+
+### 2026-10-06 effect-damage candidates complete
+
+- Routed the seven listed effect-only proc paths through shared `dealEffectDamage`, marked effect damage in the source result, fixed Amulet of Darkness to react to incoming effect damage, and changed Ice Dragon to reduce only the opponent effect-damage factor. Sun Shield now retains normal effect-damage block behavior.
+- Added `scripts/sim-effect-damage-candidates-smoke.mjs`; syntax checks, candidate smoke, final-runtime smoke, Wave C smoke, strict parity audit, fidelity ledger check, and `git diff --check` all pass.
+- Next step: continue with the remaining unchecked simulator fidelity candidates in `docs/sim/sim-100-coverage-todo.md`.

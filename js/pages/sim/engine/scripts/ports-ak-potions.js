@@ -3,6 +3,7 @@
  */
 
 import { healActor } from '../actor.js';
+import { applyHealEfficiency } from '../actor-stats.js';
 import { dealDamage } from '../damage.js';
 import {
   cleanseRandomDebuffs,
@@ -14,6 +15,7 @@ import {
 } from '../buff-economy.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { pushActivate } from './ports-util.js';
+import { dealEffectDamage, stealLife } from './handlers.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -344,17 +346,22 @@ function demonicPort(handlerId, strong) {
         drinkPotion(piece, ctx, t, () => {
           const per = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 2))));
           const dam = Math.max(1, Math.ceil(debuffCount(ctx.dummy) * per) || per);
-          dealDamage(ctx.player, ctx.dummy, {
-            amount: dam,
-            canMiss: false,
-            isAttack: false,
-            vampiricItem: strong,
-            nowT: t,
-            rng: ctx.rng,
-          });
+          const effectCtx = { ...ctx, t };
           if (strong) {
-            const unh = getP3(piece.params, 30) / 100;
-            if (unh) ctx.dummy.unhealing = (Number(ctx.dummy.unhealing) || 0) + unh;
+            applyHealEfficiency(
+              ctx.dummy,
+              -getP3(piece.params, 30) / 100,
+              effectCtx,
+              piece,
+            );
+            stealLife(
+              piece,
+              effectCtx,
+              dam,
+              getPName(piece.params, 'lifesteal', getP2(piece.params, 100)) / 100,
+            );
+          } else {
+            dealEffectDamage(piece, effectCtx, dam);
           }
         });
       ctx.bus?.on?.('piece_dealt_damage', () => {

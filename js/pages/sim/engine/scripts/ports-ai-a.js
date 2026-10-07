@@ -9,7 +9,7 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { healActor } from '../actor.js';
-import { dealDamage } from '../damage.js';
+import { dealEffectDamage } from './handlers.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
@@ -165,31 +165,7 @@ export const lightningPotionPort = {
       1,
       Math.round(piece.damageMin || getPName(piece.params, 'dam', getP1(piece.params, 5))),
     );
-    const res = dealDamage(player, dummy, {
-      amount: dam,
-      canMiss: false,
-      canCrit: false,
-      isAttack: false,
-      nowT: t,
-      rng,
-    });
-    events.push({
-      t: t + 0.003,
-      type: 'damage',
-      actor: 'player',
-      target: 'dummy',
-      amount: res.healthDamage,
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `${piece.name}: ${res.healthDamage} effect dmg`,
-      meta: {
-        category: 'damage',
-        script: true,
-        handler: 'lightning_potion',
-        effect: true,
-        dummyHp: dummy.hp,
-      },
-    });
+    dealEffectDamage(piece, ctx, dam);
 
     const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', getP2(piece.params, 2))));
     const dur = Math.max(0.5, getPName(piece.params, 'dur_blind', getP3(piece.params, 3)));

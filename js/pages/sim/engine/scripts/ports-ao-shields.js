@@ -6,7 +6,7 @@ import { healActor, tryUseStamina } from '../actor.js';
 import { grantStacks, onBuffChanged } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
-import { dealHit } from './handlers.js';
+import { dealEffectDamage } from './handlers.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 
 /**
@@ -259,7 +259,7 @@ const sunShieldPort = {
       const ticks = Math.floor(piece._blk / per);
       if (ticks <= 0) return;
       piece._blk %= per;
-      dealHit(piece, ctx, ticks * dam, '', { ignoreBlock: true });
+      dealEffectDamage(piece, ctx, ticks * dam);
     });
   },
 };

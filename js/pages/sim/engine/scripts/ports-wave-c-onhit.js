@@ -13,7 +13,7 @@ import {
 } from '../buff-economy.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addAccuracy, addBonusDamage, addSpeed, multiplyStaminaCost } from '../piece-stats.js';
-import { dealHit } from './handlers.js';
+import { dealEffectDamage, dealHit } from './handlers.js';
 import { affectedTargets } from '../board-graph.js';
 import { healActor, grantStun } from '../actor.js';
 import {
@@ -280,7 +280,7 @@ export const thorsHammerPort = {
       return;
     }
     const effectDmg = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 8))));
-    dealHit(piece, ctx, effectDmg);
+    dealEffectDamage(piece, ctx, effectDmg);
     const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', getP3(piece.params, 2))));
     const dur = Math.max(0.5, getPName(piece.params, 'dur_blind', 3));
     grantTemporaryStacks(dummy, 'blind', blind, dur, t, {

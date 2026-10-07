@@ -35,7 +35,7 @@ The simulator reaches 100% coverage only when every catalog item is classified a
 
 For each candidate, trace the game call and either map it to the simulator implementation with a focused regression or mark it intentionally unsupported with evidence. These candidates are not all confirmed bugs.
 
-- [ ] Effect damage / effect modifiers: `amulet_of_darkness`, `demonic_flask`, `ice_dragon`, `lightning_potion`, `snowcake`, `sun_shield`, `thors_hammer`.
+- [x] Effect damage / effect modifiers: `amulet_of_darkness`, `demonic_flask`, `ice_dragon`, `lightning_potion`, `snowcake`, `sun_shield`, `thors_hammer`; effect-only procs now use the shared effect path and Ice Dragon mutates effect damage only. Verified by `scripts/sim-effect-damage-candidates-smoke.mjs`.
 - [ ] Gems and socket paths: `regular_emerald`, `regular_ruby`, `regular_sapphire`, `regular_topaz`, `wisp`.
 - [ ] Resource, stack, and consumable paths: `arcane_boots`, `heart_shield`, `piercing_arrow`, `platin_customer_card`, `scissorswords`, `spell_scroll_ice`, `staff_of_unhealing`, `stone`, `stone_golem`, `stone_shoes`, `winged_boots`, `yggdrasil_leaf`.
 - [ ] Damage/stat mutation paths: `cupcake_staff`, `dancing_dragon`, `magic_mirror`, `rainbow_goobert`, `rainbow_goobert_adventurer`, `rainbow_goobert_engineer`, `rainbow_goobert_pyromancer`.
