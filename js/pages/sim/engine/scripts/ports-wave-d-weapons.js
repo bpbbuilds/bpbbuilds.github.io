@@ -347,9 +347,9 @@ function activateStoneGolem(piece, ctx) {
 export const stoneGolemPort = {
   handlerId: 'stone_golem',
   family: 'on_hit',
-  onPreCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     // StoneGolem.gd connects during onPrepare, before any combat-start effects
-    // can grant Regeneration. This is the earliest equivalent engine hook.
+    // can grant Regeneration.
     piece._stoneRegenDone = false;
     onBuffChanged(ctx.player, (change) => {
       if (change.stack === 'regeneration' && change.amount > 0) {
@@ -358,8 +358,7 @@ export const stoneGolemPort = {
     });
   },
   onCombatStart(piece, ctx) {
-    const bags = countPred(ctx, piece, (id) => /bag_of_stones|stone_bag/i.test(id));
-    const n = bags || countType(ctx, piece, 'stone');
+    const n = countPred(ctx, piece, (id) => /bag_of_stones|stone_bag/i.test(id));
     const per = Math.max(1, Math.round(getPName(piece.params, 'bonusdam', getP1(piece.params, 1))));
     if (n) addBonusDamage(piece, n * per);
   },

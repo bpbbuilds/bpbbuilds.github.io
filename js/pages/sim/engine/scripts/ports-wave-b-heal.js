@@ -289,6 +289,12 @@ export const staffOfUnhealingPort = {
     piece._unhealBuff = false;
     piece._unhealUntil = null;
   },
+  onTick(piece, ctx) {
+    if (!piece._unhealBuff || piece._unhealUntil == null || ctx.t < piece._unhealUntil) return;
+    ctx.player.unhealing = Math.max(0, (Number(ctx.player.unhealing) || 0) - 1);
+    piece._unhealBuff = false;
+    piece._unhealUntil = null;
+  },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
     if (piece._unhealBuff && piece._unhealUntil != null && t >= piece._unhealUntil) {

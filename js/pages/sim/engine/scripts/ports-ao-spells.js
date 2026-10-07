@@ -5,6 +5,7 @@
 import { healActor } from '../actor.js';
 import {
   grantStacks,
+  spendStacks,
   useMana,
   useRegeneration,
 } from '../buff-economy.js';
@@ -42,14 +43,17 @@ const spellScrollIcePort = {
     piece._coldN = 0;
     const maxC = Math.max(1, Math.round(getPName(piece.params, 'max', 4)));
     const cold = Math.max(1, Math.round(getPName(piece.params, 'cold', 1)));
-    ctx.bus?.on?.('player_damaged', () => {
+    ctx.bus?.on?.('player_damaged', (payload) => {
       if (piece._iceUsed || piece.alive === false) return;
-      if (ctx.player.hp > 1) return;
+      if (ctx.player.hp > 0 || Number(payload?.healthDamage) <= 0) return;
       const have = getStackAmount(ctx.dummy, 'cold');
       if (!(have > 0)) return;
       piece._iceUsed = true;
-      grantStacks(ctx.dummy, 'cold', -have, {});
-      gainStacks(ctx.player, 'block', Math.max(1, Math.round((Number(piece.blockGrant) || 4) * have)));
+      spendStacks(ctx.dummy, 'cold', have, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      gainStacks(ctx.player, 'block', Math.max(1, Math.round((Number(piece.blockGrant) || 2) * have)));
       piece.alive = false;
     });
   },

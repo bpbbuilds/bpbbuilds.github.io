@@ -37,7 +37,7 @@ For each candidate, trace the game call and either map it to the simulator imple
 
 - [x] Effect damage / effect modifiers: `amulet_of_darkness`, `demonic_flask`, `ice_dragon`, `lightning_potion`, `snowcake`, `sun_shield`, `thors_hammer`; effect-only procs now use the shared effect path and Ice Dragon mutates effect damage only. Verified by `scripts/sim-effect-damage-candidates-smoke.mjs`.
 - [x] Gems and socket paths: `regular_emerald`, `regular_ruby`, `regular_sapphire`, `regular_topaz`, `wisp`; regular inventory/socket tiers are covered by `scripts/sim-regular-gems-resistor-reverse-smoke.mjs`, and Wisp inventory, weapon, and armor-cooldown paths by `scripts/sim-gem-socket-candidates-smoke.mjs`.
-- [ ] Resource, stack, and consumable paths: `arcane_boots`, `heart_shield`, `piercing_arrow`, `platin_customer_card`, `scissorswords`, `spell_scroll_ice`, `staff_of_unhealing`, `stone`, `stone_golem`, `stone_shoes`, `winged_boots`, `yggdrasil_leaf`.
+- [x] Resource, stack, and consumable paths: `arcane_boots`, `heart_shield`, `piercing_arrow`, `platin_customer_card`, `scissorswords`, `spell_scroll_ice`, `staff_of_unhealing`, `stone`, `stone_golem`, `stone_shoes`, `winged_boots`, `yggdrasil_leaf`; source-backed lifecycle, threshold, inheritance, pre-hit, timed, and consumable behavior is covered by `scripts/sim-resource-stack-consumable-candidates-smoke.mjs`.
 - [ ] Damage/stat mutation paths: `cupcake_staff`, `dancing_dragon`, `magic_mirror`, `rainbow_goobert`, `rainbow_goobert_adventurer`, `rainbow_goobert_engineer`, `rainbow_goobert_pyromancer`.
 - [ ] Chess call paths: `black_bishop`, `black_king`, `black_knight`, `black_pawn`, `black_queen`, `black_rook`, `white_bishop`, `white_king`, `white_knight`, `white_pawn`, `white_queen`, `white_rook`.
 

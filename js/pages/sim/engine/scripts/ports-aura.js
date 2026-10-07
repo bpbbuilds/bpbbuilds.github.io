@@ -6,6 +6,9 @@ import {
   giveRandomBuffs,
   grantStacks,
   grantTemporaryStacks,
+  onBuffChanged,
+  useLucky,
+  useRegeneration,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
@@ -13,6 +16,7 @@ import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
 import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
 import { getScriptHandler } from './registry.js';
+import { weaponStrike } from './ports-wave-c-util.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -74,33 +78,52 @@ export const knifeToMeetYouPort = {
 export const scissorswordsPort = {
   handlerId: 'scissorswords',
   family: 'unique',
+  onCombatStart(piece, ctx) {
+    piece._lsLit = false;
+    piece._lsBlindDmg = 0;
+    const need = Math.max(1, Math.round(getPName(piece.params, 'regent', 3)));
+    const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', 10)));
+    const dur = Math.max(0.5, getPName(piece.params, 'dur_blind', 5));
+    const per = getPName(piece.params, 'dam_blind', 1);
+    const applyBlindDamage = () => {
+      const want = (Number(ctx.dummy.stacks.blind) || 0) * per;
+      addBonusDamage(piece, want - piece._lsBlindDmg);
+      piece._lsBlindDmg = want;
+    };
+    onBuffChanged(ctx.player, (change) => {
+      if (change.stack !== 'regeneration' || piece._lsLit) return;
+      if ((Number(ctx.player.stacks.regeneration) || 0) < need) return;
+      piece._lsLit = true;
+      useRegeneration(ctx.player, need, { originKey: piece.placementKey, originId: piece.itemId });
+      grantTemporaryStacks(ctx.dummy, 'blind', blind, dur, ctx.t, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+    });
+    onBuffChanged(ctx.dummy, (change) => {
+      if (change.stack !== 'blind') return;
+      applyBlindDamage();
+      if (change.amount < 0 && (Number(ctx.dummy.stacks.blind) || 0) < blind) piece._lsLit = false;
+    });
+  },
   onCooldownEffect(piece, ctx) {
-    const { t, dummy, player, events, rng } = ctx;
-    pushActivate(piece, ctx, 'scissorswords', `Weapon: ${piece.name}`);
-    const blind = Math.max(1, Math.round(getP1(piece.params, 2)));
-    const dur = Math.max(0.5, getPName(piece.params, 'dur', getP2(piece.params, 2)));
-    grantTemporaryStacks(dummy, 'blind', blind, dur, t, {
-      rng,
-      opponent: player,
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    events.push({
-      t: t + 0.004,
-      type: 'debuff',
-      target: 'dummy',
-      amount: blind,
-      label: `${piece.name}: +${blind} Blind (${dur}s)`,
-      meta: {
-        category: 'debuff',
-        stack: 'blind',
-        script: true,
-        handler: 'scissorswords',
-        temp: true,
-        duration: dur,
-      },
-    });
-    return true;
+    return weaponStrike(piece, ctx, 'scissorswords');
+  },
+  onDealtDamage(piece, ctx, hit) {
+    if (hit?.hit) {
+      const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', 10)));
+      const dur = Math.max(0.5, getPName(piece.params, 'dur_blind', 5));
+      grantTemporaryStacks(ctx.dummy, 'blind', blind, dur, ctx.t, { originKey: piece.placementKey, originId: piece.itemId });
+      grantTemporaryStacks(ctx.player, 'blind', blind, dur, ctx.t, { originKey: piece.placementKey, originId: piece.itemId });
+      const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', 3)));
+      if ((Number(ctx.player.stacks.lucky) || 0) >= need) {
+        useLucky(ctx.player, need, { originKey: piece.placementKey, originId: piece.itemId });
+        addBonusDamage(piece, Math.max(0, Math.round(getPName(piece.params, 'dam', 3))));
+        grantStacks(ctx.player, 'regeneration', Math.max(1, Math.round(getPName(piece.params, 'regen', 1))), { originKey: piece.placementKey, originId: piece.itemId });
+      }
+    } else {
+      grantStacks(ctx.player, 'lucky', Math.max(1, Math.round(getPName(piece.params, 'luck', 5))), { originKey: piece.placementKey, originId: piece.itemId });
+    }
   },
 };
 

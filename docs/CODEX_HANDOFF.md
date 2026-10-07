@@ -1871,3 +1871,13 @@ None.
 - Confirmed the four Regular gem inventory/socket paths against their inherited `Gem` sources and existing regression. Added Wisp armor socket cooldown support: its timer now grants source `maxhealth` temporary health once in the simulator loop; Wisp inventory and weapon paths are covered too.
 - Added `scripts/sim-gem-socket-candidates-smoke.mjs`; candidate, regular-gem, flawed/flawless-gem, chipped-gem, final-backlog, syntax, strict parity, ledger, and diff checks pass.
 - Next step: continue with the remaining unchecked simulator fidelity candidates in `docs/sim/sim-100-coverage-todo.md`.
+
+### 2026-10-06 resource/stack/consumable candidate claim (in progress)
+
+- Codex owns the twelve resource, stack, and consumable candidate ports and focused smoke: `arcane_boots`, `heart_shield`, `piercing_arrow`, `platin_customer_card`, `scissorswords`, `spell_scroll_ice`, `staff_of_unhealing`, `stone`, `stone_golem`, `stone_shoes`, `winged_boots`, and `yggdrasil_leaf`, plus the matching simulator TODO entry.
+
+### 2026-10-06 resource/stack/consumable candidates complete
+
+- Completed the twelve requested paths. Arcane Boots now uses timed linked speed; Heart Shield applies healing amplification, consumes the regeneration threshold, grants max health, and handles its activated ranged/effect block path; Piercing Arrow strips Block in the late critical-hit phase; Platinum Customer Card grants pre-combat reflect stacks to affected Legendary/Godly items; Scissorswords retains Lightsaber weapon inheritance plus blind/luck/regeneration branches; Ice Scroll removes cold only on a lethal hit; Staff of Unhealing expires its temporary Unhealing on engine ticks; Stone uses one-ammo weapon flow and consumes after its throw; Stone Golem registers from prepare and counts only Bag of Stones; Stone Shoes restores timed typed/effect reduction; Winged Boots logs its threshold activation; Yggdrasil Leaf filters Nature links and reacts to used mana thresholds.
+- Added `scripts/sim-resource-stack-consumable-candidates-smoke.mjs`; syntax checks, candidate smoke, Wave A-D smoke, and final runtime backlog smoke pass. The simulator tick surface now supports the small number of source timers that need expiry, and attack damage applies actor typed melee/ranged factors.
+- Updated `docs/sim/sim-100-coverage-todo.md`; next step is the remaining unchecked damage/stat mutation candidates.

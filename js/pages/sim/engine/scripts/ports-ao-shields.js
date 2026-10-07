@@ -3,11 +3,13 @@
  */
 
 import { healActor, tryUseStamina } from '../actor.js';
-import { grantStacks, onBuffChanged } from '../buff-economy.js';
+import { grantStacks, onBuffChanged, spendStacks } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { dealEffectDamage } from './handlers.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
+import { applyHealEfficiency } from '../actor-stats.js';
+import { rollPercent } from '../rng.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -78,9 +80,12 @@ const heartShieldPort = {
     for (const o of linked(ctx, piece)) {
       if (Number(o.blockGrant) > 0) o.blockGrant = Math.round(o.blockGrant * (1 + fac));
     }
+    applyHealEfficiency(ctx.player, getPName(piece.params, 'healamp', 30) / 100, ctx, piece);
+    piece._heartActive = false;
     piece._regenGiven = 0;
     const maxR = Math.max(1, Math.round(getPName(piece.params, 'max_regen', 4)));
     const onBlk = Math.max(1, Math.round(getPName(piece.params, 'regen', 1)));
+    const need = Math.max(1, Math.round(getPName(piece.params, 'regent', 7)));
     registerShield(piece, ctx, {
       afterBlock() {
         if (piece._regenGiven < maxR) {
@@ -88,6 +93,49 @@ const heartShieldPort = {
           piece._regenGiven += onBlk;
         }
       },
+    });
+    onBuffChanged(ctx.player, (change) => {
+      if (piece._heartActive || change.stack !== 'regeneration' || change.amount <= 0) return;
+      if ((Number(ctx.player.stacks.regeneration) || 0) < need) return;
+      piece._heartActive = true;
+      spendStacks(ctx.player, 'regeneration', need, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      const hp = Math.max(0, Math.round(getPName(piece.params, 'maxhealth', 150)));
+      ctx.player.maxHp += hp;
+      ctx.player.hp = Math.min(ctx.player.maxHp, ctx.player.hp + hp);
+      ctx.events.push({
+        t: ctx.t,
+        type: 'buff',
+        target: 'player',
+        amount: hp,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: +${hp} Max Health`,
+        meta: { category: 'buff', stack: 'maxhealth', script: true, handler: 'heart_shield' },
+      });
+    });
+    // The activated override also blocks ranged/effect damage; the normal
+    // Shield registration covers melee attacks through damage.js.
+    ctx.bus?.on?.('pre_take_damage', (payload) => {
+      if (!piece._heartActive || payload?.defender !== ctx.player) return;
+      const source = payload.source || {};
+      if (source.isAttack !== false && source.isMelee !== false) return;
+      if (!source.isEffectDamage && source.isAttack === false) return;
+      if (!rollPercent(Number(piece.chance) || 30, ctx.rng)) return;
+      const damage = payload.damage;
+      const cut = Math.min(Math.max(0, Number(damage?.damage) || 0), Math.max(1, Math.round(getPName(piece.params, 'damblock', 20))));
+      if (cut > 0) {
+        damage.damage -= cut;
+        damage.reduced = (damage.reduced || 0) + cut;
+        tryUseStamina(ctx.player, Math.max(0, Number(getPName(piece.params, 'stamina', getP2(piece.params, 0.7))) || 0));
+        if (piece._regenGiven < maxR) {
+          grantStacks(ctx.player, 'regeneration', onBlk, origin(piece));
+          piece._regenGiven += onBlk;
+        }
+        pushActivate(piece, ctx, piece.itemId, `Shield: ${piece.name}`);
+      }
     });
   },
 };

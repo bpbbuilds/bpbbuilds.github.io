@@ -128,7 +128,11 @@ export function takeDamage(defender, attacker, src) {
   // DamageResult.damage is already rolled when the game's early hook runs.
   // Keep that observable value live so source scripts can mutate this strike
   // without changing a miss.
-  res.raw = resolveDamageAmount(src);
+  const typedFactor =
+    src.isAttack !== false
+      ? Number(src.isMelee === false ? attacker.rangedDmgFactor : attacker.meleeDmgFactor) || 0
+      : 0;
+  res.raw = Math.max(0, Math.round(resolveDamageAmount(src) * (1 + typedFactor)));
   res.damage = res.raw;
   for (let i = 0; i < earlyN; i += 1) {
     src.onPreDealDamageEarly?.(res);

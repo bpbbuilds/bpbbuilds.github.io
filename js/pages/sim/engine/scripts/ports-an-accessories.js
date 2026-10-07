@@ -23,6 +23,7 @@ import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { superiorRingPort } from './ports-ring.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { rollPercent } from '../rng.js';
+import { removeBlock } from './ports-wave-c-util.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -236,11 +237,12 @@ const piercingArrowPort = {
       if (!canBeEmpoweredPiece(o)) continue;
       o.critSeverity = (Number(o.critSeverity) || 0) + sev;
     }
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
-      if (!payload?.hit?.critical) return;
-      if (!linked(ctx, piece).some((x) => x === payload.piece)) return;
-      spendStacks(ctx.dummy, 'block', strip, {});
-    });
+    for (const weapon of linked(ctx, piece)) {
+      weapon._preDealLate ||= [];
+      weapon._preDealLate.push((res) => {
+        if (res?.critical) removeBlock(ctx.dummy, strip, ctx, weapon);
+      });
+    }
   },
   onPeerActivated(listener, _a, ctx) {
     if (!rollPercent(chanceOf(listener, ctx), ctx.rng)) return;

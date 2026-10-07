@@ -2,8 +2,8 @@
  * Mechanical / nature board ports (Battery line, Bloodthorne, Yggdrasil, …).
  */
 
-import { tryUseStamina } from '../actor.js';
-import { grantStacks, onBuffChanged, useRegeneration } from '../buff-economy.js';
+import { healActor, tryUseStamina } from '../actor.js';
+import { cleanseRandomDebuffs, grantStacks, onBuffChanged, useRegeneration } from '../buff-economy.js';
 import { gainStacks, loseStacks } from '../stacks.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { addBonusDamageFromBuffChange } from '../piece-stats.js';
@@ -14,7 +14,7 @@ import {
   isCooldownActive,
 } from '../cooldown.js';
 import { dealHit } from './handlers.js';
-import { pushActivate } from './ports-util.js';
+import { itemHasType, pushActivate } from './ports-util.js';
 import { emitBatterySpark } from '../charge-delivery.js';
 import { eventSideForPiece } from '../vs-board.js';
 
@@ -290,6 +290,25 @@ export const bloodthornePort = {
 export const yggdrasilLeafPort = {
   handlerId: 'yggdrasil_leaf',
   family: 'synergy_aura',
+  onPrepare(piece, ctx) {
+    piece._manaUsed = 0;
+    const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP3(piece.params, 5))));
+    onBuffChanged(ctx.player, (change) => {
+      if (change.stack !== 'mana' || change.amount >= 0 || !change.used) return;
+      piece._manaUsed += -change.amount;
+      const activations = Math.floor(piece._manaUsed / need);
+      if (activations <= 0) return;
+      piece._manaUsed %= need;
+      healActor(ctx.player, Math.max(1, Math.round(getPName(piece.params, 'heal', 20))) * activations);
+      cleanseRandomDebuffs(
+        ctx.player,
+        Math.max(1, Math.round(getPName(piece.params, 'cleanse', 2))) * activations,
+        ctx.rng,
+        { originKey: piece.placementKey, originId: piece.itemId },
+      );
+      pushActivate(piece, ctx, 'yggdrasil_leaf', `Accessory: ${piece.name}`);
+    });
+  },
   onCombatStart(piece, ctx) {
     const links = affectedTargets(
       ctx.graph,
@@ -297,11 +316,12 @@ export const yggdrasilLeafPort = {
       ctx.itemsById,
       ctx.canAffect,
     );
-    const n = Math.max(0, links.length);
+    const n = Math.max(0, links.filter((link) => itemHasType(ctx.itemsById.get(link.id), 'nature')).length);
     const mana = Math.max(0, Math.round(getP1(piece.params, 1) * n));
     const regen = Math.max(0, Math.round(getP2(piece.params, 1) * n));
     if (mana > 0) gainStacks(ctx.player, 'mana', mana);
     if (regen > 0) gainStacks(ctx.player, 'regeneration', regen);
+    pushActivate(piece, ctx, 'yggdrasil_leaf', `Accessory: ${piece.name}`);
     ctx.events.push({
       t: ctx.t,
       type: 'buff',

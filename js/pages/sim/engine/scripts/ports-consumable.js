@@ -17,10 +17,16 @@ import { gainStacks } from '../stacks.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { getScriptHandler } from './registry.js';
 import { applyFoodPrepareSpeed, markFoodConsumed } from './food-helpers.js';
+import { changeReflectStacks } from '../actor-stats.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
  */
+
+function linked(ctx, piece) {
+  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+  return (ctx.pieces || []).filter((o) => links.some((l) => l.key === o.placementKey));
+}
 
 /** @type {ScriptHandler} */
 export const sliceOfBreadPort = {
@@ -108,6 +114,18 @@ export const noRushPleasePort = {
 export const platinCustomerCardPort = {
   handlerId: 'platin_customer_card',
   family: 'unique',
+  onPreCombatStart(piece, ctx) {
+    const n = linked(ctx, piece).filter((o) => {
+      const rarity = String(ctx.itemsById.get(o.itemId)?.rarity || '').toLowerCase();
+      return rarity === 'legendary' || rarity === 'godly';
+    }).length;
+    changeReflectStacks(
+      ctx.player,
+      n * Math.max(0, Math.round(getP2(piece.params, 2))),
+      ctx,
+      piece,
+    );
+  },
   onCombatStart(piece, ctx) {
     pushActivate(piece, ctx, 'platin_customer_card', `Card: ${piece.name}`);
   },

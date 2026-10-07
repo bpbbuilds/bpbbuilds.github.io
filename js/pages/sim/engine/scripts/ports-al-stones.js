@@ -8,12 +8,8 @@ import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { addBonusDamage } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
-import { tryUseStamina } from '../actor.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { weaponStrike, removeBlock } from './ports-wave-c-util.js';
-import { dealHit } from './handlers.js';
-import { pushActivate } from './ports-util.js';
-import { randInt } from '../rng.js';
 import {
   applyBagOfStones,
   initStoneAmmo,
@@ -57,20 +53,13 @@ export const stonePort = {
   },
   onCooldownEffect(piece, ctx) {
     if ((piece.ammunition ?? 1) < 1) return true;
-    const { t, player, events, rng } = ctx;
-    if (tryUseStamina(player, piece.staminaCost) === 'starve') {
-      events.push({
-        t,
-        type: 'stamina',
-        label: `${piece.name}: out of stamina`,
-        meta: { category: 'stamina', script: true, starved: true, handler: 'stone' },
-      });
-      return true;
-    }
-    pushActivate(piece, ctx, 'stone', `Weapon: ${piece.name}`);
-    const raw = randInt(piece.damageMin, piece.damageMax, rng);
-    dealHit(piece, ctx, raw);
+    const fired = weaponStrike(piece, ctx, 'stone');
+    if (!fired) return false;
     spendStoneAmmo(piece);
+    if ((piece.ammunition ?? 0) < 1) {
+      piece.alive = false;
+      piece.charges = 0;
+    }
     return true;
   },
   onPreDealDamageLate(piece, ctx) {

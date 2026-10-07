@@ -644,6 +644,9 @@ export function simulateEngine(opts) {
       for (const piece of pieces) {
         piece._lastSimT = t;
         if (typeof piece._tryCrownInvuln === 'function') piece._tryCrownInvuln(t);
+        if (piece.alive || piece._stoneUntil != null || piece._unhealUntil != null) {
+          getScriptHandler(piece.itemId)?.onTick?.(piece, { ...actCtx(piece), t });
+        }
       }
 
       // Decrement every ready piece first, then activate in fireT order.

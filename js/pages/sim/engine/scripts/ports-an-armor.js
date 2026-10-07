@@ -12,6 +12,7 @@ import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { grantTimedResistancePct } from '../timed-resistance.js';
+import { grantTimedSpeed } from '../timed-speed.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { whetstonePort } from './ports-wave-b-aura.js';
 import { applyEffectDmgFactor } from '../actor-stats.js';
@@ -82,9 +83,11 @@ const arcaneBootsPort = {
       });
       gainStacks(ctx.player, 'block', Math.max(1, Math.round(piece.blockGrant || 4)));
       const spd = getPName(piece.params, 'speed', 20) / 100;
+      const dur = Math.max(0.1, getPName(piece.params, 'dur_speed', 3));
       for (const o of linked(ctx, piece)) {
-        if (o.cooldown > 0 && o.cooldown < 500) addSpeed(o, spd);
+        if (o.cooldown > 0 && o.cooldown < 500) grantTimedSpeed(o, spd, ctx.t + dur, `arcane:${piece.placementKey}`);
       }
+      pushActivate(piece, ctx, 'arcane_boots', `Shoes: ${piece.name}`);
       piece.alive = false;
     });
   },
@@ -129,10 +132,20 @@ const stoneShoesPort = {
         originId: piece.itemId,
       });
       gainStacks(ctx.player, 'block', Math.max(1, Math.round(piece.blockGrant || 6)));
-      const red = getPName(piece.params, 'damreduction', 15);
-      applyEffectDmgFactor(ctx.dummy, -red / 100, ctx, piece);
+      const factor = getPName(piece.params, 'damreduction', 15) / 100;
+      ctx.dummy.rangedDmgFactor = (Number(ctx.dummy.rangedDmgFactor) || 0) - factor;
+      applyEffectDmgFactor(ctx.dummy, -factor, ctx, piece);
+      piece._stoneUntil = ctx.t + Math.max(0.1, getPName(piece.params, 'dur', 7));
+      pushActivate(piece, ctx, 'stone_shoes', `Shoes: ${piece.name}`);
       piece.alive = false;
     });
+  },
+  onTick(piece, ctx) {
+    if (piece._stoneUntil == null || ctx.t < piece._stoneUntil || piece._stoneRestored) return;
+    const factor = getPName(piece.params, 'damreduction', 35) / 100;
+    ctx.dummy.rangedDmgFactor = (Number(ctx.dummy.rangedDmgFactor) || 0) + factor;
+    ctx.dummy.effectDmgFactor = (Number(ctx.dummy.effectDmgFactor) || 0) + factor;
+    piece._stoneRestored = true;
   },
 };
 
@@ -154,6 +167,7 @@ const wingedBootsPort = {
       cleanseRandomDebuffs(ctx.player, Math.max(1, Math.round(getPName(piece.params, 'cleanse', 1))), ctx.rng, {});
       ctx.player.dodgeStacks =
         (Number(ctx.player.dodgeStacks) || 0) + Math.max(1, Math.round(getPName(piece.params, 'dodge', 1)));
+      pushActivate(piece, ctx, 'winged_boots', `Shoes: ${piece.name}`);
       piece.alive = false;
     });
   },
