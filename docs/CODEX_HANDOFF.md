@@ -1861,3 +1861,13 @@ None.
 - Routed the seven listed effect-only proc paths through shared `dealEffectDamage`, marked effect damage in the source result, fixed Amulet of Darkness to react to incoming effect damage, and changed Ice Dragon to reduce only the opponent effect-damage factor. Sun Shield now retains normal effect-damage block behavior.
 - Added `scripts/sim-effect-damage-candidates-smoke.mjs`; syntax checks, candidate smoke, final-runtime smoke, Wave C smoke, strict parity audit, fidelity ledger check, and `git diff --check` all pass.
 - Next step: continue with the remaining unchecked simulator fidelity candidates in `docs/sim/sim-100-coverage-todo.md`.
+
+### 2026-10-06 gem and socket candidate claim (in progress)
+
+- Codex owns the five gem/socket candidate ports and focused smoke: `regular_emerald`, `regular_ruby`, `regular_sapphire`, `regular_topaz`, and `wisp`, plus the matching simulator TODO entry.
+
+### 2026-10-06 gem and socket candidates complete
+
+- Confirmed the four Regular gem inventory/socket paths against their inherited `Gem` sources and existing regression. Added Wisp armor socket cooldown support: its timer now grants source `maxhealth` temporary health once in the simulator loop; Wisp inventory and weapon paths are covered too.
+- Added `scripts/sim-gem-socket-candidates-smoke.mjs`; candidate, regular-gem, flawed/flawless-gem, chipped-gem, final-backlog, syntax, strict parity, ledger, and diff checks pass.
+- Next step: continue with the remaining unchecked simulator fidelity candidates in `docs/sim/sim-100-coverage-todo.md`.

@@ -15,6 +15,7 @@ import { isBattleRaging } from './battle-rage.js';
 import { makeDamageSpectral } from './damage.js';
 import { rollPercent } from './rng.js';
 import { removeRandomBuffs } from './scripts/ports-wave-c-util.js';
+import { giveTempMaxHp } from './scripts/ports-ap-start.js';
 import { grantTimedDebuffResistance } from './timed-resistance.js';
 
 function familyOf(gid) {
@@ -282,10 +283,33 @@ function forEachSocket(piece, ctx, visit) {
  * @param {object} ctx
  */
 export function prepareGemSockets(piece, ctx) {
+  piece._socketGemTimers = [];
   forEachSocket(piece, ctx, (gem, params, fam, gid, originKey, weapon) => {
     if (weapon) prepareWeapon(piece, gem, params, fam, ctx, gid, originKey);
-    else prepareArmor(piece, gem, params, fam, ctx, gid, originKey);
+    else {
+      prepareArmor(piece, gem, params, fam, ctx, gid, originKey);
+      if (fam === 'wisp') {
+        piece._socketGemTimers.push({
+          id: gid,
+          kind: 'wisp_armor',
+          params,
+          remaining: Math.max(0.05, Number(gem.cooldown) || 12),
+        });
+      }
+    }
   });
+}
+
+/** Wisp.gd armor mode: its own cooldown grants temporary max health once. */
+export function tickGemSocketEffects(piece, ctx, delta) {
+  for (const timer of piece?._socketGemTimers || []) {
+    if (timer.done || timer.kind !== 'wisp_armor') continue;
+    timer.remaining -= Math.max(0, Number(delta) || 0);
+    if (timer.remaining > 1e-9) continue;
+    timer.done = true;
+    const pct = Math.max(0, getPName(timer.params, 'maxhealth', 35)) / 100;
+    giveTempMaxHp(piece, ctx, 'wisp', pct * (Number(ctx.player.hp) || 0));
+  }
 }
 
 /**

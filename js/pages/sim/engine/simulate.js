@@ -23,7 +23,7 @@ import { buildCombatPieces, activeLoopPieces } from './pieces.js';
 import { activatePiece } from './combat-activate.js';
 import { runCharacterTick } from './ticks.js';
 import { getScriptHandler } from './scripts/registry.js';
-import { combatStartGemSockets, prepareGemSockets } from './gem-sockets.js';
+import { combatStartGemSockets, prepareGemSockets, tickGemSocketEffects } from './gem-sockets.js';
 import { buildCombatStartOrder } from './combat-start-priority.js';
 import { deliverCharge, leaveCharge, processChargeJob, clearChargeTrackers } from './charge-delivery.js';
 import { tickTimedSpeeds } from './timed-speed.js';
@@ -540,6 +540,9 @@ export function simulateEngine(opts) {
     tickTemporaryStacks(dummy, t, events);
 
     if (itemsLive) {
+      for (const piece of pieces) {
+        if (piece.alive) tickGemSocketEffects(piece, { ...actCtx(piece), t }, step);
+      }
       const combatTime = t - COMBAT_DELAY;
       if (!fatigue.started && combatTime + 1e-9 >= fatigue.startAt) {
         fatigue.started = true;
