@@ -2021,3 +2021,13 @@ None.
 - The performance report now documents the implementation boundary, expected trade-offs, and the follow-up trace needed to measure the reduction against the 1,634 ms local forced-reflow baseline. Existing scene assets remain unchanged; responsive background derivatives are a separate option.
 - Chrome verification: at 390x844 the sky had `combat-sky--static`, windmill animation `none`, and an unchanged `--sky-y` before/after a full scroll; at 1920x1080 the static class was absent and `combat-sky-spin` remained active. No runtime errors appeared; the existing seven-image-dimensions issue remains.
 - Validation: `node --check js/pages/home/combat-sky/index.js` and `git diff --check` pass.
+
+### 2026-10-11 home background option 2 claim (in progress)
+
+- Codex owns `js/pages/home/combat-sky/index.js`, `js/pages/home/combat-sky.css`, `docs/pages/home/performance.md`, and this handoff while implementing coarse stepped combat-sky updates for the full desktop path. Scope: quantize scroll progress into 2.5% buckets, transition only positional/opacity properties between buckets, preserve option 1's static compact-device fallback, and push the scoped Home performance package.
+
+### 2026-10-11 home background option 2 complete
+
+- Desktop combat-sky scroll progress now advances in 40 buckets (2.5% each). Tint/color writes happen once when a bucket changes; positional and opacity properties use a 120 ms CSS transition. Compact/reduced-motion/data/low-core devices continue to bypass the animated path through option 1.
+- Chrome verification at 390x844 confirmed the static fallback remained active and the sky position stayed fixed after scrolling. At 1920x1080 the static class was absent, stepped mode was active, and a 1% scroll retained the initial sky frame while 3% and 8% moved to new bucket values. No runtime errors appeared; the existing seven-image-dimensions issue remains.
+- Validation: `node --check js/pages/home/combat-sky/index.js` and `git diff --check` pass. The performance report records the follow-up frame-pacing/self-time trace required before claiming a measured reduction.

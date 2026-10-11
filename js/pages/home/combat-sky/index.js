@@ -16,13 +16,17 @@ export const T_START = 2.5;
 export const T_END = 30;
 /** Bright day freeze for reduced motion */
 export const T_REDUCED = 6;
-/** Seconds — follow scroll so discrete rAF/scroll ticks don’t hitch. */
-const SMOOTH_SEC = 0.07;
+/** Quantize scroll progress so sky paint work happens at coarse checkpoints. */
+const SKY_STEP_COUNT = 40;
+
+function steppedProgress(progress) {
+  return Math.round(progress * SKY_STEP_COUNT) / SKY_STEP_COUNT;
+}
 
 function scrollTime(reduced, maxScrollY) {
   if (reduced) return T_REDUCED;
   const p = maxScrollY <= 0 ? 0 : Math.min(1, Math.max(0, window.scrollY / maxScrollY));
-  return T_START + p * (T_END - T_START);
+  return T_START + steppedProgress(p) * (T_END - T_START);
 }
 
 function fitScale(host) {
@@ -61,6 +65,8 @@ export function initCombatSky() {
     return;
   }
 
+  host.classList.add('combat-sky--stepped');
+
   // The first frame is always at the day start, so it does not need a document
   // height read. Measure after that frame (and after later document resizes)
   // instead of forcing layout during the first-view boot path.
@@ -87,25 +93,15 @@ export function initCombatSky() {
   applyTime(layers, displayT);
 
   let raf = 0;
-  let lastTs = 0;
 
-  const tick = (ts) => {
+  const tick = () => {
     raf = 0;
     const target = scrollTime(reduced, maxScrollY);
-    const dt = lastTs ? Math.min(0.05, (ts - lastTs) / 1000) : 0.016;
-    lastTs = ts;
-    if (reduced) {
+    if (target !== displayT) {
+      // Apply colors/tints once per bucket. CSS handles the short positional
+      // and opacity transition; no per-frame interpolation work is needed.
       displayT = target;
-    } else {
-      const k = 1 - Math.exp(-dt / SMOOTH_SEC);
-      displayT += (target - displayT) * k;
-      if (Math.abs(target - displayT) < 0.002) displayT = target;
-    }
-    applyTime(layers, displayT);
-    if (displayT !== target) {
-      raf = requestAnimationFrame(tick);
-    } else {
-      lastTs = 0;
+      applyTime(layers, displayT);
     }
   };
 

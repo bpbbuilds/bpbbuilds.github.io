@@ -39,6 +39,13 @@
   animation: none;
 }
 
+/* Desktop scrub: colors/tints snap at coarse progress buckets while movement
+   and opacity ease briefly on the compositor between bucket changes. */
+.combat-sky--stepped .combat-sky__sky,
+.combat-sky--stepped .combat-sky__celestial {
+  transition: transform 120ms ease-out, opacity 120ms ease-out;
+}
+
 /* Sky: grayscale banding × modulate color */
 .combat-sky__sky {
   position: absolute;
