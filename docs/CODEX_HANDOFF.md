@@ -6,6 +6,10 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+### 2026-10-10 browser tooling setup
+
+- Codex owns the BPB browser-tooling setup: `.cursor/mcp.json`, `.cursor/rules/browser-tools.mdc`, `scripts/start-chrome-devtools-mcp.mjs`, `scripts/browser-smoke.mjs`, `docs/testing/browser-tools.md`, and this handoff. Scope is local development/debugging only; do not change production deployment or application behavior.
+
 ### 2026-10-10 Builds view desktop scaling
 
 - Claimed `builds/view/index.html`, `js/pages/build/index.js`, `js/pages/build/build.css`, and this handoff to use the existing slim footer and scale the dedicated `/builds/view/` desktop layout to the 2560×1440 reference without changing the shared footer or the separate build-history page.
@@ -1891,3 +1895,10 @@ None.
 - The dedicated Builds view now expands its scaled desktop body to the full viewport before applying the 2560x1440 desktop scale, so the slim footer reaches the bottom at both 1920x1080 and 2560x1440 instead of leaving a scaled-page gap below it.
 - The footer host sits beneath the screen-frame overlay on desktop. The frame covers the footer's lower clearance while the slim footer content remains visible above the bottom rim; mobile footer behavior is unchanged.
 - Playwright checks at 2560x1440, 1920x1080, and 390x844 confirm no page-height gap or horizontal overflow was introduced.
+
+### 2026-10-10 browser tooling setup complete
+
+- Playwright was already installed and locked in the project at `1.62.1`; no duplicate package, test runner, or production dependency was added. Added `scripts/browser-smoke.mjs` for targeted navigation, console/page-error, failed-request, HTTP-status, viewport, and optional screenshot checks.
+- Added project Cursor MCP configuration in `.cursor/mcp.json`, a Windows-safe launcher in `scripts/start-chrome-devtools-mcp.mjs`, the always-applied Cursor browser rule `.cursor/rules/browser-tools.mdc`, and the workflow guide `docs/testing/browser-tools.md`.
+- Added the same launcher to the personal Codex MCP configuration at `C:\Users\justi\.codex\config.toml`; that machine-level file is intentionally not committed. The launcher prefers installed Google Chrome, uses an isolated profile, disables MCP usage statistics and CrUX lookups, and redacts network headers. It falls back to Playwright's installed Chrome for Testing binary when stable Chrome is unavailable.
+- Verification: Chrome DevTools MCP initialize/tools-list/new-page handshake passed through the launcher with 30 tools, including navigation, snapshot, console, network, and screenshot tools. MCP opened the local site, evaluated page state, navigated to `/builds/`, read console/network state, and captured a screenshot successfully. Playwright smoke passed at 390x844, 1920x1080, and 2560x1440 with HTTP 200, no console errors, page errors, or failed requests. Chrome 155 is now installed; no secrets or production configuration were changed.
