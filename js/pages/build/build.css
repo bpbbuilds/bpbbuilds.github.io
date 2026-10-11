@@ -48,8 +48,16 @@ body.page-build {
 @media (min-width: 1101px) {
   body.page-build-view {
     zoom: var(--build-desktop-scale, 1);
+    min-height: calc(100vh / var(--build-desktop-scale, 1));
     --bpb-frame-edge-x: 53.333333px;
     --bpb-frame-edge-y: 53.333333px;
+  }
+
+  /* Let the screen frame cover the footer's bottom edge instead of leaving
+     the frame clearance visible as empty space below the page. */
+  body.page-build-view #site-footer {
+    position: relative;
+    z-index: 1;
   }
 }
 

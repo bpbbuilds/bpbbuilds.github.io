@@ -1885,3 +1885,9 @@ None.
 - Completed the twelve requested paths. Arcane Boots now uses timed linked speed; Heart Shield applies healing amplification, consumes the regeneration threshold, grants max health, and handles its activated ranged/effect block path; Piercing Arrow strips Block in the late critical-hit phase; Platinum Customer Card grants pre-combat reflect stacks to affected Legendary/Godly items; Scissorswords retains Lightsaber weapon inheritance plus blind/luck/regeneration branches; Ice Scroll removes cold only on a lethal hit; Staff of Unhealing expires its temporary Unhealing on engine ticks; Stone uses one-ammo weapon flow and consumes after its throw; Stone Golem registers from prepare and counts only Bag of Stones; Stone Shoes restores timed typed/effect reduction; Winged Boots logs its threshold activation; Yggdrasil Leaf filters Nature links and reacts to used mana thresholds.
 - Added `scripts/sim-resource-stack-consumable-candidates-smoke.mjs`; syntax checks, candidate smoke, Wave A-D smoke, and final runtime backlog smoke pass. The simulator tick surface now supports the small number of source timers that need expiry, and attack damage applies actor typed melee/ranged factors.
 - Updated `docs/sim/sim-100-coverage-todo.md`; next step is the remaining unchecked damage/stat mutation candidates.
+
+### 2026-10-10 Builds view footer floor complete
+
+- The dedicated Builds view now expands its scaled desktop body to the full viewport before applying the 2560x1440 desktop scale, so the slim footer reaches the bottom at both 1920x1080 and 2560x1440 instead of leaving a scaled-page gap below it.
+- The footer host sits beneath the screen-frame overlay on desktop. The frame covers the footer's lower clearance while the slim footer content remains visible above the bottom rim; mobile footer behavior is unchanged.
+- Playwright checks at 2560x1440, 1920x1080, and 390x844 confirm no page-height gap or horizontal overflow was introduced.
