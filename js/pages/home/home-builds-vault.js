@@ -112,7 +112,7 @@ function vaultAvatarHtml(build, root, name) {
   );
   if (face) return face;
   if (/^smojo$/i.test(name)) {
-    return `<img class="home-vault__cell-avatar" src="${escapeAttr(`${root}assets/brand/logo-backpack-battles-builds.png`)}" alt="" width="22" height="22" draggable="false" />`;
+    return `<img class="home-vault__cell-avatar" src="${escapeAttr(`${root}assets/brand/logo-backpack-battles-builds.png`)}" alt="" width="22" height="22" loading="lazy" decoding="async" draggable="false" />`;
   }
   const parts = name.split(/\s+/).filter(Boolean);
   const initials =
@@ -159,7 +159,7 @@ function gridCellHtml(build, root, index) {
         </span>
         ${
           icon
-            ? `<img class="home-vault__cell-class" src="${escapeAttr(icon)}" alt="" title="${escapeAttr(hero)}" width="28" height="28" />`
+            ? `<img class="home-vault__cell-class" src="${escapeAttr(icon)}" alt="" title="${escapeAttr(hero)}" width="28" height="28" loading="lazy" decoding="async" />`
             : ''
         }
       </span>

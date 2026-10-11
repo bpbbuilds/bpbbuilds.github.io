@@ -20,7 +20,6 @@ import {
   makeSpriteUrl,
   mapItem,
 } from '../build/map-item.js';
-import { BOARD_COLS, BOARD_ROWS, isBagItem } from '../create/collision.js';
 import {
   hidePromoCatalogItem,
   prefetchPromoCatalogItems,
@@ -39,6 +38,15 @@ const BOARD_STAGGER_MS = 2;
 const BOARD_STAGGER_MAX_MS = 400;
 const BOARD_CELL_PX = 26;
 const PROMO_MOBILE_MQ = '(max-width: 1100px)';
+// Home only needs the fixed board dimensions and bag discriminator; importing
+// the Create collision module pulls editor-only dependencies into startup.
+const BOARD_COLS = 9;
+const BOARD_ROWS = 7;
+
+/** @param {object | null | undefined} item */
+function isBagItem(item) {
+  return String(item?.type || '') === 'Bag';
+}
 
 const ITEM_SELECT =
   'id, gid, name, rarity, type, class, extra_types, tags, cost, effect, image, shape, sockets, accuracy, cooldown, stamina_cost, damage_min, damage_max, block, chance, chance_tag, params';

@@ -205,9 +205,12 @@ function centerTrackInstant(track, domIdx) {
   const hadSnap = track.classList.contains('fs-track--snap');
   if (hadSnap) track.classList.remove('fs-track--snap');
   track.scrollLeft = child.offsetLeft - track.offsetWidth / 2 + child.offsetWidth / 2;
-  void track.offsetHeight;
-  if (hadSnap) track.classList.add('fs-track--snap');
-  track.classList.add('is-ready');
+  // Do not force a synchronous style/layout flush on startup. The next frame
+  // naturally observes the snapped position before revealing the track.
+  requestAnimationFrame(() => {
+    if (hadSnap) track.classList.add('fs-track--snap');
+    track.classList.add('is-ready');
+  });
 }
 
 /**

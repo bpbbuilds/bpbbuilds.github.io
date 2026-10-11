@@ -10,9 +10,7 @@ import {
   signInWithDiscord,
 } from '../auth.js';
 import { getFoundingStatus, isPaidPremium } from '../entitlements.js';
-import { openFoundingOffer } from '../premium-offer.js';
 import { faceHtml, hydrateFaces } from '../blob-face.js';
-import { startStripePortal } from '../stripe-portal.js';
 import { profileHref } from '../profile-href.js';
 import { escapeAttr, escapeHtml } from './markup.js';
 
@@ -43,7 +41,9 @@ export async function paintNavFounding(host, root = './') {
     </button>
   `;
   host.querySelector('[data-nav-founding]')?.addEventListener('click', () => {
-    openFoundingOffer().catch((err) => console.error(err));
+    void import('../premium-offer.js')
+      .then(({ openFoundingOffer }) => openFoundingOffer())
+      .catch((err) => console.error(err));
   });
 }
 
@@ -134,7 +134,8 @@ export async function paintNavAuth(host, root) {
     const label = btn.textContent;
     btn.disabled = true;
     btn.textContent = 'Opening…';
-    startStripePortal()
+    import('../stripe-portal.js')
+      .then(({ startStripePortal }) => startStripePortal())
       .then((url) => {
         location.href = url;
       })
