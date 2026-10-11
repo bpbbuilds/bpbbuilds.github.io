@@ -1,6 +1,6 @@
 import { initNav } from '../../shared/nav.js';
 import { initFooter } from '../../shared/footer.js';
-import { initCombatSky } from './combat-sky.js';
+import { initHomeFallingItemsBackground } from './falling-items-background.js';
 import { initFeaturedStage } from './featured-stage.js';
 import { initHomePromoBand } from './home-promo-band.js';
 
@@ -65,7 +65,7 @@ async function mountDeferredSections() {
 
 async function boot() {
   if (!(await initNav())) return;
-  initCombatSky();
+  initHomeFallingItemsBackground();
   initFooter();
   initFeaturedStage();
 
