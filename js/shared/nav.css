@@ -6,6 +6,15 @@
   padding: 0.2rem 0.85rem 0;
 }
 
+/* Keep the 2560x1440 shelf composition as the desktop reference while
+   allowing shorter/narrower desktop viewports to reclaim vertical space. */
+@media (min-width: 1101px) {
+  .site-nav-shell {
+    transform: scale(var(--bpb-nav-desktop-scale, 1));
+    transform-origin: top center;
+  }
+}
+
 .site-nav {
   display: flex;
   align-items: center;

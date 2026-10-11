@@ -20,13 +20,6 @@ function syncBuildViewDesktopScale() {
     : 1;
 
   body.style.setProperty('--build-desktop-scale', String(scale));
-
-  const nav = document.getElementById('site-nav');
-  const navSpace = document.getElementById('site-nav-space');
-  if (nav instanceof HTMLElement && navSpace instanceof HTMLElement) {
-    const visualHeight = nav.getBoundingClientRect().height;
-    if (visualHeight > 0) navSpace.style.height = `${Math.ceil(visualHeight)}px`;
-  }
 }
 
 async function boot() {

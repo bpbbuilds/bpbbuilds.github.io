@@ -63,7 +63,7 @@ body.page-build {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: 2.25rem var(--build-side-gap) 1.5rem;
+  padding: 0.75rem var(--build-side-gap) 1.5rem;
   box-sizing: border-box;
   flex: 1 1 auto;
   min-width: 0;

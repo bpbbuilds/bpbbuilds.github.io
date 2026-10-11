@@ -14,6 +14,10 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 - Claimed `builds/view/index.html`, `js/pages/build/index.js`, `js/pages/build/build.css`, and this handoff to use the existing slim footer and scale the dedicated `/builds/view/` desktop layout to the 2560×1440 reference without changing the shared footer or the separate build-history page.
 
+### 2026-10-11 shared nav density and Builds top-gap correction
+
+- Codex owns `js/shared/nav.js`, `js/shared/nav.css`, `js/shared/nav/scroll-logo.js`, `js/pages/build/build.css`, and this handoff for a viewport-scaled desktop navigation shell plus a smaller Builds view top inset. Shared nav behavior must retain the existing mobile drawer and the 2560x1440 reference composition.
+
 ### 2026-10-04 admin-selected event winners (in progress)
 
 - Claimed `js/pages/admin/event-desk.js`, `js/pages/admin/api.js`, `js/pages/admin/admin.css`, `supabase/functions/admin-builds/index.ts`, a new event-winner migration, `docs/pages/admin.md`, the affected legal pages, and this handoff. The feature will let an owner select or replace one winner only for an event whose configured voting is off; persistence and authorization remain server-side, while public event configuration and unrelated admin functions stay unchanged.
@@ -1908,3 +1912,9 @@ None.
 - Reworked the dedicated `/builds/view/` desktop scaling so `--build-desktop-scale` zooms only `.build-layout`, following the Items page's viewport-shell pattern. The shared nav, screen frame, background, and slim footer now retain their normal viewport sizing instead of being body-zoomed; mobile remains on the existing stacked layout.
 - Removed the fixed desktop frame-edge overrides and body min-height compensation from `js/pages/build/index.js`/`build.css`; nav spacer height now follows the actual unscaled nav height.
 - Verification: Playwright screenshots and geometry checks passed at 2560x1440, 1920x1080, and 390x844. At 1920x1080 the page uses body zoom `1`, build scale `0.75`, footer bottom `1080`, and no horizontal overflow. All three viewports reported no console errors, page errors, or failed requests. `node --check js/pages/build/index.js` and `git diff --check` pass.
+
+### 2026-10-11 shared nav density and Builds top-gap correction complete
+
+- The fixed desktop navigation shell now scales from the 2560x1440 reference using the same viewport-density logic as the Builds composition. The in-flow `#site-nav-space` follows the transformed shell's visual bottom, so content no longer waits through the old full-size nav height. The existing <=1100px mobile header and drawer remain unscaled.
+- Reduced `.build-main` top padding from `2.25rem` to `0.75rem` so the Builds content starts closer to the nav and gains vertical room. The 2560x1440 reference nav remains unchanged.
+- Verification: Playwright checks passed at Builds 2560x1440, 1920x1080, 1600x900, and 390x844, plus Items 1920x1080. Desktop scale values were 1, 0.75, and 0.625 respectively; footer bottoms matched the viewport, horizontal scroll stayed at viewport width, and all checks reported no console errors, page errors, or failed requests. CLI snapshot verification also passed.
