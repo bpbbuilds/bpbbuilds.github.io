@@ -6,6 +6,10 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+### 2026-10-10 Builds view slim footer
+
+- Claimed `builds/view/index.html`, `js/pages/build/index.js`, and this handoff to use the existing slim footer variant on the dedicated `/builds/view/` page without changing the shared footer or the separate build-history page.
+
 ### 2026-10-04 admin-selected event winners (in progress)
 
 - Claimed `js/pages/admin/event-desk.js`, `js/pages/admin/api.js`, `js/pages/admin/admin.css`, `supabase/functions/admin-builds/index.ts`, a new event-winner migration, `docs/pages/admin.md`, the affected legal pages, and this handoff. The feature will let an owner select or replace one winner only for an event whose configured voting is off; persistence and authorization remain server-side, while public event configuration and unrelated admin functions stay unchanged.

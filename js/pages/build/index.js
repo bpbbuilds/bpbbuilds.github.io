@@ -4,7 +4,9 @@ import { initBuildPage } from './page.js';
 
 async function boot() {
   if (!(await initNav())) return;
-  initFooter();
+  initFooter({
+    variant: document.body.dataset.footerVariant === 'slim' ? 'slim' : 'default',
+  });
   initBuildPage();
 }
 
