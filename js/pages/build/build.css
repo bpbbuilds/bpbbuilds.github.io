@@ -42,6 +42,17 @@ body.page-build {
   color: var(--bpb-ink);
 }
 
+/* Desktop builds view uses the 2560×1440 layout as its visual reference.
+   The view scales down proportionally on shorter/narrower desktop windows;
+   the existing <=1100px mobile layout remains independent. */
+@media (min-width: 1101px) {
+  body.page-build-view {
+    zoom: var(--build-desktop-scale, 1);
+    --bpb-frame-edge-x: 53.333333px;
+    --bpb-frame-edge-y: 53.333333px;
+  }
+}
+
 .build-main {
   --build-catalog-width: 45rem;
   width: 100%;

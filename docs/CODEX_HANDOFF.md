@@ -6,9 +6,9 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
-### 2026-10-10 Builds view slim footer
+### 2026-10-10 Builds view desktop scaling
 
-- Claimed `builds/view/index.html`, `js/pages/build/index.js`, and this handoff to use the existing slim footer variant on the dedicated `/builds/view/` page without changing the shared footer or the separate build-history page.
+- Claimed `builds/view/index.html`, `js/pages/build/index.js`, `js/pages/build/build.css`, and this handoff to use the existing slim footer and scale the dedicated `/builds/view/` desktop layout to the 2560×1440 reference without changing the shared footer or the separate build-history page.
 
 ### 2026-10-04 admin-selected event winners (in progress)
 
