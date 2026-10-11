@@ -328,6 +328,17 @@ function promoUsesSides() {
 }
 
 /**
+ * Pause the decorative loop while its section is away from the viewport.
+ * @param {{ active: boolean, wait: () => Promise<void> } | null | undefined} activity
+ * @param {HTMLElement} boardHost
+ */
+async function waitForPromoActivity(activity, boardHost) {
+  while (activity && !activity.active && boardHost.isConnected) {
+    await activity.wait();
+  }
+}
+
+/**
  * Visual sprite size on the board (sprite-display cells × cellPx), not the
  * occupancy AABB — art often spills past the footprint.
  * @param {object | null} item
@@ -516,6 +527,7 @@ function fadeNewBagChrome(boardHost) {
  *   infoEl?: HTMLElement | null,
  *   root: string,
  *   catalogReady?: Promise<unknown>,
+ *   activity?: { active: boolean, wait: () => Promise<void> },
  * }} opts
  */
 export async function playAssemble(opts) {
@@ -566,6 +578,7 @@ export async function playAssemble(opts) {
 
   while (boardHost.isConnected) {
     for (const build of builds) {
+      await waitForPromoActivity(opts.activity, boardHost);
       if (!boardHost.isConnected) return;
       const mapped = placementsForBuild(build, {
         shapes: extras.shapes,
@@ -597,6 +610,7 @@ export async function playAssemble(opts) {
       const placed = [];
       let wave = 0;
       for (const group of groupPlacements(ordered)) {
+        await waitForPromoActivity(opts.activity, boardHost);
         if (!boardHost.isConnected) return;
         const first = group[0];
         const item = mapped.itemsById.get(first.id);

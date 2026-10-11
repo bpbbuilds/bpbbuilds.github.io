@@ -19,10 +19,9 @@ export const T_REDUCED = 6;
 /** Seconds — follow scroll so discrete rAF/scroll ticks don’t hitch. */
 const SMOOTH_SEC = 0.07;
 
-function scrollTime(reduced) {
+function scrollTime(reduced, maxScrollY) {
   if (reduced) return T_REDUCED;
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  const p = max <= 0 ? 0 : Math.min(1, Math.max(0, window.scrollY / max));
+  const p = maxScrollY <= 0 ? 0 : Math.min(1, Math.max(0, window.scrollY / maxScrollY));
   return T_START + p * (T_END - T_START);
 }
 
@@ -42,7 +41,13 @@ export function initCombatSky() {
   const layers = bindSkyLayers(host);
   fitScale(host);
 
-  let displayT = scrollTime(reduced);
+  let maxScrollY = 0;
+  const measureScrollRange = () => {
+    maxScrollY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  };
+  measureScrollRange();
+
+  let displayT = scrollTime(reduced, maxScrollY);
   applyTime(layers, displayT);
 
   let raf = 0;
@@ -50,7 +55,7 @@ export function initCombatSky() {
 
   const tick = (ts) => {
     raf = 0;
-    const target = scrollTime(reduced);
+    const target = scrollTime(reduced, maxScrollY);
     const dt = lastTs ? Math.min(0.05, (ts - lastTs) / 1000) : 0.016;
     lastTs = ts;
     if (reduced) {
@@ -79,6 +84,7 @@ export function initCombatSky() {
   window.addEventListener(
     'resize',
     () => {
+      measureScrollRange();
       fitScale(host);
       queue();
     },

@@ -48,6 +48,7 @@ let watching = false;
  *   agitation: number,
  *   maskNw: number,
  *   maskNh: number,
+ *   decorative: boolean,
  *   frozen: boolean,
  *   holoMask: HTMLImageElement | null,
  *   ro: ResizeObserver | null,
@@ -222,7 +223,12 @@ function tick(now) {
   visible.sort((a, b) => (b.priority || 0) - (a.priority || 0));
   const drawList = visible.slice(0, MAX_DRAW);
   for (const st of drawList) {
+    // The homepage promo is decorative. Draw its liquid/holo once, then keep
+    // the painted canvas as a still while the section is visible. Repainting
+    // every animation frame was a large source of scroll-time layout work.
+    const staticArt = reduced || st.decorative;
     if (st.kind === 'potion' && st.canvas) {
+      if (staticArt && st.frozen) continue;
       const speed = 60 * dt;
       if (st.targetLevel !== st.level) {
         const dir = st.targetLevel < st.level ? -1 : 1;
@@ -235,7 +241,7 @@ function tick(now) {
       // Web CSS rotate() + canvas Y-flip need the opposite face sign so liquid
       // settles to screen-bottom (not the ceiling) when the flask spins.
       st.faceRad = readItemFaceRad(st);
-      if (!reduced) {
+      if (!staticArt) {
         st.dragBoost *= Math.exp(-10 * dt);
         st.agitation = (st.agitation || 0) * Math.exp(-4.5 * dt);
         const baseFoam = st.spec.baseFoaminess || 0.05;
@@ -257,15 +263,15 @@ function tick(now) {
         foamOffset: st.foamOffset,
         levelOffset: st.level,
       });
-      st.frozen = reduced;
+      st.frozen = staticArt;
     } else if ((st.kind === 'holo' || st.spec.holo) && st.canvas) {
       const spec = st.spec.holo || st.spec;
-      if (reduced && st.frozen) continue;
+      if (staticArt && st.frozen) continue;
       drawHolo(st.canvas, spec, st.holoMask, reduced ? 0 : tSec);
-      st.frozen = reduced;
+      st.frozen = staticArt;
     }
   }
-  if (visible.length && !reduced) kick();
+  if (visible.some((st) => !st.decorative) && !reduced) kick();
   else if (visible.some((s) => s.level !== s.targetLevel)) kick();
 }
 
@@ -300,6 +306,7 @@ function bindState(wrap, spec) {
     faceRad: 0,
     agitation: 0,
     frozen: false,
+    decorative: Boolean(wrap.closest('.home-promo')),
     holoMask: null,
     maskNw: 0,
     maskNh: 0,

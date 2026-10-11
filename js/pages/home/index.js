@@ -7,20 +7,51 @@ import { initHomeClassShowcase } from './home-class-showcase.js';
 import { initHomeItemsExplore } from './home-items-explore.js';
 import { initHomeBuildsVault } from './home-builds-vault.js';
 
+/**
+ * Mount below-the-fold sections shortly before they enter view. Keeping their
+ * initial DOM, fetches, and animations out of startup prevents them from
+ * competing with the hero/promo and scroll work on slower phones.
+ * @param {string} selector
+ * @param {() => unknown} mount
+ */
+function mountNearViewport(selector, mount) {
+  const host = document.querySelector(selector);
+  if (!(host instanceof HTMLElement)) return;
+  let mounted = false;
+  /** @type {IntersectionObserver | null} */
+  let observer = null;
+  const start = () => {
+    if (mounted) return;
+    mounted = true;
+    observer?.disconnect();
+    mount();
+  };
+  if (typeof IntersectionObserver === 'undefined') {
+    start();
+    return;
+  }
+  observer = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) start();
+    },
+    { rootMargin: '700px 0px' },
+  );
+  observer.observe(host);
+}
+
 async function boot() {
   if (!(await initNav())) return;
   initCombatSky();
   initFooter();
   initFeaturedStage();
 
-  // Each section owns a page-shaped loading state (catalog stamp, board,
-  // class rail, item orbit, and build cards). Mount that chrome now instead
-  // of waiting for idle time, so a first visit never shows blank bands while
-  // the deferred data work is pending.
+  // First-view sections mount immediately. Lower sections mount with a generous
+  // viewport lead so they are ready when reached without paying their DOM,
+  // network, and animation cost during initial render.
   initHomePromoBand('#home-promo-band', { variant: 'create' });
-  initHomeClassShowcase();
-  initHomeItemsExplore();
-  initHomeBuildsVault();
+  mountNearViewport('#home-class-showcase', initHomeClassShowcase);
+  mountNearViewport('#home-items-explore', initHomeItemsExplore);
+  mountNearViewport('#home-builds-vault', initHomeBuildsVault);
 }
 
 void boot();
