@@ -4,7 +4,6 @@ import { initBuildPage } from './page.js';
 
 const DESKTOP_REFERENCE_WIDTH = 2560;
 const DESKTOP_REFERENCE_HEIGHT = 1440;
-const DESKTOP_REFERENCE_FRAME_EDGE = (DESKTOP_REFERENCE_WIDTH * 40) / 1920;
 
 function syncBuildViewDesktopScale() {
   const body = document.body;
@@ -21,21 +20,12 @@ function syncBuildViewDesktopScale() {
     : 1;
 
   body.style.setProperty('--build-desktop-scale', String(scale));
-  if (isDesktop) {
-    // Keep the screen-frame inset in the same reference coordinate system
-    // before body zoom scales it down with the rest of the desktop page.
-    body.style.setProperty('--bpb-frame-edge-x', `${DESKTOP_REFERENCE_FRAME_EDGE}px`);
-    body.style.setProperty('--bpb-frame-edge-y', `${DESKTOP_REFERENCE_FRAME_EDGE}px`);
-  } else {
-    body.style.removeProperty('--bpb-frame-edge-x');
-    body.style.removeProperty('--bpb-frame-edge-y');
-  }
 
   const nav = document.getElementById('site-nav');
   const navSpace = document.getElementById('site-nav-space');
   if (nav instanceof HTMLElement && navSpace instanceof HTMLElement) {
     const visualHeight = nav.getBoundingClientRect().height;
-    if (visualHeight > 0) navSpace.style.height = `${Math.ceil(visualHeight / scale)}px`;
+    if (visualHeight > 0) navSpace.style.height = `${Math.ceil(visualHeight)}px`;
   }
 }
 

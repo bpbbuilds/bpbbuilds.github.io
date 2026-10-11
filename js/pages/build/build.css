@@ -43,18 +43,15 @@ body.page-build {
 }
 
 /* Desktop builds view uses the 2560×1440 layout as its visual reference.
-   The view scales down proportionally on shorter/narrower desktop windows;
-   the existing <=1100px mobile layout remains independent. */
+   Scale only the build composition when the desktop viewport is smaller so
+   the shared nav, screen frame, background, and footer keep their normal
+   viewport sizing. The existing <=1100px mobile layout remains independent. */
 @media (min-width: 1101px) {
-  body.page-build-view {
+  body.page-build-view .build-layout {
     zoom: var(--build-desktop-scale, 1);
-    min-height: calc(100vh / var(--build-desktop-scale, 1));
-    --bpb-frame-edge-x: 53.333333px;
-    --bpb-frame-edge-y: 53.333333px;
   }
 
-  /* Let the screen frame cover the footer's bottom edge instead of leaving
-     the frame clearance visible as empty space below the page. */
+  /* Keep the footer in the normal page flow under the frame edge. */
   body.page-build-view #site-footer {
     position: relative;
     z-index: 1;
