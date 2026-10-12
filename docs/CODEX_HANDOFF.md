@@ -6,7 +6,7 @@
 ### 2026-10-12 Phoenix / Enraged Phoenix / Dark Lantern synergy audit complete
 - Audited `Exclusive/Phoenix.gd`, inherited `Exclusive/Phoenix2.gd`, and `Exclusive/DarkLantern.gd`: Enraged Phoenix now runs the inherited prepare/resurrection listener and Fire multiplicity (`fire=6`), while Dark Lantern reacts to every owner reincarnation with Fire-linked effect damage and Dark-linked debuffs.
 - Added priority-aware combat-bus dispatch so Dark Lantern's source High trigger priority wins a shared lethal event before Normal-priority Phoenix handlers; its reincarnation signal is emitted before activation and is covered for both Phoenix sources.
-- Added `scripts/sim-phoenix-lantern-smoke.mjs`; it verifies standalone resurrection, Enraged Phoenix crit/multiplicity, Dark Lantern response, and the combined High-priority interaction. Source hook/call audits, focused wave smoke, syntax, diff, and `node scripts/build-sim-fidelity-ledger.mjs --check` pass. Changes are ready for the focused commit/push; unrelated local files remain unstaged.
+- Added `scripts/sim-phoenix-lantern-smoke.mjs`; it verifies standalone resurrection, Enraged Phoenix crit/multiplicity, Dark Lantern response, and the combined High-priority interaction. Source hook/call audits, focused wave smoke, syntax, diff, and `node scripts/build-sim-fidelity-ledger.mjs --check` pass. Committed and pushed as `e3e0bf1`; unrelated local files remain unstaged.
 
 ### 2026-10-12 Ruby Egg start-only Heat/Reflect correction (in progress)
 - Codex owns the Ruby Egg simulator lifecycle port, its no-cooldown regression, source-aligned debuff Reflect behavior, and the focused smoke while correcting the stale cooldown loop.
