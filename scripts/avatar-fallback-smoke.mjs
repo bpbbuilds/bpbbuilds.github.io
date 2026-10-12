@@ -27,7 +27,7 @@ const server = http.createServer((req, res) => {
       import { faceHtml } from '/js/shared/blob-face.js';
       const app = document.querySelector('#app');
       app.innerHTML = faceHtml(
-        { avatar_url: '/bad-avatar.png' },
+        { avatar_url: '/bad-avatar.png', equipped_avatar: 'discord' },
         '/',
         { className: 'test-avatar', alt: 'Jane Doe' },
       );

@@ -23,7 +23,7 @@ create table public.profiles (
   discord_id text not null unique,
   display_name text,
   avatar_url text,
-  equipped_avatar text,                         -- public sim look; NULL/'discord' → avatar_url
+  equipped_avatar text,                         -- public look; NULL → blob, 'discord' → avatar_url
   cosmetic_grants jsonb not null default '[]',  -- event / manual cosmetic ids
   coins integer not null default 0,             -- soft currency; not client-writable
   is_owner boolean not null default false,
@@ -43,7 +43,7 @@ create table public.profiles (
 | `discord_id` | Discord snowflake for `/u/{discord_id}/` |
 | `display_name` | Synced from Discord persona |
 | `avatar_url` | Synced Discord avatar URL |
-| `equipped_avatar` | Public look (`NULL` / `discord` → `avatar_url`; JSON v1 loadout with `base`: `discord` \| `blob` + cosmetic slots). Not overwritten by Discord sync. |
+| `equipped_avatar` | Public look (`NULL` → website blob; `discord` explicitly selects `avatar_url`; JSON v1 loadout with `base`: `discord` \| `blob` + cosmetic slots). Not overwritten by Discord sync. |
 | `cosmetic_grants` | JSON array of blob cosmetic ids (e.g. event winners). Public read; not client-writable. |
 | `coins` | Soft currency balance for future cosmetic buy/sell. Public read; not client-writable (`≥ 0`). |
 | `is_owner` | Site admin: `/admin/` + nav checkmark; also client Premium bypass. Self-only. |

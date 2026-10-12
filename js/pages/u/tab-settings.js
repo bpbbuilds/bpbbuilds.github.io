@@ -42,7 +42,7 @@ function identityChoiceHtml(mode, current, face) {
  * @param {object} profile
  */
 function discordFaceHtml(profile, root) {
-  return faceHtml(profile, root, {
+  return faceHtml({ ...profile, equipped_avatar: 'discord' }, root, {
     className: 'profile-settings__face',
     size: 84,
     alt: String(profile?.display_name || 'Discord profile picture'),

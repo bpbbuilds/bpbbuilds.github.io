@@ -122,7 +122,7 @@ Persist last dummy preset in `localStorage`; deep-link when practical.
 ### Avatars (art)
 
 - Class full-body sprites: `assets/characters/char-{class}.png` via `classCharacterPath`
-- Equipped profile: `profiles.equipped_avatar` → Discord `avatar_url` ([`profile-avatar.js`](../../js/shared/profile-avatar.js)); Light blobs deepen the same path later
+- Equipped profile: `profiles.equipped_avatar` → website blob by default, or explicit Discord `avatar_url` ([`profile-avatar.js`](../../js/shared/profile-avatar.js))
 - Dummy: [`assets/sim/dummy/dummy.png`](../../assets/sim/dummy/dummy.png)
 
 **v1 shipped (superseded chrome):** opp-column mode tabs ([`sim-foe-mode.js`](../../js/pages/sim/foe/sim-foe-mode.js)), under-sprite Class / Profile pills ([`sim-avatars.js`](../../js/pages/sim/hud/sim-avatars.js)), dummy settings banner above the bag / rail dock. Replaced by side rails + settings in the empty dummy bag slot.
@@ -194,9 +194,9 @@ Do **one vertical slice at a time**. Engine bugfixes continue in parallel when a
 1. [x] Foe mode switch + public build slug + mirror (promote URL-driven paths to UI) — [`sim-foe-mode.js`](../../js/pages/sim/foe/sim-foe-mode.js)
 2. [x] Dummy settings panel + persist preset — [`sim-dummy-settings.js`](../../js/pages/sim/foe/sim-dummy-settings.js)
 3. [x] Stage avatar slots — large figures under bag columns ([`sim-avatars.js`](../../js/pages/sim/hud/sim-avatars.js)); class character sprites + `assets/sim/dummy/dummy.png`
-4. [x] You avatar pick (class vs Discord profile) — localStorage `bpb-sim-you-avatar`; pills under sprite
+4. [x] You avatar pick (Blob by default; class or Discord profile opt-in) — localStorage `bpb-sim-you-avatar`; avatar rail
 5. [x] Foe avatar pick (v1) — dummy fixed; build / mirror class-vs-profile pills (`bpb-sim-foe-avatar`) — **superseded** by mode-implied avatars in side-rail UX
-6. [x] `profiles.equipped_avatar` public field — [`017_profiles_equipped_avatar.sql`](../db/sql/017_profiles_equipped_avatar.sql); resolve via [`profile-avatar.js`](../../js/shared/profile-avatar.js) (NULL → Discord `avatar_url`)
+6. [x] `profiles.equipped_avatar` public field — [`017_profiles_equipped_avatar.sql`](../db/sql/017_profiles_equipped_avatar.sql); resolve via [`profile-avatar.js`](../../js/shared/profile-avatar.js) (NULL → website blob; explicit `discord` → Discord `avatar_url`)
 7. Art swap: profile base / blob cosmetics later (Light blobs); **dummy PNG shipped** (`assets/sim/dummy/dummy.png`)
 
 ### Phase 2–3 follow-up — side rails (launch; unchecked)

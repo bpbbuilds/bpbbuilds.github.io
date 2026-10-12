@@ -56,7 +56,7 @@ function readPickMode(key) {
   } catch {
     /* ignore */
   }
-  return 'class';
+  return key === YOU_AVATAR_KEY ? 'blob' : 'class';
 }
 
 /**

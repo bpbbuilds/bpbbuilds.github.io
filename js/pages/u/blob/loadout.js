@@ -12,13 +12,14 @@ import { BLOB_SLOT_IDS, isBlobSlotId } from './slots.js';
  * }} BlobLoadout */
 
 /**
+ * @param {'discord' | 'blob'} [base]
  * @returns {BlobLoadout}
  */
-export function emptyLoadout() {
+export function emptyLoadout(base = 'blob') {
   /** @type {Record<BlobSlotId, string | null>} */
   const slots = /** @type {any} */ ({});
   for (const id of BLOB_SLOT_IDS) slots[id] = null;
-  return { v: 1, base: 'discord', slots };
+  return { v: 1, base: base === 'discord' ? 'discord' : 'blob', slots };
 }
 
 /**
@@ -27,14 +28,16 @@ export function emptyLoadout() {
  */
 export function parseLoadout(raw) {
   const s = String(raw || '').trim();
-  if (!s || s === 'discord') return emptyLoadout();
+  if (!s) return emptyLoadout('blob');
+  if (s === 'discord') return emptyLoadout('discord');
 
   if (s.startsWith('{')) {
     try {
       const j = JSON.parse(s);
       if (j && j.v === 1 && j.slots && typeof j.slots === 'object') {
-        const base = emptyLoadout();
-        base.base = String(j.base || 'discord').trim() || 'discord';
+        const base = emptyLoadout(
+          String(j.base || 'blob').trim().toLowerCase() === 'discord' ? 'discord' : 'blob',
+        );
         for (const id of BLOB_SLOT_IDS) {
           const v = j.slots[id];
           base.slots[id] = typeof v === 'string' && v.trim() ? v.trim() : null;
@@ -47,7 +50,7 @@ export function parseLoadout(raw) {
   }
 
   // Legacy single key / URL — treat as face override only.
-  const base = emptyLoadout();
+  const base = emptyLoadout('discord');
   if (/^https?:\/\//i.test(s) || s.startsWith('blob:')) {
     base.slots.face = s;
   }
@@ -59,8 +62,7 @@ export function parseLoadout(raw) {
  * @returns {string}
  */
 export function serializeLoadout(loadout) {
-  const out = emptyLoadout();
-  out.base = String(loadout?.base || 'discord').trim() || 'discord';
+  const out = emptyLoadout(identityMode(loadout));
   for (const id of BLOB_SLOT_IDS) {
     const v = loadout?.slots?.[id];
     out.slots[id] = typeof v === 'string' && v.trim() ? v.trim() : null;
@@ -75,7 +77,7 @@ export function serializeLoadout(loadout) {
  * @returns {'discord' | 'blob'}
  */
 export function identityMode(loadout) {
-  const b = String(loadout?.base || 'discord').trim().toLowerCase();
+  const b = String(loadout?.base || 'blob').trim().toLowerCase();
   return b === 'blob' ? 'blob' : 'discord';
 }
 

@@ -89,7 +89,7 @@ export function parseFaceLoadout(raw) {
   try {
     const j = JSON.parse(s);
     if (!(j && j.v === 1 && j.slots && typeof j.slots === 'object')) return null;
-    const base = String(j.base || 'discord').trim().toLowerCase() === 'blob' ? 'blob' : 'discord';
+    const base = String(j.base || 'blob').trim().toLowerCase() === 'discord' ? 'discord' : 'blob';
     /** @type {Record<string, string | null>} */
     const slots = {};
     for (const id of SLOT_ORDER) {

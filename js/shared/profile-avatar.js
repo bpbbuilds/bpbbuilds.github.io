@@ -2,7 +2,7 @@
  * Resolve the public “equipped” profile look for sim / UGC / nav.
  * Discord sync stays on `avatar_url`; `equipped_avatar` is the optional override
  * (legacy URL / blob key, or JSON v1 loadout from the profile Blob tab).
- * Loadout `base`: `discord` (default) | `blob` (website Light blob).
+ * Loadout `base`: `blob` (default) | `discord` (explicit Discord choice).
  *
  * For blob identity with cosmetics layered on, prefer `faceHtml` / `hydrateFaces`
  * or `bakeBlobFaceUrl` from `blob-face.js` — this helper returns the base PNG only.
@@ -18,7 +18,7 @@ function tryParseLoadout(raw) {
   try {
     const j = JSON.parse(s);
     if (j && j.v === 1 && j.slots && typeof j.slots === 'object') {
-      const base = String(j.base || 'discord').trim().toLowerCase() === 'blob' ? 'blob' : 'discord';
+      const base = String(j.base || 'blob').trim().toLowerCase() === 'discord' ? 'discord' : 'blob';
       return { base, face: j.slots.face || null };
     }
   } catch {
@@ -35,8 +35,10 @@ function tryParseLoadout(raw) {
  * @returns {'discord' | 'blob'}
  */
 export function resolveIdentityMode(profile) {
+  if (!profile || typeof profile !== 'object') return 'discord';
   const equipped = String(profile?.equipped_avatar || '').trim();
-  if (!equipped || equipped === 'discord') return 'discord';
+  if (!equipped) return 'blob';
+  if (equipped === 'discord') return 'discord';
   const loadout = tryParseLoadout(equipped);
   if (loadout) return loadout.base;
   if (equipped.startsWith('blob:') || equipped === 'blob') return 'blob';
@@ -52,10 +54,13 @@ export function resolveIdentityMode(profile) {
  * @returns {string | null}
  */
 export function resolveEquippedAvatarUrl(profile, assetRoot = '../') {
+  if (!profile || typeof profile !== 'object') return null;
   const equipped = String(profile?.equipped_avatar || '').trim();
   const discord = String(profile?.avatar_url || '').trim();
   const root = assetRoot.endsWith('/') ? assetRoot : `${assetRoot}/`;
   const blobBase = `${root}assets/blob/blob-base.png`;
+
+  if (!equipped) return blobBase;
 
   const loadout = tryParseLoadout(equipped);
   if (loadout) {

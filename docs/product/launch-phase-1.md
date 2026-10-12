@@ -60,7 +60,7 @@ Engine work continues ([`sim-phases.md`](../sim/sim-phases.md)); launch needs a 
 - [x] Sim foe modes UI (v1): Dummy / Public build / Mirror — [`sim-foe-mode.js`](../../js/pages/sim/foe/sim-foe-mode.js); `?foe=` + slug Apply; Mirror clones you-board
 - [x] Dummy settings panel + persist last preset (HP, defence/block, attack on/off, damage + interval) — [`sim-dummy-settings.js`](../../js/pages/sim/foe/sim-dummy-settings.js); `localStorage` + URL
 - [x] Stage avatar slots (placeholder art OK)
-- [x] You avatar pick (v1): board class vs equipped profile (under-sprite pills)
+- [x] You avatar pick (v1): Blob by default, with board class or Discord profile as explicit choices
 - [x] Foe avatar pick (v1): dummy fixed; public build = class vs author profile; mirror = independent pick — superseded by mode-implied avatars in side-rail UX
 - [x] Profiles: public equipped avatar field (schema when built) — [`017_profiles_equipped_avatar.sql`](../db/sql/017_profiles_equipped_avatar.sql); apply in Supabase
 - [x] Swap final dummy art ([ChatGPT dummy](../sim/sim-product.md#chatgpt-dummy-art-prompt) → [`assets/sim/dummy/dummy.png`](../../assets/sim/dummy/dummy.png)); profile base / blob still owner WIP
