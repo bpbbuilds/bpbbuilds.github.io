@@ -1,5 +1,10 @@
 # Codex handoff
 
+### 2026-10-12 Live admin entitlement correction complete
+- Audited the live `public.profiles` and `auth.users` records before changing anything. `smojowastaken` was the only requested admin consuming a founding slot; `bpbbuilds` existed as a free, non-founding profile; no `BPB Bot` profile or Auth account exists in the project.
+- Updated only the two verified profiles: `smojowastaken` and `bpbbuilds` now have `is_owner = true`, `plan = 'premium'`, `founding_slot = null`, and `premium_until = null` (owner-backed permanent access). The live founding count changed from 4 to 3; users remain 5. The missing `BPB Bot` identity was not fabricated or modified.
+- Verified the transaction's identity guards, post-update invariants, and live `founding_slots_used()` / `get_founding_status()` response. No product files or unrelated worktree files were changed by this operation.
+
 ### 2026-10-12 Blob-first profile avatar default (in progress)
 - Codex owns the shared profile identity default, Blob loadout default parsing, focused avatar regression coverage, and the related profile-schema documentation for making the website Blob the first-visit/default identity while preserving an explicit Discord profile-picture choice. Scope excludes the unrelated local simulator band edits and untracked admin/debug files in the worktree.
 
