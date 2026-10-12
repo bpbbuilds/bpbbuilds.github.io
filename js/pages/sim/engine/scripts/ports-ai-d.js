@@ -34,7 +34,7 @@ import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from '
  * @param {object} opts
  * @returns {Record<string, number>}
  */
-function multiplyBuffsLimit(actor, fraction, limit, opts = {}) {
+export function multiplyBuffsLimit(actor, fraction, limit, opts = {}) {
   const frac = Math.max(0, Number(fraction) || 0);
   const cap = Math.max(0, Math.round(limit) || 0);
   if (!(frac > 0) || !(cap > 0)) return {};

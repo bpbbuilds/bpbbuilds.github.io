@@ -226,6 +226,7 @@ def main() -> None:
                         "y": it["y"],
                         "r": it["r"],
                         "gems": gem_ids,
+                        **({"instance": {"persistent": it["persistent"]}} if it.get("persistent") else {}),
                     }
                 )
             if not placements:

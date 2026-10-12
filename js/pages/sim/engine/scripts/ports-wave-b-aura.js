@@ -5,7 +5,13 @@
 import { grantStacks, onBuffChanged } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
-import { addBonusDamage, addBonusDamageFromBuffChange, addBonusDamageFactor, addSpeed, multiplyStaminaCost } from '../piece-stats.js';
+import {
+  addBonusDamage,
+  addBonusDamageFactor,
+  addSpeed,
+  changeVaryingDamageFromBuffChange,
+  multiplyStaminaCost,
+} from '../piece-stats.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { itemHasType } from './ports-util.js';
 
@@ -269,26 +275,36 @@ export const villainSwordPort = {
 };
 
 /** DancingDragon.gd — heat + lucky × magic neighbors; heat/lucky bus → dmg / resist. */
+function bindDancingDragonBuff(piece, ctx) {
+  const { player } = ctx;
+  const dmgPerHeat = Math.max(0, Number(getP1(piece.params, 1)) || 0);
+  const resistPerLuck = Math.max(0, Number(piece.chance) || getPName(piece.params, 'chance', 5));
+  if (piece._dancingDragonBuffBound) return;
+  piece._dancingDragonBuffBound = true;
+  onBuffChanged(player, (ch) => {
+    if (ch.stack === 'heat' && ch.amount && dmgPerHeat) {
+      changeVaryingDamageFromBuffChange(piece, ch, dmgPerHeat);
+    }
+    if (ch.stack === 'lucky' && ch.amount && resistPerLuck) {
+      if (!player.stackResist) player.stackResist = {};
+      for (const k of ['poison', 'blind', 'cold']) {
+        player.stackResist[k] = (Number(player.stackResist[k]) || 0) + resistPerLuck * ch.amount;
+      }
+    }
+  });
+}
+
 /** @type {ScriptHandler} */
 export const dancingDragonPort = {
   handlerId: 'dancing_dragon',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    bindDancingDragonBuff(piece, ctx);
+  },
   onCombatStart(piece, ctx) {
+    bindDancingDragonBuff(piece, ctx);
     const { player } = ctx;
     const n = linkedPieces(ctx, piece, (_o, item) => itemHasType(item, 'magic')).length;
-    const dmgPerHeat = Math.max(0, Number(getP1(piece.params, 1)) || 0);
-    const resistPerLuck = Math.max(0, Number(piece.chance) || getPName(piece.params, 'chance', 5));
-    onBuffChanged(player, (ch) => {
-      if (ch.stack === 'heat' && ch.amount && dmgPerHeat) {
-        addBonusDamageFromBuffChange(piece, ch, dmgPerHeat);
-      }
-      if (ch.stack === 'lucky' && ch.amount && resistPerLuck) {
-        if (!player.stackResist) player.stackResist = {};
-        for (const k of ['poison', 'blind', 'cold']) {
-          player.stackResist[k] = (Number(player.stackResist[k]) || 0) + resistPerLuck * ch.amount;
-        }
-      }
-    });
     if (n <= 0) return;
     const heat = Math.max(0, Math.round(getP2(piece.params, 1) * n));
     const luck = Math.max(0, Math.round(getP3(piece.params, 1) * n));

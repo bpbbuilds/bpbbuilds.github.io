@@ -32,6 +32,8 @@ function withPlacementFields(p, patch = {}) {
     priority: p?.priority ?? null,
     ...patch,
   };
+  const instance = patch.instance ?? p?.instance;
+  if (instance && typeof instance === 'object') row.instance = instance;
   const gems = Array.isArray(patch.gems)
     ? patch.gems.slice()
     : Array.isArray(p?.gems)
@@ -175,6 +177,7 @@ export function commitTryAdd(args) {
     prevHeld || {
       id: cur.itemId,
       priority: null,
+      instance: cur.instance,
       ...gemCarry(cur),
     };
 

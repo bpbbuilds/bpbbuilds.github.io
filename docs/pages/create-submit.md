@@ -13,7 +13,7 @@ Discord session required at Submit (drafting stays anonymous). The browser never
 
 **Request OP:** the create tag is labeled **Request OP**; when on, Submit reads **Submit for OP review**. Payload still sends `is_op: true`; the Edge Function sets `op_requested` and keeps public `is_op` false until admin approve. The build page shows **OP pending** while waiting.
 
-**OP review requirements (client + `submit-build`):** at least one board item in each essentials tier (**Needs** / **Wants** / **Good to have**), and a trimmed **Why it works** note of **≥ 30** characters. Request OP still cannot pair with Theory.
+**Submission requirements (client + `submit-build`):** at least one board item in each essentials tier (**Needs** / **Wants** / **Good to have**). OP review additionally requires a trimmed **Why it works** note of **≥ 30** characters. Request OP still cannot pair with Theory.
 
 ## Remix preload
 

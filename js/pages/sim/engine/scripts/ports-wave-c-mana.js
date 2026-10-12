@@ -12,7 +12,11 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
-import { addBonusDamage, addBonusDamageFromBuffChange, addSpeed } from '../piece-stats.js';
+import {
+  addBonusDamage,
+  addSpeed,
+  changeVaryingDamageFromBuffChange,
+} from '../piece-stats.js';
 import { hasCombatCooldown } from './food-helpers.js';
 import { dealHit, stealLife } from './handlers.js';
 import { weaponStrike } from './ports-wave-c-util.js';
@@ -226,16 +230,25 @@ export const critwoodStaffPort = {
 };
 
 /** CupcakeStaff.gd — mana → most buffs; buff deltas scale damage. */
+function bindCupcakeBuff(piece, ctx) {
+  const per = Number(getPName(piece.params, 'dam', getP3(piece.params, 1))) || 0;
+  if (piece._cupcakeBuffBound) return;
+  piece._cupcakeBuffBound = true;
+  onBuffChanged(ctx.player, (ch) => {
+    if (!per || !BUFF_KEYS.includes(String(ch.stack))) return;
+    changeVaryingDamageFromBuffChange(piece, ch, per);
+  });
+}
+
 /** @type {ScriptHandler} */
 export const cupcakeStaffPort = {
   handlerId: 'cupcake_staff',
   family: 'on_hit',
+  onPrepare(piece, ctx) {
+    bindCupcakeBuff(piece, ctx);
+  },
   onCombatStart(piece, ctx) {
-    const per = Number(getPName(piece.params, 'dam', getP3(piece.params, 1))) || 0;
-    onBuffChanged(ctx.player, (ch) => {
-      if (!per || !BUFF_KEYS.includes(String(ch.stack))) return;
-      addBonusDamageFromBuffChange(piece, ch, per);
-    });
+    bindCupcakeBuff(piece, ctx);
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'cupcake_staff');

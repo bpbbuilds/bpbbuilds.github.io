@@ -41,12 +41,13 @@ function identityChoiceHtml(mode, current, face) {
 /**
  * @param {object} profile
  */
-function discordFaceHtml(profile) {
-  const url = String(profile?.avatar_url || '').trim();
-  if (!url) {
-    return `<span class="profile-settings__face profile-settings__face--empty" aria-hidden="true"></span>`;
-  }
-  return `<img class="profile-settings__face" src="${escapeAttr(url)}" alt="" width="84" height="84" draggable="false" />`;
+function discordFaceHtml(profile, root) {
+  return faceHtml(profile, root, {
+    className: 'profile-settings__face',
+    size: 84,
+    alt: String(profile?.display_name || 'Discord profile picture'),
+    emptyHtml: '<span class="profile-settings__face profile-settings__face--empty" aria-hidden="true"></span>',
+  });
 }
 
 /**
@@ -153,7 +154,7 @@ export function mountSettingsTab(stage, ctx) {
           <h3 class="profile-settings__heading">Identity</h3>
           <p class="profile-settings__hint">Click the picture you want shown on your profile, in the nav, and in the combat sandbox.</p>
           <div class="profile-settings__identity" role="radiogroup" aria-label="Public identity">
-            ${identityChoiceHtml('discord', identity, discordFaceHtml(profile))}
+            ${identityChoiceHtml('discord', identity, discordFaceHtml(profile, root))}
             ${identityChoiceHtml('blob', identity, blobFaceHtml(profile, root))}
           </div>
           <p class="profile-settings__fact" data-profile-identity-status hidden></p>

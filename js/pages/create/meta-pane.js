@@ -12,6 +12,7 @@ import {
 import { createOpInfoModal } from './op-info-modal.js';
 import { sumBoardGold } from './draft-gold.js';
 import { createMetaDrops } from './meta-drops.js';
+import { hasBoardItems } from './meta-drop-guards.js';
 import { tryAutoPlaceStartingBag } from './starting-bag-place.js';
 import { boardMentionIds } from '../../shared/item-mentions.js';
 import { mountNotesComposer } from './notes-composer.js';
@@ -233,6 +234,7 @@ export function mountMetaPane(host, opts) {
 
   function getAllowedIds() {
     const d = state.getDraft();
+    if (!hasBoardItems(d.placements)) return new Set();
     return d.history?.rounds?.length ? boardMentionIds(d.placements) : null;
   }
 
@@ -309,7 +311,10 @@ export function mountMetaPane(host, opts) {
     notesComposer?.setNotes(d.notes || '');
     const notesHint = host.querySelector('[data-notes-hint]');
     if (notesHint instanceof HTMLElement) {
-      if (d.history?.rounds?.length) {
+      if (!hasBoardItems(d.placements)) {
+        notesHint.textContent =
+          'Place an item on the board before dragging or mentioning item chips.';
+      } else if (d.history?.rounds?.length) {
         notesHint.textContent =
           'History attached — only items on this board can be inserted.';
       } else if (d.is_op) {
@@ -322,9 +327,8 @@ export function mountMetaPane(host, opts) {
     }
     const essHint = host.querySelector('[data-ess-hint]');
     if (essHint instanceof HTMLElement) {
-      essHint.textContent = d.is_op
-        ? 'Required for OP review: at least one item in Needs, Wants, and Good to have. Drag from the board.'
-        : 'Drag a board item onto a tier (item must be on the board first).';
+      essHint.textContent =
+        'Required for every submitted build: at least one item in Needs, Wants, and Good to have. Drag from the board.';
     }
     const yt = d.youtube_url || '';
     if (youtubeInput instanceof HTMLInputElement && youtubeInput.value !== yt) {

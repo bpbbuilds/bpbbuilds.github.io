@@ -34,6 +34,7 @@ import {
 } from './shell/sim-permalink.js';
 import { mergeLiveItemStats, pieceSnapAt } from './shell/sim-live-item.js';
 import { computePlacementCounters } from '../create/board-live-stats.js';
+import { ringEffectsFromPersistent } from '../../shared/ring-config.js';
 import { tagOpponentPlacements } from './engine/vs-board.js';
 import { simBagStageHtml, mountSimRoundPicker } from './controls/sim-round-picker.js';
 import {
@@ -573,7 +574,14 @@ export async function initSimPage() {
             resolveKey,
           )
         : null;
-    return mergeLiveItemStats(base, live, t, { placementCounters });
+    const placement = resolveKey
+      ? placements.find((p) => String(p.key) === String(resolveKey))
+      : null;
+    const ringEffects =
+      placement && (id === 'magic_ring' || id === 'superior_ring')
+        ? ringEffectsFromPersistent(placement.instance?.persistent, id)
+        : null;
+    return mergeLiveItemStats(base, live, t, { placementCounters, ringEffects });
   }
 
   tip.bind(bagsHost instanceof HTMLElement ? bagsHost : bagHost, {

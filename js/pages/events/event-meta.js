@@ -2,6 +2,10 @@
  * Featured / detail meta strip — timer + participant stack.
  */
 
+import { bindAvatarFallback } from '../../shared/blob-face.js';
+
+bindAvatarFallback();
+
 /** @typedef {import('./catalog-data.js').CatalogEvent} CatalogEvent */
 /** @typedef {import('./catalog-data.js').EventStatus} EventStatus */
 /** @typedef {import('./catalog-data.js').EventParticipant} EventParticipant */
@@ -171,7 +175,7 @@ function participantFaceHtml(p, root, z) {
   if (blobSrc) {
     inner = `<img class="events-meta__face-img events-meta__face-img--blob" src="${escapeAttr(blobSrc)}" alt="" width="36" height="36" draggable="false" />`;
   } else if (avatar) {
-    inner = `<img class="events-meta__face-img" src="${escapeAttr(avatar)}" alt="" width="36" height="36" draggable="false" />`;
+    inner = `<img class="events-meta__face-img" src="${escapeAttr(avatar)}" alt="${escapeAttr(name)}" width="36" height="36" draggable="false" data-bpb-avatar-img="1" data-bpb-avatar-class="events-meta__face-img" data-bpb-avatar-mode="initials" data-bpb-avatar-name="${escapeAttr(name)}" />`;
   } else {
     inner = `<span class="events-meta__face-img events-meta__face-img--initials" aria-hidden="true">${escapeHtml(initials)}</span>`;
   }

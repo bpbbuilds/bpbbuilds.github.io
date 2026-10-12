@@ -17,6 +17,7 @@ import { eventTimerHtml } from './event-meta.js';
 import { hydrateEventWinner, winnerStageHtml } from './event-winner.js';
 import { openEnterWizard, resumeEnterWizardIfNeeded } from './enter-wizard.js';
 import { scheduleSectionHtml } from './event-drafts.js';
+import { getProfile, onAuthChange } from '../../shared/auth.js';
 import {
   EVENT_DETAIL_TAB_LABELS,
   eventDetailTabFromLocation,
@@ -185,8 +186,9 @@ function overviewStageHtml(event, root) {
 /**
  * @param {CatalogEvent} event
  * @param {string} root
+ * @param {boolean} [canMine]
  */
-function buildsStageHtml(event, root) {
+function buildsStageHtml(event, root, canMine = false) {
   const base = root.endsWith('/') ? root : `${root}/`;
   const feedHref = `${base}builds/?event=${encodeURIComponent(event.slug)}`;
   const mineHref = `${feedHref}&mine=1`;
@@ -211,9 +213,11 @@ function buildsStageHtml(event, root) {
   } else if (entriesOpen) {
     title = 'Your entry stays private';
     blurb = `Other players cannot see submitted boards, so nobody can copy mid-contest. After you enter, you can open <strong>your</strong> submission here. The gallery opens when ${opensWhen}.`;
-    actions = `<p class="events-detail-stage__actions">
-      <a class="events-cta" href="${escapeAttr(mineHref)}">View my entry</a>
-    </p>`;
+    if (canMine) {
+      actions = `<p class="events-detail-stage__actions">
+        <a class="events-cta" href="${escapeAttr(mineHref)}">View my entry</a>
+      </p>`;
+    }
   } else if (upcoming) {
     title = 'Builds unlock later';
     blurb = `Entries aren't open yet. When the contest is running, only <strong>you</strong> will see your own board here. The gallery opens when ${opensWhen}.`;
@@ -307,10 +311,11 @@ function rewardsStageHtml(event, root) {
  * @param {EventDetailTabId} tab
  * @param {CatalogEvent} event
  * @param {string} root
+ * @param {{ canMine?: boolean }} [opts]
  */
-function stageHtml(tab, event, root) {
+function stageHtml(tab, event, root, opts = {}) {
   if (tab === 'overview') return overviewStageHtml(event, root);
-  if (tab === 'builds') return buildsStageHtml(event, root);
+  if (tab === 'builds') return buildsStageHtml(event, root, opts.canMine === true);
   if (tab === 'voting') return votingStageHtml(event, root);
   if (tab === 'winner') return winnerStageHtml(event);
   if (tab === 'rewards') return rewardsStageHtml(event, root);
@@ -442,11 +447,13 @@ export function bindEventDetailHub(rootEl, event, opts = {}) {
 
   /** @type {EventDetailTabId} */
   let active = normalizeEventDetailTab(eventDetailTabFromLocation(allowed), allowed);
+  let canMine = false;
+  let destroyed = false;
 
   const paintStage = () => {
     const stage = hub.querySelector('[data-event-detail-stage]');
     if (stage instanceof HTMLElement) {
-      stage.innerHTML = stageHtml(active, event, siteRoot);
+      stage.innerHTML = stageHtml(active, event, siteRoot, { canMine });
     }
     hub.querySelectorAll('[data-event-detail-tab]').forEach((el) => {
       if (!(el instanceof HTMLButtonElement)) return;
@@ -500,11 +507,29 @@ export function bindEventDetailHub(rootEl, event, opts = {}) {
   hub.addEventListener('click', onClick);
   window.addEventListener('popstate', onPop);
   paintStage();
+  const unbindAuth = onAuthChange(async () => {
+    const profile = await getProfile({ force: true }).catch(() => null);
+    const next = Boolean(profile?.id);
+    if (destroyed || next === canMine) return;
+    canMine = next;
+    paintStage();
+  });
+  void getProfile()
+    .then((profile) => {
+      if (destroyed) return;
+      const next = Boolean(profile?.id);
+      if (next === canMine) return;
+      canMine = next;
+      paintStage();
+    })
+    .catch(() => {});
   void resumeEnterWizardIfNeeded(event, { root: siteRoot });
 
   return () => {
+    destroyed = true;
     hub.removeEventListener('click', onClick);
     window.removeEventListener('popstate', onPop);
+    unbindAuth();
   };
 }
 

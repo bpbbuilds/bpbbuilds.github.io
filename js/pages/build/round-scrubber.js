@@ -22,7 +22,7 @@ const BUILD_PLAY_REASON = 'Play this build in the combat sandbox.';
  * @typedef {{
  *   round: number,
  *   result: RoundResult,
- *   placements: { id: string, x: number, y: number, key?: string, r?: number }[],
+ *   placements: { id: string, x: number, y: number, key?: string, r?: number, instance?: object }[],
  * }} RoundFrame
  */
 
@@ -33,7 +33,7 @@ const BUILD_PLAY_REASON = 'Play this build in the combat sandbox.';
  *   rounds?: {
  *     round: number,
  *     result: string,
- *     placements: { id: string, x: number, y: number, key?: string, r?: number }[],
+ *     placements: { id: string, x: number, y: number, key?: string, r?: number, instance?: object }[],
  *   }[],
  * } | null} historyRun
  * @returns {RoundFrame[]}
@@ -53,6 +53,7 @@ export function framesFromHistoryRun(historyRun) {
         r: Number(p.r) || 0,
         key: p.key != null ? String(p.key) : undefined,
         gems: Array.isArray(p.gems) ? p.gems : undefined,
+        instance: p.instance && typeof p.instance === 'object' ? p.instance : undefined,
       })),
   }));
 }

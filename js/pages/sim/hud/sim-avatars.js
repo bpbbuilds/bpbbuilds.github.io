@@ -4,6 +4,9 @@
  */
 
 import { classCharacterPath } from '../../../shared/class-icons.js';
+import { bindAvatarFallback } from '../../../shared/blob-face.js';
+
+bindAvatarFallback();
 
 export const YOU_AVATAR_KEY = 'bpb-sim-you-avatar';
 export const FOE_AVATAR_KEY = 'bpb-sim-foe-avatar';
@@ -221,6 +224,7 @@ export function avatarSlotHtml(side, avatar) {
       <img
         class="sim-avatar__img"
         data-sim-avatar-img
+        ${kind === 'profile' ? 'data-bpb-avatar-img="1" data-bpb-avatar-class="sim-avatar__img" data-bpb-avatar-mode="initials" data-bpb-avatar-name="' + escapeAttr(avatar.label) + '"' : ''}
         src="${escapeAttr(avatar.src)}"
         alt="${escapeAttr(avatar.label)}"
         title="${escapeAttr(avatar.label)}"
@@ -315,8 +319,26 @@ export function setAvatarSrc(slot, avatar) {
   slot.classList.toggle('sim-avatar--class', kind === 'class');
   slot.classList.toggle('sim-avatar--profile', kind === 'profile');
   slot.classList.toggle('sim-avatar--blob', kind === 'blob');
-  const img = slot.querySelector('[data-sim-avatar-img]');
-  if (!(img instanceof HTMLImageElement)) return;
+  let img = slot.querySelector('[data-sim-avatar-img]');
+  if (!(img instanceof HTMLImageElement)) {
+    const fallback = slot.querySelector('[data-bpb-avatar-fallback]');
+    if (!(fallback instanceof HTMLElement)) return;
+    img = document.createElement('img');
+    img.className = 'sim-avatar__img';
+    img.dataset.simAvatarImg = '';
+    fallback.replaceWith(img);
+  }
+  if (kind === 'profile') {
+    img.dataset.bpbAvatarImg = '1';
+    img.dataset.bpbAvatarClass = 'sim-avatar__img';
+    img.dataset.bpbAvatarMode = 'initials';
+    img.dataset.bpbAvatarName = avatar.label;
+  } else {
+    delete img.dataset.bpbAvatarImg;
+    delete img.dataset.bpbAvatarClass;
+    delete img.dataset.bpbAvatarMode;
+    delete img.dataset.bpbAvatarName;
+  }
   img.src = avatar.src;
   img.alt = avatar.label;
   img.title = avatar.label;

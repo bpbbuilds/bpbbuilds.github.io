@@ -88,6 +88,14 @@ export function createPreviewController(deps) {
     const boardRect = m?.boardRect || board.getBoundingClientRect();
     const stageRect = m?.stageRect || stageEl.getBoundingClientRect();
     const placements = state.getDraft().placements;
+    affect?.syncBagBorders?.({
+      item,
+      placements,
+      itemsById,
+      clientX,
+      clientY,
+      boardRect,
+    });
     const mode = getEditMode();
     const pickX = clientX;
     const pickY = clientY - pickOffsetPx();
@@ -164,14 +172,15 @@ export function createPreviewController(deps) {
     return tryAdd;
   }
 
-  function hidePreview() {
+  function hidePreview(opts = {}) {
     if (ghostEl instanceof HTMLElement) {
       ghostEl.hidden = true;
       ghostEl.replaceChildren();
       ghostEl.classList.remove('is-bag', 'is-valid', 'is-invalid');
     }
     invPreview?.clear();
-    affect?.clear();
+    if (opts.keepBagBorders) affect?.clearAffectTiles?.();
+    else affect?.clear();
     lastTryAdd = null;
   }
 

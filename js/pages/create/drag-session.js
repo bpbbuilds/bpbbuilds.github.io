@@ -341,7 +341,14 @@ export function attachDragSession(opts) {
     view.setSellHover?.(overSell);
     metaDrop?.updateDropHover?.(drag, p.x, p.y, heldItemRect());
     if (overStorage || overSell || overMeta || overCatalog) {
-      preview.hidePreview?.();
+      affect?.syncBagBorders?.({
+        item: itemsById.get(drag.itemId),
+        placements: state.getDraft().placements,
+        itemsById,
+        clientX: p.x,
+        clientY: p.y,
+      });
+      preview.hidePreview?.({ keepBagBorders: true });
     } else {
       preview.previewAt(
         drag.itemId,
@@ -494,12 +501,14 @@ export function attachDragSession(opts) {
       fromPark: true,
       placeKey,
       cargo: [],
+      instance: entry.instance,
       ...gemCarry(entry),
       restoreParked: {
         id: entry.id,
         r: entry.r || 0,
         key: placeKey,
         priority: entry.priority ?? null,
+        instance: entry.instance,
         ...gemCarry(entry),
       },
     };

@@ -18,6 +18,7 @@ import {
   bindFeedFilters,
   defaultFeedFilterState,
   feedFiltersHtml,
+  syncFeedPersonalFilters,
   syncFeedFiltersUi,
 } from '../../builds/feed-filters.js';
 
@@ -304,7 +305,7 @@ export function openSimBuildBrowser(fieldEl, opts) {
             { label: 'Loading builds' },
           )}
         </div>
-        ${feedFiltersHtml(root, feed, 0, { canMine: false })}
+        ${feedFiltersHtml(root, feed, 0, { canMine: false, canPersonal: false })}
       </div>
     </div>
   `;
@@ -449,6 +450,7 @@ export function openSimBuildBrowser(fieldEl, opts) {
       shapes = shapeData;
       sockets = socketData;
       myAuthorId = profile?.id || null;
+      syncFeedPersonalFilters(rail, Boolean(myAuthorId));
       searchInput?.setItems(itemsFromBuilds(all));
       searchInput?.setUsers(usersFromBuilds(all));
       const mineBtn = rail?.querySelector('[data-feed-mine]');

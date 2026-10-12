@@ -6,6 +6,7 @@ import { shapeForItem, bodyBounds } from './shape.js';
 import { spriteSizeStyle } from './sprite-size.js';
 import { animateSpinRotate, prefersReducedMotion, readRotateDeg, writeSpinRotate } from './face-spin.js';
 import { liveInnerHtml, mountLiveArt, syncLiveArtFace, unmountLiveArt } from '../item-live-art/index.js';
+import { hasInventoryDuration } from './can-affect.js';
 
 const CDN = 'https://awerc.github.io/bpb-cdn';
 /** Off-board park X (em), mirrors game clear() parking. */
@@ -549,6 +550,7 @@ export function filterEntriesNearViewport(
  *   chrome?: boolean,
  *   shadow?: boolean,
  *   bagSlots?: boolean,
+ *   placementKey?: string,
  * }} [opts]
  *   deferSprite: Itemiary pool — data-src only until warm/IO (parked eager would fetch all).
  *   chrome: hover markers / hit pads / empty sockets (default true).
@@ -634,6 +636,10 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
   // hit z-index alone can no longer lift items above bags painted later in DOM.
   const itemClass = String(item.class || 'Neutral');
   const itemType = String(item.type || '');
+  const ringConfig =
+    opts.placementKey && (item.id === 'magic_ring' || item.id === 'superior_ring')
+      ? `<button type="button" class="bpb-ring-config cr-submit-info" data-ring-config aria-label="Configure ${escapeAttr(item.name)}" aria-haspopup="dialog" aria-expanded="false"><span aria-hidden="true">i</span></button>`
+      : '';
   const extraTypes = Array.isArray(item.extraTypes) ? item.extraTypes.map(String).join(',') : '';
   const tags = Array.isArray(item.tags) ? item.tags.map(String).join(',') : '';
   const html = `
@@ -651,7 +657,7 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
       data-block="${escapeAttr(item.block ?? '')}"
       data-chance="${escapeAttr(item.chance ?? '')}"
       data-stamina-cost="${escapeAttr(item.staminaCost ?? '')}"
-      data-has-inventory-duration="${item.params?.dur != null ? '1' : ''}"
+      data-has-inventory-duration="${hasInventoryDuration(item) ? '1' : ''}"
       data-effect="${escapeAttr(item.effect ?? '')}"
       data-face="${r}"
       data-rarity="${escapeAttr(rarity)}"
@@ -663,6 +669,7 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
           ? `<span class="bpb-bg__unrecognized-label" aria-hidden="true">?</span>`
           : ''
       }
+      ${ringConfig}
       ${
         shadowImg
           ? `<div class="bpb-bg__spin bpb-bg__spin--shadow" style="${shadowSpinStyle}" aria-hidden="true">${shadowImg}</div>`

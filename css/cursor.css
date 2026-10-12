@@ -64,13 +64,18 @@ html.bpb-cursor-down.bpb-cursor-kind-ew * {
   cursor: var(--bpb-cursor-ew-down) !important;
 }
 
-/* Full hand, drawn as an element so it can hang off the screen edge.
-   Chrome drops a CSS cursor in that band and the footer was using a tiny hand. */
-html.bpb-live-cursor,
-html.bpb-live-cursor * {
-  cursor: none !important;
+/* Text editing stays native; the game hand only owns non-text surfaces. */
+html input:not([type='button']):not([type='submit']):not([type='reset']):not([type='checkbox']):not([type='radio']):not([type='range']),
+html textarea,
+html [contenteditable='true'],
+html.bpb-cursor-down input:not([type='button']):not([type='submit']):not([type='reset']):not([type='checkbox']):not([type='radio']):not([type='range']),
+html.bpb-cursor-down textarea,
+html.bpb-cursor-down [contenteditable='true'] {
+  cursor: text !important;
 }
 
+/* Full hand, drawn as an element so it can hang off the screen edge.
+   Chrome drops a CSS cursor in that band and the footer was using a tiny hand. */
 .bpb-cursor-follower {
   position: fixed;
   left: 0;
@@ -103,4 +108,23 @@ html.bpb-live-cursor .bpb-cursor-follower {
   background: transparent;
   cursor: var(--bpb-cursor-pointer);
   touch-action: pan-x pan-y;
+}
+
+/* Touch/mobile keeps the platform cursor behavior; desktop gets the game hand. */
+@media (max-width: 640px), (hover: none), (pointer: coarse) {
+  html,
+  html * {
+    cursor: auto !important;
+  }
+
+  html input:not([type='button']):not([type='submit']):not([type='reset']):not([type='checkbox']):not([type='radio']):not([type='range']),
+  html textarea,
+  html [contenteditable='true'] {
+    cursor: text !important;
+  }
+
+  .bpb-cursor-follower,
+  html.bpb-live-cursor .bpb-cursor-follower {
+    display: none !important;
+  }
 }

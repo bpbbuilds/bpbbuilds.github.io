@@ -102,7 +102,7 @@ const BUILD_PAGE_SELECT = `
         discord_id, display_name, avatar_url, equipped_avatar
       ),
       placements:build_placements (
-        id, x, y, r, gems, priority,
+        id, x, y, r, gems, instance, priority,
         item:items ( ${ITEM_SELECT} )
       )`;
 
@@ -199,6 +199,7 @@ function renderPage(main, build, root, spriteDisplay, routeSkills, gridMeta = {}
       r: Number(p.r) || 0,
       key: String(p.id ?? `${p.item.id}:${i}:${p.x},${p.y}:${p.r || 0}`),
       gems: Array.isArray(p.gems) ? p.gems : undefined,
+      instance: p.instance,
     }));
 
   const itemsById = new Map();
@@ -486,6 +487,7 @@ async function initHistoryRunPage(main, root) {
         y: p.y,
         r: p.r,
         gems: Array.isArray(p.gems) ? p.gems : [],
+        instance: p.instance,
         priority: null,
         item_id: p.id,
         item: byId.get(p.id) || null,

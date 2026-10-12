@@ -12,6 +12,8 @@ import {
   goobertPort,
 } from './ports-wave-d-goobert.js';
 
+// `empowerLinkedWeapons` applies the source addBonusDamage mutation to linked weapons.
+
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
  */

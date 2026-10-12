@@ -377,6 +377,7 @@ function bindState(wrap, spec) {
 
 export function mountLiveArt(itemEl) {
   if (!(itemEl instanceof HTMLElement)) return;
+  if (itemEl.closest('[data-bpb-live-art="off"]')) return;
   const wrap = itemEl.querySelector('.bpb-live');
   if (!(wrap instanceof HTMLElement)) return;
   const id = wrap.getAttribute('data-item-id') || itemEl.getAttribute('data-item-id');

@@ -5,6 +5,7 @@
 
 import { classIconPath } from '../../shared/class-icons.js';
 import { faceHtml, hydrateFaces } from '../../shared/blob-face.js';
+import { desktopTooltipScale } from '../../shared/tooltip-scale.js';
 
 /** Large preview board inside the class tooltip frame. */
 const PREVIEW_CELL_PX = 48;
@@ -205,9 +206,8 @@ export function bindMoreBuildTips(listEl, opts) {
   function placeTip(tip, thumb) {
     tip.style.left = '0px';
     tip.style.top = '0px';
-    tip.style.setProperty('--build-more-tip-scale', '1');
-
     const layoutW = tip.offsetWidth || 609;
+    const viewportScale = desktopTooltipScale(window.innerWidth);
     const anchor = overEl instanceof HTMLElement && !overEl.hidden ? overEl : null;
 
     if (anchor) {
@@ -217,7 +217,7 @@ export function bindMoreBuildTips(listEl, opts) {
         Math.max(r.width * OVER_INFO_WIDTH_BOOST, r.width),
         window.innerWidth - EDGE * 2,
       );
-      const scale = Math.min(1, Math.max(0.45, targetW / layoutW));
+      const scale = Math.min(viewportScale, Math.max(0.45, targetW / layoutW));
       tip.style.setProperty('--build-more-tip-scale', String(scale));
       const scaledW = layoutW * scale;
       let left = r.left + (r.width - scaledW) / 2;
@@ -237,7 +237,7 @@ export function bindMoreBuildTips(listEl, opts) {
     }
 
     const maxW = Math.max(200, window.innerWidth - EDGE * 2);
-    const scale = Math.min(1, maxW / layoutW);
+    const scale = Math.min(viewportScale, maxW / layoutW);
     tip.style.setProperty('--build-more-tip-scale', String(scale));
 
     const tr = thumb.getBoundingClientRect();

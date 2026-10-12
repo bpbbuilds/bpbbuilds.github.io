@@ -56,6 +56,7 @@ export const DRAFT_VERSION = 1;
  *   gems?: string[],
  *   gemR?: number[],
  *   priority?: Priority,
+ *   instance?: import('../sim/engine/placement-instance.js').PlacementInstance,
  * }} ParkedEntry
  */
 
@@ -198,6 +199,7 @@ export function lastRoundPlacementsFromHistory(history, draftPlacements = []) {
       priority: prioByKey.get(prioKey) ?? null,
     };
     attachSocketGems(row, p);
+    if (p.instance && typeof p.instance === 'object') row.instance = p.instance;
     return row;
   });
 }
@@ -255,6 +257,9 @@ function normalizeParkedList(raw) {
       priority,
     };
     attachSocketGems(entry, o);
+    if (o.instance && typeof o.instance === 'object') {
+      entry.instance = /** @type {ParkedEntry['instance']} */ (o.instance);
+    }
     out.push(entry);
     // Legacy nested cargo → flatten into sibling parked items
     if (Array.isArray(o.cargo)) {
@@ -276,6 +281,9 @@ function normalizeParkedList(raw) {
           priority: null,
         };
         attachSocketGems(piece, cr);
+        if (cr.instance && typeof cr.instance === 'object') {
+          piece.instance = /** @type {ParkedEntry['instance']} */ (cr.instance);
+        }
         out.push(piece);
       }
     }
@@ -318,6 +326,9 @@ export function normalizeDraft(raw) {
     /** @type {DraftPlacement} */
     const next = { id, x, y, r, key, priority };
     attachSocketGems(next, row);
+    if (row.instance && typeof row.instance === 'object') {
+      next.instance = /** @type {DraftPlacement['instance']} */ (row.instance);
+    }
     placements.push(next);
   }
 

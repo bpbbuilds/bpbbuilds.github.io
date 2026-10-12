@@ -18,7 +18,7 @@
     "unsupportedMode": 1,
     "lifecycleHookGap": 0,
     "untriagedLifecycleHookGap": 0,
-    "callReviewCandidate": 45,
+    "callReviewCandidate": 15,
     "duplicateRegistration": 19
   },
   "rows": [
@@ -319,10 +319,6 @@
         "lifecycleHookGaps": [],
         "callReviewCandidates": [
           {
-            "call": "dealEffectDamage",
-            "why": "no token of dealEffectDamage/effectDamage"
-          },
-          {
             "call": "inflictRandomDebuffs",
             "why": "no token of randomDebuff/RandomDebuff"
           }
@@ -331,7 +327,7 @@
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: dealEffectDamage, inflictRandomDebuffs.",
+      "knownDelta": "Source-call review candidate: inflictRandomDebuffs.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1578,23 +1574,20 @@
       },
       "sim": {
         "runtimeHandler": "black_bishop",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "inflictRandomDebuffs",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: inflictRandomDebuffs.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1615,27 +1608,20 @@
       },
       "sim": {
         "runtimeHandler": "black_king",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "addSpeed",
-            "why": "no port block found"
-          },
-          {
-            "call": "removeRandomBuffs",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: addSpeed, removeRandomBuffs.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1656,27 +1642,20 @@
       },
       "sim": {
         "runtimeHandler": "black_knight",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveVampirism",
-            "why": "no port block found"
-          },
-          {
-            "call": "drainStamina",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: giveVampirism, drainStamina.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1697,27 +1676,20 @@
       },
       "sim": {
         "runtimeHandler": "black_pawn",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveMana",
-            "why": "no port block found"
-          },
-          {
-            "call": "inflictPoison",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: giveMana, inflictPoison.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1738,27 +1710,20 @@
       },
       "sim": {
         "runtimeHandler": "black_queen",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "stealRandomBuff",
-            "why": "no port block found"
-          },
-          {
-            "call": "stun",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: stealRandomBuff, stun.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -1779,27 +1744,20 @@
       },
       "sim": {
         "runtimeHandler": "black_rook",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveSpikes",
-            "why": "no port block found"
-          },
-          {
-            "call": "changeAllItemsCritRate",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: giveSpikes, changeAllItemsCritRate.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -4588,17 +4546,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "changeVaryingDamage",
-            "why": "no token of varying/damageMin/damageMax/changeVarying"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: changeVaryingDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -4808,17 +4761,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "changeVaryingDamage",
-            "why": "no token of varying/damageMin/damageMax/changeVarying"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: changeVaryingDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -5151,17 +5099,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "dealEffectDamage",
-            "why": "no token of dealEffectDamage/effectDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: dealEffectDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -8495,17 +8438,13 @@
           {
             "call": "useRegeneration",
             "why": "no token of useRegeneration"
-          },
-          {
-            "call": "giveMaxHealth",
-            "why": "no token of maxHealth/max_health/maxHp/giveMaxHealth"
           }
         ],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: useRegeneration, giveMaxHealth.",
+      "knownDelta": "Source-call review candidate: useRegeneration.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -9118,17 +9057,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "changeEffectDamageFactor",
-            "why": "no token of effectDmgFactor/effectDamageFactor"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: changeEffectDamageFactor.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -9925,17 +9859,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "dealEffectDamage",
-            "why": "no token of dealEffectDamage/effectDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: dealEffectDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -10474,17 +10403,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "multiplyBuffsLimit",
-            "why": "no token of buffsLimit/limit"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: multiplyBuffsLimit.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -12162,17 +12086,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "removeBlock",
-            "why": "no token of removeBlock"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: removeBlock.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -12425,17 +12344,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveReflectStacks",
-            "why": "no token of reflect"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: giveReflectStacks.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -13484,17 +13398,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "addBonusDamage",
-            "why": "no token of addBonusDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: addBonusDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -13523,17 +13432,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "addBonusDamage",
-            "why": "no token of addBonusDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: addBonusDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -13598,17 +13502,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "addBonusDamage",
-            "why": "no token of addBonusDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: addBonusDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -13673,17 +13572,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "addBonusDamage",
-            "why": "no token of addBonusDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: addBonusDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -14796,25 +14690,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "useLucky",
-            "why": "no token of useLucky"
-          },
-          {
-            "call": "giveRegeneration",
-            "why": "no token of regeneration"
-          },
-          {
-            "call": "giveLucky",
-            "why": "no token of lucky"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: useLucky, giveRegeneration, giveLucky.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -15743,17 +15624,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "dealEffectDamage",
-            "why": "no token of dealEffectDamage/effectDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: dealEffectDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -16830,6 +16706,10 @@
         "lifecycleHookGaps": [],
         "callReviewCandidates": [
           {
+            "call": "useStamina",
+            "why": "no token of stamina"
+          },
+          {
             "call": "consume",
             "why": "no token of consume"
           }
@@ -16838,7 +16718,7 @@
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: consume.",
+      "knownDelta": "Source-call review candidate: useStamina, consume.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -17539,17 +17419,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "dealEffectDamage",
-            "why": "no token of dealEffectDamage/effectDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: dealEffectDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -17980,17 +17855,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "dealEffectDamage",
-            "why": "no token of dealEffectDamage/effectDamage"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: dealEffectDamage.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -19197,23 +19067,20 @@
       },
       "sim": {
         "runtimeHandler": "white_bishop",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "cleanseRandomDebuffs",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: cleanseRandomDebuffs.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -19270,27 +19137,20 @@
       },
       "sim": {
         "runtimeHandler": "white_king",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveEmpower",
-            "why": "no port block found"
-          },
-          {
-            "call": "giveRandomBuffs",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: giveEmpower, giveRandomBuffs.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -19311,27 +19171,20 @@
       },
       "sim": {
         "runtimeHandler": "white_knight",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "addSpeed",
-            "why": "no port block found"
-          },
-          {
-            "call": "giveMaxStaminaTemporary",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: addSpeed, giveMaxStaminaTemporary.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -19352,27 +19205,20 @@
       },
       "sim": {
         "runtimeHandler": "white_pawn",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveRegeneration",
-            "why": "no port block found"
-          },
-          {
-            "call": "giveLucky",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: giveRegeneration, giveLucky.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -19393,23 +19239,20 @@
       },
       "sim": {
         "runtimeHandler": "white_queen",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveHeat",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: giveHeat.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -19430,23 +19273,20 @@
       },
       "sim": {
         "runtimeHandler": "white_rook",
-        "handlerModules": [],
+        "handlerModules": [
+          "js/pages/sim/engine/scripts/ports-chess.js"
+        ],
         "coverageStatus": "dedicated",
         "depth": "noop"
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveBlock",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "no_combat",
       "fidelity": "no_combat",
-      "knownDelta": "Source-call review candidate: giveBlock.",
+      "knownDelta": "Chess piece has no independent combat cooldown; Chess Board AI owns movement.",
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -19555,17 +19395,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveMaxHealth",
-            "why": "no token of maxHealth/max_health/maxHp/giveMaxHealth"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: giveMaxHealth.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,
@@ -19819,21 +19654,12 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "heal",
-            "why": "no token of heal"
-          },
-          {
-            "call": "cleanseRandomDebuffs",
-            "why": "no token of cleanse"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: heal, cleanseRandomDebuffs.",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": null,
         "fixture": null,

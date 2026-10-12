@@ -25,7 +25,7 @@
         advice. We update it when authentication, storage, analytics, payments, or other material
         data practices change.
       </p>
-      <p class="legal-meta">Last updated: October 5, 2026</p>
+      <p class="legal-meta">Last updated: October 7, 2026</p>
 
       <h2>What this site stores</h2>
       <p>
@@ -34,9 +34,9 @@
         OAuth</strong> via Supabase Auth (no email/password signup on this site).
       </p>
       <ul>
-        <li><strong>Builds</strong> — title, tags, board placements, route notes, optional video link, moderation flags, author link. Event entries stay visible only to their author until that event's gallery opens (when a scored event ends, or when voting starts). Until then they are not on the public builds feed. For an event without community voting, we also store the selected winning build, selection time, and the owner account that made that private admin decision</li>
-        <li><strong>Profiles</strong> — Discord user id, display name, Discord avatar URL, optional public equipped sim look (<code>equipped_avatar</code>), optional cosmetic grants, public coin balance (<code>coins</code>, for a future site marketplace), optional bound vote key, owner flag (for site admins), membership fields (<code>plan</code>, founding slot, <code>premium_until</code>, Stripe customer id when applicable), and a recent Discord-server verification time while Private access is enabled. Access, role, grant, and membership values are recorded by our server rather than accepted from browser profile edits.</li>
-        <li><strong>Votes</strong> — anonymous <code>voter_key</code> in local storage + server vote rows; bound to your profile after Discord sign-in when possible</li>
+        <li><strong>Builds</strong> — title, tags, board placements, Needs/Wants/Good to have tier assignments, route notes, optional video link, moderation flags, author link. Submitted builds require at least one item in each tier. Event entries stay visible only to their author until that event's gallery opens (when a scored event ends, or when voting starts). Until then they are not on the public builds feed. For an event without community voting, we also store the selected winning build, selection time, and the owner account that made that private admin decision</li>
+        <li><strong>Profiles</strong> — Discord user id, display name, Discord avatar URL, optional public equipped sim look (<code>equipped_avatar</code>), optional cosmetic grants, public coin balance (<code>coins</code>, for a future site marketplace), a legacy bound vote-key field, owner flag (for site admins), membership fields (<code>plan</code>, founding slot, <code>premium_until</code>, Stripe customer id when applicable), and a recent Discord-server verification time while Private access is enabled. Access, role, grant, and membership values are recorded by our server rather than accepted from browser profile edits.</li>
+        <li><strong>Votes</strong> — signed-in Discord account vote rows and a browser cache of the selected vote for the Liked filter; a confirmed vote direction may remain briefly in session storage while OAuth returns</li>
         <li><strong>Local drafts</strong> — create-page drafts may stay in your browser (localStorage) until you submit or clear them</li>
         <li><strong>Combat sandbox</strong> — dummy fights on <code>/sim/</code> run in your browser. Fight results stay local unless you send an issue report (see below). The page may keep a mode preference in localStorage (<code>bpb-sim-mode</code>)</li>
         <li><strong>Page visits</strong> — a daily count of which public pages were opened (home, items, a build guide, and so on). We do not store your account, IP address, or the query string. A browser session is counted once per page. Admin pages are not counted. Only site owners can see the totals</li>
@@ -137,10 +137,10 @@
 
       <h2>Votes</h2>
       <p>
-        Likes/dislikes use a key in your browser plus server-side vote records. Before sign-in the
-        key is anonymous (<code>bpb-voter-id</code>). After Discord sign-in we bind that key to your
-        profile when possible so votes follow your account across devices. Clearing site data before
-        binding can create a new key.
+        Likes/dislikes require Discord sign-in and use the authenticated account on the server.
+        When you click while signed out, the site can keep the requested build and vote direction
+        briefly in session storage so the action can resume after OAuth. The browser cache used to
+        paint your selected vote and Liked filter can be cleared by deleting site data.
       </p>
 
       <h2>Hosting &amp; logs</h2>

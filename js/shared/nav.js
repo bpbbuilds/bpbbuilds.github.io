@@ -13,7 +13,6 @@ import { bindNavDrawer } from './nav/drawer.js';
 import { bindNavScrollLogo, ensureNavSpace, syncNavSpace } from './nav/scroll-logo.js';
 import { notePageView } from './page-traffic.js';
 import { initSiteAccess } from './access-gate.js';
-import './game-cursor.js';
 
 export { navSkeletonHtml };
 

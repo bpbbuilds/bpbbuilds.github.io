@@ -55,6 +55,7 @@ import { AN_ACCESSORY_PORTS } from './ports-an-accessories.js';
 import { AN_GADGET_PORTS } from './ports-an-gadgets.js';
 import { AN_ARMOR_PORTS } from './ports-an-armor.js';
 import { AN_SOCKET_PORTS } from './ports-an-gems.js';
+import { CHESS_PORTS } from './ports-chess.js';
 import { AO_SKILL_PORTS } from './ports-ao-skills.js';
 import { AO_CARD_PORTS } from './ports-ao-cards.js';
 import { AO_SHIELD_PORTS } from './ports-ao-shields.js';
@@ -888,4 +889,32 @@ export const PORT_HANDLERS = {
   ...AP_ONHIT_PORTS,
   ...AP_AURA_PORTS,
   ...AN_SOCKET_PORTS,
+  ...CHESS_PORTS,
 };
+
+/**
+ * Canonical winners for the legacy duplicate exports below.
+ * The spread order above is the runtime contract; keep these identities
+ * explicit so later ports cannot silently change an item’s handler.
+ */
+export const CANONICAL_DUPLICATE_HANDLERS = Object.freeze({
+  amulet_of_alchemy: AI_D_PORTS.amulet_of_alchemy,
+  badger_spirit: WAVE_AI_C_PORTS_A.badger_spirit,
+  crow: WAVE_AI_C_PORTS_A.crow,
+  double_rainbow: AI_E_PORTS.double_rainbow,
+  evil_hat: WAVE_AI_C_PORTS_A.evil_hat,
+  full_body_protection: AI_E_PORTS.full_body_protection,
+  heart_of_darkness: AI_D_PORTS.heart_of_darkness,
+  mana_crystal: AI_D_PORTS.mana_crystal,
+  mercury_elemental: WAVE_AI_C_PORTS_A.mercury_elemental,
+  no_rush_please: AI_E_PORTS.no_rush_please,
+  paradise_birb: WAVE_AI_C_PORTS_A.paradise_birb,
+  robodog: WAVE_AI_C_PORTS_B.robodog,
+  spirit_bells: AI_D_PORTS.spirit_bells,
+  stone_badge: AI_D_PORTS.stone_badge,
+  thorn_elemental: WAVE_AI_C_PORTS_B.thorn_elemental,
+  thornburst: AI_E_PORTS.thornburst,
+  torch: AP_PERM_PORTS.torch,
+  turtle: WAVE_AI_C_PORTS_B.turtle,
+  wolpertinger: WAVE_AI_C_PORTS_B.wolpertinger,
+});

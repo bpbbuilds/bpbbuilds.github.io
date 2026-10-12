@@ -109,7 +109,7 @@ export function defaultFeedFilterState() {
  * @param {string} root
  * @param {FeedFilterState} state
  * @param {number} shown
- * @param {{ canMine?: boolean }} [opts]
+ * @param {{ canMine?: boolean, canPersonal?: boolean }} [opts]
  */
 export function feedFiltersHtml(root, state, shown, opts = {}) {
   const base = root.endsWith('/') ? root : `${root}/`;
@@ -118,6 +118,7 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
   const viewLabel = FEED_VIEW_LABELS[state.view] || 'Card';
   const eventLabel = feedEventLabel(state.event);
   const canMine = opts.canMine === true;
+  const canPersonal = opts.canPersonal === true;
   const mineOn = canMine && state.mine;
 
   const sortOptions = FEED_SORTS.map(
@@ -198,7 +199,7 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
         </div>
       </div>
 
-      <div class="il-filter__shade">
+      <div class="il-filter__shade" data-feed-personal-filters${canPersonal ? '' : ' hidden'} aria-hidden="${canPersonal ? 'false' : 'true'}">
         <div class="il-filter__checks" role="group" aria-label="Library filters">
           <button
             type="button"
@@ -244,6 +245,18 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
         </div>
       </div>
     </aside>`;
+}
+
+/**
+ * Keep personal filters unavailable until the auth profile is known.
+ * @param {Element | null} rail
+ * @param {boolean} enabled
+ */
+export function syncFeedPersonalFilters(rail, enabled) {
+  const group = rail?.querySelector?.('[data-feed-personal-filters]');
+  if (!(group instanceof HTMLElement)) return;
+  group.hidden = !enabled;
+  group.setAttribute('aria-hidden', enabled ? 'false' : 'true');
 }
 
 /**

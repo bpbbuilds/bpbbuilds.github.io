@@ -126,6 +126,35 @@ export function addBonusDamage(piece, amount, opts = {}) {
 }
 
 /**
+ * Item.changeVaryingDamage — mutate the live damage range without adding to
+ * the removable in-battle damage pool.
+ * @param {CombatPiece} piece
+ * @param {number} amount
+ * @param {{ via?: string | null, originKey?: string | null, originId?: string | null }} [opts]
+ */
+export function changeVaryingDamage(piece, amount, opts = {}) {
+  const n = Number(amount) || 0;
+  if (!n) return;
+  piece._removableBonusDamageInitialized = true;
+  if (!Number.isFinite(Number(piece.removableBonusDamage))) piece.removableBonusDamage = 0;
+  recordPieceMod(piece, {
+    stat: 'damage',
+    amount: n,
+    unit: 'flat',
+    via: opts.via || null,
+    originKey: opts.originKey,
+    originId: opts.originId,
+  });
+  piece.bonusDamage = (Number(piece.bonusDamage) || 0) + n;
+  pushItemOverlayEvent(piece, {
+    type: 'info',
+    amount: n,
+    label: `${n > 0 ? '+' : ''}${n} damage`,
+    meta: { category: 'item_label', kind: 'damage_varying' },
+  });
+}
+
+/**
  * Item.purgeDamage — remove only the removable damage accumulated through
  * addBonusDamage. Catalog/gem damage (`damageBonus`) and base damage remain
  * intact, matching Item.removableDam rather than shrinking the weapon itself.
@@ -170,6 +199,22 @@ export function addBonusDamageFromBuffChange(piece, ch, mult = 1) {
   const amount = Math.round((Number(ch.amount) || 0) * (Number(mult) || 1));
   if (!amount || !ch.stack) return;
   addBonusDamage(piece, amount, {
+    via: ch.stack,
+    originKey: ch.originKey,
+    originId: ch.originId,
+  });
+}
+
+/**
+ * Reactive version of changeVaryingDamage for fractional buff scaling.
+ * @param {CombatPiece} piece
+ * @param {import('./buff-economy.js').BuffChange} ch
+ * @param {number} [mult]
+ */
+export function changeVaryingDamageFromBuffChange(piece, ch, mult = 1) {
+  const amount = (Number(ch.amount) || 0) * (Number(mult) || 1);
+  if (!amount || !ch.stack) return;
+  changeVaryingDamage(piece, amount, {
     via: ch.stack,
     originKey: ch.originKey,
     originId: ch.originId,

@@ -43,6 +43,11 @@ Current claim: Codex owns screenshot import as of 2026-10-01. Cursor released th
 - About 500 lines per `.js` file. One feature per file.
 - Never commit `.env` or secrets. Env names: `SUPABASE_PROJECT_URL`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_DB_PASSWORD`, `SUPABASE_DB_URL`.
 
+## Responsive visual changes
+
+- Any visual change (CSS, Tailwind, markup/layout, assets, tooltips, pointer, or scrollbar) must account for the full supported viewport range. Treat 1440p as the desktop reference, then verify the result at 1080p/short desktop, a narrow desktop or tablet breakpoint, and mobile unless that surface is explicitly mobile-excluded.
+- Prefer fluid or clamped sizing and intentional breakpoints over fixed desktop dimensions. Record any deliberate screen-size exception in the owning handoff or page rule.
+
 ## Security rules for new work
 
 - Treat every browser value, URL, hidden element, and client-side feature gate as attacker-controlled. Authorization must be repeated on the server or in Supabase RLS; never rely on the Admin page, Private-mode boot gate, or disabled UI as a security boundary.

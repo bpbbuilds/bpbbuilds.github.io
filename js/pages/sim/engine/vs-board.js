@@ -58,6 +58,7 @@ export function ctxForPiece(piece, world) {
     rng: world.rng,
     events: world.events,
     graph: them ? world.themGraph : world.youGraph,
+    board: world.board,
     itemsById: world.itemsById,
     canAffect: world.canAffect,
     pieces: them ? world.themPieces : world.youPieces,

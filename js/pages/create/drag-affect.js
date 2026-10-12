@@ -9,6 +9,7 @@
 import { shapeForItem, bodyBounds } from '../../shared/backpack-grid/index.js';
 import {
   loadCanAffectData,
+  canBagAffectItem,
   canAffectColor,
   isAffectingDistinct,
 } from '../../shared/backpack-grid/can-affect.js';
@@ -148,11 +149,91 @@ export function createDragAffectPreview(stageEl, getBoardEl) {
   let cachedMaps = null;
   /** @type {HTMLElement[]} */
   const tilePool = [];
+  /** @type {Set<HTMLElement>} */
+  const bagBorders = new Set();
+
+  function clearBagBorders() {
+    for (const bagEl of bagBorders) {
+      bagEl.classList.remove('is-drag-synergy', 'is-drag-synergy-hover');
+    }
+    bagBorders.clear();
+  }
+
+  function affectCtx() {
+    return {
+      classMasks: data?.classMasks || null,
+      classBits: data?.classBits,
+      hasAttackEffectIds: data?.hasAttackEffectIds || null,
+      reactsToChargesIds: data?.reactsToChargesIds || null,
+      gainsBuffsIds: data?.gainsBuffsIds || null,
+      usesBuffsIds: data?.usesBuffsIds || null,
+      gainedStacksById: data?.gainedStacksById || null,
+      usedStacksById: data?.usedStacksById || null,
+      craftedIds: data?.craftedIds || null,
+      scriptFamilies: data?.scriptFamilies || {},
+      parentById: data?.parentById || {},
+      rarityRank: data?.rarityRank,
+      startOfBattleIds: data?.startOfBattleIds || null,
+    };
+  }
 
   function clear() {
     lastSyncKey = '';
     el.hidden = true;
     el.replaceChildren();
+    clearBagBorders();
+  }
+
+  function clearAffectTiles() {
+    lastSyncKey = '';
+    el.hidden = true;
+    el.replaceChildren();
+  }
+
+  /**
+   * Game BagBorder: compatible bags light as soon as a non-bag is held;
+   * the bag under the pointer becomes brighter.
+   */
+  function syncBagBorders(opts) {
+    const { item, placements, itemsById, clientX, clientY } = opts;
+    const board = getBoardEl();
+    if (!item || isBagItem(item) || !(board instanceof HTMLElement)) {
+      clearBagBorders();
+      return;
+    }
+    const rect = opts.boardRect || board.getBoundingClientRect();
+    const cellW = rect.width / BOARD_COLS;
+    const cellH = rect.height / BOARD_ROWS;
+    const hoverCell = `${Math.floor((clientX - rect.left) / cellW)},${Math.floor((clientY - rect.top) / cellH)}`;
+    const next = new Set();
+    const ctx = affectCtx();
+    for (const placement of placements) {
+      const bag = itemsById.get(placement.id);
+      if (!isBagItem(bag) || !canBagAffectItem(bag, item, ctx)) continue;
+      const face = ((Number(placement.r) || 0) % 4 + 4) % 4;
+      const key =
+        placement.key != null && String(placement.key) !== ''
+          ? String(placement.key)
+          : `${placement.id}:${face}:${placement.x},${placement.y}`;
+      if (!key) continue;
+      const bagEl = board.querySelector(
+        `.bpb-bg__item--bag[data-placement-key="${CSS.escape(key)}"]`,
+      );
+      if (!(bagEl instanceof HTMLElement)) continue;
+      const hovered = placementBodyCells(bag, placement).some(
+        (cell) => `${cell.x},${cell.y}` === hoverCell,
+      );
+      bagEl.classList.add('is-drag-synergy');
+      bagEl.classList.toggle('is-drag-synergy-hover', hovered);
+      next.add(bagEl);
+    }
+    for (const bagEl of bagBorders) {
+      if (!next.has(bagEl)) {
+        bagEl.classList.remove('is-drag-synergy', 'is-drag-synergy-hover');
+      }
+    }
+    bagBorders.clear();
+    for (const bagEl of next) bagBorders.add(bagEl);
   }
 
   /**
@@ -191,21 +272,7 @@ export function createDragAffectPreview(stageEl, getBoardEl) {
     }
     const maps = cachedMaps;
     const rulesById = data?.rulesById || null;
-    const ctx = {
-      classMasks: data?.classMasks || null,
-      classBits: data?.classBits,
-      hasAttackEffectIds: data?.hasAttackEffectIds || null,
-      reactsToChargesIds: data?.reactsToChargesIds || null,
-      gainsBuffsIds: data?.gainsBuffsIds || null,
-      usesBuffsIds: data?.usesBuffsIds || null,
-      gainedStacksById: data?.gainedStacksById || null,
-      usedStacksById: data?.usedStacksById || null,
-      craftedIds: data?.craftedIds || null,
-      scriptFamilies: data?.scriptFamilies || {},
-      parentById: data?.parentById || {},
-      rarityRank: data?.rarityRank,
-      startOfBattleIds: data?.startOfBattleIds || null,
-    };
+    const ctx = affectCtx();
 
     const bRect = opts.boardRect || board.getBoundingClientRect();
     const sRect = opts.stageRect || stageEl.getBoundingClientRect();
@@ -307,7 +374,9 @@ export function createDragAffectPreview(stageEl, getBoardEl) {
 
   return {
     sync,
+    syncBagBorders,
     clear,
+    clearAffectTiles,
     destroy() {
       el.remove();
     },

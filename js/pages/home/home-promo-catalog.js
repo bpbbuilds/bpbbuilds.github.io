@@ -281,6 +281,7 @@ export function restorePromoCatalogItems(catalogRoot) {
 export async function mountPromoCatalog(host, opts) {
   const stage = host.querySelector('[data-promo-catalog]');
   if (!(stage instanceof HTMLElement)) return;
+  stage.dataset.bpbLiveArt = 'off';
 
   const root = opts.root.endsWith('/') ? opts.root : `${opts.root}/`;
 

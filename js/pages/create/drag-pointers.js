@@ -414,6 +414,7 @@ export function bindDragPointers(ctx) {
     const t = e.target instanceof Element ? e.target : null;
     if (t?.closest?.('.create-board__toolbar')) return;
     if (t?.closest?.('.create-history-lock')) return;
+    if (t?.closest?.('[data-ring-config]')) return;
 
     const gemMark = t?.closest?.('.bpb-bg__mark--gem[data-gem-slot]');
     if (gemMark instanceof HTMLElement && grid.el.contains(gemMark)) {

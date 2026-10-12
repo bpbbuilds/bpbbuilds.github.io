@@ -299,6 +299,17 @@
   background: transparent;
 }
 
+.sim-side-rail__choice-img--initials {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(60, 38, 29, 0.72);
+  color: #ffecdc;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
 .sim-side-rail__choice--you .sim-side-rail__choice-img,
 .sim-side-rail__choice--foe .sim-side-rail__choice-img {
   width: 100%;
@@ -453,6 +464,16 @@
   object-fit: cover;
   border: 3px solid rgba(60, 38, 29, 0.55);
   box-sizing: border-box;
+}
+
+.sim-avatar--profile .sim-avatar__img--initials {
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, #3c261d 72%, #8a5a2b);
+  color: #ffecdc;
+  font-family: var(--bpb-font-body, Georgia, serif);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 700;
 }
 
 .sim-avatar--blob .sim-avatar__img {

@@ -216,6 +216,48 @@
   overscroll-behavior: contain;
 }
 
+/* Create-only filter order: keep Search near the top while Debuffs remains last. */
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters .il-filter__search-row {
+  display: contents;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters .il-filter__head {
+  order: 0;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters .il-filter__search {
+  order: 1;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters .il-filter__grouping {
+  order: 2;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters .il-filter__classes {
+  order: 3;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters .il-filter__rarities {
+  order: 4;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters .il-filter__types {
+  order: 5;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters .il-filter__lower {
+  order: 6;
+}
+
+.page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters .il-filter__debuffs {
+  order: 7;
+}
+
 .page-create .create-col--catalog .items-filters.create-rail .cr-panel--filters::-webkit-scrollbar {
   width: 0;
   height: 0;
@@ -554,6 +596,11 @@
 
 .create-board.is-awaiting-build .create-board__toolbar {
   /* Keep the toolbar row reserved before the first item is placed. */
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.create-board.is-awaiting-build .create-board__toolbar-center > :not(.create-board__toggle--default-bag) {
   visibility: hidden;
   pointer-events: none;
 }
@@ -1025,6 +1072,22 @@
   filter: brightness(1.2) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
 }
 
+.create-board__toggle--default-bag {
+  margin-left: 0.08rem;
+}
+
+.create-board__default-bag-icon {
+  display: block;
+  width: 1.75rem;
+  height: 1.75rem;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+  transition: filter 0.12s ease;
+}
+
+.create-board__toggle--default-bag:hover .create-board__default-bag-icon {
+  filter: brightness(1.2) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+}
+
 /* Fabric ≈ game TileMap modulate 0.5 */
 .page-create .create-board .bpb-bg__fabric .bpb-bg__cell--bag {
   opacity: 0.5;
@@ -1035,6 +1098,130 @@
   width: 100%;
   max-width: 100%;
   overflow: visible;
+}
+
+/* Ring stats use the Submit info-button treatment in a screen-space overlay. */
+.page-create .bpb-ring-config {
+  position: absolute;
+  top: 0.08em;
+  right: 0.08em;
+  z-index: 8;
+  display: inline-flex;
+  pointer-events: auto;
+  filter: drop-shadow(0 1px 1px rgba(28, 13, 6, 0.65));
+}
+
+.page-create .create-board.is-history-locked .bpb-ring-config {
+  display: none;
+}
+
+.bpb-ring-editor {
+  --il-ink: #3c261d;
+  --il-cream: #ffecdc;
+  --il-gold: #eac914;
+  position: fixed;
+  z-index: 1000;
+  width: min(21rem, calc(100vw - 1rem));
+  padding: 0.8rem;
+  box-sizing: border-box;
+  border: 2px solid color-mix(in srgb, var(--il-cream) 35%, var(--il-ink));
+  border-radius: var(--bpb-radius-panel, 0.45rem);
+  background:
+    linear-gradient(180deg, rgba(42, 22, 16, 0.96), rgba(24, 14, 10, 0.98)),
+    url('../../../assets/theme/backgrounds/bg-parchment-panel.png');
+  background-size: cover;
+  color: var(--il-cream);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55), var(--bpb-shadow-paper, 0 4px 14px rgba(40, 24, 12, 0.35));
+}
+
+.bpb-ring-editor__head,
+.bpb-ring-editor__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+}
+
+.bpb-ring-editor h2 {
+  margin: 0;
+  font: 700 1.1rem/1.2 var(--bpb-font-body, sans-serif);
+}
+
+.bpb-ring-editor__close,
+.bpb-ring-editor__cancel,
+.bpb-ring-editor__save {
+  border: 1px solid rgba(255, 236, 220, 0.45);
+  border-radius: 0.3rem;
+  padding: 0.35rem 0.6rem;
+  background: rgba(55, 36, 22, 0.45);
+  color: var(--il-cream);
+  font: 600 0.9rem/1.1 var(--bpb-font-body, sans-serif);
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.bpb-ring-editor__close {
+  border: 0;
+  padding: 0.1rem 0.35rem;
+  font-size: 1.35rem;
+}
+
+.bpb-ring-editor__save {
+  border-color: var(--il-gold);
+  background: color-mix(in srgb, var(--il-gold) 25%, var(--il-ink));
+}
+
+.bpb-ring-editor__close:hover,
+.bpb-ring-editor__cancel:hover,
+.bpb-ring-editor__save:hover,
+.bpb-ring-editor__close:focus-visible,
+.bpb-ring-editor__cancel:focus-visible,
+.bpb-ring-editor__save:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--il-gold) 80%, transparent);
+  outline-offset: 2px;
+}
+
+.bpb-ring-editor__hint {
+  margin: 0.35rem 0 0.7rem;
+  color: color-mix(in srgb, var(--il-cream) 80%, transparent);
+  font-size: 0.82rem;
+}
+
+.bpb-ring-editor__rows {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.bpb-ring-editor__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+
+.bpb-ring-editor__row-label {
+  grid-column: 1 / -1;
+  font-size: 0.78rem;
+  opacity: 0.85;
+}
+
+.bpb-ring-editor select {
+  min-width: 0;
+  padding: 0.35rem;
+  border: 1px solid rgba(255, 236, 220, 0.45);
+  border-radius: 0.25rem;
+  background: rgba(55, 36, 22, 0.7);
+  color: var(--il-cream);
+  font: 0.82rem var(--bpb-font-body, sans-serif);
+}
+
+.bpb-ring-editor__amount {
+  grid-column: 1 / -1;
+  color: color-mix(in srgb, var(--il-gold) 82%, var(--il-cream));
+  font-size: 0.78rem;
+}
+
+.bpb-ring-editor__actions {
+  justify-content: flex-end;
+  margin-top: 0.8rem;
 }
 
 /* Attached run history — same scrubber chrome as build page (previewMode) */
@@ -1472,6 +1659,23 @@
   background-repeat: no-repeat;
   background-position: center;
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.45));
+}
+
+/* Game BagBorder: only bags that can affect the held item get the green cell border. */
+.page-create .bpb-bg--placed:not(.bpb-bg--itemiary) .bpb-bg__item--bag.is-drag-synergy .bpb-bg__bag-slots {
+  display: block;
+}
+
+.page-create .bpb-bg__item--bag.is-drag-synergy .bpb-bg__bag-slots .bpb-bg__cell--bag {
+  background-image: none !important;
+  opacity: 1;
+  outline: max(1px, 0.055em) dashed rgba(114, 188, 97, 0.9);
+  outline-offset: max(-1px, -0.055em);
+  filter: brightness(1.3) drop-shadow(0 0 0.12em rgba(77, 160, 71, 0.75));
+}
+
+.page-create .bpb-bg__item--bag.is-drag-synergy-hover .bpb-bg__bag-slots .bpb-bg__cell--bag {
+  filter: brightness(1.8) drop-shadow(0 0 0.18em rgba(133, 232, 105, 0.9));
 }
 
 .create-board__ghost-cell {

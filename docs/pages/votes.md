@@ -4,19 +4,20 @@ Reddit-style up / down on public builds. Stored in Supabase; catalog Hot / Top /
 
 ## Identity
 
-- **Anonymous:** browser UUID in `localStorage` (`bpb-voter-id`); one vote per `(build, voter_key)`
-- **Signed in (Discord):** Edge uses `profiles.voter_key` (bound on first `SIGNED_IN` via RPC `bind_my_voter_key`)
-- If the anon key is already owned by another profile, that bind stays; client gets a reissued key
-- `my_vote` also cached as `bpb-build-vote:{slug}` for Liked filter + optimistic UI
+- **Signed in (Discord) only:** the Edge Function authenticates the Discord JWT and uses the account id as the vote key; anonymous requests are rejected
+- The browser may cache `my_vote` as `bpb-build-vote:{slug}` for the signed-in account's Liked filter and optimistic UI
+- A short-lived `bpb-vote-intent` session entry carries the requested direction across the OAuth return; it contains only the build slug and `1` / `-1` direction
 
 See [`docs/pages/auth.md`](auth.md).
 
 ## Flow
 
 1. User clicks up/down (toggle again to clear).
-2. Client `POST`s to Edge Function `vote-build` with `{ slug, vote, voter_key }` (and Bearer JWT when signed in).
-3. Function resolves voter key (profile if JWT, else body), upserts/deletes `build_votes`, recomputes `builds.vote_score`, returns `{ vote_score, my_vote }`.
-4. UI shows the **net** `vote_score` (not “base + myVote”).
+2. If signed out, the site opens the shared sign-in confirm and saves the requested direction only after the user confirms.
+3. Discord OAuth returns to the page that started the sign-in; the pending direction is replayed through the normal signed vote path.
+4. Client `POST`s to Edge Function `vote-build` with `{ slug, vote }` and a Bearer JWT.
+5. Function authenticates the account, upserts/deletes `build_votes`, recomputes `builds.vote_score`, and returns `{ vote_score, my_vote }`.
+6. UI shows the **net** `vote_score` (not “base + myVote”).
 
 ## Discord
 

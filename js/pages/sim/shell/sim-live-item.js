@@ -73,13 +73,14 @@ function scalePhases(phases, baseCd, liveCd) {
  * @param {object | null | undefined} catalogItem
  * @param {object | null | undefined} live from pieceSnapshots (already includes empower/luck/heat)
  * @param {number} [_t]
- * @param {{ placementCounters?: Record<string, number> | null }} [extra]
+ * @param {{ placementCounters?: Record<string, number> | null, ringEffects?: object[] | null }} [extra]
  */
 export function mergeLiveItemStats(catalogItem, live, _t, extra = {}) {
   if (!catalogItem) return null;
   const counters = extra.placementCounters || null;
   const withCounters = (out) => {
     if (counters) out.placementCounters = counters;
+    if (Array.isArray(extra.ringEffects)) out.ringEffects = extra.ringEffects;
     return out;
   };
 

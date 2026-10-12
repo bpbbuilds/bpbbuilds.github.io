@@ -2,6 +2,61 @@
 
 Codex writes this file only. Cursor writes [`CURSOR_HANDOFF.md`](CURSOR_HANDOFF.md). Read **both** before starting. Do not edit the other handoff. Do not invent progress. Label new ideas **Proposal** until measured or approved.
 
+### 2026-10-08 Create bag-synergy indicator claim (in progress)
+
+- Codex owns the source-derived bag-effect predicate, Create drag-time bag-border indicator, focused smoke, and this handoff.
+- Scope: while a non-bag item is held, visually identify only placed bags whose `showBagBorderForItem` / `canApplyEffect` rule accepts it, with a stronger state over the hovered compatible bag. No persistent recommendation UI or simulator behavior changes.
+
+### 2026-10-08 Create bag-synergy indicator complete
+
+- Added the source-derived `Bag.canApplyEffect` / `showBagBorderForItem` rules for every current effect bag, including the direct Portable Altar override and charge emitters. The shared duration predicate now recognizes current named duration parameters such as Hammer's `dur_stun`, so Puzzlebag of Endurance can identify the same target on Create.
+- While a non-bag is held, compatible placed bags show a green cell-following border; the compatible bag under the pointer brightens further. The indicator persists while a drag is over Parked, Sell, catalog, or Build Info, and clears on drop/cancel. This does not change simulator effect resolution.
+- Added `scripts/create-bag-synergy-smoke.mjs` (every source effect-bag acceptance rule plus rejects) and `scripts/create-bag-synergy-browser-smoke.mjs` (1440, 1080, narrow, mobile, hover emphasis, cleanup). Both pass, as do changed-module syntax checks, `node scripts/build-sim-fidelity-ledger.mjs --check`, and `git diff --check`.
+
+### 2026-10-08 Create duration-affect feedback repair claim (in progress)
+
+- Codex owns the named-duration DOM stamp, placed Time Melting hover/star regression, Puzzlebag Endurance drag regression, and this handoff.
+- Scope: make every numeric `dur` / `dur_*` parameter visible to the existing Create `canAffect` and bag-border paths, and keep the game-like bag/star visual treatment unchanged except for the missing compatible state.
+
+### 2026-10-08 Create duration-affect feedback repair complete
+
+- Create item DOM now exports the shared duration predicate, including named fields such as Hammer's `params.dur_stun`, so placed Time Melting hover logic lights the Hammer star after placement.
+- Puzzle Bag of Endurance is covered by the same drag-time duration rule; holding Hammer highlights it and hovering that bag applies the brighter game-like segmented/dashed green border. The treatment scales with the existing cell `em` sizing across desktop, narrow, and mobile smoke viewports.
+- Passed `scripts/create-duration-hover-smoke.mjs`, `scripts/create-bag-synergy-smoke.mjs`, `scripts/create-bag-synergy-browser-smoke.mjs`, changed-module syntax checks, `node scripts/build-sim-fidelity-ledger.mjs --check`, and `git diff --check`.
+
+### 2026-10-08 Puzzle Bag no-key drag regression claim (in progress)
+
+- Codex owns the Create drag-border fallback for legacy placements without explicit keys, its focused browser regression, and this handoff.
+- Root-cause evidence: `paintPooled` assigns a deterministic `id:face:x,y` DOM key when a HistoryDB/legacy placement has no `key`, while `syncBagBorders` discarded that same placement before lookup. Scope is the fallback lookup only; keyed placements and the duration predicate remain unchanged.
+
+### 2026-10-08 Puzzle Bag no-key drag regression complete
+
+- `syncBagBorders` now derives the same `id:face:x,y` fallback key as `paintPooled`, so legacy/HistoryDB Puzzle Bag of Endurance placements highlight when Hammer is held even when the placement has no explicit key.
+- Extended the browser smoke with the exact no-key DOM/placement case; keyed Puzzle Bag, hovered emphasis, responsive viewports, Time Melting’s placed Hammer star, source rules, syntax, ledger, and diff checks pass.
+
+### 2026-10-07 profile avatar CDN fallback claim (in progress)
+
+- Codex owns the shared profile-image failure fallback, the direct Discord-avatar views that bypass `faceHtml`, the focused browser smoke, and this handoff.
+- Scope is broken external profile images only: render the existing initials or empty state after an image error; blob identity and unrelated artwork fallbacks remain unchanged.
+
+### 2026-10-07 profile avatar CDN fallback complete
+
+- `faceHtml()` now marks Discord-avatar images and a single delegated error handler replaces failed external images with initials or the caller's existing empty-state class. Blob identity markup is unchanged.
+- Added the same markers to event participant faces, Admin report/member rows, simulator profile selectors, and the large simulator profile avatar; simulator avatar swapping can restore an image after a fallback replacement.
+- Added `scripts/avatar-fallback-smoke.mjs`; it proves both the shared helper and a direct profile-image surface recover from a 404. Changed-module syntax checks and `git diff --check` pass.
+- Checked off the matching `docs/todo.md` item. No authentication, storage, or legal-page behavior changed.
+
+### 2026-10-07 create filter search reorder claim (in progress)
+
+- Codex owns the Create-only Filter-panel ordering rule and its focused browser smoke.
+- Scope is presentation only: Search moves above Grouping in the Create rail; the shared Items page markup/order and all filter logic remain unchanged, with Debuffs last.
+
+### 2026-10-07 create filter search reorder complete
+
+- Added Create-scoped flex ordering so Search renders immediately after the filter header, Grouping and the remaining filter groups follow, and Debuffs stays last. The shared Items filter markup and logic were not changed.
+- Added `scripts/create-filter-order-smoke.mjs`; it verifies the order at 1440p, 1080p, narrow desktop/tablet, and mobile widths. The smoke passes, changed CSS/test syntax checks pass, and `git diff --check` passes.
+- Checked off the matching `docs/todo.md` item. No authentication, storage, or legal-page behavior changed.
+
 Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant edits that file at a time.
 
 ## Owned paths
@@ -1881,3 +1936,243 @@ None.
 - Completed the twelve requested paths. Arcane Boots now uses timed linked speed; Heart Shield applies healing amplification, consumes the regeneration threshold, grants max health, and handles its activated ranged/effect block path; Piercing Arrow strips Block in the late critical-hit phase; Platinum Customer Card grants pre-combat reflect stacks to affected Legendary/Godly items; Scissorswords retains Lightsaber weapon inheritance plus blind/luck/regeneration branches; Ice Scroll removes cold only on a lethal hit; Staff of Unhealing expires its temporary Unhealing on engine ticks; Stone uses one-ammo weapon flow and consumes after its throw; Stone Golem registers from prepare and counts only Bag of Stones; Stone Shoes restores timed typed/effect reduction; Winged Boots logs its threshold activation; Yggdrasil Leaf filters Nature links and reacts to used mana thresholds.
 - Added `scripts/sim-resource-stack-consumable-candidates-smoke.mjs`; syntax checks, candidate smoke, Wave A-D smoke, and final runtime backlog smoke pass. The simulator tick surface now supports the small number of source timers that need expiry, and attack damage applies actor typed melee/ranged factors.
 - Updated `docs/sim/sim-100-coverage-todo.md`; next step is the remaining unchecked damage/stat mutation candidates.
+
+### 2026-10-06 duplicate handler canonicalization complete
+
+- Added `CANONICAL_DUPLICATE_HANDLERS` in `js/pages/sim/engine/scripts/ports.js` for all 19 audited duplicate IDs; runtime behavior remains unchanged and the declared objects match the actual last-spread winners.
+- Added `scripts/sim-duplicate-handler-alias-smoke.mjs`; it reruns the strict parity audit and verifies the exact 19 duplicate IDs, canonical object identity, and handler IDs.
+- Focused smoke, strict parity audit, no-op audit, fidelity ledger check, syntax checks, Wave A-D smoke, final runtime backlog smoke, and `git diff --check` pass.
+- Next step: continue with the remaining unchecked simulator fidelity candidates.
+
+### 2026-10-06 damage/stat mutation candidate claim (in progress)
+
+- Codex owns the seven damage/stat mutation candidate ports and focused smoke: `cupcake_staff`, `dancing_dragon`, `magic_mirror`, `rainbow_goobert`, `rainbow_goobert_adventurer`, `rainbow_goobert_engineer`, and `rainbow_goobert_pyromancer`, plus the matching simulator TODO entry.
+
+### 2026-10-06 damage/stat mutation candidates complete
+
+- Added shared `changeVaryingDamage` mutation support and fractional buff-change tracking for Cupcake Staff and Dancing Dragon; both now bind during prepare and retain source damage values such as +0.2 and +0.5 per stack.
+- Corrected Cold Mirror to use the catalog Holy-item reflect increment and proportional capped buff multiplication through the shared `multiplyBuffsLimit` helper.
+- Verified Rainbow Goobert, Adventurer, Engineer, and Pyromancer block/heal/buff/debuff/stamina and linked-weapon damage mutations.
+- Added `scripts/sim-damage-stat-mutation-smoke.mjs`; focused smoke, source-call audit, strict parity audit, ledger check, syntax checks, no-op audit, Wave A-D smoke, final runtime backlog smoke, and `git diff --check` pass.
+- Next step: continue with the remaining unchecked simulator fidelity candidates.
+
+### 2026-10-06 chess call paths claim (in progress)
+
+- Codex owns the board-owned ChessPiece capture/elimination surface for `black_bishop`, `black_king`, `black_knight`, `black_pawn`, `black_queen`, `black_rook`, `white_bishop`, `white_king`, `white_knight`, `white_pawn`, `white_queen`, and `white_rook`, plus its focused smoke, simulator roadmap entry, generated parity/ledger artifacts, and this handoff.
+- Scope is source-backed capture, elimination, king notification, and timed effect behavior. Chess Board movement AI remains the documented unsupported simulator mode.
+
+### 2026-10-06 chess call paths complete
+
+- Added explicit handlers for all 12 ChessPiece rows and board-owned `dispatchChessCapture` / `dispatchChessElimination` dispatch. Capture effects, elimination effects, king-wide capture notifications, temporary black-rook crit changes, and white-rook timed resistance now have source-backed simulator behavior; Chess Board movement/capture selection remains the existing unsupported-mode boundary.
+- Added `scripts/sim-chess-call-paths-smoke.mjs`; it passes all 12 handlers and effect paths. The call audit drops the reviewed chess candidates, the generated ledger remains at 492 source-ported / 26 no-combat / 0 unresolved / 0 deferred, and the roadmap item is checked off.
+
+### 2026-10-06 ring configuration claim (in progress)
+
+- Codex owns the HistoryDB ring payload decoder/round-trip, create-page ring info-button editor, configured ring tooltip/simulator plumbing, focused ring smoke test, and this handoff. Scope is Magic Ring and Superior Ring trigger/effect choices with the extracted 6-bit-per-effect rules; unrelated item editing remains separate.
+
+### 2026-10-06 ring configuration complete
+
+- HistoryDB decoding now preserves Magic Ring (2 effects / 12 bits) and Superior Ring (3 effects / 18 bits) as validated trigger + stack rows while retaining the raw integer for game-compatible export. Draft/history round-trips and the Python author-history exporter preserve the same payload.
+- Create now paints an accessible `i` control on placed rings. It opens a compact filter-panel-style editor with the four source triggers, ten source stacks, exact ring effect counts, amount preview, Cancel/Save, keyboard Escape, and outside-click close. Dragging ignores the control, and edits on attached history use the existing history-unlock flow.
+- Create and sim tooltips show configured generated effects. The simulator consumes persisted ring rows instead of rerolling them; unconfigured/manual rings keep the existing seeded random fallback. Published placements now carry validated ring instance JSON through the submit function and `build_placements.instance` migration.
+- Added `js/shared/ring-config.js` and `scripts/sim-ring-config-smoke.mjs`; focused ring smoke, HistoryDB catalog recovery, source ring smoke, placement-instance/playback/empty/vs-board smokes, syntax checks, strict parity audit, no-op audit, ledger check, and diff check were run. The existing placement-instance smoke still has its unrelated stale `history max stamina` expectation failure; no ring test fails.
+- Owned paths: `js/shared/ring-config.js`, `js/pages/create/ring-editor.js`, create/sim ring plumbing, ring HistoryDB/export helpers, submit-build ring validation, placement-instance migration, and this handoff. Next step: deploy the new Supabase migration/function before relying on published ring configurations.
+
+### 2026-10-07 todo checkbox formatting
+
+- Converted the plain-text entries under `### added by me` in `docs/todo.md`, including the plugin list, into unchecked Markdown task items. Existing completion states were preserved; no product code changed.
+
+### 2026-10-07 Time Melting stun-duration audit complete
+
+- Extracted source confirms `TimeMelting.gd` calls `Item.hasInventoryDuration()`, which is `descriptor.hasParam("dur")`; stun fields (`dur_stun`, `dur_stunself`, and related params) are intentionally outside that predicate. The simulator and star-slot highlighting remain source-faithful, so no stun-duration code change was made. Tooltip sizing remains paused pending user approval of its bounded design.
+
+### 2026-10-07 Create build-info empty-board guard claim (in progress)
+
+- Codex owns the create Build-tab drag/mention guard and focused smoke for preventing item-derived Build Info edits while the board has no placements. Plain text metadata editing remains available; once an item is placed, existing skill, tier, and item-mention behavior remains unchanged.
+
+### 2026-10-07 Create build-info empty-board guard complete
+
+- Added a shared `hasBoardItems` guard for Build Info item-derived edits. Empty boards now reject catalog/board item mentions, skill-slot arming and drops, and tier assignments; title, notes text, class, tags, rank, and other plain metadata remain editable.
+- The notes hint explains the empty-board requirement and returns to the existing history/OP copy after the first placement.
+- Added `scripts/create-meta-drop-guard-smoke.mjs`; focused smoke, module syntax checks, and `git diff --check` pass.
+
+### 2026-10-07 Responsive visual-change rule complete
+
+- Added a shared `AGENTS.md` rule requiring every visual change to account for supported viewport sizes, using 1440p as the desktop reference and verifying 1080p/short desktop, narrow desktop or tablet, and mobile unless explicitly excluded.
+- The rule prefers fluid/clamped sizing and intentional breakpoints and requires deliberate exceptions to be recorded in the owning handoff or page rule.
+- Checked off the matching item in `docs/todo.md`; documentation-only change, no product code or runtime behavior changed.
+
+### 2026-10-07 Personal build filters claim (in progress)
+
+- Codex owns the authenticated visibility of `Liked` and `My builds` controls across the Builds feed, profile Builds tab, simulator build browser, and event-detail “View my entry” link, plus the focused regression smoke and this handoff.
+- Anonymous users must not see or activate personal filters or event-entry links; existing public build browsing and vote controls remain unchanged.
+
+### 2026-10-07 Personal build filters complete
+
+- The shared Builds filter rail now hides the personal filter group until an authenticated profile is available. Signed-out transitions clear both `liked` and `mine` state, strip stale personal query filters, and prevent anonymous liked filtering in the shared row predicate.
+- Applied the gate to `/builds/`, profile Builds, and the simulator public-build picker. Event detail only renders “View my entry” after profile auth resolves and removes it on sign-out.
+- Added `scripts/build-personal-filter-visibility-smoke.mjs`; focused smoke, changed-module syntax checks, anonymous `/builds/` browser smoke at 1080p/1440p/mobile, anonymous event-detail browser smoke, and `git diff --check` pass. The existing simulator picker audit timed out before opening its HUD in this environment, so it was not used as evidence for this change.
+- Next step: continue with the next unchecked product TODO.
+
+### 2026-10-07 Anonymous vote sign-in claim (in progress)
+
+- Codex owns the shared build vote gate, reusable vote-intent continuation, confirm-dialog styling on feed/build/history pages, focused vote-auth smoke, and this handoff.
+- Anonymous upvote/downvote attempts must show the existing confirm preset, launch Discord sign-in only after confirmation, and resume the exact requested direction after OAuth; signed-in vote behavior remains unchanged.
+
+### 2026-10-07 Anonymous vote sign-in complete
+
+- `bindBuildVote` now checks for an authenticated session before changing optimistic score or local vote state. Anonymous upvote/downvote clicks open the shared parchment `confirmDialog`; confirmation stores only a short-lived build slug/direction intent and launches Discord OAuth on the current page.
+- Returning OAuth sessions consume that intent and replay the exact direction through the normal signed vote path. Legacy local vote resync is also session-gated, so anonymous page loads do not send vote requests.
+- Loaded `confirm-dialog.css` on `/builds/`, build view/history, and profile pages where vote controls render. Added `js/pages/build/vote-intent.js` and `scripts/build-vote-auth-smoke.mjs`; intent smoke, standalone anonymous-dialog browser smoke, OAuth-return continuation browser smoke, changed-module syntax checks, and `git diff --check` pass.
+- Updated the matching `docs/todo.md` item and refreshed the vote/auth documentation plus About, Terms, and Privacy descriptions/dates for the sign-in requirement. Server-side vote authorization remains enforced by the existing JWT check.
+
+### 2026-10-07 Create default bag action claim (in progress)
+
+- Codex owns the Create toolbar default-bag action, its confirmation/parked-item flow, icon styling, focused smoke, matching todo checkbox, and this handoff.
+- Scope: confirm before replacing an occupied board, preserve current placements in Parked through the existing cap, then place the source-shaped 9x7 default layout (Leather Bags in the interior, Stamina Sacks on the top and left edges). Existing Clear behavior remains unchanged.
+
+### 2026-10-07 Create default bag action complete
+
+- Added the Create toolbar button and matching parchment/gold bag-plus icon. It is available before the first placement while the existing onboarding overlay remains focused on the board.
+- Confirmed replacements move the current board into Parked, refuse the action if the existing Parked unique-item cap cannot preserve them, clear attached history through the existing unlock flow, and place 12 Leather Bags plus 5 Stamina Sacks covering the 9x7 board (top and left edges).
+- Added `js/pages/create/default-bag.js`, `scripts/create-default-bag-smoke.mjs`, and `scripts/create-default-bag-browser-smoke.mjs`; the smokes cover cancel/no mutation, confirmation, parked preservation, exact layout, replacement placement, and responsive toolbar visibility at 1440, 1080, narrow, and mobile widths. Module syntax checks, both focused smokes, and `git diff --check` pass.
+- Checked off the matching `docs/todo.md` item. No authentication, upload, storage, or legal-page behavior changed.
+
+### 2026-10-07 Premium offer visual treatment claim (in progress)
+
+- Codex owns the shared Premium offer popup shell styling and its responsive visual smoke in `js/shared/premium-offer.css` and this handoff.
+- Scope is the full popup surface: reset-button-inspired Patch3 panel, restrained gold/rainbow accents, and matching controls; copy, entitlement flows, checkout, and sign-in behavior remain unchanged.
+
+### 2026-10-07 Premium offer visual treatment complete
+
+- Restyled the entire Premium offer surface with the reset dialog’s Patch3 panel, dimmed/blurred backdrop, gold-border controls, restrained meter/rule accents, and a low-intensity rainbow halo retained for the premium feel. Copy and all sign-in, claim, checkout, and billing behavior are unchanged.
+- Added `scripts/premium-offer-style-smoke.mjs`; it verifies the panel and CTA treatment plus no overflow at 1440, 1080, narrow, and mobile widths. Syntax checks, the focused style smoke, and `git diff --check` pass.
+
+### 2026-10-07 Game cursor performance claim (in progress)
+
+- Codex owns the shared game cursor runtime and cursor CSS, plus its focused responsive/edge smoke and this handoff.
+- Scope is pointer rendering only: coalesce movement work with `requestAnimationFrame`, cache cursor ownership, keep the follower stable at viewport edges/footer, scale desktop art by viewport width, and leave mobile/text cursors native. Drag behavior and cursor artwork remain unchanged.
+
+### 2026-10-07 Game cursor performance complete
+
+- `game-cursor.js` now coalesces pointer/scroll/resize updates into one animation-frame pass, caches per-element cursor ownership, and keeps the full follower active at footer and viewport edges so it no longer swaps/disappears there.
+- Desktop follower art scales from the 1440px viewport reference down to compact desktop widths; mobile/touch and text-editing surfaces retain native cursors. Existing pressed/drag cursor kinds and YouTube handling remain unchanged.
+- Added `scripts/game-cursor-smoke.mjs`; it verifies edge stability, 1440→1080 scaling, native text input, and mobile behavior. Syntax checks, the focused smoke, and `git diff --check` pass.
+- Checked off the matching `docs/todo.md` item. No authentication, upload, storage, or legal-page behavior changed.
+
+### 2026-10-07 Responsive tooltip scale claim (in progress)
+
+- Codex owns the shared desktop tooltip scale helper, item/cosmetic placement, build/event tip placement, deterministic scale smoke, matching todo checkbox, and this handoff.
+- Scope: use 1440px as the desktop reference, apply the bounded viewport ratio before each existing edge/rail fit, and preserve current mobile behavior.
+
+### 2026-10-07 Responsive tooltip scale complete
+
+- Added `desktopTooltipScale()` with a 1440px reference, a 0.72 compact-desktop floor, and the existing mobile cutoff. Shared item/cosmetic placement now applies that bound before viewport/rail fitting; build previews and event tags use the same scale before their existing placement math.
+- Added `scripts/tooltip-scale-smoke.mjs`; it verifies 1440, 1080, narrow desktop, mobile, invalid-width, and wide-desktop cases. Changed-module syntax checks, the focused smoke, and `git diff --check` pass.
+- Checked off the matching `docs/todo.md` item. No authentication, upload, storage, or legal-page behavior changed.
+
+### 2026-10-07 Ring configuration deployment complete
+
+- The previously implemented HistoryDB ring configuration is now live end to end: applied remote migration `20261006000000_placement_instance.sql` and deployed the ring-validating `submit-build` function.
+- `supabase migration list` shows the placement-instance migration applied remotely; the ring configuration smoke still passes. No new product-code changes were made in this approval follow-up.
+
+### 2026-10-07 Premium offer interaction lock claim (in progress)
+
+- Codex owns the shared Premium offer page lock, its focused browser smoke, and the matching TODO checkbox.
+- While the offer is open, all other document body siblings must be inert and pointer-blocked regardless of their local z-index; the offer layer and its controls remain interactive, and each sibling's prior inert state must be restored on close.
+
+### 2026-10-07 All-build essentials validation claim (in progress)
+
+- Codex owns the Create client/server submit checks, Build-tab guidance, focused validation smoke, legal-page review, and matching TODO checkbox.
+- Every submitted build must contain at least one board placement in each of Needs, Wants, and Good to have; OP-only note/tag rules remain unchanged.
+
+### 2026-10-07 Premium offer interaction lock complete
+
+- The shared Premium offer now marks every other `body` child inert while open and restores each prior inert state on close. A CSS pointer-events fallback blocks legacy/high-z-index page layers, while the offer layer remains interactive.
+- Added `scripts/premium-offer-lock-smoke.mjs`; it verifies sibling locking, focus containment, restoration, and close behavior. The existing responsive Premium style smoke also passes.
+- Checked off the Premium interaction, Premium visual treatment, empty-board Build Info guard, and OP essentials TODO entries that were already implemented. No authentication, upload, storage, or legal-page behavior changed.
+
+### 2026-10-07 All-build essentials validation complete
+
+- Moved the Needs/Wants/Good-to-have requirement out of the OP-only branch: browser validation and the deployed `submit-build` function now reject every submitted build missing any tier; OP-only Theory and 30-character note rules remain unchanged.
+- Updated Create guidance, `docs/pages/create-submit.md`, About, Terms, and Privacy descriptions, and added `scripts/create-submit-essentials-smoke.mjs` covering ordinary and OP submissions. Focused smoke, changed-module syntax checks, `submit-build` deployment, and `git diff --check` pass.
+
+### 2026-10-07 Forgotten-approval audit
+
+- Reviewed both handoffs and the recent TODO entries. The only concrete approval-blocked behavior was the Premium interaction lock; the all-build essentials rule was implemented as a related stale requirement and is now corrected/deployed. Remaining unchecked items are separate backlog ideas, intentional simulator/screenshot constraints, or manual infrastructure steps rather than forgotten approvals.
+
+### 2026-10-07 Home cursor lag claim (in progress)
+
+- Codex owns the shared game-cursor runtime/CSS, the focused Home cursor performance smoke, and this handoff.
+- Scope: remove the page-wide cursor-style invalidation that makes Home lag while preserving desktop follower art, semantic cursor kinds, text inputs, and native mobile behavior. The Amplitude `ERR_BLOCKED_BY_CLIENT` messages are browser-extension telemetry failures and are out of product scope.
+
+### 2026-10-07 Home cursor lag complete
+
+- Replaced the `html.bpb-live-cursor *` page-wide `cursor: none` rule with a reversible inline hide on just the element beneath the game-cursor follower. Cursor kind lookup now reads the original target style without toggling root classes; pressed cursor kinds remain stable through a drag.
+- The focused cursor smoke now verifies local hiding/restoration, 1440/1080/tablet/mobile behavior, edge stability, and native text input. In a clean Home browser with 3,632 elements, 100 live-cursor state flips dropped from about 2.4 seconds to about 8 ms. No auth, uploads, storage, or legal-page behavior changed.
+
+### 2026-10-07 Home cursor lag follow-up claim (in progress)
+
+- Codex owns the Home promo catalog's live-art performance boundary, the shared live-art mount guard, focused Home smoke, and this handoff.
+- Root-cause evidence: Home's decorative catalog starts continuous potion/holo canvas work. With that animation loop disabled in a clean 1440p profile, slow animation callbacks fell from 200 to 23 over five seconds. Scope is to keep that display static without changing live art on interactive boards.
+
+### 2026-10-07 Home cursor lag follow-up complete
+
+- Home's promotional catalog now explicitly opts out of live item art. Its item sprites remain visible, but it no longer mounts the continuous potion/holo canvas animation that competed with pointer rendering.
+- Added `scripts/home-live-art-performance-smoke.mjs`; the failing-before-fix smoke confirms the Home catalog is static and has zero mounted live-art instances. A clean five-second Home profile now reports zero promo live-art mounts and 24 slow animation callbacks, down from 200. Create and simulator boards remain outside this opt-out.
+
+### 2026-10-07 Native cursor rollback claim (in progress)
+
+- Codex owns the shared custom-cursor entry points and focused native-cursor smoke.
+- Scope: remove the global game cursor stylesheet import and navigation runtime import so every page uses the browser/OS cursor again. Cursor art files and unused variable declarations remain available for a future opt-in redesign.
+
+### 2026-10-07 Native cursor rollback complete
+
+- Removed the global `cursor.css` import from `css/theme.css` and the `game-cursor.js` import from shared navigation. Pages now use the browser/OS cursor; cursor assets and the runtime remain dormant for a future opt-in redesign.
+- Added `scripts/native-cursor-smoke.mjs`; it verifies the native HTML cursor, no follower element, and no live-cursor class. The smoke and changed-module syntax/diff checks pass.
+
+### 2026-10-08 HistoryDB ring import repair claim (in progress)
+
+- Codex owns the HistoryDB ring-payload decode/normalization boundary, Create draft preservation, focused regression smoke, and this handoff.
+- Root cause: decoded ring `instance.persistent` data is dropped by top-level draft normalization, and zero is a valid game ring bit payload that was discarded as if no payload existed. Scope: preserve the exact imported effect rows through Create without changing manual ring editing rules.
+
+### 2026-10-08 HistoryDB ring import repair complete
+
+- Create draft normalization now retains each placement's `instance` payload, so imported ring configurations survive Create load/restore. History decoding records every ring's fixed-width payload, including the valid zero-bit all-default configuration; the ring helper now distinguishes an absent manual configuration from a persisted zero.
+- Added `scripts/history-ring-create-smoke.mjs`. It performs the HistoryDB encode/decode and Create-draft restore path, asserting exact imported Magic Ring effects and zero-bit default effects. Focused ring smokes and syntax/diff checks pass.
+
+### 2026-10-08 Ring editor affordance placement claim (in progress)
+
+- Codex owns the Create ring configuration overlay, its locked-board visibility, focused responsive browser smoke, and this handoff.
+- Scope: anchor the existing ring info control at the placed ring's visual top-right without inheriting rotation, reuse the Submit-tab info-button treatment, and omit it while attached HistoryDB keeps the board locked.
+
+### 2026-10-08 Ring editor affordance placement complete
+
+- The Magic Ring and Superior Ring editor button now uses the same `cr-submit-info` treatment as Create's Submit info control. It remains a sibling of the rotating sprite, so it stays screen-top-right through every rotation.
+- HistoryDB-locked boards hide the button; the editor additionally rejects a stale click while locked. Added `scripts/create-ring-editor-affordance-smoke.mjs`, covering all four rotations at 1440, 1080, narrow desktop, and mobile, plus locked visibility and stale-click prevention.
+
+### 2026-10-08 Imported ring tooltip investigation claim (in progress)
+
+- Codex owns the Create board tooltip's imported-ring effect display, focused regression coverage, and this handoff.
+- Reported symptom: a HistoryDB-loaded ring retains its cooldown but its configured effects are absent from the Create tooltip. Investigation is tracing the persisted placement through the board-live tooltip adapter and shared renderer.
+
+### 2026-10-08 Imported ring tooltip repair complete
+
+- Root cause was the shared `framesFromHistoryRun` conversion used by the History picker: it discarded each placement's `instance` payload before the selected frame reached the Create draft. The tooltip adapter and renderer were already able to show retained effects.
+- Round frames now preserve `instance`, so imported Magic Ring and Superior Ring effects survive the picker-to-Create path. Added `scripts/history-ring-picker-smoke.mjs`, which exercises the real browser frame converter and asserts the persisted ring effects remain intact.
+
+### 2026-10-08 Parked ring configuration claim (in progress)
+
+- Codex owns the Create Parked-entry/drag transfer of placement instances, focused regression coverage, and this handoff.
+- Reported symptom: a manually configured ring loses its saved effects after moving Board → Parked → Board. Investigation is tracing instance payloads through the Parked conversion and drag commit path.
+
+### 2026-10-08 Simulator duration-to-stun audit corrected
+
+- The original source extraction was stale for current game behavior. Live-game confirmation plus the current catalog establish that Puzzlebag of Endurance (+30%) and Time Melting (+55%) extend Hammer's `dur_stun` from 0.5s; the same duration system is not limited to generic `dur`.
+- Current simulator bug: Time Melting and Endurance mutate only `params.dur`, while Hammer and other duration-bearing stun effects read `dur_stun` / `dur_stunself`; a direct runtime probe still produces Hammer's unmodified 0.5s stun inside Endurance. The prior assertion that only Black Queen is affected was removed rather than preserved as a false regression claim.
+- Follow-up mapping: Puzzlebag of Ruin is `puzzlebag_z` (debuff duplication); Puzzlebag of Endurance is `puzzlebag_j` (duration). Ruin's full duplication fidelity remains a separate simulator gap because its recorded `debuffAmpChance` is not centrally consumed.
+
+### 2026-10-08 Parked ring configuration repair complete
+
+- Root cause: the Parked entry format and Parked-to-board drag seed discarded placement `instance`, which holds configured ring effects. The shared placement rebuild also omitted that payload.
+- Parked entries, saved-draft normalization, Parked drag state, and board placement rebuilds now retain `instance`; cargo flattening follows the same rule. Added `scripts/ring-parked-roundtrip-smoke.mjs` covering configured ring Board → Parked → saved draft → Board restoration.

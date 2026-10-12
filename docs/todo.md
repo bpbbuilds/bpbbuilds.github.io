@@ -417,4 +417,36 @@ Goal: propose **last-round / endgame boards** that synergize — not full shop r
 - [ ] **Builds reverse / forward** — game-style back and forward buttons on build pages (round / history navigation like the in-game UI)
 - [ ] **Create drag lag** — fix the slight delay when moving items (board ↔ board and Parked ↔ board) 
 
-when user enters event, get dm from bot basically saying thansk for entering. your entered build is private until the event ends. However you can still view it on the website in the builds page, profile page, events page. Only your able to see your build on these pages until the event is over.
+- [ ] when user enters event, get dm from bot basically saying thansk for entering. your entered build is private until the event ends. However you can still view it on the website in the builds page, profile page, events page. Only your able to see your build on these pages until the event is over.
+- [x] Broken image for discord image on website — failed Discord CDN avatars now fall back to initials or the existing empty state.
+- [ ] Creating a universal cusor and scroll bar
+- [x] PREMIUM popup during popup needs to make other sections of the website not interactable. Other page layers are now inert and pointer-blocked while the shared offer is open.
+- [x] New design for the premium pop up to make it less ugly — reset-button-inspired Premium offer treatment is shipped.
+- [ ] Loading screen over skeletons
+- [ ] 1080p screen fixes
+- [x] Tool tips for builds, cosmetics, and items size be dynamic with screen size
+- [ ] Build page scroll on filters tab
+- [x] Move search bar to the top of filters — Create-only Filter tab order now places Search before Grouping and keeps Debuffs last.
+- [x] Create a bag button to auto fill board with default bags
+- [x] Disable the ability to move items into the build info without having a item in the build grid — item-derived Build Info edits are guarded until the board has an item.
+- [x] Require items in the needs, wants, good to have — client and submit-build validation require one item in each tier for every submitted build.
+- [ ] I items to be dynamic with page size and weary of the nav section
+- [x] Time melting item import also make sure star items works — audited against `TimeMelting.gd`/`Item.hasInventoryDuration()`: only `dur` targets are valid; stun-only `dur_stun` fields intentionally do not light or extend.
+- [ ] Import stone cosmetic item and link it to the reward for the stone dps event
+- [ ] Make the nav dynamic with screensize so 1440p looks same on 1080p ect.
+- [x] Reduce size of mouse pointer and make it dynamic with screensize — desktop follower is viewport-scaled; mobile and text cursors remain native.
+- [x] Make rule that anytime any visual code is altered or changed keep in mind othe rscreen sizes and make the change compatible with that
+- [ ] Premium stats and filters for sim dps, hps, bps, maxhpps
+- [x] disable liked and my builds on builds page for non logged in users — hidden from anonymous users across Builds, profile Builds, and the simulator build picker; event-detail “View my entry” is auth-gated.
+- [x] non logged in user tries to upvote prompt sign in module — anonymous votes open the shared sign-in confirm and resume the requested vote after OAuth.
+- [ ] admin only page for preset website elements that can be reused across the page
+- [ ] chang i on rings to be in the top right corner of the rings. stays int he top right regardless of rotation. the design of the i is the same design used on the one next to the submit button
+- [ ] use different icon for the create default bag button
+### plugins to download
+- [ ] superpowers
+- [ ] kaparthy skills
+- [ ] i have adhd
+- [ ] claude octopus
+- [ ] supabase plugin
+- [ ] oh my claude code
+- [ ] chome dev tools mcp

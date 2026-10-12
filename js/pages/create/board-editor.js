@@ -13,7 +13,9 @@ import {
 } from './collision.js';
 import { EDIT_MODE } from './editor-state.js';
 import { attachDragSession } from './drag-session.js';
-import { mountParkStrip, parkedFromPlacement } from './park-strip.js';
+import { canFitParkEntries, mountParkStrip, parkedFromPlacement } from './park-strip.js';
+import { newPlacementKey } from './draft-io.js';
+import { applyDefaultBag } from './default-bag.js';
 import { bindCreateParkFly, queueAutoParkFly } from './create-park-fly.js';
 import { mountSellBin } from './sell-bin.js';
 import { economyReadoutHtml, paintEconomyReadout } from './economy-readout.js';
@@ -27,6 +29,7 @@ import { exportBoardPng } from './export-board-png.js';
 import { isTypingTarget } from '../../shared/is-typing-target.js';
 import { confirmDialog } from '../../shared/confirm-dialog.js';
 import { SCREENSHOT_IMPORT_ENABLED } from '../../shared/feature-flags.js';
+import { mountRingEditor } from './ring-editor.js';
 
 const CELL_PX = 96;
 
@@ -146,6 +149,28 @@ export function mountBoardEditor(host, opts) {
             aria-label="Clear board"
           >
             <img src="${rootBase}assets/icons/filters/ResetButton.png" alt="" width="36" height="36" draggable="false" />
+          </button>
+          <button
+            type="button"
+            class="build-round__toggle create-board__toggle create-board__toggle--default-bag"
+            data-act="default-bag"
+            title="Create default bag"
+            aria-label="Create default bag"
+          >
+            <svg
+              class="create-board__default-bag-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 32 32"
+              width="36"
+              height="36"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M8 12h16v15H8z" fill="#ffecdc" stroke="#3c261d" stroke-width="2.4" stroke-linejoin="round" />
+              <path d="M11 12V9a5 5 0 0 1 10 0v3" fill="none" stroke="#3c261d" stroke-width="2.4" stroke-linecap="round" />
+              <path d="M11 12V9a5 5 0 0 1 10 0" fill="none" stroke="#eac914" stroke-width="1.2" stroke-linecap="round" />
+              <path d="M16 16v7M12.5 19.5h7" fill="none" stroke="#eac914" stroke-width="2.2" stroke-linecap="round" />
+            </svg>
           </button>
           <div class="create-board__export" data-export-wrap hidden>
             <button
@@ -458,7 +483,9 @@ export function mountBoardEditor(host, opts) {
     exactBoard: true,
     reserveScrollGap: false,
     cellPx: CELL_PX,
+    ringConfig: true,
   });
+  const ringEditor = mountRingEditor({ root: boardRoot, state, itemsById });
 
   /** Placements currently painted on the bag from the active draft. */
   function getVisiblePlacements() {
@@ -630,6 +657,29 @@ export function mountBoardEditor(host, opts) {
     state.removePlacement(key);
   }
 
+  async function createDefaultBag() {
+    const locked = Boolean(state.isHistoryLocked?.());
+    await applyDefaultBag({
+      state,
+      itemsById,
+      keyFactory: () => newPlacementKey(),
+      parkedFromPlacement,
+      canFitParkEntries,
+      onParkOverflow: () =>
+        window.alert('There is not enough room in Parked to preserve every current item.'),
+      confirm: () =>
+        confirmDialog({
+          title: 'Create default bag?',
+          body: locked
+            ? 'Your current board will be replaced, and its items will move to Parked. Attached run history will be cleared too.'
+            : 'Your current board will be replaced, and its items will move to Parked.',
+          confirmLabel: 'Create default bag',
+          cancelLabel: 'Cancel',
+          danger: true,
+        }),
+    });
+  }
+
   /** @param {MouseEvent} e */
   function onToolbarClick(e) {
     const t = e.target instanceof Element ? e.target : null;
@@ -675,6 +725,10 @@ export function mountBoardEditor(host, opts) {
         if (!ok) return;
         state.clearBoard();
       })();
+      return;
+    }
+    if (act === 'default-bag') {
+      void createDefaultBag();
       return;
     }
     if (act === 'clear-park') {
@@ -881,6 +935,7 @@ export function mountBoardEditor(host, opts) {
       boardImport?.destroy();
       labelTool?.destroy();
       park.destroy();
+      ringEditor.destroy();
       sellBin.destroy();
       session.destroy();
       host.removeEventListener('click', onToolbarClick);

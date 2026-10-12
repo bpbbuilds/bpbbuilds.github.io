@@ -2,18 +2,14 @@
  * Band AG 202–203 — board set deepened; chess_board permanent combat noop.
  */
 
-import {
-  giveRandomBuffs,
-  grantStacks,
-  BUFF_KEYS,
-} from '../buff-economy.js';
+import { giveRandomBuffs, grantStacks } from '../buff-economy.js';
 import { affectedTargets, neighborKeys } from '../board-graph.js';
 import { getP1, getP2, getPName } from '../params.js';
 import { advanceCooldownSeconds, isCooldownActive } from '../cooldown.js';
-import { getStackAmount } from '../stacks.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { getScriptHandler } from './registry.js';
 import { magicRingPort } from './ports-ring.js';
+import { multiplyBuffsLimit } from './ports-ai-d.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -40,39 +36,45 @@ export const chessBoardPort = {
 };
 
 /** MagicMirror.gd — Holy reflect scaling; CD multiply buffs. */
+function applyMagicMirrorReflect(piece, ctx) {
+  if (piece._magicMirrorReflectApplied) return;
+  piece._magicMirrorReflectApplied = true;
+  const base = getPName(piece.params, 'reflect', getP1(piece.params, 25));
+  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+  let holy = 0;
+  for (const other of ctx.pieces || []) {
+    if (!links.some((l) => l.key === other.placementKey)) continue;
+    if (itemHasType(ctx.itemsById.get(other.itemId), 'holy')) holy += 1;
+  }
+  const perHoly = Math.max(0, Number(piece.chance2) || 2);
+  const chance = base + holy * perHoly;
+  ctx.player.debuffReflectChance = (ctx.player.debuffReflectChance || 0) + chance;
+  ctx.events.push({
+    t: ctx.t,
+    type: 'info',
+    label: `${piece.name}: +${chance}% debuff reflect`,
+    meta: { category: 'system', script: true, handler: 'magic_mirror' },
+  });
+}
+
 /** @type {ScriptHandler} */
 export const magicMirrorPort = {
   handlerId: 'magic_mirror',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    applyMagicMirrorReflect(piece, ctx);
+  },
   onCombatStart(piece, ctx) {
-    const base = getPName(piece.params, 'reflect', getP1(piece.params, 25));
-    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-    let holy = 0;
-    for (const other of ctx.pieces || []) {
-      if (!links.some((l) => l.key === other.placementKey)) continue;
-      if (itemHasType(ctx.itemsById.get(other.itemId), 'holy')) holy += 1;
-    }
-    const chance = base + holy * 5;
-    ctx.player.debuffReflectChance = (ctx.player.debuffReflectChance || 0) + chance;
-    ctx.events.push({
-      t: ctx.t,
-      type: 'info',
-      label: `${piece.name}: +${chance}% debuff reflect`,
-      meta: { category: 'system', script: true, handler: 'magic_mirror' },
-    });
+    applyMagicMirrorReflect(piece, ctx);
   },
   onCooldownEffect(piece, ctx) {
     pushActivate(piece, ctx, 'magic_mirror', `Accessory: ${piece.name}`);
-    const cap = Math.max(1, Math.round(getPName(piece.params, 'cap', 5)));
-    for (const k of BUFF_KEYS) {
-      const have = getStackAmount(ctx.player, /** @type {any} */ (k));
-      if (have <= 0) continue;
-      const add = Math.min(have, cap);
-      grantStacks(ctx.player, k, add, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-    }
+    const fraction = Math.max(0, getPName(piece.params, 'buffs', getP1(piece.params, 20)) / 100);
+    const cap = Math.max(1, Math.round(getPName(piece.params, 'max', getP2(piece.params, 20))));
+    multiplyBuffsLimit(ctx.player, fraction, cap, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
     return true;
   },
 };

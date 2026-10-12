@@ -4,6 +4,7 @@
 
 import { EVENT_STATUS_LABELS, getCatalogEvent } from '../events/catalog-data.js';
 import { formatEventDate } from '../events/event-meta.js';
+import { desktopTooltipScale } from '../../shared/tooltip-scale.js';
 
 /**
  * @param {string} s
@@ -107,7 +108,7 @@ export function bindEventBannerTip(scope) {
     tip.hidden = false;
     tip.style.left = '0px';
     tip.style.top = '0px';
-    const scale = 1;
+    const scale = desktopTooltipScale(window.innerWidth);
     tip.style.setProperty('--build-event-tip-scale', String(scale));
     const anchor = banner.getBoundingClientRect();
     const width = tip.offsetWidth * scale;

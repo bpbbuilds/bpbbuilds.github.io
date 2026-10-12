@@ -7,6 +7,7 @@ import {
   isHardIllegalAccess,
 } from '../../shared/item-access.js';
 import { pointOverElement } from './park-strip.js';
+import { hasBoardItems } from './meta-drop-guards.js';
 
 /**
  * @param {{
@@ -116,6 +117,7 @@ export function createMetaDrops(opts) {
     const item = itemsById.get(itemId);
     if (!item || String(item.type || '') !== 'Skill') return false;
     const d = state.getDraft();
+    if (!hasBoardItems(d.placements)) return false;
     const hero = String(d.hero_class || '').trim();
     if (hero && isHardIllegalAccess(accessVerdict(hero, item))) return false;
     const other =
@@ -288,6 +290,7 @@ export function createMetaDrops(opts) {
     if (target.kind === 'skill') {
       if (String(item.type || '') !== 'Skill') return false;
       const d = state.getDraft();
+      if (!hasBoardItems(d.placements)) return false;
       const hero = String(d.hero_class || '').trim();
       if (hero && isHardIllegalAccess(accessVerdict(hero, item))) return false;
       const other =
@@ -392,6 +395,7 @@ export function createMetaDrops(opts) {
   function handleRouteClick(routeSlot) {
     const route = routeSlot.dataset.route;
     if (route !== 'r3' && route !== 'r10') return false;
+    if (!hasBoardItems(state.getDraft().placements)) return false;
     const field = route === 'r3' ? 'route_r3_item_id' : 'route_r10_item_id';
     const cur = state.getDraft()[field];
     if (armedRoute === route && cur) {

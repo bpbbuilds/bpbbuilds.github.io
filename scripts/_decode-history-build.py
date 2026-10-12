@@ -29,6 +29,19 @@ CLASSES = {
     5: "Adventurer",
     6: "Engineer",
 }
+
+RING_STACKS = (
+    "lucky",
+    "regeneration",
+    "vampirism",
+    "spikes",
+    "mana",
+    "empower",
+    "heat",
+    "poison",
+    "blind",
+    "cold",
+)
 LEAGUES = [
     "bronze",
     "silver",
@@ -107,6 +120,7 @@ def load_catalog():
     # Magic Ring persistent bits — MagicRing.gd: numEffects * (2+4); CSV `2:effects`
     magic_ring_gid = next((int(r["id"]) for r in rows if r["name"] == "Magic Ring"), None)
     magic_ring_persist_bits = 12
+    superior_ring_gid = next((int(r["id"]) for r in rows if r["name"] == "Superior Ring"), None)
     if magic_ring_gid is not None:
         row = by_gid.get(magic_ring_gid) or {}
         # params cell may include `2:effects`
@@ -129,6 +143,7 @@ def load_catalog():
         "empty_socket": empty_socket,
         "magic_ring_gid": magic_ring_gid,
         "magic_ring_persist_bits": magic_ring_persist_bits,
+        "superior_ring_gid": superior_ring_gid,
     }
 
 
@@ -138,6 +153,14 @@ def sockets_for(gid: int, cat: dict) -> int:
         return cat["sockets_by_slug"][slug]
     # fallback: ItemData doesn't store sockets; assume 0
     return 0
+
+
+def decode_ring_effects(value: int, count: int) -> list[dict[str, int | str]]:
+    effects = []
+    for i in range(count):
+        encoded = (value >> ((count - i - 1) * 6)) & 0x3F
+        effects.append({"trigger": (encoded >> 4) & 3, "stack": RING_STACKS[encoded & 0xF]})
+    return effects
 
 
 def deserialize_items(build_info: str, cat: dict, version: str = "1.1.0"):
@@ -175,10 +198,20 @@ def deserialize_items(build_info: str, cat: dict, version: str = "1.1.0"):
                 return None
 
         # MagicRing.gd getDataPersistentBits = numEffects * (2+4); CSV effects=2 → 12 bits
-        if index == cat["magic_ring_gid"]:
-            persist_bits = cat.get("magic_ring_persist_bits", 12)
-            if bs.pull_bitsize(persist_bits) < 0:
+        ring_count = (
+            2 if index == cat["magic_ring_gid"]
+            else 3 if index == cat["superior_ring_gid"]
+            else 0
+        )
+        if ring_count:
+            persist = bs.pull_bitsize(ring_count * 6)
+            if persist < 0:
                 return None
+            if persist > 0:
+                entry["persistent"] = {
+                    "magicRing": persist,
+                    "effects": decode_ring_effects(persist, ring_count),
+                }
 
         row = cat["by_gid"].get(index)
         entry["name"] = row["name"] if row else f"gid:{index}"

@@ -3,8 +3,14 @@
  * Net score from Supabase (vote-build); my_vote cached in localStorage.
  */
 
-import { getSession } from '../../shared/auth.js';
+import { authRedirectTo, getSession, signInWithDiscord } from '../../shared/auth.js';
 import { config } from '../../shared/config.js';
+import { confirmDialog } from '../../shared/confirm-dialog.js';
+import {
+  clearVoteIntent,
+  readVoteIntent,
+  saveVoteIntent,
+} from './vote-intent.js';
 
 const STORAGE_PREFIX = 'bpb-build-vote:';
 const SYNCED_PREFIX = 'bpb-build-vote-synced:';
@@ -105,6 +111,8 @@ function isUuid(s) {
  * @returns {Promise<{ vote_score: number, my_vote: -1 | 0 | 1 }>}
  */
 export async function submitBuildVote(slug, vote) {
+  const session = await getSession().catch(() => null);
+  if (!session?.access_token) throw new Error('Sign in to vote on builds.');
   const url = String(config.voteBuildUrl || '').trim();
   if (!url || url.includes('YOUR_')) {
     throw new Error('Vote URL not configured. Run node scripts/write-config.mjs.');
@@ -114,14 +122,7 @@ export async function submitBuildVote(slug, vote) {
     'Content-Type': 'application/json',
     apikey: String(config.supabasePublishableKey || ''),
   };
-  try {
-    const session = await getSession();
-    if (session?.access_token) {
-      headers.Authorization = `Bearer ${session.access_token}`;
-    }
-  } catch {
-    /* anon vote */
-  }
+  headers.Authorization = `Bearer ${session.access_token}`;
   const res = await fetch(url, {
     method: 'POST',
     headers,
@@ -175,6 +176,32 @@ export function voteControlHtml(root = '../../') {
   `;
 }
 
+/**
+ * Ask anonymous visitors to sign in before a vote changes local or server
+ * state. The requested direction is kept only after explicit confirmation so
+ * OAuth can resume the same click on the returning page.
+ * @param {string} buildKey
+ * @param {1 | -1} direction
+ */
+async function promptVoteSignIn(buildKey, direction) {
+  const ok = await confirmDialog({
+    title: direction === 1 ? 'Sign in to upvote' : 'Sign in to vote',
+    body: 'Please sign in with Discord to vote on this build.',
+    confirmLabel: 'Sign in',
+    cancelLabel: 'Not now',
+  });
+  if (!ok) return;
+
+  saveVoteIntent({ buildKey, direction });
+  try {
+    await signInWithDiscord(authRedirectTo());
+  } catch (err) {
+    clearVoteIntent();
+    console.error(err);
+    window.alert(err instanceof Error ? err.message : 'Sign-in failed.');
+  }
+}
+
 function escapeAttr(s) {
   return String(s ?? '')
     .replace(/&/g, '&amp;')
@@ -215,6 +242,7 @@ export function bindBuildVote(root, opts = {}) {
     : 0;
   let myVote = /** @type {-1 | 0 | 1} */ (readMyVote(buildKey));
   let busy = false;
+  let gateBusy = false;
   let destroyed = false;
 
   function paint() {
@@ -227,8 +255,8 @@ export function bindBuildVote(root, opts = {}) {
     downBtn.setAttribute('aria-pressed', myVote === -1 ? 'true' : 'false');
     upBtn.classList.toggle('is-on', myVote === 1);
     downBtn.classList.toggle('is-on', myVote === -1);
-    upBtn.disabled = busy;
-    downBtn.disabled = busy;
+    upBtn.disabled = busy || gateBusy;
+    downBtn.disabled = busy || gateBusy;
   }
 
   /**
@@ -243,7 +271,20 @@ export function bindBuildVote(root, opts = {}) {
    * @param {1 | -1} dir
    */
   async function cast(dir) {
-    if (!buildKey || busy) return;
+    if (!buildKey || busy || gateBusy) return;
+    gateBusy = true;
+    const session = await getSession().catch(() => null);
+    if (!session) {
+      await promptVoteSignIn(buildKey, dir);
+      gateBusy = false;
+      if (!destroyed) paint();
+      return;
+    }
+    if (destroyed) {
+      gateBusy = false;
+      return;
+    }
+    gateBusy = false;
     const prev = myVote;
     const next = /** @type {-1 | 0 | 1} */ (prev === dir ? 0 : dir);
     myVote = next;
@@ -282,6 +323,8 @@ export function bindBuildVote(root, opts = {}) {
    */
   async function syncLegacyIfNeeded() {
     if (!buildKey || myVote === 0) return;
+    const session = await getSession().catch(() => null);
+    if (!session?.access_token) return;
     if (wasSynced(buildKey) && serverScore !== 0) return;
     try {
       const res = await submitBuildVote(buildKey, myVote);
@@ -311,7 +354,13 @@ export function bindBuildVote(root, opts = {}) {
   upBtn.addEventListener('click', onUp);
   downBtn.addEventListener('click', onDown);
   paint();
-  void syncLegacyIfNeeded();
+  const pending = readVoteIntent();
+  if (pending?.buildKey === buildKey) {
+    clearVoteIntent();
+    void cast(pending.direction);
+  } else {
+    void syncLegacyIfNeeded();
+  }
 
   return () => {
     destroyed = true;

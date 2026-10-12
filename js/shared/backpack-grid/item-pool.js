@@ -301,6 +301,7 @@ function ensureBoard(root) {
  *   prevShown?: Set<string>,
  *   appear?: boolean,
  *   appearLayer?: 'item' | 'under',
+ *   ringConfig?: boolean,
  * }} opts
  * @returns {Set<string>} ids shown after this paint
  */
@@ -447,6 +448,7 @@ export function paintPooled(root, opts) {
         // Itemiary: CSS drop-shadow instead of a second silhouette img (decode cost).
         shadow: !itemiary,
         bagSlots: !itemiaryPromo,
+        placementKey: opts.ringConfig ? key : undefined,
       });
       if (!itemEl) continue;
       const underEl = promo ? null : createUnderEl(item, face);

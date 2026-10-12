@@ -27,6 +27,7 @@ import {
   defaultFeedFilterState,
   feedFiltersHtml,
   isAllFeedRanks,
+  syncFeedPersonalFilters,
   syncFeedFiltersUi,
 } from './feed-filters.js';
 import { isFeedEvent } from './feed-event-filter.js';
@@ -98,7 +99,7 @@ export async function initBuildsFeed(main, opts) {
         if (!seen.has(String(row.slug || ''))) all.push(row);
       }
     }
-    if (!myAuthorId) state = { ...state, mine: false };
+    if (!myAuthorId) state = { ...state, mine: false, liked: false };
   } catch (err) {
     console.error(err);
     main.innerHTML = `<p class="build-status">Could not load builds.</p>`;
@@ -113,7 +114,10 @@ export async function initBuildsFeed(main, opts) {
       </div>
       <button type="button" class="builds-feed-filters__backdrop" data-feed-filters-backdrop hidden aria-label="Close filters"></button>
       <button type="button" class="builds-feed-filters__toggle" data-feed-filters-open aria-expanded="false" aria-controls="builds-feed-filters">Filters</button>
-      ${feedFiltersHtml(root, state, rows0.length, { canMine: Boolean(myAuthorId) })}
+      ${feedFiltersHtml(root, state, rows0.length, {
+        canMine: Boolean(myAuthorId),
+        canPersonal: Boolean(myAuthorId),
+      })}
     </div>`;
 
   const listHost = main.querySelector('[data-feed-list]');
@@ -155,6 +159,7 @@ export async function initBuildsFeed(main, opts) {
     myAuthorId = nextId;
 
     const mineBtn = rail.querySelector('[data-feed-mine]');
+    syncFeedPersonalFilters(rail, Boolean(myAuthorId));
     if (mineBtn instanceof HTMLElement) {
       if (myAuthorId) {
         mineBtn.removeAttribute('disabled');
@@ -171,7 +176,9 @@ export async function initBuildsFeed(main, opts) {
     }
 
     let nextState = state;
-    if (!myAuthorId && state.mine) nextState = { ...state, mine: false };
+    if (!myAuthorId && (state.mine || state.liked)) {
+      nextState = { ...state, mine: false, liked: false };
+    }
 
     // Avoid remounting boards (restarts AppearInLibrary) when auth only
     // echoes INITIAL_SESSION / token refresh with the same identity.
@@ -194,6 +201,7 @@ export async function initBuildsFeed(main, opts) {
 
     writeFeedStateToUrl(state);
     const rows = sortBuilds(filterBuilds(all, state, myAuthorId), state.sort);
+    syncFeedPersonalFilters(rail, Boolean(myAuthorId));
     syncFeedFiltersUi(rail, state, rows.length);
 
     if (!rows.length) {
@@ -449,7 +457,7 @@ export function filterBuilds(rows, state, myAuthorId = null) {
     if (state.mine) {
       if (!myAuthorId || String(b.author_id || '') !== myAuthorId) return false;
     }
-    if (state.liked && readMyVote(String(b.slug || '')) !== 1) return false;
+    if (state.liked && (!myAuthorId || readMyVote(String(b.slug || '')) !== 1)) return false;
     if (state.tags.length && !state.tags.some((t) => buildHasTag(b, t))) return false;
     if (state.heroClass && String(b.hero_class || '') !== state.heroClass) return false;
     if (state.event && String(b.event_slug || '') !== state.event) return false;

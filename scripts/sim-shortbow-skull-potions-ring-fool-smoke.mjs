@@ -8,6 +8,7 @@ import { buildCombatPieces } from '../js/pages/sim/engine/pieces.js';
 import { prepareGemSockets } from '../js/pages/sim/engine/gem-sockets.js';
 import { dealHit } from '../js/pages/sim/engine/scripts/handlers.js';
 import { getScriptHandler } from '../js/pages/sim/engine/scripts/registry.js';
+import { decodeRingEffects } from '../js/shared/ring-config.js';
 
 const raw = JSON.parse(fs.readFileSync('scripts/_cache/game-items.json', 'utf8'));
 const catalog = Array.isArray(raw) ? raw : raw.items;
@@ -232,6 +233,18 @@ for (const side of ['you', 'them']) {
   assert.equal(foe.stacks.cold, 0, `Superior Ring ignores a miss for opponent-low on ${side}`);
   oppBus.emit('piece_dealt_damage', { piece: itemPiece('shortbow', `${side}:hit`, side), hit: { hit: true }, t: 8 });
   assert.equal(foe.stacks.cold, 8, `Superior Ring opponent-low trigger scales Cold on ${side}`);
+}
+
+// HistoryDB-configured rings must take their encoded payload instead of rolling
+// a new pair when the simulator builds the piece.
+{
+  const owner = createActor('player');
+  const foe = createActor('dummy');
+  const persisted = itemPiece('magic_ring', 'persisted:ring');
+  persisted.persistent = { magicRing: 552 };
+  const persistedCtx = ctx(owner, foe, [], createCombatBus(), [persisted]);
+  getScriptHandler('magic_ring').onPreCombatStart(persisted, persistedCtx);
+  assert.deepEqual(persisted._ringEffects, decodeRingEffects(552, 2));
 }
 
 // TheFool.gd buffs only its own deck.cards, plus Empower when chainPosition 0.

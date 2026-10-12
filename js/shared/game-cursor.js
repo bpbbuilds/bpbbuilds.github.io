@@ -89,12 +89,28 @@ let followerSrc = '';
 let followerW = '';
 let followerH = '';
 let pressed = false;
+let pressedKind = 'default';
 let following = false;
+/** @type {Element | null} */
+let hiddenCursorTarget = null;
+let hiddenCursorValue = '';
+let hiddenCursorPriority = '';
 /** @type {EventTarget | null} */
 let lastTarget = null;
 let lastKind = 'default';
+/** @type {WeakMap<Element, string>} */
+let kindCache = new WeakMap();
 /** @type {{ x: number, y: number, target: EventTarget | null } | null} */
 let lastPointer = null;
+/** @type {{ x: number, y: number, target: EventTarget | null, pointerType: string } | null} */
+let pendingPointer = null;
+let frameHandle = 0;
+
+function resetKindCache() {
+  kindCache = new WeakMap();
+  lastTarget = null;
+  lastKind = 'default';
+}
 
 function ensureFollower() {
   if (follower) return follower;
@@ -109,25 +125,47 @@ function ensureFollower() {
 }
 
 function hideFollower() {
+  restoreNativeCursor();
   if (!following) return;
   following = false;
   document.documentElement.classList.remove('bpb-live-cursor');
+}
+
+function restoreNativeCursor() {
+  if (!hiddenCursorTarget) return;
+  hiddenCursorTarget.style.setProperty('cursor', hiddenCursorValue, hiddenCursorPriority);
+  hiddenCursorTarget = null;
+  hiddenCursorValue = '';
+  hiddenCursorPriority = '';
+}
+
+/** @param {EventTarget | null} target */
+function hideNativeCursor(target) {
+  const next = target instanceof Element ? target : null;
+  if (next === hiddenCursorTarget) return;
+  restoreNativeCursor();
+  if (!next) return;
+  hiddenCursorTarget = next;
+  hiddenCursorValue = next.style.getPropertyValue('cursor');
+  hiddenCursorPriority = next.style.getPropertyPriority('cursor');
+  next.style.setProperty('cursor', 'none', 'important');
+}
+
+function usesNativeCursor() {
+  if (window.innerWidth <= 640) return true;
+  return Boolean(window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+}
+
+/** Keep the 1440px desktop art as the reference; compact desktop viewports get a smaller hand. */
+function desktopCursorScale() {
+  return Math.max(0.72, Math.min(1, (window.innerWidth || 1440) / 1440));
 }
 
 /**
  * @param {EventTarget | null} target
  */
 function cursorKindAt(target) {
-  const root = document.documentElement;
-  const live = root.classList.contains('bpb-live-cursor');
-  const down = root.classList.contains('bpb-cursor-down');
-  const kindClasses = [...root.classList].filter((name) => name.startsWith('bpb-cursor-kind-'));
-  if (live) root.classList.remove('bpb-live-cursor');
-  if (down) root.classList.remove('bpb-cursor-down', ...kindClasses);
-  const kind = kindFrom(target instanceof Element ? target : null);
-  if (down) root.classList.add('bpb-cursor-down', ...kindClasses);
-  if (live) root.classList.add('bpb-live-cursor');
-  return kind;
+  return kindFrom(target instanceof Element ? target : null);
 }
 
 /**
@@ -136,50 +174,45 @@ function cursorKindAt(target) {
  * @param {EventTarget | null} target
  */
 function kindFor(target) {
+  if (pressed) return pressedKind;
+  if (target instanceof Element) {
+    const cached = kindCache.get(target);
+    if (cached) return cached;
+  }
   if (target === lastTarget) return lastKind;
+  restoreNativeCursor();
   lastTarget = target;
   lastKind = cursorKindAt(target);
+  if (target instanceof Element) kindCache.set(target, lastKind);
   return lastKind;
 }
 
 /**
- * @param {PointerEvent} event
+ * @param {{ x: number, y: number, target: EventTarget | null, pointerType: string }} event
  */
-function syncFollower(event) {
-  if (event.pointerType === 'touch') {
+function syncFollowerNow(event) {
+  if (event.pointerType === 'touch' || usesNativeCursor()) {
     hideFollower();
     return;
   }
-  lastPointer = {
-    x: event.clientX,
-    y: event.clientY,
-    target: event.target,
-  };
   const kind = kindFor(event.target);
   if (kind === 'native') {
     hideFollower();
     return;
   }
+  hideNativeCursor(event.target);
   const spec = specFor(kind, pressed);
   const dpr = window.devicePixelRatio || 1;
-  const hotX = spec.x / dpr;
-  const hotY = spec.y / dpr;
-  const hangs =
-    event.clientY < hotY ||
-    event.clientX < hotX ||
-    event.clientY > window.innerHeight - (spec.h - spec.y) / dpr ||
-    event.clientX > window.innerWidth - (spec.w - spec.x) / dpr;
-  if (!hangs) {
-    hideFollower();
-    return;
-  }
+  const scale = desktopCursorScale();
+  const hotX = (spec.x / dpr) * scale;
+  const hotY = (spec.y / dpr) * scale;
   const img = ensureFollower();
   if (followerSrc !== spec.src) {
     followerSrc = spec.src;
     img.src = spec.src;
   }
-  const w = `${spec.w / dpr}px`;
-  const h = `${spec.h / dpr}px`;
+  const w = `${(spec.w / dpr) * scale}px`;
+  const h = `${(spec.h / dpr) * scale}px`;
   if (followerW !== w) {
     followerW = w;
     img.style.width = w;
@@ -188,11 +221,41 @@ function syncFollower(event) {
     followerH = h;
     img.style.height = h;
   }
-  img.style.transform = `translate3d(${event.clientX - hotX}px, ${event.clientY - hotY}px, 0)`;
+  img.style.transform = `translate3d(${event.x - hotX}px, ${event.y - hotY}px, 0)`;
   if (!following) {
     following = true;
     document.documentElement.classList.add('bpb-live-cursor');
   }
+}
+
+/** @param {{ x: number, y: number, target: EventTarget | null, pointerType?: string }} event */
+function queueFollowerSync(event) {
+  if (!event) return;
+  const next = {
+    x: event.x,
+    y: event.y,
+    target: event.target,
+    pointerType: event.pointerType || 'mouse',
+  };
+  lastPointer = { x: next.x, y: next.y, target: next.target };
+  pendingPointer = next;
+  if (frameHandle) return;
+  frameHandle = window.requestAnimationFrame(() => {
+    frameHandle = 0;
+    const current = pendingPointer;
+    pendingPointer = null;
+    if (current) syncFollowerNow(current);
+  });
+}
+
+/** @param {PointerEvent} event */
+function onPointerMove(event) {
+  queueFollowerSync({
+    x: event.clientX,
+    y: event.clientY,
+    target: event.target,
+    pointerType: event.pointerType,
+  });
 }
 
 /**
@@ -202,13 +265,14 @@ function syncFollower(event) {
  * rail just like it follows the catalog scroller.
  */
 function syncFollowerAfterScroll() {
-  if (!following || !lastPointer) return;
+  if (!lastPointer || usesNativeCursor()) return;
   const target = document.elementFromPoint(lastPointer.x, lastPointer.y) || lastPointer.target;
-  syncFollower({
-    pointerType: 'mouse',
-    clientX: lastPointer.x,
-    clientY: lastPointer.y,
+  resetKindCache();
+  queueFollowerSync({
+    x: lastPointer.x,
+    y: lastPointer.y,
     target,
+    pointerType: 'mouse',
   });
 }
 
@@ -216,27 +280,40 @@ export function bindGameCursor() {
   if (document.documentElement.dataset.bpbCursor === '1') return;
   document.documentElement.dataset.bpbCursor = '1';
 
-  document.addEventListener('pointermove', syncFollower, { passive: true });
+  document.addEventListener('pointermove', onPointerMove, { passive: true });
   window.addEventListener('scroll', syncFollowerAfterScroll, { passive: true, capture: true });
+  window.addEventListener('resize', syncFollowerAfterScroll, { passive: true });
   document.addEventListener('pointerdown', (event) => {
     if (event.pointerType === 'touch') return;
     if (event.button !== 0) return;
-    pressed = true;
+    resetKindCache();
     const kind = kindFor(event.target);
+    pressedKind = kind;
+    pressed = true;
     if (kind === 'native') {
       pressed = false;
+      clearPress();
+      hideFollower();
       return;
     }
     const root = document.documentElement;
     root.classList.add('bpb-cursor-down');
     const extra = KIND_CLASS[kind];
     if (extra) root.classList.add(extra);
-    syncFollower(event);
+    queueFollowerSync({
+      x: event.clientX,
+      y: event.clientY,
+      target: event.target,
+      pointerType: event.pointerType,
+    });
   });
 
   const release = () => {
     pressed = false;
+    pressedKind = 'default';
     clearPress();
+    resetKindCache();
+    if (lastPointer) queueFollowerSync({ ...lastPointer, pointerType: 'mouse' });
   };
   document.addEventListener('pointerup', release);
   document.addEventListener('pointercancel', release);
@@ -244,7 +321,10 @@ export function bindGameCursor() {
     release();
     hideFollower();
   });
-  document.documentElement.addEventListener('pointerleave', hideFollower);
+  document.documentElement.addEventListener('pointerleave', () => {
+    pendingPointer = null;
+    hideFollower();
+  });
 }
 
 bindGameCursor();

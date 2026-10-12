@@ -123,6 +123,7 @@ export function mountPackedGrid(container, options) {
  *   reserveScrollGap?: boolean,
  *   appear?: boolean,
  *   promo?: boolean,
+ *   ringConfig?: boolean,
  * }} options
  */
 export function mountPlacedGrid(container, options) {
@@ -209,6 +210,7 @@ export function mountPlacedGrid(container, options) {
       animateFaceKeys:
         animateFaceKeys instanceof Set ? animateFaceKeys : null,
       faceContinue: faceContinue instanceof Map ? faceContinue : null,
+      ringConfig: options.ringConfig === true,
     });
   }
 

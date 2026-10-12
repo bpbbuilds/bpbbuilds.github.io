@@ -125,11 +125,13 @@
       append.push("Always offered in rounds 1 and 2.");
     }
 
-    if (
-      (id === "magic_ring" || id === "superior_ring") &&
-      !/Gains \d+ of the following effects/i.test(String(item.effect || ""))
-    ) {
-      const ring = magicRingLibraryLines(item);
+    if (id === "magic_ring" || id === "superior_ring") {
+      const configured = Array.isArray(item.ringEffects);
+      const ring = configured
+        ? magicRingConfiguredLines(item)
+        : !/Gains \d+ of the following effects/i.test(String(item.effect || ""))
+          ? magicRingLibraryLines(item)
+          : "";
       if (ring) prepend.push(ring);
     }
 
@@ -139,11 +141,11 @@
   const RING_STACKS = [
     ["lucky", "Luck"],
     ["regeneration", "Regeneration"],
+    ["vampirism", "Vampirism"],
     ["spikes", "Spikes"],
     ["mana", "Mana"],
-    ["heat", "Heat"],
-    ["vampirism", "Vampirism"],
     ["empower", "Empower"],
+    ["heat", "Heat"],
   ];
   const RING_DEBUFFS = [
     ["poison", "Poison"],
@@ -177,6 +179,39 @@
       `Health drops below ${healtht}%:\n${listAt(s3)} (Once)`,
       `Opponent drops below ${healthtOpp}%:\n${listAt(s4)} (Once)`,
     ].join("\n\n");
+  }
+
+  function magicRingConfiguredLines(item) {
+    const p = item.params && typeof item.params === "object" ? item.params : {};
+    const rows = Array.isArray(item.ringEffects) ? item.ringEffects : [];
+    const triggerNames = [
+      "Start of battle",
+      `Every ${item.cooldown != null ? item.cooldown : 6}s`,
+      `Health drops below ${Number(p.healtht ?? 50)}% (once)`,
+      `Opponent drops below ${Number(p.healtht_opp ?? 70)}% (once)`,
+    ];
+    const buffs = new Set(["lucky", "regeneration", "vampirism", "spikes", "mana", "empower", "heat"]);
+    const labels = {
+      lucky: "Luck",
+      regeneration: "Regeneration",
+      vampirism: "Vampirism",
+      spikes: "Spikes",
+      mana: "Mana",
+      empower: "Empower",
+      heat: "Heat",
+      poison: "Poison",
+      blind: "Blind",
+      cold: "Cold",
+    };
+    const lines = rows.map((row) => {
+      const trigger = Math.max(0, Math.min(3, Number(row?.trigger) || 0));
+      const stack = String(row?.stack || "lucky");
+      const scale = Number(p[`scale${trigger + 1}`]) || [1, 0.75, 1.5, 1.5][trigger];
+      const amount = Math.round(Number(p[stack] || 0) * scale);
+      const verb = buffs.has(stack) ? "Gain" : "Inflict";
+      return `${triggerNames[trigger]}: ${verb} ${amount} <${labels[stack] || stack}>.`;
+    });
+    return lines.length ? `Configured effects:\n${lines.join("\n")}` : "";
   }
 
   /** Game effect tags → CDN icon stem (or local asset). */
@@ -1238,6 +1273,9 @@
       repairSwappedBlockTokens(String(item.effect || "").trim(), item),
       item,
     );
+    if (Array.isArray(item.ringEffects) && (item.id === "magic_ring" || item.id === "superior_ring")) {
+      rawEffect = "";
+    }
     const extras = catalogExtraLines(item);
     if (extras.prepend.length) {
       rawEffect = extras.prepend.join("\n\n") + (rawEffect ? `\n\n${rawEffect}` : "");

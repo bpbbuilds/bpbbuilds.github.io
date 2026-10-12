@@ -9,7 +9,7 @@ Supabase Auth with **Discord only**. No email/password website register. Steam m
 | `/create/` draft | Anonymous OK |
 | **Submit** | Requires Discord session (OAuth if missing) |
 | **Create Play → sim** | Premium (`founding` / `premium` / `is_owner`); sign-in → auto founding if slot open |
-| Votes | Anon `bpb-voter-id`; bound to `profiles.voter_key` on first sign-in |
+| Votes | Requires Discord sign-in; the vote Edge Function authenticates the account and the browser resumes a confirmed vote after OAuth |
 | My builds | Catalog filter when signed in (`author_id = me`) |
 | Profile | `/u/{discord_id}/` — live `display_name` / `avatar_url` |
 | Admin | Prefer `profiles.is_owner` JWT; `BPB_SUBMIT_SECRET` break-glass |

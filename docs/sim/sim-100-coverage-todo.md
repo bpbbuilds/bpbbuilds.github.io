@@ -1,6 +1,6 @@
 # Simulator 100% Coverage TODO
 
-This is the completion roadmap for the simulator, not a claim that it already matches the game. It starts from the audited state on 2026-10-06: 519 catalog items, 492 source-ported items, no runtime-port-incomplete rows, zero unresolved source rows, zero deferred rows, one explicit unsupported-mode boundary, 26 intentional no-combat rows, and 45 static call-review candidates.
+This is the completion roadmap for the simulator, not a claim that it already matches the game. It starts from the audited state on 2026-10-06: 519 catalog items, 492 source-ported items, no runtime-port-incomplete rows, zero unresolved source rows, zero deferred rows, one explicit unsupported-mode boundary, 26 intentional no-combat rows, and 15 remaining static call-review candidates.
 
 ## Definition of 100%
 
@@ -38,12 +38,12 @@ For each candidate, trace the game call and either map it to the simulator imple
 - [x] Effect damage / effect modifiers: `amulet_of_darkness`, `demonic_flask`, `ice_dragon`, `lightning_potion`, `snowcake`, `sun_shield`, `thors_hammer`; effect-only procs now use the shared effect path and Ice Dragon mutates effect damage only. Verified by `scripts/sim-effect-damage-candidates-smoke.mjs`.
 - [x] Gems and socket paths: `regular_emerald`, `regular_ruby`, `regular_sapphire`, `regular_topaz`, `wisp`; regular inventory/socket tiers are covered by `scripts/sim-regular-gems-resistor-reverse-smoke.mjs`, and Wisp inventory, weapon, and armor-cooldown paths by `scripts/sim-gem-socket-candidates-smoke.mjs`.
 - [x] Resource, stack, and consumable paths: `arcane_boots`, `heart_shield`, `piercing_arrow`, `platin_customer_card`, `scissorswords`, `spell_scroll_ice`, `staff_of_unhealing`, `stone`, `stone_golem`, `stone_shoes`, `winged_boots`, `yggdrasil_leaf`; source-backed lifecycle, threshold, inheritance, pre-hit, timed, and consumable behavior is covered by `scripts/sim-resource-stack-consumable-candidates-smoke.mjs`.
-- [ ] Damage/stat mutation paths: `cupcake_staff`, `dancing_dragon`, `magic_mirror`, `rainbow_goobert`, `rainbow_goobert_adventurer`, `rainbow_goobert_engineer`, `rainbow_goobert_pyromancer`.
-- [ ] Chess call paths: `black_bishop`, `black_king`, `black_knight`, `black_pawn`, `black_queen`, `black_rook`, `white_bishop`, `white_king`, `white_knight`, `white_pawn`, `white_queen`, `white_rook`.
+- [x] Damage/stat mutation paths: `cupcake_staff`, `dancing_dragon`, `magic_mirror`, `rainbow_goobert`, `rainbow_goobert_adventurer`, `rainbow_goobert_engineer`, `rainbow_goobert_pyromancer`; shared varying-damage mutation, fractional buff scaling, Cold Mirror reflect/buff-copy scaling, and all four Rainbow Goobert weapon/stat mutations are covered by `scripts/sim-damage-stat-mutation-smoke.mjs`.
+- [x] Chess call paths: `black_bishop`, `black_king`, `black_knight`, `black_pawn`, `black_queen`, `black_rook`, `white_bishop`, `white_king`, `white_knight`, `white_pawn`, `white_queen`, `white_rook`; `dispatchChessCapture` and `dispatchChessElimination` now run every source capture/elimination effect, including king capture notifications and timed rook effects. Verified by `scripts/sim-chess-call-paths-smoke.mjs`; Chess Board movement selection remains the explicit unsupported-mode boundary.
 
 ## 5. Eliminate duplicate handler ambiguity
 
-- [ ] For every duplicate registration, keep one canonical handler or add an intentional alias test. Current audit includes `amulet_of_alchemy`, `badger_spirit`, `crow`, `double_rainbow`, `evil_hat`, `full_body_protection`, `heart_of_darkness`, `mana_crystal`, `mercury_elemental`, `no_rush_please`, `paradise_birb`, `robodog`, `spirit_bells`, `stone_badge`, `thorn_elemental`, `thornburst`, `torch`, `turtle`, and `wolpertinger`.
+- [x] For every duplicate registration, keep one canonical handler or add an intentional alias test. `CANONICAL_DUPLICATE_HANDLERS` pins the runtime winner for all 19 audited IDs, and `scripts/sim-duplicate-handler-alias-smoke.mjs` verifies the source audit and registry identity.
 
 ## 6. Validate both boards and the player-facing result
 

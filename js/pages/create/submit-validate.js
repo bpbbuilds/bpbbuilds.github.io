@@ -30,24 +30,6 @@ export function collectSoftCues(draft, opts = {}) {
   /** @type {DraftCue[]} */
   const cues = [];
   const itemsById = opts.itemsById;
-  const hasNeeds = (draft.placements || []).some((p) => p.priority === 'needed');
-  const hasWants = (draft.placements || []).some((p) => p.priority === 'nice');
-  const hasGood = (draft.placements || []).some((p) => p.priority === 'optional');
-  if (draft.placements?.length && !draft.is_op) {
-    if (!hasNeeds) {
-      cues.push({ level: 'warn', code: 'needs', message: 'Needs tier is empty.' });
-    }
-    if (!hasWants) {
-      cues.push({ level: 'warn', code: 'wants', message: 'Wants tier is empty.' });
-    }
-    if (!hasGood) {
-      cues.push({
-        level: 'warn',
-        code: 'good',
-        message: 'Good to have tier is empty.',
-      });
-    }
-  }
   const notesTrim = String(draft.notes || '').trim();
   if (!notesTrim && !draft.is_op) {
     cues.push({ level: 'warn', code: 'notes', message: '“Why it works” notes are empty.' });
@@ -249,19 +231,18 @@ export function validateCreateDraft(draft, opts = {}) {
       message: 'OP can’t be combined with Theory.',
     });
   }
+  const placements = draft.placements || [];
+  const hasNeeds = placements.some((p) => p.priority === 'needed');
+  const hasWants = placements.some((p) => p.priority === 'nice');
+  const hasGood = placements.some((p) => p.priority === 'optional');
+  if (!hasNeeds || !hasWants || !hasGood) {
+    errors.push({
+      level: 'error',
+      code: 'essentials',
+      message: 'Every submitted build needs at least one item in Needs, Wants, and Good to have.',
+    });
+  }
   if (draft.is_op) {
-    const placements = draft.placements || [];
-    const hasNeeds = placements.some((p) => p.priority === 'needed');
-    const hasWants = placements.some((p) => p.priority === 'nice');
-    const hasGood = placements.some((p) => p.priority === 'optional');
-    if (!hasNeeds || !hasWants || !hasGood) {
-      errors.push({
-        level: 'error',
-        code: 'op-essentials',
-        message:
-          'OP review needs at least one item in Needs, Wants, and Good to have.',
-      });
-    }
     const notesLen = String(draft.notes || '').trim().length;
     if (notesLen < 30) {
       errors.push({

@@ -31,6 +31,7 @@ import {
   mergeBoardLiveItem,
   warmBoardLiveCanAffect,
 } from './board-live-stats.js';
+import { ringEffectsFromPersistent } from '../../shared/ring-config.js';
 
 /** Fallback if create/index.html shell is missing (keeps board 9/7 reserve). */
 function ensureCreateShell(main) {
@@ -298,7 +299,14 @@ export async function initCreatePage() {
                 resolveKey,
               )
             : null;
-        return mergeBoardLiveItem(catalogItem, live, { placementCounters });
+        const placement = resolveKey
+          ? placements.find((p) => String(p.key) === String(resolveKey))
+          : null;
+        const ringEffects =
+          placement && (id === 'magic_ring' || id === 'superior_ring')
+            ? ringEffectsFromPersistent(placement.instance?.persistent, id)
+            : null;
+        return mergeBoardLiveItem(catalogItem, live, { placementCounters, ringEffects });
       },
       place: 'overFilters',
       filtersSelector: '[data-create-catalog]',

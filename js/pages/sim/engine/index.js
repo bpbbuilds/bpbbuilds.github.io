@@ -94,3 +94,4 @@ export function runSim(opts) {
 
 export { computeCoverage } from './coverage.js';
 export { simulateEngine } from './simulate.js';
+export { dispatchChessCapture, dispatchChessElimination } from './chess.js';

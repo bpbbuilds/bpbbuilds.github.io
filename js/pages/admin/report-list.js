@@ -3,6 +3,9 @@
  */
 
 import { escapeAttr, escapeHtml } from './row.js';
+import { bindAvatarFallback } from '../../shared/blob-face.js';
+
+bindAvatarFallback();
 
 /**
  * @param {object} r
@@ -53,7 +56,7 @@ export function reportRowHtml(r, root, opts = {}) {
 function avatarHtml(r, name) {
   const src = String(r.reporter_avatar_url || '').trim();
   if (src) {
-    return `<img class="admin-report__avatar" src="${escapeAttr(src)}" alt="" width="32" height="32" draggable="false" />`;
+    return `<img class="admin-report__avatar" src="${escapeAttr(src)}" alt="${escapeAttr(name)}" width="32" height="32" draggable="false" data-bpb-avatar-img="1" data-bpb-avatar-class="admin-report__avatar" data-bpb-avatar-mode="initials" data-bpb-avatar-name="${escapeAttr(name)}" />`;
   }
   return `<span class="admin-report__avatar admin-report__avatar--initials" aria-hidden="true">${escapeHtml(initials(name))}</span>`;
 }

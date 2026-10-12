@@ -22,6 +22,9 @@ export function parkedFromPlacement(placement) {
     priority: placement.priority ?? null,
   };
   Object.assign(entry, gemCarry(placement));
+  if (placement.instance && typeof placement.instance === 'object') {
+    entry.instance = placement.instance;
+  }
   return entry;
 }
 
@@ -42,6 +45,7 @@ export function flattenParkedEntries(placement, cargo = []) {
         r: c.r,
         key: c.key || newPlacementKey(),
         gems: c.gems,
+        instance: c.instance,
         priority: null,
       }),
     );
@@ -226,6 +230,7 @@ export function planParkEntries(args) {
             r: c.r,
             key: c.key,
             gems: c.gems,
+            instance: c.instance,
             priority: null,
           }),
         );
@@ -267,6 +272,7 @@ export function planParkEntries(args) {
       r: cur.r,
       key: cur.placeKey || cur.restoreParked?.key || newPlacementKey(),
       gems: cur.gems,
+      instance: cur.instance,
       priority: cur.restoreParked?.priority ?? null,
     };
     const cargo = Array.isArray(cur.cargo) ? cur.cargo : [];
@@ -345,6 +351,7 @@ export function commitDragToPark(args) {
             r: c.r,
             key: c.key,
             gems: c.gems,
+            instance: c.instance,
             priority: null,
           }),
         );
@@ -398,6 +405,7 @@ export function commitDragToPark(args) {
       r: cur.r,
       key: cur.placeKey || cur.restoreParked?.key || newPlacementKey(),
       gems: cur.gems,
+      instance: cur.instance,
       priority: cur.restoreParked?.priority ?? null,
     };
     const cargo = Array.isArray(cur.cargo) ? cur.cargo : [];

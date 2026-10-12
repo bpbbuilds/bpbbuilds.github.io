@@ -13,6 +13,45 @@ const SLOT_ORDER = Object.freeze(['hat', 'face', 'head', 'neck', 'body', 'hand']
 let cosmeticMap = null;
 /** @type {Promise<Map<string, { id: string, image?: string, name?: string }>> | null} */
 let cosmeticLoad = null;
+let avatarFallbackBound = false;
+
+/**
+ * Keep failed external profile images from rendering the browser broken-image
+ * glyph. The listener is delegated so dynamically painted cards are covered
+ * without each page needing its own image handler.
+ */
+export function bindAvatarFallback() {
+  if (avatarFallbackBound || typeof document === 'undefined') return;
+  avatarFallbackBound = true;
+  document.addEventListener(
+    'error',
+    (event) => {
+      const img = event.target;
+      if (!(img instanceof HTMLImageElement) || !img.dataset.bpbAvatarImg) return;
+      if (img.dataset.bpbAvatarFailed) return;
+      img.dataset.bpbAvatarFailed = '1';
+
+      const base = String(img.dataset.bpbAvatarClass || '').trim() || 'bpb-avatar';
+      const mode = img.dataset.bpbAvatarMode === 'empty' ? 'empty' : 'initials';
+      const fallback = document.createElement('span');
+      fallback.className = `${base} ${base}--${mode}`;
+      fallback.dataset.bpbAvatarFallback = '1';
+      fallback.setAttribute('aria-hidden', 'true');
+      if (mode === 'initials') {
+        const name = String(img.dataset.bpbAvatarName || img.alt || '').trim();
+        const parts = name.split(/\s+/).filter(Boolean);
+        fallback.textContent =
+          parts.length >= 2
+            ? `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+            : (parts[0] || '?').slice(0, 2).toUpperCase();
+      }
+      img.replaceWith(fallback);
+    },
+    true,
+  );
+}
+
+bindAvatarFallback();
 
 /**
  * @param {string} s
@@ -138,6 +177,7 @@ export async function blobFaceLayerSrcs(equippedRaw, root) {
  * }} [opts]
  */
 export function faceHtml(profile, root, opts = {}) {
+  bindAvatarFallback();
   const className = String(opts.className || 'bpb-face').trim() || 'bpb-face';
   const identity = resolveIdentityMode(profile);
 
@@ -164,10 +204,16 @@ export function faceHtml(profile, root, opts = {}) {
     const size = Number(opts.size) > 0 ? Math.round(Number(opts.size)) : 40;
     const sizeAttrs =
       Number(opts.size) > 0 ? ` width="${size}" height="${size}"` : '';
+    const primary = className.split(/\s+/).filter(Boolean)[0] || 'bpb-avatar';
+    const mode = String(opts.emptyHtml || '').includes('--empty') ? 'empty' : 'initials';
     return `<img
       class="${escapeAttr(className)}"
       src="${escapeAttr(url)}"
       alt="${escapeAttr(opts.alt || '')}"${sizeAttrs}
+      data-bpb-avatar-img="1"
+      data-bpb-avatar-class="${escapeAttr(primary)}"
+      data-bpb-avatar-mode="${mode}"
+      data-bpb-avatar-name="${escapeAttr(opts.alt || '')}"
       draggable="false"
     />`;
   }

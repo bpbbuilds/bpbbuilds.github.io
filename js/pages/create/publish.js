@@ -51,6 +51,7 @@ function mapPlacementsPayload(placements) {
     ...(Array.isArray(p.gemR) && p.gemR.some((n) => gemFace(n) !== 0)
       ? { gemR: p.gemR.map((n) => gemFace(n)) }
       : {}),
+    ...(p.instance && typeof p.instance === 'object' ? { instance: p.instance } : {}),
     priority: p.priority ?? null,
   }));
 }

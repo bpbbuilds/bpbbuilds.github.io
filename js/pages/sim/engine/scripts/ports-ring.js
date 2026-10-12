@@ -7,19 +7,7 @@ import { grantStacks } from '../buff-economy.js';
 import { getPName } from '../params.js';
 import { randInt } from '../rng.js';
 import { pushActivate } from './ports-util.js';
-
-const RING_STACKS = [
-  'lucky',
-  'regeneration',
-  'spikes',
-  'mana',
-  'heat',
-  'vampirism',
-  'empower',
-  'poison',
-  'blind',
-  'cold',
-];
+import { RING_STACKS, ringEffectCount, ringEffectsFromPersistent } from '../../../../shared/ring-config.js';
 
 const BUFFS = new Set([
   'lucky',
@@ -43,6 +31,18 @@ function scaledAmount(params, stack, triggerType) {
  */
 function rollEffects(piece, ctx) {
   if (Array.isArray(piece._ringEffects)) return piece._ringEffects;
+  const configured = piece.persistent;
+  const hasPersistent =
+    configured &&
+    typeof configured === 'object' &&
+    (Array.isArray(configured.effects) || Number(configured.magicRing) > 0);
+  if (hasPersistent) {
+    const effects = ringEffectsFromPersistent(configured, piece.itemId);
+    if (effects.length === ringEffectCount(piece.itemId)) {
+      piece._ringEffects = effects;
+      return effects;
+    }
+  }
   const n = Math.max(1, Math.round(getPName(piece.params, 'effects', 2)));
   const effects = [];
   for (let i = 0; i < n; i++) {

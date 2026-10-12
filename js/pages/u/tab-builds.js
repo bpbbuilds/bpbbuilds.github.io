@@ -242,7 +242,10 @@ export async function mountBuildsTab(stage, ctx) {
             ${likedBlock}
           </div>
           ${filterDrawerChromeHtml('builds-feed-filters')}
-          ${feedFiltersHtml(root, state, rows0.length, { canMine })}
+          ${feedFiltersHtml(root, state, rows0.length, {
+            canMine,
+            canPersonal: Boolean(ctx.viewerProfile?.id),
+          })}
         </div>
       </section>`;
 

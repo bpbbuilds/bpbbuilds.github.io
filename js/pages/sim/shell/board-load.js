@@ -114,6 +114,7 @@ async function fetchBuildBySlug(slug) {
       profile:profiles!builds_author_id_fkey ( avatar_url, equipped_avatar ),
       placements:build_placements (
         id, x, y, r, gems,
+        instance,
         item:items ( ${ITEM_SELECT} )
       )
     `;

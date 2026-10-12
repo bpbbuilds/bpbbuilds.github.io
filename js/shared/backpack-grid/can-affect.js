@@ -46,6 +46,44 @@ const DEBUFF_STACKS = new Set(['Debuff', 'Poison', 'Blind', 'Cold']);
 const DEBUFF_EFFECT_RE =
   /<(Poison|Blind|Cold|Heat|Vampirism|Spikes|Stun|Debuff|Weakness|Fatigue|Corruption)>/i;
 
+/** Bag.canApplyEffect overrides, extracted from the game bag scripts. */
+const BAG_EFFECT_RULES = {
+  bag_of_giving: { op: 'isClassItem' },
+  berserker_bag: { op: 'hasCooldown' },
+  box_of_prosperity: { op: 'rarityGte', rarity: 'Godly' },
+  engineer_box: { op: 'canEmitCharge' },
+  fanny_pack: { op: 'hasCooldown' },
+  fire_pit: { op: 'hasType', type: 'Fire' },
+  holdall: { op: 'isNeutral' },
+  potion_belt: { op: 'hasType', type: 'Potion' },
+  puzzlebag_j: { op: 'hasInventoryDuration' },
+  puzzlebag_l: { op: 'canHealOrLifesteal' },
+  puzzlebag_s: { op: 'gainsBuffs' },
+  puzzlebag_t: { op: 'usesBuffs' },
+  puzzlebag_z: { op: 'inflictsDebuffs' },
+  puzzlebox: { op: 'hasCooldown' },
+  ranger_bag: { op: 'canDamage' },
+  relic_case: { op: 'isWeapon' },
+  scholar_bag: { op: 'gainsStack', stack: 'Mana' },
+  sewing_case: {
+    op: 'and',
+    args: [
+      { op: 'isCrafted' },
+      { op: 'or', args: [{ op: 'hasCooldown' }, { op: 'gainsBuffs' }] },
+    ],
+  },
+  storage_coffin: { op: 'canActivate' },
+  toolbox: { op: 'canBeEmpowered' },
+  vineweave_basket: { op: 'hasType', type: 'Nature' },
+  // PortableAltar overrides showBagBorderForItem directly.
+  portable_altar: { op: 'true' },
+};
+
+const CHARGE_EMITTER_IDS = new Set([
+  'battery', 'charge_splitter', 'con_trap_tron', 'cog_badge',
+  'generator', 'lightning_staff', 'mana_crystal',
+]);
+
 /**
  * @typedef {{
  *   rulesById: Record<string, object> | null,
@@ -194,6 +232,19 @@ function canDamage(item) {
   return false;
 }
 
+/** Current live data uses several named duration parameters (dur_stun, dur_blind, ...). */
+export function hasInventoryDuration(item) {
+  if (item?.hasInventoryDuration) return true;
+  const params = item?.params;
+  return Boolean(
+    params &&
+      typeof params === 'object' &&
+      Object.entries(params).some(
+        ([key, value]) => (key === 'dur' || key.startsWith('dur_')) && Number.isFinite(Number(value)),
+      ),
+  );
+}
+
 /** ChessPiece.gd: "White" in name → White, else Black */
 function pieceColorOf(item) {
   const blob = `${item?.id || ''} ${item?.name || ''}`;
@@ -250,6 +301,11 @@ export function evalRule(rule, target, ctx = {}) {
       return Number(target?.block) > 0;
     case 'canActivate':
       return target?.canActivate !== false;
+    case 'canEmitCharge':
+      return Boolean(
+        target?.canEmitCharge ||
+          (target?.id && CHARGE_EMITTER_IDS.has(String(target.id))),
+      );
     case 'hasAttackEffect':
       return Boolean(
         target?.id && ctx.hasAttackEffectIds?.has(String(target.id)),
@@ -382,8 +438,7 @@ export function evalRule(rule, target, ctx = {}) {
       return false;
     }
     case 'hasInventoryDuration':
-      if (target?.params?.dur != null) return true;
-      return Boolean(target?.hasInventoryDuration);
+      return hasInventoryDuration(target);
     case 'canStartNewRecipe':
       return Boolean(target?.[rule.op]);
     case 'colorIs':
@@ -451,6 +506,27 @@ export function canAffectColor(
   const rule = entry?.[key];
   if (!rule) return false;
   return evalRule(rule, targetItem, ctx);
+}
+
+/**
+ * Game Bag.showBagBorderForItem / Bag.canApplyEffect for Create drag feedback.
+ * @param {object} bagItem
+ * @param {object} targetItem
+ * @param {Partial<CanAffectData>} [extra]
+ */
+export function canBagAffectItem(bagItem, targetItem, extra = {}) {
+  if (String(targetItem?.type || '') === 'Bag') return false;
+  const rule = BAG_EFFECT_RULES[String(bagItem?.id || '')];
+  if (!rule) return false;
+  return evalRule(rule, targetItem, {
+    classMasks: extra.classMasks || null,
+    classBits: extra.classBits || CLASS_BITS,
+    gainsBuffsIds: extra.gainsBuffsIds || null,
+    usesBuffsIds: extra.usesBuffsIds || null,
+    gainedStacksById: extra.gainedStacksById || null,
+    craftedIds: extra.craftedIds || null,
+    rarityRank: extra.rarityRank || DEFAULT_RARITY_RANK,
+  });
 }
 
 /**

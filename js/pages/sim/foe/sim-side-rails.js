@@ -4,6 +4,9 @@
  */
 
 import { blobAvatarPath } from '../hud/sim-avatars.js';
+import { bindAvatarFallback } from '../../../shared/blob-face.js';
+
+bindAvatarFallback();
 
 /**
  * @typedef {'class' | 'profile' | 'blob'} AvatarPickMode
@@ -128,7 +131,7 @@ function personPopInnerHtml(mode, classSrc, profileUrl, blobSrc) {
         title="Profile"
         aria-label="Profile"
       >
-        <img class="sim-side-rail__choice-img sim-side-rail__choice-img--profile" src="${escapeAttr(profileUrl)}" alt="" width="48" height="48" draggable="false" />
+        <img class="sim-side-rail__choice-img sim-side-rail__choice-img--profile" src="${escapeAttr(profileUrl)}" alt="Profile" width="48" height="48" draggable="false" data-bpb-avatar-img="1" data-bpb-avatar-class="sim-side-rail__choice-img" data-bpb-avatar-mode="empty" data-bpb-avatar-name="Profile" />
       </button>`
     : `<button
         type="button"

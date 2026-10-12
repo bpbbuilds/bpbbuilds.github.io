@@ -5,8 +5,11 @@
 import { getSupabase } from '../../shared/supabase.js';
 import { skelBar, skelRegion } from '../../shared/skeleton.js';
 import { escapeHtml } from './row.js';
+import { bindAvatarFallback } from '../../shared/blob-face.js';
 import { listMembers } from './api.js';
 import { profileHref } from '../../shared/profile-href.js';
+
+bindAvatarFallback();
 
 const PRICE_CENTS = 300;
 
@@ -160,14 +163,15 @@ function memberRosterHtml(members, root) {
 
 function memberRowHtml(member, root) {
   const avatar = String(member?.avatar_url || '').trim();
-  const name = escapeHtml(member?.name || 'Member');
+  const rawName = String(member?.name || 'Member').trim() || 'Member';
+  const name = escapeHtml(rawName);
   const site = member?.website ? 'Website member' : 'No website account';
   const discord = member?.discord ? 'Discord member' : 'Not in Discord';
   const premium = member?.premium ? (member.plan === 'founding' ? 'Founding' : 'Premium') : 'No Premium';
   const href = member?.website ? profileHref(member?.discord_id, root) : null;
   const nameHtml = href ? `<a href="${escapeHtml(href)}">${name}</a>` : `<span>${name}</span>`;
   return `<tr>
-    <td class="admin-members__person">${avatar ? `<img src="${escapeHtml(avatar)}" alt="" width="32" height="32">` : '<span class="admin-members__avatar">?</span>'}${nameHtml}</td>
+    <td class="admin-members__person">${avatar ? `<img class="admin-members__avatar" src="${escapeHtml(avatar)}" alt="${escapeHtml(rawName)}" width="32" height="32" data-bpb-avatar-img="1" data-bpb-avatar-class="admin-members__avatar" data-bpb-avatar-mode="initials" data-bpb-avatar-name="${escapeHtml(rawName)}">` : `<span class="admin-members__avatar">${escapeHtml(memberInitials(rawName))}</span>`}${nameHtml}</td>
     <td>${badge(site, Boolean(member?.website), 'website')}</td><td>${badge(discord, Boolean(member?.discord), 'discord')}</td><td>${badge(premium, Boolean(member?.premium), 'premium')}</td>
     <td>${escapeHtml(age(member?.discord_joined_at))}</td><td>${escapeHtml(age(member?.premium_since))}</td><td>${Math.max(0, Number(member?.build_count) || 0)}</td>
   </tr>`;
@@ -181,6 +185,11 @@ function badge(label, active, type = '') {
   };
   const icon = icons[type];
   return `<span class="admin-members__badge${active ? ' is-active' : ''}${type ? ` admin-members__badge--${type}` : ''}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${icon ? `<img src="${icon[0]}" alt="${escapeHtml(icon[1])}" aria-hidden="true">` : escapeHtml(label)}</span>`;
+}
+
+function memberInitials(name) {
+  const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+  return (parts.length >= 2 ? `${parts[0][0]}${parts[1][0]}` : (parts[0] || '?').slice(0, 2)).toUpperCase();
 }
 
 function age(value) {

@@ -292,13 +292,14 @@ export function computePlacementCounters(
  * Merge catalog item with board live CD for ItemTooltip.render.
  * @param {object | null | undefined} catalogItem
  * @param {{ speedScale: number, cooldown: number, catalogCooldown: number, extraCooldowns?: number[] } | null | undefined} live
- * @param {{ placementCounters?: Record<string, number> | null }} [extra]
+ * @param {{ placementCounters?: Record<string, number> | null, ringEffects?: object[] | null }} [extra]
  */
 export function mergeBoardLiveItem(catalogItem, live, extra = {}) {
   if (!catalogItem) return null;
   const counters = extra.placementCounters || null;
   const withCounters = (out) => {
     if (counters) out.placementCounters = counters;
+    if (Array.isArray(extra.ringEffects)) out.ringEffects = extra.ringEffects;
     return out;
   };
   const afterBased = isAfterBasedItem(catalogItem);

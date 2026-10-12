@@ -118,12 +118,18 @@ type BoardItem = {
 
 type Priority = 'needed' | 'nice' | 'optional' | null;
 
+type RingEffect = { trigger: number; stack: string };
+type PlacementInstance = {
+  persistent: { magicRing?: number; effects?: RingEffect[] };
+};
+
 type Placement = {
   id: string;
   x: number;
   y: number;
   r?: number;
   gems?: string[];
+  instance?: PlacementInstance;
   priority?: Priority;
 };
 
@@ -158,6 +164,50 @@ type DraftBody = {
 
 const HISTORY_MAX_ROUNDS = 40;
 const HISTORY_MAX_JSON_CHARS = 500_000;
+
+const RING_STACKS = new Set([
+  'lucky',
+  'regeneration',
+  'vampirism',
+  'spikes',
+  'mana',
+  'empower',
+  'heat',
+  'poison',
+  'blind',
+  'cold',
+]);
+
+function normalizeRingInstance(raw: unknown, id: string): PlacementInstance | undefined | null {
+  if (id !== 'magic_ring' && id !== 'superior_ring') return undefined;
+  if (!raw || typeof raw !== 'object') return undefined;
+  const instance = raw as Record<string, unknown>;
+  if (!instance.persistent || typeof instance.persistent !== 'object') return undefined;
+  const persistent = instance.persistent as Record<string, unknown>;
+  const count = id === 'magic_ring' ? 2 : 3;
+  const max = 2 ** (count * 6) - 1;
+  const out: PlacementInstance = { persistent: {} };
+  if (persistent.magicRing != null) {
+    const value = Number(persistent.magicRing);
+    if (!Number.isInteger(value) || value < 0 || value > max) return null;
+    out.persistent.magicRing = value;
+  }
+  if (persistent.effects != null) {
+    if (!Array.isArray(persistent.effects) || persistent.effects.length !== count) return null;
+    const effects: RingEffect[] = [];
+    for (const rawEffect of persistent.effects) {
+      if (!rawEffect || typeof rawEffect !== 'object') return null;
+      const effect = rawEffect as Record<string, unknown>;
+      const trigger = Number(effect.trigger);
+      const stack = String(effect.stack || '');
+      if (!Number.isInteger(trigger) || trigger < 0 || trigger > 3 || !RING_STACKS.has(stack)) return null;
+      effects.push({ trigger, stack });
+    }
+    out.persistent.effects = effects;
+  }
+  if (!Object.keys(out.persistent).length) return undefined;
+  return out;
+}
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -231,6 +281,13 @@ Deno.serve(async (req) => {
     return json({ error: historyNorm.error }, 400);
   }
   const history = historyNorm.history;
+
+  const rawPlacements = Array.isArray(body.placements) ? body.placements : [];
+  const normalizedPlacements = rawPlacements.map(normalizePlacement);
+  if (normalizedPlacements.some((p) => !p)) {
+    return json({ error: 'Invalid placement.' }, 400);
+  }
+  body.placements = normalizedPlacements.filter((p): p is Placement => Boolean(p));
 
   let build_tag =
     body.build_tag === 'feasible' ||
@@ -413,6 +470,7 @@ Deno.serve(async (req) => {
       y: Number(p.y),
       r: Number.isFinite(Number(p.r)) ? Math.round(Number(p.r)) : 0,
       gems: Array.isArray(p.gems) ? p.gems.map(String) : [],
+      instance: p.instance || null,
       priority:
         p.priority === 'needed' || p.priority === 'nice' || p.priority === 'optional'
           ? p.priority
@@ -531,6 +589,9 @@ function normalizePlacement(raw: unknown): Placement | null {
   if (p.priority === 'needed' || p.priority === 'nice' || p.priority === 'optional') {
     out.priority = p.priority;
   }
+  const instance = normalizeRingInstance(p.instance, id);
+  if (instance === null) return null;
+  if (instance) out.instance = instance;
   return out;
 }
 
@@ -665,14 +726,14 @@ function validateDraft(d: DraftBody): string | null {
   if (d.is_op && (tag === 'theory' || d.build_tag === 'theorycraft')) {
     return 'OP can’t be combined with Theory.';
   }
+  const placements = Array.isArray(d.placements) ? d.placements : [];
+  const hasNeeds = placements.some((p) => p.priority === 'needed');
+  const hasWants = placements.some((p) => p.priority === 'nice');
+  const hasGood = placements.some((p) => p.priority === 'optional');
+  if (!hasNeeds || !hasWants || !hasGood) {
+    return 'Every submitted build needs at least one item in Needs, Wants, and Good to have.';
+  }
   if (d.is_op === true) {
-    const placements = Array.isArray(d.placements) ? d.placements : [];
-    const hasNeeds = placements.some((p) => p.priority === 'needed');
-    const hasWants = placements.some((p) => p.priority === 'nice');
-    const hasGood = placements.some((p) => p.priority === 'optional');
-    if (!hasNeeds || !hasWants || !hasGood) {
-      return 'OP review needs at least one item in Needs, Wants, and Good to have.';
-    }
     const notesLen = String(d.notes || '').trim().length;
     if (notesLen < 30) {
       return 'OP review needs a “Why it works” description of at least 30 characters.';

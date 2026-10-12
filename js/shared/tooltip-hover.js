@@ -9,6 +9,8 @@
  *   // Spotlight: tip.lock(item, { stage }); tip.unlock();
  */
 
+import { desktopTooltipScale } from './tooltip-scale.js';
+
 const GAP = 12;
 const EDGE = 8;
 const FILTERS_INSET = -28;
@@ -39,7 +41,7 @@ function fitTooltipScale(tip) {
   if (cluster instanceof HTMLElement) {
     layoutW = cluster.scrollWidth || layoutW + 490;
   }
-  const scale = Math.min(1, maxW / layoutW);
+  const scale = Math.min(desktopTooltipScale(vw), maxW / layoutW);
   tip.style.setProperty('--bpb-tooltip-scale', String(scale));
   return scale;
 }
@@ -216,9 +218,8 @@ function placeItemRight(tip, anchor) {
   const space = Math.max(160, vw - EDGE - left);
 
   const card = tip.querySelector?.('.bpb-tooltip') || tip;
-  tip.style.setProperty('--bpb-tooltip-scale', '1');
   const layoutW = card.offsetWidth || 584;
-  const scale = Math.min(1, space / layoutW);
+  const scale = Math.min(desktopTooltipScale(vw), space / layoutW);
   tip.style.setProperty('--bpb-tooltip-scale', String(scale));
 
   const tipRect = tip.getBoundingClientRect();
@@ -241,13 +242,12 @@ function placeItemLeft(tip, anchor) {
     cluster.classList.add('bpb-tooltip-cluster--flip');
   }
 
-  tip.style.setProperty('--bpb-tooltip-scale', '1');
   const layoutW =
     (cluster instanceof HTMLElement ? cluster.offsetWidth : 0) ||
     tip.offsetWidth ||
     584;
   const space = Math.max(160, rect.left - GAP - EDGE);
-  const scale = Math.min(1, space / layoutW);
+  const scale = Math.min(desktopTooltipScale(window.innerWidth), space / layoutW);
   tip.style.setProperty('--bpb-tooltip-scale', String(scale));
 
   const tipRect = tip.getBoundingClientRect();

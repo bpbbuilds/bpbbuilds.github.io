@@ -21,6 +21,7 @@ import { applyBonusDamageFactor } from '../piece-stats.js';
  *   rng: () => number,
  *   events: import('../../sim-events.js').SimEvent[],
  *   graph: import('../board-graph.js').BoardGraph,
+ *   board?: { addSpeed: Function },
  *   itemsById: Map<string, object>,
  *   canAffect: object | null,
  *   pieces?: CombatPiece[],
@@ -63,6 +64,14 @@ import { applyBonusDamageFactor } from '../piece-stats.js';
  *     piece: CombatPiece,
  *     ctx: ScriptCtx,
  *     hit: { hit: boolean, healthDamage: number, raw: number, critical: boolean, missed: boolean },
+ *   ) => void,
+ *   onChessCapture?: (piece: CombatPiece, ctx: ScriptCtx, eliminatedPiece: CombatPiece) => void,
+ *   onChessEliminated?: (piece: CombatPiece, ctx: ScriptCtx, capturingPiece: CombatPiece) => void,
+ *   onChessAnyPieceCaptured?: (
+ *     piece: CombatPiece,
+ *     ctx: ScriptCtx,
+ *     capturingPiece: CombatPiece,
+ *     eliminatedPiece: CombatPiece,
  *   ) => void,
  * }} ScriptHandler
  */

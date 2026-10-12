@@ -7,6 +7,8 @@ const MAX_STAMINA = 999;
 const MAX_SIZE = 10;
 const BASE64_OFFSET = 62;
 
+import { decodeRingEffects, ringEffectCount } from '../../shared/ring-config.js';
+
 const CLASSES = {
   0: 'Ranger',
   1: 'Reaper',
@@ -167,8 +169,7 @@ export function classFromIndex(classI) {
  */
 export function ringPersistBits(cat, gid) {
   const id = cat.gidToId?.[String(gid)];
-  if (id === 'magic_ring') return cat.magicRingPersistBits || 12;
-  if (id === 'superior_ring') return 18;
+  if (ringEffectCount(id)) return ringEffectCount(id) * 6;
   return 0;
 }
 
@@ -288,7 +289,7 @@ export function deserializeItems(buildInfo, cat, version = '1.1.0') {
   const indexBits = ceilLog2(totalNumItems);
   const minItemBits =
     indexBits + ceilLog2(MAX_SIZE) * 2 + ceilLog2(4);
-  /** @type {{ gid: number, id: string | null, x: number, y: number, r: number, gems: number[], persistent?: { magicRing?: number } }[]} */
+  /** @type {{ gid: number, id: string | null, x: number, y: number, r: number, gems: number[], persistent?: { magicRing?: number, effects?: { trigger: number, stack: string }[] } }[]} */
   const items = [];
   while (bs.bitsLeft() >= minItemBits) {
     const mark = bs.current;
@@ -345,8 +346,11 @@ export function deserializeItems(buildInfo, cat, version = '1.1.0') {
         bs.current = mark;
         break;
       }
-      if (dataAsInt > 0) {
-        entry.persistent = { magicRing: dataAsInt };
+      if (dataAsInt >= 0) {
+        entry.persistent = {
+          magicRing: dataAsInt,
+          effects: decodeRingEffects(dataAsInt, ringEffectCount(entry.id)),
+        };
       }
     }
 

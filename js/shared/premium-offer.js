@@ -21,6 +21,23 @@ import { premiumCompareHtml, bindPremiumCompareTips, clearPremiumCompareTips } f
 /** @type {HTMLElement | null} */
 let layer = null;
 
+/** @type {Map<HTMLElement, boolean>} */
+const lockedSiblings = new Map();
+
+function lockPageSiblings() {
+  if (lockedSiblings.size) return;
+  for (const child of document.body.children) {
+    if (!(child instanceof HTMLElement) || child === layer) continue;
+    lockedSiblings.set(child, child.inert);
+    child.inert = true;
+  }
+}
+
+function unlockPageSiblings() {
+  for (const [child, wasInert] of lockedSiblings) child.inert = wasInert;
+  lockedSiblings.clear();
+}
+
 /**
  * @param {string} s
  */
@@ -327,6 +344,7 @@ export async function openPremiumOffer(mode, opts = {}) {
   });
   bindPremiumCompareTips(body);
   shell.hidden = false;
+  lockPageSiblings();
   document.body.classList.add('bpb-premium-offer-open');
 
   body.querySelector('[data-offer-discord]')?.addEventListener(
@@ -419,10 +437,14 @@ export async function openPremiumOffer(mode, opts = {}) {
 }
 
 export function closePremiumOffer() {
-  if (!(layer instanceof HTMLElement)) return;
+  if (!(layer instanceof HTMLElement)) {
+    unlockPageSiblings();
+    return;
+  }
   clearPremiumCompareTips();
   layer.hidden = true;
   document.body.classList.remove('bpb-premium-offer-open');
+  unlockPageSiblings();
 }
 
 /** @returns {boolean} */
