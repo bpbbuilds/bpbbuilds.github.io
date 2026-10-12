@@ -121,12 +121,21 @@ const criticalPoisonPort = {
 const dualWieldingPort = {
   handlerId: 'dual_wielding',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    const weapons = (ctx.pieces || []).filter(
+      (o) =>
+        (o.kind === 'weapon' || (Number(o.damageMax) || 0) > 0) &&
+        (Number(o.staminaCost) || 0) > 0,
+    );
+    piece._dualWieldingActive = weapons.length === 2;
+  },
   onCombatStart(piece, ctx) {
     const weapons = (ctx.pieces || []).filter(
       (o) =>
         (o.kind === 'weapon' || (Number(o.damageMax) || 0) > 0) && (Number(o.staminaCost) || 0) > 0,
     );
-    if (weapons.length !== 2) return;
+    piece._dualWieldingActive = weapons.length === 2;
+    if (!piece._dualWieldingActive) return;
     const spd = getPName(piece.params, 'speed', 15) / 100;
     const stam = getPName(piece.params, 'stamina', 20) / 100;
     for (const o of weapons) {

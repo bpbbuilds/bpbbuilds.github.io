@@ -286,6 +286,15 @@ const poisonIvyPort = {
 const luckyCatPort = {
   handlerId: 'lucky_cat',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    const gold = linked(ctx, piece).reduce(
+      (sum, other) => sum + Math.max(0, Number(ctx.itemsById.get(other.itemId)?.cost) || 0),
+      0,
+    );
+    const g1 = getPName(piece.params, 'gold1', 8);
+    const g2 = getPName(piece.params, 'gold2', 16);
+    piece._luckyCatState = gold > g2 ? 'two' : gold > g1 ? 'one' : 'none';
+  },
   onCombatStart(piece, ctx) {
     const gold = linked(ctx, piece).length;
     const g1 = getPName(piece.params, 'gold1', 8);

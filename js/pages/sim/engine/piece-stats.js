@@ -7,6 +7,7 @@ import { recordPieceMod, summarizeStatMods } from './stat-mods.js';
 import { effectiveChance } from './chance.js';
 import { pushItemOverlayEvent } from './item-fx-log.js';
 import { liveDurationParams } from './effect-duration.js';
+import { visualStateForPiece } from './visual-state.js';
 
 /** @typedef {import('./pieces.js').CombatPiece} CombatPiece */
 /** @typedef {import('./actor.js').SimActor} SimActor */
@@ -342,5 +343,6 @@ export function snapshotPieceStats(piece, stacks = null, opts = {}) {
     revealed: !!piece._revealed,
     chainPos: Number.isFinite(Number(piece._chainPos)) ? Number(piece._chainPos) : -1,
     secondaryActive: !!piece._secondaryActive,
+    visualState: visualStateForPiece(piece),
   };
 }

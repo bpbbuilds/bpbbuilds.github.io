@@ -4,6 +4,8 @@
  */
 
 import { COMBAT_DELAY } from '../engine/simulate.js';
+import { visualStateAt, visualVariantFor } from '../engine/visual-state.js';
+import { setPotionLevel } from '../../../shared/item-live-art/index.js';
 
 const CARD_BACK_FILE = {
   common: 'Cardback_common.png',
@@ -71,7 +73,7 @@ function cardBackUrl(el, root) {
  * @returns {HTMLImageElement[]}
  */
 function itemSprites(el) {
-  return [...el.querySelectorAll('img.bpb-bg__sprite')].filter(
+  return [...el.querySelectorAll('img.bpb-bg__sprite, img.bpb-live__base')].filter(
     (n) => n instanceof HTMLImageElement,
   );
 }
@@ -119,13 +121,22 @@ function setCdArt(cd, url) {
  * }} opts
  */
 export function createSimItemChrome(opts) {
-  /** @type {WeakMap<HTMLElement, { cd: HTMLElement, frontSrc: string, art: string }>} */
+  /** @type {WeakMap<HTMLElement, { cd: HTMLElement, frontSrc: string, art: string, visualState?: string | null, originalSprites: Array<{ img: HTMLImageElement, src: string | null, dataSrc: string | null }> }>} */
   const layers = new WeakMap();
   /** @type {HTMLElement[]} */
   const attached = [];
   let lastT = 0;
   /** @type {number[]} */
   const timers = [];
+  /** @type {Map<string, number>} */
+  const consumeTimes = new Map();
+  for (const ev of opts.run.events || []) {
+    if (ev?.type !== 'activate' || !ev.meta?.consume || !ev.placementKey) continue;
+    const at = Number(ev.t);
+    if (!Number.isFinite(at)) continue;
+    const previous = consumeTimes.get(ev.placementKey);
+    if (previous == null || at < previous) consumeTimes.set(ev.placementKey, at);
+  }
 
   function reduced() {
     return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
@@ -171,7 +182,12 @@ export function createSimItemChrome(opts) {
     const front = sprite instanceof HTMLImageElement
       ? sprite.getAttribute('src') || sprite.dataset.src || ''
       : art;
-    pack = { cd, frontSrc: front, art };
+    const originalSprites = itemSprites(el).map((img) => ({
+      img,
+      src: img.getAttribute('src'),
+      dataSrc: img.getAttribute('data-src'),
+    }));
+    pack = { cd, frontSrc: front, art, originalSprites };
     layers.set(el, pack);
     attached.push(el);
     return pack;
@@ -220,6 +236,51 @@ export function createSimItemChrome(opts) {
       pack.art = maskSrc;
       setCdArt(pack.cd, maskSrc);
     }
+  }
+
+  /**
+   * Game `setTexture` also updates the shadow texture. Mirror that persistent
+   * state on every item sprite, then keep the cooldown shade on the same art.
+   * @param {HTMLElement} el
+   * @param {string | null} state
+   */
+  function applyVisualArt(el, state) {
+    const pack = layers.get(el);
+    if (!pack || isCardEl(el)) return;
+    if (pack.visualState === state) return;
+    pack.visualState = state;
+    const file = visualVariantFor(el.dataset.itemId || '', state);
+    const root = opts.assetRoot || '../';
+    const base = root.endsWith('/') ? root : `${root}/`;
+    const src = file ? `${base}assets/item-sprites/${file}` : null;
+    for (const original of pack.originalSprites) {
+      const img = original.img;
+      if (!img.isConnected) continue;
+      if (src) {
+        img.src = src;
+        img.removeAttribute('data-src');
+      } else {
+        if (original.src == null) img.removeAttribute('src');
+        else img.setAttribute('src', original.src);
+        if (original.dataSrc == null) img.removeAttribute('data-src');
+        else img.setAttribute('data-src', original.dataSrc);
+      }
+    }
+    const art = artUrl(spriteArtEl(el));
+    if (art && art !== pack.art) {
+      pack.art = art;
+      setCdArt(pack.cd, art);
+    }
+  }
+
+  /**
+   * @param {import('../../sim-events.js').SimEvent[] | undefined} events
+   * @param {string} key
+   * @returns {number | null}
+   */
+  function consumedAt(events, key) {
+    void events;
+    return consumeTimes.get(key) ?? null;
   }
 
   /**
@@ -360,6 +421,12 @@ export function createSimItemChrome(opts) {
       } else {
         node.classList.remove('sim-card', 'sim-card--revealed', 'sim-card--flip');
       }
+      applyVisualArt(node, visualStateAt(snaps, t, key));
+      const potion = node.querySelector('.bpb-live[data-live-kind="potion"]');
+      if (potion) {
+        const drankAt = consumedAt(opts.run.events, key);
+        setPotionLevel(node, drankAt != null && t + 1e-6 >= drankAt ? -1 : 0, { ms: 0 });
+      }
       const face = Number(node.dataset.face) || 0;
       pack.cd.style.setProperty('--sim-cd-unspin', `${-face * 90}deg`);
       const clock = cdFill(live, t, opts.run.events, key);
@@ -384,10 +451,11 @@ export function createSimItemChrome(opts) {
       for (const el of attached) {
         const pack = layers.get(el);
         pack?.cd.remove();
-        for (const img of itemSprites(el)) {
-          const front = img.dataset.frontSrc;
-          if (front) img.src = front;
-          delete img.dataset.frontSrc;
+        for (const original of pack?.originalSprites || []) {
+          if (original.src == null) original.img.removeAttribute('src');
+          else original.img.setAttribute('src', original.src);
+          if (original.dataSrc == null) original.img.removeAttribute('data-src');
+          else original.img.setAttribute('data-src', original.dataSrc);
         }
         el.classList.remove('sim-card', 'sim-card--revealed', 'sim-card--flip');
       }

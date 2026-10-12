@@ -1,5 +1,14 @@
 # Codex handoff
 
+### 2026-10-12 Simulator used-item visual-state audit (in progress)
+- Codex owns the source-derived persistent used/empty/ash visual-state map, simulator snapshot/render wiring, focused regression coverage, and audit evidence for consumable and stateful item art. Scope is limited to gameplay-visible visual states that persist after an item is used; unrelated local simulator edits remain untouched.
+
+### 2026-10-12 Simulator used-item visual-state audit complete
+- Audited extracted source texture/state paths. All catalog Potion/Flask subclasses use the shared live potion art and now render empty at the first consumed activation during scrub/rewind. Source-backed persistent texture states now cover Phoenix and Enraged Phoenix ash, Dark Lantern used, Deer Totem active rage, Dual Wielding active set, Full Body Protection active set, Vampiric Gloves active/consumed, Pumpkin fatigue glow, Lucky Cat paw thresholds, and Scale balance side.
+- Added `visualState` to simulator piece snapshots and a shared source-asset variant map. Simulator chrome swaps both item and shadow art, updates cooldown shade art, restores normal art on rewind/destroy, and keeps potion levels synchronized without per-frame event rescanning. Imported the extracted variant PNGs into `assets/item-sprites/`.
+- Card reveal/active-face behavior remains covered by the existing shared card chrome. Chainsaw frame animation and other particle/light/shader-only `onStateChanged` paths were audited as presentation-only (no alternate persistent Icon texture); they remain represented by the simulator activation/charge surfaces rather than being mislabeled as static art swaps.
+- Added `scripts/sim-used-visuals-smoke.mjs` (source inventory, all potion live-art coverage, state mapping, Phoenix/Dark Lantern snapshot checks) and `scripts/sim-used-visuals-browser-smoke.mjs` (live base + shadow swap and rewind). Focused visual, card, Phoenix, Pumpkin/Scale, cooldown, syntax, diff, and `node scripts/build-sim-fidelity-ledger.mjs --check` checks pass. `npm run sim-harness` remains blocked by the pre-existing stale `stoneGolemPort.onPreCombatStart` test call; no unrelated local files were staged.
+
 ### 2026-10-12 Phoenix / Enraged Phoenix / Dark Lantern synergy audit (in progress)
 - Codex owns the Phoenix-family resurrection lifecycle, Dark Lantern `reincarnated` reaction, Fire type-multiplicity path, focused source audit, and regression smoke while bringing these three item ports into source-aligned simulator behavior.
 

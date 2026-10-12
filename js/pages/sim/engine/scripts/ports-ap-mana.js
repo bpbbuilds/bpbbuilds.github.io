@@ -157,6 +157,7 @@ const deerTotemPort = {
   handlerId: 'deer_totem',
   family: 'unique',
   onPrepare(piece, ctx) {
+    piece._deerRageActive = false;
     const dr = getPName(piece.params, 'damreduction', getP1(piece.params, 15));
     ctx.player.damageResistancePct = (Number(ctx.player.damageResistancePct) || 0) + dr;
     const n = linked(ctx, piece).filter((o) =>
@@ -165,12 +166,14 @@ const deerTotemPort = {
     const extra = getPName(piece.params, 'dur_rage', getP2(piece.params, 0.8)) * n;
     ctx.player._battleRageDur = (Number(ctx.player._battleRageDur) || 0) + extra;
     ctx.bus?.on?.('battle_rage_started', () => {
+      piece._deerRageActive = true;
       piece._cdLocked = false;
       const period = Math.max(0.35, Number(piece.baseCooldown) || 1);
       piece.cooldown = period;
       piece.triggerTime = period;
     });
     ctx.bus?.on?.('battle_rage_ended', () => {
+      piece._deerRageActive = false;
       piece._cdLocked = true;
       piece.cooldown = 999;
       piece.triggerTime = 999;
@@ -349,7 +352,9 @@ const scalePort = {
     const per = getPName(piece.params, 'speed', getP3(piece.params, 2)) / 100;
     addSpeed(piece, per * Math.min(c1, c2));
     const maxDif = Math.max(0, Math.round(getPName(piece.params, 'gold', getP4(piece.params, 5))));
-    if (Math.abs(c1 - c2) <= maxDif) {
+    piece._scaleState =
+      Math.abs(c1 - c2) <= maxDif ? 'base' : c1 > c2 ? 'left' : 'right';
+    if (piece._scaleState === 'base') {
       const eq = getPName(piece.params, 'speed2', getPName(piece.params, 'p5', 30)) / 100;
       for (const o of [
         ...linkedByColor(ctx, piece, 'primary'),

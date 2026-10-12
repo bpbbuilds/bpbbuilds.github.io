@@ -84,7 +84,7 @@ export const doubleRainbowPort = {
  * @param {object[]} pieces
  * @param {Map<string, object>} itemsById
  */
-function fullBodySetActive(pieces, itemsById) {
+export function fullBodySetActive(pieces, itemsById) {
   let armor = 0;
   let helmets = 0;
   let shoes = 0;
@@ -105,6 +105,9 @@ function fullBodySetActive(pieces, itemsById) {
 export const fullBodyProtectionPort = {
   handlerId: 'full_body_protection',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    piece._fbpActive = fullBodySetActive(ctx.pieces, ctx.itemsById);
+  },
   onCombatStart(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
     const blockAmp =

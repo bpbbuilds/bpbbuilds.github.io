@@ -81,7 +81,10 @@ export function preparePhoenix(piece, ctx) {
       label: `${piece.name}: reincarnate to ${hp} HP`,
       meta: { category: 'heal', script: true, handler: piece.itemId, reincarnate: true, playerHp: p.hp },
     });
-    pushActivate(piece, ctx, piece.itemId, `${piece.name}: reincarnate`);
+    pushActivate(piece, ctx, piece.itemId, `${piece.name}: reincarnate`, {
+      reincarnate: true,
+      visualState: 'ash',
+    });
   };
   ctx.bus?.on?.('character_damaged', onDamaged, PRIORITY.Normal);
   // Fatigue and a few legacy simulator paths expose only this convenience
@@ -129,7 +132,9 @@ const pumpkinPort = {
   handlerId: 'pumpkin',
   family: 'weapon_base',
   onPrepare(piece, ctx) {
+    piece._pumpkinGlowing = false;
     ctx.bus?.on?.('fatigue_start', () => {
+      piece._pumpkinGlowing = true;
       grantStacks(
         ctx.player,
         'heat',

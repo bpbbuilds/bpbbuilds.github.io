@@ -258,7 +258,10 @@ const darkLanternPort = {
         t: ctx.t,
         triggerEvent: payload,
       });
-      pushActivate(piece, ctx, 'dark_lantern', `${piece.name}: reincarnate`);
+      pushActivate(piece, ctx, 'dark_lantern', `${piece.name}: reincarnate`, {
+        reincarnate: true,
+        visualState: 'used',
+      });
     };
     // Source connects during onPrepare, before the opening self-health loss.
     ctx.bus?.on?.('character_damaged', onDamaged, PRIORITY.High);
