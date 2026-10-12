@@ -2,6 +2,12 @@
 
 Codex writes this file only. Cursor writes [`CURSOR_HANDOFF.md`](CURSOR_HANDOFF.md). Read **both** before starting. Do not edit the other handoff. Do not invent progress. Label new ideas **Proposal** until measured or approved.
 
+### 2026-10-12 Main branch reconciliation complete
+
+- Safely committed this workstation's 118 tracked website, documentation, migration, and smoke-test changes; merged the ten newer `origin/main` commits; and pushed the combined result to `main` as `d38d9fe`.
+- The only merge conflict was concurrent Codex-handoff additions. Both factual sets of records were retained. The shared build-view, live-item-art, and navigation edits merged automatically and passed focused checks.
+- Kept local-only status summaries plus untracked PowerShell/SQL admin/debug scripts out of Git because they are not website release files and several require separate secret-safe review before sharing.
+
 ### 2026-10-08 Create bag-synergy indicator claim (in progress)
 
 - Codex owns the source-derived bag-effect predicate, Create drag-time bag-border indicator, focused smoke, and this handoff.
