@@ -61,6 +61,34 @@ Shared instructions stay in root [`AGENTS.md`](../AGENTS.md). Only one assistant
 
 ## Owned paths
 
+### 2026-10-10 browser tooling setup
+
+- Codex owns the BPB browser-tooling setup: `.cursor/mcp.json`, `.cursor/rules/browser-tools.mdc`, `scripts/start-chrome-devtools-mcp.mjs`, `scripts/browser-smoke.mjs`, `docs/testing/browser-tools.md`, and this handoff. Scope is local development/debugging only; do not change production deployment or application behavior.
+
+### 2026-10-10 Builds view desktop scaling
+
+- Claimed `builds/view/index.html`, `js/pages/build/index.js`, `js/pages/build/build.css`, and this handoff to use the existing slim footer and tune the dedicated `/builds/view/` desktop layout without changing the shared footer or the separate build-history page.
+
+### 2026-10-11 Builds view targeted desktop density complete
+
+- Replaced the full Builds-view `zoom` with the Items/Create viewport shell. The board scales only inside its dedicated stage on short desktops while the title, round controls, and rails retain their normal desktop density; the shared nav keeps its existing proportional scale.
+- At 2560×1440 the board remains its native 720×560. At 1920×1080, only the board scales to the available 720×493 stage (~88%), the page remains exactly viewport height, and neither axis overflows.
+- The board stage no longer clips item or bag artwork that intentionally overhangs the top or bottom of its grid. The page shell remains viewport-bounded.
+
+### 2026-10-11 shared nav targeted desktop density complete
+
+- Replaced the shared nav's global desktop transform scale with a targeted short-viewport adjustment: only the empty bottom clearance contracts while the shelf, logo, banners, and controls keep their normal desktop size. The measured nav spacer remains the content boundary.
+- Browser verification: at 1920×1080 the nav ends at ~225px with a full-size 384×156 logo; at 2560×1440 it remains the unchanged ~300px reference composition. The Builds view stays one viewport tall with no horizontal overflow.
+
+### 2026-10-11 responsive hybrid rule complete
+
+- Added the always-applied `.cursor/rules/responsive-hybrid.mdc` rule. It makes the Items/Create targeted responsive system the default for all current and future pages: fluid primary regions, locally scaled visual canvases only, bounded internal scrollers, normal-sized controls/nav, and required 2560×1440 + 1920×1080 verification. Full-page/layout/nav scaling is an explicit exception only.
+- Applied the same targeted short-desktop policy to the shared footer: preserve normal content size and screen-frame clearance while reducing only excess top/bottom padding.
+
+### 2026-10-11 shared nav density and Builds top-gap correction
+
+- Codex owns `js/shared/nav.js`, `js/shared/nav.css`, `js/shared/nav/scroll-logo.js`, `js/pages/build/build.css`, and this handoff for a viewport-scaled desktop navigation shell plus a smaller Builds view top inset. Shared nav behavior must retain the existing mobile drawer and the 2560x1440 reference composition.
+
 ### 2026-10-04 admin-selected event winners (in progress)
 
 - Claimed `js/pages/admin/event-desk.js`, `js/pages/admin/api.js`, `js/pages/admin/admin.css`, `supabase/functions/admin-builds/index.ts`, a new event-winner migration, `docs/pages/admin.md`, the affected legal pages, and this handoff. The feature will let an owner select or replace one winner only for an event whose configured voting is off; persistence and authorization remain server-side, while public event configuration and unrelated admin functions stay unchanged.
@@ -2176,3 +2204,124 @@ None.
 
 - Root cause: the Parked entry format and Parked-to-board drag seed discarded placement `instance`, which holds configured ring effects. The shared placement rebuild also omitted that payload.
 - Parked entries, saved-draft normalization, Parked drag state, and board placement rebuilds now retain `instance`; cargo flattening follows the same rule. Added `scripts/ring-parked-roundtrip-smoke.mjs` covering configured ring Board → Parked → saved draft → Board restoration.
+### 2026-10-10 Builds view footer floor complete
+
+- The dedicated Builds view now expands its scaled desktop body to the full viewport before applying the 2560x1440 desktop scale, so the slim footer reaches the bottom at both 1920x1080 and 2560x1440 instead of leaving a scaled-page gap below it.
+- The footer host sits beneath the screen-frame overlay on desktop. The frame covers the footer's lower clearance while the slim footer content remains visible above the bottom rim; mobile footer behavior is unchanged.
+- Playwright checks at 2560x1440, 1920x1080, and 390x844 confirm no page-height gap or horizontal overflow was introduced.
+
+### 2026-10-10 browser tooling setup complete
+
+- Playwright was already installed and locked in the project at `1.62.1`; no duplicate package, test runner, or production dependency was added. Added `scripts/browser-smoke.mjs` for targeted navigation, console/page-error, failed-request, HTTP-status, viewport, and optional screenshot checks.
+- Added project Cursor MCP configuration in `.cursor/mcp.json`, a Windows-safe launcher in `scripts/start-chrome-devtools-mcp.mjs`, the always-applied Cursor browser rule `.cursor/rules/browser-tools.mdc`, and the workflow guide `docs/testing/browser-tools.md`.
+- Added the same launcher to the personal Codex MCP configuration at `C:\Users\justi\.codex\config.toml`; that machine-level file is intentionally not committed. The launcher prefers installed Google Chrome, uses an isolated profile, disables MCP usage statistics and CrUX lookups, and redacts network headers. It falls back to Playwright's installed Chrome for Testing binary when stable Chrome is unavailable.
+- Verification: Chrome DevTools MCP initialize/tools-list/new-page handshake passed through the launcher with 30 tools, including navigation, snapshot, console, network, and screenshot tools. MCP opened the local site, evaluated page state, navigated to `/builds/`, read console/network state, and captured a screenshot successfully. Playwright smoke passed at 390x844, 1920x1080, and 2560x1440 with HTTP 200, no console errors, page errors, or failed requests. Chrome 155 is now installed; no secrets or production configuration were changed.
+
+### 2026-10-11 Builds view desktop scaling correction complete
+
+- Reworked the dedicated `/builds/view/` desktop scaling so `--build-desktop-scale` zooms only `.build-layout`, following the Items page's viewport-shell pattern. The shared nav, screen frame, background, and slim footer now retain their normal viewport sizing instead of being body-zoomed; mobile remains on the existing stacked layout.
+- Removed the fixed desktop frame-edge overrides and body min-height compensation from `js/pages/build/index.js`/`build.css`; nav spacer height now follows the actual unscaled nav height.
+- Verification: Playwright screenshots and geometry checks passed at 2560x1440, 1920x1080, and 390x844. At 1920x1080 the page uses body zoom `1`, build scale `0.75`, footer bottom `1080`, and no horizontal overflow. All three viewports reported no console errors, page errors, or failed requests. `node --check js/pages/build/index.js` and `git diff --check` pass.
+
+### 2026-10-11 shared nav density and Builds top-gap correction complete
+
+- The fixed desktop navigation shell now scales from the 2560x1440 reference using the same viewport-density logic as the Builds composition. The in-flow `#site-nav-space` follows the transformed shell's visual bottom, so content no longer waits through the old full-size nav height. The existing <=1100px mobile header and drawer remain unscaled.
+- Reduced `.build-main` top padding from `2.25rem` to `0.75rem` so the Builds content starts closer to the nav and gains vertical room. The 2560x1440 reference nav remains unchanged.
+- Verification: Playwright checks passed at Builds 2560x1440, 1920x1080, 1600x900, and 390x844, plus Items 1920x1080. Desktop scale values were 1, 0.75, and 0.625 respectively; footer bottoms matched the viewport, horizontal scroll stayed at viewport width, and all checks reported no console errors, page errors, or failed requests. CLI snapshot verification also passed.
+
+### 2026-10-11 custom cursor temporarily disabled
+
+- Replaced all image-backed game cursor variables in `css/cursor.css` with native browser cursor values and removed the global `game-cursor.js` initializer from `js/shared/nav.js`. The cursor follower and YouTube cursor overlay no longer initialize, so pages no longer request `/assets/cursors/*.png`.
+- Verification: `node --check js/shared/nav.js` passed and a source scan found no active custom-cursor asset or initializer references.
+
+### 2026-10-11 Chrome DevTools MCP launcher correction
+
+- The project `chrome-devtools` MCP server was configured and exposed but passed a Chrome path with spaces as a split option, causing Chrome DevTools MCP to see only `C:\\Program`. Updated `scripts/start-chrome-devtools-mcp.mjs` to pass a single `--executablePath=<path>` argument through the Windows `cmd.exe` relay.
+- Google Chrome exists at `C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe`; the new launcher passes `node --check`. An audit attempt needs an agent/MCP-server restart before it can use the corrected launcher because the existing server process retains the old arguments. See `docs/pages/home/performance.md` for the measured-status boundary and rerun plan.
+
+### 2026-10-11 home performance audit complete
+
+- The restarted Chrome DevTools MCP completed cache-bypassed production traces at `https://bpbbuilds.com/`: desktop LCP 824 ms / CLS 0.17; constrained mobile (390x844, Fast 3G, 4x CPU) LCP 3,658 ms / CLS 0.18. No console messages, failed requests, or CrUX field data were present; INP was not measured because no interaction was exercised.
+- Findings and prioritized recommendations are recorded in `docs/pages/home/performance.md`: make the JavaScript-injected low-priority nav-logo LCP resource HTML-discoverable, correct CLS/skeleton shifts, right-size images (Chrome estimates 2.8 MB savings), defer the broad initial module graph, remove forced reflows, and improve repeat-visit cache lifetimes. The report also distinguishes directly measured delays from planning estimates (including bandwidth-equivalent upper bounds); it is an audit result, not a product-code claim.
+- Follow-up scroll trace in the same constrained mobile profile confirms the reported scroll lag: 944 ms total forced reflow work during a 3.6-second top-to-bottom-to-top scroll, with 6,185 DOM elements after scrolling. The principal paths are home promo assembly, backpack-grid render, potion live-art, combat-sky scroll work, and nav scroll-logo work; the report now makes scrolling the first remediation priority.
+- Reorganized `docs/pages/home/performance.md` into ten evidence-backed findings and a 12-step implementation sequence. Each step includes rationale plus a traceable success criterion; estimated byte/time impacts are marked as planning estimates, not additive guarantees.
+
+### 2026-10-11 home scroll-performance implementation complete
+
+- Implemented steps 1-3 from the home performance plan in `js/pages/home/`: cache combat-sky scroll range per resize rather than per scroll frame; pause the promo loop outside a 400px viewport margin; freeze promo potion/holo art after its first paint; and defer class, item-explorer, and build-vault mounting until each section is within a 700px viewport margin.
+- Validation: syntax checks pass for every edited module. A local Chrome mobile smoke/scroll trace at 390x844, Fast 3G, 4x CPU had no console errors and reported about 1,794 DOM elements after scrolling. The production 6,185-element / 944 ms forced-reflow baseline is not directly comparable to this local run, so the production trace remains the deployment verification.
+
+### 2026-10-11 sim hybrid desktop stage claim (in progress)
+
+- Codex owns `js/pages/sim/sim.css`, `js/pages/sim/controls/sim-round-picker.js`, and this handoff for applying the 2560x1440-to-short-desktop hybrid stage treatment to the simulator fight field.
+- Scope: keep the three-column desktop sim and phone stack unchanged, preserve readable page chrome, and scale only the fixed backpack artwork stage to the available desktop height. Combat behavior, board coordinates, HUD semantics, and round/video interactions remain unchanged.
+
+### 2026-10-11 sim hybrid desktop stage complete
+
+- `simBagStageHtml()` now gives every sim backpack the same media-stage wrapper, so boards without history/video also receive the responsive stage without changing round-picker behavior.
+- Desktop simulator boards keep the 2560×1440 reference stage at 720×560, scale only the fixed 45rem×35rem backpack artwork by the available stage height, and leave scrubber controls, center controls, avatars, side rails, HUD, navigation, and footer at their normal readable sizes. The <=720px one-column mobile layout remains unchanged.
+- Validation: `node --check js/pages/sim/controls/sim-round-picker.js`, `node scripts/sim-playback-smoke.mjs`, `node scripts/sim-empty-state-smoke.mjs`, and `git diff --check` pass. Chrome DevTools MCP representative-stage checks measured transform 1.0 at 2560×1440, 0.75 at 1920×1080, and 0.533 at 1366×768; the 390px mobile path retained `transform: none`. Local browser smoke at 2560×1440, 1920×1080, and 390×844 reported no console/page/request errors. The local static server could not load a Supabase board slug, so a populated live-board screenshot remains a follow-up verification item.
+
+### 2026-10-11 sim compact-stage sizing follow-up claim (in progress)
+
+- Codex owns `js/pages/sim/sim.css`, `js/pages/sim/hud/sim-avatars.css`, `js/pages/sim/controls/sim-round-picker.js`, and this handoff while correcting the first hybrid pass's undersized 1080p backpack and avatar presentation. Scope remains visual density only; simulator behavior and mobile layout are unchanged.
+
+### 2026-10-11 sim compact-stage sizing follow-up complete
+
+- Corrected the short-desktop visual density: at the browser's 1920×1080 window the local board stage now measures 720×493 (~88% of the authored 720×560 canvas) rather than the undersized ~65% first-pass result. The 2560×1440 composition still caps at the authored canvas size. Compact desktop avatars now use bounded responsive sizes (class art tops at 216px at 1920×1080) while the phone-only rules stay unchanged.
+- Browser geometry verification found no main-axis overflow at 1920×1080 or 1366×768. `node scripts/sim-playback-smoke.mjs`, `node scripts/sim-empty-state-smoke.mjs`, `node --check js/pages/sim/controls/sim-round-picker.js`, and `git diff --check` all pass.
+
+### 2026-10-11 home performance plan steps 4-6 claim (in progress)
+
+- Codex owns `index.html`, `js/shared/skeleton.css`, `js/pages/home/home-promo-band.css`, `js/pages/home/home-items-explore.js`, `js/pages/home/home-class-showcase.js`, `docs/pages/home/performance.md`, and this handoff for items 4-6 of the documented home performance plan. Scope: HTML-discoverable home LCP logo, stable/composited skeleton presentation, and use of the existing home-appropriate WebP item thumbnails; no data model, asset-generation, or visual redesign work.
+
+### 2026-10-11 home performance plan steps 4-6 complete
+
+- Step 4: Home preloads the full navigation wordmark and includes that same dimensioned, `fetchpriority="high"` image in the parser-visible navigation shell. The normal navigation replacement reuses it after scripts load.
+- Step 5: shared skeleton shimmer now animates a transform-only pseudo-element; the short-lived home pending-sprite placeholder is static. Both preserve their existing layout reservation and reduced-motion behavior.
+- Step 6: home item-orbit and class starting-bag previews now load the existing 1x WebP derivatives, falling back to a source PNG only when needed. Local constrained-mobile Chrome verification loaded those WebPs successfully with no console messages. The signed remote board-still derivative pipeline is explicitly still pending; the performance report records that remaining scope rather than claiming the full 2.8 MB audit estimate.
+- Validation: `node --check js/pages/home/home-items-explore.js`, `node --check js/pages/home/home-class-showcase.js`, and `git diff --check` pass. The implementation is local-only until deployed, so LCP/CLS and byte savings need the documented production trace before they are treated as measured results.
+
+### 2026-10-11 home performance plan steps 7-9 claim (in progress)
+
+- Codex owns `js/pages/home/index.js`, `js/pages/home/home-promo-assemble.js`, `js/pages/home/home-class-showcase.js`, `js/pages/home/home-items-explore.js`, `js/pages/home/home-builds-vault.js`, `js/shared/board-still/index.js`, `js/shared/nav/session.js`, `docs/pages/home/performance.md`, and this handoff for items 7-9. Scope: defer off-screen media/module work on Home and lazy-load payment actions from the shared navigation only on user intent; retain the existing Home visuals, navigation, tooltips, and auth behavior.
+
+### 2026-10-11 home performance plan steps 7-9 complete
+
+- Below-fold Home media now uses native lazy loading/asynchronous decoding with layout dimensions: class portraits, item-orbit and bag thumbnails, vault art, and rendered board stills. Existing section geometry remains in CSS.
+- The Home entry dynamically imports class showcase, item explorer, and vault modules only when near the viewport. Deferred observers mount sequentially, so empty section hosts cannot collapse together and trigger every import at startup. Local fresh-load verification had only the class module mounted at the initial viewport; item explorer and vault mounted in order after scrolling.
+- Removed the Home promo's import of Create collision/editor dependencies by retaining only its local fixed grid constants and bag discriminator. The shared nav now imports Premium-offer and Stripe-portal logic only when their respective controls are clicked. A fresh local page reported those payment modules plus Create collision and board-thumb modules absent at startup.
+- Validation: `node --check` passes for all seven edited JavaScript modules and `git diff --check` passes. Local Chrome confirmed lazy board-still image properties and no runtime errors; production performance numbers remain an after-deploy trace task.
+
+### 2026-10-11 home performance plan steps 10-12 claim (in progress)
+
+- Codex owns `js/pages/home/combat-sky/index.js`, `js/pages/home/featured-stage.js`, `js/shared/nav/scroll-logo.js`, `index.html`, `docs/pages/home/performance.md`, and this handoff for steps 10-12 plus a fresh local Chrome load/scroll audit. Scope: reduce first-view geometry work without changing Home presentation, remove the unused YouTube connection hint, and document/cache-deployment requirements accurately. No service worker or broad asset-pipeline change is authorized without an explicit deployment plan.
+
+### 2026-10-11 home performance plan steps 10-12 complete
+
+- Startup geometry work now avoids a synchronous combat-sky document-height read during boot, batches later range updates, avoids a featured-track `offsetHeight` flush, and skips duplicate nav-spacer writes. The combat-sky hill became the local LCP candidate after earlier optimizations. A trial plain-image preload could not be reused by its CSS mask-image request, so it was removed; the report records the parser-visible-image/refactor follow-up rather than claiming that LCP as solved.
+- Removed the unused `www.youtube.com` preconnect while retaining the `i.ytimg.com` hint used by featured thumbnails. The local document check confirmed the removed preconnect.
+- Bare GitHub Pages cannot deliver repo-configured immutable cache headers. The existing `npm run stamp-assets` workflow plus a Cloudflare/comparable edge cache rule is the supported implementation path; no service worker was added because its stale-content lifecycle is a separate product decision.
+- Fresh Chrome DevTools local audit at 390x844 / Fast 3G / 4x CPU measured LCP 3,829 ms (with a 3,454 ms combat-sky hill discovery delay), CLS 0.18, and a 50 ms largest layout update on cache-bypassed reload. A 3.6-second scripted scroll recorded 1,634 ms overlapping forced-reflow work and 1,972 maximum elements; potion drawing, backpack-grid render, nav scroll read, and combat sky remain the top lag paths. These local figures are explicitly non-comparable to the earlier production trace and the report preserves that distinction.
+- Validation: `node --check` passes for combat sky, featured stage, and nav scroll-logo; `git diff --check` passes. Chrome logged no runtime errors, but did retain the existing issue for seven lazy-loaded images without explicit dimensions.
+
+### 2026-10-11 home background option 1 claim (in progress)
+
+- Codex owns `js/pages/home/combat-sky/index.js`, `js/pages/home/combat-sky.css`, `docs/pages/home/performance.md`, and this handoff while implementing the report's first background optimization: a fixed compact-device/reduced-motion fallback with no scroll-linked combat-sky updates. Desktop full scrub behavior remains in scope unchanged; this package will be committed and pushed as requested.
+
+### 2026-10-11 home background option 1 complete
+
+- Compact viewports (`<=767px`), reduced-motion/reduced-data users, Save-Data connections, and devices reporting two or fewer logical cores now receive one fixed `T_REDUCED` combat-sky frame. The fallback performs no scroll-linked `applyTime` updates, disables windmill rotation, and releases animation-only `will-change` hints; resize still updates stage scale. Desktop retains the full scroll-scrubbed sky.
+- The performance report now documents the implementation boundary, expected trade-offs, and the follow-up trace needed to measure the reduction against the 1,634 ms local forced-reflow baseline. Existing scene assets remain unchanged; responsive background derivatives are a separate option.
+- Chrome verification: at 390x844 the sky had `combat-sky--static`, windmill animation `none`, and an unchanged `--sky-y` before/after a full scroll; at 1920x1080 the static class was absent and `combat-sky-spin` remained active. No runtime errors appeared; the existing seven-image-dimensions issue remains.
+- Validation: `node --check js/pages/home/combat-sky/index.js` and `git diff --check` pass.
+
+### 2026-10-11 home background option 2 claim (in progress)
+
+- Codex owns `js/pages/home/combat-sky/index.js`, `js/pages/home/combat-sky.css`, `docs/pages/home/performance.md`, and this handoff while implementing coarse stepped combat-sky updates for the full desktop path. Scope: quantize scroll progress into 2.5% buckets, transition only positional/opacity properties between buckets, preserve option 1's static compact-device fallback, and push the scoped Home performance package.
+
+### 2026-10-11 home background option 2 complete
+
+- Desktop combat-sky scroll progress now advances in 40 buckets (2.5% each). Tint/color writes happen once when a bucket changes; positional and opacity properties use a 120 ms CSS transition. Compact/reduced-motion/data/low-core devices continue to bypass the animated path through option 1.
+- Chrome verification at 390x844 confirmed the static fallback remained active and the sky position stayed fixed after scrolling. At 1920x1080 the static class was absent, stepped mode was active, and a 1% scroll retained the initial sky frame while 3% and 8% moved to new bucket values. No runtime errors appeared; the existing seven-image-dimensions issue remains.
+- Validation: `node --check js/pages/home/combat-sky/index.js` and `git diff --check` pass. The performance report records the follow-up frame-pacing/self-time trace required before claiming a measured reduction.

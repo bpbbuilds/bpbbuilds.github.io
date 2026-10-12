@@ -168,6 +168,31 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
     const boardTagsEl = host.querySelector('[data-promo-board-tags]');
     const infoEl = host.querySelector('[data-promo-info]');
     if (!(boardHost instanceof HTMLElement)) return;
+    let promoActive = true;
+    /** @type {Set<() => void>} */
+    const promoWaiters = new Set();
+    const activity = {
+      get active() {
+        return promoActive;
+      },
+      wait() {
+        return new Promise((resolve) => promoWaiters.add(resolve));
+      },
+    };
+    if (typeof IntersectionObserver !== 'undefined') {
+      const activityObserver = new IntersectionObserver(
+        (entries) => {
+          const next = entries.some((entry) => entry.isIntersecting);
+          if (next === promoActive) return;
+          promoActive = next;
+          if (!promoActive) return;
+          for (const resume of promoWaiters) resume();
+          promoWaiters.clear();
+        },
+        { rootMargin: '400px 0px', threshold: 0.01 },
+      );
+      activityObserver.observe(host);
+    }
     const promoMq = window.matchMedia('(max-width: 1100px)');
     const catalogReady = promoMq.matches
       ? Promise.resolve()
@@ -189,6 +214,7 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
       boardTagsEl: boardTagsEl instanceof HTMLElement ? boardTagsEl : null,
       infoEl: infoEl instanceof HTMLElement ? infoEl : null,
       catalogReady,
+      activity,
       root,
     });
     return;

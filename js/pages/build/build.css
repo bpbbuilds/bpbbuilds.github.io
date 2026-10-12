@@ -42,12 +42,28 @@ body.page-build {
   color: var(--bpb-ink);
 }
 
+/* Desktop builds view uses the 2560×1440 layout as its visual reference.
+   Scale only the build composition when the desktop viewport is smaller so
+   the shared nav, screen frame, background, and footer keep their normal
+   viewport sizing. The existing <=1100px mobile layout remains independent. */
+@media (min-width: 1101px) {
+  body.page-build-view .build-layout {
+    zoom: var(--build-desktop-scale, 1);
+  }
+
+  /* Keep the footer in the normal page flow under the frame edge. */
+  body.page-build-view #site-footer {
+    position: relative;
+    z-index: 1;
+  }
+}
+
 .build-main {
   --build-catalog-width: 45rem;
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: 2.25rem var(--build-side-gap) 1.5rem;
+  padding: 0.75rem var(--build-side-gap) 1.5rem;
   box-sizing: border-box;
   flex: 1 1 auto;
   min-width: 0;

@@ -16,6 +16,30 @@ import { initSiteAccess } from './access-gate.js';
 
 export { navSkeletonHtml };
 
+const NAV_DESKTOP_REFERENCE_WIDTH = 2560;
+const NAV_DESKTOP_REFERENCE_HEIGHT = 1440;
+
+/**
+ * Keep the desktop shelf composition at the 2560x1440 reference density.
+ * The shell is scaled in CSS; this value is shared with the spacer sync so
+ * fixed navigation and in-flow content keep the same visual boundary.
+ * @param {Element} host
+ */
+function syncNavDesktopScale(host) {
+  if (!(host instanceof HTMLElement)) return;
+
+  const isDesktop = window.innerWidth > 1100;
+  const scale = isDesktop
+    ? Math.min(
+        1,
+        window.innerWidth / NAV_DESKTOP_REFERENCE_WIDTH,
+        window.innerHeight / NAV_DESKTOP_REFERENCE_HEIGHT,
+      )
+    : 1;
+
+  host.style.setProperty('--bpb-nav-desktop-scale', String(scale));
+}
+
 function rootPrefix() {
   const raw = document.body?.dataset?.root ?? './';
   return raw.endsWith('/') ? raw : `${raw}/`;
@@ -54,6 +78,7 @@ export async function initNav(selector = '#site-nav') {
   if (!allowed) return false;
 
   // Reserve layout space immediately (nav is fixed / out of flow)
+  syncNavDesktopScale(host);
   ensureNavSpace(host);
   syncNavSpace(host);
 
@@ -72,6 +97,7 @@ export async function initNav(selector = '#site-nav') {
 
   host.replaceChildren(shell);
 
+  syncNavDesktopScale(host);
   syncNavSpace(host);
   bindNavScrollLogo(host);
   bindNavDrawer(host);
@@ -106,6 +132,7 @@ export async function initNav(selector = '#site-nav') {
   window.addEventListener(
     'resize',
     () => {
+      syncNavDesktopScale(host);
       syncNavSpace(host);
     },
     { passive: true },

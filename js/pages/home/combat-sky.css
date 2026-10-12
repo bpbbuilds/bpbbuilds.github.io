@@ -27,6 +27,25 @@
   will-change: transform;
 }
 
+/* Compact/reduced-motion fallback: keep one painted scene and release the
+   compositor layers that are only useful while scrubbing the full animation. */
+.combat-sky--static .combat-sky__stage,
+.combat-sky--static .combat-sky__sky,
+.combat-sky--static .combat-sky__celestial {
+  will-change: auto;
+}
+
+.combat-sky--static .combat-sky__blades {
+  animation: none;
+}
+
+/* Desktop scrub: colors/tints snap at coarse progress buckets while movement
+   and opacity ease briefly on the compositor between bucket changes. */
+.combat-sky--stepped .combat-sky__sky,
+.combat-sky--stepped .combat-sky__celestial {
+  transition: transform 120ms ease-out, opacity 120ms ease-out;
+}
+
 /* Sky: grayscale banding × modulate color */
 .combat-sky__sky {
   position: absolute;

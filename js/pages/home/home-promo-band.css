@@ -626,8 +626,8 @@ a.home-promo__caption-author:hover {
     rgba(226, 201, 168, 0.7) 45%,
     rgba(184, 150, 110, 0.45) 90%
   );
-  background-size: 200% 100%;
-  animation: bpb-skel-shimmer 1.35s ease-in-out infinite;
+  /* A pending sprite is brief; keep its reserved geometry without a paint-heavy
+     background-position animation. */
 }
 
 .home-promo__catalog .bpb-bg__item--sprite-pending .bpb-bg__sprite {

@@ -9,13 +9,21 @@
   display: block;
   position: relative;
   overflow: hidden;
+  background: rgba(184, 150, 110, 0.45);
+}
+
+.bpb-skel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: linear-gradient(
     110deg,
-    rgba(184, 150, 110, 0.45) 0%,
-    rgba(226, 201, 168, 0.7) 45%,
-    rgba(184, 150, 110, 0.45) 90%
+    transparent 0%,
+    rgba(226, 201, 168, 0.55) 45%,
+    transparent 90%
   );
-  background-size: 200% 100%;
+  transform: translateX(100%);
+  will-change: transform;
   animation: bpb-skel-shimmer 1.35s ease-in-out infinite;
 }
 
@@ -33,10 +41,10 @@
 
 @keyframes bpb-skel-shimmer {
   0% {
-    background-position: 100% 0;
+    transform: translateX(100%);
   }
   100% {
-    background-position: -100% 0;
+    transform: translateX(-100%);
   }
 }
 
@@ -44,5 +52,9 @@
   .bpb-skel {
     animation: none;
     background: rgba(184, 150, 110, 0.5);
+  }
+
+  .bpb-skel::after {
+    animation: none;
   }
 }

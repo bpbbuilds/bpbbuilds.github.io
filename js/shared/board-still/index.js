@@ -40,6 +40,10 @@ export function mountBoardStill(host, opts) {
   img.className = 'bpb-board-still__img';
   img.alt = '';
   img.draggable = false;
+  img.loading = 'lazy';
+  img.decoding = 'async';
+  img.width = (BOARD_COLS + STILL_OVERHANG * 2) * cellPx;
+  img.height = (BOARD_ROWS + STILL_OVERHANG * 2) * cellPx;
   still.appendChild(img);
   host.replaceChildren(still);
 

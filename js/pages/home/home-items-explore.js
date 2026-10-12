@@ -244,7 +244,21 @@ function paintOrbitSprites(orbit, byId, getSpriteUrl) {
     const img = document.createElement('img');
     img.alt = '';
     img.draggable = false;
-    img.src = getSpriteUrl(item) || '';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.width = 68;
+    img.height = 68;
+    const fullSprite = getSpriteUrl(item) || '';
+    // Orbit faces are shown at a small fixed size. Use the shipped 1x WebP
+    // derivative, falling back to the source sprite only if a catalog edge
+    // case lacks a thumbnail.
+    img.src = fullSprite
+      .replace('/assets/item-sprites/', '/assets/item-thumbs/1x/')
+      .replace(/\.png(?:\?.*)?$/i, '.webp');
+    img.addEventListener('error', () => {
+      if (img.src === fullSprite) return;
+      img.src = fullSprite;
+    }, { once: true });
     (face || btn).append(img);
   });
 }

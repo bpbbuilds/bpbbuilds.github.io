@@ -4,6 +4,7 @@
  */
 
 const LOGO_FLIP_MS = 200;
+const navSpaceHeight = new WeakMap();
 
 /**
  * In-flow spacer after the fixed nav so content isn’t covered (VH pattern).
@@ -32,8 +33,13 @@ export function syncNavSpace(host) {
   const space = document.getElementById('site-nav-space');
   if (!(space instanceof HTMLElement)) return;
 
-  const h = Math.ceil(host.getBoundingClientRect().height);
-  if (h > 0) {
+  const hostRect = host.getBoundingClientRect();
+  const shell = host.querySelector('.site-nav-shell');
+  const shellRect =
+    shell instanceof HTMLElement ? shell.getBoundingClientRect() : hostRect;
+  const h = Math.ceil(Math.max(0, shellRect.bottom - hostRect.top));
+  if (h > 0 && navSpaceHeight.get(host) !== h) {
+    navSpaceHeight.set(host, h);
     document.documentElement.style.setProperty('--bpb-nav-space', `${h}px`);
     space.style.height = `${h}px`;
   }

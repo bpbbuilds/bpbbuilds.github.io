@@ -1,0 +1,12 @@
+---
+description: Local browser debugging and targeted verification for BPB Builds
+alwaysApply: true
+---
+
+# Browser tools
+
+- Use the local development server for browser work. The documented default is `http://127.0.0.1:8123/`; Cursor Live Server ports may vary by workspace.
+- Use Chrome DevTools MCP for console errors, page/runtime errors, network failures, DOM/CSS inspection, screenshots, and performance traces.
+- Use the existing Playwright dependency for targeted navigation, interaction, responsive checks, and focused smoke scripts. Run `node scripts/browser-smoke.mjs --url <local-url>` for the generic smoke check.
+- Reproduce and inspect before changing code. After a fix, reload the same local page and re-check console/network state; run only the targeted browser checks relevant to the change.
+- Never use these tools for destructive production actions. Do not enter or expose real authentication tokens, cookies, payment data, or private user data in browser sessions.
