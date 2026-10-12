@@ -6,7 +6,7 @@
 ### 2026-10-12 Puzzle Bag of Endurance Hammer highlight regression complete
 - Root cause was an empty HistoryDB placement key: drag feedback normalized `key: ""` to `puzzlebag_j:face:x,y`, while the placed-grid renderer retained an empty DOM key, so the compatible bag could not be found for highlighting.
 - The placed-grid key path now uses the same non-empty-key fallback as drag feedback and the visible fabric. Added an empty-key HistoryDB regression to `scripts/create-bag-synergy-browser-smoke.mjs`; it verifies the fallback DOM key and active Hammer highlight.
-- Focused browser/source synergy, duration-hover, syntax, diff, and simulator ledger checks pass. The complete local bag-synergy fix set is ready to commit/push; unrelated local files remain unstaged.
+- Focused browser/source synergy, duration-hover, syntax, diff, and simulator ledger checks pass. The complete bag-synergy fix set was committed and pushed as `19383d0`; unrelated local files remain unstaged.
 
 ### 2026-10-12 Simulator stun target/duplicate-event audit (in progress)
 - Codex owns the simulator Hammer stun application/event path, shared stunned-target state, the focused regression coverage, and this handoff while auditing duplicate stun presentation and ensuring dummies/opponent boards are affected.
