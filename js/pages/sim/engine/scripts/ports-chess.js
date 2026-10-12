@@ -256,6 +256,7 @@ const whiteQueenPort = {
   onChessEliminated(piece, ctx) {
     grantInvuln(ctx.player, getPName(piece.params, 'dur', 1.3), ctx.t, {
       sourceId: piece.itemId,
+      sourceKey: piece.placementKey,
       bus: ctx.bus,
     });
   },

@@ -153,7 +153,11 @@ export const frogPrincePort = {
           originId: piece.itemId,
         });
         const dur = Math.max(0.5, getPName(piece.params, 'dur_1', 2));
-        grantInvuln(ctx.player, dur, ctx.t);
+        grantInvuln(ctx.player, dur, ctx.t, {
+          sourceId: piece.itemId,
+          sourceKey: piece.placementKey,
+          bus: ctx.bus,
+        });
       }
     });
   },

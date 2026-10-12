@@ -237,6 +237,7 @@ const darkLanternPort = {
       grantInvuln(p, getPName(piece.params, 'dur_invu', 1.3), ctx.t, {
         bus: ctx.bus,
         sourceId: piece.itemId,
+        sourceKey: piece.placementKey,
       });
       const side = p.id;
       ctx.events.push({

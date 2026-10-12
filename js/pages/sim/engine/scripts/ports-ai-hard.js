@@ -229,7 +229,11 @@ export const shinyMantlePort = {
     const durBase = getPName(piece.params, 'dur_base', getP1(piece.params, 1));
     const durBonus = getPName(piece.params, 'dur_bonus', getP2(piece.params, 0.2));
     const invuDur = durBase + durBonus * (Number(piece._mantleGemDur) || 0);
-    grantInvuln(player, invuDur, t, { bus, sourceId: piece.itemId });
+    grantInvuln(player, invuDur, t, {
+      bus,
+      sourceId: piece.itemId,
+      sourceKey: piece.placementKey,
+    });
     piece._mantleUses = (Number(piece._mantleUses) || 0) + 1;
     piece._mantleMana =
       need + Math.max(0, Math.round(getPName(piece.params, 'mana', getPName(piece.params, 'p6', 3))));

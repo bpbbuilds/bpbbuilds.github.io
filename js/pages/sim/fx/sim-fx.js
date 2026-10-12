@@ -11,6 +11,7 @@ import { createDamageNumbers } from './sim-dmg-numbers.js';
 import { bindItemOverlays } from './sim-item-labels.js';
 import { NUMBER_TYPES } from './sim-dmg-geo.js';
 import { createItemAnims } from './sim-item-anims.js';
+import { createInvulnerabilityFx } from './sim-invulnerability-fx.js';
 import { setPotionLevel } from '../../../shared/item-live-art/index.js';
 import { readSimSoundsMuted } from '../shell/sim-view-prefs.js';
 
@@ -47,6 +48,10 @@ export function createSimFx(opts) {
     boardEl: opts.boardEl,
     run: opts.run,
     assetRoot: opts.assetRoot,
+  });
+  const invulnerabilityFx = createInvulnerabilityFx({
+    boardEl: opts.boardEl,
+    run: opts.run,
   });
 
   /** @returns {HTMLElement | null} */
@@ -158,6 +163,7 @@ export function createSimFx(opts) {
     if (lastSeekT >= 0 && (t < lastSeekT - 1e-6 || t > lastSeekT + 0.5)) {
       dmgNumbers.clear();
       itemAnims.clearInFlight();
+      invulnerabilityFx.clear();
     }
     lastSeekT = t;
     const snaps = opts.run.snapshots;
@@ -256,6 +262,7 @@ export function createSimFx(opts) {
     opts.dummyHud.apply(d, t);
     chargeFx.setTime(t);
     itemChrome.seek(t);
+    invulnerabilityFx.seek(t);
     itemAnims.syncConsumed(t);
     const consumed = itemAnims.consumedEntries?.();
     if (consumed) {
@@ -271,6 +278,7 @@ export function createSimFx(opts) {
    * @param {import('../../sim-events.js').SimEvent} ev
    */
   function flashEvent(ev) {
+    invulnerabilityFx.flashEvent(ev);
     if (ev.type === 'charge' || (ev.type === 'activate' && ev.meta?.chargePath)) {
       chargeFx.flashEvent(ev);
     }
@@ -451,9 +459,11 @@ export function createSimFx(opts) {
     clearLabels() {
       dmgNumbers.clear();
       itemAnims.clearInFlight();
+      invulnerabilityFx.clear();
     },
     destroy() {
       itemChrome.destroy();
+      invulnerabilityFx.destroy();
       chargeFx.destroy();
       dmgNumbers.destroy();
       itemAnims.destroy();

@@ -972,6 +972,56 @@ body.page-sim .site-footer--slim {
   overflow: visible;
 }
 
+/* Source item pulses: BookOfLightActivationPulse and DarkResurectionPulse
+ * both expand a single RingLight sprite over 0.7s. */
+.sim-bag .bpb-bg__item.is-sim-book-light-pulse::after,
+.sim-bag .bpb-bg__item.is-sim-dark-resurrection::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(190%, 9rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9001;
+  background: center / contain no-repeat url('../../../assets/sim/vfx/RingLight.png');
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: sim-item-invulnerability-pulse 0.7s ease-out both;
+  will-change: transform, opacity;
+}
+
+.sim-bag .bpb-bg__item.is-sim-book-light-pulse::after {
+  filter: sepia(0.7) saturate(1.35) drop-shadow(0 0 0.25rem rgba(255, 210, 95, 0.8));
+}
+
+.sim-bag .bpb-bg__item.is-sim-dark-resurrection::after {
+  filter: hue-rotate(245deg) saturate(1.7) drop-shadow(0 0 0.25rem rgba(177, 106, 255, 0.85));
+}
+
+@keyframes sim-item-invulnerability-pulse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.05);
+  }
+  42% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-bag .bpb-bg__item.is-sim-book-light-pulse::after,
+  .sim-bag .bpb-bg__item.is-sim-dark-resurrection::after {
+    animation: none;
+    opacity: 0.45;
+  }
+}
+
 .sim-card--flip .bpb-bg__spin:not(.bpb-bg__spin--shadow) {
   animation: sim-card-flip 0.3s ease-in-out;
   transform-origin: 50% 50%;

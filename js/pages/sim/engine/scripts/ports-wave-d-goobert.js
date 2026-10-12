@@ -177,7 +177,11 @@ export const kingGoobertPort = {
           originId: listener.itemId,
         });
         const dur = Math.max(0.5, getPName(listener.params, 'dur_invu', getPName(listener.params, 'dur_invuln', 1.5)));
-        grantInvuln(ctx.player, dur, ctx.t);
+        grantInvuln(ctx.player, dur, ctx.t, {
+          sourceId: listener.itemId,
+          sourceKey: listener.placementKey,
+          bus: ctx.bus,
+        });
         listener._crownState = 'Active';
         ctx.events.push({
           t: ctx.t + 0.005,
@@ -280,7 +284,11 @@ function bindCrownManaTrigger(piece, ctx, handler) {
       0.5,
       getPName(piece.params, 'dur_invu', getPName(piece.params, 'dur_invuln', getP2(piece.params, 2))),
     );
-    grantInvuln(ctx.player, dur, nowT);
+    grantInvuln(ctx.player, dur, nowT, {
+      sourceId: piece.itemId,
+      sourceKey: piece.placementKey,
+      bus: ctx.bus,
+    });
     piece._crownUsedAt = nowT + dur;
     pushActivate(piece, { ...ctx, t: nowT }, handler, `Accessory: ${piece.name}`);
     ctx.events.push({

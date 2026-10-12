@@ -379,6 +379,79 @@
   user-select: none;
 }
 
+/* Character.gd's InvulnerabilityBubble: one RingLight sprite around the
+ * fighter, kept as a compositor-only layer instead of a particle swarm. */
+.sim-avatar.is-sim-invulnerable::before,
+.sim-avatar.is-sim-invulnerability-burst::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(10rem, 118%, 24rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  background: center / contain no-repeat url('../../../../assets/sim/vfx/RingLight.png');
+  mix-blend-mode: screen;
+}
+
+.sim-avatar.is-sim-invulnerable::before {
+  opacity: 0.28;
+  animation: sim-invulnerability-bubble 1.6s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.sim-avatar.is-sim-invulnerability-burst::after {
+  opacity: 0;
+  filter: sepia(0.7) saturate(1.35) drop-shadow(0 0 0.35rem rgba(255, 210, 95, 0.8));
+  animation: sim-invulnerability-burst 0.7s ease-out both;
+  will-change: transform, opacity;
+}
+
+.sim-avatar.is-sim-invulnerability-burst.sim-avatar--foe::after {
+  filter: hue-rotate(245deg) saturate(1.7) drop-shadow(0 0 0.35rem rgba(177, 106, 255, 0.8));
+}
+
+@keyframes sim-invulnerability-bubble {
+  0%,
+  100% {
+    opacity: 0.22;
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+  50% {
+    opacity: 0.38;
+    transform: translate(-50%, -50%) scale(1.02);
+  }
+}
+
+@keyframes sim-invulnerability-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.08);
+  }
+  45% {
+    opacity: 0.62;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-avatar.is-sim-invulnerable::before,
+  .sim-avatar.is-sim-invulnerability-burst::after {
+    animation: none;
+  }
+  .sim-avatar.is-sim-invulnerable::before {
+    opacity: 0.32;
+  }
+  .sim-avatar.is-sim-invulnerability-burst::after {
+    opacity: 0.42;
+  }
+}
+
 .sim-avatar.sim-avatar--blob {
   width: min(100%, 20rem);
   max-width: 22rem;

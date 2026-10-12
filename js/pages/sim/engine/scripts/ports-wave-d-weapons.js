@@ -97,7 +97,11 @@ export const holySpearPort = {
       originId: piece.itemId,
     });
     const dur = Math.max(0.5, getPName(piece.params, 'dur_invu', getPName(piece.params, 'dur_invuln', 1)));
-    grantInvuln(ctx.player, dur, ctx.t);
+    grantInvuln(ctx.player, dur, ctx.t, {
+      sourceId: piece.itemId,
+      sourceKey: piece.placementKey,
+      bus: ctx.bus,
+    });
     const speed = getPName(piece.params, 'speed', getP3(piece.params, 10)) / 100;
     grantTimedSpeed(piece, speed, ctx.t + dur, 'holy_spear');
     piece._spearState = 'Used';

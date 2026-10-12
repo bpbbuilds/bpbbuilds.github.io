@@ -6,6 +6,7 @@ import { collectActorHudStats } from './actor-stats.js';
 import { gainStacks as gainStacksImpl } from './stacks.js';
 import { summarizeTemporaryStacks } from './temp-stacks.js';
 import { pushStunLabel } from './item-fx-log.js';
+import { invulnerabilityVfxFor } from '../fx/sim-invulnerability-fx.js';
 
 /** @typedef {'player' | 'dummy'} SimActorId */
 
@@ -147,7 +148,7 @@ export function createActor(id, opts = {}) {
  * @param {SimActor} actor
  * @param {number} durationSec
  * @param {number} nowT
- * @param {{ charges?: number }} [opts]
+ * @param {{ charges?: number, bus?: { emit?: Function }, sourceId?: string | null, sourceKey?: string | null }} [opts]
  */
 export function grantInvuln(actor, durationSec, nowT, opts = {}) {
   const dur = Math.max(0, Number(durationSec) || 0);
@@ -159,6 +160,28 @@ export function grantInvuln(actor, durationSec, nowT, opts = {}) {
   const charges = Math.max(0, Math.round(Number(opts.charges) || 0));
   if (charges > 0) {
     actor.invulnCharges = (Number(actor.invulnCharges) || 0) + charges;
+  }
+  const vfx = invulnerabilityVfxFor(opts.sourceId);
+  if (Array.isArray(actor._eventLog)) {
+    actor._eventLog.push({
+      t: Number(nowT) || 0,
+      type: 'info',
+      actor: actor.id,
+      target: actor.id,
+      ...(opts.sourceId ? { itemId: String(opts.sourceId) } : {}),
+      ...(opts.sourceKey ? { placementKey: String(opts.sourceKey) } : {}),
+      amount: dur,
+      label: 'Invulnerability visual',
+      meta: {
+        uiOnly: true,
+        category: 'visual',
+        invulnerability: true,
+        invulnerabilityStart: !was,
+        invulnerabilityUntil: Number(actor.invulnUntil) || 0,
+        invulnerabilityCharges: Number(actor.invulnCharges) || 0,
+        invulnerabilityVfx: vfx,
+      },
+    });
   }
   if (!was && isInvulnerable(actor, nowT)) {
     opts.bus?.emit?.('character_invulnerable_start', {
