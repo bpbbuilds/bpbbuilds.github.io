@@ -9,7 +9,7 @@
  * @param {import('./actor.js').SimActor} actor
  * @param {number} nowT
  * @param {number} dur
- * @param {object} opts
+ * @param {{ origin?: object, label?: string, meta?: object }} opts
  * @param {'stunned' | 'stun_resisted'} kind
  */
 export function pushStunLabel(actor, nowT, dur, opts, kind) {
@@ -37,8 +37,12 @@ export function pushStunLabel(actor, nowT, dur, opts, kind) {
     amount: dur,
     itemId: origin?.itemId,
     placementKey: origin?.placementKey,
-    label: kind === 'stun_resisted' ? 'Stun Resisted' : `Stun (${dur}s)`,
-    meta: { category: 'status', stack: 'stun', kind },
+    label:
+      opts.label ||
+      (kind === 'stun_resisted'
+        ? 'Stun Resisted'
+        : `${origin?.name ? `${origin.name}: ` : ''}Stun (${dur}s)`),
+    meta: { category: 'status', stack: 'stun', ...opts.meta, kind },
   });
 }
 

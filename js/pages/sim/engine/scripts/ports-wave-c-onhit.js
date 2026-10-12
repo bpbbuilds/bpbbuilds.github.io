@@ -38,14 +38,9 @@ export const hammerPort = {
   onDealtDamage(piece, ctx, hit) {
     if (!hit?.hit || !rollItemChance(piece, ctx.rng)) return;
     const dur = Math.max(0.5, effectDuration(piece, 'dur_stun', getP1(piece.params, 1)));
-    grantStun(ctx.dummy, dur, ctx.t);
-    ctx.events.push({
-      t: ctx.t + 0.008,
-      type: 'debuff',
-      target: 'dummy',
-      amount: 1,
-      label: `${piece.name}: Stun (${dur}s)`,
-      meta: { category: 'debuff', stack: 'stun', script: true, handler: 'hammer' },
+    grantStun(ctx.dummy, dur, ctx.t, {
+      origin: piece,
+      meta: { category: 'debuff', script: true, handler: 'hammer' },
     });
   },
 };
@@ -234,14 +229,9 @@ export const brassKnucklesPort = {
     }
     if (rollItemChance(piece, ctx.rng)) {
       const dur = Math.max(0.5, effectDuration(piece, 'dur_stun', 1));
-      grantStun(ctx.dummy, dur, ctx.t);
-      ctx.events.push({
-        t: ctx.t + 0.008,
-        type: 'debuff',
-        target: 'dummy',
-        amount: 1,
-        label: `${piece.name}: Stun (${dur}s)`,
-        meta: { category: 'debuff', stack: 'stun', script: true, handler: 'brass_knuckles' },
+      grantStun(ctx.dummy, dur, ctx.t, {
+        origin: piece,
+        meta: { category: 'debuff', script: true, handler: 'brass_knuckles' },
       });
     }
   },
@@ -257,17 +247,12 @@ export const thorsHammerPort = {
   },
   onDealtDamage(piece, ctx, hit) {
     if (!hit?.hit) return;
-    const { player, dummy, rng, events, t } = ctx;
+    const { player, dummy, rng, t } = ctx;
     if (rollItemChance(piece, rng)) {
       const dur = Math.max(0.5, effectDuration(piece, 'dur_stun', 1));
-      grantStun(dummy, dur, t);
-      events.push({
-        t: t + 0.008,
-        type: 'debuff',
-        target: 'dummy',
-        amount: 1,
-        label: `${piece.name}: Stun`,
-        meta: { category: 'debuff', stack: 'stun', script: true, handler: 'thors_hammer' },
+      grantStun(dummy, dur, t, {
+        origin: piece,
+        meta: { category: 'debuff', script: true, handler: 'thors_hammer' },
       });
     }
     const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP1(piece.params, 3))));

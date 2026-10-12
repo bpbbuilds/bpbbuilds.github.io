@@ -34,6 +34,17 @@ Path: `Core/Character.gd`
 - `useStamina(amount)` — stamina economy; out-of-stamina paths exist in EventType.
 - `cleanse()` / `combatEnd()` — reset stacks, buffs, timers.
 
+## Stun behavior audit
+
+The extracted game has one stun state and one combat event per successful stun:
+
+- `Core/Character.gd` `stun()` sets `stunnedDuration = max(stunnedDuration, duration)`, emits `character_stunned`, and starts the stun animation. The animation's buff label is presentation only; it does not apply another stun.
+- `Core/Character.gd` `_physics_process()` counts the duration down and calls `endStun()` once it expires.
+- `Items/Item.gd` `stun()` delegates to `opponent().stun(...)`, so the target is always the opposing `Character` (the player or the opponent/dummy), not a hard-coded side.
+- `Items/Item.gd` `_physics_process()` does not advance an item cooldown or trigger it while its owner is stunned. This applies equally to a full opponent board and the simulator's training dummy.
+
+The simulator now follows that boundary: `grantStun()` owns the single debuff event and accepts the source item metadata, while on-hit ports no longer append a second presentation event. Side-relative contexts continue to map `ctx.dummy` to the opposing actor, so a Hammer on either board updates the correct `stunnedUntil` state and suppresses that actor's attacks until expiry. Regression coverage lives in [`scripts/sim-stun-behavior-smoke.mjs`](../../scripts/sim-stun-behavior-smoke.mjs).
+
 ---
 
 ## Item machine

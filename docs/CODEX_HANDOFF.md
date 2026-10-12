@@ -1,5 +1,25 @@
 # Codex handoff
 
+### 2026-10-12 Simulator stun target/duplicate-event audit (in progress)
+- Codex owns the simulator Hammer stun application/event path, shared stunned-target state, the focused regression coverage, and this handoff while auditing duplicate stun presentation and ensuring dummies/opponent boards are affected.
+
+### 2026-10-12 Simulator stun target/duplicate-event audit complete
+- Audited `Core/Character.gd`, `Items/Item.gd`, and `Items/Hammer.gd`: the game keeps one `stunnedDuration = max(...)` state, emits one stun combat event, and pauses the stunned character's item cooldown/trigger loop. The animation label is presentation only.
+- Removed the simulator's duplicate manually-pushed stun events from Hammer, Brass Knuckles, Thor's Hammer, and Thornburst. `grantStun()` now carries source metadata into the single event, including the actual duration and source item.
+- Verified side-relative targeting: a player Hammer targets the training dummy and suppresses dummy swings during the active stun; an opponent-board Hammer targets the player and updates the player's `stunnedUntil` state. Added `scripts/sim-stun-behavior-smoke.mjs` for both directions.
+- Focused stun, duration, parity, wave-C, chess, vs-board, log, syntax, diff, and ledger checks pass. `npm run sim-harness` still has the pre-existing stale `stoneGolemPort.onPreCombatStart` test call and remains unrelated to this change. This change set is staged for the requested commit and push.
+
+### 2026-10-12 Create bag-synergy visible-fabric regression (in progress)
+
+- Codex owns the real placed-board bag-fabric highlight path, its focused browser regression, and this handoff.
+- Root-cause hypothesis under test: Create's placed board renders shared `.bpb-bg__fabric` cells above the per-bag slot layer, so `is-drag-synergy` can be present while the visible bag outline remains unchanged. Scope is to expose the same compatible/hover state on the visible fabric cells without changing bag acceptance rules.
+
+### 2026-10-12 Create bag-synergy visible-fabric regression complete
+
+- Confirmed the issue on the real placed-board path: per-bag slots received `is-drag-synergy`, but the shared `.bpb-bg__fabric` layer was painted above them and had no highlight state.
+- Fabric cells now retain the owning bag placement keys (including the deterministic no-key HistoryDB fallback), and drag feedback mirrors compatible/hover classes onto those visible cells. The existing per-bag state remains for Itemiary/rotation paths.
+- Added the real `mountPlacedGrid` regression to `scripts/create-bag-synergy-browser-smoke.mjs`. Focused source/browser synergy, duration-hover, ring-affordance, ledger, syntax, and diff checks pass. Changes are local and not committed or pushed in this turn.
+
 ### 2026-10-12 Simulator stun-duration correction (in progress)
 
 - Codex owns the simulator effect-duration multiplier path, simulator live-item tooltip duration display, the focused Time Melting/Puzzlebag Endurance regression, and this handoff while correcting seed `2965184550` behavior. Scope is to preserve source duration parameters, apply the shared duration factor to stun effects (including Hammer and related ports), expose the modified duration in simulator tooltips, and push only after focused and ledger verification.

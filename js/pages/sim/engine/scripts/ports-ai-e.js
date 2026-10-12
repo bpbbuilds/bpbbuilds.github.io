@@ -223,17 +223,12 @@ export const thornburstPort = {
     }
   },
   onCooldownEffect(piece, ctx) {
-    const { t, player, events } = ctx;
+    const { t, player } = ctx;
     pushActivate(piece, ctx, 'thornburst', `Skill: ${piece.name}`);
     const stunDur = Math.max(0.5, effectDuration(piece, 'dur_stun', 1));
-    grantStun(ctx.dummy, stunDur, t);
-    events.push({
-      t: t + 0.002,
-      type: 'debuff',
-      target: 'dummy',
-      amount: 1,
-      label: `${piece.name}: Stun (${stunDur}s)`,
-      meta: { category: 'debuff', stack: 'stun', script: true, handler: 'thornburst' },
+    grantStun(ctx.dummy, stunDur, t, {
+      origin: piece,
+      meta: { category: 'debuff', script: true, handler: 'thornburst' },
     });
     const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 2))));
     grantStacks(player, 'spikes', spikes, {
