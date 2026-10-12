@@ -1,5 +1,14 @@
 # Codex handoff
 
+### 2026-10-12 Simulator invisibility/invulnerability VFX audit (in progress)
+- Codex owns the extracted game source/asset audit, simulator status-event wiring, actor/item visual effects, focused smoke coverage, and performance/reduced-motion handling for invisibility and invulnerability visuals. Scope excludes the unrelated local simulator band edits listed in the worktree status.
+
+### 2026-10-12 Simulator invisibility/invulnerability VFX audit complete
+- Audited `Core/Character.gd` and `Core/Character.tscn`: the game uses one `InvulnerabilityBubble` sprite with `RingLight.png` and the `Invulnerable`/`Vulnerable` animation. Crown, Holy Spear, Shiny Mantle, King Goobert, and Frog Prince use `BookOfLightActivationPulse.tscn`; Dark Lantern uses `DarkResurectionPulse.tscn`; White Queen grants the character state but has no item pulse scene.
+- Imported the extracted `RingLight.png` byte-for-byte. Every simulator `grantInvuln` caller now carries its item and placement key into one UI-only visual event. Added a cached actor aura and source-matched item burst layer using compositor-only transforms/opacity, with a binary-search snapshot lookup, no particle-node allocation, and `prefers-reduced-motion` fallbacks.
+- Added `scripts/sim-invulnerability-vfx-smoke.mjs` (source/asset audit, grant event, Dark Lantern engine event) and `scripts/sim-invulnerability-vfx-browser-smoke.mjs` (actor aura, item pulse, expiry, 1080p viewport, reduced motion). The CSS uses fluid `clamp()` sizing for supported desktop/mobile surfaces. Focused VFX, used-art, Phoenix/Lantern, Wave-D, log, syntax, diff, and `node scripts/build-sim-fidelity-ledger.mjs --check` checks pass. `npm run sim-harness` remains blocked by the pre-existing stale `stoneGolemPort.onPreCombatStart` call at `scripts/sim-harness.mjs:188`; unrelated local band edits and untracked admin/debug files remain untouched.
+- Product changes committed as `2101d63` (`Add simulator invulnerability visuals`); handoff record follows in this commit.
+
 ### 2026-10-12 Simulator used-item visual-state audit (in progress)
 - Codex owns the source-derived persistent used/empty/ash visual-state map, simulator snapshot/render wiring, focused regression coverage, and audit evidence for consumable and stateful item art. Scope is limited to gameplay-visible visual states that persist after an item is used; unrelated local simulator edits remain untouched.
 
