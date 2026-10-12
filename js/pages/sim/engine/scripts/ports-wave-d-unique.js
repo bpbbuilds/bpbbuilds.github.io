@@ -15,6 +15,7 @@ import { grantStun, healActor, tryUseStamina, gainMaxStaminaTemporary, giveStami
 import { applyEffectDmgFactor, applyHealEfficiency } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
+import { effectDuration } from '../effect-duration.js';
 import { addAccuracy, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedSpeed } from '../timed-speed.js';
@@ -256,8 +257,8 @@ export const hogusBogusPort = {
       });
       pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'hogus_bogus', picked, 0.003);
     } else if (phase === 1) {
-      grantStun(ctx.dummy, Math.max(0.5, getPName(piece.params, 'dur_stun', 1.5)), ctx.t);
-      grantStun(ctx.player, Math.max(0.5, getPName(piece.params, 'dur_stunself', 0.5)), ctx.t);
+      grantStun(ctx.dummy, Math.max(0.5, effectDuration(piece, 'dur_stun', 1.5)), ctx.t);
+      grantStun(ctx.player, Math.max(0.5, effectDuration(piece, 'dur_stunself', 0.5)), ctx.t);
     } else {
       const pct = getPName(piece.params, 'heal', getP2(piece.params, 20)) / 100;
       const heal = Math.max(1, Math.round((ctx.dummy.hp || ctx.dummy.maxHp) * pct));

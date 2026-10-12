@@ -16,6 +16,7 @@ import { gainStacks } from '../stacks.js';
 import { getItemsInside } from '../board-graph.js';
 import { reEmitCharge } from '../charge-delivery.js';
 import { getPName } from '../params.js';
+import { addEffectDurationFactor } from '../effect-duration.js';
 import { addSpeed } from '../piece-stats.js';
 import { itemHasType, pushBuffGrants } from './ports-util.js';
 
@@ -327,14 +328,14 @@ export const puzzlebagTPort = {
 export const puzzlebagJPort = {
   handlerId: 'puzzlebag_j',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const bonus = getPName(piece.params, 'bonusdur', 20) / 100;
     if (!bonus) return;
     for (const o of insides(ctx, piece)) {
       const cat = ctx.itemsById.get(o.itemId);
-      const dur = o.params?.dur ?? cat?.params?.dur;
-      if (dur == null) continue;
-      o.params = { ...o.params, dur: Number(dur) * (1 + bonus) };
+      const params = o.params || cat?.params || {};
+      if (!Object.keys(params).some((key) => /^dur(?:_|$)/i.test(key))) continue;
+      addEffectDurationFactor(o, bonus);
     }
   },
 };

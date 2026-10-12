@@ -14,6 +14,7 @@ import {
 import { healActor, tryUseStamina } from '../actor.js';
 import { affectedTargets, getItemsInside } from '../board-graph.js';
 import { getP, getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { addEffectDurationFactor } from '../effect-duration.js';
 import { addBonusDamageFactor, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount, loseStacks } from '../stacks.js';
 import { applyEffectDmgFactor } from '../actor-stats.js';
@@ -305,8 +306,10 @@ export const timeMeltingPort = {
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
       if (!other.params) continue;
-      if (other.params.dur == null || !bonusDur) continue;
-      other.params.dur = Number(other.params.dur) * (1 + bonusDur);
+      if (!Object.keys(other.params).some((key) => /^dur(?:_|$)/i.test(key)) || !bonusDur) {
+        continue;
+      }
+      addEffectDurationFactor(other, bonusDur);
     }
   },
   onCombatStart(piece, ctx) {

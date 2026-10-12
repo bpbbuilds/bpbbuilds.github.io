@@ -332,8 +332,6 @@ export function simulateEngine(opts) {
     return n;
   };
 
-  pushSnap(0);
-
   events.push({
     t: 0,
     type: 'fight_start',
@@ -412,6 +410,9 @@ export function simulateEngine(opts) {
       script?.onPrepare?.(piece, prepareCtx);
     }
   }
+  // Capture prepared item stats at the zero-time tooltip position. This keeps
+  // duration factors (Time Melting / Endurance) visible before the first tick.
+  pushSnap(0);
   const startOrder = buildCombatStartOrder(youPieces, themPieces, rng);
   /** @type {Map<string, number>} */
   const combatStartOrderMap = new Map();

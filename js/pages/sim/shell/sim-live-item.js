@@ -55,6 +55,70 @@ function rewriteEffectChance(effect, baseChance, liveChance) {
 }
 
 /**
+ * Rewrite one catalog duration token (Hammer's `0.5s`, for example) with the
+ * prepared simulator value while preserving the game's inline tint syntax.
+ * @param {string} effect
+ * @param {number} baseDuration
+ * @param {number} liveDuration
+ */
+function rewriteEffectDuration(effect, baseDuration, liveDuration) {
+  const text = String(effect || '');
+  if (!text || !Number.isFinite(baseDuration) || !Number.isFinite(liveDuration)) {
+    return text;
+  }
+  if (Math.abs(liveDuration - baseDuration) < 1e-6) return text;
+  const base = String(Math.round(baseDuration * 10000) / 10000).replace('.', '\\.')
+    .replace(/\\.0+$/, '');
+  const live = String(Math.round(liveDuration * 10000) / 10000);
+  const re = new RegExp(`(?<![\\d.])${base}s\\b`, 'g');
+  const tint = liveDuration > baseDuration ? 'green' : 'red';
+  return text.replace(re, `{${tint}}${live}s{/${tint}}`);
+}
+
+/**
+ * @param {object | null | undefined} item
+ * @returns {Record<string, number>}
+ */
+function catalogDurationParams(item) {
+  const params = item?.params;
+  if (!params || typeof params !== 'object') return {};
+  /** @type {Record<string, number>} */
+  const out = {};
+  for (const [key, raw] of Object.entries(params)) {
+    const n = Number(raw);
+    if (/^dur(?:_|$)/i.test(key) && Number.isFinite(n)) out[key] = n;
+  }
+  return out;
+}
+
+/**
+ * @param {object} out
+ * @param {object} catalogItem
+ * @param {object} live
+ */
+function mergeLiveDurations(out, catalogItem, live) {
+  const base = catalogDurationParams(catalogItem);
+  if (!Object.keys(base).length) return;
+  const factor = Number(live.durationFactor);
+  const fallback = Number.isFinite(factor) && factor > 0 ? factor : 1;
+  const supplied = live.durationParams && typeof live.durationParams === 'object'
+    ? live.durationParams
+    : {};
+  const current = {};
+  for (const [key, value] of Object.entries(base)) {
+    const candidate = Number(supplied[key]);
+    current[key] = Number.isFinite(candidate) ? candidate : value * fallback;
+  }
+  out.durationParamsCatalog = base;
+  out.durationParamsLive = current;
+  let effect = String(out.effect || '');
+  for (const [key, baseDuration] of Object.entries(base)) {
+    effect = rewriteEffectDuration(effect, baseDuration, current[key]);
+  }
+  out.effect = effect;
+}
+
+/**
  * Scale multi-phase catalog CDs by the same speed ratio as primary live CD.
  * @param {number[]} phases
  * @param {number} baseCd
@@ -196,6 +260,8 @@ export function mergeLiveItemStats(catalogItem, live, _t, extra = {}) {
   if (Array.isArray(live.statMods) && live.statMods.length) {
     out.statMods = live.statMods;
   }
+
+  mergeLiveDurations(out, catalogItem, live);
 
   const rolls = Number(live.chanceRolls) || 0;
   const procs = Number(live.chanceProcs) || 0;

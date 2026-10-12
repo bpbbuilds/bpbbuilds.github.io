@@ -11,6 +11,7 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
+import { effectDuration } from '../effect-duration.js';
 import { addSpeed } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
 import { grantTimedSpeed } from '../timed-speed.js';
@@ -224,7 +225,7 @@ export const thornburstPort = {
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
     pushActivate(piece, ctx, 'thornburst', `Skill: ${piece.name}`);
-    const stunDur = Math.max(0.5, getPName(piece.params, 'dur_stun', 1));
+    const stunDur = Math.max(0.5, effectDuration(piece, 'dur_stun', 1));
     grantStun(ctx.dummy, stunDur, t);
     events.push({
       t: t + 0.002,

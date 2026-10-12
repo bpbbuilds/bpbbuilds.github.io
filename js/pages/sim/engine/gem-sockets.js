@@ -8,6 +8,7 @@ import { healActor, grantStun } from './actor.js';
 import { applyHealEfficiency } from './actor-stats.js';
 import { grantStacks, onBuffChanged, stealRandomBuff } from './buff-economy.js';
 import { getP1, getP2, getP3, getP4, getPName, paramsFromItem } from './params.js';
+import { scaleEffectDuration } from './effect-duration.js';
 import { addSpeed } from './piece-stats.js';
 import { withStatSource } from './stat-mods.js';
 import { gainStacks } from './stacks.js';
@@ -163,7 +164,11 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
         originId: gid,
       });
     } else if (fam === 'elephant' && rollPercent(gemChance(gem), ctx.rng)) {
-      grantStun(ctx.dummy, Math.max(0.5, getPName(params, 'dur_stun', 1)), ctx.t);
+      grantStun(
+        ctx.dummy,
+        Math.max(0.5, scaleEffectDuration(piece, getPName(params, 'dur_stun', 1))),
+        ctx.t,
+      );
     }
   });
 }

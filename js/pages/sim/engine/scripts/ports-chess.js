@@ -10,6 +10,7 @@ import {
   stealRandomBuff,
 } from '../buff-economy.js';
 import { getPName } from '../params.js';
+import { effectDuration } from '../effect-duration.js';
 import { addSpeed } from '../piece-stats.js';
 import { grantTimedResistancePct } from '../timed-resistance.js';
 import { removeRandomBuffs } from './ports-wave-c-util.js';
@@ -154,7 +155,7 @@ const blackQueenPort = {
     stealRandomBuff(ctx.dummy, ctx.player, amount, ctx.rng, origin(piece));
   },
   onChessEliminated(piece, ctx) {
-    grantStun(ctx.dummy, getPName(piece.params, 'dur', 1.3), ctx.t, {
+    grantStun(ctx.dummy, effectDuration(piece, 'dur', 1.3), ctx.t, {
       rng: ctx.rng,
       events: ctx.events,
       itemId: piece.itemId,

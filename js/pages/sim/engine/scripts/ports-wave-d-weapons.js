@@ -17,6 +17,7 @@ import { grantInvuln, grantStun, healActor, isInvulnerable } from '../actor.js';
 import { affectedTargets } from '../board-graph.js';
 import { emitPathCharge } from '../charge-delivery.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { effectDuration } from '../effect-duration.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedSpeed, refreshTimedSpeed } from '../timed-speed.js';
@@ -131,7 +132,7 @@ export const automanatonPort = {
         opponent: ctx.player,
       });
       if (rollItemChance(piece, ctx.rng)) {
-        grantStun(ctx.dummy, Math.max(0.5, getPName(piece.params, 'dur_stun', 1)), ctx.t);
+        grantStun(ctx.dummy, Math.max(0.5, effectDuration(piece, 'dur_stun', 1)), ctx.t);
       }
       const cleanse = Math.max(1, Math.round(getPName(piece.params, 'cleanse', 1)));
       cleanseRandomDebuffs(ctx.player, cleanse, ctx.rng, {
@@ -193,8 +194,8 @@ export const bazookaPort = {
       originId: piece.itemId,
     });
     gainStacks(ctx.player, 'block', Math.max(1, Math.round(getP2(piece.params, 4))));
-    grantStun(ctx.dummy, Math.max(0.5, getPName(piece.params, 'dur_stun', 1)), ctx.t);
-    grantStun(ctx.player, Math.max(0.5, getPName(piece.params, 'dur_stunself', 0.5)), ctx.t);
+    grantStun(ctx.dummy, Math.max(0.5, effectDuration(piece, 'dur_stun', 1)), ctx.t);
+    grantStun(ctx.player, Math.max(0.5, effectDuration(piece, 'dur_stunself', 0.5)), ctx.t);
     const luckt = Math.max(1, Math.round(getPName(piece.params, 'luckt', 3)));
     if ((ctx.player.stacks.lucky || 0) >= luckt) {
       piece._stunResist = true;
@@ -373,7 +374,7 @@ export const stoneGolemPort = {
       originId: piece.itemId,
     });
     if (rollItemChance(piece, ctx.rng)) {
-      grantStun(ctx.dummy, Math.max(0.5, getPName(piece.params, 'dur_stun', 1)), ctx.t);
+      grantStun(ctx.dummy, Math.max(0.5, effectDuration(piece, 'dur_stun', 1)), ctx.t);
     }
   },
 };

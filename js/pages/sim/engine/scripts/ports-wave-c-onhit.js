@@ -12,6 +12,7 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { effectDuration } from '../effect-duration.js';
 import { addAccuracy, addBonusDamage, addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { dealEffectDamage, dealHit } from './handlers.js';
 import { affectedTargets } from '../board-graph.js';
@@ -36,7 +37,7 @@ export const hammerPort = {
   },
   onDealtDamage(piece, ctx, hit) {
     if (!hit?.hit || !rollItemChance(piece, ctx.rng)) return;
-    const dur = Math.max(0.5, getPName(piece.params, 'dur_stun', getP1(piece.params, 1)));
+    const dur = Math.max(0.5, effectDuration(piece, 'dur_stun', getP1(piece.params, 1)));
     grantStun(ctx.dummy, dur, ctx.t);
     ctx.events.push({
       t: ctx.t + 0.008,
@@ -232,7 +233,7 @@ export const brassKnucklesPort = {
       if (acc && (other.kind === 'weapon' || other.damageMax > 0)) addAccuracy(other, acc);
     }
     if (rollItemChance(piece, ctx.rng)) {
-      const dur = Math.max(0.5, getPName(piece.params, 'dur_stun', 1));
+      const dur = Math.max(0.5, effectDuration(piece, 'dur_stun', 1));
       grantStun(ctx.dummy, dur, ctx.t);
       ctx.events.push({
         t: ctx.t + 0.008,
@@ -258,7 +259,7 @@ export const thorsHammerPort = {
     if (!hit?.hit) return;
     const { player, dummy, rng, events, t } = ctx;
     if (rollItemChance(piece, rng)) {
-      const dur = Math.max(0.5, getPName(piece.params, 'dur_stun', 1));
+      const dur = Math.max(0.5, effectDuration(piece, 'dur_stun', 1));
       grantStun(dummy, dur, t);
       events.push({
         t: t + 0.008,

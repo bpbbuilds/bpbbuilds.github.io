@@ -13,6 +13,7 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { effectDuration } from '../effect-duration.js';
 import { addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { gainStacks, loseStacks } from '../stacks.js';
 import { getScriptHandler } from './registry.js';
@@ -261,7 +262,7 @@ export const slothPort = {
       pushBuffGrants(events, piece, player, t, 'sloth', picked);
       grantStun(
         dummy,
-        Math.max(0.05, getPName(piece.params, 'dur_stun', getPName(piece.params, 'p6', 1.5))),
+        Math.max(0.05, effectDuration(piece, 'dur_stun', getPName(piece.params, 'p6', 1.5))),
         t,
       );
       afterEffectFinished(piece, ctx, 'sloth', { activate: false });
@@ -282,7 +283,7 @@ export const slothPort = {
         dummy,
         Math.max(
           0.05,
-          getPName(piece.params, 'dur_stun_amulet', getPName(piece.params, 'p7', 0.5)),
+          effectDuration(piece, 'dur_stun_amulet', getPName(piece.params, 'p7', 0.5)),
         ),
         t,
       );

@@ -7,6 +7,7 @@ import { grantStacks, onBuffChanged, spendStacks, stealRandomBuff } from '../buf
 import { dealDamage } from '../damage.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getPName } from '../params.js';
+import { effectDuration } from '../effect-duration.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { dealHit } from './handlers.js';
@@ -109,7 +110,7 @@ const pumpkinPort = {
       afterHit(hit) {
         if (!hit?.hit) return;
         if (!rollItemChance(piece, ctx.rng)) return;
-        grantStun(ctx.dummy, getPName(piece.params, 'dur_stun', 0.5), ctx.t, { rng: ctx.rng });
+        grantStun(ctx.dummy, effectDuration(piece, 'dur_stun', 0.5), ctx.t, { rng: ctx.rng });
       },
     });
   },
@@ -134,7 +135,7 @@ const rubyChonkPort = {
         grantStacks(ctx.player, 'heat', 1, origin(piece));
         if (!piece._rubyChonkHeatReady) return;
         if (!rollItemChance(piece, ctx.rng)) return;
-        grantStun(ctx.dummy, getPName(piece.params, 'dur_stun', 0.4), ctx.t, { rng: ctx.rng });
+        grantStun(ctx.dummy, effectDuration(piece, 'dur_stun', 0.4), ctx.t, { rng: ctx.rng });
       },
     });
   },

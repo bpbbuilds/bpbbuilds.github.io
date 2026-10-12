@@ -431,7 +431,7 @@ Goal: propose **last-round / endgame boards** that synergize — not full shop r
 - [x] Disable the ability to move items into the build info without having a item in the build grid — item-derived Build Info edits are guarded until the board has an item.
 - [x] Require items in the needs, wants, good to have — client and submit-build validation require one item in each tier for every submitted build.
 - [ ] I items to be dynamic with page size and weary of the nav section
-- [x] Time melting item import also make sure star items works — audited against `TimeMelting.gd`/`Item.hasInventoryDuration()`: only `dur` targets are valid; stun-only `dur_stun` fields intentionally do not light or extend.
+- [x] Time melting item import also make sure star items works — audited against `TimeMelting.gd`/`Item.hasInventoryDuration()`: named duration targets such as `dur_stun` now light correctly and share the simulator's prepared duration multiplier.
 - [ ] Import stone cosmetic item and link it to the reward for the stone dps event
 - [ ] Make the nav dynamic with screensize so 1440p looks same on 1080p ect.
 - [x] Reduce size of mouse pointer and make it dynamic with screensize — desktop follower is viewport-scaled; mobile and text cursors remain native.

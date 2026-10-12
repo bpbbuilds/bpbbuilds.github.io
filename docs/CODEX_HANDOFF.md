@@ -1,5 +1,15 @@
 # Codex handoff
 
+### 2026-10-12 Simulator stun-duration correction (in progress)
+
+- Codex owns the simulator effect-duration multiplier path, simulator live-item tooltip duration display, the focused Time Melting/Puzzlebag Endurance regression, and this handoff while correcting seed `2965184550` behavior. Scope is to preserve source duration parameters, apply the shared duration factor to stun effects (including Hammer and related ports), expose the modified duration in simulator tooltips, and push only after focused and ledger verification.
+
+### 2026-10-12 Simulator stun-duration correction complete
+
+- Time Melting and Puzzlebag of Endurance now add multiplicative prepared duration factors instead of mutating only `params.dur`; named parameters such as `dur_stun` and `dur_stunself` are covered. Puzzlebag J now runs its source-aligned `onPrepare` path, so overlapping Endurance bags compose correctly.
+- Hammer, Thor's Hammer, chess, and every other simulator stun path now read the shared prepared duration helper. Simulator piece snapshots carry duration parameters, and live simulator tooltips rewrite the effect text with the prepared value (including the four-Endurance seed case).
+- Added `scripts/sim-duration-effects-smoke.mjs`; it verifies base, Endurance, four-bag, Time Melting, combined, and tooltip values. Focused duration, wave, parity, noop, ledger, syntax, and diff checks pass. `npm run sim-harness` remains blocked by its pre-existing `stoneGolemPort.onPreCombatStart` stale test call; the handler is already named `onPrepare` in the existing port.
+
 Codex writes this file only. Cursor writes [`CURSOR_HANDOFF.md`](CURSOR_HANDOFF.md). Read **both** before starting. Do not edit the other handoff. Do not invent progress. Label new ideas **Proposal** until measured or approved.
 
 ### 2026-10-12 Main branch reconciliation complete

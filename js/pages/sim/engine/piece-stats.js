@@ -6,6 +6,7 @@
 import { recordPieceMod, summarizeStatMods } from './stat-mods.js';
 import { effectiveChance } from './chance.js';
 import { pushItemOverlayEvent } from './item-fx-log.js';
+import { liveDurationParams } from './effect-duration.js';
 
 /** @typedef {import('./pieces.js').CombatPiece} CombatPiece */
 /** @typedef {import('./actor.js').SimActor} SimActor */
@@ -331,6 +332,8 @@ export function snapshotPieceStats(piece, stacks = null, opts = {}) {
     chanceRolls: Number(piece.chanceRolls) || 0,
     chanceProcs: Number(piece.chanceProcs) || 0,
     critChance: Math.max(0, Number(piece.critChance) || 0),
+    durationFactor: Number(piece.effectDurationFactor) || 1,
+    durationParams: liveDurationParams(piece),
     bonusDamageFactor: Number(piece.bonusDamageFactor) || 1,
     statMods: summarizeStatMods(piece, stacks, opts),
     empowerable: piece.empowerable !== false,
