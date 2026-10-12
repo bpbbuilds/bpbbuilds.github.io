@@ -56,6 +56,10 @@ function assignBand(entry) {
 function templateFor(entry) {
   const fam = entry.family || '';
   const o = new Set(entry.overrides || []);
+  // Ruby Egg overrides the shared doCooldownEffect only so its
+  // onCombatStart hook can call doCooldownEffect(false). DragonEgg has no
+  // combat cooldown; the effect is start-of-battle only.
+  if (entry.id === 'ruby_egg') return 'start_regen';
   if (fam === 'synergy_aura') return 'empower_aura';
   if (fam === 'start_buff' || fam === 'food') return 'start_regen';
   if (fam === 'pet_like') return 'pet_strike';

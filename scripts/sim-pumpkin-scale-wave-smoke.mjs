@@ -8,7 +8,7 @@ const cases = [
   ['pumpkin', 'Pumpkin.gd', 'onPrepare'],
   ['puzzlebag_l', 'Exclusive/PuzzlebagL.gd', 'onPrepare'],
   ['ruby_chonk', 'RubyChonk.gd', 'onPrepare'],
-  ['ruby_egg', 'RubyEgg.gd', 'onCooldownEffect'],
+  ['ruby_egg', 'RubyEgg.gd', 'onCombatStart'],
   ['ruby_whelp', 'RubyWhelp.gd', 'onPreCombatStart'],
   ['sapphire_whelp', 'Exclusive/SapphireWhelp.gd', 'onPreDealDamageEarly'],
   ['scale', 'Exclusive/Scale.gd', 'onPrepare'],

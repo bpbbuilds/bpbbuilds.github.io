@@ -147,7 +147,7 @@ These rows have a registered handler but still need source/lifecycle/evidence co
 - [x] `puzzlebag_l` - `Exclusive/PuzzlebagL.gd`; cargo-specific heal/lifesteal amplification prepares before combat-start max-health and activation; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
    150|- [x] `rib_saw_blade`
 - [x] `ruby_chonk` - `RubyChonk.gd`; prepare-time Heat threshold state, hit Heat, conditional stun, and inherited weapon activation are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
-- [x] `ruby_egg` - `RubyEgg.gd`; pre-start reflect plus exact `doCooldownEffect(false)` start behavior and full cooldown effect are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
+- [x] `ruby_egg` - `RubyEgg.gd`; pre-start debuff Reflect plus one start-of-battle `doCooldownEffect(false)` Heat/activation are source-ported, with no combat cooldown loop; focused regressions: `scripts/sim-ruby-egg-smoke.mjs`, `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
 - [x] `ruby_whelp` - `RubyWhelp.gd`; pre-start reflect, combat-start Heat/activation, and inherited weapon path are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
 - [x] `sapphire_whelp` - `Exclusive/SapphireWhelp.gd`; start Mana and early successful-hit Mana spend into Block/non-Mana random buff are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.
 - [x] `scale` - `Exclusive/Scale.gd`; prepare-time gold-linked speed/equilibrium and least-stack cooldown grant are source-ported; focused regression: `scripts/sim-pumpkin-scale-wave-smoke.mjs`.

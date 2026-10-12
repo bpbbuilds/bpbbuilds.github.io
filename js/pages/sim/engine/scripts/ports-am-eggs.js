@@ -1,8 +1,9 @@
 /**
- * Band AM — gem eggs (pet-like start + CD grants).
+ * Band AM — gem eggs (pet-like start and source-defined effects).
  */
 
 import { grantStacks } from '../buff-economy.js';
+import { changeReflectStacks } from '../actor-stats.js';
 import { getP1, getP3 } from '../params.js';
 import { pushActivate } from './ports-util.js';
 
@@ -21,7 +22,7 @@ export const rubyEggPort = {
   family: 'start_buff',
   onPreCombatStart(piece, ctx) {
     const n = Math.max(1, Math.round(getP1(piece.params, 3)));
-    ctx.player.debuffReflectStacks = (ctx.player.debuffReflectStacks || 0) + n;
+    changeReflectStacks(ctx.player, n, ctx, piece);
   },
   onCombatStart(piece, ctx) {
     // doCooldownEffect(false) — heat + activate; reflect already from onPreCombatStart
@@ -30,16 +31,6 @@ export const rubyEggPort = {
       originId: piece.itemId,
     });
     petActivate(piece, ctx, 'ruby_egg');
-  },
-  onCooldownEffect(piece, ctx) {
-    const reflects = Math.max(1, Math.round(getP1(piece.params, 3)));
-    ctx.player.debuffReflectStacks = (ctx.player.debuffReflectStacks || 0) + reflects;
-    grantStacks(ctx.player, 'heat', Math.max(1, Math.round(getP3(piece.params, 4))), {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    petActivate(piece, ctx, 'ruby_egg');
-    return true;
   },
 };
 

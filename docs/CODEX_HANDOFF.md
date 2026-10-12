@@ -1,5 +1,8 @@
 # Codex handoff
 
+### 2026-10-12 Ruby Egg start-only Heat/Reflect correction (in progress)
+- Codex owns the Ruby Egg simulator lifecycle port, its no-cooldown regression, source-aligned debuff Reflect behavior, and the focused smoke while correcting the stale cooldown loop.
+
 ### 2026-10-12 Puzzle Bag of Endurance Hammer highlight regression (in progress)
 - Codex owns the Create drag-synergy predicate/rendering path and its focused regression while tracing why a held Hammer does not visibly highlight Puzzle Bag of Endurance. Existing local bag-synergy edits are preserved; this task will only add the smallest missing behavior and test.
 

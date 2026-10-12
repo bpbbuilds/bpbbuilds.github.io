@@ -6276,7 +6276,7 @@
         "onCombatStart",
         "onPreCombatStart"
       ],
-      "template": "basic_cd",
+      "template": "start_regen",
       "handlerId": "ruby_egg",
       "fidelity": "reviewed"
     },
