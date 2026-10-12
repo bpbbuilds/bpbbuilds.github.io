@@ -8,6 +8,7 @@ import { dealDamage } from '../damage.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getPName } from '../params.js';
 import { effectDuration } from '../effect-duration.js';
+import { PRIORITY } from '../combat-start-priority.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { dealHit } from './handlers.js';
@@ -38,30 +39,63 @@ function starve(piece, ctx, handler) {
   });
 }
 
+/**
+ * Phoenix.gd / inherited Phoenix2.gd resurrection listener. The source
+ * connects during Item.prepare(), before combat-start self-health effects, and
+ * emits `reincarnated` so listeners such as Dark Lantern can react to any
+ * resurrection source.
+ */
+export function preparePhoenix(piece, ctx) {
+  piece._phxUsed = false;
+  const onDamaged = (payload = {}) => {
+    const p = ctx.player;
+    if (payload.actor && payload.actor !== p) return;
+    if (piece._phxUsed) return;
+    if (p.hp > 0 && !p.dead) return;
+    const heat = getStackAmount(p, 'heat') || 0;
+    if (heat <= 0) return;
+    piece._phxUsed = true;
+    const hp = Math.min(
+      p.maxHp,
+      Math.max(1, Math.round(getPName(piece.params, 'reincarnate_health', 6) * heat)),
+    );
+    p.dead = false;
+    p.hp = hp;
+    // Character.reincarnate emits before Phoenix consumes Heat or activates.
+    ctx.bus?.emit?.('reincarnated', {
+      actor: p,
+      sourceId: piece.itemId,
+      placementKey: piece.placementKey,
+      t: ctx.t,
+      triggerEvent: payload,
+    });
+    spendStacks(p, 'heat', heat, origin(piece));
+    ctx.events?.push?.({
+      t: ctx.t,
+      type: 'heal',
+      actor: p.id,
+      target: p.id,
+      amount: hp,
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `${piece.name}: reincarnate to ${hp} HP`,
+      meta: { category: 'heal', script: true, handler: piece.itemId, reincarnate: true, playerHp: p.hp },
+    });
+    pushActivate(piece, ctx, piece.itemId, `${piece.name}: reincarnate`);
+  };
+  ctx.bus?.on?.('character_damaged', onDamaged, PRIORITY.Normal);
+  // Fatigue and a few legacy simulator paths expose only this convenience
+  // signal. The owner/dead guard keeps normal damage from firing twice.
+  ctx.bus?.on?.('player_damaged', onDamaged, PRIORITY.Normal);
+}
+
 /** Phoenix.gd — stam, self-dmg if HP allows, strike; reincarnate once if heat > 0. */
 /** @type {ScriptHandler} */
 const phoenixPort = {
   handlerId: 'phoenix',
   family: 'weapon_base',
   onPrepare(piece, ctx) {
-    piece._phxUsed = false;
-    // Phoenix.gd connects to its own Character during Item.prepare(), not
-    // after combat-start. Listen to the source-level damage signal and keep
-    // the owner filter so the same handler works on either board.
-    ctx.bus?.on?.('character_damaged', (payload) => {
-      if (payload?.actor !== ctx.player) return;
-      if (piece._phxUsed) return;
-      const p = ctx.player;
-      if (p.hp > 0 && !p.dead) return;
-      const heat = getStackAmount(p, 'heat') || 0;
-      if (heat <= 0) return;
-      piece._phxUsed = true;
-      const hp = Math.max(1, Math.round(getPName(piece.params, 'reincarnate_health', 6) * heat));
-      spendStacks(p, 'heat', heat, origin(piece));
-      p.dead = false;
-      p.hp = hp;
-      pushActivate(piece, ctx, 'phoenix', `${piece.name}: reincarnate`);
-    });
+    preparePhoenix(piece, ctx);
   },
   onCooldownEffect(piece, ctx) {
     const { player, rng } = ctx;

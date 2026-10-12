@@ -16,7 +16,7 @@
     "noCombat": 26,
     "deferred": 0,
     "unsupportedMode": 1,
-    "lifecycleHookGap": 0,
+    "lifecycleHookGap": 1,
     "untriagedLifecycleHookGap": 0,
     "callReviewCandidate": 15,
     "duplicateRegistration": 19
@@ -14430,7 +14430,17 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [],
+        "lifecycleHookGaps": [
+          {
+            "hook": "doCooldownEffect",
+            "why": "no JS hook among onCooldownEffect"
+          }
+        ],
+        "lifecycleHookTriage": {
+          "status": "intentional",
+          "reason": "RubyEgg.gd declares doCooldownEffect, but onCombatStart invokes it once with reflect disabled; the simulator models that start-of-battle call directly and must not schedule a recurring cooldown.",
+          "evidence": "tools/game-extract-full/Items/RubyEgg.gd"
+        },
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },

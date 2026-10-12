@@ -120,6 +120,7 @@ const rows = catalog
     const handler = registry.getScriptHandler(id);
     const handlerId = handler?.handlerId || cov?.handlerId || null;
     const hookGaps = hook?.missing || [];
+    const effectiveHookGaps = hook?.hookTriage?.status === 'intentional' ? [] : hookGaps;
     const callCandidates = call?.missing || [];
 
     let status = 'unreviewed';
@@ -136,7 +137,7 @@ const rows = catalog
     } else if (explicitFalseNoops.has(id)) {
       status = 'source_ported';
       fidelity = 'source_ported';
-    } else if (source && depth === 'deep' && handlerId && hookGaps.length === 0) {
+    } else if (source && depth === 'deep' && handlerId && effectiveHookGaps.length === 0) {
       status = 'source_ported';
       fidelity = 'source_ported';
     } else if (source && handlerId) {
@@ -147,7 +148,7 @@ const rows = catalog
       fidelity = 'incomplete';
       knownDelta = 'Catalog item has no resolved combat-script inventory row.';
     }
-    if (hookGaps.length) knownDelta = `Lifecycle hook audit: ${hookGaps.map((x) => x.hook).join(', ')}.`;
+    if (effectiveHookGaps.length) knownDelta = `Lifecycle hook audit: ${effectiveHookGaps.map((x) => x.hook).join(', ')}.`;
     else if (callCandidates.length) knownDelta = `Source-call review candidate: ${callCandidates.map((x) => x.call).join(', ')}.`;
 
     return {

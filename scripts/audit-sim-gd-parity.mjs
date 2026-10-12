@@ -49,7 +49,14 @@ const HOOK_MAP = {
 const OUT_OF_COMBAT = new Set(['addToInventory', 'onShopEntered', 'combatEnd']);
 
 /** Source-review records exist only for currently missing hooks. */
-const HOOK_TRIAGE = {};
+const HOOK_TRIAGE = {
+  ruby_egg: {
+    status: 'intentional',
+    reason:
+      'RubyEgg.gd declares doCooldownEffect, but onCombatStart invokes it once with reflect disabled; the simulator models that start-of-battle call directly and must not schedule a recurring cooldown.',
+    evidence: 'tools/game-extract-full/Items/RubyEgg.gd',
+  },
+};
 
 function loadJson(rel) {
   return JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));

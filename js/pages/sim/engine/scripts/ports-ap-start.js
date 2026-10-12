@@ -16,9 +16,10 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets, getItemsInside } from '../board-graph.js';
 import { getP1, getP2, getP3, getP5, getPName } from '../params.js';
+import { PRIORITY } from '../combat-start-priority.js';
 import { addBonusDamage, addBonusDamageFactor } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
-import { itemHasType, pushActivate } from './ports-util.js';
+import { itemHasType, itemTypeMultiplicity, pushActivate } from './ports-util.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { rollItemChance, weaponStrike } from './ports-wave-c-util.js';
 import { eventSideForPiece } from '../vs-board.js';
@@ -209,6 +210,21 @@ const darkLanternPort = {
   family: 'unique',
   onPrepare(piece, ctx) {
     piece._lanternUsed = false;
+    const onReincarnate = (payload = {}) => {
+      const p = ctx.player;
+      if (payload.actor && payload.actor !== p) return;
+      const fires = linked(ctx, piece, 'primary').reduce(
+        (sum, o) => sum + itemTypeMultiplicity(ctx.itemsById.get(o.itemId), 'fire'),
+        0,
+      );
+      const dam = Math.max(0, Math.round(Number(piece.damageMin) || 5)) * fires;
+      if (dam) dealEffectDamage(piece, ctx, dam);
+      const darks = linked(ctx, piece, 'secondary').filter((o) =>
+        itemHasType(ctx.itemsById.get(o.itemId), 'dark'),
+      ).length;
+      const n = Math.max(0, Math.round(getPName(piece.params, 'debuffs', getP5(piece.params, 7)))) * darks;
+      if (n) inflictRandomDebuffs(ctx.dummy, n, ctx.rng, origin(piece));
+    };
     const onDamaged = (payload = {}) => {
       if (piece._lanternUsed) return;
       const p = ctx.player;
@@ -234,24 +250,21 @@ const darkLanternPort = {
         label: `${piece.name}: reincarnate to ${hp} HP`,
         meta: { category: 'heal', script: true, handler: 'dark_lantern', reincarnate: true, playerHp: p.hp },
       });
-      const fires = linked(ctx, piece, 'primary').filter((o) =>
-        itemHasType(ctx.itemsById.get(o.itemId), 'fire'),
-      ).length;
-      const dam = Math.max(0, Math.round(Number(piece.damageMin) || 5)) * fires;
-      if (dam) {
-        dealEffectDamage(piece, ctx, dam);
-      }
-      const darks = linked(ctx, piece, 'secondary').filter((o) =>
-        itemHasType(ctx.itemsById.get(o.itemId), 'dark'),
-      ).length;
-      const n = Math.max(0, Math.round(getPName(piece.params, 'debuffs', getP5(piece.params, 7)))) * darks;
-      if (n) inflictRandomDebuffs(ctx.dummy, n, ctx.rng, origin(piece));
+      // Character.reincarnate emits before Dark Lantern's own activation.
+      ctx.bus?.emit?.('reincarnated', {
+        actor: p,
+        sourceId: piece.itemId,
+        placementKey: piece.placementKey,
+        t: ctx.t,
+        triggerEvent: payload,
+      });
       pushActivate(piece, ctx, 'dark_lantern', `${piece.name}: reincarnate`);
     };
     // Source connects during onPrepare, before the opening self-health loss.
-    ctx.bus?.on?.('character_damaged', onDamaged);
+    ctx.bus?.on?.('character_damaged', onDamaged, PRIORITY.High);
     // The training-dummy/fatigue paths use this legacy convenience event.
-    ctx.bus?.on?.('player_damaged', onDamaged);
+    ctx.bus?.on?.('player_damaged', onDamaged, PRIORITY.High);
+    ctx.bus?.on?.('reincarnated', onReincarnate);
   },
   onCombatStart(piece, ctx) {
     const pct = getP1(piece.params, 50) / 100;

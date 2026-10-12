@@ -11,7 +11,8 @@ import { addBonusDamage, addBonusDamageFromBuffChange, addSpeed, setStaminaCost 
 import { getStackAmount, gainStacks } from '../stacks.js';
 import { dealHit } from './handlers.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
-import { itemHasType } from './ports-util.js';
+import { itemHasType, itemTypeMultiplicity } from './ports-util.js';
+import { preparePhoenix } from './ports-ap-basic.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 import { forAttackEffects, prepareBow } from '../attack-effects.js';
 import { randInt } from '../rng.js';
@@ -401,32 +402,16 @@ export const obsidianDragonPort = {
   },
 };
 
-/** Phoenix2.gd — fire-neighbor crit; Phoenix CD self-dmg + reincarnate approx. */
+/** Phoenix2.gd — inherited Phoenix resurrection + Fire-neighbor crit. */
 /** @type {ScriptHandler} */
 export const phoenix2Port = {
   handlerId: 'phoenix2',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
-    const fires = linked(ctx, piece).filter((o) =>
-      itemHasType(ctx.itemsById.get(o.itemId), 'fire'),
-    ).length;
+  onPrepare(piece, ctx) {
+    preparePhoenix(piece, ctx);
+    const fires = linked(ctx, piece).reduce((sum, o) =>
+      sum + itemTypeMultiplicity(ctx.itemsById.get(o.itemId), 'fire'), 0);
     piece.critChance = (Number(piece.critChance) || 0) + chanceOf(piece, ctx) * fires;
-    piece._phxUsed = false;
-    ctx.bus?.on?.('player_damaged', () => {
-      if (piece._phxUsed) return;
-      const p = ctx.player;
-      if (p.hp > 0 && !p.dead) return;
-      const heat = getStackAmount(p, 'heat') || 0;
-      if (heat <= 0) return;
-      piece._phxUsed = true;
-      const hp = Math.max(1, Math.round(getPName(piece.params, 'reincarnate_health', 1) * heat));
-      spendStacks(p, 'heat', heat, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      p.dead = false;
-      p.hp = hp;
-    });
   },
   onCooldownEffect(piece, ctx) {
     const selfDam = Math.max(0, Math.round(getPName(piece.params, 'selfdam', 0)));

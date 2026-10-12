@@ -28,6 +28,27 @@ export function itemHasType(item, needle) {
 }
 
 /**
+ * Item.getTypeMultiplicity(type) for the extracted overrides that count as
+ * more than one type. Most items contribute one when they have the type;
+ * Phoenix2 / Molten Greatsword / Molten Spear2 override Fire multiplicity in
+ * the source with their named `fire` parameter.
+ *
+ * @param {object | null | undefined} item
+ * @param {string} needle
+ */
+export function itemTypeMultiplicity(item, needle) {
+  if (!itemHasType(item, needle)) return 0;
+  const id = String(item?.id || item?.itemId || '').toLowerCase();
+  if (String(needle).toLowerCase() === 'fire' &&
+      (id === 'phoenix2' || id === 'molten_greatsword' || id === 'molten_spear2')) {
+    const params = item?.params || {};
+    const value = Number(params.fire ?? params.p3);
+    if (Number.isFinite(value) && value > 0) return Math.max(1, Math.round(value));
+  }
+  return 1;
+}
+
+/**
  * @param {import('../sim-events.js').SimEvent[] | object[]} events
  * @param {object} piece
  * @param {import('../actor.js').SimActor} player
