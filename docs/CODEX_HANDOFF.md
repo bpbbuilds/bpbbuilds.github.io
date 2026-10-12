@@ -1,5 +1,12 @@
 # Codex handoff
 
+### 2026-10-12 Blob-first profile avatar default (in progress)
+- Codex owns the shared profile identity default, Blob loadout default parsing, focused avatar regression coverage, and the related profile-schema documentation for making the website Blob the first-visit/default identity while preserving an explicit Discord profile-picture choice. Scope excludes the unrelated local simulator band edits and untracked admin/debug files in the worktree.
+
+### 2026-10-12 Blob-first profile avatar default complete
+- Profiles with no saved `equipped_avatar` choice now resolve to the website Blob across shared face rendering, profile/nav/build/event surfaces, and the simulator's You avatar default. Explicit `discord`/`base: "discord"` choices still resolve to the synced Discord picture; anonymous/null profiles retain their existing empty fallback. Blob loadout parsing/serialization and the settings Discord preview now preserve the distinction.
+- Updated the profile/simulator schema notes to document Blob as the NULL/default identity. Added `scripts/avatar-default-smoke.mjs`, refreshed the Discord fallback fixture to opt into Discord explicitly, and verified both avatar smokes, changed-module syntax, simulator empty/playback smokes, `node scripts/build-sim-fidelity-ledger.mjs --check`, and `git diff --check`. `npm run sim-harness` remains blocked by the unrelated stale `stoneGolemPort.onPreCombatStart` call at `scripts/sim-harness.mjs:188`.
+
 ### 2026-10-12 Simulator invisibility/invulnerability VFX audit (in progress)
 - Codex owns the extracted game source/asset audit, simulator status-event wiring, actor/item visual effects, focused smoke coverage, and performance/reduced-motion handling for invisibility and invulnerability visuals. Scope excludes the unrelated local simulator band edits listed in the worktree status.
 
