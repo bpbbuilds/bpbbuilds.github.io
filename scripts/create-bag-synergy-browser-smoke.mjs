@@ -206,6 +206,92 @@ assert.deepEqual(
   'HistoryDB empty-key Puzzle Bag of Endurance placement highlights for Hammer',
 );
 
+const boardPreviewPath = await page.evaluate(async () => {
+  const { mountPlacedGrid } = await import('/js/shared/backpack-grid/render.js');
+  const { createInventoryPreview } = await import('/js/pages/create/inventory-preview.js');
+  const { createPreviewController } = await import('/js/pages/create/drag-preview.js');
+  const host = document.createElement('div');
+  host.className = 'create-board';
+  host.style.cssText = 'width:720px;height:560px;position:relative';
+  document.body.append(host);
+  const items = new Map([
+    ['puzzlebag_j', window.synergy.endurance],
+    ['hammer', window.synergy.hammer],
+  ]);
+  const placement = { id: 'puzzlebag_j', key: 'endurance-preview', x: 4, y: 0, r: 0 };
+  const grid = mountPlacedGrid(host, {
+    placements: [placement],
+    itemsById: items,
+    cols: 9,
+    rows: 7,
+    cellPx: 80,
+    getSpriteUrl: () => '',
+    ringConfig: true,
+  });
+  const board = grid.el.querySelector('.bpb-bg__board');
+  const boardRect = board.getBoundingClientRect();
+  const affect = (await import('/js/pages/create/drag-affect.js')).createDragAffectPreview(host, () => board);
+  const invPreview = createInventoryPreview(host, () => board);
+  const preview = createPreviewController({
+    grid,
+    stageEl: host,
+    ghostEl: null,
+    state: { getDraft: () => ({ placements: [placement] }) },
+    itemsById: items,
+    metrics: {
+      ensure: () => ({ board, boardRect, stageRect: host.getBoundingClientRect() }),
+      currentCellPx: () => 80,
+    },
+    affect,
+    invPreview,
+    getEditMode: () => 'default',
+    updateDragCursor: () => {},
+    setGemSocketsVisible: () => {},
+    getHoveredSocket: () => null,
+    setHoveredSocket: () => {},
+    setLastPlaceOk: () => {},
+    getHeldSkipKeys: () => [],
+    getCanSnap: () => true,
+  });
+  affect.syncBagBorders({
+    item: window.synergy.hammer,
+    placements: [placement],
+    itemsById: items,
+    clientX: boardRect.left + 20,
+    clientY: boardRect.top + 20,
+  });
+  const fabricBefore = board.querySelector('.bpb-bg__fabric .bpb-bg__cell--bag');
+  const activeBefore = fabricBefore?.classList.contains('is-drag-synergy') === true;
+  // Enter the board at the left edge, matching the first board-hover frame.
+  preview.previewAt('hammer', 0, boardRect.left + 20, boardRect.top + 20, null);
+  const fabricCell = board.querySelector('.bpb-bg__fabric .bpb-bg__cell--bag');
+  const previewLayer = board.querySelector('.create-board__inv-preview');
+  return {
+    active: fabricCell?.classList.contains('is-drag-synergy') === true,
+    activeBefore,
+    bagKey: board.querySelector('.bpb-bg__item--bag')?.dataset.placementKey || '',
+    fabricKeys: fabricCell?.dataset.bagKeys || '',
+    outline: fabricCell ? getComputedStyle(fabricCell).outlineStyle : '',
+    fabricZ: board.querySelector('.bpb-bg__fabric')?.style.zIndex || getComputedStyle(board.querySelector('.bpb-bg__fabric')).zIndex,
+    previewZ: previewLayer ? getComputedStyle(previewLayer).zIndex : '',
+    previewTiles: previewLayer?.childElementCount || 0,
+  };
+});
+assert.deepEqual(
+  boardPreviewPath,
+  {
+    active: true,
+    activeBefore: true,
+    bagKey: 'endurance-preview',
+    fabricKeys: 'endurance-preview',
+    outline: 'dashed',
+    fabricZ: '5000',
+    previewZ: '7500',
+    previewTiles: 2,
+  },
+  'Hammer board-hover path keeps the Puzzle Bag highlight while preview tiles are painted',
+);
+
 await page.evaluate(() => window.syncBagBorders.clear());
 assert.equal(await page.locator('[data-placement-key="fanny"]').evaluate((el) => el.classList.contains('is-drag-synergy')), false, 'drop/cancel clears bag border');
 await browser.close();

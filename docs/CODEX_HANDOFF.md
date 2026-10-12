@@ -8,6 +8,13 @@
 - The placed-grid key path now uses the same non-empty-key fallback as drag feedback and the visible fabric. Added an empty-key HistoryDB regression to `scripts/create-bag-synergy-browser-smoke.mjs`; it verifies the fallback DOM key and active Hammer highlight.
 - Focused browser/source synergy, duration-hover, syntax, diff, and simulator ledger checks pass. The complete bag-synergy fix set was committed and pushed as `19383d0`; unrelated local files remain unstaged.
 
+### 2026-10-12 Hammer board-hover Puzzle Bag highlight regression (in progress)
+- Codex owns the Create affect-preview cleanup boundary and its browser regression while tracing why Hammer's compatible Puzzle Bag border disappears only after the pointer enters the board.
+
+### 2026-10-12 Hammer board-hover Puzzle Bag highlight regression complete
+- The board preview used the full affect-layer `clear()` when Hammer produced no affect/star tiles, which also removed the independently computed BagBorder state. `sync()` now clears only affect tiles for valid held items without an origin or affect marks; drag-end and invalid-item paths still clear both systems.
+- Extended `scripts/create-bag-synergy-browser-smoke.mjs` through the real `createPreviewController.previewAt()` path, including inventory preview tiles, and verified the Puzzle Bag remains active with a dashed outline after board entry. Focused synergy, duration-hover, syntax, diff, and simulator ledger checks pass. This fix is ready to commit and push; unrelated local files remain unstaged.
+
 ### 2026-10-12 Simulator stun target/duplicate-event audit (in progress)
 - Codex owns the simulator Hammer stun application/event path, shared stunned-target state, the focused regression coverage, and this handoff while auditing duplicate stun presentation and ensuring dummies/opponent boards are affected.
 

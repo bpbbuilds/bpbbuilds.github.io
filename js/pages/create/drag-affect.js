@@ -279,8 +279,16 @@ export function createDragAffectPreview(stageEl, getBoardEl) {
   function sync(opts) {
     const { item, r, origin, placements, itemsById, skipKey } = opts;
     const board = getBoardEl();
-    if (!item || !origin || isBagItem(item) || !(board instanceof HTMLElement)) {
+    if (!item || isBagItem(item) || !(board instanceof HTMLElement)) {
       clear();
+      return;
+    }
+    // A held item can have no affect/star marks (Hammer is one example), but
+    // its compatible BagBorder still needs to remain visible while the board
+    // preview is evaluated. Only the board-local affect tiles depend on the
+    // float origin; do not clear the independent bag-synergy state here.
+    if (!origin) {
+      clearAffectTiles();
       return;
     }
 
@@ -368,7 +376,7 @@ export function createDragAffectPreview(stageEl, getBoardEl) {
     }
 
     if (!tiles.length) {
-      clear();
+      clearAffectTiles();
       return;
     }
 
