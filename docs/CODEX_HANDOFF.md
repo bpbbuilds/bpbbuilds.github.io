@@ -1,5 +1,9 @@
 # Codex handoff
 
+### 2026-10-12 Admin-backed Premium accounting correction complete
+- Reclassified the two verified admin profiles, `smojowastaken` and `bpbbuilds`, from `plan = 'premium'` to `plan = 'free'` while retaining `is_owner = true`, `founding_slot = null`, and `premium_until = null`. The shared entitlement logic grants owners Premium access before plan checks, while `isPaidPremium` now returns false for these non-paying admin accounts.
+- Refreshed `member_daily` in the same transaction: live snapshot is users 5, paid Premium 0, founding 3, revenue $0.00. The founding status remains 3/10. No website files or unrelated worktree files were changed.
+
 ### 2026-10-12 Live admin entitlement correction complete
 - Audited the live `public.profiles` and `auth.users` records before changing anything. `smojowastaken` was the only requested admin consuming a founding slot; `bpbbuilds` existed as a free, non-founding profile; no `BPB Bot` profile or Auth account exists in the project.
 - Updated only the two verified profiles: `smojowastaken` and `bpbbuilds` now have `is_owner = true`, `plan = 'premium'`, `founding_slot = null`, and `premium_until = null` (owner-backed permanent access). The live founding count changed from 4 to 3; users remain 5. The missing `BPB Bot` identity was not fabricated or modified.
