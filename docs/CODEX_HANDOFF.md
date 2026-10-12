@@ -5,7 +5,7 @@
 
 ### 2026-10-12 Ruby Egg start-only Heat/Reflect correction complete
 - Audited `RubyEgg.gd`: it grants debuff Reflect in `onPreCombatStart`, then calls `doCooldownEffect(false)` once from `onCombatStart` for Heat and activation; it has no combat cooldown. Removed the simulator cooldown hook so it no longer receives the default 2.5-second loop, and routed Reflect through the shared stat mutation surface.
-- Added `scripts/sim-ruby-egg-smoke.mjs`, corrected the lifecycle smoke, future generator template metadata, registry row, and simulator backlog evidence. Focused Ruby Egg, source lifecycle, syntax, diff, and `node scripts/build-sim-fidelity-ledger.mjs --check` checks pass. Committed as `650d8da`; unrelated local files remain unstaged.
+- Added `scripts/sim-ruby-egg-smoke.mjs`, which verifies the standard poison, blind, and cold Reflect paths, plus corrected the lifecycle smoke, future generator template metadata, registry row, and simulator backlog evidence. Focused Ruby Egg, source lifecycle, syntax, diff, and `node scripts/build-sim-fidelity-ledger.mjs --check` checks pass. Committed as `650d8da`; unrelated local files remain unstaged.
 
 ### 2026-10-12 Puzzle Bag of Endurance Hammer highlight regression (in progress)
 - Codex owns the Create drag-synergy predicate/rendering path and its focused regression while tracing why a held Hammer does not visibly highlight Puzzle Bag of Endurance. Existing local bag-synergy edits are preserved; this task will only add the smallest missing behavior and test.

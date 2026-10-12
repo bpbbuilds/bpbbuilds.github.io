@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 
 import { createActor } from '../js/pages/sim/engine/actor.js';
+import { changeReflectStacks } from '../js/pages/sim/engine/actor-stats.js';
 import { grantStacks } from '../js/pages/sim/engine/buff-economy.js';
 import { buildCombatPieces } from '../js/pages/sim/engine/pieces.js';
 import { getScriptHandler } from '../js/pages/sim/engine/scripts/registry.js';
@@ -55,4 +56,16 @@ assert.equal(player.stacks.poison, 0, 'Ruby Egg prevents incoming debuffs from l
 assert.equal(dummy.stacks.poison, 2, 'Ruby Egg reflects incoming debuff stacks to the opponent');
 assert.equal(player.debuffReflectStacks, 0, 'Ruby Egg consumes one Reflect stack per reflected debuff');
 
-console.log('OK Ruby Egg start-only Heat and debuff Reflect');
+for (const stack of ['blind', 'cold']) {
+  changeReflectStacks(player, 1, ctx, piece);
+  grantStacks(player, stack, 1, {
+    rng: () => 0,
+    opponent: dummy,
+    originId: `dummy-${stack}`,
+  });
+  assert.equal(player.stacks[stack], 0, `Ruby Egg reflects incoming ${stack} debuffs`);
+  assert.equal(dummy.stacks[stack], 1, `Ruby Egg applies reflected ${stack} to the opponent`);
+  assert.equal(player.debuffReflectStacks, 0, `Ruby Egg consumes the ${stack} Reflect stack`);
+}
+
+console.log('OK Ruby Egg start-only Heat and poison/blind/cold Reflect');
