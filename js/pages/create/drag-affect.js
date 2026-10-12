@@ -151,12 +151,18 @@ export function createDragAffectPreview(stageEl, getBoardEl) {
   const tilePool = [];
   /** @type {Set<HTMLElement>} */
   const bagBorders = new Set();
+  /** @type {Set<HTMLElement>} */
+  const bagFabricBorders = new Set();
 
   function clearBagBorders() {
     for (const bagEl of bagBorders) {
       bagEl.classList.remove('is-drag-synergy', 'is-drag-synergy-hover');
     }
     bagBorders.clear();
+    for (const cell of bagFabricBorders) {
+      cell.classList.remove('is-drag-synergy', 'is-drag-synergy-hover');
+    }
+    bagFabricBorders.clear();
   }
 
   function affectCtx() {
@@ -206,6 +212,7 @@ export function createDragAffectPreview(stageEl, getBoardEl) {
     const cellH = rect.height / BOARD_ROWS;
     const hoverCell = `${Math.floor((clientX - rect.left) / cellW)},${Math.floor((clientY - rect.top) / cellH)}`;
     const next = new Set();
+    const nextFabric = new Set();
     const ctx = affectCtx();
     for (const placement of placements) {
       const bag = itemsById.get(placement.id);
@@ -226,6 +233,20 @@ export function createDragAffectPreview(stageEl, getBoardEl) {
       bagEl.classList.add('is-drag-synergy');
       bagEl.classList.toggle('is-drag-synergy-hover', hovered);
       next.add(bagEl);
+
+      // Placed boards render a shared FilledSlot fabric above the bag roots.
+      // Mirror the state on those visible cells so BagBorder is not hidden by
+      // the shared layer.
+      const fabricKey = encodeURIComponent(key);
+      const fabricCells = board.querySelectorAll(
+        `.bpb-bg__fabric .bpb-bg__cell--bag[data-bag-keys~="${CSS.escape(fabricKey)}"]`,
+      );
+      for (const cell of fabricCells) {
+        if (!(cell instanceof HTMLElement)) continue;
+        cell.classList.add('is-drag-synergy');
+        cell.classList.toggle('is-drag-synergy-hover', hovered);
+        nextFabric.add(cell);
+      }
     }
     for (const bagEl of bagBorders) {
       if (!next.has(bagEl)) {
@@ -234,6 +255,13 @@ export function createDragAffectPreview(stageEl, getBoardEl) {
     }
     bagBorders.clear();
     for (const bagEl of next) bagBorders.add(bagEl);
+    for (const cell of bagFabricBorders) {
+      if (!nextFabric.has(cell)) {
+        cell.classList.remove('is-drag-synergy', 'is-drag-synergy-hover');
+      }
+    }
+    bagFabricBorders.clear();
+    for (const cell of nextFabric) bagFabricBorders.add(cell);
   }
 
   /**

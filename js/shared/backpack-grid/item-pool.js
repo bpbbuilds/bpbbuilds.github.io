@@ -112,17 +112,26 @@ function syncBagFabric(itemsLayer, placements, itemsById, enabled, opts = {}) {
       ? opts.skipBagKeys
       : null;
 
-  /** @type {Map<string, { x: number, y: number }>} */
+  /** @type {Map<string, { x: number, y: number, bagKeys: Set<string> }>} */
   const cells = new Map();
   for (const p of placements) {
     const item = itemsById.get(p.id);
     if (!isBagItem(item)) continue;
-    const key = p.key != null ? String(p.key) : '';
+    const face = ((Number(p.r) || 0) % 4 + 4) % 4;
+    const key =
+      p.key != null && String(p.key) !== ''
+        ? String(p.key)
+        : `${p.id}:${face}:${p.x},${p.y}`;
     // Bag mid-rotate: per-bag slots spin with the sprite — omit from fabric
     if (key && skipKeys?.has(key)) continue;
-    const face = ((Number(p.r) || 0) % 4 + 4) % 4;
     for (const c of bagBodyCells(item, p.x, p.y, face)) {
-      cells.set(`${c.x},${c.y}`, c);
+      const cellKey = `${c.x},${c.y}`;
+      let cell = cells.get(cellKey);
+      if (!cell) {
+        cell = { ...c, bagKeys: new Set() };
+        cells.set(cellKey, cell);
+      }
+      cell.bagKeys.add(key);
     }
   }
 
@@ -135,7 +144,7 @@ function syncBagFabric(itemsLayer, placements, itemsById, enabled, opts = {}) {
   const html = [...cells.values()]
     .map(
       (c) =>
-        `<span class="bpb-bg__cell bpb-bg__cell--bag${pendingCls}" style="left:${c.x}em;top:${c.y}em;background-image:url('${url}')"></span>`,
+        `<span class="bpb-bg__cell bpb-bg__cell--bag${pendingCls}" data-bag-keys="${[...c.bagKeys].map(encodeURIComponent).join(' ')}" style="left:${c.x}em;top:${c.y}em;background-image:url('${url}')"></span>`,
     )
     .join('');
   fabric.innerHTML = html;
@@ -377,7 +386,10 @@ export function paintPooled(root, opts) {
     if (!item) continue;
     // Allow duplicate item ids (history boards) via stable per-placement key
     const face = ((Number(p.r) || 0) % 4 + 4) % 4;
-    const key = p.key != null ? String(p.key) : `${p.id}:${face}:${p.x},${p.y}`;
+    const key =
+      p.key != null && String(p.key) !== ''
+        ? String(p.key)
+        : `${p.id}:${face}:${p.x},${p.y}`;
     shown.add(key);
 
     const bag = isBagItem(item);

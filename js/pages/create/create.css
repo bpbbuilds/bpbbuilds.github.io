@@ -1666,7 +1666,8 @@
   display: block;
 }
 
-.page-create .bpb-bg__item--bag.is-drag-synergy .bpb-bg__bag-slots .bpb-bg__cell--bag {
+.page-create .bpb-bg__item--bag.is-drag-synergy .bpb-bg__bag-slots .bpb-bg__cell--bag,
+.page-create .bpb-bg__fabric .bpb-bg__cell--bag.is-drag-synergy {
   background-image: none !important;
   opacity: 1;
   outline: max(1px, 0.055em) dashed rgba(114, 188, 97, 0.9);
@@ -1674,7 +1675,8 @@
   filter: brightness(1.3) drop-shadow(0 0 0.12em rgba(77, 160, 71, 0.75));
 }
 
-.page-create .bpb-bg__item--bag.is-drag-synergy-hover .bpb-bg__bag-slots .bpb-bg__cell--bag {
+.page-create .bpb-bg__item--bag.is-drag-synergy-hover .bpb-bg__bag-slots .bpb-bg__cell--bag,
+.page-create .bpb-bg__fabric .bpb-bg__cell--bag.is-drag-synergy-hover {
   filter: brightness(1.8) drop-shadow(0 0 0.18em rgba(133, 232, 105, 0.9));
 }
 
