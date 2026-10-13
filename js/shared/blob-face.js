@@ -14,6 +14,8 @@ let cosmeticMap = null;
 /** @type {Promise<Map<string, { id: string, image?: string, name?: string }>> | null} */
 let cosmeticLoad = null;
 let avatarFallbackBound = false;
+/** @type {Map<string, Promise<void>>} */
+const warmedFaceAssets = new Map();
 
 /**
  * Keep failed external profile images from rendering the browser broken-image
@@ -160,6 +162,44 @@ export async function blobFaceLayerSrcs(equippedRaw, root) {
     if (item?.image) out.push(item.image);
   }
   return out;
+}
+
+/**
+ * Warm blob cosmetic images without changing the synchronous face paint.
+ * Player Info calls this for the active/next identity so hydrateFaces can
+ * reuse the browser's decoded image instead of starting decode work during a
+ * visible board wave. The cache is URL keyed and intentionally bounded to the
+ * finite cosmetic asset set loaded for a page.
+ *
+ * @param {{ equipped_avatar?: string | null } | null | undefined} profile
+ * @param {string} root
+ * @returns {Promise<void>}
+ */
+export async function warmFaceAssets(profile, root) {
+  if (typeof Image === 'undefined') return;
+  const urls = await blobFaceLayerSrcs(profile?.equipped_avatar, root);
+  await Promise.all(urls.map((url) => {
+    const src = String(url || '').trim();
+    if (!src) return Promise.resolve();
+    const cached = warmedFaceAssets.get(src);
+    if (cached) return cached;
+    const pending = new Promise((resolve) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+      img.src = src;
+      if (typeof img.decode === 'function') {
+        try {
+          void img.decode().then(resolve, resolve);
+        } catch {
+          resolve();
+        }
+      }
+    });
+    warmedFaceAssets.set(src, pending);
+    return pending;
+  }));
 }
 
 /**

@@ -6,7 +6,7 @@
  *   void playAssemble({ grid, boardHost, catalogRoot, root });
  */
 
-import { getSupabase } from '../../shared/supabase.js';
+import { getSupabase } from '../../shared/supabase.js?v=supabase-client-20261013a';
 import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import {
   mountPlacedGrid,
@@ -26,7 +26,19 @@ import {
   restorePromoCatalogItems,
   seekPromoCatalogItem,
 } from './home-promo-catalog.js';
-import { normalizePromoBuild, paintPromoCaption, paintPromoCreator } from './home-promo-caption.js';
+import {
+  normalizePromoBuild,
+  paintPromoCaption,
+  paintPromoCreator,
+  paintPromoPlayer,
+} from './home-promo-caption.js';
+import { promoAuthorKey, randomizeBuildSequence } from './home-promo-selection.js';
+import { warmFaceAssets } from '../../shared/blob-face.js';
+import {
+  createPromoSpriteCache,
+  DEFAULT_PROMO_SPRITE_CACHE_BUILDS,
+  DEFAULT_PROMO_SPRITE_CACHE_ENTRIES,
+} from './home-promo-sprite-cache.js';
 
 const FETCH_LIMIT = 12;
 const FLY_MS = 420;
@@ -36,12 +48,19 @@ const SEEK_BEAT_MS = 80;
 const BOARD_DEPART_MS = 400;
 const BOARD_STAGGER_MS = 2;
 const BOARD_STAGGER_MAX_MS = 400;
+const PLAYER_WAVE_MS = 960;
+const PLAYER_WAVE_STAGGER_MS = 45;
 const BOARD_CELL_PX = 26;
 const PROMO_MOBILE_MQ = '(max-width: 1100px)';
 // Home only needs the fixed board dimensions and bag discriminator; importing
 // the Create collision module pulls editor-only dependencies into startup.
 const BOARD_COLS = 9;
 const BOARD_ROWS = 7;
+const PROMO_CREATOR_COUNT_CACHE_LIMIT = 128;
+/** @type {Map<string, number>} */
+const promoCreatorCountCache = new Map();
+/** @type {Map<string, Promise<number>>} */
+const promoCreatorCountPending = new Map();
 
 /** @param {object | null | undefined} item */
 function isBagItem(item) {
@@ -61,6 +80,50 @@ function sleep(ms) {
 }
 
 /**
+ * Sleep only while the promo activity is active. Hovering the Player Info
+ * section pauses the timer so the current build resumes at the same point.
+ * @param {number} ms
+ * @param {{ active: boolean, subscribe?: (listener: (active: boolean) => void) => () => void } | null | undefined} activity
+ * @param {HTMLElement} boardHost
+ */
+function sleepWithPromoActivity(ms, activity, boardHost) {
+  const total = Math.max(0, Number(ms) || 0);
+  if (!activity || typeof activity.subscribe !== 'function') return sleep(total);
+  return new Promise((resolve) => {
+    let remaining = total;
+    let timer = null;
+    let startedAt = 0;
+    let finished = false;
+    let unsubscribe = () => {};
+    const now = () => globalThis.performance?.now?.() ?? Date.now();
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      if (timer !== null) window.clearTimeout(timer);
+      unsubscribe();
+      resolve();
+    };
+    const pauseTimer = () => {
+      if (timer === null) return;
+      remaining = Math.max(0, remaining - (now() - startedAt));
+      window.clearTimeout(timer);
+      timer = null;
+    };
+    const armTimer = () => {
+      if (finished || !boardHost.isConnected) return finish();
+      if (!activity.active) return;
+      if (remaining <= 0) return finish();
+      startedAt = now();
+      timer = window.setTimeout(finish, remaining);
+    };
+    unsubscribe = activity.subscribe((active) => {
+      if (active) armTimer();
+      else pauseTimer();
+    });
+  });
+}
+
+/**
  * @param {string} url
  */
 async function fetchJson(url) {
@@ -73,17 +136,27 @@ async function fetchJson(url) {
   }
 }
 
+/** Parsed static board metadata, shared by every Home promo mount. */
+const assetExtrasCache = new Map();
+
 /**
  * @param {string} root
  */
-async function loadAssetExtras(root) {
+function loadAssetExtras(root) {
   const base = root.endsWith('/') ? root : `${root}/`;
-  const [shapes, sockets, spriteDisplay] = await Promise.all([
+  const cached = assetExtrasCache.get(base);
+  if (cached) return cached;
+  const pending = Promise.all([
     fetchJson(`${base}assets/data/item-shapes.json`),
     fetchJson(`${base}assets/data/socket-offsets.json`),
     fetchJson(`${base}assets/data/sprite-display.json`),
-  ]);
-  return { shapes, sockets, spriteDisplay };
+  ]).then(([shapes, sockets, spriteDisplay]) => ({
+    shapes,
+    sockets,
+    spriteDisplay,
+  }));
+  assetExtrasCache.set(base, pending);
+  return pending;
 }
 
 /**
@@ -151,6 +224,7 @@ function placementsForBuild(build, opts) {
   const itemsById = new Map();
   const items = [];
   const placements = [];
+  const spriteUrls = new Set();
 
   for (const [i, p] of (build.placements || []).entries()) {
     const item = mapItem(p.item);
@@ -169,9 +243,12 @@ function placementsForBuild(build, opts) {
 
   applyShapes(items, opts.shapes || null);
   applySocketOffsets(items, opts.sockets || null);
-  for (const item of items) opts.getSpriteUrl(item);
+  for (const item of items) {
+    const src = opts.getSpriteUrl(item);
+    if (src) spriteUrls.add(src);
+  }
 
-  return { placements, itemsById };
+  return { placements, itemsById, spriteUrls };
 }
 
 /**
@@ -218,8 +295,9 @@ function faceDeg(r) {
  * @param {HTMLElement} boardHost
  * @param {(item: object) => string} getSpriteUrl
  * @param {{ destroy?: Function } | null} prevGrid
+ * @param {{ appearNewOnly?: boolean, appearMissing?: boolean, appearOrder?: 'reading' | 'diagonal' | 'diagonal-top-right', appearStaggerMs?: number, preserveBagFabric?: boolean }} [opts]
  */
-function remountBoard(boardHost, getSpriteUrl, prevGrid) {
+function remountBoard(boardHost, getSpriteUrl, prevGrid, opts = {}) {
   prevGrid?.destroy?.({ keepHost: true });
   boardHost.replaceChildren();
   const grid = mountPlacedGrid(boardHost, {
@@ -233,6 +311,15 @@ function remountBoard(boardHost, getSpriteUrl, prevGrid) {
     reserveScrollGap: false,
     cellPx: BOARD_CELL_PX,
     promo: true,
+    appearNewOnly: opts.appearNewOnly === true,
+    appearOrder:
+      opts.appearOrder === 'diagonal-top-right'
+        ? 'diagonal-top-right'
+        : opts.appearOrder === 'diagonal'
+          ? 'diagonal'
+          : 'reading',
+    appearStaggerMs: opts.appearStaggerMs,
+    preserveBagFabric: opts.preserveBagFabric === true,
   });
   if (grid?.el instanceof HTMLElement) {
     grid.el.style.overflow = 'visible';
@@ -476,8 +563,9 @@ function flyGhost(opts) {
 /**
  * Reverse AppearInLibrary wave on the live board, then caller clears placements.
  * @param {HTMLElement} boardHost
+ * @param {{ active: boolean, subscribe?: (listener: (active: boolean) => void) => () => void } | null} [activity]
  */
-function departBoardItems(boardHost) {
+export function departBoardItems(boardHost, activity = null) {
   const items = [...boardHost.querySelectorAll(
     '.bpb-bg__item:not(.bpb-bg__item--parked)',
   )].filter((el) => el instanceof HTMLElement);
@@ -493,17 +581,54 @@ function departBoardItems(boardHost) {
     el.classList.remove('home-promo__item--appear');
     el.style.removeProperty('--home-promo-wave-delay');
   }
+  const departureDelays = new Map();
   items.forEach((el, i) => {
     const delay = Math.min(i * BOARD_STAGGER_MS, BOARD_STAGGER_MAX_MS);
     el.style.setProperty('--home-promo-wave-delay', `${delay}ms`);
     el.classList.add('home-promo__item--depart');
+    const placementKey = String(el.dataset.placementKey || '').trim();
+    if (placementKey) departureDelays.set(placementKey, delay);
   });
 
   const lastDelay = Math.min(
     (items.length - 1) * BOARD_STAGGER_MS,
     BOARD_STAGGER_MAX_MS,
   );
-  return sleep(BOARD_DEPART_MS + lastDelay + 16);
+  let fabricLastDelay = lastDelay;
+  const fabricCells = [...boardHost.querySelectorAll(
+    '.bpb-bg__fabric .bpb-bg__cell--bag',
+  )].filter((el) => el instanceof HTMLElement);
+  for (const cell of fabricCells) {
+    const keys = String(cell.dataset.bagKeys || '')
+      .split(/\s+/)
+      .map((key) => {
+        try {
+          return decodeURIComponent(key);
+        } catch {
+          return key;
+        }
+      })
+      .filter(Boolean);
+    const delay = keys.reduce(
+      (max, key) => Math.max(max, departureDelays.get(key) ?? 0),
+      0,
+    );
+    fabricLastDelay = Math.max(fabricLastDelay, delay);
+    cell.classList.remove(
+      'home-promo__fabric-in',
+      'home-promo__fabric--depart',
+      'bpb-bg__cell--appear',
+      'bpb-bg__cell--appear-pending',
+    );
+    cell.style.removeProperty('--bpb-appear-delay');
+    cell.style.setProperty('--home-promo-wave-delay', `${delay}ms`);
+    cell.classList.add('home-promo__fabric--depart');
+  }
+  return sleepWithPromoActivity(
+    BOARD_DEPART_MS + fabricLastDelay + 16,
+    activity,
+    boardHost,
+  );
 }
 
 /** Occupied FilledSlot cells already faded in this board cycle. */
@@ -519,19 +644,46 @@ function clearPromoWave(boardHost) {
     el.classList.remove('home-promo__item--depart', 'home-promo__item--appear');
     if (el instanceof HTMLElement) el.style.removeProperty('--home-promo-wave-delay');
   });
+  boardHost.querySelectorAll('.home-promo__fabric--depart').forEach((el) => {
+    el.classList.remove('home-promo__fabric--depart');
+    if (el instanceof HTMLElement) el.style.removeProperty('--home-promo-wave-delay');
+  });
+}
+
+/** @param {{ key?: string, id?: string, r?: number, x?: number, y?: number }} placement */
+function promoPlacementKey(placement) {
+  if (placement?.key != null && String(placement.key) !== '') {
+    return String(placement.key);
+  }
+  const face = ((Number(placement?.r) || 0) % 4 + 4) % 4;
+  return `${placement?.id || ''}:${face}:${placement?.x || 0},${placement?.y || 0}`;
+}
+
+/** @param {HTMLElement} boardHost */
+function clearPromoSectionSkeleton(boardHost) {
+  const promo = boardHost.closest('.home-promo');
+  promo?.querySelector('[data-promo-section-skeleton]')?.remove();
 }
 
 /**
  * Fade FilledSlot fabric + bag silhouette in for newly occupied cells.
  * @param {HTMLElement} boardHost
+ * @param {{ preserveFabricAnimation?: boolean }} [opts]
  */
-function fadeNewBagChrome(boardHost) {
+function fadeNewBagChrome(boardHost, opts = {}) {
+  const preserveFabricAnimation = opts.preserveFabricAnimation === true;
   const next = new Set();
   boardHost.querySelectorAll('.bpb-bg__fabric .bpb-bg__cell--bag').forEach((cell) => {
     if (!(cell instanceof HTMLElement)) return;
     const key = `${cell.style.left}|${cell.style.top}`;
     next.add(key);
-    if (!fabricSeen.has(key)) cell.classList.add('home-promo__fabric-in');
+    if (preserveFabricAnimation) {
+      // The shared fabric wave owns Player Info timing; this Home-only fade
+      // would replace its per-cell delay and make every square appear at once.
+      cell.classList.remove('home-promo__fabric-in');
+    } else if (!fabricSeen.has(key)) {
+      cell.classList.add('home-promo__fabric-in');
+    }
   });
   fabricSeen.clear();
   next.forEach((k) => fabricSeen.add(k));
@@ -558,12 +710,22 @@ function fadeNewBagChrome(boardHost) {
  *   chestEl?: HTMLElement | null,
  *   creatorEl?: HTMLElement | null,
  *   creatorMode?: boolean,
+ *   playerEl?: HTMLElement | null,
+ *   playerInfoMode?: boolean,
  *   activity?: { active: boolean, wait: () => Promise<void> },
  * }} opts
  */
 export async function playAssemble(opts) {
-  const { boardHost, catalogRoot, captionEl, boardLink, boardTagsEl, infoEl, root } =
-    opts;
+  const {
+    boardHost,
+    catalogRoot,
+    captionEl,
+    boardLink,
+    boardTagsEl,
+    infoEl,
+    playerEl,
+    root,
+  } = opts;
   if (!(boardHost instanceof HTMLElement)) return;
 
   const base = root.endsWith('/') ? root : `${root}/`;
@@ -580,82 +742,177 @@ export async function playAssemble(opts) {
     builds = await buildsP;
   } catch (err) {
     console.warn('[home-promo] assemble fetch failed', err);
+    clearPromoSectionSkeleton(boardHost);
     paintPromoCaption(captionEl, null, base, boardLink, infoEl, boardTagsEl);
     boardHost.replaceChildren();
     return;
   }
   if (!builds.length) {
+    clearPromoSectionSkeleton(boardHost);
     paintPromoCaption(captionEl, null, base, boardLink, infoEl, boardTagsEl);
     boardHost.replaceChildren();
     return;
   }
 
   const getSpriteUrl = makeSpriteUrl(base, extras.spriteDisplay);
+  const playerInfoMode = opts.playerInfoMode === true;
+  let playerPreviousAuthorId = '';
+  let playerCycle = playerInfoMode ? randomizeBuildSequence(builds) : builds;
   // Keep decoded sprites for the active/next builds only. This avoids the old
   // eager all-build catalog preload while shared items remain immediately
-  // reusable across consecutive builds.
-  const spriteCache = new Map();
-  const spriteUrlsForBuild = (build) => new Set(
-    (build.placements || [])
-      .map((p) => mapItem(p.item))
-      .filter((item) => item?.id)
-      .map((item) => getSpriteUrl(item))
-      .filter(Boolean),
-  );
+  // reusable across consecutive builds. The limits are configurable for
+  // focused performance tests and remain bounded in production.
+  const spriteCache = createPromoSpriteCache({
+    maxBuilds: opts.spriteCacheMaxBuilds ?? DEFAULT_PROMO_SPRITE_CACHE_BUILDS,
+    maxEntries: opts.spriteCacheMaxEntries ?? DEFAULT_PROMO_SPRITE_CACHE_ENTRIES,
+  });
+  const spriteBuildKey = (build) => String(
+    build?.id || build?.slug || `${build?.author_id || ''}:${build?.title || ''}`,
+  ).trim();
+  const normalizedBuildCache = new Map();
+  const normalizedBuildFor = (build) => {
+    const key = spriteBuildKey(build);
+    const cached = normalizedBuildCache.get(key);
+    if (cached?.build === build && cached.extras === extras) return cached.value;
+    const mapped = placementsForBuild(build, {
+      shapes: extras.shapes,
+      sockets: extras.sockets,
+      getSpriteUrl,
+    });
+    const ordered = orderPlacements(mapped.placements, mapped.itemsById);
+    const value = {
+      mapped,
+      ordered,
+      bags: ordered.filter((placement) => isBagItem(mapped.itemsById.get(placement.id))),
+      spriteUrls: mapped.spriteUrls,
+    };
+    normalizedBuildCache.set(key, { build, extras, value });
+    return value;
+  };
   const retainBuildSprites = (...buildsToKeep) => {
-    const retained = new Set(buildsToKeep.flatMap((build) => [...spriteUrlsForBuild(build)]));
-    for (const src of spriteCache.keys()) {
-      if (!retained.has(src)) spriteCache.delete(src);
-    }
+    spriteCache.retainBuilds(buildsToKeep.map(spriteBuildKey));
   };
   const cacheBuildSprites = async (build) => {
-    const pending = [];
-    for (const p of build.placements || []) {
-      const item = mapItem(p.item);
-      if (!item?.id) continue;
-      const src = getSpriteUrl(item);
-      if (src && !spriteCache.has(src)) {
-        const pre = new Image();
-        pre.decoding = 'async';
-        pre.src = src;
-        spriteCache.set(src, pre);
-        pending.push(pre.decode().catch(() => {}));
-      }
-    }
-    await Promise.all(pending);
+    const normalized = normalizedBuildFor(build);
+    await spriteCache.warmBuild(spriteBuildKey(build), normalized.spriteUrls);
   };
-  await cacheBuildSprites(builds[0]);
-  const grid = remountBoard(boardHost, getSpriteUrl, opts.grid);
+  const warmPlayerFace = (build) => {
+    if (!playerInfoMode || !build) return;
+    void warmFaceAssets({ equipped_avatar: build.author_equipped_avatar }, base).catch(() => {});
+  };
+  const prunePlayerGrid = (nextBuild) => {
+    if (!playerInfoMode || !nextBuild) return;
+    const nextNormalized = normalizedBuildFor(nextBuild);
+    grid.pruneParked?.({
+      keepKeys: new Set(nextNormalized.ordered.map(promoPlacementKey)),
+    });
+  };
+  const firstBuild = playerCycle[0];
+  const firstNextBuild = playerCycle[1 % playerCycle.length] || firstBuild;
+  if (playerInfoMode) retainBuildSprites(firstBuild, firstNextBuild);
+  await cacheBuildSprites(firstBuild);
+  warmPlayerFace(firstBuild);
+  if (playerInfoMode && firstNextBuild !== firstBuild) {
+    // Warm the next Player Info build before the first board paint so its
+    // first visible wave never competes with image decoding.
+    await cacheBuildSprites(firstNextBuild);
+    warmPlayerFace(firstNextBuild);
+    retainBuildSprites(firstBuild, firstNextBuild);
+  }
+  const grid = remountBoard(boardHost, getSpriteUrl, opts.grid, {
+    appearNewOnly: playerInfoMode,
+    appearOrder: playerInfoMode ? 'diagonal' : 'reading',
+    appearStaggerMs: playerInfoMode ? PLAYER_WAVE_STAGGER_MS : undefined,
+    preserveBagFabric: playerInfoMode,
+  });
   if (!grid) return;
   const reduced = prefersReducedMotion();
   const creatorCounts = new Map();
+  let countTimer = 0;
+  let activeBuildToken = 0;
   const creatorCount = async (build) => {
     const authorId = String(build?.author_id || '').trim();
     if (!authorId) return 0;
     if (creatorCounts.has(authorId)) return creatorCounts.get(authorId);
-    const { count } = await getSupabase().from('builds').select('id', { count: 'exact', head: true }).eq('author_id', authorId).eq('is_public', true);
-    const total = Math.max(0, Number(count) || 0);
+    if (promoCreatorCountCache.has(authorId)) {
+      const total = promoCreatorCountCache.get(authorId) || 0;
+      creatorCounts.set(authorId, total);
+      return total;
+    }
+    const pending = promoCreatorCountPending.get(authorId);
+    if (pending) {
+      const total = await pending;
+      creatorCounts.set(authorId, total);
+      return total;
+    }
+    const request = getSupabase()
+      .from('builds')
+      .select('id', { count: 'exact', head: true })
+      .eq('author_id', authorId)
+      .eq('is_public', true)
+      .then(({ count }) => Math.max(0, Number(count) || 0));
+    promoCreatorCountPending.set(authorId, request);
+    const total = await request;
+    promoCreatorCountPending.delete(authorId);
+    promoCreatorCountCache.set(authorId, total);
+    while (promoCreatorCountCache.size > PROMO_CREATOR_COUNT_CACHE_LIMIT) {
+      promoCreatorCountCache.delete(promoCreatorCountCache.keys().next().value);
+    }
     creatorCounts.set(authorId, total);
     return total;
   };
+  const scheduleCreatorCount = (build, token, painter) => {
+    if (countTimer) window.clearTimeout(countTimer);
+    countTimer = window.setTimeout(() => {
+      countTimer = 0;
+      if (!boardHost.isConnected || token !== activeBuildToken) return;
+      void creatorCount(build).then((count) => {
+        if (!boardHost.isConnected || token !== activeBuildToken) return;
+        painter(count);
+      });
+    }, 180);
+  };
 
   while (boardHost.isConnected) {
-    for (const [buildIndex, build] of builds.entries()) {
+    const cycleBuilds = playerInfoMode ? playerCycle : builds;
+    for (const [buildIndex, build] of cycleBuilds.entries()) {
       await waitForPromoActivity(opts.activity, boardHost);
       if (!boardHost.isConnected) return;
-      const mapped = placementsForBuild(build, {
-        shapes: extras.shapes,
-        sockets: extras.sockets,
-        getSpriteUrl,
-      });
-      const ordered = orderPlacements(mapped.placements, mapped.itemsById);
+      const nextBuild = cycleBuilds[(buildIndex + 1) % cycleBuilds.length] || build;
+      if (playerInfoMode) {
+        // Keep the active/next window current, then await the next build's
+        // decode before this build paints. On the following iteration that
+        // same build is already warm and ready for its first visible wave.
+        retainBuildSprites(build, nextBuild);
+        await cacheBuildSprites(nextBuild);
+        warmPlayerFace(nextBuild);
+        retainBuildSprites(build, nextBuild);
+      }
+      const normalized = normalizedBuildFor(build);
+      const { mapped, ordered, bags } = normalized;
       if (!ordered.length) continue;
+      const buildToken = ++activeBuildToken;
+      if (playerInfoMode) playerPreviousAuthorId = promoAuthorKey(build);
 
-      paintPromoCaption(captionEl, build, base, boardLink, infoEl, boardTagsEl);
+      paintPromoCaption(
+        captionEl,
+        build,
+        base,
+        boardLink,
+        infoEl,
+        boardTagsEl,
+        opts.creatorMode || playerInfoMode
+          ? { hideAuthor: true, hideTags: playerInfoMode }
+          : undefined,
+      );
+      clearPromoSectionSkeleton(boardHost);
       if (opts.creatorMode) {
-        paintPromoCaption(captionEl, build, base, boardLink, infoEl, boardTagsEl, { hideAuthor: true });
         paintPromoCreator(opts.creatorEl, build, base, null);
-        void creatorCount(build).then((count) => paintPromoCreator(opts.creatorEl, build, base, count));
+        scheduleCreatorCount(build, buildToken, (count) => paintPromoCreator(opts.creatorEl, build, base, count));
+      }
+      if (playerInfoMode) {
+        paintPromoPlayer(playerEl, build, base, null);
+        scheduleCreatorCount(build, buildToken, (count) => paintPromoPlayer(playerEl, build, base, count));
       }
       grid.update([], mapped.itemsById);
       clearPromoWave(boardHost);
@@ -671,8 +928,50 @@ export async function playAssemble(opts) {
       if (reduced) {
         grid.update(ordered, mapped.itemsById);
         if (usingChest) setChestOpen(opts.chestEl, false);
-        await sleep(HOLD_MS);
+        await sleepWithPromoActivity(
+          HOLD_MS,
+          playerInfoMode ? opts.activity : null,
+          boardHost,
+        );
         grid.update([], mapped.itemsById);
+        prunePlayerGrid(nextBuild);
+        continue;
+      }
+
+      if (playerInfoMode) {
+        grid.setResizePaused?.(true);
+        try {
+          grid.update(bags, mapped.itemsById, {
+            appear: true,
+            // A new build must replay the bag intro even when its pooled nodes
+            // were parked by the previous cycle.
+            appearNewOnly: false,
+            preserveBagFabric: false,
+          });
+          fadeNewBagChrome(boardHost, { preserveFabricAnimation: true });
+          await sleepWithPromoActivity(PLAYER_WAVE_MS, opts.activity, boardHost);
+          if (!boardHost.isConnected) return;
+          grid.update(ordered, mapped.itemsById, {
+            appear: true,
+            // Keep the first-wave bags stable while only new item nodes join
+            // the second wave. Pooled item nodes are not newly created, so the
+            // missing-entry mode explicitly replays their intro.
+            appearNewOnly: true,
+            appearMissing: true,
+            preserveBagFabric: true,
+          });
+          fadeNewBagChrome(boardHost, { preserveFabricAnimation: true });
+          await sleepWithPromoActivity(PLAYER_WAVE_MS, opts.activity, boardHost);
+          if (!boardHost.isConnected) return;
+          await sleepWithPromoActivity(HOLD_MS, opts.activity, boardHost);
+          await departBoardItems(boardHost, opts.activity);
+          grid.update([], mapped.itemsById);
+          prunePlayerGrid(nextBuild);
+          clearPromoWave(boardHost);
+          fabricSeen.clear();
+        } finally {
+          grid.setResizePaused?.(false);
+        }
         continue;
       }
 
@@ -747,8 +1046,9 @@ export async function playAssemble(opts) {
       if (usingChest) setChestOpen(opts.chestEl, false);
       await sleep(HOLD_MS);
       if (!boardHost.isConnected) return;
-      const nextBuild = builds[(buildIndex + 1) % builds.length];
-      void cacheBuildSprites(nextBuild).then(() => retainBuildSprites(build, nextBuild));
+      if (!playerInfoMode) {
+        void cacheBuildSprites(nextBuild).then(() => retainBuildSprites(build, nextBuild));
+      }
       await Promise.all([
         departBoardItems(boardHost),
         fromSides || usingChest ? Promise.resolve() : restorePromoCatalogItems(catalogRoot),
@@ -757,6 +1057,9 @@ export async function playAssemble(opts) {
       grid.update([], mapped.itemsById);
       clearPromoWave(boardHost);
       fabricSeen.clear();
+    }
+    if (playerInfoMode) {
+      playerCycle = randomizeBuildSequence(builds, { previousAuthorId: playerPreviousAuthorId });
     }
   }
 }

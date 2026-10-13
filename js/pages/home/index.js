@@ -1,5 +1,5 @@
 import { initNav } from '../../shared/nav.js';
-import { initFooter } from '../../shared/footer.js';
+import { initFooter } from '../../shared/footer.js?v=footer-presets-20261013a';
 import { initHomeFallingItemsBackground } from './falling-items-background.js';
 import { initFeaturedStage } from './featured-stage.js';
 import { initHomePromoBand } from './home-promo-band.js';
@@ -66,13 +66,13 @@ async function mountDeferredSections() {
 async function boot() {
   if (!(await initNav())) return;
   initHomeFallingItemsBackground();
-  initFooter();
+  initFooter({ preset: 'regular' });
   initFeaturedStage();
 
   // First-view sections mount immediately. Lower sections mount with a generous
   // viewport lead so they are ready when reached without paying their DOM,
   // network, and animation cost during initial render.
-  initHomePromoBand('#home-promo-band', { variant: 'create' });
+  initHomePromoBand('#home-promo-band', { variant: 'create', launcher: 'player' });
   void mountDeferredSections();
 }
 

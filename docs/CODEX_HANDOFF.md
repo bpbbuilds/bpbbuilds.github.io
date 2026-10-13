@@ -1,5 +1,269 @@
 # Codex handoff
 
+### 2026-10-13 Home Player Info performance pass (in progress)
+
+- Codex owns the scoped Home Player Info performance paths in
+  `js/pages/home/home-promo-assemble.js`, `js/pages/home/home-promo-band.js`,
+  `js/pages/home/home-promo-caption.js`, `js/shared/blob-face.js`, and the
+  placed-grid lifecycle paths in `js/shared/backpack-grid/render.js` and
+  `js/shared/backpack-grid/item-pool.js`.
+- Scope: implement the three highest-impact, visually neutral findings from
+  `docs/performance/home-player-info-production-readiness-audit.md`, switch the
+  live Home create promo to the Player Info preset, add focused regression
+  coverage/documentation, and verify before a scoped commit/push.
+
+### 2026-10-13 Home Player Info performance pass complete
+
+- Added `mountPlacedGrid().pruneParked({ keepKeys })` and wired Player Info to
+  release parked item nodes after departure while retaining only the next
+  build's placement window. Create/build placed grids keep their prior
+  keep-alive behavior.
+- Added URL-keyed `warmFaceAssets()` decode prewarming for active/next blob
+  cosmetics and a bounded cross-mount creator-count cache with in-flight
+  request de-duplication. The synchronous face markup, overlay order, wave
+  timing, hover pause, and responsive CSS remain unchanged.
+- Made the live Home create promo use the Player Info preset by default. The
+  production probe now reports 126 peak handoff nodes and 63 retained nodes
+  after 12 distinct synthetic builds (down from the pre-fix 819 retained-node
+  result), with the board fully empty after destroy.
+- Verification: Node syntax checks, P1/P2/sprite/selection/activity smokes,
+  Player Info animation/wave/skeleton browser smokes, the production audit,
+  and `git diff --check` pass. Device/network traces remain a future release
+  measurement; no visual or timing changes were introduced by the optimization
+  pass.
+
+### 2026-10-13 Create onboarding copy-path feedback (in progress)
+
+- Codex owns the Create onboarding copy-path handler in
+  `js/pages/create/board-onboard.js`, its stylesheet cache-bust in
+  `create/index.html`, the onboarding module cache-bust in
+  `js/pages/create/board-editor.js`, and focused regression coverage in
+  `scripts/create-copy-path-smoke.mjs`.
+- Scope: make one Copy path click show `Copied!` when the async Clipboard API
+  exists but rejects, using the same user-gesture-safe legacy fallback used by
+  the Build share flow; preserve the existing reset label and responsive UI.
+
+### 2026-10-13 Create onboarding copy-path feedback complete
+
+- Root cause: `navigator.clipboard.writeText()` can be present but reject on
+  the first click when browser permission, local HTTP, or privacy policy blocks
+  the async write; `board-onboard.js` caught that rejection and silently left
+  the label unchanged.
+- Added a textarea + `execCommand('copy')` fallback and kept the existing
+  `Copied!`/`Copy path` timer behavior. Bumped the onboarding module query in
+  `js/pages/create/board-editor.js` so deployed browsers fetch the fix.
+- Verification: `scripts/create-copy-path-smoke.mjs` reproduces a rejecting
+  Clipboard API and confirms one click invokes the fallback and shows
+  `Copied!`; Create module syntax checks and `git diff --check` pass. The
+  broader `_test-onboard-create.mjs` was also attempted but remains blocked at
+  its later clear-button click by the existing site-nav pointer interception;
+  that failure is outside the copy-path flow.
+
+### 2026-10-13 Create page clickable-pointer audit (in progress)
+
+- Codex owns the scoped Create-page pointer token/interactive-control rules in
+  `js/pages/create/create.css`, the Create stylesheet cache-bust in
+  `create/index.html`, and the focused regression coverage in
+  `scripts/create-page-pointer-smoke.mjs`.
+- Scope: restore the native pointer for Create controls whose click, keyboard,
+  or drag activation is exposed, preserve default/disabled and grab cursors,
+  and verify the behavior at desktop, narrow desktop/tablet, and mobile widths.
+
+### 2026-10-13 Create page clickable-pointer audit complete
+
+- Root cause: Create and its shared catalog/history styles referenced the
+  optional game-cursor variables, but the site intentionally no longer loads
+  `css/cursor.css`; the unresolved variables made those `cursor` declarations
+  invalid and browsers fell back to `auto`/`default`.
+- Scoped native cursor tokens and a semantic interactive-control baseline to
+  `js/pages/create/create.css`. Active buttons, links, tabs, options, menu
+  items, selects, inputs, board hits, ring controls, and history controls now
+  resolve to `pointer`; disabled/aria-disabled controls retain their default or
+  component disabled cursor; draggable catalog/parked pieces retain `grab` and
+  `grabbing`; the unarmed Needs/Wants/Good-to-have drop boxes remain passive
+  until a valid board item arms them.
+- Bumped the Create stylesheet query in `create/index.html` and added
+  `scripts/create-page-pointer-smoke.mjs`, covering 1440, 1080, tablet, and
+  mobile widths plus active/disabled/grab/passive states. Verification:
+  pointer smoke, ring-editor affordance smoke, default-bag smoke, Create JS
+  syntax checks, an actual local Create-page interactive-element audit, and
+  `git diff --check` pass. No legal, simulator, or backend changes were needed;
+  no push requested.
+
+### 2026-10-13 Home/nav section-level skeletons (in progress)
+
+- Codex owns the shared nav skeleton, Home section loading placeholders, and focused skeleton smoke coverage in:
+  `js/shared/nav/markup.js`, `js/shared/nav.css`, `js/shared/skeleton.js`, `js/shared/skeleton.css`,
+  `index.html`, `js/pages/home/featured-stage.js`, `js/pages/home/featured-stage.css`,
+  `js/pages/home/home-promo-band.js`, `js/pages/home/home-promo-band.css`,
+  `js/pages/home/home-class-showcase.js`, `js/pages/home/home-class-showcase.css`,
+  `js/pages/home/home-items-explore.js`, `js/pages/home/home-items-explore.css`,
+  `js/pages/home/home-builds-vault.js`, `js/pages/home/home-builds-vault.css`,
+  `js/pages/home/home-section-skeleton.css`, `scripts/home-section-skeleton-smoke.mjs`,
+  `scripts/home-section-skeleton-browser-smoke.mjs`, `scripts/home-promo-player-skeleton-browser-smoke.mjs`,
+  and `scripts/admin-home-player-info-animation-smoke.mjs`.
+- Scope: use one full-surface skeleton for the nav and one section-level skeleton per Home section while preserving loaded composition and responsive geometry.
+
+### 2026-10-13 Home/nav section-level skeletons complete
+
+- Replaced the nav's logo, shelf, banner, pennant, and social placeholders with one responsive `site-nav__skel-surface`; the static Home shell and dynamic `navSkeletonHtml()` now use the same single surface.
+- Added one section-level Home skeleton for Featured builds, Create/promo, Choose your hero, Explore items, and Curated build loadouts. The promo no longer renders nested caption/board/catalog/stat skeleton fragments; it removes its single loading surface when the first real build or status is ready. Deferred Home sections keep their placeholder visible until their data mount settles.
+- Added responsive static/browser smoke coverage at 1440, 1080, tablet, and mobile widths. Verification: `home-section-skeleton-smoke`, `home-section-skeleton-browser-smoke`, Player Info skeleton/animation smokes, Choose your hero smokes, CSP smoke, Home promo selection/activity/cache/P1/P2 smokes, JavaScript syntax checks, and `git diff --check` pass. No blockers; no push requested.
+
+### 2026-10-13 Home Choose your hero admin test page (in progress)
+
+- Codex owns the isolated Choose your hero test route/controller/styles and focused smoke coverage:
+  `admin/test/home/sections/chooseYourHero/index.html`,
+  `js/pages/admin/home-class-showcase-test.js`,
+  `js/pages/admin/home-class-showcase-test.css`,
+  `scripts/admin-home-class-showcase-test-smoke.mjs`,
+  `scripts/admin-home-class-showcase-test-browser-smoke.mjs`.
+- Scope: expose the live Home Choose your hero section on an owner-gated page with responsive preview presets and no nav/footer, without changing the live Home mount.
+
+### 2026-10-13 Home Choose your hero admin test page complete
+
+- Added owner-gated route `admin/test/home/sections/chooseYourHero/index.html`, matching the existing Home section test structure and omitting nav/footer.
+- The controller mounts the live `home-class-showcase` implementation and exposes Home skin, Compact rail, and Wireframe preview controls. Scoped CSS keeps presets/test chrome isolated from the live Home page and covers desktop, short desktop, tablet, and mobile widths.
+- Verification: `node scripts/admin-home-class-showcase-test-smoke.mjs`, `node scripts/admin-home-class-showcase-test-browser-smoke.mjs`, `node scripts/admin-test-csp-smoke.mjs`, `node --check js/pages/admin/home-class-showcase-test.js`, and `git diff --check` pass. No live Home behavior changed; no push requested.
+
+### 2026-10-13 Player Info production-readiness performance audit (in progress)
+
+- Codex owns the final Player Info performance audit report and any focused synthetic audit coverage under `docs/performance/` and `scripts/home-promo-production-audit.mjs`.
+- Scope: production-readiness findings for startup/decode, repeated-cycle CPU/DOM work, memory/DOM stability, observers, and animation scheduling; no visual or timing changes are authorized by this audit request.
+
+### 2026-10-13 Player Info production-readiness performance audit complete
+
+- Added `docs/performance/home-player-info-production-readiness-audit.md` with measured startup/data shape, 100 same-key cycle results, 12-distinct-build retention results, ranked production risks, and release gates. The main remaining risk is parked placed-grid DOM retention across distinct build keys: the synthetic 63-placement probe remained stable at 63 nodes for 100 same-key cycles but reached 819 retained item nodes after 12 distinct key sets.
+- Added `scripts/home-promo-production-audit.mjs` as a repeatable Chromium probe. It also confirms `grid.destroy()` clears the board, the current/next sprite cache and P1/P2 safeguards remain covered, and no visual/timing code was changed for this audit.
+- Verification: audit script syntax and run, sprite-cache/P1/P2 smokes, Player Info animation/wave smokes, and `git diff --check` pass. Production-device/network trace and a parked-node cap remain documented follow-ups; no blockers to the report and no push requested.
+
+### 2026-10-13 Player Info pooled item wave replay (in progress)
+
+- Codex owns the staged item-wave replay fix in `js/shared/backpack-grid/render.js`, `js/shared/backpack-grid/item-pool.js`, `js/pages/home/home-promo-assemble.js`, and the focused Player Info wave coverage.
+- Scope: preserve the fixed bag-first wave while replaying item intros for pooled DOM nodes on later Player Info build transitions.
+
+### 2026-10-13 Player Info section skeleton consolidation (in progress)
+
+- Codex owns the Player Info loading skeleton markup/styles in `js/pages/home/home-promo-band.js`, `js/pages/home/home-promo-band.css`, and the focused skeleton smoke coverage.
+- Scope: replace nested title/avatar/info skeleton fragments with one cohesive skeleton per major Player Info section while leaving the loaded layout and other Home promo launchers unchanged.
+
+### 2026-10-13 Player Info pooled item wave replay complete
+
+- Root cause: `appearNewOnly` is intentionally limited to newly created DOM nodes for catalog keep-alive behavior. Player Info reuses item nodes across cycles, so later item waves had no appear candidates even though the bags replayed.
+- Added the scoped `appearMissing` option to the placed-grid pipeline. Player Info keeps `appearNewOnly: true` for stable first-wave bags and sets `appearMissing: true` for second-wave entries absent from the previous bag set, replaying pooled item intros with the existing diagonal stagger.
+- Extended `scripts/admin-home-player-info-wave-browser-smoke.mjs` to run a repeated item cycle and assert pooled item animation/delays. Player Info wave, animation, responsive, skeleton, P1/P2 performance, syntax, and `git diff --check` verification pass. No blockers; no push requested.
+
+### 2026-10-13 Player Info section skeleton consolidation complete
+
+- Player Info loading now uses one section-level skeleton each for player details, build title, board, and build information; nested item-level skeleton fragments are gone from that preset. Catalog, chest, and creator launchers retain their existing loading behavior.
+- Added `scripts/home-promo-player-skeleton-browser-smoke.mjs`; it verifies one skeleton per section, no nested item fragments, four status regions, and no horizontal overflow at 1440, 1080, tablet, and mobile widths.
+- Verification: skeleton browser smoke, responsive Player Info browser smoke, animation static smoke, P1/P2 performance smokes, JavaScript syntax check, and `git diff --check` pass. No blockers; no push requested.
+
+### 2026-10-13 Player Info two-line build title (in progress)
+
+- Codex owns the scoped title treatment in `js/pages/home/home-promo-band.css` and the responsive Player Info smoke checks.
+- Scope: allow the Player Info build title to occupy two lines with an ellipsis clamp while preserving the existing single-line truncation on other Home promo variants.
+
+### 2026-10-13 Player Info two-line build title complete
+
+- Player Info titles now wrap to two lines and use a two-line ellipsis clamp; other Home promo title variants retain their existing single-line behavior.
+- The responsive Edge smoke verifies the two-line computed clamp, available title height, avatar treatment, and no horizontal overflow at 1440, 1080, tablet, and mobile widths. Static animation smoke, syntax checks, and `git diff --check` pass. No blockers; no push requested.
+
+### 2026-10-13 Player Info fabric exit animation (in progress)
+
+- Codex owns the FilledSlot exit treatment in `js/pages/home/home-promo-assemble.js`, `js/pages/home/home-promo-band.css`, and the focused Player Info wave browser/static smokes.
+- Scope: animate bag-capacity squares out with the existing bag departure wave before the pooled board clears them; preserve hover pause, reduced-motion behavior, and all existing intro timing.
+
+### 2026-10-13 Player Info fabric exit animation complete
+
+- `departBoardItems()` now maps each FilledSlot cell to its owning bag placement key, applies a matching stagger, and adds `home-promo__fabric--depart` before the pooled board clears the fabric. The new `home-promo-fabric-out` animation fades the squares out with the bag departure; reduced-motion users receive an immediate fade rather than a motion animation.
+- Added runtime regression coverage to `scripts/admin-home-player-info-wave-browser-smoke.mjs` and static assertions for the departure class/keyframes. Player Info animation/responsive/wave smokes, P1/P2 performance smokes, syntax checks, and `git diff --check` pass. No blockers; no push requested.
+
+### 2026-10-13 Player Info blob frame treatment (in progress)
+
+- Codex owns the scoped Player Info identity-frame change in `js/pages/home/home-promo-band.css` and its responsive browser smoke.
+- Scope: keep Discord/profile photos circular, but make blob faces use an uncropped square/contain presentation so equipped cosmetics can extend beyond the base silhouette; other avatar surfaces remain unchanged.
+
+### 2026-10-13 Player Info blob frame treatment complete
+
+- Added a Player Info-only `:has(.bpb-face)` override: blob identity frames are square and `overflow: visible`, including their link wrapper, while Discord/profile photos retain the circular/hidden crop.
+- Extended the responsive Edge smoke to assert blob `0px` radius/visible overflow and profile `50%` radius/hidden overflow at 1440, 1080, tablet, and mobile widths. Animation/static smoke, syntax, and `git diff --check` pass. No blockers; no push requested.
+
+### 2026-10-13 Player Info repeat-wave animation regression (in progress)
+
+- Codex owns the Player Info repeat-cycle animation fix in `js/shared/backpack-grid/render.js`, `js/pages/home/home-promo-assemble.js`, and the focused Player Info wave browser/static smoke checks.
+- Scope: preserve the bag-first/item-second animation contract while ensuring pooled nodes replay their intro animation on each new build cycle; other placed-grid surfaces remain unchanged.
+
+### 2026-10-13 Player Info repeat-wave animation regression complete
+
+- Root cause: Player Info always used `appearNewOnly: true`, which intentionally skips intro classes on parked pooled nodes. After the first cycle, reused bag/item nodes therefore appeared immediately while the depart animation still ran.
+- Added a per-update `appearNewOnly` override to `mountPlacedGrid`. Player Info now disables new-only filtering for the first bag wave (replaying pooled bag intros) and enables it for the second item wave (keeping bags stable while new items animate).
+- Extended `scripts/admin-home-player-info-wave-browser-smoke.mjs` to reproduce a cleared/reused cycle and assert the pooled bag receives its intro class again. Added static wiring assertions. Focused Player Info animation/wave/browser smokes, sprite/P1/P2 performance smokes, syntax checks, and `git diff --check` pass. No blockers; no push requested.
+
+### 2026-10-13 Build-view vote control full-height sizing complete
+- Codex owned the Build-view vote control sizing and header-layout smoke for this adjustment. The right column now uses the full title/tag height with larger, vertically stacked up/score/down controls and fluid bounds across desktop, tablet, and mobile.
+- Updated `js/pages/build/build.css` so the identity column anchors title/tags to the row edges, the vote column has a responsive minimum height, and the icons/score scale up inside the full-height control. Extended `scripts/build-view-header-layout-smoke.mjs` to assert vertical order, full-column fill, enlarged icons, alignment, and no overflow. Density, title-spacing, syntax, and diff checks pass.
+
+### 2026-10-13 Build share first-click feedback complete
+- Codex owned the Build-view share clipboard path and focused smoke for this fix. The regression was an available-but-rejected Clipboard API that skipped the textarea fallback, so users could see no `Copied!` feedback until repeated attempts.
+- `js/pages/build/share.js` now falls back to the textarea copy path when `navigator.clipboard.writeText` rejects, preserving the existing success/failure labels and timer behavior. Added `scripts/build-share-smoke.mjs`, which simulates the rejection and verifies one click reaches `Copied!` with the copied state. Syntax and diff checks pass; no legal, simulator, or backend changes were needed.
+
+### 2026-10-13 Build-view vote column stretch complete
+- Codex owned the Build-view header geometry and its focused layout smoke for this adjustment. The identity column remains title-over-tags; the vote slot now stretches from the header top through the bottom of the tags at all supported widths and centers the vote control within that column.
+- Updated `js/pages/build/build.css` and extended `scripts/build-view-header-layout-smoke.mjs` to assert the vote slot’s top/bottom alignment and no overflow at 2560, 1920, 1440, 768, and 390 widths. Density, title-spacing, syntax, and diff checks pass.
+
+### 2026-10-13 Build-view interactive cursor coverage complete
+- Codex owns the Build-view cursor affordance for this task: `js/pages/build/build.css`, the shared Premium cursor fallback in `js/shared/premium-offer.css`, and the focused pointer smokes. Scope covers Discuss, item/bag tooltip targets, round history and navigation, board toggles, votes, Remix, Share, Premium Play, author/event links, and disabled controls.
+- Added a page-scoped native cursor contract so every semantic Build control/link and item target resolves to `pointer`, while disabled/aria-disabled controls resolve to `default`. Existing optional game-cursor tokens now have native fallbacks on the Build stylesheet. The previously fixed nav/Premium controls are included in the same cursor push.
+- Added `scripts/build-page-pointer-smoke.mjs`. Build and Premium pointer smokes plus existing Build density/header/title-spacing checks pass at desktop, short desktop, tablet, and mobile sizes. No legal, simulator, or backend changes were needed.
+
+### 2026-10-13 Premium control pointer fallback complete
+- Codex owns the focused shared Premium/navigation cursor regression for this task: the nav Free Premium button, the founding-members dialog close/View Premium features controls, and the Premium-features dialog close/Got it controls.
+- These controls now use `var(--bpb-cursor-pointer, pointer)`. The fallback preserves the native browser cursor after the custom cursor rollback while keeping any future cursor token override available; click behavior and responsive layout are unchanged.
+- Added `scripts/premium-pointer-smoke.mjs`, which verifies the four controls resolve to `pointer` at 1440×900, 1080×720, 768×900, and 390×844. The focused smoke, syntax checks, and `git diff --check` pass. No legal, simulator, or backend changes were needed.
+
+### 2026-10-13 Admin tab surface normalization complete
+- Owned paths: `js/pages/admin/admin.css`, `js/pages/admin/shell.js`, `scripts/admin-surface-smoke.mjs`, and `scripts/admin-surface-browser-smoke.mjs`. Added one shared translucent Patch3 surface with inset edge, soft shadow, fluid spacing, and responsive sizing to the common admin stage used by Overview, Reports, Builds, Events, Cosmetics, Analytics, Members, Overlay, and Marketplace.
+- Replaced the separate dark reward-plate treatment at the Reports, Analytics, and Members outer layers with the shared surface while retaining readable inner KPI, chart, table, filter, and row contrast. Existing tab behavior, data, and permissions are unchanged.
+- Verification: the new static smoke, responsive Edge browser smoke at 1440/1080/768/390px, existing Admin Builds view smoke, JavaScript syntax checks, and `git diff --check` pass. No blockers or simulator changes.
+
+### 2026-10-13 Combat-start sequence PDF complete
+- Owned paths: `docs/sim/combat-start-sequence.pdf`, `scripts/render-combat-start-pdf.mjs`, and `scripts/render-combat-start-pdf.py`. Rendered the complete combat-start Markdown, including the priority table and 519-item appendix, as a 15-page A4 PDF with print styling and page numbers.
+- Verification: Node syntax check, Python compile check, renderer structure check (title, 20 headings, 2 tables, 7 lists, 2 code blocks), valid `%PDF-1.4`/15-page file check, and PyPDF2 text checks for the title, priority section, `puzzlebag_j`, and the 519-item coverage line all pass. No simulator behavior changed.
+
+### 2026-10-13 Combat-start complete item catalog complete
+- Owned paths: `docs/sim/combat-start-sequence.md` and `scripts/build-combat-start-catalog.mjs`. Scope was documentation only: enumerate every catalog item with a prepare/pre-combat/combat-start/post-combat-start or inventory-start hook, group the complete explicit trigger-priority overrides, and record the default-Normal boundary. No simulator behavior changes were in scope.
+- Added `scripts/build-combat-start-catalog.mjs` as the reproducible generator. The document now classifies all 519 catalog items (29 explicit-priority, 321 default-Normal items with a direct start hook, and 169 default-Normal items without one), while keeping shared extract base/support classes separate.
+- Verification: generator syntax check, idempotent regeneration, exact 519/519 catalog-ID coverage check, and trailing-whitespace check pass. No simulator ledger run was needed because this was documentation-only. No blockers; future source/catalog changes should rerun the generator and review its diff.
+
+### 2026-10-13 Admin Builds collection buttons complete
+- Codex owns the Admin Builds collection-control markup for this task. Scope is converting Uploaded builds/Pending OP to actual buttons below Search and above View while retaining Featured/Hidden as status filters.
+- Converted Uploaded builds and Pending OP to two full-width collection buttons directly below Search and above View. Featured/Hidden remain under Status as existing filters; smoke, syntax, and `git diff --check` pass.
+
+### 2026-10-13 Admin Builds Pending OP filter complete
+- Codex owns the Admin Builds Pending OP consolidation for this task. Scope is removing the separate queue mount, adding Uploaded builds/Pending OP list choices, and routing both through the middle Builds panel; API behavior remains unchanged.
+- Removed the standalone Pending OP section from the Builds tab. The filter rail now offers Uploaded builds and Pending OP alongside Featured/Hidden; selecting either reloads only the middle list, with approve/deny actions preserved for Pending OP. Smoke, syntax checks, and `git diff --check` pass.
+
+### 2026-10-13 Admin Builds in-place actions complete
+- Codex owns the Admin Builds action success flow for this task. Scope is the Builds panel’s local state/DOM update after a successful moderation mutation; no API authorization behavior changes.
+- Successful moderation actions now merge the API’s returned build (with a local fallback for older responses) into the current list and repaint the cards in place. Featured/hidden filters immediately remove builds that no longer match, while action buttons and counts update without a panel remount. Added the pure `build-action-state.js` helper for focused coverage; smoke, syntax, and `git diff --check` pass.
+
+### 2026-10-13 Admin Builds remove View build action complete
+- Codex owns the admin Builds action-bar adjustment for this task. Remove only the explicit View build button; retain board/title links and moderation actions.
+- Removed the explicit View build button from all admin Builds view action bars while preserving board/title links and Feature/Unfeature plus Hide/Restore controls. Smoke, syntax, and `git diff --check` pass.
+
+### 2026-10-13 Admin Builds Grid actions complete
+- Codex owns the Grid-card action visibility correction for this task. Scope is limited to Grid card layout CSS and the focused admin Builds smoke; Card and Compact behavior remain unchanged.
+- Reset Grid card body `min-height` and kept the action footer in normal flow so View build, Feature/Unfeature, and Hide/Restore remain visible. The smoke asserts View build, Feature, and Hide markup; syntax and `git diff --check` pass.
+
+### 2026-10-13 Admin Builds filter order complete
+- Codex owns the admin Builds filter markup order for this task. Scope is limited to placing View below Search and above List; existing menu behavior and responsive stacking remain unchanged.
+- Reordered the View selector directly below Search and above List. The admin Builds smoke now asserts that order, and syntax plus `git diff --check` pass.
+
+### 2026-10-13 Admin Builds view-menu stacking fix complete
+- Codex owns the admin Builds filter menu stacking correction for this task. Scope is limited to the Builds filter rail CSS and focused verification; no shared filter or simulator paths.
+- Raised the Builds view-menu shade and its open grouping above the Character shade, matching the public Builds filter stacking pattern. The focused admin Builds smoke, syntax check, and `git diff --check` pass.
+
 ### 2026-10-13 Admin Builds view modes complete
 - Codex owns the admin Builds view selector/state, admin row templates, board-thumb view pass-through, and `js/pages/admin/admin.css` responsive variants for this task.
 - Scope: add Card and Grid views while retaining Compact as the default; preserve admin actions and existing auth/API behavior.
@@ -2447,178 +2711,262 @@ None.
 - Desktop combat-sky scroll progress now advances in 40 buckets (2.5% each). Tint/color writes happen once when a bucket changes; positional and opacity properties use a 120 ms CSS transition. Compact/reduced-motion/data/low-core devices continue to bypass the animated path through option 1.
 - Chrome verification at 390x844 confirmed the static fallback remained active and the sky position stayed fixed after scrolling. At 1920x1080 the static class was absent, stepped mode was active, and a 1% scroll retained the initial sky frame while 3% and 8% moved to new bucket values. No runtime errors appeared; the existing seven-image-dimensions issue remains.
 - Validation: `node --check js/pages/home/combat-sky/index.js` and `git diff --check` pass. The performance report records the follow-up frame-pacing/self-time trace required before claiming a measured reduction.
+### 2026-10-13 Admin Builds view shadow consistency complete
 
-### 2026-10-11 admin background test page claim (in progress)
+- Codex-owned `js/pages/admin/admin.css` now applies one scoped, fluid `--admin-build-card-shadow` to every build card under Compact, Card, and Grid view containers. The late rule intentionally follows the Patch3 reset, so all three views receive the same inset edge and responsive outer depth without changing layout, actions, or breakpoints.
+- Added `scripts/admin-builds-shadow-smoke.mjs` for selector/token/view coverage and `scripts/admin-builds-shadow-browser-smoke.mjs` for computed-style checks at 1440, 1080, 768, and 390px. All three views report the same non-empty shadow and no horizontal overflow at every viewport.
+- Verification: focused static and Edge browser shadow smokes, existing `node scripts/admin-builds-views-smoke.mjs`, both new script syntax checks, and scoped `git diff --check` pass. No blockers or behavior changes.
+### 2026-10-13 Home scrollbar parity complete
 
-- Codex owns `admin/test/background/index.html`, `js/pages/admin/background-test.js`, `js/pages/admin/background-test.css`, and this handoff while adding an owner-gated, intentionally blank scroll surface for testing Home background variants. The first selectable scene is the existing Home combat sky; no admin hub behavior or authentication policy is changed.
+- `css/theme.css` now leaves Home on the same 16px gold/brown root scrollbar as the Builds feed at desktop widths. At the shared `1240px` breakpoint and below, Home switches to the same image-based track/thumb rules and Firefox palette as Builds; Home's overflow behavior remains unchanged.
+- Added `scripts/home-scrollbar-smoke.mjs` for static rule coverage and `scripts/home-scrollbar-browser-smoke.mjs` for computed Home/Builds parity at 1440, 1080, 768, and 390px. No horizontal overflow was introduced.
+- Verification: both scrollbar smokes, both new script syntax checks, and scoped `git diff --check` pass. No page behavior or asset changes beyond scrollbar styling.
+### 2026-10-13 Public Builds view shadow parity complete
 
-### 2026-10-11 admin background test page complete
+- `js/pages/builds/builds.css` now gives the Card, Compact, and Grid content wrappers the same Patch3 surface token, masked shade layer, and stacking boundary. The existing card layout and all view-specific sizing/actions remain unchanged; only the missing Compact/Grid content surface was filled in.
+- Added `scripts/builds-view-shadow-smoke.mjs` for shared-selector and markup coverage and `scripts/builds-view-shadow-browser-smoke.mjs` for computed surface checks at 1440, 1080, 768, and 390px. All three view surfaces report the same non-transparent shade and no horizontal overflow.
+- Verification: focused static and Edge browser smokes, both new script syntax checks, and scoped `git diff --check` pass. The earlier Admin Builds-only shadow change remains untouched.
+### 2026-10-13 Build view density hybrid complete
 
-- Added `/admin/test/background/` as a noindex owner-admin test route. It uses the existing `initNav()`/`resolveAdminAuth()`/`mountGate()` path, so unauthenticated visitors see the owner gate and never mount the test controls or combat sky.
-- The authorized surface is intentionally empty and 320vh tall for scroll testing. Its fixed toolbar has the existing Home combat sky as the first selectable background plus a Blank option for comparison; the Home scene is mounted through `initCombatSky()` so its assets and scroll behavior stay identical to the homepage.
-- Validation: the unauthenticated Chrome route returned HTTP 200 with the owner gate, no combat-sky mount, and a scroll height of 3,260px versus a 949px viewport. Chrome reported no console messages or failed requests; `node --check js/pages/admin/background-test.js` and `git diff --check` pass. The owner-authenticated controls still need a signed-in owner session for interactive browser verification.
+- `js/pages/build/index.js` no longer applies the 2560Ã—1440 reference `zoom` that made a 1440px-wide desktop composition render at roughly 56% density. `js/pages/build/build.css` now uses a fluid desktop hybrid: side rails clamp from 13rem to 28rem while the central build stage stays at the readable 45rem/720px width whenever the viewport can support it. The <=1100px stacked/tablet/mobile layout remains unchanged, and horizontal overflow stays clipped at the page boundary.
+- Added `scripts/build-view-density-smoke.mjs`; it verifies stage density and no horizontal overflow at 1440Ã—900, 1920Ã—1080, 2560Ã—1440, 1080Ã—720, 768Ã—900, and 390Ã—844. The pre-change smoke failed at 1440Ã—900 with a 442.7px stage; the new layout passes with a 720px stage. JS syntax checks, the header layout smoke, title-clearance smoke, and scoped `git diff --check` pass.
 
-### 2026-10-11 home background continuous-motion progression claim (in progress)
+### 2026-10-13 Build view header alignment complete
 
-- Codex owns `js/pages/home/combat-sky/index.js`, `js/pages/home/combat-sky.css`, `js/pages/home/combat-sky/apply.js`, `js/pages/home/combat-sky/dom.js`, the generated `assets/theme/backgrounds/combat/checkpoints/` frames, `docs/pages/home/performance.md`, and this handoff while replacing the visible 2.5% desktop phase stepping with continuous rAF-driven progress and a two-layer desktop checkpoint compositor. The compact/reduced-motion static fallback remains unchanged.
+- `js/pages/build/page.js` now renders the build title and authenticity/event tags as a left-aligned identity block, moves the already-bound up/down vote control into a right-aligned header slot, and leaves round navigation/share/remix controls in their existing panel. Vote behavior and anonymous sign-in gating are unchanged.
+- `js/pages/build/build.css` gives the header a responsive two-column grid, stacks tags beneath the title, and prevents overflow at desktop, short desktop, tablet, and mobile widths.
+- Added `scripts/build-view-header-layout-smoke.mjs`; it verifies source wiring plus title/tag/vote geometry at 2560Ã—1440, 1920Ã—1080, 1440Ã—900, 768Ã—900, and 390Ã—844. `node --check`, the header smoke, the title-clearance smoke, and scoped `git diff --check` pass.
 
-### 2026-10-11 home background continuous-motion progression complete
+### 2026-10-13 Brainstorming skill removal complete
 
-- Replaced the desktop 40-bucket/120 ms phase prototype with continuous scroll progress mapped through the existing paint-aligned scheduler. The compact/reduced-motion/reduced-data/Save-Data/low-core static fallback remains unchanged.
-- Added eight flattened 1920x1080 WebP checkpoints under `assets/theme/backgrounds/combat/checkpoints/` (118 KB total). Desktop loads the first adjacent pair, crossfades their opacity continuously, swaps pairs on demand, and keeps the original masked scene visible until the first pair is ready. Checkpoint URLs are versioned for cache invalidation.
-- Chrome verification: desktop 1920x1080 activates `combat-sky--checkpoints` and hides the masked stage after the first pair decodes; a jump to the end requests the correct 6/7 pair, while activation can wait behind the page's existing image queue. At 390x844 the sky remains `combat-sky--static` with no checkpoint image sources or requests. The desktop Fast 4G scroll trace reports 23 ms attributed to `scrollProgress`; the remaining forced-reflow budget is in home promo/grid/nav paths, so the background result is not presented as a whole-page scroll win.
-- Validation: `node --check` passes for `combat-sky/index.js`, `combat-sky/dom.js`, and `combat-sky/apply.js`; `git diff --check` passes for the owned paths. The generated frames were visually inspected at day and night endpoints. Production deployment and the standard post-deploy frame-pacing/decoded-memory trace remain pending.
+- Removed the user-level `C:\Users\Justin\.agents\skills\brainstorming` directory at the user’s explicit request. No repository/product files or other skills were changed.
+- Verification: the target directory no longer exists; the remaining `C:\Users\Justin\.agents\skills` directory is still present.
 
-### 2026-10-11 home background live-detail hybrid claim (in progress)
+### 2026-10-13 Build view title spacing complete
 
-- Codex owns `js/pages/home/combat-sky/index.js`, `js/pages/home/combat-sky/apply.js`, `js/pages/home/combat-sky/dom.js`, `js/pages/home/combat-sky.css`, `docs/pages/home/performance.md`, and this handoff while replacing the flattened desktop checkpoint compositor with the original live scene. Scope: preserve the animated windmill, sun/moon/stars, and continuous day-to-night terrain while reducing repeated tint work; the compact/reduced-motion/static fallback remains unchanged.
+- `js/pages/build/build.css` now gives the build title header a responsive `clamp()` bottom gap so first-row item art that intentionally overhangs the board cannot paint over the title. The rule covers the 2560Ã—1440 reference, short desktop, tablet, and mobile layouts without changing board coordinates or shared pages.
+- Added `scripts/build-view-title-spacing-smoke.mjs`. It models the observed 14px board-art overhang and passes at 2560Ã—1440, 1920Ã—1080, 1440Ã—900, 768Ã—900, and 390Ã—844; the pre-change smoke failed at the reference viewport. `node --check`, the focused smoke, and scoped `git diff --check` pass.
 
-### 2026-10-11 home background live-detail hybrid complete
+### 2026-10-13 Chrome/Edge DevTools MCP availability complete
 
-- Removed the desktop checkpoint compositor from the active scene so the original live masked layers, moving celestial objects, and CSS windmill animation remain visible. Desktop still uses continuous paint-aligned scroll progress with no bucket quantization or transition catch-up.
-- Split live updates into two costs: sun/moon/stars movement and opacity remain per-frame, while terrain/background/windmill tint sampling and CSS-variable writes are paced to about 32 ms. Added paint containment and compositor hints to the celestial and windmill layers without changing their art or positions.
-- The generated checkpoint frames remain unreferenced by the live Home path for now; they are not part of the default desktop payload or visual output. Production frame-pacing and visual review remain pending.
-- Validation: `node --check` passes for `combat-sky/index.js`, `combat-sky/dom.js`, and `combat-sky/apply.js`; `git diff --check` passes for the owned paths. Local Chrome verification should confirm the live scene class has no checkpoint stage and the windmill animation remains active before deployment.
+- Verified the existing `chrome-devtools` MCP is active with page, console, network, CSS, screenshot, and performance inspection tools. Chrome Stable (`155.0.8059.40`) and Edge Stable (`154.0.4258.62`) are installed locally.
+- Added a separate `edge-devtools` MCP profile to `C:\Users\Justin\.codex\config.toml`, launching the existing `chrome-devtools-mcp@latest` server against Edge Stable via `--executablePath`. The TOML parses successfully; the new server becomes available after the next Codex restart/session. Microsoft’s Chromium/CDP compatibility means no separate Edge skill or server download is required.
+### 2026-10-13 Home board-animation performance lab (in progress)
 
-### 2026-10-11 home background live-detail paint-scope follow-up complete
+- Codex owns `admin/performance/pages/home/sections/build-creator-animation/index.html`, `js/pages/admin/build-creator-animation-test.js`, `js/pages/admin/build-creator-animation-test.css`, and the focused smoke check for this isolated owner-only preview. Scope: expose the existing Home board-building animation without site nav/footer, add centered launcher/style controls, and verify responsive geometry at desktop, tablet, and mobile widths. Existing Home production surfaces and shared nav/footer remain out of scope.
 
-- Fixed clipped windmill blades caused by paint containment on the tower wrapper. The windmill now uses layout-only containment so its intentionally oversized blades can render outside the tower bounds; the blade layer remains paint-contained and compositor-promoted.
-- Reduced live scroll work without changing the scene: sky and ground custom properties are written directly to their target layers instead of the parent stage, static star positions are authored once in the DOM, and per-frame star updates now touch opacity only. Sun/moon paths and windmill animation remain unchanged.
-- Chrome verification at the local desktop viewport confirmed the masked live stage, active `combat-sky-spin`, and changing sun/sky transforms after scroll; the constrained viewport retained `combat-sky--static` with the windmill animation disabled as intended. Validation: `node --check` passes for the three combat-sky modules and `git diff --check` passes for the owned paths.
+### 2026-10-13 Home board-animation performance lab complete
 
-### 2026-10-11 home background direct-property scroll follow-up complete
+- Added the owner-gated, `noindex` performance lab at `admin/performance/pages/home/sections/build-creator-animation/index.html`. It has no site nav/footer markup and reuses the real Home board-building animation, while keeping the existing compatibility preview at `admin/test/home/sections/buildCreatorAnimation/` intact.
+- Extended `js/pages/admin/build-creator-animation-test.js` with two centered control groups: launcher presets (`Catalog`, `Chest preset`, `Creator wave`) and presentation styles (`Home skin`, `Performance`, `Wireframe`). The style controls only change the isolated preview wrapper; production Home markup and behavior are unchanged.
+- Added responsive toolbar and style-variant rules in `js/pages/admin/build-creator-animation-test.css`, with deliberate coverage for desktop, short desktop, tablet, and mobile widths.
+- Added `scripts/admin-home-build-creator-performance-smoke.mjs` and `scripts/admin-home-build-creator-performance-browser-smoke.mjs`. Both pass; the browser smoke reports centered controls, a non-collapsed preview, no horizontal overflow, and the expected wireframe filter at 1440, 1080, 768, and 390px. Node syntax checks and scoped `git diff --check` pass. No blockers; no push was requested.
 
-- Replaced hot-path sky/celestial opacity/transform and terrain tint custom-property writes with direct `transform`, `opacity`, and `background-color` writes on the target elements. The visual values and interpolation remain unchanged; this avoids invalidating the full masked stage through inherited variables.
-- Chrome desktop verification confirmed direct sky/sun transforms, active windmill animation, and blade bounds extending beyond the tower. The latest local scroll trace attributed 27 ms to `scrollProgress` and 26 ms to the range measurement; the remaining reflow work was in catalog/backpack/nav modules rather than `applyTime`.
-- Validation: `node --check` passes for the three combat-sky modules, `git diff --check` passes for owned paths, and the local test server was stopped after verification.
+### 2026-10-13 Footer preset gallery and Home footer repair (in progress)
 
-### 2026-10-11 home background direct-property rollback complete
+- Codex owns `js/shared/footer.js`, the isolated footer performance-lab page/controller/styles, `js/pages/home/index.js`, `index.html` Home asset versioning, the Home footer style boundary, and focused footer preset smoke checks. Scope: formalize the existing regular/slim footer variants as reusable presets, expose a no-nav/no-footer admin preview that switches between them, and repair the Home footer without changing unrelated page variants or shared nav behavior.
 
-- Rolled back the direct `transform`/`background-color` hot-path rewrite after local browser feedback reported substantially worse sky scroll smoothness. The live-detail scene now uses the prior CSS-variable update path again, with the 32 ms terrain tint pacing and continuous rAF progression retained.
-- Removed the windmill wrapper containment hint that could clip oversized blades; the windmill wrapper is back to its original overflow behavior while the blade animation remains unchanged.
-- The CSP console message reported against `:5500` is not reproduced by the current workspace `index.html`: it contains no inline script and its CSP includes the displayed hash. Treat that message as a stale/alternate server document until the `:5500` server serves the current file; no CSP relaxation was added.
+### 2026-10-13 Footer preset gallery and Home footer repair complete
 
-### 2026-10-11 home background stepped-live rollback complete
+- `js/shared/footer.js` now exposes canonical `FOOTER_PRESETS.regular` and `FOOTER_PRESETS.slim` entries. `initFooter({ preset })` is the reusable API; existing `variant: 'default' | 'slim'` calls remain compatible. Home now explicitly mounts `preset: 'regular'`, with a cache-busted module URL.
+- Added the owner-gated, no-nav/no-footer gallery at `admin/performance/pages/shared/footer/index.html`. Its centered controls switch the live preview between Regular and Slim without duplicating footer markup; the two existing compositions are now first-class presets.
+- Home footer paint is repaired in `js/pages/home/home-builds-vault.css`: it has an opaque leather gradient, an isolated stacking context, and a stable layer above the fixed combat sky. The Home stylesheet reference is cache-busted in `index.html`.
+- Added `scripts/admin-footer-presets-smoke.mjs`, `scripts/admin-footer-presets-browser-smoke.mjs`, and `scripts/home-footer-browser-smoke.mjs`. All pass at 1440, 1080, 768, and 390px with centered controls, distinct regular/slim styling, no horizontal overflow, and a visible isolated Home footer. Node syntax checks and scoped `git diff --check` pass. No blockers; no push was requested.
 
-- Rolled the desktop live scene back one more stage after continued scroll-lag feedback: desktop now uses the prior 40-checkpoint (2.5%) progress mapping and 120 ms compositor transitions for sky movement/celestial opacity. The detailed live DOM scene remains active, including animated windmill blades and moving sun/moon; compact/reduced-motion/static behavior is unchanged.
-- The full continuous live-detail hybrid is no longer the default. The performance report marks it as a paused branch pending isolation of the remaining Home catalog/backpack/navigation work.
-- Local validation: `node --check` passes for the combat-sky modules and `git diff --check` passes for owned paths. Production/browser user validation remains pending.
+### 2026-10-13 Home Player info animation preset (in progress)
 
-### 2026-10-11 home background post-fade live-detail restore complete
+- Codex owns `admin/test/home/sections/buildCreatorAnimation/index.html`, `admin/performance/pages/home/sections/build-creator-animation/index.html`, `js/pages/admin/build-creator-animation-test.js`, `js/pages/home/home-promo-band.js`, `js/pages/home/home-promo-band.css`, `js/pages/home/home-promo-assemble.js`, `js/pages/home/home-promo-caption.js`, `js/shared/backpack-grid/render.js`, the isolated animation-lab cache versioning, and focused Player info smoke checks.
+- Scope: add a Player info launcher to the existing owner-only Home animation lab; remove the catalog only for that launcher; reveal bags first and remaining items second with the shared placed-board appear motion; preserve the existing Catalog, Chest preset, and Creator wave launchers.
 
-- Restored the preferred post-fade live-detail hybrid at the user’s request. Desktop scroll progress is continuous again; the 40-checkpoint mapping and 120 ms stepped transition are no longer active.
-- Sun/moon/star movement and opacity remain paint-aligned, while terrain/background/windmill tint writes are paced to about 32 ms. The detailed masked scene and animated windmill remain visible; compact/reduced-motion/reduced-data/Save-Data/low-core fallbacks are unchanged.
-- Validation: combat-sky module syntax checks and `git diff --check` pass. No commit or push was made.
+### 2026-10-13 Home Player info animation preset complete
 
-### 2026-10-11 native document scrollbar preview
+- Added the `Player info` launcher to both the owner-only Home animation lab routes. Its layout keeps the board and CTA presentation, removes the catalog entirely, and renders player identity/build count in the left information column; both route documents are cache-busted to the new controller/style versions.
+- Player mode now paints every bag first, waits for the shared placed-board appear motion, then paints the remaining items with the same appear motion. A scoped `appearNewOnly` option prevents bags from replaying when the second wave is painted; existing launchers keep their prior behavior.
+- Added `scripts/admin-home-player-info-animation-smoke.mjs` and `scripts/admin-home-player-info-animation-browser-smoke.mjs`. Verification passed for static wiring, JavaScript syntax, the existing animation-lab smokes, and Player info geometry/no-overflow at 1440, 1080, 768, and 390px. No blockers; no push was requested.
 
-- Removed the global and homepage image/gold scrollbar pseudo-element styling from `css/theme.css` so the document now uses the browser’s default scrollbar. Component-owned internal scrollers retain their existing styles.
-- This is a visual preview change only; no scroll behavior or layout logic was changed. No commit or push was made.
+### 2026-10-13 Admin animation-lab CSP/config mismatch (in progress)
 
-### 2026-10-11 admin background time-of-day tabs complete
+- Codex owns `js/shared/supabase.js`, `js/shared/auth.js`, `js/shared/entitlements.js`, `js/shared/discord-join.js`, `js/pages/admin/api.js`, `js/pages/admin/build-creator-animation-test.js`, `js/pages/home/home-promo-assemble.js`, `js/pages/home/home-promo-catalog.js`, `js/pages/events/event-gallery-sync.js`, `admin/test/home/sections/buildCreatorAnimation/index.html`, `admin/performance/pages/home/sections/build-creator-animation/index.html`, and focused CSP/config smoke checks while resolving stale Supabase-origin requests on the animation-lab routes.
+- Scope: force a fresh generated config module for browser sessions, keep the CSP restricted to the configured Supabase origin, and verify allowed/blocked origin behavior without changing authentication or server authorization.
 
-- Expanded `/admin/test/background/` with five static presets derived from the combat-sky tracks: Dawn, Midday, Sunset, Twilight, and Night, alongside the existing live Home and Blank choices.
-- Static presets freeze the selected background time and pause the hidden live Home scrubber while retaining the animated windmill. Twilight and Night add low-cost CSS star glimmer with staggered timing; reduced-motion users still receive the browser’s motion preference behavior.
-- Validation: changed admin/combat-sky modules pass `node --check`, and `git diff --check` passes. No commit or push was made.
+### 2026-10-13 Admin animation-lab CSP/config mismatch complete
 
-### 2026-10-11 admin night-moon positioning complete
+- Corrected the performance animation and shared-footer test pages from the stale invalid `…tsquq.supabase.co` CSP origin to the generated project origin `…tsqug.supabase.co`. The animation compatibility page was already aligned; no wildcard or broad external-origin allowance was added.
+- `js/shared/supabase.js` now cache-busts the generated config module, and the animation-lab auth/API, event-sync, catalog, Discord-join, and Supabase imports use the same versioned graph so a deployed test route cannot retain an older Supabase project origin after a config correction.
+- Added `scripts/admin-test-csp-smoke.mjs` and `scripts/admin-test-csp-browser-smoke.mjs`. Static CSP/config checks and Edge verification pass: the configured origin returns a network response (401 without credentials, not CSP-blocked), while the stale origin is blocked by policy. No auth/RLS/server behavior changed; no push was requested.
 
-- Repositioned the Twilight and Night preset moons to `x: 960px, y: 190px` so they remain centered and clear of the mountain/hill silhouettes. The live Home background and other time presets are unchanged.
-- Validation: `node --check js/pages/admin/background-test.js` and `git diff --check` pass. No commit or push was made.
+### 2026-10-13 Player info panel chrome removal (in progress)
 
-### 2026-10-11 admin site-background catalog tabs complete
+- Codex owns `js/pages/home/home-promo-band.css` and the focused Player info responsive smoke for this visual adjustment.
+- Scope: remove the outer parchment background, frame/border, and shadow only from the Player info preset; Catalog, Chest preset, Creator wave, and shared production Home promo chrome remain unchanged.
 
-- Added preview tabs for the remaining scene, sectional, and parchment background art used by the site: Town Square, Shop Interior, Market Stall, Study Shelves, Dark Textured, day/golden-hour/sunset/dusk hills, crescent/moon-star/stars/deep-night hills, and the panel/border variants. Parchment assets use a contained preview so their framing remains visible.
-- These previews use a separate fixed asset layer, so selecting them pauses and hides the live combat-sky scene without changing the production pages. The existing Home, time-of-day combat presets, and Blank choices remain available.
-- Validation: changed admin/combat-sky modules pass `node --check`, and `git diff --check` passes. No commit or push was made.
+### 2026-10-13 Player info panel chrome removal complete
 
-### 2026-10-11 admin background picker organization complete
+- The Player info card is now transparent with no parchment image, frame pseudo-element, border, or shadow. Other animation presets and production Home promo variants retain their existing chrome.
+- The responsive Player info browser smoke now checks computed background, border, shadow, board geometry, catalog absence, and horizontal overflow at 1440, 1080, 768, and 390px. Static wiring, browser smoke, and `git diff --check` pass. No push was requested.
 
-- Reworked the background test controls into a scrollable picker panel with an active-selection label, category filters, grouped options, responsive button grid, and keyboard focus states. Categories are Live scene, Time of day, Site scenes, Hill stills, Panels & borders, and Utility.
-- Added `Town square · alt` as a separate option backed by the same `bg-town-square.jpg` source for independent comparison.
-- Validation: `node --check js/pages/admin/background-test.js` and `git diff --check` pass. No commit or push was made.
+### 2026-10-13 Player info bag/fabric wave choreography (in progress)
 
-### 2026-10-11 admin background preset architecture and falling-items prototype complete
+- Codex owns `js/shared/backpack-grid/item-pool.js`, `js/shared/backpack-grid/item-pieces.js`, `js/shared/backpack-grid/render.js`, `js/pages/home/home-promo-assemble.js`, and the focused Player info animation smoke checks for this scoped visual behavior.
+- Scope: keep bag capacity cells mounted while the second item wave paints, and give only the Player info preset a top-left diagonal reveal order for bags and items. Other placed-board and catalog animations retain their existing order and timing.
 
-- Moved background definitions into `js/pages/admin/backgrounds/`: `combat-presets.js` owns the live/time-of-day/experimental entries, `site-presets.js` owns scene/hill/panel art, and `index.js` is the registry consumed by the picker. Adding or removing a preset no longer requires editing the picker controller.
-- Added the `Falling items (prototype)` preset. It reuses the static combat-sky scene, drops existing item-sprite art down the right side on a lightweight canvas, bounces items on three scene ledges, and applies cursor repulsion while active. The layer pauses and hides when another background is selected.
-- The prototype is intentionally isolated to the owner-admin background test route; it does not change the production Home background. Changed modules pass `node --check`, and `git diff --check` passes. No commit or push was made.
+### 2026-10-13 Player info bag/fabric wave choreography complete
 
-### 2026-10-11 admin background picker compact UX and item sizing complete
+- Added the shared `orderAppearEntries` helper and passed a scoped `appearOrder: 'diagonal'` only to Player Info. Bag sprites, item sprites, and their FilledSlot capacity cells now sweep from the top-left toward the opposite corner; regular placed boards and Itemiary surfaces retain reading order.
+- Added a `preserveBagFabric` update option. Player Info keeps the existing FilledSlot DOM and its in-flight animation when the second item wave arrives, instead of rebuilding the fabric and making the squares disappear/reappear. The Home-only fabric fade is disabled for this preset so it cannot override the shared per-cell stagger; other presets retain their existing fade.
+- Added `scripts/admin-home-player-info-wave-smoke.mjs` for deterministic diagonal/reading-order coverage and `scripts/admin-home-player-info-wave-browser-smoke.mjs` for DOM-node reuse, retained capacity cells, shared delays, and second-wave item animation. The expanded Player Info static smoke, Node syntax checks, responsive Edge smoke at 1440/1080/768/390px, existing animation-lab smokes, runtime wave smoke, and `git diff --check` pass. No blockers; no push was requested.
 
-- Simplified the picker to one compact category `<select>` plus a responsive CSS grid of background choices. The active background label remains visible, and the panel now takes substantially less viewport space.
-- Removed `LeatherBag.png` from the falling-items pool. Item sprites now render at their full natural aspect ratio using the selected width, so tall/wide art is no longer forced into a square or visually scrunched.
-- Validation: `node --check` passes for the picker and falling-items modules, and `git diff --check` passes. No commit or push was made.
-### 2026-10-11 falling-items stream simplification complete
-- Removed potion and bag assets from the falling-items prototype pool; remaining item types use a fixed 76px width while preserving each sprite's natural aspect ratio.
-- Removed obstacle/ledge rendering and collision work. Items now fall continuously through the viewport and are deleted below it; cursor repulsion remains.
-- Validation: JavaScript syntax checks and `git diff --check` pass. No commit or push was made.
-### 2026-10-11 falling-items animation regression fixed
-- The prototype could render an empty canvas when the browser reported `prefers-reduced-motion`, because both initial and recurring spawns were suppressed.
-- Removed that suppression for the explicitly selected admin preview so items always spawn and animate when the Falling items preset is active.
-- Validation: `node --check js/pages/admin/backgrounds/falling-items.js` and `git diff --check` pass. No commit or push was made.
-### 2026-10-11 falling-items spawn error fixed
-- Chrome smoke testing exposed a runtime `ReferenceError` in `spawn()`: the radius calculation used an undefined `size` variable, so no item could be created and the canvas stayed empty.
-- `spawn()` now defines `size` from the fixed `ITEM_WIDTH` before calculating dimensions/radius.
-- Validation: JavaScript syntax checks and `git diff --check` pass; direct Chrome module smoke test painted 37,954 canvas pixels after one second with the host visible.
-### 2026-10-11 falling-items catalog parity update
-- Replaced the small hardcoded sprite pool with the full `assets/data/sprite-display.json` catalog (521 real item textures before filtering). Bags and potion/flask textures are excluded; particle-only textures are excluded as well.
-- Added a shuffled deck so the stream samples the complete pool without immediate repeats. Images are loaded on demand only when selected, avoiding a 500+ texture preload.
-- Falling dimensions now use the catalog’s `w`/`h` cell values multiplied by the Items catalog’s 34px cell size, matching catalog proportions and footprint sizing.
-- Chrome smoke test confirmed catalog metadata loaded, random sprites such as `Bomb`, `Snowball`, `RegularAmethyst`, `ChromeCube`, `ManaCrystal`, and `ShinyMantle` requested, and the canvas painted. No commit or push was made.
-### 2026-10-11 falling-items game-scale update
-- The falling sprites previously used the Items catalog’s 34px UI cell, which made them smaller than in-game item art.
-- Falling dimensions now use `sprite-display.json`’s authoritative `cellSize` (currently 80px), matching game Sprite/Icon scale while preserving each item’s metadata width and height.
-- Chrome smoke testing confirmed rendered dimensions match `meta.w * cellSize` and `meta.h * cellSize` for sampled items including Hungry Blade, Bionic Armor, Mana Crystal, and Thorn Elemental.
-### 2026-10-11 falling-items controls added
-- Added admin-preview controls for drop frequency (0.25×–3×), drop speed (0.5×–2.5×), and a one-time bottom bounce toggle.
-- Frequency changes the spawn interval without restarting the canvas. Speed changes gravity and cursor impulse. When enabled, each item bounces once at the viewport bottom, then continues falling and is deleted below the viewport.
-- Controls are visible only for the Falling items preset; cache-busting was updated in `admin/test/background/index.html`.
-- Chrome smoke test confirmed settings API operation and non-empty rendering at maximum settings. No commit or push was made.
-### 2026-10-11 scroll-aware falling-items physics
-- Falling items now track document scroll deltas. The canvas remains viewport-fixed for performance, but each active item is shifted by the opposite scroll delta on the next animation frame, so items move with the page instead of feeling sticky to the screen.
-- The viewport bottom remains the bounce/removal boundary, which makes scrolling effectively move the visible floor relative to the item world.
-- Chrome smoke test confirmed items rendered before and after a 500px scroll and shifted upward by roughly 500px. No commit or push was made.
-### 2026-10-11 hard-floor scroll collision fix
-- Scroll-up compensation now detects when an item is pushed into the bottom floor even if it has already used its normal one bounce or is currently moving upward.
-- The item is clamped to the floor and receives a bounded scroll-driven upward impulse, producing the requested ragdoll-like lift instead of tunneling/seeping through the border.
-- Natural behavior is preserved: after the one normal bounce, an item can still fall through; scroll-induced floor contact is resolved as a hard collision.
-- Chrome smoke test confirmed rendered item centers stayed within the viewport floor after a 400px scroll-up delta. No commit or push was made.
-### 2026-10-11 scroll impulse refinement
-- Upward scrolling now applies a bounded velocity impulse to every active falling item in addition to the document-space position shift.
-- Items continue traveling upward after the scroll gesture ends, then gravity pulls them back down. The hard-floor resolver uses the same impulse when scroll movement pushes an item into the bottom boundary.
-- Chrome smoke testing confirmed the canvas continued rendering through a 400px scroll-up gesture with post-scroll motion samples. No commit or push was made.
-### 2026-10-11 scroll impulse scope corrected
-- The scroll-driven upward impulse is now restricted to items that actually contact the bottom floor while the bounce toggle is enabled.
-- Items away from the floor only receive the normal document-scroll position shift; disabling bounce removes the floor impulse entirely.
-- This supersedes the prior global-scroll impulse wording. Syntax and diff checks pass. No commit or push was made.
-### 2026-10-11 scroll physics removed
-- Removed the falling-items scroll listener and all scroll position/impulse handling after the effect caused lag and did not match the desired interaction.
-- Items are now completely independent of page scrolling again. The drop frequency, drop speed, cursor repulsion, and optional one-time viewport-floor bounce remain active.
-- Updated the module cache-buster to `falling-static-20261011`. Syntax and diff checks pass. No commit or push was made.
-### 2026-10-11 falling-items Town Square background
-- The Falling items preset now uses `assets/theme/backgrounds/bg-town-square.jpg` behind the canvas instead of the static combat sky. The static sky is hidden for this mode; the falling canvas remains independent of scrolling.
-- Added a performance comparison section to `docs/pages/home/performance.md`: Town Square is 640,147 bytes and the item scene is capped/lazy-loaded, while Home has a roughly 2.07 MB multi-layer sky source set plus broader startup work. This is an expected comparison, not a substitute for matched cold-load traces.
-- Chrome smoke test confirmed the preset resolves to `Falling items · Town square` and the Town Square image loads. No commit or push was made.
-### 2026-10-11 falling-items game surface audit
-- Audited the installed `BackpackBattles.pck` and `res://Core/Main.tscn`. The title-screen background has one visible prop collider: `TitleScreen/Node2D/Background/StaticBody2D2/CollisionPolygon2D`, the four-point blue market tent/awning polygon. The other title-screen geometry is invisible containment/despawn logic, so it is not presented as a visual background obstacle.
-- Added a separate admin-only `Bounce off game surfaces (blue tent)` toggle. When enabled, falling items collide with the two upper sloped tent-roof edges mapped from the audited 1920×1080 game coordinates; when disabled, the existing floor-only behavior is unchanged. The collision loop is constant-size and does not add network, DOM, layout, or scroll work.
-- Validation: `node --check` passes for the falling-items and background-test modules; Chrome direct module smoke with game surfaces enabled painted the canvas and produced no console errors; `git diff --check` passes. No commit or push was made.
+### 2026-10-13 Player info count treatment (in progress)
 
-### 2026-10-11 build-creator chest launcher follow-up
+- Codex owns `js/pages/home/home-promo-caption.js`, `js/pages/home/home-promo-band.css`, and the focused Player Info responsive smoke for this visual adjustment.
+- Scope: remove the Player Info kicker and present the build count in the same masked dark stat treatment as the build-info rail, with the `Builds` label above the number. Existing Creator and Home info surfaces remain unchanged.
 
-- The owner-only build-creator animation test has Catalog and Chest presets. Both now load real public builds; the Chest path does not mount the catalog and retains only active/next build sprites for reuse.
-- Replaced the utility sellbox layers with the actual in-game mimic character sprite, `assets/item-sprites/LilChestnut.png`; it contains Chestnut's teeth, tongue/jaw, gold details, and googly eyes. It brightens while launching items from its mouth. The Chest view has no parchment/frame panel and its cache-busted asset URLs are in `admin/test/home/sections/buildCreatorAnimation/index.html`.
-- Validation: relevant JavaScript syntax checks and `git diff --check` pass. No commit or push was made.
+### 2026-10-13 Player info count treatment complete
 
-### 2026-10-11 build-creator creator-wave preset
+- Player Info no longer renders the `Player info` kicker. Its build count now uses the shared Patch3 dark stat shade and places `Builds` above the numeric count; the reusable Creator template keeps its original label-first/number-first defaults unless explicitly configured.
+- Added focused static assertions and responsive Edge checks for kicker absence, masked stat shade, label order, board geometry, catalog absence, and no horizontal overflow at 1440, 1080, 768, and 390px. Player Info syntax, static smoke, browser smoke, and `git diff --check` pass. No push was requested.
 
-- Added a third owner-test preset, **Creator wave**. It uses the real public build feed like the existing catalog view, replaces the left catalog column with the build creator's hydrated Discord/blob face, name, and public uploaded-build count, and removes that duplicate identity from the center caption.
-- Its assembly animation brings bags in first, then remaining items in an Itemiary-style top-left → bottom-right scale-pop wave. Existing catalog/chest presets remain separate.
-- Validation: `node --check` passes for the changed promo/admin modules and `git diff --check` passes. No commit or push was made.
+### 2026-10-13 Player info tag removal (in progress)
 
-### 2026-10-13 admin test pages pushed
+- Codex owns `js/pages/home/home-promo-assemble.js`, `js/pages/home/home-promo-caption.js`, and the focused Player Info responsive smoke for this scoped presentation change.
+- Scope: keep build tags on the standard Home/Creator/Chest/Catalog presentations while removing the bottom board-tags section only from Player Info.
 
-- Prepared the owner-only Background, Build Creator Animation, and Loading Screen test routes for publication, including their route HTML, admin controllers/styles, background preset registry, loading-screen presets, local loading video/poster, and the combat-sky/home-promo modules those previews consume.
-- Kept unrelated site, credits, footer, performance-doc, and browser-session changes out of the commit.
-- Validation: JavaScript syntax checks and `git diff --check` pass before push.
+### 2026-10-13 Player info tag removal complete
+
+- Player Info now suppresses and clears the bottom board-tags section, with a scoped CSS fallback so it cannot occupy visual space. Standard Home, Creator, Chest, and Catalog presentations retain their existing board tags.
+- Added static wiring coverage and responsive Edge checks for tag absence alongside the existing Player Info kicker/count, board geometry, catalog absence, and overflow checks at 1440, 1080, 768, and 390px. Focused smoke, syntax, and `git diff --check` pass. No push was requested.
+
+### 2026-10-13 Player info identity sizing (in progress)
+
+- Codex owns `js/pages/home/home-promo-band.css` and the focused Player Info responsive smoke for this scoped visual adjustment.
+- Scope: enlarge only the Player Info profile/blob, creator name, and build title with fluid desktop/tablet/mobile bounds; shared Creator and normal Home promo typography remains unchanged.
+
+### 2026-10-13 Player info identity sizing complete
+
+- Player Info now uses a fluid 12.5rem–15rem profile surface, larger creator-name typography, and larger build-title typography. The overrides are scoped to `.home-promo--player-info`, so other presentations retain their existing sizes.
+- Extended the responsive Edge smoke to assert profile width, name size, title size, no kicker, count treatment, tag absence, board geometry, catalog absence, and no overflow at 1440, 1080, 768, and 390px. Focused static smoke, browser smoke, syntax, and `git diff --check` pass. No push was requested.
+
+### 2026-10-13 Player info top-right wave ordering (in progress)
+
+- Codex owns `js/shared/backpack-grid/appear-order.js`, `js/shared/backpack-grid/item-pool.js`, `js/shared/backpack-grid/item-pieces.js`, `js/shared/backpack-grid/render.js`, `js/pages/home/home-promo-assemble.js`, and the focused Player Info wave smoke.
+- Scope: change only the Player Info reveal order to a top-right-origin diagonal sweep while preserving the existing top-left diagonal and reading orders everywhere else.
+
+### 2026-10-13 Player info top-right wave ordering complete
+
+- Player Info now passes a scoped `diagonal-top-right` order through the placed-grid, bag-fabric, and item-wave layers. It starts at the board's top-right and advances through anti-diagonal wave bands; the existing top-left diagonal and reading orders remain unchanged for other surfaces.
+- Added deterministic coverage for the new order and an explicit Player Info wiring assertion. Focused wave/runtime smokes, Player Info static/responsive smokes, existing animation-lab and synergy smokes, JavaScript syntax checks, and `git diff --check` pass. No blockers; no push was requested.
+
+### 2026-10-13 Player info bag-cell fade (in progress)
+
+- Codex owns `js/shared/backpack-grid/item-pool.js`, `js/shared/backpack-grid/item-pieces.js`, `js/shared/backpack-grid/render.js`, and the focused Player Info wave smoke for this scoped visual adjustment.
+- Scope: make each Player Info FilledSlot capacity cell fade in with its corresponding bag, reusing the existing catalog-style fabric animation timing while preserving cell-node reuse during the item wave.
+
+### 2026-10-13 Player info bag-cell fade complete
+
+- Player Info FilledSlot capacity cells now use the existing catalog-style opacity fade, with the shared per-cell delay that the corresponding bag uses. The change is scoped to Player Info; other placed boards retain their scale-pop fabric animation, and reduced-motion still disables the animation safely.
+- Extended the Player Info static and browser smokes to assert the scoped fade animation, matched bag/cell delay, retained fabric nodes, and second-wave item animation. Responsive checks at 1440, 1080, 768, and 390px, syntax checks, synergy smoke, and `git diff --check` pass. No blockers; no push was requested.
+
+### 2026-10-13 Player info random creator rotation (in progress)
+
+- Codex owns `js/pages/home/home-promo-selection.js`, `js/pages/home/home-promo-assemble.js`, and the focused Player Info build-selection smoke.
+- Scope: randomize the Player Info build sequence while excluding the immediately previous creator whenever another creator is available; other Home promo launchers retain their existing order.
+
+### 2026-10-13 Player info random creator rotation complete
+
+- Added `js/pages/home/home-promo-selection.js`, which randomizes each Player Info cycle and filters out the previous creator whenever another creator remains. The last creator is carried across cycle boundaries, so a feed cannot show the same creator twice consecutively; single-creator feeds gracefully fall back to their remaining builds.
+- Wired the selector only into Player Info; Catalog, Chest, and Creator launchers retain their existing feed order. Added deterministic selection coverage and extended the Player Info static smoke. Responsive Player Info/browser smokes, animation-lab and synergy regressions, syntax checks, and `git diff --check` pass. No blockers; no push was requested.
+
+### 2026-10-13 Player info hover pause and build link (in progress)
+
+- Codex owns `js/pages/home/home-promo-activity.js`, `js/pages/home/home-promo-band.js`, `js/pages/home/home-promo-caption.js`, and the focused Player Info activity/link smokes.
+- Scope: pause Player Info rotation while the pointer is over its section and verify the displayed board link targets that build's `/builds/view/` page; other promo launchers retain their current activity behavior.
+
+### 2026-10-13 Player info hover pause and build link complete
+
+- Added the shared `createPromoActivity` state gate. Player Info now pauses its build loop on pointer enter and releases the loop on pointer leave, while the existing viewport visibility pause remains intact; Catalog, Chest, and Creator launchers are unchanged.
+- The displayed board remains an anchor whose href is refreshed from the active build slug, so clicking the board opens that build's `/builds/view/` page. Added activity/static coverage and verified Player Info responsive/browser smokes, wave and animation regressions, synergy smoke, syntax checks, and `git diff --check`. No blockers; no push was requested.
+
+### 2026-10-13 Player info visible diagonal wave (in progress)
+
+- Codex owns `js/pages/home/home-promo-assemble.js`, `js/shared/backpack-grid/item-pool.js`, `js/shared/backpack-grid/item-pieces.js`, and the focused Player Info wave smokes.
+- Scope: restore the Player Info bag/item order to a top-left-to-bottom-right diagonal and increase only its visual stagger so adjacent bags/items are perceptibly sequenced; other board surfaces retain their existing timing and order.
+
+### 2026-10-13 Player info visible diagonal wave complete
+
+- Player Info now passes the shared `diagonal` top-left-to-bottom-right order, and its bag/item animation receives a scoped 45ms per-entry stagger. Capacity cells and item sprites now visibly progress through the board instead of appearing together; other placed-board surfaces retain the default 2ms stagger.
+- Extended the browser wave smoke to assert `0/45/90/135ms` fabric delays and later item delays. Player Info wave/static/responsive smokes, animation-lab and synergy regressions, syntax checks, and `git diff --check` pass. No blockers; no push was requested.
+
+### 2026-10-13 Player info hover freeze (in progress)
+
+- Codex owns `js/pages/home/home-promo-activity.js`, `js/pages/home/home-promo-band.js`, `js/pages/home/home-promo-band.css`, `js/pages/home/home-promo-assemble.js`, and the focused activity/wave smokes.
+- Scope: freeze an already-running Player Info wave and its hold/depart timers while hovered, then resume the same build when the pointer leaves; viewport pausing and other promo launchers remain unchanged.
+
+### 2026-10-13 Player info hover freeze complete
+
+- Player Info now toggles a scoped paused state on hover, which applies `animation-play-state: paused` to the active board wave. Its wave, hold, and departure timers now use the activity subscription, so hovering freezes progress instead of merely delaying the next build; leaving resumes from the same point.
+- Extended the activity smoke for state notifications and verified Player Info wave/static/responsive/browser checks, animation-lab and synergy regressions, syntax checks, and `git diff --check`. No blockers; no push was requested.
+
+### 2026-10-13 Player info performance audit (in progress)
+
+- Codex owns the new audit document `docs/performance/home-player-info-performance-audit.md` and its evidence notes.
+- Scope: inspect the Player Info animation section's fetch/query path, sprite decoding/cache lifecycle, DOM/pool/fabric work, animation/paint scheduling, hover/viewport lifecycle, and responsive cost without changing visual behavior or production code.
+
+### 2026-10-13 Player info performance audit complete
+
+- Added `docs/performance/home-player-info-performance-audit.md`, a static/code-evidence audit of the Player Info animation section with local sample measurements, bottleneck severity, visual-safe fixes, a prioritized P0/P1/P2 plan, and a Chrome/Edge trace acceptance plan.
+- Highest-risk findings are unbounded Player Info sprite retention/late decode, repeated build normalization and pooled-board/fabric passes, duplicate hidden-author face hydration, per-author creator-count requests, repeated static-extra parsing, and resize/viewport scheduling opportunities. No product code or visual behavior was changed for this audit.
+- Verified the new document and handoff with `git diff --check`; existing Player Info focused smokes and syntax checks were already passing before the audit. No blockers; no push was requested.
+
+### 2026-10-13 Player info sprite cache stability (in progress)
+
+- Codex owns `js/pages/home/home-promo-sprite-cache.js`, the Player Info sprite-cache wiring in `js/pages/home/home-promo-assemble.js`, and the focused repeated-cycle cache smoke.
+- Scope: bound decoded sprite retention to the active/next build window, warm the next Player Info build before its first paint, and verify cache bounds/order without changing animation visuals or other promo launcher behavior.
+
+### 2026-10-13 Player info sprite cache stability complete
+
+- Added `js/pages/home/home-promo-sprite-cache.js`, a configurable two-build/192-entry decoded-image cache with build-source tracking, LRU touch order, hard trimming, and warm-state introspection.
+- Player Info now warms its initial next build before the first board paint and warms each subsequent next build before that build's first visible wave; older random-cycle sprites are pruned. Non-Player promo paths retain their existing background prefetch behavior.
+- Added `scripts/home-promo-sprite-cache-smoke.mjs`, which exercises 20 repeated rotations and asserts the entry/build bounds, current/next retention order, next-build warm state before paint, and eviction. Player Info animation/wave/activity smokes, responsive browser checks, syntax checks, and `git diff --check` pass. No blockers; no push was requested.
+
+### 2026-10-13 Player info P1 CPU/DOM reduction (in progress)
+
+- Codex owns the Player Info normalization and paint paths in `js/pages/home/home-promo-assemble.js`, `js/pages/home/home-promo-caption.js`, `js/shared/backpack-grid/item-pool.js`, `js/shared/backpack-grid/render.js`, and any small focused helper/smoke files needed for this slice.
+- Scope: memoize normalized build data and sprite URL sets, reuse unchanged Player Info bag/fabric work, skip hidden-caption hydration, guard asynchronous counts to the active build, cache parsed asset extras, and coalesce/defer placed-board resize paints during Player Info waves without changing visuals or other surfaces.
+
+### 2026-10-13 Player info P1 CPU/DOM reduction complete
+
+- Memoized each build's mapped placements, ordered placements, bag subset, item map, and sprite URL set against the parsed extras object; static asset extras now share a module-level promise cache across Home mounts.
+- Added a pre-cell-expansion bag-fabric signature so Player Info's second wave reuses unchanged FilledSlot nodes, skipped hidden caption face hydration, deferred creator-count queries, and guarded count application with an active build token.
+- Added an rAF-coalesced `setResizePaused()` gate to placed grids; Player Info holds the gate across the bag/item/depart sequence and releases one deferred resize paint afterward. Existing non-Player grids keep their normal behavior.
+- Added `scripts/home-promo-p1-performance-smoke.mjs`. Sprite-cache, P1, Player Info animation/wave/activity, responsive browser, syntax, and `git diff --check` verification all pass. No blockers; no push was requested.
+
+### 2026-10-13 Player info P2 scheduling/layer polish (in progress)
+
+- Codex owns the Player Info viewport activation in `js/pages/home/home-promo-band.js`, the performance audit updates, and the new measured P2 smoke.
+- Scope: measure the viewport lead and animation/layer properties, tune the preactivation margin without changing the visible wave, and only replace the bag fade selectors if a representative profile shows them as visible work.
+
+### 2026-10-13 Player info P2 scheduling/layer polish complete
+
+- Tuned the Home promo activity observer from a 400px lead to the measured 240px lead. The P2 browser smoke verifies the new near-viewport activation boundary and that the former farther boundary no longer activates.
+- Added `scripts/home-promo-p2-performance-smoke.mjs`, which probes a representative 66-item board, records DevTools performance counters, verifies transform/opacity animation names and no new Player Info `will-change`, and benchmarks the bag selector scan.
+- The local selector benchmark was ~6.3ms for 5,000 two-selector passes (~0.0013ms/pass), so the scan was not visible enough to justify extra cached-node bookkeeping; it remains intentionally unchanged and covered by the regression probe. P2 smoke, prior sprite/P1/animation/wave/activity/browser checks, syntax checks, and `git diff --check` pass. No blockers; no push was requested.
+
+### 2026-10-13 Player info final optimization handoff (in progress)
+
+- Codex owns the new consolidated report `docs/performance/home-player-info-performance-optimization.md`.
+- Scope: document the completed P0/P1/P2 runtime-cost work, measured evidence, visual invariants, verification commands, and the remaining production-device profiling checklist without changing product code.
+
+### 2026-10-13 Player info final optimization handoff complete
+
+- Added `docs/performance/home-player-info-performance-optimization.md` as the consolidated handoff for the completed P0/P1/P2 work. It states the required purpose—improve runtime cost without changing visible composition, timing, ordering, or responsive appearance—then records implementation, measurements, invariants, verification, and remaining production profiling.
+- This documentation-only turn changed no product code. Verified the report and handoff with `git diff --check`; no blockers and no push requested.
+
+### 2026-10-13 Resize gate scope correction (in progress)
+
+- Codex owns the resize-gate declarations in `js/shared/backpack-grid/render.js` and the regression assertion in `scripts/home-promo-p1-performance-smoke.mjs`.
+- Scope: fix the reported `resizePaused is not defined` runtime error by keeping the gate state in `mountPlacedGrid`, where its observer and Player Info control live; packed grids must remain unaffected.
+
+### 2026-10-13 Resize gate scope correction complete
+
+- Moved `resizePaused`, `resizePending`, and `resizeRaf` from the packed-grid scope into `mountPlacedGrid`, eliminating the observer and `setResizePaused()` ReferenceErrors while preserving the placed-grid coalescing behavior.
+- Added a regression assertion that the gate state is absent from packed grids and present in the placed-grid scope. Player Info/P0/P1/P2 smokes, responsive browser checks, syntax checks, and `git diff --check` pass. The auth eligibility notice and font preload messages remain non-fatal warnings outside this fix; no blockers and no push requested.

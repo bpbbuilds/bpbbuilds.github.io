@@ -121,7 +121,12 @@ export function mountPackedGrid(container, options) {
  *   fitHost?: boolean,
  *   exactBoard?: boolean,
  *   reserveScrollGap?: boolean,
- *   appear?: boolean,
+   *   appear?: boolean,
+   *   appearNewOnly?: boolean,
+   *   appearMissing?: boolean,
+   *   appearOrder?: 'reading' | 'diagonal' | 'diagonal-top-right',
+ *   appearStaggerMs?: number,
+ *   preserveBagFabric?: boolean,
  *   promo?: boolean,
  *   ringConfig?: boolean,
  * }} options
@@ -167,15 +172,23 @@ export function mountPlacedGrid(container, options) {
   let lastLayoutKey = '';
   /** First paint uses options.appear (items-page AppearInLibrary wave). */
   let appearOnce = options.appear === true;
+  /** Optional keep-alive set for staged previews that reveal existing entries only once. */
+  let previousShown = null;
   /** @type {Map<string, { itemEl: HTMLElement, underEl: HTMLElement | null }>} */
   const pool = new Map();
+  let resizePaused = false;
+  let resizePending = false;
+  let resizeRaf = 0;
 
   function render({
     forcePaint = false,
     appear = false,
+    appearNewOnly = options.appearNewOnly === true,
+    appearMissing = options.appearMissing === true,
     animateFace = false,
     animateFaceKeys = null,
     faceContinue = null,
+    preserveBagFabric = false,
   } = {}) {
     const fallback = cols * baseCellPx;
     // Prefer host width — measuring `el` after a large first paint locks fillWidth
@@ -202,21 +215,52 @@ export function mountPlacedGrid(container, options) {
       itemsById,
       getSpriteUrl: options.getSpriteUrl,
       pool,
+      prevShown: appearNewOnly ? previousShown : undefined,
+      appearNewOnly,
+      appearMissing,
       // Park items not in the current round (round scrubber / board updates)
       parkRest: true,
       appear: doAppear,
       appearLayer: 'item',
+      appearOrder:
+        options.appearOrder === 'diagonal-top-right'
+          ? 'diagonal-top-right'
+          : options.appearOrder === 'diagonal'
+            ? 'diagonal'
+            : 'reading',
+      appearStaggerMs: options.appearStaggerMs,
+      preserveBagFabric:
+        preserveBagFabric === true || options.preserveBagFabric === true,
       animateFace: animateFace === true,
       animateFaceKeys:
         animateFaceKeys instanceof Set ? animateFaceKeys : null,
       faceContinue: faceContinue instanceof Map ? faceContinue : null,
       ringConfig: options.ringConfig === true,
     });
+    if (options.appearNewOnly === true || appearNewOnly === true) {
+      previousShown = new Set(
+        [...pool.entries()]
+          .filter(([, entry]) => entry.shown)
+          .map(([key]) => key),
+      );
+    }
+  }
+
+  function scheduleResizePaint() {
+    if (resizePaused) {
+      resizePending = true;
+      return;
+    }
+    if (resizeRaf) return;
+    resizeRaf = requestAnimationFrame(() => {
+      resizeRaf = 0;
+      void render();
+    });
   }
 
   let ro = null;
   if (fillWidth || fitHost) {
-    ro = new ResizeObserver(() => render());
+    ro = new ResizeObserver(scheduleResizePaint);
     ro.observe(fitHost ? host : el);
   }
   render({ forcePaint: true });
@@ -228,6 +272,9 @@ export function mountPlacedGrid(container, options) {
      * @param {Map<string, object> | Record<string, object>} [nextItemsById]
      * @param {{
      *   appear?: boolean,
+     *   appearNewOnly?: boolean,
+     *   appearMissing?: boolean,
+     *   preserveBagFabric?: boolean,
      *   animateFace?: boolean,
      *   animateFaceKeys?: Set<string>,
      *   faceContinue?: Map<string, { fromDeg: number, durationMs?: number }>,
@@ -255,16 +302,69 @@ export function mountPlacedGrid(container, options) {
       render({
         forcePaint: true,
         appear: opts.appear === true,
+        appearNewOnly:
+          opts.appearNewOnly === undefined
+            ? options.appearNewOnly === true
+            : opts.appearNewOnly === true,
+        appearMissing:
+          opts.appearMissing === undefined
+            ? options.appearMissing === true
+            : opts.appearMissing === true,
+        preserveBagFabric: opts.preserveBagFabric === true,
         animateFace: opts.animateFace === true,
         animateFaceKeys: opts.animateFaceKeys,
         faceContinue: opts.faceContinue,
       });
     },
     /**
+     * Defer responsive repaints while a staged promo wave is running. The
+     * latest resize is coalesced and painted once the wave releases the gate.
+     * @param {boolean} paused
+     */
+    setResizePaused(paused) {
+      resizePaused = paused === true;
+      if (!resizePaused && resizePending) {
+        resizePending = false;
+        scheduleResizePaint();
+      }
+    },
+    /**
+     * Remove parked item nodes that are outside the next staged board.
+     *
+     * Placed grids normally keep parked nodes alive for instant re-entry. The
+     * Home Player Info loop rotates through public builds instead of offering
+     * a scrollable keep-alive surface, so it can safely release old entries
+     * after the departure animation has finished. Visible entries are never
+     * touched; callers may retain a small next-build key window.
+     *
+     * @param {{ keepKeys?: Set<string> }} [opts]
+     * @returns {number} number of parked placement nodes removed
+     */
+    pruneParked(opts = {}) {
+      const keepKeys = opts.keepKeys instanceof Set ? opts.keepKeys : new Set();
+      let removed = 0;
+      for (const [key, entry] of pool) {
+        if (entry.shown || keepKeys.has(key)) continue;
+        entry.itemEl.remove();
+        entry.underEl?.remove();
+        pool.delete(key);
+        removed += 1;
+      }
+      if (previousShown) {
+        for (const key of [...previousShown]) {
+          if (!pool.has(key)) previousShown.delete(key);
+        }
+      }
+      return removed;
+    },
+    /**
      * @param {{ keepHost?: boolean }} [opts]
      */
     destroy(opts = {}) {
       ro?.disconnect();
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeRaf = 0;
+      resizePending = false;
       pool.clear();
       if (!opts.keepHost) el.remove();
     },
