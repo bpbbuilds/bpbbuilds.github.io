@@ -3,21 +3,24 @@
  */
 
 import { HERO_CLASSES } from '../items/filter-logic.js';
+import { FEED_VIEW_LABELS, FEED_VIEWS } from '../builds/feed-filters.js';
 import { buildSearchFieldHtml } from '../../shared/build-search-input.js';
 
 /** @typedef {'all' | 'featured' | 'hidden'} AdminBuildsListFilter */
+/** @typedef {import('../builds/feed-filters.js').FeedView} AdminBuildsView */
 
 /**
  * @typedef {{
  *   list: AdminBuildsListFilter,
  *   heroClass: string | null,
+ *   view: AdminBuildsView,
  *   q: string,
  * }} AdminBuildsFilterState
  */
 
 /** @returns {AdminBuildsFilterState} */
 export function defaultAdminBuildsFilters() {
-  return { list: 'all', heroClass: null, q: '' };
+  return { list: 'all', heroClass: null, view: 'compact', q: '' };
 }
 
 /**
@@ -28,6 +31,7 @@ export function defaultAdminBuildsFilters() {
 export function adminBuildsFiltersHtml(root, state, shown) {
   const base = root.endsWith('/') ? root : `${root}/`;
   const countLabel = shown === 1 ? '1 build shown.' : `${shown} builds shown.`;
+  const viewLabel = FEED_VIEW_LABELS[state.view] || 'Compact';
 
   const listBtns = [
     { id: 'all', label: 'All' },
@@ -51,6 +55,10 @@ export function adminBuildsFiltersHtml(root, state, shown) {
   }).join('');
 
   const anyClassOn = !state.heroClass;
+  const viewOptions = FEED_VIEWS.map((view) => {
+    const on = state.view === view;
+    return `<button type="button" class="il-filter__group-option${on ? ' is-active' : ''}" data-admin-builds-view="${escapeAttr(view)}" role="option" aria-selected="${on}">${escapeHtml(FEED_VIEW_LABELS[view])}</button>`;
+  }).join('');
 
   return `
     <aside class="items-filters il-filter builds-feed-filters admin-builds-filters" aria-label="Filter builds">
@@ -66,6 +74,18 @@ export function adminBuildsFiltersHtml(root, state, shown) {
       <div class="il-filter__shade">
         <p class="il-filter__sticker">List</p>
         <div class="il-filter__checks" role="group" aria-label="Build list">${listBtns}</div>
+      </div>
+
+      <div class="il-filter__shade admin-builds-filters__menus">
+        <div class="il-filter__grouping" data-admin-builds-view-root>
+          <button type="button" class="il-filter__group-trigger" data-admin-builds-view-trigger aria-haspopup="listbox" aria-expanded="false">
+            <img class="il-filter__group-arrow" src="${escapeAttr(base)}assets/icons/filters/DropdownArrow.png" alt="" draggable="false" />
+            <span class="il-filter__sticker" data-admin-builds-view-label>${escapeHtml(viewLabel)}</span>
+          </button>
+          <div class="il-filter__group-menu" data-admin-builds-view-menu hidden role="listbox" aria-label="View builds">
+            ${viewOptions}
+          </div>
+        </div>
       </div>
 
       <div class="il-filter__shade">
@@ -101,6 +121,14 @@ export function syncAdminBuildsFiltersUi(rail, state, shown) {
     el.classList.toggle('is-on', on);
     el.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
+  const viewLabel = rail.querySelector('[data-admin-builds-view-label]');
+  if (viewLabel) viewLabel.textContent = FEED_VIEW_LABELS[state.view] || 'Compact';
+  rail.querySelectorAll('[data-admin-builds-view]').forEach((el) => {
+    if (!(el instanceof HTMLElement)) return;
+    const on = el.getAttribute('data-admin-builds-view') === state.view;
+    el.classList.toggle('is-active', on);
+    el.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
 }
 
 /**
@@ -113,14 +141,42 @@ export function syncAdminBuildsFiltersUi(rail, state, shown) {
  * }} opts
  */
 export function bindAdminBuildsFilters(rail, opts) {
+  const viewTrigger = rail.querySelector('[data-admin-builds-view-trigger]');
+  const viewMenu = rail.querySelector('[data-admin-builds-view-menu]');
+
+  function closeViewMenu() {
+    if (viewMenu instanceof HTMLElement) viewMenu.hidden = true;
+    if (viewTrigger instanceof HTMLElement) viewTrigger.setAttribute('aria-expanded', 'false');
+  }
+
   /** @param {Event} e */
   function onClick(e) {
     const t = e.target;
     if (!(t instanceof Element)) return;
 
     if (t.closest('[data-admin-builds-reset]') && rail.contains(t.closest('[data-admin-builds-reset]'))) {
+      closeViewMenu();
       opts.onResetSearch?.();
       opts.onChange(opts.defaultState(), { listChanged: true });
+      return;
+    }
+
+    if (t.closest('[data-admin-builds-view-trigger]') && rail.contains(viewTrigger)) {
+      const open = viewMenu instanceof HTMLElement && !viewMenu.hidden;
+      if (viewMenu instanceof HTMLElement) viewMenu.hidden = open;
+      if (viewTrigger instanceof HTMLElement) viewTrigger.setAttribute('aria-expanded', open ? 'false' : 'true');
+      return;
+    }
+
+    const viewBtn = t.closest('[data-admin-builds-view]');
+    if (viewBtn instanceof HTMLElement && rail.contains(viewBtn)) {
+      const raw = viewBtn.getAttribute('data-admin-builds-view') || '';
+      if (!FEED_VIEWS.includes(/** @type {AdminBuildsView} */ (raw))) return;
+      closeViewMenu();
+      const cur = opts.getState();
+      const view = /** @type {AdminBuildsView} */ (raw);
+      if (view === cur.view) return;
+      opts.onChange({ ...cur, view });
       return;
     }
 

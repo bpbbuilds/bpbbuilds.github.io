@@ -148,9 +148,9 @@ export async function mountBuildsPanel(host, opts) {
       return;
     }
     body.innerHTML = `
-      <div class="admin-cards" data-admin-list>
+      <div class="admin-cards admin-cards--${filters.view}" data-admin-list>
         ${builds
-          .map((b) => buildCardHtml(b, opts.root, actionsForBuild(b, filters.list)))
+          .map((b) => buildCardHtml(b, opts.root, actionsForBuild(b, filters.list), { view: filters.view }))
           .join('')}
       </div>
     `;
@@ -163,6 +163,7 @@ export async function mountBuildsPanel(host, opts) {
         spriteDisplay: opts.spriteDisplay,
         shapes: opts.shapes,
         sockets: opts.sockets,
+        view: filters.view,
       });
     }
   }

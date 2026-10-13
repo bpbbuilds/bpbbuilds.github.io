@@ -12,6 +12,7 @@ import { mountFeedBoardThumbs } from '../builds/board-thumbs.js';
  *   spriteDisplay?: object | null,
  *   shapes?: object | null,
  *   sockets?: object | null,
+ *   view?: 'card' | 'compact' | 'grid',
  * }} opts
  * @returns {() => void}
  */
@@ -19,7 +20,7 @@ export function mountAdminBoardThumbs(listEl, opts) {
   return mountFeedBoardThumbs(listEl, {
     builds: opts.builds,
     root: opts.root,
-    view: 'compact',
+    view: opts.view || 'compact',
     spriteDisplay: opts.spriteDisplay,
     shapes: opts.shapes,
     sockets: opts.sockets,

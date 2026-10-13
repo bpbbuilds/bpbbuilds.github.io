@@ -1,5 +1,27 @@
 # Codex handoff
 
+### 2026-10-13 Admin Builds view modes complete
+- Codex owns the admin Builds view selector/state, admin row templates, board-thumb view pass-through, and `js/pages/admin/admin.css` responsive variants for this task.
+- Scope: add Card and Grid views while retaining Compact as the default; preserve admin actions and existing auth/API behavior.
+- No simulator, shared navigation, legal, or screenshot-import paths are in scope.
+- Added the shared Card/Grid/Compact selector to the admin Builds filter rail, passed the selected view through the board renderer, and added responsive admin-specific templates/styles. `scripts/admin-builds-views-smoke.mjs`, JavaScript syntax checks, and `git diff --check` pass.
+
+### 2026-10-12 Combat-start ordering audit (in progress)
+- Codex owns the extracted-game versus simulator start-of-battle ordering audit, including trigger-priority parity, per-item pre/combat/post passes, preparation/listener order, and Dark Lantern threshold reactions. Scope excludes the unrelated local simulator band edits and untracked admin/debug files in the worktree.
+
+### 2026-10-12 Combat-start ordering audit complete
+- Audited `Core/Game.gd`, `Core/Character.gd`, `Items/Item.gd`, and every extracted `onPrepare` damage listener. The simulator now shuffles/sorts each side using the source trigger-priority map, runs player items before opponent items, keeps each item's socket/pre-start/arm work contiguous, and connects threshold listeners before any combat-start effects. Source priority overrides are checked against the extracted classes with no simulator-only combat priorities.
+- Corrected Dark Lantern's opening self-damage path to use the source `loseHealth` semantics (bypassing block/resistance), log the self-health event before dispatch, and emit `character_damaged` before the lethal/death path; threshold listeners (including Health Potion, boots, bags, rings, cubes, potions, Phoenix-family, and other extracted listeners) observe it from `onPrepare`. Dark Lantern still only grants invulnerability on lethal reincarnation, not at combat start. Added exact-50% strict-threshold coverage and compatibility aliases for direct handler callers.
+- Added `scripts/sim-combat-start-priority-smoke.mjs` and `scripts/sim-dark-lantern-start-threshold-smoke.mjs`; lifecycle, priority, threshold, Phoenix/Lantern, ring, resource, and focused source smokes pass. `node scripts/build-sim-fidelity-ledger.mjs --check`, syntax checks, and `git diff --check` pass. The full smoke sweep still reports unrelated existing failures (`browser-smoke`, `game-cursor-smoke`, several older candidate/alias fixtures); no unrelated fixes were folded into this task.
+- Updated the hook-audit mapping so a source `onDamaged`/`onTriggerPotion` callback implemented as an inline `onPrepare` listener is recorded as covered; the ledger remains at 492 source-ported rows, zero unresolved/deferred rows, and one intentional Ruby Egg lifecycle triage.
+
+### 2026-10-12 Dark Lantern combat-start invulnerability clarification (in progress)
+- Codex owns the Dark Lantern lifecycle regression that distinguishes its combat-start activation event from the lethal-hit invulnerability window. Scope is limited to the focused simulator smoke and source-aligned evidence; unrelated local simulator band edits remain untouched.
+
+### 2026-10-12 Dark Lantern combat-start invulnerability clarification complete
+- Confirmed the extracted source only calls `makeInvulnerable` from the lethal `onDamaged` reincarnation path. Combat start loses 50% max HP and calls `activate()` for the item event/animation; it does not grant invulnerability.
+- Added a focused simulator regression to `scripts/sim-phoenix-lantern-smoke.mjs` asserting 50% opening HP, zero invulnerability at combat start, and one activation event. Phoenix/Lantern smoke, syntax, diff, and `node scripts/build-sim-fidelity-ledger.mjs --check` pass. No product handler change was required.
+
 ### 2026-10-12 Admin-backed Premium accounting correction complete
 - Reclassified the two verified admin profiles, `smojowastaken` and `bpbbuilds`, from `plan = 'premium'` to `plan = 'free'` while retaining `is_owner = true`, `founding_slot = null`, and `premium_until = null`. The shared entitlement logic grants owners Premium access before plan checks, while `isPaidPremium` now returns false for these non-paying admin accounts.
 - Refreshed `member_daily` in the same transaction: live snapshot is users 5, paid Premium 0, founding 3, revenue $0.00. The founding status remains 3/10. No website files or unrelated worktree files were changed.

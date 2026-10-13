@@ -34,11 +34,13 @@ export function flagBadges(b) {
  * @param {object} b
  * @param {string} root
  * @param {string[]} actionKeys
+ * @param {{ view?: 'card' | 'grid' | 'compact' }} [opts]
  */
-export function buildCardHtml(b, root, actionKeys) {
+export function buildCardHtml(b, root, actionKeys, opts = {}) {
   const href = buildHref(b, root);
   const when = formatWhen(b.created_at);
   const slug = String(b.slug || '');
+  const view = opts.view === 'card' || opts.view === 'grid' ? opts.view : 'compact';
   const actions = actionKeys
     .map((key) => {
       const label = ACTION_LABELS[key] || key;
@@ -47,41 +49,61 @@ export function buildCardHtml(b, root, actionKeys) {
     })
     .join('');
 
+  const board = `
+    <a
+      class="admin-card__board${view === 'grid' ? ' admin-card__grid-board' : ''}"
+      href="${escapeAttr(href)}"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Open ${escapeAttr(b.title || slug)}"
+    >
+      <span
+        class="admin-card__board-host builds-post__board"
+        data-feed-board="${escapeAttr(slug)}"
+        aria-hidden="true"
+      ></span>
+    </a>`;
+
+  const text = `
+    <div class="admin-card__text">
+      <h3 class="admin-card__title">
+        <a class="admin-card__link" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(b.title || slug)}</a>
+      </h3>
+      <p class="admin-card__meta">${escapeHtml(b.author_name || '—')} · ${escapeHtml(b.hero_class || '—')}${when ? ` · ${escapeHtml(when)}` : ''}</p>
+      <div class="admin-card__flags">${flagBadges(b)}</div>
+    </div>`;
+
+  const actionBar = `
+    <div class="admin-card__actions">
+      <a class="admin-btn admin-btn--view" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">View build</a>
+      ${actions}
+    </div>`;
+
+  if (view === 'grid') {
+    return `
+      <article class="admin-card admin-card--grid" data-slug="${escapeAttr(slug)}">
+        ${board}
+        <div class="admin-card__body">
+          ${text}
+          ${actionBar}
+        </div>
+      </article>`;
+  }
+
   return `
-    <article class="admin-card" data-slug="${escapeAttr(slug)}">
-      <a
-        class="admin-card__board"
-        href="${escapeAttr(href)}"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Open ${escapeAttr(b.title || slug)}"
-      >
-        <span
-          class="admin-card__board-host builds-post__board"
-          data-feed-board="${escapeAttr(slug)}"
-          aria-hidden="true"
-        ></span>
-      </a>
+    <article class="admin-card admin-card--${view}" data-slug="${escapeAttr(slug)}">
+      ${board}
       <div class="admin-card__body">
-        <div class="admin-card__text">
-          <h3 class="admin-card__title">
-            <a class="admin-card__link" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(b.title || slug)}</a>
-          </h3>
-          <p class="admin-card__meta">${escapeHtml(b.author_name || '—')} · ${escapeHtml(b.hero_class || '—')}${when ? ` · ${escapeHtml(when)}` : ''}</p>
-          <div class="admin-card__flags">${flagBadges(b)}</div>
-        </div>
-        <div class="admin-card__actions">
-          <a class="admin-btn admin-btn--view" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">View build</a>
-          ${actions}
-        </div>
+        ${text}
+        ${actionBar}
       </div>
     </article>
   `;
 }
 
 /** @deprecated use buildCardHtml */
-export function buildRowHtml(b, root, actionKeys) {
-  return buildCardHtml(b, root, actionKeys);
+export function buildRowHtml(b, root, actionKeys, opts) {
+  return buildCardHtml(b, root, actionKeys, opts);
 }
 
 const ACTION_LABELS = {

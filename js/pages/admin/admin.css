@@ -3379,3 +3379,73 @@ button.admin-metric.is-active::before {
   line-height: 1.4;
   color: color-mix(in srgb, var(--bp-ui-cream) 84%, transparent);
 }
+
+/* ——— Admin Builds view modes ——— */
+
+.admin-cards--card {
+  gap: clamp(0.75rem, 1.4vw, 1.15rem);
+}
+
+.admin-cards--card .admin-card--card {
+  --admin-thumb-cell: clamp(36px, 4.2vw, 60px);
+  grid-template-columns: minmax(0, 1.35fr) minmax(15rem, 1fr);
+  gap: clamp(0.75rem, 1.5vw, 1.4rem);
+  padding: clamp(0.75rem, 1.4vw, 1.15rem);
+  align-items: center;
+}
+
+.admin-cards--card .admin-card--card .admin-card__board {
+  justify-self: center;
+}
+
+.admin-cards--grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.65rem, 1.2vw, 1rem);
+}
+
+.admin-cards--grid .admin-card--grid {
+  --admin-thumb-cell: clamp(22px, 2.25vw, 30px);
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: clamp(0.6rem, 1vw, 0.85rem);
+}
+
+.admin-cards--grid .admin-card--grid .admin-card__board {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.admin-cards--grid .admin-card--grid .admin-card__body {
+  flex: 1 1 auto;
+}
+
+@media (max-width: 1080px) {
+  .admin-cards--grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-cards--card .admin-card--card {
+    grid-template-columns: minmax(0, 1fr) minmax(13rem, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .admin-cards--card .admin-card--card {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-cards--card .admin-card--card .admin-card__board {
+    justify-self: start;
+  }
+
+  .admin-cards--grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-cards--grid .admin-card--grid .admin-card__board {
+    justify-content: flex-start;
+  }
+}
