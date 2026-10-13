@@ -299,6 +299,7 @@ def bake_class(
     fps: float = 12.0,
     max_h: int = 480,
     quality: int = 82,
+    skin: str | None = None,
 ) -> Path | None:
     tscn = (
         EXTRACT
@@ -317,6 +318,21 @@ def bake_class(
         return None
 
     res, nodes = chibi.parse_tscn(tscn)
+    if skin and skin.lower() != "default":
+        skin_tscn = (
+            EXTRACT
+            / "CharacterClasses"
+            / class_name
+            / "Skins"
+            / "Chibi"
+            / skin
+            / f"{skin}.tscn"
+        )
+        if not skin_tscn.exists():
+            _log(f"missing skin {skin_tscn}")
+            return None
+        chibi.apply_skin(res, nodes, skin_tscn)
+        _log(f"  skin {skin}")
     length = anim["length"]
     n_frames = max(2, int(round(length * fps)))
     duration_ms = max(1, int(round(1000 / fps)))
@@ -391,6 +407,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--fps", type=float, default=12.0)
     p.add_argument("--height", type=int, default=480)
     p.add_argument("--quality", type=int, default=82)
+    p.add_argument("--skin", default=None, help="optional Chibi wardrobe skin")
     args = p.parse_args(argv)
 
     if not EXTRACT.is_dir():
@@ -402,6 +419,7 @@ def main(argv: list[str] | None = None) -> int:
         fps=args.fps,
         max_h=args.height,
         quality=args.quality,
+        skin=args.skin,
     )
     return 0 if out else 1
 

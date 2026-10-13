@@ -12,6 +12,7 @@ import { createTooltipHover } from '../../shared/tooltip-hover.js';
 import { mapItem, makeSpriteUrl } from '../build/map-item.js';
 import { classCharacterPath } from '../../shared/class-icons.js';
 import { escapeAttr, escapeHtml, rootPrefix } from './home-build-media.js';
+import { skelSection } from '../../shared/skeleton.js';
 
 /** @type {Record<string, string>} */
 const CLASS_BLURB = {
@@ -32,6 +33,10 @@ const CLASS_BLURB = {
 
 const BAG_ITEM_SELECT =
   'id, gid, name, rarity, type, class, extra_types, tags, cost, effect, image, shape, sockets, accuracy, cooldown, stamina_cost, damage_min, damage_max, block, chance, chance_tag, params';
+
+// Generated from the extracted game's RangerChibiSprite Idle AnimationPlayer;
+// the admin test preset opts into it without changing the live Home surface.
+const RANGER_IDLE_ASSET = 'assets/characters/char-ranger-idle.webp';
 
 /** @returns {string[]} */
 function allStartingBagIds() {
@@ -72,6 +77,8 @@ function sectionHtml(root) {
     const blurb = CLASS_BLURB[name] || `Browse ${name} builds from the catalog.`;
     const href = `${root}builds/?class=${encodeURIComponent(name)}`;
     const art = classCharacterPath(root, name);
+    const isRanger = name === 'Ranger';
+    const idleArt = `${root}${RANGER_IDLE_ASSET}`;
 
     return `
       <article class="home-mobs__snap" data-home-mobs-card data-hero-class="${escapeAttr(name)}">
@@ -83,6 +90,7 @@ function sectionHtml(root) {
                 alt=""
                 width="320"
                 height="420"
+                ${isRanger ? `data-ranger-static-src="${escapeAttr(art)}" data-ranger-idle-src="${escapeAttr(idleArt)}" data-ranger-image="static"` : ''}
                 loading="lazy"
                 decoding="async"
                 draggable="false"
@@ -154,7 +162,7 @@ function bindRail(host) {
  */
 async function hydrateBags(host, root) {
   const ids = allStartingBagIds();
-  if (!ids.length) return;
+  if (!ids.length) return false;
 
   const base = root.endsWith('/') ? root : `${root}/`;
   let spriteDisplay = null;
@@ -172,7 +180,7 @@ async function hydrateBags(host, root) {
 
   if (error) {
     console.warn('[home-class-showcase] bag fetch failed', error);
-    return;
+    return false;
   }
 
   const getSpriteUrl = makeSpriteUrl(base, spriteDisplay);
@@ -224,10 +232,24 @@ async function hydrateBags(host, root) {
     },
     place: 'near',
   });
+  return true;
+}
+
+/** @param {HTMLElement} host @param {boolean} ready */
+function settleSectionSkeleton(host, ready) {
+  const region = host.querySelector('.home-mobs__section-skeleton')?.closest('.bpb-skel-region');
+  if (!(region instanceof HTMLElement)) return;
+  if (ready) {
+    region.remove();
+    return;
+  }
+  region.setAttribute('aria-busy', 'false');
+  region.innerHTML = '<p class="home-mobs__section-status">Starting bags are unavailable right now.</p>';
 }
 
 /**
  * @param {string | Element} [selector='#home-class-showcase']
+ * @returns {{ setRangerAnimation: (enabled: boolean) => boolean } | undefined}
  */
 export function initHomeClassShowcase(selector = '#home-class-showcase') {
   const host =
@@ -235,7 +257,32 @@ export function initHomeClassShowcase(selector = '#home-class-showcase') {
   if (!host) return;
 
   const root = rootPrefix();
-  host.innerHTML = sectionHtml(root);
+  host.innerHTML = `${sectionHtml(root)}${skelSection({
+    className: 'home-mobs__section-skeleton',
+    label: 'Loading hero classes',
+  })}`;
+
+  /**
+   * Swap only the Ranger card between the normal composite sprite and the
+   * game-extracted animated WebP. The optional test preset owns this switch;
+   * the live Home caller leaves it disabled.
+   * @param {boolean} enabled
+   */
+  const setRangerAnimation = (enabled) => {
+    const image = host.querySelector('[data-ranger-image]');
+    if (!(image instanceof HTMLImageElement)) return false;
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches === true;
+    const active = enabled === true && !reduced;
+    const next = active ? image.dataset.rangerIdleSrc : image.dataset.rangerStaticSrc;
+    if (!next) return false;
+    if (image.getAttribute('src') !== next) image.setAttribute('src', next);
+    image.dataset.rangerImage = active ? 'idle' : 'static';
+    host.dataset.rangerAnimated = String(active);
+    return active;
+  };
+
+  setRangerAnimation(false);
   bindRail(host);
-  void hydrateBags(host, root);
+  void hydrateBags(host, root).then((ready) => settleSectionSkeleton(host, ready));
+  return { setRangerAnimation };
 }

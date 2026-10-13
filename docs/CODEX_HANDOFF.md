@@ -1,5 +1,34 @@
 # Codex handoff
 
+### 2026-10-13 Choose Your Hero Ranger idle preset (in progress)
+
+- Codex owns the isolated Choose Your Hero animation-preset paths in
+  `js/pages/admin/home-class-showcase-test.js`,
+  `js/pages/admin/home-class-showcase-test.css`,
+  `js/pages/home/home-class-showcase.js`, the generated Ranger idle asset under
+  `assets/characters/`, and focused Choose Your Hero smoke coverage.
+- Scope: audit the extracted game Ranger `Idle` AnimationPlayer, reproduce its
+  15-second motion only in a new owner-only test preset, leave the live Home
+  section and all non-Ranger cards unchanged, and verify responsive/reduced
+  motion behavior before committing.
+
+### 2026-10-13 Choose Your Hero Ranger idle preset complete
+
+- Audited `tools/game-extract-full/CharacterClasses/Ranger/RangerChibiSprite.tscn`:
+  the game’s chibi Ranger uses a looping 15-second `Idle` AnimationPlayer with
+  leg, body, head, arm, and bow-angle tracks. The existing compositor now also
+  accepts a Chibi skin and produced
+  `assets/characters/char-ranger-idle.webp` from the game’s Lucky Ranger skin
+  at 8fps/360px for a lightweight browser asset.
+- Added the owner-only `Ranger game idle` preset to the Choose Your Hero test
+  page. It swaps only Ranger’s image in place, restores the static sprite when
+  leaving the preset, and keeps the live Home section and other hero cards
+  unchanged. Reduced-motion users remain on the static sprite.
+- Verification: Choose Your Hero static/browser smokes pass at 1440, 1080,
+  tablet, and mobile widths; browser coverage confirms the animated asset loads,
+  only Ranger switches, the static source restores, and reduced motion blocks
+  the animation. JavaScript/Python syntax checks and `git diff --check` pass.
+
 ### 2026-10-13 Home Player Info performance pass (in progress)
 
 - Codex owns the scoped Home Player Info performance paths in
