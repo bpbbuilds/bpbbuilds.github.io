@@ -2447,3 +2447,178 @@ None.
 - Desktop combat-sky scroll progress now advances in 40 buckets (2.5% each). Tint/color writes happen once when a bucket changes; positional and opacity properties use a 120 ms CSS transition. Compact/reduced-motion/data/low-core devices continue to bypass the animated path through option 1.
 - Chrome verification at 390x844 confirmed the static fallback remained active and the sky position stayed fixed after scrolling. At 1920x1080 the static class was absent, stepped mode was active, and a 1% scroll retained the initial sky frame while 3% and 8% moved to new bucket values. No runtime errors appeared; the existing seven-image-dimensions issue remains.
 - Validation: `node --check js/pages/home/combat-sky/index.js` and `git diff --check` pass. The performance report records the follow-up frame-pacing/self-time trace required before claiming a measured reduction.
+
+### 2026-10-11 admin background test page claim (in progress)
+
+- Codex owns `admin/test/background/index.html`, `js/pages/admin/background-test.js`, `js/pages/admin/background-test.css`, and this handoff while adding an owner-gated, intentionally blank scroll surface for testing Home background variants. The first selectable scene is the existing Home combat sky; no admin hub behavior or authentication policy is changed.
+
+### 2026-10-11 admin background test page complete
+
+- Added `/admin/test/background/` as a noindex owner-admin test route. It uses the existing `initNav()`/`resolveAdminAuth()`/`mountGate()` path, so unauthenticated visitors see the owner gate and never mount the test controls or combat sky.
+- The authorized surface is intentionally empty and 320vh tall for scroll testing. Its fixed toolbar has the existing Home combat sky as the first selectable background plus a Blank option for comparison; the Home scene is mounted through `initCombatSky()` so its assets and scroll behavior stay identical to the homepage.
+- Validation: the unauthenticated Chrome route returned HTTP 200 with the owner gate, no combat-sky mount, and a scroll height of 3,260px versus a 949px viewport. Chrome reported no console messages or failed requests; `node --check js/pages/admin/background-test.js` and `git diff --check` pass. The owner-authenticated controls still need a signed-in owner session for interactive browser verification.
+
+### 2026-10-11 home background continuous-motion progression claim (in progress)
+
+- Codex owns `js/pages/home/combat-sky/index.js`, `js/pages/home/combat-sky.css`, `js/pages/home/combat-sky/apply.js`, `js/pages/home/combat-sky/dom.js`, the generated `assets/theme/backgrounds/combat/checkpoints/` frames, `docs/pages/home/performance.md`, and this handoff while replacing the visible 2.5% desktop phase stepping with continuous rAF-driven progress and a two-layer desktop checkpoint compositor. The compact/reduced-motion static fallback remains unchanged.
+
+### 2026-10-11 home background continuous-motion progression complete
+
+- Replaced the desktop 40-bucket/120 ms phase prototype with continuous scroll progress mapped through the existing paint-aligned scheduler. The compact/reduced-motion/reduced-data/Save-Data/low-core static fallback remains unchanged.
+- Added eight flattened 1920x1080 WebP checkpoints under `assets/theme/backgrounds/combat/checkpoints/` (118 KB total). Desktop loads the first adjacent pair, crossfades their opacity continuously, swaps pairs on demand, and keeps the original masked scene visible until the first pair is ready. Checkpoint URLs are versioned for cache invalidation.
+- Chrome verification: desktop 1920x1080 activates `combat-sky--checkpoints` and hides the masked stage after the first pair decodes; a jump to the end requests the correct 6/7 pair, while activation can wait behind the page's existing image queue. At 390x844 the sky remains `combat-sky--static` with no checkpoint image sources or requests. The desktop Fast 4G scroll trace reports 23 ms attributed to `scrollProgress`; the remaining forced-reflow budget is in home promo/grid/nav paths, so the background result is not presented as a whole-page scroll win.
+- Validation: `node --check` passes for `combat-sky/index.js`, `combat-sky/dom.js`, and `combat-sky/apply.js`; `git diff --check` passes for the owned paths. The generated frames were visually inspected at day and night endpoints. Production deployment and the standard post-deploy frame-pacing/decoded-memory trace remain pending.
+
+### 2026-10-11 home background live-detail hybrid claim (in progress)
+
+- Codex owns `js/pages/home/combat-sky/index.js`, `js/pages/home/combat-sky/apply.js`, `js/pages/home/combat-sky/dom.js`, `js/pages/home/combat-sky.css`, `docs/pages/home/performance.md`, and this handoff while replacing the flattened desktop checkpoint compositor with the original live scene. Scope: preserve the animated windmill, sun/moon/stars, and continuous day-to-night terrain while reducing repeated tint work; the compact/reduced-motion/static fallback remains unchanged.
+
+### 2026-10-11 home background live-detail hybrid complete
+
+- Removed the desktop checkpoint compositor from the active scene so the original live masked layers, moving celestial objects, and CSS windmill animation remain visible. Desktop still uses continuous paint-aligned scroll progress with no bucket quantization or transition catch-up.
+- Split live updates into two costs: sun/moon/stars movement and opacity remain per-frame, while terrain/background/windmill tint sampling and CSS-variable writes are paced to about 32 ms. Added paint containment and compositor hints to the celestial and windmill layers without changing their art or positions.
+- The generated checkpoint frames remain unreferenced by the live Home path for now; they are not part of the default desktop payload or visual output. Production frame-pacing and visual review remain pending.
+- Validation: `node --check` passes for `combat-sky/index.js`, `combat-sky/dom.js`, and `combat-sky/apply.js`; `git diff --check` passes for the owned paths. Local Chrome verification should confirm the live scene class has no checkpoint stage and the windmill animation remains active before deployment.
+
+### 2026-10-11 home background live-detail paint-scope follow-up complete
+
+- Fixed clipped windmill blades caused by paint containment on the tower wrapper. The windmill now uses layout-only containment so its intentionally oversized blades can render outside the tower bounds; the blade layer remains paint-contained and compositor-promoted.
+- Reduced live scroll work without changing the scene: sky and ground custom properties are written directly to their target layers instead of the parent stage, static star positions are authored once in the DOM, and per-frame star updates now touch opacity only. Sun/moon paths and windmill animation remain unchanged.
+- Chrome verification at the local desktop viewport confirmed the masked live stage, active `combat-sky-spin`, and changing sun/sky transforms after scroll; the constrained viewport retained `combat-sky--static` with the windmill animation disabled as intended. Validation: `node --check` passes for the three combat-sky modules and `git diff --check` passes for the owned paths.
+
+### 2026-10-11 home background direct-property scroll follow-up complete
+
+- Replaced hot-path sky/celestial opacity/transform and terrain tint custom-property writes with direct `transform`, `opacity`, and `background-color` writes on the target elements. The visual values and interpolation remain unchanged; this avoids invalidating the full masked stage through inherited variables.
+- Chrome desktop verification confirmed direct sky/sun transforms, active windmill animation, and blade bounds extending beyond the tower. The latest local scroll trace attributed 27 ms to `scrollProgress` and 26 ms to the range measurement; the remaining reflow work was in catalog/backpack/nav modules rather than `applyTime`.
+- Validation: `node --check` passes for the three combat-sky modules, `git diff --check` passes for owned paths, and the local test server was stopped after verification.
+
+### 2026-10-11 home background direct-property rollback complete
+
+- Rolled back the direct `transform`/`background-color` hot-path rewrite after local browser feedback reported substantially worse sky scroll smoothness. The live-detail scene now uses the prior CSS-variable update path again, with the 32 ms terrain tint pacing and continuous rAF progression retained.
+- Removed the windmill wrapper containment hint that could clip oversized blades; the windmill wrapper is back to its original overflow behavior while the blade animation remains unchanged.
+- The CSP console message reported against `:5500` is not reproduced by the current workspace `index.html`: it contains no inline script and its CSP includes the displayed hash. Treat that message as a stale/alternate server document until the `:5500` server serves the current file; no CSP relaxation was added.
+
+### 2026-10-11 home background stepped-live rollback complete
+
+- Rolled the desktop live scene back one more stage after continued scroll-lag feedback: desktop now uses the prior 40-checkpoint (2.5%) progress mapping and 120 ms compositor transitions for sky movement/celestial opacity. The detailed live DOM scene remains active, including animated windmill blades and moving sun/moon; compact/reduced-motion/static behavior is unchanged.
+- The full continuous live-detail hybrid is no longer the default. The performance report marks it as a paused branch pending isolation of the remaining Home catalog/backpack/navigation work.
+- Local validation: `node --check` passes for the combat-sky modules and `git diff --check` passes for owned paths. Production/browser user validation remains pending.
+
+### 2026-10-11 home background post-fade live-detail restore complete
+
+- Restored the preferred post-fade live-detail hybrid at the user’s request. Desktop scroll progress is continuous again; the 40-checkpoint mapping and 120 ms stepped transition are no longer active.
+- Sun/moon/star movement and opacity remain paint-aligned, while terrain/background/windmill tint writes are paced to about 32 ms. The detailed masked scene and animated windmill remain visible; compact/reduced-motion/reduced-data/Save-Data/low-core fallbacks are unchanged.
+- Validation: combat-sky module syntax checks and `git diff --check` pass. No commit or push was made.
+
+### 2026-10-11 native document scrollbar preview
+
+- Removed the global and homepage image/gold scrollbar pseudo-element styling from `css/theme.css` so the document now uses the browser’s default scrollbar. Component-owned internal scrollers retain their existing styles.
+- This is a visual preview change only; no scroll behavior or layout logic was changed. No commit or push was made.
+
+### 2026-10-11 admin background time-of-day tabs complete
+
+- Expanded `/admin/test/background/` with five static presets derived from the combat-sky tracks: Dawn, Midday, Sunset, Twilight, and Night, alongside the existing live Home and Blank choices.
+- Static presets freeze the selected background time and pause the hidden live Home scrubber while retaining the animated windmill. Twilight and Night add low-cost CSS star glimmer with staggered timing; reduced-motion users still receive the browser’s motion preference behavior.
+- Validation: changed admin/combat-sky modules pass `node --check`, and `git diff --check` passes. No commit or push was made.
+
+### 2026-10-11 admin night-moon positioning complete
+
+- Repositioned the Twilight and Night preset moons to `x: 960px, y: 190px` so they remain centered and clear of the mountain/hill silhouettes. The live Home background and other time presets are unchanged.
+- Validation: `node --check js/pages/admin/background-test.js` and `git diff --check` pass. No commit or push was made.
+
+### 2026-10-11 admin site-background catalog tabs complete
+
+- Added preview tabs for the remaining scene, sectional, and parchment background art used by the site: Town Square, Shop Interior, Market Stall, Study Shelves, Dark Textured, day/golden-hour/sunset/dusk hills, crescent/moon-star/stars/deep-night hills, and the panel/border variants. Parchment assets use a contained preview so their framing remains visible.
+- These previews use a separate fixed asset layer, so selecting them pauses and hides the live combat-sky scene without changing the production pages. The existing Home, time-of-day combat presets, and Blank choices remain available.
+- Validation: changed admin/combat-sky modules pass `node --check`, and `git diff --check` passes. No commit or push was made.
+
+### 2026-10-11 admin background picker organization complete
+
+- Reworked the background test controls into a scrollable picker panel with an active-selection label, category filters, grouped options, responsive button grid, and keyboard focus states. Categories are Live scene, Time of day, Site scenes, Hill stills, Panels & borders, and Utility.
+- Added `Town square · alt` as a separate option backed by the same `bg-town-square.jpg` source for independent comparison.
+- Validation: `node --check js/pages/admin/background-test.js` and `git diff --check` pass. No commit or push was made.
+
+### 2026-10-11 admin background preset architecture and falling-items prototype complete
+
+- Moved background definitions into `js/pages/admin/backgrounds/`: `combat-presets.js` owns the live/time-of-day/experimental entries, `site-presets.js` owns scene/hill/panel art, and `index.js` is the registry consumed by the picker. Adding or removing a preset no longer requires editing the picker controller.
+- Added the `Falling items (prototype)` preset. It reuses the static combat-sky scene, drops existing item-sprite art down the right side on a lightweight canvas, bounces items on three scene ledges, and applies cursor repulsion while active. The layer pauses and hides when another background is selected.
+- The prototype is intentionally isolated to the owner-admin background test route; it does not change the production Home background. Changed modules pass `node --check`, and `git diff --check` passes. No commit or push was made.
+
+### 2026-10-11 admin background picker compact UX and item sizing complete
+
+- Simplified the picker to one compact category `<select>` plus a responsive CSS grid of background choices. The active background label remains visible, and the panel now takes substantially less viewport space.
+- Removed `LeatherBag.png` from the falling-items pool. Item sprites now render at their full natural aspect ratio using the selected width, so tall/wide art is no longer forced into a square or visually scrunched.
+- Validation: `node --check` passes for the picker and falling-items modules, and `git diff --check` passes. No commit or push was made.
+### 2026-10-11 falling-items stream simplification complete
+- Removed potion and bag assets from the falling-items prototype pool; remaining item types use a fixed 76px width while preserving each sprite's natural aspect ratio.
+- Removed obstacle/ledge rendering and collision work. Items now fall continuously through the viewport and are deleted below it; cursor repulsion remains.
+- Validation: JavaScript syntax checks and `git diff --check` pass. No commit or push was made.
+### 2026-10-11 falling-items animation regression fixed
+- The prototype could render an empty canvas when the browser reported `prefers-reduced-motion`, because both initial and recurring spawns were suppressed.
+- Removed that suppression for the explicitly selected admin preview so items always spawn and animate when the Falling items preset is active.
+- Validation: `node --check js/pages/admin/backgrounds/falling-items.js` and `git diff --check` pass. No commit or push was made.
+### 2026-10-11 falling-items spawn error fixed
+- Chrome smoke testing exposed a runtime `ReferenceError` in `spawn()`: the radius calculation used an undefined `size` variable, so no item could be created and the canvas stayed empty.
+- `spawn()` now defines `size` from the fixed `ITEM_WIDTH` before calculating dimensions/radius.
+- Validation: JavaScript syntax checks and `git diff --check` pass; direct Chrome module smoke test painted 37,954 canvas pixels after one second with the host visible.
+### 2026-10-11 falling-items catalog parity update
+- Replaced the small hardcoded sprite pool with the full `assets/data/sprite-display.json` catalog (521 real item textures before filtering). Bags and potion/flask textures are excluded; particle-only textures are excluded as well.
+- Added a shuffled deck so the stream samples the complete pool without immediate repeats. Images are loaded on demand only when selected, avoiding a 500+ texture preload.
+- Falling dimensions now use the catalog’s `w`/`h` cell values multiplied by the Items catalog’s 34px cell size, matching catalog proportions and footprint sizing.
+- Chrome smoke test confirmed catalog metadata loaded, random sprites such as `Bomb`, `Snowball`, `RegularAmethyst`, `ChromeCube`, `ManaCrystal`, and `ShinyMantle` requested, and the canvas painted. No commit or push was made.
+### 2026-10-11 falling-items game-scale update
+- The falling sprites previously used the Items catalog’s 34px UI cell, which made them smaller than in-game item art.
+- Falling dimensions now use `sprite-display.json`’s authoritative `cellSize` (currently 80px), matching game Sprite/Icon scale while preserving each item’s metadata width and height.
+- Chrome smoke testing confirmed rendered dimensions match `meta.w * cellSize` and `meta.h * cellSize` for sampled items including Hungry Blade, Bionic Armor, Mana Crystal, and Thorn Elemental.
+### 2026-10-11 falling-items controls added
+- Added admin-preview controls for drop frequency (0.25×–3×), drop speed (0.5×–2.5×), and a one-time bottom bounce toggle.
+- Frequency changes the spawn interval without restarting the canvas. Speed changes gravity and cursor impulse. When enabled, each item bounces once at the viewport bottom, then continues falling and is deleted below the viewport.
+- Controls are visible only for the Falling items preset; cache-busting was updated in `admin/test/background/index.html`.
+- Chrome smoke test confirmed settings API operation and non-empty rendering at maximum settings. No commit or push was made.
+### 2026-10-11 scroll-aware falling-items physics
+- Falling items now track document scroll deltas. The canvas remains viewport-fixed for performance, but each active item is shifted by the opposite scroll delta on the next animation frame, so items move with the page instead of feeling sticky to the screen.
+- The viewport bottom remains the bounce/removal boundary, which makes scrolling effectively move the visible floor relative to the item world.
+- Chrome smoke test confirmed items rendered before and after a 500px scroll and shifted upward by roughly 500px. No commit or push was made.
+### 2026-10-11 hard-floor scroll collision fix
+- Scroll-up compensation now detects when an item is pushed into the bottom floor even if it has already used its normal one bounce or is currently moving upward.
+- The item is clamped to the floor and receives a bounded scroll-driven upward impulse, producing the requested ragdoll-like lift instead of tunneling/seeping through the border.
+- Natural behavior is preserved: after the one normal bounce, an item can still fall through; scroll-induced floor contact is resolved as a hard collision.
+- Chrome smoke test confirmed rendered item centers stayed within the viewport floor after a 400px scroll-up delta. No commit or push was made.
+### 2026-10-11 scroll impulse refinement
+- Upward scrolling now applies a bounded velocity impulse to every active falling item in addition to the document-space position shift.
+- Items continue traveling upward after the scroll gesture ends, then gravity pulls them back down. The hard-floor resolver uses the same impulse when scroll movement pushes an item into the bottom boundary.
+- Chrome smoke testing confirmed the canvas continued rendering through a 400px scroll-up gesture with post-scroll motion samples. No commit or push was made.
+### 2026-10-11 scroll impulse scope corrected
+- The scroll-driven upward impulse is now restricted to items that actually contact the bottom floor while the bounce toggle is enabled.
+- Items away from the floor only receive the normal document-scroll position shift; disabling bounce removes the floor impulse entirely.
+- This supersedes the prior global-scroll impulse wording. Syntax and diff checks pass. No commit or push was made.
+### 2026-10-11 scroll physics removed
+- Removed the falling-items scroll listener and all scroll position/impulse handling after the effect caused lag and did not match the desired interaction.
+- Items are now completely independent of page scrolling again. The drop frequency, drop speed, cursor repulsion, and optional one-time viewport-floor bounce remain active.
+- Updated the module cache-buster to `falling-static-20261011`. Syntax and diff checks pass. No commit or push was made.
+### 2026-10-11 falling-items Town Square background
+- The Falling items preset now uses `assets/theme/backgrounds/bg-town-square.jpg` behind the canvas instead of the static combat sky. The static sky is hidden for this mode; the falling canvas remains independent of scrolling.
+- Added a performance comparison section to `docs/pages/home/performance.md`: Town Square is 640,147 bytes and the item scene is capped/lazy-loaded, while Home has a roughly 2.07 MB multi-layer sky source set plus broader startup work. This is an expected comparison, not a substitute for matched cold-load traces.
+- Chrome smoke test confirmed the preset resolves to `Falling items · Town square` and the Town Square image loads. No commit or push was made.
+### 2026-10-11 falling-items game surface audit
+- Audited the installed `BackpackBattles.pck` and `res://Core/Main.tscn`. The title-screen background has one visible prop collider: `TitleScreen/Node2D/Background/StaticBody2D2/CollisionPolygon2D`, the four-point blue market tent/awning polygon. The other title-screen geometry is invisible containment/despawn logic, so it is not presented as a visual background obstacle.
+- Added a separate admin-only `Bounce off game surfaces (blue tent)` toggle. When enabled, falling items collide with the two upper sloped tent-roof edges mapped from the audited 1920×1080 game coordinates; when disabled, the existing floor-only behavior is unchanged. The collision loop is constant-size and does not add network, DOM, layout, or scroll work.
+- Validation: `node --check` passes for the falling-items and background-test modules; Chrome direct module smoke with game surfaces enabled painted the canvas and produced no console errors; `git diff --check` passes. No commit or push was made.
+
+### 2026-10-11 build-creator chest launcher follow-up
+
+- The owner-only build-creator animation test has Catalog and Chest presets. Both now load real public builds; the Chest path does not mount the catalog and retains only active/next build sprites for reuse.
+- Replaced the utility sellbox layers with the actual in-game mimic character sprite, `assets/item-sprites/LilChestnut.png`; it contains Chestnut's teeth, tongue/jaw, gold details, and googly eyes. It brightens while launching items from its mouth. The Chest view has no parchment/frame panel and its cache-busted asset URLs are in `admin/test/home/sections/buildCreatorAnimation/index.html`.
+- Validation: relevant JavaScript syntax checks and `git diff --check` pass. No commit or push was made.
+
+### 2026-10-11 build-creator creator-wave preset
+
+- Added a third owner-test preset, **Creator wave**. It uses the real public build feed like the existing catalog view, replaces the left catalog column with the build creator's hydrated Discord/blob face, name, and public uploaded-build count, and removes that duplicate identity from the center caption.
+- Its assembly animation brings bags in first, then remaining items in an Itemiary-style top-left → bottom-right scale-pop wave. Existing catalog/chest presets remain separate.
+- Validation: `node --check` passes for the changed promo/admin modules and `git diff --check` passes. No commit or push was made.
+
+### 2026-10-13 admin test pages pushed
+
+- Prepared the owner-only Background, Build Creator Animation, and Loading Screen test routes for publication, including their route HTML, admin controllers/styles, background preset registry, loading-screen presets, local loading video/poster, and the combat-sky/home-promo modules those previews consume.
+- Kept unrelated site, credits, footer, performance-doc, and browser-session changes out of the commit.
+- Validation: JavaScript syntax checks and `git diff --check` pass before push.

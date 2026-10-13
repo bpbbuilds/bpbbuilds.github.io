@@ -81,7 +81,7 @@ function authorFaceHtml(build, root, name) {
  * @param {object} build
  * @param {string} root
  */
-function captionHtml(build, root) {
+function captionHtml(build, root, hideAuthor = false) {
   const base = root.endsWith('/') ? root : `${root}/`;
   const title = String(build.title || 'Untitled').trim() || 'Untitled';
   const author = String(build.author_name || 'Unknown').trim() || 'Unknown';
@@ -110,12 +110,39 @@ function captionHtml(build, root) {
       ${classHtml}
       ${titleHtml}
     </header>
-    <div class="home-promo__caption-meta">
+    ${hideAuthor ? '' : `<div class="home-promo__caption-meta">
       <div class="home-promo__caption-side home-promo__caption-side--left">${avatarHtml}</div>
       ${authorHtml}
       <div class="home-promo__caption-side home-promo__caption-side--right" aria-hidden="true"></div>
-    </div>
+    </div>`}
   `;
+}
+
+/** Paint the dedicated creator column used by the creator preset. */
+export function paintPromoCreator(el, build, root, buildCount = null) {
+  if (!(el instanceof HTMLElement)) return;
+  if (!build) {
+    el.replaceChildren();
+    el.hidden = true;
+    return;
+  }
+  const base = root.endsWith('/') ? root : `${root}/`;
+  const name = String(build.author_name || 'Unknown').trim() || 'Unknown';
+  const profileUrl = profileHref(build.author_discord_id, base) || '';
+  const face = authorFaceHtml(build, base, name);
+  const faceHtml = profileUrl
+    ? `<a class="home-promo__creator-face" href="${escapeAttr(profileUrl)}" aria-label="${escapeAttr(name)}">${face}</a>`
+    : `<span class="home-promo__creator-face">${face}</span>`;
+  const nameHtml = profileUrl
+    ? `<a class="home-promo__creator-name" href="${escapeAttr(profileUrl)}">${escapeHtml(name)}</a>`
+    : `<span class="home-promo__creator-name">${escapeHtml(name)}</span>`;
+  const count = Number.isFinite(Number(buildCount)) ? Math.max(0, Number(buildCount)) : null;
+  el.hidden = false;
+  const countHtml = count == null
+    ? '<span class="home-promo__creator-count-loading">…</span>'
+    : `<strong class="home-promo__creator-count-number">${escapeHtml(String(count))}</strong>`;
+  el.innerHTML = `${faceHtml}<span class="home-promo__creator-kicker">Build creator</span>${nameHtml}<span class="home-promo__creator-count">${countHtml}<span class="home-promo__creator-count-label">Builds</span></span>`;
+  void hydrateFaces(el, base);
 }
 
 /** @param {string} key */
@@ -237,7 +264,7 @@ function boardTagsHtml(build) {
  * @param {HTMLElement | null} [infoEl]
  * @param {HTMLElement | null} [boardTagsEl]
  */
-export function paintPromoCaption(el, build, root, boardLink, infoEl, boardTagsEl) {
+export function paintPromoCaption(el, build, root, boardLink, infoEl, boardTagsEl, opts = {}) {
   if (el instanceof HTMLElement) {
     if (!build) {
       el.replaceChildren();
@@ -245,7 +272,7 @@ export function paintPromoCaption(el, build, root, boardLink, infoEl, boardTagsE
       el.closest('[data-promo-create-card]')?.removeAttribute('aria-busy');
     } else {
       el.hidden = false;
-      el.innerHTML = captionHtml(build, root);
+      el.innerHTML = captionHtml(build, root, opts.hideAuthor === true);
       void hydrateFaces(el, root);
       el.closest('[data-promo-create-card]')?.removeAttribute('aria-busy');
     }

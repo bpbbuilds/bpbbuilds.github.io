@@ -87,6 +87,29 @@
   z-index: 1;
 }
 
+/* The chest preset floats directly on the page instead of adding another
+   parchment panel and screen-frame border behind it. */
+.home-promo--chest .home-promo__card {
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.home-promo--chest .home-promo__card::after {
+  display: none;
+}
+
+/* Creator wave is an unfenced preview on the page, matching the chest view. */
+.home-promo--creator .home-promo__card {
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.home-promo--creator .home-promo__card::after {
+  display: none;
+}
+
 /* Create promo — sticker chrome on parchment (same recipe as featured stage) */
 .home-promo--create .home-promo__caption-title {
   color: var(--bpb-label-fill, #fffaf0);
@@ -446,6 +469,172 @@ a.home-promo__caption-author:hover {
   /* Flush to the Frame2 rim (cancel card vertical padding) */
   margin-top: calc(-1 * (var(--promo-frame-pad) + 0.85rem));
   margin-bottom: calc(-1 * (var(--promo-frame-pad) + 0.95rem));
+}
+
+.home-promo--create .home-promo__side--creator {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+  padding: 1rem;
+}
+
+.home-promo__creator {
+  display: grid;
+  justify-items: center;
+  gap: 0.45rem;
+  width: min(12rem, 100%);
+  color: #fff5e1;
+  text-align: center;
+}
+
+.home-promo__creator-face,
+.home-promo__creator-face > .home-promo__caption-avatar,
+.home-promo__creator-face > .home-promo__caption-avatar-link {
+  display: grid;
+  place-items: center;
+  width: 11.5rem;
+  height: 11.5rem;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.home-promo__creator-face .home-promo__caption-avatar {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+.home-promo__creator-kicker { display: none; }
+.home-promo__creator-name {
+  color: var(--bpb-label-fill, #fffaf0);
+  font: 400 1.1rem/1.1 var(--bpb-font-display);
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  text-shadow: var(--bpb-label-stroke);
+}
+.home-promo__creator-count {
+  display: grid;
+  justify-items: center;
+  gap: 0.08rem;
+  min-width: 5rem;
+  color: var(--promo-info-ink, #3c261d);
+  text-align: center;
+}
+.home-promo__creator-count-number,
+.home-promo__creator-count-loading {
+  display: block;
+  color: var(--bpb-label-fill, #fffaf0);
+  font: 400 1.8rem/0.95 var(--bpb-font-display);
+  letter-spacing: 0.02em;
+  text-shadow: var(--bpb-label-stroke);
+}
+.home-promo__creator-count-label {
+  color: rgba(255, 240, 216, 0.84);
+  font: 700 0.68rem/1 var(--bpb-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.home-promo--creator .home-promo__caption-meta { display: none; }
+
+/* Lightweight launcher preset: the same game sell-chest used by Create.
+   It occupies the catalog column but does not mount the full item catalog. */
+.home-promo--create .home-promo__side--launcher {
+  position: relative;
+  align-self: stretch;
+  display: grid;
+  place-items: end center;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  margin-top: calc(-1 * (var(--promo-frame-pad) + 0.85rem));
+  margin-bottom: calc(-1 * (var(--promo-frame-pad) + 0.95rem));
+}
+
+.home-promo__chest-launcher {
+  position: relative;
+  width: min(15rem, 88%);
+  min-width: 9rem;
+  aspect-ratio: 478 / 360;
+  margin: 0 auto;
+  filter: drop-shadow(0 0.6rem 0.45rem rgba(42, 22, 12, 0.3));
+}
+
+.home-promo__chest-bottom,
+.home-promo__chest-top {
+  position: absolute;
+  display: block;
+  width: 100%;
+  user-select: none;
+}
+
+.home-promo__chest-bottom {
+  inset: 0;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  /* The source base includes its hidden rear teeth; the shop-facing Chestnut
+     uses the clean lower chest silhouette from the reference. */
+  clip-path: inset(23% 0 0);
+  z-index: 1;
+}
+
+.home-promo__chest-top {
+  left: 0;
+  top: 0;
+  z-index: 4;
+  transform-origin: 92% 95%;
+  transition: transform 0.2s cubic-bezier(0.22, 0.8, 0.28, 1);
+}
+
+.home-promo__chest-eye {
+  position: absolute;
+  left: 34%;
+  top: 25%;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 16%;
+  aspect-ratio: 0.78;
+  border: clamp(1px, 0.16rem, 3px) solid #4b3424;
+  border-radius: 50%;
+  background: #fff6e6;
+  box-shadow: 0 0.08rem 0.1rem rgba(0, 0, 0, 0.35);
+}
+
+.home-promo__chest-eye i {
+  display: block;
+  width: 38%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #36281f;
+}
+
+.home-promo__chest-mouth {
+  position: absolute;
+  left: 43%;
+  top: 47%;
+  z-index: 2;
+  width: 35%;
+  height: 20%;
+  border-radius: 48% 50% 52% 45%;
+  background:
+    radial-gradient(ellipse at 52% 45%, #ffd85c 0 9%, #9d551f 35%, #26160e 72%);
+  box-shadow: inset 0 0.15rem 0.2rem rgba(0, 0, 0, 0.65), 0 0 0.55rem rgba(255, 202, 54, 0.45);
+  opacity: 0;
+  transform: scaleY(0.16);
+  transform-origin: center top;
+  transition: opacity 0.16s ease, transform 0.2s ease;
+}
+
+.home-promo__chest-launcher.is-open .home-promo__chest-top {
+  transform: rotate(36deg);
+}
+
+.home-promo__chest-launcher.is-open .home-promo__chest-mouth {
+  opacity: 1;
+  transform: scaleY(1);
 }
 
 .home-promo--create .home-promo__catalog {
@@ -1128,6 +1317,12 @@ a.home-promo__caption-author:hover {
     display: none;
   }
 
+  .home-promo--creator .home-promo__side--creator { display: grid; }
+
+  .home-promo--create .home-promo__side--launcher {
+    display: none;
+  }
+
   .home-promo--create .home-promo__stage {
     width: 100%;
     max-width: 100%;
@@ -1138,6 +1333,17 @@ a.home-promo__caption-author:hover {
     max-width: 18rem;
     justify-self: center;
     padding: 0.25rem 0;
+  }
+
+  /* Keep the chest visible here; this breakpoint previously hid every
+     catalog-column launcher, which made the chest tab appear empty. */
+  .home-promo--chest .home-promo__card {
+    grid-template-columns: minmax(8.5rem, 0.7fr) minmax(0, 1.35fr) minmax(10rem, 0.8fr);
+    gap: 0.7rem;
+  }
+
+  .home-promo--chest .home-promo__side--launcher {
+    display: grid;
   }
 }
 
@@ -1204,8 +1410,35 @@ a.home-promo__caption-author:hover {
   }
 
   .home-promo--create .home-promo__side--catalog,
+  .home-promo--create .home-promo__side--launcher,
   .home-promo--create .home-promo__info {
     display: none;
+  }
+
+  .home-promo--creator .home-promo__side--creator {
+    display: grid;
+    grid-area: launcher;
+  }
+
+  .home-promo--creator .home-promo__card {
+    grid-template-areas: 'launcher' 'board' 'cta';
+  }
+
+  .home-promo--chest .home-promo__card {
+    grid-template-areas:
+      'launcher'
+      'board'
+      'cta';
+  }
+
+  .home-promo--chest .home-promo__side--launcher {
+    display: grid;
+    grid-area: launcher;
+    width: 100%;
+    height: 11rem;
+    margin: 0;
+    overflow: visible;
+    align-items: end;
   }
 
   .home-promo--create .home-promo__card {

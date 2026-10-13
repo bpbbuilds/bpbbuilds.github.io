@@ -1,0 +1,98 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body.page-admin-loading-screen-test {
+  min-height: 100%;
+  background: #d6b98b url('../../../assets/theme/backgrounds/bg-parchment-panel-2x1.png') center / cover no-repeat;
+}
+
+/* The site-wide game frame is useful on normal pages, but it would leave a
+   visible border over a full-viewport loading screen. */
+body.page-admin-loading-screen-test::after {
+  display: none;
+}
+
+/* The test page uses the wide parchment surface behind every loading preset. */
+body.page-admin-loading-screen-test .bpb-loading-screen {
+  background:
+    linear-gradient(145deg, rgba(55, 32, 24, 0.34), rgba(37, 22, 18, 0.58)),
+    url('../../../assets/theme/backgrounds/bg-parchment-panel-2x1.png') center / cover no-repeat;
+}
+
+body.page-admin-loading-screen-test #main {
+  display: flow-root;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  padding: 0;
+}
+
+.loading-screen-test {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+}
+
+.loading-screen-test__preview {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.loading-screen-test__controls {
+  position: fixed;
+  z-index: 4;
+  top: calc(var(--bpb-nav-space, 4.75rem) + 0.75rem);
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: calc(100vw - 1.5rem);
+  padding: 0.5rem 0.65rem;
+  border: 1px solid rgba(60, 38, 29, 0.65);
+  border-radius: 0.55rem;
+  background: rgba(255, 236, 220, 0.92);
+  box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.26);
+  color: #3c261d;
+  font: 600 0.78rem/1.1 var(--bpb-font-body, system-ui, sans-serif);
+}
+
+.loading-screen-test__controls button {
+  appearance: none;
+  border: 1px solid rgba(60, 38, 29, 0.7);
+  border-radius: 0.35rem;
+  padding: 0.42rem 0.7rem;
+  color: #ffecdc;
+  background: #3c261d;
+  cursor: pointer;
+  font: inherit;
+}
+
+.loading-screen-test__controls select {
+  min-width: 11rem;
+  border: 1px solid rgba(60, 38, 29, 0.45);
+  border-radius: 0.35rem;
+  padding: 0.4rem 0.5rem;
+  color: #3c261d;
+  background: rgba(255, 255, 255, 0.62);
+  font: inherit;
+}
+
+.loading-screen-test__controls button:hover,
+.loading-screen-test__controls button:focus-visible {
+  background: #60432f;
+}
+
+@media (max-width: 720px) {
+  .loading-screen-test__controls {
+    top: calc(var(--bpb-nav-space, 4rem) + 0.5rem);
+    right: 0.5rem;
+    left: 0.5rem;
+    justify-content: space-between;
+  }
+}

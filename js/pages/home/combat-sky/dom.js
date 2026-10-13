@@ -28,20 +28,19 @@ export function buildSkyDom(root) {
   host.setAttribute('aria-hidden', 'true');
 
   const img = (file) => `${root}assets/theme/backgrounds/combat/${file}`;
-
   host.innerHTML = `
     <div class="combat-sky__stage">
       <div class="combat-sky__sky"></div>
       <div class="combat-sky__celestial" data-layer="sun" style="--w:282px;--h:282px;--sx:1.4;--sy:1.4">
         <img src="${img('Sun.png')}" alt="" width="282" height="282" decoding="async" />
       </div>
-      <div class="combat-sky__celestial combat-sky__star" data-layer="star1" style="--w:106px;--h:125px;--sx:0.91;--sy:0.91">
+      <div class="combat-sky__celestial combat-sky__star" data-layer="star1" style="--w:106px;--h:125px;--sx:0.91;--sy:0.91;--x:195px;--y:136px">
         <img src="${img('Star.png')}" alt="" width="106" height="125" decoding="async" />
       </div>
-      <div class="combat-sky__celestial combat-sky__star" data-layer="star2" style="--w:106px;--h:125px;--sx:1.11;--sy:1.11">
+      <div class="combat-sky__celestial combat-sky__star" data-layer="star2" style="--w:106px;--h:125px;--sx:1.11;--sy:1.11;--x:848px;--y:213px">
         <img src="${img('Star.png')}" alt="" width="106" height="125" decoding="async" />
       </div>
-      <div class="combat-sky__celestial combat-sky__star" data-layer="star3" style="--w:106px;--h:125px;--sx:0.69;--sy:0.69">
+      <div class="combat-sky__celestial combat-sky__star" data-layer="star3" style="--w:106px;--h:125px;--sx:0.69;--sy:0.69;--x:1155px;--y:312px">
         <img src="${img('Star.png')}" alt="" width="106" height="125" decoding="async" />
       </div>
       <div class="combat-sky__celestial" data-layer="moon" style="--w:270px;--h:294px">

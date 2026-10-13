@@ -1,0 +1,523 @@
+@import url('../backpack-grid/backpack-grid.css');
+
+.bpb-loading-screen {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  padding: clamp(1.5rem, 5vw, 4rem);
+  overflow: hidden;
+  color: #fff6e8;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(211, 157, 67, 0.2), transparent 34rem),
+    linear-gradient(145deg, #19111e 0%, #2d1c23 48%, #100b12 100%);
+  isolation: isolate;
+}
+
+.bpb-loading-screen::before,
+.bpb-loading-screen::after {
+  position: absolute;
+  border: 1px solid rgba(238, 196, 101, 0.26);
+  border-radius: 50%;
+  content: '';
+  pointer-events: none;
+}
+
+.bpb-loading-screen::before {
+  width: min(78vw, 54rem);
+  aspect-ratio: 1;
+  box-shadow: 0 0 0 2rem rgba(238, 196, 101, 0.025), 0 0 0 4rem rgba(238, 196, 101, 0.02);
+}
+
+.bpb-loading-screen::after {
+  width: min(58vw, 38rem);
+  aspect-ratio: 1;
+  border-style: dashed;
+  border-color: rgba(238, 196, 101, 0.16);
+  animation: bpb-loading-orbit 28s linear infinite;
+}
+
+.bpb-loading-screen__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 31rem);
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border: 1px solid rgba(255, 231, 183, 0.32);
+  border-radius: 1rem;
+  background: rgba(25, 16, 21, 0.78);
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.38), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(0.65rem);
+  text-align: center;
+}
+
+.bpb-loading-screen__logo {
+  width: clamp(4rem, 11vw, 6rem);
+  height: auto;
+  margin-bottom: 0.75rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0.5rem 0.8rem rgba(0, 0, 0, 0.38));
+}
+
+.bpb-loading-screen__eyebrow {
+  margin: 0;
+  color: #e9c86b;
+  font: 700 0.7rem/1.2 var(--bpb-font-body, Georgia, serif);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.bpb-loading-screen__title {
+  margin: 0.5rem 0 0;
+  color: #fff8e9;
+  font: 400 clamp(1.7rem, 4vw, 2.35rem)/1.15 var(--bpb-font-display, Georgia, serif);
+}
+
+.bpb-loading-screen__subtitle {
+  min-height: 1.25rem;
+  margin: 0.65rem 0 1.5rem;
+  color: rgba(255, 244, 222, 0.72);
+  font: 400 0.85rem/1.4 var(--bpb-font-body, Georgia, serif);
+}
+
+.bpb-loading-screen__track {
+  width: 100%;
+  height: 0.55rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 227, 165, 0.28);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.34);
+}
+
+.bpb-loading-screen__bar {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #b9782e, #efd16f);
+  box-shadow: 0 0 1rem rgba(238, 196, 101, 0.5);
+  transition: width 180ms ease-out;
+}
+
+.bpb-loading-screen__meta {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+  margin-top: 0.55rem;
+  color: rgba(255, 244, 222, 0.67);
+  font: 600 0.72rem/1.2 var(--bpb-font-body, Georgia, serif);
+}
+
+.bpb-loading-screen__meta output {
+  color: #efd16f;
+  font-variant-numeric: tabular-nums;
+}
+
+.bpb-loading-screen__stages {
+  display: grid;
+  gap: 0.45rem;
+  width: 100%;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: rgba(255, 244, 222, 0.45);
+  font: 400 0.75rem/1.25 var(--bpb-font-body, Georgia, serif);
+  text-align: left;
+}
+
+.bpb-loading-screen__stages li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.bpb-loading-screen__stages li > span {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: 0 0 auto;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.bpb-loading-screen__stages li.is-active {
+  color: #efd16f;
+}
+
+.bpb-loading-screen__stages li.is-active > span {
+  background: currentColor;
+  box-shadow: 0 0 0.5rem currentColor;
+}
+
+.bpb-loading-screen__stages li.is-complete {
+  color: rgba(190, 231, 164, 0.78);
+}
+
+.bpb-loading-screen__stages li.is-complete > span {
+  border-color: currentColor;
+  background: currentColor;
+}
+
+@keyframes bpb-loading-orbit {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpb-loading-screen::after { animation: none; }
+  .bpb-loading-screen__bar { transition: none; }
+}
+
+/* YouTube video loading preset ----------------------------------------- */
+.bpb-loading-screen--video {
+  display: block;
+  min-height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  box-shadow: none;
+  overflow: hidden;
+  isolation: isolate;
+  background: #10101a;
+}
+
+.bpb-loading-screen--video::before,
+.bpb-loading-screen--video::after {
+  display: none;
+}
+
+.bpb-video-loading__poster,
+.bpb-video-loading__video,
+.bpb-video-loading__iframe,
+.bpb-video-loading__shade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bpb-video-loading__poster {
+  z-index: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: #161624;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.bpb-video-loading__video,
+.bpb-video-loading__iframe {
+  z-index: 1;
+  display: block;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  width: max(100vw, 177.78vh);
+  height: max(100vh, 56.25vw);
+  max-width: none;
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  box-shadow: none;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1.01);
+}
+
+.bpb-video-loading__video {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Keep the full video box visible; the previous 1% overscan clipped edge
+     artwork, especially along the bottom of the loading animation. */
+  transform: none;
+  object-position: center center;
+}
+
+.bpb-loading-screen--video.is-video-starting .bpb-video-loading__video {
+  opacity: 0;
+}
+
+.bpb-video-loading__shade {
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(8, 8, 18, 0.03) 45%, rgba(8, 8, 18, 0.74) 100%),
+    linear-gradient(90deg, rgba(8, 8, 18, 0.16), transparent 35%, rgba(8, 8, 18, 0.16));
+}
+
+.bpb-video-loading__label {
+  position: absolute;
+  z-index: 3;
+  right: 1rem;
+  bottom: max(8vh, 2.2rem);
+  left: 1rem;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  margin: 0;
+  color: var(--bpb-label-fill, #fff8e9);
+  font: 400 clamp(2rem, 5vw, 4.25rem) / 1 var(--bpb-font-display, Georgia, serif);
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-shadow: var(--bpb-label-stroke, 0 0 0.08em #3c261d);
+}
+
+.bpb-video-loading__credit {
+  position: absolute;
+  z-index: 3;
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  left: max(1rem, env(safe-area-inset-left, 0px));
+  max-width: min(32rem, calc(100vw - 2rem));
+  color: rgba(255, 248, 233, 0.72);
+  font: 400 0.72rem / 1.3 var(--bpb-font-body, Georgia, serif);
+  letter-spacing: 0.015em;
+  text-decoration: none;
+  text-shadow: 0 0 0.2rem rgba(20, 12, 18, 0.9), 0 1px 2px rgba(20, 12, 18, 0.85);
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+.bpb-video-loading__credit:hover,
+.bpb-video-loading__credit:focus-visible {
+  color: #fff8e9;
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.bpb-video-loading__dots {
+  display: inline-block;
+  width: 1.2em;
+  overflow: hidden;
+  text-align: left;
+  animation: bpb-video-loading-dots 1.35s steps(4, end) infinite;
+}
+
+.bpb-loading-screen--video.is-fallback .bpb-video-loading__video,
+.bpb-loading-screen--video.is-fallback .bpb-video-loading__iframe {
+  display: none;
+}
+
+@keyframes bpb-video-loading-dots {
+  0%, 20% { width: 0; }
+  45% { width: 0.4em; }
+  70% { width: 0.8em; }
+  100% { width: 1.2em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpb-video-loading__dots { animation: none; width: 1.2em; }
+}
+
+/* Build creator preset --------------------------------------------------- */
+.bpb-loading-screen--build-creator {
+  display: block;
+  padding: 0;
+}
+
+.bpb-build-loader__heading {
+  position: absolute;
+  z-index: 3;
+  top: clamp(1.25rem, 6vh, 4.5rem);
+  left: 50%;
+  width: min(90vw, 34rem);
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.bpb-build-loader__heading .bpb-loading-screen__title {
+  margin-top: 0.45rem;
+}
+
+.bpb-build-loader__heading .bpb-loading-screen__subtitle {
+  margin: 0.55rem 0 0;
+}
+
+.bpb-build-loader__board {
+  --build-cell: clamp(2.1rem, min(5vw, 7vh), 4.2rem);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: calc(var(--build-cell) * 9);
+  height: calc(var(--build-cell) * 7);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: translate(-50%, -43%);
+}
+
+.bpb-build-loader__cells,
+.bpb-build-loader__items {
+  position: absolute;
+  inset: 0;
+}
+
+.bpb-build-loader__cells {
+  opacity: 0.45;
+  background-color: transparent;
+  background-image: url("../../../assets/icons/FilledSlot.png");
+  background-size: var(--build-cell) var(--build-cell);
+  background-repeat: repeat;
+}
+
+.bpb-build-loader__items {
+  z-index: 1;
+}
+
+/* Use the same placed-grid renderer as real build pages.  This keeps shape
+   bounds, rotation pivots, bag fabric, and sprite anchors identical to an
+   actual build instead of approximating each item with a plain image box. */
+.bpb-build-loader__grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: visible;
+}
+
+.bpb-build-loader__grid > .bpb-bg {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  overflow: visible;
+  scrollbar-width: none;
+  font-size: var(--build-cell);
+}
+
+.bpb-build-loader__grid > .bpb-bg::-webkit-scrollbar {
+  display: none;
+}
+
+.bpb-build-loader__grid .bpb-bg__board {
+  width: 9em !important;
+  height: 7em !important;
+  max-width: none;
+  margin: 0;
+  overflow: visible;
+}
+
+.bpb-build-loader__grid .bpb-bg__lines {
+  display: none;
+}
+
+.bpb-build-loader__grid .bpb-bg__under,
+.bpb-build-loader__grid .bpb-bg__items,
+.bpb-build-loader__grid .bpb-bg__fabric {
+  overflow: visible;
+}
+
+.bpb-build-loader__item {
+  position: absolute;
+  top: calc(var(--item-draw-y, var(--item-y)) * var(--build-cell));
+  left: calc(var(--item-draw-x, var(--item-x)) * var(--build-cell));
+  width: calc(var(--item-w) * var(--build-cell));
+  height: calc(var(--item-h) * var(--build-cell));
+  object-fit: contain;
+  object-position: center;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: center;
+  filter: drop-shadow(0 0.3rem 0.22rem rgba(23, 11, 5, 0.45));
+  will-change: transform, opacity;
+}
+
+.bpb-build-loader__item.is-landed {
+  opacity: 1;
+}
+
+.bpb-build-loader__chest {
+  position: absolute;
+  z-index: 3;
+  bottom: max(1.25rem, 5vh);
+  left: max(1.25rem, 5vw);
+  width: clamp(9rem, 17vw, 15rem);
+  aspect-ratio: 378 / 414;
+  filter: drop-shadow(0 0.55rem 0.75rem rgba(20, 12, 8, 0.52));
+  /* The angled game sprite needs a horizontal mirror here: its mouth then
+     points from the bottom-left chest toward the board on the right. */
+  transform: translateZ(0) scaleX(-1);
+}
+
+.bpb-build-loader__chest-bottom,
+.bpb-build-loader__chest-top {
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bpb-build-loader__chest-bottom {
+  bottom: 0;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  z-index: 1;
+}
+
+.bpb-build-loader__chest-top {
+  left: 4%;
+  bottom: 42%;
+  width: 88%;
+  height: auto;
+  z-index: 2;
+  transform-origin: 94% 92%;
+  /* Closed: the lid rests across the teeth. Open: it swings upright, leaving
+     the right-facing mouth clear for the item launch. */
+  transform: rotate(-35deg);
+  transition: transform 220ms cubic-bezier(0.22, 0.8, 0.28, 1);
+}
+
+.bpb-build-loader__chest.is-open .bpb-build-loader__chest-top {
+  transform: rotate(35deg);
+}
+
+.bpb-build-loader__progress {
+  position: absolute;
+  right: 50%;
+  bottom: max(1.5rem, 6vh);
+  z-index: 3;
+  width: min(22rem, 42vw);
+  height: 0.45rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 227, 165, 0.28);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.34);
+  transform: translateX(50%);
+}
+
+.bpb-build-loader__progress .bpb-loading-screen__bar {
+  display: block;
+  height: 100%;
+}
+
+@media (max-width: 720px) {
+  .bpb-build-loader__board {
+    --build-cell: clamp(1.75rem, 8.8vw, 3rem);
+    transform: translate(-50%, -35%);
+  }
+
+  .bpb-build-loader__chest {
+    bottom: 1rem;
+    left: 1rem;
+    width: 8.5rem;
+  }
+
+  .bpb-build-loader__progress {
+    right: 1rem;
+    bottom: 1.25rem;
+    width: min(12rem, 45vw);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpb-build-loader__chest-top { transition: none; }
+}

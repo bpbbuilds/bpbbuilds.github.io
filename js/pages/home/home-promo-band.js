@@ -7,7 +7,7 @@
 
 import { skelBar, skelBlock, skelRegion } from '../../shared/skeleton.js';
 import { escapeAttr, rootPrefix } from './home-build-media.js';
-import { playAssemble } from './home-promo-assemble.js';
+import { playAssemble } from './home-promo-assemble.js?v=promo-creator-20261011m';
 import { mountPromoCatalog } from './home-promo-catalog.js';
 
 /** 10-col packed stamp (no holes) — same geometry as the live Itemiary catalog. */
@@ -95,7 +95,11 @@ function createPromoInfoSkel() {
 
 /**
  * @param {string | Element} [selector='#home-promo-band']
- * @param {{ variant?: 'create' | 'op' }} [opts]
+ * @param {{
+ *   variant?: 'create' | 'op',
+ *   builds?: object[],
+ *   launcher?: 'catalog' | 'chest' | 'creator',
+ * }} [opts]
  */
 export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
   const host =
@@ -109,22 +113,33 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
   const createHref = `${root}create/`;
   const opHref = `${root}builds/?tags=op`;
   const bagIcon = `${root}assets/icons/misc/Backpack_icon.png`;
+  const chestLauncher = variant === 'create' && opts.launcher === 'chest';
+  const creatorLauncher = variant === 'create' && opts.launcher === 'creator';
 
   if (variant === 'create') {
     host.innerHTML = `
-      <div class="home-promo home-promo--create home-promo--parchment">
+      <div class="home-promo home-promo--create home-promo--parchment${chestLauncher ? ' home-promo--chest' : ''}${creatorLauncher ? ' home-promo--creator' : ''}">
         <div class="home-promo__band">
           <div class="home-promo__card" data-promo-create-card aria-busy="true">
-            <div class="home-promo__side home-promo__side--catalog">
-              <div
-                class="home-promo__catalog"
-                data-promo-catalog-root
-                aria-hidden="true"
-              >
-                <div class="home-promo__catalog-stage" data-promo-catalog>
-                  ${createPromoCatalogSkel()}
+            <div class="home-promo__side ${chestLauncher ? 'home-promo__side--launcher' : creatorLauncher ? 'home-promo__side--creator' : 'home-promo__side--catalog'}">
+              ${chestLauncher ? `
+                <div class="home-promo__chest-launcher" data-promo-chest-launcher aria-label="Chestnut item launcher">
+                  <img class="home-promo__chest-bottom" src="${escapeAttr(`${root}assets/theme/ui/sellbox/bottom-front.png`)}" alt="" draggable="false" />
+                  <span class="home-promo__chest-eye" aria-hidden="true"><i></i></span>
+                  <span class="home-promo__chest-mouth" aria-hidden="true"></span>
+                  <img class="home-promo__chest-top" src="${escapeAttr(`${root}assets/theme/ui/sellbox/top-front.png`)}" alt="" draggable="false" />
                 </div>
-              </div>
+              ` : creatorLauncher ? `<aside class="home-promo__creator" data-promo-creator aria-label="Build creator"></aside>` : `
+                <div
+                  class="home-promo__catalog"
+                  data-promo-catalog-root
+                  aria-hidden="true"
+                >
+                  <div class="home-promo__catalog-stage" data-promo-catalog>
+                    ${createPromoCatalogSkel()}
+                  </div>
+                </div>
+              `}
             </div>
             <div class="home-promo__stage">
               <div class="home-promo__caption" data-promo-caption>
@@ -163,6 +178,8 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
       </div>`;
     const boardHost = host.querySelector('[data-promo-empty-board]');
     const catalogRoot = host.querySelector('[data-promo-catalog-root]');
+    const chestEl = host.querySelector('[data-promo-chest-launcher]');
+    const creatorEl = host.querySelector('[data-promo-creator]');
     const captionEl = host.querySelector('[data-promo-caption]');
     const boardLink = host.querySelector('[data-promo-board-link]');
     const boardTagsEl = host.querySelector('[data-promo-board-tags]');
@@ -194,10 +211,10 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
       activityObserver.observe(host);
     }
     const promoMq = window.matchMedia('(max-width: 1100px)');
-    const catalogReady = promoMq.matches
+    const catalogReady = chestLauncher || creatorLauncher || promoMq.matches
       ? Promise.resolve()
       : mountPromoCatalog(host, { root });
-    if (promoMq.matches) {
+    if (!chestLauncher && !creatorLauncher && promoMq.matches) {
       const onWide = () => {
         if (promoMq.matches) return;
         promoMq.removeEventListener('change', onWide);
@@ -214,6 +231,10 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
       boardTagsEl: boardTagsEl instanceof HTMLElement ? boardTagsEl : null,
       infoEl: infoEl instanceof HTMLElement ? infoEl : null,
       catalogReady,
+      builds: Array.isArray(opts.builds) ? opts.builds : undefined,
+      chestEl: chestEl instanceof HTMLElement ? chestEl : null,
+      creatorEl: creatorEl instanceof HTMLElement ? creatorEl : null,
+      creatorMode: creatorLauncher,
       activity,
       root,
     });

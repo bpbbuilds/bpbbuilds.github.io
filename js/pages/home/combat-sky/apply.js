@@ -24,6 +24,15 @@ import {
   WINDMILL,
 } from './tracks.js';
 
+const SUN_X_TIMES = [0, 15.2];
+const SUN_X_VALUES = [57, 1950];
+const SUN_Y_TIMES = [0, 7, 15.2];
+const SUN_Y_VALUES = [582, 119.446, 500];
+const MOON_X_TIMES = [15.7, 28.9];
+const MOON_X_VALUES = [119, 2050];
+const MOON_Y_TIMES = [15.7, 22.6, 28.9];
+const MOON_Y_VALUES = [633, 119.446, 450];
+
 /**
  * @param {HTMLElement} host
  */
@@ -77,6 +86,17 @@ function setCelestial(el, last, pose) {
 }
 
 /**
+ * Stars never move; avoid rebuilding their constant position strings on each
+ * scroll tick and only update the opacity track.
+ * @param {HTMLElement | null} el
+ * @param {Record<string, string>} last
+ * @param {number} alpha
+ */
+function setCelestialOpacity(el, last, alpha) {
+  setVar(el, '--a', alpha.toFixed(3), last);
+}
+
+/**
  * @param {HTMLElement | null} el
  * @param {Record<string, string>} last
  * @param {{ r: number, g: number, b: number, a?: number }} mod
@@ -88,68 +108,62 @@ function setMod(el, last, mod) {
 /**
  * @param {ReturnType<typeof bindSkyLayers>} layers
  * @param {number} t
+ * @param {{ updateColors?: boolean }} [options]
  */
-export function applyTime(layers, t) {
+export function applyTime(layers, t, options = {}) {
   const { stage, last } = layers;
   if (!stage) return;
 
-  setVar(stage, '--sky-mod', toCss(sampleColor(SKY_MOD.times, SKY_MOD.values, SKY_MOD.trans, t)), last);
-  setVar(stage, '--sky-y', `${sampleNum(SKY_Y.times, SKY_Y.values, SKY_Y.trans, t).toFixed(2)}px`, last);
+  const updateColors = options.updateColors !== false;
+  if (updateColors) {
+    setVar(layers.stage, '--sky-mod', toCss(sampleColor(SKY_MOD.times, SKY_MOD.values, SKY_MOD.trans, t)), last);
+  }
+  setVar(layers.stage, '--sky-y', `${sampleNum(SKY_Y.times, SKY_Y.values, SKY_Y.trans, t).toFixed(2)}px`, last);
 
   const sunT = Math.min(t, 15.2);
   setCelestial(layers.sun, last, {
-    x: samplePath([0, 15.2], [57, 1950], sunT),
-    y: samplePath([0, 7, 15.2], [582, 119.446, 500], sunT),
+    x: samplePath(SUN_X_TIMES, SUN_X_VALUES, sunT),
+    y: samplePath(SUN_Y_TIMES, SUN_Y_VALUES, sunT),
     a: sampleNum(SUN_A.times, SUN_A.values, SUN_A.trans, t),
   });
 
   const moonT = Math.max(t, 15.7);
   setCelestial(layers.moon, last, {
-    x: t < 15.7 ? 119 : samplePath([15.7, 28.9], [119, 2050], moonT),
-    y: t < 15.7 ? 633 : samplePath([15.7, 22.6, 28.9], [633, 119.446, 450], moonT),
+    x: t < 15.7 ? 119 : samplePath(MOON_X_TIMES, MOON_X_VALUES, moonT),
+    y: t < 15.7 ? 633 : samplePath(MOON_Y_TIMES, MOON_Y_VALUES, moonT),
     a: sampleNum(MOON_A.times, MOON_A.values, MOON_A.trans, t),
   });
 
-  setCelestial(layers.star1, last, {
-    x: 195,
-    y: 136,
-    a: sampleNum(STAR1_A.times, STAR1_A.values, null, t),
-  });
-  setCelestial(layers.star2, last, {
-    x: 848,
-    y: 213,
-    a: sampleNum(STAR2_A.times, STAR2_A.values, null, t),
-  });
-  setCelestial(layers.star3, last, {
-    x: 1155,
-    y: 312,
-    a: sampleNum(STAR3_A.times, STAR3_A.values, null, t),
-  });
+  setCelestialOpacity(layers.star1, last, sampleNum(STAR1_A.times, STAR1_A.values, null, t));
+  setCelestialOpacity(layers.star2, last, sampleNum(STAR2_A.times, STAR2_A.values, null, t));
+  setCelestialOpacity(layers.star3, last, sampleNum(STAR3_A.times, STAR3_A.values, null, t));
 
-  setMod(layers.shrubbery, last, sampleColor(SHRUB.times, SHRUB.values, SHRUB.trans, t));
-  setMod(layers.mountains, last, sampleColor(MOUNTAINS.times, MOUNTAINS.values, MOUNTAINS.trans, t));
-  setMod(layers.hill3, last, sampleColor(HILL3.times, HILL3.values, HILL3.trans, t));
-  setMod(layers.house, last, sampleColor(HOUSE.times, HOUSE.values, HOUSE.trans, t));
-  setMod(layers.windows, last, sampleColor(WINDOWS.times, WINDOWS.values, WINDOWS.trans, t));
-  setMod(layers.roof, last, sampleColor(ROOF.times, ROOF.values, ROOF.trans, t));
-  setMod(layers.hill2, last, sampleColor(HILL2.times, HILL2.values, HILL2.trans, t));
-  const hill1Mod = sampleColor(HILL1.times, HILL1.values, HILL1.trans, t);
-  setMod(layers.hill1, last, hill1Mod);
-  setVar(stage, '--ground-mod', toCss(hill1Mod), last);
-  setMod(layers.path, last, sampleColor(PATH.times, PATH.values, PATH.trans, t));
+  if (updateColors) {
+    setMod(layers.shrubbery, last, sampleColor(SHRUB.times, SHRUB.values, SHRUB.trans, t));
+    setMod(layers.mountains, last, sampleColor(MOUNTAINS.times, MOUNTAINS.values, MOUNTAINS.trans, t));
+    setMod(layers.hill3, last, sampleColor(HILL3.times, HILL3.values, HILL3.trans, t));
+    setMod(layers.house, last, sampleColor(HOUSE.times, HOUSE.values, HOUSE.trans, t));
+    setMod(layers.windows, last, sampleColor(WINDOWS.times, WINDOWS.values, WINDOWS.trans, t));
+    setMod(layers.roof, last, sampleColor(ROOF.times, ROOF.values, ROOF.trans, t));
+    setMod(layers.hill2, last, sampleColor(HILL2.times, HILL2.values, HILL2.trans, t));
+    const hill1Mod = sampleColor(HILL1.times, HILL1.values, HILL1.trans, t);
+    setMod(layers.hill1, last, hill1Mod);
+    setVar(layers.stage, '--ground-mod', toCss(hill1Mod), last);
+    setMod(layers.path, last, sampleColor(PATH.times, PATH.values, PATH.trans, t));
 
-  if (layers.windmill) {
-    setVar(
-      layers.windmill,
-      '--mod',
-      toCss(sampleColor(WINDMILL.times, WINDMILL.values, WINDMILL.trans, t)),
-      last,
-    );
-    setVar(
-      layers.windmill,
-      '--blade-mod',
-      toCss(sampleColor(BLADES.times, BLADES.values, BLADES.trans, t)),
-      last,
-    );
+    if (layers.windmill) {
+      setVar(
+        layers.windmill,
+        '--mod',
+        toCss(sampleColor(WINDMILL.times, WINDMILL.values, WINDMILL.trans, t)),
+        last,
+      );
+      setVar(
+        layers.windmill,
+        '--blade-mod',
+        toCss(sampleColor(BLADES.times, BLADES.values, BLADES.trans, t)),
+        last,
+      );
+    }
   }
 }

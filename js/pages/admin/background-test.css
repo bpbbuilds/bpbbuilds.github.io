@@ -1,0 +1,218 @@
+/* Owner-only blank scroll surface for trying background variants. */
+
+body.page-admin-background-test {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #000533;
+}
+
+body.page-admin-background-test #main {
+  position: relative;
+  z-index: 1;
+  min-height: 320vh;
+}
+
+/* Full-page previews for the site’s precomposed scene and sectional art. */
+.background-test__asset {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background-color: #000533;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.background-test__asset[data-fit='contain'] {
+  background-size: contain;
+  background-color: #2a1a12;
+}
+
+/* Experimental title-screen-style item physics layer. The canvas is pointer
+   transparent so the fixed picker and the document remain easy to use. */
+.background-test__falling-items {
+  position: fixed;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+}
+
+.background-test__falling-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.background-test {
+  min-height: 320vh;
+}
+
+.background-test__controls {
+  position: fixed;
+  z-index: 4;
+  top: calc(var(--bpb-nav-space, 4.75rem) + 0.75rem);
+  left: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: min(40rem, calc(100vw - 1.5rem));
+  max-height: min(52vh, 30rem);
+  padding: 0.55rem;
+  overflow: auto;
+  border: 1px solid rgba(60, 38, 29, 0.65);
+  border-radius: 0.55rem;
+  background: rgba(255, 236, 220, 0.9);
+  box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(0.4rem);
+  pointer-events: auto;
+}
+
+.background-test__picker-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  color: #3c261d;
+}
+
+.background-test__picker-label {
+  font: 700 0.95rem/1.15 var(--bpb-font-body, system-ui, sans-serif);
+}
+
+.background-test__selected {
+  overflow: hidden;
+  color: #6a4a30;
+  font: 600 0.78rem/1.15 var(--bpb-font-body, system-ui, sans-serif);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.background-test__filter-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+  color: #6a4a30;
+  font: 700 0.72rem/1.1 var(--bpb-font-body, system-ui, sans-serif);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.background-test__filter {
+  min-width: 12rem;
+  appearance: auto;
+  border: 1px solid rgba(60, 38, 29, 0.35);
+  border-radius: 0.3rem;
+  padding: 0.34rem 0.48rem;
+  color: #5c4030;
+  background: rgba(255, 255, 255, 0.48);
+  cursor: pointer;
+  font: 600 0.78rem/1.1 var(--bpb-font-body, system-ui, sans-serif);
+}
+
+.background-test__falling-controls {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.45rem 0 0.1rem;
+  border-top: 1px solid rgba(60, 38, 29, 0.22);
+}
+
+.background-test__falling-controls[hidden] {
+  display: none;
+}
+
+.background-test__falling-controls-title {
+  color: #6a4a30;
+  font: 700 0.7rem/1.1 var(--bpb-font-body, system-ui, sans-serif);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.background-test__range {
+  display: grid;
+  grid-template-columns: minmax(6.6rem, auto) minmax(7rem, 1fr) 3.1rem;
+  align-items: center;
+  gap: 0.45rem;
+  color: #5c4030;
+  font: 600 0.74rem/1.1 var(--bpb-font-body, system-ui, sans-serif);
+}
+
+.background-test__range input[type='range'] {
+  width: 100%;
+  margin: 0;
+  accent-color: #3c261d;
+}
+
+.background-test__range output {
+  color: #3c261d;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.background-test__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #5c4030;
+  font: 600 0.74rem/1.1 var(--bpb-font-body, system-ui, sans-serif);
+}
+
+.background-test__toggle input {
+  accent-color: #3c261d;
+}
+
+.background-test__button {
+  appearance: none;
+  border: 1px solid rgba(60, 38, 29, 0.7);
+  border-radius: 0.35rem;
+  padding: 0.45rem 0.7rem;
+  color: #3c261d;
+  background: rgba(255, 236, 220, 0.92);
+  box-shadow: 0 0.15rem 0.4rem rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+  font: 600 0.8rem/1.1 var(--bpb-font-body, system-ui, sans-serif);
+}
+
+.background-test__options .background-test__button {
+  min-height: 1.85rem;
+  width: 100%;
+}
+
+.background-test__options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  gap: 0.35rem;
+}
+
+.background-test__button[aria-pressed='true'] {
+  color: #ffecdc;
+  background: #3c261d;
+}
+
+.background-test__button:focus-visible {
+  outline: 2px solid #eac914;
+  outline-offset: 2px;
+}
+
+.background-test__filter:focus-visible {
+  outline: 2px solid #eac914;
+  outline-offset: 2px;
+}
+
+.background-test__blank {
+  min-height: 320vh;
+}
+
+@media (max-width: 900px) {
+  .background-test__controls {
+    top: calc(var(--bpb-nav-space, 4rem) + 0.6rem);
+    max-height: min(58vh, 28rem);
+  }
+
+  .background-test__picker-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+}

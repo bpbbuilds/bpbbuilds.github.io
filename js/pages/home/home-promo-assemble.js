@@ -26,7 +26,7 @@ import {
   restorePromoCatalogItems,
   seekPromoCatalogItem,
 } from './home-promo-catalog.js';
-import { normalizePromoBuild, paintPromoCaption } from './home-promo-caption.js';
+import { normalizePromoBuild, paintPromoCaption, paintPromoCreator } from './home-promo-caption.js';
 
 const FETCH_LIMIT = 12;
 const FLY_MS = 420;
@@ -335,6 +335,25 @@ function promoUsesSides() {
   return window.matchMedia(PROMO_MOBILE_MQ).matches;
 }
 
+/** @param {HTMLElement | null | undefined} chestEl */
+function setChestOpen(chestEl, open) {
+  chestEl?.classList.toggle('is-open', open);
+}
+
+/** @param {HTMLElement | null | undefined} chestEl */
+function chestOrigin(chestEl) {
+  const rect = chestEl?.getBoundingClientRect();
+  if (!rect || rect.width < 2 || rect.height < 2) return null;
+  const size = Math.max(34, Math.min(rect.width, rect.height) * 0.32);
+  return docBox({
+    // Open-mouth center on the shop Chestnut launcher.
+    left: rect.left + rect.width * 0.7 - size / 2,
+    top: rect.top + rect.height * 0.47 - size / 2,
+    width: size,
+    height: size,
+  });
+}
+
 /**
  * Pause the decorative loop while its section is away from the viewport.
  * @param {{ active: boolean, wait: () => Promise<void> } | null | undefined} activity
@@ -534,7 +553,11 @@ function fadeNewBagChrome(boardHost) {
  *   boardTagsEl?: HTMLElement | null,
  *   infoEl?: HTMLElement | null,
  *   root: string,
+ *   builds?: object[],
  *   catalogReady?: Promise<unknown>,
+ *   chestEl?: HTMLElement | null,
+ *   creatorEl?: HTMLElement | null,
+ *   creatorMode?: boolean,
  *   activity?: { active: boolean, wait: () => Promise<void> },
  * }} opts
  */
@@ -549,7 +572,9 @@ export async function playAssemble(opts) {
   let extras;
   try {
     const extrasP = loadAssetExtras(base);
-    const buildsP = fetchRealBuilds();
+    const buildsP = Array.isArray(opts.builds)
+      ? Promise.resolve(opts.builds)
+      : fetchRealBuilds();
     if (opts.catalogReady) await opts.catalogReady;
     extras = await extrasP;
     builds = await buildsP;
@@ -566,26 +591,56 @@ export async function playAssemble(opts) {
   }
 
   const getSpriteUrl = makeSpriteUrl(base, extras.spriteDisplay);
-  const seenSrc = new Set();
-  for (const build of builds) {
+  // Keep decoded sprites for the active/next builds only. This avoids the old
+  // eager all-build catalog preload while shared items remain immediately
+  // reusable across consecutive builds.
+  const spriteCache = new Map();
+  const spriteUrlsForBuild = (build) => new Set(
+    (build.placements || [])
+      .map((p) => mapItem(p.item))
+      .filter((item) => item?.id)
+      .map((item) => getSpriteUrl(item))
+      .filter(Boolean),
+  );
+  const retainBuildSprites = (...buildsToKeep) => {
+    const retained = new Set(buildsToKeep.flatMap((build) => [...spriteUrlsForBuild(build)]));
+    for (const src of spriteCache.keys()) {
+      if (!retained.has(src)) spriteCache.delete(src);
+    }
+  };
+  const cacheBuildSprites = async (build) => {
+    const pending = [];
     for (const p of build.placements || []) {
       const item = mapItem(p.item);
       if (!item?.id) continue;
       const src = getSpriteUrl(item);
-      if (src && !seenSrc.has(src)) {
-        seenSrc.add(src);
+      if (src && !spriteCache.has(src)) {
         const pre = new Image();
         pre.decoding = 'async';
         pre.src = src;
+        spriteCache.set(src, pre);
+        pending.push(pre.decode().catch(() => {}));
       }
     }
-  }
+    await Promise.all(pending);
+  };
+  await cacheBuildSprites(builds[0]);
   const grid = remountBoard(boardHost, getSpriteUrl, opts.grid);
   if (!grid) return;
   const reduced = prefersReducedMotion();
+  const creatorCounts = new Map();
+  const creatorCount = async (build) => {
+    const authorId = String(build?.author_id || '').trim();
+    if (!authorId) return 0;
+    if (creatorCounts.has(authorId)) return creatorCounts.get(authorId);
+    const { count } = await getSupabase().from('builds').select('id', { count: 'exact', head: true }).eq('author_id', authorId).eq('is_public', true);
+    const total = Math.max(0, Number(count) || 0);
+    creatorCounts.set(authorId, total);
+    return total;
+  };
 
   while (boardHost.isConnected) {
-    for (const build of builds) {
+    for (const [buildIndex, build] of builds.entries()) {
       await waitForPromoActivity(opts.activity, boardHost);
       if (!boardHost.isConnected) return;
       const mapped = placementsForBuild(build, {
@@ -597,19 +652,25 @@ export async function playAssemble(opts) {
       if (!ordered.length) continue;
 
       paintPromoCaption(captionEl, build, base, boardLink, infoEl, boardTagsEl);
+      if (opts.creatorMode) {
+        paintPromoCaption(captionEl, build, base, boardLink, infoEl, boardTagsEl, { hideAuthor: true });
+        paintPromoCreator(opts.creatorEl, build, base, null);
+        void creatorCount(build).then((count) => paintPromoCreator(opts.creatorEl, build, base, count));
+      }
       grid.update([], mapped.itemsById);
       clearPromoWave(boardHost);
       fabricSeen.clear();
-      const fromSides = promoUsesSides();
+      const usingChest = opts.chestEl instanceof HTMLElement && !promoUsesSides();
+      const creatorMode = opts.creatorMode === true;
+      const fromSides = !usingChest && promoUsesSides();
       if (!fromSides) {
-        void prefetchPromoCatalogItems(
-          catalogRoot,
-          ordered.map((p) => p.id),
-        );
+        if (usingChest) setChestOpen(opts.chestEl, true);
+        else void prefetchPromoCatalogItems(catalogRoot, ordered.map((p) => p.id));
       }
 
       if (reduced) {
         grid.update(ordered, mapped.itemsById);
+        if (usingChest) setChestOpen(opts.chestEl, false);
         await sleep(HOLD_MS);
         grid.update([], mapped.itemsById);
         continue;
@@ -626,7 +687,7 @@ export async function playAssemble(opts) {
         let from = null;
         /** @type {Promise<void>} */
         let hideP = Promise.resolve();
-        if (!fromSides) {
+        if (!fromSides && !usingChest) {
           const node = await seekPromoCatalogItem(catalogRoot, first.id);
           await sleep(SEEK_BEAT_MS);
           from =
@@ -641,7 +702,7 @@ export async function playAssemble(opts) {
             if (!boardHost.isConnected) return;
             const piece = mapped.itemsById.get(p.id) || item || null;
             const to = cellTarget(boardHost, p, piece, fromSides ? 'viewport' : 'document');
-            const start = fromSides ? sideOrigin(wave + i, to) : from;
+            const start = fromSides ? sideOrigin(wave + i, to) : (usingChest ? chestOrigin(opts.chestEl) : from);
             const pieceSrc = piece ? getSpriteUrl(piece) : src;
             if (pieceSrc && start) {
               await flyGhost({
@@ -669,11 +730,28 @@ export async function playAssemble(opts) {
         wave += group.length;
       }
 
+      if (creatorMode) {
+        // This is the build-view page's native placed-board wave: each piece
+        // is already at its final grid coordinate and scales in by reading order.
+        grid.update(ordered, mapped.itemsById, { appear: true });
+        await sleep(HOLD_MS);
+        await departBoardItems(boardHost);
+        grid.update([], mapped.itemsById);
+        clearPromoWave(boardHost);
+        fabricSeen.clear();
+        continue;
+      }
+
+      // The board is complete now: close Chestnut for the visible hold, then
+      // reopen at the beginning of the following build's launch sequence.
+      if (usingChest) setChestOpen(opts.chestEl, false);
       await sleep(HOLD_MS);
       if (!boardHost.isConnected) return;
+      const nextBuild = builds[(buildIndex + 1) % builds.length];
+      void cacheBuildSprites(nextBuild).then(() => retainBuildSprites(build, nextBuild));
       await Promise.all([
         departBoardItems(boardHost),
-        fromSides ? Promise.resolve() : restorePromoCatalogItems(catalogRoot),
+        fromSides || usingChest ? Promise.resolve() : restorePromoCatalogItems(catalogRoot),
       ]);
       if (!boardHost.isConnected) return;
       grid.update([], mapped.itemsById);

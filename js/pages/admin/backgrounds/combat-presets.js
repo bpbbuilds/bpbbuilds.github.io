@@ -1,0 +1,32 @@
+export const COMBAT_BACKGROUND_PRESETS = [
+  { id: 'home', label: 'Home background', group: 'live', mode: 'live' },
+  { id: 'dawn', label: 'Dawn', group: 'time', mode: 'combat-static', time: 4.5 },
+  { id: 'midday', label: 'Midday', group: 'time', mode: 'combat-static', time: 8 },
+  { id: 'sunset', label: 'Sunset', group: 'time', mode: 'combat-static', time: 12.4 },
+  {
+    id: 'twilight',
+    label: 'Twilight',
+    group: 'time',
+    mode: 'combat-static',
+    time: 18.9,
+    twinkle: true,
+    moon: { x: 960, y: 190 },
+  },
+  {
+    id: 'night',
+    label: 'Night',
+    group: 'time',
+    mode: 'combat-static',
+    time: 25.8,
+    twinkle: true,
+    moon: { x: 960, y: 190 },
+  },
+  {
+    id: 'falling-items',
+    label: 'Falling items · Town square',
+    group: 'experimental',
+    mode: 'falling-items',
+    image: 'bg-town-square.jpg',
+    fit: 'cover',
+  },
+];

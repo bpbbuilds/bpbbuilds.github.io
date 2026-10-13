@@ -1,0 +1,229 @@
+/* Owner-only preview for the homepage build-creator animation. */
+
+html,
+body {
+  min-width: 0;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body.page-admin-build-creator-animation-test {
+  min-height: 300vh;
+  display: block;
+  background:
+    linear-gradient(180deg, rgba(13, 21, 38, 0.12), rgba(39, 24, 18, 0.22)),
+    url('../../../assets/theme/backgrounds/bg-town-square.jpg') center / cover fixed no-repeat;
+}
+
+/* This test is intentionally a clean section canvas rather than a framed site page. */
+body.page-admin-build-creator-animation-test::after {
+  display: none;
+}
+
+body.page-admin-build-creator-animation-test #main {
+  width: 100%;
+  min-height: 300vh;
+  padding: 0;
+}
+
+.build-creator-animation-test {
+  width: 100%;
+  min-height: 300vh;
+  padding: clamp(3rem, 9vh, 8rem) 0 45vh;
+}
+
+.build-creator-animation-test__intro {
+  width: min(88rem, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 0 1rem 1.5rem;
+  color: #fff1d6;
+  text-align: center;
+  text-shadow: 0 0.15rem 0.35rem rgba(0, 0, 0, 0.5);
+}
+
+.build-creator-animation-test__eyebrow {
+  margin: 0 0 0.4rem;
+  color: #f2cf76;
+  font: 700 0.72rem/1.2 var(--bpb-font-body, system-ui, sans-serif);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.build-creator-animation-test__title {
+  margin: 0;
+  font: 400 clamp(1.8rem, 4vw, 3rem)/1.05 var(--bpb-font-display, Georgia, serif);
+}
+
+.build-creator-animation-test__hint {
+  max-width: 38rem;
+  margin: 0.8rem auto 0;
+  color: rgba(255, 240, 216, 0.86);
+  font: 400 clamp(0.78rem, 1.4vw, 1rem)/1.45 var(--bpb-font-body, system-ui, sans-serif);
+}
+
+.build-creator-animation-test__synergy {
+  width: min(72rem, calc(100% - 2rem));
+  margin: 0 auto 1.5rem;
+  padding: 0.85rem 1rem 0.9rem;
+  border: 1px solid rgba(255, 239, 204, 0.42);
+  border-radius: 0.55rem;
+  background: rgba(38, 24, 19, 0.72);
+  box-shadow: 0 0.55rem 1.4rem rgba(0, 0, 0, 0.24);
+  color: #fff1d6;
+}
+
+.build-creator-animation-test__synergy-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+  font: 700 0.72rem/1.2 var(--bpb-font-body, system-ui, sans-serif);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.build-creator-animation-test__synergy-heading span {
+  color: #f2cf76;
+}
+
+.build-creator-animation-test__synergy-heading strong {
+  color: #fff7e7;
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.build-creator-animation-test__synergy-items {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.build-creator-animation-test__item-chip {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0.45rem;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid rgba(255, 236, 194, 0.18);
+  border-radius: 0.35rem;
+  background: rgba(255, 240, 211, 0.08);
+}
+
+.build-creator-animation-test__item-chip img {
+  display: block;
+  width: 3.5rem;
+  height: 3.5rem;
+  flex: 0 0 3.5rem;
+  object-fit: contain;
+}
+
+.build-creator-animation-test__item-chip span {
+  display: grid;
+  min-width: 0;
+  gap: 0.18rem;
+}
+
+.build-creator-animation-test__item-chip strong,
+.build-creator-animation-test__item-chip small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.build-creator-animation-test__item-chip strong {
+  color: #fff7e7;
+  font: 700 0.7rem/1.15 var(--bpb-font-body, system-ui, sans-serif);
+}
+
+.build-creator-animation-test__item-chip small {
+  color: rgba(255, 240, 216, 0.7);
+  font: 400 0.62rem/1.15 var(--bpb-font-body, system-ui, sans-serif);
+}
+
+.build-creator-animation-test__synergy-note {
+  margin: 0.65rem 0 0;
+  color: rgba(255, 240, 216, 0.78);
+  font: 400 0.72rem/1.35 var(--bpb-font-body, system-ui, sans-serif);
+  text-align: center;
+}
+
+.build-creator-animation-test__tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  width: min(72rem, calc(100% - 2rem));
+  margin: 0 auto 0.35rem;
+}
+
+.build-creator-animation-test__tab {
+  border: 1px solid rgba(255, 239, 204, 0.4);
+  border-radius: 0.28rem;
+  padding: 0.42rem 0.7rem;
+  background: rgba(38, 24, 19, 0.78);
+  color: rgba(255, 240, 216, 0.85);
+  font: 700 0.72rem/1 var(--bpb-font-body, system-ui, sans-serif);
+  cursor: var(--bpb-cursor-pointer, pointer);
+}
+
+.build-creator-animation-test__tab.is-active {
+  border-color: #f2cf76;
+  background: #6d4324;
+  color: #fff8e9;
+}
+
+.build-creator-animation-test__tab:focus-visible {
+  outline: 2px solid #fff1b8;
+  outline-offset: 2px;
+}
+
+#build-creator-animation {
+  width: 100%;
+  min-height: 28rem;
+  scroll-margin-top: 1rem;
+}
+
+#home-promo-band {
+  width: 100%;
+}
+
+.build-creator-animation-test__scroll-space {
+  width: min(64rem, calc(100% - 2rem));
+  height: 135vh;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+/* The gate still uses the shared admin treatment, but the test remains scrollable. */
+body.page-admin-build-creator-animation-test .admin-gate {
+  width: min(34rem, calc(100% - 2rem));
+  margin: 18vh auto 0;
+}
+
+@media (max-width: 700px) {
+  .build-creator-animation-test {
+    padding-top: 2.5rem;
+  }
+
+  .build-creator-animation-test__intro {
+    width: min(100%, calc(100% - 1rem));
+    padding-inline: 0.5rem;
+  }
+
+  .build-creator-animation-test__synergy {
+    width: min(100%, calc(100% - 1rem));
+    padding-inline: 0.55rem;
+  }
+
+  .build-creator-animation-test__synergy-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .build-creator-animation-test__synergy-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+}

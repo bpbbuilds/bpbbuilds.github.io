@@ -16,17 +16,15 @@ export const T_START = 2.5;
 export const T_END = 30;
 /** Bright day freeze for reduced motion */
 export const T_REDUCED = 6;
-/** Quantize scroll progress so sky paint work happens at coarse checkpoints. */
-const SKY_STEP_COUNT = 40;
 
-function steppedProgress(progress) {
-  return Math.round(progress * SKY_STEP_COUNT) / SKY_STEP_COUNT;
+function scrollProgress(reduced, maxScrollY) {
+  if (reduced) return 0;
+  return maxScrollY <= 0 ? 0 : Math.min(1, Math.max(0, window.scrollY / maxScrollY));
 }
 
 function scrollTime(reduced, maxScrollY) {
   if (reduced) return T_REDUCED;
-  const p = maxScrollY <= 0 ? 0 : Math.min(1, Math.max(0, window.scrollY / maxScrollY));
-  return T_START + steppedProgress(p) * (T_END - T_START);
+  return T_START + scrollProgress(false, maxScrollY) * (T_END - T_START);
 }
 
 function fitScale(host) {
@@ -62,10 +60,11 @@ export function initCombatSky() {
     // the stage scale for orientation changes; no scroll callback is attached.
     applyTime(layers, T_REDUCED);
     window.addEventListener('resize', () => fitScale(host), { passive: true });
-    return;
+    return {
+      host,
+      setPaused() {},
+    };
   }
-
-  host.classList.add('combat-sky--stepped');
 
   // The first frame is always at the day start, so it does not need a document
   // height read. Measure after that frame (and after later document resizes)
@@ -93,20 +92,25 @@ export function initCombatSky() {
   applyTime(layers, displayT);
 
   let raf = 0;
+  let paused = false;
+  let lastColorUpdate = performance.now();
+  const COLOR_UPDATE_INTERVAL_MS = 32;
 
   const tick = () => {
     raf = 0;
+    if (paused) return;
     const target = scrollTime(reduced, maxScrollY);
     if (target !== displayT) {
-      // Apply colors/tints once per bucket. CSS handles the short positional
-      // and opacity transition; no per-frame interpolation work is needed.
       displayT = target;
-      applyTime(layers, displayT);
+      const now = performance.now();
+      const updateColors = now - lastColorUpdate >= COLOR_UPDATE_INTERVAL_MS;
+      applyTime(layers, displayT, { updateColors });
+      if (updateColors) lastColorUpdate = now;
     }
   };
 
   const queue = () => {
-    if (raf) return;
+    if (paused || raf) return;
     raf = requestAnimationFrame(tick);
   };
 
@@ -122,4 +126,17 @@ export function initCombatSky() {
     },
     { passive: true },
   );
+
+  return {
+    host,
+    setPaused(nextPaused) {
+      paused = Boolean(nextPaused);
+      if (paused && raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      } else if (!paused) {
+        queue();
+      }
+    },
+  };
 }
