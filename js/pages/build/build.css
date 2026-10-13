@@ -42,13 +42,21 @@ body.page-build {
   color: var(--bpb-ink);
 }
 
-/* Desktop builds view uses the 2560×1440 layout as its visual reference.
-   Scale only the build composition when the desktop viewport is smaller so
-   the shared nav, screen frame, background, and footer keep their normal
-   viewport sizing. The existing <=1100px mobile layout remains independent. */
+/* Desktop Builds view uses a fluid hybrid composition: side rails adapt while
+   the board stays at readable 1080 density. The shared nav, screen frame,
+   background, and footer remain unscaled; <=1100px stays stacked. */
 @media (min-width: 1101px) {
   body.page-build-view .build-layout {
-    zoom: var(--build-desktop-scale, 1);
+    --build-desktop-rail-width: clamp(13rem, 20vw, 28rem);
+    --build-author-width: var(--build-desktop-rail-width);
+    --build-info-width: var(--build-desktop-rail-width);
+    --build-catalog-width: min(
+      45rem,
+      calc(
+        100vw - 4rem - var(--build-desktop-rail-width) -
+          var(--build-desktop-rail-width)
+      )
+    );
   }
 
   /* Keep the footer in the normal page flow under the frame edge. */
@@ -255,7 +263,7 @@ a.build-author__name:hover {
   gap: 0.35rem;
   text-decoration: none;
   color: inherit;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   border-radius: 0.35rem;
   transition: filter 0.12s ease, background 0.12s ease;
 }
@@ -372,18 +380,23 @@ a.build-author__thumb:focus-visible {
 .build-stage__head {
   position: relative;
   width: 100%;
-  margin: 0 0 0.7rem;
-  display: flex;
-  justify-content: center;
+  /* First-row sprites can overhang the board's top edge; reserve enough
+     responsive breathing room so that art never paints over the title. */
+  margin: 0 0 clamp(1.75rem, 2vw, 2rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: clamp(0.65rem, 1.4vw, 1.1rem);
+  align-items: start;
+  justify-content: stretch;
   box-sizing: border-box;
 }
 
 .build-stage__identity {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.55rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.42rem;
   max-width: 100%;
   min-width: 0;
 }
@@ -396,10 +409,33 @@ a.build-author__thumb:focus-visible {
   font-weight: 400;
   letter-spacing: 0.02em;
   line-height: 1.12;
-  text-align: center;
+  text-align: left;
   color: var(--bpb-label-fill);
   text-shadow: var(--bpb-label-stroke);
   overflow-wrap: anywhere;
+}
+
+.build-stage__tags {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 0.42rem;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.build-stage__vote-slot {
+  min-width: max-content;
+  min-height: 2rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-top: 0.1rem;
+}
+
+.build-stage__vote-slot .build-round__vote {
+  flex: 0 0 auto;
 }
 
 .build-stage__op {
@@ -492,7 +528,7 @@ a.build-author__thumb:focus-visible {
   visibility: hidden;
   transform: scale(1.04);
   pointer-events: none;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   transition:
     opacity 0.32s ease,
     transform 0.32s ease,
@@ -537,7 +573,7 @@ a.build-author__thumb:focus-visible {
   height: 100%;
   border: 0;
   display: block;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -742,7 +778,7 @@ body.page-build .bpb-tooltip-float.is-locked {
 }
 
 .build-info [data-item-id] {
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
 }
 
 .build-info__icon--empty {
@@ -961,7 +997,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   background: transparent;
   margin: 0;
   padding: 0.35rem 0.55rem;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -1117,7 +1153,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   background: transparent;
   padding: 0.08rem 0;
   margin: 0;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   border-radius: 0.2rem;
   line-height: 0;
   /* Fixed slot — do not grow/shrink with round count */
@@ -1186,7 +1222,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   line-height: 0;
 }
 
@@ -1258,7 +1294,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   background: transparent;
   margin: 0;
   padding: 0.1rem;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   line-height: 0;
   opacity: 0.82;
   transition: transform 0.12s ease, opacity 0.12s ease, filter 0.12s ease;
@@ -1373,7 +1409,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   background: transparent;
   margin: 0;
   padding: 0.15rem 0.2rem;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -1421,7 +1457,7 @@ body.page-build .bpb-tooltip-float.is-locked {
   border: 0;
   background: transparent;
   padding: 0.15rem 0.35rem;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   font-family: var(--bpb-font-display);
   font-size: 1.85rem;
   line-height: 1;
@@ -1440,7 +1476,7 @@ body.page-build .bpb-tooltip-float.is-locked {
 
 .build-round__btn:disabled {
   opacity: 0.35;
-  cursor: var(--bpb-cursor-default);
+  cursor: var(--bpb-cursor-default, default);
 }
 
 .build-round__label {
@@ -1463,4 +1499,21 @@ body.page-build .bpb-tooltip-float.is-locked {
   padding: 3rem 1rem;
   text-align: center;
   margin: 0;
+}
+
+/* Native cursor contract for every interactive Build-view surface. The
+   custom game cursor is intentionally dormant, so keep the pointer affordance
+   even where older component rules still reference its optional token. */
+.page-build :is(
+    a[href],
+    button:not(:disabled),
+    [role='button'],
+    [role='link'],
+    [data-item-id]
+  ) {
+  cursor: var(--bpb-cursor-pointer, pointer);
+}
+
+.page-build :is(button:disabled, [aria-disabled='true']) {
+  cursor: var(--bpb-cursor-default, default);
 }
