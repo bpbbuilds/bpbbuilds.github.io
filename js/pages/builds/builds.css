@@ -347,21 +347,28 @@ body.page-builds #main {
   outline-offset: 2px;
 }
 
-.builds-post__body {
+.builds-post__body,
+.builds-post__compact,
+.builds-post__grid {
   position: relative;
   z-index: 0;
   isolation: isolate;
-  display: grid;
-  gap: 0.45rem;
   min-width: 0;
   box-sizing: border-box;
-  /* Same Patch3 shade family as Needs / Wants / Gold — a bit stronger so the card reads as one panel */
   --builds-post-body-shade: rgba(14, 15, 16, 0.22);
+}
+
+.builds-post__body {
+  display: grid;
+  gap: 0.45rem;
+  /* Same Patch3 shade family as Needs / Wants / Gold — a bit stronger so the card reads as one panel */
   padding: 0.65rem 0.65rem 0.45rem;
 }
 
 /* Shade layer (not z-index:-1 — that often paints under the page and disappears) */
-.builds-post__body::before {
+.builds-post__body::before,
+.builds-post__compact::before,
+.builds-post__grid::before {
   content: '';
   position: absolute;
   z-index: 0;
@@ -375,7 +382,9 @@ body.page-builds #main {
   mask-border-width: 8px 7px 9px 8px;
 }
 
-.builds-post__body > * {
+.builds-post__body > *,
+.builds-post__compact > *,
+.builds-post__grid > * {
   position: relative;
   z-index: 1;
 }
