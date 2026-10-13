@@ -427,11 +427,10 @@ a.build-author__thumb:focus-visible {
 
 .build-stage__vote-slot {
   min-width: max-content;
-  min-height: 2rem;
+  align-self: stretch;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-end;
-  padding-top: 0.1rem;
 }
 
 .build-stage__vote-slot .build-round__vote {
