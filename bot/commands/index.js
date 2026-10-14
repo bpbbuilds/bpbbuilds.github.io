@@ -5,7 +5,7 @@ import { blobCommand, handleBlob } from './blob.js';
 import { handleInv, handleInvButton, invCommand } from './inv.js';
 import { handleProfile, profileCommand } from './profile.js';
 import { handleTest, testCommand } from './test.js';
-import { handleItem, handleItemAutocomplete, itemCommand } from './item.js';
+import { handleItem, handleItemAutocomplete, itemCommand, warmItemAutocomplete } from './item.js';
 
 /** @type {{ name: string, description: string, options?: object[] }[]} */
 export const commands = [testCommand, invCommand, blobCommand, profileCommand, itemCommand];
@@ -18,7 +18,7 @@ const handlers = {
   item: handleItem,
 };
 
-export { handleInvButton, handleItemAutocomplete };
+export { handleInvButton, handleItemAutocomplete, warmItemAutocomplete };
 
 /**
  * @param {import('discord.js').ChatInputCommandInteraction} interaction

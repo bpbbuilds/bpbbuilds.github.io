@@ -21,7 +21,7 @@ import { syncPastEvents } from './past-events.js';
 import { syncOnboarding } from './onboarding.js';
 import { syncStats } from './stats.js';
 import { syncLayout } from './layout.js';
-import { handleCommand, handleInvButton, handleItemAutocomplete } from './commands/index.js';
+import { handleCommand, handleInvButton, handleItemAutocomplete, warmItemAutocomplete } from './commands/index.js';
 import { handleVoteButton } from './announce-votes.js';
 
 const env = loadEnv();
@@ -255,6 +255,11 @@ client.on('guildMemberUpdate', (_old, member) => {
 client.once('clientReady', () => {
   console.log(`Discord Gateway ready as ${client.user?.tag}`);
   console.log(`Watching nicknames as ${client.user?.tag}`);
+  warmItemAutocomplete().then((rows) => {
+    console.log(`Item autocomplete catalog warmed (${rows?.length || 0} items)`);
+  }).catch((err) => {
+    console.error(`Item autocomplete warm failed: ${err instanceof Error ? err.message : err}`);
+  });
   if (honeypotId) console.log('Honeypot channel is armed');
   if (welcomeId) console.log('Welcome channel is read-only');
   syncNews(env)

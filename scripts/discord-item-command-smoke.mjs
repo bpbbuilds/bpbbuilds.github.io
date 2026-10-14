@@ -28,6 +28,8 @@ assert.match(tooltip, /damageMin|damage_min/, 'tooltip image includes combat val
 assert.match(tooltip, /effect/, 'tooltip image includes the item effect');
 assert.match(commandIndex, /itemCommand|handleItem/, 'command registry imports the item command');
 assert.match(botIndex, /handleItemAutocomplete|isAutocomplete/, 'bot routes item autocomplete interactions');
+assert.match(itemCommand, /warmItemAutocomplete/, 'item autocomplete exposes a warm catalog path');
+assert.match(botIndex, /warmItemAutocomplete\(\)/, 'bot warms the autocomplete catalog when Discord is ready');
 for (const asset of [
   'assets/tooltips/frames',
   'assets/tooltips/dividers',

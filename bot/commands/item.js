@@ -6,6 +6,13 @@ import { renderItemSpritePng, renderItemTooltipPng } from '../item-tooltip.js';
 const SITE = 'https://bpbbuilds.com';
 const GOLD = 0xeac914;
 const ITEM_FIELDS = 'id,gid,name,rarity,type,class,extra_types,tags,cost,effect,image,accuracy,cooldown,stamina_cost,damage_min,damage_max';
+const AUTOCOMPLETE_FIELDS = 'id,name';
+const AUTOCOMPLETE_LIMIT = 1000;
+
+/** @type {{ id: string, name: string }[] | null} */
+let autocompleteRowsCache = null;
+/** @type {Promise<{ id: string, name: string }[] | null> | null} */
+let autocompleteRowsPending = null;
 
 export const itemCommand = {
   name: 'item',
@@ -41,16 +48,20 @@ function config() {
 
 async function rest(cfg, query, init = {}) {
   if (!cfg.base || !cfg.key) return null;
-  const response = await fetch(`${cfg.base}/rest/v1/${query}`, {
-    ...init,
-    headers: {
-      apikey: cfg.key,
-      Authorization: `Bearer ${cfg.key}`,
-      ...(init.headers || {}),
-    },
-  });
-  if (!response.ok) return null;
-  return response;
+  try {
+    const response = await fetch(`${cfg.base}/rest/v1/${query}`, {
+      ...init,
+      headers: {
+        apikey: cfg.key,
+        Authorization: `Bearer ${cfg.key}`,
+        ...(init.headers || {}),
+      },
+    });
+    if (!response.ok) return null;
+    return response;
+  } catch {
+    return null;
+  }
 }
 
 function encoded(value) {
@@ -59,9 +70,68 @@ function encoded(value) {
 
 async function searchRows(cfg, query) {
   const needle = String(query || '').trim();
+  const catalog = await warmItemAutocomplete(cfg);
+  if (catalog) {
+    const folded = needle.toLocaleLowerCase();
+    return catalog
+      .filter((row) => !folded || row.id.toLocaleLowerCase().includes(folded) || row.name.toLocaleLowerCase().includes(folded))
+      .slice(0, 25);
+  }
   const pattern = `*${needle.replace(/[(),]/g, ' ')}*`;
-  const response = await rest(cfg, `items?select=id,name&or=(id.ilike.${encoded(pattern)},name.ilike.${encoded(pattern)})&order=name.asc&limit=25`);
-  return response ? (await response.json()).map((row) => ({ id: String(row.id), name: String(row.name || row.id) })) : [];
+  const response = await rest(
+    cfg,
+    `items?select=${AUTOCOMPLETE_FIELDS}&or=(id.ilike.${encoded(pattern)},name.ilike.${encoded(pattern)})&order=name.asc&limit=25`,
+    { signal: AbortSignal.timeout(1800) },
+  );
+  if (!response) return [];
+  try {
+    const rows = await response.json();
+    return Array.isArray(rows)
+      ? rows
+        .map((row) => ({ id: String(row.id || '').trim(), name: String(row.name || row.id || '').trim() }))
+        .filter((row) => row.id && row.name)
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Warm the item-name catalog once so Discord autocomplete does not wait on a
+ * Supabase request for every keystroke. The optional config is only used by
+ * focused runtime tests; production callers use the loaded environment.
+ * @param {{ base?: string, key?: string }} [cfg]
+ * @returns {Promise<{ id: string, name: string }[] | null>}
+ */
+export async function warmItemAutocomplete(cfg = config()) {
+  if (autocompleteRowsCache !== null) return autocompleteRowsCache;
+  if (autocompleteRowsPending) return autocompleteRowsPending;
+  const request = (async () => {
+    const response = await rest(
+      cfg,
+      `items?select=${AUTOCOMPLETE_FIELDS}&order=name.asc&limit=${AUTOCOMPLETE_LIMIT}`,
+      { signal: AbortSignal.timeout(1800) },
+    );
+    if (!response) return null;
+    try {
+      const rows = await response.json();
+      if (!Array.isArray(rows)) return null;
+      return rows
+        .map((row) => ({ id: String(row.id || '').trim(), name: String(row.name || row.id || '').trim() }))
+        .filter((row) => row.id && row.name)
+        .slice(0, AUTOCOMPLETE_LIMIT);
+    } catch {
+      return null;
+    }
+  })();
+  autocompleteRowsPending = request;
+  try {
+    const rows = await request;
+    if (rows) autocompleteRowsCache = rows;
+    return rows;
+  } finally {
+    if (autocompleteRowsPending === request) autocompleteRowsPending = null;
+  }
 }
 
 /** @param {string} query */

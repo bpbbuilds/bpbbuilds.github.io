@@ -4123,3 +4123,14 @@ None.
 
 - Home promo queries now include the current `notes` field and prefer it over legacy `blurb`, matching the Build view description source. Serialized `[[item_id]]` mentions are rendered through the shared escaped mention renderer, with board placements and a single targeted catalog lookup covering mentions for items no longer on the board.
 - Added responsive Home promo mention styling and focused static, runtime, and Playwright smokes. Verification passed at 1440, 1080, tablet, and mobile widths, including icon source/dimensions, current-notes precedence, no overflow, Home Player Info wave/fabric, activity/selection, production audit, syntax, and `git diff --check`. No legal or security surfaces changed.
+
+### 2026-10-14 Discord `/item` autocomplete loading failure (in progress)
+
+- Codex owns `bot/commands/item.js`, `bot/watch.js`, the focused autocomplete regression smoke, and this handoff for this bug.
+- Scope: trace the Discord 3-second autocomplete response path, make item suggestions available from a bounded startup cache with a safe network fallback, and preserve the existing `/item` execution/embed behavior. No browser secrets or service-role credentials will be exposed.
+
+### 2026-10-14 Discord `/item` autocomplete loading failure complete
+
+- Root cause: every Discord keystroke waited on an uncached Supabase REST request with no timeout. A slow or transient network response could miss Discord's three-second autocomplete acknowledgement window and show “Loading options failed.”
+- Added a bounded 1,000-row name/ID catalog cache warmed when the Discord client becomes ready, local filtering for each keystroke, an 1.8-second abortable REST fallback, and safe response parsing. Existing item lookup, build counts, and embed rendering are unchanged.
+- Added a timing/filter regression smoke and extended the `/item` static smoke. Warmed autocomplete responds locally in ~1ms after a ~371ms catalog warm-up in this environment; command, syntax, and `git diff --check` verification pass. No secrets, legal, or security surfaces changed.
