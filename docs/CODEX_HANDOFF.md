@@ -4252,3 +4252,13 @@ None.
 
 - Added clamped surface inset tokens to the public Builds card, compact, and grid wrappers so textured backgrounds have more breathing room while scaling fluidly from desktop through mobile.
 - Added `scripts/builds-surface-padding-smoke.mjs`; it covers all three views with static contracts and a 1440px browser computed-style check. The focused smoke, textured-surface/card-info/view-density/header/title/share/pointer smokes, and `git diff --check` pass. No legal or security surfaces changed.
+
+### 2026-10-14 Builds card-view spacing (in progress)
+
+- Codex owns `js/pages/builds/builds.css`, `scripts/builds-surface-padding-smoke.mjs`, and this handoff for this task.
+- Scope: add a responsive vertical gap between public Builds card-view entries only; compact and grid view spacing remain unchanged.
+
+### 2026-10-14 Builds card-view spacing complete
+
+- Added a clamped card-list row gap so each textured build surface has a visible seam at desktop, short desktop, tablet, and mobile widths; compact and grid lists retain their existing spacing.
+- Extended `scripts/builds-surface-padding-smoke.mjs` with static and browser assertions for the card gap. Focused Builds surface/shadow/density smokes and `git diff --check` pass. No legal or security surfaces changed.

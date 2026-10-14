@@ -257,6 +257,11 @@ body.page-builds #main {
   gap: 0;
 }
 
+/* Card surfaces need a visible seam so adjacent builds do not read as one panel. */
+.builds-feed__list--card {
+  gap: clamp(0.65rem, calc(0.45rem + 0.5vw), 1.1rem);
+}
+
 .builds-post {
   display: grid;
   gap: 0.35rem;
