@@ -29,6 +29,9 @@ let raf = 0;
 let lastT = 0;
 let io = null;
 let watching = false;
+let pageVisible =
+  typeof document === 'undefined' || document.visibilityState !== 'hidden';
+let visibilityBound = false;
 
 /**
  * @typedef {{
@@ -52,6 +55,8 @@ let watching = false;
  *   frozen: boolean,
  *   holoMask: HTMLImageElement | null,
  *   ro: ResizeObserver | null,
+ *   browse: boolean,
+ *   active: boolean,
  * }} LiveState
  */
 
@@ -202,12 +207,13 @@ function ensureIo() {
 }
 
 function kick() {
-  if (raf) return;
+  if (!pageVisible || raf) return;
   raf = requestAnimationFrame(tick);
 }
 
 function tick(now) {
   raf = 0;
+  if (!pageVisible) return;
   const dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0.016;
   lastT = now;
   const reduced = prefersReduced();
@@ -226,7 +232,10 @@ function tick(now) {
     // The homepage promo is decorative. Draw its liquid/holo once, then keep
     // the painted canvas as a still while the section is visible. Repainting
     // every animation frame was a large source of scroll-time layout work.
-    const staticArt = reduced || st.decorative;
+    // Itemiary keeps the same first painted frame, but does not spend a
+    // continuous RAF budget on idle potions/holos. Hover/focus and spotlight
+    // entries opt back into live animation through `active`.
+    const staticArt = reduced || st.decorative || (st.browse && !st.active);
     if (st.kind === 'potion' && st.canvas) {
       if (staticArt && st.frozen) continue;
       const speed = 60 * dt;
@@ -271,8 +280,47 @@ function tick(now) {
       st.frozen = staticArt;
     }
   }
-  if (visible.some((st) => !st.decorative) && !reduced) kick();
+  if (
+    visible.some((st) => !st.decorative && (!st.browse || st.active)) &&
+    !reduced
+  ) {
+    kick();
+  }
   else if (visible.some((s) => s.level !== s.targetLevel)) kick();
+}
+
+function applyPageVisibility(nextVisible) {
+  pageVisible = nextVisible !== false;
+  document.documentElement?.classList.toggle(
+    'bpb-live-art-paused',
+    !pageVisible,
+  );
+  if (!pageVisible && raf) {
+    cancelAnimationFrame(raf);
+    raf = 0;
+  } else if (pageVisible) {
+    kick();
+  }
+}
+
+function bindPageVisibility() {
+  if (visibilityBound || typeof document === 'undefined') return;
+  visibilityBound = true;
+  applyPageVisibility(document.visibilityState !== 'hidden');
+  document.addEventListener(
+    'visibilitychange',
+    () => applyPageVisibility(document.visibilityState !== 'hidden'),
+    { passive: true },
+  );
+}
+
+/**
+ * Test/host hook for visibility-aware embeds. Browser visibility remains the
+ * source of truth; callers can narrow the scheduler state temporarily.
+ * @param {boolean} visible
+ */
+export function setLiveArtPageVisible(visible) {
+  applyPageVisibility(visible !== false);
 }
 
 function whenImgReady(img, fn) {
@@ -311,6 +359,12 @@ function bindState(wrap, spec) {
     maskNw: 0,
     maskNh: 0,
     ro: null,
+    browse: Boolean(
+      wrap.closest('.bpb-bg--itemiary') && !wrap.closest('.il-spotlight'),
+    ),
+    active: !Boolean(
+      wrap.closest('.bpb-bg--itemiary') && !wrap.closest('.il-spotlight'),
+    ),
   };
   live.set(wrap, st);
   st.priority = wrap.closest?.('.create-board__cursor') ? 1 : 0;
@@ -391,7 +445,24 @@ export function mountLiveArt(itemEl) {
   const spec = liveArtSpec(id);
   if (!spec) return;
   wrap.classList.add('is-live');
-  bindState(wrap, spec);
+  return bindState(wrap, spec);
+}
+
+/**
+ * Toggle the expensive animated state for a mounted item. Itemiary uses this
+ * for hover/focus; spotlight and placed boards stay active by default.
+ * @param {HTMLElement | null | undefined} itemEl
+ * @param {boolean} [active]
+ */
+export function setLiveArtActive(itemEl, active = true) {
+  if (!(itemEl instanceof HTMLElement)) return;
+  const wrap = itemEl.querySelector('.bpb-live');
+  if (!(wrap instanceof HTMLElement)) return;
+  const st = live.get(wrap);
+  if (!st) return;
+  st.active = active !== false;
+  if (st.active) st.frozen = false;
+  kick();
 }
 
 /**
@@ -415,6 +486,15 @@ export function refreshLiveArt(root) {
   host.querySelectorAll?.('.bpb-live').forEach((n) => {
     if (n instanceof HTMLElement) {
       const item = n.closest('.bpb-bg__item');
+      // Itemiary browse nodes attach live layers only when the user focuses
+      // them. Potions are mounted by their sprite warm path so their first
+      // static frame still matches the catalog; glows/holos wait for focus.
+      if (
+        item?.closest('.bpb-bg--itemiary') &&
+        !item.closest('.il-spotlight')
+      ) {
+        return;
+      }
       mountLiveArt(item instanceof HTMLElement ? item : n);
     }
   });
@@ -445,6 +525,7 @@ export function setPotionLevel(itemEl, level, opts = {}) {
   const st = live.get(wrap) || (liveArtSpec(itemEl.getAttribute('data-item-id')) ? bindState(wrap, liveArtSpec(itemEl.getAttribute('data-item-id'))) : null);
   if (!st) return;
   st.targetLevel = Number(level) || 0;
+  st.frozen = false;
   if (opts.ms === 0) st.level = st.targetLevel;
   itemEl.toggleAttribute('data-potion-empty', st.targetLevel < -0.4);
   kick();
@@ -498,3 +579,4 @@ export function syncLiveArtFace(itemEl) {
 }
 
 ensureLiveArt();
+bindPageVisibility();

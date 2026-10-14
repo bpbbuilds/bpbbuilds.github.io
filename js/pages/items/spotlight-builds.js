@@ -11,6 +11,7 @@ import { buildViewHref } from '../builds/post-row.js';
 const THUMB_CELL_PX = 18;
 const MAX_BUILDS = 10;
 const LOOKUP_LIMIT = 80;
+const BUILD_CACHE_MAX = 24;
 
 const ITEM_SELECT =
   'id, gid, name, rarity, type, class, extra_types, tags, cost, effect, image, shape, sockets, accuracy, cooldown, stamina_cost, damage_min, damage_max, block, chance, chance_tag, params';
@@ -43,6 +44,16 @@ export function createSpotlightBuilds(opts = {}) {
   let showGen = 0;
   /** @type {string | null} */
   let activeItemId = null;
+
+  function cacheBuilds(itemId, builds) {
+    cache.delete(itemId);
+    cache.set(itemId, builds);
+    while (cache.size > BUILD_CACHE_MAX) {
+      const oldest = cache.keys().next().value;
+      if (oldest == null) break;
+      cache.delete(oldest);
+    }
+  }
 
   function clearThumbs() {
     if (unmountThumbs) {
@@ -148,14 +159,16 @@ export function createSpotlightBuilds(opts = {}) {
     root.innerHTML = '';
 
     if (cache.has(id)) {
-      paintBuilds(id, cache.get(id) || []);
+      const builds = cache.get(id) || [];
+      cacheBuilds(id, builds);
+      paintBuilds(id, builds);
       return;
     }
 
     try {
       const builds = await fetchBuildsForItem(id);
       if (gen !== showGen || activeItemId !== id) return;
-      cache.set(id, builds);
+      cacheBuilds(id, builds);
       paintBuilds(id, builds);
     } catch (err) {
       if (gen !== showGen || activeItemId !== id) return;

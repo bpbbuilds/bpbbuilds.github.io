@@ -4231,3 +4231,14 @@ None.
 - Added a bounded 24-entry packed-layout LRU keyed by flow, axis limit, compact mode, grouping values, item order, and normalized item bounds. The default placed/library layout path remains untouched.
 - Added one row index of cached placement bounds per layout. `placementsNearViewport()` now queries only intersecting rows, then applies the existing horizontal/vertical checks and restores placement order exactly.
 - Extended `scripts/items-p0-performance-smoke.mjs` with static cache contracts and a browser equivalence check proving indexed viewport results match the prior full scan. Syntax, focused smoke, and `git diff --check` pass. No legal/security surfaces changed.
+
+### 2026-10-14 Items page P1 live-art/spotlight deferral (in progress)
+
+- Codex owns `js/shared/item-live-art/index.js`, `js/shared/item-live-art/item-live-art.css`, `js/pages/items/spotlight.js`, `js/pages/items/spotlight-builds.js`, `scripts/items-p1-performance-smoke.mjs`, `docs/performance/items-page-performance-audit.md`, and this handoff for this task.
+- Scope: keep catalog live-art work static until an item is focused, pause the shared live-art scheduler and CSS animation when the document is hidden, and defer spotlight runtime/art activation plus recipe/build detail work until the spotlight has opened. Preserve the existing rendered composition and interaction behavior.
+
+### 2026-10-14 Items page P1 live-art/spotlight deferral complete
+
+- Itemiary live art keeps the same first painted frame but does not maintain an idle catalog RAF. Hover/focus and spotlight entries opt into active animation; hidden documents pause both the JS scheduler and CSS glow/flicker timelines.
+- Spotlight keeps its existing geometry and immediate tooltip, defers live-art mounting plus recipe/build detail work to the next frame, and bounds completed build-detail results with a 24-entry LRU cache.
+- Added `scripts/items-p1-performance-smoke.mjs` for visibility, focus activation, spotlight deferral, build-cache, and audit-checkbox contracts. Syntax, focused P1 smoke, existing Items P0 smoke, Itemiary virtual audit, and `git diff --check` pass. No legal/security surfaces changed.

@@ -121,11 +121,26 @@
 }
 
 .bpb-live__glow--pulse {
-  animation: bpb-live-glow var(--bpb-live-period, 5s) ease-in-out infinite alternate;
+  animation: none;
 }
 
 .bpb-live__glow--flicker {
+  animation: none;
+}
+
+.bpb-live.is-live .bpb-live__glow--pulse {
+  animation: bpb-live-glow var(--bpb-live-period, 5s) ease-in-out infinite alternate;
+}
+
+.bpb-live.is-live .bpb-live__glow--flicker {
   animation: bpb-live-flicker var(--bpb-live-period, 4s) ease-in-out infinite;
+}
+
+/* Background tabs should not keep CSS glow/flicker timelines advancing. The
+ * shared JS scheduler applies this marker from document.visibilityState. */
+html.bpb-live-art-paused .bpb-live__glow--pulse,
+html.bpb-live-art-paused .bpb-live__glow--flicker {
+  animation-play-state: paused !important;
 }
 
 @keyframes bpb-live-glow {

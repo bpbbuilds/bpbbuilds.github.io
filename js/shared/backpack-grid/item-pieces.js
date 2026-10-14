@@ -5,7 +5,13 @@
 import { shapeForItem, bodyBounds } from './shape.js';
 import { spriteSizeStyle } from './sprite-size.js';
 import { animateSpinRotate, prefersReducedMotion, readRotateDeg, writeSpinRotate } from './face-spin.js';
-import { liveInnerHtml, mountLiveArt, syncLiveArtFace, unmountLiveArt } from '../item-live-art/index.js';
+import {
+  liveInnerHtml,
+  mountLiveArt,
+  setLiveArtActive,
+  syncLiveArtFace,
+  unmountLiveArt,
+} from '../item-live-art/index.js';
 import { hasInventoryDuration } from './can-affect.js';
 import { orderAppearEntries } from './appear-order.js';
 
@@ -475,6 +481,9 @@ export function activateItemLiveArt(itemEl) {
   if (!itemEl.querySelector('.bpb-live')) return;
   attachSpriteSrc(itemEl);
   mountLiveArt(itemEl);
+  // Itemiary live art is deliberately static while merely visible; hover or
+  // keyboard focus is the explicit opt-in for the animated state.
+  setLiveArtActive(itemEl, true);
 }
 
 /**
@@ -483,6 +492,13 @@ export function activateItemLiveArt(itemEl) {
  */
 export function deactivateItemLiveArt(itemEl) {
   if (!(itemEl instanceof HTMLElement)) return;
+  const wrap = itemEl.querySelector('.bpb-live');
+  if (wrap instanceof HTMLElement && itemEl.closest('.bpb-bg--itemiary')) {
+    setLiveArtActive(itemEl, false);
+    // Potion canvases keep their already-painted frame in the catalog. The
+    // shared scheduler sees the browse marker and stops requesting RAF work.
+    if (isPotionLiveItem(itemEl)) return;
+  }
   if (isPotionLiveItem(itemEl)) return;
   unmountLiveArt(itemEl);
 }
@@ -555,6 +571,7 @@ export function filterEntriesNearViewport(
  * @param {{
  *   libraryBagScale?: boolean,
  *   deferSprite?: boolean,
+ *   deferLiveArt?: boolean,
  *   chrome?: boolean,
  *   shadow?: boolean,
  *   bagSlots?: boolean,
@@ -594,6 +611,7 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
   const src =
     String(item.id) === '__unrecognized__' ? '' : getSpriteUrl(item);
   const deferSprite = opts.deferSprite === true;
+  const deferLiveArt = opts.deferLiveArt === true;
   const sizeStyle = spriteSizeStyle(item, bounds, {
     libraryBagScale: opts.libraryBagScale === true,
   });
@@ -683,7 +701,7 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
     </div>`;
   const el = elementFromHtml(html);
   // Deferred Itemiary: bind shaders on warm/IO, not while the node is parked.
-  if (el instanceof HTMLElement && !deferSprite) mountLiveArt(el);
+  if (el instanceof HTMLElement && !deferSprite && !deferLiveArt) mountLiveArt(el);
   return el;
 }
 

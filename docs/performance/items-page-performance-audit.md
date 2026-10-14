@@ -262,8 +262,8 @@ Completed in this pass: Itemiary now measures the viewport and adapts its base 6
 
 - [x] Cache packed layouts by filter/group/column signature; preserve the exact default library layout.
 - [x] Cache placement bounds and query visible rows rather than scanning every placement.
-3. Defer live-art layers and keep only focused/spotlight animation active; pause when hidden.
-4. Open spotlight immediately and defer full art/build queries behind a skeleton/cache.
+- [x] Defer live-art layers and keep only focused/spotlight animation active; pause when hidden.
+- [x] Open spotlight immediately and defer full art/build queries behind a skeleton/cache.
 5. Defer/lower-size nav/footer decorative images and cache immutable data assets.
 6. Coalesce responsive column changes and suppress repack while scrolling.
 
@@ -274,6 +274,8 @@ Completed in this pass: Itemiary now measures the viewport and adapts its base 6
 3. Convert remaining large decorative PNGs to equivalent modern formats and verify visual parity.
 
 Completed in this pass: packed Itemiary layouts now use a bounded 24-entry LRU keyed by flow, column/row limit, compact mode, grouping values, item order, and normalized item bounds. The persisted/default placed library path is unchanged. Placement width/height bounds are computed once per layout and indexed by row; scroll-window queries inspect only intersecting rows while preserving placement order and the previous horizontal/vertical inclusion rules. No markup, dimensions, styling, animation timing, or responsive behavior changed.
+
+Completed in this pass: Itemiary live art now paints the same first frame but does not keep idle catalog potions/holos on a continuous RAF; hover/focus and spotlight entries opt into animation, and both the JS scheduler and CSS glow timelines pause when the document is hidden. Spotlight geometry and the existing immediate tooltip remain synchronous, while live-art mounting and recipe/build detail work move to the next frame; completed build results use a bounded cache. No visible composition, dimensions, or interaction affordances changed.
 
 ## Acceptance checks for the fixes
 
@@ -295,4 +297,4 @@ Completed in this pass: packed Itemiary layouts now use a bounded 24-entry LRU k
 
 ## Final assessment
 
-All six P0 items and the first two P1 items are implemented and checked above. The page still benefits from the remaining P1 work—deferred live art, spotlight deferral, decorative-image prioritization, and responsive repack coalescing—before calling the entire performance program publish-ready. The completed work keeps catalog bootstrap, filtering, packed layouts, placement queries, scroll windows, sprite readiness, and memory bounded without changing the rendered composition.
+All six P0 items and the first four P1 items are implemented and checked above. The page still benefits from the remaining P1 work—decorative-image prioritization and responsive repack coalescing—before calling the entire performance program publish-ready. The completed work keeps catalog bootstrap, filtering, packed layouts, placement queries, live-art scheduling, spotlight detail work, scroll windows, sprite readiness, and memory bounded without changing the rendered composition.

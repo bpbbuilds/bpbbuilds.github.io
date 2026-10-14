@@ -8,6 +8,7 @@
  */
 
 import { createItemEl, createUnderEl } from '../../shared/backpack-grid/index.js';
+import { mountLiveArt } from '../../shared/item-live-art/index.js';
 
 const OPEN_MS = 300;
 const CLOSE_MS = 400;
@@ -343,12 +344,16 @@ export function createSpotlight(opts) {
    * @param {Element | null} [fromEl]
    */
   function mountPiece(item, fromEl = null) {
-    if (!(underLayer instanceof HTMLElement) || !(itemsLayer instanceof HTMLElement)) return;
+    if (!(underLayer instanceof HTMLElement) || !(itemsLayer instanceof HTMLElement)) return null;
     clearPiece();
     syncCellPxFromCatalog(fromEl);
 
-    const itemEl = createItemEl(item, opts.getSpriteUrl, item.libraryIndex ?? 1);
-    if (!itemEl) return;
+    // Keep geometry and the static sprite on the opening frame, but defer live
+    // canvas/observer setup until the spotlight is painted.
+    const itemEl = createItemEl(item, opts.getSpriteUrl, item.libraryIndex ?? 1, 0, [], {
+      deferLiveArt: true,
+    });
+    if (!itemEl) return null;
 
     itemEl.classList.remove('bpb-bg__item--parked');
     itemEl.classList.add('il-spotlight__item');
@@ -394,6 +399,7 @@ export function createSpotlight(opts) {
       piece.dataset.bagScale = isBag ? '0.9' : '1';
       piece.style.transform = pieceFlipTransform(0, 0, pieceBagScale());
     }
+    return itemEl;
   }
 
   /**
@@ -483,7 +489,7 @@ export function createSpotlight(opts) {
   function showItem(item, fromEl = null) {
     if (!item?.id) return;
     activeId = item.id;
-    mountPiece(item, fromEl);
+    const itemEl = mountPiece(item, fromEl);
 
     if (fromEl instanceof Element) {
       markSource(fromEl);
@@ -496,12 +502,19 @@ export function createSpotlight(opts) {
 
     const tip = opts.getTip();
     tip?.lock(item, { stage: stage instanceof Element ? stage : null });
-    opts.recipes?.showFor(item.id, {
-      stage: stage instanceof Element ? stage : null,
-      piece: piece instanceof Element ? piece : null,
-      tipHost: tip?.host instanceof HTMLElement ? tip.host : null,
+    // Let the dim/stage/tooltip paint first. Full live-art setup and the
+    // recipe/build lookups run on the next frame, with their existing caches
+    // and generation guards handling rapid item changes.
+    requestAnimationFrame(() => {
+      if (activeId !== item.id || !open || closing) return;
+      if (itemEl instanceof HTMLElement) mountLiveArt(itemEl);
+      opts.recipes?.showFor(item.id, {
+        stage: stage instanceof Element ? stage : null,
+        piece: piece instanceof Element ? piece : null,
+        tipHost: tip?.host instanceof HTMLElement ? tip.host : null,
+      });
+      void opts.builds?.showFor(item.id);
     });
-    opts.builds?.showFor(item.id);
   }
 
   /**
