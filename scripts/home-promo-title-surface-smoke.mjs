@@ -10,7 +10,8 @@ const root = new URL('../', import.meta.url);
 const css = await fs.readFile(new URL('js/pages/home/home-promo-band.css', root), 'utf8');
 
 assert.match(css, /\.home-promo--create\s+\.home-promo__caption-head::before/, 'title surface owns a scoped dark pseudo-element');
-assert.match(css, /\.home-promo--create\s+\.home-promo__caption-class\s*\{[^}]*position:\s*absolute/s, 'class icon is taken out of the centered title flow');
+assert.match(css, /\.home-promo--create\s+\.home-promo__caption-head\s*\{[^}]*grid-template-columns:/s, 'title surface reserves equal grid slots for the class icon');
+assert.match(css, /\.home-promo--create\s+\.home-promo__caption-class\s*\{[^}]*position:\s*static/s, 'class icon stays in the reserved title grid slot');
 
 const browser = await chromium.launch({ headless: true });
 try {
@@ -30,7 +31,7 @@ try {
       <div class="home-promo home-promo--create home-promo--player-info">
         <div class="home-promo__stage">
           <div class="home-promo__caption">
-            <header class="home-promo__caption-head">
+            <header class="home-promo__caption-head home-promo__caption-head--icon">
               <img class="home-promo__caption-class" src="/class.png" alt="Alchemist" width="36" height="36" />
               <span class="home-promo__caption-title">Molten Greatsword on Alchemist</span>
             </header>
@@ -74,7 +75,7 @@ try {
     assert.ok(result.paddingTop > 0 && result.paddingInline > 0, `${viewport.name}: title surface has responsive inset`);
     assert.equal(result.shadeContent, '""', `${viewport.name}: title surface uses a pseudo-element`);
     assert.equal(result.shadeBackground, 'rgba(14, 15, 16, 0.14)', `${viewport.name}: title surface matches Gold/Rank shade`);
-    assert.equal(result.iconPosition, 'absolute', `${viewport.name}: class icon does not shift the centered title`);
+    assert.equal(result.iconPosition, 'static', `${viewport.name}: class icon stays in the reserved title grid slot`);
     assert.ok(result.iconLeftInset >= 0 && result.iconLeftInset < result.width * 0.2, `${viewport.name}: class icon stays left aligned`);
     assert.ok(result.iconWidth >= 38, `${viewport.name}: class icon uses the enlarged responsive size`);
     assert.ok(Math.abs(result.iconWidth - result.iconHeight) <= 1, `${viewport.name}: class icon remains square`);

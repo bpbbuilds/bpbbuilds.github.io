@@ -4068,3 +4068,13 @@ None.
 - Home now paints the existing Night preset (`25.8`) once, pins the moon to the same Night-preview placement, and attaches no scroll listener. The windmill blades remain CSS-animated, with reduced-motion still honored.
 - Scroll-scrub behavior remains available only through `initCombatSky({ mode: 'scroll' })` for the owner admin background preview. Product homepage/theme docs now describe the fixed Night scene and animated windmill.
 - `scripts/home-background-mode-smoke.mjs` and `_audit-combat-sky.mjs` cover the static frame, opt-in admin scroll mode, unchanged sky after scroll, and active windmill animation. Both pass with module syntax checks and `git diff --check`.
+
+### 2026-10-14 Home build title/icon overlap (in progress)
+
+- Codex owns the build-animation title surface in `js/pages/home/home-promo-band.css`, its caption markup in `js/pages/home/home-promo-caption.js`, and the focused long-title regression smoke for this task.
+- Scope: reserve a responsive icon slot so long build titles wrap/truncate without colliding with the class icon, while keeping the title visually centered across desktop, short desktop, tablet, and mobile widths.
+
+### 2026-10-14 Home build title/icon overlap complete
+
+- Replaced the create-promo title row's absolute icon overlay with a responsive three-column grid: equal icon slots keep the title centered while reserving room for the class mark. Titles now wrap naturally and remain clamped to the existing two-line Player Info treatment without horizontal overflow.
+- Added `scripts/home-promo-long-title-smoke.mjs` covering 1440, 1080, tablet, and mobile widths; updated `scripts/home-promo-title-surface-smoke.mjs` for the reserved-slot contract. Both pass, as do the Player Info animation smokes and JS syntax checks. No legal or security surfaces changed.

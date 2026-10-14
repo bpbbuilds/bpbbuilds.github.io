@@ -296,7 +296,16 @@
 .home-promo--create .home-promo__caption-head {
   box-sizing: border-box;
   isolation: isolate;
+  --promo-title-icon-slot: clamp(2.4rem, 3.8vw, 3.15rem);
+  display: grid;
+  grid-template-columns: minmax(0, var(--promo-title-icon-slot)) minmax(0, 1fr) minmax(0, var(--promo-title-icon-slot));
+  align-items: center;
+  column-gap: clamp(0.35rem, 0.8vw, 0.65rem);
   padding: clamp(0.2rem, 0.55vw, 0.45rem) clamp(0.45rem, 1vw, 0.8rem);
+}
+
+.home-promo--create .home-promo__caption-head:not(.home-promo__caption-head--icon) {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .home-promo--create .home-promo__caption-head::before {
@@ -313,20 +322,25 @@
   mask-border-width: 8px 7px 9px 8px;
 }
 
-/* Keep the class mark anchored to the surface edge without contributing to
-   flex centering; the title owns the full row and stays centered. */
+/* Keep the class mark in a reserved grid slot so long titles can wrap without
+   crossing the icon while the title remains centered in the full surface. */
 .home-promo--create .home-promo__caption-class {
-  position: absolute;
-  inset-inline-start: clamp(0.45rem, 1vw, 0.8rem);
-  top: 50%;
-  width: clamp(2.4rem, 3.8vw, 3.15rem);
-  height: clamp(2.4rem, 3.8vw, 3.15rem);
-  transform: translateY(-50%);
+  position: static;
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  width: var(--promo-title-icon-slot);
+  height: var(--promo-title-icon-slot);
+  transform: none;
 }
 
 .home-promo--create .home-promo__caption-title {
-  width: 100%;
+  grid-column: 2;
+  grid-row: 1;
+  width: auto;
   box-sizing: border-box;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .home-promo__caption-title {
