@@ -1,6 +1,6 @@
 import { initNav } from '../../shared/nav.js';
 import { initFooter } from '../../shared/footer.js?v=footer-presets-20261013a';
-import { initHomeFallingItemsBackground } from './falling-items-background.js';
+import { initCombatSky } from './combat-sky.js';
 import { initFeaturedStage } from './featured-stage.js';
 import { initHomePromoBand } from './home-promo-band.js?v=home-no-skeleton-20261014a';
 
@@ -64,10 +64,10 @@ async function mountDeferredSections() {
 }
 
 async function boot() {
-  // Paint the town-square scene immediately. Navigation performs auth/access
-  // work and can wait on Supabase; the first-paint shell must not remain a
-  // blue canvas while that asynchronous gate resolves.
-  initHomeFallingItemsBackground();
+  // Paint the time-of-day combat scene immediately. Navigation performs
+  // auth/access work and can wait on Supabase; the first-paint shell must not
+  // remain a bare fallback while that asynchronous gate resolves.
+  initCombatSky();
   if (!(await initNav())) return;
   initFooter({ preset: 'regular' });
   initFeaturedStage();
