@@ -289,6 +289,29 @@
   z-index: 1;
 }
 
+/* Keep the build title/class pair on the same dark info surface as Gold and
+   Rank. The inset stays fluid so the card keeps its composition at every
+   supported desktop, tablet, and mobile width. */
+.home-promo--create .home-promo__caption-head {
+  box-sizing: border-box;
+  isolation: isolate;
+  padding: clamp(0.2rem, 0.55vw, 0.45rem) clamp(0.45rem, 1vw, 0.8rem);
+}
+
+.home-promo--create .home-promo__caption-head::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--promo-info-shade, rgba(14, 15, 16, 0.14));
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
 .home-promo__caption-title {
   display: block;
   font-family: var(--bpb-font-display);
