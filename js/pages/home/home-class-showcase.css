@@ -175,7 +175,7 @@
   text-decoration: none;
   color: inherit;
   user-select: none;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   overflow: visible;
 }
 

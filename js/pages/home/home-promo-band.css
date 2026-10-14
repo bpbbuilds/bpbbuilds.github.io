@@ -539,11 +539,11 @@ a.home-promo__caption-author:hover {
   position: relative;
   color: inherit;
   text-decoration: none;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
 }
 
 .home-promo__board-link:not([href]) {
-  cursor: var(--bpb-cursor-default);
+  cursor: var(--bpb-cursor-default, default);
   pointer-events: none;
 }
 

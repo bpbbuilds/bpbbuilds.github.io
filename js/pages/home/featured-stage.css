@@ -74,7 +74,7 @@
     transform 0.45s ease,
     opacity 0.45s ease;
   z-index: 1;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   user-select: none;
   /* Keep peek art from painting under the active card */
   isolation: isolate;
@@ -85,7 +85,14 @@
   opacity: 1;
   filter: none;
   z-index: 10;
-  cursor: var(--bpb-cursor-default);
+  cursor: var(--bpb-cursor-default, default);
+}
+
+/* The active preview is a delegated click target: clicking its media mounts
+   the video preview. Keep the surrounding active copy on the default cursor,
+   but give the actionable media the same hand as the explicit controls. */
+.fs-slide.is-active .fs-focus__media {
+  cursor: var(--bpb-cursor-pointer, pointer);
 }
 
 .fs-slide:not(.is-active):hover {
@@ -93,7 +100,7 @@
   opacity: 0.85;
   filter: none;
   z-index: 5;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
 }
 
 /* —— Video + info: info tucks under video (old plate overlap) —— */
