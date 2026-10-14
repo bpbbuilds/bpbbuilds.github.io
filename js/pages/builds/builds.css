@@ -284,10 +284,9 @@ body.page-builds #main {
     0.038em -0.092em 0 var(--bp-ui-ink),
     0.071em -0.071em 0 var(--bp-ui-ink),
     0.092em -0.038em 0 var(--bp-ui-ink);
-  border-bottom: 1px solid color-mix(in srgb, #3c261d 22%, transparent);
 }
 
-/* Title + tags sit above the Patch3 shade */
+/* Title + tags sit above the shared textured surface */
 .builds-post__top {
   display: flex;
   align-items: flex-start;
@@ -337,7 +336,7 @@ body.page-builds #main {
 }
 
 .builds-post__link:hover {
-  /* Keep hover subtle so it doesn’t wash out the Patch3 shade */
+  /* Keep hover subtle so it doesn’t wash out the textured surface */
   filter: brightness(1.03);
   background: transparent;
 }
@@ -355,31 +354,19 @@ body.page-builds #main {
   isolation: isolate;
   min-width: 0;
   box-sizing: border-box;
-  --builds-post-body-shade: rgba(14, 15, 16, 0.22);
+  border-radius: 1.5rem;
+  background-color: #111;
+  background-image: url('../../../assets/theme/backgrounds/bg-dark-textured.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: none;
 }
 
 .builds-post__body {
   display: grid;
   gap: 0.45rem;
-  /* Same Patch3 shade family as Needs / Wants / Gold — a bit stronger so the card reads as one panel */
   padding: 0.65rem 0.65rem 0.45rem;
-}
-
-/* Shade layer (not z-index:-1 — that often paints under the page and disappears) */
-.builds-post__body::before,
-.builds-post__compact::before,
-.builds-post__grid::before {
-  content: '';
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  box-sizing: border-box;
-  background: var(--builds-post-body-shade);
-  pointer-events: none;
-  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
-  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
-  mask-border-slice: 8 7 9 8 fill;
-  mask-border-width: 8px 7px 9px 8px;
 }
 
 .builds-post__body > *,
@@ -1035,7 +1022,6 @@ a.builds-post__author:hover {
 
 .builds-post--skel {
   padding: 0.85rem 0.35rem;
-  border-bottom: 1px solid color-mix(in srgb, #3c261d 14%, transparent);
 }
 
 .builds-post__skel-byline {
@@ -1275,7 +1261,6 @@ a.builds-post__author:hover {
 
 .builds-feed__list--grid .builds-post {
   padding: 0.55rem 0.2rem 0.65rem;
-  border-bottom: 1px solid color-mix(in srgb, #3c261d 18%, transparent);
   min-width: 0;
 }
 

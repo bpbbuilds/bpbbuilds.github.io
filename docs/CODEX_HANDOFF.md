@@ -4078,3 +4078,13 @@ None.
 
 - Replaced the create-promo title row's absolute icon overlay with a responsive three-column grid: equal icon slots keep the title centered while reserving room for the class mark. Titles now wrap naturally and remain clamped to the existing two-line Player Info treatment without horizontal overflow.
 - Added `scripts/home-promo-long-title-smoke.mjs` covering 1440, 1080, tablet, and mobile widths; updated `scripts/home-promo-title-surface-smoke.mjs` for the reserved-slot contract. Both pass, as do the Player Info animation smokes and JS syntax checks. No legal or security surfaces changed.
+
+### 2026-10-14 Builds view textured surfaces (in progress)
+
+- Codex owns the public Builds view surfaces in `js/pages/builds/builds.css`, their focused surface smokes, and this handoff.
+- Scope: remove listing separator lines and the current Patch3 shadow layer from card, compact, and grid views; apply the existing dark textured background and the Home build-animation card radius consistently across supported desktop, tablet, and mobile widths.
+
+### 2026-10-14 Builds view textured surfaces complete
+
+- Card, compact, and grid listing wrappers now use `bg-dark-textured.webp`, `border-radius: 1.5rem` (matching the Home build-animation card), and no box shadow/Patch3 overlay. Listing and grid separator borders are removed, including skeleton listing separators.
+- Updated `scripts/builds-view-shadow-smoke.mjs` and its browser smoke to assert the shared texture, 24px radius, no shadow layer, no separator borders, and zero horizontal overflow at 1440, 1080, 768, and 390px. Build density, header layout, title-spacing, syntax, and `git diff --check` checks pass. No legal or security surfaces changed.

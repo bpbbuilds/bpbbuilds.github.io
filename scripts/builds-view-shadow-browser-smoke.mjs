@@ -35,30 +35,38 @@ try {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     const result = await page.evaluate(() => {
       const wrappers = [...document.querySelectorAll('.builds-post__body, .builds-post__compact, .builds-post__grid')];
+      const listings = [...document.querySelectorAll('.builds-post')];
       const surfaces = wrappers.map((wrapper) => {
         const style = getComputedStyle(wrapper);
-        const shade = getComputedStyle(wrapper, '::before');
         return {
-          background: shade.backgroundColor,
-          position: shade.position,
-          zIndex: shade.zIndex,
+          backgroundImage: style.backgroundImage,
+          backgroundColor: style.backgroundColor,
+          borderRadius: style.borderRadius,
+          boxShadow: style.boxShadow,
           width: wrapper.getBoundingClientRect().width,
         };
       });
       return {
         surfaces,
+        listingBorders: listings.map((listing) => getComputedStyle(listing).borderBottomStyle),
         overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
     });
     if (result.surfaces.length !== 3) throw new Error(`${viewport.name}: missing view surfaces`);
-    if (result.surfaces.some((surface) => surface.background === 'rgba(0, 0, 0, 0)')) {
-      throw new Error(`${viewport.name}: one or more content shadows missing`);
+    if (result.surfaces.some((surface) => !surface.backgroundImage.includes('bg-dark-textured.webp'))) {
+      throw new Error(`${viewport.name}: one or more textured surfaces missing`);
     }
-    if (new Set(result.surfaces.map((surface) => surface.background)).size !== 1) {
-      throw new Error(`${viewport.name}: content shadows differ`);
+    if (new Set(result.surfaces.map((surface) => surface.backgroundImage)).size !== 1) {
+      throw new Error(`${viewport.name}: textured surfaces differ`);
     }
-    if (result.surfaces.some((surface) => surface.position !== 'absolute' || surface.zIndex !== '0')) {
-      throw new Error(`${viewport.name}: content shadow layer stacking changed`);
+    if (result.surfaces.some((surface) => surface.borderRadius !== '24px')) {
+      throw new Error(`${viewport.name}: view surfaces do not share the Home promo radius`);
+    }
+    if (result.surfaces.some((surface) => surface.boxShadow !== 'none')) {
+      throw new Error(`${viewport.name}: view surfaces still paint a shadow`);
+    }
+    if (result.listingBorders.some((border) => border !== 'none')) {
+      throw new Error(`${viewport.name}: listing separator remains`);
     }
     if (result.surfaces.some((surface) => surface.width <= 0)) throw new Error(`${viewport.name}: view content collapsed`);
     if (result.overflowX > 1) throw new Error(`${viewport.name}: horizontal overflow ${result.overflowX}px`);
