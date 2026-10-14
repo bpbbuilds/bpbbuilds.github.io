@@ -67,8 +67,9 @@ function waitForImages(root) {
 
 /**
  * @param {string | Element} [selector='#site-nav']
+ * @param {{ onAccessGranted?: () => void }} [opts]
  */
-export async function initNav(selector = '#site-nav') {
+export async function initNav(selector = '#site-nav', opts = {}) {
   const host = typeof selector === 'string' ? document.querySelector(selector) : selector;
   if (!host) return;
 
@@ -76,6 +77,17 @@ export async function initNav(selector = '#site-nav') {
   initAuth();
   const allowed = await initSiteAccess();
   if (!allowed) return false;
+
+  // Let page-specific critical work start as soon as access is confirmed.
+  // The callback is intentionally fire-and-forget: nav image/auth/founding
+  // decoration remains on its own path and cannot delay the page's content.
+  if (typeof opts.onAccessGranted === 'function') {
+    try {
+      opts.onAccessGranted();
+    } catch (error) {
+      console.error('[nav] access-granted bootstrap failed', error);
+    }
+  }
 
   // Reserve layout space immediately (nav is fixed / out of flow)
   syncNavDesktopScale(host);

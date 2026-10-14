@@ -249,12 +249,14 @@ Cache immutable JSON with content hashes/long-lived cache headers and share modu
 
 ### P0 — required before release
 
-1. Start catalog bootstrap in parallel with nav decoration; keep access checks intact.
-2. Make filter paint synchronous for geometry/count and move sprite decode to cancellable per-item background work.
-3. Replace the 64/320 ms scroll-only refresh with an immediate cheap rAF window update plus trailing catch-up.
-4. Bound the virtual DOM/decoded-sprite pool; evict old off-window entries with an LRU.
-5. Reduce/adapt the 24 em overscan and prioritize current/next viewport only.
-6. Add normalized filter metadata and one cached filter result per state signature; remove the duplicate `filterItems()` pass.
+- [x] Start catalog bootstrap in parallel with nav decoration; keep access checks intact.
+- [x] Make filter paint synchronous for geometry/count and move sprite decode to cancellable per-item background work.
+- [ ] Replace the 64/320 ms scroll-only refresh with an immediate cheap rAF window update plus trailing catch-up.
+- [ ] Bound the virtual DOM/decoded-sprite pool; evict old off-window entries with an LRU.
+- [ ] Reduce/adapt the 24 em overscan and prioritize current/next viewport only.
+- [ ] Add normalized filter metadata and one cached filter result per state signature; remove the duplicate `filterItems()` pass.
+
+Completed in this pass: the Items page now starts catalog initialization immediately after the shared access gate resolves while navigation decoration continues independently. Filter changes commit their count and geometry from one computed result, and sprite readiness is warmed off the paint path with each item unhidden independently as its own art becomes ready. No markup, dimensions, visual styling, or access behavior changed.
 
 ### P1 — required for a stable “publish-ready” interaction budget
 
@@ -291,4 +293,4 @@ Cache immutable JSON with content hashes/long-lived cache headers and share modu
 
 ## Final assessment
 
-The page needs the P0 work before calling it publish-ready. The highest-return change is to stop treating image decode as part of filter/scroll completion. The second is to replace the delayed scroll refresh and unbounded warm pool with a small, measured viewport window. Once those are in place, normalized filter/pack caches and deferred chrome/live art should bring the page to a predictable interaction budget without changing its appearance.
+The first two P0 items are implemented and checked above, but the page still needs the remaining P0 work before calling it publish-ready. The highest-return remaining changes are the immediate scroll window, bounded DOM/sprite pool, and measured overscan. Once those are in place, normalized filter/pack caches and deferred chrome/live art should bring the page to a predictable interaction budget without changing its appearance.

@@ -1051,7 +1051,15 @@ export function mountItemiaryGrid(container, options) {
       });
     }
     if (near.length) {
-      await warmItemSprites(near.map((e) => e.itemEl));
+      // Do not hold filter/scroll paint on the slowest image decode. Each
+      // item clears its pending marker when its own sprite is ready.
+      void warmItemSprites(near.map((e) => e.itemEl), {
+        isCurrent: () => gen === paintGen,
+      }).catch((error) => {
+        if (gen === paintGen) {
+          console.warn('[itemiary] progressive sprite warm failed', error);
+        }
+      });
     }
     if (gen !== paintGen) return;
 

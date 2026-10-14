@@ -101,6 +101,8 @@ let paintRaf = 0;
 let colsRaf = 0;
 /** @type {boolean} */
 let paintPending = false;
+/** @type {object[] | null} */
+let pendingFiltered = null;
 /** @type {number} */
 let prewarmHandle = 0;
 /** @type {string} */
@@ -198,6 +200,7 @@ function teardown() {
   catalogPackFlow = 'row';
   catalogPackRows = 4;
   paintPending = false;
+  pendingFiltered = null;
   if (prewarmHandle) {
     if (typeof window.cancelIdleCallback === 'function') {
       window.cancelIdleCallback(prewarmHandle);
@@ -449,14 +452,20 @@ export function setCatalogFillWidth(on) {
 
 function schedulePaintGrid(host) {
   const meta = { craftedIds, gatedIds, shopItemIds, treasureIds };
-  updateFilterMeta(host, filterItems(allItems, filterState, meta).length);
+  // Compute the result once for the immediate count and the next paint. When
+  // several filter controls change in one frame, the newest result replaces
+  // the pending one without repeating the full catalog scan in paintGrid().
+  pendingFiltered = filterItems(allItems, filterState, meta);
+  updateFilterMeta(host, pendingFiltered.length);
 
   paintPending = true;
   if (paintRaf) return;
   paintRaf = requestAnimationFrame(() => {
     paintRaf = 0;
     paintPending = false;
-    void paintGrid(host, { appear: true });
+    const filtered = pendingFiltered;
+    pendingFiltered = null;
+    void paintGrid(host, { appear: true, filtered });
   });
 }
 
@@ -503,7 +512,7 @@ function schedulePrewarm() {
 
 /**
  * @param {Element} host
- * @param {{ appear?: boolean }} [opts]
+ * @param {{ appear?: boolean, filtered?: object[] | null }} [opts]
  * @returns {Promise<void>}
  */
 async function paintGrid(host, opts = {}) {
@@ -511,7 +520,9 @@ async function paintGrid(host, opts = {}) {
 
   const appear = opts.appear === true;
   const meta = { craftedIds, gatedIds, shopItemIds, treasureIds };
-  let filtered = filterItems(allItems, filterState, meta);
+  let filtered = Array.isArray(opts.filtered)
+    ? opts.filtered
+    : filterItems(allItems, filterState, meta);
   const grouping = filterState.grouping || 'none';
   if (grouping === 'none') {
     filtered = sortByLibraryOrder(filtered, libraryOrderIndex);

@@ -5,9 +5,19 @@ import { watchItemsCatalogColumns } from './catalog-responsive.js';
 import { initWheelToGrid } from './wheel-to-grid.js';
 
 async function boot() {
-  if (!(await initNav())) return;
+  // Start the catalog as soon as the shared access gate passes. Nav image
+  // decoration/auth UI can continue warming in parallel without delaying the
+  // page's critical content path.
+  let catalogPromise = null;
+  const navPromise = initNav('#site-nav', {
+    onAccessGranted: () => {
+      catalogPromise = initItemsCatalog();
+    },
+  });
+  if (!(await navPromise)) return;
   initFooter({ variant: 'slim' });
-  void initItemsCatalog().then(() => {
+  const ready = catalogPromise || initItemsCatalog();
+  void ready.then(() => {
     watchItemsCatalogColumns();
   });
   initWheelToGrid();

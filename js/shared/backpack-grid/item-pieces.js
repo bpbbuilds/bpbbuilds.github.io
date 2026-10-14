@@ -427,20 +427,21 @@ function waitSpriteReady(img) {
 }
 
 /**
- * Attach deferred srcs and await load/decode for the given item roots.
+ * Attach deferred srcs and warm the given item roots progressively.
  * Itemiary: potions full live; other browse stills only. Boards/spotlight: full live.
- * Clears --sprite-pending after ready (or timeout) so init cannot stall.
+ * Clears each root's --sprite-pending marker as soon as that item's art is
+ * ready (or times out), so one slow sprite cannot hold the whole catalog.
  * @param {Iterable<HTMLElement>} itemEls
+ * @param {{ isCurrent?: () => boolean }} [opts]
  * @returns {Promise<void>}
  */
-export function warmItemSprites(itemEls) {
+export function warmItemSprites(itemEls, opts = {}) {
   /** @type {Promise<unknown>[]} */
-  const waits = [];
-  /** @type {HTMLElement[]} */
-  const roots = [];
+  const itemWaits = [];
   for (const el of itemEls) {
     if (!(el instanceof HTMLElement)) continue;
-    roots.push(el);
+    /** @type {Promise<unknown>[]} */
+    const waits = [];
     if (isItemiaryBrowseItem(el) && !isPotionLiveItem(el)) {
       attachBrowseStills(el);
       for (const img of el.querySelectorAll(BROWSE_STILL_SRC)) {
@@ -453,10 +454,16 @@ export function warmItemSprites(itemEls) {
         if (img instanceof HTMLImageElement) waits.push(waitSpriteReady(img));
       }
     }
+    itemWaits.push(
+      Promise.all(waits).then(() => {
+        // A later filter/scroll paint may have reused this node. Treat the
+        // previous warm as cancelled so stale decode work cannot unhide it.
+        if (typeof opts.isCurrent === 'function' && !opts.isCurrent()) return;
+        el.classList.remove('bpb-bg__item--sprite-pending');
+      }),
+    );
   }
-  return Promise.all(waits).then(() => {
-    for (const el of roots) el.classList.remove('bpb-bg__item--sprite-pending');
-  });
+  return Promise.all(itemWaits).then(() => undefined);
 }
 
 /**

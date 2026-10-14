@@ -4186,3 +4186,15 @@ None.
 - `createItemEl()` no longer emits a second shadow `<img>` or shadow spin. A `bpb-bg__item--no-shadow` marker preserves explicit opt-outs; normal items use the shared sprite alpha for the shadow.
 - Shared backpack-grid CSS now paints the game-equivalent 5/80-cell SE silhouette with `drop-shadow`, compensates local offsets for all four faces, keeps bags at the softer 0.45/0.75px treatment, and preserves affected/hover states. Itemiary, boards, simulator, spotlight, and responsive surfaces therefore decode one art image per item.
 - Added `scripts/item-shadow-smoke.mjs`; it checks the renderer has no duplicate shadow image, verifies normal/affected/no-shadow CSS behavior in Chromium, and confirms no duplicate shadow image is mounted. Focused shadow, bag-synergy, duration-hover, ring-editor, simulator-visual, syntax, and `git diff --check` checks pass. The existing `_audit-itemiary-virtual` and `_audit-item-anims` live checks still have unrelated environment/legacy assertions (pool-size and simulated-board selector timeouts); no legal or security surfaces changed.
+
+### 2026-10-14 Items page P0 performance fixes (in progress)
+
+- Codex owns `js/pages/items/index.js`, `js/shared/nav.js`, `js/pages/items/catalog/index.js`, `js/shared/backpack-grid/item-pieces.js`, `js/shared/backpack-grid/item-pool.js`, `docs/performance/items-page-performance-audit.md`, the focused P0 smoke, and this handoff for this task.
+- Scope: overlap catalog bootstrap with non-critical navigation decoration after access is granted, and make filter geometry/count updates immediate while item sprites warm progressively off the blocking paint path. Preserve access gating, composition, animation timing, and responsive layout.
+
+### 2026-10-14 Items page P0 performance fixes complete
+
+- Items catalog initialization now starts from `initNav(..., { onAccessGranted })` immediately after the shared access gate resolves; nav decoration and image waits remain independent. A fallback prevents duplicate initialization if the callback cannot start.
+- Filter interactions compute the filtered result once for the immediate count and the next animation-frame paint. Itemiary sprite warming is non-blocking and progressive, with an active paint-generation guard so stale decode work cannot unhide a reused node.
+- Checked the first two P0 entries in `docs/performance/items-page-performance-audit.md`; no markup, dimensions, styling, access behavior, or responsive breakpoints changed.
+- Added `scripts/items-p0-performance-smoke.mjs`: static bootstrap/paint contracts plus a Chromium delayed-sprite test (fast item clears while slow item remains pending, then both complete). The focused smoke, shared item-shadow smoke, syntax checks, and `git diff --check` pass. The existing `_audit-itemiary-virtual.mjs` still reports its pre-existing `mid-scroll DOM exploded 518` pool-cap assertion; that is the separate unchecked P0 pool/LRU item.
