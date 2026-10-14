@@ -7,6 +7,15 @@ import { chromium } from 'playwright';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PORT = 8812;
+const createCss = fs.readFileSync(path.join(ROOT, 'js/pages/create/create.css'), 'utf8');
+const itemPieces = fs.readFileSync(path.join(ROOT, 'js/shared/backpack-grid/item-pieces.js'), 'utf8');
+assert.match(createCss, /\.bpb-bg__bag-border[\s\S]*mask-image/, 'Create uses the extracted BagBorder texture mask');
+assert.match(createCss, /is-drag-synergy[\s\S]*brightness\(1\.3\)/, 'Create keeps the game BagBorder base brightness');
+assert.match(createCss, /is-drag-synergy-hover[\s\S]*brightness\(2\.5\)/, 'Create keeps the game BagBorder hover brightness');
+assert.match(itemPieces, /bpb-bg__bag-border/, 'item renderer mounts a BagBorder overlay for bags');
+for (const file of ['RangerBag_Border.png', 'FannyPack_Border.png', 'PotionBelt_Border.png', 'StorageCoffin_Border.png', 'Box_Border.png', 'Firepit_Border.png', 'PuzzlebagL_Border.png', 'PuzzlebagS_Border.png', 'PuzzlebagT_Border.png', 'Puzzlebox_Border.png', 'SewingCase_Border.png', 'Toolbox_Border.png']) {
+  assert.ok(fs.existsSync(path.join(ROOT, 'assets/icons/grid/bag-borders', file)), `game border asset exists: ${file}`);
+}
 const server = http.createServer((req, res) => {
   const url = new URL(req.url || '/', `http://127.0.0.1:${PORT}`);
   if (url.pathname === '/harness') {
@@ -91,9 +100,17 @@ const enduranceHover = await page.evaluate(() => {
     clientY: rect.top + 20,
   });
   const el = document.querySelector('[data-placement-key="endurance"]');
-  return { hover: el.classList.contains('is-drag-synergy-hover'), outline: getComputedStyle(el.querySelector('.bpb-bg__cell--bag')).outlineStyle };
+  const border = el.querySelector('.bpb-bg__bag-border');
+  const style = getComputedStyle(border);
+  return {
+    hover: el.classList.contains('is-drag-synergy-hover'),
+    mask: style.webkitMaskImage || style.maskImage,
+    filter: style.filter,
+  };
 });
-assert.deepEqual(enduranceHover, { hover: true, outline: 'dashed' }, 'Puzzle Bag of Endurance gets the game-like hovered border');
+assert.equal(enduranceHover.hover, true, 'Puzzle Bag of Endurance gets the game-like hovered border');
+assert.match(enduranceHover.mask, /RangerBag_Border|Puzzlebag/i, 'hovered bag uses an extracted game border texture');
+assert.match(enduranceHover.filter, /brightness\(2\.5\)/, 'hovered bag uses the game BagBorder brightness');
 
 const legacyNoKey = await page.evaluate(() => {
   const board = document.querySelector('#board');
@@ -266,31 +283,38 @@ const boardPreviewPath = await page.evaluate(async () => {
   preview.previewAt('hammer', 0, boardRect.left + 20, boardRect.top + 20, null);
   const fabricCell = board.querySelector('.bpb-bg__fabric .bpb-bg__cell--bag');
   const previewLayer = board.querySelector('.create-board__inv-preview');
+  const bagBorder = board.querySelector('.bpb-bg__item--bag .bpb-bg__bag-border');
+  const bagBorderStyle = bagBorder ? getComputedStyle(bagBorder) : null;
   return {
     active: fabricCell?.classList.contains('is-drag-synergy') === true,
     activeBefore,
     bagKey: board.querySelector('.bpb-bg__item--bag')?.dataset.placementKey || '',
     fabricKeys: fabricCell?.dataset.bagKeys || '',
     outline: fabricCell ? getComputedStyle(fabricCell).outlineStyle : '',
+    bagBorderMask: bagBorderStyle?.webkitMaskImage || bagBorderStyle?.maskImage || '',
+    bagBorderFilter: bagBorderStyle?.filter || '',
     fabricZ: board.querySelector('.bpb-bg__fabric')?.style.zIndex || getComputedStyle(board.querySelector('.bpb-bg__fabric')).zIndex,
     previewZ: previewLayer ? getComputedStyle(previewLayer).zIndex : '',
     previewTiles: previewLayer?.childElementCount || 0,
   };
 });
+const { bagBorderMask, bagBorderFilter, ...boardPreviewState } = boardPreviewPath;
 assert.deepEqual(
-  boardPreviewPath,
+  boardPreviewState,
   {
     active: true,
     activeBefore: true,
     bagKey: 'endurance-preview',
     fabricKeys: 'endurance-preview',
-    outline: 'dashed',
+    outline: 'none',
     fabricZ: '5000',
     previewZ: '7500',
     previewTiles: 2,
   },
   'Hammer board-hover path keeps the Puzzle Bag highlight while preview tiles are painted',
 );
+assert.match(bagBorderMask, /RangerBag_Border|Puzzlebag/i, 'board hover mounts the extracted BagBorder texture');
+assert.match(bagBorderFilter, /brightness\(1\.3\)/, 'board hover uses the game BagBorder base brightness');
 
 await page.evaluate(() => window.syncBagBorders.clear());
 assert.equal(await page.locator('[data-placement-key="fanny"]').evaluate((el) => el.classList.contains('is-drag-synergy')), false, 'drop/cancel clears bag border');

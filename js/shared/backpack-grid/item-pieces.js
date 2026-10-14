@@ -36,6 +36,63 @@ function gridIconUrl(name) {
   return `${assetPrefix()}assets/icons/grid/${name}.png`;
 }
 
+/* Extracted BagBorder textures from the game's bag scenes. Most bags use the
+ * shared Ranger border; shape-specific bags override the texture just like
+ * their Godot Border child does. */
+const BAG_BORDER_ASSET_BY_ID = Object.freeze({
+  box_of_prosperity: 'Box_Border.png',
+  fire_pit: 'Firepit_Border.png',
+  fanny_pack: 'FannyPack_Border.png',
+  potion_belt: 'PotionBelt_Border.png',
+  relic_case: 'PotionBelt_Border.png',
+  storage_coffin: 'StorageCoffin_Border.png',
+  portable_altar: 'Box_Border.png',
+  puzzlebag_j: 'PuzzlebagL_Border.png',
+  puzzlebag_l: 'PuzzlebagL_Border.png',
+  puzzlebag_s: 'PuzzlebagS_Border.png',
+  puzzlebag_t: 'PuzzlebagT_Border.png',
+  puzzlebag_z: 'PuzzlebagS_Border.png',
+  puzzlebox: 'Puzzlebox_Border.png',
+  sewing_case: 'SewingCase_Border.png',
+  toolbox: 'Toolbox_Border.png',
+  vineweave_basket: 'Firepit_Border.png',
+});
+
+/* Border node modulates from the extracted scene; BagBorder.gd then applies
+ * 1.3x at rest and 2.5x while its occupied cells are hovered. */
+const BAG_BORDER_TINT_BY_ID = Object.freeze({
+  bag_of_giving: '#fec291',
+  berserker_bag: '#f6e459',
+  box_of_prosperity: '#89bdfa',
+  engineer_bag_2: '#f2bf6f',
+  engineer_box: '#f2bf6f',
+  fanny_pack: '#d27f60',
+  fire_pit: '#fc9859',
+  holdall: '#fec291',
+  portable_altar: '#f8e789',
+  potion_belt: '#d4d159',
+  puzzlebag_j: '#99bde4',
+  puzzlebag_l: '#fe9c92',
+  puzzlebag_s: '#a7e172',
+  puzzlebag_t: '#feeb92',
+  puzzlebag_z: '#da92fe',
+  puzzlebox: '#fbb0ac',
+  relic_case: '#d6aff9',
+  scholar_bag: '#fec291',
+  sewing_case: '#fec291',
+  storage_coffin: '#b469e8',
+  toolbox: '#aed4e3',
+  vineweave_basket: '#cae66b',
+});
+
+function bagBorderStyle(item) {
+  const id = String(item?.id || '');
+  const file = BAG_BORDER_ASSET_BY_ID[id] || 'RangerBag_Border.png';
+  const tint = BAG_BORDER_TINT_BY_ID[id] || '#72bc61';
+  const url = `${assetPrefix()}assets/icons/grid/bag-borders/${file}`;
+  return `--bpb-bag-border-image:url('${url}');--bpb-bag-border-color:${tint};`;
+}
+
 function escapeAttr(s) {
   return String(s ?? '')
     .replace(/&/g, '&amp;')
@@ -607,6 +664,10 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
           bagSlotUrl(),
         )}</div>`
       : '';
+  const bagBorder =
+    bag && useChrome
+      ? `<span class="bpb-bg__bag-border" aria-hidden="true" style="${bagBorderStyle(item)}"></span>`
+      : '';
 
   const src =
     String(item.id) === '__unrecognized__' ? '' : getSpriteUrl(item);
@@ -694,6 +755,7 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
           ${hitPads}
         </button>
         ${bagSlots}
+        ${bagBorder}
         ${useChrome ? socketLayerHtml(item, shape, bounds, gems) : ''}
         ${gemLayerHtml(item, shape, bounds, gems, r)}
         ${useChrome ? hoverMarkersHtml(item, shape, bounds) : ''}

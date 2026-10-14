@@ -4262,3 +4262,14 @@ None.
 
 - Added a clamped card-list row gap so each textured build surface has a visible seam at desktop, short desktop, tablet, and mobile widths; compact and grid lists retain their existing spacing.
 - Extended `scripts/builds-surface-padding-smoke.mjs` with static and browser assertions for the card gap. Focused Builds surface/shadow/density smokes and `git diff --check` pass. No legal or security surfaces changed.
+
+### 2026-10-14 Create BagBorder game-style audit (in progress)
+
+- Codex owns `js/pages/create/create.css`, `js/shared/backpack-grid/item-pieces.js`, the Create bag-synergy browser smoke, extracted BagBorder assets under `assets/icons/grid/bag-borders/`, and this handoff for this task.
+- Source evidence: `tools/game-extract-full/Items/Tiles/BagBorder.gd` uses the Border texture as a Sprite, applies the scene tint, brightens to `1.3` at rest and `2.5` over an occupied hovered cell, and hides the border when the held item is incompatible. Bag scenes override the texture/tint for shaped bags such as Puzzlebag, Potion Belt, Storage Coffin, and Toolbox.
+- Scope: replace Create's dashed cell outline with the extracted texture/mask and source-derived tint/brightness while preserving the existing compatibility predicate, hover state, fabric fallback, and responsive board geometry.
+
+### 2026-10-14 Create BagBorder game-style audit complete
+
+- Create now mounts the extracted BagBorder texture for every rendered bag, maps shape-specific game border assets/tints, and uses the game brightness states (`1.3` compatible, `2.5` hovered). Compatible placed bags temporarily sit above the shared FilledSlot fabric so the complete border remains visible while still below gear sprites; non-compatible bags remain hidden.
+- Removed the dashed per-cell outline and added asset/source/browser assertions to `scripts/create-bag-synergy-browser-smoke.mjs`. Create synergy, duration-hover, ring-affordance, syntax, and `git diff --check` checks pass. No legal or security surfaces changed.
