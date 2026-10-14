@@ -1,4 +1,4 @@
-import { initHomeClassShowcase } from '../home/home-class-showcase.js?v=home-class-showcase-test-20261013c';
+import { initHomeClassShowcase } from '../home/home-class-showcase.js?v=ranger-hq-20261014a';
 import { resolveAdminAuth } from './api.js?v=admin-csp-20261013a';
 import { mountGate } from './gate.js';
 

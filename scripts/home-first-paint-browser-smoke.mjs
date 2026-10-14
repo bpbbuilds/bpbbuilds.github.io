@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/** Browser smoke for the static Home shell before module boot/hydration. */
+/** Browser smoke for the empty Home shell before section modules mount. */
 
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -58,24 +58,22 @@ try {
     const state = await page.evaluate((ids) => {
       const sections = ids.map((id) => {
         const host = document.getElementById(id);
-        const region = host?.querySelector('.bpb-skel-region');
-        const surface = region?.querySelector('.bpb-skel');
         return {
           id,
           regions: host?.querySelectorAll('.bpb-skel-region').length || 0,
-          surfaces: region?.querySelectorAll('.bpb-skel').length || 0,
-          height: surface instanceof HTMLElement ? surface.getBoundingClientRect().height : 0,
+          surfaces: host?.querySelectorAll('.bpb-skel').length || 0,
+          childCount: host?.children.length || 0,
         };
       });
       const footer = document.querySelector('#site-footer');
-      const footerSurface = footer?.querySelector('.bpb-skel');
       const frame = getComputedStyle(document.body, '::after').backgroundImage;
       const bodyBg = getComputedStyle(document.body).backgroundImage;
       return {
         sections,
         footerRegions: footer?.querySelectorAll('.bpb-skel-region').length || 0,
         footerSurfaces: footer?.querySelectorAll('.bpb-skel').length || 0,
-        footerHeight: footerSurface instanceof HTMLElement ? footerSurface.getBoundingClientRect().height : 0,
+        footerChildCount: footer?.children.length || 0,
+        navRegions: document.querySelectorAll('#site-nav .bpb-skel-region').length || 0,
         frame,
         bodyBg,
         overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -83,13 +81,14 @@ try {
     }, sectionIds);
 
     for (const section of state.sections) {
-      assert.equal(section.regions, 1, `${viewport.name}/${section.id}: one first-paint region`);
-      assert.equal(section.surfaces, 1, `${viewport.name}/${section.id}: one first-paint surface`);
-      assert.ok(section.height > 0, `${viewport.name}/${section.id}: skeleton has height`);
+      assert.equal(section.regions, 0, `${viewport.name}/${section.id}: no page-level skeleton region`);
+      assert.equal(section.surfaces, 0, `${viewport.name}/${section.id}: no page-level skeleton surface`);
+      assert.equal(section.childCount, 0, `${viewport.name}/${section.id}: section host starts empty`);
     }
-    assert.equal(state.footerRegions, 1, `${viewport.name}: footer has one first-paint region`);
-    assert.equal(state.footerSurfaces, 1, `${viewport.name}: footer has one first-paint surface`);
-    assert.ok(state.footerHeight > 0, `${viewport.name}: footer skeleton has height`);
+    assert.equal(state.footerRegions, 0, `${viewport.name}: footer has no page-level skeleton region`);
+    assert.equal(state.footerSurfaces, 0, `${viewport.name}: footer has no page-level skeleton surface`);
+    assert.equal(state.footerChildCount, 0, `${viewport.name}: footer host starts empty`);
+    assert.equal(state.navRegions, 0, `${viewport.name}: nav host starts empty before shared init`);
     assert.match(state.bodyBg, /bg-town-square\.jpg/, `${viewport.name}: Home background is present before boot`);
     if (viewport.width > 1100) {
       assert.match(state.frame, /ui-screen-frame\.png/, `${viewport.name}: desktop frame is present before boot`);

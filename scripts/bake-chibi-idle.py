@@ -201,9 +201,15 @@ def apply_animation(nodes: dict, anim: dict, t: float) -> dict:
 
 
 def render_frame(
-    res, nodes, *, canvas_size=CANVAS_SIZE, cy_bias=CY_BIAS
+    res, nodes, *, canvas_size=CANVAS_SIZE, cy_bias=CY_BIAS, render_scale=1.0
 ) -> Image.Image:
-    """Same compositing path as composite-class-chibis; full canvas (no crop)."""
+    """Same compositing path as composite-class-chibis; full canvas (no crop).
+
+    ``render_scale`` renders the extracted textures before the final crop so a
+    browser can downsample a higher-resolution animation instead of enlarging
+    an already rasterized game-size frame.
+    """
+    render_scale = max(0.1, float(render_scale))
     sprites = []
     for path, n in nodes.items():
         if n["type"] != "Sprite" or n["texture_id"] is None:
@@ -219,14 +225,23 @@ def render_frame(
         m = chibi.mat_mul(
             m, chibi.mat_from_trs(n["position"], n["rotation"], n["scale"])
         )
+        if render_scale != 1.0:
+            m = [
+                m[0] * render_scale,
+                m[1] * render_scale,
+                m[2] * render_scale,
+                m[3] * render_scale,
+                m[4] * render_scale,
+                m[5] * render_scale,
+            ]
         z = chibi.accumulate_z(
             nodes, parent_path, n["z_index"], n["show_behind_parent"]
         )
         sprites.append((z, path, n, tex_path, m))
 
     sprites.sort(key=lambda t: (t[0], t[1]))
-    w = h = canvas_size
-    cx, cy = w // 2, h // 2 + cy_bias
+    w = h = max(1, int(round(canvas_size * render_scale)))
+    cx, cy = w // 2, h // 2 + int(round(cy_bias * render_scale))
     canvas = Image.new("RGBA", (w, h), (0, 0, 0, 0))
 
     for _z, _path, n, tex_path, m in sprites:
@@ -301,6 +316,7 @@ def bake_class(
     quality: int = 82,
     method: int = 6,
     skin: str | None = None,
+    render_scale: float = 1.0,
 ) -> Path | None:
     tscn = (
         EXTRACT
@@ -340,7 +356,8 @@ def bake_class(
 
     _log(
         f"baking {class_name} Idle: {length}s @ {fps}fps -> {n_frames} frames, "
-        f"{len(anim['tracks'])} tracks, {duration_ms}ms/frame"
+        f"{len(anim['tracks'])} tracks, {duration_ms}ms/frame, "
+        f"render scale {render_scale:g}"
     )
 
     # Pass 1: measure shared world-space crop (discard canvases — saves GBs of RAM).
@@ -349,7 +366,11 @@ def bake_class(
     x1 = y1 = 0
     for i in range(n_frames):
         t = (i / n_frames) * length
-        canvas = render_frame(res, apply_animation(nodes, anim, t))
+        canvas = render_frame(
+            res,
+            apply_animation(nodes, anim, t),
+            render_scale=render_scale,
+        )
         bb = canvas.getbbox()
         canvas.close()
         if not bb:
@@ -365,11 +386,12 @@ def bake_class(
         _log("no opaque pixels")
         return None
     pad = 4
+    render_canvas_size = max(1, int(round(CANVAS_SIZE * max(0.1, float(render_scale)))))
     box = (
         max(0, x0 - pad),
         max(0, y0 - pad),
-        min(CANVAS_SIZE, x1 + pad),
-        min(CANVAS_SIZE, y1 + pad),
+        min(render_canvas_size, x1 + pad),
+        min(render_canvas_size, y1 + pad),
     )
     _log(f"  crop box {box}")
 
@@ -378,7 +400,11 @@ def bake_class(
     frames: list[Image.Image] = []
     for i in range(n_frames):
         t = (i / n_frames) * length
-        canvas = render_frame(res, apply_animation(nodes, anim, t))
+        canvas = render_frame(
+            res,
+            apply_animation(nodes, anim, t),
+            render_scale=render_scale,
+        )
         frames.append(fit_height(canvas.crop(box), max_h))
         canvas.close()
         if (i + 1) % 30 == 0 or i + 1 == n_frames:
@@ -410,6 +436,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--quality", type=int, default=82)
     p.add_argument("--method", type=int, default=6, choices=range(0, 7), help="WebP encoder effort (0 is fastest, 6 is smallest)")
     p.add_argument("--skin", default=None, help="optional Chibi wardrobe skin")
+    p.add_argument("--scale", type=float, default=1.0, help="render extracted textures at this scale before cropping")
     args = p.parse_args(argv)
 
     if not EXTRACT.is_dir():
@@ -423,6 +450,7 @@ def main(argv: list[str] | None = None) -> int:
         quality=args.quality,
         method=args.method,
         skin=args.skin,
+        render_scale=args.scale,
     )
     return 0 if out else 1
 

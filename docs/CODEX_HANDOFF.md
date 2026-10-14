@@ -1,5 +1,606 @@
 # Codex handoff
 
+### 2026-10-14 Curated loadout metadata spacing and avatar scale complete
+- Removed the extra board-to-metadata flex gap and reduced the board still's
+  reserved transparent tail by a small responsive amount, bringing creator
+  information visibly closer without changing the board image or ordering.
+- Increased creator pfp/blob rendering to a fluid `3rem`–`4rem` clamp and raised
+  the face source request to 64px so the larger face stays crisp. The compact
+  mobile card remains within its width and the blob remains uncropped/square.
+- Added `home-curated-loadout-meta-browser-smoke.mjs`, a red/green responsive
+  geometry check covering 1440, 1080, 768, and 390px, including the overlap
+  bound, square avatar size, source contract, and horizontal overflow. Updated
+  Home cache keys. Verification passed: the focused smoke, Home no-skeleton and
+  footer/first-paint browser smokes, JS syntax checks, and `git diff --check`.
+  This work is local and has not been pushed.
+
+### 2026-10-14 Footer corner underlay correction complete
+- The footer host now paints the same `bg-hills-night-deep.jpg` scene as the
+  curated loadouts band behind its masked top corners, so the left/right curve
+  reveals cannot fall through to the Town Square body background. Mobile keeps
+  the opaque textured footer fallback because its curve mask is disabled.
+- Bumped the Home loadouts stylesheet cache key and extended
+  `home-footer-browser-smoke.mjs` to assert the matching underlay plus the
+  existing 24/25px overlap, stacking order, responsive mask, and no overflow.
+  Verification passed: footer smoke, Home no-skeleton smoke, first-paint smoke,
+  and `git diff --check`. This work is local and has not been pushed.
+
+### 2026-10-14 Curated loadouts background underlap complete
+- The Home footer host now overlaps the curated build-loadout band by the
+  footer's transparent curve height (24px desktop/short desktop, 25px tablet),
+  with the footer promoted above the loadout background as the interactive top
+  layer. Phones keep the existing unmasked textured footer and do not overlap.
+- Bumped the Home curated-loadouts stylesheet cache key and extended the footer
+  browser smoke to measure the exact overlap, stacking order, responsive mask,
+  and horizontal overflow at 1440, 1080, 768, and 390px. Verification passed:
+  `home-footer-browser-smoke.mjs`, `home-section-skeleton-browser-smoke.mjs`,
+  `home-section-skeleton-smoke.mjs`, `home-first-paint-browser-smoke.mjs`, and
+  `git diff --check`. This work is local and has not been pushed.
+
+### 2026-10-14 Remove Home loading skeletons complete
+- Scope: remove every visible/loading skeleton from the Home page only, including
+  section placeholders, sprite/bag placeholders, Player Info's coordinated stack,
+  and the shared navigation placeholder while Home boots. Other pages retain the
+  shared skeleton helpers and their existing loading states.
+- Owned paths for this change: `js/pages/home/`, `js/pages/home/index.js`,
+  `js/shared/nav.js`, and focused Home skeleton smoke scripts.
+- Responsive rule: Home remains fluid at 1440, 1080/short desktop, tablet, and
+  mobile; removing placeholders must not introduce horizontal overflow.
+- Each Home section now mounts clean markup (or an explicit error status) while
+  data loads, and the shared nav skips its placeholder only when `body.page-home`
+  is active. Cache keys were bumped for the changed Home modules/styles.
+- Verification passed: `home-section-skeleton-smoke.mjs`,
+  `home-section-skeleton-browser-smoke.mjs`,
+  `home-promo-player-skeleton-browser-smoke.mjs`,
+  `home-promo-skeleton-shape-smoke.mjs`,
+  `home-promo-skeleton-lifecycle-browser-smoke.mjs`,
+  `home-first-paint-browser-smoke.mjs`, `home-footer-browser-smoke.mjs`,
+  `home-promo-activity-smoke.mjs`,
+  `admin-home-player-info-animation-browser-smoke.mjs`, all touched-module
+  `node --check` checks, and `git diff --check`. This work is local and has not
+  been pushed.
+
+### 2026-10-14 Patches banner sizing and route complete
+- Standardized the Patches pennant to the same responsive desktop slot as the
+  Events/Market/Quest banners, including the narrower 1200px desktop breakpoint;
+  the supplied artwork now fills that slot without the previous undersized
+  plaque. Mobile/tablet behavior remains drawer-only.
+- Added `/patch-notes/` as the linked under-construction Patches page, reusing
+  the established Market coming-soon surface with its own page module and
+  metadata. The existing nav link already targets this route.
+- Added static and responsive browser smoke coverage. Verification passed:
+  `nav-patches-smoke.mjs`, `nav-patches-browser-smoke.mjs`,
+  `patch-notes-page-smoke.mjs`, `patch-notes-page-browser-smoke.mjs`,
+  `home-first-paint-browser-smoke.mjs`, `node --check`, and `git diff --check`.
+  This work is local and has not been pushed.
+
+### 2026-10-14 Restore home footer side curves complete
+- The footer base is transparent again on desktop/tablet so the existing masked
+  textured pseudo-layer can reveal the left/right top curves. The pseudo-layer
+  still covers the full footer below the curve. Mobile keeps an opaque textured
+  base because its curve mask is intentionally disabled.
+- Updated the footer smoke to assert transparent desktop/tablet bases, the
+  responsive curve masks, and the opaque unmasked mobile fallback. Verification
+  passed: `home-footer-browser-smoke.mjs`, `admin-footer-presets-browser-smoke.mjs`,
+  `home-first-paint-browser-smoke.mjs`, and `git diff --check`. This work is
+  local and has not been pushed.
+
+### 2026-10-14 Featured-to-Player Info spacing adjustment complete
+- Reduced only the featured stage shell's bottom margin from `2rem` to `1.25rem`,
+  trimming the gap before the Player Info build animation by 12px on desktop,
+  short desktop, and tablet. The existing mobile `1.15rem` spacing remains
+  unchanged.
+- Added a responsive smoke assertion for the compact inter-section gap and
+  bumped the featured stylesheet cache key. Verification passed:
+  `home-section-skeleton-browser-smoke.mjs`, `home-first-paint-browser-smoke.mjs`,
+  `admin-home-player-info-animation-browser-smoke.mjs`, and `git diff --check`.
+  This work is local and has not been pushed.
+
+### 2026-10-14 Home Player Info skeleton overlay correction complete
+- The four translucent panels were the Player Info skeleton stack painting above the
+  finished caption, player, board, and details. The assembler now marks the card
+  explicitly ready (`data-promo-ready="true"`, `aria-busy="false"`) and hides/removes
+  the stack defensively; the error boundary follows the same cleanup path. A CSS
+  fallback prevents a stale live-reload stack from remaining visible after ready.
+- Bumped the home promo module and stylesheet cache keys so local reloads receive
+  the corrected lifecycle code. Added assertions for zero skeleton surfaces and
+  the ready/busy state after animated and reduced-motion paints.
+- Verification passed: `home-promo-skeleton-lifecycle-browser-smoke.mjs`,
+  `home-promo-player-skeleton-browser-smoke.mjs`,
+  `admin-home-player-info-animation-browser-smoke.mjs`, both promo `node --check`
+  checks, and `git diff --check`. This work is local and has not been pushed.
+
+### 2026-10-14 Footer navigation pill buttons complete
+
+- Restyled the shared footer navigation links as compact pill buttons with the
+  exact scrollbar thumb yellow `#eac914`, dark readable text, subtle game-style
+  rim/shadow, hover lift, and visible keyboard focus. Regular and slim footer
+  presets both use the treatment; social icon links remain unchanged.
+- Added static and responsive browser assertions for the yellow background,
+  pill radius, flex button geometry, regular/slim presets, wrapping, and no
+  overflow at 1440, 1080, 768, and 390px. Verification:
+  `admin-footer-presets-smoke.mjs`, `admin-footer-presets-browser-smoke.mjs`,
+  `home-footer-browser-smoke.mjs`, `home-section-skeleton-browser-smoke.mjs`,
+  and `git diff --check` pass. No auth, data, legal-page, or migration
+  behavior changed. This work is local and has not been pushed.
+
+### 2026-10-14 Curated Build Loadouts footnote removal complete
+
+- Removed the redundant “Browse every featured board in the catalog” line from
+  the curated loadouts success view and removed its unused style rule. The
+  section title, build rail, buttons, and empty/error states are unchanged.
+- Added a static regression rejecting the removed copy. Verification:
+  `home-section-skeleton-smoke.mjs`,
+  `home-section-skeleton-browser-smoke.mjs`, `node --check
+  js/pages/home/home-builds-vault.js`, and `git diff --check` pass. No auth,
+  data, legal-page, or migration behavior changed. This work is local and has
+  not been pushed.
+
+### 2026-10-14 Home footer exposed-edge correction complete
+
+- Root cause: the footer's curved `::before` texture intentionally has
+  transparent pixels in its 24px/25px top step, but the footer itself was
+  transparent. Those pixels therefore revealed the hills scene as a brown
+  strip above the dark footer.
+- Added an opaque dark-textured underlay to the Home footer itself. The curved
+  mask remains in place, but every transparent edge pixel now resolves to the
+  footer's own texture instead of the page background; footer content, bounds,
+  and responsive edge geometry are unchanged.
+- Updated the Home footer browser/static checks to require the opaque texture
+  underlay and preserve the desktop/short-desktop/tablet/mobile mask and
+  overflow contracts. Verification: `home-footer-browser-smoke.mjs`,
+  `admin-footer-presets-smoke.mjs`, and `git diff --check` pass. No auth, data,
+  legal-page, or migration behavior changed. This work is local and has not
+  been pushed.
+
+### 2026-10-14 Home build-animation height stabilization complete
+
+- Root cause: the Player Info build title was clamped to two lines but only
+  reserved its natural height. A one-line title therefore shortened the entire
+  promo card by about 32px at 1440px, shifting the following Home section and
+  exposing an inconsistent page-background gap.
+- Reserved the two-line title footprint with a responsive `min-height` on the
+  Player Info title. The existing two-line clamp, typography, board, and
+  animation remain unchanged; only the short-title whitespace is stabilized.
+- Added a browser regression that compares one-line and two-line card heights
+  at 1440, 1080, 768, and 390px, plus static coverage for the reservation.
+  Verification: `admin-home-player-info-animation-smoke.mjs`,
+  `admin-home-player-info-animation-browser-smoke.mjs`,
+  `home-section-skeleton-browser-smoke.mjs`,
+  `home-promo-player-skeleton-browser-smoke.mjs`, and `git diff --check` pass.
+  No auth, data, legal-page, or migration behavior changed. This work is local
+  and has not been pushed.
+
+### 2026-10-14 Patches navbar banner asset replacement complete
+
+- Renamed the supplied banner image from
+  `assets/theme/ui/df9ee347-d41a-48d6-a31c-a6f2c9523d8c.png` to the canonical
+  `assets/theme/ui/ui-patches-banner.png` and switched the navbar markup to
+  use it. The temporary generated `ui-patches-banner.svg` was deleted after
+  its references were removed; the markup now carries the supplied 1100x1430
+  intrinsic dimensions to avoid a load-time layout shift.
+- Updated the static and responsive Patches navbar smokes to validate the PNG
+  signature, reject stale SVG references, load the new asset, and preserve the
+  desktop/tablet/mobile visibility and overflow contracts. Verification:
+  `nav-patches-smoke.mjs`, `nav-patches-browser-smoke.mjs`,
+  `node --check js/shared/nav/markup.js`, and `git diff --check` pass. No auth,
+  data, legal-page, or migration behavior changed. This work is local and has
+  not been pushed.
+
+### 2026-10-14 Discord build embed-only image fix complete
+
+- Root cause: new forum posts still sent `build.png` as a normal multipart
+  attachment while also declaring the board image in the embed. Discord then
+  rendered the same board once above the embed and once inside it.
+- New posts now host a generated board image when it fits the public image
+  bucket and always send the board only through the embed URL; no board file is
+  included in the thread message payload. Existing still URLs remain the safe
+  fallback when generated PNG hosting is rejected by the bucket limit.
+- Added `discord-build-image-smoke.mjs` and a guarded
+  `repost-discord-builds.mjs` maintenance path. Verified the two newest live
+  posts, deleted and recreated them in chronological order, and confirmed both
+  replacement messages have zero attachments and one embed image. The local
+  bot state was updated with the replacement thread IDs. `node --check` and
+  `git diff --check` pass. No auth, data, legal-page, or migration behavior
+  changed. Code and scripts are local and have not been pushed.
+
+### 2026-10-14 Curated Build Loadouts metadata spacing complete
+
+- Tightened the board-to-metadata flex gap from 0.45rem to 0.15rem while
+  leaving the board's required overhang reservation intact.
+- Increased creator pfp/blob rendering to a responsive 2.5rem–3rem clamp and
+  raised the face source request to 48px. The author row, class icon, links,
+  and board composition are unchanged.
+- Added static coverage for the spacing and avatar contracts. Responsive Home
+  section smoke coverage and JavaScript syntax checks pass at 1440, 1080, 768,
+  and 390px with no overflow. No auth, data, legal-page, or migration
+  behavior changed. This work is local and has not been pushed.
+
+### 2026-10-14 Curated Build Loadouts hover glow removed
+
+- Removed the card-level `drop-shadow` hover/focus filter from the Curated
+  Build Loadouts rail. Hovering no longer adds the unwanted glow; row pause,
+  stacking order, focus outline, and card links remain unchanged.
+- Added a focused static regression to ensure the hover/focus rule cannot
+  reintroduce the glow. Responsive Home section smoke coverage remains green
+  at 1440, 1080, 768, and 390px with no overflow. No auth, data, legal-page,
+  or migration behavior changed. This work is local and has not been pushed.
+
+### 2026-10-14 Home footer coverage complete
+
+- Root cause: the footer used one full-height SVG mask, so its curve geometry
+  scaled with the footer content and left the lower textured surface visually
+  disconnected from the footer copy.
+- Replaced it with the same fixed-step composite mask geometry as the aligned
+  Home surfaces: 24px/320px on desktop, 25px/100px at tablet, and a plain
+  textured surface below 400px. The pseudo-element remains inset to all four
+  footer edges, so the texture covers the entire footer height.
+- Added static and browser assertions for the fixed edge sizes, mobile
+  fallback, full pseudo-element bounds, responsive cover sizing, and no
+  horizontal overflow. Bumped the Home stylesheet query to invalidate the old
+  cached mask. Verification: `admin-footer-presets-smoke.mjs`,
+  `home-footer-browser-smoke.mjs`, and `git diff --check` pass. No auth, data,
+  legal-page, or migration behavior changed. This work is local and has not
+  been pushed.
+
+### 2026-10-14 Choose Your Hero curve-size alignment complete
+
+- Root cause: the previous inverted Hero mask used a full-section SVG whose
+  24px-looking curve coordinates were stretched over the entire band height,
+  producing a much larger dip than Explore 500 Items.
+- Replaced it with a fixed-step composite mask matching Explore's geometry:
+  24px depth and 320px corner transitions on desktop, 25px depth and 100px
+  corners at the tablet breakpoint. The Hero remains inverted, viewport-flush,
+  and disables the edge mask below 400px like Explore Items.
+- Updated static/browser coverage to assert the fixed mask sizes, matching
+  breakpoint geometry, mobile fallback, all four hero presets, and no overflow.
+  Verification: `admin-home-class-showcase-test-smoke.mjs`,
+  `admin-home-class-showcase-test-browser-smoke.mjs`, and `git diff --check`
+  pass. No auth, data, legal-page, or migration behavior changed. This work
+  is local and has not been pushed.
+
+### 2026-10-14 Home Player Info skeleton dismissal boundary complete
+
+- Root cause: the Player Info assembler mounted the complete bag + item board
+  during the second wave, but waited another `PLAYER_WAVE_MS` before removing
+  the four-surface loading stack. This left the skeleton visibly covering
+  ready content during the remainder of the intro.
+- The stack now clears immediately after the complete board composition is
+  mounted; the wave animation and board-complete activity state still finish
+  on their existing schedule.
+- Added a normal-motion regression to
+  `home-promo-skeleton-lifecycle-browser-smoke.mjs` that waits for both bag
+  and item nodes, then asserts no skeleton remains over the loaded section.
+  Verification: lifecycle, Player Info shape/responsive, animation, section
+  skeleton, and JavaScript syntax smokes pass. No auth, data, legal-page, or
+  migration behavior changed. This work is local and has not been pushed.
+
+### 2026-10-14 Shared tooltip enter fade correction complete
+
+- Fixed the shared tooltip show lifecycle so hosts that start hidden commit
+  their transparent base frame before receiving `is-visible`. Item, build, and
+  event tooltips now visibly fade in instead of appearing instantly, while
+  repeated refreshes of an already-visible tooltip do not restart the fade.
+- Extended the tooltip static/browser regression coverage to assert a
+  transparent enter frame, an in-progress opacity value, full opacity after
+  the transition, hidden-host coverage for build/event tips, responsive
+  behavior, reduced motion, and unchanged fade-out cleanup. Verification:
+  `tooltip-transition-smoke.mjs`, `tooltip-transition-browser-smoke.mjs`,
+  `tooltip-scale-smoke.mjs`, and `git diff --check` pass. No auth, data,
+  legal-page, or migration behavior changed. This work is local and has not
+  been pushed.
+
+### 2026-10-14 Curated Build Loadouts transition overlap complete
+
+- Added a responsive negative top margin to the Curated Build Loadouts
+  wrapper, pulling it 24px upward at desktop and scaling to 14.4px at tablet
+  and mobile. This lets the Explore Items lower dip overlap the loadouts
+  surface without changing the loadout content, background, or edge bleed.
+- Added static and responsive browser coverage for the negative overlap margin,
+  deep-night background, viewport edges, and no horizontal overflow at 1440,
+  1080, tablet, and mobile widths. Verification:
+  `home-section-skeleton-smoke.mjs`, `home-section-skeleton-browser-smoke.mjs`,
+  and `git diff --check` pass. No auth, data, legal-page, or migration
+  behavior changed. This work is local and has not been pushed.
+
+### 2026-10-14 Home footer inverted top edge complete
+
+- Applied the same full-width SVG mask used by Choose Your Hero to the Home
+  footer's textured background. The footer surface now rises through the
+  center and sits lower at both sides, while footer copy remains above the
+  masked layer and existing responsive padding is unchanged.
+- Added static and browser coverage for the curve mask, textured background,
+  responsive cover sizing, paint isolation, and no horizontal overflow at
+  1440, 1080, tablet, and mobile widths. Verification:
+  `admin-footer-presets-smoke.mjs`, `home-footer-browser-smoke.mjs`, and
+  `git diff --check` pass. No auth, data, legal-page, or migration behavior
+  changed. This work is local and has not been pushed.
+
+### 2026-10-14 Choose Your Hero inverted top edge complete
+
+- Added a full-width SVG mask to the Choose Your Hero background layer. Its
+  top edge rises through the center and sits lower at both sides, inverting the
+  Explore 500 Items edge treatment while keeping the dark texture, content
+  rail, and viewport-flush bleed unchanged.
+- Added static and responsive browser coverage for the inverted mask, dark
+  texture, 1440/1080/tablet/mobile geometry, all four preview presets, and no
+  horizontal overflow. Verification: `admin-home-class-showcase-test-smoke.mjs`,
+  `admin-home-class-showcase-test-browser-smoke.mjs`, and `git diff --check`
+  pass. No auth, data, legal-page, or migration behavior changed. This work is
+  local and has not been pushed.
+
+### 2026-10-14 Home Player Info skeleton lifecycle and final-shape alignment complete
+
+- Fixed the build-animation loading surface so invalid/empty loaded builds are
+  filtered before the animation loop, preventing a microtask loop from
+  stranding the skeleton over a ready section. The assembler now clears the
+  skeleton when no playable build exists, when the board cannot mount, and the
+  Home boundary also clears it on unexpected render failures.
+- Rebuilt the four-surface skeleton around the Player Info card grid instead of
+  arbitrary percentage offsets. The title, player, board, and details surfaces
+  now follow the responsive desktop/tablet/mobile layout; the board skeleton
+  keeps the final 9:7 board ratio and profile height remains substantial on
+  narrow screens.
+- Added lifecycle and shape coverage for valid first paint, empty loaded data,
+  responsive geometry, board ratio, and skeleton removal. Verification:
+  `home-promo-skeleton-lifecycle-browser-smoke.mjs`,
+  `home-promo-skeleton-shape-smoke.mjs`,
+  `home-promo-player-skeleton-browser-smoke.mjs`,
+  `admin-home-player-info-animation-smoke.mjs`,
+  `home-section-skeleton-smoke.mjs`, JavaScript syntax checks, and
+  `git diff --check` pass. No auth, data, legal-page, or migration behavior
+  changed. This work is local and has not been pushed.
+
+### 2026-10-14 Shared tooltip fade transitions complete
+
+- Added a shared `tooltip-motion.js` lifecycle and applied coordinated
+  opacity/transform/visibility states to item/cosmetic hosts
+  (`.bpb-tooltip-float`), build-preview tips, and event tips. Fade-out keeps
+  content mounted until the transition completes; rapid re-hover cancels the
+  pending cleanup. Reduced-motion disables the CSS transition and uses
+  immediate cleanup.
+- Added static and browser coverage for fade-in/out, cleanup, responsive
+  desktop/tablet/mobile behavior, and reduced-motion. Existing tooltip
+  scale/parity coverage remains green.
+- Verification: `tooltip-transition-smoke.mjs`,
+  `tooltip-transition-browser-smoke.mjs`, `tooltip-scale-smoke.mjs`,
+  `audit-tooltip-parity.mjs`, JavaScript syntax checks, and `git diff --check`
+  pass. No auth, data, legal-page, or migration behavior changed. This work
+  is local and has not been pushed.
+
+### 2026-10-14 Curated Build Loadouts full-bleed background complete
+
+- Confirmed the Curated Build Loadouts section already uses a full-bleed
+  wrapper; hardened its frame-edge calculations with a zero-pixel fallback so
+  the deep-night hills background reaches both viewport edges even if the
+  frame token is unavailable. The centered rail and card behavior are
+  unchanged.
+- Added browser assertions for exact left/right viewport alignment at 1440,
+  1080, tablet, and mobile widths, responsive cover scaling, and no overflow.
+- Verification: `home-section-skeleton-smoke.mjs`,
+  `home-section-skeleton-browser-smoke.mjs`, and `git diff --check` pass. No
+  auth, data, legal-page, or migration behavior changed. This work is local and
+  has not been pushed.
+
+### 2026-10-14 Choose Your Hero full-bleed background complete
+
+- Moved the Choose Your Hero texture onto a full-bleed pseudo-element that
+  extends across the desktop frame inset while leaving the centered hero rail
+  and card composition in place. The texture remains cover-scaled and uses no
+  extra bleed at tablet/mobile widths where the frame inset is zero.
+- Added browser assertions for the transparent content band, textured
+  background layer, viewport-edge offsets, all four supported viewport sizes,
+  card sizing, animation presets, and no horizontal overflow.
+- Verification: `admin-home-class-showcase-test-browser-smoke.mjs`,
+  `admin-home-class-showcase-test-smoke.mjs`,
+  `home-section-skeleton-browser-smoke.mjs`, JavaScript syntax checks, and
+  `git diff --check` pass. No auth, data, legal-page, or migration behavior
+  changed. This work is local and has not been pushed.
+
+### 2026-10-14 Home build-animation background removal complete
+
+- Removed the Player Info/build-animation section's decorative radial field and
+  stepped edge mask. The section and card now remain transparent while the
+  board animation, four-surface skeleton, and responsive layout are unchanged.
+- Updated the focused browser smoke to assert transparent section/card surfaces
+  and no mask at 1440, 1080, tablet, and mobile widths.
+- Verification: `home-promo-player-skeleton-browser-smoke.mjs` passed with four
+  skeletons, transparent surfaces, no mask, and no horizontal overflow. No
+  auth, data, legal-page, or migration behavior changed. This work is local and
+  has not been pushed.
+
+### 2026-10-14 Home Player Info four-surface skeleton complete
+
+- Replaced the legacy single `[data-promo-section-skeleton]` overlay on the
+  Home Player Info/build-animation preset with one coordinated stack of
+  exactly four responsive skeleton surfaces: title, Player Info, board, and
+  build details. The stack is scoped to the Player Info launcher and all four
+  remain visible until the first complete build has painted; error/empty states
+  still clear it safely.
+- Updated the assembler to remove the stack only after title/player/details
+  data is painted and the board's full content has rendered, including the
+  reduced-motion path. Added static/browser coverage for exactly four
+  surfaces, absence of the legacy skeleton, positive geometry at 1440/1080/
+  768/390, and no horizontal overflow.
+- Verification: `home-promo-activity-smoke.mjs`,
+  `admin-home-player-info-animation-smoke.mjs`,
+  `admin-home-player-info-animation-browser-smoke.mjs`,
+  `admin-home-player-info-wave-smoke.mjs`,
+  `admin-home-player-info-wave-browser-smoke.mjs`,
+  `home-promo-player-skeleton-browser-smoke.mjs`,
+  `home-section-skeleton-smoke.mjs`,
+  `home-section-skeleton-browser-smoke.mjs`, JavaScript syntax checks, and
+  `git diff --check` pass. No auth, data, legal-page, or migration behavior
+  changed. This work is local and has not been pushed.
+
+### 2026-10-14 Home Player Info board-hover completion gate complete
+
+- Player Info hover tracking now attaches to the rendered board link instead of
+  the whole promo section. A board hover no longer pauses an in-progress bag
+  or item wave; the assembler marks the board complete after the second wave,
+  then pauses the completed-board hold/handoff until the pointer leaves.
+- Added activity-state coverage for in-progress reveal, completed-board pause,
+  pointer release, and starting a new build while the pointer remains over the
+  board. Static wiring coverage verifies the board-only pointer listeners and
+  completion gates.
+- Verification: `home-promo-activity-smoke.mjs`,
+  `admin-home-player-info-animation-smoke.mjs`,
+  `admin-home-player-info-animation-browser-smoke.mjs`,
+  `admin-home-player-info-wave-smoke.mjs`,
+  `admin-home-player-info-wave-browser-smoke.mjs`,
+  `home-promo-player-skeleton-browser-smoke.mjs`, JavaScript syntax checks,
+  and `git diff --check` pass. No auth, data, legal-page, or migration
+  behavior changed. This work is local and has not been pushed.
+
+### 2026-10-14 Home Curated Build Loadouts hover clarity complete
+
+- Removed the Curated Build Loadouts rule that applied `brightness(0.35)` and
+  `blur(2.5px)` to neighboring cards. Hovering still pauses the active row and
+  keeps the hovered card's existing focus/drop-shadow treatment, while all
+  other builds retain their normal appearance.
+- Added a static contract for the removed dim/blur selector and verified the
+  responsive Home skeleton harness at 1440, 1080, 768, and 390px with no
+  horizontal overflow.
+- Verification: Home section static/browser smokes, JavaScript syntax checks,
+  and `git diff --check` pass. No auth, data, legal-page, or migration
+  behavior changed. This work is local and has not been pushed.
+
+### 2026-10-14 Home footer textured-black background complete
+
+- Replaced the Home footer's brown wash with the existing
+  `assets/theme/backgrounds/bg-dark-textured.webp` surface, using a dark
+  fallback and responsive `cover` sizing. Footer spacing, border, content, and
+  edge-to-edge layout remain unchanged.
+- Updated `home-footer-browser-smoke.mjs` to assert the textured-black asset,
+  responsive cover sizing, boundary isolation, and no horizontal overflow at
+  1440, 1080, 768, and 390px.
+- Verification: `home-footer-browser-smoke.mjs`, Home section skeleton smoke,
+  JavaScript syntax check, and `git diff --check` pass. No auth, data,
+  legal-page, or migration behavior changed. This work is local and has not
+  been pushed.
+
+### 2026-10-14 Home Curated Build Loadouts deep-night background complete
+
+- Updated `.home-vault__band` for the Curated Build Loadouts section to use
+  `assets/theme/backgrounds/bg-hills-night-deep.jpg`, with a dark fallback,
+  centered positioning, no-repeat behavior, and fluid `cover` sizing. The
+  change is scoped to this section; its marquee, content, and responsive layout
+  remain unchanged.
+- Added static and browser smoke assertions for the asset and cover sizing at
+  desktop (1440px and 1080px), tablet (768px), and mobile (390px), with no
+  horizontal overflow reported.
+- Verification: `home-section-skeleton-smoke.mjs`,
+  `home-section-skeleton-browser-smoke.mjs`, JavaScript syntax checks, and
+  `git diff --check` pass. No auth, data, legal-page, or migration behavior
+  changed. This work is local and has not been pushed.
+
+### 2026-10-14 Home Choose Your Hero dark texture complete
+
+- Updated `.home-mobs__band` to use the existing `assets/theme/backgrounds/bg-dark-textured.webp` surface with a dark fallback, centered cover sizing, and no-repeat behavior. The change is scoped to Choose Your Hero; the card rail, Ranger preset, and other Home sections are unchanged.
+- Added static and responsive browser assertions for the dark-textured asset, fluid cover sizing, seven cards, rail behavior, and no horizontal overflow at 1440, 1080, 768, and 390px.
+- Verification: `admin-home-class-showcase-test-smoke.mjs`, `admin-home-class-showcase-test-browser-smoke.mjs`, JavaScript syntax check, and `git diff --check` pass. No auth, data, legal-page, or migration behavior changed. This work is local and has not been pushed.
+
+### 2026-10-14 Home Player Info Vault gradient correction complete
+
+- Corrected the Home build-animation/Player Info background to match the Vault
+  Hunters Loot/Progress/Conquer section's exact neutral gradient: neutral-800
+  (`oklch(26.9% 0 0)`) to neutral-950 (`oklch(14.5% 0 0)`). The warmer Explore
+  Items gradient is no longer reused by this surface.
+- Preserved the existing stepped top/bottom edge treatment, full-viewport bleed,
+  narrow-mobile mask fallback, and no-overflow behavior. Extended the Player
+  Info browser smoke to assert both Vault gradient stops at 1440, 1080, 768,
+  and 390px.
+- Verification: `scripts/home-promo-player-skeleton-browser-smoke.mjs`, Home
+  promo JavaScript syntax check, and `git diff --check` pass. No auth, data,
+  legal-page, or migration behavior changed. This work is local and has not
+  been pushed.
+
+### 2026-10-14 Ranger idle test-preset quality and playback complete
+
+- Replaced the Ranger idle test-preset video source with the extracted,
+  render-scale-2 VP9 asset at `666x810`, 60fps, transparent alpha, preserving
+  the static WebP fallback for browsers without VP9 support. The live Home
+  surface remains static and does not download the roughly 25 MB video until
+  the owner selects the Ranger idle preset.
+- Kept the static art visible until the first decoded video frame is ready,
+  then crossfaded to the video through `requestVideoFrameCallback`. Added
+  generation guards so switching presets cannot restart a stale media listener,
+  and kept the video on a compositor-friendly 3D transform path. Responsive
+  sizing now matches the card art at desktop, short desktop, tablet, and mobile.
+- Added the bake script's `--scale` support and strengthened the focused smoke
+  checks for the high-resolution source, alpha, first-frame handoff, 60fps
+  playback, reduced-motion fallback, responsive sizing, and no overflow.
+- Verification: `admin-home-class-showcase-test-smoke.mjs`,
+  `admin-home-class-showcase-test-browser-smoke.mjs` (1440, 1080, 768, and
+  390px; all presets), JavaScript/Python syntax checks, `ffprobe` metadata, and
+  `git diff --check` pass. No auth, data, legal-page, or migration behavior
+  changed. This work is local and has not been pushed.
+
+### 2026-10-14 Home Player Info full-bleed background complete
+
+- Extended the Player Info gradient/masked surface to bleed across the Home
+  screen-frame inset, so its background reaches both viewport edges while the
+  internal build composition remains centered.
+- Added bounds assertions to `home-promo-player-skeleton-browser-smoke.mjs`;
+  1440, 1080, tablet, and mobile all report left `0`, right viewport width,
+  and no horizontal overflow. No auth, data, legal-page, or migration behavior
+  changed. This work is local and has not been pushed.
+
+### 2026-10-14 Home Player Info curved gradient edges complete
+
+- Added the Vault Hunters-style stepped/curved mask around the existing Player
+  Info gradient, with desktop and tablet step geometry plus the narrower mobile
+  geometry. The mask is disabled below 400px, matching the source site's
+  small-screen behavior, while preserving the build animation DOM, timing, and
+  responsive layout.
+- Extended `home-promo-player-skeleton-browser-smoke.mjs` to assert the edge
+  mask at 1440, 1080, and tablet widths, its deliberate mobile fallback, and no
+  horizontal overflow. No auth, data, legal-page, or migration behavior
+  changed. This work is local and has not been pushed.
+
+### 2026-10-14 Home Player Info Vault Hunters gradient complete
+
+- Added the Vault Hunters overview section's neutral radial-gradient treatment
+  to the Home build-animation/Player Info surface, with a solid fallback and
+  responsive-safe cover positioning. The build animation DOM and timing remain
+  unchanged.
+- Extended `home-promo-player-skeleton-browser-smoke.mjs` to assert the
+  gradient and fallback color at 1440, 1080, tablet, and mobile viewports.
+- No auth, data, legal-page, or migration behavior changed. This work is local
+  and has not been pushed.
+
+### 2026-10-14 Home page skeleton ownership complete
+
+- Removed all static/page-level Home skeleton markup from `index.html`; the five
+  section hosts, navigation host, and footer host now start empty.
+- Removed the unused `home-first-paint.css` page-shell stylesheet. Featured,
+  Promo, Hero, Items, and Vault continue to create their own section skeletons
+  when their modules mount; shared navigation still owns its loading surface in
+  `initNav()`.
+- Updated the static and responsive browser smoke contracts to assert empty Home
+  hosts before boot, section-owned skeleton behavior, no horizontal overflow,
+  and the existing desktop/tablet/mobile background fallback. Verification:
+  `home-section-skeleton-smoke.mjs`, `home-first-paint-browser-smoke.mjs`,
+  `home-section-skeleton-browser-smoke.mjs`,
+  `home-promo-player-skeleton-browser-smoke.mjs`,
+  `home-footer-browser-smoke.mjs`, syntax check, and `git diff --check` pass.
+- No auth, data, legal-page, or migration behavior changed. This work is local
+  and has not been pushed.
+
+### 2026-10-14 Admin Builds uploaded-board thumbnails live deployment complete
+
+- Root cause: today’s `builds` rows already had valid `board_still_path` values,
+  but the deployed `admin-builds` Edge Function was version 24 from October 6
+  and did not return that field. The local Admin thumbnail fallback was
+  correct but could not receive the stored path.
+- Deployed the current owner-gated `admin-builds` function to project
+  `xklkysmakrmgtiztsqug`; the live function is now version 25 (2026-10-14).
+  An unauthenticated POST reaches the function and returns its expected 401.
+- Verification: `scripts/admin-builds-board-thumbnail-smoke.mjs`, Admin Builds
+  and board-thumb JavaScript syntax checks, and `git diff --check` pass. The
+  owner should reload the Admin Builds tab to fetch the new payload; no data
+  migration or legal-page change was needed.
+
 ### 2026-10-13 Local website changes pushed
 
 - Pushed the accumulated safe website/source/documentation changes on `main`.

@@ -82,7 +82,10 @@ export async function initNav(selector = '#site-nav') {
   ensureNavSpace(host);
   syncNavSpace(host);
 
-  if (!host.querySelector('.site-nav--skel')) {
+  // The landing page owns its own progressive sections and intentionally
+  // starts with a clean scene; interior pages keep the shared nav placeholder.
+  const showSkeleton = !document.body?.classList.contains('page-home');
+  if (showSkeleton && !host.querySelector('.site-nav--skel')) {
     host.innerHTML = navSkeletonHtml();
   }
 

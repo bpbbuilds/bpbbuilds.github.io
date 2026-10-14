@@ -12,7 +12,6 @@ import { createTooltipHover } from '../../shared/tooltip-hover.js';
 import { mapItem, makeSpriteUrl } from '../build/map-item.js';
 import { classCharacterPath } from '../../shared/class-icons.js';
 import { escapeAttr, escapeHtml, rootPrefix } from './home-build-media.js';
-import { skelSection } from '../../shared/skeleton.js';
 
 /** @type {Record<string, string>} */
 const CLASS_BLURB = {
@@ -40,7 +39,7 @@ const RANGER_IDLE_ASSET = 'assets/characters/char-ranger-idle.webp?v=60fps-480q7
 // VP9/WebM keeps the same transparent 60fps motion but lets Chromium/Edge use
 // the media pipeline instead of decoding a 900-frame animated WebP on the
 // main thread. The WebP remains the compatibility fallback.
-const RANGER_IDLE_VIDEO_ASSET = 'assets/characters/char-ranger-idle.webm?v=60fps-vp9-20261013a';
+const RANGER_IDLE_VIDEO_ASSET = 'assets/characters/char-ranger-idle-hq.webm?v=hq-666x810-60fps-20261014a';
 
 /** @returns {string[]} */
 function allStartingBagIds() {
@@ -66,7 +65,6 @@ function bagButtonsHtml(name) {
           data-item-id="${escapeAttr(id)}"
           aria-label="Starting bag"
         >
-          <span class="home-mobs__bag-skel" aria-hidden="true"></span>
         </button>`,
     )
     .join('');
@@ -218,8 +216,6 @@ async function hydrateBags(host, root) {
     const name = String(item.name || id);
     btn.setAttribute('aria-label', name);
     btn.title = name;
-    const skel = btn.querySelector('.home-mobs__bag-skel');
-    skel?.remove();
     const img = document.createElement('img');
     img.alt = '';
     img.draggable = false;
@@ -252,16 +248,14 @@ async function hydrateBags(host, root) {
   return true;
 }
 
-/** @param {HTMLElement} host @param {boolean} ready */
-function settleSectionSkeleton(host, ready) {
-  const region = host.querySelector('.home-mobs__section-skeleton')?.closest('.bpb-skel-region');
-  if (!(region instanceof HTMLElement)) return;
-  if (ready) {
-    region.remove();
-    return;
-  }
-  region.setAttribute('aria-busy', 'false');
-  region.innerHTML = '<p class="home-mobs__section-status">Starting bags are unavailable right now.</p>';
+/** @param {HTMLElement} host */
+function showBagStatus(host) {
+  const band = host.querySelector('.home-mobs__band');
+  if (!(band instanceof HTMLElement)) return;
+  const status = document.createElement('p');
+  status.className = 'home-mobs__section-status';
+  status.textContent = 'Starting bags are unavailable right now.';
+  band.append(status);
 }
 
 /**
@@ -274,10 +268,7 @@ export function initHomeClassShowcase(selector = '#home-class-showcase') {
   if (!host) return;
 
   const root = rootPrefix();
-  host.innerHTML = `${sectionHtml(root)}${skelSection({
-    className: 'home-mobs__section-skeleton',
-    label: 'Loading hero classes',
-  })}`;
+  host.innerHTML = sectionHtml(root);
 
   /**
    * Swap only the Ranger card between the normal composite sprite and the
@@ -300,8 +291,10 @@ export function initHomeClassShowcase(selector = '#home-class-showcase') {
         video.pause();
         video.currentTime = 0;
         video.hidden = true;
+        video.classList.remove('is-ranger-video-ready');
       }
       image.hidden = false;
+      image.classList.remove('is-ranger-video-placeholder');
       if (image.getAttribute('src') !== next) image.setAttribute('src', next);
       image.dataset.rangerImage = 'static';
       host.dataset.rangerAnimated = 'false';
@@ -318,21 +311,41 @@ export function initHomeClassShowcase(selector = '#home-class-showcase') {
     host.dataset.rangerAnimated = 'true';
 
     if (canUseVideo) {
+      const videoToken = Number(host.dataset.rangerVideoToken || 0) + 1;
+      host.dataset.rangerVideoToken = String(videoToken);
+      // Warm only when the owner selects the Ranger idle preset; the live Home
+      // surface remains static and does not download the 25 MiB media asset.
+      video.preload = 'auto';
       if (video.getAttribute('src') !== videoSrc) {
         video.setAttribute('src', videoSrc);
         video.load();
       }
+      const revealVideo = () => {
+        if (host.dataset.rangerAnimated !== 'true') return;
+        if (Number(host.dataset.rangerVideoToken || 0) !== videoToken) return;
+        video.classList.add('is-ranger-video-ready');
+        image.classList.add('is-ranger-video-placeholder');
+      };
       const startVideo = () => {
         if (host.dataset.rangerAnimated !== 'true') return;
-        image.hidden = true;
+        if (Number(host.dataset.rangerVideoToken || 0) !== videoToken) return;
         video.hidden = false;
+        video.classList.remove('is-ranger-video-ready');
         video.currentTime = 0;
         const playResult = video.play();
-        playResult?.catch(() => {
+        Promise.resolve(playResult).then(() => {
+          if (typeof video.requestVideoFrameCallback === 'function') {
+            video.requestVideoFrameCallback(revealVideo);
+          } else {
+            video.addEventListener('playing', revealVideo, { once: true });
+          }
+        }).catch(() => {
           // Autoplay can still be denied by an embedding policy. Keep the
           // tested WebP fallback visible instead of leaving the card blank.
           video.pause();
           video.hidden = true;
+          video.classList.remove('is-ranger-video-ready');
+          image.classList.remove('is-ranger-video-placeholder');
           image.hidden = false;
           if (image.getAttribute('src') !== next) image.setAttribute('src', next);
         });
@@ -340,7 +353,9 @@ export function initHomeClassShowcase(selector = '#home-class-showcase') {
       // Keep the already-visible static sprite until the first video frame is ready;
       // this avoids a blank flash while the media decoder warms up.
       video.hidden = true;
+      video.classList.remove('is-ranger-video-ready');
       image.hidden = false;
+      image.classList.remove('is-ranger-video-placeholder');
       if (video.readyState >= 2) startVideo();
       else video.addEventListener('canplay', startVideo, { once: true });
     } else {
@@ -354,6 +369,8 @@ export function initHomeClassShowcase(selector = '#home-class-showcase') {
 
   setRangerAnimation(false);
   bindRail(host);
-  void hydrateBags(host, root).then((ready) => settleSectionSkeleton(host, ready));
+  void hydrateBags(host, root).then((ready) => {
+    if (!ready) showBagStatus(host);
+  });
   return { setRangerAnimation };
 }

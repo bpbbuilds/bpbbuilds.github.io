@@ -41,11 +41,15 @@ try {
       const toolbarRect = toolbar?.getBoundingClientRect();
       const regularHeight = footer?.getBoundingClientRect().height || 0;
       const regularPaddingTop = footer ? getComputedStyle(footer).paddingTop : '';
+      const regularNavLink = footer?.querySelector('.site-footer__nav a');
+      const regularNavStyle = regularNavLink ? getComputedStyle(regularNavLink) : null;
       if (footer) footer.classList.add('site-footer--slim');
       if (inner) inner.classList.add('site-footer__inner--slim');
       const slimHeight = footer?.getBoundingClientRect().height || 0;
       const slimPaddingTop = footer ? getComputedStyle(footer).paddingTop : '';
       const slimInnerDisplay = inner ? getComputedStyle(inner).display : '';
+      const slimNavLink = footer?.querySelector('.site-footer__nav a');
+      const slimNavStyle = slimNavLink ? getComputedStyle(slimNavLink) : null;
       return {
         toolbarWidth: toolbarRect?.width || 0,
         viewportWidth: document.documentElement.clientWidth,
@@ -55,12 +59,25 @@ try {
         regularPaddingTop,
         slimPaddingTop,
         slimInnerDisplay,
+        regularNavDisplay: regularNavStyle?.display || '',
+        regularNavBackground: regularNavStyle?.backgroundColor || '',
+        regularNavRadius: regularNavStyle?.borderRadius || '',
+        regularNavMinHeight: regularNavStyle ? parseFloat(regularNavStyle.minHeight) || 0 : 0,
+        slimNavDisplay: slimNavStyle?.display || '',
+        slimNavBackground: slimNavStyle?.backgroundColor || '',
+        slimNavRadius: slimNavStyle?.borderRadius || '',
+        slimNavMinHeight: slimNavStyle ? parseFloat(slimNavStyle.minHeight) || 0 : 0,
         overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
     });
     if (result.toolbarWidth <= 0 || result.toolbarWidth > result.viewportWidth) throw new Error(`${viewport.name}: toolbar overflows viewport`);
     if (!result.centered) throw new Error(`${viewport.name}: preset toolbar is not centered`);
     if (result.regularPaddingTop === result.slimPaddingTop || result.slimInnerDisplay !== 'grid') throw new Error(`${viewport.name}: regular/slim styles did not differ (${JSON.stringify(result)})`);
+    for (const mode of ['regular', 'slim']) {
+      if (!['flex', 'inline-flex'].includes(result[`${mode}NavDisplay`]) || result[`${mode}NavBackground`] !== 'rgb(234, 201, 20)' || result[`${mode}NavRadius`] !== '9999px' || result[`${mode}NavMinHeight`] <= 0) {
+        throw new Error(`${viewport.name}: ${mode} footer navigation links are not yellow pills (${JSON.stringify(result)})`);
+      }
+    }
     if (result.overflowX > 1) throw new Error(`${viewport.name}: horizontal overflow ${result.overflowX}px`);
     results.push({ ...viewport, ...result });
   }

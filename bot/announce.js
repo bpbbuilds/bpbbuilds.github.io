@@ -9,7 +9,7 @@ import { moveCreatorIcons, useHostedCreatorIcon } from './announce-icon.js';
 import { embedDescription, fieldsWithLinks, foldLinksIntoPosts, showBuildInEmbeds, applyLinkColumns } from './announce-links.js';
 import { refreshItemMentions, withItemEmoji } from './announce-mentions.js';
 import { applyVoteButtons, voteComponentsFor } from './announce-votes.js';
-import { buildThumbPng, stillUrl } from './board-thumb.js';
+import { buildThumbPng, hostBoardImage, stillUrl } from './board-thumb.js';
 import {
   classEmojiId,
   classFieldValue,
@@ -363,7 +363,7 @@ function buildUrl(config, slug) {
  * @param {Record<string, unknown>} build
  * @param {Map<string, string>} tagIds
  */
-async function postBody(config, build, tagIds, credit) {
+export async function postBody(config, build, tagIds, credit) {
   const slug = String(build.slug || '');
   const title = clip(String(build.title || 'Build').replace(/\s+/g, ' ').trim() || 'Build', 100);
   const className = labelOf(CLASS_LABELS, build.hero_class);
@@ -381,7 +381,7 @@ async function postBody(config, build, tagIds, credit) {
     ? { name: clip(String(build.author_name || '').trim(), 256) }
     : null);
   const image = stillUrl(config, build);
-  const boardImage = credit?.thumb ? 'attachment://build.png' : image;
+  const boardImage = credit?.boardImage || image;
   const faceUrl = String(credit?.author?.icon_url || '');
   const faceThumb = /^https?:\/\//i.test(faceUrl) ? faceUrl : '';
   const applied = [];
@@ -425,13 +425,14 @@ async function postPending(config, known, tagIds, linked, creditState, thumbDone
     const credit = await creatorCredit(config, build);
     await useHostedCreatorIcon(config, build, credit);
     const thumb = await buildThumbPng(config, build);
-    credit.thumb = Boolean(thumb);
+    const hostedImage = thumb ? await hostBoardImage(config, slug, thumb) : '';
+    credit.boardImage = hostedImage || '';
     const res = await postDiscord(
       config.token,
       `/channels/${config.forumId}/threads`,
       'POST',
       await postBody(config, build, tagIds, credit),
-      thumb ? [{ filename: 'build.png', bytes: thumb }] : null,
+      null,
     );
     if (!res.ok) {
       const detail = await res.text();

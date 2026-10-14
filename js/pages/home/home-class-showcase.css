@@ -19,19 +19,6 @@
   position: relative;
 }
 
-#home-class-showcase > .bpb-skel-section-wrap {
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-  min-height: 100%;
-  pointer-events: none;
-}
-
-.home-mobs__section-skeleton {
-  min-height: clamp(28rem, 48vw, 48rem);
-  border-radius: 0;
-}
-
 .home-mobs__section-status {
   margin: 0 auto;
   padding: 1rem 1.25rem;
@@ -41,12 +28,71 @@
 }
 
 .home-mobs__band {
+  /* Match Explore Items' fixed edge geometry while keeping the Hero edge
+     inverted: 24px deep with 320px corner transitions on desktop. */
+  --home-mobs-step-height: 24px;
+  --home-mobs-step-corner: 320px;
+  --home-mobs-step-mask-size: 320px var(--home-mobs-step-height);
+  --home-mobs-inverted-top-body-mask: linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent var(--home-mobs-step-height),
+    white var(--home-mobs-step-height),
+    white 100%
+  );
+  --home-mobs-inverted-top-center-mask: linear-gradient(
+    to right,
+    transparent 0,
+    transparent var(--home-mobs-step-corner),
+    white var(--home-mobs-step-corner),
+    white calc(100% - var(--home-mobs-step-corner)),
+    transparent calc(100% - var(--home-mobs-step-corner)),
+    transparent 100%
+  );
+  --home-mobs-inverted-top-left-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 24' preserveAspectRatio='none'><path fill='white' d='M0,24 H264 C292,24 292,0 320,0 V24 Z'/></svg>");
+  --home-mobs-inverted-top-right-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 24' preserveAspectRatio='none'><path fill='white' d='M320,24 H56 C28,24 28,0 0,0 V24 Z'/></svg>");
   position: relative;
   width: 100%;
   /* Sit flush under create promo; pad for content only */
   padding: 4.5rem 0 4rem;
-  /* Transparent — fixed combat sky shows through */
+  /* Keep the content surface transparent; the texture is painted by the
+     full-bleed pseudo-element below so it can cross the desktop frame inset
+     without shifting the centered hero rail. */
   background: transparent;
+}
+
+.home-mobs__band::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0 calc(-1 * var(--bpb-frame-edge-x, 0px));
+  background-color: #111;
+  background-image: url('../../../assets/theme/backgrounds/bg-dark-textured.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-mask-image:
+    var(--home-mobs-inverted-top-body-mask),
+    var(--home-mobs-inverted-top-center-mask),
+    var(--home-mobs-inverted-top-left-mask),
+    var(--home-mobs-inverted-top-right-mask);
+  mask-image:
+    var(--home-mobs-inverted-top-body-mask),
+    var(--home-mobs-inverted-top-center-mask),
+    var(--home-mobs-inverted-top-left-mask),
+    var(--home-mobs-inverted-top-right-mask);
+  -webkit-mask-size: 100% 100%, 100% var(--home-mobs-step-height), var(--home-mobs-step-mask-size), var(--home-mobs-step-mask-size);
+  mask-size: 100% 100%, 100% var(--home-mobs-step-height), var(--home-mobs-step-mask-size), var(--home-mobs-step-mask-size);
+  -webkit-mask-position: center, top left, top left, top right;
+  mask-position: center, top left, top left, top right;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.home-mobs__band > * {
+  position: relative;
+  z-index: 1;
 }
 
 .home-mobs__header {
@@ -172,6 +218,7 @@
 }
 
 .home-mobs__image {
+  position: relative;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -186,7 +233,7 @@
  * Wider sprites may overlap neighbors — intentional.
  */
 .home-mobs__image img,
-.home-mobs__image-ranger-video {
+.home-mobs__image .home-mobs__image-ranger-video {
   display: block;
   width: auto;
   height: 29.8rem;
@@ -196,6 +243,26 @@
   transform-origin: bottom center;
   transition: transform 0.35s cubic-bezier(0.34, 1.3, 0.64, 1);
   filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.5));
+}
+
+/* Keep the high-resolution Ranger video composited over the static placeholder
+   until requestVideoFrameCallback confirms that its first frame is ready. */
+.home-mobs__image .home-mobs__image-ranger-video {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  opacity: 0;
+  transform: translate3d(-50%, 0, 0);
+  transition: opacity 0.1s linear, transform 0.35s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+.home-mobs__image-ranger-video.is-ranger-video-ready {
+  opacity: 1;
+}
+
+.home-mobs__image img.is-ranger-video-placeholder {
+  opacity: 0;
+  transition: opacity 0.1s linear;
 }
 
 .home-mobs__content {
@@ -283,14 +350,6 @@
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
 }
 
-.home-mobs__bag-skel {
-  display: block;
-  width: 70%;
-  height: 70%;
-  border-radius: 0.25rem;
-  background: color-mix(in srgb, var(--home-mobs-muted) 35%, transparent);
-}
-
 .home-mobs__bag:hover,
 .home-mobs__bag:focus-visible {
   filter: brightness(1.1);
@@ -315,6 +374,11 @@
   transform: scale(1.05);
 }
 
+.home-mobs__snap:hover .home-mobs__image-ranger-video,
+.home-mobs__snap:focus-within .home-mobs__image-ranger-video {
+  transform: translate3d(-50%, 0, 0) scale(1.05);
+}
+
 .home-mobs__snap:hover .home-mobs__collapsible-wrap,
 .home-mobs__snap:focus-within .home-mobs__collapsible-wrap {
   grid-template-rows: 1fr;
@@ -327,8 +391,8 @@
   }
 
   .home-mobs__image img,
-  .home-mobs__image-ranger-video {
-    transform: scale(1.05);
+  .home-mobs__image .home-mobs__image-ranger-video {
+    transform: translate3d(-50%, 0, 0) scale(1.05);
   }
 
   .home-mobs__collapsible-wrap {
@@ -352,7 +416,7 @@
   }
 
   .home-mobs__image img,
-  .home-mobs__image-ranger-video {
+  .home-mobs__image .home-mobs__image-ranger-video {
     /* 15.5rem * (434 / 262) ≈ 25.7rem */
     height: 25.7rem;
   }
@@ -363,6 +427,23 @@
 
   .home-mobs__snap:last-child {
     margin-right: calc(50% - 7.75rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .home-mobs__band {
+    --home-mobs-step-height: 25px;
+    --home-mobs-step-corner: 100px;
+    --home-mobs-step-mask-size: 100px var(--home-mobs-step-height);
+    --home-mobs-inverted-top-left-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 25' preserveAspectRatio='none'><path fill='white' d='M0,25 H40 C70,25 70,0 100,0 V25 Z'/></svg>");
+    --home-mobs-inverted-top-right-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 25' preserveAspectRatio='none'><path fill='white' d='M100,25 H60 C30,25 30,0 0,0 V25 Z'/></svg>");
+  }
+}
+
+@media (max-width: 400px) {
+  .home-mobs__band::before {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }
 

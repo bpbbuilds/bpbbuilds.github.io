@@ -2,7 +2,7 @@ import { initNav } from '../../shared/nav.js';
 import { initFooter } from '../../shared/footer.js?v=footer-presets-20261013a';
 import { initHomeFallingItemsBackground } from './falling-items-background.js';
 import { initFeaturedStage } from './featured-stage.js';
-import { initHomePromoBand } from './home-promo-band.js';
+import { initHomePromoBand } from './home-promo-band.js?v=home-no-skeleton-20261014a';
 
 /**
  * Mount below-the-fold sections shortly before they enter view. Keeping their
@@ -47,17 +47,17 @@ function mountNearViewport(selector, mount) {
  */
 async function mountDeferredSections() {
   await mountNearViewport('#home-class-showcase', () =>
-    import('./home-class-showcase.js?v=ranger-video-20261013a').then(({ initHomeClassShowcase }) =>
+    import('./home-class-showcase.js?v=home-no-skeleton-20261014a').then(({ initHomeClassShowcase }) =>
       initHomeClassShowcase(),
     ),
   );
   await mountNearViewport('#home-items-explore', () =>
-    import('./home-items-explore.js').then(({ initHomeItemsExplore }) =>
+    import('./home-items-explore.js?v=home-no-skeleton-20261014a').then(({ initHomeItemsExplore }) =>
       initHomeItemsExplore(),
     ),
   );
   await mountNearViewport('#home-builds-vault', () =>
-    import('./home-builds-vault.js').then(({ initHomeBuildsVault }) =>
+    import('./home-builds-vault.js?v=home-loadout-meta-20261014a').then(({ initHomeBuildsVault }) =>
       initHomeBuildsVault(),
     ),
   );

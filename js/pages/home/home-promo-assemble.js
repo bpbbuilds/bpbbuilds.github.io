@@ -80,8 +80,9 @@ function sleep(ms) {
 }
 
 /**
- * Sleep only while the promo activity is active. Hovering the Player Info
- * section pauses the timer so the current build resumes at the same point.
+ * Sleep only while the promo activity is active. A Player Info board hover
+ * keeps the reveal active, then pauses the completed-board hold/handoff until
+ * the pointer leaves.
  * @param {number} ms
  * @param {{ active: boolean, subscribe?: (listener: (active: boolean) => void) => () => void } | null | undefined} activity
  * @param {HTMLElement} boardHost
@@ -659,12 +660,6 @@ function promoPlacementKey(placement) {
   return `${placement?.id || ''}:${face}:${placement?.x || 0},${placement?.y || 0}`;
 }
 
-/** @param {HTMLElement} boardHost */
-function clearPromoSectionSkeleton(boardHost) {
-  const promo = boardHost.closest('.home-promo');
-  promo?.querySelector('[data-promo-section-skeleton]')?.remove();
-}
-
 /**
  * Fade FilledSlot fabric + bag silhouette in for newly occupied cells.
  * @param {HTMLElement} boardHost
@@ -742,13 +737,11 @@ export async function playAssemble(opts) {
     builds = await buildsP;
   } catch (err) {
     console.warn('[home-promo] assemble fetch failed', err);
-    clearPromoSectionSkeleton(boardHost);
     paintPromoCaption(captionEl, null, base, boardLink, infoEl, boardTagsEl);
     boardHost.replaceChildren();
     return;
   }
   if (!builds.length) {
-    clearPromoSectionSkeleton(boardHost);
     paintPromoCaption(captionEl, null, base, boardLink, infoEl, boardTagsEl);
     boardHost.replaceChildren();
     return;
@@ -789,6 +782,15 @@ export async function playAssemble(opts) {
     normalizedBuildCache.set(key, { build, extras, value });
     return value;
   };
+  // A loaded API response can still contain placements that are no longer
+  // present in the item catalog. Exclude those builds before entering the
+  // animation loop so a valid section never spins forever without content.
+  builds = builds.filter((build) => normalizedBuildFor(build).ordered.length > 0);
+  if (!builds.length) {
+    paintPromoCaption(captionEl, null, base, boardLink, infoEl, boardTagsEl);
+    boardHost.replaceChildren();
+    return;
+  }
   const retainBuildSprites = (...buildsToKeep) => {
     spriteCache.retainBuilds(buildsToKeep.map(spriteBuildKey));
   };
@@ -825,7 +827,9 @@ export async function playAssemble(opts) {
     appearStaggerMs: playerInfoMode ? PLAYER_WAVE_STAGGER_MS : undefined,
     preserveBagFabric: playerInfoMode,
   });
-  if (!grid) return;
+  if (!grid) {
+    return;
+  }
   const reduced = prefersReducedMotion();
   const creatorCounts = new Map();
   let countTimer = 0;
@@ -891,6 +895,7 @@ export async function playAssemble(opts) {
       const normalized = normalizedBuildFor(build);
       const { mapped, ordered, bags } = normalized;
       if (!ordered.length) continue;
+      if (playerInfoMode) opts.activity?.setBoardComplete?.(false);
       const buildToken = ++activeBuildToken;
       if (playerInfoMode) playerPreviousAuthorId = promoAuthorKey(build);
 
@@ -905,7 +910,6 @@ export async function playAssemble(opts) {
           ? { hideAuthor: true, hideTags: playerInfoMode }
           : undefined,
       );
-      clearPromoSectionSkeleton(boardHost);
       if (opts.creatorMode) {
         paintPromoCreator(opts.creatorEl, build, base, null);
         scheduleCreatorCount(build, buildToken, (count) => paintPromoCreator(opts.creatorEl, build, base, count));
@@ -928,6 +932,7 @@ export async function playAssemble(opts) {
       if (reduced) {
         grid.update(ordered, mapped.itemsById);
         if (usingChest) setChestOpen(opts.chestEl, false);
+        if (playerInfoMode) opts.activity?.setBoardComplete?.(true);
         await sleepWithPromoActivity(
           HOLD_MS,
           playerInfoMode ? opts.activity : null,
@@ -963,6 +968,7 @@ export async function playAssemble(opts) {
           fadeNewBagChrome(boardHost, { preserveFabricAnimation: true });
           await sleepWithPromoActivity(PLAYER_WAVE_MS, opts.activity, boardHost);
           if (!boardHost.isConnected) return;
+          opts.activity?.setBoardComplete?.(true);
           await sleepWithPromoActivity(HOLD_MS, opts.activity, boardHost);
           await departBoardItems(boardHost, opts.activity);
           grid.update([], mapped.itemsById);

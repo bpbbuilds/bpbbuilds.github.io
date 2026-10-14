@@ -31,9 +31,12 @@ assert.match(styles, /home-promo--player-info \.home-promo__creator-name/, 'Play
 assert.match(styles, /home-promo--player-info \.home-promo__caption-title/, 'Player Info has larger scoped build-title typography');
 assert.match(styles, /home-promo--player-info \.home-promo__caption-title[\s\S]*?-webkit-line-clamp: 2/, 'Player Info build titles are clamped to two lines');
 assert.match(styles, /home-promo--player-info \.home-promo__caption-title[\s\S]*?white-space: normal/, 'Player Info build titles can wrap before truncating');
-assert.match(band, /data-promo-section-skeleton/, 'Home promo exposes one whole-section skeleton');
-assert.match(band, /home-promo__section-skeleton-surface/, 'Home promo skeleton uses one full surface');
-assert.doesNotMatch(band, /home-promo__skel-(item|section|board|class|title)/, 'Home promo does not render nested skeleton fragments');
+assert.match(styles, /home-promo--player-info \.home-promo__caption-title[\s\S]*?min-height:\s*calc\(2\s*\*\s*1\.15em\s*\+\s*0\.2em\)/, 'Player Info reserves two title lines for stable section height');
+assert.doesNotMatch(
+  band,
+  /data-promo-skeleton-stack|home-promo__skeleton|data-promo-section-skeleton|home-promo__section-skeleton/,
+  'Home promo keeps loading placeholders out of the live Home surface',
+);
 assert.match(assemble, /grid\.update\(bags, mapped\.itemsById, \{[\s\S]*?preserveBagFabric: false/, 'Player info reveals bags first without reusing a prior fabric');
 assert.match(assemble, /grid\.update\(ordered, mapped\.itemsById, \{[\s\S]*?preserveBagFabric: true/, 'Player info reveals remaining items while preserving bag fabric');
 assert.match(assemble, /grid\.update\(ordered, mapped\.itemsById, \{[\s\S]*?appearMissing: true/, 'Player Info replays pooled item intros in the second wave');
@@ -45,12 +48,17 @@ assert.match(assemble, /randomizeBuildSequence/, 'Player Info uses randomized bu
 assert.match(assemble, /playerPreviousAuthorId/, 'Player Info carries the previous creator across cycles');
 assert.match(selection, /eligible/, 'selection helper excludes the previous creator when alternatives exist');
 assert.match(band, /createPromoActivity/, 'Player Info uses shared promo activity state');
-assert.match(band, /pointerenter/, 'Player Info pauses while hovered');
-assert.match(band, /pointerleave/, 'Player Info resumes after hover ends');
+assert.match(band, /boardLink[\s\S]*?pointerenter/, 'Player Info gates activity from the rendered board hover');
+assert.match(band, /boardLink[\s\S]*?pointerleave/, 'Player Info resumes after the rendered board hover ends');
+assert.doesNotMatch(band, /host\.addEventListener\(['"]pointerenter/, 'Player Info does not gate activity from the whole section hover');
 assert.match(band, /home-promo--activity-paused/, 'Player Info exposes the active animation pause state');
-assert.match(activity, /setHovered/, 'promo activity exposes hover gating');
+assert.match(activity, /setHovered/, 'promo activity exposes board hover gating');
+assert.match(activity, /setBoardComplete/, 'promo activity exposes completed-board gating');
 assert.match(caption, /buildViewHref/, 'displayed build link targets the build view route');
 assert.match(assemble, /sleepWithPromoActivity/, 'Player Info timers honor the hover activity gate');
+assert.match(assemble, /setBoardComplete\?\.\(false\)/, 'Player Info keeps the reveal active while a new build is incomplete');
+assert.match(assemble, /setBoardComplete\?\.\(true\)/, 'Player Info gates the next handoff after the item wave completes');
+assert.doesNotMatch(assemble, /data-promo-section-skeleton/, 'Player Info assembler has no legacy section skeleton selector');
 assert.match(styles, /home-promo--activity-paused[\s\S]*?animation-play-state: paused/, 'Player Info freezes CSS animations while hovered');
 assert.match(assemble, /fadeNewBagChrome\(boardHost, \{ preserveFabricAnimation: true \}\)/, 'Player info keeps the shared fabric wave animation');
 assert.match(assemble, /export function departBoardItems/, 'board departure exposes the shared exit sequence for regression coverage');

@@ -1,6 +1,7 @@
 /* Market stub — stall scene + rewards plate */
 
-body.page-market {
+body.page-market,
+body.page-patch-notes {
   height: 100vh;
   max-height: 100vh;
   min-height: 0;
@@ -17,11 +18,14 @@ body.page-market {
 }
 
 body.page-market #site-nav-space,
-body.page-market #site-footer {
+body.page-market #site-footer,
+body.page-patch-notes #site-nav-space,
+body.page-patch-notes #site-footer {
   flex: 0 0 auto;
 }
 
-body.page-market #main {
+body.page-market #main,
+body.page-patch-notes #main {
   flex: 1 1 auto;
   min-height: 0;
 }

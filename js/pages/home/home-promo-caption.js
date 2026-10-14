@@ -289,14 +289,12 @@ export function paintPromoCaption(el, build, root, boardLink, infoEl, boardTagsE
     if (!build) {
       el.replaceChildren();
       el.hidden = true;
-      el.closest('[data-promo-create-card]')?.removeAttribute('aria-busy');
     } else {
       el.hidden = false;
       el.innerHTML = captionHtml(build, root, opts.hideAuthor === true);
       if (opts.hydrateFaces !== false && opts.hideAuthor !== true) {
         void hydrateFaces(el, root);
       }
-      el.closest('[data-promo-create-card]')?.removeAttribute('aria-busy');
     }
   }
   if (boardTagsEl instanceof HTMLElement) {

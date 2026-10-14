@@ -24,26 +24,6 @@
   background: transparent;
 }
 
-/* The create/promo composition loads as one unit. Keep one quiet surface over
-   the card until the first real build is ready instead of shimmering each
-   caption, board, catalog tile, and stat independently. */
-.home-promo__section-skeleton {
-  position: absolute;
-  inset: 0;
-  z-index: 20;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  padding: 3.25rem clamp(1rem, 3vw, 2rem) 3rem;
-  pointer-events: none;
-}
-
-.home-promo__section-skeleton-surface {
-  width: min(88rem, 100%);
-  min-height: clamp(24rem, 38vw, 42rem);
-  border-radius: 0.35rem;
-}
-
 /* Town shows through; parchment + frame live on the card */
 .home-promo--parchment {
   margin: 0;
@@ -75,13 +55,18 @@
 .home-promo--create .home-promo__card {
   --promo-stage-h: 20.2rem;
   --promo-frame-pad: clamp(1.35rem, 2.4vw, 2.1rem);
+  --promo-grid-columns: minmax(16rem, 1.1fr) minmax(20rem, 1.35fr) minmax(12rem, 0.85fr);
+  --promo-grid-gap-x: 1.5rem;
+  --promo-grid-gap-y: 1rem;
+  --promo-grid-pad-top: calc(var(--promo-frame-pad) + 0.85rem);
+  --promo-grid-pad-x: calc(var(--promo-frame-pad) + 1rem);
+  --promo-grid-pad-bottom: calc(var(--promo-frame-pad) + 0.95rem);
   position: relative;
   isolation: isolate;
   width: min(88rem, 100%);
-  grid-template-columns: minmax(16rem, 1.1fr) minmax(20rem, 1.35fr) minmax(12rem, 0.85fr);
-  gap: 1rem 1.5rem;
-  padding: calc(var(--promo-frame-pad) + 0.85rem) calc(var(--promo-frame-pad) + 1rem)
-    calc(var(--promo-frame-pad) + 0.95rem);
+  grid-template-columns: var(--promo-grid-columns);
+  gap: var(--promo-grid-gap-y) var(--promo-grid-gap-x);
+  padding: var(--promo-grid-pad-top) var(--promo-grid-pad-x) var(--promo-grid-pad-bottom);
   align-items: center;
   border-radius: 0.35rem;
   background-color: #e4d5bc;
@@ -142,6 +127,97 @@
 
 .home-promo.home-promo--player-info .home-promo__card::after {
   display: none;
+}
+
+/* Player Info follows the official Vault Hunters overview section's
+   ``gradient`` treatment: neutral-800 → neutral-950, rather than the warmer
+   Explore Items wash. Keep a solid fallback for older engines before applying
+   the exact neutral radial field. */
+.home-promo.home-promo--player-info {
+  --home-promo-edge-height: 24px;
+  --home-promo-step-top-left: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 24'><path fill='white' d='M0,0 L264,0 C292,0 292,24 320,24 L320,28 L0,28 Z'/></svg>");
+  --home-promo-step-top-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 24'><path fill='white' d='M320,0 L56,0 C28,0 28,24 0,24 L0,28 L320,28 Z'/></svg>");
+  --home-promo-step-bottom-left: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 24'><path fill='white' d='M0,28 L264,28 C292,28 292,4 320,4 L320,0 L0,0 Z' transform='translate(0,-4)'/></svg>");
+  --home-promo-step-bottom-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 24'><path fill='white' d='M320,28 L56,28 C28,28 28,4 0,4 L0,0 L320,0 Z' transform='translate(0,-4)'/></svg>");
+  --home-promo-mask-with-step-both: linear-gradient(
+    transparent 0,
+    transparent var(--home-promo-edge-height),
+    #000 var(--home-promo-edge-height),
+    #000 calc(100% - var(--home-promo-edge-height)),
+    transparent calc(100% - var(--home-promo-edge-height))
+  );
+  /* #main keeps the screen-frame rim clear on desktop; the gradient itself
+     intentionally bleeds across that inset to meet the viewport edges. */
+  width: calc(100% + var(--bpb-frame-edge-x, 0px) + var(--bpb-frame-edge-x, 0px));
+  margin-left: calc(-1 * var(--bpb-frame-edge-x, 0px));
+  margin-right: calc(-1 * var(--bpb-frame-edge-x, 0px));
+  background-color: #252525;
+  background-image: radial-gradient(#444 0%, #252525 100%);
+  background-image: radial-gradient(
+    oklch(26.9% 0 0) 0%,
+    oklch(14.5% 0 0) 100%
+  );
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-mask-image:
+    var(--home-promo-step-top-left),
+    var(--home-promo-step-top-right),
+    var(--home-promo-mask-with-step-both),
+    var(--home-promo-step-bottom-left),
+    var(--home-promo-step-bottom-right);
+  mask-image:
+    var(--home-promo-step-top-left),
+    var(--home-promo-step-top-right),
+    var(--home-promo-mask-with-step-both),
+    var(--home-promo-step-bottom-left),
+    var(--home-promo-step-bottom-right);
+  -webkit-mask-size:
+    320px var(--home-promo-edge-height),
+    320px var(--home-promo-edge-height),
+    100% 100%,
+    320px var(--home-promo-edge-height),
+    320px var(--home-promo-edge-height);
+  mask-size:
+    320px var(--home-promo-edge-height),
+    320px var(--home-promo-edge-height),
+    100% 100%,
+    320px var(--home-promo-edge-height),
+    320px var(--home-promo-edge-height);
+  -webkit-mask-position: top left, top right, top left, bottom left, bottom right;
+  mask-position: top left, top right, top left, bottom left, bottom right;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@media (max-width: 768px) {
+  .home-promo.home-promo--player-info {
+    --home-promo-step-top-left: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 25'><path fill='white' d='M0,0 L40,0 C70,0 70,25 100,25 L120,25 L120,30 L0,30 Z'/></svg>");
+    --home-promo-step-top-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 25'><path fill='white' d='M120,0 L80,0 C50,0 50,25 20,25 L0,25 L0,30 L220,30 Z' transform='translate(-20,0)'/></svg>");
+    --home-promo-step-bottom-left: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 25'><path fill='white' d='M0,30 L40,30 C70,30 70,5 100,5 L120,5 L120,0 L0,0 Z' transform='translate(0,-5)'/></svg>");
+    --home-promo-step-bottom-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 25'><path fill='white' d='M220,30 L80,30 C50,30 50,5 20,5 L0,5 L0,0 L220,0 Z' transform='translate(-20,-5)'/></svg>");
+    -webkit-mask-size: 100px 25px, 100px 25px, 100% 100%, 100px 25px, 100px 25px;
+    mask-size: 100px 25px, 100px 25px, 100% 100%, 100px 25px, 100px 25px;
+  }
+}
+
+@media (max-width: 400px) {
+  .home-promo.home-promo--player-info {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* The build-animation section is intentionally transparent. Keep the
+   composition on the page surface without the former radial field or stepped
+   edge mask. */
+.home-promo.home-promo--player-info {
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  background: transparent;
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 /* Create promo — sticker chrome on parchment (same recipe as featured stage) */
@@ -612,6 +688,11 @@ a.home-promo__caption-author:hover {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  /* Reserve the same two-line title footprint when a build title is short;
+     otherwise the whole Player Info card (and the next Home section) shifts
+     every time the rotating build changes. The extra 0.2em accounts for the
+     existing vertical title padding. */
+  min-height: calc(2 * 1.15em + 0.2em);
   overflow: hidden;
   white-space: normal;
   text-overflow: ellipsis;
@@ -989,7 +1070,7 @@ a.home-promo__caption-author:hover {
   animation-delay: var(--bpb-appear-delay, 0ms);
 }
 
-/* Hover pauses the current wave in place; activity timers use the same gate. */
+/* Once the board is complete, a board hover pauses the handoff in place. */
 .home-promo--player-info.home-promo--activity-paused .home-promo__board * {
   animation-play-state: paused !important;
 }
@@ -1149,10 +1230,6 @@ a.home-promo__caption-author:hover {
   border-top: 1.5px solid color-mix(in srgb, var(--promo-info-ink) 88%, #000);
   border-bottom: 1.5px solid color-mix(in srgb, var(--promo-info-ink) 88%, #000);
   padding: 0.65rem 0.55rem 0.7rem;
-}
-
-.home-promo__info-how .bpb-skel--bar + .bpb-skel--bar {
-  margin-top: 0.38em;
 }
 
 .home-promo__info-desc {
@@ -1385,9 +1462,11 @@ a.home-promo__caption-author:hover {
 @media (max-width: 1100px) and (min-width: 901px) {
   .home-promo--create .home-promo__card {
     --promo-stage-h: 20rem;
-    grid-template-columns: minmax(0, 1.35fr) minmax(15rem, 18rem);
+    --promo-grid-columns: minmax(0, 1.35fr) minmax(15rem, 18rem);
+    --promo-grid-gap-x: 1.15rem;
+    grid-template-columns: var(--promo-grid-columns);
     align-items: center;
-    gap: 0.85rem 1.15rem;
+    gap: 0.85rem var(--promo-grid-gap-x);
   }
 
   .home-promo--create .home-promo__side--catalog {
@@ -1454,13 +1533,19 @@ a.home-promo__caption-author:hover {
   .home-promo--create .home-promo__card {
     --promo-stage-h: 16rem;
     --promo-frame-pad: 1.15rem;
+    --promo-grid-columns: minmax(0, 1fr);
+    --promo-grid-gap-x: 0.5rem;
+    --promo-grid-gap-y: 0.5rem;
+    --promo-grid-pad-top: calc(var(--promo-frame-pad) + 0.7rem);
+    --promo-grid-pad-x: calc(var(--promo-frame-pad) + 0.85rem);
+    --promo-grid-pad-bottom: calc(var(--promo-frame-pad) + 0.8rem);
     grid-template-areas:
       'board'
       'cta'
       'art';
     width: min(92rem, 100%);
-    padding: calc(var(--promo-frame-pad) + 0.7rem) calc(var(--promo-frame-pad) + 0.85rem)
-      calc(var(--promo-frame-pad) + 0.8rem);
+    grid-template-columns: var(--promo-grid-columns);
+    padding: var(--promo-grid-pad-top) var(--promo-grid-pad-x) var(--promo-grid-pad-bottom);
   }
 
   .home-promo__copy {
@@ -1530,6 +1615,12 @@ a.home-promo__caption-author:hover {
 
   .home-promo--create .home-promo__card {
     --promo-stage-h: 18rem;
+    --promo-grid-columns: minmax(0, 1fr);
+    --promo-grid-gap-x: 0.5rem;
+    --promo-grid-gap-y: 0.5rem;
+    --promo-grid-pad-top: calc(var(--promo-frame-pad) + 0.7rem);
+    --promo-grid-pad-x: calc(var(--promo-frame-pad) + 0.85rem);
+    --promo-grid-pad-bottom: calc(var(--promo-frame-pad) + 0.8rem);
     grid-template-areas:
       'board'
       'cta';

@@ -6,6 +6,7 @@
 import { classIconPath } from '../../shared/class-icons.js';
 import { faceHtml, hydrateFaces } from '../../shared/blob-face.js';
 import { desktopTooltipScale } from '../../shared/tooltip-scale.js';
+import { hideTooltip, showTooltip } from '../../shared/tooltip-motion.js';
 
 /** Large preview board inside the class tooltip frame. */
 const PREVIEW_CELL_PX = 48;
@@ -101,9 +102,10 @@ export function bindMoreBuildTips(listEl, opts) {
     showGen += 1;
     activeThumb = null;
     if (host) {
-      host.hidden = true;
-      host.replaceChildren();
-      host.style.removeProperty('--build-more-tip-scale');
+      hideTooltip(host, () => {
+        host.replaceChildren();
+        host.style.removeProperty('--build-more-tip-scale');
+      });
     }
   }
 
@@ -183,7 +185,7 @@ export function bindMoreBuildTips(listEl, opts) {
       </div>
     `;
 
-    tip.hidden = false;
+    showTooltip(tip);
     void hydrateFaces(tip, root);
     placeTip(tip, thumb);
 

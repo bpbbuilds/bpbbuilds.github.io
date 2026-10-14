@@ -9,7 +9,6 @@ import { getSupabase } from '../../shared/supabase.js';
 import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import { youtubeThumb, youtubeEmbedSrc } from '../../shared/youtube.js';
 import { classIconPath } from '../../shared/class-icons.js';
-import { skelBlock, skelRegion } from '../../shared/skeleton.js';
 import { mapItem, makeSpriteUrl } from '../build/map-item.js';
 import { featuredBlurbHtml } from './featured-mentions.js';
 
@@ -198,16 +197,6 @@ function escapeAttr(s) {
   return escapeHtml(s).replace(/'/g, '&#39;');
 }
 
-/** Placeholder carousel while featured builds load — matches real layout. */
-function skeletonStageHtml() {
-  return skelRegion(
-    `<div class="fs-shell fs-shell--skel">
-      ${skelBlock({ className: 'fs-section-skeleton' })}
-    </div>`,
-    { className: 'fs-skel-wrap', label: 'Loading featured builds' },
-  );
-}
-
 /** Center a track child instantly (no smooth scroll / no entrance animation). */
 function centerTrackInstant(track, domIdx) {
   const child = track.children[domIdx];
@@ -255,12 +244,9 @@ export async function initFeaturedStage(selector = '#featured-stage') {
   if (!host) return;
 
   const root = rootPrefix();
-  host.innerHTML = skeletonStageHtml();
-  const skelTrack = host.querySelector('.fs-track');
-  if (skelTrack) {
-    // Middle skeleton slide (peek | center | peek)
-    requestAnimationFrame(() => centerTrackInstant(skelTrack, 1));
-  }
+  // Home intentionally starts with an empty host; other pages retain their
+  // own loading placeholders without making the landing page paint skeletons.
+  host.replaceChildren();
 
   let builds = [];
   try {

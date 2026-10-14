@@ -7,7 +7,6 @@
 
 import { getSupabase } from '../../shared/supabase.js';
 import { createTooltipHover } from '../../shared/tooltip-hover.js';
-import { skelBlock, skelSection } from '../../shared/skeleton.js';
 import { mapItem, makeSpriteUrl } from '../build/map-item.js';
 import { itemMatchesCategory } from '../items/filter-logic.js';
 import { escapeAttr, escapeHtml, rootPrefix } from './home-build-media.js';
@@ -115,9 +114,7 @@ function orbitRingHtml(ids, ring) {
             data-item-id="${escapeAttr(id)}"
             aria-label="Item"
           >
-            <span class="home-items__sprite-face">
-              ${skelBlock({ className: 'home-items__sprite-skel', radius: '0.4rem' })}
-            </span>
+            <span class="home-items__sprite-face"></span>
           </button>
         </div>`;
     })
@@ -204,16 +201,14 @@ function sectionHtml(root) {
     </div>`;
 }
 
-/** @param {HTMLElement} host @param {boolean} ready */
-function settleSectionSkeleton(host, ready) {
-  const region = host.querySelector('.home-items__section-skeleton')?.closest('.bpb-skel-region');
-  if (!(region instanceof HTMLElement)) return;
-  if (ready) {
-    region.remove();
-    return;
-  }
-  region.setAttribute('aria-busy', 'false');
-  region.innerHTML = '<p class="home-items__section-status">The item library is unavailable right now.</p>';
+/** @param {HTMLElement} host */
+function showSectionStatus(host) {
+  const visual = host.querySelector('.home-items__visual');
+  if (!(visual instanceof HTMLElement)) return;
+  const status = document.createElement('p');
+  status.className = 'home-items__section-status';
+  status.textContent = 'The item library is unavailable right now.';
+  visual.append(status);
 }
 
 /**
@@ -251,7 +246,6 @@ function paintOrbitSprites(orbit, byId, getSpriteUrl) {
     btn.setAttribute('aria-label', name);
     btn.title = name;
     const face = btn.querySelector('.home-items__sprite-face');
-    face?.querySelector('.home-items__sprite-skel')?.remove();
     face?.querySelector('img')?.remove();
     const img = document.createElement('img');
     img.alt = '';
@@ -367,13 +361,10 @@ export function initHomeItemsExplore(selector = '#home-items-explore') {
   if (!host) return;
 
   const root = rootPrefix();
-  host.innerHTML = `${sectionHtml(root)}${skelSection({
-    className: 'home-items__section-skeleton',
-    label: 'Loading item library',
-  })}`;
+  host.innerHTML = sectionHtml(root);
 
   void hydrateSprites(host, root).then((catalog) => {
-    settleSectionSkeleton(host, Boolean(catalog));
+    if (!catalog) showSectionStatus(host);
     bindExploreTabs(host, {
       refillOrbit: catalog?.refillOrbit,
     });

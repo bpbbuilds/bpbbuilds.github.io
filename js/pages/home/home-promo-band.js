@@ -5,9 +5,8 @@
  *   initHomePromoBand('#home-promo-band', { variant: 'create' });
  */
 
-import { skelBlock } from '../../shared/skeleton.js';
 import { escapeAttr, rootPrefix } from './home-build-media.js';
-import { playAssemble } from './home-promo-assemble.js?v=promo-player-20261013a';
+import { playAssemble } from './home-promo-assemble.js?v=home-no-skeleton-20261014a';
 import { createPromoActivity } from './home-promo-activity.js?v=promo-player-20261013b';
 import { mountPromoCatalog } from './home-promo-catalog.js';
 
@@ -44,10 +43,7 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
     host.innerHTML = `
       <div class="home-promo home-promo--create home-promo--parchment${chestLauncher ? ' home-promo--chest' : ''}${creatorLauncher ? ' home-promo--creator' : ''}${playerLauncher ? ' home-promo--player-info' : ''}">
         <div class="home-promo__band">
-          <div class="home-promo__section-skeleton" data-promo-section-skeleton role="status" aria-busy="true" aria-label="Loading create a build">
-            ${skelBlock({ className: 'home-promo__section-skeleton-surface' })}
-          </div>
-          <div class="home-promo__card" data-promo-create-card aria-busy="true">
+          <div class="home-promo__card" data-promo-create-card>
             <div class="home-promo__side ${chestLauncher ? 'home-promo__side--launcher' : creatorLauncher ? 'home-promo__side--creator' : playerLauncher ? 'home-promo__side--player' : 'home-promo__side--catalog'}">
               ${chestLauncher ? `
                 <div class="home-promo__chest-launcher" data-promo-chest-launcher aria-label="Chestnut item launcher">
@@ -114,8 +110,9 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
       activity.subscribe((active) => {
         host.classList.toggle('home-promo--activity-paused', !active);
       });
-      host.addEventListener('pointerenter', () => activity.setHovered(true));
-      host.addEventListener('pointerleave', () => activity.setHovered(false));
+      const boardHoverTarget = boardLink instanceof HTMLElement ? boardLink : boardHost;
+      boardHoverTarget.addEventListener('pointerenter', () => activity.setHovered(true));
+      boardHoverTarget.addEventListener('pointerleave', () => activity.setHovered(false));
     }
     if (typeof IntersectionObserver !== 'undefined') {
       const activityObserver = new IntersectionObserver(
@@ -156,6 +153,13 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
       playerInfoMode: playerLauncher,
       activity,
       root,
+    }).catch((err) => {
+      // Keep the rest of the landing page usable if an unexpected renderer
+      // failure occurs. The assembler handles expected data errors; this
+      // catches module or browser failures at the boundary.
+      console.warn('[home-promo] assemble render failed', err);
+      const card = host.querySelector('[data-promo-create-card]');
+      if (card instanceof HTMLElement) card.dataset.promoError = 'true';
     });
     return;
   }

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/** Browser smoke for the consolidated Player Info loading skeleton surfaces. */
+/** Browser smoke proving Player Info starts without a loading skeleton. */
 
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -21,7 +21,7 @@ const server = http.createServer((req, res) => {
   const url = new URL(req.url || '/', `http://127.0.0.1:${port}`);
   if (url.pathname === '/harness') {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-    res.end(`<!doctype html><html><head><link rel="stylesheet" href="/js/shared/skeleton.css"><link rel="stylesheet" href="/js/pages/home/home-promo-band.css"><style>*,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0}</style></head><body data-root="/"><div id="probe"></div></body></html>`);
+    res.end(`<!doctype html><html><head><link rel="stylesheet" href="/js/shared/skeleton.css"><link rel="stylesheet" href="/js/pages/home/home-promo-band.css"><style>*,*::before,*::after{box-sizing:border-box}:root{--bpb-frame-edge-x:calc(100vw * 40 / 1920)}html,body{margin:0;padding:0}#probe{padding-inline:var(--bpb-frame-edge-x)}@media(max-width:1100px){:root{--bpb-frame-edge-x:0px}#probe{padding-inline:0}}</style></head><body data-root="/"><div id="probe"></div></body></html>`);
     return;
   }
   const filePath = path.join(root, decodeURIComponent(url.pathname.replace(/^\//, '')));
@@ -51,15 +51,40 @@ try {
       const { initHomePromoBand } = await import('/js/pages/home/home-promo-band.js');
       initHomePromoBand('#probe', { variant: 'create', launcher: 'player', builds: [] });
     });
-    const result = await page.evaluate(() => ({
-      sectionSkeletons: document.querySelectorAll('[data-promo-section-skeleton]').length,
-      nestedSkeletons: document.querySelectorAll('.home-promo .home-promo__skel-item, .home-promo .home-promo__skel-section, .home-promo .home-promo__skel-board, .home-promo .home-promo__skel-class, .home-promo .home-promo__skel-title, .home-promo .home-promo__info-grid').length,
-      statusRegions: document.querySelectorAll('.home-promo--player-info .bpb-skel-region[role="status"], .home-promo--player-info [data-promo-section-skeleton][role="status"]').length,
-      overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-    }));
-    assert.equal(result.sectionSkeletons, 1, `${viewport.name}: Player Info uses one whole-section skeleton`);
-    assert.equal(result.nestedSkeletons, 0, `${viewport.name}: Player Info does not render nested skeleton fragments`);
-    assert.equal(result.statusRegions, 1, `${viewport.name}: Player Info exposes one loading status for the Home section`);
+    const result = await page.evaluate(() => {
+      const section = document.querySelector('.home-promo--player-info');
+      const style = section instanceof HTMLElement ? getComputedStyle(section) : null;
+      const bounds = section instanceof HTMLElement ? section.getBoundingClientRect() : null;
+      return {
+        skeletonStacks: document.querySelectorAll('[data-promo-skeleton-stack]').length,
+        skeletons: document.querySelectorAll('.home-promo--player-info [data-promo-skeleton-stack] .bpb-skel').length,
+        skeletonRects: [...document.querySelectorAll('.home-promo--player-info [data-promo-skeleton-stack] .bpb-skel')].map((el) => {
+          const rect = el.getBoundingClientRect();
+          return { className: el.className, width: rect.width, height: rect.height };
+        }),
+        legacySkeletons: document.querySelectorAll('[data-promo-section-skeleton], .home-promo__section-skeleton').length,
+        statusRegions: document.querySelectorAll('.home-promo--player-info [data-promo-skeleton-stack][role="status"]').length,
+        backgroundImage: style?.backgroundImage || '',
+        backgroundColor: style?.backgroundColor || '',
+        edgeMask: style?.webkitMaskImage || style?.maskImage || '',
+        cardBackgroundImage: getComputedStyle(document.querySelector('.home-promo--player-info .home-promo__card')).backgroundImage,
+        cardBackgroundColor: getComputedStyle(document.querySelector('.home-promo--player-info .home-promo__card')).backgroundColor,
+        left: bounds?.left ?? -1,
+        right: bounds?.right ?? -1,
+        viewportWidth: window.innerWidth,
+        overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      };
+    });
+    assert.equal(result.skeletonStacks, 0, `${viewport.name}: Player Info has no skeleton stack`);
+    assert.equal(result.skeletons, 0, `${viewport.name}: Player Info has no skeleton surfaces`);
+    assert.equal(result.skeletonRects.length, 0, `${viewport.name}: Player Info does not reserve skeleton geometry`);
+    assert.equal(result.legacySkeletons, 0, `${viewport.name}: Player Info has no legacy whole-section skeleton`);
+    assert.equal(result.statusRegions, 0, `${viewport.name}: Player Info exposes no loading status for a skeleton`);
+    assert.equal(result.backgroundImage, 'none', `${viewport.name}: Player Info section has no decorative background image`);
+    assert.equal(result.backgroundColor, 'rgba(0, 0, 0, 0)', `${viewport.name}: Player Info section has a transparent background`);
+    assert.equal(result.cardBackgroundImage, 'none', `${viewport.name}: Player Info card has no decorative background image`);
+    assert.equal(result.cardBackgroundColor, 'rgba(0, 0, 0, 0)', `${viewport.name}: Player Info card has a transparent background`);
+    assert.equal(result.edgeMask, 'none', `${viewport.name}: Player Info has no decorative edge mask`);
     assert.ok(result.overflowX <= 1, `${viewport.name}: skeleton introduced horizontal overflow`);
     results.push({ ...viewport, ...result });
     await page.close();

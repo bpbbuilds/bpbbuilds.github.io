@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/** Responsive browser smoke for the single-surface Home/nav placeholders. */
+/** Responsive browser smoke for the Home page's intentionally clean boot. */
 
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -17,51 +17,18 @@ const viewports = [
   { name: 'tablet', width: 768, height: 900 },
   { name: 'mobile', width: 390, height: 844 },
 ];
-const sectionSpecs = [
-  {
-    id: 'featured-stage',
-    selector: '.fs-skel-wrap',
-    markup: `<div class="bpb-skel-region fs-skel-wrap" role="status" aria-busy="true">
-      <div class="fs-shell fs-shell--skel"><span class="bpb-skel bpb-skel--block fs-section-skeleton" aria-hidden="true"></span></div>
-    </div>`,
-  },
-  {
-    id: 'home-promo-band',
-    selector: '.home-promo__section-skeleton',
-    markup: `<div class="home-promo home-promo--create"><div class="home-promo__band">
-      <div class="home-promo__section-skeleton bpb-skel-region" role="status" aria-busy="true">
-        <span class="bpb-skel bpb-skel--block home-promo__section-skeleton-surface" aria-hidden="true"></span>
-      </div>
-    </div></div>`,
-  },
-  {
-    id: 'home-class-showcase',
-    selector: '.bpb-skel-section-wrap',
-    markup: `<div class="bpb-skel-region bpb-skel-section-wrap" role="status" aria-busy="true">
-      <div class="bpb-skel bpb-skel--block bpb-skel-section home-mobs__section-skeleton" aria-hidden="true"></div>
-    </div>`,
-  },
-  {
-    id: 'home-items-explore',
-    selector: '.bpb-skel-section-wrap',
-    markup: `<div class="bpb-skel-region bpb-skel-section-wrap" role="status" aria-busy="true">
-      <div class="bpb-skel bpb-skel--block bpb-skel-section home-items__section-skeleton" aria-hidden="true"></div>
-    </div>`,
-  },
-  {
-    id: 'home-builds-vault',
-    selector: '.bpb-skel-section-wrap',
-    markup: `<div class="bpb-skel-region bpb-skel-section-wrap" role="status" aria-busy="true">
-      <div class="bpb-skel bpb-skel--block bpb-skel-section home-vault__section-skeleton" aria-hidden="true"></div>
-    </div>`,
-  },
+const sectionIds = [
+  'featured-stage',
+  'home-promo-band',
+  'home-class-showcase',
+  'home-items-explore',
+  'home-builds-vault',
 ];
-const sectionIds = sectionSpecs.map(({ id }) => id);
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url || '/', `http://127.0.0.1:${port}`);
   if (url.pathname === '/harness') {
-    const sections = sectionSpecs.map(({ id, markup }) => `<section id="${id}">${markup}</section>`).join('');
+    const sections = sectionIds.map((id) => `<section id="${id}"></section>`).join('');
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(`<!doctype html><html><head>
       <link rel="stylesheet" href="/css/theme.css">
@@ -71,14 +38,7 @@ const server = http.createServer((req, res) => {
       <link rel="stylesheet" href="/js/pages/home/home-class-showcase.css">
       <link rel="stylesheet" href="/js/pages/home/home-items-explore.css">
       <link rel="stylesheet" href="/js/pages/home/home-builds-vault.css">
-    </head><body class="page-home">
-      <div id="site-nav"><div class="site-nav-skel-wrap bpb-skel-region" role="status" aria-busy="true">
-        <div class="site-nav-shell"><header class="site-nav site-nav--skel">
-          <span class="bpb-skel bpb-skel--block site-nav__skel-surface" aria-hidden="true"></span>
-        </header></div>
-      </div></div>
-      <main id="main">${sections}</main>
-    </body></html>`);
+    </head><body class="page-home"><div id="site-nav"></div><main>${sections}</main><div id="site-footer"></div></body></html>`);
     return;
   }
   const filePath = path.join(root, decodeURIComponent(url.pathname.replace(/^\//, '')));
@@ -100,34 +60,29 @@ try {
   for (const viewport of viewports) {
     const page = await browser.newPage({ viewport });
     await page.goto(`http://127.0.0.1:${port}/harness`, { waitUntil: 'networkidle' });
-    const result = await page.evaluate((specs) => {
-      const nav = document.querySelector('.site-nav--skel');
-      const regions = specs.map(({ id, selector }) => {
+    const result = await page.evaluate((ids) => ({
+      sections: ids.map((id) => {
         const host = document.getElementById(id);
-        const region = host?.querySelector(selector);
-        const surface = region?.querySelector('.bpb-skel');
         return {
           id,
-          regions: host?.querySelectorAll(selector).length || 0,
-          surfaces: region?.querySelectorAll('.bpb-skel').length || 0,
-          height: surface instanceof HTMLElement ? surface.getBoundingClientRect().height : 0,
+          skeletonRegions: host?.querySelectorAll('.bpb-skel-region').length || 0,
+          skeletonSurfaces: host?.querySelectorAll('.bpb-skel').length || 0,
+          children: host?.children.length || 0,
         };
-      });
-      return {
-        navSurfaces: nav?.querySelectorAll('.site-nav__skel-surface').length || 0,
-        navHeight: nav instanceof HTMLElement ? nav.getBoundingClientRect().height : 0,
-        regions,
-        overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      };
-    }, sectionSpecs);
-    assert.equal(result.navSurfaces, 1, `${viewport.name}: nav has one skeleton surface`);
-    assert.ok(result.navHeight > 0, `${viewport.name}: nav skeleton has height`);
-    for (const region of result.regions) {
-      assert.equal(region.regions, 1, `${viewport.name}/${region.id}: one section skeleton wrapper`);
-      assert.equal(region.surfaces, 1, `${viewport.name}/${region.id}: one section skeleton surface`);
-      assert.ok(region.height > 0, `${viewport.name}/${region.id}: section skeleton has height`);
+      }),
+      navSkeletons: document.querySelectorAll('#site-nav .bpb-skel, #site-nav .site-nav--skel').length,
+      footerSkeletons: document.querySelectorAll('#site-footer .bpb-skel').length,
+      overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    }), sectionIds);
+
+    for (const section of result.sections) {
+      assert.equal(section.skeletonRegions, 0, `${viewport.name}/${section.id}: no skeleton region`);
+      assert.equal(section.skeletonSurfaces, 0, `${viewport.name}/${section.id}: no skeleton surface`);
+      assert.equal(section.children, 0, `${viewport.name}/${section.id}: clean empty host before async data`);
     }
-    assert.ok(result.overflowX <= 1, `${viewport.name}: skeletons introduced horizontal overflow`);
+    assert.equal(result.navSkeletons, 0, `${viewport.name}: Home nav has no skeleton`);
+    assert.equal(result.footerSkeletons, 0, `${viewport.name}: Home footer has no skeleton`);
+    assert.ok(result.overflowX <= 1, `${viewport.name}: clean Home shell has no horizontal overflow`);
     results.push({ ...viewport, ...result });
     await page.close();
   }

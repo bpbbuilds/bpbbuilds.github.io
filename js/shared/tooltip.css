@@ -696,6 +696,43 @@
   margin-top: 0.1em;
 }
 
+/* Shared floating tooltip motion. Item/cosmetic hosts use
+   .bpb-tooltip-float; build-preview and event hosts reuse the same states. */
+.bpb-tooltip-float,
+.build-more-tip,
+.build-event-tip {
+  --bpb-tooltip-fade-duration: 160ms;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--bpb-tooltip-fade-duration) ease,
+    transform var(--bpb-tooltip-fade-duration) ease,
+    visibility 0s linear var(--bpb-tooltip-fade-duration);
+}
+
+.bpb-tooltip-float.is-visible,
+.bpb-tooltip-float.is-hiding,
+.build-more-tip.is-visible,
+.build-more-tip.is-hiding,
+.build-event-tip.is-visible,
+.build-event-tip.is-hiding {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.bpb-tooltip-float.is-visible,
+.build-more-tip.is-visible,
+.build-event-tip.is-visible {
+  opacity: 1;
+}
+
+.bpb-tooltip-float.is-hiding,
+.build-more-tip.is-hiding,
+.build-event-tip.is-hiding {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Floating host (tooltip-hover.js) */
 .bpb-tooltip-float {
   --bpb-tooltip-scale: 1;
@@ -705,17 +742,20 @@
   left: 0;
   top: 0;
   pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
   transform: translate3d(0, 4px, 0) scale(var(--bpb-tooltip-scale));
   transform-origin: top left;
-  transition: opacity 0.12s ease, transform 0.12s ease, visibility 0.12s;
 }
 
 .bpb-tooltip-float.is-visible {
-  opacity: 1;
-  visibility: visible;
   transform: translate3d(0, 0, 0) scale(var(--bpb-tooltip-scale));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpb-tooltip-float,
+  .build-more-tip,
+  .build-event-tip {
+    transition: none;
+  }
 }
 
 /* Spotlight locks the card on the left; stay above dim + stage */

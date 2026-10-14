@@ -9,7 +9,6 @@ import { getSupabase } from '../../shared/supabase.js';
 import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import { classIconPath } from '../../shared/class-icons.js';
 import { faceHtml, hydrateFaces } from '../../shared/blob-face.js';
-import { skelSection } from '../../shared/skeleton.js';
 import { mountFeedBoardThumbs } from '../builds/board-thumbs.js';
 import {
   buildViewHref,
@@ -108,11 +107,11 @@ function vaultAvatarHtml(build, root, name) {
       equipped_avatar: build?.author_equipped_avatar,
     },
     root,
-    { className: 'home-vault__cell-avatar', size: 36, alt: name },
+    { className: 'home-vault__cell-avatar', size: 64, alt: name },
   );
   if (face) return face;
   if (/^smojo$/i.test(name)) {
-    return `<img class="home-vault__cell-avatar" src="${escapeAttr(`${root}assets/brand/logo-backpack-battles-builds.png`)}" alt="" width="22" height="22" loading="lazy" decoding="async" draggable="false" />`;
+    return `<img class="home-vault__cell-avatar" src="${escapeAttr(`${root}assets/brand/logo-backpack-battles-builds.png`)}" alt="" width="32" height="32" loading="lazy" decoding="async" draggable="false" />`;
   }
   const parts = name.split(/\s+/).filter(Boolean);
   const initials =
@@ -294,17 +293,9 @@ function sectionHtml(root, builds) {
               <span>Explore the catalog</span>
             </a>
           </div>
-          <p class="home-vault__footnote">Browse every featured board in the catalog</p>
         </div>
       </div>
     </div>`;
-}
-
-function skeletonHtml() {
-  return skelSection({
-    className: 'home-vault__section-skeleton',
-    label: 'Loading builds',
-  });
 }
 
 /**
@@ -374,7 +365,9 @@ export async function initHomeBuildsVault(selector = '#home-builds-vault') {
   if (!host) return;
 
   const root = rootPrefix();
-  paintVault(host, skeletonHtml());
+  // Home deliberately keeps this deferred host empty until real build data is
+  // ready; loading placeholders belong to content-heavy interior pages.
+  paintVault(host, '');
 
   try {
     const builds = await fetchVaultBuilds();

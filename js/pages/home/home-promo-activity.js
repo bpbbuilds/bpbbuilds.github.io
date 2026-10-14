@@ -1,24 +1,25 @@
 /**
  * Shared activity state for a Home promo loop.
  *
- * A loop is active only while its section is in the viewport and the pointer
- * is not over the section. Waiting callers are released whenever both gates
- * become active again.
+ * A loop is active only while its section is in the viewport. A board hover
+ * is allowed to finish the current reveal; once that board is complete,
+ * waiting callers stay paused until the pointer leaves the board.
  *
  * @param {boolean} [initialViewportActive]
  */
 export function createPromoActivity(initialViewportActive = true) {
   let viewportActive = initialViewportActive !== false;
   let hovered = false;
+  let boardComplete = false;
   /** @type {Set<() => void>} */
   const waiters = new Set();
   /** @type {Set<(active: boolean) => void>} */
   const listeners = new Set();
-  let lastActive = viewportActive && !hovered;
+  let lastActive = viewportActive && (!hovered || !boardComplete);
 
   const activity = {
     get active() {
-      return viewportActive && !hovered;
+      return viewportActive && (!hovered || !boardComplete);
     },
     wait() {
       if (activity.active) return Promise.resolve();
@@ -32,6 +33,10 @@ export function createPromoActivity(initialViewportActive = true) {
     },
     setHovered(next) {
       hovered = next === true;
+      update();
+    },
+    setBoardComplete(next) {
+      boardComplete = next === true;
       update();
     },
     setViewportActive(next) {

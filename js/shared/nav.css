@@ -373,7 +373,8 @@
 
 .site-nav__events,
 .site-nav__market,
-.site-nav__challenges {
+.site-nav__challenges,
+.site-nav__patches {
   position: relative;
   top: auto;
   left: auto;
@@ -387,12 +388,22 @@
   transition: filter 0.15s ease, transform 0.15s ease;
 }
 
+/* Patches uses the same rendered slot as the other desktop pennants. Its
+   source canvas has a different intrinsic ratio, so normalize the image into
+   the shared Events slot instead of shrinking the whole plaque. */
+.site-nav__patches {
+  width: clamp(3.4rem, 6.8vw, 5rem);
+  aspect-ratio: 273 / 399;
+}
+
 .site-nav__events:hover,
 .site-nav__events:focus-visible,
 .site-nav__market:hover,
 .site-nav__market:focus-visible,
 .site-nav__challenges:hover,
-.site-nav__challenges:focus-visible {
+.site-nav__challenges:focus-visible,
+.site-nav__patches:hover,
+.site-nav__patches:focus-visible {
   filter: drop-shadow(0 3px 5px rgba(20, 10, 5, 0.4)) brightness(1.1) saturate(1.06);
   transform: translateY(1px);
   outline: none;
@@ -400,7 +411,8 @@
 
 .site-nav__events-banner,
 .site-nav__market-banner,
-.site-nav__challenges-banner {
+.site-nav__challenges-banner,
+.site-nav__patches-banner {
   display: block;
   width: 100%;
   height: auto;
@@ -408,9 +420,15 @@
   user-select: none;
 }
 
+.site-nav__patches-banner {
+  height: 100%;
+  object-fit: fill;
+}
+
 .site-nav__events-text,
 .site-nav__market-text,
-.site-nav__challenges-text {
+.site-nav__challenges-text,
+.site-nav__patches-text {
   position: absolute;
   left: 50%;
   top: 36%;
@@ -601,13 +619,15 @@
 
   .site-nav__events,
   .site-nav__market,
-  .site-nav__challenges {
+  .site-nav__challenges,
+  .site-nav__patches {
     width: clamp(2.55rem, 4.6vw, 3.35rem);
   }
 
   .site-nav__events-text,
   .site-nav__market-text,
-  .site-nav__challenges-text {
+  .site-nav__challenges-text,
+  .site-nav__patches-text {
     font-size: clamp(0.82rem, 1.45vw, 1.05rem);
   }
 
@@ -643,13 +663,15 @@
 @media (max-width: 900px) {
   .site-nav__events,
   .site-nav__market,
-  .site-nav__challenges {
+  .site-nav__challenges,
+  .site-nav__patches {
     width: clamp(2.9rem, 7vw, 3.8rem);
   }
 
   .site-nav__events-text,
   .site-nav__market-text,
-  .site-nav__challenges-text {
+  .site-nav__challenges-text,
+  .site-nav__patches-text {
     font-size: clamp(0.9rem, 2.4vw, 1.15rem);
   }
 

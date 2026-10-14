@@ -10,6 +10,10 @@
  */
 
 import { desktopTooltipScale } from './tooltip-scale.js';
+import {
+  hideTooltip,
+  showTooltip,
+} from './tooltip-motion.js';
 
 const GAP = 12;
 const EDGE = 8;
@@ -408,9 +412,9 @@ export function createTooltipHover(options = {}) {
     clearHide();
     activeAnchor = null;
     activePlace = defaultPlaceConfig();
-    host.replaceChildren();
-    host.classList.remove('is-visible');
-    host.setAttribute('aria-hidden', 'true');
+    hideTooltip(host, () => {
+      if (!host.classList.contains('is-visible')) host.replaceChildren();
+    });
   }
 
   function pinHover() {
@@ -485,8 +489,7 @@ export function createTooltipHover(options = {}) {
     if (place) activePlace = place;
     const el = renderItem(item, anchor);
     host.replaceChildren(el);
-    host.classList.add('is-visible');
-    host.setAttribute('aria-hidden', 'true');
+    showTooltip(host);
     placeTip(anchor);
   }
 
@@ -518,7 +521,8 @@ export function createTooltipHover(options = {}) {
     activeAnchor = null;
     const el = window.ItemTooltip.render(item);
     host.replaceChildren(el);
-    host.classList.add('is-visible', 'is-locked');
+    showTooltip(host);
+    host.classList.add('is-locked');
     placeSpotlight(host, spotlightStage);
     initTooltipInteractions(host);
   }
@@ -531,9 +535,9 @@ export function createTooltipHover(options = {}) {
     clearHide();
     activeAnchor = null;
     activePlace = defaultPlaceConfig();
-    host.replaceChildren();
-    host.classList.remove('is-visible');
-    host.setAttribute('aria-hidden', 'true');
+    hideTooltip(host, () => {
+      if (!host.classList.contains('is-visible')) host.replaceChildren();
+    });
   }
 
   function scheduleHide(ms = 60) {

@@ -38,6 +38,7 @@ export function navHtml(root) {
   const rankedBanner = `${root}assets/theme/ui/ui-ranked-banner.png`;
   const unrankedBanner = `${root}assets/theme/ui/ui-unranked-banner.png`;
   const continueBanner = `${root}assets/theme/ui/ui-continue-banner.png`;
+  const patchesBanner = `${root}assets/theme/ui/ui-patches-banner.png`;
   const iconYt = `${root}assets/theme/ui/ui-icon-youtube.png`;
   const iconDiscord = `${root}assets/theme/ui/ui-icon-discord.png`;
 
@@ -126,6 +127,22 @@ export function navHtml(root) {
                 aria-hidden="true"
               />
               <span class="site-nav__challenges-text">Quest</span>
+            </a>
+            <a
+              class="site-nav__patches"
+              href="${root}patch-notes/"
+              aria-label="Patches"
+              title="Patches"
+            >
+              <img
+                class="site-nav__patches-banner"
+                src="${patchesBanner}"
+                alt=""
+                width="1100"
+                height="1430"
+                aria-hidden="true"
+              />
+              <span class="site-nav__patches-text">Patches</span>
             </a>
           </div>
         </div>
@@ -257,6 +274,7 @@ function drawerHtml(root) {
         ${link('events/', 'Events')}
         ${link('market/', 'Market')}
         ${link('quest/', 'Quest')}
+        ${link('patch-notes/', 'Patches')}
       </div>
       <div class="site-nav-drawer__utility">
         <div data-nav-founding-host></div>

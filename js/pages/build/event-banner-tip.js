@@ -5,6 +5,7 @@
 import { EVENT_STATUS_LABELS, getCatalogEvent } from '../events/catalog-data.js';
 import { formatEventDate } from '../events/event-meta.js';
 import { desktopTooltipScale } from '../../shared/tooltip-scale.js';
+import { hideTooltip, showTooltip } from '../../shared/tooltip-motion.js';
 
 /**
  * @param {string} s
@@ -101,11 +102,11 @@ export function bindEventBannerTip(scope) {
     const slug = banner.getAttribute('data-event-slug') || '';
     const event = getCatalogEvent(slug);
     if (!event) {
-      tip.hidden = true;
+      hideTooltip(tip, () => tip.replaceChildren());
       return;
     }
     tip.innerHTML = tipHtml(event);
-    tip.hidden = false;
+    showTooltip(tip);
     tip.style.left = '0px';
     tip.style.top = '0px';
     const scale = desktopTooltipScale(window.innerWidth);
@@ -127,7 +128,7 @@ export function bindEventBannerTip(scope) {
   for (const banner of marks) {
     const show = () => place(banner);
     const hide = () => {
-      tip.hidden = true;
+      hideTooltip(tip, () => tip.replaceChildren());
     };
     banner.addEventListener('pointerenter', show);
     banner.addEventListener('pointerleave', hide);

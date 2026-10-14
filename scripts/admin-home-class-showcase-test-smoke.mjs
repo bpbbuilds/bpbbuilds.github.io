@@ -9,6 +9,7 @@ const root = new URL('../', import.meta.url);
 const page = await readFile(new URL('admin/test/home/sections/chooseYourHero/index.html', root), 'utf8');
 const controller = await readFile(new URL('js/pages/admin/home-class-showcase-test.js', root), 'utf8');
 const styles = await readFile(new URL('js/pages/admin/home-class-showcase-test.css', root), 'utf8');
+const liveStyles = await readFile(new URL('js/pages/home/home-class-showcase.css', root), 'utf8');
 const source = await readFile(new URL('js/pages/home/home-class-showcase.js', root), 'utf8');
 
 assert.match(page, /page-admin-home-class-showcase-test/, 'test page has a scoped body class');
@@ -28,6 +29,7 @@ assert.match(controller, /setRangerAnimation/, 'test preset can toggle Ranger an
 assert.match(controller, /style === 'ranger-idle'[\s\S]*data-home-mobs-rail[\s\S]*scrollLeft/, 'Ranger selection centers its rail without a horizontal reveal');
 assert.match(source, /data-ranger-video/, 'Ranger preset has an animated-video presentation path');
 assert.match(source, /video\.play\(\)/, 'Ranger preset starts the animated video path explicitly');
+assert.match(source, /video\.preload\s*=\s*['"]auto['"]/, 'Ranger test media is warmed before first animated paint');
 assert.match(styles, /@media \(max-width: 700px\)/, 'test page has a narrow responsive breakpoint');
 assert.match(styles, /@media \(max-width: 640px\)/, 'test page has a compact mobile breakpoint');
 assert.match(styles, /overflow-x: hidden/, 'test page prevents decorative hero overhang from creating page overflow');
@@ -38,10 +40,16 @@ assert.match(styles, /translate3d\(0,\s*var\(--home-ranger-enter-y\),\s*0\)/, 'R
 assert.match(styles, /data-style='ranger-idle'[^}]*\.home-mobs__cards[^}]*scroll-behavior:\s*auto/, 'Ranger idle disables the rail smooth-scroll reveal');
 assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/, 'test page has reduced-motion coverage');
 assert.match(styles, /data-style='ranger-idle'\]\s+\.home-mobs\s+\{[\s\S]*?animation:\s*none/, 'Ranger idle entrance respects reduced motion');
+assert.match(liveStyles, /\.home-mobs__band[\s\S]*?bg-dark-textured\.webp/, 'Choose your hero uses the shared dark textured background');
+assert.match(liveStyles, /background-size:\s*cover/, 'Choose your hero texture scales fluidly across viewports');
+assert.match(liveStyles, /--home-mobs-inverted-top-(?:left|right)-mask:/, 'Choose your hero defines the inverted top edge curve');
+assert.match(liveStyles, /\.home-mobs__band::before[\s\S]*?-webkit-mask-image:/, 'Choose your hero applies the curved mask to its background layer');
+assert.match(liveStyles, /--home-mobs-step-height:\s*24px/, 'Choose your hero uses the Explore Items desktop step height');
+assert.match(liveStyles, /mask-size:\s*100% 100%,\s*100% var\(--home-mobs-step-height\),\s*var\(--home-mobs-step-mask-size\),\s*var\(--home-mobs-step-mask-size\)/, 'Choose your hero keeps the inverted curve at the Explore Items desktop size and position');
 assert.match(source, /Choose your hero/, 'live section source still contains the section heading');
 assert.match(source, /data-home-mobs-rail/, 'live section source still contains its card rail');
 assert.match(source, /char-ranger-idle\.webp/, 'Ranger game idle asset is wired as an opt-in source');
-assert.match(source, /char-ranger-idle\.webm/, 'Ranger game idle WebM is wired as an opt-in source');
+assert.match(source, /ranger-idle-hq/, 'Ranger game idle uses the high-resolution media revision');
 assert.match(source, /data-ranger-video/, 'Ranger markup includes an animated-video fallback surface');
 assert.match(source, /prefers-reduced-motion/, 'Ranger game idle respects reduced-motion users');
 

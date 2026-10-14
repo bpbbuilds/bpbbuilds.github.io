@@ -45,6 +45,13 @@ try {
       const boardTags = document.querySelector('.home-promo__board-tags');
       const card = document.querySelector('.home-promo__card');
       const board = document.querySelector('.home-promo__board');
+      const titleElement = title instanceof HTMLElement ? title : null;
+      const measureCardHeight = () => card?.getBoundingClientRect().height || 0;
+      const longTitle = titleElement?.textContent || '';
+      const longCardHeight = measureCardHeight();
+      if (titleElement) titleElement.textContent = 'Short build';
+      const shortCardHeight = measureCardHeight();
+      if (titleElement) titleElement.textContent = longTitle;
       const profileProbe = document.createElement('span');
       profileProbe.className = 'home-promo__creator-face';
       profileProbe.style.cssText = 'position:absolute;left:-10000px;top:0;visibility:hidden;';
@@ -70,6 +77,8 @@ try {
         titleLineClamp: title ? getComputedStyle(title).webkitLineClamp : '',
         titleLineHeight: title ? parseFloat(getComputedStyle(title).lineHeight) || 0 : 0,
         titleHeight: title?.getBoundingClientRect().height || 0,
+        longCardHeight,
+        shortCardHeight,
         hasKicker: Boolean(kicker),
         countShade: count?.classList.contains('home-promo__info-shade') === true,
         countBeforeColor: count ? getComputedStyle(count, '::before').backgroundColor : '',
@@ -93,6 +102,7 @@ try {
     if (result.titleFontSize < 20.5) throw new Error(`${viewport.name}: build title is not enlarged (${JSON.stringify(result)})`);
     if (!['-webkit-box', 'flow-root'].includes(result.titleDisplay) || result.titleWhiteSpace !== 'normal' || result.titleLineClamp !== '2') throw new Error(`${viewport.name}: Player Info title is not two-line clamped (${JSON.stringify(result)})`);
     if (result.titleHeight < result.titleLineHeight * 1.8) throw new Error(`${viewport.name}: Player Info title does not have room for two lines (${JSON.stringify(result)})`);
+    if (Math.abs(result.longCardHeight - result.shortCardHeight) > 1) throw new Error(`${viewport.name}: one-line and two-line build titles change the Player Info section height (${JSON.stringify(result)})`);
     if (result.hasKicker) throw new Error(`${viewport.name}: Player info kicker is still visible (${JSON.stringify(result)})`);
     if (!result.countShade || result.countBeforeColor !== 'rgba(14, 15, 16, 0.14)') throw new Error(`${viewport.name}: build count is missing the dark stat shade (${JSON.stringify(result)})`);
     if (!result.countLabelBeforeNumber) throw new Error(`${viewport.name}: Builds label is not above the count (${JSON.stringify(result)})`);

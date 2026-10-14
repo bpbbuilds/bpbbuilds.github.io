@@ -4,7 +4,9 @@
   /* Bleed past #main frame padding so cards meet the screen-frame on both sides */
   width: calc(100% + 2 * var(--bpb-frame-edge-x, 0px));
   max-width: none;
-  margin: 0.75rem calc(-1 * var(--bpb-frame-edge-x, 0px)) 2rem;
+  /* Keep the Player Info build animation visually connected to the featured
+     stage without changing the carousel's internal breathing room. */
+  margin: 0.75rem calc(-1 * var(--bpb-frame-edge-x, 0px)) 1.25rem;
   padding: 0.5rem 0 1rem;
   overflow: hidden;
   box-sizing: border-box;
@@ -92,32 +94,6 @@
   filter: none;
   z-index: 5;
   cursor: var(--bpb-cursor-pointer);
-}
-
-/* —— Loading skeleton (uses shared .bpb-skel) —— */
-.fs-skel-wrap {
-  width: 100%;
-}
-
-.fs-shell--skel {
-  min-height: clamp(22rem, 34vw, 39rem);
-}
-
-.fs-section-skeleton {
-  min-height: inherit;
-  border-radius: 0.35rem;
-}
-
-@media (max-width: 1100px) {
-  .fs-shell--skel {
-    min-height: clamp(18rem, 48vw, 31rem);
-  }
-}
-
-@media (max-width: 640px) {
-  .fs-shell--skel {
-    min-height: 15rem;
-  }
 }
 
 /* —— Video + info: info tucks under video (old plate overlap) —— */
