@@ -485,6 +485,20 @@ export function createTooltipHover(options = {}) {
     if (pinned) return;
     clearHide();
     if (!item?.name) return;
+
+    // pointerover bubbles through every sprite/text node inside an item. The
+    // Vault Hunters gear page uses mouseenter-style boundaries, so crossing a
+    // descendant must not re-render the same card or restart its fade.
+    const sameVisibleAnchor =
+      activeAnchor === anchor &&
+      host.classList.contains('is-visible') &&
+      !host.classList.contains('is-hiding');
+    if (sameVisibleAnchor) {
+      if (place) activePlace = place;
+      placeTip(anchor);
+      return;
+    }
+
     activeAnchor = anchor;
     if (place) activePlace = place;
     const el = renderItem(item, anchor);

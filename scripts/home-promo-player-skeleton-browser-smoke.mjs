@@ -69,6 +69,9 @@ try {
         edgeMask: style?.webkitMaskImage || style?.maskImage || '',
         cardBackgroundImage: getComputedStyle(document.querySelector('.home-promo--player-info .home-promo__card')).backgroundImage,
         cardBackgroundColor: getComputedStyle(document.querySelector('.home-promo--player-info .home-promo__card')).backgroundColor,
+        cardBorder: getComputedStyle(document.querySelector('.home-promo--player-info .home-promo__card')).borderTopColor,
+        cardBorderWidth: getComputedStyle(document.querySelector('.home-promo--player-info .home-promo__card')).borderTopWidth,
+        cardRadius: getComputedStyle(document.querySelector('.home-promo--player-info .home-promo__card')).borderTopLeftRadius,
         left: bounds?.left ?? -1,
         right: bounds?.right ?? -1,
         viewportWidth: window.innerWidth,
@@ -82,8 +85,11 @@ try {
     assert.equal(result.statusRegions, 0, `${viewport.name}: Player Info exposes no loading status for a skeleton`);
     assert.equal(result.backgroundImage, 'none', `${viewport.name}: Player Info section has no decorative background image`);
     assert.equal(result.backgroundColor, 'rgba(0, 0, 0, 0)', `${viewport.name}: Player Info section has a transparent background`);
-    assert.equal(result.cardBackgroundImage, 'none', `${viewport.name}: Player Info card has no decorative background image`);
-    assert.equal(result.cardBackgroundColor, 'rgba(0, 0, 0, 0)', `${viewport.name}: Player Info card has a transparent background`);
+    assert.match(result.cardBackgroundImage, /radial-gradient/, `${viewport.name}: Player Info card uses the dark hero gradient`);
+    assert.equal(result.cardBackgroundColor, 'rgb(20, 17, 15)', `${viewport.name}: Player Info card has the dark fallback fill`);
+    assert.equal(result.cardBorder, 'rgb(58, 50, 44)', `${viewport.name}: Player Info card has the outlined hero edge`);
+    assert.equal(result.cardBorderWidth, '1px', `${viewport.name}: Player Info card outline stays thin`);
+    assert.equal(result.cardRadius, '24px', `${viewport.name}: Player Info card keeps the hero-card radius`);
     assert.equal(result.edgeMask, 'none', `${viewport.name}: Player Info has no decorative edge mask`);
     assert.ok(result.overflowX <= 1, `${viewport.name}: skeleton introduced horizontal overflow`);
     results.push({ ...viewport, ...result });

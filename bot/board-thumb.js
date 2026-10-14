@@ -11,6 +11,9 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CELL_PX = 256;
 const PAD_PX = 24;
 const OVERHANG_CELLS = 1;
+const BOARD_BUCKET_ID = 'discord-builds';
+const BOARD_BUCKET_FILE_LIMIT = 10485760;
+const BOARD_BUCKET_MIME_TYPES = ['image/png', 'image/webp'];
 const ITEM_FIELDS = [
   'id',
   'gid',
@@ -115,28 +118,78 @@ export function stillUrl(config, build) {
 
 let bucketReady = false;
 
+/**
+ * Ensure the public board-image bucket accepts the generated export size. Older
+ * deployments created this bucket with a 2 MiB limit, which made hosting fail
+ * and left Discord embeds pointing at unavailable board-stills URLs.
+ * @param {{ base: string, key: string }} config
+ * @returns {Promise<boolean>}
+ */
 async function ensureBoardBucket(config) {
-  if (bucketReady) return;
+  if (bucketReady) return true;
+  const headers = {
+    apikey: config.key,
+    Authorization: `Bearer ${config.key}`,
+    'Content-Type': 'application/json',
+  };
+  const desired = {
+    id: BOARD_BUCKET_ID,
+    name: BOARD_BUCKET_ID,
+    public: true,
+    file_size_limit: BOARD_BUCKET_FILE_LIMIT,
+    allowed_mime_types: BOARD_BUCKET_MIME_TYPES,
+  };
+  const bucketUrl = `${config.base}/storage/v1/bucket/${BOARD_BUCKET_ID}`;
+  const existing = await fetch(bucketUrl, { headers });
+  if (existing.ok) {
+    const current = await existing.json().catch(() => ({}));
+    const currentLimit = Number(current?.file_size_limit) || 0;
+    const currentTypes = Array.isArray(current?.allowed_mime_types)
+      ? current.allowed_mime_types
+      : [];
+    if (currentLimit >= BOARD_BUCKET_FILE_LIMIT && currentTypes.includes('image/png')) {
+      bucketReady = true;
+      return true;
+    }
+    const updated = await fetch(bucketUrl, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(desired),
+    });
+    bucketReady = updated.ok;
+    if (!bucketReady) {
+      const detail = await updated.text();
+      console.error(`Build image bucket update failed (${updated.status}): ${detail.slice(0, 160)}`);
+    }
+    return bucketReady;
+  }
+
   const res = await fetch(`${config.base}/storage/v1/bucket`, {
     method: 'POST',
-    headers: {
-      apikey: config.key,
-      Authorization: `Bearer ${config.key}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      id: 'discord-builds',
-      name: 'discord-builds',
-      public: true,
-      file_size_limit: 10485760,
-      allowed_mime_types: ['image/png'],
-    }),
+    headers,
+    body: JSON.stringify(desired),
   });
-  bucketReady = res.ok || res.status === 400 || res.status === 409;
-  if (!bucketReady) {
+  if (res.ok) {
+    bucketReady = true;
+    return true;
+  }
+  if (res.status === 409 || res.status === 400) {
+    const updated = await fetch(bucketUrl, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(desired),
+    });
+    bucketReady = updated.ok;
+    if (bucketReady) return true;
+    const detail = await updated.text();
+    console.error(`Build image bucket update failed (${updated.status}): ${detail.slice(0, 160)}`);
+    return false;
+  }
+  {
     const detail = await res.text();
     console.error(`Build image bucket failed (${res.status}): ${detail.slice(0, 160)}`);
   }
+  return false;
 }
 
 /**
@@ -148,10 +201,10 @@ async function ensureBoardBucket(config) {
  * @returns {Promise<string>}
  */
 export async function hostBoardImage(config, slug, png) {
-  await ensureBoardBucket(config);
+  if (!(await ensureBoardBucket(config))) return '';
   const name = String(slug || 'build').replace(/[^\w.-]/g, '') || 'build';
   const objectPath = `${name}.png`;
-  const res = await fetch(`${config.base}/storage/v1/object/discord-builds/${objectPath}`, {
+  const res = await fetch(`${config.base}/storage/v1/object/${BOARD_BUCKET_ID}/${objectPath}`, {
     method: 'POST',
     headers: {
       apikey: config.key,

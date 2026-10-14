@@ -1,5 +1,131 @@
 # Codex handoff
 
+### 2026-10-14 Home background swap complete
+- Replaced the Home falling-item background with the existing scroll-scrubbed
+  time-of-day combat sky and animated windmill. `index.html` now loads
+  `combat-sky.css`, and `js/pages/home/index.js` boots `initCombatSky()` before
+  navigation/auth work so the background is present on first paint.
+- Added `scripts/home-background-mode-smoke.mjs`, covering the stylesheet and
+  boot contract, removal of the falling-item layer, and windmill animation
+  keyframes. Smoke and JS syntax checks passed; staged diff check passed.
+- Committed locally as `31d8680` (`Use animated time-of-day Home background`).
+  The commit is not pushed; unrelated local work remains unstaged.
+
+### 2026-10-14 Home build class icon sizing complete
+- Enlarged the left-anchored class icon with fluid `clamp()` sizing in
+  `js/pages/home/home-promo-band.css`; the title remains centered and the icon
+  remains square at all supported widths.
+- Extended `scripts/home-promo-title-surface-smoke.mjs` to require the larger
+  icon size and square geometry. Focused title-surface and existing Player Info
+  smokes passed at desktop, short desktop, tablet, and mobile widths.
+- Committed locally as `082dcfc` (`Enlarge Home build class icon`). The commit
+  is not pushed; unrelated local work remains unstaged.
+
+### 2026-10-14 Home build-animation title alignment complete
+- Anchored the class icon to the left edge of the existing dark title surface
+  while making the title own the full row and remain centered. The responsive
+  behavior is unchanged across desktop, short desktop, tablet, and mobile.
+- Extended `scripts/home-promo-title-surface-smoke.mjs` to assert the icon is
+  absolutely positioned, the title is centered, the dark surface is retained,
+  and no viewport overflows are introduced. Focused and existing Home Player
+  Info smokes passed.
+- Committed locally as `f301180` (`Align Home build class icon left`). The
+  commit is not pushed; unrelated local work remains unstaged.
+
+### 2026-10-14 Home build-animation title surface complete
+- Added the Home build-animation title/class surface in
+  `js/pages/home/home-promo-band.css`, reusing the same Patch3-backed
+  `rgba(14, 15, 16, 0.14)` shade as the Gold and Rank cells. Fluid padding and
+  a scoped pseudo-element keep the title and class icon legible without
+  changing the board, player, gold, or rank layout.
+- Added `scripts/home-promo-title-surface-smoke.mjs`. It passed at 1440,
+  1080/short desktop, tablet, and mobile widths; the Player Info browser smoke
+  also passed with no horizontal overflow and the existing responsive card
+  metrics unchanged. `git diff --cached --check` passed before commit.
+- Committed as `c6c836b` (`Add dark Home build title surface`). Owned paths:
+  `js/pages/home/home-promo-band.css` and
+  `scripts/home-promo-title-surface-smoke.mjs`. Unrelated local work remains
+  unstaged.
+
+### 2026-10-14 Choose Your Hero bag links complete
+- Claimed and updated `js/pages/home/home-class-showcase.js` and its stylesheet.
+  The subtitle now explains both navigation paths. Revealed starting bags are
+  accessible links using the existing Builds search chip format
+  (`q=[[item_id]]`), so each bag opens the Builds page filtered to that exact
+  bag; the card's hero links and delegated card navigation remain unchanged.
+- Added `scripts/home-class-showcase-bag-links-smoke.mjs` to verify the copy,
+  anchor contract, pointer styling, exact item-id serialization, and positive /
+  negative build matching. Verification passed: bag-link smoke, Admin Choose
+  Your Hero static/browser smokes, Home pointer smoke, and `git diff --check`.
+- Responsive behavior is unchanged and verified at 1440, 1080, tablet, and
+  mobile widths. Owned paths: `js/pages/home/home-class-showcase.js`,
+  `js/pages/home/home-class-showcase.css`, and the new smoke script. Committed
+  and pushed as `8e70aa3` (`Link Choose Your Hero bags to filtered builds`).
+  Unrelated local edits remain unstaged.
+
+### 2026-10-14 Home clickable cursor audit complete
+- Claimed and updated the Home pointer surfaces in
+  `js/pages/home/featured-stage.css`, `home-class-showcase.css`,
+  `home-items-explore.css`, and `home-promo-band.css`. CSS cursor variables now
+  fall back to the native `pointer`/`default` values because the custom game
+  cursor stylesheet is intentionally not loaded; the featured carousel's
+  active media also explicitly owns the pointer because its delegated click
+  mounts the preview while the surrounding active copy remains default.
+- Added `scripts/home-pointer-smoke.mjs`, covering the active preview media,
+  delegated hero card, item sprite, build cell, promo board link, and inactive
+  featured slide at 1440, 1080, tablet, and mobile widths. Verification
+  passed: focused Home pointer smoke and `git diff --check`. No mobile
+  override was added because the site uses the platform cursor on mobile.
+- Owned paths: the four Home stylesheets above and the new pointer smoke. The
+  pointer-only commits `8dcbe6e` and `a87cefd` are pushed to `origin/main`;
+  unrelated local work remains unstaged.
+
+### 2026-10-14 Discord latest build image repair complete
+- Repaired only the two newest Builds forum threads:
+  `bpbb-crazy-debuff-invin-build-9ini5d` and
+  `bpbb-molten-greatsword-on-alchemist-is-awesom-vvki8f`.
+- Root cause was the existing public `discord-builds` bucket's 2 MiB file
+  limit. Generated board PNGs are 5.6–6.5 MiB, so hosting failed and the bot
+  fell back to unavailable `board-stills` URLs. `bot/board-thumb.js` now reads
+  and upgrades the bucket to a 10 MiB limit before upload; the guarded repost
+  refuses to delete a target if its replacement image cannot be hosted.
+- Deleted/reposted both targets. Final live verification shows zero message
+  attachments, one embed image per post, `discord-builds/*.png` URLs, and HTTP
+  200 `image/png` responses. Added the bucket/repost contract assertions to
+  `discord-build-image-smoke.mjs`; syntax and smoke checks passed. This code
+  change is local and has not been pushed.
+
+### 2026-10-14 Tooltip-to-tooltip fade restart complete
+- Shared tooltip hosts now add a scoped anchor-switch animation whenever visible
+  content is replaced. Item/cosmetic, build-preview, event, and Home curated
+  loadout tooltips fade through the transition instead of swapping at full
+  opacity; ordinary show/hide and reduced-motion behavior remain intact.
+- Owned paths for this change: `js/shared/tooltip-motion.js`,
+  `js/shared/tooltip.css`, and tooltip transition smoke coverage.
+- Responsive rule: tooltip placement and scale are unchanged at 1440,
+  1080/short desktop, tablet, and mobile; only the opacity lifecycle changes.
+- Added static coverage for the swap class/keyframes and browser coverage that
+  switches anchors, samples the fade, checks replacement content, and verifies
+  reduced-motion/responsive states. Verification passed: tooltip transition
+  static/browser smokes, tooltip scale smoke, curated-loadout responsive smoke,
+  JS syntax checks, and `git diff --check`. This work is local and has not been
+  pushed.
+
+### 2026-10-14 Player Info card background complete
+- Added the Choose Your Hero card treatment only to
+  `.home-promo--player-info .home-promo__card`: a black-to-gray radial gradient,
+  `#3a322c` outline, and `1.5rem` radius. The surrounding build-animation
+  section remains transparent and mask-free.
+- Preserved the card's existing fluid layout, frame removal, animation content,
+  and no-overflow behavior at 1440, 1080/short desktop, tablet, and mobile
+  widths. Bumped the Home promo stylesheet cache key in the live Home page and
+  both admin animation test/performance surfaces.
+- Updated the static and browser smokes to assert the card surface, border, and
+  radius while retaining the transparent outer section checks. Verification
+  passed: Player Info animation/skeleton smokes, Home section skeleton and
+  first-paint browser smokes, no-skeleton shape smoke, and `git diff --check`.
+  This work is local and has not been pushed.
+
 ### 2026-10-14 Local website changes pushed
 - Committed and pushed the staged product/assets/regression set as
   `82bd0396a3934edf01d06ffb19a7ee95d58873d3` (`Sync local website updates`) to
@@ -3897,3 +4023,36 @@ None.
 
 - Fixed the data-path mismatch: current builds store their description in `notes`, while Featured was selecting/rendering only legacy `blurb`. Featured now selects `notes`, prefers it with a `blurb` fallback, extracts its serialized `[[item_id]]` references, fetches only those item rows plus sprite metadata, and renders shared escaped sprite chips.
 - Added `js/pages/home/featured-mentions.js`, scoped chip styling, and static/runtime smokes covering item id, image source, escaping, notes-first fallback, and no-mention lookup avoidance. Featured syntax, mention smokes, Home skeleton smokes, responsive skeleton coverage, and `git diff --check` pass. No push was requested.
+
+### 2026-10-14 Vault Hunters tooltip motion audit (in progress)
+
+- Codex owns `js/shared/tooltip-hover.js`, `js/shared/tooltip-motion.js`, `js/shared/tooltip.css`, the focused tooltip transition smokes, and the new tooltip audit note.
+- Scope: compare the Vault Hunters gear hover lifecycle with our shared tooltip host, fix descendant pointer churn and anchor-to-anchor fade timing without changing tooltip content, placement, scale, or responsive behavior, and verify desktop/tablet/mobile plus reduced-motion states.
+
+### 2026-10-14 Vault Hunters tooltip motion audit complete
+
+- Audited the Vault Hunters gear/loadout surface and reproduced its Tippy fade: per-card poppers use `animation: "fade"`, `data-animation="fade"`, and a `0.3s` opacity/transform/visibility transition. Added the evidence and implementation notes to `docs/performance/tooltip-motion-audit.md`.
+- Fixed the local shared host so bubbling descendant `pointerover` events do not re-render the same anchor or restart its fade. Anchor changes retain the shared crossfade, and the cadence now matches the audited 300ms reference; reduced-motion remains motionless.
+- Added a nested-descendant regression to the browser smoke and verified enter, switch, exit, responsive (1440/1080/tablet/mobile), and reduced-motion behavior. Tooltip transition/static, scale, parity, syntax, and `git diff --check` checks pass. No blockers; no push was requested.
+
+### 2026-10-14 Discord /item command (in progress)
+
+- Codex owns `bot/commands/item.js`, `bot/item-tooltip.js`, `bot/commands/index.js`, `bot/watch.js`, the bot image asset list in `bot/Dockerfile`, the focused `/item` smoke, and this handoff.
+- Scope: add an autocomplete-backed `/item` lookup, render the item icon as the embed thumbnail, render a tooltip-style PNG as the large embed image, include the requested combat/catalog/effect fields, and link the public-build count to the existing `q=[[item_id]]` Builds filter. No browser secrets or service-role credentials will be exposed.
+
+### 2026-10-14 Discord /item command complete
+
+- Added the registered `/item` slash command with name/ID autocomplete, exact-or-name catalog lookup through the server-side Supabase service-role path, and safe “not found” handling.
+- Added the requested embed details: item icon thumbnail, generated tooltip image, damage, stamina, accuracy, cooldown, cost, rarity, class, category, effect/type tags, and a deduplicated public-build count linking to the existing `q=[[item_id]]` Builds filter.
+- Added server-side PNG rendering using the existing item sprites, tooltip frames, and tooltip fonts. Docker now packages the frame/divider/font assets needed by the command. Autocomplete and command execution are routed by the persistent watcher.
+- Added `scripts/discord-item-command-smoke.mjs`; it passes static registration/asset checks and runtime embed/link assertions. `node --check` passes for all touched bot modules; command registry import and an actual canvas icon/tooltip render smoke also pass. Guild command registration completed successfully with 5 commands. No secrets were added and no push was requested.
+
+### 2026-10-14 Builds empty-state typography (in progress)
+
+- Codex owns the Builds feed empty-state rule in `js/pages/builds/builds.css`, the focused style smoke, and this handoff.
+- Scope: make “No builds match these filters.” use the shared outlined white display-label treatment used by navigation, with fluid sizing across desktop, tablet, and mobile.
+
+### 2026-10-14 Builds empty-state typography complete
+
+- Updated `.builds-feed__empty` to use the shared display font, white label fill, outlined label stroke, larger clamped typography, and responsive spacing.
+- Added `scripts/builds-empty-state-style-smoke.mjs`. Static smoke, syntax checks, `git diff --check`, and a Playwright viewport probe pass at 1440, 1080, 768, and 390px. No blockers.

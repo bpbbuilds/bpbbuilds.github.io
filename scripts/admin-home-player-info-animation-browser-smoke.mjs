@@ -88,7 +88,9 @@ try {
         cardAreas: cardStyle?.gridTemplateAreas || '',
         cardBackgroundImage: cardStyle?.backgroundImage || '',
         cardBackgroundColor: cardStyle?.backgroundColor || '',
+        cardBorderTopColor: cardStyle?.borderTopColor || '',
         cardBorderTopWidth: cardStyle?.borderTopWidth || '',
+        cardRadius: cardStyle?.borderTopLeftRadius || '',
         cardShadow: cardStyle?.boxShadow || '',
         hasCatalog: Boolean(document.querySelector('.home-promo__catalog')),
         overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -108,8 +110,8 @@ try {
     if (!result.countLabelBeforeNumber) throw new Error(`${viewport.name}: Builds label is not above the count (${JSON.stringify(result)})`);
     if (result.boardTagsDisplay !== 'none') throw new Error(`${viewport.name}: Player Info board tags are still visible (${JSON.stringify(result)})`);
     if (result.boardWidth <= 0) throw new Error(`${viewport.name}: board collapsed`);
-    if (result.cardBackgroundImage !== 'none' || result.cardBackgroundColor !== 'rgba(0, 0, 0, 0)') throw new Error(`${viewport.name}: Player info card still has a background (${JSON.stringify(result)})`);
-    if (result.cardBorderTopWidth !== '0px' || result.cardShadow !== 'none') throw new Error(`${viewport.name}: Player info card still has border/shadow (${JSON.stringify(result)})`);
+    if (!result.cardBackgroundImage.includes('radial-gradient') || result.cardBackgroundColor !== 'rgb(20, 17, 15)') throw new Error(`${viewport.name}: Player info card lost the dark hero surface (${JSON.stringify(result)})`);
+    if (result.cardBorderTopColor !== 'rgb(58, 50, 44)' || result.cardBorderTopWidth !== '1px' || result.cardRadius !== '24px' || result.cardShadow !== 'none') throw new Error(`${viewport.name}: Player info card lost the outlined hero-card treatment (${JSON.stringify(result)})`);
     if (result.hasCatalog) throw new Error(`${viewport.name}: catalog mounted in Player info mode`);
     if (result.overflowX > 1) throw new Error(`${viewport.name}: horizontal overflow ${result.overflowX}px`);
     results.push({ ...viewport, ...result });

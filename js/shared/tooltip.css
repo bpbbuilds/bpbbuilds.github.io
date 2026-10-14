@@ -701,7 +701,7 @@
 .bpb-tooltip-float,
 .build-more-tip,
 .build-event-tip {
-  --bpb-tooltip-fade-duration: 160ms;
+  --bpb-tooltip-fade-duration: 300ms;
   opacity: 0;
   visibility: hidden;
   transition:
@@ -724,6 +724,21 @@
 .build-more-tip.is-visible,
 .build-event-tip.is-visible {
   opacity: 1;
+}
+
+/* Reused tooltip hosts need an explicit mid-hover fade when their anchor
+   changes. The content is replaced before this animation starts, so each
+   card transition reads as a deliberate fade instead of a hard swap. */
+@keyframes bpb-tooltip-anchor-swap {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.bpb-tooltip-float.is-swapping,
+.build-more-tip.is-swapping,
+.build-event-tip.is-swapping {
+  animation: bpb-tooltip-anchor-swap var(--bpb-tooltip-fade-duration) ease both;
 }
 
 .bpb-tooltip-float.is-hiding,
@@ -755,6 +770,7 @@
   .build-more-tip,
   .build-event-tip {
     transition: none;
+    animation: none;
   }
 }
 

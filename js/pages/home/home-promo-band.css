@@ -115,13 +115,14 @@
   display: none;
 }
 
-/* Player info is an open information-first presentation: keep the board and
-   player details on the page without the parchment panel or screen frame. */
+/* Player info keeps the outer section open, while its content card uses the
+   same dark, outlined surface as the Choose Your Hero cards. */
 .home-promo.home-promo--player-info .home-promo__card {
-  background: transparent;
-  background-image: none;
-  border: 0;
+  background: radial-gradient(circle at top center, #2a2420, #14110f);
+  background-color: #14110f;
+  border: 1px solid #3a322c;
   border-image: none;
+  border-radius: 1.5rem;
   box-shadow: none;
 }
 

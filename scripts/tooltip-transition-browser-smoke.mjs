@@ -20,7 +20,7 @@ const server = http.createServer((req, res) => {
       <link rel="stylesheet" href="/js/pages/build/more-build-tip.css">
       <link rel="stylesheet" href="/js/pages/build/event-banner-tip.css">
       <style>*,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0}#root{padding:80px}.test-surface{position:fixed;left:12px;top:12px;width:24px;height:24px;background:#222}</style>
-    </head><body><main id="root"><button id="item" data-item-id="hammer">Item</button></main></body></html>`);
+    </head><body><main id="root"><button id="item" data-item-id="hammer"><span id="item-child">Item</span></button><button id="item-2" data-item-id="shield">Second item</button></main></body></html>`);
     return;
   }
   const filePath = path.join(root, decodeURIComponent(url.pathname.replace(/^\//, '')));
@@ -53,10 +53,12 @@ try {
     const { hideTooltip, showTooltip } = await import('/js/shared/tooltip-motion.js');
     const root = document.querySelector('#root');
     const item = document.querySelector('#item');
+    const itemChild = document.querySelector('#item-child');
+    const itemTwo = document.querySelector('#item-2');
     const tip = createTooltipHover();
     tip.bind(root, {
       selector: '[data-item-id]',
-      getItem: () => ({ name: 'Hammer' }),
+      getItem: (anchor) => ({ name: anchor?.getAttribute('data-item-id') === 'shield' ? 'Shield' : 'Hammer' }),
     });
 
     const enterProbe = document.createElement('div');
@@ -67,7 +69,7 @@ try {
     const enterImmediate = getComputedStyle(enterProbe).opacity;
     await new Promise((resolve) => window.setTimeout(resolve, 45));
     const enterMid = getComputedStyle(enterProbe).opacity;
-    await new Promise((resolve) => window.setTimeout(resolve, 180));
+    await new Promise((resolve) => window.setTimeout(resolve, 340));
     const enterFinished = getComputedStyle(enterProbe).opacity;
     enterProbe.remove();
 
@@ -75,7 +77,7 @@ try {
     const host = tip.host;
     const visibleEntryStyle = getComputedStyle(host);
     const visibleEntryOpacity = visibleEntryStyle.opacity;
-    await new Promise((resolve) => window.setTimeout(resolve, 200));
+    await new Promise((resolve) => window.setTimeout(resolve, 340));
     const visibleStyle = getComputedStyle(host);
     const visible = {
       classVisible: host.classList.contains('is-visible'),
@@ -86,7 +88,26 @@ try {
       transitionProperty: visibleStyle.transitionProperty,
     };
 
-    item.dispatchEvent(new PointerEvent('pointerout', { bubbles: true, relatedTarget: document.body }));
+    itemChild.dispatchEvent(new PointerEvent('pointerover', { bubbles: true, clientX: 124, clientY: 124 }));
+    const sameAnchor = {
+      swapping: host.classList.contains('is-swapping'),
+      content: host.textContent,
+    };
+
+    itemTwo.dispatchEvent(new PointerEvent('pointerover', { bubbles: true, clientX: 180, clientY: 120 }));
+    const swapEntry = getComputedStyle(host).opacity;
+    await new Promise((resolve) => window.setTimeout(resolve, 45));
+    const swapMid = getComputedStyle(host).opacity;
+    await new Promise((resolve) => window.setTimeout(resolve, 420));
+    const swapFinished = getComputedStyle(host).opacity;
+    const swapped = {
+      entryOpacity: swapEntry,
+      midOpacity: swapMid,
+      finishedOpacity: swapFinished,
+      hasSecondContent: host.textContent.includes('Shield'),
+    };
+
+    itemTwo.dispatchEvent(new PointerEvent('pointerout', { bubbles: true, relatedTarget: document.body }));
     await new Promise((resolve) => window.setTimeout(resolve, 120));
     const hidingStyle = getComputedStyle(host);
     const hiding = {
@@ -95,7 +116,7 @@ try {
       visibility: hidingStyle.visibility,
       opacity: hidingStyle.opacity,
     };
-    await new Promise((resolve) => window.setTimeout(resolve, 170));
+    await new Promise((resolve) => window.setTimeout(resolve, 340));
     const finished = {
       hidden: host.hidden,
       classHiding: host.classList.contains('is-hiding'),
@@ -109,7 +130,7 @@ try {
       el.hidden = true;
       document.body.append(el);
       showTooltip(el);
-      await new Promise((resolve) => window.setTimeout(resolve, 200));
+      await new Promise((resolve) => window.setTimeout(resolve, 340));
       const shown = getComputedStyle(el);
       const shownOpacity = shown.opacity;
       const shownVisibility = shown.visibility;
@@ -127,7 +148,7 @@ try {
       });
     }
 
-    return { visible, hiding, finished, custom, enter: { immediate: enterImmediate, mid: enterMid, finished: enterFinished } };
+    return { visible, sameAnchor, swapped, hiding, finished, custom, enter: { immediate: enterImmediate, mid: enterMid, finished: enterFinished } };
   });
 
   assert.equal(result.visible.classVisible, true, 'shared tooltip enters the visible state');
@@ -136,6 +157,12 @@ try {
   assert.ok(parseFloat(result.visible.entryOpacity) < 1, 'shared tooltip begins its enter transition below full opacity');
   assert.match(result.visible.transitionProperty, /opacity/, 'shared tooltip transitions opacity');
   assert.ok(result.visible.transitionDuration.split(',').some((duration) => parseFloat(duration) > 0), 'shared tooltip has a non-zero fade duration');
+  assert.equal(result.sameAnchor.swapping, false, 'descendant pointerover does not restart the fade for the same anchor');
+  assert.equal(result.sameAnchor.content, 'Hammer', 'descendant pointerover keeps the current tooltip content');
+  assert.equal(result.swapped.entryOpacity, '1', 'shared tooltip keeps the current card visible at the start of an anchor switch');
+  assert.ok(parseFloat(result.swapped.midOpacity) < 1, `shared tooltip visibly fades out during an anchor switch (${JSON.stringify(result.swapped)})`);
+  assert.equal(result.swapped.finishedOpacity, '1', 'shared tooltip finishes the switch fade at full opacity');
+  assert.equal(result.swapped.hasSecondContent, true, 'shared tooltip replaces content for the new anchor');
   assert.ok(parseFloat(result.enter.immediate) < 1, 'shared tooltip starts transparent before the enter transition');
   assert.ok(parseFloat(result.enter.mid) > parseFloat(result.enter.immediate) && parseFloat(result.enter.mid) < 1, 'shared tooltip is visibly fading in before the transition completes');
   assert.equal(result.enter.finished, '1', 'shared tooltip finishes the fade-in at full opacity');

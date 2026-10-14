@@ -115,6 +115,9 @@ for (const build of builds) {
   await useHostedCreatorIcon(config, build, credit);
   const png = await buildThumbPng(config, build);
   const boardImage = png ? await hostBoardImage(config, slug, png) : stillUrl(config, build);
+  if (png && !boardImage) {
+    throw new Error(`Refusing to repost ${slug}: generated board image could not be hosted`);
+  }
   credit.boardImage = boardImage || '';
   replacements.push({ slug, payload: await postBody(config, build, tagIds, credit) });
 }

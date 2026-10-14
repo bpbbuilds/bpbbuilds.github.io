@@ -21,7 +21,7 @@ import { syncPastEvents } from './past-events.js';
 import { syncOnboarding } from './onboarding.js';
 import { syncStats } from './stats.js';
 import { syncLayout } from './layout.js';
-import { handleCommand, handleInvButton } from './commands/index.js';
+import { handleCommand, handleInvButton, handleItemAutocomplete } from './commands/index.js';
 import { handleVoteButton } from './announce-votes.js';
 
 const env = loadEnv();
@@ -211,8 +211,12 @@ async function onRules(message) {
 }
 
 client.on('interactionCreate', (interaction) => {
-  const run = interaction.isChatInputCommand()
-    ? handleCommand(interaction)
+  const run = interaction.isAutocomplete()
+    ? interaction.commandName === 'item'
+      ? handleItemAutocomplete(interaction)
+      : interaction.respond([])
+    : interaction.isChatInputCommand()
+      ? handleCommand(interaction)
     : interaction.isButton() && interaction.customId.startsWith('inv:')
       ? handleInvButton(interaction)
       : interaction.isButton() && interaction.customId.startsWith('vote:')
@@ -221,6 +225,10 @@ client.on('interactionCreate', (interaction) => {
   if (!run) return;
   Promise.resolve(run).catch(async (err) => {
     console.error(err instanceof Error ? err.message : err);
+    if (interaction.isAutocomplete()) {
+      await interaction.respond([]).catch(() => {});
+      return;
+    }
     const payload = { content: 'That command failed.', ephemeral: true };
     if (interaction.replied || interaction.deferred) {
       await interaction.followUp(payload).catch(() => {});

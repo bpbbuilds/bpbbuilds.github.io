@@ -16,6 +16,9 @@ COPY bot ./bot
 # and screenshot-detector assets in the bot image.
 COPY assets/data/item-shapes.json assets/data/sprite-display.json assets/data/socket-offsets.json assets/data/item-live-art.json assets/data/blob-cosmetics.json ./assets/data/
 COPY assets/item-sprites ./assets/item-sprites
+COPY assets/tooltips/frames ./assets/tooltips/frames
+COPY assets/tooltips/dividers ./assets/tooltips/dividers
+COPY assets/fonts/libre-baskerville-tooltip.ttf assets/fonts/libre-baskerville-tooltip-bold.ttf assets/fonts/milonga-tooltip.ttf ./assets/fonts/
 COPY assets/blob ./assets/blob
 COPY assets/brand/logo-bpb.png ./assets/brand/logo-bpb.png
 COPY assets/icons/history/VoteUp.png assets/icons/history/VoteDown.png ./assets/icons/history/

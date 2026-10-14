@@ -75,10 +75,12 @@ assert.match(pieces, /orderAppearEntries/, 'item wave uses the shared reveal ord
 assert.match(styles, /home-promo--player-info[\s\S]*?bpb-bg__cell--bag\.bpb-bg__cell--appear[\s\S]*?animation: home-promo-fabric-in/, 'Player Info capacity cells use the catalog-style fade');
 assert.match(styles, /home-promo--player/, 'Player info layout has isolated styling');
 assert.match(styles, /home-promo__side--player/, 'Player info uses a dedicated player-information column');
-assert.match(styles, /home-promo\.home-promo--player-info \.home-promo__card[\s\S]*?background: transparent/, 'Player info card removes the background');
+assert.match(styles, /home-promo\.home-promo--player-info \.home-promo__card[\s\S]*?background:\s*radial-gradient\(circle at top center, #2a2420, #14110f\)/, 'Player info card uses the Choose Your Hero dark gradient');
+assert.match(styles, /home-promo\.home-promo--player-info \.home-promo__card[\s\S]*?border:\s*1px solid #3a322c/, 'Player info card uses the outlined card edge');
+assert.match(styles, /home-promo\.home-promo--player-info \.home-promo__card[\s\S]*?border-radius:\s*1\.5rem/, 'Player info card uses the rounded hero-card shape');
 assert.match(styles, /home-promo\.home-promo--player-info \.home-promo__card::after[\s\S]*?display: none/, 'Player info card removes the frame');
-assert.match(performancePage, /promo-player-20261013a/, 'Performance lab cache version includes Player info styles');
-assert.match(compatibilityPage, /promo-player-20261013a/, 'Compatibility lab cache version includes Player info styles');
+assert.match(performancePage, /home-player-card-20261014a/, 'Performance lab cache version includes Player info styles');
+assert.match(compatibilityPage, /home-player-card-20261014a/, 'Compatibility lab cache version includes Player info styles');
 assert.match(compatibilityPage, /build-creator-animation-test-20261013b/, 'Compatibility lab cache version includes Player info controls');
 
 console.log('Home Player info animation smoke passed.');

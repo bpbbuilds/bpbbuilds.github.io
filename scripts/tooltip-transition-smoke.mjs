@@ -21,6 +21,10 @@ for (const surface of ['bpb-tooltip-float', 'build-more-tip', 'build-event-tip']
   assert.match(tooltipCss + eventCss + buildCss, new RegExp(`\\.${surface}\\.is-hiding`), `${surface} has a fade-out state`);
 }
 assert.match(tooltipCss, /transition:[^;]*opacity[^;]*transform[^;]*visibility/s, 'shared tooltip host transitions opacity, transform, and visibility');
+assert.match(tooltipCss, /@keyframes bpb-tooltip-anchor-swap/, 'shared tooltip defines an anchor-switch fade');
+assert.match(tooltipCss, /\.bpb-tooltip-float\.is-swapping[\s\S]*animation:\s*bpb-tooltip-anchor-swap/, 'item tooltip host runs the anchor-switch fade');
+assert.match(tooltipCss, /\.build-more-tip\.is-swapping[\s\S]*animation:\s*bpb-tooltip-anchor-swap/, 'build tooltip host runs the anchor-switch fade');
+assert.match(tooltipCss, /\.build-event-tip\.is-swapping[\s\S]*animation:\s*bpb-tooltip-anchor-swap/, 'event tooltip host runs the anchor-switch fade');
 assert.match(tooltipCss, /prefers-reduced-motion:\s*reduce[\s\S]*?bpb-tooltip-float[\s\S]*?transition:\s*none/s, 'shared tooltip fade respects reduced motion');
 assert.match(hoverJs, /tooltip-motion\.js/, 'shared tooltip hover uses the shared motion helper');
 assert.match(hoverJs, /showTooltip/, 'shared tooltip hover uses the shared show lifecycle');
@@ -32,5 +36,8 @@ assert.match(buildJs, /tooltip-motion\.js/, 'build tips use the shared motion he
 assert.match(buildJs, /showTooltip/, 'build tips use the shared show lifecycle');
 assert.match(buildJs, /hideTooltip/, 'build tips use the shared hide lifecycle');
 assert.match(motionJs, /offsetWidth/, 'shared show lifecycle commits the hidden base frame before entering');
+assert.match(motionJs, /is-swapping/, 'shared show lifecycle restarts the anchor-switch fade');
+assert.match(motionJs, /TOOLTIP_FADE_MS\s*=\s*300/, 'shared tooltip cadence matches the audited 300ms fade');
+assert.match(tooltipCss, /--bpb-tooltip-fade-duration:\s*300ms/, 'tooltip CSS uses the audited 300ms cadence');
 
 console.log('tooltip transition smoke passed.');
