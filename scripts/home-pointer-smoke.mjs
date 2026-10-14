@@ -51,6 +51,7 @@ try {
     { width: 1440, height: 900 },
     { width: 1080, height: 720 },
     { width: 768, height: 900 },
+    { width: 390, height: 844 },
   ]) {
     await page.setViewportSize(viewport);
     const cursors = await page.evaluate((entries) =>
@@ -70,7 +71,7 @@ try {
     }
   }
 
-  console.log('home pointer smoke: ok (delegated click targets, responsive desktop/tablet)');
+  console.log('home pointer smoke: ok (delegated click targets, responsive desktop/tablet/mobile)');
 } finally {
   await browser.close();
 }
