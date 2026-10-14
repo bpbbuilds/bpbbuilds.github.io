@@ -4165,3 +4165,24 @@ None.
 
 - Replaced the raster `ui-btn-crimson.png` background on the build-animation Create link with a responsive CSS pill: crimson gradient, dark outer edge, inset gold rim, hover/active/focus states, and the existing backpack icon/route retained.
 - The CTA uses clamped sizing and mobile overrides so the pill remains readable at 1440, 1080, tablet, and mobile widths. Added `scripts/home-promo-create-cta-smoke.mjs`; the focused CTA/browser checks, long-title/title-surface/player-info smokes, syntax check, and `git diff --check` pass. No legal or security surfaces changed.
+### 2026-10-14 Items page performance audit (in progress)
+
+- Codex owns `docs/performance/items-page-performance-audit.md` for this audit and its evidence only; no product code is being changed.
+- Scope: section-by-section load, filtering, catalog scrolling/virtualization, tooltips/live art, spotlight interactions, and responsive/shared chrome. Report will contain measured pain points, ranked fixes, acceptance checks, and explicit not-checked items.
+
+### 2026-10-14 Items page performance audit complete
+
+- Added `docs/performance/items-page-performance-audit.md` with a section-by-section audit of bootstrap/shared chrome, catalog data/first paint, filters/search, virtualization/scrolling, sprites/tooltips/live art, spotlight, responsive CSS, and wheel forwarding.
+- The report records local Chromium evidence at 1440×900 plus a 4× CPU profile: ~1.07 s catalog readiness, ~596–878 ms filter interactions under throttle, scroll frame gaps up to ~66.7 ms, long tasks around 59/92/65 ms, and the warm pool growing to all 518 item nodes.
+- Ranked P0/P1/P2 fixes focus on decoupling filter/scroll geometry from sprite decode, immediate rAF window updates, bounded DOM/sprite LRU, smaller adaptive overscan, normalized filter/pack caches, deferred shared chrome/live art, and explicit publish-ready acceptance checks. No product code or legal/security surfaces changed.
+
+### 2026-10-14 Shared item shadow images (in progress)
+
+- Codex owns `js/shared/backpack-grid/item-pieces.js`, `js/shared/backpack-grid/item-pool.js`, `js/shared/backpack-grid/backpack-grid.css`, the focused shadow regression smoke, and this handoff for this task.
+- Scope: remove duplicate item silhouette image requests from the shared item renderer and use a CSS alpha-based drop shadow with the existing game offset/opacity, preserving item rotation, bags, hover states, tooltip/spotlight behavior, and responsive sizing.
+
+### 2026-10-14 Shared item shadow images complete
+
+- `createItemEl()` no longer emits a second shadow `<img>` or shadow spin. A `bpb-bg__item--no-shadow` marker preserves explicit opt-outs; normal items use the shared sprite alpha for the shadow.
+- Shared backpack-grid CSS now paints the game-equivalent 5/80-cell SE silhouette with `drop-shadow`, compensates local offsets for all four faces, keeps bags at the softer 0.45/0.75px treatment, and preserves affected/hover states. Itemiary, boards, simulator, spotlight, and responsive surfaces therefore decode one art image per item.
+- Added `scripts/item-shadow-smoke.mjs`; it checks the renderer has no duplicate shadow image, verifies normal/affected/no-shadow CSS behavior in Chromium, and confirms no duplicate shadow image is mounted. Focused shadow, bag-synergy, duration-hover, ring-editor, simulator-visual, syntax, and `git diff --check` checks pass. The existing `_audit-itemiary-virtual` and `_audit-item-anims` live checks still have unrelated environment/legacy assertions (pool-size and simulated-board selector timeouts); no legal or security surfaces changed.

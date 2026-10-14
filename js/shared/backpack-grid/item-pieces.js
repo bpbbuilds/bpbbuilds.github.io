@@ -569,6 +569,9 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
   const z = Number.isFinite(stackZ) ? stackZ : placedStackZ(item, 1);
 
   const useChrome = opts.chrome !== false;
+  // Keep the visual shadow opt-out for callers that intentionally render a
+  // chrome-free item, but never duplicate the sprite. The shared stylesheet
+  // derives the silhouette from the live sprite alpha instead.
   const useShadow = opts.shadow !== false;
   const useBagSlots = opts.bagSlots !== false;
   const bagSlots =
@@ -608,15 +611,6 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
         : `<img class="bpb-bg__sprite" src="${escapeAttr(src)}" alt="" draggable="false" loading="eager" decoding="async" style="${anchorStyle}${sizeStyle}" />`
       : `<span class="bpb-bg__sprite bpb-bg__sprite--empty" aria-hidden="true"></span>`;
 
-  // Game: duplicate sprite, modulate (0,0,0,0.5), global_position + (5,5) — offset in
-  // world space, not local, so SE stays SE after rotation (Item.shadowOffset_dropped).
-  const shadowImg =
-    src && useShadow
-      ? deferSprite
-        ? `<img class="bpb-bg__sprite bpb-bg__sprite--shadow" data-src="${escapeAttr(src)}" alt="" draggable="false" decoding="async" style="${anchorStyle}${sizeStyle}" aria-hidden="true" />`
-        : `<img class="bpb-bg__sprite bpb-bg__sprite--shadow" src="${escapeAttr(src)}" alt="" draggable="false" loading="eager" decoding="async" style="${anchorStyle}${sizeStyle}" aria-hidden="true" />`
-      : '';
-
   const hitPads = useChrome
     ? shape.body
         .map((c) => {
@@ -630,9 +624,6 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
   // Godot: rotation = face * π/2. Use individual CSS props so translate
   // runs before rotate (shorthand would rotate then translate and skew the pivot).
   const spinStyle = `width:${bounds.w}em;height:${bounds.h}em;translate:-50% -50%;rotate:${r * 90}deg;`;
-  // Same spin + world-space SE nudge (5/80 cell) outside local rotate.
-  const shadowSpinStyle = `width:${bounds.w}em;height:${bounds.h}em;translate:calc(-50% + 0.0625em) calc(-50% + 0.0625em);rotate:${r * 90}deg;`;
-
   // z-index on the item root — spin's transform creates a stacking context, so
   // hit z-index alone can no longer lift items above bags painted later in DOM.
   const itemClass = String(item.class || 'Neutral');
@@ -643,9 +634,10 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
       : '';
   const extraTypes = Array.isArray(item.extraTypes) ? item.extraTypes.map(String).join(',') : '';
   const tags = Array.isArray(item.tags) ? item.tags.map(String).join(',') : '';
+  const shadowClass = useShadow ? '' : ' bpb-bg__item--no-shadow';
   const html = `
     <div
-      class="bpb-bg__item${bag ? ' bpb-bg__item--bag' : ''}${
+      class="bpb-bg__item${bag ? ' bpb-bg__item--bag' : ''}${shadowClass}${
         String(item.id) === '__unrecognized__' ? ' bpb-bg__item--unrecognized' : ''
       } bpb-bg__item--parked"
       data-item-id="${escapeAttr(item.id)}"
@@ -671,11 +663,6 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
           : ''
       }
       ${ringConfig}
-      ${
-        shadowImg
-          ? `<div class="bpb-bg__spin bpb-bg__spin--shadow" style="${shadowSpinStyle}" aria-hidden="true">${shadowImg}</div>`
-          : ''
-      }
       <div class="bpb-bg__spin" style="${spinStyle}">
         <button type="button" class="bpb-bg__hit" aria-label="${escapeAttr(item.name)}">
           ${img}
@@ -988,9 +975,7 @@ export function applyItemFace(itemEl, underEl, item, face, opts = {}) {
  * @param {(string | { url?: string, w?: number, h?: number, id?: string, name?: string, rarity?: string } | null | undefined)[]} gems
  */
 export function syncItemGems(itemEl, item, gems = []) {
-  const spin = itemEl.querySelector(
-    ':scope > .bpb-bg__spin:not(.bpb-bg__spin--shadow)',
-  );
+  const spin = itemEl.querySelector(':scope > .bpb-bg__spin');
   if (!(spin instanceof HTMLElement)) return;
 
   const shape = shapeForItem(item, 0);

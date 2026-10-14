@@ -538,8 +538,9 @@ export function paintPooled(root, opts) {
       const itemEl = createItemEl(item, getSpriteUrl, stackZ, face, resolvedGems, {
         deferSprite,
         chrome: !promo,
-        // Itemiary: CSS drop-shadow instead of a second silhouette img (decode cost).
-        shadow: !itemiary,
+        // All surfaces use the shared CSS silhouette; promo cards intentionally
+        // omit the depth shadow, but no surface requests a duplicate image.
+        shadow: !itemiaryPromo,
         bagSlots: !itemiaryPromo,
         placementKey: opts.ringConfig ? key : undefined,
       });
@@ -709,7 +710,8 @@ export function ensurePoolEntries(pool, root, items, getSpriteUrl) {
     const itemEl = createItemEl(item, getSpriteUrl, item.libraryIndex ?? 1, 0, [], {
       deferSprite,
       chrome: !promo,
-      shadow: false,
+      // Prewarmed board entries use the same CSS silhouette as painted entries.
+      shadow: !promo,
       bagSlots: !promo,
     });
     if (!itemEl) continue;
