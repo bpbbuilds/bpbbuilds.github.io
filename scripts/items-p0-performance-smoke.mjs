@@ -23,15 +23,62 @@ assert.match(itemsPage, /initNav\('#site-nav',\s*\{[\s\S]*onAccessGranted/);
 assert.match(itemsPage, /catalogPromise\s*\|\|\s*initItemsCatalog/);
 assert.match(nav, /const allowed = await initSiteAccess\(\);[\s\S]*onAccessGranted/);
 assert.match(catalog, /let pendingFiltered = null/);
-assert.match(catalog, /pendingFiltered = filterItems\(allItems, filterState, meta\)/);
+assert.match(catalog, /pendingFiltered = filteredItemsForState\(\)/);
 assert.match(catalog, /paintGrid\(host, \{ appear: true, filtered \}\)/);
 assert.doesNotMatch(pool, /if \(near\.length\) \{\s*await warmItemSprites/);
 assert.match(pool, /void warmItemSprites\(near\.map\(\(e\) => e\.itemEl\), \{[\s\S]*isCurrent:[\s\S]*\}\)\.catch/);
 assert.match(pieces, /itemWaits\.push\([\s\S]*Promise\.all\(waits\)\.then\([\s\S]*isCurrent[\s\S]*sprite-pending/);
 assert.match(pool, /queueScrollPaint\(\);[\s\S]*scrollTimer = window\.setTimeout/);
-assert.match(pool, /export const ITEMIARY_POOL_MAX_ENTRIES = 480/);
+assert.match(pool, /export const ITEMIARY_POOL_MAX_ENTRIES = 384/);
 assert.match(pool, /function touchPoolEntry\([\s\S]*pool\.delete\(key\)[\s\S]*pool\.set\(key, entry\)/);
 assert.match(pool, /function pruneItemiaryPool\([\s\S]*recycleEntry\(entry\)/);
+assert.match(catalog, /virtualPadEm: 6,[\s\S]*virtualPadMaxEm: 14,[\s\S]*adaptivePad: true/);
+assert.match(pool, /const adaptivePad = options\.adaptivePad === true/);
+assert.match(catalog, /function filterStateSignature\(\)/);
+assert.match(catalog, /let filterResultCache = new Map/);
+assert.match(catalog, /filterItems\(allItems, filterState, filterMeta\(\)\)/);
+
+const {
+  createFilterIndex,
+  defaultFilterState,
+  filterItems,
+} = await import('../js/pages/items/filter-logic.js');
+const filterFixtures = [
+  {
+    id: 'neutral', name: 'Neutral Charm', rarity: 'Common', type: 'Accessory',
+    class: 'Neutral', classMask: 127, extraTypes: [], effect: '', mentionedStacks: [],
+  },
+  {
+    id: 'ranger', name: 'Ranger Poison Blade', rarity: 'Rare', type: 'Melee Weapon',
+    class: 'Ranger', classMask: 1, extraTypes: [], effect: '$Melee <Poison>',
+    mentionedStacks: ['Poison'],
+  },
+  {
+    id: 'treasure', name: 'Treasure Skill', rarity: 'Unique', type: 'Skill',
+    class: 'Neutral', classMask: 127, isTreasure: true, extraTypes: [], effect: '',
+    mentionedStacks: [],
+  },
+  {
+    id: 'class-unique', name: 'Ranger Unique Armor', rarity: 'Unique', type: 'Armor',
+    class: 'Ranger', classMask: 1, isTreasure: false, extraTypes: [], effect: '',
+    mentionedStacks: [],
+  },
+];
+const filterMetaFixture = {
+  craftedIds: new Set(),
+  gatedIds: new Set(),
+  shopItemIds: new Set(),
+  treasureIds: new Set(['treasure']),
+};
+const filterStateFixture = defaultFilterState();
+filterStateFixture.types.Melee = true;
+filterStateFixture.stacks.Poison = true;
+const filterIndexFixture = createFilterIndex(filterFixtures, filterMetaFixture);
+const indexedIds = filterItems(filterFixtures, filterStateFixture, {
+  ...filterMetaFixture,
+  index: filterIndexFixture,
+}).map((item) => item.id);
+assert.deepEqual(indexedIds, ['ranger'], 'normalized filter index preserves game matching');
 
 const svg = (color) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><rect width="8" height="8" fill="${color}"/></svg>`;

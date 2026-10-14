@@ -300,7 +300,7 @@ const ITEMIARY_SCROLL_SETTLE_MS = 64;
 /** Keep a long trackpad fling from outrunning the virtual window entirely. */
 const ITEMIARY_SCROLL_MAX_WAIT_MS = 320;
 /** Keep current/nearby nodes warm, but release older parked entries. */
-export const ITEMIARY_POOL_MAX_ENTRIES = 480;
+export const ITEMIARY_POOL_MAX_ENTRIES = 384;
 
 /**
  * Move a visible entry to the newest end of the Itemiary LRU. The Map order
@@ -783,6 +783,8 @@ export function ensurePoolEntries(pool, root, items, getSpriteUrl) {
  *   spriteRoot?: Element | null,
  *   virtualize?: boolean,
  *   virtualPadEm?: number,
+ *   virtualPadMaxEm?: number,
+ *   adaptivePad?: boolean,
  *   poolCap?: number,
  * }} options
  */
@@ -806,6 +808,10 @@ export function mountItemiaryGrid(container, options) {
   const virtualPadEm = Number.isFinite(options.virtualPadEm)
     ? Math.max(0, Number(options.virtualPadEm))
     : VIRTUAL_PAD_EM;
+  const adaptivePad = options.adaptivePad === true;
+  const virtualPadMaxEm = Number.isFinite(options.virtualPadMaxEm)
+    ? Math.max(virtualPadEm, Number(options.virtualPadMaxEm))
+    : Math.max(virtualPadEm, 14);
   const poolCap = Number.isFinite(options.poolCap)
     ? Math.max(64, Math.floor(Number(options.poolCap)))
     : ITEMIARY_POOL_MAX_ENTRIES;
@@ -851,6 +857,9 @@ export function mountItemiaryGrid(container, options) {
   let spriteIo = null;
   /** Bumps when a newer paint supersedes an in-flight warm. */
   let paintGen = 0;
+  let lastScrollTop = 0;
+  let lastScrollAt = 0;
+  let scrollVelocityRows = 0;
 
   /**
    * Stills while scrolling; live art only on hover/focus (not spotlight clones).
@@ -944,6 +953,17 @@ export function mountItemiaryGrid(container, options) {
    */
   function visibleSlice(cellPx, nextRows, nextPlacements, nextMap) {
     if (!virtualize) return nextPlacements;
+    const viewportRows = Math.max(
+      1,
+      (el.clientHeight || cellPx * 18) / Math.max(1, cellPx),
+    );
+    const velocityPad = Math.min(viewportRows * 0.3, scrollVelocityRows * 4);
+    const padEm = adaptivePad
+      ? Math.max(
+          virtualPadEm,
+          Math.min(virtualPadMaxEm, viewportRows * 0.55 + velocityPad),
+        )
+      : virtualPadEm;
     return placementsNearViewport(
       nextPlacements,
       nextMap,
@@ -955,7 +975,7 @@ export function mountItemiaryGrid(container, options) {
         scrollLeft: el.scrollLeft,
         clientWidth: el.clientWidth,
       },
-      virtualPadEm,
+      padEm,
     );
   }
 
@@ -1225,10 +1245,18 @@ export function mountItemiaryGrid(container, options) {
     // useful while the user is actively scrubbing through the catalog.
     appearNext = false;
     void render();
+    scrollVelocityRows = 0;
   }
 
   function onScroll() {
     if (!virtualize || mode == null) return;
+    const now = performance.now();
+    const cellPx = frozenCellPx || baseCellPx;
+    const dt = Math.max(1, now - lastScrollAt);
+    const deltaRows = Math.abs(el.scrollTop - lastScrollTop) / Math.max(1, cellPx);
+    scrollVelocityRows = deltaRows / dt;
+    lastScrollTop = el.scrollTop;
+    lastScrollAt = now;
     // Refresh the virtual window on the next frame so native scrolling never
     // outruns the mounted band. The trailing timers provide one final catch-up
     // after a burst/long fling without changing the passive scroll contract.

@@ -16,6 +16,7 @@ import {
 } from '../../../shared/backpack-grid/index.js';
 import {
   defaultFilterState,
+  createFilterIndex,
   filterItems,
   bindFilters,
   updateFilterMeta,
@@ -135,6 +136,10 @@ let thumbImages = new Set();
 const thumbSet = (window.devicePixelRatio || 1) > 1.5 ? '2x' : '1x';
 
 let filterState = defaultFilterState();
+/** @type {{ items: object[], entries: object[] } | null} */
+let filterIndex = null;
+/** @type {Map<string, object[]>} */
+let filterResultCache = new Map();
 /** Bumps when init/teardown races a layout preview paint. */
 let catalogGen = 0;
 /** True after the first real (sprite) paint — preview must not overwrite. */
@@ -226,6 +231,8 @@ function teardown() {
   mentionedStacksById = null;
   thumbImages = new Set();
   filterState = defaultFilterState();
+  filterIndex = null;
+  filterResultCache = new Map();
 }
 
 /**
@@ -450,12 +457,59 @@ export function setCatalogFillWidth(on) {
   return changed || !itemiaryGrid;
 }
 
+function filterMeta() {
+  return {
+    craftedIds,
+    gatedIds,
+    shopItemIds,
+    treasureIds,
+    index: filterIndex,
+  };
+}
+
+/** @param {Record<string, boolean>} values */
+function boolMapSignature(values) {
+  return Object.keys(values || {})
+    .sort()
+    .map((key) => `${key}:${values[key] ? 1 : 0}`)
+    .join(',');
+}
+
+function filterStateSignature() {
+  return [
+    String(filterState.q || '').trim().toLowerCase(),
+    String(filterState.grouping || 'none'),
+    String(filterState.category || ''),
+    boolMapSignature(filterState.classes),
+    boolMapSignature(filterState.rarities),
+    boolMapSignature(filterState.types),
+    boolMapSignature(filterState.stacks),
+    filterState.classItems ? '1' : '0',
+    filterState.treasure ? '1' : '0',
+    filterState.shop ? '1' : '0',
+    filterState.crafted ? '1' : '0',
+    filterState.gated ? '1' : '0',
+  ].join('|');
+}
+
+function filteredItemsForState() {
+  const signature = filterStateSignature();
+  const cached = filterResultCache.get(signature);
+  if (cached) return cached;
+  const filtered = filterItems(allItems, filterState, filterMeta());
+  if (filterResultCache.size >= 64) {
+    const oldest = filterResultCache.keys().next().value;
+    if (oldest != null) filterResultCache.delete(oldest);
+  }
+  filterResultCache.set(signature, filtered);
+  return filtered;
+}
+
 function schedulePaintGrid(host) {
-  const meta = { craftedIds, gatedIds, shopItemIds, treasureIds };
   // Compute the result once for the immediate count and the next paint. When
   // several filter controls change in one frame, the newest result replaces
   // the pending one without repeating the full catalog scan in paintGrid().
-  pendingFiltered = filterItems(allItems, filterState, meta);
+  pendingFiltered = filteredItemsForState();
   updateFilterMeta(host, pendingFiltered.length);
 
   paintPending = true;
@@ -480,9 +534,11 @@ function ensureItemiary(stage) {
       cellPx: CELL_PX,
       cols: catalogCols,
       fillWidth: catalogFillWidth,
-      // Keep a wider prefetch band for fast trackpad/wheel scrolling; the
-      // shared board default remains unchanged for create/build surfaces.
-      virtualPadEm: 24,
+      // Keep a measured current/next-viewport band. The shared board default
+      // remains unchanged for create/build surfaces.
+      virtualPadEm: 6,
+      virtualPadMaxEm: 14,
+      adaptivePad: true,
     });
   }
   itemiaryGrid.setPackFlow?.(
@@ -519,10 +575,10 @@ async function paintGrid(host, opts = {}) {
   if (spotlight?.isOpen()) spotlight.close({ immediate: true });
 
   const appear = opts.appear === true;
-  const meta = { craftedIds, gatedIds, shopItemIds, treasureIds };
+  const meta = filterMeta();
   let filtered = Array.isArray(opts.filtered)
     ? opts.filtered
-    : filterItems(allItems, filterState, meta);
+    : filteredItemsForState();
   const grouping = filterState.grouping || 'none';
   if (grouping === 'none') {
     filtered = sortByLibraryOrder(filtered, libraryOrderIndex);
@@ -740,12 +796,14 @@ export async function initItemsCatalog(selector = '#items-catalog', opts = {}) {
       return null;
     }
 
-    const filtered = filterItems(allItems, filterState, {
+    filterIndex = createFilterIndex(allItems, {
       craftedIds,
       gatedIds,
       shopItemIds,
       treasureIds,
     });
+    filterResultCache = new Map();
+    const filtered = filteredItemsForState();
 
     if (itemiaryGrid) {
       itemiaryGrid.destroy();

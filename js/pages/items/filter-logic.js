@@ -201,6 +201,15 @@ export function itemPassesClassFilter(item, classToggles) {
       ? item.classMask
       : fallbackClassMask(item);
 
+  return itemPassesClassMask(mask, classToggles);
+}
+
+/**
+ * @param {number} mask
+ * @param {Record<string, boolean>} classToggles
+ */
+function itemPassesClassMask(mask, classToggles) {
+
   if (mask === CLASS_BITS.Neutral) {
     return Boolean(classToggles.Neutral);
   }
@@ -319,63 +328,130 @@ function itemMentionsStack(item, stack) {
 }
 
 /**
- * @param {object[]} items
- * @param {ReturnType<typeof defaultFilterState>} state
- * @param {{ craftedIds?: Set<string>, gatedIds?: Set<string>, shopItemIds?: Set<string>, treasureIds?: Set<string> }} [meta]
+ * Normalized metadata for one catalog data generation. This keeps filtering
+ * from allocating Sets, lowercasing names, and rescanning effect tokens on
+ * every control change.
+ * @typedef {{
+ *   item: object,
+ *   id: string,
+ *   nameLower: string,
+ *   classMask: number,
+ *   types: Set<string>,
+ *   mentionedTypes: Set<string>,
+ *   mentionedStacks: Set<string>,
+ *   rarity: string,
+ *   treasure: boolean,
+ *   crafted: boolean,
+ *   gated: boolean,
+ *   shop: boolean,
+ *   categories: Set<string>,
+ * }} FilterIndexEntry
  */
-export function filterItems(items, state, meta = {}) {
-  const q = state.q.trim().toLowerCase();
+
+/** @typedef {{ items: object[], entries: FilterIndexEntry[] }} FilterIndex */
+
+/**
+ * @param {object[]} items
+ * @param {{ craftedIds?: Set<string>, gatedIds?: Set<string>, shopItemIds?: Set<string>, treasureIds?: Set<string> }} [meta]
+ * @returns {FilterIndex}
+ */
+export function createFilterIndex(items, meta = {}) {
   const craftedIds = meta.craftedIds || new Set();
   const gatedIds = meta.gatedIds || new Set();
   const shopItemIds = meta.shopItemIds || new Set();
   const treasureIds = meta.treasureIds;
+  const entries = items.map((item) => {
+    const id = String(item.id || '');
+    const crafted = craftedIds.has(id);
+    const gated = gatedIds.has(id);
+    const treasure = isTreasureItem(item, treasureIds);
+    const mentionedTypes = new Set(
+      TYPE_ORDER.filter((type) => itemMentionsType(item, type)),
+    );
+    const mentionedStacks = new Set(
+      [...BUFF_ORDER, ...DEBUFF_ORDER].filter((stack) =>
+        itemMentionsStack(item, stack),
+      ),
+    );
+    const categories = new Set(
+      ITEM_CATEGORY_IDS.filter((category) =>
+        itemMatchesCategory(item, category, treasureIds),
+      ),
+    );
+    return {
+      item,
+      id,
+      nameLower: String(item.name || '').toLowerCase(),
+      classMask:
+        typeof item.classMask === 'number'
+          ? item.classMask
+          : fallbackClassMask(item),
+      types: itemTypes(item),
+      mentionedTypes,
+      mentionedStacks,
+      rarity: String(item.rarity || ''),
+      treasure,
+      crafted,
+      gated,
+      shop: shopItemIds.has(id) || (!crafted && !gated),
+      categories,
+    };
+  });
+  return { items, entries };
+}
+
+/**
+ * @param {object[]} items
+ * @param {ReturnType<typeof defaultFilterState>} state
+ * @param {{ craftedIds?: Set<string>, gatedIds?: Set<string>, shopItemIds?: Set<string>, treasureIds?: Set<string>, index?: FilterIndex }} [meta]
+ */
+export function filterItems(items, state, meta = {}) {
+  const q = state.q.trim().toLowerCase();
+  const index =
+    meta.index && meta.index.items === items
+      ? meta.index
+      : createFilterIndex(items, meta);
 
   const activeTypes = TYPE_ORDER.filter((t) => state.types[t]);
   const activeStacks = [...BUFF_ORDER, ...DEBUFF_ORDER].filter((s) => state.stacks[s]);
 
-  return items.filter((item) => {
-    const id = item.id;
-    const crafted = craftedIds.has(id);
-    const gated = gatedIds.has(id);
+  return index.entries
+    .filter((entry) => {
     // Game ItemDescriptor.isShopItem: shopItem || (!crafted && !gated)
-    const shop = shopItemIds.has(id) || (!crafted && !gated);
-
     let originOk = false;
-    if (state.shop && shop) originOk = true;
-    if (state.crafted && crafted) originOk = true;
-    if (state.gated && gated) originOk = true;
+    if (state.shop && entry.shop) originOk = true;
+    if (state.crafted && entry.crafted) originOk = true;
+    if (state.gated && entry.gated) originOk = true;
     if (!originOk) return false;
 
-    if (!itemPassesClassFilter(item, state.classes)) return false;
+    if (!itemPassesClassMask(entry.classMask, state.classes)) return false;
 
-    const treasure = isTreasureItem(item, treasureIds);
-    const classUnique = item.rarity === 'Unique' && !treasure;
+    const classUnique = entry.rarity === 'Unique' && !entry.treasure;
     const rarityOk =
-      (item.rarity !== 'Unique' && state.rarities[item.rarity]) ||
-      (treasure && state.treasure) ||
+      (entry.rarity !== 'Unique' && state.rarities[entry.rarity]) ||
+      (entry.treasure && state.treasure) ||
       (classUnique && state.classItems);
     if (!rarityOk) return false;
 
     if (activeTypes.length) {
       for (const t of activeTypes) {
-        if (!itemHasTypeFilter(item, t)) return false;
+        if (!entry.types.has(t) && !entry.mentionedTypes.has(t)) return false;
       }
     }
 
     if (activeStacks.length) {
       for (const s of activeStacks) {
-        if (!itemMentionsStack(item, s)) return false;
+        if (!entry.mentionedStacks.has(s)) return false;
       }
     }
 
-    if (q) {
-      if (!String(item.name || '').toLowerCase().includes(q)) return false;
-    }
+    if (q && !entry.nameLower.includes(q)) return false;
 
-    if (!itemMatchesCategory(item, state.category, treasureIds)) return false;
+    if (state.category && !entry.categories.has(state.category)) return false;
 
     return true;
-  });
+    })
+    .map((entry) => entry.item);
 }
 
 /**

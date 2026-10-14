@@ -11,6 +11,7 @@ import {
   DEBUFF_ORDER,
   GROUPING_OPTS,
   defaultFilterState,
+  createFilterIndex,
   filterItems,
   sortForGrouping,
   groupSortKey,
@@ -22,6 +23,7 @@ import {
 
 export {
   defaultFilterState,
+  createFilterIndex,
   filterItems,
   sortForGrouping,
   groupSortKey,

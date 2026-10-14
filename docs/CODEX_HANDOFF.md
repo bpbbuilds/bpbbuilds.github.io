@@ -4209,3 +4209,14 @@ None.
 - Itemiary scroll now queues a passive next-frame virtual-window paint immediately, while the 64 ms settle and 320 ms fling timers remain as trailing catch-up passes. The scroll path still suppresses entrance-wave layout work.
 - Added a configurable `poolCap` with a 480-entry default. Visible entries stay pinned; the least-recent parked entries are recycled with `recycleEntry()`, releasing DOM, sprite `src`, and live-art resources. LRU recency is updated only for painted entries, so normal visual ordering and composition are unchanged.
 - Marked P0 items 3 and 4 complete in `docs/performance/items-page-performance-audit.md`. Extended `scripts/items-p0-performance-smoke.mjs` with a next-frame scroll assertion and a 1,200-item bounded-pool browser cycle. The focused smoke passes (initial 152 nodes, post-scroll 304, cap 480); syntax and diff checks pass. The legacy `_audit-itemiary-virtual.mjs` has no page errors but still expects the old `<400` mid-scroll total while the current 24em overscan mounts 449 visible entries; that threshold belongs to the remaining overscan item and is intentionally not changed here.
+
+### 2026-10-14 Items page P0 overscan/filter cache fixes (in progress)
+
+- Codex owns `js/pages/items/catalog/index.js`, `js/pages/items/catalog-filters.js`, `js/shared/backpack-grid/item-pool.js`, `scripts/items-p0-performance-smoke.mjs`, `docs/performance/items-page-performance-audit.md`, and this handoff for this task.
+- Scope: replace the fixed Itemiary 24em overscan with a measured viewport-relative band, and normalize/cache filter metadata/results by state signature while preserving the exact default layout, item ordering, visual composition, and responsive behavior.
+
+### 2026-10-14 Items page P0 overscan/filter cache fixes complete
+
+- Replaced the Items catalog's fixed 24em prefetch band with a measured adaptive 6–14em band based on viewport rows and scroll velocity. Other backpack-grid callers retain their existing defaults; item order, cell dimensions, and visible art composition are unchanged.
+- Added one normalized filter index per catalog data generation (lowercased names, class masks, type/stack/category memberships, rarity/origin flags) and a bounded 64-entry filter-result cache keyed by the complete filter state signature. Initialization, count updates, filter paints, and responsive repaints now reuse the same result instead of rescanning the catalog.
+- Tuned the shared Itemiary pool default to 384 entries so the reduced overscan has a small reserve without retaining the full library. The focused P0 smoke, broad Itemiary virtual audit, syntax checks, and `git diff --check` pass. No legal/security surfaces changed.
