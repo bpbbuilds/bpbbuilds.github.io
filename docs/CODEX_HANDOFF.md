@@ -4155,3 +4155,13 @@ None.
 - Added `bot/commands/commands.js` with the `/commands` definition, a data-driven `commandsEmbed`, and an ephemeral interaction handler.
 - Registered `/commands` in `bot/commands/index.js`; the embed is built from that same canonical registry, so every deployed command gets one `/name` field with its current description.
 - Added `scripts/discord-commands-help-smoke.mjs`, including coverage that every registered command appears in the embed. The focused smoke, existing `/item` command/autocomplete smokes, `/inv` grid smoke, bot syntax checks, and `git diff --check` pass. No legal, security, or browser surfaces changed.
+
+### 2026-10-14 Home Player Info Create CTA (in progress)
+
+- Codex owns `js/pages/home/home-promo-band.css`, the Home promo CTA markup/renderer if needed, the focused responsive smoke, and this handoff for this task.
+- Scope: restyle the existing build-animation Create action as a real CSS/Tailwind-style rounded pill matching the red event-banner treatment with an inset gold outline. Preserve its route, accessible label, animation, and responsive behavior.
+
+### 2026-10-14 Home Player Info Create CTA complete
+
+- Replaced the raster `ui-btn-crimson.png` background on the build-animation Create link with a responsive CSS pill: crimson gradient, dark outer edge, inset gold rim, hover/active/focus states, and the existing backpack icon/route retained.
+- The CTA uses clamped sizing and mobile overrides so the pill remains readable at 1440, 1080, tablet, and mobile widths. Added `scripts/home-promo-create-cta-smoke.mjs`; the focused CTA/browser checks, long-title/title-surface/player-info smokes, syntax check, and `git diff --check` pass. No legal or security surfaces changed.
