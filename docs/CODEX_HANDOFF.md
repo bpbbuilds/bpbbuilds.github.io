@@ -4144,3 +4144,14 @@ None.
 
 - `/inv` now renders nine owned cosmetics per page in a 3×3 composite PNG grid, with each cell showing the blob base plus its cosmetic overlay. Page descriptions list every visible item with slot and rarity, and Previous/Next now paginate by grid page rather than individual item.
 - Ownership rules, owner access, profile lookup, and user-scoped button IDs remain unchanged. Added `scripts/discord-inventory-grid-smoke.mjs`; grid pagination, PNG dimensions, embed attachment, navigation, existing `/item` smokes, bot syntax, and `git diff --check` all pass. No secrets, legal, or security surfaces changed.
+
+### 2026-10-14 Discord `/commands` help embed (in progress)
+
+- Codex owns the bot command registry/help handler files, focused smoke, and this handoff for this task.
+- Scope: add a registered `/commands` command whose embed is generated from the canonical command definitions and includes every available command with a concise description. No existing command behavior or secrets change.
+
+### 2026-10-14 Discord `/commands` help embed complete
+
+- Added `bot/commands/commands.js` with the `/commands` definition, a data-driven `commandsEmbed`, and an ephemeral interaction handler.
+- Registered `/commands` in `bot/commands/index.js`; the embed is built from that same canonical registry, so every deployed command gets one `/name` field with its current description.
+- Added `scripts/discord-commands-help-smoke.mjs`, including coverage that every registered command appears in the embed. The focused smoke, existing `/item` command/autocomplete smokes, `/inv` grid smoke, bot syntax checks, and `git diff --check` pass. No legal, security, or browser surfaces changed.

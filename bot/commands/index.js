@@ -6,9 +6,10 @@ import { handleInv, handleInvButton, invCommand } from './inv.js';
 import { handleProfile, profileCommand } from './profile.js';
 import { handleTest, testCommand } from './test.js';
 import { handleItem, handleItemAutocomplete, itemCommand, warmItemAutocomplete } from './item.js';
+import { commandsCommand, handleCommands } from './commands.js';
 
 /** @type {{ name: string, description: string, options?: object[] }[]} */
-export const commands = [testCommand, invCommand, blobCommand, profileCommand, itemCommand];
+export const commands = [testCommand, invCommand, blobCommand, profileCommand, itemCommand, commandsCommand];
 
 const handlers = {
   test: handleTest,
@@ -16,6 +17,7 @@ const handlers = {
   blob: handleBlob,
   profile: handleProfile,
   item: handleItem,
+  commands: (interaction) => handleCommands(interaction, commands),
 };
 
 export { handleInvButton, handleItemAutocomplete, warmItemAutocomplete };
