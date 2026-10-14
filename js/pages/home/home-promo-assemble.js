@@ -57,6 +57,7 @@ const PROMO_MOBILE_MQ = '(max-width: 1100px)';
 const BOARD_COLS = 9;
 const BOARD_ROWS = 7;
 const PROMO_CREATOR_COUNT_CACHE_LIMIT = 128;
+const ITEM_MENTION_RE = /\[\[([a-z0-9_]+)\]\]/gi;
 /** @type {Map<string, number>} */
 const promoCreatorCountCache = new Map();
 /** @type {Map<string, Promise<number>>} */
@@ -174,7 +175,7 @@ async function fetchRealBuilds() {
     )
   `;
   const withProfile = `
-    id, slug, title, hero_class, blurb, gold_count, rank, is_op, is_featured, build_tag, updated_at,
+    id, slug, title, hero_class, blurb, notes, gold_count, rank, is_op, is_featured, build_tag, updated_at,
     author_id, author_name,
     profile:profiles!builds_author_id_fkey (
       discord_id, display_name, avatar_url, equipped_avatar
@@ -182,7 +183,7 @@ async function fetchRealBuilds() {
     ${placementSelect}
   `;
   const bare = `
-    id, slug, title, hero_class, blurb, gold_count, rank, is_op, is_featured, build_tag, updated_at,
+    id, slug, title, hero_class, blurb, notes, gold_count, rank, is_op, is_featured, build_tag, updated_at,
     author_id, author_name,
     ${placementSelect}
   `;
@@ -250,6 +251,40 @@ function placementsForBuild(build, opts) {
   }
 
   return { placements, itemsById, spriteUrls };
+}
+
+/**
+ * Load catalog rows for description mentions that are not present on the
+ * rendered board. Build notes may reference a suggested item that was later
+ * sold, so placement rows alone are not a complete mention catalog.
+ * @param {object[]} builds
+ * @returns {Promise<Map<string, object>>}
+ */
+async function loadPromoMentionItems(builds) {
+  const ids = new Set();
+  for (const build of builds || []) {
+    const text = String(build?.notes || build?.blurb || '');
+    for (const match of text.matchAll(new RegExp(ITEM_MENTION_RE.source, 'gi'))) {
+      ids.add(String(match[1]).toLowerCase());
+    }
+  }
+  if (!ids.size) return new Map();
+  try {
+    const { data, error } = await getSupabase()
+      .from('items')
+      .select(ITEM_SELECT)
+      .in('id', [...ids]);
+    if (error) throw error;
+    const items = new Map();
+    for (const row of data || []) {
+      const item = mapItem(row);
+      if (item?.id) items.set(String(item.id).toLowerCase(), item);
+    }
+    return items;
+  } catch (err) {
+    console.warn('[home-promo] item mention lookup failed', err);
+    return new Map();
+  }
 }
 
 /**
@@ -748,6 +783,7 @@ export async function playAssemble(opts) {
   }
 
   const getSpriteUrl = makeSpriteUrl(base, extras.spriteDisplay);
+  const promoMentionItems = await loadPromoMentionItems(builds);
   const playerInfoMode = opts.playerInfoMode === true;
   let playerPreviousAuthorId = '';
   let playerCycle = playerInfoMode ? randomizeBuildSequence(builds) : builds;
@@ -778,6 +814,10 @@ export async function playAssemble(opts) {
       ordered,
       bags: ordered.filter((placement) => isBagItem(mapped.itemsById.get(placement.id))),
       spriteUrls: mapped.spriteUrls,
+      mentionItemsById: new Map([
+        ...promoMentionItems,
+        ...[...mapped.itemsById].map(([id, item]) => [String(id).toLowerCase(), item]),
+      ]),
     };
     normalizedBuildCache.set(key, { build, extras, value });
     return value;
@@ -893,7 +933,7 @@ export async function playAssemble(opts) {
         retainBuildSprites(build, nextBuild);
       }
       const normalized = normalizedBuildFor(build);
-      const { mapped, ordered, bags } = normalized;
+      const { mapped, ordered, bags, mentionItemsById } = normalized;
       if (!ordered.length) continue;
       if (playerInfoMode) opts.activity?.setBoardComplete?.(false);
       const buildToken = ++activeBuildToken;
@@ -907,8 +947,20 @@ export async function playAssemble(opts) {
         infoEl,
         boardTagsEl,
         opts.creatorMode || playerInfoMode
-          ? { hideAuthor: true, hideTags: playerInfoMode }
-          : undefined,
+          ? {
+              hideAuthor: true,
+              hideTags: playerInfoMode,
+              mentionData: {
+                itemsById: mentionItemsById,
+                getSpriteUrl,
+              },
+            }
+          : {
+              mentionData: {
+                itemsById: mentionItemsById,
+                getSpriteUrl,
+              },
+            },
       );
       if (opts.creatorMode) {
         paintPromoCreator(opts.creatorEl, build, base, null);

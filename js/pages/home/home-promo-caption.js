@@ -8,6 +8,7 @@
 import { classIconPath } from '../../shared/class-icons.js';
 import { faceHtml, hydrateFaces } from '../../shared/blob-face.js';
 import { profileHref } from '../../shared/profile-href.js';
+import { notesToHtml } from '../../shared/item-mentions.js';
 import { buildViewHref, escapeAttr, escapeHtml } from './home-build-media.js';
 
 /** Game league badge files under assets/icons/leagues/ */
@@ -175,8 +176,9 @@ function titleCaseLeague(key) {
  * Gold + rank + blurb for the create-promo CTA column.
  * @param {object} build
  * @param {string} root
+ * @param {{ itemsById: Map<string, object>, getSpriteUrl: (item: object) => string } | null} [mentionData]
  */
-function infoHtml(build, root) {
+function infoHtml(build, root, mentionData = null) {
   const base = root.endsWith('/') ? root : `${root}/`;
   const goldNum = Number(build.gold_count);
   const goldHtml = Number.isFinite(goldNum)
@@ -204,11 +206,12 @@ function infoHtml(build, root) {
     : `<span class="home-promo__info-empty">—</span>`;
 
   const desc =
-    String(build.blurb || '').trim() ||
     String(build.notes || '').trim() ||
+    String(build.blurb || '').trim() ||
     '';
+  const description = promoInfoDescriptionHtml(desc, mentionData);
   const descHtml = desc
-    ? `<p class="home-promo__info-desc">${escapeHtml(desc)}</p>`
+    ? `<p class="home-promo__info-desc">${description}</p>`
     : `<p class="home-promo__info-desc home-promo__info-desc--empty">No description yet.</p>`;
 
   return `
@@ -226,6 +229,24 @@ function infoHtml(build, root) {
       ${descHtml}
     </div>
   `;
+}
+
+/**
+ * Render the serialized item mentions used by build notes while retaining the
+ * plain-text fallback for callers that do not have catalog rows available.
+ * @param {string} text
+ * @param {{ itemsById: Map<string, object>, getSpriteUrl: (item: object) => string } | null} [mentionData]
+ */
+export function promoInfoDescriptionHtml(text, mentionData = null) {
+  const raw = String(text || '');
+  if (!raw) return '';
+  if (
+    mentionData?.itemsById instanceof Map &&
+    typeof mentionData.getSpriteUrl === 'function'
+  ) {
+    return notesToHtml(raw, mentionData.itemsById, mentionData.getSpriteUrl);
+  }
+  return escapeHtml(raw);
 }
 
 /**
@@ -282,7 +303,7 @@ function boardTagsHtml(build) {
  * @param {HTMLAnchorElement | null} [boardLink]
  * @param {HTMLElement | null} [infoEl]
  * @param {HTMLElement | null} [boardTagsEl]
- * @param {{ hideAuthor?: boolean, hideTags?: boolean, hydrateFaces?: boolean }} [opts]
+ * @param {{ hideAuthor?: boolean, hideTags?: boolean, hydrateFaces?: boolean, mentionData?: { itemsById: Map<string, object>, getSpriteUrl: (item: object) => string } | null }} [opts]
  */
 export function paintPromoCaption(el, build, root, boardLink, infoEl, boardTagsEl, opts = {}) {
   if (el instanceof HTMLElement) {
@@ -313,7 +334,7 @@ export function paintPromoCaption(el, build, root, boardLink, infoEl, boardTagsE
       infoEl.hidden = true;
     } else {
       infoEl.hidden = false;
-      infoEl.innerHTML = infoHtml(build, root);
+      infoEl.innerHTML = infoHtml(build, root, opts.mentionData || null);
     }
   }
   const base = root.endsWith('/') ? root : `${root}/`;

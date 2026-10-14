@@ -1305,6 +1305,17 @@ a.home-promo__caption-author:hover {
   overflow: hidden;
 }
 
+.home-promo__info-desc .bpb-mention {
+  display: inline-block;
+  width: clamp(1.2rem, 2.1vw, 1.75rem);
+  height: clamp(1.2rem, 2.1vw, 1.75rem);
+  margin: 0 0.12em;
+  object-fit: contain;
+  vertical-align: -0.42em;
+  image-rendering: auto;
+  pointer-events: none;
+}
+
 .home-promo__info-desc--empty {
   font-style: italic;
   color: color-mix(in srgb, var(--promo-info-cream) 55%, transparent);

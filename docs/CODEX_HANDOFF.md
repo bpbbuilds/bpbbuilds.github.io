@@ -4113,3 +4113,13 @@ None.
 
 - Root cause: anchor switching replaced the tooltip content before starting a `1 → 0 → 1` animation, so the new card was briefly visible, faded out, and appeared again. The switch animation now starts at opacity 0 and fades the replacement card in once.
 - Updated `scripts/tooltip-transition-smoke.mjs` and `scripts/tooltip-transition-browser-smoke.mjs` to assert no initial replacement flash, one clean switch fade, custom tooltip parity, responsive 1440/1080/tablet/mobile behavior, and reduced-motion support. Tooltip scale/parity audits and JS syntax checks pass. No legal or security surfaces changed.
+
+### 2026-10-14 Home Player Info description item icons (in progress)
+
+- Codex owns the Home Player Info description rendering paths in `js/pages/home/home-promo-caption.js`, `js/pages/home/home-promo-assemble.js`, the scoped icon styling in `js/pages/home/home-promo-band.css`, any small shared Home helper required by that renderer, the focused regression smoke, and this handoff.
+- Scope: make serialized item mentions in the Home build-animation description render their item icons using the existing catalog sprite metadata, without changing description text, escaping, tooltip behavior, or other Home/Builds surfaces.
+
+### 2026-10-14 Home Player Info description item icons complete
+
+- Home promo queries now include the current `notes` field and prefer it over legacy `blurb`, matching the Build view description source. Serialized `[[item_id]]` mentions are rendered through the shared escaped mention renderer, with board placements and a single targeted catalog lookup covering mentions for items no longer on the board.
+- Added responsive Home promo mention styling and focused static, runtime, and Playwright smokes. Verification passed at 1440, 1080, tablet, and mobile widths, including icon source/dimensions, current-notes precedence, no overflow, Home Player Info wave/fabric, activity/selection, production audit, syntax, and `git diff --check`. No legal or security surfaces changed.
