@@ -4134,3 +4134,13 @@ None.
 - Root cause: every Discord keystroke waited on an uncached Supabase REST request with no timeout. A slow or transient network response could miss Discord's three-second autocomplete acknowledgement window and show “Loading options failed.”
 - Added a bounded 1,000-row name/ID catalog cache warmed when the Discord client becomes ready, local filtering for each keystroke, an 1.8-second abortable REST fallback, and safe response parsing. Existing item lookup, build counts, and embed rendering are unchanged.
 - Added a timing/filter regression smoke and extended the `/item` static smoke. Warmed autocomplete responds locally in ~1ms after a ~371ms catalog warm-up in this environment; command, syntax, and `git diff --check` verification pass. No secrets, legal, or security surfaces changed.
+
+### 2026-10-14 Discord `/inv` inventory grid (in progress)
+
+- Codex owns `bot/commands/inv.js`, the focused inventory-grid smoke, and this handoff for this feature.
+- Scope: replace the one-cosmetic-per-page image with a paginated 3×3 grid, preserve server-side ownership filtering and Previous/Next controls, and include readable per-page item labels without exposing private profile data.
+
+### 2026-10-14 Discord `/inv` inventory grid complete
+
+- `/inv` now renders nine owned cosmetics per page in a 3×3 composite PNG grid, with each cell showing the blob base plus its cosmetic overlay. Page descriptions list every visible item with slot and rarity, and Previous/Next now paginate by grid page rather than individual item.
+- Ownership rules, owner access, profile lookup, and user-scoped button IDs remain unchanged. Added `scripts/discord-inventory-grid-smoke.mjs`; grid pagination, PNG dimensions, embed attachment, navigation, existing `/item` smokes, bot syntax, and `git diff --check` all pass. No secrets, legal, or security surfaces changed.

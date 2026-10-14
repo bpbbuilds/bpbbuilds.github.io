@@ -1,5 +1,5 @@
 /**
- * /inv — one owned blob cosmetic per page, with Previous / Next.
+ * /inv — a paginated grid of the member's owned blob cosmetics.
  */
 import fs from 'fs';
 import path from 'path';
@@ -27,13 +27,19 @@ const SLOT_LABEL = {
   body: 'Body',
   hand: 'Hand',
 };
+const INVENTORY_COLUMNS = 3;
+const INVENTORY_ROWS = 3;
+export const INVENTORY_PAGE_SIZE = INVENTORY_COLUMNS * INVENTORY_ROWS;
+const INVENTORY_CELL_SIZE = 256;
+const INVENTORY_GAP = 16;
+const INVENTORY_PADDING = 16;
 
 /** @type {object[] | null} */
 let catalog = null;
 
 export const invCommand = {
   name: 'inv',
-  description: 'Page through a member’s blob inventory, one item image at a time.',
+  description: 'Browse a member\'s blob inventory in a paginated grid.',
   options: [
     {
       name: 'user',
@@ -103,20 +109,77 @@ async function loadProfile(discordId) {
 }
 
 /**
- * @param {string} file
+ * @param {object[]} items
+ * @param {number} page
+ * @returns {object[]}
  */
-async function itemPng(file) {
+export function inventoryPage(items, page) {
+  const index = Math.max(0, Math.floor(Number(page) || 0));
+  return (Array.isArray(items) ? items : []).slice(
+    index * INVENTORY_PAGE_SIZE,
+    (index + 1) * INVENTORY_PAGE_SIZE,
+  );
+}
+
+/**
+ * Render one Discord attachment containing a 3×3 cosmetic grid.
+ * @param {object[]} items
+ * @returns {Promise<Buffer>}
+ */
+export async function renderInventoryGridPng(items) {
   const base = await loadImage(fs.readFileSync(BLOB_BASE));
-  const scale = 8;
-  const canvas = createCanvas(base.width * scale, base.height * scale);
+  const width = INVENTORY_PADDING * 2 + INVENTORY_COLUMNS * INVENTORY_CELL_SIZE + (INVENTORY_COLUMNS - 1) * INVENTORY_GAP;
+  const height = INVENTORY_PADDING * 2 + INVENTORY_ROWS * INVENTORY_CELL_SIZE + (INVENTORY_ROWS - 1) * INVENTORY_GAP;
+  const canvas = createCanvas(width, height);
   const ctx = canvas.getContext('2d');
   ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(base, 0, 0, base.width * scale, base.height * scale);
-  if (file && fs.existsSync(file)) {
-    const overlay = await loadImage(fs.readFileSync(file));
-    ctx.drawImage(overlay, 0, 0, base.width * scale, base.height * scale);
-  }
+  ctx.fillStyle = '#16120f';
+  ctx.fillRect(0, 0, width, height);
+
+  const overlays = await Promise.all((Array.isArray(items) ? items : []).map(async (item) => {
+    const file = String(item?.file || '');
+    if (!file || !fs.existsSync(file)) return null;
+    return loadImage(fs.readFileSync(file));
+  }));
+  (Array.isArray(items) ? items : []).forEach((item, index) => {
+    const column = index % INVENTORY_COLUMNS;
+    const row = Math.floor(index / INVENTORY_COLUMNS);
+    const x = INVENTORY_PADDING + column * (INVENTORY_CELL_SIZE + INVENTORY_GAP);
+    const y = INVENTORY_PADDING + row * (INVENTORY_CELL_SIZE + INVENTORY_GAP);
+    ctx.fillStyle = '#211b16';
+    ctx.fillRect(x, y, INVENTORY_CELL_SIZE, INVENTORY_CELL_SIZE);
+    ctx.drawImage(base, x, y, INVENTORY_CELL_SIZE, INVENTORY_CELL_SIZE);
+    if (overlays[index]) {
+      ctx.drawImage(overlays[index], x, y, INVENTORY_CELL_SIZE, INVENTORY_CELL_SIZE);
+    }
+    ctx.strokeStyle = 'rgba(234, 201, 20, 0.42)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x + 1, y + 1, INVENTORY_CELL_SIZE - 2, INVENTORY_CELL_SIZE - 2);
+  });
   return canvas.toBuffer('image/png');
+}
+
+/** @param {string} value */
+function escapeMarkdown(value) {
+  return String(value || '').replace(/[\\`*_{}\[\]()<>#+\-.!|~]/g, '\\$&');
+}
+
+/** @param {object} item @param {number} index */
+function itemLine(item, index) {
+  const slot = SLOT_LABEL[item.slot] || item.slot;
+  return `${index + 1}. **${escapeMarkdown(item.name)}** — ${escapeMarkdown(slot)} · ${escapeMarkdown(item.rarity)}`;
+}
+
+/** @param {object[]} items */
+function inventoryDescription(items) {
+  return items.map(itemLine).join('\n');
+}
+
+/** @param {object[]} items */
+function assertInventoryGrid(items) {
+  if (!Array.isArray(items) || items.length > INVENTORY_PAGE_SIZE) {
+    throw new Error('Inventory page exceeds the grid capacity');
+  }
 }
 
 /**
@@ -186,20 +249,21 @@ async function showPage(interaction, discordId, page, update) {
     return;
   }
 
-  const index = Math.min(Math.max(0, page), items.length - 1);
-  const item = items[index];
-  const png = await itemPng(item.file);
-  const slot = SLOT_LABEL[item.slot] || item.slot;
+  const totalPages = Math.max(1, Math.ceil(items.length / INVENTORY_PAGE_SIZE));
+  const index = Math.min(Math.max(0, Math.floor(page)), totalPages - 1);
+  const pageItems = inventoryPage(items, index);
+  assertInventoryGrid(pageItems);
+  const png = await renderInventoryGridPng(pageItems);
   const embed = new EmbedBuilder()
     .setColor(GOLD)
     .setTitle(title)
     .setURL(`${SITE}/u/?d=${encodeURIComponent(discordId)}`)
-    .setDescription(`**${item.name}**\n${slot} · ${item.rarity}`)
+    .setDescription(inventoryDescription(pageItems))
     .setImage('attachment://inv.png')
-    .setFooter({ text: `Page ${index + 1} of ${items.length}` });
+    .setFooter({ text: `Page ${index + 1} of ${totalPages} · ${items.length} items` });
   await interaction.editReply({
     embeds: [embed],
-    components: [pageRow(discordId, index, items.length)],
+    components: [pageRow(discordId, index, totalPages)],
     files: [new AttachmentBuilder(png, { name: 'inv.png' })],
     attachments: [],
   });
