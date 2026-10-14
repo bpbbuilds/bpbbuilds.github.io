@@ -4198,3 +4198,14 @@ None.
 - Filter interactions compute the filtered result once for the immediate count and the next animation-frame paint. Itemiary sprite warming is non-blocking and progressive, with an active paint-generation guard so stale decode work cannot unhide a reused node.
 - Checked the first two P0 entries in `docs/performance/items-page-performance-audit.md`; no markup, dimensions, styling, access behavior, or responsive breakpoints changed.
 - Added `scripts/items-p0-performance-smoke.mjs`: static bootstrap/paint contracts plus a Chromium delayed-sprite test (fast item clears while slow item remains pending, then both complete). The focused smoke, shared item-shadow smoke, syntax checks, and `git diff --check` pass. The existing `_audit-itemiary-virtual.mjs` still reports its pre-existing `mid-scroll DOM exploded 518` pool-cap assertion; that is the separate unchecked P0 pool/LRU item.
+
+### 2026-10-14 Items page P0 scroll/pool fixes (in progress)
+
+- Codex owns `js/shared/backpack-grid/item-pool.js`, `js/shared/backpack-grid/item-virtual.js` if needed, `scripts/items-p0-performance-smoke.mjs`, `docs/performance/items-page-performance-audit.md`, and this handoff for this task.
+- Scope: replace delayed scroll-only window refresh with an immediate passive-scroll rAF plus trailing catch-up, and bound Itemiary parked DOM/sprite entries with an LRU while retaining the current visible window. Preserve composition, spacing, item order, and responsive behavior.
+
+### 2026-10-14 Items page P0 scroll/pool fixes complete
+
+- Itemiary scroll now queues a passive next-frame virtual-window paint immediately, while the 64 ms settle and 320 ms fling timers remain as trailing catch-up passes. The scroll path still suppresses entrance-wave layout work.
+- Added a configurable `poolCap` with a 480-entry default. Visible entries stay pinned; the least-recent parked entries are recycled with `recycleEntry()`, releasing DOM, sprite `src`, and live-art resources. LRU recency is updated only for painted entries, so normal visual ordering and composition are unchanged.
+- Marked P0 items 3 and 4 complete in `docs/performance/items-page-performance-audit.md`. Extended `scripts/items-p0-performance-smoke.mjs` with a next-frame scroll assertion and a 1,200-item bounded-pool browser cycle. The focused smoke passes (initial 152 nodes, post-scroll 304, cap 480); syntax and diff checks pass. The legacy `_audit-itemiary-virtual.mjs` has no page errors but still expects the old `<400` mid-scroll total while the current 24em overscan mounts 449 visible entries; that threshold belongs to the remaining overscan item and is intentionally not changed here.

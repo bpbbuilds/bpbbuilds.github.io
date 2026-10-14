@@ -251,12 +251,12 @@ Cache immutable JSON with content hashes/long-lived cache headers and share modu
 
 - [x] Start catalog bootstrap in parallel with nav decoration; keep access checks intact.
 - [x] Make filter paint synchronous for geometry/count and move sprite decode to cancellable per-item background work.
-- [ ] Replace the 64/320 ms scroll-only refresh with an immediate cheap rAF window update plus trailing catch-up.
-- [ ] Bound the virtual DOM/decoded-sprite pool; evict old off-window entries with an LRU.
+- [x] Replace the 64/320 ms scroll-only refresh with an immediate cheap rAF window update plus trailing catch-up.
+- [x] Bound the virtual DOM/decoded-sprite pool; evict old off-window entries with an LRU.
 - [ ] Reduce/adapt the 24 em overscan and prioritize current/next viewport only.
 - [ ] Add normalized filter metadata and one cached filter result per state signature; remove the duplicate `filterItems()` pass.
 
-Completed in this pass: the Items page now starts catalog initialization immediately after the shared access gate resolves while navigation decoration continues independently. Filter changes commit their count and geometry from one computed result, and sprite readiness is warmed off the paint path with each item unhidden independently as its own art becomes ready. No markup, dimensions, visual styling, or access behavior changed.
+Completed in this pass: the Items page now refreshes its virtual window on the next animation frame during scroll, with the existing short-settle and long-fling catch-up timers retained. Parked Itemiary nodes/sprites use a configurable 480-entry LRU; visible entries are never evicted, and older parked entries release their DOM and decoded sprite sources. Together with the first two P0 fixes, catalog initialization, filtering, sprite readiness, and scrolling are decoupled from slow optional work. No markup, dimensions, visual styling, or access behavior changed.
 
 ### P1 — required for a stable “publish-ready” interaction budget
 
@@ -293,4 +293,4 @@ Completed in this pass: the Items page now starts catalog initialization immedia
 
 ## Final assessment
 
-The first two P0 items are implemented and checked above, but the page still needs the remaining P0 work before calling it publish-ready. The highest-return remaining changes are the immediate scroll window, bounded DOM/sprite pool, and measured overscan. Once those are in place, normalized filter/pack caches and deferred chrome/live art should bring the page to a predictable interaction budget without changing its appearance.
+The first four P0 items are implemented and checked above, but the page still needs the remaining P0 work before calling it publish-ready. The highest-return remaining changes are measured overscan and normalized filter metadata/caching. Once those are in place, normalized filter/pack caches and deferred chrome/live art should bring the page to a predictable interaction budget without changing its appearance.

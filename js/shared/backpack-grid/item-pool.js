@@ -32,6 +32,7 @@ import {
   placementsNearViewport,
   itemHeightEm,
   parkWarmEntry,
+  recycleEntry,
 } from './item-virtual.js';
 
 function isBagItem(item) {
@@ -298,6 +299,40 @@ const APPEAR_LAYOUT_GUARD_MS = 1200;
 const ITEMIARY_SCROLL_SETTLE_MS = 64;
 /** Keep a long trackpad fling from outrunning the virtual window entirely. */
 const ITEMIARY_SCROLL_MAX_WAIT_MS = 320;
+/** Keep current/nearby nodes warm, but release older parked entries. */
+export const ITEMIARY_POOL_MAX_ENTRIES = 480;
+
+/**
+ * Move a visible entry to the newest end of the Itemiary LRU. The Map order
+ * is the only bookkeeping needed; parked entries remain reusable until the
+ * cap is exceeded.
+ * @param {Map<string, object>} pool
+ * @param {string} key
+ * @param {object} entry
+ */
+function touchPoolEntry(pool, key, entry) {
+  if (pool.get(key) !== entry) return;
+  pool.delete(key);
+  pool.set(key, entry);
+}
+
+/**
+ * Release the least-recently used parked Itemiary entries. Visible entries
+ * are never evicted, so a large near-viewport band can temporarily exceed the
+ * reserve without changing what the user sees.
+ * @param {Map<string, { itemEl: HTMLElement, underEl: HTMLElement | null, shown?: boolean }>} pool
+ * @param {Set<string>} shown
+ * @param {number} [maxEntries=ITEMIARY_POOL_MAX_ENTRIES]
+ */
+function pruneItemiaryPool(pool, shown, maxEntries = ITEMIARY_POOL_MAX_ENTRIES) {
+  if (pool.size <= maxEntries) return;
+  for (const [key, entry] of pool) {
+    if (pool.size <= maxEntries) break;
+    if (shown.has(key) || entry.shown) continue;
+    pool.delete(key);
+    recycleEntry(entry);
+  }
+}
 
 /**
  * @param {HTMLElement} el
@@ -592,6 +627,7 @@ export function paintPooled(root, opts) {
     } else {
       entry.itemEl.dataset.placementKey = key;
     }
+    touchPoolEntry(pool, key, entry);
     stampAffectCells(entry.itemEl, item, p.x, p.y, face);
 
     if (deferSprite) markSpritePending(entry.itemEl);
@@ -666,6 +702,10 @@ export function paintPooled(root, opts) {
       entry.underEl?.remove();
       pool.delete(id);
     }
+  }
+
+  if (itemiary && Number.isFinite(Number(opts.poolCap))) {
+    pruneItemiaryPool(pool, shown, Math.max(64, Math.floor(Number(opts.poolCap))));
   }
 
   // Collar extension promotion (Acorn Ace), rarity-hover listeners, etc.
@@ -743,6 +783,7 @@ export function ensurePoolEntries(pool, root, items, getSpriteUrl) {
  *   spriteRoot?: Element | null,
  *   virtualize?: boolean,
  *   virtualPadEm?: number,
+ *   poolCap?: number,
  * }} options
  */
 export function mountItemiaryGrid(container, options) {
@@ -765,6 +806,9 @@ export function mountItemiaryGrid(container, options) {
   const virtualPadEm = Number.isFinite(options.virtualPadEm)
     ? Math.max(0, Number(options.virtualPadEm))
     : VIRTUAL_PAD_EM;
+  const poolCap = Number.isFinite(options.poolCap)
+    ? Math.max(64, Math.floor(Number(options.poolCap)))
+    : ITEMIARY_POOL_MAX_ENTRIES;
 
   /** @type {Map<string, PoolEntry>} */
   const pool = new Map();
@@ -1015,6 +1059,7 @@ export function mountItemiaryGrid(container, options) {
       skipPark: null,
       deferAppear: true,
       deferSprite: true,
+      poolCap,
     });
     const { shown, appearList, warmEntries } =
       result instanceof Set
@@ -1175,10 +1220,6 @@ export function mountItemiaryGrid(container, options) {
 
   function flushScrollPaint() {
     scrollRaf = 0;
-    if (scrollMaxTimer) {
-      clearTimeout(scrollMaxTimer);
-      scrollMaxTimer = 0;
-    }
     appearNewOnly = true;
     // Entrance animations force a layout flush (`offsetWidth`) and are not
     // useful while the user is actively scrubbing through the catalog.
@@ -1188,10 +1229,10 @@ export function mountItemiaryGrid(container, options) {
 
   function onScroll() {
     if (!virtualize || mode == null) return;
-    // Let native/compositor scrolling run without a DOM paint competing in
-    // the same frame.  A short trailing debounce keeps the virtual window
-    // filled after the user pauses, while still handling slow wheel/keyboard
-    // scrolling promptly.
+    // Refresh the virtual window on the next frame so native scrolling never
+    // outruns the mounted band. The trailing timers provide one final catch-up
+    // after a burst/long fling without changing the passive scroll contract.
+    queueScrollPaint();
     if (scrollTimer) clearTimeout(scrollTimer);
     scrollTimer = window.setTimeout(() => {
       scrollTimer = 0;
