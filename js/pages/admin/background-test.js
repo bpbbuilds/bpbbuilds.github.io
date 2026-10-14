@@ -196,7 +196,7 @@ async function boot() {
     return;
   }
 
-  const skyController = initCombatSky();
+  const skyController = initCombatSky({ mode: 'scroll' });
   const staticSky = createStaticSky();
   const assetBackground = createAssetBackground();
   const fallingItems = createFallingItemsBackground({ root: combatSkyRoot() });

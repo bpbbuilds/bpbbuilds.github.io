@@ -1,5 +1,6 @@
 /**
- * Homepage combat day→night backdrop — scroll-scrubbed like game Round anim.
+ * Homepage combat backdrop. The Home page uses a fixed Night frame; the
+ * admin background preview opts into the original scroll-scrubbed mode.
  *
  *   import { initCombatSky } from './combat-sky.js';
  *   initCombatSky();
@@ -14,6 +15,8 @@ export const DESIGN_H = 1080;
 export const T_START = 2.5;
 /** Deep night hold (skip late star encore / loop) */
 export const T_END = 30;
+/** Home's established Night preset (moon visible, no scroll interpolation). */
+export const T_HOME_NIGHT = 25.8;
 /** Bright day freeze for reduced motion */
 export const T_REDUCED = 6;
 
@@ -41,18 +44,35 @@ function shouldUseStaticSky() {
   return compactViewport || reducedData || saveData || lowCoreDevice;
 }
 
-export function initCombatSky() {
+export function initCombatSky({ mode = 'fixed-night' } = {}) {
   if (!document.body.classList.contains('page-home')) return;
   if (document.querySelector('.combat-sky')) return;
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const staticMode = reduced || shouldUseStaticSky();
+  const scrollMode = mode === 'scroll';
+  const staticMode = scrollMode && (reduced || shouldUseStaticSky());
   const host = buildSkyDom(combatSkyRoot());
   if (staticMode) host.classList.add('combat-sky--static');
+  if (!scrollMode) host.classList.add('combat-sky--fixed-night');
   document.body.insertBefore(host, document.body.firstChild);
 
   const layers = bindSkyLayers(host);
   fitScale(host);
+
+  if (!scrollMode) {
+    // Home keeps the Night preset fixed while the CSS windmill blades remain
+    // independently animated. There is intentionally no scroll listener.
+    applyTime(layers, T_HOME_NIGHT);
+    if (layers.moon) {
+      layers.moon.style.setProperty('--x', '960px');
+      layers.moon.style.setProperty('--y', '190px');
+    }
+    window.addEventListener('resize', () => fitScale(host), { passive: true });
+    return {
+      host,
+      setPaused() {},
+    };
+  }
 
   if (staticMode) {
     // A single painted frame keeps the scene readable without competing with

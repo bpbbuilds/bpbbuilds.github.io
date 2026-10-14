@@ -1,6 +1,4 @@
-/**
- * Homepage combat sky: transform-based celestials + scroll scrub still day→night.
- */
+/** Homepage combat sky: fixed Night frame with an independently animated windmill. */
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -52,14 +50,19 @@ await page.goto(`http://127.0.0.1:${PORT}/`, { waitUntil: 'domcontentloaded' });
 await page.waitForSelector('.combat-sky__celestial[data-layer="sun"]', { timeout: 15000 });
 await page.waitForTimeout(200);
 
-const day = await page.evaluate(() => {
+const beforeScroll = await page.evaluate(() => {
   const sky = document.querySelector('.combat-sky__sky');
   const sun = document.querySelector('[data-layer="sun"]');
+  const windmill = document.querySelector('.combat-sky__blades');
   const cs = sun ? getComputedStyle(sun) : null;
+  const wm = windmill ? getComputedStyle(windmill) : null;
   return {
     skyMod: sky ? getComputedStyle(sky).backgroundColor : '',
+    skyY: sky ? getComputedStyle(sky).transform : '',
     sunTf: cs?.transform || '',
     sunLeft: cs?.left || '',
+    sunOpacity: cs?.opacity || '',
+    windmillAnimation: wm?.animationName || '',
     layers: document.querySelectorAll('.combat-sky [data-layer]').length,
   };
 });
@@ -70,12 +73,16 @@ await page.evaluate(() => {
 });
 await page.waitForTimeout(350);
 
-const night = await page.evaluate(() => {
+const afterScroll = await page.evaluate(() => {
   const sky = document.querySelector('.combat-sky__sky');
   const sun = document.querySelector('[data-layer="sun"]');
+  const windmill = document.querySelector('.combat-sky__blades');
+  const cs = sun ? getComputedStyle(sun) : null;
   return {
     skyMod: sky ? getComputedStyle(sky).backgroundColor : '',
-    sunA: sun ? getComputedStyle(sun).opacity : '',
+    skyY: sky ? getComputedStyle(sky).transform : '',
+    sunOpacity: cs?.opacity || '',
+    windmillAnimation: windmill ? getComputedStyle(windmill).animationName : '',
     y: window.scrollY,
   };
 });
@@ -84,11 +91,15 @@ await browser.close();
 server.close();
 
 const fail = [];
-if (day.layers < 12) fail.push(`sky layers ${day.layers}`);
-if (!/matrix/.test(day.sunTf)) fail.push(`sun transform ${day.sunTf}`);
-if (day.sunLeft !== '0px') fail.push(`sun still uses left ${day.sunLeft} (want transform)`);
-if (day.skyMod === night.skyMod) fail.push('sky color did not change after scroll');
+if (beforeScroll.layers < 12) fail.push(`sky layers ${beforeScroll.layers}`);
+if (!/matrix/.test(beforeScroll.sunTf)) fail.push(`sun transform ${beforeScroll.sunTf}`);
+if (beforeScroll.sunLeft !== '0px') fail.push(`sun still uses left ${beforeScroll.sunLeft} (want transform)`);
+if (beforeScroll.skyMod !== afterScroll.skyMod) fail.push('sky color changed after scroll');
+if (beforeScroll.skyY !== afterScroll.skyY) fail.push('sky position changed after scroll');
+if (beforeScroll.sunOpacity !== afterScroll.sunOpacity) fail.push('sun visibility changed after scroll');
+if (beforeScroll.windmillAnimation !== 'combat-sky-spin') fail.push(`windmill animation ${beforeScroll.windmillAnimation}`);
+if (afterScroll.windmillAnimation !== 'combat-sky-spin') fail.push(`windmill animation after scroll ${afterScroll.windmillAnimation}`);
 if (errors.length) fail.push(`page errors: ${errors.join(' | ')}`);
 
-console.log(JSON.stringify({ day, night, fail }, null, 2));
+console.log(JSON.stringify({ beforeScroll, afterScroll, fail }, null, 2));
 if (fail.length) process.exit(1);

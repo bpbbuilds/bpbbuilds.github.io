@@ -1,4 +1,5 @@
-/* Fixed combat day→night backdrop — scrubbed by scroll (homepage only) */
+/* Fixed combat backdrop. Home uses a static Night frame; only windmill blades
+   retain their independent CSS animation. */
 
 .combat-sky {
   position: fixed;
@@ -37,6 +38,12 @@
 
 .combat-sky--static .combat-sky__blades {
   animation: none;
+}
+
+.combat-sky--fixed-night .combat-sky__stage,
+.combat-sky--fixed-night .combat-sky__sky,
+.combat-sky--fixed-night .combat-sky__celestial {
+  will-change: auto;
 }
 
 /* Admin background-test presets are frozen to a selected time, but keep the

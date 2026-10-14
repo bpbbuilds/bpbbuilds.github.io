@@ -107,7 +107,7 @@ From Background pack + older keyart layers → `assets/theme/backgrounds/`
 
 | File | Best use |
 |---|---|
-| `combat/` (layer PNGs) | **Homepage atmosphere** — fixed day→night scene scrubbed by scroll (`combat-sky.js`) |
+| `combat/` (layer PNGs) | **Homepage atmosphere** — fixed Night scene with animated windmill (`combat-sky.js`) |
 | `bg-town-square.jpg` | Alt / non-home pages — main-menu town |
 | `bg-shop-interior.jpg` | Item DB / construct — empty wall for UI |
 | `bg-study-shelves-portrait.png` | Tall/sidebar / mobile study vibe (keyart layer) |
@@ -129,15 +129,15 @@ From Background pack + older keyart layers → `assets/theme/backgrounds/`
 
 ### Combat sky layers (`backgrounds/combat/`)
 
-Source: game `Assets/Background/*` (Sun, Moon, Star, Hills, Mountains, House, Windmill, Path, Speckles, …). Homepage mounts a fixed stack and seeks the combat `Round` day→night keyframes from page scroll. Explore-items keeps its opaque dark band on top.
+Source: game `Assets/Background/*` (Sun, Moon, Star, Hills, Mountains, House, Windmill, Path, Speckles, …). Homepage mounts a fixed stack at the Night preset and leaves only the windmill blades animated. The admin background preview can still opt into the combat `Round` day→night scroll scrub. Explore-items keeps its opaque dark band on top.
 
 ### Recommended defaults
 
-- **Homepage atmosphere:** `combat/` layers via `js/pages/home/combat-sky.js` (not town-square)
+- **Homepage atmosphere:** `combat/` layers at the Night preset via `js/pages/home/combat-sky.js` (not town-square)
 - **Panels / cards / modals:** `bg-parchment-panel.png` ← biggest win from the older keyart pack
 - **Featured carousel cards:** video lane = Frame2 on media only; info lane = slightly smaller `ui-character-sheet.png` tucked under the video so the sheet edge peeks behind the frame; copy stays centered in the visible sheet band (`--fs-info-tuck`)
 - **Items / shop tools scene:** `bg-shop-interior.jpg` or `bg-market-stall-arch.png`
-- **Precomposed hill JPGs:** optional sectional alts when you don’t need the living scrub
+- **Precomposed hill JPGs:** optional sectional alts when you don’t need the living windmill
 
 ### CSS tip
 

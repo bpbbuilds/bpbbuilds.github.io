@@ -4057,3 +4057,14 @@ None.
 - Updated `.builds-feed__empty` to use the shared display font, white label fill, outlined label stroke, larger clamped typography, and responsive spacing.
 - Added `scripts/builds-empty-state-style-smoke.mjs`. Static smoke, syntax checks, `git diff --check`, and a Playwright viewport probe pass at 1440, 1080, 768, and 390px. No blockers.
 - Committed and pushed with the current bot, tooltip, Home, and Builds work as commit `48cec4a`. Local scratch files containing test credentials, database operations, summaries, and temporary screenshots were intentionally left untracked and were not pushed.
+
+### 2026-10-14 Home static Night background (in progress)
+
+- Codex owns the Home combat-sky mode in `js/pages/home/combat-sky/index.js`, its CSS, the admin background-preview call site, related Home background documentation, and the focused background smokes.
+- Scope: keep the Home page at the established Night preset while preserving only the windmill blade animation; the admin background preview retains explicit scroll mode.
+
+### 2026-10-14 Home static Night background complete
+
+- Home now paints the existing Night preset (`25.8`) once, pins the moon to the same Night-preview placement, and attaches no scroll listener. The windmill blades remain CSS-animated, with reduced-motion still honored.
+- Scroll-scrub behavior remains available only through `initCombatSky({ mode: 'scroll' })` for the owner admin background preview. Product homepage/theme docs now describe the fixed Night scene and animated windmill.
+- `scripts/home-background-mode-smoke.mjs` and `_audit-combat-sky.mjs` cover the static frame, opt-in admin scroll mode, unchanged sky after scroll, and active windmill animation. Both pass with module syntax checks and `git diff --check`.
