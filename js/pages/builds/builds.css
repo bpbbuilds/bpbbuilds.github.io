@@ -286,6 +286,20 @@ body.page-builds #main {
     0.092em -0.038em 0 var(--bp-ui-ink);
 }
 
+/* Card view owns the complete surface so its avatar, author, title, tags,
+   votes, board, and details all sit inside one textured rounded panel. */
+.builds-post:not(.builds-post--compact):not(.builds-post--grid) {
+  position: relative;
+  isolation: isolate;
+  border-radius: 1.5rem;
+  background-color: #111;
+  background-image: url('../../../assets/theme/backgrounds/bg-dark-textured.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: none;
+}
+
 /* Title + tags sit above the shared textured surface */
 .builds-post__top {
   display: flex;
@@ -367,6 +381,11 @@ body.page-builds #main {
   display: grid;
   gap: 0.45rem;
   padding: 0.65rem 0.65rem 0.45rem;
+}
+
+.builds-post:not(.builds-post--compact):not(.builds-post--grid) > .builds-post__body {
+  background: transparent;
+  border-radius: 0 0 1.5rem 1.5rem;
 }
 
 .builds-post__body > *,

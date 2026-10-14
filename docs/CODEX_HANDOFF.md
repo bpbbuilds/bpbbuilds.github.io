@@ -4088,3 +4088,8 @@ None.
 
 - Card, compact, and grid listing wrappers now use `bg-dark-textured.webp`, `border-radius: 1.5rem` (matching the Home build-animation card), and no box shadow/Patch3 overlay. Listing and grid separator borders are removed, including skeleton listing separators.
 - Updated `scripts/builds-view-shadow-smoke.mjs` and its browser smoke to assert the shared texture, 24px radius, no shadow layer, no separator borders, and zero horizontal overflow at 1440, 1080, 768, and 390px. Build density, header layout, title-spacing, syntax, and `git diff --check` checks pass. No legal or security surfaces changed.
+
+### 2026-10-14 Builds card header surface complete
+
+- Card view now paints the dark textured rounded surface on the outer `.builds-post`, covering the avatar, author, title, tags, vote controls, board, details, and actions together. Its inner body is transparent so the texture continues behind the complete card; compact and grid retain their own textured content wrappers.
+- Extended the Builds surface smokes to assert the card parent surface, transparent card body, shared 24px radius, no shadows/separators, and responsive no-overflow behavior. Existing Builds density/header/title checks and syntax validation pass. No legal or security surfaces changed.

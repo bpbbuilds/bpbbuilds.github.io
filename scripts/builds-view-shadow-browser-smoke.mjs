@@ -22,7 +22,7 @@ try {
   const page = await browser.newPage();
   await page.setContent(`<!doctype html><html><head><style>${css}</style></head><body class="page-builds">
     <main class="builds-main"><div class="builds-feed-col"><ul class="builds-feed__list">
-      <li class="builds-post"><div class="builds-post__body"><span>Card content</span></div></li>
+      <li class="builds-post"><div class="builds-post__top"><span>Card header</span></div><div class="builds-post__body"><span>Card content</span></div></li>
     </ul><ul class="builds-feed__list builds-feed__list--compact">
       <li class="builds-post builds-post--compact"><div class="builds-post__compact"><span>Compact content</span></div></li>
     </ul><ul class="builds-feed__list builds-feed__list--grid">
@@ -34,7 +34,8 @@ try {
   for (const viewport of viewports) {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     const result = await page.evaluate(() => {
-      const wrappers = [...document.querySelectorAll('.builds-post__body, .builds-post__compact, .builds-post__grid')];
+      const wrappers = [...document.querySelectorAll('.builds-post:not(.builds-post--compact):not(.builds-post--grid), .builds-post__compact, .builds-post__grid')];
+      const cardBody = document.querySelector('.builds-post:not(.builds-post--compact):not(.builds-post--grid) > .builds-post__body');
       const listings = [...document.querySelectorAll('.builds-post')];
       const surfaces = wrappers.map((wrapper) => {
         const style = getComputedStyle(wrapper);
@@ -48,6 +49,7 @@ try {
       });
       return {
         surfaces,
+        cardBodyBackground: cardBody ? getComputedStyle(cardBody).backgroundColor : '',
         listingBorders: listings.map((listing) => getComputedStyle(listing).borderBottomStyle),
         overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
@@ -64,6 +66,9 @@ try {
     }
     if (result.surfaces.some((surface) => surface.boxShadow !== 'none')) {
       throw new Error(`${viewport.name}: view surfaces still paint a shadow`);
+    }
+    if (result.cardBodyBackground !== 'rgba(0, 0, 0, 0)') {
+      throw new Error(`${viewport.name}: card body is hiding the full card surface`);
     }
     if (result.listingBorders.some((border) => border !== 'none')) {
       throw new Error(`${viewport.name}: listing separator remains`);
