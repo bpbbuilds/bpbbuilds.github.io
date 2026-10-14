@@ -21,7 +21,7 @@ for (const surface of ['bpb-tooltip-float', 'build-more-tip', 'build-event-tip']
   assert.match(tooltipCss + eventCss + buildCss, new RegExp(`\\.${surface}\\.is-hiding`), `${surface} has a fade-out state`);
 }
 assert.match(tooltipCss, /transition:[^;]*opacity[^;]*transform[^;]*visibility/s, 'shared tooltip host transitions opacity, transform, and visibility');
-assert.match(tooltipCss, /@keyframes bpb-tooltip-anchor-swap/, 'shared tooltip defines an anchor-switch fade');
+assert.match(tooltipCss, /@keyframes\s+bpb-tooltip-anchor-swap\s*\{\s*0%\s*\{\s*opacity:\s*0\s*;\s*\}\s*100%\s*\{\s*opacity:\s*1\s*;/, 'shared tooltip switch starts from the hidden frame');
 assert.match(tooltipCss, /\.bpb-tooltip-float\.is-swapping[\s\S]*animation:\s*bpb-tooltip-anchor-swap/, 'item tooltip host runs the anchor-switch fade');
 assert.match(tooltipCss, /\.build-more-tip\.is-swapping[\s\S]*animation:\s*bpb-tooltip-anchor-swap/, 'build tooltip host runs the anchor-switch fade');
 assert.match(tooltipCss, /\.build-event-tip\.is-swapping[\s\S]*animation:\s*bpb-tooltip-anchor-swap/, 'event tooltip host runs the anchor-switch fade');

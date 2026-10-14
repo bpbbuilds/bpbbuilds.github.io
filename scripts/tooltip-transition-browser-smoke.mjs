@@ -159,8 +159,8 @@ try {
   assert.ok(result.visible.transitionDuration.split(',').some((duration) => parseFloat(duration) > 0), 'shared tooltip has a non-zero fade duration');
   assert.equal(result.sameAnchor.swapping, false, 'descendant pointerover does not restart the fade for the same anchor');
   assert.equal(result.sameAnchor.content, 'Hammer', 'descendant pointerover keeps the current tooltip content');
-  assert.equal(result.swapped.entryOpacity, '1', 'shared tooltip keeps the current card visible at the start of an anchor switch');
-  assert.ok(parseFloat(result.swapped.midOpacity) < 1, `shared tooltip visibly fades out during an anchor switch (${JSON.stringify(result.swapped)})`);
+  assert.ok(parseFloat(result.swapped.entryOpacity) < 0.1, 'shared tooltip does not flash the replacement card before its switch fade');
+  assert.ok(parseFloat(result.swapped.midOpacity) > parseFloat(result.swapped.entryOpacity) && parseFloat(result.swapped.midOpacity) < 1, `shared tooltip fades the replacement card in during an anchor switch (${JSON.stringify(result.swapped)})`);
   assert.equal(result.swapped.finishedOpacity, '1', 'shared tooltip finishes the switch fade at full opacity');
   assert.equal(result.swapped.hasSecondContent, true, 'shared tooltip replaces content for the new anchor');
   assert.ok(parseFloat(result.enter.immediate) < 1, 'shared tooltip starts transparent before the enter transition');

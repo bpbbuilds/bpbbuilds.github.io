@@ -726,12 +726,12 @@
   opacity: 1;
 }
 
-/* Reused tooltip hosts need an explicit mid-hover fade when their anchor
-   changes. The content is replaced before this animation starts, so each
-   card transition reads as a deliberate fade instead of a hard swap. */
+/* Reused tooltip hosts need an explicit fade when their anchor changes. The
+   replacement content is mounted before this animation starts, so begin at
+   opacity zero; a 1 -> 0 -> 1 keyframe would flash the new card once before
+   fading it out and back in. */
 @keyframes bpb-tooltip-anchor-swap {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
+  0% { opacity: 0; }
   100% { opacity: 1; }
 }
 

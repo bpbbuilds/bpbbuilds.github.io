@@ -4103,3 +4103,13 @@ None.
 
 - Class, Rank, Sub, and Gold tiles now use the Home hero-card treatment: `radial-gradient(circle at top center, #2a2420, #14110f)`, the matching `#3a322c` edge, and a 1.5rem radius. The former faded Patch3 overlay is removed.
 - Added `scripts/builds-card-info-surface-smoke.mjs` for computed-style coverage at 1440, 1080, 768, and 390px. Builds surface, density, header, title-spacing, syntax, and `git diff --check` checks pass. No legal or security surfaces changed.
+
+### 2026-10-14 Tooltip switch flash (in progress)
+
+- Codex owns the shared tooltip transition contract in `js/shared/tooltip.css` and its transition smokes for this task.
+- Scope: remove the replacement-card flash when moving directly from one tooltip anchor to another, while preserving the existing enter/exit fades, custom build/event tooltip behavior, and reduced-motion handling.
+
+### 2026-10-14 Tooltip switch flash complete
+
+- Root cause: anchor switching replaced the tooltip content before starting a `1 → 0 → 1` animation, so the new card was briefly visible, faded out, and appeared again. The switch animation now starts at opacity 0 and fades the replacement card in once.
+- Updated `scripts/tooltip-transition-smoke.mjs` and `scripts/tooltip-transition-browser-smoke.mjs` to assert no initial replacement flash, one clean switch fade, custom tooltip parity, responsive 1440/1080/tablet/mobile behavior, and reduced-motion support. Tooltip scale/parity audits and JS syntax checks pass. No legal or security surfaces changed.
