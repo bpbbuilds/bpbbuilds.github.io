@@ -4242,3 +4242,13 @@ None.
 - Itemiary live art keeps the same first painted frame but does not maintain an idle catalog RAF. Hover/focus and spotlight entries opt into active animation; hidden documents pause both the JS scheduler and CSS glow/flicker timelines.
 - Spotlight keeps its existing geometry and immediate tooltip, defers live-art mounting plus recipe/build detail work to the next frame, and bounds completed build-detail results with a 24-entry LRU cache.
 - Added `scripts/items-p1-performance-smoke.mjs` for visibility, focus activation, spotlight deferral, build-cache, and audit-checkbox contracts. Syntax, focused P1 smoke, existing Items P0 smoke, Itemiary virtual audit, and `git diff --check` pass. No legal/security surfaces changed.
+
+### 2026-10-14 Builds page content padding (in progress)
+
+- Codex owns `js/pages/builds/builds.css`, `scripts/builds-surface-padding-smoke.mjs`, and this handoff for this task.
+- Scope: add responsive breathing room inside the public Builds page's textured card, compact, and grid surfaces without changing content order, board dimensions, or responsive breakpoints.
+
+### 2026-10-14 Builds page content padding complete
+
+- Added clamped surface inset tokens to the public Builds card, compact, and grid wrappers so textured backgrounds have more breathing room while scaling fluidly from desktop through mobile.
+- Added `scripts/builds-surface-padding-smoke.mjs`; it covers all three views with static contracts and a 1440px browser computed-style check. The focused smoke, textured-surface/card-info/view-density/header/title/share/pointer smokes, and `git diff --check` pass. No legal or security surfaces changed.

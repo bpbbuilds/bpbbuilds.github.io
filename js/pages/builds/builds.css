@@ -261,6 +261,10 @@ body.page-builds #main {
   display: grid;
   gap: 0.35rem;
   padding: 0.85rem 0.35rem 0.85rem;
+  /* Keep textured build surfaces comfortably inset at every desktop size. */
+  --builds-surface-pad-inline: clamp(0.6rem, calc(0.45rem + 0.38vw), 1rem);
+  --builds-surface-pad-block: clamp(0.65rem, calc(0.48rem + 0.35vw), 0.95rem);
+  --builds-surface-pad-bottom: clamp(0.55rem, calc(0.4rem + 0.3vw), 0.85rem);
   /* OptionsFont tokens — same recipe as Item Library filters */
   --bp-ui-ink: #3c261d;
   --bp-ui-cream: #ffecdc;
@@ -380,7 +384,7 @@ body.page-builds #main {
 .builds-post__body {
   display: grid;
   gap: 0.45rem;
-  padding: 0.65rem 0.65rem 0.45rem;
+  padding: var(--builds-surface-pad-block) var(--builds-surface-pad-inline) var(--builds-surface-pad-bottom);
 }
 
 .builds-post:not(.builds-post--compact):not(.builds-post--grid) > .builds-post__body {
@@ -1099,7 +1103,7 @@ a.builds-post__author:hover {
   grid-template-columns: auto minmax(0, 1fr);
   gap: 0.55rem 0.75rem;
   align-items: stretch;
-  padding: 0.55rem 0.25rem 0.5rem;
+  padding: var(--builds-surface-pad-block) var(--builds-surface-pad-inline) var(--builds-surface-pad-bottom);
 }
 
 .builds-post__compact-thumb {
@@ -1279,6 +1283,7 @@ a.builds-post__author:hover {
   flex-direction: column;
   gap: 0.3rem;
   min-width: 0;
+  padding: var(--builds-surface-pad-block) var(--builds-surface-pad-inline) var(--builds-surface-pad-bottom);
 }
 
 .builds-post__grid .builds-post__top {
