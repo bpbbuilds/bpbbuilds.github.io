@@ -4093,3 +4093,13 @@ None.
 
 - Card view now paints the dark textured rounded surface on the outer `.builds-post`, covering the avatar, author, title, tags, vote controls, board, details, and actions together. Its inner body is transparent so the texture continues behind the complete card; compact and grid retain their own textured content wrappers.
 - Extended the Builds surface smokes to assert the card parent surface, transparent card body, shared 24px radius, no shadows/separators, and responsive no-overflow behavior. Existing Builds density/header/title checks and syntax validation pass. No legal or security surfaces changed.
+
+### 2026-10-14 Builds card info tiles (in progress)
+
+- Codex owns the card-view Class/Rank/Sub/Gold tile treatment in `js/pages/builds/builds.css`, its focused surface smoke, and this handoff.
+- Scope: replace the faded Patch3 tile overlays with the same dark radial hero-card surface, border, and rounded corners used by the Home hero cards. Compact and grid views do not contain these card-only info tiles.
+
+### 2026-10-14 Builds card info tiles complete
+
+- Class, Rank, Sub, and Gold tiles now use the Home hero-card treatment: `radial-gradient(circle at top center, #2a2420, #14110f)`, the matching `#3a322c` edge, and a 1.5rem radius. The former faded Patch3 overlay is removed.
+- Added `scripts/builds-card-info-surface-smoke.mjs` for computed-style coverage at 1440, 1080, 768, and 390px. Builds surface, density, header, title-spacing, syntax, and `git diff --check` checks pass. No legal or security surfaces changed.

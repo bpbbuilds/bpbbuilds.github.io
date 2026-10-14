@@ -672,19 +672,10 @@ a.builds-post__author:hover {
   padding: 0.4rem 0.25rem 0.45rem;
   box-sizing: border-box;
   min-height: 5.25rem;
-}
-
-.builds-post__info-cell::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background: var(--builds-post-shade);
-  pointer-events: none;
-  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
-  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
-  mask-border-slice: 8 7 9 8 fill;
-  mask-border-width: 8px 7px 9px 8px;
+  border: 1px solid #3a322c;
+  border-radius: 1.5rem;
+  background: radial-gradient(circle at top center, #2a2420, #14110f);
+  background-color: #14110f;
 }
 
 .builds-post__info-label {
