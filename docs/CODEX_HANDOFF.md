@@ -1,5 +1,16 @@
 # Codex handoff
 
+### 2026-10-14 Local website changes pushed
+- Committed and pushed the staged product/assets/regression set as
+  `82bd0396a3934edf01d06ffb19a7ee95d58873d3` (`Sync local website updates`) to
+  `origin/main`; the remote ref was verified to match the local commit.
+- The staged set includes the Home visual/performance work, Patches banner and
+  route, shared tooltip fade lifecycle, Ranger asset, Discord embed-image fix,
+  and their responsive smoke coverage.
+- Credential-bearing local PowerShell helpers, account-reset SQL/test scripts,
+  scratch completion summaries, and `.omc/` state remain untracked and were not
+  published. The working tree is otherwise clean relative to `origin/main`.
+
 ### 2026-10-14 Curated loadout metadata spacing and avatar scale complete
 - Removed the extra board-to-metadata flex gap and reduced the board still's
   reserved transparent tail by a small responsive amount, bringing creator
