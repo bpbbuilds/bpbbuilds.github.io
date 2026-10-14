@@ -52,20 +52,21 @@ function allStartingBagIds() {
 
 /**
  * @param {string} name
+ * @param {string} root
  */
-function bagButtonsHtml(name) {
+function bagButtonsHtml(name, root) {
   const ids = startingBagIdsForClass(name);
   if (!ids.length) return '';
   const btns = ids
     .map(
       (id) => `
-        <button
-          type="button"
+        <a
           class="home-mobs__bag"
+          href="${escapeAttr(`${root}builds/?q=${encodeURIComponent(`[[${id}]]`)}`)}"
           data-item-id="${escapeAttr(id)}"
-          aria-label="Starting bag"
+          aria-label="See builds using this starting bag"
         >
-        </button>`,
+        </a>`,
     )
     .join('');
   return `<div class="home-mobs__bags" role="group" aria-label="${escapeAttr(name)} starting bags">${btns}</div>`;
@@ -119,7 +120,7 @@ function sectionHtml(root) {
             <div class="home-mobs__collapsible-wrap">
               <div class="home-mobs__collapsible">
                 <p class="home-mobs__desc">${escapeHtml(blurb)}</p>
-                ${bagButtonsHtml(name)}
+                ${bagButtonsHtml(name, root)}
               </div>
             </div>
           </div>
@@ -133,7 +134,7 @@ function sectionHtml(root) {
         <header class="home-mobs__header">
           <h2 class="home-mobs__title home-mobs__shade">Choose your hero</h2>
           <p class="home-mobs__subtitle home-mobs__shade">
-            Each class brings its own bag, synergies, and broken boards. Scroll the row, then jump into builds for the hero you play.
+            Choose your hero to browse its builds, or click a starting bag to see every build that uses it.
           </p>
         </header>
         <div class="home-mobs__cards" data-home-mobs-rail>

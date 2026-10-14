@@ -338,7 +338,9 @@
   border: none;
   border-radius: 0;
   background: transparent;
-  cursor: help;
+  color: inherit;
+  text-decoration: none;
+  cursor: var(--bpb-cursor-pointer, pointer);
   transition: filter 0.12s ease, transform 0.12s ease;
 }
 
