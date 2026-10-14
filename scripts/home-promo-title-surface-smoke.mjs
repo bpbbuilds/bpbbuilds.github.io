@@ -10,6 +10,7 @@ const root = new URL('../', import.meta.url);
 const css = await fs.readFile(new URL('js/pages/home/home-promo-band.css', root), 'utf8');
 
 assert.match(css, /\.home-promo--create\s+\.home-promo__caption-head::before/, 'title surface owns a scoped dark pseudo-element');
+assert.match(css, /\.home-promo--create\s+\.home-promo__caption-class\s*\{[^}]*position:\s*absolute/s, 'class icon is taken out of the centered title flow');
 
 const browser = await chromium.launch({ headless: true });
 try {
@@ -46,15 +47,24 @@ try {
       }
       const headStyle = getComputedStyle(head);
       const shadeStyle = getComputedStyle(head, '::before');
+      const iconStyle = getComputedStyle(icon);
+      const titleStyle = getComputedStyle(title);
+      const headRect = head.getBoundingClientRect();
+      const titleRect = title.getBoundingClientRect();
+      const iconRect = icon.getBoundingClientRect();
       return {
-        width: head.getBoundingClientRect().width,
-        height: head.getBoundingClientRect().height,
+        width: headRect.width,
+        height: headRect.height,
         paddingTop: parseFloat(headStyle.paddingTop),
         paddingInline: parseFloat(headStyle.paddingLeft),
         shadeContent: shadeStyle.content,
         shadeBackground: shadeStyle.backgroundColor,
-        iconWidth: icon.getBoundingClientRect().width,
-        titleWidth: title.getBoundingClientRect().width,
+        iconPosition: iconStyle.position,
+        iconLeftInset: iconRect.left - headRect.left,
+        iconWidth: iconRect.width,
+        titleWidth: titleRect.width,
+        titleTextAlign: titleStyle.textAlign,
+        titleCenterOffset: Math.abs((titleRect.left + titleRect.width / 2) - (headRect.left + headRect.width / 2)),
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
     });
@@ -63,6 +73,10 @@ try {
     assert.ok(result.paddingTop > 0 && result.paddingInline > 0, `${viewport.name}: title surface has responsive inset`);
     assert.equal(result.shadeContent, '""', `${viewport.name}: title surface uses a pseudo-element`);
     assert.equal(result.shadeBackground, 'rgba(14, 15, 16, 0.14)', `${viewport.name}: title surface matches Gold/Rank shade`);
+    assert.equal(result.iconPosition, 'absolute', `${viewport.name}: class icon does not shift the centered title`);
+    assert.ok(result.iconLeftInset >= 0 && result.iconLeftInset < result.width * 0.2, `${viewport.name}: class icon stays left aligned`);
+    assert.equal(result.titleTextAlign, 'center', `${viewport.name}: title remains center aligned`);
+    assert.ok(result.titleCenterOffset <= 1, `${viewport.name}: title stays centered in the surface`);
     assert.ok(result.iconWidth > 0 && result.titleWidth > 0, `${viewport.name}: title and class remain visible`);
     assert.ok(result.overflow <= 1, `${viewport.name}: title surface does not cause horizontal overflow`);
 

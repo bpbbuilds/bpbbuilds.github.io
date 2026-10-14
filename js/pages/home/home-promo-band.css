@@ -312,6 +312,20 @@
   mask-border-width: 8px 7px 9px 8px;
 }
 
+/* Keep the class mark anchored to the surface edge without contributing to
+   flex centering; the title owns the full row and stays centered. */
+.home-promo--create .home-promo__caption-class {
+  position: absolute;
+  inset-inline-start: clamp(0.45rem, 1vw, 0.8rem);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.home-promo--create .home-promo__caption-title {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .home-promo__caption-title {
   display: block;
   font-family: var(--bpb-font-display);
