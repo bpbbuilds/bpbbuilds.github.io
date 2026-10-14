@@ -1,5 +1,16 @@
 # Codex handoff
 
+### 2026-10-13 Local website changes pushed
+
+- Pushed the accumulated safe website/source/documentation changes on `main`.
+  The feature commit is `d22f410`; the follow-up PDF renderer commit is
+  `dad873b`. `origin/main` is synchronized at `dad873b`.
+- Ran all 44 staged smoke scripts successfully and passed staged diff checks.
+  The repository has no `npm test` script, so `npm test` reports the expected
+  missing-script error rather than running a suite.
+- Credential-bearing local helper scripts and scratch status summaries remain
+  unstaged and were not pushed.
+
 ### 2026-10-13 Ranger idle bottom-up section reveal (in progress)
 
 - Codex owns the isolated Choose Your Hero Ranger preset reveal in
