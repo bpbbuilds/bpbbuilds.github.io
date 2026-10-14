@@ -318,6 +318,8 @@
   position: absolute;
   inset-inline-start: clamp(0.45rem, 1vw, 0.8rem);
   top: 50%;
+  width: clamp(2.4rem, 3.8vw, 3.15rem);
+  height: clamp(2.4rem, 3.8vw, 3.15rem);
   transform: translateY(-50%);
 }
 
