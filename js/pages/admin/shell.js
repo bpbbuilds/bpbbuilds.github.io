@@ -11,7 +11,6 @@ import { escapeHtml } from './row.js';
 import { mountMetrics } from './metrics.js';
 import { defaultReportListFilters } from './report-filters.js';
 import { mountReportsPanel } from './reports.js';
-import { mountPendingQueue } from './queue.js';
 import { mountBuildsPanel } from './builds.js';
 import { mountEventsPanel } from './tab-events.js';
 import { mountCosmeticsPanel } from './tab-cosmetics.js';
@@ -39,7 +38,7 @@ let assetsCache = null;
 
 let reportFilters = defaultReportListFilters();
 let expandedId = '';
-/** @type {'all' | 'featured' | 'hidden'} */
+/** @type {'all' | 'pending_op' | 'featured' | 'hidden'} */
 let buildsFilter = 'all';
 
 /**
@@ -184,7 +183,7 @@ async function paintHub(main, root, state = {}) {
             <p class="admin-head__blurb" data-admin-blurb></p>
           </div>
         </header>
-        <div class="admin-stage" data-admin-stage aria-live="polite"></div>
+        <div class="admin-stage admin-surface" data-admin-stage aria-live="polite"></div>
       </div>
     </div>
   `;
@@ -344,12 +343,10 @@ async function mountStage(stage, tab, ctx) {
     if (!assetsCache) await loadAssets(ctx.root);
     ctx.assets = assetsCache || ctx.assets;
     stage.innerHTML = `
-      <div data-admin-pending></div>
       <div data-admin-builds></div>
     `;
-    const pendingHost = stage.querySelector('[data-admin-pending]');
     const buildsHost = stage.querySelector('[data-admin-builds]');
-    if (!(pendingHost instanceof HTMLElement) || !(buildsHost instanceof HTMLElement)) {
+    if (!(buildsHost instanceof HTMLElement)) {
       return;
     }
     const thumbOpts = {
@@ -357,13 +354,6 @@ async function mountStage(stage, tab, ctx) {
       shapes: ctx.assets.shapes,
       sockets: ctx.assets.sockets,
     };
-    await mountPendingQueue(pendingHost, {
-      auth: ctx.auth,
-      root: ctx.root,
-      onUnauthorized: ctx.onUnauthorized,
-      onChanged: ctx.reload,
-      ...thumbOpts,
-    });
     await mountBuildsPanel(buildsHost, {
       auth: ctx.auth,
       root: ctx.root,
@@ -372,7 +362,6 @@ async function mountStage(stage, tab, ctx) {
       onFilterChange: (f) => {
         buildsFilter = f;
       },
-      onChanged: ctx.reload,
       ...thumbOpts,
     });
     return;

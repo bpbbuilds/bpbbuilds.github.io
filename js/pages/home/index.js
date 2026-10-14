@@ -47,7 +47,7 @@ function mountNearViewport(selector, mount) {
  */
 async function mountDeferredSections() {
   await mountNearViewport('#home-class-showcase', () =>
-    import('./home-class-showcase.js').then(({ initHomeClassShowcase }) =>
+    import('./home-class-showcase.js?v=ranger-video-20261013a').then(({ initHomeClassShowcase }) =>
       initHomeClassShowcase(),
     ),
   );
@@ -64,8 +64,11 @@ async function mountDeferredSections() {
 }
 
 async function boot() {
-  if (!(await initNav())) return;
+  // Paint the town-square scene immediately. Navigation performs auth/access
+  // work and can wait on Supabase; the first-paint shell must not remain a
+  // blue canvas while that asynchronous gate resolves.
   initHomeFallingItemsBackground();
+  if (!(await initNav())) return;
   initFooter({ preset: 'regular' });
   initFeaturedStage();
 

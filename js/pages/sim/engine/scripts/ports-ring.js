@@ -81,39 +81,62 @@ function applyTrigger(piece, ctx, triggerType) {
  * @returns {import('./handlers.js').ScriptHandler}
  */
 export function makeRingPort(id) {
+  const bindTriggers = (piece, ctx) => {
+    // The production simulator uses character_damaged. Keep the legacy
+    // convenience signals wired as aliases for direct handler callers and old
+    // smoke fixtures; one-shot flags make the aliases idempotent.
+    if (piece._ringBoundBus === ctx.bus) return;
+    piece._ringBoundBus = ctx.bus;
+    rollEffects(piece, ctx);
+    piece._ringPlayerLow = false;
+    piece._ringOppoLow = false;
+
+    const playerDamaged = (payload = {}) => {
+      if (piece._ringPlayerLow) return;
+      const rel = ctx.player.maxHp > 0 ? ctx.player.hp / ctx.player.maxHp : 1;
+      if (rel < getPName(piece.params, 'healtht', 50) / 100) {
+        piece._ringPlayerLow = true;
+        applyTrigger(piece, ctx, 2);
+      }
+    };
+    const opponentDamaged = (payload = {}) => {
+      if (piece._ringOppoLow) return;
+      const rel = ctx.dummy.maxHp > 0 ? ctx.dummy.hp / ctx.dummy.maxHp : 1;
+      if (rel < getPName(piece.params, 'healtht_opp', 70) / 100) {
+        piece._ringOppoLow = true;
+        applyTrigger(piece, ctx, 3);
+      }
+    };
+
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor === ctx.player) playerDamaged(payload);
+      else if (payload?.actor === ctx.dummy) opponentDamaged(payload);
+    });
+    // Compatibility with pre-priority simulator tests that emitted the
+    // player-only convenience signal without an actor field.
+    ctx.bus?.on?.('player_damaged', playerDamaged);
+    // MagicRing.gd observes the opponent's character_damaged signal. Older
+    // direct tests represented that hit through piece_dealt_damage instead.
+    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
+      if (payload?.hit?.hit === false) return;
+      opponentDamaged(payload);
+    });
+  };
+
   return {
     handlerId: id,
     family: 'unique',
+    onPrepare(piece, ctx) {
+      bindTriggers(piece, ctx);
+    },
+    // Legacy alias: older callers invoked ring preparation from
+    // preCombatStart before the shared prepare pass was introduced.
     onPreCombatStart(piece, ctx) {
-      rollEffects(piece, ctx);
-      piece._ringPlayerLow = false;
-      piece._ringOppoLow = false;
+      bindTriggers(piece, ctx);
     },
     onCombatStart(piece, ctx) {
       rollEffects(piece, ctx);
       applyTrigger(piece, ctx, 0);
-      const healtht = getPName(piece.params, 'healtht', 50) / 100;
-      const healthtOpp = getPName(piece.params, 'healtht_opp', 70) / 100;
-      ctx.bus?.on?.('player_damaged', () => {
-        if (piece._ringPlayerLow) return;
-        const rel = ctx.player.maxHp > 0 ? ctx.player.hp / ctx.player.maxHp : 1;
-        if (rel < healtht) {
-          piece._ringPlayerLow = true;
-          applyTrigger(piece, ctx, 2);
-        }
-      });
-      ctx.bus?.on?.('piece_dealt_damage', (payload) => {
-        // MagicRing.gd listens to opponent.character_damaged, not an attack
-        // attempt. A miss does not damage the opponent and must not satisfy
-        // the low-health trigger.
-        if (!payload?.hit?.hit) return;
-        if (piece._ringOppoLow) return;
-        const rel = ctx.dummy.maxHp > 0 ? ctx.dummy.hp / ctx.dummy.maxHp : 1;
-        if (rel < healthtOpp) {
-          piece._ringOppoLow = true;
-          applyTrigger(piece, ctx, 3);
-        }
-      });
     },
     onCooldownEffect(piece, ctx) {
       applyTrigger(piece, ctx, 1);

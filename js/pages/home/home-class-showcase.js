@@ -36,7 +36,11 @@ const BAG_ITEM_SELECT =
 
 // Generated from the extracted game's RangerChibiSprite Idle AnimationPlayer;
 // the admin test preset opts into it without changing the live Home surface.
-const RANGER_IDLE_ASSET = 'assets/characters/char-ranger-idle.webp';
+const RANGER_IDLE_ASSET = 'assets/characters/char-ranger-idle.webp?v=60fps-480q76-20261013';
+// VP9/WebM keeps the same transparent 60fps motion but lets Chromium/Edge use
+// the media pipeline instead of decoding a 900-frame animated WebP on the
+// main thread. The WebP remains the compatibility fallback.
+const RANGER_IDLE_VIDEO_ASSET = 'assets/characters/char-ranger-idle.webm?v=60fps-vp9-20261013a';
 
 /** @returns {string[]} */
 function allStartingBagIds() {
@@ -95,6 +99,19 @@ function sectionHtml(root) {
                 decoding="async"
                 draggable="false"
               />
+              ${isRanger ? `
+                <video
+                  class="home-mobs__image-ranger-video"
+                  data-ranger-video
+                  data-ranger-video-src="${escapeAttr(`${root}${RANGER_IDLE_VIDEO_ASSET}`)}"
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  aria-hidden="true"
+                  hidden
+                ></video>
+              ` : ''}
             </span>
           </a>
           <div class="home-mobs__content">
@@ -264,20 +281,74 @@ export function initHomeClassShowcase(selector = '#home-class-showcase') {
 
   /**
    * Swap only the Ranger card between the normal composite sprite and the
-   * game-extracted animated WebP. The optional test preset owns this switch;
-   * the live Home caller leaves it disabled.
+   * game-extracted animated media. The optional test preset owns this switch;
+   * the live Home caller leaves it disabled. VP9/WebM is preferred when the
+   * browser can play it; the animated WebP remains a compatibility fallback.
    * @param {boolean} enabled
    */
   const setRangerAnimation = (enabled) => {
     const image = host.querySelector('[data-ranger-image]');
     if (!(image instanceof HTMLImageElement)) return false;
+    const video = host.querySelector('[data-ranger-video]');
     const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches === true;
     const active = enabled === true && !reduced;
     const next = active ? image.dataset.rangerIdleSrc : image.dataset.rangerStaticSrc;
     if (!next) return false;
-    if (image.getAttribute('src') !== next) image.setAttribute('src', next);
-    image.dataset.rangerImage = active ? 'idle' : 'static';
-    host.dataset.rangerAnimated = String(active);
+
+    if (!active) {
+      if (video instanceof HTMLVideoElement) {
+        video.pause();
+        video.currentTime = 0;
+        video.hidden = true;
+      }
+      image.hidden = false;
+      if (image.getAttribute('src') !== next) image.setAttribute('src', next);
+      image.dataset.rangerImage = 'static';
+      host.dataset.rangerAnimated = 'false';
+      return false;
+    }
+
+    const videoSrc = video instanceof HTMLVideoElement
+      ? video.dataset.rangerVideoSrc
+      : '';
+    const canUseVideo = video instanceof HTMLVideoElement
+      && Boolean(videoSrc)
+      && Boolean(video.canPlayType('video/webm; codecs="vp9"'));
+    image.dataset.rangerImage = 'idle';
+    host.dataset.rangerAnimated = 'true';
+
+    if (canUseVideo) {
+      if (video.getAttribute('src') !== videoSrc) {
+        video.setAttribute('src', videoSrc);
+        video.load();
+      }
+      const startVideo = () => {
+        if (host.dataset.rangerAnimated !== 'true') return;
+        image.hidden = true;
+        video.hidden = false;
+        video.currentTime = 0;
+        const playResult = video.play();
+        playResult?.catch(() => {
+          // Autoplay can still be denied by an embedding policy. Keep the
+          // tested WebP fallback visible instead of leaving the card blank.
+          video.pause();
+          video.hidden = true;
+          image.hidden = false;
+          if (image.getAttribute('src') !== next) image.setAttribute('src', next);
+        });
+      };
+      // Keep the already-visible static sprite until the first video frame is ready;
+      // this avoids a blank flash while the media decoder warms up.
+      video.hidden = true;
+      image.hidden = false;
+      if (video.readyState >= 2) startVideo();
+      else video.addEventListener('canplay', startVideo, { once: true });
+    } else {
+      image.hidden = false;
+      if (image.getAttribute('src') !== next) image.setAttribute('src', next);
+      if (video instanceof HTMLVideoElement) video.hidden = true;
+    }
+
     return active;
   };
 

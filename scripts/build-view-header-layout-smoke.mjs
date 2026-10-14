@@ -48,9 +48,9 @@ try {
             <div class="build-stage__tags"><span class="build-stage__auth">Real</span><span class="build-stage__event">Event</span></div>
           </div>
           <div class="build-stage__vote-slot"><div class="build-round__vote" role="group" aria-label="Build rating">
-            <button class="build-round__vote-btn" type="button"><img class="build-round__vote-icon" alt="" width="28" height="28" /></button>
+            <button class="build-round__vote-btn" type="button"><img class="build-round__vote-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" width="28" height="28" /></button>
             <span class="build-round__vote-score">0</span>
-            <button class="build-round__vote-btn" type="button"><img class="build-round__vote-icon" alt="" width="28" height="28" /></button>
+            <button class="build-round__vote-btn" type="button"><img class="build-round__vote-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" width="28" height="28" /></button>
           </div></div>
         </header>
         <div class="build-stage__media smoke-media"></div>
@@ -67,22 +67,43 @@ try {
       const tags = document.querySelector('.build-stage__tags');
       const identity = document.querySelector('.build-stage__identity');
       const voteSlot = document.querySelector('.build-stage__vote-slot');
-      if (![head, title, tags, identity, voteSlot].every((el) => el instanceof HTMLElement)) {
+      const vote = document.querySelector('.build-stage__vote-slot .build-round__vote');
+      const up = document.querySelector('.build-stage__vote-slot .build-round__vote-btn--up')
+        || document.querySelector('.build-stage__vote-slot .build-round__vote-btn');
+      const down = document.querySelector('.build-stage__vote-slot .build-round__vote-btn--down')
+        || document.querySelectorAll('.build-stage__vote-slot .build-round__vote-btn')[1];
+      const score = document.querySelector('.build-stage__vote-slot .build-round__vote-score');
+      if (![head, title, tags, identity, voteSlot, vote, up, down, score].every((el) => el instanceof HTMLElement)) {
         throw new Error('header fixture missing');
       }
       const headRect = head.getBoundingClientRect();
       const titleRect = title.getBoundingClientRect();
       const tagsRect = tags.getBoundingClientRect();
-      const identityRect = identity.getBoundingClientRect();
       const voteRect = voteSlot.getBoundingClientRect();
+      const voteControlRect = vote.getBoundingClientRect();
+      const upRect = up.getBoundingClientRect();
+      const downRect = down.getBoundingClientRect();
+      const scoreRect = score.getBoundingClientRect();
       return {
         headDisplay: getComputedStyle(head).display,
         titleAlign: getComputedStyle(title).textAlign,
         identityDirection: getComputedStyle(document.querySelector('.build-stage__identity')).flexDirection,
+        tagsWrap: getComputedStyle(tags).flexWrap,
         tagsBelowTitle: tagsRect.top >= titleRect.bottom - 0.5,
+        tagsSingleLine: tagsRect.height <= Math.max(...[...tags.children].map((tag) => tag.getBoundingClientRect().height)) + 1,
         voteRightAligned: Math.abs(voteRect.right - headRect.right) <= 1,
         voteStartsWithHeader: Math.abs(voteRect.top - headRect.top) <= 1,
-        voteEndsWithTags: Math.abs(voteRect.bottom - identityRect.bottom) <= 1,
+        voteEndsWithTags: Math.abs(voteRect.bottom - tagsRect.bottom) <= 1,
+        voteDirection: getComputedStyle(vote).flexDirection,
+        voteCenteredInColumn: Math.abs(
+          (voteControlRect.top + voteControlRect.bottom) / 2
+          - (voteRect.top + voteRect.bottom) / 2,
+        ) <= 1,
+        upBeforeScore: upRect.right <= scoreRect.left + 1,
+        downAfterScore: downRect.left >= scoreRect.right - 1,
+        scoreBetweenButtons: scoreRect.left >= upRect.right - 1
+          && scoreRect.right <= downRect.left + 1,
+        iconHeight: document.querySelector('.build-stage__vote-slot .build-round__vote-icon')?.getBoundingClientRect().height || 0,
         headWidth: headRect.width,
         overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
@@ -90,10 +111,18 @@ try {
     if (result.headDisplay !== 'grid') throw new Error(`${viewport.name}: header is not a two-column grid`);
     if (result.titleAlign !== 'left') throw new Error(`${viewport.name}: title is not left aligned`);
     if (result.identityDirection !== 'column') throw new Error(`${viewport.name}: tags are not below the title`);
+    if (result.tagsWrap !== 'nowrap') throw new Error(`${viewport.name}: tags are allowed to wrap`);
+    if (!result.tagsSingleLine) throw new Error(`${viewport.name}: tags do not occupy one row`);
     if (!result.tagsBelowTitle) throw new Error(`${viewport.name}: tags overlap title`);
     if (!result.voteRightAligned) throw new Error(`${viewport.name}: vote slot is not right aligned`);
     if (!result.voteStartsWithHeader) throw new Error(`${viewport.name}: vote slot does not start at the header top`);
     if (!result.voteEndsWithTags) throw new Error(`${viewport.name}: vote slot does not extend through the tags`);
+    if (result.voteDirection !== 'row') throw new Error(`${viewport.name}: vote controls are not arranged horizontally`);
+    if (!result.voteCenteredInColumn) throw new Error(`${viewport.name}: vote control is not centered in the vote column`);
+    if (!result.upBeforeScore) throw new Error(`${viewport.name}: upvote is not left of the score`);
+    if (!result.downAfterScore) throw new Error(`${viewport.name}: downvote is not right of the score`);
+    if (!result.scoreBetweenButtons) throw new Error(`${viewport.name}: vote score is not between the buttons`);
+    if (result.iconHeight < 20) throw new Error(`${viewport.name}: vote icons did not scale up`);
     if (result.headWidth <= 0 || result.overflowX > 1) throw new Error(`${viewport.name}: header collapsed or overflowed`);
     results.push({ ...viewport, ...result });
   }

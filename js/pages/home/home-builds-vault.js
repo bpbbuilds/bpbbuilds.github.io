@@ -9,7 +9,7 @@ import { getSupabase } from '../../shared/supabase.js';
 import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import { classIconPath } from '../../shared/class-icons.js';
 import { faceHtml, hydrateFaces } from '../../shared/blob-face.js';
-import { skelBlock, skelRegion } from '../../shared/skeleton.js';
+import { skelSection } from '../../shared/skeleton.js';
 import { mountFeedBoardThumbs } from '../builds/board-thumbs.js';
 import {
   buildViewHref,
@@ -301,42 +301,10 @@ function sectionHtml(root, builds) {
 }
 
 function skeletonHtml() {
-  const skelCell = `
-    <div class="home-vault__cell home-vault__cell--skel" aria-hidden="true">
-      ${skelBlock({ className: 'home-vault__skel-media', width: '16.5rem', height: '14rem', radius: '0.55rem' })}
-      <span class="home-vault__cell-meta">
-        ${skelBlock({ className: 'home-vault__skel-face', width: '2.25rem', height: '2.25rem', radius: '50%' })}
-        <span class="home-vault__cell-copy">
-          ${skelBlock({ className: 'home-vault__skel-author', width: '5.5rem', height: '0.65rem', radius: '0.2rem' })}
-          ${skelBlock({ className: 'home-vault__skel-label', width: '8rem', height: '0.7rem', radius: '0.2rem' })}
-        </span>
-      </span>
-    </div>`;
-  const group = `<div class="home-vault__group">${Array.from({ length: 6 }, () => skelCell).join('')}</div>`;
-
-  return skelRegion(
-    `
-    <div class="home-vault">
-      <div class="home-vault__band">
-        <div class="home-vault__inner">
-          <h2 class="home-vault__title home-vault__shade">Curated build loadouts</h2>
-          <p class="home-vault__lede home-vault__shade">
-            Every featured board is a full loadout: route, backpack, and guide video.
-            Mix the pieces, steal the synergies, and craft the run that climbs the ladder.
-          </p>
-          <div class="home-vault__marquee">
-            <div class="home-vault__row home-vault__row--left">
-              <div class="home-vault__track">${group}${group}</div>
-            </div>
-            <div class="home-vault__row home-vault__row--right">
-              <div class="home-vault__track">${group}${group}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`,
-    { label: 'Loading builds' },
-  );
+  return skelSection({
+    className: 'home-vault__section-skeleton',
+    label: 'Loading builds',
+  });
 }
 
 /**

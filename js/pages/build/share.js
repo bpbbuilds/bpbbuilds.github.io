@@ -50,8 +50,13 @@ export function bindShareBuild(btn, opts = {}) {
    */
   async function copyText(text) {
     if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(text);
-      return;
+      try {
+        await navigator.clipboard.writeText(text);
+        return;
+      } catch {
+        // Clipboard can exist but reject when permission or secure-context
+        // policy blocks it. Keep the first click useful with the legacy path.
+      }
     }
     const ta = document.createElement('textarea');
     ta.value = text;

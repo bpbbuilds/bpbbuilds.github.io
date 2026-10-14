@@ -9,10 +9,14 @@ import { getSupabase } from '../../shared/supabase.js';
 import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import { youtubeThumb, youtubeEmbedSrc } from '../../shared/youtube.js';
 import { classIconPath } from '../../shared/class-icons.js';
-import { skelBar, skelBlock, skelRegion } from '../../shared/skeleton.js';
+import { skelBlock, skelRegion } from '../../shared/skeleton.js';
+import { mapItem, makeSpriteUrl } from '../build/map-item.js';
+import { featuredBlurbHtml } from './featured-mentions.js';
 
 const AUTO_MS = 120_000;
 const CLONE_COUNT = 2;
+const ITEM_SELECT = 'id, name, image';
+const ITEM_MENTION_RE = /\[\[([a-z0-9_]+)\]\]/gi;
 
 function rootPrefix() {
   const raw = document.body?.dataset?.root ?? './';
@@ -46,7 +50,7 @@ async function fetchFeaturedBuilds() {
   const { data, error } = await supabase
     .from('builds')
     .select(
-      'id, slug, title, hero_class, blurb, youtube_url, thumbnail_path, is_op, author_name',
+      'id, slug, title, hero_class, blurb, notes, youtube_url, thumbnail_path, is_op, author_name',
     )
     .eq('is_public', true)
     .eq('is_featured', true)
@@ -58,18 +62,67 @@ async function fetchFeaturedBuilds() {
 }
 
 /**
+ * Load only the catalog rows referenced by Featured descriptions. The
+ * description renderer uses the same serialized [[item_id]] format as the
+ * Build view, so the carousel does not need to download the full catalog.
+ * @param {object[]} builds
+ * @param {string} root
+ * @returns {Promise<{ itemsById: Map<string, object>, getSpriteUrl: (item: object) => string }>}
+ */
+async function loadFeaturedMentionData(builds, root) {
+  const ids = new Set();
+  for (const build of builds || []) {
+    const blurb = String(build?.notes || build?.blurb || '');
+    for (const match of blurb.matchAll(ITEM_MENTION_RE)) ids.add(match[1].toLowerCase());
+  }
+
+  if (!ids.size) {
+    return { itemsById: new Map(), getSpriteUrl: makeSpriteUrl(root, null) };
+  }
+
+  let rows = [];
+  try {
+    const result = await getSupabase()
+      .from('items')
+      .select(ITEM_SELECT)
+      .in('id', [...ids]);
+    if (result.error) throw result.error;
+    rows = result.data || [];
+  } catch (err) {
+    console.warn('[home-featured] item mention lookup failed', err);
+  }
+
+  let spriteDisplay = null;
+  try {
+    const response = await fetch(`${root}assets/data/sprite-display.json`);
+    if (response.ok) spriteDisplay = await response.json();
+  } catch {
+    /* Item URLs still resolve from their catalog image when metadata is unavailable. */
+  }
+
+  const itemsById = new Map();
+  for (const row of rows) {
+    const item = mapItem(row);
+    if (item?.id) itemsById.set(String(item.id).toLowerCase(), item);
+  }
+  return { itemsById, getSpriteUrl: makeSpriteUrl(root, spriteDisplay) };
+}
+
+/**
  * @param {object} build
  * @param {string} root
  * @param {number} realIndex
  * @param {number} domIndex
+ * @param {{ itemsById: Map<string, object>, getSpriteUrl: (item: object) => string }} mentionData
  */
-function slideHtml(build, root, realIndex, domIndex) {
+function slideHtml(build, root, realIndex, domIndex, mentionData) {
   const thumb = resolveThumb(build.thumbnail_path, build.youtube_url, root);
   const icon = classIconPath(root, build.hero_class);
   const watchHref = build.youtube_url || '#';
-  const buildHref = `${root}builds/${build.slug}/`;
+  const buildHref = `${root}builds/view/?slug=${encodeURIComponent(build.slug)}`;
   const classLabel = build.hero_class || 'Unknown';
   const errAttr = build.thumbnail_path ? '' : thumbOnErrorAttr(build.youtube_url);
+  const blurbHtml = featuredBlurbHtml(build.notes || build.blurb || '', mentionData);
 
   return `
     <article
@@ -107,7 +160,7 @@ function slideHtml(build, root, realIndex, domIndex) {
                   <span class="fs-class__name">${escapeHtml(classLabel)}</span>
                 </span>
               </div>
-              <p class="fs-focus__blurb">${escapeHtml(build.blurb || '')}</p>
+              <p class="fs-focus__blurb">${blurbHtml}</p>
             </div>
             <div class="fs-focus__actions">
               <a class="fs-btn fs-btn--watch" href="${escapeAttr(watchHref)}" target="_blank" rel="noopener noreferrer">
@@ -147,49 +200,9 @@ function escapeAttr(s) {
 
 /** Placeholder carousel while featured builds load — matches real layout. */
 function skeletonStageHtml() {
-  const card = `
-    <div class="fs-focus fs-focus--skel">
-      <div class="fs-lane fs-lane--video">
-        <div class="fs-focus__media fs-skel-media">
-          ${skelBlock({ className: 'fs-skel-media__fill' })}
-        </div>
-      </div>
-      <div class="fs-lane fs-lane--info">
-        <div class="fs-focus__stitch">
-          <header class="fs-focus__header">
-            ${skelBar({ className: 'fs-skel-title', width: '78%', height: '1.15em' })}
-            ${skelBar({ className: 'fs-skel-rule', width: '100%', height: '2px' })}
-          </header>
-          <div class="fs-focus__main">
-            ${skelBar({ className: 'fs-skel-class', width: '42%', height: '0.95em' })}
-            ${skelBar({ className: 'fs-skel-blurb', width: '100%', height: '0.8em' })}
-            ${skelBar({ className: 'fs-skel-blurb', width: '88%', height: '0.8em' })}
-          </div>
-          <div class="fs-focus__actions fs-skel-actions">
-            ${skelBar({ className: 'fs-skel-btn', height: 'var(--fs-btn-h, 2.4rem)', radius: '0.35rem' })}
-            ${skelBar({ className: 'fs-skel-btn', height: 'var(--fs-btn-h, 2.4rem)', radius: '0.35rem' })}
-          </div>
-        </div>
-      </div>
-    </div>`;
-
-  const peek = () => `
-    <div class="fs-slide fs-slide--skel is-side" aria-hidden="true">
-      ${card}
-    </div>`;
-
-  const center = `
-    <div class="fs-slide fs-slide--skel is-active" aria-hidden="true">
-      ${card}
-    </div>`;
-
   return skelRegion(
-    `<div class="fs-shell">
-      <div class="fs-track" aria-hidden="true">
-        ${peek()}
-        ${center}
-        ${peek()}
-      </div>
+    `<div class="fs-shell fs-shell--skel">
+      ${skelBlock({ className: 'fs-section-skeleton' })}
     </div>`,
     { className: 'fs-skel-wrap', label: 'Loading featured builds' },
   );
@@ -263,13 +276,14 @@ export async function initFeaturedStage(selector = '#featured-stage') {
     return;
   }
 
+  const featuredMentionData = await loadFeaturedMentionData(builds, root);
   const { slides, cloneCount, looping } = withClones(builds);
   const totalDom = slides.length;
 
   host.innerHTML = `
     <div class="fs-shell">
       <div class="fs-track fs-track--snap" tabindex="0" aria-label="Featured builds carousel">
-        ${slides.map((s, i) => slideHtml(s.build, root, s.realIndex, i)).join('')}
+        ${slides.map((s, i) => slideHtml(s.build, root, s.realIndex, i, featuredMentionData)).join('')}
       </div>
     </div>
   `;

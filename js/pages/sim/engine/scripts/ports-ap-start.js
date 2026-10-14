@@ -3,8 +3,7 @@
  * `piggybank` stays in ports-threshold.js (HAND only).
  */
 
-import { dealDamage } from '../damage.js';
-import { dealEffectDamage } from './handlers.js';
+import { dealEffectDamage, loseHealth } from './handlers.js';
 import { grantInvuln, healActor } from '../actor.js';
 import { applyHealEfficiency } from '../actor-stats.js';
 import {
@@ -274,16 +273,10 @@ const darkLanternPort = {
     const pct = getP1(piece.params, 50) / 100;
     const loss = Math.max(0, Math.round(pct * ctx.player.maxHp));
     if (loss) {
-      dealDamage(ctx.player, ctx.player, {
-        amount: loss,
-        canMiss: false,
-        canCrit: false,
-        isAttack: false,
-        skipSpikes: true,
-        nowT: ctx.t,
-        bus: ctx.bus,
-        rng: ctx.rng,
-      });
+      // DarkLantern.gd calls Character.loseHealth, which bypasses block and
+      // resistance and emits character_damaged before the lethal/death path.
+      // Keep the lethal option available for non-default item instances too.
+      loseHealth(piece, ctx, loss, { allowDeath: true });
     }
     pushActivate(piece, ctx, 'dark_lantern', `Accessory: ${piece.name}`);
   },

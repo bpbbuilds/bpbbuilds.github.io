@@ -148,6 +148,27 @@ function context(player, dummy, pieces, graph) {
   assert.equal(dummy.hp, 70, 'Dark Lantern deals damage for Enraged Phoenix Fire multiplicity');
 }
 
+// Combat-start activation is only the item's activation pulse. The source does
+// not grant invulnerability until the later lethal-hit reincarnation path.
+{
+  const player = createActor('player', { maxHp: 100 });
+  const dummy = createActor('dummy', { maxHp: 100 });
+  player.block = 25;
+  const lantern = piece('dark_lantern', 'lantern');
+  const ctx = context(player, dummy, [lantern], graphFor(lantern, []));
+  const handler = getScriptHandler('dark_lantern');
+  handler.onPrepare(lantern, ctx);
+  handler.onCombatStart(lantern, ctx);
+  assert.equal(player.hp, 50, 'Dark Lantern combat start removes 50% max HP');
+  assert.equal(player.block, 25, 'Dark Lantern loseHealth bypasses Block');
+  assert.equal(player.invulnUntil, 0, 'Dark Lantern does not grant invulnerability at combat start');
+  assert.equal(
+    ctx.events.filter((event) => event.type === 'activate' && event.itemId === 'dark_lantern').length,
+    1,
+    'Dark Lantern still emits its combat-start activation event',
+  );
+}
+
 // Cross-item lifecycle: the game gives Dark Lantern High trigger priority, so
 // it wins the shared lethal trigger before either Normal-priority Phoenix. Its
 // reincarnation signal still drives the Fire-multiplicity pulse exactly once.

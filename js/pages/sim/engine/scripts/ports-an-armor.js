@@ -59,14 +59,14 @@ const dragonClawsPort = {
 };
 
 /** @type {ScriptHandler} */
-const arcaneBootsPort = {
-  handlerId: 'arcane_boots',
-  family: 'unique',
-  onCombatStart(piece, ctx) {
+const bindArcaneBoots = (piece, ctx) => {
+  if (piece._arcaneBound) return;
+  piece._arcaneBound = true;
     piece._arcane = false;
     const th = getPName(piece.params, 'healtht', 50) / 100;
     const need = Math.max(1, Math.round(getPName(piece.params, 'manat', 4)));
-    ctx.bus?.on?.('player_damaged', () => {
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._arcane) return;
       if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
       const mana = Number(ctx.player.stacks?.mana) || 0;
@@ -90,7 +90,21 @@ const arcaneBootsPort = {
       pushActivate(piece, ctx, 'arcane_boots', `Shoes: ${piece.name}`);
       piece.alive = false;
     });
-  },
+    ctx.bus?.on?.('player_damaged', (payload) => {
+      if (piece._arcane) return;
+      if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
+      // The player_damaged signal is a legacy alias; reuse the canonical
+      // callback by emitting the source-shaped event through the same bus.
+      ctx.bus?.emit?.('character_damaged', { ...payload, actor: ctx.player });
+    });
+};
+const arcaneBootsPort = {
+  handlerId: 'arcane_boots',
+  family: 'unique',
+  // ArcaneBoots.gd connects during onPrepare. Keep onCombatStart as an
+  // idempotent compatibility alias for direct handler callers.
+  onPrepare: bindArcaneBoots,
+  onCombatStart: bindArcaneBoots,
 };
 
 /** @type {ScriptHandler} */
@@ -113,13 +127,13 @@ const dragonskinBootsPort = {
 };
 
 /** @type {ScriptHandler} */
-const stoneShoesPort = {
-  handlerId: 'stone_shoes',
-  family: 'unique',
-  onCombatStart(piece, ctx) {
+const bindStoneShoes = (piece, ctx) => {
+  if (piece._stoneBound) return;
+  piece._stoneBound = true;
     piece._stone = false;
     const th = getP1(piece.params, 40) / 100;
-    ctx.bus?.on?.('player_damaged', () => {
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._stone) return;
       if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
       piece._stone = true;
@@ -139,7 +153,18 @@ const stoneShoesPort = {
       pushActivate(piece, ctx, 'stone_shoes', `Shoes: ${piece.name}`);
       piece.alive = false;
     });
-  },
+    ctx.bus?.on?.('player_damaged', (payload) => {
+      if (piece._stone) return;
+      if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
+      ctx.bus?.emit?.('character_damaged', { ...payload, actor: ctx.player });
+    });
+};
+const stoneShoesPort = {
+  handlerId: 'stone_shoes',
+  family: 'unique',
+  // StoneShoes.gd connects during onPrepare.
+  onPrepare: bindStoneShoes,
+  onCombatStart: bindStoneShoes,
   onTick(piece, ctx) {
     if (piece._stoneUntil == null || ctx.t < piece._stoneUntil || piece._stoneRestored) return;
     const factor = getPName(piece.params, 'damreduction', 35) / 100;
@@ -150,13 +175,13 @@ const stoneShoesPort = {
 };
 
 /** @type {ScriptHandler} */
-const wingedBootsPort = {
-  handlerId: 'winged_boots',
-  family: 'unique',
-  onCombatStart(piece, ctx) {
+const bindWingedBoots = (piece, ctx) => {
+  if (piece._wingBound) return;
+  piece._wingBound = true;
     piece._wing = false;
     const th = getPName(piece.params, 'healtht', 50) / 100;
-    ctx.bus?.on?.('player_damaged', () => {
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._wing) return;
       if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
       piece._wing = true;
@@ -170,7 +195,18 @@ const wingedBootsPort = {
       pushActivate(piece, ctx, 'winged_boots', `Shoes: ${piece.name}`);
       piece.alive = false;
     });
-  },
+    ctx.bus?.on?.('player_damaged', (payload) => {
+      if (piece._wing) return;
+      if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
+      ctx.bus?.emit?.('character_damaged', { ...payload, actor: ctx.player });
+    });
+};
+const wingedBootsPort = {
+  handlerId: 'winged_boots',
+  family: 'unique',
+  // WingedBoots.gd connects during onPrepare.
+  onPrepare: bindWingedBoots,
+  onCombatStart: bindWingedBoots,
 };
 
 /** Whetstone2.tscn uses Whetstone.gd */

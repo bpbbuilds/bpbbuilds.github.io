@@ -126,9 +126,14 @@ async function boot() {
     const isSelf =
       Boolean(viewerProfile?.discord_id) &&
       String(viewerProfile.discord_id) === String(profile.discord_id);
+    // `is_owner` is intentionally omitted from public profile reads. Carry
+    // the trusted self-profile role into the owner’s own wardrobe only, so
+    // owners see the full catalog without exposing that role on visitor pages.
+    const ownerAwareProfile =
+      isSelf && viewerProfile?.is_owner ? { ...profile, is_owner: true } : profile;
 
     mountProfileShell(main, {
-      profile,
+      profile: ownerAwareProfile,
       viewerProfile,
       isSelf,
       root,
@@ -136,7 +141,7 @@ async function boot() {
     });
 
     loadBlobCatalog(root)
-      .then((cat) => applyProfileBackground(profile.equipped_avatar, cat))
+      .then((cat) => applyProfileBackground(ownerAwareProfile.equipped_avatar, cat))
       .catch((err) => console.error(err));
   } catch (err) {
     console.error(err);

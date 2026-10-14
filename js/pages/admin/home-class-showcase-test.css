@@ -1,0 +1,257 @@
+/* Owner-only isolated preview for the Home Choose your hero section. */
+
+html,
+body {
+  min-width: 0;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body.page-admin-home-class-showcase-test {
+  min-height: 300vh;
+  display: block;
+  background:
+    linear-gradient(180deg, rgba(13, 21, 38, 0.12), rgba(39, 24, 18, 0.22)),
+    url('../../../assets/theme/backgrounds/bg-town-square.jpg') center / cover fixed no-repeat;
+}
+
+body.page-admin-home-class-showcase-test::after {
+  display: none;
+}
+
+body.page-admin-home-class-showcase-test #main {
+  width: 100%;
+  min-height: 300vh;
+  padding: 0;
+}
+
+.home-class-showcase-test {
+  width: 100%;
+  min-height: 300vh;
+  padding: clamp(3rem, 9vh, 8rem) 0 45vh;
+}
+
+.home-class-showcase-test__intro {
+  width: min(88rem, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 0 1rem 1.5rem;
+  color: #fff1d6;
+  text-align: center;
+  text-shadow: 0 0.15rem 0.35rem rgba(0, 0, 0, 0.5);
+}
+
+.home-class-showcase-test__eyebrow {
+  margin: 0 0 0.4rem;
+  color: #f2cf76;
+  font: 700 0.72rem/1.2 var(--bpb-font-body, system-ui, sans-serif);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home-class-showcase-test__title {
+  margin: 0;
+  font: 400 clamp(1.8rem, 4vw, 3rem)/1.05 var(--bpb-font-display, Georgia, serif);
+}
+
+.home-class-showcase-test__hint,
+.home-class-showcase-test__note {
+  max-width: 38rem;
+  margin: 0.8rem auto 0;
+  color: rgba(255, 240, 216, 0.86);
+  font: 400 clamp(0.78rem, 1.4vw, 1rem)/1.45 var(--bpb-font-body, system-ui, sans-serif);
+}
+
+.home-class-showcase-test__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.65rem 0.8rem;
+  width: min(76rem, calc(100% - 2rem));
+  box-sizing: border-box;
+  margin: 0 auto 1rem;
+  padding: 0.85rem clamp(0.7rem, 2vw, 1.35rem);
+  border: 1px solid rgba(255, 239, 204, 0.38);
+  border-radius: 0.55rem;
+  background: rgba(38, 24, 19, 0.74);
+  box-shadow: 0 0.55rem 1.4rem rgba(0, 0, 0, 0.24);
+}
+
+.home-class-showcase-test__control-label {
+  flex: 0 0 auto;
+  color: #f2cf76;
+  font: 700 0.68rem/1.2 var(--bpb-font-body, system-ui, sans-serif);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.home-class-showcase-test__controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.home-class-showcase-test__tab {
+  border: 1px solid rgba(255, 239, 204, 0.4);
+  border-radius: 0.28rem;
+  padding: 0.42rem 0.7rem;
+  background: rgba(38, 24, 19, 0.78);
+  color: rgba(255, 240, 216, 0.85);
+  font: 700 0.72rem/1 var(--bpb-font-body, system-ui, sans-serif);
+  cursor: var(--bpb-cursor-pointer, pointer);
+}
+
+.home-class-showcase-test__tab.is-active {
+  border-color: #f2cf76;
+  background: #6d4324;
+  color: #fff8e9;
+}
+
+.home-class-showcase-test__tab:focus-visible {
+  outline: 2px solid #fff1b8;
+  outline-offset: 2px;
+}
+
+#home-class-showcase {
+  width: 100%;
+  min-height: 36rem;
+  scroll-margin-top: 1rem;
+}
+
+/* Preview-only treatments; Home skin keeps the live section unchanged. */
+[data-hero-preview][data-style='compact'] .home-mobs__card {
+  width: 15.5rem;
+  height: 18rem;
+  margin-top: 10rem;
+}
+
+[data-hero-preview][data-style='compact'] .home-mobs__portrait {
+  top: -10rem;
+}
+
+[data-hero-preview][data-style='compact'] .home-mobs__image img,
+[data-hero-preview][data-style='compact'] .home-mobs__image-ranger-video {
+  height: 25.7rem;
+}
+
+[data-hero-preview][data-style='wireframe'] .home-mobs__card {
+  border-style: dashed;
+  background: rgba(18, 25, 36, 0.84);
+  box-shadow: none;
+}
+
+[data-hero-preview][data-style='wireframe'] .home-mobs__card,
+[data-hero-preview][data-style='wireframe'] .home-mobs__card > * {
+  filter: grayscale(1) saturate(0.35);
+}
+
+[data-hero-preview][data-style='wireframe'] .home-mobs__image img,
+[data-hero-preview][data-style='wireframe'] .home-mobs__image-ranger-video {
+  filter: grayscale(1) saturate(0.35);
+  opacity: 0.82;
+}
+
+/* The Ranger idle preset enters from below. Keep its rail stationary so the
+   preset does not expose the live rail's horizontal centering scroll. */
+@keyframes home-class-showcase-ranger-bottom-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--home-ranger-enter-y), 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+[data-hero-preview][data-style='ranger-idle'] .home-mobs {
+  --home-ranger-enter-y: clamp(1.25rem, 3vw, 2.5rem);
+  animation: home-class-showcase-ranger-bottom-in 0.58s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+[data-hero-preview][data-style='ranger-idle'] .home-mobs__cards {
+  scroll-behavior: auto;
+}
+
+.home-class-showcase-test__scroll-space {
+  width: min(64rem, calc(100% - 2rem));
+  height: 135vh;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+body.page-admin-home-class-showcase-test .admin-gate {
+  width: min(34rem, calc(100% - 2rem));
+  margin: 18vh auto 0;
+}
+
+@media (max-width: 700px) {
+  .home-class-showcase-test {
+    padding-top: 2.5rem;
+  }
+
+  .home-class-showcase-test__intro,
+  .home-class-showcase-test__toolbar {
+    width: min(100%, calc(100% - 1rem));
+  }
+
+  .home-class-showcase-test__intro {
+    padding-inline: 0.5rem;
+  }
+
+  .home-class-showcase-test__toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    padding-inline: 0.55rem;
+  }
+
+  .home-class-showcase-test__control-label {
+    text-align: center;
+  }
+
+  .home-class-showcase-test__controls {
+    width: 100%;
+  }
+
+  .home-class-showcase-test__tab {
+    flex: 1 1 auto;
+    min-width: 7rem;
+  }
+}
+
+@media (max-width: 640px) {
+  [data-hero-preview][data-style='compact'] .home-mobs__card {
+    width: 13.75rem;
+    height: 16.75rem;
+    margin-top: 8.75rem;
+  }
+
+  [data-hero-preview][data-style='compact'] .home-mobs__portrait {
+    top: -8.75rem;
+  }
+
+  [data-hero-preview][data-style='compact'] .home-mobs__image img,
+  [data-hero-preview][data-style='compact'] .home-mobs__image-ranger-video {
+    height: 23.25rem;
+  }
+
+  [data-hero-preview][data-style='ranger-idle'] .home-mobs {
+    --home-ranger-enter-y: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-class-showcase-test__tab,
+  [data-hero-preview] .home-mobs__card,
+  [data-hero-preview] .home-mobs__image img,
+  [data-hero-preview] .home-mobs__image-ranger-video {
+    transition: none;
+  }
+
+  [data-hero-preview][data-style='ranger-idle'] .home-mobs {
+    animation: none;
+  }
+}

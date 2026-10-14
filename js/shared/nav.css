@@ -530,95 +530,18 @@
 }
 
 .site-nav--skel {
+  position: relative;
+  min-height: 7.6rem;
   pointer-events: none;
 }
 
-.site-nav__skel-shelf {
-  width: 100%;
-  padding: 0.15rem 0;
-}
-
-.site-nav__skel-shelf-bar {
-  width: 100%;
-}
-
-.site-nav__skel-banners {
+.site-nav__skel-surface {
   position: absolute;
-  left: 50%;
-  bottom: calc(100% - 0.9rem);
-  transform: translateX(-50%);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 0.35rem;
-  width: 82%;
-  z-index: 1;
-}
-
-.site-nav__skel-banner {
-  flex: 1 1 0;
-  max-width: calc(50% - 0.175rem);
-}
-
-.site-nav__skel-events,
-.site-nav__skel-market,
-.site-nav__skel-challenges {
-  position: relative;
-  top: auto;
-  left: auto;
-  width: clamp(3.4rem, 6.8vw, 5rem);
-  z-index: 1;
-}
-
-.site-nav__skel-challenges {
-  aspect-ratio: 270 / 416;
-}
-
-.site-nav__skel-events {
-  aspect-ratio: 273 / 399;
-}
-
-.site-nav__skel-market {
-  aspect-ratio: 280 / 412;
-}
-
-.site-nav__skel-banners--right {
-  justify-content: center;
-}
-
-.site-nav__skel-socials {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: calc(50% - 0.175rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.85rem;
-  padding: 0 0.1rem 0.25rem;
-}
-
-.site-nav__skel-social {
-  width: clamp(2.75rem, 5vw, 3.75rem);
-  height: clamp(2.25rem, 4vw, 3.1rem);
-  flex: 0 0 auto;
-}
-
-.site-nav__brand--skel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  min-width: min(24rem, 32vw);
-}
-
-.site-nav__skel-logo {
-  width: min(24rem, 32vw);
-  height: auto;
-  aspect-ratio: 992 / 403;
-}
-
-.site-nav__skel-builds {
-  width: min(11rem, 16vw);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.45rem;
+  opacity: 0.86;
 }
 
 .site-nav__admin-wrap[hidden] {
@@ -664,32 +587,21 @@
     padding-bottom: 4.35rem;
   }
 
-  .site-nav__logo-swap,
-  .site-nav__brand--skel,
-  .site-nav__skel-logo {
+  .site-nav__logo-swap {
     --logo-w: clamp(12.5rem, 20vw, 16.5rem);
-  }
-
-  .site-nav__brand--skel,
-  .site-nav__skel-logo {
-    width: clamp(12.5rem, 20vw, 16.5rem);
   }
 
   #site-nav.is-scrolled .site-nav__logo-swap {
     --logo-w: clamp(7.5rem, 12vw, 9.5rem);
   }
 
-  .site-nav__builds,
-  .site-nav__skel-builds {
+  .site-nav__builds {
     width: min(8rem, 13vw);
   }
 
   .site-nav__events,
   .site-nav__market,
-  .site-nav__challenges,
-  .site-nav__skel-events,
-  .site-nav__skel-market,
-  .site-nav__skel-challenges {
+  .site-nav__challenges {
     width: clamp(2.55rem, 4.6vw, 3.35rem);
   }
 
@@ -731,10 +643,7 @@
 @media (max-width: 900px) {
   .site-nav__events,
   .site-nav__market,
-  .site-nav__challenges,
-  .site-nav__skel-events,
-  .site-nav__skel-market,
-  .site-nav__skel-challenges {
+  .site-nav__challenges {
     width: clamp(2.9rem, 7vw, 3.8rem);
   }
 
@@ -748,15 +657,8 @@
     max-width: 16rem;
   }
 
-  .site-nav__logo-swap,
-  .site-nav__brand--skel,
-  .site-nav__skel-logo {
+  .site-nav__logo-swap {
     --logo-w: min(18rem, 36vw);
-  }
-
-  .site-nav__brand--skel,
-  .site-nav__skel-logo {
-    width: min(18rem, 36vw);
   }
 
   #site-nav.is-scrolled .site-nav__logo-swap {
@@ -769,12 +671,13 @@
     padding: 2rem 0.35rem 4.2rem;
   }
 
+  .site-nav--skel {
+    min-height: 2.9rem;
+  }
+
   .site-nav__events,
   .site-nav__market,
-  .site-nav__challenges,
-  .site-nav__skel-events,
-  .site-nav__skel-market,
-  .site-nav__skel-challenges {
+  .site-nav__challenges {
     width: 2.55rem;
   }
 
@@ -816,17 +719,11 @@
     --logo-w: min(12rem, 44vw);
   }
 
-  .site-nav__brand--skel,
-  .site-nav__skel-logo {
-    width: min(12rem, 44vw);
-  }
-
   #site-nav.is-scrolled .site-nav__logo-swap {
     --logo-w: min(7.5rem, 28vw);
   }
 
-  .site-nav__builds,
-  .site-nav__skel-builds {
+  .site-nav__builds {
     width: min(7rem, 26vw);
   }
 }
@@ -852,8 +749,7 @@
 
   /* Same BUILDS banner as desktop, under the wordmark. In flow so the
      fixed header and its spacer grow with it. */
-  .site-nav__builds,
-  .site-nav__skel-builds {
+  .site-nav__builds {
     display: block !important;
     position: static;
     width: min(11rem, 52vw);
@@ -865,6 +761,10 @@
   .site-nav {
     justify-content: space-between;
     padding: 0.35rem 0.15rem 0.2rem;
+  }
+
+  .site-nav--skel {
+    min-height: 4.75rem;
   }
 
   .site-nav__menu,
@@ -948,11 +848,6 @@
   body.page-create .site-nav__logo--compact {
     opacity: 1;
     transform: scale(1);
-  }
-
-  .site-nav__brand--skel,
-  .site-nav__skel-logo {
-    width: min(16rem, 62vw);
   }
 
   #site-nav.is-scrolled .site-nav__logo-swap {

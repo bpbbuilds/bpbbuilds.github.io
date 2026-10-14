@@ -1,5 +1,8 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { config } from './config.js';
+// The generated config can change independently of the shared client bundle.
+// Keep a versioned import so a deployed test page cannot reuse an older project
+// origin from the browser module cache after a config correction.
+import { config } from './config.js?v=supabase-config-20261013a';
 
 let client;
 

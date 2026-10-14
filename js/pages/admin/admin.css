@@ -3420,6 +3420,13 @@ button.admin-metric.is-active::before {
 
 .admin-cards--grid .admin-card--grid .admin-card__body {
   flex: 1 1 auto;
+  min-height: 0;
+}
+
+.admin-cards--grid .admin-card--grid .admin-card__actions {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.65rem;
 }
 
 @media (max-width: 1080px) {
@@ -3447,5 +3454,283 @@ button.admin-metric.is-active::before {
 
   .admin-cards--grid .admin-card--grid .admin-card__board {
     justify-content: flex-start;
+  }
+}
+
+/* Keep the Builds view menu above the following Character shade. */
+.admin-builds-filters.items-filters > .admin-builds-filters__menus {
+  position: relative;
+  z-index: 20;
+}
+
+.admin-builds-filters__menus .il-filter__grouping {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0;
+}
+
+.admin-builds-filters__menus .il-filter__grouping:has(.il-filter__group-menu:not([hidden])) {
+  z-index: 40;
+}
+
+.admin-builds-filters__menus .il-filter__group-menu {
+  z-index: 30;
+  min-width: 10.5rem;
+}
+
+/* Keep the build-content depth treatment identical in Compact, Card, and Grid.
+ * The Patch3 chrome above intentionally clears the legacy card shadow, so this
+ * scoped rule is the single late owner for build-list depth. */
+.admin-builds-col .admin-cards > .admin-card {
+  --admin-build-card-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--il-ink, #3c261d) 18%, transparent),
+    0 clamp(0.24rem, 0.55vw, 0.45rem) clamp(0.48rem, 1vw, 0.85rem)
+      color-mix(in srgb, var(--il-ink, #3c261d) 28%, transparent);
+  box-shadow: var(--admin-build-card-shadow);
+}
+
+.admin-builds-filters__mode-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.admin-builds-filters__mode-btn {
+  width: 100%;
+  min-height: 2.35rem;
+  padding-inline: 0.5rem;
+  text-align: center;
+}
+
+.admin-builds-filters__mode-btn.is-on {
+  background: color-mix(in srgb, var(--il-gold, #eac914) 22%, var(--bp-ui-ink));
+  border-color: color-mix(in srgb, var(--il-gold, #eac914) 72%, var(--bp-ui-ink));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--il-gold, #eac914) 42%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--il-gold, #eac914) 18%, transparent);
+}
+
+/* Shared admin tab surface: one clear, softly shadowed material for every tab. */
+.admin-surface {
+  --admin-surface-fill: color-mix(in srgb, var(--admin-patch-shade) 86%, transparent);
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: clamp(0.55rem, 1.25vw, 1rem);
+  border-radius: clamp(0.3rem, 0.55vw, 0.55rem);
+  background: var(--admin-surface-fill);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--il-ink) 16%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--il-cream) 22%, transparent),
+    0 clamp(0.45rem, 1vw, 0.8rem) clamp(0.9rem, 2vw, 1.45rem)
+      color-mix(in srgb, var(--il-ink) 20%, transparent);
+}
+
+.admin-surface::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  box-sizing: border-box;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--admin-patch-shade) 72%, transparent);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.admin-surface > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Reports, analytics, and members previously carried a separate dark rewards
+ * plate. Let the shared stage material show through while keeping their inner
+ * rows and charts readable. */
+.admin-surface > .admin-traffic,
+.admin-surface > .admin-members,
+.admin-surface .admin-reports-col > .admin-kpis,
+.admin-surface .admin-reports-panel,
+.admin-surface .admin-report-filters.items-filters {
+  background: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.admin-surface > .admin-traffic,
+.admin-surface > .admin-members {
+  padding: clamp(0.15rem, 0.65vw, 0.55rem);
+  color: var(--bp-ui-cream);
+  overflow: visible;
+}
+
+.admin-surface > .admin-traffic::before,
+.admin-surface > .admin-traffic::after,
+.admin-surface > .admin-members::before,
+.admin-surface > .admin-members::after {
+  display: none;
+}
+
+.admin-surface .admin-reports-col > .admin-kpis {
+  padding: 0.2rem;
+}
+
+.admin-surface .admin-reports-panel {
+  padding: 0.2rem;
+}
+
+.admin-surface .admin-report-filters.items-filters {
+  padding: 0.2rem;
+}
+
+.admin-surface .admin-reports-col > .admin-kpis .admin-metric,
+.admin-surface .admin-members__stat,
+.admin-surface .admin-members__chart-panel {
+  background: color-mix(in srgb, var(--admin-patch-shade) 84%, transparent);
+  border-color: color-mix(in srgb, var(--il-ink) 18%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--il-cream) 10%, transparent);
+}
+
+.admin-surface .admin-report,
+.admin-surface .admin-traffic__table tbody th,
+.admin-surface .admin-traffic__table tbody td,
+.admin-surface .admin-members__roster tbody th,
+.admin-surface .admin-members__roster tbody td {
+  background: color-mix(in srgb, var(--admin-patch-shade) 82%, transparent);
+}
+
+.admin-surface .admin-reports-panel,
+.admin-surface .admin-report-filters.items-filters,
+.admin-surface .admin-traffic,
+.admin-surface .admin-members,
+.admin-surface .admin-cosmetics,
+.admin-surface .admin-marketplace {
+  color: var(--bp-ui-cream);
+}
+
+@media (max-width: 720px) {
+  .admin-surface {
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+  }
+}
+
+/* Cosmetics follows the shared Builds-tab material: one clear outer panel,
+ * softly raised sections/cards, and the same Patch3 filter rail chrome. */
+.admin-surface .admin-cosmetics-layout {
+  gap: clamp(0.85rem, 1.15vw, 1.4rem);
+}
+
+.admin-surface .admin-cosmetics__section {
+  margin: 0 0 clamp(0.8rem, 1.15vw, 1.15rem);
+  padding: clamp(0.7rem, 1.05vw, 0.95rem);
+  border: 0;
+  border-radius: clamp(0.3rem, 0.55vw, 0.5rem);
+  background: color-mix(in srgb, var(--admin-patch-shade) 84%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--il-ink, #3c261d) 16%, transparent),
+    0 clamp(0.24rem, 0.55vw, 0.45rem) clamp(0.48rem, 1vw, 0.85rem)
+      color-mix(in srgb, var(--il-ink, #3c261d) 24%, transparent);
+}
+
+.admin-surface .admin-cosmetics__section--catalog {
+  padding-top: clamp(0.7rem, 1.05vw, 0.95rem);
+  border-top: 0;
+}
+
+.admin-surface .admin-cosmetics__row,
+.admin-surface .admin-cosmetics__card {
+  border: 1px solid color-mix(in srgb, var(--il-ink, #3c261d) 18%, transparent);
+  border-radius: clamp(0.22rem, 0.4vw, 0.35rem);
+  background: color-mix(in srgb, var(--admin-patch-shade) 82%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--il-cream, #ffecdc) 10%, transparent),
+    0 clamp(0.2rem, 0.45vw, 0.35rem) clamp(0.38rem, 0.8vw, 0.65rem)
+      color-mix(in srgb, var(--il-ink, #3c261d) 24%, transparent);
+}
+
+.admin-surface .admin-cosmetics__card {
+  position: relative;
+}
+
+.admin-surface .admin-cosmetics__card:not(.admin-cosmetics__row)::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  box-sizing: border-box;
+  background: color-mix(in srgb, var(--admin-patch-shade) 70%, transparent);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.admin-surface .admin-cosmetics__card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.admin-surface .admin-cosmetics-filters.items-filters {
+  --builds-post-body-shade: rgba(14, 15, 16, 0.22);
+  box-sizing: border-box;
+  position: sticky;
+  isolation: isolate;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.65rem 0.65rem 0.75rem;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  scrollbar-width: thin;
+}
+
+.admin-surface .admin-cosmetics-filters.items-filters::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--builds-post-body-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.admin-surface .admin-cosmetics-filters.items-filters > * {
+  position: relative;
+  z-index: 1;
+}
+
+.admin-surface .admin-cosmetics-filters .il-filter__shade {
+  background: none;
+}
+
+.admin-surface .admin-cosmetics-filters .il-filter__shade::before {
+  content: none;
+  display: none;
+}
+
+@media (max-width: 1240px) {
+  .admin-surface .admin-cosmetics-filters.items-filters {
+    overflow-y: visible;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-surface .admin-cosmetics__section {
+    padding: 0.7rem;
+  }
+
+  .admin-surface .admin-cosmetics__card-actions {
+    grid-template-columns: 1fr;
   }
 }

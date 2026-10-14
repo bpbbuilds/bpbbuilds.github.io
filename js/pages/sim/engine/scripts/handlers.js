@@ -332,14 +332,15 @@ export function dealEffectDamage(piece, ctx, raw, opts = {}) {
  * @param {CombatPiece} piece
  * @param {ScriptCtx} ctx
  * @param {number} amount
+ * @param {{ allowDeath?: boolean }} [opts]
  * @returns {{ eventId: string | number | null, amount: number } | null}
  */
-export function loseHealth(piece, ctx, amount) {
+export function loseHealth(piece, ctx, amount, opts = {}) {
   const n = Math.max(0, Math.round(Number(amount) || 0));
-  if (!(n > 0) || !(ctx.player.hp > n)) return null;
-  ctx.player.hp -= n;
+  if (!(n > 0) || (!opts.allowDeath && !(ctx.player.hp > n))) return null;
+  ctx.player.hp = Math.max(0, ctx.player.hp - n);
   const eventId = ctx.logChain?.nextId?.() ?? null;
-  ctx.events.push({
+  const event = {
     t: ctx.t,
     type: 'damage',
     actor: ctx.player.id,
@@ -355,7 +356,23 @@ export function loseHealth(piece, ctx, amount) {
       healthDamage: n,
       playerHp: ctx.player.hp,
     },
+  };
+  // The source creates/logs the damage event before dispatching its signal.
+  ctx.events.push(event);
+  // Character.loseHealth emits character_damaged before the death handler.
+  // This ordering is what lets Dark Lantern and other prepared threshold
+  // listeners react to the opening self-health loss.
+  ctx.bus?.emit?.('character_damaged', {
+    actor: ctx.player,
+    attacker: ctx.player,
+    t: ctx.t,
+    hit: true,
+    healthDamage: n,
+    blocked: 0,
+    damage: { damage: n, healthDamage: n, raw: n },
+    selfHealthCost: true,
   });
+  if (ctx.player.hp <= 0 && !ctx.player.dead) ctx.player.dead = true;
   return { eventId, amount: n };
 }
 

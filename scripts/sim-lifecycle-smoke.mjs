@@ -104,6 +104,51 @@ const socketPrepare = firstIndex(trace, (entry) => entry.placementKey === player
 const cooldownArm = firstIndex(trace, (entry) => entry.placementKey === playerSword.key && entry.phase === 'cooldown_arm');
 ok(socketPrepare >= 0 && socketPrepare < cooldownArm, 'socket preparation precedes host cooldown arm');
 
+// Game Item.preCombatStart runs each item's socket preparation, cooldown arm,
+// and own pre-start hook as one contiguous item pass. It does not run all
+// socket preparations globally before arming every item.
+const startPasses = ['socket_prepare', 'cooldown_arm', 'pre_combat_start'];
+const startTrace = trace.filter((entry) => startPasses.includes(entry.phase));
+const startKeys = [...new Set(startTrace.filter((entry) => entry.phase === 'socket_prepare').map((entry) => entry.placementKey))];
+for (let i = 0; i < startKeys.length; i += 1) {
+  const key = startKeys[i];
+  const at = (phase) => startTrace.findIndex((entry) => entry.placementKey === key && entry.phase === phase);
+  const nextSocket = i + 1 < startKeys.length
+    ? startTrace.findIndex((entry) => entry.placementKey === startKeys[i + 1] && entry.phase === 'socket_prepare')
+    : startTrace.length;
+  ok(
+    at('socket_prepare') < at('cooldown_arm') &&
+      at('cooldown_arm') < at('pre_combat_start') &&
+      at('pre_combat_start') < nextSocket,
+    `${key}: pre-combat-start item work is contiguous before the next item`,
+  );
+}
+
+// Item.combatStart() keeps that item's socket combat-start effects immediately
+// ahead of its own onCombatStart hook before moving to the next item.
+const combatPasses = ['socket_combat_start', 'combat_start'];
+const combatTrace = trace.filter((entry) => combatPasses.includes(entry.phase));
+const combatKeys = [...new Set(
+  combatTrace
+    .filter((entry) => entry.phase === 'socket_combat_start')
+    .map((entry) => entry.placementKey),
+)];
+for (let i = 0; i < combatKeys.length; i += 1) {
+  const key = combatKeys[i];
+  const at = (phase) => combatTrace.findIndex(
+    (entry) => entry.placementKey === key && entry.phase === phase,
+  );
+  const nextSocket = i + 1 < combatKeys.length
+    ? combatTrace.findIndex(
+      (entry) => entry.placementKey === combatKeys[i + 1] && entry.phase === 'socket_combat_start',
+    )
+    : combatTrace.length;
+  ok(
+    at('socket_combat_start') < at('combat_start') && at('combat_start') < nextSocket,
+    `${key}: combat-start gem work is contiguous before the host hook`,
+  );
+}
+
 const startSnapshot = run.pieceSnapshots.find((snapshot) => Math.abs(snapshot.t - 2.5) < 1e-9);
 const socketCd = Number(startSnapshot?.byKey?.[playerSword.key]?.cooldown);
 const bare = simulateEngine({

@@ -355,7 +355,18 @@ function renderPage(main, build, root, spriteDisplay, routeSkills, gridMeta = {}
     },
   });
 
+  moveVoteToStageHead(roundHost, main);
+
   syncRoundPanelToBoard(bagHost, roundHost);
+}
+
+/** Move the bound vote control beside the build title, without rebinding it. */
+function moveVoteToStageHead(roundHost, main) {
+  const vote = roundHost.querySelector('.build-round__vote');
+  const slot = main.querySelector('.build-stage__vote-slot');
+  if (vote instanceof HTMLElement && slot instanceof HTMLElement) {
+    slot.append(vote);
+  }
 }
 
 /** Keep W/L strip + scrubber the same pixel width as the inventory board. */
@@ -420,10 +431,13 @@ function renderStageHead(build, root) {
     <header class="build-stage__head">
       <div class="build-stage__identity">
         <h1 class="build-stage__title">${escapeHtml(title)}</h1>
-        ${op}
-        ${authFlair}
-        ${eventMark}
+        <div class="build-stage__tags">
+          ${op}
+          ${authFlair}
+          ${eventMark}
+        </div>
       </div>
+      <div class="build-stage__vote-slot"></div>
     </header>
   `;
 }

@@ -5,100 +5,23 @@
  *   initHomePromoBand('#home-promo-band', { variant: 'create' });
  */
 
-import { skelBar, skelBlock, skelRegion } from '../../shared/skeleton.js';
+import { skelBlock } from '../../shared/skeleton.js';
 import { escapeAttr, rootPrefix } from './home-build-media.js';
-import { playAssemble } from './home-promo-assemble.js?v=promo-creator-20261011m';
+import { playAssemble } from './home-promo-assemble.js?v=promo-player-20261013a';
+import { createPromoActivity } from './home-promo-activity.js?v=promo-player-20261013b';
 import { mountPromoCatalog } from './home-promo-catalog.js';
 
+// Keep enough lead for data/sprite warm-up without activating a hidden Home
+// section a full 400px early. The P2 browser smoke measures this boundary.
+export const PROMO_VIEWPORT_ROOT_MARGIN = '240px 0px';
+
 /** 10-col packed stamp (no holes) — same geometry as the live Itemiary catalog. */
-const CATALOG_SKEL_STAMP = [
-  [0, 0, 2, 2],
-  [2, 0, 1, 1],
-  [3, 0, 1, 1],
-  [4, 0, 2, 1],
-  [6, 0, 1, 2],
-  [7, 0, 3, 2],
-  [2, 1, 2, 1],
-  [4, 1, 2, 1],
-  [0, 2, 1, 2],
-  [1, 2, 2, 1],
-  [3, 2, 1, 1],
-  [4, 2, 2, 2],
-  [6, 2, 2, 1],
-  [8, 2, 2, 1],
-  [1, 3, 1, 1],
-  [2, 3, 2, 1],
-  [6, 3, 4, 1],
-];
-const CATALOG_SKEL_STAMP_ROWS = 4;
-const CATALOG_SKEL_REPEATS = 6;
-
-function createPromoCatalogSkel() {
-  const tiles = [];
-  for (let r = 0; r < CATALOG_SKEL_REPEATS; r += 1) {
-    const dy = r * CATALOG_SKEL_STAMP_ROWS;
-    for (const [x, y, w, h] of CATALOG_SKEL_STAMP) {
-      const radius = w * h >= 4 ? '0.28em' : '0.18em';
-      tiles.push(
-        `<span class="bpb-skel bpb-skel--block home-promo__skel-item" style="--x:${x};--y:${y + dy};--w:${w};--h:${h};border-radius:${radius}" aria-hidden="true"></span>`,
-      );
-    }
-  }
-  return skelRegion(`<div class="home-promo__skel-catalog">${tiles.join('')}</div>`, {
-    className: 'home-promo__skel-catalog-wrap',
-    label: 'Loading items',
-  });
-}
-
-function createPromoCaptionSkel() {
-  return `<header class="home-promo__caption-head home-promo__caption-head--icon">
-      ${skelBlock({ className: 'home-promo__skel-class', width: '2.1rem', height: '2.1rem', radius: '0.25rem' })}
-      ${skelBar({ className: 'home-promo__skel-title', width: '11.5rem', height: '1.25rem' })}
-    </header>
-    <div class="home-promo__caption-meta">
-      <div class="home-promo__caption-side home-promo__caption-side--left">
-        ${skelBlock({ className: 'home-promo__skel-avatar', width: '4.65rem', height: '4.65rem', radius: '0.35rem' })}
-      </div>
-      ${skelBar({ width: '8.5rem', height: '1.15rem' })}
-      <div class="home-promo__caption-side home-promo__caption-side--right" aria-hidden="true"></div>
-    </div>`;
-}
-
-function createPromoBoardSkel() {
-  return skelRegion(`<div class="home-promo__skel-board" aria-hidden="true"></div>`, {
-    className: 'home-promo__skel-board-wrap',
-    label: 'Loading board',
-  });
-}
-
-function createPromoInfoSkel() {
-  return `<div class="home-promo__info-grid">
-      <div class="home-promo__info-cell home-promo__info-shade">
-        <span class="home-promo__info-label">Gold</span>
-        <span class="home-promo__info-gold">
-          ${skelBar({ width: '2.35rem', height: '1.2rem' })}
-          ${skelBlock({ className: 'home-promo__skel-gold-icon', width: '1.45rem', height: '1.45rem', radius: '0.28rem' })}
-        </span>
-      </div>
-      <div class="home-promo__info-cell home-promo__info-shade">
-        <span class="home-promo__info-label">Rank</span>
-        ${skelBlock({ className: 'home-promo__skel-rank', width: '2.85rem', height: '2.85rem', radius: '0.35rem' })}
-      </div>
-    </div>
-    <div class="home-promo__info-how home-promo__info-shade">
-      ${skelBar({ width: '100%', height: '0.78em' })}
-      ${skelBar({ width: '94%', height: '0.78em' })}
-      ${skelBar({ width: '78%', height: '0.78em' })}
-      ${skelBar({ width: '62%', height: '0.78em' })}
-    </div>`;
-}
-
 /**
  * @param {string | Element} [selector='#home-promo-band']
  * @param {{
  *   variant?: 'create' | 'op',
  *   builds?: object[],
- *   launcher?: 'catalog' | 'chest' | 'creator',
+ *   launcher?: 'catalog' | 'chest' | 'creator' | 'player',
  * }} [opts]
  */
 export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
@@ -115,13 +38,17 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
   const bagIcon = `${root}assets/icons/misc/Backpack_icon.png`;
   const chestLauncher = variant === 'create' && opts.launcher === 'chest';
   const creatorLauncher = variant === 'create' && opts.launcher === 'creator';
+  const playerLauncher = variant === 'create' && opts.launcher === 'player';
 
   if (variant === 'create') {
     host.innerHTML = `
-      <div class="home-promo home-promo--create home-promo--parchment${chestLauncher ? ' home-promo--chest' : ''}${creatorLauncher ? ' home-promo--creator' : ''}">
+      <div class="home-promo home-promo--create home-promo--parchment${chestLauncher ? ' home-promo--chest' : ''}${creatorLauncher ? ' home-promo--creator' : ''}${playerLauncher ? ' home-promo--player-info' : ''}">
         <div class="home-promo__band">
+          <div class="home-promo__section-skeleton" data-promo-section-skeleton role="status" aria-busy="true" aria-label="Loading create a build">
+            ${skelBlock({ className: 'home-promo__section-skeleton-surface' })}
+          </div>
           <div class="home-promo__card" data-promo-create-card aria-busy="true">
-            <div class="home-promo__side ${chestLauncher ? 'home-promo__side--launcher' : creatorLauncher ? 'home-promo__side--creator' : 'home-promo__side--catalog'}">
+            <div class="home-promo__side ${chestLauncher ? 'home-promo__side--launcher' : creatorLauncher ? 'home-promo__side--creator' : playerLauncher ? 'home-promo__side--player' : 'home-promo__side--catalog'}">
               ${chestLauncher ? `
                 <div class="home-promo__chest-launcher" data-promo-chest-launcher aria-label="Chestnut item launcher">
                   <img class="home-promo__chest-bottom" src="${escapeAttr(`${root}assets/theme/ui/sellbox/bottom-front.png`)}" alt="" draggable="false" />
@@ -129,26 +56,23 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
                   <span class="home-promo__chest-mouth" aria-hidden="true"></span>
                   <img class="home-promo__chest-top" src="${escapeAttr(`${root}assets/theme/ui/sellbox/top-front.png`)}" alt="" draggable="false" />
                 </div>
-              ` : creatorLauncher ? `<aside class="home-promo__creator" data-promo-creator aria-label="Build creator"></aside>` : `
+              ` : creatorLauncher ? `<aside class="home-promo__creator" data-promo-creator aria-label="Build creator"></aside>` : playerLauncher ? `<aside class="home-promo__creator home-promo__player" data-promo-player aria-label="Player information"></aside>` : `
                 <div
                   class="home-promo__catalog"
                   data-promo-catalog-root
                   aria-hidden="true"
                 >
                   <div class="home-promo__catalog-stage" data-promo-catalog>
-                    ${createPromoCatalogSkel()}
                   </div>
                 </div>
               `}
             </div>
             <div class="home-promo__stage">
               <div class="home-promo__caption" data-promo-caption>
-                ${createPromoCaptionSkel()}
               </div>
               <div class="home-promo__board-wrap">
                 <a class="home-promo__board-link" data-promo-board-link>
                   <div class="home-promo__board" data-promo-empty-board>
-                    ${createPromoBoardSkel()}
                   </div>
                 </a>
               </div>
@@ -156,7 +80,6 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
             </div>
             <div class="home-promo__side home-promo__side--right home-promo__side--cta">
               <div class="home-promo__info" data-promo-info>
-                ${createPromoInfoSkel()}
               </div>
               <div class="home-promo__cta-block home-promo__cta-block--create">
                 <p class="home-promo__cta-lead">Create your build now.</p>
@@ -180,41 +103,35 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
     const catalogRoot = host.querySelector('[data-promo-catalog-root]');
     const chestEl = host.querySelector('[data-promo-chest-launcher]');
     const creatorEl = host.querySelector('[data-promo-creator]');
+    const playerEl = host.querySelector('[data-promo-player]');
     const captionEl = host.querySelector('[data-promo-caption]');
     const boardLink = host.querySelector('[data-promo-board-link]');
     const boardTagsEl = host.querySelector('[data-promo-board-tags]');
     const infoEl = host.querySelector('[data-promo-info]');
     if (!(boardHost instanceof HTMLElement)) return;
-    let promoActive = true;
-    /** @type {Set<() => void>} */
-    const promoWaiters = new Set();
-    const activity = {
-      get active() {
-        return promoActive;
-      },
-      wait() {
-        return new Promise((resolve) => promoWaiters.add(resolve));
-      },
-    };
+    const activity = createPromoActivity(true);
+    if (playerLauncher) {
+      activity.subscribe((active) => {
+        host.classList.toggle('home-promo--activity-paused', !active);
+      });
+      host.addEventListener('pointerenter', () => activity.setHovered(true));
+      host.addEventListener('pointerleave', () => activity.setHovered(false));
+    }
     if (typeof IntersectionObserver !== 'undefined') {
       const activityObserver = new IntersectionObserver(
         (entries) => {
           const next = entries.some((entry) => entry.isIntersecting);
-          if (next === promoActive) return;
-          promoActive = next;
-          if (!promoActive) return;
-          for (const resume of promoWaiters) resume();
-          promoWaiters.clear();
+          activity.setViewportActive(next);
         },
-        { rootMargin: '400px 0px', threshold: 0.01 },
+        { rootMargin: PROMO_VIEWPORT_ROOT_MARGIN, threshold: 0.01 },
       );
       activityObserver.observe(host);
     }
     const promoMq = window.matchMedia('(max-width: 1100px)');
-    const catalogReady = chestLauncher || creatorLauncher || promoMq.matches
+    const catalogReady = chestLauncher || creatorLauncher || playerLauncher || promoMq.matches
       ? Promise.resolve()
       : mountPromoCatalog(host, { root });
-    if (!chestLauncher && !creatorLauncher && promoMq.matches) {
+    if (!chestLauncher && !creatorLauncher && !playerLauncher && promoMq.matches) {
       const onWide = () => {
         if (promoMq.matches) return;
         promoMq.removeEventListener('change', onWide);
@@ -235,6 +152,8 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
       chestEl: chestEl instanceof HTMLElement ? chestEl : null,
       creatorEl: creatorEl instanceof HTMLElement ? creatorEl : null,
       creatorMode: creatorLauncher,
+      playerEl: playerEl instanceof HTMLElement ? playerEl : null,
+      playerInfoMode: playerLauncher,
       activity,
       root,
     });

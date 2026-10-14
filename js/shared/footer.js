@@ -2,11 +2,17 @@
  * Site footer — fan disclaimer + legal / catalog links.
  *
  *   import { initFooter } from '../../shared/footer.js';
- *   initFooter();                    // full footer
- *   initFooter({ variant: 'slim' }); // one-line dense layout
+ *   initFooter({ preset: 'regular' }); // full footer
+ *   initFooter({ preset: 'slim' });    // one-line dense layout
  */
 
 import { DISCORD_INVITE_URL, SMOJO_YOUTUBE_URL } from './social-links.js';
+
+/** Canonical footer presentation presets used by pages and preview labs. */
+export const FOOTER_PRESETS = Object.freeze({
+  regular: Object.freeze({ id: 'regular', label: 'Regular' }),
+  slim: Object.freeze({ id: 'slim', label: 'Slim' }),
+});
 
 function rootPrefix() {
   const raw = document.body?.dataset?.root ?? './';
@@ -106,23 +112,31 @@ function footerSlimHtml(root) {
   `;
 }
 
+/** @param {unknown} value */
+function normalizeFooterPreset(value) {
+  if (value === 'slim') return FOOTER_PRESETS.slim.id;
+  return FOOTER_PRESETS.regular.id;
+}
+
 /**
  * @param {string | Element | {
  *   selector?: string | Element,
+ *   preset?: 'regular' | 'slim',
  *   variant?: 'default' | 'slim',
  * }} [opts]
  */
 export function initFooter(opts = '#site-footer') {
   /** @type {string | Element} */
   let selector = '#site-footer';
-  /** @type {'default' | 'slim'} */
-  let variant = 'default';
+  /** @type {'regular' | 'slim'} */
+  let preset = FOOTER_PRESETS.regular.id;
 
   if (typeof opts === 'string' || (typeof Element !== 'undefined' && opts instanceof Element)) {
     selector = /** @type {string | Element} */ (opts);
   } else if (opts && typeof opts === 'object') {
     if (opts.selector != null) selector = opts.selector;
-    if (opts.variant === 'slim') variant = 'slim';
+    if (opts.preset != null) preset = normalizeFooterPreset(opts.preset);
+    else if (opts.variant != null) preset = normalizeFooterPreset(opts.variant);
   }
 
   const host =
@@ -130,5 +144,5 @@ export function initFooter(opts = '#site-footer') {
   if (!host) return;
 
   const root = rootPrefix();
-  host.innerHTML = variant === 'slim' ? footerSlimHtml(root) : footerHtml(root);
+  host.innerHTML = preset === FOOTER_PRESETS.slim.id ? footerSlimHtml(root) : footerHtml(root);
 }

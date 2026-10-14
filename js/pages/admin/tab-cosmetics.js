@@ -71,7 +71,7 @@ function sortCosmetics(a, b) {
 function catalogRowHtml(c, root, published) {
   const grant = grantLabel(c.grant || (c.starter ? 'starter' : null));
   return `
-    <li class="admin-cosmetics__row">
+    <li class="admin-cosmetics__card admin-cosmetics__row">
       <div class="admin-cosmetics__thumb" data-blob-item="${escapeHtml(c.id)}" aria-label="${escapeHtml(c.name || c.id)}">${compositeTileHtml(c, root)}</div>
       <div class="admin-cosmetics__row-main">
         <p class="admin-cosmetics__name">${escapeHtml(c.name || c.id)}</p>
@@ -142,10 +142,14 @@ function paintBody(host, root, catalog, state, published) {
     <div class="admin-cosmetics-layout">
       <div class="admin-cosmetics-col">
         <section class="admin-panel admin-cosmetics" aria-label="Cosmetics">
+          <div class="admin-panel__head">
+            <h2 class="admin-panel__title">Cosmetics</h2>
+          </div>
           <p class="admin-panel__blurb">
             Review player-submitted blob art, and upload official cosmetics for the wardrobe.
           </p>
-          <section class="admin-cosmetics__section" aria-labelledby="admin-cosmetics-review-h">
+          <div class="admin-panel__body">
+            <section class="admin-cosmetics__section" aria-labelledby="admin-cosmetics-review-h">
       <div class="admin-cosmetics__section-head">
         <h3 class="admin-cosmetics__section-title" id="admin-cosmetics-review-h">Review submissions</h3>
         <div class="admin-cosmetics__filters" role="group" aria-label="Submission status">
@@ -177,7 +181,7 @@ function paintBody(host, root, catalog, state, published) {
       </ul>
     </section>
 
-    <section class="admin-cosmetics__section" aria-labelledby="admin-cosmetics-upload-h">
+            <section class="admin-cosmetics__section" aria-labelledby="admin-cosmetics-upload-h">
       <h3 class="admin-cosmetics__section-title" id="admin-cosmetics-upload-h">Upload ours</h3>
       <p class="admin-cosmetics__hint">
         Official Smojo cosmetics. Upload saves a draft to the live catalog; Publish makes it public and announces it through the cosmetic drops channel.
@@ -187,7 +191,7 @@ function paintBody(host, root, catalog, state, published) {
       </button>
     </section>
 
-    <section class="admin-cosmetics__section admin-cosmetics__section--catalog" aria-labelledby="admin-cosmetics-live-h">
+            <section class="admin-cosmetics__section admin-cosmetics__section--catalog" aria-labelledby="admin-cosmetics-live-h">
       <h3 class="admin-cosmetics__section-title" id="admin-cosmetics-live-h">Live catalog</h3>
       <p class="admin-cosmetics__hint" data-admin-cos-catalog-hint>${rows.length} shown · ${catalog.length} in the catalog.</p>
       <p class="admin-status" data-admin-cos-publish-status hidden></p>
@@ -195,6 +199,7 @@ function paintBody(host, root, catalog, state, published) {
         ${catalogListHtml(rows, root, catalog.length, published)}
       </ul>
     </section>
+          </div>
         </section>
       </div>
       ${adminCosmeticFiltersHtml(root, state, rows.length)}
@@ -564,10 +569,15 @@ export async function mountCosmeticsPanel(host, opts) {
 
   host.innerHTML = `
     <section class="admin-panel admin-cosmetics" aria-label="Cosmetics">
+      <div class="admin-panel__head">
+        <h2 class="admin-panel__title">Cosmetics</h2>
+      </div>
       <p class="admin-panel__blurb">
         Review player-submitted blob art, and upload official cosmetics for the wardrobe.
       </p>
-      <p class="admin-status" data-admin-cosmetics-status>Loading…</p>
+      <div class="admin-panel__body">
+        <p class="admin-status" data-admin-cosmetics-status>Loading…</p>
+      </div>
     </section>`;
 
   const status = host.querySelector('[data-admin-cosmetics-status]');

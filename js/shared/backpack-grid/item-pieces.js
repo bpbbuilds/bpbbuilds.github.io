@@ -7,6 +7,7 @@ import { spriteSizeStyle } from './sprite-size.js';
 import { animateSpinRotate, prefersReducedMotion, readRotateDeg, writeSpinRotate } from './face-spin.js';
 import { liveInnerHtml, mountLiveArt, syncLiveArtFace, unmountLiveArt } from '../item-live-art/index.js';
 import { hasInventoryDuration } from './can-affect.js';
+import { orderAppearEntries } from './appear-order.js';
 
 const CDN = 'https://awerc.github.io/bpb-cdn';
 /** Off-board park X (em), mirrors game clear() parking. */
@@ -757,6 +758,8 @@ const APPEAR_STAGGER_MAX_MS = 400;
  * }[]} entries
  * @param {{
  *   layer?: 'item' | 'under',
+ *   order?: 'reading' | 'diagonal' | 'diagonal-top-right',
+ *   staggerMs?: number,
  *   inView?: typeof entries,
  *   metrics?: { cellPx?: number, rows?: number, scrollTop?: number, clientHeight?: number },
  * }} [opts]
@@ -790,20 +793,26 @@ export function playAppearInLibraryBatch(root, entries, opts = {}) {
   // Nothing on screen to wave (e.g. scroll past new shorter results) — leave at rest
   if (!inView.length) return;
 
-  // Reading order within the viewport
-  inView.sort((a, b) => {
-    const dy = (a.y ?? 0) - (b.y ?? 0);
-    if (dy) return dy;
-    return (a.x ?? 0) - (b.x ?? 0);
-  });
+  // Reading order remains the default; Player Info opts into a scoped diagonal sweep.
+  inView = orderAppearEntries(
+    inView,
+    opts.order === 'diagonal-top-right'
+      ? 'diagonal-top-right'
+      : opts.order === 'diagonal'
+        ? 'diagonal'
+        : 'reading',
+  );
 
   // Single intentional flush after clearAppear — restarts CSS animation.
   // No getComputedStyle/clientHeight between clear and class-add.
   void scroller.offsetWidth;
 
+  const staggerMs = Number.isFinite(Number(opts.staggerMs))
+    ? Math.max(0, Number(opts.staggerMs))
+    : APPEAR_STAGGER_MS;
   for (let i = 0; i < inView.length; i += 1) {
     const { itemEl, underEl, isBag } = inView[i];
-    const delay = `${Math.min(i * APPEAR_STAGGER_MS, APPEAR_STAGGER_MAX_MS)}ms`;
+    const delay = `${Math.min(i * staggerMs, APPEAR_STAGGER_MAX_MS)}ms`;
     const useBagAnim = Boolean(isBag && bagSmall);
     if (layer === 'under' && underEl) {
       underEl.style.setProperty('--bpb-appear-delay', delay);

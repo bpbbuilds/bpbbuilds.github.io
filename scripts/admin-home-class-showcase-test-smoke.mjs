@@ -25,12 +25,24 @@ assert.match(controller, /id: 'compact'/, 'test page includes a compact preview 
 assert.match(controller, /id: 'wireframe'/, 'test page includes a wireframe preview preset');
 assert.match(controller, /id: 'ranger-idle'/, 'test page includes the Ranger game-idle preset');
 assert.match(controller, /setRangerAnimation/, 'test preset can toggle Ranger animation without remounting the rail');
+assert.match(controller, /style === 'ranger-idle'[\s\S]*data-home-mobs-rail[\s\S]*scrollLeft/, 'Ranger selection centers its rail without a horizontal reveal');
+assert.match(source, /data-ranger-video/, 'Ranger preset has an animated-video presentation path');
+assert.match(source, /video\.play\(\)/, 'Ranger preset starts the animated video path explicitly');
 assert.match(styles, /@media \(max-width: 700px\)/, 'test page has a narrow responsive breakpoint');
 assert.match(styles, /@media \(max-width: 640px\)/, 'test page has a compact mobile breakpoint');
 assert.match(styles, /overflow-x: hidden/, 'test page prevents decorative hero overhang from creating page overflow');
+assert.match(styles, /data-style='ranger-idle'[^}]*\.home-mobs/, 'Ranger idle has a preset-scoped section treatment');
+assert.match(styles, /home-class-showcase-ranger-bottom-in/, 'Ranger idle uses a named bottom-up entrance animation');
+assert.match(styles, /--home-ranger-enter-y:\s*clamp\(/, 'Ranger idle entrance distance is fluid across supported widths');
+assert.match(styles, /translate3d\(0,\s*var\(--home-ranger-enter-y\),\s*0\)/, 'Ranger idle entrance starts below the section');
+assert.match(styles, /data-style='ranger-idle'[^}]*\.home-mobs__cards[^}]*scroll-behavior:\s*auto/, 'Ranger idle disables the rail smooth-scroll reveal');
+assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/, 'test page has reduced-motion coverage');
+assert.match(styles, /data-style='ranger-idle'\]\s+\.home-mobs\s+\{[\s\S]*?animation:\s*none/, 'Ranger idle entrance respects reduced motion');
 assert.match(source, /Choose your hero/, 'live section source still contains the section heading');
 assert.match(source, /data-home-mobs-rail/, 'live section source still contains its card rail');
 assert.match(source, /char-ranger-idle\.webp/, 'Ranger game idle asset is wired as an opt-in source');
+assert.match(source, /char-ranger-idle\.webm/, 'Ranger game idle WebM is wired as an opt-in source');
+assert.match(source, /data-ranger-video/, 'Ranger markup includes an animated-video fallback surface');
 assert.match(source, /prefers-reduced-motion/, 'Ranger game idle respects reduced-motion users');
 
 console.log('Admin Choose your hero test smoke passed.');

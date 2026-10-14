@@ -127,13 +127,15 @@ export const rangerBagPort = {
 export const berserkerBagPort = {
   handlerId: 'berserker_bag',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // BerserkerBag.gd connects during onPrepare, before start-of-battle damage.
+  onPrepare(piece, ctx) {
     piece._rageArmed = false;
     const th = getPName(piece.params, 'healtht', 50) / 100 - 0.0001;
     const speed = getPName(piece.params, 'speed_rage', 20) / 100;
     const dr = getPName(piece.params, 'damresistance', 15);
     const dur = Math.max(1, getPName(piece.params, 'dur_rage', 4));
-    ctx.bus?.on?.('player_damaged', (p) => {
+    ctx.bus?.on?.('character_damaged', (p) => {
+      if (p?.actor && p.actor !== ctx.player) return;
       if (piece._rageArmed || !piece.alive) return;
       const player = ctx.player;
       if (player.maxHp <= 0 || player.hp / player.maxHp >= th) return;

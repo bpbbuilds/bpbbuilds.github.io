@@ -7,7 +7,7 @@
 
 import { getSupabase } from '../../shared/supabase.js';
 import { createTooltipHover } from '../../shared/tooltip-hover.js';
-import { skelBlock } from '../../shared/skeleton.js';
+import { skelBlock, skelSection } from '../../shared/skeleton.js';
 import { mapItem, makeSpriteUrl } from '../build/map-item.js';
 import { itemMatchesCategory } from '../items/filter-logic.js';
 import { escapeAttr, escapeHtml, rootPrefix } from './home-build-media.js';
@@ -204,6 +204,18 @@ function sectionHtml(root) {
     </div>`;
 }
 
+/** @param {HTMLElement} host @param {boolean} ready */
+function settleSectionSkeleton(host, ready) {
+  const region = host.querySelector('.home-items__section-skeleton')?.closest('.bpb-skel-region');
+  if (!(region instanceof HTMLElement)) return;
+  if (ready) {
+    region.remove();
+    return;
+  }
+  region.setAttribute('aria-busy', 'false');
+  region.innerHTML = '<p class="home-items__section-status">The item library is unavailable right now.</p>';
+}
+
 /**
  * @param {object[]} items
  * @param {string} category
@@ -355,9 +367,13 @@ export function initHomeItemsExplore(selector = '#home-items-explore') {
   if (!host) return;
 
   const root = rootPrefix();
-  host.innerHTML = sectionHtml(root);
+  host.innerHTML = `${sectionHtml(root)}${skelSection({
+    className: 'home-items__section-skeleton',
+    label: 'Loading item library',
+  })}`;
 
   void hydrateSprites(host, root).then((catalog) => {
+    settleSectionSkeleton(host, Boolean(catalog));
     bindExploreTabs(host, {
       refillOrbit: catalog?.refillOrbit,
     });

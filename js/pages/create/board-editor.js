@@ -21,7 +21,7 @@ import { mountSellBin } from './sell-bin.js';
 import { economyReadoutHtml, paintEconomyReadout } from './economy-readout.js';
 import { premiumCtaFxHtml } from '../../shared/premium-cta.js';
 import { requirePremium, resumePremiumIntent } from '../../shared/premium-gate.js';
-import { isBoardAndParkEmpty, mountBoardOnboard } from './board-onboard.js?v=place-back';
+import { isBoardAndParkEmpty, mountBoardOnboard } from './board-onboard.js?v=copy-path-20261013';
 import { mountBoardImport } from './board-import.js?v=bags2u';
 import { mountLabelTool, wantLabelTool } from './label-tool.js?v=shells1';
 import { mountHistoryEditGuard } from './history-edit-guard.js';

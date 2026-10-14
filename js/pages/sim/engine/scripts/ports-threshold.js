@@ -420,8 +420,9 @@ export const bionicArmorPort = {
 export const stoneArmorPort = {
   handlerId: 'stone_armor',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const { t, player, events, pieces } = ctx;
+  // StoneArmor.gd connects its low-health listener during onPrepare.
+  onPrepare(piece, ctx) {
+    const { player, events, pieces } = ctx;
     // StoneArmor.gd onPrepare: changeStaminaFactor(staminacost) on all items
     const stamPct = getPName(piece.params, 'staminacost', getPName(piece.params, 'stamina', 20)) / 100;
     if (stamPct) {
@@ -437,7 +438,8 @@ export const stoneArmorPort = {
       getPName(piece.params, 'healtht', getPName(piece.params, 'p4', 50)) / 100;
     const blockPer =
       getPName(piece.params, 'blockperhealth', getPName(piece.params, 'p5', 50)) / 100;
-    ctx.bus?.on?.('player_damaged', (payload) => {
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== player) return;
       if (piece._stoneArmorTriggered || !payload?.hit) return;
       const rel = player.maxHp > 0 ? player.hp / player.maxHp : 1;
       if (rel >= healthTh) return;
@@ -457,6 +459,9 @@ export const stoneArmorPort = {
         meta: { category: 'buff', stack: 'block', script: true, handler: 'stone_armor' },
       });
     });
+  },
+  onCombatStart(piece, ctx) {
+    const { t, player, events } = ctx;
     const block = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 12)));
     grantStacks(player, 'block', block, {
       originKey: piece.placementKey,

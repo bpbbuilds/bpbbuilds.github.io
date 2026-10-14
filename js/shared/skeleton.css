@@ -39,6 +39,19 @@
   border-radius: 0.35rem;
 }
 
+/* A single surface for sections whose complete composition arrives together. */
+.bpb-skel-section-wrap {
+  display: block;
+  width: 100%;
+  min-height: var(--bpb-skel-section-min-height, 18rem);
+}
+
+.bpb-skel-section {
+  width: 100%;
+  min-height: inherit;
+  border-radius: var(--bpb-skel-section-radius, 0.45rem);
+}
+
 @keyframes bpb-skel-shimmer {
   0% {
     transform: translateX(100%);

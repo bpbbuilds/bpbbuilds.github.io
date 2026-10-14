@@ -1,5 +1,240 @@
 # Codex handoff
 
+### 2026-10-13 Ranger idle bottom-up section reveal (in progress)
+
+- Codex owns the isolated Choose Your Hero Ranger preset reveal in
+  `js/pages/admin/home-class-showcase-test.js` and
+  `js/pages/admin/home-class-showcase-test.css`, its cache-busted test-page
+  reference in `admin/test/home/sections/chooseYourHero/index.html`, and the
+  focused Choose Your Hero static/browser smoke coverage.
+- Scope: keep Home, Compact, and Wireframe previews unchanged; make only the
+  Ranger game-idle preset enter from below instead of exposing the horizontal
+  rail's smooth-scroll movement, while retaining responsive and reduced-motion
+  behavior.
+
+### 2026-10-13 Ranger idle bottom-up section reveal complete
+
+- The Ranger game-idle preset now uses a fluid, preset-scoped bottom-up reveal
+  (`home-class-showcase-ranger-bottom-in`) and disables smooth rail scrolling
+  only for that preset. Selecting Ranger also snaps the centered rail without a
+  horizontal transition, so the section no longer appears to enter from the
+  right. Home, Compact, and Wireframe retain their existing rail behavior.
+- The reveal distance stays bounded with a desktop-to-mobile clamp and a small
+  mobile override; reduced-motion users receive no entrance animation. The
+  live Home surface and Ranger media playback are unchanged.
+- Verification: static smoke, browser smoke with Ranger/non-Ranger rail and
+  animation assertions at 1440, 1080, 768, and 390 pixels, reduced-motion
+  browser coverage, JavaScript syntax checks, and `git diff --check` pass. No
+  auth, data, legal-page, or migration behavior changed. No push requested.
+
+### 2026-10-13 Ranger idle playback smoothness (in progress)
+
+- Codex owns the Ranger idle presentation in
+  `js/pages/home/home-class-showcase.js`, the shared Choose Your Hero styles,
+  the isolated admin test controller/styles, the generated Ranger idle media,
+  and focused animation playback coverage.
+- Scope: preserve the game-derived motion and static/reduced-motion fallback,
+  but avoid dropped frames from decoding the large animated WebP on the test
+  page. Use a browser-friendly animated source with a WebP fallback and keep
+  all non-Ranger cards and the live Home surface unchanged.
+
+### 2026-10-13 Ranger idle playback smoothness complete
+
+- Root cause: the 24.8 MiB, 900-frame animated WebP was being decoded as an
+  `<img>` animation. The source keyframes and 17ms frame timing are valid, but
+  this path can make Chromium/Edge drop presentation frames under normal page
+  paint/decode load.
+- Added `assets/characters/char-ranger-idle.webm`, a transparent VP9 60fps
+  encode at the same 337×412 composition (about 6.3 MiB). The Ranger test
+  preset now prefers the media pipeline, keeps the static sprite visible until
+  the first video frame is ready, and falls back to the animated WebP only when
+  WebM playback/autoplay is unavailable. The live Home caller remains static.
+- Extended the hero image styles to cover the video surface without changing
+  card geometry, hover treatment, compact/wireframe presets, reduced motion, or
+  mobile behavior. Updated cache-busts for the test page and Home stylesheet.
+- Verification: source/static smoke, video-load/transparency/advancing-playback
+  browser smoke at 1440, 1080, 768, and 390 pixels, JavaScript syntax checks,
+  VP9/WebM metadata inspection (`337×412`, `60/1`), and `git diff --check` pass.
+  No auth, data, or legal-page behavior changed; no migration or legal-page
+  maintenance was needed.
+
+### 2026-10-13 Home first-paint skeleton composition (in progress)
+
+- Codex owns the Home initial loading shell in `index.html`, scoped Home
+  loading styles, `js/pages/home/index.js`, and focused first-paint coverage.
+- Scope: show the Home background/frame and section-level skeletons for the
+  featured, promo, hero, items, builds, and footer hosts before async boot;
+  preserve the hydrated composition and responsive behavior at desktop,
+  short desktop, tablet, and mobile widths.
+
+### 2026-10-13 Home first-paint skeleton composition complete
+
+- `index.html` now ships a static, single-surface skeleton for Featured,
+  Create, Choose your hero, Explore items, Curated builds, and the footer, so
+  the complete Home composition is visible before module hydration. Existing
+  section initializers replace these placeholders in place, and deferred
+  sections retain their current mount timing.
+- Added `js/pages/home/home-first-paint.css` for fluid promo/footer placeholder
+  sizing, with desktop, short desktop, tablet, and mobile rules and reduced
+  motion support. `body.page-home` now has the Town Square image as a CSS
+  fallback (scroll attachment on narrow screens) while the canvas background
+  starts before the asynchronous navigation/access gate.
+- Added `scripts/home-first-paint-browser-smoke.mjs` and extended the static
+  Home skeleton smoke. Verification passed: first-paint browser checks at
+  1440, 1080, 768, and 390 pixels, existing responsive section-skeleton
+  browser smoke, JavaScript syntax checks, and `git diff --check`. No auth,
+  data, or legal-page behavior changed; no migration or legal maintenance was
+  needed.
+
+### 2026-10-13 Admin Builds baked board thumbnail fallback (in progress)
+
+- Codex owns the Admin Builds payload/thumbnail boundary in
+  `supabase/functions/admin-builds/index.ts`, `js/pages/builds/board-thumbs.js`,
+  and focused Admin Builds board-thumbnail coverage.
+- Scope: preserve uploaded `board_still_path` in the owner list response so new
+  builds can use the existing baked thumbnail fallback when live placement data
+  is unavailable, without changing build actions or authorization.
+
+### 2026-10-13 Admin Builds baked board thumbnail fallback complete
+
+- Root cause: `supabase/functions/admin-builds/index.ts` omitted
+  `board_still_path` from `BUILD_COLS`, so the Admin Builds payload discarded the
+  baked board still already saved by new submissions. The thumbnail renderer's
+  fallback could not use the stored image and displayed `No board` when live
+  placement rows were unavailable.
+- Added `board_still_path` to the owner list/update projection. The existing
+  `mountFeedBoardThumbs` path now receives the stored still and keeps it visible
+  while retaining live placement rendering when available.
+- Added `scripts/admin-builds-board-thumbnail-smoke.mjs`, covering payload
+  preservation and the baked/live fallback contract. Verification passed:
+  focused smoke, JavaScript syntax check, and `git diff --check`.
+- No build data was changed and no authorization, legal-page, or migration
+  changes were needed. The updated Edge Function must be deployed for the
+  production Admin Builds endpoint to return the field.
+
+### 2026-10-13 Admin Cosmetics surface alignment (in progress)
+
+- Codex owns the Cosmetics tab presentation in `js/pages/admin/tab-cosmetics.js`,
+  `js/pages/admin/admin.css`, and focused Cosmetics visual smoke coverage.
+- Scope: align the Cosmetics tab sections, catalog cards, and filter rail with
+  the shared Builds/admin clear-shadow surface while preserving all cosmetic
+  actions, permissions, and responsive behavior across desktop, short desktop,
+  tablet, and mobile widths.
+
+### 2026-10-13 Admin Cosmetics surface alignment complete
+
+- `js/pages/admin/tab-cosmetics.js` now uses the shared admin panel heading/body
+  structure and renders catalog entries through the same raised card surface as
+  the Builds tab; review, upload, edit, publish, and queue actions are unchanged.
+- `js/pages/admin/admin.css` now gives Cosmetics one clear/shadowed outer panel,
+  fluid section/card spacing, Patch3 filter-rail chrome, and narrow/mobile
+  behavior matching the existing Builds layout. The layout was checked at
+  1440, 1080, 768, and 390 pixel viewports with no horizontal overflow.
+- Added `scripts/admin-cosmetics-design-smoke.mjs` and
+  `scripts/admin-cosmetics-design-browser-smoke.mjs`. Verification passed:
+  focused/static smoke, responsive browser smoke, shared admin-surface smoke,
+  Builds shadow smoke, JavaScript syntax checks, and `git diff --check`.
+- No authorization, data, upload, or legal-page behavior changed; no migration
+  or legal-page maintenance was needed.
+
+### 2026-10-13 Owner cosmetic inventory entitlement (in progress)
+
+- Codex owns the self-profile ownership handoff in `js/pages/u/index.js`, the
+  owner cosmetic entitlement contract in `js/pages/u/blob/catalog.js`, and
+  focused owner/non-owner cosmetic inventory coverage.
+- Scope: carry the trusted owner role into the signed-in owner’s own profile
+  wardrobe so every current and future catalog cosmetic appears unlocked in
+  Blob and Inventory; do not materialize a stale grant list or weaken server
+  profile protections. Public visitor profiles remain unchanged.
+
+### 2026-10-13 Owner cosmetic inventory entitlement complete
+
+- Root cause: public profile reads intentionally omit `is_owner`, but the
+  signed-in owner’s own `/u/` page passed that public row into both the Blob
+  wardrobe and Inventory tabs. The existing catalog entitlement already has a
+  server-role-backed owner bypass, so the owner path never reached it.
+- `js/pages/u/index.js` now overlays `is_owner: true` only when the target
+  profile matches the authenticated `viewerProfile` and that trusted profile
+  is an owner. Visitor profile data remains unchanged and does not expose the
+  owner role.
+- Because inventory remains derived from the catalog, owners automatically see
+  current and future cosmetics without a materialized `cosmetic_grants` list;
+  non-owners retain the existing starter/Premium/founding/event checks.
+- Added `scripts/profile-owner-cosmetics-smoke.mjs`. Verification: owner
+  entitlement smoke, changed-profile JavaScript syntax checks, and
+  `git diff --check` pass. No migration or legal-page change was needed; the
+  server-managed owner role and existing profile RLS protections remain the
+  authorization boundary.
+
+### 2026-10-13 Ranger idle quality pass (in progress)
+
+- Codex owns the Ranger idle asset, its cache-busted source reference, and the
+  bake/verification paths while improving the preset’s visual fidelity.
+- Scope: address the 294×360 source being enlarged in the hero card by baking a
+  larger, higher-quality animation; keep the game timing, reduced-motion/static
+  fallback, and responsive composition stable; measure the resulting payload
+  before choosing any additional frame-rate increase.
+
+### 2026-10-13 Ranger idle quality pass complete
+
+- Re-baked Ranger from the extracted game tracks at 60 FPS / 900 frames over
+  the same 15-second loop. The output is now 337×412 instead of 294×360, so it
+  is enlarged substantially less by the hero card and is visibly sharper.
+- Selected WebP quality 76 with encoder method 3 after measuring the larger
+  alternatives: the final asset is approximately 23.70 MiB. The 60 FPS/high
+  resolution quality-88 candidate was approximately 33 MiB and was not kept.
+- Updated the cache-bust to `60fps-480q76-20261013`; static and
+  reduced-motion behavior remain unchanged.
+- Verification: Python syntax, Pillow metadata (`900` frames, `337×412`),
+  Choose your hero static smoke, responsive browser smoke at 1440, 1080,
+  tablet, and mobile widths, JavaScript syntax, and `git diff --check` pass.
+
+### 2026-10-13 Ranger idle 30 FPS asset (in progress)
+
+- Codex owns the generated Ranger idle asset at
+  `assets/characters/char-ranger-idle.webp`, its cache-busted source reference
+  in `js/pages/home/home-class-showcase.js`, and focused asset verification.
+- Scope: rebake the existing extracted game Ranger idle animation at 30 FPS,
+  keep the current preset URL and reduced-motion/static fallback unchanged, and
+  verify frame timing, loop metadata, dimensions, and browser loading.
+
+### 2026-10-13 Ranger idle 30 FPS asset complete
+
+- Rebaked the extracted 15-second Ranger `Idle` AnimationPlayer at 30 FPS:
+  450 frames, 294×360 transparent WebP, looping, approximately 10.43 MiB at
+  quality 72 / encoder method 3. The preset still uses the game-derived source
+  track rather than duplicating the old 8 FPS frames.
+- Added a configurable `--method` WebP encoder option to
+  `scripts/bake-chibi-idle.py` so future high-frame-rate bakes can tune encode
+  time without changing the source animation.
+- Added a `30fps-20261013` asset query version in the shared Choose your hero
+  source so deployed browsers do not retain the prior 8 FPS file from cache.
+  Static and reduced-motion fallbacks remain unchanged.
+- Verification: Python syntax, Pillow metadata (`450` frames, `294×360`),
+  Choose your hero static smoke, responsive browser smoke at 1440, 1080,
+  tablet, and mobile widths, JavaScript syntax, and `git diff --check` pass.
+
+### 2026-10-13 Featured build link routing (in progress)
+
+- Codex owns the scoped Featured carousel link path in
+  `js/pages/home/featured-stage.js`, the small URL helper (if needed), and
+  focused Featured link smoke coverage.
+- Scope: point Featured “View build” links at the canonical build-view route
+  with an encoded slug, preserving the existing carousel and external Watch
+  link.
+
+### 2026-10-13 Featured build link routing complete
+
+- Root cause: the Featured carousel generated `/builds/<slug>/`, but the static
+  site’s build page resolves community builds at `/builds/view/?slug=<slug>`.
+- Updated the Featured “View build” target to the canonical query route and
+  URL-encode the slug; the external Watch link and carousel behavior are
+  unchanged.
+- Added `scripts/home-featured-link-smoke.mjs` to prevent the old route from
+  returning. Verification passes for the link smoke, Featured mention smokes,
+  Home section skeleton/static browser smokes across desktop, short desktop,
+  tablet, and mobile, JavaScript syntax, and `git diff --check`.
+
 ### 2026-10-13 Choose Your Hero Ranger idle preset (in progress)
 
 - Codex owns the isolated Choose Your Hero animation-preset paths in
@@ -2999,3 +3234,43 @@ None.
 
 - Moved `resizePaused`, `resizePending`, and `resizeRaf` from the packed-grid scope into `mountPlacedGrid`, eliminating the observer and `setResizePaused()` ReferenceErrors while preserving the placed-grid coalescing behavior.
 - Added a regression assertion that the gate state is absent from packed grids and present in the placed-grid scope. Player Info/P0/P1/P2 smokes, responsive browser checks, syntax checks, and `git diff --check` pass. The auth eligibility notice and font preload messages remain non-fatal warnings outside this fix; no blockers and no push requested.
+
+### 2026-10-13 Build view vote layout (in progress)
+
+- Codex owns `js/pages/build/build.css` and the focused `scripts/build-view-header-layout-smoke.mjs` regression for this scoped visual adjustment.
+- Scope: keep the build-view header's vote control aligned to the right and full-height, but place the upvote button to the left of the score and the downvote button to its right at every supported desktop/tablet/mobile test width.
+
+### 2026-10-13 Build view vote layout complete
+
+- The build-view header vote control now remains right-aligned and full-height while rendering as upvote, score, downvote from left to right. The scoped CSS preserves the lower round vote controls and other pages.
+- Updated the header-layout smoke to verify horizontal ordering, centered alignment, score placement, icon sizing, and no overflow at 2560, 1920, 1440, 768, and 390px. The focused layout, density, title-spacing, pointer, syntax, and `git diff --check` checks pass. No push was requested.
+
+### 2026-10-13 Build view tag row (in progress)
+
+- Codex owns the build-view tag-row rule in `js/pages/build/build.css` and the corresponding header-layout smoke assertion.
+- Scope: keep build tags on one horizontal row beside one another at supported widths, with a contained horizontal overflow path on narrow screens so the page itself does not overflow.
+
+### 2026-10-13 Build view tag row complete
+
+- Build-view tags now use a single non-wrapping horizontal row. Tag children keep their intrinsic widths, and any narrow-screen overflow is contained within the tag row with the scrollbar visually suppressed; the page remains overflow-free.
+- Extended the header-layout smoke to verify `nowrap`, one-row geometry, and no page overflow at 2560, 1920, 1440, 768, and 390px. Focused layout, density, title-spacing, pointer, syntax, and `git diff --check` checks pass. No push was requested.
+
+### 2026-10-13 Home section-owned skeletons (in progress)
+
+- Codex owns `index.html`, the Home section-owned skeleton smoke fixtures, and the now-unused `js/pages/home/home-section-skeleton.css` placeholder layer for this scoped loading-state adjustment.
+- Scope: remove duplicate page-shell skeleton markup so each Home section module owns its own loading surface and dismissal, while retaining the existing deferred section mounts and responsive section skeleton styles.
+
+### 2026-10-13 Home section-owned skeletons complete
+
+- Removed the duplicate Home page-shell skeleton wrappers and stylesheet. The Home document now keeps empty section hosts; Featured, Promo, Hero, Items, and Vault modules render and dismiss their own section-level skeletons when mounted. Deferred mounting and the single-surface nav skeleton remain unchanged.
+- Updated the static and responsive browser smokes to verify module-owned skeleton selectors, one surface per section, positive responsive geometry, and no horizontal overflow at 1440, 1080, 768, and 390px. Home skeleton smokes, syntax checks, and `git diff --check` pass. No push was requested.
+
+### 2026-10-13 Featured description item mentions (in progress)
+
+- Codex owns `js/pages/home/featured-stage.js` and the focused Featured description mention smoke for this bug fix.
+- Scope: resolve serialized build item mentions in the Featured carousel description to the same item sprite chips used by the Build view, without changing unrelated Home descriptions or content escaping.
+
+### 2026-10-13 Featured description item mentions complete
+
+- Fixed the data-path mismatch: current builds store their description in `notes`, while Featured was selecting/rendering only legacy `blurb`. Featured now selects `notes`, prefers it with a `blurb` fallback, extracts its serialized `[[item_id]]` references, fetches only those item rows plus sprite metadata, and renders shared escaped sprite chips.
+- Added `js/pages/home/featured-mentions.js`, scoped chip styling, and static/runtime smokes covering item id, image source, escaping, notes-first fallback, and no-mention lookup avoidance. Featured syntax, mention smokes, Home skeleton smokes, responsive skeleton coverage, and `git diff --check` pass. No push was requested.

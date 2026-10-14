@@ -40,7 +40,11 @@ const server = http.createServer((req, res) => {
     ? 'text/javascript'
     : ext === '.css'
       ? 'text/css'
-      : 'application/octet-stream';
+      : ext === '.webm'
+        ? 'video/webm'
+        : ext === '.webp'
+          ? 'image/webp'
+          : 'application/octet-stream';
   res.writeHead(200, { 'Content-Type': contentType });
   fs.createReadStream(filePath).pipe(res);
 });
@@ -72,23 +76,26 @@ try {
   const animationSources = await page.evaluate(() => {
     const preview = document.querySelector('#probe');
     const ranger = preview?.querySelector('[data-hero-class="Ranger"] img');
+    const video = preview?.querySelector('[data-hero-class="Ranger"] [data-ranger-video]');
     const others = [...preview?.querySelectorAll('[data-home-mobs-card]:not([data-hero-class="Ranger"]) img') || []];
     const controller = window.__showcase;
     const staticSrc = ranger?.getAttribute('src') || '';
     controller?.setRangerAnimation(true);
     const idleSrc = ranger?.getAttribute('src') || '';
     const idleFlag = ranger?.getAttribute('data-ranger-image') || '';
+    const idleVideoSrc = video?.getAttribute('src') || '';
     const otherIdle = others.some((img) => String(img.getAttribute('src') || '').includes('char-ranger-idle'));
     controller?.setRangerAnimation(false);
-    return { staticSrc, idleSrc, idleFlag, otherIdle, restoredSrc: ranger?.getAttribute('src') || '' };
+    return { staticSrc, idleSrc, idleFlag, idleVideoSrc, otherIdle, restoredSrc: ranger?.getAttribute('src') || '' };
   });
   if (!animationSources.staticSrc.includes('char-ranger.png')) throw new Error(`Ranger starts on the static source: ${JSON.stringify(animationSources)}`);
-  if (!animationSources.idleSrc.includes('char-ranger-idle.webp') || animationSources.idleFlag !== 'idle') throw new Error(`Ranger game idle did not activate: ${JSON.stringify(animationSources)}`);
+  if (animationSources.idleFlag !== 'idle' || !animationSources.idleVideoSrc.includes('char-ranger-idle.webm')) throw new Error(`Ranger game idle did not activate: ${JSON.stringify(animationSources)}`);
   if (animationSources.otherIdle) throw new Error(`Non-Ranger card received Ranger animation: ${JSON.stringify(animationSources)}`);
   if (!animationSources.restoredSrc.includes('char-ranger.png')) throw new Error(`Ranger static source did not restore: ${JSON.stringify(animationSources)}`);
 
   const idleLoad = await page.evaluate(async () => {
     const ranger = document.querySelector('[data-hero-class="Ranger"] img');
+    const video = document.querySelector('[data-hero-class="Ranger"] [data-ranger-video]');
     window.__showcase?.setRangerAnimation(true);
     if (!(ranger instanceof HTMLImageElement)) return 0;
     if (!ranger.complete) {
@@ -97,21 +104,52 @@ try {
         ranger.addEventListener('error', resolve, { once: true });
       });
     }
-    return ranger.naturalWidth;
+    await new Promise((resolve) => window.setTimeout(resolve, 250));
+    let alphaAtCorner = 255;
+    if (video instanceof HTMLVideoElement && video.readyState >= 2 && video.videoWidth > 0) {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0);
+        alphaAtCorner = ctx.getImageData(0, 0, 1, 1).data[3];
+      }
+    }
+    return {
+      width: ranger.naturalWidth,
+      videoVisible: video instanceof HTMLVideoElement && !video.hidden,
+      videoReady: video instanceof HTMLVideoElement ? video.readyState : 0,
+      videoTime: video instanceof HTMLVideoElement ? video.currentTime : 0,
+      alphaAtCorner,
+    };
   });
-  if (idleLoad <= 0) throw new Error(`Ranger game idle asset did not load (${idleLoad}px)`);
+  if (idleLoad.width <= 0) throw new Error(`Ranger game idle fallback did not load (${JSON.stringify(idleLoad)})`);
+  if (!idleLoad.videoVisible || idleLoad.videoReady < 2 || idleLoad.videoTime <= 0) {
+    throw new Error(`Ranger game idle video did not advance (${JSON.stringify(idleLoad)})`);
+  }
+  if (idleLoad.alphaAtCorner >= 255) {
+    throw new Error(`Ranger game idle video lost transparency (${JSON.stringify(idleLoad)})`);
+  }
   await page.evaluate(() => window.__showcase?.setRangerAnimation(false));
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   const reducedMotionSource = await page.evaluate(() => {
     const ranger = document.querySelector('[data-hero-class="Ranger"] img');
+    const video = document.querySelector('[data-hero-class="Ranger"] [data-ranger-video]');
+    const preview = document.querySelector('#probe');
+    if (preview instanceof HTMLElement) preview.dataset.style = 'ranger-idle';
     window.__showcase?.setRangerAnimation(true);
     return {
       src: ranger?.getAttribute('src') || '',
       flag: ranger?.getAttribute('data-ranger-image') || '',
+      videoHidden: video instanceof HTMLVideoElement ? video.hidden : false,
+      sectionAnimation: preview?.querySelector('.home-mobs') instanceof HTMLElement
+        ? getComputedStyle(preview.querySelector('.home-mobs')).animationName
+        : '',
     };
   });
-  if (!reducedMotionSource.src.includes('char-ranger.png') || reducedMotionSource.flag !== 'static') {
+  if (!reducedMotionSource.src.includes('char-ranger.png') || reducedMotionSource.flag !== 'static' || !reducedMotionSource.videoHidden || reducedMotionSource.sectionAnimation !== 'none') {
     throw new Error(`Ranger animation ignored reduced-motion preference: ${JSON.stringify(reducedMotionSource)}`);
   }
   await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -120,10 +158,11 @@ try {
   const results = [];
   for (const viewport of viewports) {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
-    for (const style of ['home', 'compact', 'wireframe']) {
+    for (const style of ['home', 'compact', 'wireframe', 'ranger-idle']) {
       const result = await page.evaluate((nextStyle) => {
         const preview = document.querySelector('#probe');
         const rail = preview?.querySelector('[data-home-mobs-rail]');
+        const section = preview?.querySelector('.home-mobs');
         const cards = preview?.querySelectorAll('[data-home-mobs-card]') || [];
         if (preview instanceof HTMLElement) preview.dataset.style = nextStyle;
         const firstCard = preview?.querySelector('.home-mobs__card');
@@ -131,6 +170,8 @@ try {
         const railRect = rail?.getBoundingClientRect();
         const cardRect = firstCard?.getBoundingClientRect();
         const imageStyle = firstImage ? getComputedStyle(firstImage) : null;
+        const sectionStyle = section ? getComputedStyle(section) : null;
+        const railStyle = rail ? getComputedStyle(rail) : null;
         return {
           cards: cards.length,
           railWidth: railRect?.width || 0,
@@ -138,6 +179,8 @@ try {
           cardWidth: cardRect?.width || 0,
           imageHeight: imageStyle?.height || '',
           wireframeFilter: imageStyle?.filter || '',
+          sectionAnimation: sectionStyle?.animationName || '',
+          railScrollBehavior: railStyle?.scrollBehavior || '',
           overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         };
       }, style);
@@ -146,6 +189,16 @@ try {
       if (result.railScrollWidth < result.railWidth) throw new Error(`${viewport.name}/${style}: hero rail is not scrollable`);
       if (style === 'wireframe' && !result.wireframeFilter.includes('grayscale')) {
         throw new Error(`${viewport.name}/${style}: wireframe treatment was not applied`);
+      }
+      if (style === 'ranger-idle') {
+        if (!result.sectionAnimation.includes('home-class-showcase-ranger-bottom-in')) {
+          throw new Error(`${viewport.name}/${style}: section did not use the bottom-up entrance`);
+        }
+        if (result.railScrollBehavior !== 'auto') {
+          throw new Error(`${viewport.name}/${style}: rail retained horizontal smooth scrolling`);
+        }
+      } else if (result.railScrollBehavior !== 'smooth') {
+        throw new Error(`${viewport.name}/${style}: non-Ranger rail behavior changed to ${result.railScrollBehavior}`);
       }
       if (result.overflowX > 1) throw new Error(`${viewport.name}/${style}: horizontal overflow ${result.overflowX}px`);
       results.push({ ...viewport, style, ...result });

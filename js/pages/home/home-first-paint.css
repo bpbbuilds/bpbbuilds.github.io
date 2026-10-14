@@ -1,0 +1,70 @@
+/*
+ * Home first-paint shell. These placeholders live in index.html so a hard
+ * refresh has the complete composition before the module graph and Supabase
+ * requests finish. Hydration replaces each host's contents in place.
+ */
+
+.home-first-paint__promo {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  min-height: clamp(24rem, 38vw, 42rem);
+  padding: 3.25rem clamp(1rem, 3vw, 2rem) 3rem;
+}
+
+.home-first-paint__promo-surface {
+  width: min(88rem, 100%);
+  min-height: clamp(24rem, 38vw, 42rem);
+  border-radius: 0.35rem;
+}
+
+.home-first-paint__footer {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: clamp(10rem, 15vw, 14rem);
+  padding: 1.75rem var(--bpb-frame-edge-x, 1rem)
+    max(3.25rem, var(--bpb-frame-edge-y, 2rem));
+}
+
+.home-first-paint__footer-surface {
+  width: min(48rem, calc(100vw - 2rem));
+  min-height: clamp(6rem, 9vw, 9rem);
+  margin: 0 auto;
+  border-radius: 0.35rem;
+}
+
+@media (max-width: 1100px) {
+  .home-first-paint__footer {
+    min-height: clamp(8rem, 21vw, 11rem);
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .home-first-paint__footer-surface {
+    width: min(48rem, calc(100vw - 2rem));
+    min-height: clamp(5rem, 13vw, 7rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .home-first-paint__promo {
+    min-height: 20rem;
+    padding: 2rem 0.75rem 2.25rem;
+  }
+
+  .home-first-paint__promo-surface {
+    min-height: 20rem;
+  }
+
+  .home-first-paint__footer {
+    min-height: 7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-first-paint__promo-surface::after,
+  .home-first-paint__footer-surface::after {
+    animation: none;
+  }
+}

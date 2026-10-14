@@ -11,6 +11,7 @@ import {
 } from '../../shared/build-search.js';
 import { mountBuildSearchInput } from '../../shared/build-search-input.js';
 import { listBuilds, mutateBuild, AdminAuthError } from './api.js';
+import { applyBuildAction } from './build-action-state.js';
 import {
   adminBuildsFiltersHtml,
   bindAdminBuildsFilters,
@@ -117,12 +118,29 @@ export async function mountBuildsPanel(host, opts) {
     },
   });
 
+  bindActions(body, opts, ({ action, slug, result }) => {
+    const current = all.find((build) => String(build.slug || '') === slug);
+    if (!current) return;
+    const serverBuild =
+      result && typeof result === 'object' && result.build && typeof result.build === 'object'
+        ? result.build
+        : null;
+    const next = serverBuild
+      ? { ...current, ...serverBuild }
+      : applyBuildAction(current, action);
+    all = all.map((build) => (String(build.slug || '') === slug ? next : build));
+    paintCards();
+  });
+
   /**
    * @param {object[]} builds
    */
   function visibleBuilds(builds) {
     const parsed = parseBuildSearchQuery(filters.q || '');
     return builds.filter((b) => {
+      if (filters.list === 'featured' && !b.is_featured) return false;
+      if (filters.list === 'hidden' && b.is_public) return false;
+      if (filters.list === 'pending_op' && (!b.op_requested || b.is_op)) return false;
       if (filters.heroClass && String(b.hero_class || '') !== filters.heroClass) {
         return false;
       }
@@ -154,7 +172,6 @@ export async function mountBuildsPanel(host, opts) {
           .join('')}
       </div>
     `;
-    bindActions(body, opts);
     const list = body.querySelector('[data-admin-list]');
     if (list instanceof HTMLElement) {
       unmountThumbs = mountAdminBoardThumbs(list, {
@@ -192,10 +209,10 @@ export async function mountBuildsPanel(host, opts) {
  * @param {{
  *   auth: { mode: 'jwt' | 'secret', token: string },
  *   onUnauthorized: () => void,
- *   onChanged?: () => void,
  * }} opts
+ * @param {(args: { action: string, slug: string, result: object | null }) => void} onSuccess
  */
-function bindActions(rootEl, opts) {
+function bindActions(rootEl, opts, onSuccess) {
   rootEl.addEventListener('click', async (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement)) return;
@@ -206,8 +223,8 @@ function bindActions(rootEl, opts) {
     if (!action || !slug) return;
     btn.disabled = true;
     try {
-      await mutateBuild(opts.auth, action, slug);
-      opts.onChanged?.();
+      const result = await mutateBuild(opts.auth, action, slug);
+      onSuccess({ action, slug, result: result && typeof result === 'object' ? result : null });
     } catch (err) {
       if (err instanceof AdminAuthError) {
         opts.onUnauthorized();

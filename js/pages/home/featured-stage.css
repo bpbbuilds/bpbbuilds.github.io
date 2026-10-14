@@ -99,37 +99,25 @@
   width: 100%;
 }
 
-.fs-slide--skel {
-  cursor: var(--bpb-cursor-default);
-  pointer-events: none;
+.fs-shell--skel {
+  min-height: clamp(22rem, 34vw, 39rem);
 }
 
-.fs-focus--skel .fs-skel-media {
-  background: rgba(40, 28, 18, 0.35);
+.fs-section-skeleton {
+  min-height: inherit;
+  border-radius: 0.35rem;
 }
 
-.fs-skel-media__fill {
-  position: absolute;
-  inset: 4%;
-  width: auto;
-  height: auto;
-  border-radius: 0.3rem;
+@media (max-width: 1100px) {
+  .fs-shell--skel {
+    min-height: clamp(18rem, 48vw, 31rem);
+  }
 }
 
-.fs-focus--skel .fs-focus__header,
-.fs-focus--skel .fs-focus__main {
-  gap: 0.45rem;
-}
-
-.fs-skel-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 0.7rem;
-  margin-top: auto;
-}
-
-.fs-skel-btn {
-  width: 100%;
+@media (max-width: 640px) {
+  .fs-shell--skel {
+    min-height: 15rem;
+  }
 }
 
 /* —— Video + info: info tucks under video (old plate overlap) —— */
@@ -483,6 +471,15 @@
   overflow: hidden;
   box-sizing: border-box;
   padding-inline: var(--fs-stroke-bleed);
+}
+
+.fs-focus__blurb .bpb-mention {
+  display: inline-block;
+  width: 1.35em;
+  height: 1.35em;
+  margin: 0 0.08em;
+  vertical-align: -0.28em;
+  object-fit: contain;
 }
 
 .fs-focus__actions {

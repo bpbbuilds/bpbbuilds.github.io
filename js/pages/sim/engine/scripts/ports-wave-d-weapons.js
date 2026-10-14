@@ -113,8 +113,38 @@ export const holySpearPort = {
 export const automanatonPort = {
   handlerId: 'automanaton',
   family: 'on_hit',
-  onCombatStart(piece) {
+  // Automanaton.gd connects its low-health listener during onPrepare.
+  onPrepare(piece, ctx) {
     piece._autoLowHp = false;
+    piece._autoLowHpTrigger = (t = ctx.t) => {
+      if (piece._autoLowHp) return;
+      const thresh = getPName(piece.params, 'healtht', 50) / 100;
+      const rel = ctx.player.maxHp > 0 ? ctx.player.hp / ctx.player.maxHp : 1;
+      if (!(rel < thresh)) return;
+      piece._autoLowHp = true;
+      const speed = getPName(piece.params, 'speed', 10) / 100;
+      const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+      for (const other of ctx.pieces || []) {
+        if (!links.some((l) => l.key === other.placementKey)) continue;
+        grantTimedSpeed(other, speed, t + Math.max(1, getPName(piece.params, 'dur_dmgreduction', 3)), 'automanaton');
+      }
+      const resistDur = Math.max(1, getPName(piece.params, 'dur_dmgreduction', 3));
+      ctx.player.damageResistancePct = (ctx.player.damageResistancePct || 0) + getPName(piece.params, 'dmgreduction', 20);
+      piece._autoResistUntil = t + resistDur;
+      piece._onTimedSpeedEnd = (tag) => {
+        if (tag === 'automanaton' && piece._autoResistUntil && ctx.t >= piece._autoResistUntil) {
+          ctx.player.damageResistancePct = Math.max(
+            0,
+            (ctx.player.damageResistancePct || 0) - getPName(piece.params, 'dmgreduction', 20),
+          );
+        }
+      };
+      gainStacks(ctx.player, 'block', Math.max(1, Math.round(getP2(piece.params, 4))));
+    };
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
+      piece._autoLowHpTrigger(payload?.t ?? ctx.t);
+    });
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'automanaton');
@@ -144,29 +174,7 @@ export const automanatonPort = {
         originId: piece.itemId,
       });
     }
-    const thresh = getPName(piece.params, 'healtht', 50) / 100;
-    const rel = ctx.player.maxHp > 0 ? ctx.player.hp / ctx.player.maxHp : 1;
-    if (!piece._autoLowHp && rel < thresh) {
-      piece._autoLowHp = true;
-      const speed = getPName(piece.params, 'speed', 10) / 100;
-      const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-      for (const other of ctx.pieces || []) {
-        if (!links.some((l) => l.key === other.placementKey)) continue;
-        grantTimedSpeed(other, speed, ctx.t + Math.max(1, getPName(piece.params, 'dur_dmgreduction', 3)), 'automanaton');
-      }
-      const resistDur = Math.max(1, getPName(piece.params, 'dur_dmgreduction', 3));
-      ctx.player.damageResistancePct = (ctx.player.damageResistancePct || 0) + getPName(piece.params, 'dmgreduction', 20);
-      piece._autoResistUntil = ctx.t + resistDur;
-      piece._onTimedSpeedEnd = (tag) => {
-        if (tag === 'automanaton' && piece._autoResistUntil && ctx.t >= piece._autoResistUntil) {
-          ctx.player.damageResistancePct = Math.max(
-            0,
-            (ctx.player.damageResistancePct || 0) - getPName(piece.params, 'dmgreduction', 20),
-          );
-        }
-      };
-      gainStacks(ctx.player, 'block', Math.max(1, Math.round(getP2(piece.params, 4))));
-    }
+    piece._autoLowHpTrigger?.(ctx.t);
   },
 };
 

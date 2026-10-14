@@ -1,4 +1,4 @@
-import { initHomeClassShowcase } from '../home/home-class-showcase.js?v=home-class-showcase-test-20261013b';
+import { initHomeClassShowcase } from '../home/home-class-showcase.js?v=home-class-showcase-test-20261013c';
 import { resolveAdminAuth } from './api.js?v=admin-csp-20261013a';
 import { mountGate } from './gate.js';
 
@@ -54,6 +54,12 @@ function renderTestSurface(main) {
         ? button.dataset.style
         : 'home';
       if (preview instanceof HTMLElement) preview.dataset.style = style;
+      if (style === 'ranger-idle' && preview instanceof HTMLElement) {
+        const rail = preview.querySelector('[data-home-mobs-rail]');
+        if (rail instanceof HTMLElement) {
+          rail.scrollLeft = Math.max(0, (rail.scrollWidth - rail.clientWidth) / 2);
+        }
+      }
       showcase?.setRangerAnimation(style === 'ranger-idle');
       main.querySelectorAll('button[data-style]').forEach((control) => {
         const active = control === button;

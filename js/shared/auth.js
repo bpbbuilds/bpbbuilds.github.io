@@ -3,8 +3,8 @@
  * Sign-in at Submit / nav; bind anon votes on SIGNED_IN.
  */
 
-import { getSupabase } from './supabase.js';
-import { claimFoundingSlot } from './entitlements.js';
+import { getSupabase } from './supabase.js?v=supabase-client-20261013a';
+import { claimFoundingSlot } from './entitlements.js?v=admin-csp-20261013a';
 
 /** @typedef {import('./entitlements.js').Profile} Profile */
 const VOTER_KEY = 'bpb-voter-id';
@@ -319,7 +319,7 @@ async function afterSignedIn(session) {
 
   profileCache = undefined;
   await getProfile({ force: true });
-  const { maybePromptDiscordJoin } = await import('./discord-join.js');
+  const { maybePromptDiscordJoin } = await import('./discord-join.js?v=admin-csp-20261013a');
   await maybePromptDiscordJoin();
 }
 

@@ -439,12 +439,14 @@ const twineBadgePort = {
 const wolfBadgePort = {
   handlerId: 'wolf_badge',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // WolfBadge.gd connects its damage and rage listeners during onPrepare.
+  onPrepare(piece, ctx) {
     piece._wolf = false;
     const th = getP1(piece.params, 50) / 100;
     const rageSpd = getP3(piece.params, 15) / 100;
     const dr = getP4(piece.params, 15);
-    ctx.bus?.on?.('player_damaged', () => {
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._wolf) return;
       if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
       piece._wolf = true;

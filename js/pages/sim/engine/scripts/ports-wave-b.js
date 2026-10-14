@@ -632,12 +632,14 @@ export const owlSpiritPort = {
 export const hedgehogPort = {
   handlerId: 'hedgehog',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  // Hedgehog.gd connects during onPrepare.
+  onPrepare(piece, ctx) {
     piece._hedgeTriggered = false;
     const th = getPName(piece.params, 'healtht', 50) / 100 - 0.0001;
     const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', 3)));
     const block = Math.max(0, Math.round(piece.blockGrant || getP2(piece.params, 4)));
-    ctx.bus?.on?.('player_damaged', (payload) => {
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._hedgeTriggered || !payload?.hit) return;
       const player = ctx.player;
       const rel = player.maxHp > 0 ? player.hp / player.maxHp : 1;

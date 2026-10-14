@@ -119,7 +119,7 @@ function captionHtml(build, root, hideAuthor = false) {
 }
 
 /** Paint the dedicated creator column used by the creator preset. */
-export function paintPromoCreator(el, build, root, buildCount = null) {
+export function paintPromoCreator(el, build, root, buildCount = null, opts = {}) {
   if (!(el instanceof HTMLElement)) return;
   if (!build) {
     el.replaceChildren();
@@ -141,8 +141,27 @@ export function paintPromoCreator(el, build, root, buildCount = null) {
   const countHtml = count == null
     ? '<span class="home-promo__creator-count-loading">…</span>'
     : `<strong class="home-promo__creator-count-number">${escapeHtml(String(count))}</strong>`;
-  el.innerHTML = `${faceHtml}<span class="home-promo__creator-kicker">Build creator</span>${nameHtml}<span class="home-promo__creator-count">${countHtml}<span class="home-promo__creator-count-label">Builds</span></span>`;
+  const kicker = String(opts.kicker || 'Build creator').trim() || 'Build creator';
+  const kickerHtml = opts.hideKicker === true
+    ? ''
+    : `<span class="home-promo__creator-kicker">${escapeHtml(kicker)}</span>`;
+  const countLabel = '<span class="home-promo__creator-count-label">Builds</span>';
+  const countContents = opts.countLabelFirst === true
+    ? `${countLabel}${countHtml}`
+    : `${countHtml}${countLabel}`;
+  const countShade = opts.countShade === true ? ' home-promo__info-shade' : '';
+  el.innerHTML = `${faceHtml}${kickerHtml}${nameHtml}<span class="home-promo__creator-count${countShade}">${countContents}</span>`;
   void hydrateFaces(el, base);
+}
+
+/** Paint the player-information column used by the Player info preset. */
+export function paintPromoPlayer(el, build, root, buildCount = null) {
+  paintPromoCreator(el, build, root, buildCount, {
+    kicker: '',
+    hideKicker: true,
+    countLabelFirst: true,
+    countShade: true,
+  });
 }
 
 /** @param {string} key */
@@ -263,6 +282,7 @@ function boardTagsHtml(build) {
  * @param {HTMLAnchorElement | null} [boardLink]
  * @param {HTMLElement | null} [infoEl]
  * @param {HTMLElement | null} [boardTagsEl]
+ * @param {{ hideAuthor?: boolean, hideTags?: boolean, hydrateFaces?: boolean }} [opts]
  */
 export function paintPromoCaption(el, build, root, boardLink, infoEl, boardTagsEl, opts = {}) {
   if (el instanceof HTMLElement) {
@@ -273,12 +293,14 @@ export function paintPromoCaption(el, build, root, boardLink, infoEl, boardTagsE
     } else {
       el.hidden = false;
       el.innerHTML = captionHtml(build, root, opts.hideAuthor === true);
-      void hydrateFaces(el, root);
+      if (opts.hydrateFaces !== false && opts.hideAuthor !== true) {
+        void hydrateFaces(el, root);
+      }
       el.closest('[data-promo-create-card]')?.removeAttribute('aria-busy');
     }
   }
   if (boardTagsEl instanceof HTMLElement) {
-    if (!build) {
+    if (!build || opts.hideTags === true) {
       boardTagsEl.replaceChildren();
       boardTagsEl.hidden = true;
     } else {

@@ -30,10 +30,12 @@ import { eventSideForPiece } from '../vs-board.js';
 export const badgerSpiritPort = {
   handlerId: 'badger_spirit',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  // BadgerSpirit.gd connects during onPrepare.
+  onPrepare(piece, ctx) {
     piece._badgerArmed = true;
     const th = getPName(piece.params, 'healtht', 50) / 100;
-    ctx.bus?.on?.('player_damaged', (payload) => {
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (!piece._badgerArmed || !payload?.hit) return;
       const player = ctx.player;
       const rel = player.maxHp > 0 ? player.hp / player.maxHp : 1;

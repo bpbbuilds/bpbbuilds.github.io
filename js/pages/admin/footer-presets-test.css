@@ -1,0 +1,162 @@
+/* Owner-only gallery for the shared footer presets. */
+
+html,
+body {
+  min-width: 0;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body.page-admin-footer-presets-test {
+  min-height: 100vh;
+  display: block;
+  background:
+    linear-gradient(180deg, rgba(13, 21, 38, 0.18), rgba(39, 24, 18, 0.28)),
+    url('../../../assets/theme/backgrounds/bg-town-square.jpg') center / cover fixed no-repeat;
+}
+
+body.page-admin-footer-presets-test::after {
+  display: none;
+}
+
+body.page-admin-footer-presets-test #main {
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.footer-presets-test {
+  width: 100%;
+  min-height: 100vh;
+  padding: clamp(3rem, 9vh, 8rem) 0 5rem;
+}
+
+.footer-presets-test__intro {
+  width: min(72rem, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 0 1rem 1.5rem;
+  color: #fff1d6;
+  text-align: center;
+  text-shadow: 0 0.15rem 0.35rem rgba(0, 0, 0, 0.5);
+}
+
+.footer-presets-test__eyebrow {
+  margin: 0 0 0.4rem;
+  color: #f2cf76;
+  font: 700 0.72rem/1.2 var(--bpb-font-body, system-ui, sans-serif);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.footer-presets-test__title {
+  margin: 0;
+  font: 400 clamp(1.8rem, 4vw, 3rem)/1.05 var(--bpb-font-display, Georgia, serif);
+}
+
+.footer-presets-test__hint {
+  max-width: 38rem;
+  margin: 0.8rem auto 0;
+  color: rgba(255, 240, 216, 0.86);
+  font: 400 clamp(0.78rem, 1.4vw, 1rem)/1.45 var(--bpb-font-body, system-ui, sans-serif);
+}
+
+.footer-presets-test__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  width: min(40rem, calc(100% - 2rem));
+  box-sizing: border-box;
+  margin: 0 auto 1.5rem;
+  padding: 0.85rem clamp(0.7rem, 2vw, 1.35rem);
+  border: 1px solid rgba(255, 239, 204, 0.38);
+  border-radius: 0.55rem;
+  background: rgba(38, 24, 19, 0.74);
+  box-shadow: 0 0.55rem 1.4rem rgba(0, 0, 0, 0.24);
+}
+
+.footer-presets-test__label {
+  color: #f2cf76;
+  font: 700 0.68rem/1.2 var(--bpb-font-body, system-ui, sans-serif);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.footer-presets-test__controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.footer-presets-test__button {
+  min-width: 7rem;
+  border: 1px solid rgba(255, 239, 204, 0.4);
+  border-radius: 0.28rem;
+  padding: 0.48rem 0.85rem;
+  background: rgba(38, 24, 19, 0.78);
+  color: rgba(255, 240, 216, 0.85);
+  font: 700 0.72rem/1 var(--bpb-font-body, system-ui, sans-serif);
+  cursor: var(--bpb-cursor-pointer, pointer);
+}
+
+.footer-presets-test__button.is-active {
+  border-color: #f2cf76;
+  background: #6d4324;
+  color: #fff8e9;
+}
+
+.footer-presets-test__button:focus-visible {
+  outline: 2px solid #fff1b8;
+  outline-offset: 2px;
+}
+
+.footer-presets-test__preview {
+  width: 100%;
+  min-height: 8rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 239, 204, 0.22);
+  background: rgba(13, 16, 22, 0.16);
+}
+
+.footer-presets-test__preview .site-footer {
+  margin: 0;
+}
+
+body.page-admin-footer-presets-test .admin-gate {
+  width: min(34rem, calc(100% - 2rem));
+  margin: 18vh auto 0;
+}
+
+@media (max-width: 700px) {
+  .footer-presets-test {
+    padding-top: 2.5rem;
+  }
+
+  .footer-presets-test__intro {
+    width: min(100%, calc(100% - 1rem));
+    padding-inline: 0.5rem;
+  }
+
+  .footer-presets-test__toolbar {
+    width: min(100%, calc(100% - 1rem));
+    flex-direction: column;
+  }
+
+  .footer-presets-test__label {
+    text-align: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .footer-presets-test__controls {
+    width: 100%;
+  }
+
+  .footer-presets-test__button {
+    flex: 1 1 auto;
+  }
+}

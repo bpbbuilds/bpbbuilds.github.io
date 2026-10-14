@@ -167,13 +167,13 @@ function cubeAdvance(target, ctx, piece) {
 }
 
 /** @type {import('./handlers.js').ScriptHandler} */
-const chromeCubePort = {
-  handlerId: 'chrome_cube',
-  family: 'unique',
-  onCombatStart(piece, ctx) {
+const bindChromeCube = (piece, ctx) => {
+  if (piece._chromeCubeBound) return;
+  piece._chromeCubeBound = true;
     piece._cube = false;
     const th = getPName(piece.params, 'healtht', 50) / 100;
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
+    const onOpponentDamaged = (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.dummy) return;
       if (piece._cube || !payload?.hit?.hit) return;
       if (ctx.dummy.maxHp <= 0 || ctx.dummy.hp / ctx.dummy.maxHp >= th) return;
       piece._cube = true;
@@ -185,18 +185,30 @@ const chromeCubePort = {
         piece,
       );
       piece.alive = false;
-    });
-  },
+    };
+    // ChromeCube.gd binds opponent.character_damaged during onPrepare.
+    ctx.bus?.on?.('character_damaged', onOpponentDamaged);
+    // Keep the old attack-result signal as a compatibility alias for direct
+    // callers; one-shot state prevents duplicate consumption.
+    ctx.bus?.on?.('piece_dealt_damage', onOpponentDamaged);
+};
+const chromeCubePort = {
+  handlerId: 'chrome_cube',
+  family: 'unique',
+  onPrepare: bindChromeCube,
+  onCombatStart: bindChromeCube,
 };
 
 /** @type {import('./handlers.js').ScriptHandler} */
 const goldCubePort = {
   handlerId: 'gold_cube',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // GoldCube.gd connects during onPrepare.
+  onPrepare(piece, ctx) {
     piece._cube = false;
     const th = getPName(piece.params, 'healtht', 50) / 100;
-    ctx.bus?.on?.('player_damaged', () => {
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._cube) return;
       if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
       piece._cube = true;
@@ -287,15 +299,15 @@ const coilPort = {
 const conTrapTronPort = {
   handlerId: 'con_trap_tron',
   family: 'unique',
-  onPreCombatStart(piece, ctx) {
+  // ConTrapTron.gd applies its speed malus and connects during onPrepare.
+  onPrepare(piece, ctx) {
     piece._trap = false;
     const malus = getPName(piece.params, 'speed', 10) / 100;
     const target = firstLinkedCd(ctx, piece);
     if (target && malus) addSpeed(target, -malus);
-  },
-  onCombatStart(piece, ctx) {
     const th = getPName(piece.params, 'healtht', 70) / 100 - 0.0001;
-    ctx.bus?.on?.('player_damaged', (payload) => {
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._trap || !piece.alive) return;
       const maxHp = Number(ctx.player.maxHp) || 0;
       if (!(maxHp > 0)) return;

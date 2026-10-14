@@ -46,3 +46,20 @@ export function skelRegion(innerHtml, opts = {}) {
   const label = opts.label || 'Loading';
   return `<div class="${cls}" role="status" aria-busy="true" aria-label="${label}">${innerHtml}</div>`;
 }
+
+/**
+ * Render one full-surface loading placeholder for a page section.
+ *
+ * Section-level skeletons intentionally avoid mirroring each child control;
+ * the real section replaces the whole surface once its async data is ready.
+ * @param {{ className?: string, label?: string }} [opts]
+ */
+export function skelSection(opts = {}) {
+  const cls = ['bpb-skel', 'bpb-skel--block', 'bpb-skel-section', opts.className]
+    .filter(Boolean)
+    .join(' ');
+  return skelRegion(`<div class="${cls}" aria-hidden="true"></div>`, {
+    className: 'bpb-skel-section-wrap',
+    label: opts.label || 'Loading section',
+  });
+}

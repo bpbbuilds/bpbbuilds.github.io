@@ -396,8 +396,17 @@ export function simulateEngine(opts) {
 
   player._simT = COMBAT_DELAY;
   dummy._simT = COMBAT_DELAY;
+  // Game.gd shuffles/sorts each side before prepareItems(). That same order is
+  // then reused for every item lifecycle pass, so listeners observe the same
+  // connection order as the source EventBus.
+  const startOrder = buildCombatStartOrder(youPieces, themPieces, rng);
+  /** @type {Map<string, number>} */
+  const combatStartOrderMap = new Map();
+  for (let i = 0; i < startOrder.length; i += 1) {
+    combatStartOrderMap.set(startOrder[i].placementKey, i);
+  }
   // Game Item.prepare(): chanceRng.reset() before onPrepare / combat-start scripts.
-  for (const piece of pieces) {
+  for (const piece of startOrder) {
     traceLifecycle('prepare', piece, 0);
     const script = getScriptHandler(piece.itemId);
     const prepareCtx = { ...ctxForPiece(piece, world), t: 0 };
@@ -413,31 +422,20 @@ export function simulateEngine(opts) {
   // Capture prepared item stats at the zero-time tooltip position. This keeps
   // duration factors (Time Melting / Endurance) visible before the first tick.
   pushSnap(0);
-  const startOrder = buildCombatStartOrder(youPieces, themPieces, rng);
-  /** @type {Map<string, number>} */
-  const combatStartOrderMap = new Map();
-  for (let i = 0; i < startOrder.length; i += 1) {
-    combatStartOrderMap.set(startOrder[i].placementKey, i);
-  }
-  // Item.gd preCombatStart: socket pre-start work, then adjustCooldown /
-  // activateCooldown, then onPreCombatStart. Socket preparation must happen
-  // before arming because it can alter host speed and listeners.
+  // Item.gd preCombatStart is one per-item operation: socket pre-start work,
+  // then adjustCooldown / activateCooldown, then onPreCombatStart. Keeping
+  // these contiguous is important because start effects can observe the
+  // already-armed state of earlier items.
   for (const piece of startOrder) {
     const sc = ctxForPiece(piece, world);
     sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
     traceLifecycle('socket_prepare', piece, COMBAT_DELAY);
     prepareGemSockets(piece, sc);
-  }
-  for (const piece of startOrder) {
     traceLifecycle('cooldown_arm', piece, COMBAT_DELAY);
     armPieceCooldown(piece, ownerStacks(piece, world), rng, {
       opponent: piece.side === 'them',
     });
-  }
-  for (const piece of startOrder) {
     const script = getScriptHandler(piece.itemId);
-    const sc = ctxForPiece(piece, world);
-    sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
     traceLifecycle('pre_combat_start', piece, COMBAT_DELAY);
     if (piece.kind === 'weapon') {
       runWeaponInheritedHook(piece, sc, 'pre_combat_start', script?.onPreCombatStart);
@@ -451,6 +449,9 @@ export function simulateEngine(opts) {
     const script = getScriptHandler(piece.itemId);
     const sc = ctxForPiece(piece, world);
     sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
+    // Item.combatStart() runs each item's sockets immediately before that
+    // item's own onCombatStart hook; socket effects must not all run as one
+    // global pass ahead of every host item.
     traceLifecycle('socket_combat_start', piece, COMBAT_DELAY);
     combatStartGemSockets(piece, sc);
     traceLifecycle('combat_start', piece, COMBAT_DELAY);
@@ -461,8 +462,7 @@ export function simulateEngine(opts) {
     }
   }
   // Game Item.postCombatStart is a separate third pass after every item's
-  // combatStart. Keep it explicit so post-start effects cannot accidentally
-  // interleave with start-of-battle grants.
+  // combatStart. Each item still runs its gem post hook before its own hook.
   for (const piece of startOrder) {
     const script = getScriptHandler(piece.itemId);
     const sc = ctxForPiece(piece, world);
@@ -568,7 +568,17 @@ export function simulateEngine(opts) {
         const dLost = applyFatigueDamage(dummy, dmg);
         bus.emit('fatigue_tick', { t, counter: fatigue.counter, damage: dmg });
         if (pLost > 0) {
+          const playerFatigue = {
+            actor: player,
+            attacker: null,
+            t,
+            hit: true,
+            healthDamage: pLost,
+            blocked: 0,
+          };
+          bus.emit('character_damaged', playerFatigue);
           bus.emit('player_damaged', {
+            actor: player,
             t,
             hit: true,
             healthDamage: pLost,
@@ -591,6 +601,15 @@ export function simulateEngine(opts) {
           });
         }
         if (dLost > 0) {
+          const dummyFatigue = {
+            actor: dummy,
+            attacker: null,
+            t,
+            hit: true,
+            healthDamage: dLost,
+            blocked: 0,
+          };
+          bus.emit('character_damaged', dummyFatigue);
           events.push({
             t,
             type: 'damage',
@@ -784,7 +803,18 @@ export function simulateEngine(opts) {
           bus,
           rng,
         });
+        bus.emit('character_damaged', {
+          actor: player,
+          attacker: dummy,
+          t,
+          hit: res.hit,
+          healthDamage: res.healthDamage,
+          blocked: res.blocked,
+          damage: res,
+        });
         bus.emit('player_damaged', {
+          actor: player,
+          attacker: dummy,
           t,
           hit: res.hit,
           healthDamage: res.healthDamage,

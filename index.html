@@ -23,14 +23,15 @@
   <link rel="preload" href="./assets/brand/logo-backpack-battles.png" as="image" fetchpriority="high" />
   <link rel="preconnect" href="https://i.ytimg.com" />
   <link rel="preconnect" href="https://esm.sh" crossorigin />
-  <link rel="stylesheet" href="./css/theme.css?v=cursor-abs" />
+  <link rel="stylesheet" href="./css/theme.css?v=cursor-abs-home-first-paint-20261013a" />
   <link rel="stylesheet" href="./css/shared.css?v=fa3633b" />
   <link rel="stylesheet" href="./js/pages/home/falling-items-background.css?v=home-falling-items-20261011" />
   <link rel="stylesheet" href="./js/pages/home/featured-stage.css?v=fa3633b" />
   <link rel="stylesheet" href="./js/pages/home/home-promo-band.css?v=fa3633b" />
-  <link rel="stylesheet" href="./js/pages/home/home-class-showcase.css?v=fa3633b" />
+  <link rel="stylesheet" href="./js/pages/home/home-class-showcase.css?v=ranger-video-20261013a" />
   <link rel="stylesheet" href="./js/pages/home/home-items-explore.css?v=fa3633b" />
-  <link rel="stylesheet" href="./js/pages/home/home-builds-vault.css?v=fa3633b" />
+  <link rel="stylesheet" href="./js/pages/home/home-builds-vault.css?v=footer-presets-20261013a" />
+  <link rel="stylesheet" href="./js/pages/home/home-first-paint.css?v=first-paint-20261013a" />
   <link rel="stylesheet" href="./js/shared/backpack-grid/backpack-grid.css?v=fa3633b" />
   <link rel="stylesheet" href="./js/pages/build/more-build-tip.css?v=fa3633b" />
   <link rel="stylesheet" href="./js/shared/tooltip.css?v=fa3633b" />
@@ -41,54 +42,48 @@
     <div class="site-nav-skel-wrap bpb-skel-region" role="status" aria-busy="true" aria-label="Loading navigation">
       <div class="site-nav-shell">
         <header class="site-nav site-nav--skel">
-          <div class="site-nav__rail site-nav__rail--left">
-            <div class="site-nav__skel-banners">
-              <span class="bpb-skel bpb-skel--bar site-nav__skel-banner" style="height:2.1rem;border-radius:0.25rem" aria-hidden="true"></span>
-              <span class="bpb-skel bpb-skel--bar site-nav__skel-banner" style="height:2.1rem;border-radius:0.25rem" aria-hidden="true"></span>
-            </div>
-            <div class="site-nav__skel-shelf">
-              <span class="bpb-skel bpb-skel--bar site-nav__skel-shelf-bar" style="height:0.85rem;border-radius:0.2rem" aria-hidden="true"></span>
-            </div>
-          </div>
-          <div class="site-nav__brand site-nav__brand--skel">
-            <img
-              class="site-nav__skel-logo"
-              src="./assets/brand/logo-backpack-battles.png"
-              alt="Backpack Battles"
-              width="992"
-              height="403"
-              fetchpriority="high"
-              style="display:block"
-            />
-            <span class="bpb-skel bpb-skel--bar site-nav__skel-builds" style="height:1.35rem;border-radius:0.25rem" aria-hidden="true"></span>
-          </div>
-          <div class="site-nav__rail site-nav__rail--right">
-            <div class="site-nav__skel-banners site-nav__skel-banners--right">
-              <span class="bpb-skel bpb-skel--bar site-nav__skel-banner" style="height:2.1rem;border-radius:0.25rem" aria-hidden="true"></span>
-              <div class="site-nav__skel-socials">
-                <span class="bpb-skel bpb-skel--block site-nav__skel-social" style="border-radius:0.35rem" aria-hidden="true"></span>
-                <span class="bpb-skel bpb-skel--block site-nav__skel-social" style="border-radius:0.35rem" aria-hidden="true"></span>
-              </div>
-            </div>
-            <div class="site-nav__skel-shelf">
-              <span class="bpb-skel bpb-skel--bar site-nav__skel-shelf-bar" style="height:0.85rem;border-radius:0.2rem" aria-hidden="true"></span>
-            </div>
-          </div>
+          <span class="bpb-skel bpb-skel--block site-nav__skel-surface" aria-hidden="true"></span>
         </header>
       </div>
     </div>
   </div>
 
   <main id="main">
-    <section id="featured-stage" aria-label="Featured builds"></section>
-    <section id="home-promo-band" aria-label="Create a build"></section>
-    <section id="home-class-showcase" aria-label="Choose your hero"></section>
-    <section id="home-items-explore" aria-label="Explore items"></section>
-    <section id="home-builds-vault" aria-label="Curated build loadouts"></section>
+    <section id="featured-stage" aria-label="Featured builds">
+      <div class="bpb-skel-region fs-skel-wrap" role="status" aria-busy="true" aria-label="Loading featured builds">
+        <div class="fs-shell fs-shell--skel">
+          <span class="bpb-skel bpb-skel--block fs-section-skeleton" aria-hidden="true"></span>
+        </div>
+      </div>
+    </section>
+    <section id="home-promo-band" aria-label="Create a build">
+      <div class="home-first-paint__promo bpb-skel-region" role="status" aria-busy="true" aria-label="Loading create a build">
+        <span class="bpb-skel bpb-skel--block home-first-paint__promo-surface" aria-hidden="true"></span>
+      </div>
+    </section>
+    <section id="home-class-showcase" aria-label="Choose your hero">
+      <div class="bpb-skel-region bpb-skel-section-wrap" role="status" aria-busy="true" aria-label="Loading hero classes">
+        <div class="bpb-skel bpb-skel--block bpb-skel-section home-mobs__section-skeleton" aria-hidden="true"></div>
+      </div>
+    </section>
+    <section id="home-items-explore" aria-label="Explore items">
+      <div class="bpb-skel-region bpb-skel-section-wrap" role="status" aria-busy="true" aria-label="Loading item library">
+        <div class="bpb-skel bpb-skel--block bpb-skel-section home-items__section-skeleton" aria-hidden="true"></div>
+      </div>
+    </section>
+    <section id="home-builds-vault" aria-label="Curated build loadouts">
+      <div class="bpb-skel-region bpb-skel-section-wrap" role="status" aria-busy="true" aria-label="Loading builds">
+        <div class="bpb-skel bpb-skel--block bpb-skel-section home-vault__section-skeleton" aria-hidden="true"></div>
+      </div>
+    </section>
   </main>
 
-  <div id="site-footer"></div>
+  <div id="site-footer">
+    <div class="home-first-paint__footer bpb-skel-region" role="status" aria-busy="true" aria-label="Loading footer">
+      <span class="bpb-skel bpb-skel--block home-first-paint__footer-surface" aria-hidden="true"></span>
+    </div>
+  </div>
 
-  <script type="module" src="./js/pages/home/index.js?v=home-falling-items-20261011"></script>
+  <script type="module" src="./js/pages/home/index.js?v=home-first-paint-20261013a"></script>
 </body>
 </html>

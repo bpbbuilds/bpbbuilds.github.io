@@ -24,6 +24,26 @@
   background: transparent;
 }
 
+/* The create/promo composition loads as one unit. Keep one quiet surface over
+   the card until the first real build is ready instead of shimmering each
+   caption, board, catalog tile, and stat independently. */
+.home-promo__section-skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 3.25rem clamp(1rem, 3vw, 2rem) 3rem;
+  pointer-events: none;
+}
+
+.home-promo__section-skeleton-surface {
+  width: min(88rem, 100%);
+  min-height: clamp(24rem, 38vw, 42rem);
+  border-radius: 0.35rem;
+}
+
 /* Town shows through; parchment + frame live on the card */
 .home-promo--parchment {
   margin: 0;
@@ -107,6 +127,20 @@
 }
 
 .home-promo--creator .home-promo__card::after {
+  display: none;
+}
+
+/* Player info is an open information-first presentation: keep the board and
+   player details on the page without the parchment panel or screen frame. */
+.home-promo.home-promo--player-info .home-promo__card {
+  background: transparent;
+  background-image: none;
+  border: 0;
+  border-image: none;
+  box-shadow: none;
+}
+
+.home-promo.home-promo--player-info .home-promo__card::after {
   display: none;
 }
 
@@ -479,6 +513,14 @@ a.home-promo__caption-author:hover {
   padding: 1rem;
 }
 
+.home-promo--create .home-promo__side--player {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+  padding: 1rem;
+}
+
 .home-promo__creator {
   display: grid;
   justify-items: center;
@@ -537,6 +579,62 @@ a.home-promo__caption-author:hover {
 }
 
 .home-promo--creator .home-promo__caption-meta { display: none; }
+
+.home-promo--player-info .home-promo__player {
+  width: min(12rem, 100%);
+}
+
+.home-promo--player-info .home-promo__creator-face {
+  width: clamp(12.5rem, 16vw, 15rem);
+  height: clamp(12.5rem, 16vw, 15rem);
+}
+
+/* Discord photos keep the circular avatar treatment above. Blob faces are a
+ * full cosmetic canvas: cosmetics may extend beyond the base silhouette, so
+ * their identity frame stays square and never clips its contents. */
+.home-promo--player-info .home-promo__creator-face:has(.bpb-face) {
+  border-radius: 0;
+  overflow: visible;
+}
+
+.home-promo--player-info .home-promo__creator-face:has(.bpb-face) > .home-promo__caption-avatar-link,
+.home-promo--player-info .home-promo__creator-face:has(.bpb-face) > .home-promo__caption-avatar.bpb-face {
+  border-radius: 0;
+  overflow: visible;
+}
+
+.home-promo--player-info .home-promo__creator-name {
+  font-size: clamp(1.3rem, 2.1vw, 1.7rem);
+}
+
+.home-promo--player-info .home-promo__caption-title {
+  font-size: clamp(1.3rem, 2.35vw, 1.75rem);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+}
+
+.home-promo--player-info .home-promo__board-tags {
+  display: none;
+}
+
+.home-promo--player-info .home-promo__creator-count {
+  box-sizing: border-box;
+  width: min(100%, 7rem);
+  min-height: 4.25rem;
+  padding: 0.55rem 0.65rem 0.6rem;
+  gap: 0.12rem;
+}
+
+.home-promo--player-info .home-promo__creator-count-label {
+  color: var(--promo-info-cream, #ffecdc);
+  font: 700 0.68rem/1 var(--bpb-font-body);
+  letter-spacing: -0.03em;
+  text-transform: none;
+}
 
 /* Lightweight launcher preset: the same game sell-chest used by Create.
    It occupies the catalog column but does not mount the full item catalog. */
@@ -658,53 +756,6 @@ a.home-promo__caption-author:hover {
   height: 100%;
   min-height: 0;
   overflow: hidden;
-}
-
-.home-promo__skel-catalog-wrap {
-  width: 100%;
-  height: 100%;
-}
-
-.home-promo__skel-catalog {
-  position: relative;
-  container-type: inline-size;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.home-promo__skel-catalog .home-promo__skel-item {
-  position: absolute;
-  left: calc(var(--x, 0) * 10cqw + 0.05em);
-  top: calc(var(--y, 0) * 10cqw + 0.05em);
-  width: calc(var(--w, 1) * 10cqw - 0.1em);
-  height: calc(var(--h, 1) * 10cqw - 0.1em);
-}
-
-.home-promo__skel-title {
-  display: block;
-  margin: 0 auto 0.08rem;
-}
-
-.home-promo__skel-avatar,
-.home-promo__skel-class,
-.home-promo__skel-gold-icon,
-.home-promo__skel-rank {
-  flex: 0 0 auto;
-}
-
-.home-promo__skel-board-wrap {
-  width: 100%;
-  height: 100%;
-}
-
-.home-promo__skel-board {
-  width: 100%;
-  height: 100%;
-  background-image: url("../../../assets/icons/FilledSlot.png");
-  background-size: calc(100% / 9) calc(100% / 7);
-  background-repeat: repeat;
-  opacity: 0.35;
 }
 
 .home-promo__catalog-track {
@@ -908,6 +959,11 @@ a.home-promo__caption-author:hover {
   animation: home-promo-fabric-in 0.45s ease both;
 }
 
+.home-promo__board .bpb-bg__cell--bag.home-promo__fabric--depart {
+  animation: home-promo-fabric-out 0.4s ease-in both;
+  animation-delay: var(--home-promo-wave-delay, 0ms);
+}
+
 @keyframes home-promo-fabric-in {
   from {
     opacity: 0;
@@ -915,6 +971,27 @@ a.home-promo__caption-author:hover {
   to {
     opacity: 0.62;
   }
+}
+
+@keyframes home-promo-fabric-out {
+  from {
+    opacity: 0.62;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Player Info keeps the catalog's soft FilledSlot fade, synchronized to the
+ * shared placed-bag delay instead of using the fabric scale-pop animation. */
+.home-promo--player-info .home-promo__board .bpb-bg__cell--bag.bpb-bg__cell--appear {
+  animation: home-promo-fabric-in 0.5s ease-in-out both;
+  animation-delay: var(--bpb-appear-delay, 0ms);
+}
+
+/* Hover pauses the current wave in place; activity timers use the same gate. */
+.home-promo--player-info.home-promo--activity-paused .home-promo__board * {
+  animation-play-state: paused !important;
 }
 
 @keyframes home-promo-bag-shadow-in {
@@ -980,7 +1057,7 @@ a.home-promo__caption-author:hover {
   z-index: -1;
   inset: 0;
   box-sizing: border-box;
-  background: var(--promo-info-shade);
+  background: var(--promo-info-shade, rgba(14, 15, 16, 0.14));
   pointer-events: none;
   -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
   mask-border-source: url('../../../assets/icons/filters/Patch3.png');
@@ -1317,7 +1394,8 @@ a.home-promo__caption-author:hover {
     display: none;
   }
 
-  .home-promo--creator .home-promo__side--creator { display: grid; }
+  .home-promo--creator .home-promo__side--creator,
+  .home-promo--player-info .home-promo__side--player { display: grid; }
 
   .home-promo--create .home-promo__side--launcher {
     display: none;
@@ -1420,6 +1498,15 @@ a.home-promo__caption-author:hover {
     grid-area: launcher;
   }
 
+  .home-promo--player-info .home-promo__side--player {
+    display: grid;
+    grid-area: player;
+  }
+
+  .home-promo--player-info .home-promo__card {
+    grid-template-areas: 'player' 'board' 'cta';
+  }
+
   .home-promo--creator .home-promo__card {
     grid-template-areas: 'launcher' 'board' 'cta';
   }
@@ -1452,6 +1539,19 @@ a.home-promo__caption-author:hover {
     border: 0;
     border-image: none;
     background-clip: border-box;
+  }
+
+  .home-promo--player-info .home-promo__card {
+    grid-template-areas:
+      'player'
+      'board'
+      'cta';
+  }
+
+  .home-promo--player-info .home-promo__side--player {
+    grid-area: player;
+    width: 100%;
+    padding: 0.35rem 0;
   }
 
   /* Frame sits on top of the parchment. Its inner edge is transparent, so the
@@ -1585,6 +1685,19 @@ a.home-promo__caption-author:hover {
       'cta';
   }
 
+  .home-promo--player-info .home-promo__card {
+    grid-template-areas:
+      'player'
+      'board'
+      'cta';
+  }
+
+  .home-promo--player-info .home-promo__side--player {
+    grid-area: player;
+    width: 100%;
+    padding: 0.25rem 0;
+  }
+
   .home-promo__side--left {
     grid-area: left;
     justify-self: center;
@@ -1636,8 +1749,18 @@ a.home-promo__caption-author:hover {
   }
 
   .home-promo__board .bpb-bg__cell--bag.home-promo__fabric-in,
+  .home-promo__board .bpb-bg__cell--bag.home-promo__fabric--depart,
   .home-promo__board .bpb-bg__item--bag.home-promo__bag-chrome-in .bpb-bg__sprite--shadow {
     animation: none;
+  }
+
+  .home-promo__board .bpb-bg__cell--bag.home-promo__fabric--depart {
+    opacity: 0;
+  }
+
+  .home-promo--player-info .home-promo__board .bpb-bg__cell--bag.bpb-bg__cell--appear {
+    animation: none;
+    opacity: 0.62;
   }
 
   .home-promo__board .bpb-bg__item--bag:not(.bpb-bg__item--parked) .bpb-bg__sprite--shadow {

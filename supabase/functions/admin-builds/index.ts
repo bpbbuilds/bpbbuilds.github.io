@@ -14,7 +14,7 @@ const cors = {
 };
 
 const BUILD_COLS =
-  'id, slug, title, hero_class, author_name, build_tag, is_op, op_requested, is_featured, is_public, created_at, youtube_url, rank, gold_count';
+  'id, slug, title, hero_class, author_name, build_tag, is_op, op_requested, is_featured, is_public, created_at, youtube_url, rank, gold_count, board_still_path';
 
 const PLACEMENT_SELECT = `
   id, build_id, x, y, r, gems,

@@ -399,9 +399,38 @@ export function mountBoardOnboard(stageEl, opts) {
     syncVisibility();
   }
 
+  /**
+   * Clipboard can be exposed while still rejecting the first write (common
+   * with local HTTP, privacy filters, and permission prompts). Keep the click
+   * useful with the same legacy path used by the Build share control.
+   * @param {string} text
+   */
+  async function copyText(text) {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return;
+      } catch {
+        // Fall through when the API is present but permission/secure context
+        // policy rejects it.
+      }
+    }
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.setAttribute('aria-hidden', 'true');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    const copied = typeof document.execCommand === 'function' && document.execCommand('copy');
+    textarea.remove();
+    if (!copied) throw new Error('copy failed');
+  }
+
   async function copyHistoryPath() {
     try {
-      await navigator.clipboard.writeText(HISTORY_DB_DIR);
+      await copyText(HISTORY_DB_DIR);
       if (copyPathBtn instanceof HTMLElement) {
         const prev = copyPathBtn.textContent;
         copyPathBtn.textContent = 'Copied!';

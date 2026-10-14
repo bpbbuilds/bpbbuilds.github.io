@@ -62,6 +62,44 @@ body.page-admin-build-creator-animation-test #main {
   font: 400 clamp(0.78rem, 1.4vw, 1rem)/1.45 var(--bpb-font-body, system-ui, sans-serif);
 }
 
+.build-creator-animation-test__toolbar {
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+  width: min(76rem, calc(100% - 2rem));
+  box-sizing: border-box;
+  margin: 0 auto 1rem;
+  padding: 0.85rem clamp(0.7rem, 2vw, 1.35rem);
+  border: 1px solid rgba(255, 239, 204, 0.38);
+  border-radius: 0.55rem;
+  background: rgba(38, 24, 19, 0.74);
+  box-shadow: 0 0.55rem 1.4rem rgba(0, 0, 0, 0.24);
+}
+
+.build-creator-animation-test__control-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.7rem;
+  width: 100%;
+}
+
+.build-creator-animation-test__control-label {
+  flex: 0 0 auto;
+  color: #f2cf76;
+  font: 700 0.68rem/1.2 var(--bpb-font-body, system-ui, sans-serif);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.build-creator-animation-test__controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
 .build-creator-animation-test__synergy {
   width: min(72rem, calc(100% - 2rem));
   margin: 0 auto 1.5rem;
@@ -179,6 +217,38 @@ body.page-admin-build-creator-animation-test #main {
   outline-offset: 2px;
 }
 
+[data-animation-preview][data-style='performance'] .home-promo--create .home-promo__card {
+  background-color: rgba(24, 22, 21, 0.94);
+  background-image: none;
+  box-shadow: 0 0.7rem 1.6rem rgba(0, 0, 0, 0.32);
+}
+
+[data-animation-preview][data-style='home'] .home-promo--create .home-promo__card {
+  filter: none;
+}
+
+[data-animation-preview][data-style='performance'] .home-promo--create .home-promo__card::after {
+  opacity: 0.28;
+}
+
+[data-animation-preview][data-style='wireframe'] .home-promo--create .home-promo__card {
+  background: rgba(18, 25, 36, 0.84);
+  box-shadow: none;
+}
+
+[data-animation-preview][data-style='wireframe'] .home-promo--create .home-promo__card::after {
+  opacity: 0.08;
+}
+
+[data-animation-preview][data-style='wireframe'] .home-promo--create .home-promo__card > * {
+  filter: grayscale(1) saturate(0.35);
+}
+
+[data-animation-preview][data-style='performance'] .home-promo__band,
+[data-animation-preview][data-style='wireframe'] .home-promo__band {
+  padding-block: clamp(1.5rem, 4vw, 2.5rem);
+}
+
 #build-creator-animation {
   width: 100%;
   min-height: 28rem;
@@ -212,6 +282,20 @@ body.page-admin-build-creator-animation-test .admin-gate {
     padding-inline: 0.5rem;
   }
 
+  .build-creator-animation-test__toolbar {
+    width: min(100%, calc(100% - 1rem));
+    padding-inline: 0.55rem;
+  }
+
+  .build-creator-animation-test__control-group {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .build-creator-animation-test__control-label {
+    text-align: center;
+  }
+
   .build-creator-animation-test__synergy {
     width: min(100%, calc(100% - 1rem));
     padding-inline: 0.55rem;
@@ -225,5 +309,20 @@ body.page-admin-build-creator-animation-test .admin-gate {
     align-items: flex-start;
     flex-direction: column;
     gap: 0.2rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .build-creator-animation-test__toolbar {
+    gap: 0.65rem;
+  }
+
+  .build-creator-animation-test__controls {
+    width: 100%;
+  }
+
+  .build-creator-animation-test__tab {
+    flex: 1 1 auto;
+    min-width: 7rem;
   }
 }

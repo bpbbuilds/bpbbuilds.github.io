@@ -299,6 +299,7 @@ def bake_class(
     fps: float = 12.0,
     max_h: int = 480,
     quality: int = 82,
+    method: int = 6,
     skin: str | None = None,
 ) -> Path | None:
     tscn = (
@@ -393,7 +394,7 @@ def bake_class(
         duration=[duration_ms] * len(frames),
         loop=0,
         quality=quality,
-        method=6,
+        method=method,
         minimize_size=True,
     )
     kb = dest.stat().st_size / 1024
@@ -407,6 +408,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--fps", type=float, default=12.0)
     p.add_argument("--height", type=int, default=480)
     p.add_argument("--quality", type=int, default=82)
+    p.add_argument("--method", type=int, default=6, choices=range(0, 7), help="WebP encoder effort (0 is fastest, 6 is smallest)")
     p.add_argument("--skin", default=None, help="optional Chibi wardrobe skin")
     args = p.parse_args(argv)
 
@@ -419,6 +421,7 @@ def main(argv: list[str] | None = None) -> int:
         fps=args.fps,
         max_h=args.height,
         quality=args.quality,
+        method=args.method,
         skin=args.skin,
     )
     return 0 if out else 1

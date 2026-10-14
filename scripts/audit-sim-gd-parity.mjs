@@ -36,9 +36,14 @@ const HOOK_MAP = {
   onPreDealDamage_late: ['onPreDealDamageEarly', 'onCooldownEffect'],
   onDealtDamage: ['onDealtDamage', 'onCooldownEffect'],
   onChargeReceived: ['onChargeReceived'],
-  onDamaged: ['onCombatStart', 'onPreCombatStart', 'onDealtDamage'],
+  // Reactive source callbacks are bound during the simulator's explicit
+  // prepare pass, so an inline listener in onPrepare is a valid carrier for
+  // the source onDamaged hook (Dark Lantern / threshold items rely on this).
+  onDamaged: ['onPrepare', 'onCombatStart', 'onPreCombatStart', 'onDealtDamage'],
   afterBlock: ['onCombatStart', 'onPreCombatStart', 'onDealtDamage'],
-  onTriggerPotion: ['onCombatStart', 'onCooldownEffect', 'onDrink'],
+  // Potion ports bind their source trigger listener during onPrepare and run
+  // the trigger inline when the signal arrives.
+  onTriggerPotion: ['onPrepare', 'onCombatStart', 'onCooldownEffect', 'onDrink'],
   trigger: ['onCombatStart', 'onCooldownEffect', 'onPeerActivated'],
   addToInventory: [],
   onShopEntered: [],

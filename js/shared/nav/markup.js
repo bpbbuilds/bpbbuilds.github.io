@@ -2,7 +2,7 @@
  * Site nav markup (skeleton + shelves / banners / logos).
  */
 
-import { skelBar, skelBlock, skelRegion } from '../skeleton.js';
+import { skelBlock, skelRegion } from '../skeleton.js';
 import { DISCORD_INVITE_URL, SMOJO_YOUTUBE_URL } from '../social-links.js';
 
 export function escapeHtml(s) {
@@ -19,35 +19,10 @@ export function escapeAttr(s) {
 
 /** Parchment placeholder matching nav layout (safe before assets load). */
 export function navSkeletonHtml() {
-  const shelf = skelBar({ className: 'site-nav__skel-shelf-bar', height: '0.85rem', radius: '0.2rem' });
-  const banner = skelBar({ className: 'site-nav__skel-banner', height: '2.1rem', radius: '0.25rem' });
-  const social = skelBlock({ className: 'site-nav__skel-social', radius: '0.35rem' });
-
   return skelRegion(
     `<div class="site-nav-shell">
       <header class="site-nav site-nav--skel">
-        <div class="site-nav__rail site-nav__rail--left">
-          <div class="site-nav__skel-banners">
-            ${banner}${banner}
-          </div>
-          <div class="site-nav__skel-shelf">${shelf}</div>
-          <div class="site-nav__pennants">
-            ${skelBlock({ className: 'site-nav__skel-events', radius: '0.2rem' })}
-            ${skelBlock({ className: 'site-nav__skel-market', radius: '0.2rem' })}
-            ${skelBlock({ className: 'site-nav__skel-challenges', radius: '0.2rem' })}
-          </div>
-        </div>
-        <div class="site-nav__brand site-nav__brand--skel">
-          ${skelBlock({ className: 'site-nav__skel-logo', radius: '0.4rem' })}
-          ${skelBar({ className: 'site-nav__skel-builds', height: '1.35rem', radius: '0.25rem' })}
-        </div>
-        <div class="site-nav__rail site-nav__rail--right">
-          <div class="site-nav__skel-banners site-nav__skel-banners--right">
-            ${banner}
-            <div class="site-nav__skel-socials">${social}${social}</div>
-          </div>
-          <div class="site-nav__skel-shelf">${shelf}</div>
-        </div>
+        ${skelBlock({ className: 'site-nav__skel-surface', radius: '0.45rem' })}
       </header>
     </div>`,
     { className: 'site-nav-skel-wrap', label: 'Loading navigation' },

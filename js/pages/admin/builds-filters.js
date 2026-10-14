@@ -6,7 +6,7 @@ import { HERO_CLASSES } from '../items/filter-logic.js';
 import { FEED_VIEW_LABELS, FEED_VIEWS } from '../builds/feed-filters.js';
 import { buildSearchFieldHtml } from '../../shared/build-search-input.js';
 
-/** @typedef {'all' | 'featured' | 'hidden'} AdminBuildsListFilter */
+/** @typedef {'all' | 'pending_op' | 'featured' | 'hidden'} AdminBuildsListFilter */
 /** @typedef {import('../builds/feed-filters.js').FeedView} AdminBuildsView */
 
 /**
@@ -33,8 +33,19 @@ export function adminBuildsFiltersHtml(root, state, shown) {
   const countLabel = shown === 1 ? '1 build shown.' : `${shown} builds shown.`;
   const viewLabel = FEED_VIEW_LABELS[state.view] || 'Compact';
 
-  const listBtns = [
-    { id: 'all', label: 'All' },
+  const modeBtns = [
+    { id: 'all', label: 'Uploaded builds' },
+    { id: 'pending_op', label: 'Pending OP' },
+  ]
+    .map((s) => {
+      const on = state.list === s.id;
+      return `<button type="button" class="admin-btn admin-builds-filters__mode-btn${on ? ' is-on' : ''}" data-admin-builds-list="${s.id}" aria-pressed="${on}">
+      ${escapeHtml(s.label)}
+    </button>`;
+    })
+    .join('');
+
+  const statusBtns = [
     { id: 'featured', label: 'Featured' },
     { id: 'hidden', label: 'Hidden' },
   ]
@@ -71,9 +82,10 @@ export function adminBuildsFiltersHtml(root, state, shown) {
 
       ${buildSearchFieldHtml('Title, @user, [Item]…')}
 
-      <div class="il-filter__shade">
-        <p class="il-filter__sticker">List</p>
-        <div class="il-filter__checks" role="group" aria-label="Build list">${listBtns}</div>
+      <div class="il-filter__shade admin-builds-filters__modes">
+        <div class="admin-builds-filters__mode-actions" role="group" aria-label="Build collection">
+          ${modeBtns}
+        </div>
       </div>
 
       <div class="il-filter__shade admin-builds-filters__menus">
@@ -86,6 +98,11 @@ export function adminBuildsFiltersHtml(root, state, shown) {
             ${viewOptions}
           </div>
         </div>
+      </div>
+
+      <div class="il-filter__shade">
+        <p class="il-filter__sticker">Status</p>
+        <div class="il-filter__checks" role="group" aria-label="Build status">${statusBtns}</div>
       </div>
 
       <div class="il-filter__shade">
@@ -185,7 +202,7 @@ export function bindAdminBuildsFilters(rail, opts) {
       const list = /** @type {AdminBuildsListFilter} */ (
         listBtn.getAttribute('data-admin-builds-list')
       );
-      if (list !== 'all' && list !== 'featured' && list !== 'hidden') return;
+      if (list !== 'all' && list !== 'pending_op' && list !== 'featured' && list !== 'hidden') return;
       const cur = opts.getState();
       if (list === cur.list) return;
       opts.onChange({ ...cur, list }, { listChanged: true });

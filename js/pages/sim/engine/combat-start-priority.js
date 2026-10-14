@@ -36,15 +36,14 @@ export const COMBAT_START_PRIORITY = {
   automanaton: PRIORITY.High + 2,
   stone_golem: PRIORITY.High + 1,
   strong_health_potion: PRIORITY.High + 1,
+  king_crown: PRIORITY.Normal + 1,
+  holy_spear: PRIORITY.Normal + 2,
   dark_lantern: PRIORITY.High,
   health_potion: PRIORITY.High,
   shelly: PRIORITY.High,
   heart_of_darkness: PRIORITY.High,
-  present: PRIORITY.Low + 1,
   just_stats: PRIORITY.Low,
   more_stats: PRIORITY.Low,
-  bag_of_giving: PRIORITY.Low,
-  investment_opportunity: PRIORITY.Lowest,
 };
 
 /**

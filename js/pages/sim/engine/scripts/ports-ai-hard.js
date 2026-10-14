@@ -92,11 +92,14 @@ export const resistorPort = {
 export const leatherBootsPort = {
   handlerId: 'leather_boots',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // LeatherBoots.gd connects during onPrepare, before Dark Lantern and other
+  // start-of-battle self-damage can cross the threshold.
+  onPrepare(piece, ctx) {
     piece._bootsFired = false;
     const thresh =
       getPName(piece.params, 'healtht', getP1(piece.params, 70)) / 100 - 0.0001;
-    ctx.bus?.on?.('player_damaged', () => {
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._bootsFired || !piece.alive) return;
       const { player } = ctx;
       if (player.maxHp <= 0) return;
@@ -120,7 +123,7 @@ export const leatherBootsPort = {
       });
       gainStacks(player, 'block', block);
       ctx.events.push({
-        t: ctx.t,
+        t: payload?.t ?? ctx.t,
         type: 'buff',
         target: 'player',
         amount: block,
@@ -413,7 +416,8 @@ export const toolboxPort = {
 export const mrStrugglesPort = {
   handlerId: 'mr_struggles',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  // MrStruggles.gd connects during onPrepare, before combat-start damage.
+  onPrepare(piece, ctx) {
     piece._struggleFired = false;
     piece._struggleDebuffN = 0;
     const thresh =
@@ -424,7 +428,8 @@ export const mrStrugglesPort = {
       0.5,
       getPName(piece.params, 'dur_speed', getPName(piece.params, 'p4', 8)),
     );
-    ctx.bus?.on?.('player_damaged', () => {
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._struggleFired || !piece.alive) return;
       const { player } = ctx;
       if (player.maxHp <= 0 || player.hp / player.maxHp >= thresh) return;
@@ -441,7 +446,7 @@ export const mrStrugglesPort = {
         grantTimedSpeed(other, speedBonus, ctx.t + durSpeed, 'mr_struggles');
       }
       ctx.events.push({
-        t: ctx.t,
+        t: payload?.t ?? ctx.t,
         type: 'buff',
         target: 'player',
         amount: Math.round(speedBonus * 100),

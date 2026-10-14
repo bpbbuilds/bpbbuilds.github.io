@@ -4,6 +4,7 @@
 
 import { shapeForItem, bodyBounds } from './shape.js';
 import { packItems, packGeom } from './pack.js';
+import { orderAppearEntries } from './appear-order.js';
 import { bindHoverSparks } from './hover-sparks.js';
 import { bindRarityHover } from './rarity-hover.js';
 import {
@@ -85,18 +86,42 @@ function bagBodyCells(item, x, y, face = 0) {
 }
 
 /**
+ * Cheap bag-only signature used to skip the expensive cell expansion when a
+ * staged paint contains the same bags, faces, and positions as the prior paint.
+ * @param {{ id: string, x: number, y: number, r?: number, key?: string }[]} placements
+ * @param {Map<string, object>} itemsById
+ * @param {Set<string> | null} skipKeys
+ */
+function bagFabricInputSignature(placements, itemsById, skipKeys = null) {
+  const parts = [];
+  for (const p of placements) {
+    const item = itemsById.get(p.id);
+    if (!isBagItem(item)) continue;
+    const face = ((Number(p.r) || 0) % 4 + 4) % 4;
+    const key =
+      p.key != null && String(p.key) !== ''
+        ? String(p.key)
+        : `${p.id}:${face}:${p.x},${p.y}`;
+    if (key && skipKeys?.has(key)) continue;
+    parts.push(`${key}|${item.id || ''}|${String(item.shape || '')}`);
+  }
+  return parts.sort().join('|');
+}
+
+/**
  * Soft FilledSlot fabric above bag sprites (so overhanging Icon art cannot
  * cover neighbor seams) and below gear items.
  * @param {HTMLElement} itemsLayer
  * @param {{ id: string, x: number, y: number, r?: number }[]} placements
  * @param {Map<string, object>} itemsById
  * @param {boolean} enabled
- * @param {{ appear?: boolean }} [opts]
+ * @param {{ appear?: boolean, appearOrder?: 'reading' | 'diagonal' | 'diagonal-top-right', appearStaggerMs?: number, preserveExisting?: boolean, signature?: string }} [opts]
  */
 function syncBagFabric(itemsLayer, placements, itemsById, enabled, opts = {}) {
   let fabric = itemsLayer.querySelector(':scope > .bpb-bg__fabric');
   if (!enabled) {
     fabric?.replaceChildren();
+    fabric?.removeAttribute('data-bpb-fabric-input');
     return;
   }
   if (!(fabric instanceof HTMLElement)) {
@@ -111,6 +136,24 @@ function syncBagFabric(itemsLayer, placements, itemsById, enabled, opts = {}) {
     opts.skipBagKeys instanceof Set && opts.skipBagKeys.size
       ? opts.skipBagKeys
       : null;
+
+  const inputSignature =
+    typeof opts.signature === 'string'
+      ? opts.signature
+      : bagFabricInputSignature(placements, itemsById, skipKeys);
+  // Player Info paints the same bag set twice. This check happens before
+  // bagBodyCells() expands every bag, so the second item wave only reconciles
+  // item nodes and leaves the already-mounted fabric untouched.
+  const hasExpectedFabric = inputSignature
+    ? fabric.childElementCount > 0
+    : fabric.childElementCount === 0;
+  if (
+    opts.preserveExisting === true &&
+    fabric.dataset.bpbFabricInput === inputSignature &&
+    hasExpectedFabric
+  ) {
+    return;
+  }
 
   /** @type {Map<string, { x: number, y: number, bagKeys: Set<string> }>} */
   const cells = new Map();
@@ -135,6 +178,20 @@ function syncBagFabric(itemsLayer, placements, itemsById, enabled, opts = {}) {
     }
   }
 
+  const fabricKeys = [...cells.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, cell]) => `${key}:${[...cell.bagKeys].sort().join(',')}`)
+    .join('|');
+  // Player Info paints the same bags twice. Keep the already-mounted FilledSlot
+  // nodes intact during the second (item) wave so their opacity/scale animation
+  // cannot reset or flash.
+  if (
+    opts.preserveExisting === true &&
+    fabric.dataset.bpbFabricKeys === fabricKeys
+  ) {
+    return;
+  }
+
   const url = bagSlotUrl();
   const doAppear =
     opts.appear === true &&
@@ -148,8 +205,10 @@ function syncBagFabric(itemsLayer, placements, itemsById, enabled, opts = {}) {
     )
     .join('');
   fabric.innerHTML = html;
+  fabric.dataset.bpbFabricKeys = fabricKeys;
+  fabric.dataset.bpbFabricInput = inputSignature;
 
-  if (doAppear) playFabricAppear(fabric);
+  if (doAppear) playFabricAppear(fabric, opts.appearOrder, opts.appearStaggerMs);
 }
 
 /** Same stagger as AppearInLibrary item wave. */
@@ -157,24 +216,35 @@ const FABRIC_APPEAR_STAGGER_MS = 2;
 const FABRIC_APPEAR_STAGGER_MAX_MS = 400;
 
 /**
- * Pop fabric cells in with the bag wave (reading order).
+ * Pop fabric cells in with the bag wave (reading order by default).
  * Cells start as --appear-pending (hidden); this stamps delays and starts the wave.
  * @param {HTMLElement} fabric
+ * @param {'reading' | 'diagonal' | 'diagonal-top-right'} [order]
+ * @param {number} [staggerMs]
  */
-function playFabricAppear(fabric) {
+function playFabricAppear(fabric, order = 'reading', staggerMs = FABRIC_APPEAR_STAGGER_MS) {
   const cells = [...fabric.querySelectorAll('.bpb-bg__cell--bag')];
   if (!cells.length) return;
 
-  cells.sort((a, b) => {
-    const ay = parseFloat(a.style.top) || 0;
-    const by = parseFloat(b.style.top) || 0;
-    if (ay !== by) return ay - by;
-    return (parseFloat(a.style.left) || 0) - (parseFloat(b.style.left) || 0);
-  });
+  const orderedCells = orderAppearEntries(
+    cells.map((el) => ({
+      el,
+      x: parseFloat(el.style.left) || 0,
+      y: parseFloat(el.style.top) || 0,
+    })),
+    order === 'diagonal-top-right'
+      ? 'diagonal-top-right'
+      : order === 'diagonal'
+        ? 'diagonal'
+        : 'reading',
+  );
 
-  for (let i = 0; i < cells.length; i += 1) {
-    const el = cells[i];
-    const delay = `${Math.min(i * FABRIC_APPEAR_STAGGER_MS, FABRIC_APPEAR_STAGGER_MAX_MS)}ms`;
+  const safeStaggerMs = Number.isFinite(Number(staggerMs))
+    ? Math.max(0, Number(staggerMs))
+    : FABRIC_APPEAR_STAGGER_MS;
+  for (let i = 0; i < orderedCells.length; i += 1) {
+    const el = orderedCells[i].el;
+    const delay = `${Math.min(i * safeStaggerMs, FABRIC_APPEAR_STAGGER_MAX_MS)}ms`;
     el.style.setProperty('--bpb-appear-delay', delay);
     el.classList.remove('bpb-bg__cell--appear-pending');
     el.classList.add('bpb-bg__cell--appear');
@@ -310,6 +380,10 @@ function ensureBoard(root) {
  *   prevShown?: Set<string>,
  *   appear?: boolean,
  *   appearLayer?: 'item' | 'under',
+ *   appearMissing?: boolean,
+ *   appearOrder?: 'reading' | 'diagonal' | 'diagonal-top-right',
+ *   appearStaggerMs?: number,
+ *   preserveBagFabric?: boolean,
  *   ringConfig?: boolean,
  * }} opts
  * @returns {Set<string>} ids shown after this paint
@@ -333,6 +407,10 @@ export function paintPooled(root, opts) {
   const deferSprite = itemiary || opts.deferSprite === true;
   const deferAppear = opts.deferAppear === true;
   const appearNewOnly = opts.appearNewOnly === true;
+  // Player Info replays a staged second wave on pooled nodes. Unlike the
+  // catalog's scroll keep-alive mode, entries missing from the previous wave
+  // must animate even when their DOM node already exists.
+  const appearMissing = opts.appearMissing === true;
   const skipPark = opts.skipPark instanceof Set ? opts.skipPark : null;
   const appear =
     opts.appear === true &&
@@ -377,6 +455,9 @@ export function paintPooled(root, opts) {
     }
     syncBagFabric(itemsLayer, placements, itemsById, true, {
       skipBagKeys: skip,
+      appearOrder: opts.appearOrder,
+      appearStaggerMs: opts.appearStaggerMs,
+      preserveExisting: opts.preserveBagFabric === true,
     });
   }
 
@@ -529,6 +610,7 @@ export function paintPooled(root, opts) {
     if (appear) {
       const isNew =
         created ||
+        (appearMissing && (!prevShown || !prevShown.has(key))) ||
         (!appearNewOnly && (!prevShown || !prevShown.has(key)));
       if (isNew) {
         const waveUnder =
@@ -551,7 +633,13 @@ export function paintPooled(root, opts) {
     // Build boards only — Itemiary keeps per-bag FilledSlot under the Icon.
     // Sharing .bpb-bg--placed for library layout used to paint fabric over bags.
     fabricEnabled,
-    { appear, skipBagKeys: spinningBagKeys },
+    {
+      appear,
+      appearOrder: opts.appearOrder,
+      appearStaggerMs: opts.appearStaggerMs,
+      preserveExisting: opts.preserveBagFabric === true,
+      skipBagKeys: spinningBagKeys,
+    },
   );
 
   if (parkRest) {
@@ -589,6 +677,13 @@ export function paintPooled(root, opts) {
   if (appearList.length) {
     playAppearInLibraryBatch(root, appearList, {
       layer: opts.appearLayer === 'under' ? 'under' : 'item',
+      staggerMs: opts.appearStaggerMs,
+      order:
+        opts.appearOrder === 'diagonal-top-right'
+          ? 'diagonal-top-right'
+          : opts.appearOrder === 'diagonal'
+            ? 'diagonal'
+            : 'reading',
     });
   }
 

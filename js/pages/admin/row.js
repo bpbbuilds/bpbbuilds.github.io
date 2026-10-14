@@ -75,7 +75,6 @@ export function buildCardHtml(b, root, actionKeys, opts = {}) {
 
   const actionBar = `
     <div class="admin-card__actions">
-      <a class="admin-btn admin-btn--view" href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">View build</a>
       ${actions}
     </div>`;
 
@@ -126,7 +125,7 @@ const ACTION_KINDS = {
 
 /**
  * @param {object} b
- * @param {'pending' | 'all' | 'featured' | 'hidden'} mode
+ * @param {'pending' | 'pending_op' | 'all' | 'featured' | 'hidden'} mode
  * @returns {string[]}
  */
 export function actionsForBuild(b, mode) {
@@ -139,7 +138,7 @@ export function actionsForBuild(b, mode) {
   else keys.push('set_featured');
   if (b.is_public) keys.push('hide');
   else keys.push('restore');
-  if (mode === 'pending') {
+  if (mode === 'pending' || mode === 'pending_op') {
     return keys.filter(
       (k) => k === 'approve_op' || k === 'deny_op' || k === 'set_featured' || k === 'hide',
     );

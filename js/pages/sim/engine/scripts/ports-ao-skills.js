@@ -335,10 +335,9 @@ const spicyBananaPort = {
   },
 };
 
-const stonedPort = {
-  handlerId: 'stoned',
-  family: 'unique',
-  onCombatStart(piece, ctx) {
+const bindStoned = (piece, ctx) => {
+  if (piece._stonedBound) return;
+  piece._stonedBound = true;
     const fac = getPName(piece.params, 'blockfordam', 20) / 100;
     const dr = getPName(piece.params, 'damreduction', 15);
     ctx.bus?.on?.('piece_dealt_damage', (payload) => {
@@ -359,7 +358,14 @@ const stonedPort = {
         ctx.player.damageResistancePct = (Number(ctx.player.damageResistancePct) || 0) - dr;
       }
     });
-  },
+};
+
+const stonedPort = {
+  handlerId: 'stoned',
+  family: 'unique',
+  // Stoned.gd connects its damage/block listeners during onPrepare.
+  onPrepare: bindStoned,
+  onCombatStart: bindStoned,
 };
 
 const uniquelyUniquePort = {

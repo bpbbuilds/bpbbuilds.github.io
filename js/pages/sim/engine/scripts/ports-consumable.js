@@ -390,7 +390,8 @@ function bindHealthPotionDrink(piece, ctx, withRegen) {
   const regen = withRegen
     ? Math.max(0, Math.round(getPName(piece.params, 'regen', getP4(piece.params, 3))))
     : 0;
-  ctx.bus?.on?.('player_damaged', (payload) => {
+  ctx.bus?.on?.('character_damaged', (payload) => {
+    if (payload?.actor && payload.actor !== ctx.player) return;
     if (!piece.alive || piece.charges === 0) return;
     if (!payload?.hit || !(payload.healthDamage > 0)) return;
     const player = ctx.player;
@@ -461,7 +462,9 @@ export const healthPotionPort = {
   family: 'consumable',
   /** Skip items-live activatePiece — wait for HP threshold. */
   deferStartActivate: true,
-  onCombatStart(piece, ctx) {
+  // HealthPotion.gd connects during onPrepare, before any combat-start item
+  // can damage the owner (Dark Lantern is the important case).
+  onPrepare(piece, ctx) {
     bindHealthPotionDrink(piece, ctx, false);
   },
 };
@@ -472,7 +475,7 @@ export const strongHealthPotionPort = {
   handlerId: 'strong_health_potion',
   family: 'consumable',
   deferStartActivate: true,
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     bindHealthPotionDrink(piece, ctx, true);
   },
 };

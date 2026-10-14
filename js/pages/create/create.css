@@ -3,6 +3,14 @@
 /* Create page — board left, items catalog (identical to /items/) on the right */
 
 .page-create {
+  /* The optional game-cursor stylesheet is intentionally not loaded on the
+     site (the native cursor is the supported experience). Keep Create's
+     existing cursor tokens valid so interactive controls do not silently
+     fall back to `auto`. */
+  --bpb-cursor-default: default;
+  --bpb-cursor-pointer: pointer;
+  --bpb-cursor-grab: grab;
+  --bpb-cursor-grabbing: grabbing;
   --create-ink: #3c261d;
   --create-cream: #ffecdc;
   /* Keep Filter|Build rail above the fixed Sellbox (chest) */
@@ -31,6 +39,33 @@
     0.071em -0.071em 0 var(--build-ink),
     0.092em -0.038em 0 var(--build-ink);
   color: var(--bpb-ink, var(--create-ink));
+}
+
+/* Audit baseline for controls rendered by Create and its History overlay.
+   Component rules below retain their more specific grab, disabled, and
+   intentionally passive cursors. */
+.page-create :where(
+  a[href]:not([aria-disabled='true']),
+  button:not(:disabled):not([aria-disabled='true']),
+  summary,
+  select:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [role='tab']:not([aria-disabled='true']),
+  [role='option']:not([aria-disabled='true']),
+  [role='menuitem']:not([aria-disabled='true']),
+  [type='button']:not(:disabled):not([aria-disabled='true']),
+  [type='submit']:not(:disabled):not([aria-disabled='true']),
+  [type='reset']:not(:disabled):not([aria-disabled='true']),
+  [type='checkbox']:not(:disabled):not([aria-disabled='true']),
+  [type='radio']:not(:disabled):not([aria-disabled='true']),
+  [type='file']:not(:disabled):not([aria-disabled='true']),
+  [type='range']:not(:disabled):not([aria-disabled='true'])
+) {
+  cursor: var(--bpb-cursor-pointer);
+}
+
+.page-create :where(button:disabled, [aria-disabled='true']) {
+  cursor: var(--bpb-cursor-default);
 }
 
 .page-create .visually-hidden {

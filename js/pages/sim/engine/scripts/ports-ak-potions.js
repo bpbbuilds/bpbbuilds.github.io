@@ -78,46 +78,66 @@ function debuffCount(actor) {
 
 /** ManaPotion / StrongManaPotion — HP threshold or own mana spend → mana + maxHP. */
 function manaPotionPort(handlerId) {
+  const bind = (piece, ctx) => {
+    if (piece._manaPotionBound) return;
+    piece._manaPotionBound = true;
+    lockCd(piece);
+    const th = getPName(piece.params, 'p1', getP1(piece.params, 50)) / 100 - 0.0001;
+    const drink = (t) =>
+      drinkPotion(piece, ctx, t, () => {
+        const mana = Math.max(
+          1,
+          Math.round(getPName(piece.params, 'mana', getP2(piece.params, 4))),
+        );
+        const maxHp = Math.max(
+          0,
+          Math.round(getPName(piece.params, 'maxhealth', getP3(piece.params, 0))),
+        );
+        grantStacks(ctx.player, 'mana', mana, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        });
+        if (maxHp) ctx.player.maxHp += maxHp;
+        ctx.events.push({
+          t,
+          type: 'buff',
+          target: 'player',
+          amount: mana,
+          label: `${piece.name}: +${mana} Mana`,
+          meta: { category: 'buff', stack: 'mana', script: true, handler: handlerId },
+        });
+      });
+    ctx.bus?.on?.('character_damaged', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
+      if (!piece.alive) return;
+      if (hpFrac(ctx.player) < th) drink(payload?.t ?? ctx.t);
+    });
+    // Legacy direct callers emitted the player-only convenience signal before
+    // character_damaged became the canonical source event.
+    ctx.bus?.on?.('player_damaged', (payload) => {
+      if (!piece.alive) return;
+      if (hpFrac(ctx.player) < th) drink(payload?.t ?? ctx.t);
+    });
+    onBuffChanged(ctx.player, (ch) => {
+      if (!piece.alive || ch.stack !== 'mana' || !(ch.amount < 0)) return;
+      drink(ctx.t);
+    });
+  };
+
   /** @type {ScriptHandler} */
   return {
     handlerId,
     family: 'consumable',
     deferStartActivate: true,
+    // ManaPotion.gd binds both damage and mana listeners during onPrepare.
+    // Keep the bind idempotent and expose the legacy onCombatStart entry point
+    // for direct script callers/tests that invoke handlers without lifecycle
+    // preparation. The simulator itself calls onPrepare first.
+    onPrepare(piece, ctx) {
+      bind(piece, ctx);
+    },
     onCombatStart(piece, ctx) {
-      lockCd(piece);
-      const th = getPName(piece.params, 'p1', getP1(piece.params, 50)) / 100 - 0.0001;
-      const drink = (t) =>
-        drinkPotion(piece, ctx, t, () => {
-          const mana = Math.max(
-            1,
-            Math.round(getPName(piece.params, 'mana', getP2(piece.params, 4))),
-          );
-          const maxHp = Math.max(
-            0,
-            Math.round(getPName(piece.params, 'maxhealth', getP3(piece.params, 0))),
-          );
-          grantStacks(ctx.player, 'mana', mana, {
-            originKey: piece.placementKey,
-            originId: piece.itemId,
-          });
-          if (maxHp) ctx.player.maxHp += maxHp;
-          ctx.events.push({
-            t,
-            type: 'buff',
-            target: 'player',
-            amount: mana,
-            label: `${piece.name}: +${mana} Mana`,
-            meta: { category: 'buff', stack: 'mana', script: true, handler: handlerId },
-          });
-        });
-      ctx.bus?.on?.('player_damaged', (payload) => {
-        if (!piece.alive) return;
-        if (hpFrac(ctx.player) < th) drink(payload?.t ?? ctx.t);
-      });
-      onBuffChanged(ctx.player, (ch) => {
-        if (!piece.alive || ch.stack !== 'mana' || !(ch.amount < 0)) return;
-        drink(ctx.t);
-      });
+      bind(piece, ctx);
     },
   };
 }
@@ -162,7 +182,8 @@ function divinePotionPort(handlerId, extraBuffs) {
     handlerId,
     family: 'consumable',
     deferStartActivate: true,
-    onCombatStart(piece, ctx) {
+    // StrongDemonicFlask.gd connects to both characters during onPrepare.
+    onPrepare(piece, ctx) {
       lockCd(piece);
       const need = Math.max(1, Math.round(getP1(piece.params, 3)));
       onBuffChanged(ctx.player, (ch) => {
@@ -194,7 +215,8 @@ function vampiricPotionPort(handlerId, strong) {
     handlerId,
     family: 'consumable',
     deferStartActivate: true,
-    onCombatStart(piece, ctx) {
+    // VampiricPotion.gd listens to both characters during onPrepare.
+    onPrepare(piece, ctx) {
       lockCd(piece);
       const th = getP1(piece.params, 50) / 100;
       const tryDrink = (t) => {
@@ -222,8 +244,7 @@ function vampiricPotionPort(handlerId, strong) {
           }
         });
       };
-      ctx.bus?.on?.('player_damaged', (p) => tryDrink(p?.t ?? ctx.t));
-      ctx.bus?.on?.('piece_dealt_damage', () => tryDrink(ctx.t));
+      ctx.bus?.on?.('character_damaged', (p) => tryDrink(p?.t ?? ctx.t));
     },
   };
 }
@@ -331,49 +352,68 @@ function pestilencePort(handlerId, strong) {
 
 /** DemonicFlask — foe HP% → damage × foe debuffs. Strong: also own HP% + unhealing. */
 function demonicPort(handlerId, strong) {
+  const bind = (piece, ctx) => {
+    if (piece._demonicBound) return;
+    piece._demonicBound = true;
+    lockCd(piece);
+    const foeTh = strong
+      ? getPName(piece.params, 'opphpt', 50) / 100 - 0.0001
+      : getP1(piece.params, 50) / 100 - 0.0001;
+    const ownTh = strong ? getPName(piece.params, 'ownhpt', 50) / 100 - 0.0001 : 0;
+    const drink = (t) =>
+      drinkPotion(piece, ctx, t, () => {
+        const per = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 2))));
+        const dam = Math.max(1, Math.ceil(debuffCount(ctx.dummy) * per) || per);
+        const effectCtx = { ...ctx, t };
+        if (strong) {
+          applyHealEfficiency(
+            ctx.dummy,
+            -getP3(piece.params, 30) / 100,
+            effectCtx,
+            piece,
+          );
+          stealLife(
+            piece,
+            effectCtx,
+            dam,
+            getPName(piece.params, 'lifesteal', getP2(piece.params, 100)) / 100,
+          );
+        } else {
+          dealEffectDamage(piece, effectCtx, dam);
+        }
+      });
+    const onOpponentDamaged = (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.dummy) return;
+      if (!piece.alive) return;
+      if (hpFrac(ctx.dummy) < foeTh) drink(payload?.t ?? ctx.t);
+    };
+    // DemonicFlask.gd observes opponent.character_damaged from onPrepare.
+    ctx.bus?.on?.('character_damaged', onOpponentDamaged);
+    // Compatibility for older direct callers that emitted attack-result events.
+    ctx.bus?.on?.('piece_dealt_damage', onOpponentDamaged);
+    if (strong) {
+      const onPlayerDamaged = (payload = {}) => {
+        if (payload.actor && payload.actor !== ctx.player) return;
+        if (!piece.alive) return;
+        if (hpFrac(ctx.player) < ownTh) drink(payload?.t ?? ctx.t);
+      };
+      ctx.bus?.on?.('character_damaged', onPlayerDamaged);
+      ctx.bus?.on?.('player_damaged', onPlayerDamaged);
+    }
+  };
+
   /** @type {ScriptHandler} */
   return {
     handlerId,
     family: 'consumable',
     deferStartActivate: true,
+    // Source connects threshold listeners during onPrepare. Keep the
+    // onCombatStart alias idempotent for direct handler callers.
+    onPrepare(piece, ctx) {
+      bind(piece, ctx);
+    },
     onCombatStart(piece, ctx) {
-      lockCd(piece);
-      const foeTh = strong
-        ? getPName(piece.params, 'opphpt', 50) / 100 - 0.0001
-        : getP1(piece.params, 50) / 100 - 0.0001;
-      const ownTh = strong ? getPName(piece.params, 'ownhpt', 50) / 100 - 0.0001 : 0;
-      const drink = (t) =>
-        drinkPotion(piece, ctx, t, () => {
-          const per = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 2))));
-          const dam = Math.max(1, Math.ceil(debuffCount(ctx.dummy) * per) || per);
-          const effectCtx = { ...ctx, t };
-          if (strong) {
-            applyHealEfficiency(
-              ctx.dummy,
-              -getP3(piece.params, 30) / 100,
-              effectCtx,
-              piece,
-            );
-            stealLife(
-              piece,
-              effectCtx,
-              dam,
-              getPName(piece.params, 'lifesteal', getP2(piece.params, 100)) / 100,
-            );
-          } else {
-            dealEffectDamage(piece, effectCtx, dam);
-          }
-        });
-      ctx.bus?.on?.('piece_dealt_damage', () => {
-        if (!piece.alive) return;
-        if (hpFrac(ctx.dummy) < foeTh) drink(ctx.t);
-      });
-      if (strong) {
-        ctx.bus?.on?.('player_damaged', (p) => {
-          if (!piece.alive) return;
-          if (hpFrac(ctx.player) < ownTh) drink(p?.t ?? ctx.t);
-        });
-      }
+      bind(piece, ctx);
     },
   };
 }
