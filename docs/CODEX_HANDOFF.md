@@ -4129,6 +4129,17 @@ None.
 - Codex owns `bot/commands/item.js`, `bot/watch.js`, the focused autocomplete regression smoke, and this handoff for this bug.
 - Scope: trace the Discord 3-second autocomplete response path, make item suggestions available from a bounded startup cache with a safe network fallback, and preserve the existing `/item` execution/embed behavior. No browser secrets or service-role credentials will be exposed.
 
+### 2026-10-14 Discord `/item` runtime readiness follow-up (in progress)
+
+- Codex owns `bot/commands/item.js`, `bot/commands/index.js`, `bot/watch.js`, the focused `/item` readiness/autocomplete smoke, and this handoff.
+- Scope: guarantee a bounded autocomplete acknowledgement even when the startup catalog request is unavailable, and keep the deployed interaction route and command registry sourced from the same handler map so `/item` cannot fall through to the generic not-ready reply. Existing item lookup/embed behavior and server-side credentials remain unchanged.
+
+### 2026-10-14 Discord `/item` runtime readiness follow-up complete
+
+- Autocomplete now has a 2.2-second response deadline. A slow or failed cold catalog request returns a valid empty choice list before Discord expires the interaction, while the in-flight warm/fallback request can populate the cache for the next keystroke. Warmed name/ID filtering remains local and exact/name `/item` lookup is unchanged.
+- Exported the canonical command-handler lookup and added parity coverage so every registered slash command, including `/item`, has a live handler. The watcher now reconciles the guild command registry from that same canonical list at Gateway readiness, eliminating stale command definitions after a deployment.
+- Added `scripts/discord-item-readiness-smoke.mjs`; it covers delayed and failed autocomplete acknowledgement, command/handler parity, and startup guild command synchronization. Focused `/item`, `/commands`, `/inv`, syntax, and `git diff --check` verification pass. `npm run bot:commands` registered all 6 current guild commands successfully. No secrets, legal, or security surfaces changed.
+
 ### 2026-10-14 Discord `/item` autocomplete loading failure complete
 
 - Root cause: every Discord keystroke waited on an uncached Supabase REST request with no timeout. A slow or transient network response could miss Discord's three-second autocomplete acknowledgement window and show “Loading options failed.”

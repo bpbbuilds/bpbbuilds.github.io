@@ -8,6 +8,7 @@ const GOLD = 0xeac914;
 const ITEM_FIELDS = 'id,gid,name,rarity,type,class,extra_types,tags,cost,effect,image,accuracy,cooldown,stamina_cost,damage_min,damage_max';
 const AUTOCOMPLETE_FIELDS = 'id,name';
 const AUTOCOMPLETE_LIMIT = 1000;
+const AUTOCOMPLETE_RESPONSE_DEADLINE_MS = 2200;
 
 /** @type {{ id: string, name: string }[] | null} */
 let autocompleteRowsCache = null;
@@ -234,6 +235,16 @@ export async function handleItem(interaction) {
 
 export async function handleItemAutocomplete(interaction) {
   const query = interaction.options.getString('item') || '';
-  const rows = await searchRows(config(), query);
+  // Discord invalidates an autocomplete interaction after roughly three
+  // seconds. The startup warm and its network fallback are deliberately
+  // allowed to continue in the background, but never hold the acknowledgement
+  // past a bounded deadline. A late catalog warm benefits the next keystroke.
+  const rows = await Promise.race([
+    searchRows(config(), query),
+    new Promise((resolve) => {
+      const timer = setTimeout(() => resolve([]), AUTOCOMPLETE_RESPONSE_DEADLINE_MS);
+      timer.unref?.();
+    }),
+  ]);
   await interaction.respond(rows.slice(0, 25).map((row) => ({ name: row.name.slice(0, 100), value: row.id })));
 }

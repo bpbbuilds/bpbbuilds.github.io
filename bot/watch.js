@@ -21,7 +21,7 @@ import { syncPastEvents } from './past-events.js';
 import { syncOnboarding } from './onboarding.js';
 import { syncStats } from './stats.js';
 import { syncLayout } from './layout.js';
-import { handleCommand, handleInvButton, handleItemAutocomplete, warmItemAutocomplete } from './commands/index.js';
+import { commands, handleCommand, handleInvButton, handleItemAutocomplete, warmItemAutocomplete } from './commands/index.js';
 import { handleVoteButton } from './announce-votes.js';
 
 const env = loadEnv();
@@ -252,9 +252,18 @@ client.on('guildMemberUpdate', (_old, member) => {
   enforce(member).catch((err) => console.error(err));
 });
 
-client.once('clientReady', () => {
+async function syncGuildCommands() {
+  if (!client.application?.commands) throw new Error('Discord application command manager is unavailable');
+  const registered = await client.application.commands.set(commands, config.guildId);
+  console.log(`Guild command registry synchronized (${registered.size} commands)`);
+}
+
+client.once('clientReady', async () => {
   console.log(`Discord Gateway ready as ${client.user?.tag}`);
   console.log(`Watching nicknames as ${client.user?.tag}`);
+  await syncGuildCommands().catch((err) => {
+    console.error(`Guild command sync failed: ${err instanceof Error ? err.message : err}`);
+  });
   warmItemAutocomplete().then((rows) => {
     console.log(`Item autocomplete catalog warmed (${rows?.length || 0} items)`);
   }).catch((err) => {

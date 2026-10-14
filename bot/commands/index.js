@@ -20,13 +20,18 @@ const handlers = {
   commands: (interaction) => handleCommands(interaction, commands),
 };
 
+/** @param {string} commandName */
+export function getCommandHandler(commandName) {
+  return handlers[String(commandName || '').trim()];
+}
+
 export { handleInvButton, handleItemAutocomplete, warmItemAutocomplete };
 
 /**
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
  */
 export function handleCommand(interaction) {
-  const run = handlers[interaction.commandName];
+  const run = getCommandHandler(interaction.commandName);
   if (!run) {
     return interaction.reply({ content: 'That command is not set up yet.', ephemeral: true });
   }
