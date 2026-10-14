@@ -30,6 +30,10 @@ assert.match(pool, /void warmItemSprites\(near\.map\(\(e\) => e\.itemEl\), \{[\s
 assert.match(pieces, /itemWaits\.push\([\s\S]*Promise\.all\(waits\)\.then\([\s\S]*isCurrent[\s\S]*sprite-pending/);
 assert.match(pool, /queueScrollPaint\(\);[\s\S]*scrollTimer = window\.setTimeout/);
 assert.match(pool, /export const ITEMIARY_POOL_MAX_ENTRIES = 384/);
+assert.match(pool, /export const ITEMIARY_PACK_LAYOUT_CACHE_MAX = 24/);
+assert.match(pool, /const packedLayoutCache = new Map/);
+assert.match(pool, /buildPlacementIndex\(placements, itemsById\)/);
+assert.match(pool, /placementsNearViewport\([\s\S]*placementIndex/);
 assert.match(pool, /function touchPoolEntry\([\s\S]*pool\.delete\(key\)[\s\S]*pool\.set\(key, entry\)/);
 assert.match(pool, /function pruneItemiaryPool\([\s\S]*recycleEntry\(entry\)/);
 assert.match(catalog, /virtualPadEm: 6,[\s\S]*virtualPadMaxEm: 14,[\s\S]*adaptivePad: true/);
@@ -168,6 +172,42 @@ try {
     const { mountItemiaryGrid, ITEMIARY_POOL_MAX_ENTRIES } = await import(
       `http://127.0.0.1:${serverPort}/js/shared/backpack-grid/item-pool.js`
     );
+    const { buildPlacementIndex, placementsNearViewport } = await import(
+      `http://127.0.0.1:${serverPort}/js/shared/backpack-grid/item-virtual.js`
+    );
+    const indexedItems = new Map(
+      Array.from({ length: 80 }, (_, index) => [
+        `index-${index}`,
+        { id: `index-${index}`, shape: [[1]], type: 'Weapon' },
+      ]),
+    );
+    const indexedPlacements = Array.from({ length: 80 }, (_, index) => ({
+      id: `index-${index}`,
+      x: index % 8,
+      y: Math.floor(index / 8),
+    }));
+    const viewportMetrics = {
+      cellPx: 20,
+      rows: 10,
+      scrollTop: 20,
+      clientHeight: 60,
+      scrollLeft: 0,
+      clientWidth: 160,
+    };
+    const placementIndex = buildPlacementIndex(indexedPlacements, indexedItems);
+    const indexedIds = placementsNearViewport(
+      indexedPlacements,
+      indexedItems,
+      viewportMetrics,
+      2,
+      placementIndex,
+    ).map((placement) => placement.id);
+    const scannedIds = placementsNearViewport(
+      indexedPlacements,
+      indexedItems,
+      viewportMetrics,
+      2,
+    ).map((placement) => placement.id);
     const style = document.createElement('style');
     style.textContent = '.bpb-bg{height:120px;overflow:auto;width:800px}.bpb-bg__board{position:relative}';
     document.head.append(style);
@@ -211,12 +251,14 @@ try {
       total,
       max: ITEMIARY_POOL_MAX_ENTRIES,
       immediate: firstBefore !== firstAfterImmediate,
+      indexedViewportMatches: JSON.stringify(indexedIds) === JSON.stringify(scannedIds),
     };
   }, { port });
 
   assert.ok(poolResult.initial < poolResult.max, 'initial window stays below pool cap');
   assert.equal(poolResult.immediate, true, 'scroll window updates on the next frame');
   assert.ok(poolResult.total <= poolResult.max, 'parked Itemiary pool stays bounded');
+  assert.equal(poolResult.indexedViewportMatches, true, 'row-indexed viewport matches full scan');
   console.log('items P0 performance smoke passed', { ...result, pool: poolResult });
 } finally {
   await browser.close();

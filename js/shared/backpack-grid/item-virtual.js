@@ -37,6 +37,44 @@ export function itemHeightEm(item) {
 }
 
 /**
+ * Build the small row index used by Itemiary viewport queries. Bounds are
+ * computed once per packed/placed layout, then reused while scrolling.
+ *
+ * @param {{ id: string, x: number, y: number }[]} placements
+ * @param {Map<string, object>} itemsById
+ * @returns {{ placements: typeof placements, rows: Map<number, object[]>, count: number }}
+ */
+export function buildPlacementIndex(placements, itemsById) {
+  const rows = new Map();
+  let count = 0;
+  for (const placement of placements) {
+    const item = itemsById.get(placement.id);
+    const x = Number(placement.x) || 0;
+    const y = Number(placement.y) || 0;
+    const width = itemWidthEm(item);
+    const height = itemHeightEm(item);
+    const rowStart = Math.floor(y);
+    const rowEnd = Math.max(rowStart, Math.ceil(y + height) - 1);
+    const entry = {
+      placement,
+      index: count++,
+      x,
+      y,
+      width,
+      height,
+      rowStart,
+      rowEnd,
+    };
+    for (let row = rowStart; row <= rowEnd; row += 1) {
+      const bucket = rows.get(row);
+      if (bucket) bucket.push(entry);
+      else rows.set(row, [entry]);
+    }
+  }
+  return { placements, rows, count };
+}
+
+/**
  * @param {{ id: string, x: number, y: number }[]} placements
  * @param {Map<string, object>} itemsById
  * @param {{
@@ -48,12 +86,14 @@ export function itemHeightEm(item) {
  *   clientWidth?: number,
  * }} metrics
  * @param {number} [padEm]
+ * @param {{ placements: typeof placements, rows: Map<number, object[]>, count: number } | null} [index]
  */
 export function placementsNearViewport(
   placements,
   itemsById,
   metrics,
   padEm = VIRTUAL_PAD_EM,
+  index = null,
 ) {
   if (!placements.length) return [];
   const cellPx = metrics.cellPx > 0 ? metrics.cellPx : 34;
@@ -65,17 +105,45 @@ export function placementsNearViewport(
   const padPx = padEm * cellPx;
   /** @type {typeof placements} */
   const near = [];
-  for (const p of placements) {
-    const h = itemHeightEm(itemsById.get(p.id));
-    const topPx = (Number(p.y) || 0) * cellPx;
-    const bottomPx = topPx + h * cellPx;
+  const indexed = index?.placements === placements && index.rows instanceof Map;
+  const candidates = [];
+  if (indexed) {
+    const firstRow = Math.floor(Math.max(0, (scrollTop - padPx) / cellPx));
+    const lastRow = Math.floor(
+      Math.min(Math.ceil(rows) - 1, (viewBottom + padPx) / cellPx),
+    );
+    const seen = new Set();
+    for (let row = firstRow; row <= lastRow; row += 1) {
+      for (const entry of index.rows.get(row) || []) {
+        if (seen.has(entry.index)) continue;
+        seen.add(entry.index);
+        candidates.push(entry);
+      }
+    }
+    candidates.sort((a, b) => a.index - b.index);
+  } else {
+    for (let i = 0; i < placements.length; i += 1) {
+      const p = placements[i];
+      candidates.push({
+        placement: p,
+        x: Number(p.x) || 0,
+        y: Number(p.y) || 0,
+        width: itemWidthEm(itemsById.get(p.id)),
+        height: itemHeightEm(itemsById.get(p.id)),
+      });
+    }
+  }
+  for (const entry of candidates) {
+    const p = entry.placement;
+    const topPx = entry.y * cellPx;
+    const bottomPx = topPx + entry.height * cellPx;
     if (bottomPx < scrollTop - padPx || topPx > viewBottom + padPx) continue;
     const clientWidth = metrics.clientWidth || 0;
     if (clientWidth > 0) {
       const scrollLeft = Math.max(0, metrics.scrollLeft || 0);
       const viewRight = scrollLeft + clientWidth;
-      const leftPx = (Number(p.x) || 0) * cellPx;
-      const rightPx = leftPx + itemWidthEm(itemsById.get(p.id)) * cellPx;
+      const leftPx = entry.x * cellPx;
+      const rightPx = leftPx + entry.width * cellPx;
       if (rightPx < scrollLeft - padPx || leftPx > viewRight + padPx) continue;
     }
     near.push(p);

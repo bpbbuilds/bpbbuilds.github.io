@@ -260,8 +260,8 @@ Completed in this pass: Itemiary now measures the viewport and adapts its base 6
 
 ### P1 — required for a stable “publish-ready” interaction budget
 
-1. Cache packed layouts by filter/group/column signature; preserve the exact default library layout.
-2. Cache placement bounds and query visible rows rather than scanning every placement.
+- [x] Cache packed layouts by filter/group/column signature; preserve the exact default library layout.
+- [x] Cache placement bounds and query visible rows rather than scanning every placement.
 3. Defer live-art layers and keep only focused/spotlight animation active; pause when hidden.
 4. Open spotlight immediately and defer full art/build queries behind a skeleton/cache.
 5. Defer/lower-size nav/footer decorative images and cache immutable data assets.
@@ -272,6 +272,8 @@ Completed in this pass: Itemiary now measures the viewport and adapts its base 6
 1. Optimize filter-control DOM updates and wheel forwarding.
 2. Add scoped CSS containment only after decoration bounds are proven safe.
 3. Convert remaining large decorative PNGs to equivalent modern formats and verify visual parity.
+
+Completed in this pass: packed Itemiary layouts now use a bounded 24-entry LRU keyed by flow, column/row limit, compact mode, grouping values, item order, and normalized item bounds. The persisted/default placed library path is unchanged. Placement width/height bounds are computed once per layout and indexed by row; scroll-window queries inspect only intersecting rows while preserving placement order and the previous horizontal/vertical inclusion rules. No markup, dimensions, styling, animation timing, or responsive behavior changed.
 
 ## Acceptance checks for the fixes
 
@@ -293,4 +295,4 @@ Completed in this pass: Itemiary now measures the viewport and adapts its base 6
 
 ## Final assessment
 
-All six P0 items are implemented and checked above. The page still benefits from the remaining P1 work—packed-layout caching, placement indexing, and deferred live art—before calling the entire performance program publish-ready. The completed P0 work now keeps catalog bootstrap, filtering, scroll windows, sprite readiness, and memory bounded without changing the rendered composition.
+All six P0 items and the first two P1 items are implemented and checked above. The page still benefits from the remaining P1 work—deferred live art, spotlight deferral, decorative-image prioritization, and responsive repack coalescing—before calling the entire performance program publish-ready. The completed work keeps catalog bootstrap, filtering, packed layouts, placement queries, scroll windows, sprite readiness, and memory bounded without changing the rendered composition.

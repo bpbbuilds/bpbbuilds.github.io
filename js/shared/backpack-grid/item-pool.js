@@ -29,7 +29,9 @@ import {
 } from './item-pieces.js';
 import {
   VIRTUAL_PAD_EM,
+  buildPlacementIndex,
   placementsNearViewport,
+  itemWidthEm,
   itemHeightEm,
   parkWarmEntry,
   recycleEntry,
@@ -301,6 +303,17 @@ const ITEMIARY_SCROLL_SETTLE_MS = 64;
 const ITEMIARY_SCROLL_MAX_WAIT_MS = 320;
 /** Keep current/nearby nodes warm, but release older parked entries. */
 export const ITEMIARY_POOL_MAX_ENTRIES = 384;
+export const ITEMIARY_PACK_LAYOUT_CACHE_MAX = 24;
+
+function cachePackedLayout(cache, key, result) {
+  cache.delete(key);
+  cache.set(key, result);
+  while (cache.size > ITEMIARY_PACK_LAYOUT_CACHE_MAX) {
+    const oldest = cache.keys().next().value;
+    if (oldest == null) break;
+    cache.delete(oldest);
+  }
+}
 
 /**
  * Move a visible entry to the newest end of the Itemiary LRU. The Map order
@@ -843,8 +856,12 @@ export function mountItemiaryGrid(container, options) {
   let previewMode = false;
   /** @type {object[]} */
   let packedItems = [];
+  /** Packed results survive filter toggles/column changes in a bounded LRU. */
+  const packedLayoutCache = new Map();
   let lastPackKey = '';
   let lastPackResult = /** @type {{ placements: typeof placements, rows: number } | null} */ (null);
+  let placementIndex = null;
+  let placementIndexKey = '';
   let lastPaintKey = '';
   /** Cell size committed by the last paint — held until the stage really resizes. */
   let frozenCellPx = 0;
@@ -976,6 +993,7 @@ export function mountItemiaryGrid(container, options) {
         clientWidth: el.clientWidth,
       },
       padEm,
+      placementIndex,
     );
   }
 
@@ -1156,27 +1174,44 @@ export function mountItemiaryGrid(container, options) {
 
     if (mode === 'packed') {
       const axisLimit = packFlow === 'column' ? packRows : cols;
-      const packKey = `${packFlow}|${axisLimit}|${compact ? 1 : 0}|${groupKeyFn ? 1 : 0}|${packedItems.map((i) => i.id).join('\0')}`;
+      const groupSignature = groupKeyFn
+        ? `group:${packedItems.map((item) => String(groupKeyFn(item))).join('\0')}`
+        : 'ungrouped';
+      const itemSignature = packedItems
+        .map((item) => `${item.id}:${itemWidthEm(item)}x${itemHeightEm(item)}`)
+        .join('\0');
+      const packKey = `${packFlow}|${axisLimit}|${compact ? 1 : 0}|${groupSignature}|${itemSignature}`;
       if (packKey !== lastPackKey || !lastPackResult) {
         lastPackKey = packKey;
-        if (!packedItems.length) {
-          lastPackResult = { placements: [], rows: 1, cols };
+        const cached = packedLayoutCache.get(packKey);
+        if (cached) {
+          lastPackResult = cached;
+          cachePackedLayout(packedLayoutCache, packKey, cached);
         } else {
-          const packed = packItems(packedItems, axisLimit, {
-            compact,
-            groupKey: groupKeyFn || undefined,
-            flow: packFlow,
-          });
-          lastPackResult = {
-            placements: packed.placements,
-            rows: packed.rows,
-            cols: packed.cols,
-          };
+          if (!packedItems.length) {
+            lastPackResult = { placements: [], rows: 1, cols };
+          } else {
+            const packed = packItems(packedItems, axisLimit, {
+              compact,
+              groupKey: groupKeyFn || undefined,
+              flow: packFlow,
+            });
+            lastPackResult = {
+              placements: packed.placements,
+              rows: packed.rows,
+              cols: packed.cols,
+            };
+          }
+          cachePackedLayout(packedLayoutCache, packKey, lastPackResult);
         }
       }
       placements = lastPackResult.placements;
       rows = lastPackResult.rows;
       itemsById = mergePoolIntoMap(new Map(packedItems.map((i) => [i.id, i])));
+      if (placementIndexKey !== packKey || placementIndex?.placements !== placements) {
+        placementIndex = buildPlacementIndex(placements, itemsById);
+        placementIndexKey = packKey;
+      }
     }
 
     const paintCols = mode === 'packed' && packFlow === 'column'
@@ -1330,6 +1365,8 @@ export function mountItemiaryGrid(container, options) {
         }
         rows = maxY;
       }
+      placementIndex = buildPlacementIndex(placements, itemsById);
+      placementIndexKey = `placed:${placements.length}:${rows}`;
       appearNext = opts.appear === true;
       appearNewOnly = false;
       appearLayerNext = opts.appearLayer === 'under' ? 'under' : 'item';
@@ -1365,6 +1402,8 @@ export function mountItemiaryGrid(container, options) {
       appearLayerNext = opts.appearLayer === 'under' ? 'under' : 'item';
       lastPackKey = '';
       lastPackResult = null;
+      placementIndex = null;
+      placementIndexKey = '';
       lastPaintKey = '';
       return render();
     },
@@ -1382,6 +1421,8 @@ export function mountItemiaryGrid(container, options) {
       lastPackResult = { placements: [], rows: 1 };
       placements = [];
       rows = 1;
+      placementIndex = buildPlacementIndex(placements, itemsById);
+      placementIndexKey = 'parked';
       const { cellPx, cols, hostW } = layoutMetrics();
       lastPaintKey = '';
       return paintNow(cellPx, cols, 1, [], itemsById, hostW);
@@ -1482,6 +1523,7 @@ export function mountItemiaryGrid(container, options) {
         entry.underEl?.remove();
       }
       pool.clear();
+      packedLayoutCache.clear();
       el.remove();
     },
   };

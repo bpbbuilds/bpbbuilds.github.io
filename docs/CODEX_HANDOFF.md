@@ -4220,3 +4220,14 @@ None.
 - Replaced the Items catalog's fixed 24em prefetch band with a measured adaptive 6–14em band based on viewport rows and scroll velocity. Other backpack-grid callers retain their existing defaults; item order, cell dimensions, and visible art composition are unchanged.
 - Added one normalized filter index per catalog data generation (lowercased names, class masks, type/stack/category memberships, rarity/origin flags) and a bounded 64-entry filter-result cache keyed by the complete filter state signature. Initialization, count updates, filter paints, and responsive repaints now reuse the same result instead of rescanning the catalog.
 - Tuned the shared Itemiary pool default to 384 entries so the reduced overscan has a small reserve without retaining the full library. The focused P0 smoke, broad Itemiary virtual audit, syntax checks, and `git diff --check` pass. No legal/security surfaces changed.
+
+### 2026-10-14 Items page P1 layout/bounds caching (in progress)
+
+- Codex owns `js/shared/backpack-grid/item-pool.js`, `js/shared/backpack-grid/item-virtual.js`, `scripts/items-p0-performance-smoke.mjs`, `docs/performance/items-page-performance-audit.md`, and this handoff for this task.
+- Scope: cache packed layouts by the complete filter/group/flow/column signature while preserving the default placed layout, and index cached placement bounds by row so viewport queries do not scan every placement. Visual composition, order, dimensions, and responsive behavior must remain unchanged.
+
+### 2026-10-14 Items page P1 layout/bounds caching complete
+
+- Added a bounded 24-entry packed-layout LRU keyed by flow, axis limit, compact mode, grouping values, item order, and normalized item bounds. The default placed/library layout path remains untouched.
+- Added one row index of cached placement bounds per layout. `placementsNearViewport()` now queries only intersecting rows, then applies the existing horizontal/vertical checks and restores placement order exactly.
+- Extended `scripts/items-p0-performance-smoke.mjs` with static cache contracts and a browser equivalence check proving indexed viewport results match the prior full scan. Syntax, focused smoke, and `git diff --check` pass. No legal/security surfaces changed.
