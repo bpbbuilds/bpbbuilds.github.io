@@ -1489,6 +1489,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  girl_power: {
+    focusedRegression: 'scripts/sim-girl-power-smoke.mjs',
+    fixture: 'Girl Power source class-only distinct primary preparation speed, Empower/Regeneration comparison branches, tie RNG branches, origin tracking, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   gigawatz: {
     focusedRegression: 'scripts/sim-gigawatz-smoke.mjs',
     fixture: 'Gigawatz source preparation counters, capped charge speed, Blind/effect-damage cooldown ordering, source damage increments, both board sides, and zero-safe parameters.',
@@ -1499,6 +1506,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   gingerbread_man: {
     focusedRegression: 'scripts/sim-gingerbread-man-smoke.mjs',
     fixture: 'Gingerbread Man inherited Food preparation, starting and cooldown max-health gains, nested Lucky/Heat/Mana gate, Empower/Regeneration grants, modified max-health-use, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  gloves_of_haste: {
+    focusedRegression: 'scripts/sim-gloves-of-haste-smoke.mjs',
+    fixture: 'Gloves of Haste source cooldown-only target rule, catalog descriptor cooldown fallback, exact speed grant, activation order, both board sides, and zero-safe parameters.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',

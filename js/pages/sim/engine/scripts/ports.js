@@ -349,14 +349,15 @@ export const glovesOfHastePort = {
   family: 'synergy_aura',
   onCombatStart(piece, ctx) {
     const { t, events, graph, itemsById, canAffect } = ctx;
-    const speedPct = getPName(piece.params, 'speed', getP1(piece.params, 20));
+    const speedPct = getP1(piece.params, 0);
     const frac = speedPct / 100;
-    if (!frac) return;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     for (const other of ctx.pieces || []) {
       if (other.placementKey === piece.placementKey) continue;
       if (!links.some((l) => l.key === other.placementKey)) continue;
-      if (!(other.cooldown > 0) || other.cooldown >= 500) continue;
+      const catalogCooldown = Number(itemsById.get(other.itemId)?.cooldown);
+      const cooldown = Number.isFinite(catalogCooldown) ? catalogCooldown : Number(other.cooldown);
+      if (!(cooldown > 0)) continue;
       addSpeed(other, frac);
       events.push({
         t: t + 0.01,

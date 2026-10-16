@@ -12,7 +12,7 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { rollItemChance } from '../chance.js';
-import { getP1, getP2, getPName } from '../params.js';
+import { getP1, getP2, getP3, getPName } from '../params.js';
 import { modifiedParamValue } from '../placement-instance.js';
 import { addAccuracy, addBonusDamageFactor, addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
@@ -36,6 +36,10 @@ function linkedEntries(ctx, piece) {
     const target = (ctx.pieces || []).find((candidate) => candidate.placementKey === link.key);
     return target ? { link, target, item: ctx.itemsById.get(target.itemId) } : null;
   }).filter(Boolean);
+}
+
+function origin(piece) {
+  return { originKey: piece.placementKey, originId: piece.itemId };
 }
 
 /**
@@ -479,19 +483,20 @@ const uniquelyUniquePort = {
 const girlPowerPort = {
   handlerId: 'girl_power',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const n = linked(ctx, piece).length;
-    addSpeed(piece, (getPName(piece.params, 'speed', 8) / 100) * Math.max(1, n));
+  onPrepare(piece, ctx) {
+    const n = linkedEntries(ctx, piece).filter(({ link }) => link.color === 'primary').length;
+    const speed = getPName(piece.params, 'speed', getP3(piece.params, 0)) / 100;
+    addSpeed(piece, speed * n);
   },
   onCooldownEffect(piece, ctx) {
     const emp = getStackAmount(ctx.player, 'empower');
     const regen = getStackAmount(ctx.player, 'regeneration');
-    const a = Math.max(1, Math.round(getPName(piece.params, 'empower', 1)));
-    const b = Math.max(1, Math.round(getPName(piece.params, 'regen', 1)));
-    if (regen < emp) grantStacks(ctx.player, 'regeneration', b, {});
-    else if (regen > emp) grantStacks(ctx.player, 'empower', a, {});
-    else if (ctx.rng() < 0.5) grantStacks(ctx.player, 'regeneration', b, {});
-    else grantStacks(ctx.player, 'empower', a, {});
+    const a = Math.trunc(getPName(piece.params, 'empower', getP2(piece.params, 0)));
+    const b = Math.trunc(getPName(piece.params, 'regen', getP1(piece.params, 0)));
+    if (regen < emp) grantStacks(ctx.player, 'regeneration', b, origin(piece));
+    else if (regen > emp) grantStacks(ctx.player, 'empower', a, origin(piece));
+    else if (ctx.rng() < 0.5) grantStacks(ctx.player, 'regeneration', b, origin(piece));
+    else grantStacks(ctx.player, 'empower', a, origin(piece));
     pushActivate(piece, ctx, 'girl_power', `Skill: ${piece.name}`);
     return true;
   },

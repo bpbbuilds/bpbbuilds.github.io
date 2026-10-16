@@ -9012,9 +9012,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-girl-power-smoke.mjs",
+        "fixture": "Girl Power source class-only distinct primary preparation speed, Empower/Regeneration comparison branches, tie RNG branches, origin tracking, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -9048,9 +9054,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-gloves-of-haste-smoke.mjs",
+        "fixture": "Gloves of Haste source cooldown-only target rule, catalog descriptor cooldown fallback, exact speed grant, activation order, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

@@ -6270,3 +6270,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 253 - in progress
 
 - Codex owns the next retained Girl Power and Gloves of Haste fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-girl-power-smoke.mjs`, `scripts/sim-gloves-of-haste-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 253 - complete
+
+- Codex repaired Girl Power to use its source preparation hook, distinct primary class-item targeting, exact Empower/Regeneration comparison and tie branches, origin tracking, and zero-safe parameters. Gloves of Haste now uses the source cooldown target rule from catalog descriptors, preserves exact speed values, activates even for zero values, and keeps grant/activation ordering.
+- Added `scripts/sim-girl-power-smoke.mjs` and `scripts/sim-gloves-of-haste-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 365 / 519 verified item rows. Focused pair tests, Wave A/B, Emerald-through-Gingerbread, lifecycle closure, changed-module syntax, and scoped verification pass. No legal, authentication, database, storage, or security behavior changed.
+- The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Gold Armor and Gold Cube; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 254 - in progress
+
+- Codex owns the next retained Gold Armor and Gold Cube fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-gold-armor-smoke.mjs`, `scripts/sim-gold-cube-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

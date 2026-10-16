@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "8e02a3c8c43c936769852b8154b1f6898330614ff7f1c87c39f17773fd6c2b4f",
+    "dashboardSha256": "bfea185e15858566e96c2c15bb498a1b3794267350918013cc5188f6024661a3",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 363,
+    "verified_1to1": 365,
     "confirmed_gap": 8,
-    "evidence_pending": 133,
+    "evidence_pending": 131,
     "no_independent_combat": 15
   },
   "byId": {
@@ -216,8 +216,8 @@
     "ghost": "verified_1to1",
     "gigawatz": "verified_1to1",
     "gingerbread_man": "verified_1to1",
-    "girl_power": "evidence_pending",
-    "gloves_of_haste": "evidence_pending",
+    "girl_power": "verified_1to1",
+    "gloves_of_haste": "verified_1to1",
     "gold_armor": "evidence_pending",
     "gold_cube": "evidence_pending",
     "goobert": "evidence_pending",
