@@ -360,6 +360,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  broccotree: {
+    focusedRegression: 'scripts/sim-broccotree-smoke.mjs',
+    fixture: 'Broccotree source Food override, Lucky/Regeneration threshold, regeneration-driven stamina gain, and post-effect activation ordering.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   battery: {
     focusedRegression: 'scripts/sim-battery-smoke.mjs',
     fixture: 'Battery source combat-start charge, duration and speed-per-tile path, charged-item speed mutation, owner-attributed charge events, and both board sides.',
@@ -636,6 +643,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   chain_whip: {
     focusedRegression: 'scripts/sim-carrot-cat-chain-cheese-smoke.mjs',
     fixture: 'Chain Whip source preparation purge listener, early-hit opponent buff strip, purge-scaled varying damage, Battle Rage heal, and weapon callback path.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  chainsaw: {
+    focusedRegression: 'scripts/sim-chainsaw-smoke.mjs',
+    fixture: 'Chainsaw source charge-state transitions, hit-only five-percent buff removal or steal, self slowdown, and miss no-op.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',

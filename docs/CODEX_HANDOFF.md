@@ -6166,3 +6166,13 @@ None.
 
 - Codex repaired Broccoli to preserve the source effect-before-activation flow while retaining inherited Food preparation speed and the Lucky/Regeneration threshold branch. Broccoli Goobert now emits its activation after the source peer-triggered Lucky/Regeneration effect at the six-activation threshold.
 - Added `scripts/sim-broccoli-smoke.mjs` and `scripts/sim-broccoli-goobert-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 341 / 519 verified item rows. Focused smokes, the existing combined Broccoli source smoke, changed-module syntax, ledger/dashboard `--check`, coverage honesty, Admin audit, a 40-second Goobert runtime fixture, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed. The two-item batch is committed locally; `git push origin main` was attempted and rejected with GitHub HTTP 403 because `JusticeMcNealLLC` lacks write permission for `bpbbuilds/bpbbuilds.github.io`.
+
+### 2026-10-16 Simulator item parity continuation 242 - in progress
+
+- Codex owns the Broccotree and Chainsaw fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and this handoff. Planned paths are limited to the relevant simulator port modules, `scripts/sim-broccotree-smoke.mjs`, `scripts/sim-chainsaw-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 242 - complete
+
+- Codex repaired Broccotree to grant Lucky and optional Regeneration before its activation, preserving its Food override and regeneration-driven stamina gain. Chainsaw now mirrors the source charge-state transitions while retaining hit-only five-percent buff removal/steal and self slowdown.
+- Added `scripts/sim-broccotree-smoke.mjs` and `scripts/sim-chainsaw-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 343 / 519 verified item rows. Both focused smokes, the combined Broccoli/Broccotree source smoke, ledger/dashboard checks, coverage-honesty, Admin audit, verified-coverage, changed-module syntax, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed.
+- Local commit `a6936cb` was pushed successfully to `origin/main` after GitHub access was corrected.

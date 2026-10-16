@@ -256,7 +256,10 @@ export const chainsawPort = {
     piece._chainsawCharged = false;
   },
   onChargeReceived(piece) {
-    piece._chainsawCharged = true;
+    if ((piece.numCharges || 0) === 1) piece._chainsawCharged = true;
+  },
+  onChargeLeft(piece) {
+    if ((piece.numCharges || 0) === 0) piece._chainsawCharged = false;
   },
   onPreDealDamageEarly(piece, ctx, damageRes) {
     if (!damageRes?.hit) return;

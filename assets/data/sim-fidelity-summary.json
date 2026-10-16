@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "0f7e9158f98c297763b383a1563f841e73c78aff07b9dd4c34324f3b491de0fe",
+    "dashboardSha256": "6c48358c36ded03b5d075c01eb82a93443203a3e739ac71036441d60e99028b2",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 341,
+    "verified_1to1": 343,
     "confirmed_gap": 8,
-    "evidence_pending": 155,
+    "evidence_pending": 153,
     "no_independent_combat": 15
   },
   "byId": {
@@ -81,7 +81,7 @@
     "brass_knuckles": "verified_1to1",
     "broccoli": "verified_1to1",
     "broccoli_goobert": "verified_1to1",
-    "broccotree": "evidence_pending",
+    "broccotree": "verified_1to1",
     "broom": "verified_1to1",
     "burning_banner": "verified_1to1",
     "burning_blade": "verified_1to1",
@@ -97,7 +97,7 @@
     "cat_spirit": "verified_1to1",
     "cauldron": "verified_1to1",
     "chain_whip": "verified_1to1",
-    "chainsaw": "evidence_pending",
+    "chainsaw": "verified_1to1",
     "charge_splitter": "verified_1to1",
     "cheese": "verified_1to1",
     "cheese_goobert": "verified_1to1",

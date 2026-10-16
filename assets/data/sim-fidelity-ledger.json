@@ -2996,9 +2996,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-broccotree-smoke.mjs",
+        "fixture": "Broccotree source Food override, Lucky/Regeneration threshold, regeneration-driven stamina gain, and post-effect activation ordering.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -3752,9 +3758,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-chainsaw-smoke.mjs",
+        "fixture": "Chainsaw source charge-state transitions, hit-only five-percent buff removal or steal, self slowdown, and miss no-op.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

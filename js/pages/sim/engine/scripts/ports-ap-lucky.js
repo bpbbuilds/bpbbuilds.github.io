@@ -136,7 +136,6 @@ const broccotreePort = {
     const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP1(piece.params, 3))));
     const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP2(piece.params, 5))));
     const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', getP3(piece.params, 3))));
-    pushActivate(piece, ctx, 'broccotree', `Food: ${piece.name}`);
     grantStacks(ctx.player, 'lucky', luck, origin(piece));
     ctx.events.push({
       t: ctx.t + 0.002,
@@ -161,6 +160,7 @@ const broccotreePort = {
         meta: { category: 'buff', script: true, handler: 'broccotree', stack: 'regeneration' },
       });
     }
+    pushActivate(piece, ctx, 'broccotree', `Food: ${piece.name}`);
     return true;
   },
 };
