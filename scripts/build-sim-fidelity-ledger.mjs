@@ -1545,6 +1545,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  greatsword: {
+    focusedRegression: 'scripts/sim-greatsword-smoke.mjs',
+    fixture: 'Greatsword source preparation lifecycle, exact Empower threshold transitions, buffed stamina/cooldown values, weapon inherited strike, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  halberd: {
+    focusedRegression: 'scripts/sim-halberd-smoke.mjs',
+    fixture: 'Halberd source canBlock targeting, empty affected-cell removal, Block buff power, early-hit damage, late block transfer, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',

@@ -340,7 +340,7 @@ export const bigBloodthornePort = {
   onPrepare(piece, ctx) {
     // BigBloodthorne.gd inherits Greatsword.gd, whose empower state is set in
     // Item.prepare rather than at combat start.
-    greatswordPort.onCombatStart(piece, ctx);
+    greatswordPort.onPrepare(piece, ctx);
     const per = Math.max(0, Math.round(getPName(piece.params, 'dam', getP(piece.params, 6, 1))));
     onBuffChanged(ctx.player, (change) => {
       if (change.stack !== 'vampirism' && change.stack !== 'spikes') return;

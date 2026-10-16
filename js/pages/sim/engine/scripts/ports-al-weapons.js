@@ -147,11 +147,11 @@ export const poisonBowPort = {
 export const greatswordPort = {
   handlerId: 'greatsword',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._gsBaseStam = Number(piece.staminaCost) || 0;
     piece._gsBaseCd = Number(piece.baseCooldown ?? piece.cooldown) || 0;
     piece._gsBuffed = false;
-    const need = Math.max(1, Math.round(getP1(piece.params, 5)));
+    const need = Math.trunc(getP1(piece.params, 5));
     const apply = () => {
       const emp = getStackAmount(ctx.player, 'empower');
       const want = emp >= need;
@@ -168,7 +168,6 @@ export const greatswordPort = {
         piece.cooldown = piece._gsBaseCd;
       }
     };
-    apply();
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack === 'empower') apply();
     });

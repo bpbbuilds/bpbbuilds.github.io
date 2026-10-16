@@ -107,7 +107,7 @@ const halberdPort = {
   },
   onPreDealDamageEarly(piece, _ctx, res) {
     if (res && !res.hit) return;
-    const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', getP1(piece.params, 1))));
+    const dam = getPName(piece.params, 'dam', getP1(piece.params, 1));
     if (res) res.damage = (Number(res.damage) || 0) + dam;
     addBonusDamage(piece, dam);
   },

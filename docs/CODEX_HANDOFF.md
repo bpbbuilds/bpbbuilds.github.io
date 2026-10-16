@@ -6303,3 +6303,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 256 - in progress
 
 - Codex owns the next retained Greatsword and Halberd fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-greatsword-smoke.mjs`, `scripts/sim-halberd-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 256 - complete
+
+- Codex repaired Greatsword to mirror the source `onPrepare` lifecycle, exact Empower threshold transitions, buffed stamina/cooldown values, and explicit zero parameters. Halberd now mirrors source `canBlock` targeting, empty affected-cell counting, Block buff power, exact early-hit damage, late block removal/transfer, and zero parameters. Big Bloodthorne's inherited Greatsword setup now calls the corrected preparation hook.
+- Added `scripts/sim-greatsword-smoke.mjs` and `scripts/sim-halberd-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 371 / 519 verified item rows. Focused Greatsword/Halberd, Big Bloodthorne, Wave A/B/D, changed-module syntax, and scoped audit checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Hammer and Hardwood; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 257 - in progress
+
+- Codex owns the next retained Hammer and Hardwood fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-hammer-smoke.mjs`, `scripts/sim-hardwood-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
