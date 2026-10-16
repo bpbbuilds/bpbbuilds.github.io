@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "acfd4936fdca6ee2d2bdac48d44dc3eeea8ebf2077dd076dc8d50f958483be51",
+    "dashboardSha256": "510c807f2be5ddc169097d2718931fb0a0fc3ab25bfb88ffca896dfaaaa5c18e",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 337,
+    "verified_1to1": 339,
     "confirmed_gap": 8,
-    "evidence_pending": 159,
+    "evidence_pending": 157,
     "no_independent_combat": 15
   },
   "byId": {
@@ -511,8 +511,8 @@
     "walrus_tusk": "verified_1to1",
     "wand": "verified_1to1",
     "wand_of_dissonance": "verified_1to1",
-    "war_scythe": "evidence_pending",
-    "water_elemental": "evidence_pending",
+    "war_scythe": "verified_1to1",
+    "water_elemental": "verified_1to1",
     "whetstone": "evidence_pending",
     "whetstone2": "evidence_pending",
     "whetstone3": "evidence_pending",

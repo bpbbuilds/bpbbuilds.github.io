@@ -1453,6 +1453,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  war_scythe: {
+    focusedRegression: 'scripts/sim-war-scythe-smoke.mjs',
+    fixture: 'War Scythe source prepare-time Poison power, early poison threshold conversion, live crit chance/severity, miss guard, and critical damage projection.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  water_elemental: {
+    focusedRegression: 'scripts/sim-water-elemental-smoke.mjs',
+    fixture: 'Water Elemental source secondary Ice speed, primary Nature-scaled mana chance, external used-Mana stage progression, bonus damage, healing, and stage-three Cold projection.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   piercing_arrow: {
     focusedRegression: 'scripts/sim-piercing-arrow-smoke.mjs',
     fixture: 'Piercing Arrow source prepare-time empowered/activatable target filters, crit severity, integer Block removal on critical late-hit, and Lucky on secondary activation.',

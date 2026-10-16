@@ -167,7 +167,8 @@ export function takeDamage(defender, attacker, src) {
         res.critical = false;
         delete res.criticalSource;
       } else {
-        dmg = Math.round(dmg * 2);
+        const severity = Number(src.originPiece?.critSeverity);
+        dmg = Math.round(dmg * (Number.isFinite(severity) ? severity : 2));
       }
     }
   }

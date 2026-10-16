@@ -25,6 +25,7 @@ import { modifiedParamValue } from '../placement-instance.js';
 import { eventSideForPiece } from '../vs-board.js';
 import { itemHasType } from './ports-util.js';
 import { applyEffectDmgFactor } from '../actor-stats.js';
+import { effectiveChance } from '../chance.js';
 import { rollItemChance, weaponStrike } from './ports-wave-c-util.js';
 
 /**
@@ -375,7 +376,7 @@ export const hungryBladePort = {
 export const warScythePort = {
   handlerId: 'war_scythe',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
     const keys = new Set(links.map((l) => l.key));
     for (const other of ctx.pieces || []) {
@@ -386,14 +387,14 @@ export const warScythePort = {
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'war_scythe');
   },
-  onDealtDamage(piece, ctx, hit) {
-    if (!hit?.hit) return;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'poisont', getP1(piece.params, 5))));
+  onPreDealDamageEarly(piece, ctx, res) {
+    if (!res?.hit) return;
+    const need = Math.max(0, Math.round(getPName(piece.params, 'poisont', getP1(piece.params, 5))));
     if ((ctx.dummy.stacks.poison || 0) < need) return;
     loseStacks(ctx.dummy, 'poison', need);
-    piece.critChance = (Number(piece.critChance) || 0) + (piece.chance || 10);
+    piece.critChance = (Number(piece.critChance) || 0) + effectiveChance(piece, 10);
     const sev = getPName(piece.params, 'critdam', 0) / 100;
-    if (sev) piece.critSeverity = (Number(piece.critSeverity) || 0) + sev;
+    if (sev) piece.critSeverity = (Number(piece.critSeverity) || 2) + sev;
     ctx.events.push({
       t: ctx.t + 0.008,
       type: 'info',

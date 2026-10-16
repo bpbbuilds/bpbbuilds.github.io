@@ -36,20 +36,27 @@ import {
   weaponStrike,
 } from './ports-wave-c-util.js';
 import { rollPercent } from '../rng.js';
+import { effectiveChance } from '../chance.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
  */
 
 /** @param {object} ctx @param {object} piece @param {string} type */
-function countType(ctx, piece, type) {
-  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+function countType(ctx, piece, type, color = null) {
+  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect)
+    .filter((link) => !color || link.color === color);
   let n = 0;
   for (const other of ctx.pieces || []) {
     if (!links.some((l) => l.key === other.placementKey)) continue;
     if (itemHasType(ctx.itemsById.get(other.itemId), type)) n += 1;
   }
   return n;
+}
+
+/** @param {object} ctx @param {object} piece */
+function linkedCount(ctx, piece) {
+  return affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect).length;
 }
 
 /** @param {object} ctx @param {object} piece @param {(id: string) => boolean} pred */
@@ -448,49 +455,63 @@ export const stoneGolemPort = {
 export const waterElementalPort = {
   handlerId: 'water_elemental',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
-    const ice = countType(ctx, piece, 'ice');
+  onPrepare(piece, ctx) {
+    const ice = countType(ctx, piece, 'ice', 'secondary');
     const speed = getPName(piece.params, 'speed', 5) / 100;
     if (ice) addSpeed(piece, speed * ice);
     piece._manaSpent = 0;
     piece._waterStage = 0;
+    piece._waterNatureCount = countType(ctx, piece, 'nature', 'primary');
+    piece._waterAffectedCount = linkedCount(ctx, piece);
+    onBuffChanged(ctx.player, (change) => {
+      if (change.stack !== 'mana' || change.amount >= 0 || !change.used) return;
+      piece._manaSpent = (piece._manaSpent || 0) + Math.abs(change.amount);
+      const before = piece._waterStage || 0;
+      const t1 = Math.max(0, Math.round(getPName(piece.params, 'manat1', 10)));
+      const t2 = Math.max(0, Math.round(getPName(piece.params, 'manat2', 20)));
+      const t3 = Math.max(0, Math.round(getPName(piece.params, 'manat3', 30)));
+      if (piece._waterStage === 0 && piece._manaSpent >= t1) piece._waterStage = 1;
+      if (piece._waterStage === 1 && piece._manaSpent >= t2) {
+        piece._waterStage = 2;
+        addBonusDamage(piece, getPName(piece.params, 'dam', 0));
+      }
+      if (piece._waterStage === 2 && piece._manaSpent >= t3) piece._waterStage = 3;
+      if (before !== piece._waterStage) {
+        ctx.events.push({
+          t: ctx.t,
+          type: 'info',
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          label: `${piece.name}: stage ${piece._waterStage}`,
+          meta: { category: 'system', script: true, handler: 'water_elemental' },
+        });
+      }
+    });
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'water_elemental');
   },
   onDealtDamage(piece, ctx, hit) {
     if (!hit?.hit) return;
-    let manaGain = Math.max(1, Math.round(getPName(piece.params, 'mana', 1)));
-    if (countType(ctx, piece, 'nature') && rollPercent(50, ctx.rng)) {
-      manaGain += Math.max(0, Math.round(getPName(piece.params, 'mana2', 1)));
+    let manaGain = Math.max(0, Math.round(getPName(piece.params, 'mana', 0)));
+    const chance = effectiveChance(piece, 0) * (piece._waterAffectedCount ?? linkedCount(ctx, piece));
+    if (piece._waterNatureCount && rollPercent(chance, ctx.rng)) {
+      manaGain += Math.max(0, Math.round(getPName(piece.params, 'mana2', 0)));
     }
     grantStacks(ctx.player, 'mana', manaGain, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    const t1 = Math.max(1, Math.round(getPName(piece.params, 'manat1', 2)));
-    const t2 = Math.max(t1 + 1, Math.round(getPName(piece.params, 'manat2', 4)));
-    const t3 = Math.max(t2 + 1, Math.round(getPName(piece.params, 'manat3', 6)));
-    const cost = Math.max(1, Math.round(getP1(piece.params, 2)));
-    if ((ctx.player.stacks.mana || 0) >= cost) {
-      useMana(ctx.player, cost, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      piece._manaSpent = (piece._manaSpent || 0) + cost;
-      const spent = piece._manaSpent;
-      if (spent >= t1 && piece._waterStage < 1) piece._waterStage = 1;
-      if (spent >= t2 && piece._waterStage < 2) {
-        piece._waterStage = 2;
-        addBonusDamage(piece, Math.max(1, Math.round(getPName(piece.params, 'dam', 2))));
-      }
-      if (spent >= t3 && piece._waterStage < 3) piece._waterStage = 3;
-    }
     if ((piece._waterStage || 0) >= 1) {
-      healActor(ctx.player, Math.max(1, Math.round(getPName(piece.params, 'heal', getP2(piece.params, 6)))));
+      const heal = modifiedParamValue(
+        piece,
+        getPName(piece.params, 'heal', getP4(piece.params, 0)),
+        'heal',
+      );
+      healActor(ctx.player, Math.max(0, Math.round(heal)));
     }
     if ((piece._waterStage || 0) >= 3) {
-      grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getPName(piece.params, 'cold', 1))), {
+      grantStacks(ctx.dummy, 'cold', Math.max(0, Math.round(getPName(piece.params, 'cold', 0))), {
         originKey: piece.placementKey,
         originId: piece.itemId,
         rng: ctx.rng,
