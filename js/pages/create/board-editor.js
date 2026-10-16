@@ -154,23 +154,22 @@ export function mountBoardEditor(host, opts) {
             type="button"
             class="build-round__toggle create-board__toggle create-board__toggle--default-bag"
             data-act="default-bag"
-            title="Create default bag"
-            aria-label="Create default bag"
+            title="Fill with default bags"
+            aria-label="Fill with default bags"
           >
-            <svg
+            <span
               class="create-board__default-bag-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 32 32"
-              width="36"
-              height="36"
               aria-hidden="true"
-              focusable="false"
             >
-              <path d="M8 12h16v15H8z" fill="#ffecdc" stroke="#3c261d" stroke-width="2.4" stroke-linejoin="round" />
-              <path d="M11 12V9a5 5 0 0 1 10 0v3" fill="none" stroke="#3c261d" stroke-width="2.4" stroke-linecap="round" />
-              <path d="M11 12V9a5 5 0 0 1 10 0" fill="none" stroke="#eac914" stroke-width="1.2" stroke-linecap="round" />
-              <path d="M16 16v7M12.5 19.5h7" fill="none" stroke="#eac914" stroke-width="2.2" stroke-linecap="round" />
-            </svg>
+              <img
+                src="${rootBase}assets/icons/history/BagToggle-v3.png"
+                alt=""
+                width="40"
+                height="40"
+                draggable="false"
+              />
+              <span class="create-board__default-bag-badge" aria-hidden="true">+</span>
+            </span>
           </button>
           <div class="create-board__export" data-export-wrap hidden>
             <button
@@ -669,11 +668,11 @@ export function mountBoardEditor(host, opts) {
         window.alert('There is not enough room in Parked to preserve every current item.'),
       confirm: () =>
         confirmDialog({
-          title: 'Create default bag?',
+          title: 'Fill with default bags?',
           body: locked
             ? 'Your current board will be replaced, and its items will move to Parked. Attached run history will be cleared too.'
             : 'Your current board will be replaced, and its items will move to Parked.',
-          confirmLabel: 'Create default bag',
+          confirmLabel: 'Fill with default bags',
           cancelLabel: 'Cancel',
           danger: true,
         }),

@@ -1112,14 +1112,42 @@
 }
 
 .create-board__default-bag-icon {
+  position: relative;
   display: block;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.9rem;
+  height: 1.9rem;
+}
+
+.create-board__default-bag-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
   transition: filter 0.12s ease;
 }
 
-.create-board__toggle--default-bag:hover .create-board__default-bag-icon {
+.create-board__default-bag-badge {
+  position: absolute;
+  right: -0.24rem;
+  bottom: -0.16rem;
+  display: grid;
+  place-items: center;
+  width: 0.82rem;
+  height: 0.82rem;
+  box-sizing: border-box;
+  border: 2px solid var(--il-ink, #3c261d);
+  border-radius: 50%;
+  color: var(--il-ink, #3c261d);
+  background: var(--il-gold, #eac914);
+  font-family: var(--bpb-font-body, sans-serif);
+  font-size: 0.88rem;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: none;
+}
+
+.create-board__toggle--default-bag:hover .create-board__default-bag-icon img {
   filter: brightness(1.2) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
 }
 

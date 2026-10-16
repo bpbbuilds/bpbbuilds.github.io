@@ -5623,3 +5623,10 @@ None.
 - The `/sim/` fidelity chip now reports retained `verified_1to1` proof for the items actually placed on the board; a handler or generic engine path no longer appears as 1:1 coverage. Report-issue snapshots and saved run summaries use the same verified percentage.
 - Added deterministic `assets/data/sim-fidelity-summary.json`, generated alongside the admin dashboard. Current source-backed status is 333 of 519 catalog items verified (64% global); the board chip remains board-specific and intentionally shows `—` if the evidence artifact is unavailable.
 - Added `scripts/sim-verified-coverage-smoke.mjs`; updated dashboard-builder coverage tests and simulator documentation. Focused smoke, coverage honesty, syntax checks, parity/call audits, ledger/dashboard/summary stale checks, recent-row verdict assertions, and `git diff --check` pass. The pre-existing engine census still reports its known eight support-class handler gaps plus `dragonegg` generic mapping; no unrelated exceptions were changed. No legal/security surfaces changed and no live verification was required.
+
+### 2026-10-15 Create default-bag preset button 237 — complete
+
+- Replaced the lock-shaped inline SVG on `/create/` with the existing game-style `BagToggle-v3.png` backpack asset and a gold fill/add badge. Updated the tooltip, accessible label, and confirmation action to say “Fill with default bags.”
+- Added source-contract and Playwright responsive coverage to `scripts/create-default-bag-browser-smoke.mjs`; the focused browser smoke passes at 1440, 1080, narrow/tablet, and mobile viewports. The default-bag behavior smoke, JavaScript syntax checks, and `git diff --check` also pass.
+- Updated both related checklist entries in `docs/todo.md`. No legal/security surfaces changed.
+- `npm test` is unavailable because this repository has no `test` script. The earlier simulator audit commit `4989900` remains local because GitHub rejected `git push origin main` with HTTP 403 for the configured account; no remote or credential changes were made.

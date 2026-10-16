@@ -443,7 +443,7 @@ Goal: propose **last-round / endgame boards** that synergize — not full shop r
 - [x] non logged in user tries to upvote prompt sign in module — anonymous votes open the shared sign-in confirm and resume the requested vote after OAuth.
 - [ ] admin only page for preset website elements that can be reused across the page
 - [ ] chang i on rings to be in the top right corner of the rings. stays int he top right regardless of rotation. the design of the i is the same design used on the one next to the submit button
-- [ ] use different icon for the create default bag button
+- [x] use different icon for the create default bag button — backpack asset with a fill/add badge and clearer accessible label shipped on `/create/`.
 ### plugins to download
 - [ ] superpowers
 - [ ] kaparthy skills
@@ -452,7 +452,7 @@ Goal: propose **last-round / endgame boards** that synergize — not full shop r
 - [ ] supabase plugin
 - [ ] oh my claude code
 - [ ] chome dev tools mcp
-[ ] preset button design
+[x] preset button design — default-bag control now uses the game backpack icon with a gold fill/add badge instead of the lock-shaped SVG.
 [ ] button remove the box shadow but show it on hover instead
 [ ] user hovers over build animation user is able to hover over the items instead of the bags, item tool tips, star slots ect. will show
 [ ] add remix build button which will be blue
