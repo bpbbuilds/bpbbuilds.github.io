@@ -6248,3 +6248,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 251 - in progress
 
 - Codex owns the next retained Generator and Ghost fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to `js/pages/sim/engine/scripts/ports-outliers-board.js`, `js/pages/sim/engine/scripts/ports-wave-b-heal.js`, `scripts/sim-generator-smoke.mjs`, `scripts/sim-ghost-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 251 - complete
+
+- Codex repaired Generator to mirror its six explicit lightning charge cells, exact fractional stamina gate, source-modified duration, owner-side charge projections, combat-start/successful-cooldown `charge_emitted` signals, and activation-before-charge ordering. Ghost now mirrors preparation-time Unhealing, one random available buff spend, source-modified heal logging, owner-side projections, unconditional activation, and explicit zero parameters.
+- Added `scripts/sim-generator-smoke.mjs` and `scripts/sim-ghost-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 361 / 519 verified item rows. Focused pair tests, Battery/charge/Cog/Con-Trap/Engineer Box regressions, Wave B/D, lifecycle closure, parity systems, coverage honesty, verified coverage, Admin audit, ledger/dashboard checks, changed-module syntax, and scoped `git diff --check` pass.
+- The repository-wide continuous audit still has unrelated blockers: the patch-drift baseline reports accumulated source changes requiring its explicit baseline workflow, and the existing Ace/Armored Puppy smoke expects a missing handler. Neither touches Generator/Ghost; no legal, authentication, database, storage, or security behavior changed.
+- The next retained queue begins with Gigawatt and Gingerbread Man; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 252 - in progress
+
+- Codex owns the next retained Gigawatt and Gingerbread Man fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-gigawatt-smoke.mjs`, `scripts/sim-gingerbread-man-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

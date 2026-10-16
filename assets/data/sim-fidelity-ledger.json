@@ -8840,9 +8840,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-generator-smoke.mjs",
+        "fixture": "Generator source six-cell lightning charge, exact fractional stamina gate, modified duration, owner-side charge events, activation/charge ordering, and zero-safe parameters on both board sides.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -8877,9 +8883,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-ghost-smoke.mjs",
+        "fixture": "Ghost source preparation Unhealing, one random buff spend, modified heal logging, owner-side events, unconditional activation, and zero-safe parameters on both board sides.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

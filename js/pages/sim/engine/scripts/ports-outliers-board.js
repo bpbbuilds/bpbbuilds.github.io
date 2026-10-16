@@ -20,12 +20,14 @@ import {
 import { scheduleStatChargePath } from '../charge-delivery.js';
 import { advanceCooldownSeconds, isCooldownActive } from '../cooldown.js';
 import { getP, getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addSpeed, changeVaryingDamage, modifiedCooldown } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
 import { canBagAffectItem } from '../../../../shared/backpack-grid/can-affect.js';
 import { itemHasType, afterEffectFinished, pushActivate } from './ports-util.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 import { greatswordPort } from './ports-al-weapons.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -53,19 +55,19 @@ const COG_BADGE_CHARGE_CELLS = [
  * @param {object} piece
  * @param {import('./handlers.js').ScriptCtx} ctx
  * @param {string} handler
- * @param {{ collisionCells?: { x: number, y: number }[], generatorPath?: boolean, emitBus?: boolean, speedFactor?: number }} [opts]
+ * @param {{ collisionCells?: { x: number, y: number }[], generatorPath?: boolean, emitBus?: boolean, speedFactor?: number, durPerTile?: number }} [opts]
  */
 function emitBatteryCharge(piece, ctx, handler, opts = {}) {
   const { t, events, graph, itemsById } = ctx;
+  const actor = eventSideForPiece(piece);
   const item = itemsById.get(piece.itemId);
   const boardPiece = graph.pieces.get(piece.placementKey);
   if (!item || !boardPiece) return;
   const flat = getPName(piece.params, 'speed', getP1(piece.params, 10)) / 100;
   const perTile = getPName(piece.params, 'speed2', getP2(piece.params, 5)) / 100;
   const speedFactor = Math.max(0.01, Number(opts.speedFactor) || 1);
-  const durPerTile =
-    (getPName(piece.params, 'dur', BATTERY_DUR_PER_TILE) || BATTERY_DUR_PER_TILE) /
-    speedFactor;
+  const baseDur = opts.durPerTile ?? getPName(piece.params, 'dur', BATTERY_DUR_PER_TILE);
+  const durPerTile = Number(baseDur) / speedFactor;
   const pathId = `charge:${piece.placementKey}:${t}:${speedFactor}`;
   const placement = {
     x: boardPiece.x,
@@ -105,7 +107,7 @@ function emitBatteryCharge(piece, ctx, handler, opts = {}) {
   events.push({
     t,
     type: 'charge',
-    actor: 'player',
+    actor,
     itemId: piece.itemId,
     placementKey: piece.placementKey,
     label: `${piece.name}: charge`,
@@ -127,7 +129,7 @@ function emitBatteryCharge(piece, ctx, handler, opts = {}) {
       events.push({
         t: enterAbs,
         type: 'charge',
-        actor: 'player',
+        actor,
         itemId: piece.itemId,
         placementKey: piece.placementKey,
         label: targetPiece
@@ -458,21 +460,26 @@ export const corruptedArmorPort = {
 export const generatorPort = {
   handlerId: 'generator',
   family: 'unique',
-  emitCharge(piece, ctx, speedFactor = 1) {
+  emitCharge(piece, ctx, speedFactor = 1, emitBus = false) {
+    const dur = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur', getP1(piece.params, BATTERY_DUR_PER_TILE)),
+      'dur',
+    );
     pushActivate(piece, ctx, 'generator', `Accessory: ${piece.name}`);
     emitBatteryCharge(piece, ctx, 'generator', {
       generatorPath: true,
-      emitBus: false,
+      emitBus,
       speedFactor,
+      durPerTile: dur,
     });
   },
   onCombatStart(piece, ctx) {
-    pushActivate(piece, ctx, 'generator', `Accessory: ${piece.name}`);
-    emitBatteryCharge(piece, ctx, 'generator', { generatorPath: true });
+    generatorPort.emitCharge(piece, ctx, 1, true);
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    if (tryUseStamina(player, Math.max(1, piece.staminaCost || 1)) === 'starve') {
+    if (tryUseStamina(player, piece.staminaCost) === 'starve') {
       events.push({
         t,
         type: 'stamina',
@@ -481,8 +488,7 @@ export const generatorPort = {
       });
       return true;
     }
-    pushActivate(piece, ctx, 'generator', `Accessory: ${piece.name}`);
-    emitBatteryCharge(piece, ctx, 'generator', { generatorPath: true });
+    generatorPort.emitCharge(piece, ctx, 1, true);
     return true;
   },
 };

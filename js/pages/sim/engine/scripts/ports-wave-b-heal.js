@@ -73,30 +73,49 @@ function bindSunArmor(piece, ctx) {
 export const ghostPort = {
   handlerId: 'ghost',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const unh = getPName(piece.params, 'unhealing', 10) / 100;
+  onPrepare(piece, ctx) {
+    const unh = getPName(piece.params, 'unhealing', getP1(piece.params, 0)) / 100;
     if (unh) ctx.player.unhealing = (Number(ctx.player.unhealing) || 0) + unh;
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    pushActivate(piece, ctx, 'ghost', `Accessory: ${piece.name}`);
     const used = useRandomBuff(player, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    if (!used) return true;
-    const healAmt = Math.max(1, Math.round(getPName(piece.params, 'heal', getP1(piece.params, 8))));
-    const healed = healActor(player, healAmt);
-    if (healed > 0) {
-      events.push({
-        t: t + 0.003,
-        type: 'heal',
-        target: 'player',
-        amount: healed,
-        label: `${piece.name}: heal +${healed} (spent ${used})`,
-        meta: { category: 'heal', script: true, handler: 'ghost' },
-      });
+    if (used) {
+      const healAmt = modifiedParamValue(
+        piece,
+        getPName(piece.params, 'heal', getP2(piece.params, 0)),
+        'heal',
+      );
+      const side = eventSideForPiece(piece);
+      const want = requestedHealAmount(player, healAmt);
+      healActor(player, healAmt);
+      if (player._lastHeal) player._lastHeal.meterAttached = true;
+      if (want > 0) {
+        events.push({
+          t: t + 0.003,
+          type: 'heal',
+          actor: side,
+          target: side,
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          amount: want,
+          label: `${piece.name}: heal +${want} (spent ${used})`,
+          meta: {
+            category: 'heal',
+            script: true,
+            handler: 'ghost',
+            loggedAmount: want,
+            meterAttached: true,
+            requestedHealAmount: healAmt,
+          },
+        });
+      }
     }
+    // Ghost.gd always calls activate(), including when no buff was available.
+    pushActivate(piece, ctx, 'ghost', `Accessory: ${piece.name}`);
     return true;
   },
 };

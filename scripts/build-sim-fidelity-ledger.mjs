@@ -1461,6 +1461,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  generator: {
+    focusedRegression: 'scripts/sim-generator-smoke.mjs',
+    fixture: 'Generator source six-cell lightning charge, exact fractional stamina gate, modified duration, owner-side charge events, activation/charge ordering, and zero-safe parameters on both board sides.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   full_body_protection: {
     focusedRegression: 'scripts/sim-full-body-protection-smoke.mjs',
     fixture: 'Full Body Protection source preparation-time Block buff power for linked blockers, exact complete Armor/Helmet/Shoes activation gate, per-hit attack/effect damage reduction, cooldown Block, and activation ordering on both board sides.',
@@ -1471,6 +1478,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   garlic: {
     focusedRegression: 'scripts/sim-garlic-smoke.mjs',
     fixture: 'Garlic source Food cooldown, catalog Block plus addBonusBlock extra value, source chance RNG, opponent-side partial Vampirism removal, and effect-before-activation ordering.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  ghost: {
+    focusedRegression: 'scripts/sim-ghost-smoke.mjs',
+    fixture: 'Ghost source preparation Unhealing, one random buff spend, modified heal logging, owner-side events, unconditional activation, and zero-safe parameters on both board sides.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',
