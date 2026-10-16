@@ -1439,6 +1439,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  vineweave_basket: {
+    focusedRegression: 'scripts/sim-vineweave-basket-smoke.mjs',
+    fixture: 'Vineweave Basket source preparation timing, Nature cargo filtering, base/per-Nature healing efficiency, and engine preparation snapshot; shop-sale hooks remain outside combat simulation scope.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  walrus_tusk: {
+    focusedRegression: 'scripts/sim-walrus-tusk-smoke.mjs',
+    fixture: 'Walrus Tusk source combat-start P1 Spikes grant, consume lifecycle, activation log, and engine start projection.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   piercing_arrow: {
     focusedRegression: 'scripts/sim-piercing-arrow-smoke.mjs',
     fixture: 'Piercing Arrow source prepare-time empowered/activatable target filters, crit severity, integer Block removal on critical late-hit, and Lucky on secondary activation.',

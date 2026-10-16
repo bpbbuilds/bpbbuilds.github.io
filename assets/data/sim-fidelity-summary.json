@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "aa7d9320aae183f5af68aaeeffc92d1e4acbfcae38d6f6171285d3529c0ecc43",
+    "dashboardSha256": "4982a8b31007fa20723742c76ad25a0e1a338a8d84babcabe70472451be875d9",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 333,
+    "verified_1to1": 335,
     "confirmed_gap": 8,
-    "evidence_pending": 163,
+    "evidence_pending": 161,
     "no_independent_combat": 15
   },
   "byId": {
@@ -507,8 +507,8 @@
     "vampiric_potion": "verified_1to1",
     "vampiric_scythe": "verified_1to1",
     "villain_sword": "verified_1to1",
-    "vineweave_basket": "evidence_pending",
-    "walrus_tusk": "evidence_pending",
+    "vineweave_basket": "verified_1to1",
+    "walrus_tusk": "verified_1to1",
     "wand": "evidence_pending",
     "wand_of_dissonance": "evidence_pending",
     "war_scythe": "evidence_pending",

@@ -58,7 +58,7 @@ export const staminaSackPort = {
 export const vineweaveBasketPort = {
   handlerId: 'vineweave_basket',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const nature = insides(ctx, piece).filter((o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'nature'),
     ).length;

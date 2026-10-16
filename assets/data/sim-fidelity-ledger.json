@@ -20727,9 +20727,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-vineweave-basket-smoke.mjs",
+        "fixture": "Vineweave Basket source preparation timing, Nature cargo filtering, base/per-Nature healing efficiency, and engine preparation snapshot; shop-sale hooks remain outside combat simulation scope.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -20763,9 +20769,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-walrus-tusk-smoke.mjs",
+        "fixture": "Walrus Tusk source combat-start P1 Spikes grant, consume lifecycle, activation log, and engine start projection.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
