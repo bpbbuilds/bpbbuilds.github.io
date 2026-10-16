@@ -6186,3 +6186,13 @@ None.
 - Codex repaired Chess Master to apply its source preparation-time speed bonus to the first Chess Board, and repaired Chili Goobert to heal, grant Heat, then activate at the six-peer threshold in source order.
 - Added `scripts/sim-chess-master-smoke.mjs` and `scripts/sim-chili-goobert-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 345 / 519 verified item rows. Focused smokes, chess call-paths, Goobert regression, lifecycle closure, parity systems, coverage honesty, Admin audit, verified coverage, changed-module syntax, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed.
 - The next retained queue begins with Coil; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 244 - in progress
+
+- Codex owns the Coil and Dragon Nest fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and this handoff. Planned paths are limited to the relevant simulator port modules, `scripts/sim-coil-smoke.mjs`, `scripts/sim-dragon-nest-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 244 - complete
+
+- Codex verified Coil against its source charge counter, random-buff steal, mini-activation, ten-charge consumption cap, and post-cap no-op. Dragon Nest was repaired to react to every source dragon attack signal, including misses, heal the owner, and emit a visual-only mini-activation projection; its Dragon-only targeting and four start buffs are covered.
+- Added `scripts/sim-coil-smoke.mjs` and `scripts/sim-dragon-nest-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 347 / 519 verified item rows. Focused smokes, existing Coil/Band Y/Wave D regressions, lifecycle closure, coverage honesty, verified coverage, Admin audit, changed-module syntax, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed.
+- The next retained queue begins with Flute; this batch is ready to commit and push.

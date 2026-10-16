@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "9b5c535bc94fd699467d7edbe1715168fa0b86f98aa94916689d1b8b1f610b32",
+    "dashboardSha256": "7dfdaa467ffde5137a2478a59b426d052f5ff5fbf0eecc6232500a30f9dfeb43",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 345,
+    "verified_1to1": 347,
     "confirmed_gap": 8,
-    "evidence_pending": 151,
+    "evidence_pending": 149,
     "no_independent_combat": 15
   },
   "byId": {
@@ -114,7 +114,7 @@
     "claws_of_attack": "verified_1to1",
     "cog": "verified_1to1",
     "cog_badge": "verified_1to1",
-    "coil": "evidence_pending",
+    "coil": "verified_1to1",
     "coins": "verified_1to1",
     "con_trap_tron": "verified_1to1",
     "corrupted_armor": "verified_1to1",
@@ -156,7 +156,7 @@
     "draconic_orb": "verified_1to1",
     "dragon_claws": "verified_1to1",
     "dragon_knight": "verified_1to1",
-    "dragon_nest": "evidence_pending",
+    "dragon_nest": "verified_1to1",
     "dragon_set": "verified_1to1",
     "dragonscale_armor": "verified_1to1",
     "dragonskin_boots": "verified_1to1",

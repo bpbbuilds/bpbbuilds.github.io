@@ -438,7 +438,7 @@ export const dragonNestPort = {
     const healPer = Math.max(1, Math.round(getPName(piece.params, 'heal', getP1(piece.params, 4))));
     ctx.bus?.on?.('piece_dealt_damage', (payload) => {
       const atk = payload?.piece;
-      if (!atk || !payload?.hit?.hit) return;
+      if (!atk) return;
       if (!dragonKeys.has(atk.placementKey)) return;
       const healed = healActor(player, healPer);
       if (healed > 0) {
@@ -451,6 +451,15 @@ export const dragonNestPort = {
           meta: { category: 'heal', script: true, handler: 'dragon_nest' },
         });
       }
+      events.push({
+        t: payload?.t ?? ctx.t,
+        type: 'info',
+        actor: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: mini activate`,
+        meta: { category: 'system', script: true, handler: 'dragon_nest', miniActivate: true },
+      });
     });
     const luck = Math.max(0, Math.round(getP2(piece.params, 1)));
     const regen = Math.max(0, Math.round(getP3(piece.params, 1)));

@@ -4556,9 +4556,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-coil-smoke.mjs",
+        "fixture": "Coil source preparation reset, random-buff steal per charge, mini-activation projection, exact ten-charge consumption cap, and post-cap no-op.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -6339,9 +6345,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-dragon-nest-smoke.mjs",
+        "fixture": "Dragon Nest source Dragon-only target wiring, start Lucky/Regeneration/Mana/Heat grants, attack healing, miss reaction, and mini-activation projection.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

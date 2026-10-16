@@ -774,6 +774,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  coil: {
+    focusedRegression: 'scripts/sim-coil-smoke.mjs',
+    fixture: 'Coil source preparation reset, random-buff steal per charge, mini-activation projection, exact ten-charge consumption cap, and post-cap no-op.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   con_trap_tron: {
     focusedRegression: 'scripts/sim-cog-con-trap-smoke.mjs',
     fixture: 'Con-Trap-Tron source prepare-time linked cooldown speed malus/target caching, strict health threshold, dual charge paths, buff-amplification jobs, and base/bonus cooldown advance.',
@@ -1113,6 +1120,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   dragon_knight: {
     focusedRegression: 'scripts/sim-dragon-knight-smoke.mjs',
     fixture: 'Dragon Knight source canActivate peer wiring, inherited Ruby Whelp Reflect/Heat lifecycle, hit-only healing, cooldown advancement, and zero typed parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  dragon_nest: {
+    focusedRegression: 'scripts/sim-dragon-nest-smoke.mjs',
+    fixture: 'Dragon Nest source Dragon-only target wiring, start Lucky/Regeneration/Mana/Heat grants, attack healing, miss reaction, and mini-activation projection.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',
