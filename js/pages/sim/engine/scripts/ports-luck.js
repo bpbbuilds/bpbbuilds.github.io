@@ -16,6 +16,7 @@ import {
   useRegeneration,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
+import { rollItemChance } from '../chance.js';
 import { getP, getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { rollPercent } from '../rng.js';
@@ -376,35 +377,48 @@ export const garlicPort = {
   family: 'food',
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    pushActivate(piece, ctx, 'garlic', `Food: ${piece.name}`);
-    const block =
-      Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 4))) +
-      (Number(piece._extraBlock) || 0);
-    gainStacks(player, 'block', block);
-    events.push({
-      t: t + 0.002,
-      type: 'buff',
-      target: 'player',
-      amount: block,
-      label: `${piece.name}: +${block} Block`,
-      meta: { category: 'buff', stack: 'block', script: true, handler: 'garlic' },
-    });
-    const chance = Number(piece.chance) || 50;
-    if (rollPercent(chance, rng)) {
-      const rem = Math.max(1, Math.round(getP1(piece.params, 1)));
-      const spent = Math.min(rem, Number(player.stacks.vampirism) || 0);
+    const catalogBlock = Number(ctx.itemsById.get(piece.itemId)?.block);
+    const baseBlock = Number.isFinite(catalogBlock)
+      ? catalogBlock
+      : Number(piece.blockGrant) || 0;
+    const currentBlock = Number(piece.blockGrant);
+    const inferredExtra = Number.isFinite(currentBlock)
+      ? Math.max(0, currentBlock - baseBlock)
+      : 0;
+    const explicitExtra = Math.max(0, Number(piece._extraBlock) || 0);
+    const block = Math.max(0, Math.round(baseBlock + Math.max(explicitExtra, inferredExtra)));
+    if (block > 0) {
+      grantStacks(player, 'block', block, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+    }
+    const chance = Number.isFinite(Number(piece.chance))
+      ? Number(piece.chance)
+      : Number(ctx.itemsById.get(piece.itemId)?.chance) || 0;
+    if (rollItemChance(piece, rng, chance)) {
+      const rem = Math.max(0, Math.round(getP1(piece.params, 0)));
+      const spent = loseStacks(ctx.dummy, 'vampirism', rem);
       if (spent > 0) {
-        loseStacks(player, 'vampirism', spent);
         events.push({
           t: t + 0.004,
           type: 'buff',
-          target: 'player',
+          actor: ctx.dummy.id,
+          target: ctx.dummy.id,
           amount: -spent,
           label: `${piece.name}: −${spent} Vampirism`,
-          meta: { category: 'buff', stack: 'vampirism', script: true, handler: 'garlic' },
+          meta: {
+            category: 'buff',
+            stack: 'vampirism',
+            script: true,
+            handler: 'garlic',
+            originId: piece.itemId,
+            originKey: piece.placementKey,
+          },
         });
       }
     }
+    pushActivate(piece, ctx, 'garlic', `Food: ${piece.name}`);
     return true;
   },
 };

@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "7f9330717fe4d61a015034f8404f930daff0277b7a284e8155554475bd9b2e3a",
+    "dashboardSha256": "20859bcb22f5f8e0e20611fa140b2d95ce55fea84a09b20876a03b85ca4eff89",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 357,
+    "verified_1to1": 359,
     "confirmed_gap": 8,
-    "evidence_pending": 139,
+    "evidence_pending": 137,
     "no_independent_combat": 15
   },
   "byId": {
@@ -209,9 +209,9 @@
     "frostbite": "verified_1to1",
     "frozen_buckler": "verified_1to1",
     "frozen_flame": "verified_1to1",
-    "full_body_protection": "evidence_pending",
+    "full_body_protection": "verified_1to1",
     "furcifer_prime": "no_independent_combat",
-    "garlic": "evidence_pending",
+    "garlic": "verified_1to1",
     "generator": "evidence_pending",
     "ghost": "evidence_pending",
     "gigawatz": "evidence_pending",

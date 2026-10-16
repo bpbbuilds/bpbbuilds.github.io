@@ -9,6 +9,9 @@ import {
   grantStacks,
   onBuffChanged,
 } from '../buff-economy.js';
+// FullBodyProtection.gd uses giveBuffPower during preparation so linked
+// blockers retain their own catalog block value and scale every later grant.
+import { giveBuffPower } from '../buff-power.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { scaleEffectDuration } from '../effect-duration.js';
@@ -104,56 +107,68 @@ export const fullBodyProtectionPort = {
   handlerId: 'full_body_protection',
   family: 'unique',
   onPrepare(piece, ctx) {
-    piece._fbpActive = fullBodySetActive(ctx.pieces, ctx.itemsById);
-  },
-  onCombatStart(piece, ctx) {
-    const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
+    const { graph, itemsById, canAffect, pieces } = ctx;
     const blockAmp =
-      getPName(piece.params, 'block', getPName(piece.params, 'blockamp', 20)) / 100;
+      getPName(piece.params, 'block', getP2(piece.params, 0)) / 100;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    for (const other of pieces || []) {
-      if (!links.some((l) => l.key === other.placementKey)) continue;
+    for (const link of links) {
+      const other = (pieces || []).find((candidate) => candidate.placementKey === link.key);
+      if (!other) continue;
+      const item = itemsById.get(other.itemId);
       const canBlock =
-        (Number(other.blockGrant) || 0) > 0 ||
-        other.kind === 'armor' ||
-        other.kind === 'shield' ||
-        itemHasType(itemsById.get(other.itemId), 'armor') ||
-        itemHasType(itemsById.get(other.itemId), 'shield');
+        Number(other.blockGrant ?? item?.block) > 0 ||
+        other.itemId === 'halberd' ||
+        other.itemId === 'stoned';
       if (!canBlock || !(blockAmp > 0)) continue;
-      other.blockGrant = Math.max(
-        0,
-        Math.round((Number(other.blockGrant) || 0) * (1 + blockAmp)),
-      );
+      giveBuffPower(other, 'block', blockAmp);
     }
     piece._fbpActive = fullBodySetActive(pieces, itemsById);
-    if (piece._fbpActive) {
-      const flat = Math.max(
+    if (!piece._fbpActive || piece._fbpBound) return;
+    piece._fbpBound = true;
+    ctx.bus?.on?.('pre_take_damage', (payload) => {
+      if (payload?.defender !== ctx.player) return;
+      const damage = payload.damage;
+      const source = damage?.damageSource || payload.source || {};
+      if (!damage || (source.isAttack === false && source.isEffectDamage !== true)) return;
+      const amount = Math.max(
         0,
-        Math.round(getPName(piece.params, 'damreduction', getP2(piece.params, 2))),
+        Math.round(getPName(piece.params, 'damreduction', getP1(piece.params, 0))),
       );
-      if (flat > 0) {
-        player.damageReduction = (Number(player.damageReduction) || 0) + flat;
-        piece._fbpFlatDr = flat;
-        events.push({
-          t: t + 0.002,
-          type: 'info',
-          label: `${piece.name}: set active +${flat} flat DR`,
-          meta: { category: 'system', script: true, handler: 'full_body_protection' },
+      if (!(amount > 0)) return;
+      const left = Math.max(
+        0,
+        (Number(damage.damage) || 0) - (Number(damage.damageReduction) || 0),
+      );
+      const actual = Math.min(amount, left);
+      damage.damageReduction = (Number(damage.damageReduction) || 0) + amount;
+      if (actual > 0) {
+        damage.reductionSources?.push?.({
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          amount: actual,
         });
       }
-    }
+    });
   },
   onCooldownEffect(piece, ctx) {
-    const { player } = ctx;
+    const { player, itemsById } = ctx;
+    const catalogBlock = Number(itemsById.get(piece.itemId)?.block);
+    const baseBlock = Number.isFinite(catalogBlock)
+      ? catalogBlock
+      : Number(piece.blockGrant) || 0;
+    const currentBlock = Number(piece.blockGrant);
+    const inferredExtra = Number.isFinite(currentBlock)
+      ? Math.max(0, currentBlock - baseBlock)
+      : 0;
+    const explicitExtra = Math.max(0, Number(piece._extraBlock) || 0);
+    const block = Math.max(0, Math.round(baseBlock + Math.max(explicitExtra, inferredExtra)));
+    if (block > 0) {
+      grantStacks(player, 'block', block, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+    }
     pushActivate(piece, ctx, 'full_body_protection', `Armor: ${piece.name}`);
-    const block = Math.max(
-      1,
-      Math.round(Number(ctx.itemsById.get(piece.itemId)?.block) || piece.blockGrant || 10),
-    );
-    grantStacks(player, 'block', block, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
     return true;
   },
 };

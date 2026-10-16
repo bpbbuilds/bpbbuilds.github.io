@@ -1461,6 +1461,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  full_body_protection: {
+    focusedRegression: 'scripts/sim-full-body-protection-smoke.mjs',
+    fixture: 'Full Body Protection source preparation-time Block buff power for linked blockers, exact complete Armor/Helmet/Shoes activation gate, per-hit attack/effect damage reduction, cooldown Block, and activation ordering on both board sides.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  garlic: {
+    focusedRegression: 'scripts/sim-garlic-smoke.mjs',
+    fixture: 'Garlic source Food cooldown, catalog Block plus addBonusBlock extra value, source chance RNG, opponent-side partial Vampirism removal, and effect-before-activation ordering.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',

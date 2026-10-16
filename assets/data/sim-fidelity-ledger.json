@@ -8723,9 +8723,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-full-body-protection-smoke.mjs",
+        "fixture": "Full Body Protection source preparation-time Block buff power for linked blockers, exact complete Armor/Helmet/Shoes activation gate, per-hit attack/effect damage reduction, cooldown Block, and activation ordering on both board sides.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -8791,9 +8797,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-garlic-smoke.mjs",
+        "fixture": "Garlic source Food cooldown, catalog Block plus addBonusBlock extra value, source chance RNG, opponent-side partial Vampirism removal, and effect-before-activation ordering.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
