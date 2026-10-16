@@ -6258,4 +6258,15 @@ None.
 
 ### 2026-10-16 Simulator item parity continuation 252 - in progress
 
-- Codex owns the next retained Gigawatt and Gingerbread Man fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-gigawatt-smoke.mjs`, `scripts/sim-gingerbread-man-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+- Codex owns the next retained Gigawatz and Gingerbread Man fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-gigawatz-smoke.mjs`, `scripts/sim-gingerbread-man-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 252 - complete
+
+- Codex repaired Gigawatz to mirror its source preparation reset, count exactly ten charge-based speed boosts instead of accumulating speed against the cap, inflict Blind before source effect damage, use the descriptor damage path, activate before recording the next damage increment, and increment by `damincrease`. Gingerbread Man now preserves inherited Food preparation, source starting/cooldown max-health gains, the nested Lucky/Heat/Mana gate, exact Empower/Regeneration values, modified `maxhealth_use`, both board sides, and explicit zero parameters.
+- Added `scripts/sim-gigawatz-smoke.mjs` and `scripts/sim-gingerbread-man-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 363 / 519 verified item rows. Focused pair tests, Emerald-through-Gingerbread, AP milestone, Wave D, Staff of Unhealing, lifecycle closure, parity systems, coverage honesty, verified coverage, Admin audit, ledger/dashboard checks, changed-module syntax, and scoped `git diff --check` pass.
+- The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch. No legal, authentication, database, storage, or security behavior changed.
+- The next retained queue begins with Girl Power and Gloves of Haste; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 253 - in progress
+
+- Codex owns the next retained Girl Power and Gloves of Haste fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-girl-power-smoke.mjs`, `scripts/sim-gloves-of-haste-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

@@ -1489,6 +1489,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  gigawatz: {
+    focusedRegression: 'scripts/sim-gigawatz-smoke.mjs',
+    fixture: 'Gigawatz source preparation counters, capped charge speed, Blind/effect-damage cooldown ordering, source damage increments, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  gingerbread_man: {
+    focusedRegression: 'scripts/sim-gingerbread-man-smoke.mjs',
+    fixture: 'Gingerbread Man inherited Food preparation, starting and cooldown max-health gains, nested Lucky/Heat/Mana gate, Empower/Regeneration grants, modified max-health-use, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',

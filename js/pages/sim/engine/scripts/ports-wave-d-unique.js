@@ -15,6 +15,7 @@ import { grantStun, healActor, tryUseStamina, gainMaxStaminaTemporary, giveStami
 import { applyEffectDmgFactor, applyHealEfficiency } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { effectDuration } from '../effect-duration.js';
 import { addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
@@ -28,7 +29,6 @@ import {
 } from './ports-util.js';
 import { randInt } from '../rng.js';
 import { rollItemChance } from '../chance.js';
-import { emitChargePulse } from '../charge-delivery.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -248,30 +248,31 @@ export const frozenFlamePort = {
 export const gigawatzPort = {
   handlerId: 'gigawatz',
   family: 'pet_like',
-  onCombatStart(piece) {
-    piece._gigaActs = 0;
-    piece._gigaChargeSpeed = 0;
+  onPrepare(piece) {
+    piece._gigaNumSpeedBoosts = 0;
+    piece._gigaDamageBonus = 0;
   },
   onChargeReceived(piece) {
-    const max = getPName(piece.params, 'max', 0.5);
-    const step = getPName(piece.params, 'speed', 5) / 100;
-    if ((piece._gigaChargeSpeed || 0) + step <= max + 1e-9) {
+    const max = Math.max(0, Math.trunc(getPName(piece.params, 'max', getP4(piece.params, 0))));
+    const step = getPName(piece.params, 'speed', getP3(piece.params, 0)) / 100;
+    if ((piece._gigaNumSpeedBoosts || 0) < max) {
       addSpeed(piece, step);
-      piece._gigaChargeSpeed = (piece._gigaChargeSpeed || 0) + step;
+      piece._gigaNumSpeedBoosts = (piece._gigaNumSpeedBoosts || 0) + 1;
     }
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'gigawatz', `Pet: ${piece.name}`);
-    emitChargePulse(piece, ctx, { label: `${piece.name}: charge` });
-    grantStacks(ctx.dummy, 'blind', Math.max(1, Math.round(getP1(piece.params, 1))), {
+    const blind = Math.trunc(getPName(piece.params, 'blind', getP1(piece.params, 0)));
+    const damageBonus = getPName(piece.params, 'damincrease', getP2(piece.params, 0));
+    const baseDamage = Number.isFinite(Number(piece.damageMin)) ? Number(piece.damageMin) : 0;
+    grantStacks(ctx.dummy, 'blind', blind, {
       originKey: piece.placementKey,
       originId: piece.itemId,
       rng: ctx.rng,
       opponent: ctx.player,
     });
-    const base = Math.max(1, Math.round(getPName(piece.params, 'dam', piece.damageMin || 4)));
-    dealHit(piece, ctx, base + (piece._gigaActs || 0));
-    piece._gigaActs = (piece._gigaActs || 0) + 1;
+    dealEffectDamage(piece, ctx, baseDamage + (piece._gigaDamageBonus || 0));
+    pushActivate(piece, ctx, 'gigawatz', `Skill: ${piece.name}`);
+    piece._gigaDamageBonus = (piece._gigaDamageBonus || 0) + damageBonus;
     return true;
   },
 };

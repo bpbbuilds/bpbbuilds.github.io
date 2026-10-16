@@ -14,7 +14,7 @@ import {
   useRegeneration,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { getP, getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import {
@@ -129,14 +129,18 @@ const gingerbreadManPort = {
     applyFoodPrepareSpeed(piece, ctx);
   },
   onCombatStart(piece, ctx) {
-    const hp = Math.max(1, Math.round(getPName(piece.params, 'maxhealth', getP1(piece.params, 40))));
+    const hp = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'maxhealth', getP1(piece.params, 0)),
+      'maxhealth',
+    );
     giveTempMaxHp(piece, ctx, 'gingerbread_man', hp);
     pushActivate(piece, ctx, 'gingerbread_man', `Food: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    const luckN = Math.max(1, Math.round(getP2(piece.params, 1)));
-    const heatN = Math.max(1, Math.round(getP3(piece.params, 1)));
-    const manaN = Math.max(1, Math.round(getP4(piece.params, 1)));
+    const luckN = Math.trunc(getPName(piece.params, 'luckt', getP2(piece.params, 0)));
+    const heatN = Math.trunc(getPName(piece.params, 'heatt', getP3(piece.params, 0)));
+    const manaN = Math.trunc(getPName(piece.params, 'manat', getP4(piece.params, 0)));
     if (
       getStackAmount(ctx.player, 'lucky') >= luckN &&
       getStackAmount(ctx.player, 'heat') >= heatN &&
@@ -148,18 +152,19 @@ const gingerbreadManPort = {
       grantStacks(
         ctx.player,
         'empower',
-        Math.max(1, Math.round(getPName(piece.params, 'empower', 1))),
+        getPName(piece.params, 'empower', getP5(piece.params, 0)),
         origin(piece),
       );
       grantStacks(
         ctx.player,
         'regeneration',
-        Math.max(1, Math.round(getPName(piece.params, 'regen', 3))),
+        getPName(piece.params, 'regen', getP6(piece.params, 0)),
         origin(piece),
       );
-      const extra = Math.max(
-        1,
-        Math.round(getPName(piece.params, 'maxhealth_use', 20)),
+      const extra = modifiedParamValue(
+        piece,
+        getPName(piece.params, 'maxhealth_use', getP(piece.params, 6, 0)),
+        'maxhealth_use',
       );
       giveTempMaxHp(piece, ctx, 'gingerbread_man', extra);
     }

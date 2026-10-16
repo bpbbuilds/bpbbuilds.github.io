@@ -8926,9 +8926,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-gigawatz-smoke.mjs",
+        "fixture": "Gigawatz source preparation counters, capped charge speed, Blind/effect-damage cooldown ordering, source damage increments, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -8963,9 +8969,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-gingerbread-man-smoke.mjs",
+        "fixture": "Gingerbread Man inherited Food preparation, starting and cooldown max-health gains, nested Lucky/Heat/Mana gate, Empower/Regeneration grants, modified max-health-use, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
