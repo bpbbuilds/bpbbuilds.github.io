@@ -8547,9 +8547,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-frog-prince-smoke.mjs",
+        "fixture": "Frog Prince inherited Toad threshold origin tracking, multi-tick Blind cleanse/heal, first-use Lucky/Mana/invulnerability state, cooldown order, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -8584,9 +8590,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-frostbite-smoke.mjs",
+        "fixture": "Frostbite source preparation Vampirism/Cold listeners, exact non-removable varying damage, early successful-hit Cold infliction, Cold threshold Vampirism, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

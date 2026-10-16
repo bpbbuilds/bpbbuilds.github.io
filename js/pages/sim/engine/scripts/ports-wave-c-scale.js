@@ -16,7 +16,6 @@ import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import {
   addAccuracy,
   addBonusDamage,
-  addBonusDamageFromBuffChange,
   addSpeed,
   changeVaryingDamageFromBuffChange,
 } from '../piece-stats.js';
@@ -405,17 +404,19 @@ export const warScythePort = {
 export const frostbitePort = {
   handlerId: 'frostbite',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._frostVamp = false;
-    const per = Number(getP2(piece.params, 1)) || 0;
-    const th = Math.max(1, Math.round(getP3(piece.params, 6)));
-    const vampN = Math.max(1, Math.round(getP4(piece.params, 2)));
+    const per = Number(getPName(piece.params, 'dam', getP2(piece.params))) || 0;
+    const th = Math.trunc(getP3(piece.params));
+    const vampN = Math.trunc(getPName(piece.params, 'vampirism', getP4(piece.params)));
     onBuffChanged(ctx.player, (ch) => {
-      if (ch.stack === 'vampirism' && ch.amount) addBonusDamageFromBuffChange(piece, ch);
+      if (ch.stack === 'vampirism' && ch.amount) {
+        changeVaryingDamageFromBuffChange(piece, ch);
+      }
     });
     onBuffChanged(ctx.dummy, (ch) => {
       if (ch.stack !== 'cold') return;
-      if (per && ch.amount) addBonusDamageFromBuffChange(piece, ch, per);
+      if (per && ch.amount) changeVaryingDamageFromBuffChange(piece, ch, per);
       if (!piece._frostVamp && (ctx.dummy.stacks.cold || 0) >= th) {
         piece._frostVamp = true;
         grantStacks(ctx.player, 'vampirism', vampN, {
@@ -428,9 +429,9 @@ export const frostbitePort = {
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'frostbite');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit || !rollItemChance(piece, ctx.rng)) return;
-    const cold = Math.max(1, Math.round(getP1(piece.params, 2)));
+    const cold = Math.trunc(getP1(piece.params));
     grantStacks(ctx.dummy, 'cold', cold, {
       originKey: piece.placementKey,
       originId: piece.itemId,

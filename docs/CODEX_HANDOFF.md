@@ -6227,3 +6227,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 248 - in progress
 
 - Codex owns the Frog Prince and Frostbite fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and this handoff. Planned paths are limited to the relevant simulator port modules, `scripts/sim-frog-prince-smoke.mjs`, `scripts/sim-frostbite-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 248 - complete
+
+- Codex repaired Frog Prince to mirror inherited Toad threshold semantics, including affected-origin tracking, multi-tick heal behavior, one Blind cleanse per threshold callback, mini-activation projections, exact first-use Lucky/Mana/invulnerability state, and cooldown effect ordering. Frostbite now prepares its Vampirism/Cold listeners, preserves exact non-removable varying damage, inflicts Cold in the early successful-hit hook, and grants exact threshold Vampirism.
+- Added `scripts/sim-frog-prince-smoke.mjs` and `scripts/sim-frostbite-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 355 / 519 verified item rows. Focused smokes, Emerald-through-Gingerbread regression, lifecycle closure, parity systems, coverage honesty, verified coverage, Admin audit, dashboard tests/checks, changed-module syntax, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed.
+- The next retained queue begins with Frozen Buckler; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 249 - in progress
+
+- Codex owns the Frozen Buckler and Frozen Flame fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and this handoff. Planned paths are limited to the relevant simulator port modules, `scripts/sim-frozen-buckler-smoke.mjs`, `scripts/sim-frozen-flame-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

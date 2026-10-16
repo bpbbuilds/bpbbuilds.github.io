@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "a83919cac8319b3ef38d339dbdc2657626694bdebcfe80c749088e816f073a0e",
+    "dashboardSha256": "80376f71f703ccd1dde705f98ff75a2e47b9a23fc91c17277640937c92dd276a",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 353,
+    "verified_1to1": 355,
     "confirmed_gap": 8,
-    "evidence_pending": 143,
+    "evidence_pending": 141,
     "no_independent_combat": 15
   },
   "byId": {
@@ -205,8 +205,8 @@
     "forging_hammer": "verified_1to1",
     "fortunas_kiss": "verified_1to1",
     "friendly_fire": "verified_1to1",
-    "frog_prince": "evidence_pending",
-    "frostbite": "evidence_pending",
+    "frog_prince": "verified_1to1",
+    "frostbite": "verified_1to1",
     "frozen_buckler": "evidence_pending",
     "frozen_flame": "evidence_pending",
     "full_body_protection": "evidence_pending",

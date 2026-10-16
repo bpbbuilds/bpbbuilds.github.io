@@ -1433,6 +1433,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  frog_prince: {
+    focusedRegression: 'scripts/sim-frog-prince-smoke.mjs',
+    fixture: 'Frog Prince inherited Toad threshold origin tracking, multi-tick Blind cleanse/heal, first-use Lucky/Mana/invulnerability state, cooldown order, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  frostbite: {
+    focusedRegression: 'scripts/sim-frostbite-smoke.mjs',
+    fixture: 'Frostbite source preparation Vampirism/Cold listeners, exact non-removable varying damage, early successful-hit Cold infliction, Cold threshold Vampirism, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',

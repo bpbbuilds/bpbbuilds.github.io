@@ -46,6 +46,18 @@ function petActivate(piece, ctx, handler) {
   pushActivate(piece, ctx, handler, `Pet: ${piece.name}`);
 }
 
+function frogMiniActivate(piece, ctx, phase) {
+  ctx.events.push({
+    t: ctx.t,
+    type: 'info',
+    actor: eventSideForPiece(piece),
+    itemId: piece.itemId,
+    placementKey: piece.placementKey,
+    label: `${piece.name}: mini activate`,
+    meta: { category: 'system', script: true, handler: 'frog_prince', miniActivate: true, phase },
+  });
+}
+
 function pickCycle(piece) {
   if (!Array.isArray(piece._ppOpts) || !piece._ppOpts.length) piece._ppOpts = [0, 1, 2];
   const i = Math.floor((piece._ppRng || Math.random)() * piece._ppOpts.length);
@@ -126,47 +138,84 @@ export const couragePuppyPort = {
 export const frogPrincePort = {
   handlerId: 'frog_prince',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
     const affected = new Set(links.map((l) => l.key));
     piece._frogState = 'Inactive';
     piece._toadState = { gained: 0, used: 0, affected };
-    const gainedTh = Math.max(1, Math.round(getPName(piece.params, 'gained', getP1(piece.params, 10))));
-    const usedTh = Math.max(1, Math.round(getPName(piece.params, 'used', getP3(piece.params, 10))));
-    const healPer = Math.max(0, Math.round(getPName(piece.params, 'heal', getP2(piece.params, 12))));
-    const blindN = Math.max(1, Math.round(getPName(piece.params, 'blind', 2)));
+    const gainedTh = Math.trunc(getPName(piece.params, 'gained', getP1(piece.params)));
+    const usedTh = Math.trunc(getPName(piece.params, 'used', getP4(piece.params)));
+    const healPer = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'heal', getP3(piece.params)),
+      'heal',
+    );
+    const blindN = Math.trunc(getPName(piece.params, 'blind', getP2(piece.params)));
+    const luck = Math.trunc(getPName(piece.params, 'luck', getP5(piece.params)));
+    const mana = Math.trunc(getPName(piece.params, 'mana', getP6(piece.params)));
+    const duration = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur_1', getP(piece.params, 6)),
+      'dur_1',
+    );
     onBuffChanged(ctx.player, (ch) => {
       if (!ch.originKey || !affected.has(ch.originKey)) return;
-      const ticks = advanceBuffThresholds(piece._toadState, ch.amount, gainedTh, usedTh);
+      const ticks = advanceBuffThresholds(
+        piece._toadState,
+        ch.amount,
+        gainedTh > 0 ? gainedTh : Number.POSITIVE_INFINITY,
+        usedTh > 0 ? usedTh : Number.POSITIVE_INFINITY,
+      );
       if (ticks.gainTicks > 0) {
-        spendStacks(ctx.player, 'blind', blindN * ticks.gainTicks, {});
-        if (healPer) healActor(ctx.player, ticks.gainTicks * healPer);
+        spendStacks(ctx.player, 'blind', blindN, {});
+        const healAmount = ticks.gainTicks * healPer;
+        const want = requestedHealAmount(ctx.player, healAmount);
+        healActor(ctx.player, healAmount);
+        if (ctx.player._lastHeal) ctx.player._lastHeal.meterAttached = true;
+        if (want > 0) {
+          ctx.events.push({
+            t: ctx.t,
+            type: 'heal',
+            actor: eventSideForPiece(piece),
+            target: eventSideForPiece(piece),
+            amount: want,
+            itemId: piece.itemId,
+            placementKey: piece.placementKey,
+            label: `${piece.name}: heal +${want}`,
+            meta: {
+              category: 'heal',
+              script: true,
+              handler: 'frog_prince',
+              loggedAmount: want,
+              meterAttached: true,
+              requestedHealAmount: healAmount,
+            },
+          });
+        }
+        frogMiniActivate(piece, ctx, 'gained_threshold');
       }
       if (ticks.useTicks > 0 && piece._frogState === 'Inactive') {
         piece._frogState = 'Active';
-        const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', 1)));
-        const mana = Math.max(1, Math.round(getPName(piece.params, 'mana', 1)));
-        grantStacks(ctx.player, 'lucky', luck, {
+        if (luck) grantStacks(ctx.player, 'lucky', luck, {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
-        grantStacks(ctx.player, 'mana', mana, {
+        if (mana) grantStacks(ctx.player, 'mana', mana, {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
-        const dur = Math.max(0.5, getPName(piece.params, 'dur_1', 2));
-        grantInvuln(ctx.player, dur, ctx.t, {
+        grantInvuln(ctx.player, duration, ctx.t, {
           sourceId: piece.itemId,
           sourceKey: piece.placementKey,
           bus: ctx.bus,
         });
+        frogMiniActivate(piece, ctx, 'used_threshold');
       }
     });
   },
   onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'frog_prince');
-    const luck2 = Math.max(0, Math.round(getPName(piece.params, 'luck2', 1)));
-    const mana2 = Math.max(0, Math.round(getPName(piece.params, 'mana2', 1)));
+    const luck2 = Math.trunc(getPName(piece.params, 'luck2', getP(piece.params, 7)));
+    const mana2 = Math.trunc(getPName(piece.params, 'mana2', getP(piece.params, 8)));
     if (luck2) {
       grantStacks(ctx.player, 'lucky', luck2, {
         originKey: piece.placementKey,
@@ -179,6 +228,7 @@ export const frogPrincePort = {
         originId: piece.itemId,
       });
     }
+    petActivate(piece, ctx, 'frog_prince');
     return true;
   },
 };
