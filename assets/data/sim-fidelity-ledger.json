@@ -2901,9 +2901,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-broccoli-smoke.mjs",
+        "fixture": "Broccoli source Food preparation speed, Lucky/Regeneration threshold branch, source parameter values, and activation after the food effect.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -2935,9 +2941,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-broccoli-goobert-smoke.mjs",
+        "fixture": "Broccoli Goobert source six-activation peer threshold, Lucky/Regeneration branch, and activation after the peer effect.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

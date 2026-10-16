@@ -94,6 +94,7 @@ const broccoliGoobertPort = variantGoobert('broccoli_goobert', (piece, ctx) => {
       originId: piece.itemId,
     });
   }
+  pushActivate(piece, ctx, 'broccoli_goobert', `Pet: ${piece.name}`);
 });
 
 /** ToastGoobert.gd */

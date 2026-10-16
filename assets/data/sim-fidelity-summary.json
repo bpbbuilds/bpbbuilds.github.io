@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "510c807f2be5ddc169097d2718931fb0a0fc3ab25bfb88ffca896dfaaaa5c18e",
+    "dashboardSha256": "0f7e9158f98c297763b383a1563f841e73c78aff07b9dd4c34324f3b491de0fe",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 339,
+    "verified_1to1": 341,
     "confirmed_gap": 8,
-    "evidence_pending": 157,
+    "evidence_pending": 155,
     "no_independent_combat": 15
   },
   "byId": {
@@ -79,8 +79,8 @@
     "box_of_prosperity": "verified_1to1",
     "box_of_riches": "verified_1to1",
     "brass_knuckles": "verified_1to1",
-    "broccoli": "evidence_pending",
-    "broccoli_goobert": "evidence_pending",
+    "broccoli": "verified_1to1",
+    "broccoli_goobert": "verified_1to1",
     "broccotree": "evidence_pending",
     "broom": "verified_1to1",
     "burning_banner": "verified_1to1",

@@ -346,6 +346,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  broccoli: {
+    focusedRegression: 'scripts/sim-broccoli-smoke.mjs',
+    fixture: 'Broccoli source Food preparation speed, Lucky/Regeneration threshold branch, source parameter values, and activation after the food effect.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  broccoli_goobert: {
+    focusedRegression: 'scripts/sim-broccoli-goobert-smoke.mjs',
+    fixture: 'Broccoli Goobert source six-activation peer threshold, Lucky/Regeneration branch, and activation after the peer effect.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   battery: {
     focusedRegression: 'scripts/sim-battery-smoke.mjs',
     fixture: 'Battery source combat-start charge, duration and speed-per-tile path, charged-item speed mutation, owner-attributed charge events, and both board sides.',

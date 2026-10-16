@@ -80,7 +80,6 @@ const broccoliPort = {
     const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP1(piece.params, 2))));
     const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP2(piece.params, 5))));
     const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', getP3(piece.params, 2))));
-    pushActivate(piece, ctx, 'broccoli', `Food: ${piece.name}`);
     if (getStackAmount(ctx.player, 'lucky') >= need) {
       grantStacks(ctx.player, 'regeneration', regen, origin(piece));
       ctx.events.push({
@@ -106,6 +105,7 @@ const broccoliPort = {
         meta: { category: 'buff', script: true, handler: 'broccoli', stack: 'lucky' },
       });
     }
+    pushActivate(piece, ctx, 'broccoli', `Food: ${piece.name}`);
     return true;
   },
 };
