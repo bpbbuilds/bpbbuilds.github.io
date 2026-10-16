@@ -41,7 +41,14 @@ export const hammerPort = {
   },
   onDealtDamage(piece, ctx, hit) {
     if (!hit?.hit || !rollItemChance(piece, ctx.rng)) return;
-    const dur = Math.max(0.5, effectDuration(piece, 'dur_stun', getP1(piece.params, 1)));
+    const dur = scaleEffectDuration(
+      piece,
+      modifiedParamValue(
+        piece,
+        getPName(piece.params, 'dur_stun', getP1(piece.params, 1)),
+        'dur_stun',
+      ),
+    );
     grantStun(ctx.dummy, dur, ctx.t, {
       origin: piece,
       meta: { category: 'debuff', script: true, handler: 'hammer' },

@@ -1559,6 +1559,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  hammer: {
+    focusedRegression: 'scripts/sim-hammer-smoke.mjs',
+    fixture: 'Hammer source hit gating, chance stun, modified getP_m stun duration, miss handling, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  hardwood: {
+    focusedRegression: 'scripts/sim-hardwood-smoke.mjs',
+    fixture: 'Hardwood source Common targeting, preparation-time common melee damage factor, catalog Block per target, unconditional start activation, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',

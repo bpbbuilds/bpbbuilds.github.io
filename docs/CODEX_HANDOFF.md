@@ -6314,3 +6314,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 257 - in progress
 
 - Codex owns the next retained Hammer and Hardwood fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-hammer-smoke.mjs`, `scripts/sim-hardwood-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 257 - complete
+
+- Codex repaired Hammer to mirror source hit/chance gating, modified `getP_m("dur_stun")` duration handling, and explicit zero durations. Hardwood now mirrors source Common-only targeting, preparation-time common melee damage factors, catalog Block per Common target, unconditional combat-start activation, and zero-safe parameters.
+- Added `scripts/sim-hammer-smoke.mjs` and `scripts/sim-hardwood-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 373 / 519 verified item rows. Focused Hammer/Hardwood, Wave B/C/D, Forging Hammer, Thor’s Hammer, changed-module syntax, and scoped audit checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Hawk Rune and Healing Herbs; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 258 - in progress
+
+- Codex owns the next retained Hawk Rune and Healing Herbs fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-hawk-rune-smoke.mjs`, `scripts/sim-healing-herbs-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

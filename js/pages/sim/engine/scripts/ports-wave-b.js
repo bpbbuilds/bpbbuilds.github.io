@@ -255,8 +255,8 @@ export const firePitPort = {
 export const hardwoodPort = {
   handlerId: 'hardwood',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const damF = getPName(piece.params, 'dam', 10) / 100;
+  onPrepare(piece, ctx) {
+    const damF = getPName(piece.params, 'dam', getP(piece.params, 0, 10)) / 100;
     let n = 0;
     const { graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
@@ -269,26 +269,39 @@ export const hardwoodPort = {
       const melee =
         canBeEmpoweredPiece(other) &&
         (itemHasType(item, 'melee') ||
-          String(item?.type || '')
+        String(item?.type || '')
             .toLowerCase()
             .includes('melee'));
       if (melee && damF) addBonusDamageFactor(other, damF);
     }
-    if (n <= 0) return;
-    const per = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 4)));
-    const block = per * n;
-    grantStacks(ctx.player, 'block', block, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    ctx.events.push({
-      t: ctx.t,
-      type: 'buff',
-      target: 'player',
-      amount: block,
-      label: `${piece.name}: +${block} Block`,
-      meta: { category: 'buff', stack: 'block', script: true, handler: 'hardwood' },
-    });
+    piece._hardwoodCommons = n;
+  },
+  onCombatStart(piece, ctx) {
+    const n = Math.max(0, Math.round(Number(piece._hardwoodCommons) || 0));
+    if (n > 0) {
+      const catalogBlock = Number(ctx.itemsById.get(piece.itemId)?.block);
+      const per = Number.isFinite(Number(piece.blockGrant))
+        ? Number(piece.blockGrant)
+        : Number.isFinite(catalogBlock)
+          ? catalogBlock
+          : 0;
+      const block = per * n;
+      if (block > 0) {
+        grantStacks(ctx.player, 'block', block, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        });
+        ctx.events.push({
+          t: ctx.t,
+          type: 'buff',
+          target: 'player',
+          amount: block,
+          label: `${piece.name}: +${block} Block`,
+          meta: { category: 'buff', stack: 'block', script: true, handler: 'hardwood' },
+        });
+      }
+    }
+    pushActivate(piece, ctx, 'hardwood', `${piece.name}`);
   },
 };
 

@@ -9364,9 +9364,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-hammer-smoke.mjs",
+        "fixture": "Hammer source hit gating, chance stun, modified getP_m stun duration, miss handling, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -9401,9 +9407,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-hardwood-smoke.mjs",
+        "fixture": "Hardwood source Common targeting, preparation-time common melee damage factor, catalog Block per target, unconditional start activation, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
