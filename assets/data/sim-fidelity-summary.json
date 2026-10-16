@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "7dfdaa467ffde5137a2478a59b426d052f5ff5fbf0eecc6232500a30f9dfeb43",
+    "dashboardSha256": "9d714a4d009fe391fcd46388b7cac3a269222af53abdf0dc8a7cf995648b3a17",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 347,
+    "verified_1to1": 349,
     "confirmed_gap": 8,
-    "evidence_pending": 149,
+    "evidence_pending": 147,
     "no_independent_combat": 15
   },
   "byId": {
@@ -199,8 +199,8 @@
     "flawless_ruby": "verified_1to1",
     "flawless_sapphire": "verified_1to1",
     "flawless_topaz": "verified_1to1",
-    "flute": "evidence_pending",
-    "fly_agaric": "evidence_pending",
+    "flute": "verified_1to1",
+    "fly_agaric": "verified_1to1",
     "forest_dragon": "evidence_pending",
     "forging_hammer": "evidence_pending",
     "fortunas_kiss": "evidence_pending",

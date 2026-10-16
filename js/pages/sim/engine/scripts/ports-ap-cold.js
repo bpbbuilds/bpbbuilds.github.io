@@ -232,7 +232,7 @@ const flyAgaricPort = {
     applyFoodPrepareSpeed(piece, ctx);
   },
   onCooldownEffect(piece, ctx) {
-    grantStacks(ctx.dummy, 'poison', Math.max(1, Math.round(getP1(piece.params, 1))), origin(piece));
+    grantStacks(ctx.dummy, 'poison', Math.round(getP1(piece.params)), origin(piece));
     // FlyAgaric.gd inflicts Poison before activate().
     pushActivate(piece, ctx, 'fly_agaric', `Food: ${piece.name}`);
     return true;

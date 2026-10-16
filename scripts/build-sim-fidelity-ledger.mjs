@@ -1391,6 +1391,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  flute: {
+    focusedRegression: 'scripts/sim-flute-smoke.mjs',
+    fixture: 'Flute source affected-item speed, no-repeat Block/Stamina/Lucky cooldown choices, effect-before-activation order, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  fly_agaric: {
+    focusedRegression: 'scripts/sim-fly-agaric-smoke.mjs',
+    fixture: 'Fly Agaric inherited Food-only preparation speed, exact Poison effect, activation order, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',

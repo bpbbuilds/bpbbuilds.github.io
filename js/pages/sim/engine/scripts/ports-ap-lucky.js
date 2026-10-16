@@ -292,8 +292,9 @@ const flutePort = {
   family: 'unique',
   onPrepare(piece, ctx) {
     const n = linked(ctx, piece).length;
-    const spd = getP3(piece.params, 10) / 100;
-    if (n && spd) addSpeed(piece, spd * n);
+    const spd = getP3(piece.params) / 100;
+    // Flute.gd calls addSpeed even when the source parameter is zero.
+    if (n) addSpeed(piece, spd * n);
     piece._fluteOpts = [0, 1, 2];
   },
   onCooldownEffect(piece, ctx) {
@@ -301,10 +302,11 @@ const flutePort = {
     if (!Array.isArray(opts) || !opts.length) opts = [0, 1, 2];
     const pick = opts[Math.floor(ctx.rng() * opts.length)] ?? 0;
     if (pick === 0) {
-      const block = Number(ctx.itemsById.get(piece.itemId)?.block) || 14;
+      const rawBlock = piece.block ?? ctx.itemsById.get(piece.itemId)?.block;
+      const block = Number.isFinite(Number(rawBlock)) ? Number(rawBlock) : 0;
       gainStacks(ctx.player, 'block', block);
     } else if (pick === 1) {
-      const stam = Math.max(1, Math.round(getP1(piece.params, 2)));
+      const stam = Math.round(getP1(piece.params));
       const before = Number(ctx.player.stamina) || 0;
       giveStamina(ctx.player, stam);
       const gained = Math.max(0, (Number(ctx.player.stamina) || 0) - before);
@@ -321,7 +323,7 @@ const flutePort = {
         });
       }
     } else {
-      const luck = Math.max(1, Math.round(getP2(piece.params, 2)));
+      const luck = Math.round(getP2(piece.params));
       grantStacks(ctx.player, 'lucky', luck, origin(piece));
       ctx.events.push({
         t: ctx.t + 0.002,

@@ -6196,3 +6196,10 @@ None.
 - Codex verified Coil against its source charge counter, random-buff steal, mini-activation, ten-charge consumption cap, and post-cap no-op. Dragon Nest was repaired to react to every source dragon attack signal, including misses, heal the owner, and emit a visual-only mini-activation projection; its Dragon-only targeting and four start buffs are covered.
 - Added `scripts/sim-coil-smoke.mjs` and `scripts/sim-dragon-nest-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 347 / 519 verified item rows. Focused smokes, existing Coil/Band Y/Wave D regressions, lifecycle closure, coverage honesty, verified coverage, Admin audit, changed-module syntax, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed.
 - The next retained queue begins with Flute; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 245 - complete
+
+- Codex verified Flute against its source affected-item speed, no-repeat Block/Stamina/Lucky cooldown choices, effect-before-activation ordering, both board sides, and zero-safe parameters. The port now preserves source values instead of inventing minimum defaults and uses the piece’s effective Block stat.
+- Codex verified Fly Agaric against inherited Food-only preparation speed, exact Poison application, activation ordering, both board sides, and zero-safe parameters; its port now preserves a source zero Poison value.
+- Added `scripts/sim-flute-smoke.mjs` and `scripts/sim-fly-agaric-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 349 / 519 verified item rows. Focused smokes, the existing Emerald-through-Gingerbread regression, lifecycle closure, coverage honesty, verified coverage, Admin audit, ledger/dashboard checks, changed-module syntax, and scoped `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed.
+- The next retained queue begins with Forest Dragon; this batch is ready to commit and push.
