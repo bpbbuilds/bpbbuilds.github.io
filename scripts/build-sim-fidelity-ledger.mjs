@@ -1419,6 +1419,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  fortunas_kiss: {
+    focusedRegression: 'scripts/sim-fortunas-kiss-smoke.mjs',
+    fixture: "Fortuna's Kiss source chance-bearing target filter, exact chance multiplier, Lucky threshold/random-buff branches, activation order, both board sides, and zero-safe parameters.",
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  friendly_fire: {
+    focusedRegression: 'scripts/sim-friendly-fire-smoke.mjs',
+    fixture: 'Friendly Fire source Fire-only preparation speed, max-heat threshold progression, exact Lucky/Regeneration/effect damage values, mana-to-Heat cooldown order, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',

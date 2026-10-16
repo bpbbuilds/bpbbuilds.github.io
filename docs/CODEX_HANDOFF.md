@@ -6217,3 +6217,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 247 - in progress
 
 - Codex owns the Fortunas Kiss and Friendly Fire fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and this handoff. Planned paths are limited to the relevant simulator port modules, `scripts/sim-fortunas-kiss-smoke.mjs`, `scripts/sim-friendly-fire-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 247 - complete
+
+- Codex verified Fortunas Kiss against its source chance-bearing target filter, exact chance multiplier, Lucky threshold/random-buff branches, activation order, both board sides, and zero-safe parameters. Friendly Fire was repaired to prepare before combat, count linked Fire items, preserve exact heat thresholds/effects, emit each threshold activation, and apply mana-to-Heat before its cooldown activation.
+- Added `scripts/sim-fortunas-kiss-smoke.mjs` and `scripts/sim-friendly-fire-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 353 / 519 verified item rows. Focused smokes, Emerald-through-Gingerbread regression, lifecycle closure, parity systems, coverage honesty, verified coverage, Admin audit, dashboard tests/checks, changed-module syntax, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed.
+- The next retained queue begins with Frog Prince; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 248 - in progress
+
+- Codex owns the Frog Prince and Frostbite fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and this handoff. Planned paths are limited to the relevant simulator port modules, `scripts/sim-frog-prince-smoke.mjs`, `scripts/sim-frostbite-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

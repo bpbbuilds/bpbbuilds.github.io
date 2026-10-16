@@ -3,7 +3,7 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "ff94c89147149521e074810f91e3a8426ef80dc9f57b346fa35128d446158183",
+    "itemLedgerSha256": "be79bafd62fff64a7a21208cec9bfb620e74aa129b853e036243f5b58bebb18e",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
     "systemSurfaceSha256": "79e1178a7ae154e964452b8a7fada954ec8e043c0756f30c20fc35ec6dea6778",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 351,
+    "verified_1to1": 353,
     "confirmed_gap": 9,
-    "evidence_pending": 165,
+    "evidence_pending": 163,
     "no_independent_combat": 15
   },
   "items": [
@@ -8824,8 +8824,8 @@
       "name": "Fortunas Kiss",
       "category": "Skill",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -8851,9 +8851,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-fortunas-kiss-smoke.mjs",
+        "fixture": "Fortuna's Kiss source chance-bearing target filter, exact chance multiplier, Lucky threshold/random-buff branches, activation order, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
@@ -8863,8 +8869,8 @@
       "name": "Friendly Fire",
       "category": "Pet",
       "class": "Pyromancer",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -8890,9 +8896,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-friendly-fire-smoke.mjs",
+        "fixture": "Friendly Fire source Fire-only preparation speed, max-heat threshold progression, exact Lucky/Regeneration/effect damage values, mana-to-Heat cooldown order, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },

@@ -467,50 +467,55 @@ export const fireShellyPort = {
 export const friendlyFirePort = {
   handlerId: 'friendly_fire',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const n = countType(ctx, piece, 'fire');
-    const sp = getP3(piece.params, 8) / 100;
-    if (n && sp) addSpeed(piece, n * sp);
+    const sp = getPName(piece.params, 'speed', getP3(piece.params)) / 100;
+    if (n) addSpeed(piece, n * sp);
     piece._ffMax = 0;
-    const t1 = getP4(piece.params, 4);
-    const t2 = getP(piece.params, 5, 8);
-    const t3 = getP(piece.params, 7, 12);
+    const t1 = Math.trunc(getPName(piece.params, 'heatt1', getP4(piece.params)));
+    const t2 = Math.trunc(getPName(piece.params, 'heatt2', getP(piece.params, 5)));
+    const t3 = Math.trunc(getPName(piece.params, 'heatt3', getP(piece.params, 7)));
+    const lucky = Math.trunc(getPName(piece.params, 'luck', getP5(piece.params)));
+    const regeneration = Math.trunc(getPName(piece.params, 'regen', getP(piece.params, 6)));
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'heat') return;
       const heat = getStackAmount(ctx.player, 'heat') || 0;
       const prev = Number(piece._ffMax) || 0;
       if (heat >= t3 && prev < t3) {
         piece._ffMax = heat;
-        const raw = Math.max(1, Number(piece.damageMin) || 6);
+        const raw = Number.isFinite(Number(piece.damageMin)) ? Number(piece.damageMin) : 0;
         dealEffectDamage(piece, ctx, raw);
+        petActivate(piece, ctx, 'friendly_fire');
       } else if (heat >= t2 && prev < t2) {
         piece._ffMax = heat;
-        grantStacks(ctx.player, 'regeneration', Math.max(1, Math.round(getP(piece.params, 6, 1))), {
+        grantStacks(ctx.player, 'regeneration', regeneration, {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
+        petActivate(piece, ctx, 'friendly_fire');
       } else if (heat >= t1 && prev < t1) {
         piece._ffMax = heat;
-        grantStacks(ctx.player, 'lucky', Math.max(1, Math.round(getP5(piece.params, 1))), {
+        grantStacks(ctx.player, 'lucky', lucky, {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
+        petActivate(piece, ctx, 'friendly_fire');
       }
     });
   },
   onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'friendly_fire');
-    const need = Math.max(1, Math.round(getP1(piece.params, 2)));
+    const need = Math.trunc(getPName(piece.params, 'manat', getP1(piece.params)));
     if ((getStackAmount(ctx.player, 'mana') || 0) >= need) {
       useMana(ctx.player, need, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
-      grantStacks(ctx.player, 'heat', Math.max(1, Math.round(getP2(piece.params, 1))), {
+      grantStacks(ctx.player, 'heat', Math.trunc(getPName(piece.params, 'heat', getP2(piece.params))), {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
     }
+    petActivate(piece, ctx, 'friendly_fire');
     return true;
   },
 };

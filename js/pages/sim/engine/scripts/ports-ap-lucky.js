@@ -361,7 +361,7 @@ const fortunasKissPort = {
     });
   },
   onCooldownEffect(piece, ctx) {
-    const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP2(piece.params, 5))));
+    const need = Math.trunc(getPName(piece.params, 'luckt', getP2(piece.params)));
     if (getStackAmount(ctx.player, 'lucky') >= need) {
       const picked = giveRandomBuffs(ctx.player, 1, ctx.rng, {
         ...origin(piece),
