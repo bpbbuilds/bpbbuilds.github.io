@@ -93,7 +93,7 @@ ok(getScriptHandler('chess_board')?.onCombatStart != null, 'chess_board noop exi
   const player = createActor('player');
   const events = [];
   const ctx = { t: 3, player, events, rng: () => 0.5 };
-  getScriptHandler('crown').onCombatStart(piece, ctx);
+  getScriptHandler('crown').onPrepare(piece, ctx);
   grantStacks(player, 'mana', 5, {});
   piece._tryCrownInvuln?.(3);
   ok(isInvulnerable(player, 3.1), 'crown mana → invuln');

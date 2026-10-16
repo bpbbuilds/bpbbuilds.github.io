@@ -11,10 +11,12 @@ import {
 } from '../buff-economy.js';
 import { PLAYER_STAMINA_REGEN } from '../actor.js';
 import { applyStaminaRegeneration } from '../actor-stats.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
-import { grantTimedSpeed } from '../timed-speed.js';
+import { modifiedParamValue } from '../placement-instance.js';
+import { grantTimedResistancePct } from '../timed-resistance.js';
+import { eventSideForPiece } from '../vs-board.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { linkedWith } from './ports-ai-c-util.js';
 
@@ -27,6 +29,10 @@ import { linkedWith } from './ports-ai-c-util.js';
 export const robodogPort = {
   handlerId: 'robodog',
   family: 'custom_cd',
+  onPrepare(piece) {
+    // Robodog.gd starts with its charged-state visuals disabled.
+    piece._roboCharged = false;
+  },
   onCombatStart(piece) {
     piece._roboBaseCd = Number(piece.baseCooldown ?? piece.cooldown) || 0;
   },
@@ -35,14 +41,20 @@ export const robodogPort = {
     const base = Number(piece._roboBaseCd) || Number(piece.baseCooldown) || 0;
     piece.baseCooldown = base;
     piece.cooldown = base;
+    if (Number(piece.numCharges) === 1) piece._roboCharged = true;
+  },
+  onChargeLeft(piece) {
+    if (Number(piece.numCharges) === 0) piece._roboCharged = false;
   },
   onCooldownEffect(piece, ctx) {
-    const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP1(piece.params, 1))));
-    const heat = Math.max(0, Math.round(getPName(piece.params, 'heat', getP2(piece.params, 1))));
-    grantStacks(ctx.player, 'lucky', luck, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
+    const luck = Math.max(0, Math.trunc(getPName(piece.params, 'luck', getP1(piece.params, 0))));
+    const heat = Math.max(0, Math.trunc(getPName(piece.params, 'heat', getP2(piece.params, 0))));
+    if (luck > 0) {
+      grantStacks(ctx.player, 'lucky', luck, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+    }
     if (heat > 0) {
       grantStacks(ctx.player, 'heat', heat, {
         originKey: piece.placementKey,
@@ -51,12 +63,14 @@ export const robodogPort = {
     }
     // .gd: grow base CD only while numCharges == 0
     if ((piece.numCharges || 0) === 0) {
-      const grow = Math.max(0, getPName(piece.params, 'cdincrease', 0.5));
+      const grow = Math.max(0, getPName(piece.params, 'cdincrease', getP3(piece.params, 0)));
       const next = (Number(piece.baseCooldown ?? piece.cooldown) || 0) + grow;
       piece.baseCooldown = next;
       piece.cooldown = next;
+      pushActivate(piece, ctx, 'robodog', `Pet: ${piece.name}`);
     }
-    // grantStacks already combat-logs; no summary buff (Lucky meter was double-counting).
+    // grantStacks already combat-logs; activation is only emitted for the source's
+    // uncharged branch (Lucky/Heat still happen on every cooldown).
     return true;
   },
 };
@@ -68,10 +82,10 @@ export const robodogPort = {
 export const thornElementalPort = {
   handlerId: 'thorn_elemental',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const lim = getPName(piece.params, 'spikedam', 100) / 100;
-    ctx.player.meleeSpikesLimit = Math.max(Number(ctx.player.meleeSpikesLimit) || 0, lim);
-    // Gap: rangedSpikesLimit + spikes-crit not in takeDamage (spikes canCrit:false)
+    ctx.player.effectSpikesLimit = (Number(ctx.player.effectSpikesLimit) || 0) + lim;
+    ctx.player.rangedSpikesLimit = (Number(ctx.player.rangedSpikesLimit) || 0) + lim;
     const natureN = linkedWith(ctx, piece, (o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'nature'),
     ).length;
@@ -79,21 +93,12 @@ export const thornElementalPort = {
     if (crit) ctx.player._spikesCritChance = (Number(ctx.player._spikesCritChance) || 0) + crit;
   },
   onCooldownEffect(piece, ctx) {
-    const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'thorn_elemental', `Pet: ${piece.name}`);
-    const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 2))));
-    grantStacks(player, 'spikes', spikes, {
+    const spikes = Math.trunc(getPName(piece.params, 'spikes', getP1(piece.params, 2)));
+    grantStacks(ctx.player, 'spikes', spikes, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    events.push({
-      t: t + 0.004,
-      type: 'buff',
-      target: 'player',
-      amount: spikes,
-      label: `${piece.name}: +${spikes} Spikes`,
-      meta: { category: 'buff', stack: 'spikes', script: true, handler: 'thorn_elemental' },
-    });
+    pushActivate(piece, ctx, 'thorn_elemental', `Pet: ${piece.name}`);
     return true;
   },
 };
@@ -103,53 +108,52 @@ export const thornElementalPort = {
 export const turtlePort = {
   handlerId: 'turtle',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
-    const extra = getPName(piece.params, 'bonus_damblock', 10) / 100;
+  onPrepare(piece, ctx) {
+    const extra = getP2(piece.params, 0) / 100;
     for (const { other } of linkedWith(ctx, piece, (o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'shield'),
     )) {
-      // Gap: modifyParam damblock unsupported — boost shield blockGrant as proxy
-      other.blockGrant = Math.max(
-        0,
-        Math.round((Number(other.blockGrant) || 0) * (1 + extra) + extra * 5),
-      );
+      const prior = Number(other.paramMult?.damblock);
+      const multiplier = Number.isFinite(prior) && prior !== 0 ? prior : 1;
+      other.paramMult = { ...(other.paramMult || {}), damblock: multiplier + extra };
     }
-    const dr = Math.max(0, getP1(piece.params, 10));
-    if (dr) {
-      ctx.player.damageResistancePct = (Number(ctx.player.damageResistancePct) || 0) + dr;
-      // .gd also applies damReduction to opponent — skipped (would tank dummy)
-      const dur = Math.max(0.5, getPName(piece.params, 'dur', 3));
-      grantTimedSpeed(piece, 1e-6, ctx.t + dur, 'turtle_dr');
-      const prev = piece._onTimedSpeedEnd;
-      piece._onTimedSpeedEnd = (tag, e) => {
-        prev?.(tag, e);
-        if (tag === 'turtle_dr') {
-          ctx.player.damageResistancePct = Math.max(
-            0,
-            (Number(ctx.player.damageResistancePct) || 0) - dr,
-          );
-        }
-      };
-    }
+  },
+  onPreCombatStart(piece, ctx) {
+    const dr = Number(getP1(piece.params, 0)) || 0;
+    if (!dr) return;
+    const duration = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur', getP3(piece.params, 0)),
+      'dur',
+    );
+    const untilT = (Number(ctx.t) || 0) + duration;
+    const tag = `turtle:${piece.placementKey || piece.itemId}`;
+    grantTimedResistancePct(ctx.player, dr, untilT, `${tag}:owner`);
+    grantTimedResistancePct(ctx.dummy, dr, untilT, `${tag}:opponent`);
+  },
+  onCombatStart(piece, ctx) {
     pushActivate(piece, ctx, 'turtle', `Pet: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const baseBlock = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number(catalog?.block) || 0;
+    const maxHealthBlock = getP4(piece.params, 0) / 100;
+    const block = Math.max(0, Math.round(baseBlock + player.maxHp * maxHealthBlock));
+    if (block > 0) {
+      gainStacks(player, 'block', block);
+      events.push({
+        t: t + 0.004,
+        type: 'buff',
+        target: eventSideForPiece(piece),
+        amount: block,
+        label: `${piece.name}: +${block} Block`,
+        meta: { category: 'buff', stack: 'block', script: true, handler: 'turtle' },
+      });
+    }
     pushActivate(piece, ctx, 'turtle', `Pet: ${piece.name}`);
-    const frac =
-      getPName(piece.params, 'block2', getPName(piece.params, 'maxhealthblock', 5)) / 100;
-    const block =
-      Math.max(1, Math.round(piece.blockGrant || getP2(piece.params, 4))) +
-      Math.round(player.maxHp * frac);
-    gainStacks(player, 'block', block);
-    events.push({
-      t: t + 0.004,
-      type: 'buff',
-      target: 'player',
-      amount: block,
-      label: `${piece.name}: +${block} Block`,
-      meta: { category: 'buff', stack: 'block', script: true, handler: 'turtle' },
-    });
     return true;
   },
 };

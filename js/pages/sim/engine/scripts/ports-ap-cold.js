@@ -11,13 +11,14 @@ import {
   spendStacks,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { advanceCooldownSeconds } from '../cooldown.js';
+import { advanceCooldownPercent, advanceCooldownSeconds } from '../cooldown.js';
 import { dealEffectDamage } from './handlers.js';
-import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { applyFoodPrepareSpeed } from './food-helpers.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { itemHasType, afterEffectFinished, pushActivate } from './ports-util.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -73,14 +74,18 @@ const snowcakePort = {
   handlerId: 'snowcake',
   family: 'food',
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'snowcake', `Food: ${piece.name}`);
+    const cold = Math.trunc(getPName(piece.params, 'cold', getP1(piece.params, 1)));
     grantStacks(
       ctx.dummy,
       'cold',
-      Math.max(1, Math.round(getPName(piece.params, 'cold', getP1(piece.params, 1)))),
-      origin(piece),
+      cold,
+      {
+        ...origin(piece),
+        rng: ctx.rng,
+        opponent: ctx.player,
+      },
     );
-    const need = Math.max(1, Math.round(getPName(piece.params, 'coldt', getP2(piece.params, 10))));
+    const need = Math.trunc(getPName(piece.params, 'coldt', getP2(piece.params, 10)));
     if (getStackAmount(ctx.dummy, 'cold') >= need) {
       applyEffectDmgFactor(
         ctx.player,
@@ -88,9 +93,10 @@ const snowcakePort = {
         ctx,
         piece,
       );
-      const dam = Math.max(1, Math.round(Number(ctx.itemsById.get(piece.itemId)?.damageMin) || 10));
-      dealEffectDamage(piece, ctx, dam);
+      const dam = Number(ctx.itemsById.get(piece.itemId)?.damageMin);
+      if (Number.isFinite(dam) && dam > 0) dealEffectDamage(piece, ctx, dam);
     }
+    pushActivate(piece, ctx, 'snowcake', `Food: ${piece.name}`);
     return true;
   },
 };
@@ -100,16 +106,18 @@ const ukulelePort = {
   handlerId: 'ukulele',
   family: 'unique',
   onPrepare(piece, ctx) {
-    const n = linked(ctx, piece).length;
-    const spd = getPName(piece.params, 'speed', getPName(piece.params, 'p5', 10)) / 100;
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    const n = links.filter((link) => link.color === 'primary').length;
+    const spd = getP5(piece.params, 0) / 100;
     if (n && spd) addSpeed(piece, spd * n);
     applyHealEfficiency(
       ctx.player,
-      getPName(piece.params, 'healamp', getP1(piece.params, 20)) / 100,
+      getP1(piece.params, 0) / 100,
       ctx,
       piece,
     );
-    const amp = Number(ctx.itemsById.get(piece.itemId)?.chance) || 15;
+    const chanceRaw = Number(piece.chance ?? ctx.itemsById.get(piece.itemId)?.chance);
+    const amp = Number.isFinite(chanceRaw) ? chanceRaw : 0;
     for (const o of ctx.pieces || []) {
       o.buffAmpChance = (Number(o.buffAmpChance) || 0) + amp;
     }
@@ -129,32 +137,36 @@ const ukulelePort = {
     piece._ukePool = pool;
     piece._ukeIdx = 0;
     piece._ukeOpts = [0, 1, 2];
-    const pct = getPName(piece.params, 'advance', 20) / 100;
+    const pct = getP6(piece.params, 0);
     ctx.bus?.on?.('piece_activated', (payload) => {
       const other = payload?.piece;
       if (!other || other === piece) return;
       if (!linkedByColor(ctx, piece, 'secondary').some((o) => o === other)) return;
       if (!itemHasType(ctx.itemsById.get(other.itemId), 'musical')) return;
-      const list = (piece._ukePool || []).filter((o) => o.alive && o.cooldown > 0 && o.cooldown < 500);
-      if (!list.length) return;
-      let idx = Number(piece._ukeIdx) || 0;
-      const target = list[idx % list.length];
-      piece._ukeIdx = (idx + 1) % list.length;
-      const period = Number(target.baseCooldown) || Number(target.cooldown) || 0;
-      if (period > 0) advanceCooldownSeconds(target, period * pct, ctx);
+      const list = piece._ukePool || [];
+      while (list.length) {
+        const idx = (Number(piece._ukeIdx) || 0) % list.length;
+        const target = list[idx];
+        if (target?.alive && target.cooldown > 0 && target.cooldown < 500) {
+          piece._ukeIdx = (idx + 1) % list.length;
+          advanceCooldownPercent(target, pct, ctx);
+          return;
+        }
+        list.splice(idx, 1);
+        piece._ukeIdx = list.length ? idx % list.length : 0;
+      }
     });
   },
   onCooldownEffect(piece, ctx) {
     const pick = pickNoRepeat(piece, '_ukeOpts', ctx.rng);
-    pushActivate(piece, ctx, 'ukulele', `Accessory: ${piece.name}`);
     if (pick === 0) {
-      const heal = Math.max(1, Math.round(getPName(piece.params, 'heal', getP2(piece.params, 30))));
+      const heal = Math.trunc(getP2(piece.params, 0));
       const got = healActor(ctx.player, heal);
       if (got > 0) {
         ctx.events.push({
           t: ctx.t + 0.002,
           type: 'heal',
-          target: 'player',
+          target: eventSideForPiece(piece),
           amount: got,
           itemId: piece.itemId,
           placementKey: piece.placementKey,
@@ -165,7 +177,7 @@ const ukulelePort = {
     } else if (pick === 1) {
       giveRandomBuffs(
         ctx.player,
-        Math.max(1, Math.round(getPName(piece.params, 'buffs', getP3(piece.params, 5)))),
+        Math.trunc(getP3(piece.params, 0)),
         ctx.rng,
         origin(piece),
       );
@@ -173,10 +185,11 @@ const ukulelePort = {
       grantStacks(
         ctx.dummy,
         'cold',
-        Math.max(1, Math.round(getPName(piece.params, 'cold', getP4(piece.params, 4)))),
+        Math.trunc(getP4(piece.params, 0)),
         origin(piece),
       );
     }
+    pushActivate(piece, ctx, 'ukulele', `Accessory: ${piece.name}`);
     return true;
   },
 };
@@ -185,11 +198,16 @@ const ukulelePort = {
 const doomCapPort = {
   handlerId: 'doom_cap',
   family: 'food',
+  // DoomCap.gd extends Food without overriding prepare(). Preserve the
+  // inherited linked-food speed bonus before its cooldown effect runs.
+  onPrepare(piece, ctx) {
+    applyFoodPrepareSpeed(piece, ctx);
+  },
   onCooldownEffect(piece, ctx) {
     grantStacks(
       ctx.dummy,
       'poison',
-      Math.max(1, Math.round(getPName(piece.params, 'poison', getP1(piece.params, 3)))),
+      Math.trunc(getPName(piece.params, 'poison', getP1(piece.params, 3))),
       origin(piece),
     );
     applyHealEfficiency(

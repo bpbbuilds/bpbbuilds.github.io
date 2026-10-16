@@ -564,8 +564,14 @@ export function simulateEngine(opts) {
         !dummy.dead
       ) {
         const dmg = advanceFatigueCounter(fatigue, combatTime);
-        const pLost = applyFatigueDamage(player, dmg);
-        const dLost = applyFatigueDamage(dummy, dmg);
+        const pLost = applyFatigueDamage(
+          player,
+          dmg + (Number(player.bonusFatigueDamage) || 0),
+        );
+        const dLost = applyFatigueDamage(
+          dummy,
+          dmg + (Number(dummy.bonusFatigueDamage) || 0),
+        );
         bus.emit('fatigue_tick', { t, counter: fatigue.counter, damage: dmg });
         if (pLost > 0) {
           const playerFatigue = {
@@ -663,8 +669,14 @@ export function simulateEngine(opts) {
       tickBattleRage(dummy, t, { bus });
       for (const piece of pieces) {
         piece._lastSimT = t;
-        if (typeof piece._tryCrownInvuln === 'function') piece._tryCrownInvuln(t);
-        if (piece.alive || piece._stoneUntil != null || piece._unhealUntil != null) {
+        if (
+          piece.alive ||
+          piece._stoneUntil != null ||
+          piece._unhealUntil != null ||
+          piece._demonicHealReductionUntil != null ||
+          piece._pestilencePoisonAt != null ||
+          piece._vampiricLifestealUntil != null
+        ) {
           getScriptHandler(piece.itemId)?.onTick?.(piece, { ...actCtx(piece), t });
         }
       }

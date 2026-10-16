@@ -6,10 +6,12 @@
 import { healActor } from '../actor.js';
 import { applyStaminaRegeneration } from '../actor-stats.js';
 import { cleanseRandomDebuffs, grantStacks } from '../buff-economy.js';
-import { getP1, getP3, getP5, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP5, getPName } from '../params.js';
 import { multiplyStaminaCost } from '../piece-stats.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { eventFoeSide } from '../vs-board.js';
 import { stealLife } from './handlers.js';
+import { giveTempMaxHp } from './ports-ap-start.js';
 import { afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
 
 /**
@@ -78,8 +80,13 @@ function rubyInventory(id) {
     handlerId: id,
     family: 'unique',
     onCooldownEffect(piece, ctx) {
-      const dam = Math.max(1, Math.round(getPName(piece.params, 'flatsteal', getP3(piece.params, 4))));
-      const factor = getPName(piece.params, 'lifesteal_factor', 150) / 100;
+      // Ruby.gd passes getP3() directly to stealLife(); damage processing
+      // performs the game's rounding downstream. Its factor uses getP_m(),
+      // so preserve per-instance add/multiply modifiers on that named value.
+      const rawDamage = Number(getPName(piece.params, 'flatsteal', getP3(piece.params, 4)));
+      const dam = Number.isFinite(rawDamage) ? rawDamage : 0;
+      const factorBase = getPName(piece.params, 'lifesteal_factor', 150);
+      const factor = modifiedParamValue(piece, factorBase, 'lifesteal_factor') / 100;
       // Item.stealLife is an effect hit (effect modifiers, block, no vamp/spikes)
       // followed by a nested heal.  Keep the shared helper so the causal log and
       // opponent-side actor mapping remain identical to the game path.
@@ -97,10 +104,11 @@ function emeraldInventory(id) {
     handlerId: id,
     family: 'unique',
     onCooldownEffect(piece, ctx) {
-      const regen = Math.max(
-        1,
-        Math.round(getPName(piece.params, 'regen', getP3(piece.params, 2))),
-      );
+      // Emerald.gd passes getP3() straight to giveRegeneration(); Item.gd
+      // applies buff power and rounds inside giveStacks. Keep the raw source
+      // amount here so zero/fractional values follow the same path.
+      const rawRegen = Number(getPName(piece.params, 'regen', getP3(piece.params, 2)));
+      const regen = Number.isFinite(rawRegen) ? rawRegen : 0;
       const gained = grantStacks(ctx.player, 'regeneration', regen, {
         ...origin(piece),
         rng: ctx.rng,
@@ -123,7 +131,10 @@ function sapphireInventory(id) {
     handlerId: id,
     family: 'unique',
     onCooldownEffect(piece, ctx) {
-      const cold = Math.max(1, Math.round(getPName(piece.params, 'p5', getP5(piece.params, 1))));
+      // Sapphire.gd passes getP5() directly to inflictCold(); let the shared
+      // stack path perform the game's amplification and rounding.
+      const rawCold = Number(getPName(piece.params, 'p5', getP5(piece.params, 1)));
+      const cold = Number.isFinite(rawCold) ? rawCold : 0;
       const inflicted = grantStacks(ctx.dummy, 'cold', cold, {
         ...origin(piece),
         rng: ctx.rng,
@@ -181,7 +192,9 @@ function topazInventory(id) {
     family: 'unique',
     presenceOnly: true,
     onPrepare(piece, ctx) {
-      const stam = getPName(piece.params, 'staminaregen', getPName(piece.params, 'p2', 0)) / 100;
+      // Topaz.gd reads the positional source value directly via getP2().
+      // Named catalog aliases are descriptions, not an alternate lookup path.
+      const stam = getP2(piece.params, 0) / 100;
       if (stam) applyStaminaRegeneration(ctx.player, stam, ctx, piece);
     },
   };
@@ -196,23 +209,21 @@ function skullInventory(id) {
     onCombatStart(piece, ctx) {
       piece._skullUsed = false;
       const th = getP1(piece.params, 50) / 100 - 0.0001;
-      ctx.bus?.on?.('piece_dealt_damage', (payload) => {
-        if (piece._skullUsed || !payload?.hit?.hit) return;
+      ctx.bus?.on?.('character_damaged', (payload = {}) => {
+        if (piece._skullUsed) return;
+        if (payload.actor && payload.actor !== ctx.dummy) return;
         const maxHp = Number(ctx.dummy.maxHp) || 1;
         if (ctx.dummy.hp / maxHp > th) return;
         piece._skullUsed = true;
-        const heal = Math.max(1, Math.round(getPName(piece.params, 'heal', 20)));
-        const got = healActor(ctx.player, heal);
-        grantStacks(
-          ctx.player,
-          'empower',
-          Math.max(1, Math.round(getP3(piece.params, 1))),
-          origin(piece),
+        const heal = modifiedParamValue(
+          piece,
+          getPName(piece.params, 'heal', getP2(piece.params, 0)),
+          'heal',
         );
-        pushActivate(piece, ctx, id, `Gem: ${piece.name}`);
+        const got = healActor(ctx.player, heal);
         if (got > 0) {
           ctx.events.push({
-            t: ctx.t,
+            t: payload?.t ?? ctx.t,
             type: 'heal',
             target: 'player',
             amount: got,
@@ -222,6 +233,11 @@ function skullInventory(id) {
             meta: { category: 'heal', script: true, handler: id },
           });
         }
+        const empower = getP3(piece.params, 0);
+        if (empower > 0) {
+          grantStacks(ctx.player, 'empower', empower, origin(piece));
+        }
+        pushActivate(piece, ctx, id, `Gem: ${piece.name}`);
       });
     },
   };
@@ -240,6 +256,7 @@ function badgerInventory(id) {
       const stam = getPName(piece.params, 'stamina', 10);
       const frac = -stam / 100;
       for (const o of ctx.pieces || []) {
+        if (o.side && piece.side && o.side !== piece.side) continue;
         multiplyStaminaCost(o, frac);
       }
     },
@@ -283,29 +300,8 @@ function elephantInventory(id) {
     family: 'unique',
     presenceOnly: true,
     onCombatStart(piece, ctx) {
-      const hp = Math.max(
-        1,
-        Math.round(getPName(piece.params, 'maxhealth', getP1(piece.params, 8))),
-      );
-      ctx.player.maxHp += hp;
-      ctx.player.hp += hp;
-      ctx.events.push({
-        t: ctx.t + 0.0015,
-        type: 'heal',
-        actor: ctx.player.id,
-        target: ctx.player.id,
-        amount: hp,
-        itemId: piece.itemId,
-        placementKey: piece.placementKey,
-        label: `${piece.name}: +${hp} maximum health`,
-        meta: {
-          category: 'health',
-          kind: 'maxHp',
-          stat: 'max_health',
-          script: true,
-          handler: id,
-        },
-      });
+      const hp = getPName(piece.params, 'maxhealth', getP1(piece.params, 8));
+      giveTempMaxHp(piece, ctx, id, hp);
       afterEffectFinished(piece, ctx, id, { activate: true, label: `Gem: ${piece.name}` });
     },
   };

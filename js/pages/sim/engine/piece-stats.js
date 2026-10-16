@@ -238,6 +238,23 @@ export function addBonusDamageFactor(piece, frac) {
 }
 
 /**
+ * Item.addBonusDamageFactor / reduceBonusDamageFactor — apply a reversible
+ * multiplier delta while retaining the source contribution in the stat log.
+ * @param {CombatPiece} piece
+ * @param {number} delta
+ */
+export function changeBonusDamageFactor(piece, delta) {
+  const d = Number(delta) || 0;
+  if (!d) return;
+  recordPieceMod(piece, { stat: 'damage', amount: d, unit: 'factor' });
+  const cur = Number(piece.bonusDamageFactor);
+  piece.bonusDamageFactor = Math.max(
+    1,
+    (Number.isFinite(cur) && cur > 0 ? cur : 1) + d,
+  );
+}
+
+/**
  * Game getMinDamage / getMaxDamage: round(amount * bonusDamageFactor).
  * @param {CombatPiece} piece
  * @param {number} amount

@@ -2,9 +2,10 @@
  * Band AO — leftover shields (chance-block + beforeBlock / afterBlock).
  */
 
-import { healActor, tryUseStamina } from '../actor.js';
+import { drainStamina, healActor } from '../actor.js';
 import { grantStacks, onBuffChanged, spendStacks } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
+import { giveBuffPower } from '../buff-power.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { dealEffectDamage } from './handlers.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
@@ -16,31 +17,55 @@ import { rollPercent } from '../rng.js';
  */
 
 function registerShield(piece, ctx, opts) {
-  const chance =
-    Number(ctx.itemsById.get(piece.itemId)?.chance) || Number(piece.chance) || 30;
+  const catalog = ctx.itemsById.get(piece.itemId);
+  const chanceRaw = piece.chance != null ? piece.chance : catalog?.chance;
+  const chanceValue = Number(chanceRaw);
+  const chance = Number.isFinite(chanceValue) ? chanceValue : 30;
   const damblock = Math.max(
     1,
     Math.round(opts.damblock ?? getPName(piece.params, 'damblock', getP1(piece.params, 7))),
   );
+  const baseGetter = opts.getDamblock;
+  const readDamblock = () => {
+    const base = Number(baseGetter ? baseGetter() : damblock) || 0;
+    const add = Number(piece.paramAdd?.damblock) || 0;
+    const rawMult = Number(piece.paramMult?.damblock);
+    const multiplier = Number.isFinite(rawMult) && rawMult !== 0 ? rawMult : 1;
+    return (base + add) * multiplier;
+  };
   if (!ctx.player._shields) ctx.player._shields = [];
+  const liveCtx = () => ({
+    ...ctx,
+    t: Number(ctx.player?._simT) || ctx.t,
+  });
   ctx.player._shields.push({
     piece,
     chance,
     damblock,
-    getDamblock: opts.getDamblock,
+    getDamblock: readDamblock,
     beforeBlock(payload) {
       if (!piece.alive) return;
-      opts.beforeBlock?.(payload);
+      opts.beforeBlock?.(payload, liveCtx());
     },
     afterBlock(payload) {
       if (!piece.alive) return;
-      opts.afterBlock?.(payload);
+      opts.afterBlock?.(payload, liveCtx());
       const drain = Math.max(
         0,
         Number(getPName(piece.params, 'stamina', getP2(piece.params, 0.3))) || 0,
       );
-      if (drain > 0) tryUseStamina(ctx.player, drain);
-      pushActivate(piece, ctx, piece.itemId, `Shield: ${piece.name}`);
+      if (drain > 0) {
+        drainStamina(ctx.player, drain, {
+          events: liveCtx().events,
+          t: liveCtx().t,
+          actorSide: 'player',
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          label: `${piece.name}: Removed ${drain} stamina`,
+          handler: piece.itemId,
+        });
+      }
+      pushActivate(piece, liveCtx(), piece.itemId, `Shield: ${piece.name}`);
     },
   });
 }
@@ -129,7 +154,15 @@ const heartShieldPort = {
       if (cut > 0) {
         damage.damage -= cut;
         damage.reduced = (damage.reduced || 0) + cut;
-        tryUseStamina(ctx.player, Math.max(0, Number(getPName(piece.params, 'stamina', getP2(piece.params, 0.7))) || 0));
+        drainStamina(ctx.player, Math.max(0, Number(getP2(piece.params, 0.7)) || 0), {
+          events: ctx.events,
+          t: ctx.t,
+          actorSide: 'player',
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          label: `${piece.name}: Removed stamina`,
+          handler: piece.itemId,
+        });
         if (piece._regenGiven < maxR) {
           grantStacks(ctx.player, 'regeneration', onBlk, origin(piece));
           piece._regenGiven += onBlk;
@@ -170,7 +203,7 @@ const moonShieldPort = {
 const pineProtectorPort = {
   handlerId: 'pine_protector',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._spikesGiven = 0;
     piece._damblockIncrease = 0;
     const baseDam = Math.max(
@@ -207,7 +240,7 @@ const pineProtectorPort = {
       damblock: baseDam,
       getDamblock: () => baseDam + (Number(piece._damblockIncrease) || 0),
       // SpikedShield.beforeBlock — give spikes before damage resolves.
-      beforeBlock() {
+      beforeBlock(_payload, liveCtx) {
         const left = piece._maxSpikes - (Number(piece._spikesGiven) || 0);
         if (!(left > 0)) return;
         const n = Math.min(left, spikesPer);
@@ -216,7 +249,7 @@ const pineProtectorPort = {
           ...origin(piece),
           silentLog: true,
         });
-        pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'pine_protector', {
+        pushBuffGrants(liveCtx.events, piece, liveCtx.player, liveCtx.t, 'pine_protector', {
           spikes: n,
         });
       },
@@ -254,11 +287,14 @@ const pineProtectorPort = {
 const shieldOfValorPort = {
   handlerId: 'shield_of_valor',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const fac = getP3(piece.params, 20) / 100;
+    if (!fac) return;
     for (const o of linked(ctx, piece)) {
-      if (Number(o.blockGrant) > 0) o.blockGrant = Math.round(o.blockGrant * (1 + fac));
+      if (Number(ctx.itemsById.get(o.itemId)?.block) > 0) giveBuffPower(o, 'block', fac);
     }
+  },
+  onCombatStart(piece, ctx) {
     registerShield(piece, ctx, {});
   },
 };
@@ -297,18 +333,45 @@ const spikedWallPort = {
 const sunShieldPort = {
   handlerId: 'sun_shield',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
+    piece._sunShieldPrepared = true;
     piece._blk = 0;
-    const per = Math.max(1, Math.round(getP3(piece.params, 4)));
-    const dam = Math.max(1, Math.round(getP4(piece.params, 4)));
-    registerShield(piece, ctx, {});
-    ctx.bus?.on?.('afterBlock', () => {
-      piece._blk += 1;
-      const ticks = Math.floor(piece._blk / per);
+    piece._sunShieldBonusDamage = 0;
+    const linkedKeys = new Set(linked(ctx, piece).map((target) => target.placementKey));
+    const blockPerTick = Math.max(1, Math.trunc(getP3(piece.params, 1)));
+    const damagePerTick = Math.trunc(getP4(piece.params, 0));
+    onBuffChanged(ctx.player, (change) => {
+      if (change.stack !== 'block' || !(change.amount > 0)) return;
+      if (!linkedKeys.has(change.originKey)) return;
+      piece._blk += change.amount;
+      const ticks = Math.floor(piece._blk / blockPerTick);
       if (ticks <= 0) return;
-      piece._blk %= per;
-      dealEffectDamage(piece, ctx, ticks * dam);
+      piece._blk %= blockPerTick;
+      const liveCtx = {
+        ...ctx,
+        t: Number(ctx.player?._simT) || ctx.t,
+      };
+      dealEffectDamage(
+        piece,
+        liveCtx,
+        ticks * (damagePerTick + (Number(piece._sunShieldBonusDamage) || 0)),
+      );
+      liveCtx.events.push({
+        t: liveCtx.t,
+        type: 'info',
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: mini activate`,
+        meta: { category: 'system', script: true, handler: 'sun_shield', miniActivate: true },
+      });
     });
+  },
+  onCombatStart(piece, ctx) {
+    if (!piece._sunShieldPrepared) this.onPrepare(piece, ctx);
+    registerShield(piece, ctx, {});
+  },
+  addBonusDamageOnTick(piece, _ctx, damage) {
+    piece._sunShieldBonusDamage = (Number(piece._sunShieldBonusDamage) || 0) + (Number(damage) || 0);
   },
 };
 

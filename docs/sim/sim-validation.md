@@ -103,7 +103,7 @@ Dump protocol (Phase 259): [`sim-debug-protocol.md`](sim-debug-protocol.md) — 
 
 Runtime generic ban (Phase 261): `npm run sim-engine-1to1-count` — silent `cd_*` / `basic_cd` unique resolve fails the harness.
 
-Coverage honesty (Phase 262): the HUD meter’s **scripted** count is `engineMatch` (combat hooks), not `handlerExists`. Shop/chess noops, empty unique gem stubs, and gems still on generic `basic_cd` do not count as scripted combat. `npm run sim-coverage-honesty`.
+Coverage honesty (Phase 262): the engine coverage object’s **scripted** count remains `engineMatch` (combat hooks), not `handlerExists`. Shop/chess noops, empty unique gem stubs, and gems still on generic `basic_cd` do not count as scripted combat. The public `/sim/` banner now uses the stricter `verifiedPct` count from the generated fidelity summary, so a handler alone cannot appear as 1:1 proof. `npm run sim-coverage-honesty`.
 
 Engine banner (Phase **268–270**): `/sim/` titles **Engine 1:1** only when 252 + 258 + 264 + 265 **and** counsel flags. Closeout JSON sets `engine11Achieved: false`. `npm run sim-engine-claim`.
 
@@ -459,6 +459,16 @@ Intentional / deferred vs commercial “1:1”:
 | Live `live.*` fill-in | Phase **265** ingest; paste a real fight — history.db has no end HP |
 
 Public marketing of “1:1 combat” still needs **Band F Phase 38** (Phase **270** closed the numbered ladder without claiming 1:1; [`sim-ip-marketing.md`](sim-ip-marketing.md)).
+
+## Admin evidence dashboard
+
+The owner-only Admin Sim audit lists every catalog item and shared combat
+surface. Its source-verified checkmark is not a source-port count: it requires
+retained current source, automated regression, and every applicable projection;
+it does not require the user to supply a live capture.
+Rows with a handler or partial/implemented source mapping remain evidence
+pending until that proof is attached. The generated artifact is checked by
+`node scripts/sim-continuous-audit.mjs --check`.
 
 ## Legal
 

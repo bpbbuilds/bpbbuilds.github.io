@@ -17,7 +17,7 @@ import { PLAYER_STAMINA_REGEN } from '../actor.js';
 import { applyStaminaRegeneration } from '../actor-stats.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
-import { afterEffectFinished } from './ports-util.js';
+import { afterEffectFinished, pushActivate } from './ports-util.js';
 import { recordPieceMod, withStatSource } from '../stat-mods.js';
 
 /**
@@ -56,7 +56,9 @@ function pushBuffGrants(events, piece, player, t, handler, picked, baseOff = 0.0
 export const amuletOfFortunePort = {
   handlerId: 'amulet_of_fortune',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // AmuletofFortune.gd applies its chance multiplier in onPrepare, before
+  // chance-bearing pieces begin their combat lifecycle.
+  onPrepare(piece, ctx) {
     const { t, events, graph, itemsById, canAffect, pieces } = ctx;
     const chance = Math.max(
       0,
@@ -345,6 +347,14 @@ export const cheesePort = {
   family: 'food',
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
+    grantMaxHealth(piece, player, events, t, 'cheese');
+    const num = Math.max(1, Math.round(getP2(piece.params, 1)));
+    const picked = giveRandomBuffs(player, num, rng, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+    pushBuffGrants(events, piece, player, t, 'cheese', picked, 0.004);
+    // Cheese.gd activates after max health and random buffs.
     events.push({
       t,
       type: 'activate',
@@ -354,13 +364,6 @@ export const cheesePort = {
       label: `Food: ${piece.name}`,
       meta: { category: 'consumable', script: true, handler: 'cheese' },
     });
-    grantMaxHealth(piece, player, events, t, 'cheese');
-    const num = Math.max(1, Math.round(getP2(piece.params, 1)));
-    const picked = giveRandomBuffs(player, num, rng, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    pushBuffGrants(events, piece, player, t, 'cheese', picked, 0.004);
     return true;
   },
 };
@@ -371,6 +374,14 @@ export const cheeseGoobertPort = {
   family: 'pet_like',
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
+    grantMaxHealth(piece, player, events, t, 'cheese_goobert');
+    const num = Math.max(1, Math.round(getP3(piece.params, 2)));
+    const picked = giveRandomBuffs(player, num, rng, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+    pushBuffGrants(events, piece, player, t, 'cheese_goobert', picked, 0.004);
+    // Goobert's source callback activates after its doCooldownEffect body.
     events.push({
       t,
       type: 'activate',
@@ -380,13 +391,6 @@ export const cheeseGoobertPort = {
       label: `Pet: ${piece.name}`,
       meta: { category: 'pet', script: true, handler: 'cheese_goobert' },
     });
-    grantMaxHealth(piece, player, events, t, 'cheese_goobert');
-    const num = Math.max(1, Math.round(getP3(piece.params, 2)));
-    const picked = giveRandomBuffs(player, num, rng, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    pushBuffGrants(events, piece, player, t, 'cheese_goobert', picked, 0.004);
     return true;
   },
 };
@@ -397,21 +401,13 @@ export const presentPort = {
   family: 'unique',
   onCombatStart(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    const num = Math.max(1, Math.round(getP1(piece.params, 5)));
-    events.push({
-      t,
-      type: 'activate',
-      actor: 'player',
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `Accessory: ${piece.name}`,
-      meta: { category: 'system', script: true, handler: 'present' },
-    });
+    const num = Math.max(0, Math.trunc(getP1(piece.params, 5)));
     const picked = giveRandomBuffs(player, num, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     pushBuffGrants(events, piece, player, t, 'present', picked);
+    pushActivate(piece, ctx, 'present', `Accessory: ${piece.name}`);
   },
 };
 
@@ -471,7 +467,7 @@ export const shamanMaskPort = {
     const { t, player, events, pieces } = ctx;
     let gems = 0;
     for (const p of pieces || []) {
-      gems += Array.isArray(p.gemNames) ? p.gemNames.length : 0;
+      gems += Array.isArray(p.gemIds) ? p.gemIds.filter(Boolean).length : 0;
     }
     if (gems > 0) {
       grantStacks(player, 'lucky', gems, {
@@ -498,17 +494,8 @@ export const shamanMaskPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    const need = Math.max(1, Math.round(getP2(piece.params, 2)));
-    const num = Math.max(1, Math.round(getP3(piece.params, 5)));
-    events.push({
-      t,
-      type: 'activate',
-      actor: 'player',
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `Accessory: ${piece.name}`,
-      meta: { category: 'system', script: true, handler: 'shaman_mask' },
-    });
+    const need = Math.trunc(getP2(piece.params, 0));
+    const num = getP3(piece.params, 0);
     if ((Number(player.stacks.lucky) || 0) >= need) {
       const spent = useLucky(player, need, {
         originKey: piece.placementKey,
@@ -525,13 +512,14 @@ export const shamanMaskPort = {
           label: `${piece.name}: −${spent.spent} Lucky`,
           meta: { category: 'buff', stack: 'lucky', script: true, handler: 'shaman_mask' },
         });
-        const picked = giveRandomBuffs(player, num, rng, {
-          originKey: piece.placementKey,
-          originId: piece.itemId,
-        });
-        pushBuffGrants(events, piece, player, t, 'shaman_mask', picked, 0.004);
       }
+      const picked = giveRandomBuffs(player, num, rng, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      pushBuffGrants(events, piece, player, t, 'shaman_mask', picked, 0.004);
     }
+    pushActivate(piece, ctx, 'shaman_mask', `Accessory: ${piece.name}`);
     return true;
   },
 };

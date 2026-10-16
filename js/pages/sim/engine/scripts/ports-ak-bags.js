@@ -4,7 +4,6 @@
 
 import { applyHealEfficiency, applyStaminaRegeneration } from '../actor-stats.js';
 import { startBattleRage } from '../battle-rage.js';
-import { grantTimedResistancePct } from '../timed-resistance.js';
 import {
   BUFF_KEYS,
   cleanseRandomDebuffs,
@@ -14,11 +13,18 @@ import {
 } from '../buff-economy.js';
 import { gainStacks } from '../stacks.js';
 import { getItemsInside } from '../board-graph.js';
-import { reEmitCharge } from '../charge-delivery.js';
-import { getPName } from '../params.js';
+import { canEmitCharge, reEmitCharge } from '../charge-delivery.js';
+import { gainMaxStaminaTemporary } from '../actor.js';
+import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addEffectDurationFactor } from '../effect-duration.js';
 import { addSpeed } from '../piece-stats.js';
-import { itemHasType, pushBuffGrants } from './ports-util.js';
+import { rollItemChance } from '../chance.js';
+import { isBagLike } from '../item-kind.js';
+import {
+  canBagAffectItem,
+  hasInventoryDuration,
+} from '../../../../shared/backpack-grid/can-affect.js';
+import { itemHasType, pieceHasCombatCooldown, pushActivate, pushBuffGrants } from './ports-util.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -130,10 +136,10 @@ export const berserkerBagPort = {
   // BerserkerBag.gd connects during onPrepare, before start-of-battle damage.
   onPrepare(piece, ctx) {
     piece._rageArmed = false;
-    const th = getPName(piece.params, 'healtht', 50) / 100 - 0.0001;
-    const speed = getPName(piece.params, 'speed_rage', 20) / 100;
-    const dr = getPName(piece.params, 'damresistance', 15);
-    const dur = Math.max(1, getPName(piece.params, 'dur_rage', 4));
+    const th = getPName(piece.params, 'healtht', getP1(piece.params, 50)) / 100 - 0.0001;
+    const speed = getPName(piece.params, 'speed_rage', getP3(piece.params, 20)) / 100;
+    const dr = getPName(piece.params, 'damresistance', getP4(piece.params, 15));
+    const dur = Math.max(0, getPName(piece.params, 'dur_rage', getP2(piece.params, 4)));
     ctx.bus?.on?.('character_damaged', (p) => {
       if (p?.actor && p.actor !== ctx.player) return;
       if (piece._rageArmed || !piece.alive) return;
@@ -141,16 +147,20 @@ export const berserkerBagPort = {
       if (player.maxHp <= 0 || player.hp / player.maxHp >= th) return;
       piece._rageArmed = true;
       startBattleRage(player, dur, p?.t ?? ctx.t, { bus: ctx.bus, sourceId: piece.itemId });
+      pushActivate(piece, ctx, 'berserker_bag', `Bag: ${piece.name}`);
     });
-    ctx.bus?.on?.('battle_rage_started', () => {
-      if (dr) grantTimedResistancePct(ctx.player, dr, ctx.t + dur, 'berserker_bag');
+    ctx.bus?.on?.('battle_rage_started', (event) => {
+      if (event?.actor && event.actor !== ctx.player) return;
+      if (dr) ctx.player.damageResistancePct = (Number(ctx.player.damageResistancePct) || 0) + dr;
       for (const o of insides(ctx, piece)) {
-        if (Number(o.cooldown) > 0 && speed) addSpeed(o, speed);
+        if (pieceHasCombatCooldown(o) && speed) addSpeed(o, speed);
       }
     });
-    ctx.bus?.on?.('battle_rage_ended', () => {
+    ctx.bus?.on?.('battle_rage_ended', (event) => {
+      if (event?.actor && event.actor !== ctx.player) return;
+      if (dr) ctx.player.damageResistancePct = Math.max(0, (Number(ctx.player.damageResistancePct) || 0) - dr);
       for (const o of insides(ctx, piece)) {
-        if (Number(o.cooldown) > 0 && speed) addSpeed(o, -speed);
+        if (pieceHasCombatCooldown(o) && speed) addSpeed(o, -speed);
       }
     });
   },
@@ -161,16 +171,17 @@ export const berserkerBagPort = {
 export const bagOfGivingPort = {
   handlerId: 'bag_of_giving',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const stam = Math.max(1, Math.round(getPName(piece.params, 'stamina', 2)));
-    ctx.bus?.on?.('potion_emptied', () => {});
-    // Use piece activate via combat-activate bus if present; fallback: any inside CD fire
-    const keys = new Set(getItemsInside(ctx.graph, piece.placementKey));
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
-      const src = payload?.piece;
-      if (!src || !keys.has(src.placementKey)) return;
-      ctx.player.maxStamina = (Number(ctx.player.maxStamina) || 20) + stam;
-    });
+  onPrepare(piece) {
+    piece._bagGivingReady = true;
+  },
+  onPeerActivated(listener, activated, ctx) {
+    if (!listener._bagGivingReady) return;
+    const bagItem = ctx.itemsById.get(listener.itemId) || listener;
+    const activatedItem = ctx.itemsById.get(activated.itemId) || activated;
+    if (!canBagAffectItem(bagItem, activatedItem, ctx.canAffect || {})) return;
+    const stam = Math.max(1, Math.round(getPName(listener.params, 'stamina', 2)));
+    gainMaxStaminaTemporary(ctx.player, stam);
+    pushActivate(listener, ctx, 'bag_of_giving', `Bag: ${listener.name}`);
   },
 };
 
@@ -179,12 +190,25 @@ export const bagOfGivingPort = {
 export const sewingCasePort = {
   handlerId: 'sewing_case',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const speed = getPName(piece.params, 'speed', 15) / 100;
+  onPrepare(piece, ctx) {
+    const speed =
+      getPName(piece.params, 'speed', getP1(piece.params, 15)) / 100;
+    const bagItem = ctx.itemsById.get(piece.itemId) || piece;
+    const rawChance =
+      piece.chance != null ? piece.chance : bagItem.chance;
+    const chance = Number.isFinite(Number(rawChance)) ? Number(rawChance) : 0;
     for (const o of insides(ctx, piece)) {
       const item = ctx.itemsById.get(o.itemId);
-      const crafted = itemHasType(item, 'crafted') || item?.shop === 'crafted';
-      if (crafted && speed && Number(o.cooldown) > 0) addSpeed(o, speed);
+      if (!item) continue;
+      const target = { ...item, ...o, params: o.params || item.params };
+      if (!canBagAffectItem(bagItem, target, ctx.canAffect || {})) continue;
+      if (speed) addSpeed(o, speed);
+      if (!chance) continue;
+      o.buffAmplificationChances = o.buffAmplificationChances || {};
+      for (const stack of BUFF_KEYS) {
+        o.buffAmplificationChances[stack] =
+          (Number(o.buffAmplificationChances[stack]) || 0) + chance;
+      }
     }
   },
 };
@@ -194,16 +218,42 @@ export const sewingCasePort = {
 export const storageCoffinPort = {
   handlerId: 'storage_coffin',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const chance =
-      Number(ctx.itemsById.get(piece.itemId)?.chance) || Number(piece.chance) || 25;
-    const keys = new Set(getItemsInside(ctx.graph, piece.placementKey));
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
-      const src = payload?.piece;
-      if (!src || !keys.has(src.placementKey)) return;
-      if (ctx.rng() * 100 >= chance) return;
-      gainStacks(ctx.dummy, 'poison', 1, { rng: ctx.rng, opponent: ctx.player });
+  onPrepare(piece, ctx) {
+    const catalog = ctx.itemsById.get(piece.itemId) || piece;
+    const chance = Number.isFinite(Number(piece.chance))
+      ? Number(piece.chance)
+      : Number(catalog.chance) || 0;
+    const keys = new Set(
+      insides(ctx, piece)
+        .filter((inside) => {
+          const item = ctx.itemsById.get(inside.itemId) || inside;
+          return inside.canActivate !== false &&
+            item.canActivate !== false &&
+            !isBagLike(item);
+        })
+        .map((inside) => inside.placementKey),
+    );
+    piece._storageCoffinBound = true;
+    ctx.bus?.on?.('piece_activated', (payload) => {
+      const activated = payload?.piece;
+      if (!activated || !keys.has(activated.placementKey)) return;
+      if (!rollItemChance(piece, ctx.rng, chance)) return;
+      gainStacks(ctx.dummy, 'poison', 1, {
+        rng: ctx.rng,
+        opponent: ctx.player,
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+        t: payload?.t ?? ctx.t,
+      });
+      pushBuffGrants(ctx.events, piece, ctx.player, payload?.t ?? ctx.t, 'storage_coffin', {
+        poison: 1,
+      }, 0.002, 'dummy');
     });
+  },
+  // Compatibility for direct callers that used the old lifecycle slot; the
+  // production simulator binds this source onPrepare hook first.
+  onCombatStart(piece, ctx) {
+    if (!piece._storageCoffinBound) this.onPrepare(piece, ctx);
   },
 };
 
@@ -215,18 +265,24 @@ export const storageCoffinPort = {
 export const engineerBoxPort = {
   handlerId: 'engineer_box',
   family: 'unique',
-  onPreCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._engQueue = [];
     piece._engTimerAt = null;
+    piece._engEmitters = new Set(
+      insides(ctx, piece)
+        .filter((item) => canEmitCharge(item))
+        .map((item) => item.placementKey),
+    );
     ctx.bus?.on?.('charge_emitted', (payload) => {
       const emitter = payload?.piece;
       if (!emitter?.placementKey || piece.alive === false) return;
-      const inside = new Set(getItemsInside(ctx.graph, piece.placementKey));
-      if (!inside.has(emitter.placementKey)) return;
+      if (!piece._engEmitters?.has(emitter.placementKey)) return;
       if (!piece._engQueue) piece._engQueue = [];
       piece._engQueue.push(emitter.placementKey);
-      const delay = Math.max(0, Number(getPName(piece.params, 'delay', 5)) || 5);
-      piece._engTimerAt = ctx.t + delay;
+      const rawDelay = Number(getPName(piece.params, 'delay', 5));
+      const delay = Number.isFinite(rawDelay) ? Math.max(0, rawDelay) : 5;
+      const signalT = Number.isFinite(Number(payload?.t)) ? Number(payload.t) : ctx.t;
+      piece._engTimerAt = signalT + delay;
     });
   },
   onQueuedChargeTimeout(piece, ctx) {
@@ -236,6 +292,11 @@ export const engineerBoxPort = {
     const emitter = (ctx.pieces || []).find((p) => p.placementKey === key);
     const speedFactor = getPName(piece.params, 'speed', 150) / 100;
     reEmitCharge(emitter, ctx, speedFactor);
+  },
+  onCombatEnd(piece) {
+    piece._engTimerAt = null;
+    piece._engQueue = [];
+    piece._engEmitters = new Set();
   },
 };
 
@@ -251,10 +312,17 @@ function bagChance(piece, ctx, fallback = 15) {
 export const puzzlebagSPort = {
   handlerId: 'puzzlebag_s',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const amp = bagChance(piece, ctx, 15);
+  onPrepare(piece, ctx) {
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const rawChance = catalog?.chance ?? piece.chance ?? 0;
+    const amp = Number.isFinite(Number(rawChance)) ? Number(rawChance) : 0;
     if (!amp) return;
     for (const o of insides(ctx, piece)) {
+      const targetCatalog = ctx.itemsById.get(o.itemId);
+      const target = targetCatalog
+        ? { ...targetCatalog, ...o, params: o.params || targetCatalog.params }
+        : o;
+      if (!canBagAffectItem({ id: 'puzzlebag_s' }, target, ctx.canAffect || {})) continue;
       o.buffAmpChance = (Number(o.buffAmpChance) || 0) + amp;
     }
   },
@@ -264,10 +332,17 @@ export const puzzlebagSPort = {
 export const puzzlebagZPort = {
   handlerId: 'puzzlebag_z',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const amp = bagChance(piece, ctx, 15);
+  onPrepare(piece, ctx) {
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const rawChance = catalog?.chance ?? piece.chance ?? 0;
+    const amp = Number.isFinite(Number(rawChance)) ? Number(rawChance) : 0;
     if (!amp) return;
     for (const o of insides(ctx, piece)) {
+      const targetCatalog = ctx.itemsById.get(o.itemId);
+      const target = targetCatalog
+        ? { ...targetCatalog, ...o, params: o.params || targetCatalog.params }
+        : o;
+      if (!canBagAffectItem({ id: 'puzzlebag_z' }, target, ctx.canAffect || {})) continue;
       o.debuffAmpChance = (Number(o.debuffAmpChance) || 0) + amp;
     }
   },
@@ -282,14 +357,15 @@ export const puzzlebagZPort = {
 export const puzzlebagTPort = {
   handlerId: 'puzzlebag_t',
   family: 'unique',
-  onPreCombatStart(piece, ctx) {
-    const refund = getPName(piece.params, 'buff', 25) / 100;
-    if (!(refund > 0)) return;
-    // Game: canApplyEffect = usesBuffs → getAffectedItemsInside().
-    const usesIds = ctx.canAffect?.usesBuffsIds;
+  onPrepare(piece, ctx) {
+    const refund = getPName(piece.params, 'buff', 0) / 100;
     const keys = new Set();
     for (const o of insides(ctx, piece)) {
-      if (usesIds && !usesIds.has(String(o.itemId))) continue;
+      const catalog = ctx.itemsById.get(o.itemId);
+      const target = catalog
+        ? { ...catalog, ...o, params: o.params || catalog.params }
+        : o;
+      if (!canBagAffectItem({ id: 'puzzlebag_t' }, target, ctx.canAffect || {})) continue;
       keys.add(o.placementKey);
     }
     if (!keys.size) return;
@@ -331,12 +407,14 @@ export const puzzlebagJPort = {
   handlerId: 'puzzlebag_j',
   family: 'unique',
   onPrepare(piece, ctx) {
-    const bonus = getPName(piece.params, 'bonusdur', 20) / 100;
+    const bonus = getPName(piece.params, 'bonusdur', 0) / 100;
     if (!bonus) return;
     for (const o of insides(ctx, piece)) {
       const cat = ctx.itemsById.get(o.itemId);
-      const params = o.params || cat?.params || {};
-      if (!Object.keys(params).some((key) => /^dur(?:_|$)/i.test(key))) continue;
+      const target = cat
+        ? { ...cat, ...o, params: o.params || cat.params }
+        : o;
+      if (!hasInventoryDuration(target)) continue;
       addEffectDurationFactor(o, bonus);
     }
   },

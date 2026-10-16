@@ -2,8 +2,8 @@
  * Band Y Phase 139 — heal / onBuffsChanged thresholds (Toad siblings).
  */
 
-import { PLAYER_MAX_STAMINA, PLAYER_STAMINA_REGEN, tryUseStamina, gainMaxStaminaTemporary, grantStun } from '../actor.js';
-import { applyStaminaRegeneration, applyUnhealing } from '../actor-stats.js';
+import { tryUseStamina, gainMaxStaminaTemporary, grantStun } from '../actor.js';
+import { applyStaminaRegeneration, applyUnhealing, changeReflectStacks } from '../actor-stats.js';
 import {
   advanceBuffThresholds,
   giveAllBuffs,
@@ -13,12 +13,14 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
-import { effectDuration } from '../effect-duration.js';
+import { scaleEffectDuration } from '../effect-duration.js';
 import { addSpeed, multiplyStaminaCost } from '../piece-stats.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { gainStacks, loseStacks } from '../stacks.js';
 import { getScriptHandler } from './registry.js';
 import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
 import { eventSideForPiece } from '../vs-board.js';
+import { giveTempMaxHp } from './ports-ap-start.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -28,13 +30,29 @@ import { eventSideForPiece } from '../vs-board.js';
 export const angelCrystalPort = {
   handlerId: 'angel_crystal',
   family: 'unique',
+  // AngelCrystal.gd subscribes before its combat-start regeneration, so that
+  // the initial grant also converts to max health.
+  onPrepare(piece, ctx) {
+    const { player } = ctx;
+    const maxPer = Math.max(
+      0,
+      Math.round(getPName(piece.params, 'maxhealth', getP2(piece.params, 2))),
+    );
+    onBuffChanged(player, (ch) => {
+      if (ch.stack !== 'regeneration' || ch.amount <= 0 || maxPer <= 0) return;
+      const hp = ch.amount * maxPer;
+      player.maxHp += hp;
+      player.hp = Math.min(player.maxHp, player.hp + hp);
+    });
+  },
   onCombatStart(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect } = ctx;
-    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
+    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect)
+      .filter((link) => itemHasType(itemsById.get(link.id), 'holy'));
     const regen =
       Math.max(1, Math.round(getPName(piece.params, 'regen', getP1(piece.params, 2)))) +
       links.length *
-        Math.max(0, Math.round(getPName(piece.params, 'regen2', 1)));
+        Math.max(0, Math.round(getPName(piece.params, 'regen_holy', getPName(piece.params, 'regen2', 1))));
     grantStacks(player, 'regeneration', regen, {
       originKey: piece.placementKey,
       originId: piece.itemId,
@@ -47,26 +65,16 @@ export const angelCrystalPort = {
       label: `${piece.name}: +${regen} Regen`,
       meta: { category: 'buff', stack: 'regeneration', script: true, handler: 'angel_crystal' },
     });
-    const maxPer = Math.max(
-      0,
-      Math.round(getPName(piece.params, 'maxhealth', getP2(piece.params, 2))),
-    );
-    onBuffChanged(player, (ch) => {
-      if (ch.stack !== 'regeneration' || ch.amount <= 0) return;
-      if (maxPer <= 0) return;
-      const hp = ch.amount * maxPer;
-      player.maxHp += hp;
-      player.hp = Math.min(player.maxHp, player.hp + hp);
-    });
     pushActivate(piece, ctx, 'angel_crystal', `Accessory: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect } = ctx;
     pushActivate(piece, ctx, 'angel_crystal', `Accessory: ${piece.name}`);
-    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
+    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect)
+      .filter((link) => itemHasType(itemsById.get(link.id), 'holy'));
     const emp =
       Math.max(1, Math.round(getPName(piece.params, 'empower', getP3(piece.params, 1)))) +
-      links.length * Math.max(0, Math.round(getPName(piece.params, 'empower2', 0)));
+      links.length * Math.max(0, Math.round(getPName(piece.params, 'empower_holy', getPName(piece.params, 'empower2', 0))));
     grantStacks(player, 'empower', emp, {
       originKey: piece.placementKey,
       originId: piece.itemId,
@@ -88,7 +96,7 @@ export const angelCrystalPort = {
 export const bloodManipulationPort = {
   handlerId: 'blood_manipulation',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { graph, itemsById, canAffect, player } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect).filter(
       (link) => itemHasType(itemsById.get(link.id), 'vampiric'),
@@ -135,37 +143,19 @@ export const powerOfTheMoonPort = {
       ctx.canAffect,
     );
     piece._moonLinkedKeys = new Set(links.map((link) => link.key));
-  },
-  onCombatStart(piece, ctx) {
-    // Band Z 150 — listen for fatigue via combat bus
+    // PoweroftheMoon.gd connects to the combat timer during prepare, before
+    // combat-start/post-start hooks can emit fatigue_start.
     ctx.bus?.on?.('fatigue_start', (payload) => {
       const pct = Math.max(
         0,
         getPName(piece.params, 'maxhealth', getP3(piece.params, 70)),
       ) / 100;
-      const hp = Math.round(ctx.player.maxHp * pct);
-      if (!(hp > 0)) return;
-      ctx.player.maxHp += hp;
-      ctx.player.hp = Math.min(ctx.player.maxHp, ctx.player.hp + hp);
-      const side = eventSideForPiece(piece);
-      ctx.events.push({
-        t: payload?.t ?? ctx.t,
-        type: 'heal',
-        actor: side,
-        target: side,
-        amount: hp,
-        itemId: piece.itemId,
-        placementKey: piece.placementKey,
-        label: `${piece.name}: +${hp} max HP (fatigue)`,
-        meta: {
-          category: 'heal',
-          script: true,
-          handler: 'power_of_the_moon',
-          kind: 'temp_max_hp',
-          fatigue: true,
-        },
-      });
+      const eventCtx = { ...ctx, t: payload?.t ?? ctx.t };
+      giveTempMaxHp(piece, eventCtx, 'power_of_the_moon', ctx.player.maxHp * pct);
+      // Source calls activate() even when the computed bonus is zero.
+      pushActivate(piece, eventCtx, 'power_of_the_moon', `Skill: ${piece.name}`);
     });
+    pushActivate(piece, ctx, 'vampiric_armor', `Armor: ${piece.name}`);
   },
   onPeerActivated(listener, activated, ctx) {
     if (
@@ -193,8 +183,7 @@ export const powerOfTheMoonPort = {
     if (activatedId === 'moon_shield') {
       const reflect = Math.max(0, Math.round(getPName(listener.params, 'reflect', 1)));
       if (reflect > 0) {
-        ctx.player.debuffReflectStacks =
-          (Number(ctx.player.debuffReflectStacks) || 0) + reflect;
+        changeReflectStacks(ctx.player, reflect, ctx, listener);
       }
     }
   },
@@ -207,7 +196,11 @@ export const slothPort = {
   family: 'pet_like',
   onPreCombatStart(piece, ctx) {
     // Sloth.gd onPrepare: reduceSpeed on hasCooldown neighbors
-    const slow = getPName(piece.params, 'speed', getP1(piece.params, 30)) / 100;
+    const slow = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'speed', getP1(piece.params, 30)),
+      'speed',
+    ) / 100;
     if (!slow) return;
     const links = affectedTargets(
       ctx.graph,
@@ -223,22 +216,19 @@ export const slothPort = {
   onCombatStart(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    const basePct = getPName(piece.params, 'maxhealth_base', getP2(piece.params, 10));
-    const perPct = getPName(piece.params, 'maxhealth_item', getP3(piece.params, 15));
+    const basePct = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'maxhealth_base', getP2(piece.params, 10)),
+      'maxhealth_base',
+    );
+    const perPct = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'maxhealth_item', getP3(piece.params, 15)),
+      'maxhealth_item',
+    );
     const pct = (basePct + links.length * perPct) / 100;
-    const hp = Math.max(1, Math.round(player.maxHp * pct));
-    player.maxHp += hp;
-    player.hp = Math.min(player.maxHp, player.hp + hp);
-    events.push({
-      t,
-      type: 'heal',
-      target: 'player',
-      amount: hp,
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `${piece.name}: +${hp} max HP`,
-      meta: { category: 'heal', script: true, handler: 'sloth', kind: 'temp_max_hp' },
-    });
+    const hp = Math.round(player.maxHp * pct);
+    giveTempMaxHp(piece, ctx, 'sloth', hp);
     // Game activate() — starts the awaken CD bar
     pushActivate(piece, ctx, 'sloth', `Pet: ${piece.name}`);
     // trigger() always sets awakenNow before doCooldownEffect in-game
@@ -246,15 +236,15 @@ export const slothPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, dummy, events } = ctx;
-    pushActivate(piece, ctx, 'sloth', `Pet: ${piece.name}`);
     const awaken = piece._slothAwaken !== false;
     piece._slothAwaken = false;
     if (awaken) {
       // Awaken: giveAllBuffs(buffs) + stun opponent + consume
-      const n = Math.max(
-        1,
-        Math.round(getPName(piece.params, 'buffs', getP4(piece.params, 10))),
-      );
+      const n = Math.trunc(modifiedParamValue(
+        piece,
+        getPName(piece.params, 'buffs', getP4(piece.params, 10)),
+        'buffs',
+      ));
       const picked = giveAllBuffs(player, n, {
         originKey: piece.placementKey,
         originId: piece.itemId,
@@ -262,18 +252,24 @@ export const slothPort = {
       pushBuffGrants(events, piece, player, t, 'sloth', picked);
       grantStun(
         dummy,
-        Math.max(0.05, effectDuration(piece, 'dur_stun', getPName(piece.params, 'p6', 1.5))),
+        scaleEffectDuration(
+          piece,
+          modifiedParamValue(
+            piece,
+            getPName(piece.params, 'dur_stun', getPName(piece.params, 'p6', 1.5)),
+            'dur_stun',
+          ),
+        ),
         t,
       );
       afterEffectFinished(piece, ctx, 'sloth', { activate: false });
     } else {
       // Amulet / non-trigger path: smaller buffs + short stun, keep looping
-      const n = Math.max(
-        1,
-        Math.round(
-          getPName(piece.params, 'buffs_amulet', getPName(piece.params, 'p5', 1)),
-        ),
-      );
+      const n = Math.trunc(modifiedParamValue(
+        piece,
+        getPName(piece.params, 'buffs_amulet', getPName(piece.params, 'p5', 1)),
+        'buffs_amulet',
+      ));
       const picked = giveAllBuffs(player, n, {
         originKey: piece.placementKey,
         originId: piece.itemId,
@@ -281,12 +277,17 @@ export const slothPort = {
       pushBuffGrants(events, piece, player, t, 'sloth', picked);
       grantStun(
         dummy,
-        Math.max(
-          0.05,
-          effectDuration(piece, 'dur_stun_amulet', getPName(piece.params, 'p7', 0.5)),
+        scaleEffectDuration(
+          piece,
+          modifiedParamValue(
+            piece,
+            getPName(piece.params, 'dur_stun_amulet', getPName(piece.params, 'p7', 0.5)),
+            'dur_stun_amulet',
+          ),
         ),
         t,
       );
+      pushActivate(piece, ctx, 'sloth', `Pet: ${piece.name}`);
     }
     return true;
   },
@@ -295,6 +296,7 @@ export const slothPort = {
 function bionicAccHealOrBlock(piece, ctx, amount) {
   if (!(amount > 0)) return;
   const { player, events } = ctx;
+  const actor = eventSideForPiece(piece);
   const healthTh = Math.max(
     1,
     Math.round(getPName(piece.params, 'healtht', getPName(piece.params, 'p4', 10))),
@@ -310,6 +312,7 @@ function bionicAccHealOrBlock(piece, ctx, amount) {
   events.push({
     t: ctx.t,
     type: 'info',
+    actor,
     label: `${piece.name}: +${gain} temp max stamina`,
     meta: { category: 'system', script: true, handler: 'bionic_armor' },
   });
@@ -320,15 +323,15 @@ function bionicAccHealOrBlock(piece, ctx, amount) {
 export const bionicArmorPort = {
   handlerId: 'bionic_armor',
   family: 'unique',
-  onPreCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { player } = ctx;
     piece._bionicAcc = 0;
-    const malusPct =
-      Math.abs(getPName(piece.params, 'staminaregen', getPName(piece.params, 'p1', 100))) / 100;
+    const malusPct = getPName(piece.params, 'staminaregen', getPName(piece.params, 'p1', 100)) / 100;
+    const baseStaminaRegen = Number(player.baseStaminaRegen ?? player.staminaRegen) || 0;
     if (malusPct > 0) {
       applyStaminaRegeneration(
         player,
-        -malusPct * PLAYER_STAMINA_REGEN,
+        -malusPct * baseStaminaRegen,
         ctx,
         piece,
       );
@@ -337,13 +340,14 @@ export const bionicArmorPort = {
       if (ch.stack !== 'block' || !(ch.amount > 0)) return;
       bionicAccHealOrBlock(piece, ctx, ch.amount);
     });
-    player._combatBus?.on?.('actor_healed', (payload) => {
+    ctx.bus?.on?.('actor_healed', (payload) => {
       if (payload?.actor !== player || !(payload?.amount > 0)) return;
       bionicAccHealOrBlock(piece, ctx, payload.amount);
     });
   },
   onCombatStart(piece, ctx) {
     const { t, player, events } = ctx;
+    const actor = eventSideForPiece(piece);
     const block = Math.max(
       0,
       Math.round(
@@ -360,7 +364,8 @@ export const bionicArmorPort = {
       events.push({
         t,
         type: 'buff',
-        target: 'player',
+        actor,
+        target: actor,
         amount: block,
         label: `${piece.name}: +${block} Block`,
         meta: { category: 'buff', stack: 'block', script: true, handler: 'bionic_armor' },
@@ -370,6 +375,7 @@ export const bionicArmorPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
+    const actor = eventSideForPiece(piece);
     pushActivate(piece, ctx, 'bionic_armor', `Armor: ${piece.name}`);
     const th = Math.max(
       1,
@@ -387,7 +393,8 @@ export const bionicArmorPort = {
       events.push({
         t: t + 0.004,
         type: 'buff',
-        target: 'player',
+        actor,
+        target: actor,
         amount: block2,
         label: `${piece.name}: +${block2} Block`,
         meta: { category: 'buff', stack: 'block', script: true, handler: 'bionic_armor' },
@@ -406,7 +413,8 @@ export const bionicArmorPort = {
       events.push({
         t: t + 0.004,
         type: 'buff',
-        target: 'player',
+        actor,
+        target: actor,
         amount: emp,
         label: `${piece.name}: +${emp} Empower`,
         meta: { category: 'buff', stack: 'empower', script: true, handler: 'bionic_armor' },
@@ -424,7 +432,7 @@ export const stoneArmorPort = {
   onPrepare(piece, ctx) {
     const { player, events, pieces } = ctx;
     // StoneArmor.gd onPrepare: changeStaminaFactor(staminacost) on all items
-    const stamPct = getPName(piece.params, 'staminacost', getPName(piece.params, 'stamina', 20)) / 100;
+    const stamPct = getPName(piece.params, 'staminacost', getP4(piece.params, 20)) / 100;
     if (stamPct) {
       for (const other of pieces || []) {
         if (other.placementKey === piece.placementKey) continue;
@@ -435,7 +443,7 @@ export const stoneArmorPort = {
     }
     piece._stoneArmorTriggered = false;
     const healthTh =
-      getPName(piece.params, 'healtht', getPName(piece.params, 'p4', 50)) / 100;
+      getPName(piece.params, 'healtht', getP3(piece.params, 50)) / 100;
     const blockPer =
       getPName(piece.params, 'blockperhealth', getPName(piece.params, 'p5', 50)) / 100;
     ctx.bus?.on?.('character_damaged', (payload) => {
@@ -445,7 +453,7 @@ export const stoneArmorPort = {
       if (rel >= healthTh) return;
       piece._stoneArmorTriggered = true;
       const missing = Math.max(0, (Number(player.maxHp) || 0) - (Number(player.hp) || 0));
-      const bl = Math.max(1, Math.round(missing * blockPer));
+      const bl = Math.max(0, Math.round(missing * blockPer));
       grantStacks(player, 'block', bl, {
         originKey: piece.placementKey,
         originId: piece.itemId,
@@ -462,11 +470,12 @@ export const stoneArmorPort = {
   },
   onCombatStart(piece, ctx) {
     const { t, player, events } = ctx;
-    const block = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 12)));
+    const block = Math.max(0, Math.round(piece.blockGrant ?? getP1(piece.params, 0)));
     grantStacks(player, 'block', block, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
+    pushActivate(piece, ctx, 'stone_armor', `Armor: ${piece.name}`);
     events.push({
       t,
       type: 'buff',
@@ -478,17 +487,17 @@ export const stoneArmorPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, dummy, events } = ctx;
-    pushActivate(piece, ctx, 'stone_armor', `Armor: ${piece.name}`);
     const spikeRem = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'spikes', getP2(piece.params, 1))),
+      0,
+      Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 0))),
     );
     const empRem = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'empower', getP3(piece.params, 1))),
+      0,
+      Math.round(getPName(piece.params, 'empower', getP2(piece.params, 0))),
     );
-    loseStacks(dummy, 'spikes', Math.min(spikeRem, Number(dummy.stacks.spikes) || 0));
-    loseStacks(dummy, 'empower', Math.min(empRem, Number(dummy.stacks.empower) || 0));
+    loseStacks(dummy, 'spikes', spikeRem);
+    loseStacks(dummy, 'empower', empRem);
+    pushActivate(piece, ctx, 'stone_armor', `Armor: ${piece.name}`);
     events.push({
       t: t + 0.004,
       type: 'info',
@@ -508,12 +517,12 @@ export const stoneArmorPort = {
  */
 function healthToBlock(player, healthCap, blockCap) {
   const want = Math.max(0, Number(healthCap) || 0);
-  const blockWant = Math.max(0, Number(blockCap) || 0);
-  if (!(want > 0) || !(blockWant > 0)) return { spent: 0, block: 0 };
+  const blockWant = Number(blockCap) || 0;
+  if (!(want > 0)) return { spent: 0, block: 0 };
   const clamped = Math.min(want, Math.max(0, (Number(player.hp) || 0) - 1));
   if (!(clamped > 0)) return { spent: 0, block: 0 };
   player.hp = Math.max(1, (Number(player.hp) || 0) - clamped);
-  const block = Math.max(1, Math.ceil((clamped / want) * blockWant));
+  const block = Math.ceil((clamped / want) * blockWant);
   grantStacks(player, 'block', block);
   return { spent: clamped, block };
 }
@@ -525,29 +534,22 @@ export const vampiricArmorPort = {
   family: 'unique',
   onCombatStart(piece, ctx) {
     const { t, player, events, itemsById } = ctx;
-    const healthCap = Math.max(1, Math.round(getPName(piece.params, 'healtht', getP1(piece.params, 50))));
-    const blockCap = Math.max(
-      1,
-      Math.round(
-        Number(piece.blockGrant) ||
-          Number(itemsById?.get?.(piece.itemId)?.block) ||
-          100,
-      ),
-    );
+    const healthCap = getP1(piece.params, 0);
+    const catalogBlock = itemsById?.get?.(piece.itemId)?.block;
+    const blockCap = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number(catalogBlock) || 0;
     const { spent, block } = healthToBlock(player, healthCap, blockCap);
-    const vamp = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'vampirism', getP2(piece.params, 5))),
-    );
+    const vamp = getP2(piece.params, 0);
     grantStacks(player, 'vampirism', vamp, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    pushActivate(piece, ctx, 'vampiric_armor', `Armor: ${piece.name}`);
-    events.push({
+    if (block > 0) events.push({
       t,
       type: 'buff',
-      target: 'player',
+      actor: eventSideForPiece(piece),
+      target: eventSideForPiece(piece),
       amount: block,
       label: `${piece.name}: HP→Block ${spent}→+${block}, +${vamp} Vamp`,
       meta: {
@@ -558,18 +560,19 @@ export const vampiricArmorPort = {
         healthSpent: spent,
       },
     });
+    pushActivate(piece, ctx, 'vampiric_armor', `Armor: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'vampiric_armor', `Armor: ${piece.name}`);
-    const healthCap = Math.max(1, Math.round(getP3(piece.params, 10)));
-    const blockCap = Math.max(1, Math.round(getP4(piece.params, 20)));
+    const healthCap = getP3(piece.params, 0);
+    const blockCap = getP4(piece.params, 0);
     const { spent, block } = healthToBlock(player, healthCap, blockCap);
     if (block > 0) {
       events.push({
         t: t + 0.004,
         type: 'buff',
-        target: 'player',
+        actor: eventSideForPiece(piece),
+        target: eventSideForPiece(piece),
         amount: block,
         label: `${piece.name}: HP→Block ${spent}→+${block}`,
         meta: {
@@ -581,6 +584,7 @@ export const vampiricArmorPort = {
         },
       });
     }
+    pushActivate(piece, ctx, 'vampiric_armor', `Armor: ${piece.name}`);
     return true;
   },
 };
@@ -627,10 +631,9 @@ function piggybankStartOfBattleCount(graph, piece, itemsById, canAffect) {
   const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect).filter(
     (link) => link.via === 'rule',
   );
-  if (canAffect?.rulesById) return links.length;
   return links.filter((link) => {
     const handler = getScriptHandler(link.id);
-    return Boolean(handler?.onCombatStart && !handler?.onCooldownEffect);
+    return Boolean(handler?.onCombatStart);
   }).length;
 }
 
@@ -639,49 +642,14 @@ export const piggybankPort = {
   family: 'start_buff',
   onCombatStart(piece, ctx) {
     const { graph, itemsById, canAffect, player, t, events } = ctx;
-    pushActivate(piece, ctx, 'piggybank', `Accessory: ${piece.name}`);
-    const per = Math.round(getPName(piece.params, 'maxhealth', getP2(piece.params, 2)));
+    const per = getPName(piece.params, 'maxhealth', getP2(piece.params, 2));
     const n = piggybankStartOfBattleCount(graph, piece, itemsById, canAffect);
-    const gain = Math.max(0, Math.round(per * n));
-    const side = eventSideForPiece(piece);
-    if (gain > 0) {
-      player.maxHp += gain;
-      player.hp += gain;
-      events.push({
-        t,
-        type: 'heal',
-        actor: side,
-        target: side,
-        itemId: piece.itemId,
-        placementKey: piece.placementKey,
-        amount: gain,
-        label: `${piece.name}: +${gain} max HP (${per}×${n} start-of-battle)`,
-        meta: {
-          category: 'heal',
-          script: true,
-          handler: 'piggybank',
-          kind: 'maxHp',
-          consumed: true,
-          playerHp: player.hp,
-          affected: n,
-        },
-      });
-    } else {
-      events.push({
-        t: t + 0.001,
-        type: 'info',
-        itemId: piece.itemId,
-        placementKey: piece.placementKey,
-        label: `${piece.name}: 0 start-of-battle items in range`,
-        meta: {
-          category: 'adjacency',
-          script: true,
-          handler: 'piggybank',
-          zeroGain: true,
-          affected: 0,
-        },
-      });
-    }
+    giveTempMaxHp(piece, ctx, 'piggybank', per * n);
+    // Piggybank.gd calls consume() after giveMaxHealth(), so activation is last.
+    pushActivate(piece, ctx, 'piggybank', `Accessory: ${piece.name}`, {
+      consume: true,
+      affected: n,
+    });
     piece.alive = false;
     piece.charges = 0;
   },

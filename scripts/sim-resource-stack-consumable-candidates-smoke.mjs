@@ -94,7 +94,7 @@ function link(ctx, source, target, targetItem = target.itemId) {
 // Piercing Arrow strips Block in the late critical-hit phase, before Block absorbs damage.
 {
   const ctx = context(); const arrow = piece('piercing_arrow', 'arrow'); const weapon = piece('wooden_sword', 'sword');
-  link(ctx, arrow, weapon); getScriptHandler('piercing_arrow').onCombatStart(arrow, ctx); ctx.dummy.block = 20;
+  link(ctx, arrow, weapon); getScriptHandler('piercing_arrow').onPrepare(arrow, ctx); ctx.dummy.block = 20;
   weapon._preDealLate.forEach((fn) => fn({ critical: true, damage: 10 }));
   assert.equal(ctx.dummy.block, 5);
 }
@@ -109,16 +109,20 @@ function link(ctx, source, target, targetItem = target.itemId) {
 // Scissorswords retains Lightsaber's weapon strike and adds its hit/miss branches.
 {
   const ctx = context(); const sword = piece('scissorswords', 'sword', { damageMin: 10, damageMax: 10 });
-  const handler = getScriptHandler('scissorswords'); handler.onCombatStart(sword, ctx);
+  const handler = getScriptHandler('scissorswords'); handler.onPrepare(sword, ctx);
   handler.onDealtDamage(sword, ctx, { hit: false }); assert.equal(ctx.player.stacks.lucky, 5);
-  handler.onDealtDamage(sword, ctx, { hit: true }); assert.equal(ctx.dummy.stacks.blind, 10); assert.equal(ctx.player.stacks.blind, 10);
+  handler.onDealtDamage(sword, ctx, { hit: true }); assert.equal(ctx.dummy.stacks.blind, 0); assert.equal(ctx.player.stacks.blind, 0);
 }
 
 // Ice Scroll removes all cold only on a real lethal hit and converts it to Block.
 {
   const ctx = context(); const scroll = piece('spell_scroll_ice', 'scroll');
-  getScriptHandler('spell_scroll_ice').onCombatStart(scroll, ctx); grantStacks(ctx.dummy, 'cold', 3); ctx.player.hp = 0;
-  ctx.bus.emit('player_damaged', { healthDamage: 5 });
+  getScriptHandler('spell_scroll_ice').onPrepare(scroll, ctx); grantStacks(ctx.dummy, 'cold', 3); ctx.player.hp = 10;
+  ctx.bus.emit('pre_take_damage_late', {
+    defender: ctx.player,
+    damage: { damage: 10, healthDamage: 10 },
+    source: { ignoreBlock: false },
+  });
   assert.equal(ctx.dummy.stacks.cold, 0); assert.equal(ctx.player.block, 6); assert.equal(scroll.alive, false);
 }
 

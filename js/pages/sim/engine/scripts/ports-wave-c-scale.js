@@ -13,8 +13,15 @@ import {
 import { giveBuffPower } from '../buff-power.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
-import { addAccuracy, addBonusDamage, addBonusDamageFromBuffChange, addSpeed } from '../piece-stats.js';
+import {
+  addAccuracy,
+  addBonusDamage,
+  addBonusDamageFromBuffChange,
+  addSpeed,
+  changeVaryingDamageFromBuffChange,
+} from '../piece-stats.js';
 import { gainStacks, loseStacks } from '../stacks.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { eventSideForPiece } from '../vs-board.js';
 import { itemHasType } from './ports-util.js';
 import { applyEffectDmgFactor } from '../actor-stats.js';
@@ -65,29 +72,21 @@ export const onionCutterPort = {
 export const thornWhipPort = {
   handlerId: 'thorn_whip',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const per = Number(getP1(piece.params, 1)) || 0;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'spikes' || !per) return;
-      addBonusDamageFromBuffChange(piece, ch, per);
+      changeVaryingDamageFromBuffChange(piece, ch, per);
     });
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'thorn_whip');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
     grantStacks(ctx.player, 'spikes', 1, {
       originKey: piece.placementKey,
       originId: piece.itemId,
-    });
-    ctx.events.push({
-      t: ctx.t + 0.008,
-      type: 'buff',
-      target: 'player',
-      amount: 1,
-      label: `${piece.name}: +1 Spikes`,
-      meta: { category: 'buff', stack: 'spikes', script: true, handler: 'thorn_whip' },
     });
   },
 };
@@ -97,7 +96,7 @@ export const thornWhipPort = {
 export const clawsOfAttackPort = {
   handlerId: 'claws_of_attack',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._clawHits = 0;
     piece._clawSpeed = 0;
     const syncSpeed = () => {
@@ -115,10 +114,19 @@ export const clawsOfAttackPort = {
     });
   },
   onCooldownEffect(piece, ctx) {
-    return weaponStrike(piece, ctx, 'claws_of_attack');
+    return weaponStrike(piece, ctx, 'claws_of_attack', {
+      onPreDealDamageEarly: (hit) => clawsPreDealDamage(piece, ctx, hit),
+    });
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
+    clawsPreDealDamage(piece, ctx, hit);
+  },
+};
+
+function clawsPreDealDamage(piece, ctx, hit) {
     if (!hit?.hit) return;
+    if (hit._clawsApplied) return;
+    hit._clawsApplied = true;
     piece._clawHits = (piece._clawHits || 0) + 1;
     const need = Math.max(1, Math.round(getP3(piece.params, 3)));
     if (piece._clawHits >= need) {
@@ -136,8 +144,7 @@ export const clawsOfAttackPort = {
         meta: { category: 'buff', stack: 'empower', script: true, handler: 'claws_of_attack' },
       });
     }
-  },
-};
+}
 
 /** ForestDragon.gd — nature speed; regen deltas → dam; hit regen/luck. */
 /** @type {ScriptHandler} */
@@ -224,11 +231,15 @@ export const iceDragonPort = {
 export const thornbloomPort = {
   handlerId: 'thornbloom',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
-    const per = Number(getPName(piece.params, 'damperspike', getP2(piece.params, 1))) || 0;
-    const hpPer = Math.max(0, Math.round(getPName(piece.params, 'maxhealth', 5)));
+  onPrepare(piece, ctx) {
+    const per = Number(getPName(piece.params, 'damperspike', getP3(piece.params, 1))) || 0;
+    const hpPer = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'maxhealth', getP4(piece.params, 11)),
+      'maxhealth',
+    );
     onBuffChanged(ctx.player, (ch) => {
-      if (ch.stack === 'spikes' && per) addBonusDamageFromBuffChange(piece, ch, per);
+      if (ch.stack === 'spikes' && per) changeVaryingDamageFromBuffChange(piece, ch, per);
       if (ch.stack === 'empower' && ch.amount > 0 && hpPer) {
         const hp = hpPer * ch.amount;
         ctx.player.maxHp += hp;
@@ -239,15 +250,15 @@ export const thornbloomPort = {
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'thornbloom');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
-    const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 1))));
+    const spikes = Math.trunc(getPName(piece.params, 'spikes', getP1(piece.params, 1)));
     grantStacks(ctx.player, 'spikes', spikes, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     if (rollItemChance(piece, ctx.rng)) {
-      const emp = Math.max(1, Math.round(getPName(piece.params, 'empower', getP3(piece.params, 1))));
+      const emp = Math.trunc(getPName(piece.params, 'empower', getP2(piece.params, 1)));
       grantStacks(ctx.player, 'empower', emp, {
         originKey: piece.placementKey,
         originId: piece.itemId,
@@ -266,18 +277,19 @@ export const fancyFencingRapierPort = {
   },
   onDealtDamage(piece, ctx, hit) {
     if (hit?.hit) {
-      const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP1(piece.params, 1))));
-      if (
+      // FancyFencingRapier.gd caches int(getP("luckt")); a zero threshold is
+      // therefore a successful tryUseLucky even when no Lucky stack exists.
+      const need = Math.trunc(getPName(piece.params, 'luckt', getP1(piece.params, 1)));
+      if ((Number(ctx.player.stacks.lucky) || 0) >= need) {
         useLucky(ctx.player, need, {
           originKey: piece.placementKey,
           originId: piece.itemId,
-        }).spent > 0
-      ) {
-        const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 2))));
+        });
+        const dam = getPName(piece.params, 'dam', getP2(piece.params, 2));
         addBonusDamage(piece, dam);
       }
     } else {
-      const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP3(piece.params, 1))));
+      const luck = Math.trunc(getPName(piece.params, 'luck', getP3(piece.params, 1)));
       grantStacks(ctx.player, 'lucky', luck, {
         originKey: piece.placementKey,
         originId: piece.itemId,
@@ -436,7 +448,7 @@ export const frostbitePort = {
 export const cursedDaggerPort = {
   handlerId: 'cursed_dagger',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const chance = piece.chance || 5;
     const acc = Math.max(0, getP2(piece.params, 1));
     onBuffChanged(ctx.dummy, (ch) => {
@@ -447,7 +459,7 @@ export const cursedDaggerPort = {
       for (const other of ctx.pieces || []) {
         if (!links.some((l) => l.key === other.placementKey)) continue;
         other.critChance = (Number(other.critChance) || 0) + ch.amount * chance;
-        if (acc && (other.kind === 'weapon' || other.damageMax > 0)) {
+        if (acc && other.kind === 'weapon') {
           addAccuracy(other, ch.amount * acc);
         }
       }
@@ -456,7 +468,7 @@ export const cursedDaggerPort = {
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'cursed_dagger');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
     const n = Math.max(1, Math.round(getP1(piece.params, 1)));
     inflictRandomDebuffs(ctx.dummy, n, ctx.rng, {

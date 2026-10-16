@@ -9,9 +9,9 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP5, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
-import { grantTimedResistancePct } from '../timed-resistance.js';
 import { grantTimedSpeed } from '../timed-speed.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { whetstonePort } from './ports-wave-b-aura.js';
@@ -31,12 +31,21 @@ function linked(ctx, piece) {
 const dragonscaleArmorPort = {
   handlerId: 'dragonscale_armor',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const dr = getP1(piece.params, 15);
-    ctx.bus?.on?.('battle_rage_started', () => {
-      gainStacks(ctx.player, 'block', Math.max(1, Math.round(piece.blockGrant || getPName(piece.params, 'block', 8))));
-      grantTimedResistancePct(ctx.player, dr, ctx.player.battleRageUntil || ctx.t + 4, 'dragonscale');
+    const block = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : getPName(piece.params, 'block', 8);
+    const ownRage = (payload = {}, amount) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      gainStacks(ctx.player, 'block', block);
+      ctx.player.damageResistancePct = (Number(ctx.player.damageResistancePct) || 0) + amount;
       pushActivate(piece, ctx, 'dragonscale_armor', `Armor: ${piece.name}`);
+    };
+    ctx.bus?.on?.('battle_rage_started', (payload = {}) => ownRage(payload, dr));
+    ctx.bus?.on?.('battle_rage_ended', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      ctx.player.damageResistancePct = (Number(ctx.player.damageResistancePct) || 0) - dr;
     });
   },
 };
@@ -45,16 +54,25 @@ const dragonscaleArmorPort = {
 const dragonClawsPort = {
   handlerId: 'dragon_claws',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     ctx.player.stackResist = ctx.player.stackResist || {};
     ctx.player.stackResist.poison =
-      (Number(ctx.player.stackResist.poison) || 0) + (Number(piece.chance) || 15);
+      (Number(ctx.player.stackResist.poison) || 0) +
+      (Number.isFinite(Number(piece.chance)) ? Number(piece.chance) : 0);
     const spd = getP1(piece.params, 15) / 100;
-    ctx.bus?.on?.('battle_rage_started', () => {
+    const hasCooldown = (other) => {
+      const catalogItem = ctx.itemsById?.get?.(other.itemId);
+      const cd = catalogItem?.cooldown ?? other.baseCooldown ?? other.cooldown;
+      return cd > 0 && cd < 500;
+    };
+    const ownRage = (payload = {}, amount) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
       for (const o of linked(ctx, piece)) {
-        if (o.cooldown > 0 && o.cooldown < 500) addSpeed(o, spd);
+        if (hasCooldown(o)) addSpeed(o, amount);
       }
-    });
+    };
+    ctx.bus?.on?.('battle_rage_started', (payload = {}) => ownRage(payload, spd));
+    ctx.bus?.on?.('battle_rage_ended', (payload = {}) => ownRage(payload, -spd));
   },
 };
 
@@ -63,7 +81,8 @@ const bindArcaneBoots = (piece, ctx) => {
   if (piece._arcaneBound) return;
   piece._arcaneBound = true;
     piece._arcane = false;
-    const th = getPName(piece.params, 'healtht', 50) / 100;
+    // ArcaneBoots.gd stores healtht / 100 - 0.0001 and triggers strictly below it.
+    const th = getPName(piece.params, 'healtht', 50) / 100 - 0.0001;
     const need = Math.max(1, Math.round(getPName(piece.params, 'manat', 4)));
     ctx.bus?.on?.('character_damaged', (payload) => {
       if (payload?.actor && payload.actor !== ctx.player) return;
@@ -89,6 +108,7 @@ const bindArcaneBoots = (piece, ctx) => {
       }
       pushActivate(piece, ctx, 'arcane_boots', `Shoes: ${piece.name}`);
       piece.alive = false;
+      piece.charges = 0;
     });
     ctx.bus?.on?.('player_damaged', (payload) => {
       if (piece._arcane) return;
@@ -111,17 +131,27 @@ const arcaneBootsPort = {
 const dragonskinBootsPort = {
   handlerId: 'dragonskin_boots',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
+    piece._hasActivated = false;
     ctx.player.stackResist = ctx.player.stackResist || {};
+    const chance = Number.isFinite(Number(piece.chance))
+      ? Number(piece.chance)
+      : 20;
     ctx.player.stackResist.cold =
-      (Number(ctx.player.stackResist.cold) || 0) + (Number(piece.chance) || 20);
-    ctx.bus?.on?.('battle_rage_started', () => {
-      cleanseRandomDebuffs(ctx.player, Math.max(1, Math.round(getP1(piece.params, 1))), ctx.rng, {});
-      grantStacks(ctx.player, 'empower', Math.max(1, Math.round(getP2(piece.params, 1))), {
+      (Number(ctx.player.stackResist.cold) || 0) + chance;
+    const cleanse = Math.trunc(getPName(piece.params, 'p1', 1));
+    const empower = Math.trunc(getPName(piece.params, 'p2', 1));
+    const block = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : getPName(piece.params, 'block', 4);
+    ctx.bus?.on?.('battle_rage_started', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      cleanseRandomDebuffs(ctx.player, cleanse, ctx.rng, {});
+      grantStacks(ctx.player, 'empower', empower, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
-      gainStacks(ctx.player, 'block', Math.max(1, Math.round(piece.blockGrant || 4)));
+      gainStacks(ctx.player, 'block', block);
     });
   },
 };
@@ -131,7 +161,7 @@ const bindStoneShoes = (piece, ctx) => {
   if (piece._stoneBound) return;
   piece._stoneBound = true;
     piece._stone = false;
-    const th = getP1(piece.params, 40) / 100;
+    const th = getP1(piece.params, 40) / 100 - 0.0001;
     ctx.bus?.on?.('character_damaged', (payload) => {
       if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._stone) return;
@@ -145,11 +175,22 @@ const bindStoneShoes = (piece, ctx) => {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
-      gainStacks(ctx.player, 'block', Math.max(1, Math.round(piece.blockGrant || 6)));
+      const catalogBlock = Number(ctx.itemsById?.get?.(piece.itemId)?.block);
+      const block = Number.isFinite(Number(piece.blockGrant))
+        ? Number(piece.blockGrant)
+        : Number.isFinite(catalogBlock)
+          ? catalogBlock
+          : getPName(piece.params, 'block', 0);
+      gainStacks(ctx.player, 'block', Math.max(0, Math.round(block)));
       const factor = getPName(piece.params, 'damreduction', 15) / 100;
       ctx.dummy.rangedDmgFactor = (Number(ctx.dummy.rangedDmgFactor) || 0) - factor;
       applyEffectDmgFactor(ctx.dummy, -factor, ctx, piece);
-      piece._stoneUntil = ctx.t + Math.max(0.1, getPName(piece.params, 'dur', 7));
+      const duration = modifiedParamValue(
+        piece,
+        getPName(piece.params, 'dur', getP5(piece.params, 7)),
+        'dur',
+      );
+      piece._stoneUntil = ctx.t + Math.max(0.1, duration);
       pushActivate(piece, ctx, 'stone_shoes', `Shoes: ${piece.name}`);
       piece.alive = false;
     });

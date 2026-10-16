@@ -153,12 +153,14 @@ export const amuletOfAlchemyPort = {
 export const amuletOfLifePort = {
   handlerId: 'amulet_of_life',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
-    const { t, player, events } = ctx;
+  onPrepare(piece, ctx) {
     const healAmp = getPName(piece.params, 'healamp', getP1(piece.params, 10)) / 100;
     if (healAmp) {
-      applyHealEfficiency(player, healAmp, ctx, piece);
+      applyHealEfficiency(ctx.player, healAmp, ctx, piece);
     }
+  },
+  onCombatStart(piece, ctx) {
+    const { t, player, events } = ctx;
     const hp = Math.max(
       1,
       Math.round(getPName(piece.params, 'maxhealth', getP2(piece.params, 20))),
@@ -275,49 +277,59 @@ export const heartOfDarknessPort = {
  * ManaCrystal.gd — emitPathCharge; mana1 / mana2(magic) when charge enters a new peer.
  * @type {ScriptHandler}
  */
+function emitManaCrystalCharge(piece, ctx, speedFactor = 1) {
+  const { t, events, player } = ctx;
+  const mana1 = Math.max(1, Math.round(getPName(piece.params, 'mana1', getP1(piece.params, 1))));
+  const mana2 = Math.max(1, Math.round(getPName(piece.params, 'mana2', getP2(piece.params, 2))));
+  const durPerTile = getPName(piece.params, 'dur', getP3(piece.params, 2)) || 2;
+  /** @type {string | null} */
+  let lastKey = null;
+  emitPathCharge(piece, ctx, {
+    speedFactor,
+    durPerTile,
+    label: `${piece.name}: emitCharge`,
+    onCellEnter(target, step) {
+      if (!target) {
+        lastKey = null;
+        return;
+      }
+      const key = target.placementKey;
+      if (key === lastKey) return;
+      lastKey = key;
+      const tgtItem = ctx.itemsById.get(target.itemId);
+      const amt = itemHasType(tgtItem, 'magic') ? mana2 : mana1;
+      grantStacks(player, 'mana', amt, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      events.push({
+        t: t + (step.enterT || 0),
+        type: 'buff',
+        target: 'player',
+        amount: amt,
+        label: `${piece.name}: +${amt} Mana (${target.name})`,
+        meta: {
+          category: 'buff',
+          stack: 'mana',
+          script: true,
+          handler: 'mana_crystal',
+        },
+      });
+    },
+  });
+}
+
 export const manaCrystalPort = {
   handlerId: 'mana_crystal',
   family: 'unique',
-  onCooldownEffect(piece, ctx) {
-    const { t, events, player } = ctx;
+  emitCharge(piece, ctx, speedFactor = 1) {
     pushActivate(piece, ctx, 'mana_crystal', `Accessory: ${piece.name}`);
-    const mana1 = Math.max(1, Math.round(getPName(piece.params, 'mana1', getP1(piece.params, 1))));
-    const mana2 = Math.max(1, Math.round(getPName(piece.params, 'mana2', getP2(piece.params, 2))));
-    const durPerTile = getPName(piece.params, 'dur', getP3(piece.params, 2)) || 2;
-    /** @type {string | null} */
-    let lastKey = null;
-    emitPathCharge(piece, ctx, {
-      durPerTile,
-      label: `${piece.name}: emitCharge`,
-      onCellEnter(target, step) {
-        if (!target) {
-          lastKey = null;
-          return;
-        }
-        const key = target.placementKey;
-        if (key === lastKey) return;
-        lastKey = key;
-        const tgtItem = ctx.itemsById.get(target.itemId);
-        const amt = itemHasType(tgtItem, 'magic') ? mana2 : mana1;
-        grantStacks(player, 'mana', amt, {
-          originKey: piece.placementKey,
-          originId: piece.itemId,
-        });
-        events.push({
-          t: t + (step.enterT || 0),
-          type: 'buff',
-          target: 'player',
-          amount: amt,
-          label: `${piece.name}: +${amt} Mana (${target.name})`,
-          meta: {
-            category: 'buff',
-            stack: 'mana',
-            script: true,
-            handler: 'mana_crystal',
-          },
-        });
-      },
-    });
+    emitManaCrystalCharge(piece, ctx, speedFactor);
+  },
+  onCooldownEffect(piece, ctx) {
+    pushActivate(piece, ctx, 'mana_crystal', `Accessory: ${piece.name}`);
+    emitManaCrystalCharge(piece, ctx);
+    ctx.bus?.emit?.('charge_emitted', { piece, t: ctx.t });
     return true;
   },
 };
@@ -394,15 +406,18 @@ export const stoneBadgePort = {
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'stone_badge', `Badge: ${piece.name}`);
-    const block = Math.max(
-      1,
-      Math.round(piece.blockGrant || getPName(piece.params, 'block', getP1(piece.params, 4))),
-    );
+    const catalogBlock = Number(ctx.itemsById?.get?.(piece.itemId)?.block);
+    const baseBlock = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number.isFinite(catalogBlock)
+        ? catalogBlock
+        : getPName(piece.params, 'block', getP1(piece.params, 0));
+    const block = Math.max(0, Math.round(baseBlock));
     grantStacks(player, 'block', block, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
+    pushActivate(piece, ctx, 'stone_badge', `Badge: ${piece.name}`);
     events.push({
       t: t + 0.004,
       type: 'buff',

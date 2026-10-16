@@ -2,7 +2,6 @@
  * Band AP 249 — leftover `weapon_perm_bonus_on_hit` MAP items → `.gd` ports.
  */
 
-import { isBattleRaging } from '../battle-rage.js';
 import {
   spendStacks,
   useLucky,
@@ -23,6 +22,7 @@ import {
 } from './ports-wave-c-util.js';
 import { rollItemChance } from '../chance.js';
 import { pushActivationAudit } from '../report-weapon-audit.js';
+import { itemHasType } from './ports-util.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -68,10 +68,11 @@ const doubleAxePort = {
   family: 'weapon_base',
   onPrepare(piece, ctx) {
     piece._axeRaged = false;
-    ctx.bus?.on?.('battle_rage_started', () => {
+    ctx.bus?.on?.('battle_rage_started', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
       if (piece._axeRaged) return;
-      piece._axeRaged = true;
       doubleAxePort.onCooldownEffect(piece, ctx);
+      piece._axeRaged = true;
     });
   },
   onCooldownEffect(piece, ctx) {
@@ -79,11 +80,9 @@ const doubleAxePort = {
   },
   onPreDealDamageEarly(piece, ctx, res) {
     if (res && !res.hit) return;
-    const raging = piece._axeRaged || isBattleRaging(ctx.player, ctx.t);
-    addBonusDamage(
-      piece,
-      Math.max(1, Math.round(raging ? getP2(piece.params, 3) : getP1(piece.params, 2))),
-    );
+    const bonus = piece._axeRaged ? getP2(piece.params, 3) : getP1(piece.params, 2);
+    addBonusDamage(piece, bonus);
+    if (res) res.damage = (Number(res.damage) || 0) + (Number(bonus) || 0);
   },
 };
 
@@ -198,10 +197,9 @@ const ribSawBladePort = {
   onPrepare(piece, ctx) {
     piece._ribOppWeapons = (ctx.allPieces || []).filter((other) => {
       if (!other || other === piece || other.side === piece.side) return false;
-      return (
-        other.kind === 'weapon' &&
-        canBeEmpoweredPiece(other)
-      );
+      const item = ctx.itemsById?.get?.(other.itemId);
+      if (!itemHasType(item, 'weapon')) return false;
+      return Number(item.damageMin) > 0 || itemHasType(item, 'lifesteal');
     });
   },
   onCooldownEffect(piece, ctx) {
@@ -209,17 +207,15 @@ const ribSawBladePort = {
   },
   onPreDealDamageEarly(piece, _ctx, res) {
     if (res && !res.hit) return;
-    const removeDam = Math.max(
-      0,
-      Number(getPName(piece.params, 'dam', getP1(piece.params, 1))) || 0,
-    );
+    const removeDam = Math.max(0, Number(getPName(piece.params, 'dam', getP1(piece.params, 0))) || 0);
     for (const weapon of piece._ribOppWeapons || []) {
       purgeBonusDamage(weapon, removeDam);
     }
-    addBonusDamage(
-      piece,
-      getPName(piece.params, 'bonusdam', getP2(piece.params, 0.5)),
+    const bonusDam = Math.max(
+      0,
+      Number(getPName(piece.params, 'bonusdam', getP2(piece.params, 0))) || 0,
     );
+    if (bonusDam) addBonusDamage(piece, bonusDam);
   },
 };
 

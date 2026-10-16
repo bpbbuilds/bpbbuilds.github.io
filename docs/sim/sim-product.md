@@ -229,13 +229,13 @@ Target: [Side rails (avatar + foe chrome)](#side-rails-avatar--foe-chrome). Impl
 
 - [x] Clear regions: **stage**, **run controls**, **HUD / bags**, **combat log + meters** — `sim-region--*` sections in `page.js` + stage band in `sim.css`
 - [x] Existing engine playback still works (seed, scrubber, speed, load board from slug/draft) — `initialT` includes `0` on round change; round-picker teardown on `pagehide`; `npm run sim-playback-smoke`
-- [x] Coverage / fidelity chip stays visible without looking like a debug dump — “Script coverage N%” on this board (not phase / fixture dump)
+- [x] Coverage / fidelity chip stays visible without looking like a debug dump — “Verified 1:1 coverage N%” on this board, based only on retained source-backed and automated proof (not a phase / fixture dump)
 - [x] Lab clutter trimmed for product shell — Engine/Demo + save-run/compare removed; seed/permalink/export in run-details bar (no separate mode toggle)
 
 ### Honest product copy
 
 - [x] Short blurb: predictive sandbox, seeded RNG — **not** a ranked CombatLog replay — fidelity chip hint
-- [x] No public “matches the game 1:1” claim ([`sim-ip-marketing.md`](sim-ip-marketing.md)) — avoid “Game accuracy”; use script coverage
+- [x] No public “matches the game 1:1” claim ([`sim-ip-marketing.md`](sim-ip-marketing.md)) — avoid “Game accuracy”; use the evidence-qualified Verified 1:1 coverage label
 - [x] Empty / error states stay plain and honest (no stuck skeletons) — `sim-status.js` + try/catch in `initSimPage`/`mountRun`; slug load errors; opponent fallback note; `npm run sim-empty-state-smoke`
 
 ### Simple / Advanced view (deferred)

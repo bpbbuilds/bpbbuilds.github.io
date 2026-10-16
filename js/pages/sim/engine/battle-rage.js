@@ -29,6 +29,7 @@ export function startBattleRage(actor, durationSec, nowT, opts = {}) {
   actor._battleRageDur = dur;
   if (!was) {
     opts.bus?.emit?.('battle_rage_started', {
+      actor,
       t: nowT,
       duration: dur,
       untilT: actor.battleRageUntil,
@@ -51,5 +52,5 @@ export function tickBattleRage(actor, t, opts = {}) {
   actor.battleRageUntil = 0;
   actor.battleRage = false;
   actor._battleRageDur = 0;
-  opts.bus?.emit?.('battle_rage_ended', { t, duration: dur });
+  opts.bus?.emit?.('battle_rage_ended', { actor, t, duration: dur });
 }

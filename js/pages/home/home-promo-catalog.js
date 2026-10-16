@@ -10,7 +10,7 @@
  *   } from './home-promo-catalog.js';
  */
 
-import { getSupabase } from '../../shared/supabase.js?v=supabase-client-20261013a';
+import { getSupabase } from '../../shared/supabase.js';
 import {
   attachSpriteSrc,
   mountItemiaryGrid,

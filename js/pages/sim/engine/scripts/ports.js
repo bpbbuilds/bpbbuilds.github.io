@@ -2,13 +2,13 @@
  * Dedicated per-item GDScript ports (Band G Phase 45).
  */
 
-import { tryUseStamina, healActor, requestedHealAmount } from '../actor.js';
+import { tryUseStamina, healActor, requestedHealAmount, giveStamina } from '../actor.js';
 import { gainStacks } from '../stacks.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP6, getPName } from '../params.js';
 import { affectedTargets, getItemsInside } from '../board-graph.js';
 import { randInt, rollPercent } from '../rng.js';
-import { rollItemChance } from '../chance.js';
-import { basicCd, doubleStrike, dealHit } from './handlers.js';
+import { applyBonusChance, rollItemChance } from '../chance.js';
+import { basicCd, dealHit } from './handlers.js';
 import { pushActivate } from './ports-util.js';
 import { weaponBasePort } from './ports-wave-c-util.js';
 import { eventFoeSide, eventSideForPiece } from '../vs-board.js';
@@ -74,6 +74,7 @@ import { applyFoodPrepareSpeed, canBeEmpoweredPiece, markFoodConsumed } from './
 import { addAccuracy, addBonusDamage, addSpeed } from '../piece-stats.js';
 import { withStatSource } from '../stat-mods.js';
 import { buffPowerOf } from '../buff-power.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import {
   advanceBuffThresholds,
   giveLeastBuffs,
@@ -91,7 +92,7 @@ import {
 export const broomPort = {
   handlerId: 'broom',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._broomBonus = 0;
     ctx.bus?.on?.('player_damaged', (payload) => {
       if (payload?.hit) return;
@@ -133,6 +134,7 @@ export const broomPort = {
         events.push({
           t: t + 0.008,
           type: 'debuff',
+          actor: eventSideForPiece(piece),
           target: eventFoeSide(piece),
           itemId: piece.itemId,
           placementKey: piece.placementKey,
@@ -152,6 +154,7 @@ export const bananaPort = {
   family: 'food',
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
+    const actor = eventSideForPiece(piece);
     // Banana.gd: heal() + giveStamina() — Item.giveStamina default amount = 1 (no p2 in catalog).
     const healAmt = Math.max(1, Math.round(getPName(piece.params, 'heal', getP1(piece.params, 4))));
     const stamAmt = Math.max(
@@ -159,11 +162,11 @@ export const bananaPort = {
       Math.round(getPName(piece.params, 'stamina', getP2(piece.params, 1))),
     );
     const healed = healActor(player, healAmt);
-    player.stamina = Math.min(player.maxStamina, player.stamina + stamAmt);
+    giveStamina(player, stamAmt);
     events.push({
       t,
       type: 'activate',
-      actor: 'player',
+      actor,
       itemId: piece.itemId,
       placementKey: piece.placementKey,
       label: `Food: ${piece.name}`,
@@ -175,8 +178,8 @@ export const bananaPort = {
       events.push({
         t: t + 0.002,
         type: 'heal',
-        actor: 'player',
-        target: 'player',
+        actor,
+        target: actor,
         itemId: piece.itemId,
         placementKey: piece.placementKey,
         amount: logged,
@@ -187,7 +190,7 @@ export const bananaPort = {
     events.push({
       t: t + 0.003,
       type: 'stamina',
-      actor: 'player',
+      actor,
       itemId: piece.itemId,
       placementKey: piece.placementKey,
       amount: stamAmt,
@@ -256,29 +259,30 @@ export const falconBladePort = {
     const { t, events, graph, itemsById, canAffect } = ctx;
     const speedPct = getPName(piece.params, 'speed', getP1(piece.params, 40));
     const frac = speedPct / 100;
-    if (!frac) return;
-    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     let buffed = 0;
-    for (const other of ctx.pieces || []) {
-      if (other.placementKey === piece.placementKey) continue;
-      if (!links.some((l) => l.key === other.placementKey)) continue;
-      if (!(other.cooldown > 0) || other.cooldown >= 500) continue;
-      addSpeed(other, frac);
-      buffed += 1;
-      events.push({
-        t: t + 0.01,
-        type: 'info',
-        itemId: piece.itemId,
-        placementKey: piece.placementKey,
-        label: `${piece.name}: +${speedPct}% speed → ${other.name}`,
-        meta: {
-          category: 'adjacency',
-          script: true,
-          handler: 'falcon_blade',
-          targetKey: other.placementKey,
-          speedPct,
-        },
-      });
+    if (frac) {
+      const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
+      for (const other of ctx.pieces || []) {
+        if (other.placementKey === piece.placementKey) continue;
+        if (!links.some((l) => l.key === other.placementKey)) continue;
+        if (!(other.cooldown > 0) || other.cooldown >= 500) continue;
+        addSpeed(other, frac);
+        buffed += 1;
+        events.push({
+          t: t + 0.01,
+          type: 'info',
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          label: `${piece.name}: +${speedPct}% speed → ${other.name}`,
+          meta: {
+            category: 'adjacency',
+            script: true,
+            handler: 'falcon_blade',
+            targetKey: other.placementKey,
+            speedPct,
+          },
+        });
+      }
     }
     // Game activate(null, false) at combat start.
     pushActivate(piece, ctx, 'falcon_blade', `Weapon: ${piece.name}`);
@@ -297,7 +301,43 @@ export const falconBladePort = {
       },
     });
   },
-  onCooldownEffect: (piece, ctx) => doubleStrike.onCooldownEffect(piece, ctx),
+  onCooldownEffect(piece, ctx) {
+    const { t, player, events, rng } = ctx;
+    if (tryUseStamina(player, piece.staminaCost) === 'starve') {
+      events.push({
+        t,
+        type: 'stamina',
+        actor: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        amount: piece.staminaCost,
+        label: `${piece.name}: out of stamina`,
+        meta: { category: 'stamina', script: true, starved: true, handler: 'falcon_blade' },
+      });
+      return true;
+    }
+
+    const first = dealHit(
+      piece,
+      { ...ctx, t: t + 0.01 },
+      randInt(piece.damageMin, piece.damageMax, rng),
+      `${piece.name} hit A`,
+    );
+    pushActivate(piece, { ...ctx, t: t + 0.015 }, 'falcon_blade', `Weapon: ${piece.name}`, {
+      hit: Boolean(first?.hit),
+    });
+
+    const second = dealHit(
+      piece,
+      { ...ctx, t: t + 0.02 },
+      randInt(piece.damageMin, piece.damageMax, rng),
+      `${piece.name} hit B`,
+    );
+    pushActivate(piece, { ...ctx, t: t + 0.025 }, 'falcon_blade', `Weapon: ${piece.name}`, {
+      hit: Boolean(second?.hit),
+    });
+    return true;
+  },
 };
 
 /**
@@ -379,11 +419,11 @@ export const healingHerbsPort = {
 export const blueberriesPort = {
   handlerId: 'blueberries',
   family: 'food',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     applyFoodPrepareSpeed(piece, ctx);
   },
   onCooldownEffect(piece, ctx) {
-    const { t, player, events } = ctx;
+    const { t, player } = ctx;
     pushActivate(piece, ctx, 'blueberries', `Food: ${piece.name}`);
     // Item.giveMana_capped: round(amount * buffPowers[Mana]) then fill to maximum.
     const raw = Math.max(
@@ -409,25 +449,6 @@ export const blueberriesPort = {
       if (manaGiven > 0) gainStacks(player, 'mana', manaGiven);
     }
 
-    if (manaGiven > 0) {
-      events.push({
-        t: t + 0.002,
-        type: 'buff',
-        target: 'player',
-        amount: manaGiven,
-        itemId: piece.itemId,
-        placementKey: piece.placementKey,
-        label: `${piece.name}: +${manaGiven} Mana`,
-        meta: {
-          category: 'buff',
-          stack: 'mana',
-          script: true,
-          handler: 'blueberries',
-          mana: player.stacks.mana,
-        },
-      });
-    }
-
     if (overflow > 0) {
       grantStacks(player, 'lucky', luck, {
         originKey: piece.placementKey,
@@ -447,7 +468,9 @@ export const blueberriesPort = {
 export const amuletOfLightPort = {
   handlerId: 'amulet_of_light',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // AmuletofLight.gd binds activation and regeneration listeners in
+  // onPrepare, before combat-start activations can occur.
+  onPrepare(piece, ctx) {
     ctx.events.push({
       t: ctx.t,
       type: 'info',
@@ -515,24 +538,22 @@ export const amuletOfLightPort = {
 export const enchantedWeaponsPort = {
   handlerId: 'enchanted_weapons',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { t, events, graph, itemsById, canAffect, pieces } = ctx;
     const selfItem = itemsById.get(piece.itemId);
-    const chance = Number(selfItem?.chance) || Number(piece.chance) || 25;
+    const baseChance = Number.isFinite(Number(piece.chance))
+      ? Number(piece.chance)
+      : Number(selfItem?.chance) || 0;
+    const chance = Math.max(0, Math.min(100, applyBonusChance(baseChance, piece, 1)));
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     let buffed = 0;
     for (const other of pieces || []) {
       if (other.placementKey === piece.placementKey) continue;
       if (!links.some((l) => l.key === other.placementKey)) continue;
       const item = itemsById.get(other.itemId);
-      const hasAtk =
-        other.kind === 'weapon' ||
-        other.damageMax > 0 ||
-        other.damageMin > 0 ||
-        Boolean(item?.hasAttackEffect) ||
-        (Array.isArray(other.stackHints) && other.stackHints.length > 0) ||
-        Number(other.chance) > 0 ||
-        Number(item?.chance) > 0;
+      const hasAtk = canAffect?.rulesById
+        ? true
+        : Boolean(canAffect?.hasAttackEffectIds?.has?.(other.itemId) || item?.hasAttackEffect);
       if (!hasAtk) continue;
       other.doubleAttackEffectChance =
         (Number(other.doubleAttackEffectChance) || 0) + chance / 100;
@@ -562,16 +583,7 @@ export const enchantedWeaponsPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    const n = Math.max(1, Math.round(getPName(piece.params, 'buffs', getP1(piece.params, 1))));
-    events.push({
-      t,
-      type: 'activate',
-      actor: 'player',
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `Skill: ${piece.name}`,
-      meta: { category: 'consumable', script: true, handler: 'enchanted_weapons' },
-    });
+    const n = Math.trunc(getPName(piece.params, 'buffs', getP1(piece.params, 1)));
     const picked = giveLeastBuffs(player, n, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
@@ -596,6 +608,15 @@ export const enchantedWeaponsPort = {
       });
       off += 0.002;
     }
+    events.push({
+      t,
+      type: 'activate',
+      actor: 'player',
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `Skill: ${piece.name}`,
+      meta: { category: 'consumable', script: true, handler: 'enchanted_weapons' },
+    });
     return true;
   },
 };
@@ -607,18 +628,29 @@ export const fannyPackPort = {
   family: 'unique',
   onCombatStart(piece, ctx) {
     const { t, events, graph, pieces, itemsById } = ctx;
-    let speedBonus = getP1(piece.params, 10) / 100;
-    const bagtacular = (pieces || []).find((p) => p.itemId === 'bagtacular' && p.alive !== false);
+    let speedBonus = getP1(piece.params) / 100;
+    const ownerSide = eventSideForPiece(piece);
+    // Fanny Pack's isTypeInInventory check is local to the owning character.
+    const bagtacular = (pieces || []).find(
+      (p) =>
+        p.itemId === 'bagtacular' &&
+        p.alive !== false &&
+        eventSideForPiece(p) === ownerSide,
+    );
     if (bagtacular) {
       const bagItem = itemsById?.get?.('bagtacular');
       const bagParams = bagtacular.params || bagItem?.params || {};
-      speedBonus += getPName(bagParams, 'speed', getP1(bagParams, 5)) / 100;
+      speedBonus += getPName(bagParams, 'speed', getP1(bagParams)) / 100;
     }
     const inside = getItemsInside(graph, piece.placementKey);
     for (const key of inside) {
       const other = (pieces || []).find((p) => p.placementKey === key);
       if (!other || other.kind === 'bag') continue;
-      if (!(other.baseCooldown > 0 || (other.cooldown > 0 && other.cooldown < 500))) continue;
+      // Source Item.hasCooldown() reads the item's descriptor cooldown. Do
+      // not use synthetic fallback loop cooldowns for consumables/cards.
+      const targetItem = itemsById?.get?.(other.itemId);
+      const targetCooldown = Number(targetItem?.cooldown);
+      if (!Number.isFinite(targetCooldown) || targetCooldown === 0) continue;
       addSpeed(other, speedBonus);
       events.push({
         t: t + 0.01,
@@ -673,28 +705,71 @@ export const missFortunePort = {
   },
 };
 
+function toadIntParam(params, name, fallback) {
+  const value = Number(getPName(params, name, fallback));
+  return Number.isFinite(value) ? Math.trunc(value) : 0;
+}
+
+function pushToadMiniActivate(piece, ctx, phase) {
+  const actor = eventSideForPiece(piece);
+  const now = Number(ctx.player?._simT);
+  ctx.events.push({
+    t: Number.isFinite(now) ? now : ctx.t,
+    type: 'info',
+    actor,
+    itemId: piece.itemId,
+    placementKey: piece.placementKey,
+    label: `${piece.name}: mini activate`,
+    meta: {
+      category: 'system',
+      script: true,
+      handler: 'toad',
+      miniActivate: true,
+      phase,
+    },
+  });
+}
+
 /** Toad.gd — CD luck2+mana2; buff thresholds on affected origins. */
 /** @type {ScriptHandler} */
 export const toadPort = {
   handlerId: 'toad',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { player, graph, itemsById, canAffect } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     /** @type {Set<string>} */
     const affected = new Set(links.map((l) => l.key));
     piece._toadState = { gained: 0, used: 0, affected };
-    const gainedTh = Math.max(1, Math.round(getPName(piece.params, 'gained', getP1(piece.params, 10))));
-    const usedTh = Math.max(1, Math.round(getPName(piece.params, 'used', getP3(piece.params, 10))));
-    const healPer = Math.max(0, Math.round(getPName(piece.params, 'heal', getP2(piece.params, 12))));
-    const luckPer = Math.max(0, Math.round(getPName(piece.params, 'luck', 1)));
-    const manaPer = Math.max(0, Math.round(getPName(piece.params, 'mana', 1)));
+    const gainedTh = toadIntParam(piece.params, 'gained', getP1(piece.params, 10));
+    const usedTh = toadIntParam(piece.params, 'used', getP3(piece.params, 10));
+    const healPer = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'heal', getP2(piece.params, 12)),
+      'heal',
+    );
+    const luckPer = toadIntParam(piece.params, 'luck', 1);
+    const manaPer = toadIntParam(piece.params, 'mana', 1);
+    piece._toadThresholds = {
+      gained: gainedTh,
+      used: usedTh,
+      heal: healPer,
+      luck: luckPer,
+      mana: manaPer,
+    };
 
     onBuffChanged(player, (ch) => {
       if (!ch.originKey || !affected.has(ch.originKey)) return;
-      const ticks = advanceBuffThresholds(piece._toadState, ch.amount, gainedTh, usedTh);
+      // Invalid zero thresholds are inert instead of turning into a divide-by-zero
+      // loop; valid source values retain Item.gd's integer thresholds exactly.
+      const ticks = advanceBuffThresholds(
+        piece._toadState,
+        ch.amount,
+        gainedTh > 0 ? gainedTh : Number.POSITIVE_INFINITY,
+        usedTh > 0 ? usedTh : Number.POSITIVE_INFINITY,
+      );
       // Game onGainThresholdReached → heal(ticks * getP_m("heal")); miniActivate is VFX only.
-      if (ticks.gainTicks > 0 && healPer > 0) {
+      if (ticks.gainTicks > 0) {
         const healAmt = ticks.gainTicks * healPer;
         const side = eventSideForPiece(piece);
         const want = requestedHealAmount(player, healAmt);
@@ -720,42 +795,44 @@ export const toadPort = {
             },
           });
         }
+        pushToadMiniActivate(piece, ctx, 'gained_threshold');
       }
       // Game onUseThresholdReached → giveLucky + giveMana; grantStacks already combat-logs.
       if (ticks.useTicks > 0) {
-        if (luckPer > 0) {
+        if (luckPer) {
           grantStacks(player, 'lucky', ticks.useTicks * luckPer, {
             originKey: piece.placementKey,
             originId: piece.itemId,
           });
         }
-        if (manaPer > 0) {
+        if (manaPer) {
           grantStacks(player, 'mana', ticks.useTicks * manaPer, {
             originKey: piece.placementKey,
             originId: piece.itemId,
           });
         }
+        pushToadMiniActivate(piece, ctx, 'used_threshold');
       }
     });
   },
   onCooldownEffect(piece, ctx) {
     const { player } = ctx;
-    const luck2 = Math.max(0, Math.round(getPName(piece.params, 'luck2', 1)));
-    const mana2 = Math.max(0, Math.round(getPName(piece.params, 'mana2', 1)));
+    const luck2 = toadIntParam(piece.params, 'luck2', getP6(piece.params, 1));
+    const mana2 = toadIntParam(piece.params, 'mana2', getPName(piece.params, 'p7', 1));
     // Game doCooldownEffect → giveLucky/giveMana then activate(); one Activation only.
-    pushActivate(piece, ctx, 'toad', `Pet: ${piece.name}`);
-    if (luck2 > 0) {
+    if (luck2) {
       grantStacks(player, 'lucky', luck2, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
     }
-    if (mana2 > 0) {
+    if (mana2) {
       grantStacks(player, 'mana', mana2, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
     }
+    pushActivate(piece, ctx, 'toad', `Pet: ${piece.name}`);
     return true;
   },
 };

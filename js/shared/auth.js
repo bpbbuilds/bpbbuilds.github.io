@@ -3,8 +3,8 @@
  * Sign-in at Submit / nav; bind anon votes on SIGNED_IN.
  */
 
-import { getSupabase } from './supabase.js?v=supabase-client-20261013a';
-import { claimFoundingSlot } from './entitlements.js?v=admin-csp-20261013a';
+import { getSupabase } from './supabase.js';
+import { claimFoundingSlot } from './entitlements.js';
 
 /** @typedef {import('./entitlements.js').Profile} Profile */
 const VOTER_KEY = 'bpb-voter-id';
@@ -301,25 +301,20 @@ async function afterSignedIn(session) {
   const foundingResult = await claimFoundingSlot();
   if (foundingResult.status === 'granted') {
     console.log('[afterSignedIn] Founding slot granted:', foundingResult.data);
-    // Profile will be refreshed below; nav should pick up the new plan
   } else if (foundingResult.status === 'error') {
     console.warn('[afterSignedIn] Founding grant error:', foundingResult.reason);
-    // User will see upgrade prompt instead of dead click
-  } else if (foundingResult.status === 'not_started') {
-    console.log('[afterSignedIn] Founding promo not yet started — Stripe Premium path');
-  } else if (foundingResult.status === 'full') {
-    console.log('[afterSignedIn] All founding slots claimed — Stripe Premium path');
-  } else if (foundingResult.status === 'ineligible') {
-    console.log('[afterSignedIn] Account ineligible for founding (may be owner)');
-  } else if (foundingResult.status === 'already_entitled') {
-    console.log('[afterSignedIn] Already entitled to founding/premium');
-  } else {
+  } else if (
+    foundingResult.status !== 'already_entitled' &&
+    foundingResult.status !== 'ineligible' &&
+    foundingResult.status !== 'not_started' &&
+    foundingResult.status !== 'full'
+  ) {
     console.warn(`[afterSignedIn] Founding grant did not complete: ${foundingResult.status}`);
   }
 
   profileCache = undefined;
   await getProfile({ force: true });
-  const { maybePromptDiscordJoin } = await import('./discord-join.js?v=admin-csp-20261013a');
+  const { maybePromptDiscordJoin } = await import('./discord-join.js');
   await maybePromptDiscordJoin();
 }
 

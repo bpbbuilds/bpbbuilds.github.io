@@ -11,15 +11,19 @@ import {
   useMana,
   useRegeneration,
 } from '../buff-economy.js';
-import { grantInvuln, healActor } from '../actor.js';
+import { grantInvuln, healActor, requestedHealAmount } from '../actor.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP, getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
+import { getP, getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { dealEffectDamage, dealHit } from './handlers.js';
 import { itemHasType, pushActivate } from './ports-util.js';
-import { rollItemChance } from './ports-wave-c-util.js';
-import { randInt, rollPercent } from '../rng.js';
+import { rollItemChance, rollItemChance2 } from './ports-wave-c-util.js';
+import { randInt } from '../rng.js';
+import { eventSideForPiece } from '../vs-board.js';
+import { shellyPort } from './ports-wave-b-heal.js';
+import { giveTempMaxHp } from './ports-ap-start.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -55,7 +59,7 @@ function pickCycle(piece) {
 export const powerPuppyPort = {
   handlerId: 'power_puppy',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._ppOpts = [0, 1, 2];
     piece._ppRng = ctx.rng;
     const n = countType(ctx, piece, 'pet');
@@ -63,17 +67,14 @@ export const powerPuppyPort = {
     if (n && sp) addSpeed(piece, n * sp);
   },
   onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'power_puppy');
     const pick = pickCycle(piece);
     const key = pick === 0 ? 'lucky' : pick === 1 ? 'regeneration' : 'empower';
-    const amt = Math.max(
-      1,
-      Math.round(pick === 0 ? getP1(piece.params, 1) : pick === 1 ? getP2(piece.params, 1) : getP3(piece.params, 1)),
-    );
+    const amt = pick === 0 ? getP1(piece.params, 1) : pick === 1 ? getP2(piece.params, 1) : getP3(piece.params, 1);
     grantStacks(ctx.player, key, amt, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
+    petActivate(piece, ctx, 'power_puppy');
     return true;
   },
 };
@@ -83,7 +84,8 @@ export const powerPuppyPort = {
 export const armoredPowerPuppyPort = {
   handlerId: 'armored_power_puppy',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  // ArmoredPowerPuppy.gd overrides PowerPuppy.onPrepare.
+  onPrepare(piece, ctx) {
     piece._ppOpts = [0, 1, 2];
     piece._ppRng = ctx.rng;
     const pets = countType(ctx, piece, 'pet');
@@ -102,7 +104,7 @@ export const armoredPowerPuppyPort = {
 export const couragePuppyPort = {
   handlerId: 'courage_puppy',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  onPreCombatStart(piece, ctx) {
     const pets = countType(ctx, piece, 'pet');
     const per = Math.max(0, Math.round(getP1(piece.params, 2)));
     if (pets && per) addBonusDamage(piece, per * pets);
@@ -181,24 +183,35 @@ export const frogPrincePort = {
   },
 };
 
-/** Cubert.gd — peer regen; regen bank → empower. Gap: secondary affect cells ≈ same links. */
+/** Cubert.gd — primary/secondary activated listeners; regen bank → empower. */
 /** @type {ScriptHandler} */
 export const cubertPort = {
   handlerId: 'cubert',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
-    const keys = new Set(linked(ctx, piece).map((o) => o.placementKey));
+  onPrepare(piece, ctx) {
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    const primaryKeys = new Set(
+      links.filter((link) => link.color === 'primary').map((link) => link.key),
+    );
+    const secondaryKeys = new Set(
+      links.filter((link) => link.color === 'secondary').map((link) => link.key),
+    );
     ctx.bus?.on?.('piece_activated', (payload) => {
       const src = payload?.piece;
-      if (!src || !keys.has(src.placementKey)) return;
-      if (rollItemChance(piece, ctx.rng)) {
+      if (!src) return;
+      if (primaryKeys.has(src.placementKey) && rollItemChance(piece, ctx.rng)) {
         grantStacks(ctx.player, 'regeneration', Math.max(1, Math.round(getPName(piece.params, 'regen', 1))), {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
+        cubertMiniActivate(piece, ctx, 'primary');
       }
       const need = Math.max(1, Math.round(getPName(piece.params, 'regent', 5)));
-      if ((getStackAmount(ctx.player, 'regeneration') || 0) >= need && rollPercent(Number(piece.chance2) || 50, ctx.rng)) {
+      if (
+        secondaryKeys.has(src.placementKey) &&
+        (getStackAmount(ctx.player, 'regeneration') || 0) >= need &&
+        rollItemChance2(piece, ctx.rng)
+      ) {
         useRegeneration(ctx.player, need, {
           originKey: piece.placementKey,
           originId: piece.itemId,
@@ -207,11 +220,11 @@ export const cubertPort = {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
+        cubertMiniActivate(piece, ctx, 'secondary');
       }
     });
   },
   onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'cubert');
     const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', 1)));
     grantStacks(ctx.player, 'regeneration', regen, {
       originKey: piece.placementKey,
@@ -228,35 +241,57 @@ export const cubertPort = {
         originId: piece.itemId,
       });
     }
+    petActivate(piece, ctx, 'cubert');
     return true;
   },
 };
+
+/** @param {object} piece @param {object} ctx @param {'primary'|'secondary'} branch */
+function cubertMiniActivate(piece, ctx, branch) {
+  ctx.events.push({
+    t: ctx.t,
+    type: 'activate',
+    actor: eventSideForPiece(piece),
+    itemId: piece.itemId,
+    placementKey: piece.placementKey,
+    label: `${piece.name}: ${branch} response`,
+    meta: {
+      category: 'system',
+      script: true,
+      handler: 'cubert',
+      miniActivate: true,
+      branch,
+    },
+  });
+}
 
 /** Snowmaster.gd */
 /** @type {ScriptHandler} */
 export const snowmasterPort = {
   handlerId: 'snowmaster',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const n = countType(ctx, piece, 'ice');
-    const sp = getPName(piece.params, 'speed', 8) / 100;
+    const sp = getPName(piece.params, 'speed', getP4(piece.params, 8)) / 100;
     if (n && sp) addSpeed(piece, n * sp);
   },
   onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'snowmaster');
-    const need = Math.max(1, Math.round(getPName(piece.params, 'coldt', 4)));
+    const need = Math.trunc(getPName(piece.params, 'coldt', getP2(piece.params, 4)));
     if ((getStackAmount(ctx.dummy, 'cold') || 0) >= need) {
-      grantStacks(ctx.player, 'empower', Math.max(1, Math.round(getPName(piece.params, 'empower', 1))), {
+      grantStacks(ctx.player, 'empower', Math.trunc(getPName(piece.params, 'empower', getP3(piece.params, 1))), {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
     } else {
-      grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getPName(piece.params, 'cold', 1))), {
+      grantStacks(ctx.dummy, 'cold', Math.trunc(getPName(piece.params, 'cold', getP1(piece.params, 1))), {
         originKey: piece.placementKey,
         originId: piece.itemId,
+        rng: ctx.rng,
+        opponent: ctx.player,
       });
     }
     cleanseRandomDebuffs(ctx.player, 1, ctx.rng, {});
+    petActivate(piece, ctx, 'snowmaster');
     return true;
   },
 };
@@ -266,23 +301,37 @@ export const snowmasterPort = {
 export const ratPort = {
   handlerId: 'rat',
   family: 'pet_like',
+  onCombatStart(piece, ctx) {
+    // Rat inherits ForestFriend.combatStart(): each affected Pet/Food adds the
+    // source's petspeed percentage to Rat itself.
+    const affected = linked(ctx, piece).length;
+    const speed = getPName(piece.params, 'petspeed', getP1(piece.params, 0)) / 100;
+    if (affected && speed) addSpeed(piece, affected * speed);
+  },
   onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'rat');
-    const raw = Math.max(1, Number(piece.damageMin) || getP1(piece.params, 4));
-    dealEffectDamage(piece, ctx, raw);
+    const catalog = ctx.itemsById?.get(piece.itemId);
+    const raw = Number.isFinite(Number(catalog?.damageMin))
+      ? Number(catalog.damageMin)
+      : Number(piece.damageMin) || 0;
+    const res = dealEffectDamage(piece, ctx, raw);
     if (rollItemChance(piece, ctx.rng)) {
-      grantStacks(ctx.dummy, 'poison', Math.max(1, Math.round(getPName(piece.params, 'poison', 1))), {
+      const poison = Math.trunc(getPName(piece.params, 'poison', getP2(piece.params, 0)));
+      grantStacks(ctx.dummy, 'poison', poison, {
         originKey: piece.placementKey,
         originId: piece.itemId,
+        parentId: res.damageId,
       });
     }
-    const c2 = Number(piece.chance2) || Number(ctx.itemsById.get(piece.itemId)?.chance2) || 0;
-    if (c2 && rollPercent(c2, ctx.rng)) {
-      grantStacks(ctx.dummy, 'blind', Math.max(1, Math.round(getPName(piece.params, 'blind', 1))), {
+    if (rollItemChance2(piece, ctx.rng)) {
+      const blind = Math.trunc(getPName(piece.params, 'blind', getP3(piece.params, 0)));
+      grantStacks(ctx.dummy, 'blind', blind, {
         originKey: piece.placementKey,
         originId: piece.itemId,
+        parentId: res.damageId,
       });
     }
+    // Rat.gd activates only after damage and both conditional debuff effects.
+    petActivate(piece, ctx, 'rat');
     return true;
   },
 };
@@ -292,18 +341,37 @@ export const ratPort = {
 export const poisonFrogPort = {
   handlerId: 'poison_frog',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
     const affected = new Set(links.map((l) => l.key));
     piece._toadState = { gained: 0, used: 0, affected };
-    const gainedTh = Math.max(1, Math.round(getPName(piece.params, 'gained', 8)));
-    const usedTh = Math.max(1, Math.round(getPName(piece.params, 'used', 8)));
-    const poison = Math.max(1, Math.round(getPName(piece.params, 'poison', 1)));
-    const mana = Math.max(1, Math.round(getPName(piece.params, 'mana', 1)));
+    const gainedTh = Math.max(1, Math.round(getPName(piece.params, 'gained', getP1(piece.params, 10))));
+    const usedTh = Math.max(1, Math.round(getPName(piece.params, 'used', getP6(piece.params, 10))));
+    const poison = getPName(piece.params, 'poison', getP3(piece.params, 2));
+    const mana = getPName(piece.params, 'mana', getP2(piece.params, 1));
     onBuffChanged(ctx.player, (ch) => {
       if (!ch.originKey || !affected.has(ch.originKey)) return;
       const ticks = advanceBuffThresholds(piece._toadState, ch.amount, gainedTh, usedTh);
-      if (ticks.gainTicks > 0) healActor(ctx.player, ticks.gainTicks * Math.max(1, getPName(piece.params, 'heal', 4)));
+      if (ticks.gainTicks > 0) {
+        const healAmount = getPName(piece.params, 'heal', getP(piece.params, 6, 12));
+        const logged = requestedHealAmount(ctx.player, healAmount);
+        healActor(ctx.player, healAmount);
+        if (ctx.player._lastHeal) ctx.player._lastHeal.meterAttached = true;
+        if (logged > 0) {
+          const t = Number(ctx.player._simT) || ctx.t;
+          ctx.events.push({
+            t,
+            type: 'heal',
+            actor: eventSideForPiece(piece),
+            target: eventSideForPiece(piece),
+            amount: logged,
+            itemId: piece.itemId,
+            placementKey: piece.placementKey,
+            label: `${piece.name}: heal +${logged}`,
+            meta: { category: 'heal', script: true, handler: 'poison_frog', miniActivate: true },
+          });
+        }
+      }
       if (ticks.useTicks > 0) {
         grantStacks(ctx.dummy, 'poison', ticks.useTicks * poison, {
           originKey: piece.placementKey,
@@ -317,15 +385,15 @@ export const poisonFrogPort = {
     });
   },
   onCooldownEffect(piece, ctx) {
+    grantStacks(ctx.dummy, 'poison', getPName(piece.params, 'poison2', getP5(piece.params, 2)), {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+    grantStacks(ctx.player, 'mana', getPName(piece.params, 'mana2', getP4(piece.params, 1)), {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
     petActivate(piece, ctx, 'poison_frog');
-    grantStacks(ctx.dummy, 'poison', Math.max(1, Math.round(getPName(piece.params, 'poison2', 1))), {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getPName(piece.params, 'mana2', 1))), {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
     return true;
   },
 };
@@ -335,25 +403,43 @@ export const poisonFrogPort = {
 export const snakePort = {
   handlerId: 'snake',
   family: 'pet_like',
+  onPrepare(piece, ctx) {
+    const catalog = ctx.itemsById?.get(piece.itemId);
+    const rawChance = piece.chance != null ? piece.chance : catalog?.chance;
+    const chance = Number.isFinite(Number(rawChance)) ? Number(rawChance) : 0;
+    ctx.bus?.on?.('character_lucky_changed', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      const amount = Number(payload.amount) || 0;
+      if (!amount || !chance) return;
+      ctx.dummy.stackResist = ctx.dummy.stackResist || {};
+      ctx.dummy.stackResist.poison =
+        (Number(ctx.dummy.stackResist.poison) || 0) + amount * chance;
+    });
+  },
   onCombatStart(piece, ctx) {
     const n = countType(ctx, piece, 'pet');
-    const luck = Math.max(0, Math.round(getPName(piece.params, 'luck', 1) * n));
-    const hp = Math.max(0, Math.round(getPName(piece.params, 'maxhealth', 0) * n));
+    const luck = getPName(piece.params, 'luck', getP1(piece.params, 1)) * n;
+    const hpPer = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'maxhealth', getP3(piece.params, 0)),
+      'maxhealth',
+    );
+    const hp = hpPer * n;
     if (luck) {
       grantStacks(ctx.player, 'lucky', luck, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
     }
-    if (hp) ctx.player.maxHp += hp;
+    if (hp) giveTempMaxHp(piece, ctx, 'snake', hp);
     petActivate(piece, ctx, 'snake');
   },
   onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'snake');
-    grantStacks(ctx.dummy, 'poison', Math.max(1, Math.round(getPName(piece.params, 'poison', 1))), {
+    grantStacks(ctx.dummy, 'poison', getPName(piece.params, 'poison', getP2(piece.params, 1)), {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
+    petActivate(piece, ctx, 'snake');
     return true;
   },
 };
@@ -363,25 +449,16 @@ export const snakePort = {
 export const fireShellyPort = {
   handlerId: 'fire_shelly',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
-    const n = countType(ctx, piece, 'potion');
-    const sp = getPName(piece.params, 'speed', 8) / 100;
-    if (n && sp) addSpeed(piece, n * sp);
+  onPrepare(piece, ctx) {
+    shellyPort.onPrepare(piece, ctx);
   },
   onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'fire_shelly');
-    grantStacks(ctx.player, 'heat', Math.max(1, Math.round(getPName(piece.params, 'heat', 1))), {
+    const heat = Math.trunc(getPName(piece.params, 'heat', getP4(piece.params, 0)));
+    grantStacks(ctx.player, 'heat', heat, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    cleanseRandomDebuffs(
-      ctx.player,
-      Math.max(1, Math.round(getPName(piece.params, 'debuffs', 1))),
-      ctx.rng,
-      {},
-    );
-    healActor(ctx.player, Math.max(1, Math.round(getPName(piece.params, 'heal', getP2(piece.params, 8)))));
-    return true;
+    return shellyPort.onCooldownEffect(piece, ctx);
   },
 };
 
@@ -443,7 +520,8 @@ export const friendlyFirePort = {
 export const catSpiritPort = {
   handlerId: 'cat_spirit',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  // CatSpirit.gd applies its linked crit chance during onPrepare.
+  onPrepare(piece, ctx) {
     const crit = Number(ctx.itemsById.get(piece.itemId)?.chance) || Number(piece.chance) || 5;
     for (const o of linked(ctx, piece)) {
       if ((o.damageMax || 0) > 0 || o.kind === 'weapon') {
@@ -452,7 +530,6 @@ export const catSpiritPort = {
     }
   },
   onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'cat_spirit');
     const need = Math.max(1, Math.round(getPName(piece.params, 'manat', 3)));
     if ((getStackAmount(ctx.player, 'mana') || 0) >= need) {
       useMana(ctx.player, need, {
@@ -468,6 +545,8 @@ export const catSpiritPort = {
         originId: piece.itemId,
       });
     }
+    // SpiritCompanion.doCooldownEffect activates after its resource effects.
+    petActivate(piece, ctx, 'cat_spirit');
     return true;
   },
 };

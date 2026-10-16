@@ -3,6 +3,7 @@
  *   node scripts/sim-tesla-smoke.mjs
  */
 import fs from 'fs';
+import assert from 'node:assert/strict';
 import { runSim } from '../js/pages/sim/engine/index.js';
 import { hydrateSimCoverage } from '../js/pages/sim/engine/scripts/registry.js';
 import { buildBatteryChargePath } from '../js/pages/sim/engine/charge-path.js';
@@ -20,6 +21,16 @@ const canRules = JSON.parse(
 const classMasks = JSON.parse(
   fs.readFileSync('assets/data/item-class-masks.json', 'utf8'),
 );
+const source = fs.readFileSync('tools/game-extract-full/Items/Exclusive/TeslaCoil.gd', 'utf8');
+const handlerSource = fs.readFileSync('js/pages/sim/engine/scripts/ports-mech.js', 'utf8');
+assert.match(source, /func canAffect\(item\):[\s\S]*return item\.hasCooldown\(\)/);
+assert.match(source, /func onPrepare\(\):[\s\S]*itemsToAdvance = getAffectedItems\(\)\.duplicate\(\)/);
+assert.match(source, /func onChargeReceived\(_charge\):[\s\S]*numCollectedCharges \+= 1[\s\S]*miniActivate\(\)/);
+assert.match(source, /func doCooldownEffect\(\):[\s\S]*onAfterEffectFinished\(done\)[\s\S]*if not done:[\s\S]*activate\(\)/);
+assert.match(source, /func advanceItem\(\):[\s\S]*advanceCooldownSeconds\(cdAdvance\)[\s\S]*miniActivate\(\)/);
+assert.match(handlerSource, /export const teslaCoilPort = \{[\s\S]*onPrepare\(piece, ctx\)/);
+assert.match(handlerSource, /afterEffectFinished\(piece, ctx, 'tesla_coil'/);
+assert.match(handlerSource, /phase: 'tesla_resume'/);
 hydrateSimCoverage(coverage, inventory);
 
 const canAffect = {
@@ -193,6 +204,10 @@ if (receives.length < 1) {
   console.error('FAIL expected charge_received on Tesla, got', receives.length);
   process.exit(1);
 }
+if (receives.some((e) => e.type === 'activate')) {
+  console.error('FAIL Tesla miniActivate charge projection must not inflate normal activations', receives);
+  process.exit(1);
+}
 
 const advances = evs.filter((e) => e.meta?.phase === 'tesla_advance');
 if (advances.length < 1) {
@@ -220,6 +235,11 @@ if (teslaDamage.length) {
 const spend = evs.find((e) => e.meta?.phase === 'tesla_spend');
 if (!spend) {
   console.error('FAIL missing tesla_spend');
+  process.exit(1);
+}
+const resume = evs.find((e) => e.meta?.phase === 'tesla_resume');
+if (!resume) {
+  console.error('FAIL Tesla should stop its cooldown and resume charge routing while the queue remains');
   process.exit(1);
 }
 

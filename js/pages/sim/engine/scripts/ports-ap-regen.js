@@ -2,7 +2,7 @@
  * Band AP 245 — leftover `cd_regen` MAP items → `.gd` ports.
  */
 
-import { healActor } from '../actor.js';
+import { giveStamina, healActor } from '../actor.js';
 import { applyHealEfficiency } from '../actor-stats.js';
 import {
   grantStacks,
@@ -27,6 +27,7 @@ import { removeRandomBuffs } from './ports-wave-c-util.js';
 import { rollPercent } from '../rng.js';
 import { giveTempMaxHp } from './ports-ap-start.js';
 import { applyFoodPrepareSpeed } from './food-helpers.js';
+import { modifiedParamValue } from '../placement-instance.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -303,21 +304,44 @@ const sliceOfToastPort = {
   handlerId: 'slice_of_toast',
   family: 'food',
   onCooldownEffect(piece, ctx) {
-    const th = getPName(piece.params, 'staminat', getP1(piece.params, 2.5));
-    pushActivate(piece, ctx, 'slice_of_toast', `Food: ${piece.name}`);
+    const th = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'staminat', getP1(piece.params, 2.5)),
+      'staminat',
+    );
     if ((Number(ctx.player.stamina) || 0) < th) {
-      const stam = getPName(piece.params, 'stamina', getP2(piece.params, 0.5));
-      const next = (Number(ctx.player.stamina) || 0) + stam;
-      const cap = Number(ctx.player.maxStamina);
-      ctx.player.stamina = cap > 0 ? Math.min(cap, next) : next;
+      const stam = modifiedParamValue(
+        piece,
+        getPName(piece.params, 'stamina', getP2(piece.params, 0.5)),
+        'stamina',
+      );
+      const before = Number(ctx.player.stamina) || 0;
+      giveStamina(ctx.player, stam);
+      const gained = (Number(ctx.player.stamina) || 0) - before;
+      if (gained > 0) {
+        ctx.events?.push?.({
+          t: (ctx.t ?? 0) + 0.004,
+          type: 'stamina',
+          target: 'player',
+          amount: gained,
+          label: `${piece.name}: +${gained} stamina`,
+          meta: { category: 'stamina', script: true, handler: 'slice_of_toast' },
+        });
+      }
     } else {
+      const regen = Math.trunc(modifiedParamValue(
+        piece,
+        getPName(piece.params, 'regen', getP3(piece.params, 1)),
+        'regen',
+      ));
       grantStacks(
         ctx.player,
         'regeneration',
-        Math.max(1, Math.round(getPName(piece.params, 'regen', getP3(piece.params, 1)))),
+        regen,
         origin(piece),
       );
     }
+    pushActivate(piece, ctx, 'slice_of_toast', `Food: ${piece.name}`);
     return true;
   },
 };

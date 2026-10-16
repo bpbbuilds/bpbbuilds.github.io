@@ -3,9 +3,9 @@
  * Discord owner JWT only. The break-glass secret is server-only.
  */
 
-import { getProfile, getSession } from '../../shared/auth.js?v=admin-csp-20261013a';
+import { getProfile, getSession } from '../../shared/auth.js';
 import { config } from '../../shared/config.js?v=supabase-config-20261013a';
-import { getSupabase } from '../../shared/supabase.js?v=supabase-client-20261013a';
+import { getSupabase } from '../../shared/supabase.js';
 
 export class AdminAuthError extends Error {
   constructor(message = 'Unauthorized') {

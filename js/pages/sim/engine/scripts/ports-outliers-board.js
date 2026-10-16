@@ -6,6 +6,7 @@ import { tryUseStamina } from '../actor.js';
 import {
   cleanseRandomDebuffs,
   grantStacks,
+  onBuffChanged,
   useRegeneration,
 } from '../buff-economy.js';
 import { affectedTargets, getItemsInside } from '../board-graph.js';
@@ -18,22 +19,41 @@ import {
 } from '../charge-path.js';
 import { scheduleStatChargePath } from '../charge-delivery.js';
 import { advanceCooldownSeconds, isCooldownActive } from '../cooldown.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
-import { addBonusDamage, addSpeed, modifiedCooldown } from '../piece-stats.js';
-import { randInt } from '../rng.js';
+import { getP, getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
+import { addSpeed, changeVaryingDamage, modifiedCooldown } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
-import { dealHit } from './handlers.js';
+import { canBagAffectItem } from '../../../../shared/backpack-grid/can-affect.js';
 import { itemHasType, afterEffectFinished, pushActivate } from './ports-util.js';
+import { weaponStrike } from './ports-wave-c-util.js';
+import { greatswordPort } from './ports-al-weapons.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
  */
 
+/** CogBadge.gd sendCharge collision map, in source order. */
+const COG_BADGE_CHARGE_CELLS = [
+  { x: -1, y: -1 },
+  { x: -1, y: -2 },
+  { x: -1, y: -3 },
+  { x: -1, y: -4 },
+  { x: -2, y: -3 },
+  { x: -3, y: -2 },
+  { x: -4, y: -1 },
+  { x: -3, y: 0 },
+  { x: -2, y: 1 },
+  { x: -1, y: 2 },
+  { x: 0, y: 1 },
+  { x: 1, y: 0 },
+  { x: 2, y: -1 },
+  { x: 1, y: -2 },
+];
+
 /**
  * @param {object} piece
  * @param {import('./handlers.js').ScriptCtx} ctx
  * @param {string} handler
- * @param {{ collisionCells?: { x: number, y: number }[], generatorPath?: boolean, emitBus?: boolean }} [opts]
+ * @param {{ collisionCells?: { x: number, y: number }[], generatorPath?: boolean, emitBus?: boolean, speedFactor?: number }} [opts]
  */
 function emitBatteryCharge(piece, ctx, handler, opts = {}) {
   const { t, events, graph, itemsById } = ctx;
@@ -42,8 +62,11 @@ function emitBatteryCharge(piece, ctx, handler, opts = {}) {
   if (!item || !boardPiece) return;
   const flat = getPName(piece.params, 'speed', getP1(piece.params, 10)) / 100;
   const perTile = getPName(piece.params, 'speed2', getP2(piece.params, 5)) / 100;
-  const durPerTile = getPName(piece.params, 'dur', BATTERY_DUR_PER_TILE) || BATTERY_DUR_PER_TILE;
-  const pathId = `charge:${piece.placementKey}:${t}`;
+  const speedFactor = Math.max(0.01, Number(opts.speedFactor) || 1);
+  const durPerTile =
+    (getPName(piece.params, 'dur', BATTERY_DUR_PER_TILE) || BATTERY_DUR_PER_TILE) /
+    speedFactor;
+  const pathId = `charge:${piece.placementKey}:${t}:${speedFactor}`;
   const placement = {
     x: boardPiece.x,
     y: boardPiece.y,
@@ -170,9 +193,9 @@ export const springLoaderPort = {
 export const puzzleBadgePort = {
   handlerId: 'puzzle_badge',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { graph, itemsById, canAffect, pieces } = ctx;
-    const slow = getPName(piece.params, 'slow', getP1(piece.params, 10)) / 100;
+    const slow = getPName(piece.params, 'speed', getP1(piece.params, 10)) / 100;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
@@ -182,8 +205,8 @@ export const puzzleBadgePort = {
   onCooldownEffect(piece, ctx) {
     const { t, events, graph, itemsById, canAffect, pieces } = ctx;
     pushActivate(piece, ctx, 'puzzle_badge', `Badge: ${piece.name}`);
-    const slow = getPName(piece.params, 'slow', getP1(piece.params, 10)) / 100;
-    const fast = getPName(piece.params, 'fast', getP2(piece.params, 20)) / 100;
+    const slow = getPName(piece.params, 'speed', getP1(piece.params, 10)) / 100;
+    const fast = getPName(piece.params, 'speed2', getP2(piece.params, 20)) / 100;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
@@ -204,22 +227,33 @@ export const puzzleBadgePort = {
 export const puzzleboxPort = {
   handlerId: 'puzzlebox',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const { graph, pieces } = ctx;
-    const slow = getPName(piece.params, 'slow', getP1(piece.params, 10)) / 100;
+  onPrepare(piece, ctx) {
+    const { graph, pieces, itemsById, canAffect } = ctx;
+    const slow = getPName(piece.params, 'speed', getP1(piece.params, 0)) / 100;
     for (const key of getItemsInside(graph, piece.placementKey)) {
       const other = (pieces || []).find((p) => p.placementKey === key);
-      if (other && slow) addSpeed(other, -slow);
+      const catalog = itemsById.get(other?.itemId);
+      const target = catalog
+        ? { ...catalog, ...other, params: other.params || catalog.params }
+        : other;
+      if (other && canBagAffectItem({ id: 'puzzlebox' }, target, canAffect || {}) && slow) {
+        addSpeed(other, -slow);
+      }
     }
   },
   onCooldownEffect(piece, ctx) {
-    const { t, events, graph, pieces } = ctx;
-    pushActivate(piece, ctx, 'puzzlebox', `Bag: ${piece.name}`);
-    const slow = getPName(piece.params, 'slow', getP1(piece.params, 10)) / 100;
-    const fast = getPName(piece.params, 'fast', getP2(piece.params, 20)) / 100;
+    const { t, events, graph, pieces, itemsById, canAffect } = ctx;
+    const slow = getPName(piece.params, 'speed', getP1(piece.params, 0)) / 100;
+    const fast = getPName(piece.params, 'speed2', getP2(piece.params, 0)) / 100;
     for (const key of getItemsInside(graph, piece.placementKey)) {
       const other = (pieces || []).find((p) => p.placementKey === key);
-      if (other) addSpeed(other, slow + fast);
+      const catalog = itemsById.get(other?.itemId);
+      const target = catalog
+        ? { ...catalog, ...other, params: other.params || catalog.params }
+        : other;
+      if (other && canBagAffectItem({ id: 'puzzlebox' }, target, canAffect || {})) {
+        addSpeed(other, slow + fast);
+      }
     }
     events.push({
       t: t + 0.004,
@@ -227,7 +261,7 @@ export const puzzleboxPort = {
       label: `${piece.name}: inside speed pulse`,
       meta: { category: 'adjacency', script: true, handler: 'puzzlebox' },
     });
-    afterEffectFinished(piece, ctx, 'puzzlebox', { activate: false });
+    afterEffectFinished(piece, ctx, 'puzzlebox');
     return true;
   },
 };
@@ -237,7 +271,10 @@ export const puzzleboxPort = {
 export const timeDilatorPort = {
   handlerId: 'time_dilator',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
+    // TimeDilator.gd runs this before cooldowns are armed and resets its
+    // alternating activation-sound counter for each combat.
+    piece._timeDilatorTickI = 0;
     const slow = getPName(piece.params, 'slow', getP1(piece.params, 30)) / 100;
     if (!slow) return;
     for (const other of ctx.allPieces || ctx.pieces || []) {
@@ -258,6 +295,8 @@ export const timeDilatorPort = {
         slowest = other;
       }
     }
+    piece._timeDilatorTickI = (Number(piece._timeDilatorTickI) || 0) + 1;
+    const soundPitch = piece._timeDilatorTickI % 2 === 0 ? 1 : 0.7;
     if (slowest && speedUp) {
       addSpeed(slowest, speedUp);
       events.push({
@@ -274,6 +313,8 @@ export const timeDilatorPort = {
           targetItemId: slowest.itemId,
           speedUp,
           modifiedCd: slowestCd,
+          tickI: piece._timeDilatorTickI,
+          soundPitch,
         },
       });
     }
@@ -294,57 +335,46 @@ function isCombatWeapon(piece, itemsById) {
 export const bigBloodthornePort = {
   handlerId: 'big_bloodthorne',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
-    const per = Math.max(0, Math.round(getPName(piece.params, 'dam', getP1(piece.params, 1))));
-    const vamp = Number(ctx.player.stacks.vampirism) || 0;
-    const spikes = Number(ctx.player.stacks.spikes) || 0;
-    if (per > 0) addBonusDamage(piece, (vamp + spikes) * per);
+  onPrepare(piece, ctx) {
+    // BigBloodthorne.gd inherits Greatsword.gd, whose empower state is set in
+    // Item.prepare rather than at combat start.
+    greatswordPort.onCombatStart(piece, ctx);
+    const per = Math.max(0, Math.round(getPName(piece.params, 'dam', getP(piece.params, 6, 1))));
+    onBuffChanged(ctx.player, (change) => {
+      if (change.stack !== 'vampirism' && change.stack !== 'spikes') return;
+      changeVaryingDamage(piece, (Number(change.amount) || 0) * per, {
+        via: change.stack,
+        originKey: change.originKey,
+        originId: change.originId,
+      });
+    });
+  },
+  onPreDealDamageEarly(piece, ctx, damageRes) {
+    if (damageRes && !damageRes.hit) return;
+    const { player } = ctx;
+    const need = Math.max(1, Math.round(getPName(piece.params, 'regent', getP4(piece.params, 3))));
+    if ((Number(player.stacks.regeneration) || 0) < need) return;
+    if (
+      useRegeneration(player, need, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      }).spent <= 0
+    ) {
+      return;
+    }
+    const vamp = Math.max(1, Math.round(getPName(piece.params, 'vampirism', getP5(piece.params, 1))));
+    const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP6(piece.params, 1))));
+    grantStacks(player, 'vampirism', vamp, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+    grantStacks(player, 'spikes', spikes, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
   },
   onCooldownEffect(piece, ctx) {
-    const { t, player, events, rng } = ctx;
-    if (tryUseStamina(player, piece.staminaCost) === 'starve') {
-      events.push({
-        t,
-        type: 'stamina',
-        label: `${piece.name}: out of stamina`,
-        meta: { category: 'stamina', script: true, starved: true },
-      });
-      return true;
-    }
-    pushActivate(piece, ctx, 'big_bloodthorne', `Weapon: ${piece.name}`);
-    const raw = randInt(piece.damageMin, piece.damageMax, rng);
-    const hit = dealHit(piece, ctx, raw);
-    if (hit.hit) {
-      const need = Math.max(1, Math.round(getPName(piece.params, 'regent', getP2(piece.params, 3))));
-      if ((Number(player.stacks.regeneration) || 0) >= need) {
-        if (
-          useRegeneration(player, need, {
-            originKey: piece.placementKey,
-            originId: piece.itemId,
-          }).spent > 0
-        ) {
-          const vamp = Math.max(1, Math.round(getPName(piece.params, 'vampirism', 1)));
-          const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', 1)));
-          grantStacks(player, 'vampirism', vamp, {
-            originKey: piece.placementKey,
-            originId: piece.itemId,
-          });
-          grantStacks(player, 'spikes', spikes, {
-            originKey: piece.placementKey,
-            originId: piece.itemId,
-          });
-          events.push({
-            t: t + 0.01,
-            type: 'buff',
-            target: 'player',
-            amount: vamp,
-            label: `${piece.name}: Regen→Vamp/Spikes`,
-            meta: { category: 'buff', script: true, handler: 'big_bloodthorne' },
-          });
-        }
-      }
-    }
-    return true;
+    return weaponStrike(piece, ctx, 'big_bloodthorne');
   },
 };
 
@@ -380,16 +410,12 @@ export const corruptedArmorPort = {
         tagged += 1;
       }
     }
-    // Gap: opponent changeDebuffProtectionChance (cleanse-protect) — engine has no cleanseProtectionChance.
     const chance = Math.max(0, Number(piece.chance) || getPName(piece.params, 'chance', 0));
-    if (chance > 0 && tagged > 0) {
-      events.push({
-        t: t + 0.01,
-        type: 'info',
-        label: `${piece.name}: Holy→Dark ×${tagged} (opp cleanse-protect unsupported)`,
-        meta: { category: 'adjacency', script: true, handler: 'corrupted_armor', gap: 'cleanseProtection' },
-      });
-    } else if (tagged > 0) {
+    if (chance > 0 && links.length > 0) {
+      ctx.dummy.debuffCleanseProtectChance =
+        (Number(ctx.dummy.debuffCleanseProtectChance) || 0) + chance * links.length;
+    }
+    if (tagged > 0) {
       events.push({
         t: t + 0.01,
         type: 'info',
@@ -401,15 +427,20 @@ export const corruptedArmorPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, dummy, events, rng } = ctx;
-    pushActivate(piece, ctx, 'corrupted_armor', `Armor: ${piece.name}`);
     const moved = Math.max(1, Math.round(getPName(piece.params, 'moved', getP1(piece.params, 1))));
     const cleansed = cleanseRandomDebuffs(player, moved, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
+      cleanse: true,
     });
     let n = 0;
     for (const [stack, amount] of Object.entries(cleansed || {})) {
-      gainStacks(dummy, /** @type {any} */ (stack), amount, { rng, opponent: player });
+      gainStacks(dummy, /** @type {any} */ (stack), amount, {
+        rng,
+        opponent: player,
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
       n += amount;
     }
     events.push({
@@ -418,6 +449,7 @@ export const corruptedArmorPort = {
       label: `${piece.name}: move ${n} debuff(s)`,
       meta: { category: 'system', script: true, handler: 'corrupted_armor' },
     });
+    pushActivate(piece, ctx, 'corrupted_armor', `Armor: ${piece.name}`);
     return true;
   },
 };
@@ -426,6 +458,14 @@ export const corruptedArmorPort = {
 export const generatorPort = {
   handlerId: 'generator',
   family: 'unique',
+  emitCharge(piece, ctx, speedFactor = 1) {
+    pushActivate(piece, ctx, 'generator', `Accessory: ${piece.name}`);
+    emitBatteryCharge(piece, ctx, 'generator', {
+      generatorPath: true,
+      emitBus: false,
+      speedFactor,
+    });
+  },
   onCombatStart(piece, ctx) {
     pushActivate(piece, ctx, 'generator', `Accessory: ${piece.name}`);
     emitBatteryCharge(piece, ctx, 'generator', { generatorPath: true });
@@ -451,9 +491,23 @@ export const generatorPort = {
 export const cogBadgePort = {
   handlerId: 'cog_badge',
   family: 'unique',
+  emitCharge(piece, ctx, speedFactor = 1) {
+    pushActivate(piece, ctx, 'cog_badge', `Badge: ${piece.name}`);
+    emitBatteryCharge(piece, ctx, 'cog_badge', {
+      collisionCells: COG_BADGE_CHARGE_CELLS,
+      emitBus: false,
+      speedFactor,
+    });
+  },
   onCooldownEffect(piece, ctx) {
     pushActivate(piece, ctx, 'cog_badge', `Badge: ${piece.name}`);
-    emitBatteryCharge(piece, ctx, 'cog_badge');
+    emitBatteryCharge(piece, ctx, 'cog_badge', {
+      collisionCells: COG_BADGE_CHARGE_CELLS,
+      emitBus: false,
+    });
+    // CogBadge.gd emits charge_emitted after its own activation so listeners
+    // (and the source EventBus ordering) observe the completed charge send.
+    ctx.bus?.emit?.('charge_emitted', { piece, t: ctx.t });
     afterEffectFinished(piece, ctx, 'cog_badge', { activate: false, consume: false });
     return true;
   },

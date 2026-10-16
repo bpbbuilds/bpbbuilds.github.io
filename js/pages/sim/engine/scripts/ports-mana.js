@@ -11,12 +11,10 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import {
-  BATTERY_DUR_PER_TILE,
-  buildBatteryChargePath,
-  chargeEnterSchedule,
-} from '../charge-path.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { applyHealEfficiency } from '../actor-stats.js';
+import { eventSideForPiece } from '../vs-board.js';
+import { emitPathCharge } from '../charge-delivery.js';
+import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { randInt } from '../rng.js';
 import { gainStacks } from '../stacks.js';
@@ -28,101 +26,55 @@ import { getScriptHandler } from './registry.js';
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
  */
 
+function emitManaCrystalCharge(piece, ctx, speedFactor = 1) {
+  const mana1 = Math.max(1, Math.round(getPName(piece.params, 'mana1', getP1(piece.params, 1))));
+  const mana2 = Math.max(1, Math.round(getPName(piece.params, 'mana2', getP2(piece.params, 2))));
+  const durPerTile = getPName(piece.params, 'dur', 2) || 2;
+  let lastKey = null;
+  emitPathCharge(piece, ctx, {
+    speedFactor,
+    durPerTile,
+    label: `${piece.name}: charge`,
+    onCellEnter(target, step) {
+      const targetKey = target?.placementKey || null;
+      if (targetKey === lastKey) return;
+      lastKey = targetKey;
+      if (!target) return;
+      const targetItem = ctx.itemsById.get(target.itemId);
+      const amount = itemHasType(targetItem, 'magic') ? mana2 : mana1;
+      grantStacks(ctx.player, 'mana', amount, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      ctx.events.push({
+        t: ctx.t + (step.enterT || 0),
+        type: 'buff',
+        target: 'player',
+        amount,
+        label: `${piece.name}: +${amount} Mana (${target.name})`,
+        meta: {
+          category: 'buff',
+          stack: 'mana',
+          script: true,
+          handler: 'mana_crystal',
+        },
+      });
+    },
+  });
+}
+
 /** @type {ScriptHandler} */
 export const manaCrystalPort = {
   handlerId: 'mana_crystal',
   family: 'unique',
-  onCooldownEffect(piece, ctx) {
-    const { t, events, graph, itemsById } = ctx;
+  emitCharge(piece, ctx, speedFactor = 1) {
     pushActivate(piece, ctx, 'mana_crystal', `Accessory: ${piece.name}`);
-    const item = itemsById.get(piece.itemId);
-    const boardPiece = graph.pieces.get(piece.placementKey);
-    if (!item || !boardPiece) return true;
-
-    const mana1 = Math.max(1, Math.round(getPName(piece.params, 'mana1', getP1(piece.params, 1))));
-    const mana2 = Math.max(1, Math.round(getPName(piece.params, 'mana2', getP2(piece.params, 2))));
-    const durPerTile = getPName(piece.params, 'dur', BATTERY_DUR_PER_TILE) || BATTERY_DUR_PER_TILE;
-    const pathId = `charge:${piece.placementKey}:${t}`;
-    const path = buildBatteryChargePath({
-      pathId,
-      item,
-      placement: {
-        x: boardPiece.x,
-        y: boardPiece.y,
-        r: boardPiece.r,
-        key: piece.placementKey,
-      },
-      startT: t,
-      durPerTile,
-    });
-    if (!path) return true;
-
-    for (const cell of path.cells) {
-      const tk = graph.filled.get(cell.cell) || null;
-      cell.targetKey = tk && tk !== piece.placementKey ? tk : null;
-    }
-
-    events.push({
-      t,
-      type: 'charge',
-      actor: 'player',
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `${piece.name}: charge`,
-      meta: {
-        category: 'charge',
-        phase: 'start',
-        pathId,
-        chargePath: path,
-        handler: 'mana_crystal',
-      },
-    });
-
-    const schedule = chargeEnterSchedule(path.cells.length, durPerTile);
-    /** @type {string | null} */
-    let lastKey = null;
-    for (const step of schedule) {
-      const cell = path.cells[step.cellIndex];
-      if (!cell) continue;
-      const targetKey = cell.targetKey || null;
-      const targetPiece = targetKey
-        ? (ctx.pieces || []).find((p) => p.placementKey === targetKey)
-        : null;
-      const enterAbs = t + step.enterT;
-      if (targetKey !== lastKey) {
-        if (targetPiece) {
-          if (!targetPiece.pendingCharges) targetPiece.pendingCharges = [];
-          targetPiece.pendingCharges.push({
-            at: enterAbs,
-            meta: {
-              pathId,
-              cellIndex: step.cellIndex,
-              emitterKey: piece.placementKey,
-            },
-          });
-          const tgtItem = itemsById.get(targetPiece.itemId);
-          const amt = itemHasType(tgtItem, 'magic') ? mana2 : mana1;
-          grantStacks(ctx.player, 'mana', amt, {
-            originKey: piece.placementKey,
-            originId: piece.itemId,
-          });
-          events.push({
-            t: enterAbs,
-            type: 'buff',
-            target: 'player',
-            amount: amt,
-            label: `${piece.name}: +${amt} Mana (${targetPiece.name})`,
-            meta: {
-              category: 'buff',
-              stack: 'mana',
-              script: true,
-              handler: 'mana_crystal',
-            },
-          });
-        }
-        lastKey = targetKey;
-      }
-    }
+    emitManaCrystalCharge(piece, ctx, speedFactor);
+  },
+  onCooldownEffect(piece, ctx) {
+    pushActivate(piece, ctx, 'mana_crystal', `Accessory: ${piece.name}`);
+    emitManaCrystalCharge(piece, ctx);
+    ctx.bus?.emit?.('charge_emitted', { piece, t: ctx.t });
     return true;
   },
 };
@@ -150,7 +102,7 @@ export const eggscaliburPort = {
   onDealtDamage(piece, ctx, hit) {
     if (!hit?.hit) return;
     const { player, rng, graph, itemsById, canAffect, pieces } = ctx;
-    const need = Math.max(1, Math.round(getP2(piece.params, 1)));
+    const need = Math.round(getP2(piece.params, 1));
     if (
       useMana(player, need, {
         originKey: piece.placementKey,
@@ -221,7 +173,7 @@ export const badgerSpiritPort = {
 export const bookOfBasicsPort = {
   handlerId: 'book_of_basics',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     let factor = 0;
@@ -235,7 +187,6 @@ export const bookOfBasicsPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'book_of_basics', `Book: ${piece.name}`);
     const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP1(piece.params, 5))));
     if ((Number(player.stacks.mana) || 0) >= need) {
       if (useMana(player, need, {
@@ -253,13 +204,15 @@ export const bookOfBasicsPort = {
         events.push({
           t: t + 0.004,
           type: 'heal',
-          target: 'player',
+          actor: eventSideForPiece(piece),
+          target: eventSideForPiece(piece),
           amount: hp,
           label: `${piece.name}: +${hp} max HP`,
           meta: { category: 'heal', script: true, handler: 'book_of_basics' },
         });
       }
     }
+    pushActivate(piece, ctx, 'book_of_basics', `Book: ${piece.name}`);
     return true;
   },
 };
@@ -273,17 +226,20 @@ export const rainbowOrbPort = {
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     let vamp = 0;
     let mana = 0;
+    let holy = 0;
     let dark = 0;
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
       const item = itemsById.get(other.itemId);
       if (itemHasType(item, 'vampir')) vamp += 1;
       if (itemHasType(item, 'magic')) mana += 1;
+      if (itemHasType(item, 'holy')) holy += 1;
       if (itemHasType(item, 'dark')) dark += 1;
     }
-    const vampPer = Math.max(0, Math.round(getPName(piece.params, 'vampirism', 1)));
-    const manaPer = Math.max(0, Math.round(getPName(piece.params, 'mana', 1)));
-    const debuffPer = Math.max(0, Math.round(getPName(piece.params, 'debuffs', 1)));
+    const vampPer = getPName(piece.params, 'vampirism', getP2(piece.params, 0));
+    const manaPer = getPName(piece.params, 'mana', getP3(piece.params, 0));
+    const healAmpPer = getPName(piece.params, 'healamp', getP4(piece.params, 0));
+    const debuffPer = getPName(piece.params, 'debuffs', getP5(piece.params, 0));
     if (vamp > 0) {
       grantStacks(player, 'vampirism', vamp * vampPer, {
         originKey: piece.placementKey,
@@ -296,6 +252,9 @@ export const rainbowOrbPort = {
         originId: piece.itemId,
       });
     }
+    if (holy > 0 && healAmpPer) {
+      applyHealEfficiency(player, (holy * healAmpPer) / 100, ctx, piece);
+    }
     if (dark > 0 && debuffPer > 0) {
       inflictRandomDebuffs(dummy, dark * debuffPer, rng, {
         originKey: piece.placementKey,
@@ -306,7 +265,8 @@ export const rainbowOrbPort = {
     events.push({
       t,
       type: 'activate',
-      actor: 'player',
+      actor: eventSideForPiece(piece),
+      target: eventSideForPiece(piece),
       itemId: piece.itemId,
       placementKey: piece.placementKey,
       label: `Accessory: ${piece.name}`,
@@ -315,13 +275,12 @@ export const rainbowOrbPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'rainbow_orb', `Accessory: ${piece.name}`);
-    const n = Math.max(1, Math.round(getPName(piece.params, 'buffs', getP1(piece.params, 1))));
-    const picked = giveAllBuffs(player, n, {
+    const picked = giveAllBuffs(player, 1, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     pushBuffGrants(events, piece, player, t, 'rainbow_orb', picked);
+    pushActivate(piece, ctx, 'rainbow_orb', `Accessory: ${piece.name}`);
     return true;
   },
 };

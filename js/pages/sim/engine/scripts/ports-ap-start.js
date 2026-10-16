@@ -5,7 +5,7 @@
 
 import { dealEffectDamage, loseHealth } from './handlers.js';
 import { grantInvuln, healActor } from '../actor.js';
-import { applyHealEfficiency } from '../actor-stats.js';
+import { applyHealEfficiency, changeReflectStacks } from '../actor-stats.js';
 import {
   BUFF_KEYS,
   giveRandomBuffs,
@@ -17,8 +17,8 @@ import { affectedTargets, getItemsInside } from '../board-graph.js';
 import { getP1, getP2, getP3, getP5, getPName } from '../params.js';
 import { PRIORITY } from '../combat-start-priority.js';
 import { addBonusDamage, addBonusDamageFactor } from '../piece-stats.js';
-import { gainStacks } from '../stacks.js';
 import { itemHasType, itemTypeMultiplicity, pushActivate } from './ports-util.js';
+import { canBagAffectItem } from '../../../../shared/backpack-grid/can-affect.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { rollItemChance, weaponStrike } from './ports-wave-c-util.js';
 import { eventSideForPiece } from '../vs-board.js';
@@ -64,6 +64,7 @@ export function giveTempMaxHp(piece, ctx, handler, amount) {
     label: `${piece.name}: +${gain} max HP`,
     meta: {
       category: 'heal',
+      kind: 'maxHp',
       script: true,
       handler,
       playerHp: ctx.player.hp,
@@ -104,7 +105,7 @@ const cursedHairCombPort = {
         .filter((o) => canBeEmpoweredPiece(o))
         .map((o) => o.placementKey),
     );
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
+    ctx.bus?.on?.('item_attacked', (payload) => {
       const src = payload?.piece;
       if (!src || !payload?.hit?.hit || !keys.has(src.placementKey)) return;
       const vampN = linked(ctx, piece, 'secondary').filter((o) =>
@@ -170,10 +171,14 @@ const flameBadgePort = {
   handlerId: 'flame_badge',
   family: 'start_buff',
   onCombatStart(piece, ctx) {
+    // FlameBadge.gd calls giveHeat(getP1()). Item.giveStacks applies the
+    // source buff power before Character.gainStacks rounds; do not round the
+    // parameter before grantStacks performs that same sequence.
+    const heat = getPName(piece.params, 'heat', getP1(piece.params, 6));
     grantStacks(
       ctx.player,
       'heat',
-      Math.max(1, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 6)))),
+      heat,
       origin(piece),
     );
     consumeStart(piece, ctx, 'flame_badge');
@@ -185,15 +190,13 @@ const rubyWhelpPort = {
   handlerId: 'ruby_whelp',
   family: 'weapon_base',
   onPreCombatStart(piece, ctx) {
-    ctx.player.debuffReflectStacks =
-      (Number(ctx.player.debuffReflectStacks) || 0) +
-      Math.max(0, Math.round(getPName(piece.params, 'reflect', getP2(piece.params, 3))));
+    changeReflectStacks(ctx.player, getP2(piece.params, 0), ctx, piece);
   },
   onCombatStart(piece, ctx) {
     grantStacks(
       ctx.player,
       'heat',
-      Math.max(1, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 5)))),
+      getP1(piece.params, 0),
       origin(piece),
     );
     pushActivate(piece, ctx, 'ruby_whelp', `Weapon: ${piece.name}`);
@@ -329,31 +332,45 @@ const piggyOfRichesPort = {
   },
 };
 
+/**
+ * PuzzlebagL.gd's Item.changeHealAmp adds to paramMult. Keep the prepared
+ * source value so multiple bags compose additively (1 + 20% + 20%), rather
+ * than repeatedly multiplying the already-prepared catalog value.
+ */
+function applyPuzzlebagLHealAmp(cargo, catalog, bonus) {
+  const currentBonus = Number(cargo._puzzlebagLBonus) || 0;
+  const nextBonus = currentBonus + bonus;
+  const baseParams = cargo._puzzlebagLBaseParams || {
+    ...(catalog?.params || {}),
+    ...(cargo.params || {}),
+  };
+  cargo._puzzlebagLBaseParams = baseParams;
+  cargo._puzzlebagLBonus = nextBonus;
+  const params = { ...(cargo.params || {}) };
+  for (const key of ['heal', 'lifesteal']) {
+    if (baseParams[key] == null) continue;
+    params[key] = Number(baseParams[key]) * (1 + nextBonus);
+  }
+  cargo.params = params;
+}
+
 /** PuzzlebagL.gd — Item.changeHealAmp on cargo with heal/lifesteal params; giveMaxHealth. */
 const puzzlebagLPort = {
   handlerId: 'puzzlebag_l',
   family: 'start_buff',
   onPrepare(piece, ctx) {
-    const amp = 1 + getPName(piece.params, 'healamp', getP1(piece.params, 20)) / 100;
+    const bonus = getPName(piece.params, 'healamp', 0) / 100;
+    if (!bonus) return;
     const byKey = new Map((ctx.pieces || []).map((o) => [o.placementKey, o]));
     for (const key of getItemsInside(ctx.graph, piece.placementKey)) {
       const cargo = byKey.get(key);
       if (!cargo) continue;
       const cat = ctx.itemsById.get(cargo.itemId);
-      const hasHeal =
-        cargo.params.heal != null ||
-        cargo.params.lifesteal != null ||
-        cat?.params?.heal != null ||
-        cat?.params?.lifesteal != null;
-      if (!hasHeal) continue;
-      cargo.params = { ...cargo.params };
-      if (cargo.params.heal != null || cat?.params?.heal != null) {
-        cargo.params.heal = (Number(cargo.params.heal ?? cat.params.heal) || 0) * amp;
-      }
-      if (cargo.params.lifesteal != null || cat?.params?.lifesteal != null) {
-        cargo.params.lifesteal =
-          (Number(cargo.params.lifesteal ?? cat.params.lifesteal) || 0) * amp;
-      }
+      const target = cat
+        ? { ...cat, ...cargo, params: cargo.params || cat.params }
+        : cargo;
+      if (!canBagAffectItem({ id: 'puzzlebag_l' }, target, ctx.canAffect || {})) continue;
+      applyPuzzlebagLHealAmp(cargo, cat, bonus);
     }
   },
   onCombatStart(piece, ctx) {
@@ -361,7 +378,7 @@ const puzzlebagLPort = {
       piece,
       ctx,
       'puzzlebag_l',
-      getPName(piece.params, 'maxhealth', getP2(piece.params, 7)),
+      getPName(piece.params, 'maxhealth', 0),
     );
     ctx.events.push({
       t: ctx.t,
@@ -380,12 +397,12 @@ const emeraldWhelpPort = {
   handlerId: 'emerald_whelp',
   family: 'weapon_base',
   onCombatStart(piece, ctx) {
-    grantStacks(ctx.player, 'lucky', Math.max(1, Math.round(getP1(piece.params, 3))), origin(piece));
+    grantStacks(ctx.player, 'lucky', Math.round(getP1(piece.params, 3)), origin(piece));
     pushActivate(piece, ctx, 'emerald_whelp', `Weapon: ${piece.name}`);
   },
   onPreDealDamageEarly(piece, ctx, res) {
-    if (res && !res.hit) return;
-    grantStacks(ctx.dummy, 'poison', Math.max(1, Math.round(getP2(piece.params, 3))), origin(piece));
+    if (!res?.hit) return;
+    grantStacks(ctx.dummy, 'poison', Math.round(getP2(piece.params, 3)), origin(piece));
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'emerald_whelp');
@@ -410,19 +427,20 @@ const sapphireWhelpPort = {
     grantStacks(
       ctx.player,
       'mana',
-      Math.max(1, Math.round(getPName(piece.params, 'mana', getP1(piece.params, 6)))),
+      getP1(piece.params, 0),
       origin(piece),
     );
     pushActivate(piece, ctx, 'sapphire_whelp', `Weapon: ${piece.name}`);
   },
   onPreDealDamageEarly(piece, ctx, res) {
-    if (res && !res.hit) return;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP2(piece.params, 1))));
+    if (!res?.hit) return;
+    const need = getP2(piece.params, 0);
     const used = useMana(ctx.player, need, origin(piece));
     if (!(used.spent > 0)) return;
-    const block =
-      Number(piece.blockGrant) || Number(ctx.itemsById.get(piece.itemId)?.block) || 10;
-    gainStacks(ctx.player, 'block', block);
+    const block = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number(ctx.itemsById.get(piece.itemId)?.block) || 0;
+    grantStacks(ctx.player, 'block', block, origin(piece));
     giveRandomBuffs(ctx.player, 1, ctx.rng, {
       ...origin(piece),
       availableBuffs: BUFF_KEYS.filter((k) => k !== 'mana'),

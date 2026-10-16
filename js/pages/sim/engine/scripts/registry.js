@@ -37,6 +37,8 @@ let coveragePromise = null;
 let coverageCache = null;
 /** @type {object | null} */
 let inventoryCache = null;
+/** @type {object | null} */
+let fidelityCache = null;
 
 /** Resolve order later in getScriptHandler; merge for listHandlerIds. */
 const ALL_HANDLERS = {
@@ -51,10 +53,12 @@ bindChargeHandlerResolve((id) => getScriptHandler(id));
 /**
  * @param {object | null} coverage
  * @param {object | null} [inventory]
+ * @param {object | null} [fidelity]
  */
-export function hydrateSimCoverage(coverage, inventory = null) {
+export function hydrateSimCoverage(coverage, inventory = null, fidelity = null) {
   coverageCache = coverage;
   if (inventory) inventoryCache = inventory;
+  if (fidelity) fidelityCache = fidelity;
 }
 
 /**
@@ -70,8 +74,11 @@ export function loadSimCoverage(root) {
       fetch(`${base}assets/data/sim-item-inventory.json`)
         .then((r) => (r.ok ? r.json() : null))
         .catch(() => null),
-    ]).then(([coverage, inventory]) => {
-      hydrateSimCoverage(coverage, inventory);
+      fetch(`${base}assets/data/sim-fidelity-summary.json`)
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null),
+    ]).then(([coverage, inventory, fidelity]) => {
+      hydrateSimCoverage(coverage, inventory, fidelity);
       return coverage;
     });
   }
@@ -80,6 +87,10 @@ export function loadSimCoverage(root) {
 
 export function getCoverageSync() {
   return coverageCache;
+}
+
+export function getFidelitySync() {
+  return fidelityCache;
 }
 
 /**

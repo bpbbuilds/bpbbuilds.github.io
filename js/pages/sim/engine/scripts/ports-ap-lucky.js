@@ -19,7 +19,7 @@ import { PLAYER_STAMINA_REGEN, giveStamina } from '../actor.js';
 import { applyStaminaRegeneration } from '../actor-stats.js';
 import { scheduleStatChargePath } from '../charge-delivery.js';
 import { buildScriptChargePath, chargeEnterSchedule } from '../charge-path.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
@@ -179,11 +179,12 @@ const CHARGE_SPLITTER_CELLS_2 = [
 ];
 
 /** ChargeSplitter.gd's two explicit sendCharge paths. */
-function emitChargeSplitterCharges(piece, ctx) {
+function emitChargeSplitterCharges(piece, ctx, speedFactor = 1) {
   const item = ctx.itemsById.get(piece.itemId);
   const boardPiece = ctx.graph?.pieces?.get(piece.placementKey);
   if (!item || !boardPiece) return;
-  const durPerTile = Math.max(0.01, getPName(piece.params, 'dur', 2));
+  const factor = Math.max(0.01, Number(speedFactor) || 1);
+  const durPerTile = Math.max(0.01, getPName(piece.params, 'dur', 2) / factor);
   const flat = Number(piece.chance) || getPName(piece.params, 'chance', 10);
   const perTile = Number(piece.chance2) || getPName(piece.params, 'chance2', 5);
   const placement = { x: boardPiece.x, y: boardPiece.y, r: boardPiece.r, key: piece.placementKey };
@@ -245,6 +246,10 @@ function emitChargeSplitterCharges(piece, ctx) {
 const chargeSplitterPort = {
   handlerId: 'charge_splitter',
   family: 'unique',
+  emitCharge(piece, ctx, speedFactor = 1) {
+    pushActivate(piece, ctx, 'charge_splitter', `Accessory: ${piece.name}`);
+    emitChargeSplitterCharges(piece, ctx, speedFactor);
+  },
   onPrepare(piece) {
     piece._splitterFired = false;
   },
@@ -429,29 +434,43 @@ const ultimaPort = {
   family: 'unique',
   onPrepare(piece, ctx) {
     const types = piece._ultimaTypes = countTypes(ctx, piece);
-    const spd = getPName(piece.params, 'speed', getPName(piece.params, 'p5', 75)) / 100;
-    if (types.spell > 0 && spd) addSpeed(piece, spd * types.spell);
+    const spd = getP5(piece.params, 0) / 100;
+    if (types.spell > 0) addSpeed(piece, spd * types.spell);
   },
   onCooldownEffect(piece, ctx) {
     const types = piece._ultimaTypes || countTypes(ctx, piece);
-    const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP1(piece.params, 2))));
-    const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP2(piece.params, 2))));
-    const cold = Math.max(1, Math.round(getPName(piece.params, 'cold', getP3(piece.params, 2))));
-    const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', getPName(piece.params, 'p4', 3))));
-    const blockEach = Number(ctx.itemsById.get(piece.itemId)?.block) || 15;
-    if (types.nature > 0) {
+    const luck = getP1(piece.params, 0);
+    const spikes = getP2(piece.params, 0);
+    const cold = getP3(piece.params, 0);
+    const regen = getP4(piece.params, 0);
+    const catalogBlock = ctx.itemsById.get(piece.itemId)?.block;
+    const blockEach = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number(catalogBlock) || 0;
+    if (types.nature > 0 && luck) {
       grantStacks(ctx.player, 'lucky', types.nature * luck, origin(piece));
+    }
+    if (types.nature > 0 && spikes) {
       grantStacks(ctx.player, 'spikes', types.nature * spikes, origin(piece));
     }
     if (types.ice > 0) {
-      gainStacks(ctx.player, 'block', types.ice * blockEach);
-      grantStacks(ctx.dummy, 'cold', types.ice * cold, origin(piece));
+      if (blockEach) gainStacks(ctx.player, 'block', types.ice * blockEach, origin(piece));
+      if (cold) {
+        grantStacks(ctx.dummy, 'cold', types.ice * cold, {
+          ...origin(piece),
+          rng: ctx.rng,
+          opponent: ctx.player,
+        });
+      }
     }
-    if (types.holy > 0) {
+    if (types.holy > 0 && regen) {
       grantStacks(ctx.player, 'regeneration', types.holy * regen, origin(piece));
     }
     if (types.dark > 0) {
-      stealRandomBuff(ctx.dummy, ctx.player, types.dark, ctx.rng, origin(piece));
+      stealRandomBuff(ctx.dummy, ctx.player, types.dark, ctx.rng, {
+        ...origin(piece),
+        rng: ctx.rng,
+      });
     }
     afterEffectFinished(piece, ctx, 'ultima');
     return true;

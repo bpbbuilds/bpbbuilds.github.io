@@ -20,6 +20,7 @@ import {
   registerChargePath,
   unregisterChargePath,
 } from './charge-stat.js';
+import { eventSideForPiece } from './vs-board.js';
 
 /** @type {null | ((id: string) => import('./scripts/handlers.js').ScriptHandler | null | undefined)} */
 let resolveHandler = null;
@@ -197,6 +198,7 @@ export function emitChargePulse(piece, ctx, opts = {}) {
  * @param {import('./scripts/handlers.js').ScriptCtx} ctx
  * @param {{
  *   durPerTile?: number,
+ *   speedFactor?: number,
  *   onCellEnter?: (target: object | null, step: object, cell: object) => void,
  *   label?: string,
  * }} [opts]
@@ -207,7 +209,8 @@ export function emitPathCharge(piece, ctx, opts = {}) {
   const boardPiece = graph.pieces.get(piece.placementKey);
   if (!item || !boardPiece) return null;
 
-  const durPerTile = opts.durPerTile ?? BATTERY_DUR_PER_TILE;
+  const speedFactor = Math.max(0.01, Number(opts.speedFactor) || 1);
+  const durPerTile = (opts.durPerTile ?? BATTERY_DUR_PER_TILE) / speedFactor;
   const pathId = `path:${piece.placementKey}:${t}`;
   const path = buildBatteryChargePath({
     pathId,
@@ -305,13 +308,14 @@ export function emitPathCharge(piece, ctx, opts = {}) {
  */
 export function emitBatterySpark(piece, ctx, speedFactor = 1) {
   const { t, events, graph, itemsById } = ctx;
+  const actor = eventSideForPiece(piece);
   const factor = Math.max(0.01, Number(speedFactor) || 1);
   const item = itemsById.get(piece.itemId);
   const boardPiece = graph?.pieces?.get(piece.placementKey);
   events.push({
     t,
     type: 'activate',
-    actor: 'player',
+    actor,
     itemId: piece.itemId,
     placementKey: piece.placementKey,
     label: `${piece.name} activated.`,
@@ -353,7 +357,7 @@ export function emitBatterySpark(piece, ctx, speedFactor = 1) {
   events.push({
     t,
     type: 'charge',
-    actor: 'player',
+    actor,
     itemId: piece.itemId,
     placementKey: piece.placementKey,
     label: `${piece.name}: charge`,
@@ -386,7 +390,7 @@ export function emitBatterySpark(piece, ctx, speedFactor = 1) {
     events.push({
       t: enterAbs,
       type: 'charge',
-      actor: 'player',
+      actor,
       itemId: piece.itemId,
       placementKey: piece.placementKey,
       label: targetPiece
@@ -410,7 +414,7 @@ export function emitBatterySpark(piece, ctx, speedFactor = 1) {
   events.push({
     t: t + path.duration,
     type: 'charge',
-    actor: 'player',
+    actor,
     itemId: piece.itemId,
     placementKey: piece.placementKey,
     label: `${piece.name}: charge end`,
@@ -435,4 +439,14 @@ export function reEmitCharge(piece, ctx, speedFactor = 1) {
   if (typeof script?.emitCharge === 'function') {
     script.emitCharge(piece, ctx, speedFactor);
   }
+}
+
+/**
+ * EngineerBox.gd canApplyEffect — source items must expose emitCharge.
+ * @param {object | null | undefined} piece
+ */
+export function canEmitCharge(piece) {
+  if (!piece?.itemId) return false;
+  if (piece.itemId === 'battery') return true;
+  return typeof resolveHandler?.(piece.itemId)?.emitCharge === 'function';
 }

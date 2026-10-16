@@ -274,6 +274,18 @@ export function takeDamage(defender, attacker, src) {
   res.damage = dmg;
   res.healthDamage = dmg;
 
+  // Item.pre_take_damage_late runs after damage reductions but before Block.
+  // Defensive save items use this phase to react while the hit is still
+  // reversible (for example, Spell Scroll Ice converts opponent Cold into
+  // Block before the incoming damage is applied).
+  src.bus?.emit?.('pre_take_damage_late', {
+    t: src.nowT ?? 0,
+    defender,
+    attacker,
+    damage: res,
+    source: src,
+  });
+
   const canBlock = src.canBlock !== false && !src.ignoreBlock && !src.isPoison;
   if (canBlock && defender.block > 0 && dmg > 0) {
     if (dmg > defender.block) {
@@ -312,17 +324,21 @@ export function takeDamage(defender, attacker, src) {
   }
 
   // Spikes reflect (melee limit 1.0 → full spikes stacks, capped by damage * limit)
-  if (
+  const canTriggerSpikes =
     !src.skipSpikes &&
     !src.isSpikes &&
     !src.isPoison &&
-    src.isAttack !== false &&
+    (src.isAttack !== false || src.isEffectDamage === true);
+  if (
+    canTriggerSpikes &&
     (defender.stacks.spikes || 0) > 0 &&
     res.damage > 0 &&
     !attacker.dead
   ) {
     const limit =
-      src.isMelee === false
+      src.isEffectDamage === true
+        ? defender.effectSpikesLimit ?? 0
+        : src.isMelee === false
         ? defender.rangedSpikesLimit ?? 0
         : defender.meleeSpikesLimit ?? 1;
     const spikeDam = Math.min(
@@ -333,7 +349,8 @@ export function takeDamage(defender, attacker, src) {
       const back = takeDamage(attacker, defender, {
         amount: spikeDam,
         canMiss: false,
-        canCrit: false,
+        canCrit: true,
+        critChance: Number(defender._spikesCritChance) || 0,
         canBlock: true,
         isAttack: false,
         isSpikes: true,

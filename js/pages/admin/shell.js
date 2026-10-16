@@ -18,6 +18,7 @@ import { mountMarketplacePanel } from './tab-marketplace.js';
 import { mountOverlayPanel } from './tab-overlay.js?v=premiere-alpha-20261004';
 import { mountAnalyticsPanel } from './tab-analytics.js';
 import { mountMembersPanel } from './tab-members.js';
+import { mountSimAuditPanel } from './tab-sim-audit.js';
 import {
   ADMIN_TAB_META,
   normalizeTab,
@@ -336,6 +337,11 @@ async function mountStage(stage, tab, ctx) {
       },
       onChanged: ctx.reload,
     });
+    return;
+  }
+
+  if (tab === 'sim-audit') {
+    mountSimAuditPanel(stage, { root: ctx.root });
     return;
   }
 

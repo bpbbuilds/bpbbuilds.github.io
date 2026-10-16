@@ -2,23 +2,26 @@
  * Band Y Phase 137 — heat / cold.
  */
 
-import { tryUseStamina, healActor } from '../actor.js';
+import { tryUseStamina } from '../actor.js';
 import {
   giveRandomBuffs,
   grantStacks,
   grantTemporaryStacks,
   inflictRandomDebuffs,
   cleanseRandomDebuffs,
+  onBuffChanged,
   spendStacks,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { randInt } from '../rng.js';
 import { gainStacks } from '../stacks.js';
-import { dealHit } from './handlers.js';
+import { dealHit, stealLife } from './handlers.js';
+import { weaponStrike } from './ports-wave-c-util.js';
 import { afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
 import { eventFoeSide } from '../vs-board.js';
+import { burningSwordPort } from './ports-ap-onhit.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -28,54 +31,26 @@ import { eventFoeSide } from '../vs-board.js';
 export const devouringSpherePort = {
   handlerId: 'devouring_sphere',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    piece._devourCold = Number(ctx.dummy.stacks.cold) || 0;
-    piece._devourBlind = Number(ctx.dummy.stacks.blind) || 0;
-    pushActivate(piece, ctx, 'devouring_sphere', `Accessory: ${piece.name}`);
+  onPrepare(piece, ctx) {
+    const coldSpeed = Number(getPName(piece.params, 'speed_cold', getP3(piece.params, 5))) / 100;
+    const blindSpeed = Number(getPName(piece.params, 'speed_blind', getP4(piece.params, 5))) / 100;
+    onBuffChanged(ctx.dummy, (change) => {
+      if (change.stack === 'cold' && coldSpeed) addSpeed(piece, change.amount * coldSpeed);
+      if (change.stack === 'blind' && blindSpeed) addSpeed(piece, change.amount * blindSpeed);
+    });
   },
   onCooldownEffect(piece, ctx) {
-    const { t, player, dummy, events } = ctx;
-    pushActivate(piece, ctx, 'devouring_sphere', `Accessory: ${piece.name}`);
-    const vamp = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'vampirism', getP1(piece.params, 1))),
-    );
-    grantStacks(player, 'vampirism', vamp, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 4))));
-    const ls = getPName(piece.params, 'lifesteal', 50) / 100;
-    dummy.hp = Math.max(0, dummy.hp - dam);
-    const healed = healActor(player, Math.round(dam * ls));
-    events.push({
-      t: t + 0.004,
-      type: 'damage',
-      target: 'dummy',
-      amount: dam,
-      label: `${piece.name}: ${dam} lifesteal hit`,
-      meta: { category: 'damage', script: true, handler: 'devouring_sphere' },
-    });
-    if (healed > 0) {
-      events.push({
-        t: t + 0.006,
-        type: 'heal',
-        target: 'player',
-        amount: healed,
-        label: `${piece.name}: +${healed} HP`,
-        meta: { category: 'heal', script: true, handler: 'devouring_sphere' },
+    const vamp = Number(getPName(piece.params, 'vampirism', getP1(piece.params, 1))) || 0;
+    if (vamp) {
+      grantStacks(ctx.player, 'vampirism', vamp, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
       });
     }
-    const coldNow = Number(dummy.stacks.cold) || 0;
-    const blindNow = Number(dummy.stacks.blind) || 0;
-    const coldDelta = coldNow - (Number(piece._devourCold) || 0);
-    const blindDelta = blindNow - (Number(piece._devourBlind) || 0);
-    const coldSpeed = getPName(piece.params, 'speed_cold', 5) / 100;
-    const blindSpeed = getPName(piece.params, 'speed_blind', 5) / 100;
-    if (coldDelta > 0) addSpeed(piece, coldDelta * coldSpeed);
-    if (blindDelta > 0) addSpeed(piece, blindDelta * blindSpeed);
-    piece._devourCold = coldNow;
-    piece._devourBlind = blindNow;
+    const dam = Number(getPName(piece.params, 'dam', getP5(piece.params, 10))) || 0;
+    const ls = (Number(getPName(piece.params, 'lifesteal', getP2(piece.params, 100))) || 0) / 100;
+    stealLife(piece, ctx, dam, ls);
+    pushActivate(piece, ctx, 'devouring_sphere', `Accessory: ${piece.name}`);
     return true;
   },
 };
@@ -122,37 +97,15 @@ export const snowballPort = {
 /** @type {ScriptHandler} */
 export const burningBladePort = {
   handlerId: 'burning_blade',
-  family: 'on_hit',
+  family: 'weapon_base',
+  onPrepare(piece, ctx) {
+    burningSwordPort.onPrepare(piece, ctx);
+  },
   onCooldownEffect(piece, ctx) {
-    const { t, player, events, rng } = ctx;
-    if (tryUseStamina(player, piece.staminaCost) === 'starve') {
-      events.push({
-        t,
-        type: 'stamina',
-        label: `${piece.name}: out of stamina`,
-        meta: { category: 'stamina', script: true, starved: true },
-      });
-      return true;
-    }
-    pushActivate(piece, ctx, 'burning_blade', `Weapon: ${piece.name}`);
-    const raw = randInt(piece.damageMin, piece.damageMax, rng);
-    const hit = dealHit(piece, ctx, raw);
-    if (hit.hit) {
-      const heat = Math.max(1, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 1))));
-      grantStacks(player, 'heat', heat, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      events.push({
-        t: t + 0.01,
-        type: 'buff',
-        target: 'player',
-        amount: heat,
-        label: `${piece.name}: +${heat} Heat`,
-        meta: { category: 'buff', stack: 'heat', script: true, handler: 'burning_blade' },
-      });
-    }
-    return true;
+    return weaponStrike(piece, ctx, 'burning_blade');
+  },
+  onPreDealDamageEarly(piece, ctx, res) {
+    burningSwordPort.onPreDealDamageEarly(piece, ctx, res);
   },
 };
 
@@ -161,16 +114,16 @@ export const burningBladePort = {
 export const electricTorchPort = {
   handlerId: 'electric_torch',
   family: 'unique',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._torchCharged = false;
     piece._torchSpeedKeys = [];
+    piece._torchSpeedBonus = 0;
   },
   onChargeReceived(piece, ctx) {
     if ((piece.numCharges || 0) !== 1 || piece._torchCharged) return;
     piece._torchCharged = true;
     const speedBonus =
       getPName(piece.params, 'speed', getP1(piece.params, 5)) / 100;
-    if (!(speedBonus > 0)) return;
     const { graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     /** @type {string[]} */
@@ -190,7 +143,6 @@ export const electricTorchPort = {
     if (!piece._torchCharged) return;
     piece._torchCharged = false;
     const bonus = Number(piece._torchSpeedBonus) || 0;
-    if (!(bonus > 0)) return;
     for (const other of ctx.pieces || []) {
       if (!(piece._torchSpeedKeys || []).includes(other.placementKey)) continue;
       addSpeed(other, -bonus);
@@ -201,29 +153,31 @@ export const electricTorchPort = {
   onCooldownEffect(piece, ctx) {
     const { t, dummy, player, events, rng } = ctx;
     pushActivate(piece, ctx, 'electric_torch', `Accessory: ${piece.name}`);
-    const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', getP1(piece.params, 2))));
-    const dur = Math.max(0.5, getPName(piece.params, 'dur_blind', getP2(piece.params, 3)));
-    grantTemporaryStacks(dummy, 'blind', blind, dur, t, {
+    const blind = Math.trunc(getPName(piece.params, 'blind', getP1(piece.params, 2)));
+    const dur = getPName(piece.params, 'dur_blind', getP2(piece.params, 3));
+    const granted = grantTemporaryStacks(dummy, 'blind', blind, dur, t, {
       rng,
       opponent: player,
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    events.push({
-      t: t + 0.004,
-      type: 'debuff',
-      target: 'dummy',
-      amount: blind,
-      label: `${piece.name}: +${blind} Blind (${dur}s)`,
-      meta: {
-        category: 'debuff',
-        stack: 'blind',
-        script: true,
-        handler: 'electric_torch',
-        temp: true,
-        duration: dur,
-      },
-    });
+    if (granted.gained > 0) {
+      events.push({
+        t: t + 0.004,
+        type: 'debuff',
+        target: 'dummy',
+        amount: granted.gained,
+        label: `${piece.name}: +${granted.gained} Blind (${dur}s)`,
+        meta: {
+          category: 'debuff',
+          stack: 'blind',
+          script: true,
+          handler: 'electric_torch',
+          temp: true,
+          duration: dur,
+        },
+      });
+    }
     afterEffectFinished(piece, ctx, 'electric_torch', { activate: false });
     return true;
   },
@@ -287,11 +241,8 @@ export const pocketSandPort = {
   onCombatStart(piece, ctx) {
     const { t, dummy, player, events, rng } = ctx;
     // Item.consume → activate() → Activations metric
-    pushActivate(piece, ctx, 'pocket_sand', `Accessory: ${piece.name}`);
-    const blind = Math.max(1, Math.round(getP1(piece.params, 2)));
+    const blind = getP1(piece.params, 2);
     gainStacks(dummy, 'blind', blind, { rng, opponent: player });
-    piece.alive = false;
-    piece.charges = 0;
     events.push({
       t,
       type: 'debuff',
@@ -307,6 +258,10 @@ export const pocketSandPort = {
         handler: 'pocket_sand',
         consumed: true,
       },
+    });
+    afterEffectFinished(piece, ctx, 'pocket_sand', {
+      consume: true,
+      label: `Accessory: ${piece.name}`,
     });
   },
 };

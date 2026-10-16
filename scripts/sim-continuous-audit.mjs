@@ -24,6 +24,7 @@ const checks = [
   ['patch drift', ['scripts/sim-patch-drift.mjs', '--check']],
   ['shared source surface', ['scripts/build-sim-system-surface.mjs', '--check']],
   ['fidelity ledger', ['scripts/build-sim-fidelity-ledger.mjs', '--check']],
+  ['Admin simulator audit dashboard', ['scripts/build-sim-audit-dashboard.mjs', '--check']],
   ['hook triage', ['scripts/audit-sim-gd-parity.mjs', '--require-triage']],
   ['call candidate report', ['scripts/audit-sim-gd-calls.mjs']],
   ['intentional noops', ['scripts/sim-noop-audit.mjs']],

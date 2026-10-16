@@ -35,7 +35,7 @@ Not linked from public nav yet. Entry points:
 
 Both emit `SimEvent[]` via `runSim()` (`js/pages/sim/engine/index.js`). Toggle on the page; preference stored in `localStorage` (`bpb-sim-mode`).
 
-Coverage meter: **scripted** vs catalog-CD vs passive (`assets/data/sim-item-coverage.json`). Phase 25 log = category chips + **export JSON** (not game Combat Log UI yet).
+Coverage internals: **scripted** vs catalog-CD vs passive (`assets/data/sim-item-coverage.json`). The public fidelity chip uses retained `verified_1to1` item verdicts from `assets/data/sim-fidelity-summary.json`; Phase 25 log = category chips + **export JSON** (not game Combat Log UI yet).
 
 **Combat HUD** (Phase 33): dual panels with Health, Stamina, Buffs / Debuffs **stack counters** — same info architecture as the in-game fight UI. Scrubber seeks actor snapshots. Base max HP follows `Game.getMaxHealthInRound`: round 1 is **25** for every class, then +10 / +15 / +20 / +30 per later round band. With a round selected, the training dummy uses the same pool so early-round tests finish. No round in the URL → player 200 / dummy 1200 (old sandbox default).
 

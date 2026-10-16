@@ -9,15 +9,22 @@ import {
   grantStacks,
   spendStacks,
 } from '../buff-economy.js';
-import { healActor, requestedHealAmount } from '../actor.js';
+import { giveStamina, healActor, requestedHealAmount } from '../actor.js';
 import { affectedTargets, getItemsInside } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
-import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
+import { grantTimedResistancePct } from '../timed-resistance.js';
+import {
+  itemHasType,
+  pushActivate,
+  pushBuffGrants,
+  triggerFirstAffectedPotion,
+} from './ports-util.js';
 import { getScriptHandler } from './registry.js';
-import { applyFoodPrepareSpeed, markFoodConsumed } from './food-helpers.js';
+import { applyFoodPrepareSpeed } from './food-helpers.js';
 import { changeReflectStacks } from '../actor-stats.js';
+import { modifiedParamValue } from '../placement-instance.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -34,20 +41,32 @@ export const sliceOfBreadPort = {
   family: 'food',
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'slice_of_bread', `Food: ${piece.name}`);
-    const th = Math.max(1, Math.round(getPName(piece.params, 'staminat', getP1(piece.params, 5))));
+    const th = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'staminat', getP1(piece.params, 2.5)),
+      'staminat',
+    );
     if ((Number(player.stamina) || 0) < th) {
-      const stam = Math.max(1, Math.round(getPName(piece.params, 'stamina', getP2(piece.params, 3))));
-      player.stamina = Math.min(player.maxStamina || 20, (player.stamina || 0) + stam);
-      events.push({
-        t: t + 0.004,
-        type: 'stamina',
-        target: 'player',
-        amount: stam,
-        label: `${piece.name}: +${stam} stamina`,
-        meta: { category: 'stamina', script: true, handler: 'slice_of_bread' },
-      });
+      const stam = modifiedParamValue(
+        piece,
+        getPName(piece.params, 'stamina', getP2(piece.params, 0.5)),
+        'stamina',
+      );
+      const before = Number(player.stamina) || 0;
+      giveStamina(player, stam);
+      const gained = (Number(player.stamina) || 0) - before;
+      if (gained > 0) {
+        events.push({
+          t: t + 0.004,
+          type: 'stamina',
+          target: 'player',
+          amount: gained,
+          label: `${piece.name}: +${gained} stamina`,
+          meta: { category: 'stamina', script: true, handler: 'slice_of_bread' },
+        });
+      }
     }
+    pushActivate(piece, ctx, 'slice_of_bread', `Food: ${piece.name}`);
     return true;
   },
 };
@@ -121,33 +140,93 @@ export const platinCustomerCardPort = {
     }).length;
     changeReflectStacks(
       ctx.player,
-      n * Math.max(0, Math.round(getP2(piece.params, 2))),
+      n * getP2(piece.params, 2),
       ctx,
       piece,
     );
+    pushActivate(piece, ctx, 'platin_customer_card', `Card: ${piece.name}`);
   },
   onCombatStart(piece, ctx) {
-    pushActivate(piece, ctx, 'platin_customer_card', `Card: ${piece.name}`);
+    // PlatinCustomerCard.gd intentionally leaves onCombatStart empty.
   },
 };
 
 /** @type {ScriptHandler} */
+function sandbagParams(piece) {
+  return {
+    damageResistance: getP1(piece.params, 0),
+    duration: getPName(piece.params, 'dur', getP2(piece.params, 0)),
+    blind: getPName(piece.params, 'blind', getP3(piece.params, 0)),
+  };
+}
+
+function armSandbagResistance(actor, pct, untilT, tag) {
+  const list = actor._timedResists || (actor._timedResists = []);
+  const existing = list.find((entry) => entry.tag === tag);
+  if (existing) {
+    existing.untilT = untilT;
+    return;
+  }
+  if (Number(pct) || 0) {
+    grantTimedResistancePct(actor, pct, untilT, tag);
+  } else {
+    list.push({ pct: 0, untilT, tag });
+  }
+}
+
+function finishSandbag(piece, ctx, tag, endedTag) {
+  if (endedTag !== tag || piece._sandbagEnded) return;
+  piece._sandbagEnded = true;
+  piece._sandbagBuffsActive = 0;
+  ctx.player._sandbagActive = false;
+}
+
+function bindSandbagExpiry(actor, piece, ctx, tag) {
+  const previous = actor._onTimedResistEnd;
+  actor._onTimedResistEnd = (endedTag, entry) => {
+    previous?.(endedTag, entry);
+    finishSandbag(piece, ctx, tag, endedTag);
+  };
+}
+
 export const sandbagPort = {
   handlerId: 'sandbag',
   family: 'consumable',
+  onPrepare(piece) {
+    piece._sandbagBuffsActive = 0;
+    piece._sandbagEnded = false;
+  },
+  onPreCombatStart(piece, ctx) {
+    const { player, dummy, t } = ctx;
+    const { damageResistance, duration } = sandbagParams(piece);
+    const tag = piece._sandbagTag || `sandbag:${piece.placementKey}`;
+    const untilT = t + duration;
+    piece._sandbagTag = tag;
+    piece._sandbagUntil = untilT;
+    if (!player._sandbagActive) {
+      player._sandbagActive = true;
+      piece._sandbagBuffsActive = 1;
+      armSandbagResistance(player, damageResistance, untilT, tag);
+      armSandbagResistance(dummy, damageResistance, untilT, tag);
+      bindSandbagExpiry(player, piece, ctx, tag);
+      bindSandbagExpiry(dummy, piece, ctx, tag);
+    } else if (piece._sandbagBuffsActive > 0) {
+      armSandbagResistance(player, damageResistance, untilT, tag);
+      armSandbagResistance(dummy, damageResistance, untilT, tag);
+    }
+  },
   onCombatStart(piece, ctx) {
     const { t, dummy, player, events, rng } = ctx;
-    const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', getP1(piece.params, 2))));
-    gainStacks(dummy, 'blind', blind, { rng, opponent: player });
-    gainStacks(player, 'blind', blind);
-    events.push({
-      t,
-      type: 'debuff',
-      target: 'dummy',
-      amount: blind,
-      label: `${piece.name}: +${blind} Blind both`,
-      meta: { category: 'debuff', stack: 'blind', script: true, handler: 'sandbag' },
-    });
+    const { blind } = sandbagParams(piece);
+    const origin = { originKey: piece.placementKey, originId: piece.itemId };
+    const opponentGrant = grantStacks(dummy, 'blind', blind, { ...origin, rng, opponent: player });
+    const ownerGrant = grantStacks(player, 'blind', blind, origin);
+    if (opponentGrant.gained > 0) {
+      pushBuffGrants(events, piece, player, t, 'sandbag', { blind: opponentGrant.gained }, 0.002, 'dummy');
+    }
+    if (ownerGrant.gained > 0) {
+      pushBuffGrants(events, piece, player, t, 'sandbag', { blind: ownerGrant.gained }, 0.004, 'player');
+    }
     pushActivate(piece, ctx, 'sandbag', `Skill: ${piece.name}`);
   },
 };
@@ -183,7 +262,7 @@ export const evilHatPort = {
 export const cupcakePort = {
   handlerId: 'cupcake',
   family: 'food',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     applyFoodPrepareSpeed(piece, ctx);
   },
   onCooldownEffect(piece, ctx) {
@@ -229,18 +308,22 @@ export const cupcakePort = {
 export const pineapplePort = {
   handlerId: 'pineapple',
   family: 'food',
+  onPrepare(piece, ctx) {
+    applyFoodPrepareSpeed(piece, ctx);
+  },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'pineapple', `Food: ${piece.name}`);
-    const healAmt = Math.max(1, Math.round(getPName(piece.params, 'heal', getP1(piece.params, 8))));
+    const healAmt = getPName(piece.params, 'heal', getP1(piece.params, 8));
     const healed = healActor(player, healAmt);
-    if (healed > 0) {
+    if (healed > 0 || (player._lastHeal && !player._lastHeal.meterAttached)) {
+      const logged = Number(player._lastHeal?.loggedAmount) || healed;
+      if (player._lastHeal) player._lastHeal.meterAttached = true;
       events.push({
         t: t + 0.002,
         type: 'heal',
         target: 'player',
-        amount: healed,
-        label: `${piece.name}: heal +${healed}`,
+        amount: logged,
+        label: `${piece.name}: heal +${logged}`,
         meta: { category: 'heal', script: true, handler: 'pineapple', playerHp: player.hp },
       });
     }
@@ -255,7 +338,8 @@ export const pineapplePort = {
         meta: { category: 'buff', stack: 'spikes', script: true, handler: 'pineapple' },
       });
     }
-    markFoodConsumed(piece, ctx, 'pineapple');
+    // Pineapple.gd calls activate(), not consume(); it remains a cooldown Food.
+    pushActivate(piece, ctx, 'pineapple', `Food: ${piece.name}`);
     return true;
   },
 };
@@ -319,7 +403,11 @@ export const protectivePursePort = {
   family: 'unique',
   onCombatStart(piece, ctx) {
     const { t, player, events } = ctx;
-    let block = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 8)));
+    const purseCatalog = ctx.itemsById.get(piece.itemId);
+    let block = Math.max(
+      0,
+      Math.round(Number(piece.blockGrant) || Number(purseCatalog?.block) || getPName(piece.params, 'block', getP1(piece.params, 0))),
+    );
     const bagtacular = (ctx.pieces || []).find(
       (other) => other.itemId === 'bagtacular' && other.alive !== false,
     );
@@ -327,7 +415,7 @@ export const protectivePursePort = {
       const catalog = ctx.itemsById.get('bagtacular');
       block += Math.max(
         0,
-        Math.round(getP1(bagtacular.params || catalog?.params, 15)),
+        Math.round(getPName(bagtacular.params || catalog?.params, 'block', getP1(bagtacular.params || catalog?.params, 0))),
       );
     }
     gainStacks(player, 'block', block);
@@ -340,6 +428,17 @@ export const protectivePursePort = {
       placementKey: piece.placementKey,
       label: `${piece.name}: +${block} Block`,
       meta: { category: 'buff', stack: 'block', script: true, handler: 'protective_purse' },
+    });
+    // ProtectivePurse.gd calls activate() even though this bag has no combat
+    // cooldown; record the source visual event without pushActivate's bag guard.
+    events.push({
+      t,
+      type: 'activate',
+      actor: 'player',
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `Bag: ${piece.name}`,
+      meta: { category: 'bag', script: true, handler: 'protective_purse' },
     });
   },
 };
@@ -380,8 +479,12 @@ function bindHealthPotionDrink(piece, ctx, withRegen) {
   const handler = withRegen ? 'strong_health_potion' : 'health_potion';
   const th = getPName(piece.params, 'p1', getP1(piece.params, 50)) / 100;
   const healAmt = Math.max(
-    1,
-    Math.round(getPName(piece.params, 'heal', getP2(piece.params, withRegen ? 24 : 12))),
+    0,
+    modifiedParamValue(
+      piece,
+      getPName(piece.params, 'heal', getP2(piece.params, withRegen ? 24 : 12)),
+      'heal',
+    ),
   );
   const cleanse = Math.max(
     0,
@@ -390,17 +493,10 @@ function bindHealthPotionDrink(piece, ctx, withRegen) {
   const regen = withRegen
     ? Math.max(0, Math.round(getPName(piece.params, 'regen', getP4(piece.params, 3))))
     : 0;
-  ctx.bus?.on?.('character_damaged', (payload) => {
-    if (payload?.actor && payload.actor !== ctx.player) return;
-    if (!piece.alive || piece.charges === 0) return;
-    if (!payload?.hit || !(payload.healthDamage > 0)) return;
+  const applyEffect = (t) => {
     const player = ctx.player;
-    const rel = player.maxHp > 0 ? player.hp / player.maxHp : 1;
-    if (rel >= th - 1e-9) return;
-    const t = payload.t ?? ctx.t;
     healActor(player, healAmt);
     const logged = requestedHealAmount(player, healAmt);
-    pushActivate(piece, { ...ctx, t }, handler, `Potion: ${piece.name}`, { consume: true });
     ctx.events.push({
       t: t + 0.001,
       type: 'heal',
@@ -431,6 +527,8 @@ function bindHealthPotionDrink(piece, ctx, withRegen) {
       const spent = spendStacks(player, 'poison', cleanse, {
         originKey: piece.placementKey,
         originId: piece.itemId,
+        cleanse: true,
+        rng: ctx.rng,
       });
       if (spent?.spent > 0) {
         ctx.events.push({
@@ -441,9 +539,23 @@ function bindHealthPotionDrink(piece, ctx, withRegen) {
         });
       }
     }
+  };
+  piece._potionTrigger = ({ t = ctx.t } = {}) => applyEffect(t);
+  ctx.bus?.on?.('character_damaged', (payload) => {
+    if (payload?.actor && payload.actor !== ctx.player) return;
+    if (!piece.alive || piece.charges === 0) return;
+    const player = ctx.player;
+    const rel = player.maxHp > 0 ? player.hp / player.maxHp : 1;
+    if (rel >= th) return;
+    const t = payload.t ?? ctx.t;
+    // Potion.consumePotion empties first, so effects or linked callbacks cannot
+    // re-enter this potion while the source trigger chain is running.
     piece.alive = false;
     piece.charges = 0;
+    applyEffect(t);
+    triggerFirstAffectedPotion(piece, ctx, t);
     ctx.bus?.emit?.('potion_emptied', { piece, t });
+    pushActivate(piece, { ...ctx, t }, handler, `Potion: ${piece.name}`, { consume: true });
     ctx.events.push({
       t: t + 0.003,
       type: 'info',

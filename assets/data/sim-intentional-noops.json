@@ -10,7 +10,7 @@
     { "id": "unidentified_skill", "gd": null, "why": "shop skill; no combat overrides in inventory" },
     { "id": "leather_bag", "gd": null, "why": "generic bag container; no combat script" },
     { "id": "box_of_prosperity", "gd": "Items/Exclusive/BoxofProsperity.gd", "why": "onShopEntered gem if godlies inside" },
-    { "id": "engineer_bag_2", "gd": null, "why": "shop bag; no combat overrides in inventory" },
+    { "id": "engineer_bag_2", "gd": "Items/Exclusive/EngineerBag2.gd", "why": "onShopEntered/onItemRoll/getRelatedItems only; no independent combat hook" },
     { "id": "random_loadout_bag", "gd": null, "why": "shop bag; no combat overrides in inventory" }
   ],
   "wearablesShopOnly": [

@@ -119,8 +119,11 @@ export function grantStacks(actor, stack, amount, opts = {}) {
   }
   // Item buffAmplificationChances / buffAmpChance (Con-Trap-Tron path, Double Rainbow, …)
   const origin = originPieceFromOpts(opts);
+  const isDebuff = DEBUFF_KEYS.includes(String(stack));
   const amp =
-    (Number(origin?.buffAmpChance) || 0) +
+    (isDebuff
+      ? Number(origin?.debuffAmpChance) || 0
+      : Number(origin?.buffAmpChance) || 0) +
     (Number(origin?.buffAmplificationChances?.[stack]) || 0);
   const g = gainStacks(actor, /** @type {any} */ (stack), amount, {
     ...opts,
@@ -175,6 +178,7 @@ export function spendStacks(actor, stack, amount, opts = {}) {
   opts = withReactiveCause(opts);
   let need = Math.max(0, Math.round(amount));
   if (need <= 0) return { spent: 0 };
+  const have = getStackAmount(actor, /** @type {any} */ (stack));
   // Hostile strip (steal / purge): buff-protect consumes instead of removing
   if (
     opts.hostileStrip &&
@@ -188,10 +192,15 @@ export function spendStacks(actor, stack, amount, opts = {}) {
   // Buff.gd loseStacks cleanseProtection — steal / strip / cleanse, not item useStacks
   if (
     (opts.hostileStrip || opts.cleanse) &&
-    BUFF_KEYS.includes(String(stack)) &&
+    (BUFF_KEYS.includes(String(stack)) || DEBUFF_KEYS.includes(String(stack))) &&
     typeof opts.rng === 'function'
   ) {
-    const pct = Number(actor.buffCleanseProtectChance) || 0;
+    const stackSpecific = actor.buffCleanseProtectChanceByStack?.[String(stack)];
+    const pct = DEBUFF_KEYS.includes(String(stack))
+      ? Number(actor.debuffCleanseProtectChance) || 0
+      : Number.isFinite(Number(stackSpecific))
+        ? Number(stackSpecific)
+        : Number(actor.buffCleanseProtectChance) || 0;
     if (pct > 0) {
       let kept = 0;
       for (let i = 0; i < need; i++) {
@@ -207,7 +216,9 @@ export function spendStacks(actor, stack, amount, opts = {}) {
     }
     need = Math.max(0, need);
   }
-  const have = getStackAmount(actor, /** @type {any} */ (stack));
+  // Buff.gd loseStacks clamps a cleanse to the current stack count after
+  // cleanse-protection adjustment. Item uses still require the full amount.
+  if (opts.cleanse) need = Math.min(need, have);
   if (have < need) return { spent: 0 };
   const spent = loseStacks(actor, /** @type {any} */ (stack), need);
   if (spent > 0) {

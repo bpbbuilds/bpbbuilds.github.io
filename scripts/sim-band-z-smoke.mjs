@@ -126,7 +126,10 @@ ok(!!getScriptHandler('electric_torch')?.onCooldownEffect, 'electric_torch handl
 // --- Carrot goobert temp empower ---
 {
   const result = simulateEngine({
-    placements: [{ id: 'carrot_goobert', key: 'cg', x: 0, y: 0, r: 0 }],
+    placements: [
+      { id: 'carrot_goobert', key: 'cg', x: 0, y: 0, r: 0 },
+      { id: 'banana', key: 'cg-food', x: 1, y: 0, r: 0 },
+    ],
     itemsById,
     durationSec: 12,
     seed: 11,
@@ -164,7 +167,10 @@ ok(!!getScriptHandler('electric_torch')?.onCooldownEffect, 'electric_torch handl
 // --- Poison bow on-hit poison ---
 {
   const result = simulateEngine({
-    placements: [{ id: 'poison_bow', key: 'pb', x: 0, y: 0, r: 0 }],
+    placements: [
+      { id: 'poison_bow', key: 'pb', x: 0, y: 0, r: 0 },
+      { id: 'wooden_sword', key: 'pb-weapon', x: 1, y: 0, r: 0 },
+    ],
     itemsById,
     durationSec: 10,
     seed: 3,

@@ -137,14 +137,15 @@ function bagClassIconHtml(root, heroClass) {
  */
 function bannerHtml(run) {
   const total = Number(run.coverage?.total) || 0;
-  const scripted = Number(run.coverage?.scripted) || 0;
-  const hasPct = total > 0;
-  const pct = hasPct ? Math.round((scripted / total) * 100) : 0;
+  const verified = Number(run.coverage?.verified) || 0;
+  const fidelityKnown = run.coverage?.fidelityKnown === true;
+  const hasPct = fidelityKnown && total > 0;
+  const pct = hasPct ? Math.round((verified / total) * 100) : 0;
   const tip = hasPct
-    ? `${scripted} of ${total} items on this board have dedicated combat scripts. Not a guarantee the fight matches ranked Backpack Battles.`
+    ? `${verified} of ${total} items on this board have retained source-backed and automated 1:1 proof. This does not guarantee the fight matches ranked Backpack Battles.`
     : 'Predictive sandbox with seeded RNG — not a ranked Combat Log replay.';
   return `
-    <span class="sim-fidelity__label" title="${escapeHtml(tip)}">Script coverage</span>
+    <span class="sim-fidelity__label" title="${escapeHtml(tip)}">Verified 1:1 coverage</span>
     <span class="sim-fidelity__pct" title="${escapeHtml(tip)}">${hasPct ? `${pct}%` : '—'}</span>
     <span class="sim-fidelity__hint">this board · predictive sandbox, not ranked replay</span>
     <button type="button" class="sim-fidelity__report" data-sim-report-open>
@@ -302,9 +303,10 @@ export async function initSimPage() {
   }
 
   function reportIssueSnapshot() {
-    const total = Number(currentRun?.coverage?.total) || 0;
-    const scripted = Number(currentRun?.coverage?.scripted) || 0;
-    const coveragePct = total > 0 ? Math.round((scripted / total) * 100) : null;
+    const coveragePct =
+      typeof currentRun?.coverage?.verifiedPct === 'number'
+        ? currentRun.coverage.verifiedPct
+        : null;
     const youName = String(premium?.profile?.display_name || '').trim();
     let permalink = `?${permalinkQs()}`;
     try {

@@ -85,18 +85,18 @@ export const longSpearPort = {
 export const poisonSpearPort = {
   handlerId: 'poison_spear',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const empty = countEmptyAffectCells(ctx, piece);
     const nature = countLinkedType(ctx, piece, 'nature');
-    const per = Math.max(1, Math.round(getPName(piece.params, 'blockremoval', getP1(piece.params, 2))));
+    const per = Math.trunc(getPName(piece.params, 'blockremoval', getP1(piece.params, 2)));
     piece._blockStrip = per * (empty + nature);
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'poison_spear');
   },
-  onDealtDamage(piece, ctx) {
-    const poison = Math.max(1, Math.round(getPName(piece.params, 'poison', getP1(piece.params, 2))));
-    const selfPoison = Math.max(0, Math.round(getPName(piece.params, 'poison2', getP2(piece.params, 1))));
+  onPreDealDamageLate(piece, ctx) {
+    const poison = Math.trunc(getPName(piece.params, 'poison', getP1(piece.params, 2)));
+    const selfPoison = Math.trunc(getPName(piece.params, 'poison2', getP2(piece.params, 1)));
     grantStacks(ctx.dummy, 'poison', poison, {
       originKey: piece.placementKey,
       originId: piece.itemId,

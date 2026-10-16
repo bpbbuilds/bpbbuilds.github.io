@@ -16,19 +16,22 @@ import {
 import { grantInvuln, grantStun, healActor, isInvulnerable } from '../actor.js';
 import { affectedTargets } from '../board-graph.js';
 import { emitPathCharge } from '../charge-delivery.js';
-import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
 import { effectDuration } from '../effect-duration.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedSpeed, refreshTimedSpeed } from '../timed-speed.js';
-import { deliverCharge } from '../charge-delivery.js';
-import { itemHasType } from './ports-util.js';
+import { grantTimedResistancePct } from '../timed-resistance.js';
+import { deliverCharge, leaveCharge } from '../charge-delivery.js';
+import { modifiedParamValue } from '../placement-instance.js';
+import { itemHasType, pushActivate } from './ports-util.js';
 import {
   countEmptyAffectCells,
   removeBuffsFraction,
   removeBlock,
   removeRandomBuffs,
   rollItemChance,
+  rollItemChance2,
   stealBuffsFraction,
   weaponStrike,
 } from './ports-wave-c-util.js';
@@ -118,7 +121,7 @@ export const automanatonPort = {
     piece._autoLowHp = false;
     piece._autoLowHpTrigger = (t = ctx.t) => {
       if (piece._autoLowHp) return;
-      const thresh = getPName(piece.params, 'healtht', 50) / 100;
+      const thresh = getPName(piece.params, 'healtht', 50) / 100 - 0.0001;
       const rel = ctx.player.maxHp > 0 ? ctx.player.hp / ctx.player.maxHp : 1;
       if (!(rel < thresh)) return;
       piece._autoLowHp = true;
@@ -127,19 +130,19 @@ export const automanatonPort = {
       for (const other of ctx.pieces || []) {
         if (!links.some((l) => l.key === other.placementKey)) continue;
         grantTimedSpeed(other, speed, t + Math.max(1, getPName(piece.params, 'dur_dmgreduction', 3)), 'automanaton');
+        const manaAmp = Number(piece.chance2) || getPName(piece.params, 'chance2', 0);
+        if (manaAmp) {
+          other.buffAmplificationChances = other.buffAmplificationChances || {};
+          other.buffAmplificationChances.mana =
+            (Number(other.buffAmplificationChances.mana) || 0) + manaAmp;
+        }
       }
       const resistDur = Math.max(1, getPName(piece.params, 'dur_dmgreduction', 3));
-      ctx.player.damageResistancePct = (ctx.player.damageResistancePct || 0) + getPName(piece.params, 'dmgreduction', 20);
-      piece._autoResistUntil = t + resistDur;
-      piece._onTimedSpeedEnd = (tag) => {
-        if (tag === 'automanaton' && piece._autoResistUntil && ctx.t >= piece._autoResistUntil) {
-          ctx.player.damageResistancePct = Math.max(
-            0,
-            (ctx.player.damageResistancePct || 0) - getPName(piece.params, 'dmgreduction', 20),
-          );
-        }
-      };
-      gainStacks(ctx.player, 'block', Math.max(1, Math.round(getP2(piece.params, 4))));
+      grantTimedResistancePct(ctx.player, getPName(piece.params, 'dmgreduction', 20), t + resistDur, 'automanaton');
+      grantStacks(ctx.player, 'block', Math.max(1, Math.round(piece.blockGrant || getP2(piece.params, 4))), {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
     };
     ctx.bus?.on?.('character_damaged', (payload) => {
       if (payload?.actor && payload.actor !== ctx.player) return;
@@ -174,7 +177,6 @@ export const automanatonPort = {
         originId: piece.itemId,
       });
     }
-    piece._autoLowHpTrigger?.(ctx.t);
   },
 };
 
@@ -183,35 +185,55 @@ export const automanatonPort = {
 export const bazookaPort = {
   handlerId: 'bazooka',
   family: 'on_hit',
-  onCombatStart(piece) {
+  onPrepare(piece, ctx) {
     piece._bazoUses = 0;
+    piece._stunResist = false;
+    const chance =
+      Number(ctx.itemsById.get(piece.itemId)?.chance) || Number(piece.chance) || 0;
+    const luckNeeded = Math.max(
+      1,
+      Math.round(getPName(piece.params, 'luckt', getP3(piece.params, 10))),
+    );
+    onBuffChanged(ctx.player, (change) => {
+      if (change?.stack !== 'lucky' || !change.amount) return;
+      const lucky = Number(ctx.player.stacks.lucky) || 0;
+      if (change.amount > 0 && !piece._stunResist && lucky >= luckNeeded) {
+        ctx.player.stunResistance = (Number(ctx.player.stunResistance) || 0) + chance;
+        piece._stunResist = true;
+      } else if (change.amount < 0 && piece._stunResist && lucky < luckNeeded) {
+        ctx.player.stunResistance = Math.max(
+          0,
+          (Number(ctx.player.stunResistance) || 0) - chance,
+        );
+        piece._stunResist = false;
+      }
+    });
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'bazooka');
   },
   onDealtDamage(piece, ctx, hit) {
     if (!hit?.hit) return;
-    const max = Math.max(1, Math.round(getPName(piece.params, 'max', 3)));
+    const max = Math.max(1, Math.round(getPName(piece.params, 'max', getP6(piece.params, 5))));
     if ((piece._bazoUses || 0) >= max) return;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP1(piece.params, 3))));
+    const need = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP1(piece.params, 1))));
     if ((ctx.player.stacks.heat || 0) < need) return;
     spendStacks(ctx.player, 'heat', need, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     piece._bazoUses = (piece._bazoUses || 0) + 1;
-    const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', 1)));
+    const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP2(piece.params, 2))));
     grantStacks(ctx.player, 'lucky', luck, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    gainStacks(ctx.player, 'block', Math.max(1, Math.round(getP2(piece.params, 4))));
-    grantStun(ctx.dummy, Math.max(0.5, effectDuration(piece, 'dur_stun', 1)), ctx.t);
-    grantStun(ctx.player, Math.max(0.5, effectDuration(piece, 'dur_stunself', 0.5)), ctx.t);
-    const luckt = Math.max(1, Math.round(getPName(piece.params, 'luckt', 3)));
-    if ((ctx.player.stacks.lucky || 0) >= luckt) {
-      piece._stunResist = true;
-    }
+    grantStacks(ctx.player, 'block', Math.max(0, Math.round(Number(piece.blockGrant) || 0)), {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+    grantStun(ctx.dummy, effectDuration(piece, 'dur_stun', getP4(piece.params, 0.6)), ctx.t, { rng: ctx.rng });
+    grantStun(ctx.player, effectDuration(piece, 'dur_stunself', getP5(piece.params, 0.4)), ctx.t, { rng: ctx.rng });
   },
 };
 
@@ -255,7 +277,7 @@ export const chainsawPort = {
 export const cupcakeDragonPort = {
   handlerId: 'cupcake_dragon',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const n = countType(ctx, piece, 'food');
     const speed = getPName(piece.params, 'speed', 10) / 100;
     if (n && speed) addSpeed(piece, n * speed);
@@ -263,15 +285,15 @@ export const cupcakeDragonPort = {
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'cupcake_dragon');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
     const removeN = Math.max(1, Math.round(getPName(piece.params, 'remove', 1)));
-    removeRandomBuffs(ctx.dummy, removeN, ctx.rng, {
+    removeMostDragonBuffs(ctx.player, ctx.dummy, removeN, ctx.rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     const gainN = Math.max(1, Math.round(getPName(piece.params, 'gain', 1)));
-    const pool = BUFF_KEYS.filter((k) => getStackAmount(ctx.dummy, /** @type {any} */ (k)) > 0);
+    const pool = mostDragonBuffs(ctx.dummy, ctx.rng);
     if (!pool.length) return;
     const choice = pool[Math.floor(ctx.rng() * pool.length)] || pool[0];
     grantStacks(ctx.player, choice, gainN, {
@@ -281,12 +303,39 @@ export const cupcakeDragonPort = {
   },
 };
 
+/**
+ * Cupcake Dragon follows the source getMostStacks() list: only the tied
+ * highest buff types are candidates, and removal can span that list.
+ */
+function mostDragonBuffs(actor, rng) {
+  let best = 0;
+  for (const stack of BUFF_KEYS) best = Math.max(best, getStackAmount(actor, /** @type {any} */ (stack)) || 0);
+  if (best <= 0) return [];
+  const pool = BUFF_KEYS.filter((stack) => getStackAmount(actor, /** @type {any} */ (stack)) === best);
+  for (let i = pool.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(rng() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool;
+}
+
+function removeMostDragonBuffs(sourceTypes, target, num, rng, opts) {
+  let left = Math.max(0, Math.round(num));
+  for (const stack of mostDragonBuffs(sourceTypes, rng)) {
+    if (left <= 0) break;
+    const current = getStackAmount(target, /** @type {any} */ (stack));
+    const take = Math.min(current, left);
+    const spent = spendStacks(target, stack, take, { ...opts, hostileStrip: true, rng });
+    left -= spent.spent || 0;
+  }
+}
+
 /** PrismaticSword.gd */
 /** @type {ScriptHandler} */
 export const prismaticSwordPort = {
   handlerId: 'prismatic_sword',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const magic = countType(ctx, piece, 'magic');
     const holy = countType(ctx, piece, 'holy');
     const dark = countType(ctx, piece, 'dark');
@@ -300,21 +349,24 @@ export const prismaticSwordPort = {
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'prismatic_sword');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
-    const damPer = Math.max(1, Math.round(getPName(piece.params, 'dam', 2)));
-    if (piece._prismHoly) addBonusDamage(piece, damPer * piece._prismHoly);
-    if (piece._prismDark && rollPercent(Math.min(100, 15 * piece._prismDark), ctx.rng)) {
-      const n = Math.max(1, Math.round(getPName(piece.params, 'debuffs', 1)));
+    const damPer = getPName(piece.params, 'dam', getP3(piece.params, 0));
+    if (piece._prismHoly && damPer) addBonusDamage(piece, damPer * piece._prismHoly);
+    const baseChance2 = Number(piece.chance2) || Number(ctx.itemsById?.get?.(piece.itemId)?.chance2) || 0;
+    if (piece._prismDark && rollItemChance2(piece, ctx.rng, baseChance2 * piece._prismDark)) {
+      const n = Math.max(0, Math.trunc(getPName(piece.params, 'debuffs', getP4(piece.params, 0))));
       inflictRandomDebuffs(ctx.dummy, n, ctx.rng, {
         originKey: piece.placementKey,
         originId: piece.itemId,
         opponent: ctx.player,
       });
     }
-    const ls = getPName(piece.params, 'lifesteal', 10) / 100;
-    const mult = Math.max(1, piece._prismVamp || 1);
-    const healed = healActor(ctx.player, Math.ceil((hit.healthDamage || 0) * ls * mult));
+  },
+  onPreDealDamageLate(piece, ctx, hit) {
+    if (!hit?.hit || !(piece._prismVamp > 0)) return;
+    const ls = getPName(piece.params, 'lifesteal', 0) / 100;
+    const healed = healActor(ctx.player, Math.ceil((Number(hit.damage) || 0) * ls * piece._prismVamp));
     if (healed > 0) {
       ctx.events.push({
         t: ctx.t + 0.008,
@@ -449,10 +501,29 @@ export const waterElementalPort = {
 };
 
 /** LightningStaff.gd — path sendCharge + cell dam */
+function emitLightningStaffCharge(piece, ctx, speedFactor = 1) {
+  const flat = Math.max(0, Math.round(getPName(piece.params, 'dam_flat', 1)));
+  const perTile = Math.max(0, Math.round(getPName(piece.params, 'dam_tile', 1)));
+  emitPathCharge(piece, ctx, {
+    speedFactor,
+    durPerTile: getPName(piece.params, 'dur', 2) || 2,
+    label: `${piece.name}: sendCharge`,
+    onCellEnter(target, step) {
+      if (!target) return;
+      const bonus = flat + perTile * (step.cellIndex || 0);
+      if (bonus) addBonusDamage(target, bonus);
+    },
+  });
+}
+
 /** @type {ScriptHandler} */
 export const lightningStaffPort = {
   handlerId: 'lightning_staff',
   family: 'on_hit',
+  emitCharge(piece, ctx, speedFactor = 1) {
+    pushActivate(piece, ctx, 'lightning_staff', `Weapon: ${piece.name}`);
+    emitLightningStaffCharge(piece, ctx, speedFactor);
+  },
   onCombatStart(piece) {
     piece._litHits = 0;
   },
@@ -473,67 +544,113 @@ export const lightningStaffPort = {
     const every = Math.max(1, Math.round(getPName(piece.params, 'num', getP3(piece.params, 3))));
     if (piece._litHits < every) return;
     piece._litHits = 0;
-    const flat = Math.max(0, Math.round(getPName(piece.params, 'dam_flat', 1)));
-    const perTile = Math.max(0, Math.round(getPName(piece.params, 'dam_tile', 1)));
-    emitPathCharge(piece, ctx, {
-      durPerTile: getPName(piece.params, 'dur', 2) || 2,
-      label: `${piece.name}: sendCharge`,
-      onCellEnter(target, step) {
-        if (!target) return;
-        const bonus = flat + perTile * (step.cellIndex || 0);
-        if (bonus) addBonusDamage(target, bonus);
-      },
-    });
+    pushActivate(piece, ctx, 'lightning_staff', `Weapon: ${piece.name}`);
+    emitLightningStaffCharge(piece, ctx);
+    ctx.bus?.emit?.('charge_emitted', { piece, t: ctx.t });
   },
 };
 
-/** ThunderDrake.gd — timed speed + chargeReceived/Left */
+/** ThunderDrake.gd — exact Lightning target filter, hit threshold, charge cycle, and timer. */
 /** @type {ScriptHandler} */
 export const thunderDrakePort = {
   handlerId: 'thunder_drake',
   family: 'on_hit',
-  onCombatStart(piece) {
+  onPrepare(piece, ctx) {
     piece._drakeHits = 0;
     piece._drakeBuffOn = false;
+    piece._drakeBuffUntil = null;
+    piece._drakeTargets = drakeTargets(piece, ctx);
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'thunder_drake');
   },
+  onTick(piece, ctx) {
+    if (!piece._drakeBuffOn || piece._drakeBuffUntil == null) return;
+    if (ctx.t + 1e-9 < piece._drakeBuffUntil) return;
+    endDrakeBuff(piece, ctx);
+  },
   onDealtDamage(piece, ctx, hit) {
     if (!hit?.hit) return;
     piece._drakeHits = (piece._drakeHits || 0) + 1;
-    const every = Math.max(1, Math.round(getPName(piece.params, 'hits', getP1(piece.params, 3))));
-    if (piece._drakeHits < every) return;
+    const every = Math.trunc(getPName(piece.params, 'hits', getP1(piece.params, 3)));
+    if (every <= 0 || piece._drakeHits !== every) return;
     piece._drakeHits = 0;
-    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-    const targets = (ctx.pieces || []).filter((o) =>
-      links.some((l) => l.key === o.placementKey),
+
+    const targets = getDrakeTargets(piece, ctx);
+    const tag = `drake:${piece.placementKey}`;
+    const speed = getPName(piece.params, 'speed', getP3(piece.params, 20)) / 100;
+    const durBase = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur', getP2(piece.params, 2)),
+      'dur',
     );
-    const mult = Math.max(1, targets.length);
-    const speed = (getPName(piece.params, 'speed', 10) / 100) * mult;
-    const dur = Math.max(0.5, getPName(piece.params, 'dur', 3));
-    const until = ctx.t + dur;
-    if (!piece._drakeBuffOn) {
-      piece._drakeBuffOn = true;
-      for (const other of targets) {
-        refreshTimedSpeed(other, speed, until, `drake:${piece.placementKey}`);
-        deliverCharge(other, ctx, { emitterKey: piece.placementKey });
-        other._onTimedSpeedEnd = (tag) => {
-          if (tag === `drake:${piece.placementKey}`) {
-            piece._drakeBuffOn = false;
-            other.numCharges = Math.max(0, (other.numCharges || 1) - 1);
-          }
-        };
+    const dur = scaleDrakeDuration(piece, durBase);
+    const until = ctx.t + Math.max(0, dur);
+
+    if (piece._drakeBuffOn) {
+      for (const { target } of targets) {
+        leaveCharge(target, ctx, { emitterKey: piece.placementKey });
+        deliverCharge(target, ctx, { emitterKey: piece.placementKey });
+        restartDrakeSpeed(target, until, tag);
       }
     } else {
-      for (const other of targets) {
-        other.numCharges = Math.max(0, (other.numCharges || 1) - 1);
-        deliverCharge(other, ctx, { emitterKey: piece.placementKey });
-        refreshTimedSpeed(other, speed, until, `drake:${piece.placementKey}`);
+      piece._drakeBuffOn = true;
+      for (const { target, multiplicity } of targets) {
+        grantTimedSpeed(target, speed * multiplicity, until, tag);
+        deliverCharge(target, ctx, { emitterKey: piece.placementKey });
       }
     }
+    piece._drakeBuffUntil = until;
   },
 };
+
+/** @param {object} piece @param {object} ctx */
+function drakeTargets(piece, ctx) {
+  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+  const source = ctx.graph?.pieces?.get?.(piece.placementKey);
+  const counts = new Map();
+  for (const mark of source?.affectCells || []) {
+    if (mark.color !== 'lightning') continue;
+    const key = ctx.graph?.filled?.get?.(mark.cell);
+    if (key) counts.set(key, (counts.get(key) || 0) + 1);
+  }
+  return (ctx.pieces || [])
+    .filter((target) => links.some((link) => link.key === target.placementKey))
+    .map((target) => ({
+      target,
+      multiplicity: Math.max(1, counts.get(target.placementKey) || 0),
+    }));
+}
+
+/** @param {object} piece @param {object} ctx */
+function getDrakeTargets(piece, ctx) {
+  if (Array.isArray(piece._drakeTargets)) return piece._drakeTargets;
+  const targets = drakeTargets(piece, ctx);
+  piece._drakeTargets = targets;
+  return targets;
+}
+
+/** @param {object} piece @param {number} base */
+function scaleDrakeDuration(piece, base) {
+  const factor = Number(piece.effectDurationFactor);
+  return base * (Number.isFinite(factor) && factor > 0 ? factor : 1);
+}
+
+/** @param {object} target @param {number} until @param {string} tag */
+function restartDrakeSpeed(target, until, tag) {
+  const existing = (target._timedSpeeds || []).find((entry) => entry.tag === tag);
+  if (existing) existing.untilT = until;
+}
+
+/** @param {object} piece @param {object} ctx */
+function endDrakeBuff(piece, ctx) {
+  const targets = getDrakeTargets(piece, ctx);
+  for (const { target } of targets) {
+    leaveCharge(target, ctx, { emitterKey: piece.placementKey });
+  }
+  piece._drakeBuffOn = false;
+  piece._drakeBuffUntil = null;
+}
 
 /** @type {Record<string, ScriptHandler>} */
 export const WAVE_D_WEAPON_PORTS = {

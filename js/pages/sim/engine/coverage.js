@@ -4,7 +4,11 @@
  * are not “scripted combat.”
  */
 
-import { getScriptHandler, getCoverageSync } from './scripts/registry.js';
+import {
+  getScriptHandler,
+  getCoverageSync,
+  getFidelitySync,
+} from './scripts/registry.js';
 import { HANDLERS } from './scripts/handlers.js';
 import { AK_NOOP_IDS } from './scripts/ports-ak-noop.js';
 
@@ -90,7 +94,13 @@ export function computeCoverage(placements, itemsById) {
   let passive = 0;
   let handlerExists = 0;
   let noop = 0;
+  let verified = 0;
   const covFile = getCoverageSync();
+  const fidelityFile = getFidelitySync();
+  const fidelityById = fidelityFile?.byId;
+  const fidelityKnown = Boolean(
+    fidelityById && typeof fidelityById === 'object',
+  );
 
   for (const p of placements || []) {
     const item = itemsById.get(p.id);
@@ -101,6 +111,7 @@ export function computeCoverage(placements, itemsById) {
     const fileEntry = covFile?.byId?.[item.id];
     const kind = classifyCoverageItem(item.id, item);
     if (kind.handlerExists) handlerExists += 1;
+    if (fidelityById?.[item.id] === 'verified_1to1') verified += 1;
     if (kind.reason === 'noop' || kind.reason === 'empty_stub' || kind.reason === 'gem_basic_cd') {
       noop += 1;
     }
@@ -120,6 +131,9 @@ export function computeCoverage(placements, itemsById) {
 
   const supported = scripted + catalogCd;
   const pct = total > 0 ? Math.round((supported / total) * 100) : 0;
+  const verifiedPct = fidelityKnown && total > 0
+    ? Math.round((verified / total) * 100)
+    : null;
 
   return {
     total,
@@ -129,6 +143,9 @@ export function computeCoverage(placements, itemsById) {
     catalogCd,
     passive,
     noop,
+    verified,
+    fidelityKnown,
+    verifiedPct,
     supported,
     pct,
     label:

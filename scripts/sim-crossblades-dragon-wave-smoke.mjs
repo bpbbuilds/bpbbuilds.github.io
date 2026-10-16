@@ -125,7 +125,7 @@ for (const side of ['you', 'them']) {
   assert.equal(owner.stacks.vampirism, 6, `Cursed Hair Comb vampirism on ${side}`);
   owner.hp = 50;
   const hpBeforeComb = owner.hp;
-  combCtx.bus.emit('piece_dealt_damage', { piece: combWeapon, hit: { hit: true, damage: 20 }, t: 5 });
+  combCtx.bus.emit('item_attacked', { piece: combWeapon, hit: { hit: true, damage: 20 }, t: 5 });
   assert.ok(owner.hp > hpBeforeComb, `Cursed Hair Comb lifesteal listener on ${side}`);
 
   const lantern = piece('dark_lantern', `${side}:lantern`, side);

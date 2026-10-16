@@ -121,6 +121,14 @@ export function buildCombatPieces(placements, itemsById) {
     // of their own: they remain in the inventory as global/passive modifiers
     // and must still participate in prepare-time scans.
     const presenceOnly = script?.presenceOnly === true;
+    // Preparation-only source scripts still need an inventory piece: Game.gd
+    // invokes Item.prepare() before it arms any initial cooldowns. A handler
+    // that also has a start or cooldown hook is not preparation-only.
+    const preparationOnly =
+      typeof script?.onPrepare === 'function' &&
+      !script?.onCombatStart &&
+      !script?.onCooldownEffect &&
+      !listenOnly;
     // Bags are combat hosts (insides / Fanny Pack). Other gem/passive skip rules unchanged.
     if (bagHost) {
       // keep kind bag
@@ -129,7 +137,8 @@ export function buildCombatPieces(placements, itemsById) {
       !script?.onCombatStart &&
       !script?.onCooldownEffect &&
       !listenOnly &&
-      !presenceOnly
+      !presenceOnly &&
+      !preparationOnly
     ) {
       continue;
     } else if (
@@ -211,6 +220,7 @@ export function buildCombatPieces(placements, itemsById) {
 
     const startOnly =
       presenceOnly ||
+      preparationOnly ||
       petStartOnly ||
       (Boolean(script?.onCombatStart) &&
         !script?.onCooldownEffect &&

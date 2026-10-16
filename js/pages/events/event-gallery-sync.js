@@ -3,7 +3,7 @@
  * The clock lives in SQL, so a page load cannot publish a board early.
  */
 
-import { getSupabase } from '../../shared/supabase.js?v=supabase-client-20261013a';
+import { getSupabase } from '../../shared/supabase.js';
 
 /** @type {Promise<void> | null} */
 let pending = null;

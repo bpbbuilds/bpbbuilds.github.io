@@ -3,10 +3,10 @@
  */
 
 import {
+  cleanseRandomDebuffs,
   giveMostBuffs,
   grantStacks,
   grantTemporaryStacks,
-  onBuffChanged,
   useMana,
 } from '../buff-economy.js';
 import {
@@ -24,6 +24,7 @@ import {
   spendPieceInvulnBudget,
 } from '../timed-speed.js';
 import { pushActivate, pushBuffGrants } from './ports-util.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -34,20 +35,30 @@ function isVulnerable(actor, nowT) {
   return !isInvulnerable(actor, nowT);
 }
 
-/** @param {object} piece @param {object} ctx @param {string} handler @param {number} heal */
-export function goobertHeal(piece, ctx, handler, heal) {
-  pushActivate(piece, ctx, handler, `Pet: ${piece.name}`);
+/**
+ * @param {object} piece
+ * @param {object} ctx
+ * @param {string} handler
+ * @param {number} heal
+ * @param {{ activate?: boolean }} [opts]
+ */
+export function goobertHeal(piece, ctx, handler, heal, opts = {}) {
   const healed = healActor(ctx.player, heal);
   if (healed > 0) {
+    const side = eventSideForPiece(piece);
     ctx.events.push({
       t: ctx.t + 0.003,
       type: 'heal',
-      target: 'player',
+      actor: side,
+      target: side,
       amount: healed,
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
       label: `${piece.name}: heal +${healed}`,
       meta: { category: 'heal', script: true, handler },
     });
   }
+  if (opts.activate !== false) pushActivate(piece, ctx, handler, `Pet: ${piece.name}`);
   return true;
 }
 
@@ -83,7 +94,7 @@ export function empowerLinkedWeapons(piece, ctx, handler, damOverride) {
 export const goobertPort = {
   handlerId: 'goobert',
   family: 'pet_like',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._goobertActs = 0;
   },
   // Peer-only — no timed CD heal (would double-fire)
@@ -102,7 +113,7 @@ export const goobertPort = {
 export const cupcakeGoobertPort = {
   handlerId: 'cupcake_goobert',
   family: 'pet_like',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._goobertActs = 0;
   },
   onCooldownEffect() {
@@ -111,13 +122,14 @@ export const cupcakeGoobertPort = {
   onPeerActivated(listener, _activated, ctx) {
     goobertPeerTick(listener, ctx, () => {
       const heal = Math.max(1, Math.round(getPName(listener.params, 'heal', getP2(listener.params, 8))));
-      goobertHeal(listener, ctx, 'cupcake_goobert', heal);
+      goobertHeal(listener, ctx, 'cupcake_goobert', heal, { activate: false });
       const n = Math.max(1, Math.round(getPName(listener.params, 'buffs', getP3(listener.params, 1))));
       const picked = giveMostBuffs(ctx.player, n, ctx.rng, {
         originKey: listener.placementKey,
         originId: listener.itemId,
       });
       pushBuffGrants(ctx.events, listener, ctx.player, ctx.t, 'cupcake_goobert', picked, 0.005);
+      pushActivate(listener, ctx, 'cupcake_goobert', `Pet: ${listener.name}`);
     });
   },
 };
@@ -196,43 +208,80 @@ export const kingGoobertPort = {
   },
 };
 
-/** @param {object} piece @param {object} ctx @param {string} handler @param {'mage'|'ranger'} mode */
-function rainbowEffect(piece, ctx, handler, mode) {
-  pushActivate(piece, ctx, handler, `Pet: ${piece.name}`);
-  const block = Math.max(1, Math.round(piece.blockGrant || getPName(piece.params, 'block', 8)));
-  gainStacks(ctx.player, 'block', block);
-  const heal = Math.max(1, Math.round(getPName(piece.params, 'heal', getP2(piece.params, 10))));
-  healActor(ctx.player, heal);
-  const vamp = Math.max(1, Math.round(getP3(piece.params, 1)));
-  grantStacks(ctx.player, 'vampirism', vamp, {
-    originKey: piece.placementKey,
-    originId: piece.itemId,
-  });
-  if (mode === 'mage') {
-    const num = Math.max(1, Math.round(getP4(piece.params, 2)));
-    const picked = giveMostBuffs(ctx.player, num, ctx.rng, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, handler, picked, 0.004);
-  } else {
-    const emp = Math.max(1, Math.round(getP4(piece.params, 2)));
-    grantStacks(ctx.player, 'empower', emp, {
+/** RainbowGoobertMage.gd — source-ordered peer effect with zero-safe parameters. */
+function rainbowMageEffect(piece, ctx) {
+  const handler = 'rainbow_goobert_mage';
+  const block = Number(piece.block ?? ctx.itemsById.get(piece.itemId)?.block) || 0;
+  if (block > 0) gainStacks(ctx.player, 'block', block);
+  goobertHeal(
+    piece,
+    ctx,
+    handler,
+    getPName(piece.params, 'heal', getP2(piece.params, 0)),
+    { activate: false },
+  );
+
+  const vamp = getP3(piece.params, 0);
+  if (vamp > 0) {
+    grantStacks(ctx.player, 'vampirism', vamp, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
   }
-  const blind = Math.max(1, Math.round(getP5(piece.params, 1)));
-  gainStacks(ctx.dummy, 'blind', blind, { rng: ctx.rng, opponent: ctx.player });
-  empowerLinkedWeapons(piece, ctx, handler);
-  return true;
+
+  const buffs = getP4(piece.params, 0);
+  const picked = giveMostBuffs(ctx.player, buffs, ctx.rng, {
+    originKey: piece.placementKey,
+    originId: piece.itemId,
+  });
+  pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, handler, picked, 0.004);
+
+  const blind = getP5(piece.params, 0);
+  if (blind > 0) gainStacks(ctx.dummy, 'blind', blind, { rng: ctx.rng, opponent: ctx.player });
+  empowerLinkedWeapons(piece, ctx, handler, getP6(piece.params, 0));
+  pushActivate(piece, ctx, handler, `Pet: ${piece.name}`);
+}
+
+/** RainbowGoobertRanger.gd — source-ordered peer effect with zero-safe parameters. */
+function rainbowRangerEffect(piece, ctx) {
+  const handler = 'rainbow_goobert_ranger';
+  const block = Number(piece.block ?? ctx.itemsById.get(piece.itemId)?.block) || 0;
+  if (block > 0) gainStacks(ctx.player, 'block', block);
+  goobertHeal(
+    piece,
+    ctx,
+    handler,
+    getPName(piece.params, 'heal', getP2(piece.params, 0)),
+    { activate: false },
+  );
+
+  const vamp = getP3(piece.params, 0);
+  if (vamp > 0) {
+    grantStacks(ctx.player, 'vampirism', vamp, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+  }
+
+  const empower = getP4(piece.params, 0);
+  if (empower > 0) {
+    grantStacks(ctx.player, 'empower', empower, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+  }
+
+  const blind = getP5(piece.params, 0);
+  if (blind > 0) gainStacks(ctx.dummy, 'blind', blind, { rng: ctx.rng, opponent: ctx.player });
+  empowerLinkedWeapons(piece, ctx, handler, getP6(piece.params, 0));
+  pushActivate(piece, ctx, handler, `Pet: ${piece.name}`);
 }
 
 /** @type {ScriptHandler} */
 export const rainbowGoobertMagePort = {
   handlerId: 'rainbow_goobert_mage',
   family: 'pet_like',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._goobertActs = 0;
   },
   onCooldownEffect() {
@@ -240,7 +289,7 @@ export const rainbowGoobertMagePort = {
   },
   onPeerActivated(listener, _activated, ctx) {
     goobertPeerTick(listener, ctx, () => {
-      rainbowEffect(listener, ctx, 'rainbow_goobert_mage', 'mage');
+      rainbowMageEffect(listener, ctx);
     });
   },
 };
@@ -249,7 +298,7 @@ export const rainbowGoobertMagePort = {
 export const rainbowGoobertRangerPort = {
   handlerId: 'rainbow_goobert_ranger',
   family: 'pet_like',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._goobertActs = 0;
   },
   onCooldownEffect() {
@@ -257,7 +306,7 @@ export const rainbowGoobertRangerPort = {
   },
   onPeerActivated(listener, _activated, ctx) {
     goobertPeerTick(listener, ctx, () => {
-      rainbowEffect(listener, ctx, 'rainbow_goobert_ranger', 'ranger');
+      rainbowRangerEffect(listener, ctx);
     });
   },
 };
@@ -271,28 +320,46 @@ export const rainbowGoobertRangerPort = {
 function bindCrownManaTrigger(piece, ctx, handler) {
   piece._crownState = 'Inactive';
   const manaCost = Math.max(1, Math.round(getPName(piece.params, 'mana', getPName(piece.params, 'manat', 4))));
-  piece._tryCrownInvuln = (nowT) => {
+  const crownTime = (payload = {}) => {
+    if (Number.isFinite(Number(payload.t))) return Number(payload.t);
+    if (Number.isFinite(Number(piece._lastSimT))) return Number(piece._lastSimT);
+    return Number(ctx.t) || 0;
+  };
+  const finishCrown = (nowT) => {
+    if (
+      piece._crownState === 'Active' &&
+      piece._crownUsedAt != null &&
+      nowT >= piece._crownUsedAt
+    ) {
+      piece._crownState = 'Used';
+    }
+  };
+  piece._finishCrown = finishCrown;
+  piece._tryCrownInvuln = (nowT, triggerEvent = null) => {
+    const at = Number(nowT) || 0;
+    finishCrown(at);
     if (piece._crownState !== 'Inactive') return;
-    if (!isVulnerable(ctx.player, nowT)) return;
+    if (!isVulnerable(ctx.player, at)) return;
     if ((ctx.player.stacks.mana || 0) < manaCost) return;
     piece._crownState = 'Active';
-    useMana(ctx.player, manaCost, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
     const dur = Math.max(
       0.5,
       getPName(piece.params, 'dur_invu', getPName(piece.params, 'dur_invuln', getP2(piece.params, 2))),
     );
-    grantInvuln(ctx.player, dur, nowT, {
+    grantInvuln(ctx.player, dur, at, {
       sourceId: piece.itemId,
       sourceKey: piece.placementKey,
       bus: ctx.bus,
     });
-    piece._crownUsedAt = nowT + dur;
-    pushActivate(piece, { ...ctx, t: nowT }, handler, `Accessory: ${piece.name}`);
+    piece._crownUsedAt = at + dur;
+    useMana(ctx.player, manaCost, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+      triggerEvent,
+    });
+    pushActivate(piece, { ...ctx, t: at }, handler, `Accessory: ${piece.name}`);
     ctx.events.push({
-      t: nowT + 0.003,
+      t: at + 0.003,
       type: 'buff',
       target: 'player',
       amount: 1,
@@ -300,29 +367,46 @@ function bindCrownManaTrigger(piece, ctx, handler) {
       meta: { category: 'buff', stack: 'invuln', script: true, handler },
     });
   };
-  onBuffChanged(ctx.player, (ch) => {
-    if (ch.stack !== 'mana') return;
-    // ctx.t may be stale; prefer last known sim time on piece
-    piece._tryCrownInvuln(Number(piece._lastSimT) || ctx.t);
+  piece._crownWasInvulnerable = isInvulnerable(ctx.player, Number(ctx.t) || 0);
+  piece._crownTick = (nowT) => {
+    const at = Number(nowT) || 0;
+    const wasInvulnerable = piece._crownWasInvulnerable;
+    const currentlyInvulnerable = isInvulnerable(ctx.player, at);
+    piece._crownWasInvulnerable = currentlyInvulnerable;
+    finishCrown(at);
+    if (wasInvulnerable && !currentlyInvulnerable) {
+      piece._tryCrownInvuln(at, { actor: ctx.player, t: at, reason: 'invulnerable_end' });
+    }
+  };
+  ctx.bus?.on?.('character_mana_changed', (payload = {}) => {
+    if (payload.actor && payload.actor !== ctx.player) return;
+    piece._tryCrownInvuln(crownTime(payload), payload);
   });
-  piece._tryCrownInvuln(ctx.t);
+  ctx.bus?.on?.('character_invulnerable_end', (payload = {}) => {
+    if (payload.actor && payload.actor !== ctx.player) return;
+    piece._tryCrownInvuln(crownTime(payload), payload);
+  });
 }
 
 /** @type {ScriptHandler} */
 export const crownPort = {
   handlerId: 'crown',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     bindCrownManaTrigger(piece, ctx, 'crown');
+  },
+  onTick(piece, ctx) {
+    piece._crownTick?.(ctx.t);
   },
   onCooldownEffect(piece, ctx) {
     piece._lastSimT = ctx.t;
-    if (piece._crownState === 'Active' && piece._crownUsedAt != null && ctx.t >= piece._crownUsedAt) {
-      piece._crownState = 'Used';
-    }
-    piece._tryCrownInvuln?.(ctx.t);
-    pushActivate(piece, ctx, 'crown', `Accessory: ${piece.name}`);
-    loseBlindOne(ctx.player);
+    cleanseRandomDebuffs(ctx.player, 1, ctx.rng, {
+      availableDebuffs: ['blind'],
+      cleanse: true,
+      rng: ctx.rng,
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
     const heal = Math.max(1, Math.round(getPName(piece.params, 'heal', getP3(piece.params, 8))));
     const healed = healActor(ctx.player, heal);
     if (healed > 0) {
@@ -335,16 +419,10 @@ export const crownPort = {
         meta: { category: 'heal', script: true, handler: 'crown' },
       });
     }
+    pushActivate(piece, ctx, 'crown', `Accessory: ${piece.name}`);
     return true;
   },
 };
-
-/** @param {import('../actor.js').SimActor} player */
-function loseBlindOne(player) {
-  if ((player.stacks.blind || 0) > 0) {
-    player.stacks.blind = Math.max(0, player.stacks.blind - 1);
-  }
-}
 
 /** @type {ScriptHandler} */
 export const kingCrownPort = {
@@ -353,12 +431,14 @@ export const kingCrownPort = {
   onCombatStart(piece, ctx) {
     bindCrownManaTrigger(piece, ctx, 'king_crown');
   },
+  onTick(piece, ctx) {
+    piece._crownTick?.(ctx.t);
+  },
   onCooldownEffect(piece, ctx) {
     piece._lastSimT = ctx.t;
     if (piece._crownState === 'Active' && piece._crownUsedAt != null && ctx.t >= piece._crownUsedAt) {
       piece._crownState = 'Used';
     }
-    piece._tryCrownInvuln?.(ctx.t);
     pushActivate(piece, ctx, 'king_crown', `Accessory: ${piece.name}`);
     grantBuffProtect(ctx.player, 1);
     const heal = Math.max(1, Math.round(getPName(piece.params, 'heal', getP3(piece.params, 10))));

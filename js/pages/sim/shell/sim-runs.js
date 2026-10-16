@@ -63,7 +63,9 @@ export function summarizeRun(run, meta = {}) {
     damageToPlayer: Math.round(damageToPlayer),
     heals: Math.round(heals),
     coveragePct:
-      typeof run.coverage?.pct === 'number' ? run.coverage.pct : null,
+      typeof run.coverage?.verifiedPct === 'number'
+        ? run.coverage.verifiedPct
+        : null,
   };
 }
 

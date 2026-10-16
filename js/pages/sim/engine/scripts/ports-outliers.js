@@ -82,6 +82,15 @@ export const portableAltarPort = {
       label: `${piece.name}: +${emp} Empower`,
       meta: { category: 'buff', stack: 'empower', script: true, handler: 'portable_altar' },
     });
+    events.push({
+      t,
+      type: 'activate',
+      actor: 'player',
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `Bag: ${piece.name}`,
+      meta: { category: 'system', script: true, handler: 'portable_altar' },
+    });
   },
 };
 
@@ -111,12 +120,12 @@ export const skullBadgePort = {
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const { dummy, player, rng } = ctx;
-    pushActivate(piece, ctx, 'skull_badge', `Badge: ${piece.name}`);
     inflictRandomDebuffs(dummy, 1, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
       opponent: player,
     });
+    pushActivate(piece, ctx, 'skull_badge', `Badge: ${piece.name}`);
     return true;
   },
 };
@@ -148,13 +157,12 @@ export const rainbowBadgePort = {
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'rainbow_badge', `Badge: ${piece.name}`);
     const picked = giveAllBuffs(player, 1, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     pushBuffGrants(events, piece, player, t, 'rainbow_badge', picked);
-    afterEffectFinished(piece, ctx, 'rainbow_badge', { activate: false });
+    afterEffectFinished(piece, ctx, 'rainbow_badge');
     return true;
   },
 };
@@ -336,28 +344,29 @@ export const vampiricGlovesPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
-    pushActivate(piece, ctx, 'vampiric_gloves', `Accessory: ${piece.name}`);
     piece._vampiricGlovesActive = true;
-    const vamp = Math.max(1, Math.round(getP1(piece.params, 1)));
+    const vamp = Math.max(0, Math.round(getP1(piece.params, 0)));
     grantStacks(player, 'vampirism', vamp, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    const speed = getP2(piece.params, 10) / 100;
+    const speed = getP2(piece.params, 0) / 100;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
       if (speed) addSpeed(other, speed);
     }
-    events.push({
-      t: t + 0.004,
-      type: 'buff',
-      target: 'player',
-      amount: vamp,
-      label: `${piece.name}: +${vamp} Vampirism`,
-      meta: { category: 'buff', stack: 'vampirism', script: true, handler: 'vampiric_gloves' },
-    });
-    afterEffectFinished(piece, ctx, 'vampiric_gloves', { activate: false });
+    if (vamp > 0) {
+      events.push({
+        t: t + 0.004,
+        type: 'buff',
+        target: 'player',
+        amount: vamp,
+        label: `${piece.name}: +${vamp} Vampirism`,
+        meta: { category: 'buff', stack: 'vampirism', script: true, handler: 'vampiric_gloves' },
+      });
+    }
+    afterEffectFinished(piece, ctx, 'vampiric_gloves');
     return true;
   },
 };
@@ -386,38 +395,6 @@ export const thornElementalPort = {
   },
 };
 
-/** @type {ScriptHandler} */
-export const thornburstPort = {
-  handlerId: 'thornburst',
-  family: 'unique',
-  onCombatStart(piece) {
-    piece._thornUses = Math.max(1, Math.round(getPName(piece.params, 'uses', getP2(piece.params, 3))));
-  },
-  onCooldownEffect(piece, ctx) {
-    const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'thornburst', `Skill: ${piece.name}`);
-    const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 2))));
-    grantStacks(player, 'spikes', spikes, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    events.push({
-      t: t + 0.004,
-      type: 'buff',
-      target: 'player',
-      amount: spikes,
-      label: `${piece.name}: +${spikes} Spikes`,
-      meta: { category: 'buff', stack: 'spikes', script: true, handler: 'thornburst' },
-    });
-    piece._thornUses = (Number(piece._thornUses) || 1) - 1;
-    if (piece._thornUses <= 0) {
-      piece.alive = false;
-      piece.charges = 0;
-    }
-    return true;
-  },
-};
-
 /** @type {Record<string, ScriptHandler>} */
 export const OUTLIER_PORTS = {
   amethyst_egg: amethystEggPort,
@@ -434,5 +411,4 @@ export const OUTLIER_PORTS = {
   mercury_elemental: mercuryElementalPort,
   vampiric_gloves: vampiricGlovesPort,
   thorn_elemental: thornElementalPort,
-  thornburst: thornburstPort,
 };

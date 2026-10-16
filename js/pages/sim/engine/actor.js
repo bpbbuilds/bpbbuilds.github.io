@@ -54,6 +54,7 @@ import { invulnerabilityVfxFor } from '../fx/sim-invulnerability-fx.js';
  *   invulnUntil?: number,
  *   invulnCharges?: number,
  *   buffProtect?: number,
+ *   buffCleanseProtectChanceByStack: Record<string, number>,
  *   stunnedUntil?: number,
  * }} SimActor
  */
@@ -128,6 +129,8 @@ export function createActor(id, opts = {}) {
     debuffResistStacks: 0,
     meleeSpikesLimit: 1,
     rangedSpikesLimit: 0,
+    effectSpikesLimit: 0,
+    _spikesCritChance: 0,
     meleeVampirismLimit: 1,
     rangedVampirismLimit: 0,
     stackResist: {},
@@ -137,10 +140,29 @@ export function createActor(id, opts = {}) {
     invulnCharges: 0,
     buffProtect: 0,
     buffCleanseProtectChance: 0,
+    debuffCleanseProtectChance: 0,
+    buffCleanseProtectChanceByStack: {},
+    bonusFatigueDamage: 0,
     stunnedUntil: 0,
     _healAmp: 0,
     unhealing: 0,
   };
+}
+
+/**
+ * Character.changeProtectionChance(Game.EventType.*) — stack-specific cleanse
+ * protection, kept separate from the legacy global protection percentage.
+ * @param {SimActor} actor
+ * @param {string} stack
+ * @param {number} amount
+ */
+export function changeBuffCleanseProtectChance(actor, stack, amount) {
+  if (!actor.buffCleanseProtectChanceByStack) {
+    actor.buffCleanseProtectChanceByStack = {};
+  }
+  const delta = Number(amount) || 0;
+  actor.buffCleanseProtectChanceByStack[stack] =
+    (Number(actor.buffCleanseProtectChanceByStack[stack]) || 0) + delta;
 }
 
 /**
@@ -276,6 +298,7 @@ export function tryUseStamina(actor, amount) {
   actor._combatBus?.emit?.('stamina_used', {
     amount: cost,
     actor,
+    piece: actor._staminaItem || null,
     t: actor._simT,
   });
   const log = actor._eventLog;

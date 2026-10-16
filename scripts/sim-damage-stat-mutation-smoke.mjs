@@ -45,7 +45,7 @@ function context(pieces, itemsById, graph, player = createActor('player'), dummy
     pieces: new Map(),
     filled: new Map(),
   });
-  getScriptHandler('cupcake_staff').onCombatStart(piece, ctx);
+  getScriptHandler('cupcake_staff').onPrepare(piece, ctx);
   grantStacks(ctx.player, 'heat', 1, { originId: 'test' });
   assert.equal(piece.bonusDamage, 0.2, 'Cupcake Staff keeps fractional damage per buff');
   assert.equal(purgeBonusDamage(piece, 1), 0, 'Varying damage is not removable damage');

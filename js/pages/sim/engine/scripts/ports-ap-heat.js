@@ -9,7 +9,6 @@ import {
   cleanseRandomDebuffs,
   giveRandomBuffs,
   grantStacks,
-  onBuffChanged,
   spendStacks,
 } from '../buff-economy.js';
 import { changeCritStacks } from '../actor-stats.js';
@@ -34,8 +33,10 @@ function linked(ctx, piece) {
   return (ctx.pieces || []).filter((o) => links.some((l) => l.key === o.placementKey));
 }
 
-function countId(ctx, id) {
-  return (ctx.pieces || []).filter((o) => o.alive && o.itemId === id).length;
+function countId(ctx, id, side) {
+  return (ctx.pieces || []).filter(
+    (o) => o.alive && o.itemId === id && (side == null || o.side === side),
+  ).length;
 }
 
 /** BurningCoal.gd inventory: heat + cleanse then consume. Weapon/armor in gem-sockets. */
@@ -96,19 +97,20 @@ const draconicOrbPort = {
   family: 'unique',
   onPrepare(piece, ctx) {
     piece._orbHeat = 0;
-    const th = Math.max(1, Math.round(getP1(piece.params, 15)));
-    const crits = Math.max(1, Math.round(getPName(piece.params, 'crits', getP2(piece.params, 3))));
-    onBuffChanged(ctx.player, (ch) => {
-      if (ch.stack !== 'heat' || !(ch.amount > 0) || piece._orbHeat >= th) return;
-      piece._orbHeat += ch.amount;
+    const th = Math.trunc(getP1(piece.params, 15));
+    const crits = getPName(piece.params, 'crits', getP2(piece.params, 3));
+    ctx.bus?.on?.('character_heat_changed', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      if (!(Number(payload.amount) > 0) || piece._orbHeat >= th) return;
+      piece._orbHeat += Number(payload.amount);
       if (piece._orbHeat >= th) {
         changeCritStacks(ctx.player, crits, ctx, origin(piece));
       }
     });
   },
   onCooldownEffect(piece, ctx) {
-    const take = Math.max(1, Math.round(getP3(piece.params, 1)));
-    const per = Math.max(1, Math.round(getP4(piece.params, 1)));
+    const take = Math.trunc(getP3(piece.params, 1));
+    const per = Math.trunc(getP4(piece.params, 1));
     const have = getStackAmount(ctx.dummy, 'spikes');
     if (have > 0) {
       const lost = Math.min(have, take);
@@ -125,27 +127,31 @@ const dragonSetPort = {
   handlerId: 'dragon_set',
   family: 'unique',
   onPrepare(piece, ctx) {
-    deactivateCooldown(piece);
-    ctx.bus?.on?.('battle_rage_started', () => {
+    // DragonSet.gd waits until preCombatStart() to deactivate its CD. Keeping
+    // preparation side-effect free preserves the source's pre-combat snapshot.
+    ctx.bus?.on?.('battle_rage_started', (event = {}) => {
+      if (event.actor && event.actor !== ctx.player) return;
       piece._cdLocked = false;
       const period = Math.max(0.35, Number(piece.baseCooldown) || 0.7);
       piece.cooldown = period;
       piece.triggerTime = period;
     });
-    ctx.bus?.on?.('battle_rage_ended', () => {
+    ctx.bus?.on?.('battle_rage_ended', (event = {}) => {
+      if (event.actor && event.actor !== ctx.player) return;
       piece._cdLocked = true;
       piece.cooldown = 999;
       piece.triggerTime = 999;
     });
     const set =
-      countId(ctx, 'dragonscale_armor') > 0 &&
-      countId(ctx, 'dragonskin_boots') > 0 &&
-      countId(ctx, 'dragon_claws') > 0;
+      countId(ctx, 'dragonscale_armor', piece.side) > 0 &&
+      countId(ctx, 'dragonskin_boots', piece.side) > 0 &&
+      countId(ctx, 'dragon_claws', piece.side) > 0;
     if (!set) return;
     const ls = getPName(piece.params, 'lifesteal', getP2(piece.params, 2)) / 100;
     const cap = getPName(piece.params, 'max', getP3(piece.params, 30)) / 100;
     ctx.bus?.on?.('piece_dealt_damage', (payload) => {
       if (!payload?.hit?.hit) return;
+      if (payload.canApplyLifesteal === false || payload.hit.canApplyLifesteal === false) return;
       if (eventSideForPiece(payload.piece) !== eventFoeSide(piece)) return;
       const dmg = Number(payload.hit.damage) || Number(payload.hit.healthDamage) || 0;
       if (!(dmg > 0)) return;
@@ -173,10 +179,11 @@ const dragonSetPort = {
   },
   onCooldownEffect(piece, ctx) {
     if (!isBattleRaging(ctx.player, ctx.t)) return true;
+    const heat = Math.trunc(getPName(piece.params, 'heat', getP1(piece.params, 1)));
     grantStacks(
       ctx.player,
       'heat',
-      Math.max(1, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 1)))),
+      heat,
       origin(piece),
     );
     // DragonSet.gd gives Heat before its activation event.
@@ -201,11 +208,11 @@ const energyConversionPort = {
   onCooldownEffect(piece, ctx) {
     const cost = Number(piece.staminaCost) || 0.7;
     if (tryUseStamina(ctx.player, cost) === 'starve') return false;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP2(piece.params, 20))));
+    const need = Math.trunc(getPName(piece.params, 'heatt', getP2(piece.params, 20)));
     if (getStackAmount(ctx.player, 'heat') >= need) {
       giveRandomBuffs(
         ctx.player,
-        Math.max(1, Math.round(getPName(piece.params, 'buffs', getP3(piece.params, 5)))),
+        Math.trunc(getPName(piece.params, 'buffs', getP3(piece.params, 5))),
         ctx.rng,
         { ...origin(piece), availableBuffs: BUFF_KEYS.filter((k) => k !== 'heat') },
       );
@@ -213,7 +220,7 @@ const energyConversionPort = {
       grantStacks(
         ctx.player,
         'heat',
-        Math.max(1, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 4)))),
+        Math.trunc(getPName(piece.params, 'heat', getP1(piece.params, 4))),
         origin(piece),
       );
     }
@@ -227,9 +234,10 @@ const everburningPort = {
   handlerId: 'everburning',
   family: 'unique',
   onPrepare(piece, ctx) {
-    piece._everFlames = countId(ctx, 'flame');
+    piece._everFlames = countId(ctx, 'flame', piece.side);
     const stam = -getPName(piece.params, 'stamina', getP2(piece.params, 60)) / 100;
     for (const o of ctx.pieces || []) {
+      if (o.side !== piece.side) continue;
       if (o.itemId === 'burning_sword' || o.itemId === 'burning_blade') {
         multiplyStaminaCost(o, stam);
       }
@@ -238,9 +246,9 @@ const everburningPort = {
   onCooldownEffect(piece, ctx) {
     const n = Number.isFinite(Number(piece._everFlames))
       ? Number(piece._everFlames)
-      : countId(ctx, 'flame');
+      : countId(ctx, 'flame', piece.side);
     if (n > 0) {
-      const heat = Math.max(1, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 1))));
+      const heat = Number(getPName(piece.params, 'heat', getP1(piece.params, 1)));
       grantStacks(ctx.player, 'heat', heat * n, origin(piece));
     }
     afterEffectFinished(piece, ctx, 'everburning');

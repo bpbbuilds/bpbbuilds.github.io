@@ -98,10 +98,10 @@ for (const side of ['you', 'them']) {
   const bus = createCombatBus();
   const piece = itemPiece('skull', `${side}:skull`, side);
   getScriptHandler('skull').onCombatStart(piece, ctx(owner, foe, events, bus, [piece]));
-  bus.emit('piece_dealt_damage', { piece: itemPiece('shortbow', `${side}:hit`, side), hit: { hit: true }, t: 5 });
+  bus.emit('character_damaged', { actor: foe, hit: true, t: 5 });
   assert.equal(owner.hp, 100, `Skull heals its owner once on ${side}`);
   assert.equal(owner.stacks.empower, 5, `Skull grants source p3 Empower on ${side}`);
-  bus.emit('piece_dealt_damage', { piece: itemPiece('shortbow', `${side}:hit2`, side), hit: { hit: true }, t: 6 });
+  bus.emit('character_damaged', { actor: foe, hit: true, t: 6 });
   assert.equal(owner.stacks.empower, 5, `Skull remains once-only on ${side}`);
 }
 

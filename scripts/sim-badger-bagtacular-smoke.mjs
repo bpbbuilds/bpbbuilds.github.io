@@ -181,7 +181,7 @@ const withBagtacular = simulateEngine({
   dummyAttacks: false,
 });
 assert.equal(noBagtacular.snapshots.find((snap) => snap.t === 2.5).player.block, 15);
-assert.equal(withBagtacular.snapshots.find((snap) => snap.t === 2.5).player.block, 22);
+assert.equal(withBagtacular.snapshots.find((snap) => snap.t === 2.5).player.block, 30);
 assert.equal(
   withBagtacular.events.some((event) => event.itemId === 'bagtacular' && event.type === 'activate'),
   false,
@@ -265,7 +265,7 @@ const opponentBagtacular = simulateEngine({
 });
 assert.equal(
   opponentBagtacular.snapshots.find((snap) => snap.t === 2.5).dummy.block,
-  22,
+  30,
   'Opponent Bagtacular must modify the opponent bag path',
 );
 

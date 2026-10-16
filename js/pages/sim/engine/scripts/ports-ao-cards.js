@@ -10,12 +10,12 @@ import {
   changeReflectStacks,
 } from '../actor-stats.js';
 import { giveRandomBuffs, grantStacks, stealRandomBuff } from '../buff-economy.js';
-import { getP1, getP2, getPName } from '../params.js';
+import { getP1, getP2, getP3, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
 import { dealEffectDamage, stealLife } from './handlers.js';
 import {
-  assignChain,
   cardSecondaryEffectActive,
   chainPos,
   prepareCard,
@@ -70,14 +70,22 @@ const cardBasePort = {
 const deckOfCardsPort = {
   handlerId: 'deck_of_cards',
   family: 'unique',
+  onPrepare(piece) {
+    piece._deckChainStarted = false;
+    piece._deckCardActivations = 0;
+  },
   onCombatStart(piece, ctx) {
-    const cards = assignChain(ctx, piece);
-    const luck = Math.max(1, Math.round(getP1(piece.params, 1)));
+    const cards = Array.isArray(piece._cards) ? piece._cards : [];
+    const luck = Math.trunc(getP1(piece.params, 1));
     grantStacks(ctx.player, 'lucky', luck, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    if (cards[0]) startCardActivation(cards[0]);
+    if (!piece._deckChainStarted) {
+      piece._deckChainStarted = true;
+      piece._deckCardActivations = 0;
+      if (cards[0]) startCardActivation(cards[0]);
+    }
     pushActivate(piece, ctx, 'deck_of_cards', `Deck: ${piece.name}`);
   },
 };
@@ -85,6 +93,7 @@ const deckOfCardsPort = {
 const aceOfSpadesPort = {
   handlerId: 'ace_of_spades',
   family: 'unique',
+  onPrepare: prepareCard,
   onRevealEffect(piece, ctx) {
       // AceofSpades.gd: giveCritTokens(1) delegates to character(), so this
       // is an actor token consumed by the next eligible attack—not +1% crit
@@ -137,10 +146,11 @@ const reversePort = {
   handlerId: 'reverse',
   family: 'unique',
   onRevealEffect(piece, ctx) {
-      const reflect = Math.max(0, Math.round(getPName(piece.params, 'reflect', 3)));
+      const reflect = Math.trunc(getPName(piece.params, 'reflect', getP1(piece.params, 0)));
       changeReflectStacks(ctx.player, reflect, ctx, piece);
       if (secondaryOn(piece, ctx)) {
-        stealRandomBuff(ctx.dummy, ctx.player, Math.max(1, Math.round(getPName(piece.params, 'steal', 1))), ctx.rng, {});
+        const steal = Math.trunc(getPName(piece.params, 'steal', getP2(piece.params, 0)));
+        if (steal > 0) stealRandomBuff(ctx.dummy, ctx.player, steal, ctx.rng, {});
       }
     pushActivate(piece, ctx, 'reverse', `Card: ${piece.name}`);
   },
@@ -260,7 +270,8 @@ const theFoolPort = {
       addSpeed(o, spd);
     }
     if (secondaryOn(piece, ctx)) {
-      grantStacks(ctx.player, 'empower', Math.max(1, Math.round(getPName(piece.params, 'empower', 1))), {});
+      const empower = Math.max(0, Math.round(getPName(piece.params, 'empower', 1)));
+      if (empower) grantStacks(ctx.player, 'empower', empower, {});
     }
     pushActivate(piece, ctx, 'the_fool', `Card: ${piece.name}`);
   },
@@ -282,18 +293,24 @@ const theLoversPort = {
           piece,
         );
       }
-      const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', 7)));
-      const ls = getPName(piece.params, 'lifesteal', 100) / 100;
+      const dam = Number(getPName(piece.params, 'dam', getP1(piece.params, 7))) || 0;
+      const ls = modifiedParamValue(
+        piece,
+        getPName(piece.params, 'lifesteal', getP3(piece.params, 100)),
+        'lifesteal',
+      ) / 100;
       stealLife(piece, ctx, dam, ls);
       if (secondaryOn(piece, ctx)) {
-        const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', 2)));
+        const regen = Math.trunc(getPName(piece.params, 'regen', getP2(piece.params, 2)));
         // grantStacks already combat-logs; pass fireT so it matches activatePiece stamp
         // (getT() is step-end and was duplicating at +~0.03s → two "Gained 2 regen" lines).
-        grantStacks(ctx.player, 'regeneration', regen, {
-          originKey: piece.placementKey,
-          originId: piece.itemId,
-          t: ctx.t,
-        });
+        if (regen > 0) {
+          grantStacks(ctx.player, 'regeneration', regen, {
+            originKey: piece.placementKey,
+            originId: piece.itemId,
+            t: ctx.t,
+          });
+        }
       }
     pushActivate(piece, ctx, 'the_lovers', `Card: ${piece.name}`);
   },

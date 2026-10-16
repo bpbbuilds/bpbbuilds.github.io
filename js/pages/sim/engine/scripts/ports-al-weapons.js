@@ -7,7 +7,13 @@ import { giveBuffPower } from '../buff-power.js';
 import { dealDamage } from '../damage.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
-import { addBonusDamage, addBonusDamageFromBuffChange, addSpeed, setStaminaCost } from '../piece-stats.js';
+import {
+  addBonusDamage,
+  addBonusDamageFromBuffChange,
+  addSpeed,
+  changeVaryingDamageFromBuffChange,
+  setStaminaCost,
+} from '../piece-stats.js';
 import { getStackAmount, gainStacks } from '../stacks.js';
 import { dealHit } from './handlers.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
@@ -59,7 +65,7 @@ export const bowBasePort = {
 export const daggerPort = {
   handlerId: 'dagger',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     ctx.bus?.on?.('actor_stunned', (payload) => {
       if (!piece.alive || payload?.actor !== ctx.dummy) return;
       const raw = randInt(piece.damageMin, piece.damageMax, ctx.rng);
@@ -177,30 +183,32 @@ export const greatswordPort = {
 export const bustedBladePort = {
   handlerId: 'busted_blade',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  // BustedBlade.gd overrides Greatsword.onPrepare rather than calling it.
+  // Its own preparation still establishes the false state and all three
+  // character listeners before any combat-start events can fire.
+  onPrepare(piece, ctx) {
     piece._bbBaseCd = Number(piece.baseCooldown ?? piece.cooldown) || 0;
-    piece._bbEmp = 0;
+    piece._bbBaseStam = Number(piece.baseStaminaCost ?? piece.staminaCost) || 0;
+    setStaminaCost(piece, piece._bbBaseStam);
     const per = getP1(piece.params, 1);
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'empower') return;
-      const emp = getStackAmount(ctx.player, 'empower');
-      const delta = (emp - piece._bbEmp) * per;
-      // Varying dmg is this weapon's mechanic — not the buff grantor (Mana Orb).
-      addBonusDamage(piece, delta, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-        originName: piece.name,
-      });
-      piece._bbEmp = emp;
+      // The source receives the signal delta and calls changeVaryingDamage;
+      // keep that non-removable damage pool and its causal origin intact.
+      changeVaryingDamageFromBuffChange(piece, ch, per);
     });
-    ctx.bus?.on?.('battle_rage_started', () => {
+    ctx.bus?.on?.('battle_rage_started', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       const cd = getP3(piece.params, piece._bbBaseCd);
       piece.baseCooldown = cd;
       piece.cooldown = cd;
+      setStaminaCost(piece, getP2(piece.params, piece._bbBaseStam));
     });
-    ctx.bus?.on?.('battle_rage_ended', () => {
+    ctx.bus?.on?.('battle_rage_ended', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       piece.baseCooldown = piece._bbBaseCd;
       piece.cooldown = piece._bbBaseCd;
+      setStaminaCost(piece, piece._bbBaseStam);
     });
   },
   onCooldownEffect(piece, ctx) {
@@ -238,16 +246,15 @@ export const forgingHammerPort = {
 export const popPort = {
   handlerId: 'pop',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._popSpd = 0;
-    const per = getPName(piece.params, 'speed', 2) / 100;
-    const cap = getPName(piece.params, 'max', 50) / 100;
+    const per = getPName(piece.params, 'speed', getP1(piece.params, 2)) / 100;
+    const cap = getPName(piece.params, 'max', getP2(piece.params, 50)) / 100;
     const apply = () => {
       const want = Math.min(cap, per * (getStackAmount(ctx.player, 'mana') || 0));
       addSpeed(piece, want - piece._popSpd);
       piece._popSpd = want;
     };
-    apply();
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack === 'mana') apply();
     });
@@ -262,11 +269,11 @@ export const popPort = {
 export const vampiricScythePort = {
   handlerId: 'vampiric_scythe',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     for (const other of linked(ctx, piece)) giveBuffPower(other, 'vampirism', 1);
     piece._vsSpd = 0;
-    const per = getP1(piece.params, 1) / 100;
-    const cap = getP2(piece.params, 50) / 100;
+    const per = getP1(piece.params, 0) / 100;
+    const cap = getP2(piece.params, 0) / 100;
     const apply = () => {
       const want = Math.min(cap, per * (getStackAmount(ctx.player, 'vampirism') || 0));
       addSpeed(piece, want - piece._vsSpd);
@@ -287,17 +294,16 @@ export const vampiricScythePort = {
 export const deathScythePort = {
   handlerId: 'death_scythe',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     for (const other of linked(ctx, piece)) giveBuffPower(other, 'poison', 1);
     piece._dsCrit = false;
-    const th = Math.max(1, Math.round(getP1(piece.params, 8)));
+    const th = Math.trunc(getP1(piece.params, 8));
     const apply = () => {
       if (piece._dsCrit) return;
       if ((getStackAmount(ctx.dummy, 'poison') || 0) < th) return;
       piece._dsCrit = true;
       piece.critChance = (Number(piece.critChance) || 0) + chanceOf(piece, ctx);
     };
-    apply();
     onBuffChanged(ctx.dummy, (ch) => {
       if (ch.stack === 'poison') apply();
     });
@@ -436,7 +442,8 @@ export const phoenix2Port = {
 export const armoredCouragePuppyPort = {
   handlerId: 'armored_courage_puppy',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  // ArmoredCouragePuppy inherits CouragePuppy.gd onPreCombatStart.
+  onPreCombatStart(piece, ctx) {
     const pets = linked(ctx, piece).filter((o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'pet'),
     ).length;

@@ -13,6 +13,7 @@ import { addSpeed } from '../piece-stats.js';
 import { changeReflectStacks } from '../actor-stats.js';
 import { gainStacks } from '../stacks.js';
 import { advanceCooldownPercent } from '../cooldown.js';
+import { stealLife } from './handlers.js';
 import { itemHasType, afterEffectFinished, pushActivate } from './ports-util.js';
 import { getScriptHandler } from './registry.js';
 import { weaponStrike } from './ports-wave-c-util.js';
@@ -35,13 +36,13 @@ export const darkRitualPort = {
   onCooldownEffect(piece, ctx) {
     const { t, player, dummy, events, rng } = ctx;
     pushActivate(piece, ctx, 'dark_ritual', `Skill: ${piece.name}`);
-    const debuffs = Math.max(1, Math.round(getPName(piece.params, 'debuffs', getP2(piece.params, 2))));
+    const debuffs = Math.trunc(getPName(piece.params, 'debuffs', getP2(piece.params, 2)));
     inflictRandomDebuffs(dummy, debuffs, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
       opponent: player,
     });
-    const vamp = Math.max(1, Math.round(getPName(piece.params, 'vamp', getP3(piece.params, 2))));
+    const vamp = Math.trunc(getPName(piece.params, 'vampirism', getP3(piece.params, 2)));
     grantStacks(player, 'vampirism', vamp, {
       originKey: piece.placementKey,
       originId: piece.itemId,
@@ -63,23 +64,22 @@ export const darkRitualPort = {
 export const spellScrollDarkPort = {
   handlerId: 'spell_scroll_dark',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._scrollActs = 0;
     const { graph, itemsById, canAffect } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    const speed = getPName(piece.params, 'darkspeed', getP1(piece.params, 5)) / 100;
-    if (links.length && speed) addSpeed(piece, links.length * speed);
+    const darkSpeed = getPName(piece.params, 'speed_dark', getP2(piece.params, 10)) / 100;
+    const secondary = links.filter((link) => link.color === 'secondary').length;
+    if (secondary && darkSpeed) addSpeed(piece, secondary * darkSpeed);
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
-    pushActivate(piece, ctx, 'spell_scroll_dark', `Spell: ${piece.name}`);
-    const maxActs = Math.max(1, Math.round(getPName(piece.params, 'max', getP3(piece.params, 5))));
+    const maxActs = Math.trunc(getPName(piece.params, 'max', getP3(piece.params, 5)));
     const speedBonus = getPName(piece.params, 'speed', getP2(piece.params, 10)) / 100;
     piece._scrollActs = (Number(piece._scrollActs) || 0) + 1;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
-      if (!(other.cooldown > 0)) continue;
       addSpeed(other, speedBonus);
     }
     gainStacks(player, 'blind', 1);
@@ -91,9 +91,10 @@ export const spellScrollDarkPort = {
       label: `${piece.name}: +1 Blind (self)`,
       meta: { category: 'buff', stack: 'blind', script: true, handler: 'spell_scroll_dark' },
     });
-    if ((Number(piece._scrollActs) || 0) >= maxActs) {
-      piece.alive = false;
-      piece.charges = 0;
+    if (piece._scrollActs === maxActs) {
+      afterEffectFinished(piece, ctx, 'spell_scroll_dark', { label: `Spell: ${piece.name}` });
+    } else {
+      pushActivate(piece, ctx, 'spell_scroll_dark', `Spell: ${piece.name}`);
     }
     return true;
   },
@@ -111,8 +112,8 @@ export const dragonKnightPort = {
         .filter((other) =>
           other.placementKey !== piece.placementKey &&
           links.some((link) => link.key === other.placementKey) &&
-          (getScriptHandler(other.itemId)?.onCooldownEffect ||
-            (Number(other.cooldown) > 0 && Number(other.cooldown) < 500)),
+          (ctx.itemsById.get(other.itemId)?.canActivate !== false &&
+            other.canActivate !== false),
         )
         .map((other) => other.placementKey),
     );
@@ -133,10 +134,8 @@ export const dragonKnightPort = {
     pushActivate(piece, ctx, 'dragon_knight', `Weapon: ${piece.name}`);
   },
   onPeerActivated(listener, activated, ctx) {
-    if (
-      listener._dragonKnightKeys instanceof Set &&
-      !listener._dragonKnightKeys.has(activated?.placementKey)
-    ) {
+    if (!(listener._dragonKnightKeys instanceof Set)) return;
+    if (!listener._dragonKnightKeys.has(activated?.placementKey)) {
       return;
     }
     advanceCooldownPercent(
@@ -174,13 +173,13 @@ export const dragonKnightPort = {
 export const echoingBattlecryPort = {
   handlerId: 'echoing_battlecry',
   family: 'unique',
-  onPreCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { graph, itemsById, canAffect, rng } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     /** @type {string[]} */
     const keys = links.map((l) => l.key);
     for (let i = keys.length - 1; i > 0; i--) {
-      const j = Math.floor(rng() * (i + 1));
+      const j = Math.floor((typeof rng === 'function' ? rng() : Math.random()) * (i + 1));
       const tmp = keys[i];
       keys[i] = keys[j];
       keys[j] = tmp;
@@ -200,7 +199,9 @@ export const echoingBattlecryPort = {
       const other = (pieces || []).find((p) => p.placementKey === key);
       if (other) {
         const h = getScriptHandler(other.itemId);
+        h?.onPreCombatStart?.(other, ctx);
         if (h?.onCombatStart) h.onCombatStart(other, ctx);
+        h?.onPostCombatStart?.(other, ctx);
         events.push({
           t: t + 0.004,
           type: 'info',
@@ -220,44 +221,36 @@ export const echoingBattlecryPort = {
 export const cthulhuPort = {
   handlerId: 'cthulhu',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     const speed = getPName(piece.params, 'speed', getP1(piece.params, 5)) / 100;
     if (links.length && speed) addSpeed(piece, links.length * speed);
-    piece._cthulhuFoods = (pieces || [])
-      .filter(
-        (p) =>
-          links.some((l) => l.key === p.placementKey) &&
-          itemHasType(itemsById.get(p.itemId), 'food'),
-      )
-      .map((p) => p.placementKey);
+    piece._cthulhuFoods = [];
+    for (const food of pieces || []) {
+      if (!links.some((link) => link.key === food.placementKey)) continue;
+      if (!itemHasType(itemsById.get(food.itemId), 'food')) continue;
+      piece._cthulhuFoods.push(food.placementKey);
+      markCthulhuFoodDark(food);
+    }
+  },
+  onAffectedItemAdded(_piece, ctx, item) {
+    const catalog = ctx.itemsById?.get?.(item?.itemId ?? item?.id) || item;
+    if (itemHasType(catalog, 'food')) markCthulhuFoodDark(item);
+  },
+  onAffectedItemRemoved(_piece, ctx, item) {
+    const catalog = ctx.itemsById?.get?.(item?.itemId ?? item?.id) || item;
+    if (!itemHasType(catalog, 'food') || !item || !Array.isArray(item._dynamicTypes)) return;
+    item._dynamicTypes = item._dynamicTypes.filter(
+      (type) => String(type).toLowerCase() !== 'dark',
+    );
   },
   onCooldownEffect(piece, ctx) {
-    const { t, player, dummy, events, rng, pieces } = ctx;
-    pushActivate(piece, ctx, 'cthulhu', `Pet: ${piece.name}`);
+    const { rng, pieces } = ctx;
     const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 6))));
     const ls = getPName(piece.params, 'lifesteal', 40) / 100;
-    dummy.hp = Math.max(0, dummy.hp - dam);
-    const healed = healActor(player, Math.round(dam * ls));
-    events.push({
-      t: t + 0.004,
-      type: 'damage',
-      target: 'dummy',
-      amount: dam,
-      label: `${piece.name}: ${dam} lifesteal`,
-      meta: { category: 'damage', script: true, handler: 'cthulhu' },
-    });
-    if (healed > 0) {
-      events.push({
-        t: t + 0.006,
-        type: 'heal',
-        target: 'player',
-        amount: healed,
-        label: `${piece.name}: +${healed} HP`,
-        meta: { category: 'heal', script: true, handler: 'cthulhu' },
-      });
-    }
+    stealLife(piece, ctx, dam, ls);
+    pushActivate(piece, ctx, 'cthulhu', `Pet: ${piece.name}`);
     const foods = piece._cthulhuFoods || [];
     if (foods.length) {
       const key = foods[Math.floor(rng() * foods.length)];
@@ -271,14 +264,25 @@ export const cthulhuPort = {
   },
 };
 
+/** @param {object | null | undefined} item */
+function markCthulhuFoodDark(item) {
+  if (!item) return;
+  const dynamicTypes = Array.isArray(item._dynamicTypes) ? item._dynamicTypes : [];
+  if (!dynamicTypes.some((type) => String(type).toLowerCase() === 'dark')) {
+    dynamicTypes.push('dark');
+  }
+  item._dynamicTypes = dynamicTypes;
+}
+
 /** @type {ScriptHandler} */
 export const digDeeperPort = {
   handlerId: 'dig_deeper',
   family: 'unique',
   onCombatStart(piece, ctx) {
     const { t, dummy, player, events, rng } = ctx;
-    const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', getP1(piece.params, 2))));
-    gainStacks(dummy, 'blind', blind, { rng, opponent: player });
+    const blind = Math.round(getPName(piece.params, 'blind', getP1(piece.params, 2)));
+    if (blind) gainStacks(dummy, 'blind', blind, { rng, opponent: player });
+    if (!blind) return;
     events.push({
       t,
       type: 'debuff',

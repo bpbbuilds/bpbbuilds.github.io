@@ -21,12 +21,12 @@ export const rubyEggPort = {
   handlerId: 'ruby_egg',
   family: 'start_buff',
   onPreCombatStart(piece, ctx) {
-    const n = Math.max(1, Math.round(getP1(piece.params, 3)));
+    const n = Math.trunc(getP1(piece.params, 0));
     changeReflectStacks(ctx.player, n, ctx, piece);
   },
   onCombatStart(piece, ctx) {
     // doCooldownEffect(false) — heat + activate; reflect already from onPreCombatStart
-    grantStacks(ctx.player, 'heat', Math.max(1, Math.round(getP3(piece.params, 4))), {
+    grantStacks(ctx.player, 'heat', Math.trunc(getP3(piece.params, 0)), {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
@@ -40,18 +40,18 @@ export const emeraldEggPort = {
   handlerId: 'emerald_egg',
   family: 'pet_like',
   onCombatStart(piece, ctx) {
-    grantStacks(ctx.player, 'lucky', Math.max(1, Math.round(getP1(piece.params, 1))), {
+    grantStacks(ctx.player, 'lucky', Math.round(getP1(piece.params, 1)), {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     petActivate(piece, ctx, 'emerald_egg');
   },
   onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'emerald_egg');
-    grantStacks(ctx.player, 'lucky', Math.max(1, Math.round(getP1(piece.params, 1))), {
+    grantStacks(ctx.player, 'lucky', Math.round(getP1(piece.params, 1)), {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
+    petActivate(piece, ctx, 'emerald_egg');
     return true;
   },
 };
@@ -62,19 +62,11 @@ export const sapphireEggPort = {
   handlerId: 'sapphire_egg',
   family: 'pet_like',
   onCombatStart(piece, ctx) {
-    grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getP1(piece.params, 1))), {
+    grantStacks(ctx.player, 'mana', getP1(piece.params, 0), {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     petActivate(piece, ctx, 'sapphire_egg');
-  },
-  onCooldownEffect(piece, ctx) {
-    petActivate(piece, ctx, 'sapphire_egg');
-    grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getP1(piece.params, 1))), {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    return true;
   },
 };
 

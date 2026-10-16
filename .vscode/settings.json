@@ -8,14 +8,22 @@
     "Expires": "0"
   },
   "liveServer.settings.ignoreFiles": [
-    ".vscode/**",
-    ".git/**",
-    ".agents/**",
+    "**/.vscode/**",
+    "**/.git/**",
+    "**/.agents/**",
     "**/node_modules/**",
     "**/*.md",
-    "docs/**",
-    "scripts/**",
-    "agent-transcripts/**"
+    "**/docs/**",
+    "**/scripts/**",
+    "**/agent-transcripts/**",
+    "**/tools/**"
   ],
-  "liveServer.settings.port": 5501
+  "liveServer.settings.port": 5501,
+  "files.watcherExclude": {
+    "**/scripts/_cache/**": true,
+    "**/tools/**": true
+  },
+  "search.exclude": {
+    "**/scripts/_cache/**": true
+  }
 }

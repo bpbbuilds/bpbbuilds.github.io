@@ -6,7 +6,7 @@
  *   void playAssemble({ grid, boardHost, catalogRoot, root });
  */
 
-import { getSupabase } from '../../shared/supabase.js?v=supabase-client-20261013a';
+import { getSupabase } from '../../shared/supabase.js';
 import { syncEventBuildVisibility } from '../events/event-gallery-sync.js';
 import {
   mountPlacedGrid,

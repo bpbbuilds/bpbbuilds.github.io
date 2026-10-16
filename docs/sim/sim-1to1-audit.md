@@ -1,5 +1,20 @@
 # Simulator 1:1 audit
 
+## Admin evidence dashboard
+
+`/admin/?tab=sim-audit` is the owner-only review surface for every catalog
+item and the generated shared combat-system surface. It is derived from
+`assets/data/sim-fidelity-ledger.json` and `assets/data/sim-system-surface.json`
+by `node scripts/build-sim-audit-dashboard.mjs`.
+
+The dashboard deliberately distinguishes source coverage from a 1:1 verdict:
+only retained current source mapping, deterministic regression, and every
+applicable log/meter/HUD projection may display a check. A source
+port, deep handler, or `implemented` shared-system owner is evidence pending
+until that proof is recorded. Confirmed deltas and intentionally unsupported
+modes display a cross; shop-only/no-independent-combat catalog entries display
+a dash. Run the generator with `--check`; it is also a continuous-audit gate.
+
 This is the operational audit for `/sim/`. It establishes what can currently
 be proved, what cannot, and the next evidence needed to close a gap. It does
 not use coverage counts as a substitute for live-game parity.
@@ -13,7 +28,8 @@ following:
 2. The matching lifecycle/hook and catalog parameters.
 3. A focused automated regression for state and event sequence.
 4. Combat Log, Damage Meter, and HUD events for every user-visible effect.
-5. A live capture where the extract or dummy model cannot prove the behavior.
+5. Any source-ambiguous behavior is retained as an open gap rather than asking
+   the user for a live capture. A source-verified check is self-contained.
 
 The game extract is authoritative for code behavior. The simulator's existing
 code, static fixtures, and coverage data are useful evidence but cannot

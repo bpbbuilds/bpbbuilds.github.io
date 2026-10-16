@@ -5,8 +5,10 @@
 import { giveRandomBuffs, grantStacks } from '../buff-economy.js';
 import { affectedTargets, neighborKeys } from '../board-graph.js';
 import { getP1, getP2, getPName } from '../params.js';
-import { advanceCooldownSeconds, isCooldownActive } from '../cooldown.js';
-import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
+import { advanceCooldownPercent, deactivateCooldown, isCooldownActive } from '../cooldown.js';
+import { runCardInheritedHook } from './card-chain.js';
+import { afterEffectFinished, itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
+import { runWeaponInheritedHook } from './ports-wave-c-util.js';
 import { getScriptHandler } from './registry.js';
 import { magicRingPort } from './ports-ring.js';
 import { multiplyBuffsLimit } from './ports-ai-d.js';
@@ -85,38 +87,35 @@ export const plasticCubePort = {
   handlerId: 'plastic_cube',
   family: 'unique',
   onCooldownEffect(piece, ctx) {
-    const { t, player, events, pieces, graph } = ctx;
-    pushActivate(piece, ctx, 'plastic_cube', `Accessory: ${piece.name}`);
-    const pct = getPName(piece.params, 'cd', getP1(piece.params, 20)) / 100;
-    const neigh = new Set(neighborKeys(graph, piece.placementKey) || []);
-    /** @type {object | null} */
-    let target = null;
-    for (const other of pieces || []) {
-      if (other.placementKey === piece.placementKey) continue;
-      if (!isCooldownActive(other)) continue;
-      if (neigh.size && !neigh.has(other.placementKey)) continue;
-      target = other;
-      break;
-    }
+    const { player, pieces, graph, itemsById, canAffect } = ctx;
+    // PlasticCube.gd stops its own cooldown before advancing the target, then
+    // onAfterEffectFinished consumes it after the target and Spikes effects.
+    deactivateCooldown(piece);
+    const pct = getPName(piece.params, 'cdadvance', getP1(piece.params, 20));
+    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
+    const targetKey = links.find((link) => {
+      const candidate = (pieces || []).find((other) => other.placementKey === link.key);
+      return candidate && isCooldownActive(candidate);
+    })?.key;
+    const target = targetKey
+      ? (pieces || []).find((other) => other.placementKey === targetKey)
+      : null;
     if (target) {
-      const period = Math.max(0.35, Number(target.cooldown) || 1);
-      let sec = period * pct;
-      if (target._cubeAdvanced) sec *= 0.5;
-      advanceCooldownSeconds(target, sec, player.stacks);
-      target._cubeAdvanced = true;
+      if (!player._cubeAdvanced) player._cubeAdvanced = new Map();
+      const repeated = player._cubeAdvanced.has(target.placementKey);
+      const penalty = getPName(piece.params, 'penalty', getPName(piece.params, 'p5', 50));
+      const amount = repeated ? pct * (1 - penalty / 100) : pct;
+      if (!repeated) player._cubeAdvanced.set(target.placementKey, piece.placementKey);
+      advanceCooldownPercent(target, amount, ctx);
     }
-    const spikes = Math.max(1, Math.round(getP2(piece.params, 1)));
+    const spikes = getPName(piece.params, 'spikes', getP2(piece.params, 1));
     grantStacks(player, 'spikes', spikes, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    events.push({
-      t: t + 0.003,
-      type: 'info',
-      label: target
-        ? `${piece.name}: advanced ${target.name} ${(pct * 100).toFixed(0)}%`
-        : `${piece.name}: no target`,
-      meta: { category: 'system', script: true, handler: 'plastic_cube' },
+    afterEffectFinished(piece, ctx, 'plastic_cube', {
+      consume: true,
+      label: `Accessory: ${piece.name}`,
     });
     return true;
   },
@@ -128,7 +127,6 @@ export const repeaterPort = {
   handlerId: 'repeater',
   family: 'unique',
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'repeater', `Accessory: ${piece.name}`);
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
     let n = 0;
     for (const other of ctx.pieces || []) {
@@ -136,7 +134,21 @@ export const repeaterPort = {
       if (!links.some((l) => l.key === other.placementKey)) continue;
       const h = getScriptHandler(other.itemId);
       if (!h?.onCombatStart) continue;
-      h.onCombatStart(other, ctx);
+      // Item.repeatCombatStart() is the complete source lifecycle, not just
+      // the derived onCombatStart callback.
+      if (other.kind === 'weapon') {
+        runWeaponInheritedHook(other, ctx, 'pre_combat_start', h.onPreCombatStart);
+      } else if (other.kind === 'card') {
+        runCardInheritedHook(other, ctx, 'pre_combat_start', h.onPreCombatStart);
+      } else {
+        h.onPreCombatStart?.(other, ctx);
+      }
+      if (other.kind === 'weapon') {
+        runWeaponInheritedHook(other, ctx, 'combat_start', h.onCombatStart);
+      } else {
+        h.onCombatStart(other, ctx);
+      }
+      h.onPostCombatStart?.(other, ctx);
       n += 1;
     }
     ctx.events.push({
@@ -145,6 +157,9 @@ export const repeaterPort = {
       label: `${piece.name}: repeated start ×${n}`,
       meta: { category: 'system', script: true, handler: 'repeater' },
     });
+    // Repeater.gd calls onAfterEffectFinished(), whose default consumes the
+    // one-shot accessory after all affected items have been replayed.
+    afterEffectFinished(piece, ctx, 'repeater', { label: `Accessory: ${piece.name}` });
     return true;
   },
 };
@@ -155,9 +170,9 @@ export const slimeTimePort = {
   handlerId: 'slime_time',
   family: 'unique',
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'slime_time', `Accessory: ${piece.name}`);
     let n = 0;
     for (const other of ctx.pieces || []) {
+      if (other.side && piece.side && other.side !== piece.side) continue;
       const id = String(other.itemId || '');
       if (!id.includes('goobert')) continue;
       const h = getScriptHandler(other.itemId);
@@ -170,6 +185,7 @@ export const slimeTimePort = {
         n += 1;
       }
     }
+    pushActivate(piece, ctx, 'slime_time', `Accessory: ${piece.name}`);
     ctx.events.push({
       t: ctx.t + 0.003,
       type: 'info',

@@ -6,13 +6,12 @@ import { drainStamina, giveStamina, healActor } from '../actor.js';
 import { isBattleRaging } from '../battle-rage.js';
 import {
   grantStacks,
-  onBuffChanged,
   spendStacks,
   useLucky,
   useMana,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { loseHealth } from './handlers.js';
@@ -43,6 +42,13 @@ function origin(piece) {
   return { originKey: piece.placementKey, originId: piece.itemId };
 }
 
+function removeAvailableStacks(actor, stack, amount, opts) {
+  const requested = Math.max(0, Math.round(Number(amount) || 0));
+  const available = getStackAmount(actor, stack);
+  if (!requested || !available) return { spent: 0 };
+  return spendStacks(actor, stack, Math.min(requested, available), opts);
+}
+
 function goldOf(ctx, o) {
   return Math.max(0, Number(ctx.itemsById.get(o.itemId)?.cost) || 0);
 }
@@ -55,11 +61,12 @@ function pickNoRepeat(piece, key, rng) {
   return pick;
 }
 
-function checkDjinn(piece, ctx) {
+function checkDjinn(piece, ctx, changeAmount) {
   if (piece._djinnOn || !piece._djinnWeapon) return;
+  if (!(Number(changeAmount) > 0)) return;
   const p = ctx.player;
-  const need = Math.max(1, Math.round(getP1(piece.params, 7)));
-  const hpNeed = Math.max(1, Math.round(getP2(piece.params, 27)));
+  const need = Math.round(getP1(piece.params, 7));
+  const hpNeed = Math.round(getP2(piece.params, 27));
   let progress = 0;
   progress += Math.min(getStackAmount(p, 'block') || Number(p.block) || 0, need) / need;
   progress += Math.min(getStackAmount(p, 'spikes'), need) / need;
@@ -138,9 +145,9 @@ const deathLotusPort = {
     if (n && spd) addSpeed(piece, spd * n);
   },
   onCooldownEffect(piece, ctx) {
-    const mana = Math.max(1, Math.round(getPName(piece.params, 'mana', getP1(piece.params, 4))));
-    const buffs = Math.max(1, Math.round(getPName(piece.params, 'buffs', getP2(piece.params, 3))));
-    const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP3(piece.params, 1))));
+    const mana = Math.round(getPName(piece.params, 'mana', getP1(piece.params, 4)));
+    const buffs = Math.round(getPName(piece.params, 'buffs', getP2(piece.params, 3)));
+    const need = Math.round(getPName(piece.params, 'luckt', getP3(piece.params, 1)));
     grantStacks(ctx.player, 'mana', mana, origin(piece));
     removeRandomBuffs(ctx.dummy, buffs, ctx.rng, origin(piece));
     if (getStackAmount(ctx.player, 'lucky') >= need) {
@@ -184,7 +191,7 @@ const deerTotemPort = {
   },
   onCooldownEffect(piece, ctx) {
     if (!isBattleRaging(ctx.player, ctx.t)) return true;
-    const heal = Math.max(1, Math.round(getPName(piece.params, 'heal', getP3(piece.params, 8))));
+    const heal = Math.round(getPName(piece.params, 'heal', getP3(piece.params, 8)));
     const got = healActor(ctx.player, heal);
     if (got > 0) {
       const side = eventSideForPiece(piece);
@@ -203,7 +210,7 @@ const deerTotemPort = {
     grantStacks(
       ctx.player,
       'mana',
-      Math.max(1, Math.round(getPName(piece.params, 'mana', getP4(piece.params, 3)))),
+      Math.round(getPName(piece.params, 'mana', getP4(piece.params, 3))),
       origin(piece),
     );
     pushActivate(piece, ctx, 'deer_totem', `Accessory: ${piece.name}`);
@@ -218,16 +225,17 @@ const djinnLampPort = {
   onPrepare(piece, ctx) {
     piece._djinnOn = false;
     piece._djinnWeapon = linked(ctx, piece).find((o) => canBeEmpoweredPiece(o)) || null;
-    onBuffChanged(ctx.player, () => checkDjinn(piece, ctx));
+    if (!piece._djinnWeapon) return;
     const own = (payload = {}) => {
-      if (!payload.actor || payload.actor === ctx.player) checkDjinn(piece, ctx);
+      if (payload.actor && payload.actor !== ctx.player) return;
+      const amount = payload.amount ?? payload.healthDamage ?? payload.damage?.healthDamage ?? 0;
+      checkDjinn(piece, ctx, amount);
     };
     ctx.bus?.on?.('character_block_changed', own);
     ctx.bus?.on?.('character_spikes_changed', own);
     ctx.bus?.on?.('character_mana_changed', own);
     ctx.bus?.on?.('character_lucky_changed', own);
     ctx.bus?.on?.('character_damaged', own);
-    ctx.bus?.on?.('player_damaged', own);
     ctx.bus?.on?.('actor_healed', own);
   },
   onCooldownEffect(piece, ctx) {
@@ -250,17 +258,17 @@ const fanfarePort = {
   family: 'unique',
   onPrepare(piece, ctx) {
     const n = linked(ctx, piece).length;
-    const spd = getPName(piece.params, 'p5', 10) / 100;
+    const spd = getP5(piece.params, 10) / 100;
     if (n && spd) addSpeed(piece, spd * n);
     piece._fanfareOpts = [0, 1, 2];
   },
   onCooldownEffect(piece, ctx) {
     const pick = pickNoRepeat(piece, '_fanfareOpts', ctx.rng);
     if (pick === 0) {
-      grantStacks(ctx.player, 'empower', Math.max(1, Math.round(getP1(piece.params, 1))), origin(piece));
+      grantStacks(ctx.player, 'empower', getP1(piece.params, 1), origin(piece));
     } else if (pick === 1) {
-      grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getP2(piece.params, 3))), origin(piece));
-      spendStacks(ctx.dummy, 'mana', Math.max(1, Math.round(getP3(piece.params, 2))), origin(piece));
+      grantStacks(ctx.player, 'mana', getP2(piece.params, 3), origin(piece));
+      removeAvailableStacks(ctx.dummy, 'mana', getP3(piece.params, 2), origin(piece));
     } else {
       const drain = getP4(piece.params, 1);
       drainStamina(ctx.dummy, drain, {
@@ -273,8 +281,10 @@ const fanfarePort = {
         handler: 'fanfare',
       });
     }
-    // Fanfare.gd applies its selected effect before activate().
-    pushActivate(piece, ctx, 'fanfare', `Accessory: ${piece.name}`);
+    // Fanfare.gd applies its selected effect before activate(). Keep the
+    // activation timestamp after the stack/drain event so sorted logs retain
+    // that source order.
+    pushActivate(piece, { ...ctx, t: ctx.t + 0.006 }, 'fanfare', `Accessory: ${piece.name}`);
     return true;
   },
 };

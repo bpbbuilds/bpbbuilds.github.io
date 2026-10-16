@@ -11,12 +11,15 @@ import {
   useRegeneration,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP, getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
+import { applyFatigueDamage } from '../fatigue.js';
 import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
 import { getScriptHandler } from './registry.js';
 import { weaponStrike } from './ports-wave-c-util.js';
+import { giveTempMaxHp } from './ports-ap-start.js';
+import { empowerLinkedWeapons, goobertPeerTick } from './ports-wave-d-goobert.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -78,51 +81,71 @@ export const knifeToMeetYouPort = {
 export const scissorswordsPort = {
   handlerId: 'scissorswords',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._lsLit = false;
     piece._lsBlindDmg = 0;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'regent', 3)));
-    const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', 10)));
-    const dur = Math.max(0.5, getPName(piece.params, 'dur_blind', 5));
-    const per = getPName(piece.params, 'dam_blind', 1);
-    const applyBlindDamage = () => {
-      const want = (Number(ctx.dummy.stacks.blind) || 0) * per;
-      addBonusDamage(piece, want - piece._lsBlindDmg);
-      piece._lsBlindDmg = want;
+    piece._lsBlindUntil = 0;
+    piece._ssRegenNeeded = Math.trunc(getPName(piece.params, 'regent', getP1(piece.params, 0)));
+    piece._ssBlind = Math.trunc(getPName(piece.params, 'blind', getP3(piece.params, 0)));
+    piece._ssBlindDuration = getPName(piece.params, 'dur_blind', getP4(piece.params, 0));
+    piece._ssBlindDamage = getPName(piece.params, 'dam_blind', getP2(piece.params, 0));
+    piece._ssBonusDamage = getPName(piece.params, 'dam', getP6(piece.params, 0));
+    piece._ssLuckNeeded = Math.trunc(getPName(piece.params, 'luckt', getP5(piece.params, 0)));
+    piece._ssLuck = Math.trunc(getPName(piece.params, 'luck', getP(piece.params, 6, 0)));
+    piece._ssRegen = Math.trunc(getPName(piece.params, 'regen', getP(piece.params, 7, 0)));
+
+    const applyBlindDamage = (change) => {
+      if (change.stack !== 'blind') return;
+      addBonusDamage(piece, Number(change.amount) * piece._ssBlindDamage, { removable: false });
     };
-    onBuffChanged(ctx.player, (change) => {
-      if (change.stack !== 'regeneration' || piece._lsLit) return;
-      if ((Number(ctx.player.stacks.regeneration) || 0) < need) return;
+    const startBlindingLight = (nowT = Number.isFinite(Number(ctx.player._simT)) ? ctx.player._simT : ctx.t) => {
+      const { player, dummy } = ctx;
+      if (piece._lsLit || player.stacks.regeneration < piece._ssRegenNeeded) return;
       piece._lsLit = true;
-      useRegeneration(ctx.player, need, { originKey: piece.placementKey, originId: piece.itemId });
-      grantTemporaryStacks(ctx.dummy, 'blind', blind, dur, ctx.t, {
+      useRegeneration(player, piece._ssRegenNeeded, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
+      const duration = piece._ssBlindDuration;
+      piece._lsBlindUntil = nowT + duration;
+      grantTemporaryStacks(dummy, 'blind', piece._ssBlind, duration, nowT, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      grantTemporaryStacks(player, 'blind', piece._ssBlind, duration, nowT, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      pushActivate(piece, { ...ctx, t: nowT }, 'scissorswords', `Weapon: ${piece.name}`, {
+        playCombatAni: false,
+        source: 'blinding_light',
+      });
+    };
+    onBuffChanged(ctx.player, (change) => {
+      if (change.stack !== 'regeneration' || change.amount < 0) return;
+      startBlindingLight();
     });
-    onBuffChanged(ctx.dummy, (change) => {
-      if (change.stack !== 'blind') return;
-      applyBlindDamage();
-      if (change.amount < 0 && (Number(ctx.dummy.stacks.blind) || 0) < blind) piece._lsLit = false;
-    });
+    onBuffChanged(ctx.dummy, applyBlindDamage);
+    piece._ssStartBlindingLight = (nowT) => startBlindingLight(nowT);
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'scissorswords');
   },
   onDealtDamage(piece, ctx, hit) {
     if (hit?.hit) {
-      const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', 10)));
-      const dur = Math.max(0.5, getPName(piece.params, 'dur_blind', 5));
-      grantTemporaryStacks(ctx.dummy, 'blind', blind, dur, ctx.t, { originKey: piece.placementKey, originId: piece.itemId });
-      grantTemporaryStacks(ctx.player, 'blind', blind, dur, ctx.t, { originKey: piece.placementKey, originId: piece.itemId });
-      const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', 3)));
-      if ((Number(ctx.player.stacks.lucky) || 0) >= need) {
-        useLucky(ctx.player, need, { originKey: piece.placementKey, originId: piece.itemId });
-        addBonusDamage(piece, Math.max(0, Math.round(getPName(piece.params, 'dam', 3))));
-        grantStacks(ctx.player, 'regeneration', Math.max(1, Math.round(getPName(piece.params, 'regen', 1))), { originKey: piece.placementKey, originId: piece.itemId });
+      if ((Number(ctx.player.stacks.lucky) || 0) >= piece._ssLuckNeeded) {
+        useLucky(ctx.player, piece._ssLuckNeeded, { originKey: piece.placementKey, originId: piece.itemId });
+        addBonusDamage(piece, piece._ssBonusDamage);
+        grantStacks(ctx.player, 'regeneration', piece._ssRegen, { originKey: piece.placementKey, originId: piece.itemId });
       }
     } else {
-      grantStacks(ctx.player, 'lucky', Math.max(1, Math.round(getPName(piece.params, 'luck', 5))), { originKey: piece.placementKey, originId: piece.itemId });
+      grantStacks(ctx.player, 'lucky', piece._ssLuck, { originKey: piece.placementKey, originId: piece.itemId });
+    }
+  },
+  onTick(piece, ctx) {
+    if (piece._lsLit && ctx.t + 1e-9 >= piece._lsBlindUntil) {
+      piece._lsLit = false;
+      piece._ssStartBlindingLight?.(ctx.t);
     }
   },
 };
@@ -160,24 +183,26 @@ export const steelGoobertPort = {
   },
 };
 
-/** Corrupted Crystal — fatigue approx as direct damage. */
+/** CorruptedCrystal.gd — add one to the opponent's fatigue source, apply it now. */
 /** @type {ScriptHandler} */
 export const corruptedCrystalPort = {
   handlerId: 'corrupted_crystal',
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const { t, dummy, events } = ctx;
-    pushActivate(piece, ctx, 'corrupted_crystal', `Gem: ${piece.name}`);
-    const dam = Math.max(1, Math.round(getP1(piece.params, 3)));
-    dummy.hp = Math.max(0, dummy.hp - dam);
+    dummy.bonusFatigueDamage = (Number(dummy.bonusFatigueDamage) || 0) + 1;
+    const counter = Math.max(0, Math.round(Number(ctx.fatigue?.counter) || 0));
+    const dam = Math.max(1, counter + dummy.bonusFatigueDamage);
+    applyFatigueDamage(dummy, dam);
     events.push({
-      t: t + 0.004,
+      t,
       type: 'damage',
       target: 'dummy',
       amount: dam,
       label: `${piece.name}: ${dam} fatigue`,
-      meta: { category: 'damage', script: true, handler: 'corrupted_crystal' },
+      meta: { category: 'damage', script: true, handler: 'corrupted_crystal', fatigue: true },
     });
+    pushActivate(piece, ctx, 'corrupted_crystal', `Gem: ${piece.name}`);
     return true;
   },
 };
@@ -186,36 +211,51 @@ export const corruptedCrystalPort = {
 export const rainbowGoobertBerserkerPort = {
   handlerId: 'rainbow_goobert_berserker',
   family: 'pet_like',
-  onCooldownEffect(piece, ctx) {
-    const { t, player, dummy, events, rng, graph, itemsById, canAffect, pieces } = ctx;
-    pushActivate(piece, ctx, 'rainbow_goobert_berserker', `Pet: ${piece.name}`);
-    const block = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 8)));
-    gainStacks(player, 'block', block);
-    const hp = Math.max(1, Math.round(getP2(piece.params, 10)));
-    player.maxHp += hp;
-    player.hp = Math.min(player.maxHp, player.hp + hp);
-    const vamp = Math.max(1, Math.round(getP3(piece.params, 1)));
-    grantStacks(player, 'vampirism', vamp, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
+  onPrepare(piece) {
+    piece._goobertActs = 0;
+  },
+  onCooldownEffect() {
+    return false;
+  },
+  onPeerActivated(listener, _activated, ctx) {
+    goobertPeerTick(listener, ctx, () => {
+      const { player, dummy, events, rng, t, itemsById } = ctx;
+      const block = Number(listener.block ?? itemsById.get(listener.itemId)?.block) || 0;
+      if (block > 0) gainStacks(player, 'block', block);
+
+      giveTempMaxHp(
+        listener,
+        ctx,
+        'rainbow_goobert_berserker',
+        getPName(listener.params, 'maxhealth', getP2(listener.params, 0)),
+      );
+
+      const vamp = getP3(listener.params, 0);
+      if (vamp > 0) {
+        grantStacks(player, 'vampirism', vamp, {
+          originKey: listener.placementKey,
+          originId: listener.itemId,
+        });
+      }
+
+      const buffCount = getP4(listener.params, 0);
+      const picked = giveRandomBuffs(player, buffCount, rng, {
+        originKey: listener.placementKey,
+        originId: listener.itemId,
+      });
+      pushBuffGrants(events, listener, player, t, 'rainbow_goobert_berserker', picked, 0.004);
+
+      const blind = getPName(listener.params, 'blind', getP6(listener.params, 0));
+      if (blind > 0) gainStacks(dummy, 'blind', blind, { rng, opponent: player });
+
+      empowerLinkedWeapons(
+        listener,
+        ctx,
+        'rainbow_goobert_berserker',
+        getP5(listener.params, 0),
+      );
+      pushActivate(listener, ctx, 'rainbow_goobert_berserker', `Pet: ${listener.name}`);
     });
-    const num = Math.max(1, Math.round(getPName(piece.params, 'buffs', 2)));
-    const picked = giveRandomBuffs(player, num, rng, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    pushBuffGrants(events, piece, player, t, 'rainbow_goobert_berserker', picked, 0.004);
-    const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', 1)));
-    gainStacks(dummy, 'blind', blind, { rng, opponent: player });
-    const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', 2)));
-    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    for (const other of pieces || []) {
-      if (!links.some((l) => l.key === other.placementKey)) continue;
-      if (other.empowerable === false) continue;
-      if (!(other.damageMax > 0)) continue;
-      addBonusDamage(other, dam);
-    }
-    return true;
   },
 };
 
@@ -298,15 +338,16 @@ export const wolfEmblemPort = {
 export const amuletOfTheWildPort = {
   handlerId: 'amulet_of_the_wild',
   family: 'unique',
-  onPreCombatStart(piece, ctx) {
+  // AmuletoftheWild.gd raises both spikes limits in onPrepare, before any
+  // cooldown or combat-start damage can consume them.
+  onPrepare(piece, ctx) {
     const lim = getPName(piece.params, 'spikedam', 0) / 100;
     if (!lim) return;
-    ctx.player.meleeSpikesLimit = Math.max(Number(ctx.player.meleeSpikesLimit) || 0, lim);
-    ctx.player.rangedSpikesLimit = Math.max(Number(ctx.player.rangedSpikesLimit) || 0, lim);
+    ctx.player.meleeSpikesLimit = (Number(ctx.player.meleeSpikesLimit) || 0) + lim;
+    ctx.player.rangedSpikesLimit = (Number(ctx.player.rangedSpikesLimit) || 0) + lim;
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
-    pushActivate(piece, ctx, 'amulet_of_the_wild', `Accessory: ${piece.name}`);
     const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 1))));
     grantStacks(player, 'spikes', spikes, {
       originKey: piece.placementKey,
@@ -324,6 +365,7 @@ export const amuletOfTheWildPort = {
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
       if (other.itemId === 'amulet_of_the_wild') continue;
+      if (!itemHasType(itemsById.get(other.itemId), 'pet')) continue;
       if (other._wildTriggered) continue;
       const h = getScriptHandler(other.itemId);
       if (!h?.onCooldownEffect) continue;
@@ -334,8 +376,9 @@ export const amuletOfTheWildPort = {
         other._wildTriggered = false;
       }
     }
-    piece.alive = false;
-    piece.charges = 0;
+    afterEffectFinished(piece, ctx, 'amulet_of_the_wild', {
+      label: `Accessory: ${piece.name}`,
+    });
     return true;
   },
 };

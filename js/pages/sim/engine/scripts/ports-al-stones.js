@@ -74,7 +74,9 @@ export const bagOfStonesPort = {
   handlerId: 'bag_of_stones',
   family: 'unique',
   deferStartActivate: true,
-  onCombatStart(piece, ctx) {
+  // BagofStones.gd tags the affected Stone items during onPrepare(), before
+  // combat starts, so their ammo is ready for the first throw.
+  onPrepare(piece, ctx) {
     applyBagOfStones(piece, ctx);
   },
 };
@@ -84,9 +86,12 @@ export const bagOfStonesPort = {
 export const artifactStoneColdPort = {
   handlerId: 'artifact_stone_cold',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // ArtifactStoneCold.gd installs the affected-weapon listener in onPrepare().
+  onPrepare(piece, ctx) {
     initStoneAmmo(piece);
-    const keys = new Set(linked(ctx, piece).map((o) => o.placementKey));
+    const keys = new Set(linked(ctx, piece)
+      .filter((o) => canBeEmpoweredPiece(o))
+      .map((o) => o.placementKey));
     ctx.bus?.on?.('piece_dealt_damage', (payload) => {
       const src = payload?.piece;
       if (!src || !payload?.hit?.hit || !keys.has(src.placementKey)) return;
@@ -116,7 +121,8 @@ export const artifactStoneColdPort = {
 export const artifactStoneHeatPort = {
   handlerId: 'artifact_stone_heat',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // ArtifactStoneHeat.gd installs its heat listener in onPrepare().
+  onPrepare(piece, ctx) {
     initStoneAmmo(piece);
     piece._ashOn = false;
     const need = Math.max(1, Math.round(getP2(piece.params, 4)));
@@ -157,7 +163,8 @@ export const artifactStoneHeatPort = {
 export const artifactStoneDeathPort = {
   handlerId: 'artifact_stone_death',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // ArtifactStoneDeath.gd installs both fatigue listeners in onPrepare().
+  onPrepare(piece, ctx) {
     initStoneAmmo(piece);
     piece._asdFat = 0;
     const per = chanceOf(piece, ctx);
@@ -167,7 +174,7 @@ export const artifactStoneDeathPort = {
       piece._asdFat = dmg;
       if (!diff) return;
       for (const w of linked(ctx, piece)) {
-        if ((w.damageMax || 0) > 0 || w.kind === 'weapon') {
+        if (canBeEmpoweredPiece(w)) {
           w.critChance = (Number(w.critChance) || 0) + per * diff;
         }
       }

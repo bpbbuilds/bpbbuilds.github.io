@@ -17,7 +17,7 @@ import {
 import { getStackAmount } from '../stacks.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { weaponStrike } from './ports-wave-c-util.js';
-import { pushActivate } from './ports-util.js';
+import { itemHasType, pushActivate } from './ports-util.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -54,7 +54,9 @@ export const katanaPort = {
     // opponent weapon snapshot before its own buff-strip reaction runs.
     piece._ribOppWeapons = (ctx.allPieces || []).filter((other) => {
       if (!other || other === piece || other.side === piece.side) return false;
-      return other.kind === 'weapon' && canBeEmpoweredPiece(other);
+      const item = ctx.itemsById?.get?.(other.itemId);
+      if (!itemHasType(item, 'weapon')) return false;
+      return Number(item.damageMin) > 0 || itemHasType(item, 'lifesteal');
     });
   },
   onCooldownEffect(piece, ctx) {
@@ -119,23 +121,20 @@ export const relicCasePort = {
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const { t, events, graph, pieces } = ctx;
-    pushActivate(piece, ctx, 'relic_case', `Bag: ${piece.name}`);
-    const damF =
-      getPName(piece.params, 'bonusdam', getPName(piece.params, 'dam', getP1(piece.params, 10))) /
-      100;
-    // GD changeStaminaFactor divides by 100 — pass fraction into helper
-    const stamF =
-      -Math.abs(getPName(piece.params, 'stamina', getP2(piece.params, 20))) / 100;
+    // RelicCase.gd uses getP("bonusdam") / 100 and getP("stamina") exactly;
+    // keep the named source parameters with their indexed catalog fallbacks,
+    // but do not invent defaults when a fixture omits both forms.
+    const damF = getPName(piece.params, 'bonusdam', getP1(piece.params, 0)) / 100;
+    // GD changeStaminaFactor divides by 100 — pass the signed fraction through.
+    const stamF = -getPName(piece.params, 'stamina', getP2(piece.params, 0)) / 100;
     const inside = getItemsInside(graph, piece.placementKey);
     let n = 0;
     for (const key of inside) {
       const other = (pieces || []).find((p) => p.placementKey === key);
       if (!other) continue;
-      const isWeapon =
-        other.kind === 'weapon' ||
-        (Number(other.damageMax) || 0) > 0 ||
-        (Number(other.damageMin) || 0) > 0;
-      if (!isWeapon) continue;
+      // Bag.getAffectedItemsInside() delegates to RelicCase.canApplyEffect,
+      // which is exactly Item.isWeapon(), not merely any damage-bearing piece.
+      if (!itemHasType(ctx.itemsById.get(other.itemId), 'weapon')) continue;
       if (canBeEmpoweredPiece(other) && damF) addBonusDamageFactor(other, damF);
       if (stamF) changeStaminaFactor(other, stamF);
       n += 1;
@@ -146,6 +145,7 @@ export const relicCasePort = {
       label: `${piece.name}: empower ×${n} inside`,
       meta: { category: 'adjacency', script: true, handler: 'relic_case' },
     });
+    pushActivate(piece, ctx, 'relic_case', `Bag: ${piece.name}`);
     return true;
   },
 };

@@ -81,10 +81,14 @@ const shepherdsCrookPort = {
   handlerId: 'shepherds_crook',
   family: 'synergy_aura',
   onPrepare(piece, ctx) {
-    const prot = Number(piece.chance) || Number(ctx.itemsById.get(piece.itemId)?.chance) || 35;
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const protRaw = piece.chance != null ? piece.chance : catalog?.chance;
+    const protValue = Number(protRaw);
+    const prot = Number.isFinite(protValue) ? protValue : 35;
     ctx.player.buffCleanseProtectChance = (Number(ctx.player.buffCleanseProtectChance) || 0) + prot;
-    const resist =
-      Number(piece.chance2) || Number(ctx.itemsById.get(piece.itemId)?.chance2) || 50;
+    const resistRaw = piece.chance2 != null ? piece.chance2 : catalog?.chance2;
+    const resistValue = Number(resistRaw);
+    const resist = Number.isFinite(resistValue) ? resistValue : 50;
     ctx.player.stackResist = ctx.player.stackResist || {};
     ctx.player.stackResist.blind = (Number(ctx.player.stackResist.blind) || 0) + resist;
     ctx.player.stackResist.cold = (Number(ctx.player.stackResist.cold) || 0) + resist;

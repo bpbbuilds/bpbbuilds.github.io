@@ -6,6 +6,11 @@ import { createCombatBus } from '../js/pages/sim/engine/combat-bus.js';
 import { grantStacks } from '../js/pages/sim/engine/buff-economy.js';
 import { getScriptHandler } from '../js/pages/sim/engine/scripts/registry.js';
 
+const bowArrowSource = fs.readFileSync('tools/game-extract-full/Items/BowandArrow.gd', 'utf8');
+assert.match(bowArrowSource, /func onPrepare\(\)/);
+assert.match(bowArrowSource, /bonusDmg = 0/);
+assert.match(bowArrowSource, /connectForCombat|onWeaponAttacked/);
+
 const source = fs.readFileSync('tools/game-extract-full/Items/Bow.gd', 'utf8');
 assert.match(source, /affectedWeapon = getFirstAffectedItem\(\)/);
 assert.match(source, /connectForCombat\(affectedWeapon, "attacked", "onWeaponAttacked"\)/);
@@ -14,15 +19,15 @@ for (const id of ['bow', 'bow_and_arrow', 'lucky_bow', 'poison_bow', 'thorn_bow'
   assert.equal(typeof getScriptHandler(id)?.onPrepare, 'function', `${id} prepares through Bow`);
 }
 
-function makeCtx(bowId, params = {}) {
+function makeCtx(bowId, params = {}, side = 'you') {
   const bus = createCombatBus();
-  const player = createActor('player');
-  const dummy = createActor('dummy');
+  const player = createActor(side === 'you' ? 'player' : 'dummy');
+  const dummy = createActor(side === 'you' ? 'dummy' : 'player');
   const bow = {
     itemId: bowId,
     name: bowId,
     placementKey: 'bow',
-    side: 'you',
+    side,
     kind: 'weapon',
     params,
     damageMin: 3,
@@ -32,8 +37,8 @@ function makeCtx(bowId, params = {}) {
     alive: true,
     bonusDamage: 0,
   };
-  const first = { itemId: 'first_weapon', placementKey: 'first', kind: 'weapon', side: 'you' };
-  const second = { itemId: 'second_weapon', placementKey: 'second', kind: 'weapon', side: 'you' };
+  const first = { itemId: 'first_weapon', placementKey: 'first', kind: 'weapon', side };
+  const second = { itemId: 'second_weapon', placementKey: 'second', kind: 'weapon', side };
   const itemsById = new Map([
     [bowId, { id: bowId, type: 'Weapon' }],
     ['first_weapon', { id: 'first_weapon', type: 'Weapon' }],
@@ -103,6 +108,13 @@ function attacked(ctx, piece, hit) {
   attacked(ctx, first, { hit: true, damage: 5 });
   assert.equal(bow._thornBonusN, 1, 'Thorn Bow spends spikes after its prepared weapon hit');
   assert.equal(bow.bonusDamage, 3, 'Thorn Bow adds its prepared-hit bonus');
+}
+
+{
+  const { bow, first, ctx } = makeCtx('bow_and_arrow', { p1: 2, p2: 4 }, 'them');
+  getScriptHandler('bow_and_arrow').onPrepare(bow, ctx);
+  attacked(ctx, first, { hit: true, damage: 9 });
+  assert.equal(bow.bonusDamage, 2, 'Bow and Arrow works for the opponent board side');
 }
 
 console.log('OK shared Bow prepare and all derived bow listeners');

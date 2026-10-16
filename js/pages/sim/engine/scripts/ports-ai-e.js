@@ -10,12 +10,13 @@ import {
   onBuffChanged,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
-import { effectDuration } from '../effect-duration.js';
+import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { scaleEffectDuration } from '../effect-duration.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addSpeed } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
 import { grantTimedSpeed } from '../timed-speed.js';
-import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
+import { afterEffectFinished, itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -29,9 +30,11 @@ import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 export const doubleRainbowPort = {
   handlerId: 'double_rainbow',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { t, events, graph, itemsById, canAffect, pieces } = ctx;
-    const amp = Math.max(0, Number(piece.chance) || getPName(piece.params, 'chance', 15));
+    const amp = Number.isFinite(Number(piece.chance))
+      ? Number(piece.chance)
+      : getPName(piece.params, 'chance', 15);
     const speedPer = getPName(piece.params, 'speed', getP1(piece.params, 35)) / 100;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     let holy = 0;
@@ -40,7 +43,10 @@ export const doubleRainbowPort = {
       if (!other) continue;
       if (link.color !== 'secondary') {
         // Primary: gainsBuffs → amplify all buffs
-        if (amp > 0) {
+        const gainsBuffs = Boolean(
+          other.gainsBuffs || canAffect?.gainsBuffsIds?.has?.(other.itemId),
+        );
+        if (gainsBuffs && amp) {
           other.buffAmpChance = (Number(other.buffAmpChance) || 0) + amp;
         }
       } else if (itemHasType(itemsById.get(other.itemId), 'holy')) {
@@ -61,20 +67,12 @@ export const doubleRainbowPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    events.push({
-      t,
-      type: 'activate',
-      actor: 'player',
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `Skill: ${piece.name}`,
-      meta: { category: 'system', script: true, handler: 'double_rainbow' },
-    });
     const picked = giveRandomBuffs(player, 1, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     pushBuffGrants(events, piece, player, t, 'double_rainbow', picked);
+    pushActivate(piece, ctx, 'double_rainbow', `Skill: ${piece.name}`);
     return true;
   },
 };
@@ -212,12 +210,11 @@ export const noRushPleasePort = {
 export const thornburstPort = {
   handlerId: 'thornburst',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    piece._thornUses = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'max', getPName(piece.params, 'uses', getP2(piece.params, 3)))),
+  onPrepare(piece, ctx) {
+    piece._thornUses = Math.trunc(
+      getPName(piece.params, 'max', getPName(piece.params, 'uses', getP3(piece.params, 5))),
     );
-    const spikeSpeed = getPName(piece.params, 'speed', getP3(piece.params, 5)) / 100;
+    const spikeSpeed = getPName(piece.params, 'speed', getP4(piece.params, 5)) / 100;
     if (spikeSpeed) {
       onBuffChanged(ctx.player, (ch) => {
         if (ch.stack !== 'spikes' || !ch.amount) return;
@@ -226,30 +223,28 @@ export const thornburstPort = {
     }
   },
   onCooldownEffect(piece, ctx) {
-    const { t, player } = ctx;
-    pushActivate(piece, ctx, 'thornburst', `Skill: ${piece.name}`);
-    const stunDur = Math.max(0.5, effectDuration(piece, 'dur_stun', 1));
-    grantStun(ctx.dummy, stunDur, t, {
+    const stunBase = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur_stun', getP1(piece.params, 0.3)),
+      'dur_stun',
+    );
+    const stunDur = scaleEffectDuration(piece, stunBase);
+    grantStun(ctx.dummy, stunDur, ctx.t, {
       origin: piece,
       meta: { category: 'debuff', script: true, handler: 'thornburst' },
     });
-    const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 2))));
-    grantStacks(player, 'spikes', spikes, {
+    const spikes = Math.trunc(getPName(piece.params, 'spikes', getP2(piece.params, 2)));
+    grantStacks(ctx.player, 'spikes', spikes, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    events.push({
-      t: t + 0.004,
-      type: 'buff',
-      target: 'player',
-      amount: spikes,
-      label: `${piece.name}: +${spikes} Spikes`,
-      meta: { category: 'buff', stack: 'spikes', script: true, handler: 'thornburst' },
-    });
     piece._thornUses = (Number(piece._thornUses) || 1) - 1;
-    if (piece._thornUses <= 0) {
-      piece.alive = false;
-      piece.charges = 0;
+    if (piece._thornUses === 0) {
+      afterEffectFinished(piece, ctx, 'thornburst', {
+        label: `Skill: ${piece.name}`,
+      });
+    } else {
+      pushActivate(piece, ctx, 'thornburst', `Skill: ${piece.name}`);
     }
     return true;
   },

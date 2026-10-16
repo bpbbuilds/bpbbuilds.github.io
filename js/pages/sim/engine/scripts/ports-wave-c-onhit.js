@@ -11,12 +11,16 @@ import {
   stealRandomBuff,
   useMana,
 } from '../buff-economy.js';
-import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
-import { effectDuration } from '../effect-duration.js';
+import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
+import { effectDuration, scaleEffectDuration } from '../effect-duration.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addAccuracy, addBonusDamage, addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { dealEffectDamage, dealHit } from './handlers.js';
 import { affectedTargets } from '../board-graph.js';
 import { healActor, grantStun } from '../actor.js';
+import { pushActivate } from './ports-util.js';
+import { eventSideForPiece } from '../vs-board.js';
+import { randInt } from '../rng.js';
 import {
   removeRandomBuffs,
   rollItemChance,
@@ -84,14 +88,6 @@ export const thornShortbowPort = {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    ctx.events.push({
-      t: ctx.t + 0.008,
-      type: 'buff',
-      target: 'player',
-      amount: 1,
-      label: `${piece.name}: +1 Spikes`,
-      meta: { category: 'buff', stack: 'spikes', script: true, handler: 'thorn_shortbow' },
-    });
   },
 };
 
@@ -103,16 +99,18 @@ export const snowStickPort = {
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'snow_stick');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
-    const cold = Math.max(1, Math.round(getPName(piece.params, 'cold', getP1(piece.params, 2))));
-    const selfCold = Math.max(0, Math.round(getPName(piece.params, 'cold2', getP2(piece.params, 1))));
-    grantStacks(ctx.dummy, 'cold', cold, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-      rng: ctx.rng,
-      opponent: ctx.player,
-    });
+    const cold = Math.trunc(getPName(piece.params, 'cold', getP1(piece.params, 2)));
+    const selfCold = Math.trunc(getPName(piece.params, 'cold2', getP2(piece.params, 1)));
+    if (cold > 0) {
+      grantStacks(ctx.dummy, 'cold', cold, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+        rng: ctx.rng,
+        opponent: ctx.player,
+      });
+    }
     if (selfCold) {
       grantStacks(ctx.player, 'cold', selfCold, {
         originKey: piece.placementKey,
@@ -138,7 +136,7 @@ export const boomerangPort = {
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'boomerang');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
     const stamRed = Math.abs(getPName(piece.params, 'stamina', getP1(piece.params, 10)) / 100);
     if (stamRed) multiplyStaminaCost(piece, -stamRed);
@@ -152,7 +150,10 @@ export const boomerangPort = {
       ctx.events.push({
         t: ctx.t + 0.008,
         type: 'buff',
-        target: 'player',
+        actor: eventSideForPiece(piece),
+        target: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
         amount: n,
         label: `${piece.name}: stole buff`,
         meta: { category: 'buff', script: true, handler: 'boomerang' },
@@ -166,26 +167,39 @@ export const boomerangPort = {
 export const daggerangPort = {
   handlerId: 'daggerang',
   family: 'on_hit',
+  onPrepare(piece, ctx) {
+    ctx.bus?.on?.('actor_stunned', (payload) => {
+      if (!piece.alive || payload?.actor !== ctx.dummy) return;
+      const raw = randInt(piece.damageMin, piece.damageMax, ctx.rng);
+      dealHit(piece, ctx, raw);
+    });
+  },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'daggerang');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
     const stamRed = Math.abs(getPName(piece.params, 'stamina', getP1(piece.params, 10)) / 100);
     if (stamRed) multiplyStaminaCost(piece, -stamRed);
     if (!rollItemChance(piece, ctx.rng)) return;
-    stealRandomBuff(ctx.dummy, ctx.player, 1, ctx.rng, {
+    const stolen = stealRandomBuff(ctx.dummy, ctx.player, 1, ctx.rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    ctx.events.push({
-      t: ctx.t + 0.008,
-      type: 'buff',
-      target: 'player',
-      amount: 1,
-      label: `${piece.name}: stole buff`,
-      meta: { category: 'buff', script: true, handler: 'daggerang' },
-    });
+    const n = Object.values(stolen).reduce((a, b) => a + b, 0);
+    if (n > 0) {
+      ctx.events.push({
+        t: ctx.t + 0.008,
+        type: 'buff',
+        actor: eventSideForPiece(piece),
+        target: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        amount: n,
+        label: `${piece.name}: stole buff`,
+        meta: { category: 'buff', script: true, handler: 'daggerang' },
+      });
+    }
   },
 };
 
@@ -194,22 +208,20 @@ export const daggerangPort = {
 export const brassKnucklesPort = {
   handlerId: 'brass_knuckles',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const rageSpeed = getP4(piece.params, 15) / 100;
     piece._knuckleRageOn = false;
-    // Approx battle_rage via Empower spikes from Extra Angy / similar
-    onBuffChanged(ctx.player, (ch) => {
-      if (ch.stack !== 'empower') return;
-      const raging = (ctx.player.stacks.empower || 0) >= 3;
-      if (raging && !piece._knuckleRageOn && rageSpeed) {
-        addSpeed(piece, rageSpeed);
-        piece._knuckleRageOn = true;
-        ctx.player.battleRage = true;
-      } else if (!raging && piece._knuckleRageOn && rageSpeed) {
-        addSpeed(piece, -rageSpeed);
-        piece._knuckleRageOn = false;
-        ctx.player.battleRage = false;
-      }
+    ctx.bus?.on?.('battle_rage_started', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
+      if (piece._knuckleRageOn || !rageSpeed) return;
+      addSpeed(piece, rageSpeed);
+      piece._knuckleRageOn = true;
+    });
+    ctx.bus?.on?.('battle_rage_ended', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
+      if (!piece._knuckleRageOn || !rageSpeed) return;
+      addSpeed(piece, -rageSpeed);
+      piece._knuckleRageOn = false;
     });
   },
   onCooldownEffect(piece, ctx) {
@@ -228,7 +240,7 @@ export const brassKnucklesPort = {
       if (acc && (other.kind === 'weapon' || other.damageMax > 0)) addAccuracy(other, acc);
     }
     if (rollItemChance(piece, ctx.rng)) {
-      const dur = Math.max(0.5, effectDuration(piece, 'dur_stun', 1));
+      const dur = Math.max(0, effectDuration(piece, 'dur_stun', 1));
       grantStun(ctx.dummy, dur, ctx.t, {
         origin: piece,
         meta: { category: 'debuff', script: true, handler: 'brass_knuckles' },
@@ -247,42 +259,61 @@ export const thorsHammerPort = {
   },
   onDealtDamage(piece, ctx, hit) {
     if (!hit?.hit) return;
-    const { player, dummy, rng, t } = ctx;
+    const { player, dummy, rng, t, events } = ctx;
     if (rollItemChance(piece, rng)) {
-      const dur = Math.max(0.5, effectDuration(piece, 'dur_stun', 1));
+      const dur = scaleEffectDuration(
+        piece,
+        modifiedParamValue(
+          piece,
+          getPName(piece.params, 'dur_stun', getP1(piece.params, 0.5)),
+          'dur_stun',
+        ),
+      );
       grantStun(dummy, dur, t, {
         origin: piece,
         meta: { category: 'debuff', script: true, handler: 'thors_hammer' },
       });
     }
-    const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP1(piece.params, 3))));
+    const need = Math.trunc(getPName(piece.params, 'manat', getP2(piece.params, 2)));
     if ((player.stacks.mana || 0) < need) return;
-    if (
-      useMana(player, need, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      }).spent <= 0
-    ) {
-      return;
-    }
-    const effectDmg = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 8))));
+    useMana(player, need, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+    const effectDmg = Math.trunc(getPName(piece.params, 'dam', getP3(piece.params, 12)));
     dealEffectDamage(piece, ctx, effectDmg);
-    const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', getP3(piece.params, 2))));
-    const dur = Math.max(0.5, getPName(piece.params, 'dur_blind', 3));
-    grantTemporaryStacks(dummy, 'blind', blind, dur, t, {
+    const blind = Math.trunc(getPName(piece.params, 'blind', getP4(piece.params, 5)));
+    const dur = scaleEffectDuration(
+      piece,
+      modifiedParamValue(
+        piece,
+        getPName(piece.params, 'dur_blind', getP5(piece.params, 2)),
+        'dur_blind',
+      ),
+    );
+    const blindGain = grantTemporaryStacks(dummy, 'blind', blind, dur, t, {
       rng,
       opponent: player,
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    events.push({
-      t: t + 0.01,
-      type: 'debuff',
-      target: 'dummy',
-      amount: blind,
-      label: `${piece.name}: +${blind} Blind`,
-      meta: { category: 'debuff', stack: 'blind', script: true, handler: 'thors_hammer' },
-    });
+    if (blindGain.gained > 0) {
+      events.push({
+        t: t + 0.01,
+        type: 'debuff',
+        target: 'dummy',
+        amount: blindGain.gained,
+        label: `${piece.name}: +${blindGain.gained} Blind`,
+        meta: {
+          category: 'debuff',
+          stack: 'blind',
+          script: true,
+          handler: 'thors_hammer',
+          temp: true,
+          duration: dur,
+        },
+      });
+    }
   },
 };
 
@@ -307,6 +338,7 @@ export const amethystWhelpPort = {
       label: `${piece.name}: random debuffs ×${n}`,
       meta: { category: 'debuff', script: true, handler: 'amethyst_whelp' },
     });
+    pushActivate(piece, ctx, 'amethyst_whelp', `Weapon: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'amethyst_whelp');
@@ -322,43 +354,59 @@ export const amethystWhelpPort = {
 
 /** ChainWhip.gd — strip buffs; purge listener → bonus dmg; rage heal. */
 /** @type {ScriptHandler} */
+function chainWhipPreDealDamage(piece, ctx, hit) {
+  if (!hit?.hit) return;
+  const n = Math.max(1, Math.round(getP1(piece.params, 1)));
+  removeRandomBuffs(ctx.dummy, n, ctx.rng, {
+    originKey: piece.placementKey,
+    originId: piece.itemId,
+  });
+  if (ctx.player.battleRage) {
+    const healed = healActor(ctx.player, Math.max(1, Math.round(getP2(piece.params, 4))));
+    if (healed > 0) {
+      ctx.events.push({
+        t: ctx.t + 0.008,
+        type: 'heal',
+        target: 'player',
+        amount: healed,
+        label: `${piece.name}: rage heal +${healed}`,
+        meta: { category: 'heal', script: true, handler: 'chain_whip' },
+      });
+    }
+  }
+}
+
 export const chainWhipPort = {
   handlerId: 'chain_whip',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._buffsPurged = 0;
     const per = Math.max(0, Math.round(getP3(piece.params, 1)));
     onBuffChanged(ctx.dummy, (ch) => {
       if (!(ch.amount < 0) || !BUFF_KEYS.includes(String(ch.stack))) return;
-      if (ch.originKey !== piece.placementKey) return;
+      const origin = [...(ctx.allPieces || ctx.pieces || [])].find(
+        (candidate) => candidate.placementKey === ch.originKey,
+      );
+      // ChainWhip.gd checks the Item origin's character, not only the whip's
+      // own placement. Preserve that distinction when another allied item
+      // strips the opponent's buffs through the same character.
+      if (origin) {
+        if (eventSideForPiece(origin) !== eventSideForPiece(piece)) return;
+      } else if (ch.originKey !== piece.placementKey) {
+        return;
+      }
       const n = Math.abs(ch.amount);
       piece._buffsPurged = (piece._buffsPurged || 0) + n;
       if (per) addBonusDamage(piece, n * per);
     });
   },
   onCooldownEffect(piece, ctx) {
-    return weaponStrike(piece, ctx, 'chain_whip');
-  },
-  onDealtDamage(piece, ctx, hit) {
-    if (!hit?.hit) return;
-    const n = Math.max(1, Math.round(getP1(piece.params, 1)));
-    removeRandomBuffs(ctx.dummy, n, ctx.rng, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
+    return weaponStrike(piece, ctx, 'chain_whip', {
+      onPreDealDamageEarly: (hit) => chainWhipPreDealDamage(piece, ctx, hit),
     });
-    if (ctx.player.battleRage) {
-      const healed = healActor(ctx.player, Math.max(1, Math.round(getP2(piece.params, 4))));
-      if (healed > 0) {
-        ctx.events.push({
-          t: ctx.t + 0.008,
-          type: 'heal',
-          target: 'player',
-          amount: healed,
-          label: `${piece.name}: rage heal +${healed}`,
-          meta: { category: 'heal', script: true, handler: 'chain_whip' },
-        });
-      }
-    }
+  },
+  onPreDealDamageEarly(piece, ctx, hit) {
+    chainWhipPreDealDamage(piece, ctx, hit);
   },
 };
 

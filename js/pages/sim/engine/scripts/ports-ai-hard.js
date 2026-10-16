@@ -2,7 +2,8 @@
  * Band AJ — HARD gap ports (engine hooks: timed DR, battle rage, shield afterBlock).
  */
 
-import { grantInvuln, healActor, tryUseStamina } from '../actor.js';
+import { grantInvuln, healActor, isInvulnerable, tryUseStamina } from '../actor.js';
+import { applyHealEfficiency } from '../actor-stats.js';
 import {
   grantStacks,
   grantTemporaryStacks,
@@ -12,14 +13,15 @@ import {
 } from '../buff-economy.js';
 import { getItemsInside, affectedTargets } from '../board-graph.js';
 import { startBattleRage, isBattleRaging } from '../battle-rage.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addBonusDamageFactor, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedResistancePct } from '../timed-resistance.js';
 import { grantTimedSpeed } from '../timed-speed.js';
-import { armPieceCooldown } from '../cooldown.js';
+import { armPieceCooldown, deactivateCooldown } from '../cooldown.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
-import { pushActivate } from './ports-util.js';
+import { afterEffectFinished, itemHasType, pushActivate } from './ports-util.js';
 import { eventSideForPiece } from '../vs-board.js';
 
 /**
@@ -32,49 +34,42 @@ export const resistorPort = {
   handlerId: 'resistor',
   family: 'unique',
   onChargeReceived(piece, ctx) {
-    const heatT = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'heatt', getP1(piece.params, 20))),
-    );
-    const heat = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'heat', getP2(piece.params, 3))),
-    );
+    const heatT = Math.trunc(getPName(piece.params, 'heatt', getP1(piece.params, 0)));
+    const heat = Math.trunc(getPName(piece.params, 'heat', getP2(piece.params, 0)));
     const cur = getStackAmount(ctx.player, 'heat');
     if (cur < heatT) {
-      gainStacks(ctx.player, 'heat', heat, {
+      const result = gainStacks(ctx.player, 'heat', heat, {
         originKey: piece.placementKey,
         originId: piece.itemId,
         rng: ctx.rng,
       });
-      // Item.miniActivate() is a VFX-only activation: it must not increment
-      // the normal Activations metric or arm/consume the Resistor cooldown.
+      if (result.gained > 0) {
+        ctx.events.push({
+          t: ctx.t,
+          type: 'buff',
+          target: eventSideForPiece(piece),
+          actor: eventSideForPiece(piece),
+          amount: result.gained,
+          itemId: piece.itemId,
+          label: `${piece.name}: +${result.gained} Heat (charge)`,
+          meta: {
+            category: 'buff',
+            stack: 'heat',
+            script: true,
+            handler: 'resistor',
+            source: 'resistor_charge',
+          },
+        });
+      }
+      // Item.miniActivate() is VFX-only: retain the projection without a
+      // normal `activate` event, which would inflate Activations metrics.
       ctx.events.push({
         t: ctx.t,
-        type: 'buff',
-        target: eventSideForPiece(piece),
-        actor: eventSideForPiece(piece),
-        amount: heat,
-        itemId: piece.itemId,
-        label: `${piece.name}: +${heat} Heat (charge)`,
-        meta: {
-          category: 'buff',
-          stack: 'heat',
-          script: true,
-          handler: 'resistor',
-          // The canonical grantStacks combat-log line is retained; this
-          // explicit line is collapsed when the shared logger has already
-          // emitted the same causal grant.
-          source: 'resistor_charge',
-        },
-      });
-      ctx.events.push({
-        t: ctx.t + 0.001,
-        type: 'activate',
+        type: 'info',
         actor: eventSideForPiece(piece),
         itemId: piece.itemId,
         placementKey: piece.placementKey,
-        label: `${piece.name}: charge response`,
+        label: `${piece.name}: mini activate`,
         meta: {
           category: 'system',
           script: true,
@@ -159,48 +154,107 @@ export const leatherHelmPort = {
 export const evilCapPort = {
   handlerId: 'evil_cap',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
+    piece._evilNullifyApplied = false;
     const healRed =
       getPName(piece.params, 'healreduction', getP3(piece.params, 30)) / 100;
     if (healRed) {
-      ctx.dummy.unhealing = (Number(ctx.dummy.unhealing) || 0) + healRed;
+      applyHealEfficiency(ctx.dummy, -healRed, ctx, {
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        name: piece.name,
+      });
     }
-    const nullify =
-      Number(ctx.itemsById.get(piece.itemId)?.chance) || Number(piece.chance) || 15;
-    ctx.dummy.buffNullifyChance =
-      (Number(ctx.dummy.buffNullifyChance) || 0) + nullify;
-    const dr = Math.max(0, getPName(piece.params, 'damagereduction', getP1(piece.params, 25)));
-    const dur = Math.max(0.5, getPName(piece.params, 'dur', getP2(piece.params, 5)));
-    if (dr) grantTimedResistancePct(ctx.player, dr, ctx.t + dur, 'evil_cap');
-    pushActivate(piece, ctx, 'evil_cap', `Accessory: ${piece.name}`);
+  },
+  onPreCombatStart(piece, ctx) {
+    const dr = getPName(
+      piece.params,
+      'damagereduction',
+      getP1(piece.params, 25),
+    );
+    const dur = getPName(piece.params, 'dur', getP2(piece.params, 5));
+    const tag = `evil_cap:${piece.placementKey || piece.itemId}`;
+    piece._evilResistTag = tag;
+    if (!dr) return;
+    const actor = ctx.player;
+    const priorEnd = actor._onTimedResistEnd;
+    actor._onTimedResistEnd = (endedTag, entry) => {
+      priorEnd?.(endedTag, entry);
+      if (endedTag !== tag) return;
+      piece._evilBuffsActive = Math.max(0, (Number(piece._evilBuffsActive) || 0) - 1);
+      piece._evilParticlesActive = piece._evilBuffsActive > 0;
+    };
+    grantTimedResistancePct(actor, dr, (Number(ctx.t) || 0) + dur, tag);
+  },
+  onCombatStart(piece, ctx) {
+    if (!piece._evilNullifyApplied) {
+      piece._evilNullifyApplied = true;
+      const rawChance = piece.chance ?? ctx.itemsById?.get?.(piece.itemId)?.chance;
+      const chance = rawChance == null || !Number.isFinite(Number(rawChance))
+        ? 15
+        : Number(rawChance);
+      ctx.dummy.buffNullifyChance =
+        (Number(ctx.dummy.buffNullifyChance) || 0) + chance;
+    }
+    piece._evilBuffsActive = (Number(piece._evilBuffsActive) || 0) + 1;
+    piece._evilParticlesActive = true;
+    pushActivate(piece, ctx, 'evil_cap', `Helmet: ${piece.name}`);
   },
 };
 
 /** ShinyMantle.gd — mana → invuln; Blind on invuln start; escalating mana cost. */
 /** @type {ScriptHandler} */
+function shinyMantleGemDurationFactor(piece, ctx) {
+  const gold = getPName(piece.params, 'gold', getP3(piece.params, 10));
+  if (!(gold > 0)) return 0;
+  let value = 0;
+  for (const other of ctx.pieces || []) {
+    const item = ctx.itemsById?.get?.(other.itemId);
+    if (itemHasType(item, 'gem')) value += Number(item?.cost) || 0;
+    for (const gemId of other.gemIds || []) {
+      value += Number(ctx.itemsById?.get?.(gemId)?.cost) || 0;
+    }
+  }
+  return Math.floor(value / gold);
+}
+
 export const shinyMantlePort = {
   handlerId: 'shiny_mantle',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    piece._mantleMana = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'manat', getPName(piece.params, 'p5', 3))),
+  onPrepare(piece, ctx) {
+    piece._mantleMana = Math.trunc(
+      getPName(piece.params, 'manat', getPName(piece.params, 'p5', 3)),
+    );
+    piece._mantleManaIncrease = Math.trunc(
+      getPName(piece.params, 'mana', getPName(piece.params, 'p6', 3)),
+    );
+    piece._mantleBlind = Math.trunc(
+      getPName(piece.params, 'blind', getPName(piece.params, 'p4', 3)),
+    );
+    piece._mantleMaxUses = Math.trunc(
+      getPName(piece.params, 'max', getPName(piece.params, 'p7', 3)),
     );
     piece._mantleUses = 0;
-    // Gem gold duration factor — inventory gems not fully priced; use 0 (base dur only)
-    piece._mantleGemDur = 0;
+    // ShinyMantle.getCounterValue() / gold: sum the catalog value of gem counters.
+    piece._mantleGemDur = shinyMantleGemDurationFactor(piece, ctx);
+    piece._mantleCtx = ctx;
     ctx.bus?.on?.('character_invulnerable_start', (payload) => {
       if (payload?.sourceId !== piece.itemId) return;
-      const blind = Math.max(
-        1,
-        Math.round(getPName(piece.params, 'blind', getPName(piece.params, 'p4', 3))),
-      );
-      gainStacks(ctx.dummy, 'blind', blind, { rng: ctx.rng, opponent: ctx.player });
-      ctx.events.push({
-        t: ctx.t,
+      const eventCtx = piece._mantleCtx || ctx;
+      const blind = Number(piece._mantleBlind) || 0;
+      if (!(blind > 0)) return;
+      const result = gainStacks(eventCtx.dummy, 'blind', blind, {
+        rng: eventCtx.rng,
+        opponent: eventCtx.player,
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      if (!(result.gained > 0)) return;
+      eventCtx.events.push({
+        t: Number(payload.t) || eventCtx.t,
         type: 'debuff',
         target: 'dummy',
-        amount: blind,
+        amount: result.gained,
         label: `${piece.name}: +${blind} Blind (invuln)`,
         meta: {
           category: 'debuff',
@@ -213,44 +267,42 @@ export const shinyMantlePort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, bus } = ctx;
-    pushActivate(piece, ctx, 'shiny_mantle', `Armor: ${piece.name}`);
-    const need = Number(piece._mantleMana) || 3;
-    const maxUses = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'max', getPName(piece.params, 'p7', 3))),
-    );
-    if ((Number(piece._mantleUses) || 0) >= maxUses) return true;
-    if ((Number(player.stacks.mana) || 0) < need) return true;
-    if (
-      useMana(player, need, {
+    const need = Number.isFinite(Number(piece._mantleMana))
+      ? Number(piece._mantleMana)
+      : Math.trunc(getPName(piece.params, 'manat', getPName(piece.params, 'p5', 3)));
+    const maxUses = Number.isFinite(Number(piece._mantleMaxUses))
+      ? Number(piece._mantleMaxUses)
+      : Math.trunc(getPName(piece.params, 'max', getPName(piece.params, 'p7', 3)));
+    piece._activationLogged = true;
+    if (!isInvulnerable(player, t) && (Number(player.stacks.mana) || 0) >= need) {
+      const spent = useMana(player, need, {
         originKey: piece.placementKey,
         originId: piece.itemId,
-      }).spent <= 0
-    ) {
-      return true;
-    }
-    const durBase = getPName(piece.params, 'dur_base', getP1(piece.params, 1));
-    const durBonus = getPName(piece.params, 'dur_bonus', getP2(piece.params, 0.2));
-    const invuDur = durBase + durBonus * (Number(piece._mantleGemDur) || 0);
-    grantInvuln(player, invuDur, t, {
-      bus,
-      sourceId: piece.itemId,
-      sourceKey: piece.placementKey,
-    });
-    piece._mantleUses = (Number(piece._mantleUses) || 0) + 1;
-    piece._mantleMana =
-      need + Math.max(0, Math.round(getPName(piece.params, 'mana', getPName(piece.params, 'p6', 3))));
-    events.push({
-      t: t + 0.004,
-      type: 'buff',
-      target: 'player',
-      amount: invuDur,
-      label: `${piece.name}: invulnerable ${invuDur.toFixed(1)}s`,
-      meta: { category: 'system', script: true, handler: 'shiny_mantle' },
-    });
-    if ((Number(piece._mantleUses) || 0) >= maxUses) {
-      piece.alive = false;
-      piece.charges = 0;
+      }).spent;
+      if (spent <= 0) return true;
+      const durBase = getPName(piece.params, 'dur_base', getP1(piece.params, 1));
+      const durBonus = getPName(piece.params, 'dur_bonus', getP2(piece.params, 0.2));
+      const invuDur = durBase + durBonus * (Number(piece._mantleGemDur) || 0);
+      grantInvuln(player, invuDur, t, {
+        bus,
+        sourceId: piece.itemId,
+        sourceKey: piece.placementKey,
+      });
+      piece._mantleUses = (Number(piece._mantleUses) || 0) + 1;
+      piece._mantleMana = need + (Number(piece._mantleManaIncrease) || 0);
+      events.push({
+        t: t + 0.004,
+        type: 'buff',
+        target: 'player',
+        amount: invuDur,
+        label: `${piece.name}: invulnerable ${invuDur.toFixed(1)}s`,
+        meta: { category: 'system', script: true, handler: 'shiny_mantle' },
+      });
+      if ((Number(piece._mantleUses) || 0) === maxUses) {
+        afterEffectFinished(piece, ctx, 'shiny_mantle', { label: `Armor: ${piece.name}` });
+      } else {
+        pushActivate(piece, ctx, 'shiny_mantle', `Armor: ${piece.name}`);
+      }
     }
     return true;
   },
@@ -298,20 +350,22 @@ export const extraAngyPort = {
   handlerId: 'extra_angy',
   family: 'unique',
   deferStartActivate: true,
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._angyActivated = false;
     piece._angyRageDur = 0;
-    piece._cdLocked = true;
-    piece.triggerTime = 1e9;
     ctx.bus?.on?.('battle_rage_started', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (!piece._angyActivated) {
-        piece._angyRageDur = Number(payload?.duration) || 0;
+        const duration = Number(payload?.duration);
+        piece._angyRageDur = Number.isFinite(duration) ? duration : 0;
       }
     });
-    ctx.bus?.on?.('battle_rage_ended', () => {
+    ctx.bus?.on?.('battle_rage_ended', (payload) => {
+      if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._angyActivated || !piece.alive) return;
       piece._angyActivated = true;
       piece._cdLocked = false;
+      piece.cooldown = Number(piece.baseCooldown ?? ctx.itemsById?.get?.(piece.itemId)?.cooldown) || 0;
       armPieceCooldown(piece, ctx.player.stacks, ctx.rng);
       ctx.events.push({
         t: ctx.t,
@@ -322,11 +376,13 @@ export const extraAngyPort = {
       });
     });
   },
+  onPreCombatStart(piece) {
+    deactivateCooldown(piece);
+  },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, bus } = ctx;
-    pushActivate(piece, ctx, 'extra_angy', `Skill: ${piece.name}`);
     const pct = getPName(piece.params, 'dur', getP1(piece.params, 100)) / 100;
-    const dur = Math.max(0.5, (Number(piece._angyRageDur) || 3) * pct);
+    const dur = (Number(piece._angyRageDur) || 0) * pct;
     startBattleRage(player, dur, t, { bus, sourceId: piece.itemId });
     events.push({
       t: t + 0.004,
@@ -336,8 +392,7 @@ export const extraAngyPort = {
       label: `${piece.name}: battle rage ${dur.toFixed(1)}s`,
       meta: { category: 'system', script: true, handler: 'extra_angy' },
     });
-    piece.alive = false;
-    piece.charges = 0;
+    afterEffectFinished(piece, ctx, 'extra_angy', { label: `Skill: ${piece.name}` });
     return true;
   },
 };
@@ -347,12 +402,61 @@ export const extraAngyPort = {
 export const toolboxPort = {
   handlerId: 'toolbox',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    const lifesteal = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'lifesteal', getP4(piece.params, 35)),
+      'lifesteal',
+    ) / 100;
+    piece._toolboxLifesteal = lifesteal;
+    // Toolbox.gd connects to the owner's opponent.character_attacked signal
+    // during onPrepare. The simulator's canonical equivalent is the damage
+    // event whose actor is this owner and whose attacker is the opponent.
+    ctx.bus?.on?.('character_damaged', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      if (payload.attacker && payload.attacker !== ctx.dummy) return;
+      if (!piece.alive) return;
+      const at = Number(payload.t ?? ctx.t);
+      if (!isBattleRaging(ctx.player, at)) return;
+      const hit =
+        typeof payload.hit === 'object'
+          ? payload.hit
+          : { hit: payload.hit === true };
+      if (hit.hit !== true) return;
+      const source = payload.damage?.damageSource ?? payload.damageSource;
+      if (source?.canApplyLifesteal === false || source?.isEffectDamage === true) return;
+      if (typeof source?.canApplyLifesteal === 'function' && !source.canApplyLifesteal()) return;
+      const damage = Number(payload.damage?.damage ?? payload.damage ?? payload.healthDamage) || 0;
+      if (!(damage > 0) || !(lifesteal > 0)) return;
+      const amount = Math.ceil(lifesteal * damage);
+      if (!(amount > 0)) return;
+      const healed = healActor(ctx.player, amount);
+      const side = eventSideForPiece(piece);
+      ctx.events.push({
+        t: at,
+        type: 'heal',
+        actor: side,
+        target: side,
+        amount: Number(ctx.player._lastHeal?.loggedAmount) || amount,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: rage lifesteal +${amount}`,
+        meta: {
+          category: 'heal',
+          script: true,
+          handler: 'toolbox',
+          applied: healed,
+          damage: damage,
+        },
+      });
+    });
+  },
   onCombatStart(piece, ctx) {
-    const { t, events, graph, pieces } = ctx;
+    const { graph, pieces } = ctx;
     const speedRed =
-      getPName(piece.params, 'speedreduction', getPName(piece.params, 'p2', 30)) / 100;
+      getPName(piece.params, 'speedreduction', getP1(piece.params, 30)) / 100;
     const damBonus =
-      getPName(piece.params, 'dambonus', getPName(piece.params, 'p1', 30)) / 100;
+      getPName(piece.params, 'dambonus', getP2(piece.params, 30)) / 100;
     const inside = getItemsInside(graph, piece.placementKey);
     for (const key of inside) {
       const other = (pieces || []).find((p) => p.placementKey === key);
@@ -360,53 +464,31 @@ export const toolboxPort = {
       if (speedRed) addSpeed(other, -speedRed);
       if (damBonus) addBonusDamageFactor(other, damBonus);
     }
-    const lsFrac =
-      getPName(piece.params, 'lifesteal', getPName(piece.params, 'p4', 35)) / 100;
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
-      if (!isBattleRaging(ctx.player, ctx.t)) return;
-      const hit = payload?.hit;
-      if (!hit?.hit || !(hit.healthDamage > 0)) return;
-      const heal = Math.ceil(lsFrac * Number(hit.damage || hit.healthDamage || 0));
-      if (heal > 0) {
-        healActor(ctx.player, heal);
-        events.push({
-          t: ctx.t,
-          type: 'heal',
-          target: 'player',
-          amount: heal,
-          label: `${piece.name}: rage lifesteal ${heal}`,
-          meta: { category: 'heal', script: true, handler: 'toolbox' },
-        });
-      }
-    });
-    events.push({
-      t,
-      type: 'activate',
-      actor: 'player',
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `Bag: ${piece.name}`,
-      meta: { category: 'system', script: true, handler: 'toolbox' },
-    });
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, bus } = ctx;
-    pushActivate(piece, ctx, 'toolbox', `Bag: ${piece.name}`);
     const dur = Math.max(
-      0.5,
-      getPName(piece.params, 'dur_rage', getPName(piece.params, 'p3', 5.5)),
+      0,
+      modifiedParamValue(
+        piece,
+        getPName(piece.params, 'dur_rage', getP3(piece.params, 5.5)),
+        'dur_rage',
+      ),
     );
     startBattleRage(player, dur, t, { bus, sourceId: piece.itemId });
-    events.push({
-      t: t + 0.004,
-      type: 'buff',
-      target: 'player',
-      amount: dur,
-      label: `${piece.name}: battle rage ${dur.toFixed(1)}s`,
-      meta: { category: 'system', script: true, handler: 'toolbox' },
-    });
-    piece.alive = false;
-    piece.charges = 0;
+    if (dur > 0) {
+      const side = eventSideForPiece(piece);
+      events.push({
+        t: t + 0.004,
+        type: 'buff',
+        actor: side,
+        target: side,
+        amount: dur,
+        label: `${piece.name}: battle rage ${dur.toFixed(1)}s`,
+        meta: { category: 'system', script: true, handler: 'toolbox' },
+      });
+    }
+    afterEffectFinished(piece, ctx, 'toolbox', { label: `Bag: ${piece.name}` });
     return true;
   },
 };

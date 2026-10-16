@@ -24,6 +24,7 @@ import { superiorRingPort } from './ports-ring.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { rollPercent } from '../rng.js';
 import { removeBlock } from './ports-wave-c-util.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -34,23 +35,75 @@ function linked(ctx, piece) {
   return (ctx.pieces || []).filter((o) => links.some((l) => l.key === o.placementKey));
 }
 
+function ropeSecondaryTarget(ctx, piece) {
+  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect)
+    .filter((link) => link.color === 'secondary');
+  return (ctx.pieces || [])
+    .filter((other) => {
+      if (!links.some((link) => link.key === other.placementKey)) return false;
+      // Rope.canAffect_secondary() is Item.hasCooldown(), which uses the
+      // catalog descriptor rather than the current simulator trigger loop.
+      return Number(ctx.itemsById.get(other.itemId)?.cooldown) > 0;
+    })
+    .at(-1) || null;
+}
+
+function ropeSpeedParams(piece) {
+  return {
+    per: Math.max(0, getPName(piece.params, 'speed', getP1(piece.params, 0)) / 100),
+    cap: Math.max(0, getPName(piece.params, 'max', getP3(piece.params, 0)) / 100),
+    duration: Math.max(0, getPName(piece.params, 'dur', getP2(piece.params, 0))),
+  };
+}
+
+function expireRopeSpeed(listener, ctx) {
+  const target = listener._ropeTarget;
+  if (!target) return;
+  const { per, cap } = ropeSpeedParams(listener);
+  const total = Math.max(0, (Number(target._ropeSpeedupTotal) || 0) - per);
+  target._ropeSpeedupTotal = total;
+  const left = cap - total;
+  if (left > 0 && per > 0) addSpeed(target, -Math.min(left, per));
+}
+
 function chanceOf(piece, ctx, key = 'chance', fb = 20) {
   const item = ctx.itemsById.get(piece.itemId);
   const n = Number(item?.[key] ?? piece.chance);
   return Number.isFinite(n) && n > 0 ? n : fb;
 }
 
+function baseChanceOf(piece, ctx, key) {
+  const n = Number(ctx.itemsById.get(piece.itemId)?.[key]);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function acornCollarTargets(ctx, piece) {
+  return linked(ctx, piece).filter((other) => {
+    const item = ctx.itemsById.get(other.itemId);
+    return (Number(item?.damageMin) || 0) > 0 || itemHasType(item, 'lifesteal');
+  });
+}
+
 /** @type {ScriptHandler} */
 const acornCollarPort = {
   handlerId: 'acorn_collar',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // RangerCollar.prepare() captures damage-capable targets and applies one
+  // Acorn Ace stamina factor per copy before AcornCollar.gd binds Lucky.
+  onPrepare(piece, ctx) {
+    const targets = acornCollarTargets(ctx, piece);
+    const ace = ctx.itemsById.get('acorn_ace');
+    const aceCount = (ctx.pieces || []).filter((other) => other.itemId === 'acorn_ace').length;
+    const staminaReduction = -aceCount * getPName(ace?.params, 'stamina', 10) / 100;
+    if (staminaReduction) {
+      for (const other of targets) multiplyStaminaCost(other, staminaReduction);
+    }
+    if (!targets.length) return;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'lucky' || !ch.amount) return;
-      const per = chanceOf(piece, ctx) / 100;
-      for (const o of linked(ctx, piece)) {
-        if ((Number(o.damageMax) || 0) <= 0 && o.kind !== 'weapon') continue;
-        o.critChance = (Number(o.critChance) || 0) + ch.amount * per * 100;
+      const per = chanceOf(piece, ctx);
+      for (const other of targets) {
+        other.critChance = (Number(other.critChance) || 0) + ch.amount * per;
       }
     });
   },
@@ -123,21 +176,27 @@ const spikedCollarPort = {
 const vampiricCollarPort = {
   handlerId: 'vampiric_collar',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const maxLs = getPName(piece.params, 'max', 25) / 100;
+  onPrepare(piece, ctx) {
+    const maxLs = getPName(piece.params, 'max', getP2(piece.params, 25)) / 100;
+    const targets = linked(ctx, piece);
+    if (!targets.length) return;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'vampirism' || !ch.amount) return;
       const per = chanceOf(piece, ctx) / 100;
-      for (const o of linked(ctx, piece)) {
+      for (const o of targets) {
         o.critChance = (Number(o.critChance) || 0) + ch.amount * per * 100;
       }
     });
     ctx.bus?.on?.('piece_dealt_damage', (payload) => {
-      if (!payload?.hit?.hit || !payload.hit.healthDamage) return;
-      if (!linked(ctx, piece).some((o) => o === payload.piece)) return;
+      const damage = Number(payload?.hit?.damage ?? payload?.hit?.healthDamage) || 0;
+      if (!payload?.hit?.hit || damage <= 0) return;
+      if (!targets.some((o) => o === payload.piece)) return;
       const luck = Math.max(1, getStackAmount(ctx.player, 'lucky'));
-      const fac = Math.min(maxLs, (getPName(piece.params, 'lifesteal', 5) / 100) * luck);
-      if (fac > 0) healActor(ctx.player, Math.max(1, Math.ceil(payload.hit.healthDamage * fac)));
+      const fac = Math.min(
+        maxLs,
+        (getPName(piece.params, 'lifesteal', getP1(piece.params, 5)) / 100) * luck,
+      );
+      if (fac > 0) healActor(ctx.player, Math.max(1, damage * fac));
     });
   },
 };
@@ -173,7 +232,9 @@ const leafBadgePort = {
 const amuletOfDarknessPort = {
   handlerId: 'amulet_of_darkness',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // AmuletofDarkness.gd binds both listeners in onPrepare, before start-time
+  // activations can produce effect damage.
+  onPrepare(piece, ctx) {
     piece._darkAcc = 0;
     const th = Math.max(1, Math.round(getPName(piece.params, 'damt', getP1(piece.params, 20))));
     ctx.bus?.on?.('character_damaged', (payload) => {
@@ -204,7 +265,9 @@ const amuletOfDarknessPort = {
 const amuletOfFeastingPort = {
   handlerId: 'amulet_of_feasting',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  // AmuletofFeasting.gd applies Food speed in onPrepare so affected Food
+  // cooldowns are armed with the adjusted value.
+  onPrepare(piece, ctx) {
     const spd = getPName(piece.params, 'foodspeed', getP1(piece.params, 15)) / 100;
     for (const o of linked(ctx, piece)) {
       if (!itemHasType(ctx.itemsById.get(o.itemId), 'food')) continue;
@@ -217,10 +280,10 @@ const amuletOfFeastingPort = {
 const starOfCouragePort = {
   handlerId: 'star_of_courage',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const fac = -getPName(piece.params, 'stamina', getP1(piece.params, 20)) / 100;
+  onPrepare(piece, ctx) {
+    const fac = -getPName(piece.params, 'stamina', getP2(piece.params, 0)) / 100;
     for (const o of ctx.pieces || []) {
-      if (o.kind !== 'weapon' && !(Number(o.damageMax) > 0)) continue;
+      if (!itemHasType(ctx.itemsById.get(o.itemId), 'weapon')) continue;
       multiplyStaminaCost(o, fac);
     }
   },
@@ -230,9 +293,10 @@ const starOfCouragePort = {
 const piercingArrowPort = {
   handlerId: 'piercing_arrow',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const sev = getP1(piece.params, 15) / 100;
-    const strip = Math.max(1, Math.round(getP2(piece.params, 2)));
+    const rawStrip = Number(getP2(piece.params, 2));
+    const strip = Number.isFinite(rawStrip) ? Math.trunc(rawStrip) : 2;
     for (const o of linked(ctx, piece)) {
       if (!canBeEmpoweredPiece(o)) continue;
       o.critSeverity = (Number(o.critSeverity) || 0) + sev;
@@ -257,16 +321,26 @@ const piercingArrowPort = {
 const poisonIvyPort = {
   handlerId: 'poison_ivy',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const n = linked(ctx, piece).filter((o) => itemHasType(ctx.itemsById.get(o.itemId), 'nature')).length;
+    piece._ivyAmp = false;
     ctx.player.stackResist = ctx.player.stackResist || {};
     ctx.player.stackResist.poison =
-      (Number(ctx.player.stackResist.poison) || 0) + chanceOf(piece, ctx) * Math.max(1, n);
+      (Number(ctx.player.stackResist.poison) || 0) + chanceOf(piece, ctx) * n;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'spikes' || !(ch.amount > 0)) return;
       grantStacks(ctx.dummy, 'poison', ch.amount * Math.max(1, Math.round(getP4(piece.params, 1))), {
         originKey: piece.placementKey,
         originId: piece.itemId,
+      });
+      ctx.events.push({
+        t: ctx.t,
+        type: 'activate',
+        actor: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: mini activate`,
+        meta: { category: 'system', script: true, handler: 'poison_ivy', miniActivate: true },
       });
     });
     onBuffChanged(ctx.dummy, (ch) => {
@@ -384,17 +458,20 @@ const twinePort = {
   family: 'unique',
   onPrepare(piece, ctx) {
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-    piece._twineTriggers = new Set(links.filter((link) => link.color !== 'secondary').map((link) => link.key));
+    piece._twineMaxHealth = Math.trunc(getP1(piece.params, 0));
+    piece._twineTriggers = new Set(links.filter((link) => link.color === 'primary').map((link) => link.key));
     piece._twineSecondaryCount = links.filter((link) => link.color === 'secondary').length;
   },
   onPeerActivated(listener, activated, ctx) {
     if (!listener._twineTriggers?.has(activated?.placementKey)) return;
     const n2 = Number(listener._twineSecondaryCount) || 0;
-    const ch = chanceOf(listener, ctx) + n2 * chanceOf(listener, ctx, 'chance2', 5);
+    const ch = baseChanceOf(listener, ctx, 'chance') + n2 * baseChanceOf(listener, ctx, 'chance2');
     if (!rollPercent(ch, ctx.rng)) return;
-    const hp = Math.max(1, Math.round(getPName(listener.params, 'health', 4)));
-    ctx.player.maxHp += hp;
-    ctx.player.hp = Math.min(ctx.player.maxHp, ctx.player.hp + hp);
+    const hp = Number(listener._twineMaxHealth) || 0;
+    if (hp > 0) {
+      ctx.player.maxHp += hp;
+      ctx.player.hp = Math.min(ctx.player.maxHp, ctx.player.hp + hp);
+    }
     pushActivate(listener, ctx, 'twine', `Accessory: ${listener.name}`);
   },
 };
@@ -403,23 +480,48 @@ const twinePort = {
 const ropePort = {
   handlerId: 'rope',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const cdItems = linked(ctx, piece).filter((o) => o.cooldown > 0 && o.cooldown < 500);
-    piece._ropeTarget = cdItems[0] || null;
-    const per = getPName(piece.params, 'speed', 8) / 100;
-    const cap = getPName(piece.params, 'max', 40) / 100;
-    piece._ropeAcc = 0;
+  onPrepare(piece, ctx) {
+    piece._ropeTarget = ropeSecondaryTarget(ctx, piece);
+    piece._ropeSpeedupTotal = 0;
+    const previous = piece._onTimedSpeedEnd;
+    piece._onTimedSpeedEnd = (tag, event) => {
+      previous?.(tag, event);
+      if (tag === 'rope_expire') expireRopeSpeed(piece, ctx);
+    };
   },
-  onPeerActivated(listener, _a, ctx) {
+  onPeerActivated(listener, activated, ctx) {
     const target = listener._ropeTarget;
     if (!target) return;
-    const per = getPName(listener.params, 'speed', 8) / 100;
-    const cap = getPName(listener.params, 'max', 40) / 100;
-    const left = cap - (Number(listener._ropeAcc) || 0);
-    if (left <= 0) return;
-    const add = Math.min(left, per);
-    listener._ropeAcc = (Number(listener._ropeAcc) || 0) + add;
-    addSpeed(target, add);
+    const links = affectedTargets(ctx.graph, listener.placementKey, ctx.itemsById, ctx.canAffect);
+    if (!links.some((link) => link.key === activated?.placementKey && link.color !== 'secondary')) return;
+    const { per, cap, duration } = ropeSpeedParams(listener);
+    const total = Number(target._ropeSpeedupTotal) || 0;
+    const left = cap - total;
+    if (left > 0 && per > 0) addSpeed(target, Math.min(left, per));
+    // Game.dictAdd() records the full per-trigger amount even when the visible
+    // speed is capped; the timeout later subtracts that same amount.
+    target._ropeSpeedupTotal = total + per;
+    if (duration > 0) {
+      const untilT = ctx.t + duration;
+      const listenerTimers = listener._timedSpeeds || (listener._timedSpeeds = []);
+      const existing = listenerTimers.find((entry) => entry.tag === 'rope_expire');
+      if (existing) existing.untilT = untilT;
+      else listenerTimers.push({ frac: 0, untilT, tag: 'rope_expire' });
+    }
+    ctx.events.push({
+      t: ctx.t + 0.001,
+      type: 'info',
+      itemId: listener.itemId,
+      placementKey: listener.placementKey,
+      label: `${listener.name}: mini activate`,
+      meta: {
+        category: 'system',
+        script: true,
+        handler: 'rope',
+        miniActivate: true,
+        targetKey: target.placementKey,
+      },
+    });
   },
 };
 
@@ -427,10 +529,16 @@ const ropePort = {
 const twineBadgePort = {
   handlerId: 'twine_badge',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const spd = getPName(piece.params, 'speed', 10) / 100;
-    for (const o of linked(ctx, piece)) {
-      addSpeed(o, spd);
+  onPrepare(piece, ctx) {
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    const speed = getP1(piece.params, 0) / 100;
+    const chanceRaw = Number(piece.chance ?? ctx.itemsById.get(piece.itemId)?.chance);
+    const amp = Number.isFinite(chanceRaw) ? chanceRaw : 0;
+    for (const link of links) {
+      const other = (ctx.pieces || []).find((candidate) => candidate.placementKey === link.key);
+      if (!other) continue;
+      if (speed) addSpeed(other, speed);
+      if (amp) other.buffAmpChance = (Number(other.buffAmpChance) || 0) + amp;
     }
   },
 };
@@ -478,18 +586,22 @@ const timePendantPort = {
       ctx.itemsById,
       ctx.canAffect,
     );
-    const target = (ctx.pieces || []).find(
-      (o) =>
-        links.some((l) => l.key === o.placementKey) && isCooldownActive(o),
-    );
+    // Item.getFirstAffectedItem() selects the first affected star in source
+    // order, then the source checks that one item's active-CD state. It does
+    // not skip an inactive first target to search later stars.
+    const firstTarget = links
+      .map((link) => (ctx.pieces || []).find((o) => o.placementKey === link.key))
+      .find(Boolean);
+    const target = firstTarget && isCooldownActive(firstTarget) ? firstTarget : null;
     if (target && sec > 0) {
       const before = target.triggerTime;
       advanceCooldownSeconds(target, sec, ctx);
+      const side = eventSideForPiece(piece);
       ctx.events.push({
         t: ctx.t,
         type: 'buff',
-        actor: 'player',
-        target: 'player',
+        actor: side,
+        target: side,
         itemId: piece.itemId,
         placementKey: piece.placementKey,
         amount: sec,

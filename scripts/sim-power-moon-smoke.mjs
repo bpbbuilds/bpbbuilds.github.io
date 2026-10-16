@@ -24,7 +24,7 @@ assert.match(handler, /onPostCombatStart[\s\S]*advanceTime/);
 assert.match(handler, /onPrepare[\s\S]*_moonLinkedKeys/);
 assert.match(handler, /fatigue_start[\s\S]*maxhealth/);
 assert.match(handler, /activatedId === 'moon_armor'[\s\S]*blind/);
-assert.match(handler, /activatedId === 'moon_shield'[\s\S]*debuffReflectStacks/);
+assert.match(handler, /activatedId === 'moon_shield'[\s\S]*(?:debuffReflectStacks|changeReflectStacks)/);
 assert.doesNotMatch(handler, /onCooldownEffect/);
 
 // CombatTimer.advanceTime changes only the fatigue threshold. It is additive

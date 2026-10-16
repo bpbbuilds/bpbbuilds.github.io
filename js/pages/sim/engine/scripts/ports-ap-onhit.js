@@ -11,7 +11,7 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { healActor } from '../actor.js';
-import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
+import { getP, getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addBonusDamage } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { itemHasType, pushActivate } from './ports-util.js';
@@ -78,7 +78,7 @@ const bloodyDaggerPort = {
 };
 
 /** BurningSword.gd — chance heat on hit; heat bank → perm on self + empowerable stars. */
-const burningSwordPort = {
+export const burningSwordPort = {
   handlerId: 'burning_sword',
   family: 'weapon_base',
   onPrepare(piece, ctx) {
@@ -126,9 +126,14 @@ const flameWhipPort = {
   handlerId: 'flame_whip',
   family: 'weapon_base',
   onCooldownEffect(piece, ctx) {
-    const extra = Math.max(0, Number(getPName(piece.params, 'bonusdam', getP3(piece.params, 8))) || 0);
-    const need = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 1))));
-    const heat = Math.max(1, Math.round(getPName(piece.params, 'heat', getP2(piece.params, 4))));
+    const rawExtra = Number(getPName(piece.params, 'bonusdam', getP3(piece.params, 8)));
+    const extra = Number.isFinite(rawExtra) ? rawExtra : 0;
+    const rawNeed = Number(getPName(piece.params, 'spikes', getP1(piece.params, 1)));
+    const rawHeat = Number(getPName(piece.params, 'heat', getP2(piece.params, 4)));
+    // FlameWhip.gd declares spikes/heat as int and leaves bonusdam as float.
+    // Keep zero valid and truncate only the two typed integer parameters.
+    const need = Number.isFinite(rawNeed) ? Math.trunc(rawNeed) : 0;
+    const heat = Number.isFinite(rawHeat) ? Math.trunc(rawHeat) : 0;
     return weaponStrike(piece, ctx, 'flame_whip', {
       // FlameWhip.gd mutates DamageResult after the hit roll. This must not
       // spend Spikes on an accuracy miss or alter the pre-roll amount.
@@ -164,12 +169,12 @@ const darksaberPort = {
     return weaponStrike(piece, ctx, 'darksaber');
   },
   onPreDealDamageEarly(piece, ctx) {
-    const need = Math.max(1, Math.round(getPName(piece.params, 'mana', getP2(piece.params, 1))));
+    const need = Math.round(getPName(piece.params, 'mana', getP2(piece.params, 1)));
     if (!(useMana(ctx.player, need, origin(piece)).spent > 0)) return;
     grantStacks(
       ctx.dummy,
       'blind',
-      Math.max(1, Math.round(getPName(piece.params, 'blind', getP3(piece.params, 1)))),
+      Math.round(getPName(piece.params, 'blind', getP3(piece.params, 1))),
       origin(piece),
     );
   },
@@ -313,29 +318,38 @@ const serpentStaffPort = {
   family: 'weapon_base',
   onPrepare(piece, ctx) {
     piece._serpAcc = 0;
-    piece._serpMana = false;
-    const chance = Number(piece.chance) || Number(ctx.itemsById.get(piece.itemId)?.chance) || 40;
+    piece._serpManaUseEvents = [];
+    const catalog = ctx.itemsById?.get(piece.itemId);
+    const chance = Number.isFinite(Number(piece.chance))
+      ? Number(piece.chance)
+      : Number(catalog?.chance) || 0;
     ctx.dummy.stackResist = ctx.dummy.stackResist || {};
     ctx.dummy.stackResist.poison = (Number(ctx.dummy.stackResist.poison) || 0) - chance;
   },
   onCooldownEffect(piece, ctx) {
-    piece._serpMana = false;
     return weaponStrike(piece, ctx, 'serpent_staff');
   },
   onPreDealDamageEarly(piece, ctx) {
-    const need = Math.max(1, Math.round(getPName(piece.params, 'mana', getP1(piece.params, 4))));
+    const need = getPName(piece.params, 'mana', getP(piece.params, 0, 0));
     if (!(useMana(ctx.player, need, origin(piece)).spent > 0)) return;
-    piece._serpMana = true;
-    addBonusDamage(piece, Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 2)))));
+    piece._serpManaUseEvents = piece._serpManaUseEvents || [];
+    piece._serpManaUseEvents.push({});
+    addBonusDamage(piece, getPName(piece.params, 'dam', getP(piece.params, 1, 0)));
   },
   onDealtDamage(piece, ctx, hit) {
-    if (!hit?.hit || !piece._serpMana) return;
-    piece._serpAcc = (Number(piece._serpAcc) || 0) + (Number(hit.damage) || Number(hit.healthDamage) || 0);
-    const per = Math.max(1, Math.round(getPName(piece.params, 'damforpoison', getP4(piece.params, 4))));
+    if (!hit?.hit || !piece._serpManaUseEvents?.length) return;
+    piece._serpAcc = (Number(piece._serpAcc) || 0) + (Number.isFinite(Number(hit.damage)) ? Number(hit.damage) : Number(hit.healthDamage) || 0);
+    const per = Math.trunc(getPName(piece.params, 'damforpoison', getP(piece.params, 3, 0)));
+    if (!(per > 0)) {
+      piece._serpManaUseEvents.pop();
+      return;
+    }
     const stacks = Math.floor((Number(piece._serpAcc) || 0) / per);
-    if (stacks <= 0) return;
-    piece._serpAcc %= per;
-    grantStacks(ctx.dummy, 'poison', stacks, origin(piece));
+    if (stacks > 0) {
+      piece._serpAcc %= per;
+      grantStacks(ctx.dummy, 'poison', stacks, origin(piece));
+    }
+    piece._serpManaUseEvents.pop();
   },
 };
 

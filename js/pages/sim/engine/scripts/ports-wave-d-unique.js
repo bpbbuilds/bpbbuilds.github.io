@@ -20,7 +20,12 @@ import { addAccuracy, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedSpeed } from '../timed-speed.js';
 import { dealEffectDamage, dealHit, loseHealth } from './handlers.js';
-import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
+import {
+  itemHasType,
+  pushActivate,
+  pushBuffGrants,
+  triggerFirstAffectedPotion,
+} from './ports-util.js';
 import { randInt } from '../rng.js';
 import { rollItemChance } from '../chance.js';
 import { emitChargePulse } from '../charge-delivery.js';
@@ -403,56 +408,136 @@ export const wandOfDissonancePort = {
 };
 
 /** RainbowPotion.gd */
+/**
+ * RainbowPotion.onTriggerPotion() selects a shuffled, descriptor-distinct set
+ * from the whole inventory. It triggers those potions without consuming them;
+ * the mini-activate projection is visual/logging only.
+ *
+ * @param {object} piece
+ * @param {object} ctx
+ * @param {number} t
+ */
+function triggerRainbowPotions(piece, ctx, t) {
+  const limit = Math.max(0, Math.round(getPName(piece.params, 'potions', getP5(piece.params, 0))));
+  if (!limit) return;
+
+  const candidates = (ctx.pieces || [])
+    .filter((candidate) => candidate.placementKey !== piece.placementKey)
+    .filter((candidate) => itemHasType(ctx.itemsById?.get(candidate.itemId), 'potion'));
+  const rng = typeof ctx.rng === 'function' ? ctx.rng : Math.random;
+  for (let i = candidates.length - 1; i > 0; i -= 1) {
+    const roll = Math.max(0, Math.min(0.999999999, Number(rng()) || 0));
+    const j = Math.floor(roll * (i + 1));
+    [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+  }
+
+  const selected = new Set();
+  let triggered = 0;
+  for (const potion of candidates) {
+    const descriptor = String(potion.itemId || potion.id || '');
+    if (!descriptor || selected.has(descriptor)) continue;
+    selected.add(descriptor);
+    if (typeof potion._potionTrigger === 'function') {
+      potion._potionTrigger({ ...ctx, t });
+    }
+    ctx.events.push({
+      t: t + 0.001,
+      type: 'info',
+      itemId: potion.itemId,
+      placementKey: potion.placementKey,
+      label: `${potion.name}: mini activate`,
+      meta: {
+        category: 'system',
+        script: true,
+        miniActivate: true,
+        triggeredBy: piece.itemId,
+      },
+    });
+    triggered += 1;
+    if (triggered >= limit) break;
+  }
+}
+
+/**
+ * Potion.consumePotion(event) empties first, then runs its trigger chain and
+ * emits the consume activation. Emptying first prevents buff callbacks caused
+ * by the chain from re-entering this potion.
+ *
+ * @param {object} piece
+ * @param {object} ctx
+ * @param {object | null} [event]
+ */
+function consumeRainbowPotion(piece, ctx, event = null) {
+  if (!piece.alive || piece.charges === 0) return;
+  const t = Number(event?.t ?? ctx.t) || 0;
+  piece.alive = false;
+  piece.charges = 0;
+  piece._potionTrigger?.({ ...ctx, t, event });
+  triggerFirstAffectedPotion(piece, ctx, t);
+  ctx.bus?.emit?.('potion_emptied', { piece, t });
+  const previousT = ctx.t;
+  ctx.t = t;
+  pushActivate(piece, ctx, 'rainbow_potion', `${piece.name} consumed`, { consume: true });
+  ctx.t = previousT;
+}
+
 /** @type {ScriptHandler} */
 export const rainbowPotionPort = {
   handlerId: 'rainbow_potion',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
-    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-    let books = 0;
-    let staffs = 0;
-    for (const other of ctx.pieces || []) {
-      if (!links.some((l) => l.key === other.placementKey)) continue;
-      const id = String(other.itemId || '');
-      if (/book/i.test(id)) books += 1;
-      if (/staff/i.test(id)) staffs += 1;
-    }
-    if (books) {
-      const mana = Math.max(1, Math.round(getPName(piece.params, 'mana', getP1(piece.params, 4)))) * books;
-      grantStacks(ctx.player, 'mana', mana, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      ctx.player.stamina = Math.min(ctx.player.maxStamina, ctx.player.stamina + books);
-    }
-    if (staffs) {
-      const picked = giveRandomBuffs(ctx.player, Math.max(1, staffs * Math.round(getP2(piece.params, 1))), ctx.rng, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'rainbow_potion', picked);
-    }
-    if (!books && !staffs) {
-      grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getP1(piece.params, 4))), {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-    }
+  onPrepare(piece, ctx) {
+    piece._rainbowPotionUsedBuffs = 0;
+    piece._rainbowPotionCtx = ctx;
+    piece._potionTrigger = ({ t = ctx.t } = {}) => triggerRainbowPotions(piece, piece._rainbowPotionCtx || ctx, t);
+
+    if (piece._rainbowPotionBuffListenerPlayer === ctx.player) return;
+    piece._rainbowPotionBuffListenerPlayer = ctx.player;
     onBuffChanged(ctx.player, (ch) => {
-      if (!(ch.amount < 0) || !BUFF_KEYS.includes(String(ch.stack))) return;
-      for (const other of ctx.pieces || []) {
-        if (!/potion/i.test(String(other.itemId || ''))) continue;
-        if (!other.alive) continue;
-        const h = ctx.activatePiece ? null : null;
-        void h;
-        // Soft-trigger: mark spent potions for activatePiece if available
-        if (typeof ctx.activatePiece === 'function' && other.cooldown > 0) {
-          other.triggerTime = 0;
-        }
+      const activeCtx = piece._rainbowPotionCtx || ctx;
+      if (!piece.alive || !(ch.amount < 0) || !ch.used) return;
+      piece._rainbowPotionUsedBuffs =
+        (Number(piece._rainbowPotionUsedBuffs) || 0) + Math.trunc(Math.abs(Number(ch.amount) || 0));
+      const threshold = Math.round(getPName(piece.params, 'buffst', getP4(piece.params, 0)));
+      if (piece._rainbowPotionUsedBuffs > threshold) {
+        consumeRainbowPotion(piece, activeCtx, ch);
       }
     });
-    piece.alive = false;
-    piece.charges = 0;
+  },
+  onCombatStart(piece, ctx) {
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    const books = new Set(
+      links
+        .filter((link) => link.color === 'secondary')
+        .filter((link) => itemHasType(ctx.itemsById?.get(link.id), 'book'))
+        .map((link) => link.id),
+    ).size;
+    const staffs = new Set(
+      links
+        .filter((link) => link.color === 'tertiary')
+        .filter((link) => itemHasType(ctx.itemsById?.get(link.id), 'staff'))
+        .map((link) => link.id),
+    ).size;
+    if (books) {
+      const manaPerBook = getPName(piece.params, 'mana', getP1(piece.params, 0));
+      const staminaPerBook = getPName(piece.params, 'stamina', getP2(piece.params, 0));
+      const mana = Math.round(manaPerBook * books);
+      if (mana) grantStacks(ctx.player, 'mana', mana, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      gainMaxStaminaTemporary(ctx.player, staminaPerBook * books);
+    }
+    if (staffs) {
+      const buffsPerStaff = getPName(piece.params, 'buffs', getP3(piece.params, 0));
+      const picked = giveRandomBuffs(ctx.player, Math.round(buffsPerStaff * staffs), ctx.rng, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      if (Object.keys(picked).length) {
+        pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'rainbow_potion', picked);
+      }
+    }
+    pushActivate(piece, ctx, 'rainbow_potion', `Potion: ${piece.name}`);
   },
 };
 
@@ -461,7 +546,7 @@ export const rainbowPotionPort = {
 export const perpetuumMobilePort = {
   handlerId: 'perpetuum_mobile',
   family: 'unique',
-  onPreCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     /** @type {Record<string, number>} */
     piece._usedStacks = {};
     for (const k of BUFF_KEYS) piece._usedStacks[k] = 0;
@@ -469,16 +554,9 @@ export const perpetuumMobilePort = {
 
     const speed = getPName(piece.params, 'speed', getP4(piece.params, 30)) / 100;
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-    for (const other of ctx.pieces || []) {
-      if (!links.some((l) => l.key === other.placementKey)) continue;
-      const item = ctx.itemsById.get(other.itemId);
-      if (
-        itemHasType(item, 'engineering') ||
-        /cog|resistor|battery|wrench/i.test(other.itemId)
-      ) {
-        if (speed) addSpeed(other, speed);
-      }
-    }
+    // PerpetuumMobile.gd calls addSpeed on itself, scaled by the number of
+    // affected Engineer items; it does not speed up those linked items.
+    if (speed && links.length) addSpeed(piece, speed * links.length);
 
     onBuffChanged(ctx.player, (ch) => {
       if (!(ch.amount < 0) || !ch.used) return;
@@ -499,7 +577,6 @@ export const perpetuumMobilePort = {
     pushActivate(piece, ctx, 'perpetuum_mobile', `Accessory: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'perpetuum_mobile', `Accessory: ${piece.name}`);
     const buffRefund =
       getPName(piece.params, 'refund_buffs', getP2(piece.params, 30)) / 100;
     const stamRefund =
@@ -519,9 +596,12 @@ export const perpetuumMobilePort = {
       });
     }
 
-    const stamGive = Math.round((Number(piece._staminaUsed) || 0) * stamRefund);
+    // Character.giveStamina accepts the fractional amount directly. Do not
+    // round before it reaches the actor.
+    const stamGive = (Number(piece._staminaUsed) || 0) * stamRefund;
     if (stamGive > 0) giveStamina(ctx.player, stamGive);
     piece._staminaUsed = 0;
+    pushActivate(piece, ctx, 'perpetuum_mobile', `Accessory: ${piece.name}`);
     return true;
   },
 };

@@ -2,13 +2,13 @@
  * Band Y Phase 141 — pets / unique CD.
  */
 
-import { healActor } from '../actor.js';
 import {
   cleanseRandomDebuffs,
   grantStacks,
   grantTemporaryStacks,
   stealRandomBuff,
 } from '../buff-economy.js';
+import { giveStamina } from '../actor.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
@@ -16,6 +16,7 @@ import { gainStacks } from '../stacks.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { eventSideForPiece } from '../vs-board.js';
 import { goobertPeerTick } from './ports-wave-d-goobert.js';
+import { stealLife } from './handlers.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -38,29 +39,6 @@ export const squirrelPort = {
 };
 
 /** @type {ScriptHandler} */
-export const turtlePort = {
-  handlerId: 'turtle',
-  family: 'pet_like',
-  onCooldownEffect(piece, ctx) {
-    const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'turtle', `Pet: ${piece.name}`);
-    const frac = getPName(piece.params, 'maxhealthblock', getP1(piece.params, 5)) / 100;
-    const block =
-      Math.max(1, Math.round(piece.blockGrant || getP2(piece.params, 4))) +
-      Math.round(player.maxHp * frac);
-    gainStacks(player, 'block', block);
-    events.push({
-      t: t + 0.004,
-      type: 'buff',
-      target: 'player',
-      amount: block,
-      label: `${piece.name}: +${block} Block`,
-      meta: { category: 'buff', stack: 'block', script: true, handler: 'turtle' },
-    });
-    return true;
-  },
-};
-
 /** @type {ScriptHandler} */
 export const ratChefPort = {
   handlerId: 'rat_chef',
@@ -90,22 +68,30 @@ export const ratChefPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'rat_chef', `Pet: ${piece.name}`);
-    const stam = Math.max(1, Math.round(getP1(piece.params, 2)));
-    const emp = Math.max(1, Math.round(getP2(piece.params, 1)));
-    player.stamina = Math.min(player.maxStamina || 20, (player.stamina || 0) + stam);
+    const stam = getPName(piece.params, 'stamina', getP2(piece.params, 0));
+    const emp = getPName(piece.params, 'empower', getP3(piece.params, 0));
+    const before = Number(player.stamina) || 0;
+    giveStamina(player, stam);
+    const gainedStamina = Math.max(0, (Number(player.stamina) || 0) - before);
+    if (gainedStamina > 0) {
+      events.push({
+        t: t + 0.001,
+        type: 'stamina',
+        target: 'player',
+        amount: gainedStamina,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: +${gainedStamina} stamina`,
+        meta: { category: 'stamina', script: true, handler: 'rat_chef' },
+      });
+    }
     grantStacks(player, 'empower', emp, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    events.push({
-      t: t + 0.004,
-      type: 'buff',
-      target: 'player',
-      amount: emp,
-      label: `${piece.name}: +${stam} stam +${emp} Empower`,
-      meta: { category: 'buff', stack: 'empower', script: true, handler: 'rat_chef' },
-    });
+    pushBuffGrants(events, piece, player, t, 'rat_chef', emp ? { empower: emp } : {});
+    // RatChef.gd activates only after stamina and Empower are applied.
+    pushActivate(piece, ctx, 'rat_chef', `Pet: ${piece.name}`);
     return true;
   },
 };
@@ -126,32 +112,13 @@ export const bloodGoobertPort = {
     pushActivate(piece, ctx, 'blood_goobert', `Pet: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    const { t, player, dummy, events } = ctx;
+    const { player } = ctx;
     pushActivate(piece, ctx, 'blood_goobert', `Pet: ${piece.name}`);
     const dam =
       Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 4)))) +
       (Number(player.stacks.vampirism) || 0);
     const ls = getPName(piece.params, 'lifesteal', 50) / 100;
-    dummy.hp = Math.max(0, dummy.hp - dam);
-    const healed = healActor(player, Math.round(dam * ls));
-    events.push({
-      t: t + 0.004,
-      type: 'damage',
-      target: 'dummy',
-      amount: dam,
-      label: `${piece.name}: ${dam} lifesteal`,
-      meta: { category: 'damage', script: true, handler: 'blood_goobert' },
-    });
-    if (healed > 0) {
-      events.push({
-        t: t + 0.006,
-        type: 'heal',
-        target: 'player',
-        amount: healed,
-        label: `${piece.name}: +${healed} HP`,
-        meta: { category: 'heal', script: true, handler: 'blood_goobert' },
-      });
-    }
+    stealLife(piece, ctx, dam, ls);
     return true;
   },
 };
@@ -284,7 +251,6 @@ export const paradiseBirbPort = {
 /** @type {Record<string, ScriptHandler>} */
 export const PET_PORTS = {
   squirrel: squirrelPort,
-  turtle: turtlePort,
   rat_chef: ratChefPort,
   blood_goobert: bloodGoobertPort,
   carrot_goobert: carrotGoobertPort,

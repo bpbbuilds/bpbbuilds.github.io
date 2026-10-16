@@ -56,6 +56,12 @@ function source(id, file, sceneFile, extendsName) {
   return row;
 }
 
+const amethystSource = source(
+  'chipped_amethyst',
+  'Gems/Amethyst.gd',
+  'Gems/ChippedAmethyst.tscn',
+  'Gem',
+);
 const emeraldSource = source(
   'chipped_emerald',
   'Gems/Emerald.gd',
@@ -88,6 +94,9 @@ const elephantSource = source(
   'Gem',
 );
 
+assert.deepEqual(amethystSource.overrides, ['doCooldownEffect']);
+assert.ok(amethystSource.sourceMethods.includes('prepareWeapon'));
+assert.ok(amethystSource.sourceMethods.includes('prepareArmor'));
 assert.deepEqual(emeraldSource.overrides, ['doCooldownEffect']);
 assert.deepEqual(rubySource.overrides, ['doCooldownEffect']);
 assert.deepEqual(sapphireSource.overrides, ['doCooldownEffect']);
@@ -102,6 +111,7 @@ assert.ok(elephantSource.sourceMethods.includes('combatStartArmor'));
 assert.ok(elephantSource.sourceMethods.includes('hasCooldown'));
 
 for (const id of [
+  'chipped_amethyst',
   'chipped_emerald',
   'chipped_ruby',
   'chipped_sapphire',
@@ -110,6 +120,29 @@ for (const id of [
   'elephant_rune',
 ]) {
   assert.equal(getScriptHandler(id)?.handlerId, id, `${id} has an explicit handler`);
+}
+
+// Chipped Amethyst: Amethyst.gd cleanses one debuff before its repeating
+// activation; it does not consume like the Emerald/Ruby/Sapphire tiers.
+{
+  const handler = getScriptHandler('chipped_amethyst');
+  const player = createActor('player');
+  const dummy = createActor('dummy');
+  player.stacks.poison = 1;
+  player.stacks.blind = 1;
+  const events = [];
+  withCombatLog(events, dummy, () =>
+    handler.onCooldownEffect(piece('chipped_amethyst', 'amethyst'), {
+      player,
+      dummy,
+      events,
+      rng: () => 0,
+      t: 5,
+    }),
+  );
+  assert.equal(player.stacks.poison + player.stacks.blind, 1);
+  assert.equal(events.at(-1)?.type, 'activate');
+  assert.equal(events.at(-1)?.itemId, 'chipped_amethyst');
 }
 
 // Chipped Emerald: give regeneration, then consume/activate. Verify the

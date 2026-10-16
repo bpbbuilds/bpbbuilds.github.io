@@ -64,16 +64,19 @@ function applyTrigger(piece, ctx, triggerType) {
   const effects = (piece._ringEffects || []).filter((e) => e.trigger === triggerType);
   for (const e of effects) {
     const amount = scaledAmount(piece.params, e.stack, triggerType);
-    if (!amount) continue;
     const isBuff = BUFFS.has(e.stack);
-    grantStacks(isBuff ? ctx.player : ctx.dummy, e.stack, amount, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-      rng: ctx.rng,
-      opponent: isBuff ? ctx.dummy : ctx.player,
-    });
+    if (amount) {
+      grantStacks(isBuff ? ctx.player : ctx.dummy, e.stack, amount, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+        rng: ctx.rng,
+        opponent: isBuff ? ctx.dummy : ctx.player,
+      });
+    }
+    // MagicRing.gd activates inside giveStacksFromEffect(), so multiple effects
+    // sharing one trigger produce one activation each, even when an amount is 0.
+    pushActivate(piece, ctx, piece.itemId, `Accessory: ${piece.name}`);
   }
-  if (effects.length) pushActivate(piece, ctx, piece.itemId, `Accessory: ${piece.name}`);
 }
 
 /**

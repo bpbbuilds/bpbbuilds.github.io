@@ -2,7 +2,7 @@
  * After sign-in, ask to join the community server when the bot says
  * this Discord account is not a member. Members are left alone.
  */
-import { getSession } from './auth.js?v=admin-csp-20261013a';
+import { getSession } from './auth.js';
 import { config } from './config.js?v=supabase-config-20261013a';
 import { DISCORD_INVITE_URL } from './social-links.js';
 

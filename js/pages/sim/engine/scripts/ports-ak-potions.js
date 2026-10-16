@@ -4,7 +4,6 @@
 
 import { healActor } from '../actor.js';
 import { applyHealEfficiency } from '../actor-stats.js';
-import { dealDamage } from '../damage.js';
 import {
   cleanseRandomDebuffs,
   DEBUFF_KEYS,
@@ -13,8 +12,9 @@ import {
   grantTemporaryStacks,
   onBuffChanged,
 } from '../buff-economy.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
-import { pushActivate } from './ports-util.js';
+import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
+import { pushActivate, triggerFirstAffectedPotion } from './ports-util.js';
 import { dealEffectDamage, stealLife } from './handlers.js';
 
 /**
@@ -26,13 +26,15 @@ import { dealEffectDamage, stealLife } from './handlers.js';
  * @param {import('./handlers.js').ScriptCtx} ctx
  * @param {number} t
  * @param {() => void} onDrink
+ * @param {() => void} [onLinked]
  */
-function drinkPotion(piece, ctx, t, onDrink) {
+function drinkPotion(piece, ctx, t, onDrink, onLinked) {
   if (!piece.alive || piece.charges === 0) return;
   // Empty first so block/buff listeners from onDrink cannot re-enter.
   piece.alive = false;
   piece.charges = 0;
   onDrink();
+  onLinked?.();
   ctx.bus?.emit?.('potion_emptied', { piece, t });
   const prevT = ctx.t;
   ctx.t = t;
@@ -83,30 +85,48 @@ function manaPotionPort(handlerId) {
     piece._manaPotionBound = true;
     lockCd(piece);
     const th = getPName(piece.params, 'p1', getP1(piece.params, 50)) / 100 - 0.0001;
-    const drink = (t) =>
-      drinkPotion(piece, ctx, t, () => {
-        const mana = Math.max(
-          1,
-          Math.round(getPName(piece.params, 'mana', getP2(piece.params, 4))),
-        );
-        const maxHp = Math.max(
-          0,
-          Math.round(getPName(piece.params, 'maxhealth', getP3(piece.params, 0))),
-        );
-        grantStacks(ctx.player, 'mana', mana, {
-          originKey: piece.placementKey,
-          originId: piece.itemId,
-        });
-        if (maxHp) ctx.player.maxHp += maxHp;
-        ctx.events.push({
-          t,
-          type: 'buff',
-          target: 'player',
-          amount: mana,
-          label: `${piece.name}: +${mana} Mana`,
-          meta: { category: 'buff', stack: 'mana', script: true, handler: handlerId },
-        });
+    const applyEffect = (t) => {
+      const mana = Math.max(
+        0,
+        modifiedParamValue(
+          piece,
+          getPName(piece.params, 'mana', getP2(piece.params, 4)),
+          'mana',
+        ),
+      );
+      const maxHp = Math.max(
+        0,
+        Math.round(modifiedParamValue(
+          piece,
+          getPName(piece.params, 'maxhealth', getP3(piece.params, 0)),
+          'maxhealth',
+        )),
+      );
+      grantStacks(ctx.player, 'mana', mana, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
       });
+      if (maxHp) {
+        ctx.player.maxHp += maxHp;
+        ctx.player.hp += maxHp;
+      }
+      ctx.events.push({
+        t,
+        type: 'buff',
+        target: 'player',
+        amount: mana,
+        label: `${piece.name}: +${mana} Mana`,
+        meta: { category: 'buff', stack: 'mana', script: true, handler: handlerId },
+      });
+    };
+    const drink = (t) => drinkPotion(
+      piece,
+      ctx,
+      t,
+      () => applyEffect(t),
+      () => triggerFirstAffectedPotion(piece, ctx, t),
+    );
+    piece._potionTrigger = ({ t = ctx.t } = {}) => applyEffect(t);
     ctx.bus?.on?.('character_damaged', (payload) => {
       if (payload?.actor && payload.actor !== ctx.player) return;
       if (!piece.alive) return;
@@ -120,6 +140,13 @@ function manaPotionPort(handlerId) {
     });
     onBuffChanged(ctx.player, (ch) => {
       if (!piece.alive || ch.stack !== 'mana' || !(ch.amount < 0)) return;
+      const origin = (ctx.pieces || []).find((candidate) =>
+        ch.originKey && candidate.placementKey === ch.originKey,
+      ) || (ctx.pieces || []).find((candidate) =>
+        ch.originId && candidate.itemId === ch.originId &&
+        (candidate.side == null || piece.side == null || candidate.side === piece.side),
+      );
+      if (!origin) return;
       drink(ctx.t);
     });
   };
@@ -152,28 +179,55 @@ export const strongHeroicPotionPort = {
   handlerId: 'strong_heroic_potion',
   family: 'consumable',
   deferStartActivate: true,
+  onPrepare(piece, ctx) {
+    bindStrongHeroicPotion(piece, ctx);
+  },
   onCombatStart(piece, ctx) {
-    lockCd(piece);
-    ctx.bus?.on?.('pre_use_stamina', (payload) => {
-      if (!piece.alive) return;
-      const amount = Number(payload?.amount) || 0;
-      if ((Number(ctx.player.stamina) || 0) + 1e-9 >= amount) return;
-      const t = payload?.t ?? ctx.t;
-      drinkPotion(piece, ctx, t, () => {
-        const stam = Math.max(1, Math.round(getP1(piece.params, 4)));
-        const emp = Math.max(1, Math.round(getP2(piece.params, 1)));
-        ctx.player.stamina = Math.min(
-          ctx.player.maxStamina || 20,
-          (ctx.player.stamina || 0) + stam,
-        );
-        grantStacks(ctx.player, 'empower', emp, {
-          originKey: piece.placementKey,
-          originId: piece.itemId,
-        });
-      });
-    });
+    bindStrongHeroicPotion(piece, ctx);
   },
 };
+
+function bindStrongHeroicPotion(piece, ctx) {
+  if (piece._strongHeroicPotionBound) return;
+  piece._strongHeroicPotionBound = true;
+  lockCd(piece);
+  piece._potionTrigger = ({ t = ctx.t } = {}) => {
+    const stam = Math.max(0, Number(getP1(piece.params, 4)) || 0);
+    const emp = Math.max(0, Number(getP2(piece.params, 1)) || 0);
+    ctx.player.stamina = Math.min(
+      ctx.player.maxStamina || 20,
+      (ctx.player.stamina || 0) + stam,
+    );
+    grantStacks(ctx.player, 'empower', emp, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+    ctx.events.push({
+      t,
+      type: 'buff',
+      target: 'player',
+      amount: emp,
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `${piece.name}: +${emp} Empower`,
+      meta: { category: 'buff', stack: 'empower', script: true, handler: 'strong_heroic_potion' },
+    });
+  };
+  ctx.bus?.on?.('pre_use_stamina', (payload) => {
+    if (payload?.actor && payload.actor !== ctx.player) return;
+    if (!piece.alive || piece.charges === 0) return;
+    const amount = Number(payload?.amount) || 0;
+    if ((Number(ctx.player.stamina) || 0) >= amount) return;
+    const t = payload?.t ?? ctx.t;
+    drinkPotion(
+      piece,
+      ctx,
+      t,
+      () => piece._potionTrigger?.({ t }),
+      () => triggerFirstAffectedPotion(piece, ctx, t),
+    );
+  });
+}
 
 /** DivinePotion — drink when own debuff stacks >= p1; cleanse. Strong: + random buffs. */
 function divinePotionPort(handlerId, extraBuffs) {
@@ -185,23 +239,29 @@ function divinePotionPort(handlerId, extraBuffs) {
     // StrongDemonicFlask.gd connects to both characters during onPrepare.
     onPrepare(piece, ctx) {
       lockCd(piece);
-      const need = Math.max(1, Math.round(getP1(piece.params, 3)));
+      const need = Math.round(getP1(piece.params, 3));
+      const applyEffect = (t) => {
+        const n = Math.round(getP2(piece.params, 2));
+        if (n) cleanseRandomDebuffs(ctx.player, n, ctx.rng, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        });
+        if (extraBuffs) {
+          const b = Math.round(getP3(piece.params, 2));
+          if (b) giveRandomBuffs(ctx.player, b, ctx.rng, {
+            originKey: piece.placementKey,
+            originId: piece.itemId,
+          });
+        }
+        void t;
+      };
+      piece._potionTrigger = ({ t = ctx.t } = {}) => applyEffect(t);
       onBuffChanged(ctx.player, (ch) => {
         if (!piece.alive || !DEBUFF_KEYS.includes(/** @type {any} */ (ch.stack))) return;
         if (debuffCount(ctx.player) < need) return;
         drinkPotion(piece, ctx, ctx.t, () => {
-          const n = Math.max(1, Math.round(getP2(piece.params, 2)));
-          cleanseRandomDebuffs(ctx.player, n, ctx.rng, {
-            originKey: piece.placementKey,
-            originId: piece.itemId,
-          });
-          if (extraBuffs) {
-            const b = Math.max(1, Math.round(getP3(piece.params, 2)));
-            giveRandomBuffs(ctx.player, b, ctx.rng, {
-              originKey: piece.placementKey,
-              originId: piece.itemId,
-            });
-          }
+          applyEffect(ctx.t);
+          triggerFirstAffectedPotion(piece, ctx, ctx.t);
         });
       });
     },
@@ -219,32 +279,88 @@ function vampiricPotionPort(handlerId, strong) {
     onPrepare(piece, ctx) {
       lockCd(piece);
       const th = getP1(piece.params, 50) / 100;
+      const applyEffect = (t) => {
+        if (strong) {
+          const lifesteal = modifiedParamValue(
+            piece,
+            getPName(piece.params, 'lifesteal', getP3(piece.params, 0)),
+            'lifesteal',
+          ) / 100;
+          const duration = Math.max(
+            0,
+            modifiedParamValue(
+              piece,
+              getPName(piece.params, 'dur', getP4(piece.params, 0)),
+              'dur',
+            ),
+          );
+          piece._vampiricLifesteal = (Number(piece._vampiricLifesteal) || 0) + lifesteal;
+          piece._vampiricLifestealUntil = t + duration;
+        } else {
+          const dam = Math.max(0, Number(getP3(piece.params, 0)) || 0);
+          const lifesteal = modifiedParamValue(
+            piece,
+            getPName(piece.params, 'lifesteal', getP4(piece.params, 100)),
+            'lifesteal',
+          ) / 100;
+          stealLife(piece, ctx, dam, lifesteal);
+        }
+        const vamp = Math.max(0, Number(getP2(piece.params, 0)) || 0);
+        grantStacks(ctx.player, 'vampirism', vamp, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        });
+      };
+      piece._potionTrigger = ({ t = ctx.t } = {}) => applyEffect(t);
       const tryDrink = (t) => {
         if (!piece.alive) return;
         if (hpFrac(ctx.player) >= th || hpFrac(ctx.dummy) >= th) return;
-        drinkPotion(piece, ctx, t, () => {
-          const dam = Math.max(1, Math.round(getP3(piece.params, 8)));
-          const vamp = Math.max(1, Math.round(getP2(piece.params, 2)));
-          dealDamage(ctx.player, ctx.dummy, {
-            amount: dam,
-            canMiss: false,
-            canCrit: false,
-            isAttack: false,
-            vampiricItem: true,
-            nowT: t,
-            rng: ctx.rng,
-          });
-          grantStacks(ctx.player, 'vampirism', vamp, {
-            originKey: piece.placementKey,
-            originId: piece.itemId,
-          });
-          if (strong) {
-            const ls = getPName(piece.params, 'lifesteal', 20) / 100;
-            if (ls) healActor(ctx.player, Math.ceil(dam * ls));
-          }
-        });
+        drinkPotion(
+          piece,
+          ctx,
+          t,
+          () => applyEffect(t),
+          () => triggerFirstAffectedPotion(piece, ctx, t),
+        );
       };
       ctx.bus?.on?.('character_damaged', (p) => tryDrink(p?.t ?? ctx.t));
+      if (strong) {
+        ctx.bus?.on?.('item_attacked', (payload = {}) => {
+          if (piece._vampiricLifestealUntil == null) return;
+          const attacker = payload.piece;
+          if (attacker?.side != null && piece.side != null && attacker.side === piece.side) return;
+          const hit = payload.hit || {};
+          if (hit.hit !== true || hit.canApplyLifesteal === false || payload.canApplyLifesteal === false) return;
+          const at = Number(payload.t ?? ctx.t);
+          if (at + 1e-9 >= piece._vampiricLifestealUntil) return;
+          const damage = Number(hit.damage ?? hit.healthDamage) || 0;
+          const healed = Math.ceil(damage * (Number(piece._vampiricLifesteal) || 0));
+          if (healed <= 0) return;
+          healActor(ctx.player, healed);
+          const logged = Number(ctx.player._lastHeal?.loggedAmount) || healed;
+          ctx.events.push({
+            t: at + 0.002,
+            type: 'heal',
+            target: 'player',
+            amount: logged,
+            itemId: piece.itemId,
+            placementKey: piece.placementKey,
+            label: `${piece.name}: lifesteal +${logged}`,
+            meta: { category: 'heal', script: true, handler: handlerId, lifesteal: true },
+          });
+        });
+      }
+    },
+    onTick(piece, ctx) {
+      if (!strong || piece._vampiricLifestealUntil == null) return;
+      if (Number(ctx.t) + 1e-9 < piece._vampiricLifestealUntil) return;
+      piece._vampiricLifestealUntil = null;
+      piece._vampiricLifesteal = 0;
+    },
+    onCombatEnd(piece) {
+      if (!strong) return;
+      piece._vampiricLifestealUntil = null;
+      piece._vampiricLifesteal = 0;
     },
   };
 }
@@ -256,54 +372,54 @@ function stoneSkinPort(handlerId, strong) {
     handlerId,
     family: 'consumable',
     deferStartActivate: true,
-    onPreCombatStart(piece, ctx) {
+    onPrepare(piece, ctx) {
       lockCd(piece);
-      const need = Math.max(
-        1,
-        Math.round(getPName(piece.params, 'blockt', getP1(piece.params, 45))),
-      );
-      const tryDrink = (t) => {
-        if (!piece.alive || (Number(ctx.player.block) || 0) < need) return;
-        drinkPotion(piece, ctx, t, () => {
-          const healthCap = Math.max(
-            1,
-            Math.round(getPName(piece.params, 'healtht', getP2(piece.params, 15))),
+      const need = Math.max(0, Math.round(getPName(piece.params, 'blockt', getP1(piece.params, 0))));
+      const applyEffect = (t) => {
+        const healthCap = Math.max(
+          0,
+          Math.round(getPName(piece.params, 'healtht', getP2(piece.params, 0))),
+        );
+        const catalogBlock = Number(ctx.itemsById?.get?.(piece.itemId)?.block);
+        const blockCap = Number.isFinite(Number(piece.blockGrant))
+          ? Number(piece.blockGrant)
+          : Number.isFinite(catalogBlock)
+            ? catalogBlock
+            : getPName(piece.params, 'block', 0);
+        healthToBlock(ctx.player, healthCap, blockCap, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        });
+        if (strong) {
+          const spikes = Math.max(0, Math.round(getPName(piece.params, 'spikes', getP3(piece.params, 0))));
+          const dur = Math.max(
+            0,
+            modifiedParamValue(piece, getPName(piece.params, 'dur', getP4(piece.params, 0)), 'dur'),
           );
-          const blockCap = Math.max(
-            1,
-            Math.round(
-              Number(piece.blockGrant) ||
-                Number(ctx.itemsById?.get?.(piece.itemId)?.block) ||
-                30,
-            ),
-          );
-          healthToBlock(ctx.player, healthCap, blockCap, {
+          grantTemporaryStacks(ctx.player, 'spikes', spikes, dur, t, {
             originKey: piece.placementKey,
             originId: piece.itemId,
           });
-          if (strong) {
-            const spikes = Math.max(
-              1,
-              Math.round(getPName(piece.params, 'spikes', 2)),
-            );
-            const dur = Math.max(1, getPName(piece.params, 'dur', 4));
-            grantTemporaryStacks(ctx.player, 'spikes', spikes, dur, t, {
-              originKey: piece.placementKey,
-              originId: piece.itemId,
-            });
-          }
+        }
+      };
+      piece._potionTrigger = ({ t = ctx.t } = {}) => applyEffect(t);
+      const tryDrink = (t) => {
+        if (!piece.alive || (Number(ctx.player.block) || 0) < need) return;
+        drinkPotion(piece, ctx, t, () => {
+          applyEffect(t);
+          triggerFirstAffectedPotion(piece, ctx, t);
         });
       };
       piece._stoneSkinTryDrink = tryDrink;
-      onBuffChanged(ctx.player, (ch) => {
-        if (ch.stack !== 'block') return;
+      ctx.bus?.on?.('character_block_changed', (payload = {}) => {
+        if (payload.actor && payload.actor !== ctx.player) return;
         tryDrink(ctx.t);
       });
     },
-    onCombatStart(piece, ctx) {
-      // Catch block already ≥ threshold if a later start script granted it
-      // without another change after our listener (or pre-existing block).
-      piece._stoneSkinTryDrink?.(ctx.t);
+    // Direct callers from the older potion harness used this phase; keep it
+    // idempotent while the production lifecycle binds in onPrepare.
+    onPreCombatStart(piece, ctx) {
+      if (!piece._stoneSkinTryDrink) stoneSkinPort(handlerId, strong).onPrepare(piece, ctx);
     },
   };
 }
@@ -315,37 +431,56 @@ function pestilencePort(handlerId, strong) {
     handlerId,
     family: 'consumable',
     deferStartActivate: true,
-    onCombatStart(piece, ctx) {
+    onPrepare(piece, ctx) {
       lockCd(piece);
+      const applyEffect = (t) => {
+        // PestilenceFlask.gd passes the raw parameters to giveStacks; the
+        // stack system performs the game's final rounding and resistance.
+        const them = Number(getP1(piece.params, 2));
+        const self = Number(getP2(piece.params, 1));
+        grantStacks(ctx.dummy, 'poison', them, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+          rng: ctx.rng,
+          opponent: ctx.player,
+        });
+        if (self) {
+          grantStacks(ctx.player, 'poison', self, {
+            originKey: piece.placementKey,
+            originId: piece.itemId,
+            rng: ctx.rng,
+          });
+        }
+        if (strong) {
+          const delay = Math.max(0, Number(getP3(piece.params, 3.5)) || 0);
+          piece._pestilencePoisonAt = t + delay;
+        }
+      };
+      piece._potionTrigger = ({ t = ctx.t } = {}) => applyEffect(t);
       ctx.bus?.on?.('actor_healed', (payload) => {
         if (!piece.alive) return;
         if (payload?.actor !== ctx.dummy) return;
         const t = payload?.t ?? ctx.t;
         drinkPotion(piece, ctx, t, () => {
-          const them = Math.max(1, Math.round(getP1(piece.params, 2)));
-          const self = Math.max(0, Math.round(getP2(piece.params, 1)));
-          grantStacks(ctx.dummy, 'poison', them, {
-            originKey: piece.placementKey,
-            originId: piece.itemId,
-            rng: ctx.rng,
-            opponent: ctx.player,
-          });
-          if (self) {
-            grantStacks(ctx.player, 'poison', self, {
-              originKey: piece.placementKey,
-              originId: piece.itemId,
-              rng: ctx.rng,
-            });
-          }
-          if (strong) {
-            const later = Math.max(1, Math.round(getPName(piece.params, 'p4', getP3(piece.params, 2))));
-            grantTemporaryStacks(ctx.dummy, 'poison', later, 3, t, {
-              originKey: piece.placementKey,
-              originId: piece.itemId,
-            });
-          }
+          applyEffect(t);
+          triggerFirstAffectedPotion(piece, ctx, t);
         });
       });
+    },
+    onTick(piece, ctx) {
+      if (!strong || piece._pestilencePoisonAt == null) return;
+      if (Number(ctx.t) + 1e-9 < piece._pestilencePoisonAt) return;
+      const later = Math.max(0, Number(getP4(piece.params, 0)) || 0);
+      grantStacks(ctx.dummy, 'poison', later, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+        rng: ctx.rng,
+        opponent: ctx.player,
+      });
+      piece._pestilencePoisonAt = null;
+    },
+    onCombatEnd(piece) {
+      if (strong) piece._pestilencePoisonAt = null;
     },
   };
 }
@@ -360,27 +495,36 @@ function demonicPort(handlerId, strong) {
       ? getPName(piece.params, 'opphpt', 50) / 100 - 0.0001
       : getP1(piece.params, 50) / 100 - 0.0001;
     const ownTh = strong ? getPName(piece.params, 'ownhpt', 50) / 100 - 0.0001 : 0;
+    const applyEffect = (t) => {
+      const per = Number(getPName(piece.params, 'dam', getP2(piece.params, 2))) || 0;
+      const dam = Math.ceil(debuffCount(ctx.dummy) * per);
+      const effectCtx = { ...ctx, t };
+      if (strong) {
+        const reduction = (Number(getP3(piece.params, 30)) || 0) / 100;
+        const duration = modifiedParamValue(
+          piece,
+          Number(getPName(piece.params, 'dur', getP4(piece.params, 3))) || 0,
+          'dur',
+        );
+        applyHealEfficiency(ctx.dummy, -reduction, effectCtx, piece);
+        if (reduction > 0 && duration > 0) {
+          piece._demonicHealReduction = reduction;
+          piece._demonicHealReductionUntil = t + duration;
+        }
+        stealLife(
+          piece,
+          effectCtx,
+          dam,
+          (Number(getPName(piece.params, 'lifesteal', getP2(piece.params, 100))) || 0) / 100,
+        );
+      } else {
+        dealEffectDamage(piece, effectCtx, dam);
+      }
+    };
     const drink = (t) =>
       drinkPotion(piece, ctx, t, () => {
-        const per = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 2))));
-        const dam = Math.max(1, Math.ceil(debuffCount(ctx.dummy) * per) || per);
-        const effectCtx = { ...ctx, t };
-        if (strong) {
-          applyHealEfficiency(
-            ctx.dummy,
-            -getP3(piece.params, 30) / 100,
-            effectCtx,
-            piece,
-          );
-          stealLife(
-            piece,
-            effectCtx,
-            dam,
-            getPName(piece.params, 'lifesteal', getP2(piece.params, 100)) / 100,
-          );
-        } else {
-          dealEffectDamage(piece, effectCtx, dam);
-        }
+        applyEffect(t);
+        triggerFirstAffectedPotion(piece, ctx, t);
       });
     const onOpponentDamaged = (payload = {}) => {
       if (payload.actor && payload.actor !== ctx.dummy) return;
@@ -389,8 +533,6 @@ function demonicPort(handlerId, strong) {
     };
     // DemonicFlask.gd observes opponent.character_damaged from onPrepare.
     ctx.bus?.on?.('character_damaged', onOpponentDamaged);
-    // Compatibility for older direct callers that emitted attack-result events.
-    ctx.bus?.on?.('piece_dealt_damage', onOpponentDamaged);
     if (strong) {
       const onPlayerDamaged = (payload = {}) => {
         if (payload.actor && payload.actor !== ctx.player) return;
@@ -398,8 +540,9 @@ function demonicPort(handlerId, strong) {
         if (hpFrac(ctx.player) < ownTh) drink(payload?.t ?? ctx.t);
       };
       ctx.bus?.on?.('character_damaged', onPlayerDamaged);
-      ctx.bus?.on?.('player_damaged', onPlayerDamaged);
     }
+    piece._demonicApplyEffect = applyEffect;
+    piece._potionTrigger = (triggerCtx) => applyEffect(triggerCtx?.t ?? ctx.t);
   };
 
   /** @type {ScriptHandler} */
@@ -414,6 +557,16 @@ function demonicPort(handlerId, strong) {
     },
     onCombatStart(piece, ctx) {
       bind(piece, ctx);
+    },
+    onPotionTrigger(piece, ctx) {
+      piece._demonicApplyEffect?.(ctx.t);
+    },
+    onTick(piece, ctx) {
+      if (!strong || piece._demonicHealReductionUntil == null) return;
+      if (Number(ctx.t) + 1e-9 < piece._demonicHealReductionUntil) return;
+      applyHealEfficiency(ctx.dummy, piece._demonicHealReduction, ctx, piece);
+      piece._demonicHealReductionUntil = null;
+      piece._demonicHealReduction = 0;
     },
   };
 }

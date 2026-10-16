@@ -9,15 +9,18 @@ import { applyHealEfficiency } from './actor-stats.js';
 import { grantStacks, onBuffChanged, stealRandomBuff } from './buff-economy.js';
 import { getP1, getP2, getP3, getP4, getPName, paramsFromItem } from './params.js';
 import { scaleEffectDuration } from './effect-duration.js';
-import { addSpeed } from './piece-stats.js';
+import { modifiedParamValue } from './placement-instance.js';
+import { addSpeed, changeBonusDamageFactor } from './piece-stats.js';
 import { withStatSource } from './stat-mods.js';
 import { gainStacks } from './stacks.js';
 import { isBattleRaging } from './battle-rage.js';
 import { makeDamageSpectral } from './damage.js';
+import { applyBonusChance } from './chance.js';
 import { rollPercent } from './rng.js';
 import { removeRandomBuffs } from './scripts/ports-wave-c-util.js';
 import { giveTempMaxHp } from './scripts/ports-ap-start.js';
 import { grantTimedDebuffResistance } from './timed-resistance.js';
+import { eventSideForPiece } from './vs-board.js';
 
 function familyOf(gid) {
   const id = String(gid || '');
@@ -32,6 +35,7 @@ function familyOf(gid) {
   if (id === 'elephant_rune') return 'elephant';
   if (id === 'lump_of_coal') return 'coal';
   if (id === 'burning_coal') return 'burning_coal';
+  if (id === 'corrupted_crystal') return 'corrupted_crystal';
   if (id === 'wisp') return 'wisp';
   return 'stat';
 }
@@ -47,6 +51,13 @@ function isWeaponHost(piece) {
 function gemChance(gem, key = 'chance', fb = 20) {
   const n = Number(gem?.[key]);
   return Number.isFinite(n) && n > 0 ? n : fb;
+}
+
+/** Item.getChance/getChance2 for a socketed gem, including chance modifiers. */
+function effectiveGemChance(gem, key, fallback, index) {
+  const raw = Number(gem?.[key]);
+  const base = Number.isFinite(raw) ? raw : fallback;
+  return Math.max(0, Math.min(100, applyBonusChance(base, gem, index)));
 }
 
 function onHostHit(ctx, piece, fn) {
@@ -65,10 +76,33 @@ function gemOriginKey(piece, slotIndex) {
  * Gem.prepareWeapon — once. On-hit listeners only where .gd connects "attacked".
  */
 function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
+  if (fam === 'corrupted_crystal') {
+    let applied = false;
+    const threshold = getP1(params, 30) / 100 - 0.0001;
+    const factor = getP2(params, 50) / 100;
+    const sync = () => {
+      const maxHp = Number(ctx.dummy.maxHp) || 1;
+      const below = (Number(ctx.dummy.hp) || 0) / maxHp < threshold;
+      if (below && !applied) {
+        applied = true;
+        changeBonusDamageFactor(piece, factor);
+      } else if (!below && applied) {
+        applied = false;
+        changeBonusDamageFactor(piece, -factor);
+      }
+    };
+    ctx.bus?.on?.('character_damaged', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.dummy) return;
+      const hit =
+        typeof payload.hit === 'object' ? Boolean(payload.hit?.hit) : Boolean(payload.hit);
+      if (hit) sync();
+    });
+    return;
+  }
   if (fam === 'topaz') {
     // Topaz.gd prepareWeapon — addSpeed once, not per hit. Stam regen is prepareInventory.
     withStatSource({ name: String(gem.name || gid), itemId: gid }, () => {
-      addSpeed(piece, getPName(params, 'attackspeed', getP1(params, 10)) / 100);
+      addSpeed(piece, getP1(params, 10) / 100);
     });
     return;
   }
@@ -123,13 +157,42 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
     });
     onHostHit(ctx, piece, () => {
       if (!spectral) return;
-      grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getP1(params, 1))), {
+      const rawMana = Number(getP1(params, 1));
+      const mana = Number.isFinite(rawMana) ? rawMana : 0;
+      grantStacks(ctx.player, 'mana', mana, {
         originKey,
         originId: gid,
       });
-      grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getP4(params, 1))), {
+      const rawCold = Number(getP4(params, 1));
+      const cold = Number.isFinite(rawCold) ? rawCold : 0;
+      grantStacks(ctx.dummy, 'cold', cold, {
         originKey,
         originId: gid,
+      });
+    });
+    return;
+  }
+  if (fam === 'tiger') {
+    // TigerRune.gd connects pre_deal_damage_late, so its Vampirism is added
+    // before the host strike resolves rather than from the post-hit bus.
+    const chance = getPName(params, 'chance_vamp', gemChance(gem));
+    const rawVamp = Number(getPName(params, 'vampirism', getP1(params, 1)));
+    const vamp = Number.isFinite(rawVamp) ? Math.trunc(rawVamp) : 0;
+    piece._preDealLate = piece._preDealLate || [];
+    piece._preDealLate.push((damageRes) => {
+      if (!damageRes?.hit || !rollPercent(chance, ctx.rng)) return;
+      grantStacks(ctx.player, 'vampirism', vamp, {
+        originKey,
+        originId: gid,
+      });
+      ctx.events.push({
+        t: (Number(ctx.t) || 0) + 0.001,
+        type: 'info',
+        actor: eventSideForPiece(piece),
+        itemId: gid,
+        placementKey: piece.placementKey,
+        label: `${gem.name || gid}: mini activate`,
+        meta: { category: 'system', script: true, handler: gid, miniActivate: true },
       });
     });
     return;
@@ -138,13 +201,21 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
 
   onHostHit(ctx, piece, (hit) => {
     if (fam === 'amethyst' && rollPercent(gemChance(gem), ctx.rng)) {
-      removeRandomBuffs(ctx.dummy, Math.max(1, Math.round(getP2(params, 1))), ctx.rng, {});
+      const rawRemoval = Number(getPName(params, 'buffs', getP2(params, 1)));
+      const removal = Number.isFinite(rawRemoval) ? Math.trunc(rawRemoval) : 0;
+      removeRandomBuffs(ctx.dummy, removal, ctx.rng, {});
     } else if (fam === 'ruby') {
-      const pct = getPName(params, 'lifesteal_weapon', 10) / 100;
+      // Ruby.gd uses getP_m("lifesteal_weapon") and heals ceil(damage * pct).
+      const basePct = getPName(params, 'lifesteal_weapon', 10);
+      const pct = modifiedParamValue(gem, basePct, 'lifesteal_weapon') / 100;
       const dmg = Number(hit.damage) || Number(hit.healthDamage) || 0;
       if (pct && dmg) healActor(ctx.player, Math.ceil(dmg * pct));
     } else if (fam === 'emerald' && rollPercent(gemChance(gem), ctx.rng)) {
-      grantStacks(ctx.dummy, 'poison', Math.max(1, Math.round(getP1(params, 1))), {
+      // Emerald.gd passes getP1() directly to inflictPoison(); Item.gd's
+      // giveStacks performs buff-power scaling and rounding at the target.
+      const rawPoison = Number(getPName(params, 'poison', getP1(params, 1)));
+      const poison = Number.isFinite(rawPoison) ? rawPoison : 0;
+      grantStacks(ctx.dummy, 'poison', poison, {
         originKey,
         originId: gid,
       });
@@ -157,11 +228,6 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
       // BadgerRune.gd onAttack — addSpeed every hit
       withStatSource({ name: String(gem.name || gid), itemId: gid }, () => {
         addSpeed(piece, getPName(params, 'attackspeed', 5) / 100);
-      });
-    } else if (fam === 'tiger' && rollPercent(getPName(params, 'chance_vamp', gemChance(gem)), ctx.rng)) {
-      grantStacks(ctx.player, 'vampirism', Math.max(1, Math.round(getPName(params, 'vampirism', 1))), {
-        originKey,
-        originId: gid,
       });
     } else if (fam === 'elephant' && rollPercent(gemChance(gem), ctx.rng)) {
       grantStun(
@@ -178,29 +244,51 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
  */
 function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
   if (fam === 'amethyst') {
-    const red = getP1(params, 8) / 100;
+    const rawPower = Number(gem?.gemPower);
+    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const red = (gemPower * getP1(params, 8)) / 100;
     if (red) applyHealEfficiency(ctx.dummy, -red, ctx, piece);
   } else if (fam === 'ruby') {
-    const amp = getP2(params, 8) / 100;
+    // Ruby.gd applies getGemPower() * getP2() to the owning character.
+    const rawPower = Number(gem?.gemPower);
+    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const amp = (gemPower * getP2(params, 8)) / 100;
     if (amp) applyHealEfficiency(ctx.player, amp, ctx, piece);
   } else if (fam === 'emerald') {
-    const ch = getP2(params, gemChance(gem));
+    // Gem.prepareArmor uses getGemPower() * getP2(); Gem.gd clamps the
+    // multiplier at zero and starts new gems at 1.0.
+    const rawPower = Number(gem?.gemPower);
+    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const ch = gemPower * getP2(params, gemChance(gem));
     ctx.player.stackResist = ctx.player.stackResist || {};
     ctx.player.stackResist.poison = (Number(ctx.player.stackResist.poison) || 0) + ch;
   } else if (fam === 'sapphire') {
-    const need = Math.max(1, Math.round(getP2(params, 4)));
+    // Sapphire.gd stores int(getP2()) once, then multiplies the raw block
+    // amount by GemPower before giveBlock performs the final rounding.
+    const rawNeed = Number(getP2(params, 4));
+    const need = Number.isFinite(rawNeed) ? Math.trunc(rawNeed) : 0;
+    const rawPower = Number(gem?.gemPower);
+    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
     let bank = 0;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'mana' || !(ch.amount > 0)) return;
       bank += ch.amount;
+      if (!(need > 0)) return;
       const block = Math.floor(bank / need) * getP3(params, 1);
       bank %= need;
-      if (block > 0) gainStacks(ctx.player, 'block', Math.max(1, Math.round(block)));
+      if (block > 0) gainStacks(ctx.player, 'block', gemPower * block);
     });
   } else if (fam === 'topaz') {
-    ctx.player.stunResistance = (Number(ctx.player.stunResistance) || 0) + gemChance(gem);
+    // Topaz.gd applies GemPower to both armor resistances. Gem.gd starts at
+    // 1.0 and clamps negative powers to zero before prepareArmor runs.
+    const rawPower = Number(gem?.gemPower);
+    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const stunChance = effectiveGemChance(gem, 'chance', 20, 1);
+    const critChance = effectiveGemChance(gem, 'chance2', 5, 2);
+    ctx.player.stunResistance =
+      (Number(ctx.player.stunResistance) || 0) + gemPower * stunChance;
     ctx.player.critResistance =
-      (Number(ctx.player.critResistance) || 0) + gemChance(gem, 'chance2', 5);
+      (Number(ctx.player.critResistance) || 0) + gemPower * critChance;
   } else if (fam === 'elephant') {
     // ElephantRune.gd changes debuff resistance during prepareArmor. The
     // combat-start timer only controls when that prepared resistance is
@@ -215,8 +303,12 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
   } else if (fam === 'skull') {
     // Skull.gd prepareArmor applies its gem-power chance to every debuff,
     // then separately applies the same amount to crit resistance.
+    const rawPower = Number(gem?.gemPower);
+    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const rawChance = Number(gem?.chance);
+    const chance = Number.isFinite(rawChance) ? rawChance : 20;
+    const ch = gemPower * chance;
     ctx.player.stackResist = ctx.player.stackResist || {};
-    const ch = gemChance(gem);
     for (const stack of ['poison', 'blind', 'cold']) {
       ctx.player.stackResist[stack] =
         (Number(ctx.player.stackResist[stack]) || 0) + ch;
@@ -243,21 +335,73 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
       }
     });
   } else if (fam === 'tiger') {
-    const need = Math.max(1, Math.round(getPName(params, 'buffs', 4)));
-    const per = Math.max(1, Math.round(getPName(params, 'block', 2)));
+    // TigerRune.gd caches int(getP("buffs")) / int(getP("block")) and
+    // multiplies each resulting Block grant by getGemPower(). New gems start
+    // at 1.0 and Gem clamps negative power to zero.
+    const rawNeed = Number(getPName(params, 'buffs', getP2(params, 10)));
+    const need = Number.isFinite(rawNeed) ? Math.trunc(rawNeed) : 0;
+    const rawPer = Number(getPName(params, 'block', getP3(params, 5)));
+    const per = Number.isFinite(rawPer) ? Math.trunc(rawPer) : 0;
+    const rawPower = Number(gem?.gemPower);
+    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
     let bank = 0;
+    piece._tigerBuffCounter = 0;
     onBuffChanged(ctx.player, (ch) => {
       if (!(ch.amount > 0) || ch.stack === 'block') return;
       bank += ch.amount;
-      const n = Math.floor(bank / need);
+      piece._tigerBuffCounter = bank;
+      if (!(need > 0)) return;
+      const relBuffs = bank / need;
+      const block = relBuffs * per;
       bank %= need;
-      if (n) gainStacks(ctx.player, 'block', n * per);
+      piece._tigerBuffCounter = bank;
+      if (block > 0) {
+        gainStacks(ctx.player, 'block', gemPower * block, { originKey, originId: gid });
+      }
     });
   } else if (fam === 'burning_coal') {
     ctx.player.stackResist = ctx.player.stackResist || {};
     ctx.player.stackResist.cold =
       (Number(ctx.player.stackResist.cold) || 0) +
       Math.round(getPName(params, 'coldresist', getP3(params, 7)));
+  } else if (fam === 'corrupted_crystal') {
+    const need = Math.max(1, Math.round(getP3(params, 7)));
+    const blockGain = Math.max(0, Math.round(getP4(params, 6)));
+    let bank = 0;
+    onBuffChanged(ctx.dummy, (ch) => {
+      if (!(ch.amount > 0) || !['poison', 'blind', 'cold'].includes(ch.stack)) return;
+      const originKey = String(ch.originKey || '');
+      const hostPrefix = `${piece.placementKey}:gem:`;
+      const originPiece = (ctx.allPieces || ctx.pieces || []).find(
+        (other) => other.placementKey === ch.originKey,
+      );
+      const ownerMatch = originPiece
+        ? eventSideForPiece(originPiece) === eventSideForPiece(piece)
+        : originKey.startsWith(hostPrefix) && ch.originId === gid;
+      if (!ownerMatch) return;
+      bank += Number(ch.amount) || 0;
+      const activations = Math.floor(bank / need);
+      bank %= need;
+      if (activations <= 0) return;
+      const amount = blockGain * activations;
+      gainStacks(ctx.player, 'block', amount, {
+        originKey,
+        originId: gid,
+      });
+      ctx.events.push({
+        t: ctx.t + 0.004,
+        type: 'info',
+        itemId: gid,
+        placementKey: piece.placementKey,
+        label: `${gem.name || gid}: mini activate`,
+        meta: {
+          category: 'system',
+          script: true,
+          handler: 'corrupted_crystal',
+          miniActivate: true,
+        },
+      });
+    });
   }
 }
 

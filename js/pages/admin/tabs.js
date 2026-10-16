@@ -2,7 +2,7 @@
  * Admin hub tabs + URL helpers (?tab=).
  */
 
-/** @typedef {'overview' | 'analytics' | 'members' | 'reports' | 'builds' | 'events' | 'cosmetics' | 'overlay' | 'marketplace'} AdminTabId */
+/** @typedef {'overview' | 'analytics' | 'members' | 'reports' | 'sim-audit' | 'builds' | 'events' | 'cosmetics' | 'overlay' | 'marketplace'} AdminTabId */
 
 /** @type {readonly AdminTabId[]} */
 export const ADMIN_TABS = Object.freeze([
@@ -10,6 +10,7 @@ export const ADMIN_TABS = Object.freeze([
   'analytics',
   'members',
   'reports',
+  'sim-audit',
   'builds',
   'events',
   'cosmetics',
@@ -23,6 +24,7 @@ export const ADMIN_TAB_LABELS = Object.freeze({
   analytics: 'Analytics',
   members: 'Members',
   reports: 'Sim reports',
+  'sim-audit': 'Sim audit',
   builds: 'Builds',
   events: 'Events',
   cosmetics: 'Cosmetics',
@@ -47,6 +49,10 @@ export const ADMIN_TAB_META = Object.freeze({
   reports: {
     title: 'Sim reports',
     blurb: 'Issue notes from the combat sandbox.',
+  },
+  'sim-audit': {
+    title: 'Sim audit',
+    blurb: 'Catalog and combat-system evidence. Checks require retained 1:1 proof.',
   },
   builds: {
     title: 'Builds',

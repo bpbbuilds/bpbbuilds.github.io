@@ -11,17 +11,21 @@ import {
   spendStacks,
   useMana,
 } from '../buff-economy.js';
-import { healActor, tryUseStamina } from '../actor.js';
+import { changeBuffCleanseProtectChance, healActor, tryUseStamina } from '../actor.js';
 import { affectedTargets, getItemsInside } from '../board-graph.js';
 import { getP, getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addEffectDurationFactor } from '../effect-duration.js';
 import { addBonusDamageFactor, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount, loseStacks } from '../stacks.js';
 import { applyEffectDmgFactor } from '../actor-stats.js';
 import { dealEffectDamage, dealHit } from './handlers.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
-import { itemHasType, pushActivate } from './ports-util.js';
+import { afterEffectFinished, itemHasType, itemTypeMultiplicity, pushActivate } from './ports-util.js';
 import { randInt } from '../rng.js';
+import { eventSideForPiece } from '../vs-board.js';
+import { leatherHelmPort } from './ports-ai-hard.js';
+import { canBagAffectItem } from '../../../../shared/backpack-grid/can-affect.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -79,18 +83,31 @@ export const magicBadgePort = {
 export const scholarBagPort = {
   handlerId: 'scholar_bag',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
-    const { graph, pieces, player } = ctx;
-    const inside = getItemsInside(graph, piece.placementKey);
-    const amp = Math.max(0, Number(piece.chance) || getPName(piece.params, 'chance', 15));
-    const prot = Math.max(0, Number(piece.chance2) || getPName(piece.params, 'chance2', 10));
-    for (const key of inside) {
-      const other = (pieces || []).find((p) => p.placementKey === key);
+  onPrepare(piece, ctx) {
+    const { graph, itemsById, canAffect, pieces, player } = ctx;
+    const catalog = itemsById.get(piece.itemId);
+    const amp = Math.max(0, Number(piece.chance ?? catalog?.chance) || 0);
+    const prot = Math.max(0, Number(piece.chance2 ?? catalog?.chance2) || 0);
+    const byKey = new Map((pieces || []).map((other) => [other.placementKey, other]));
+    for (const key of getItemsInside(graph, piece.placementKey)) {
+      const other = byKey.get(key);
       if (!other) continue;
-      other.buffAmpChance = (Number(other.buffAmpChance) || 0) + amp;
+      const targetCatalog = itemsById.get(other.itemId);
+      const target = targetCatalog
+        ? { ...targetCatalog, ...other, params: other.params || targetCatalog.params }
+        : other;
+      if (!canBagAffectItem({ id: 'scholar_bag' }, target, canAffect || {})) continue;
+      if (amp) {
+        other.buffAmplificationChances = other.buffAmplificationChances || {};
+        other.buffAmplificationChances.mana =
+          (Number(other.buffAmplificationChances.mana) || 0) + amp;
+      }
     }
-    if (prot) player.buffProtect = (Number(player.buffProtect) || 0) + Math.max(1, Math.round(prot / 20));
-    const mana = Math.max(1, Math.round(getPName(piece.params, 'mana', getP1(piece.params, 4))));
+    if (prot) changeBuffCleanseProtectChance(player, 'mana', prot);
+  },
+  onCombatStart(piece, ctx) {
+    const { player } = ctx;
+    const mana = Math.trunc(getPName(piece.params, 'mana', getP1(piece.params, 0)));
     grantStacks(player, 'mana', mana, {
       originKey: piece.placementKey,
       originId: piece.itemId,
@@ -103,6 +120,7 @@ export const scholarBagPort = {
       label: `${piece.name}: +${mana} Mana`,
       meta: { category: 'buff', stack: 'mana', script: true, handler: 'scholar_bag' },
     });
+    pushActivate(piece, ctx, 'scholar_bag', `Bag: ${piece.name}`, { force: true });
   },
 };
 
@@ -111,10 +129,8 @@ export const scholarBagPort = {
 export const burningSpikesPort = {
   handlerId: 'burning_spikes',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { player, graph, itemsById, canAffect } = ctx;
-    const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 3))));
-    const heat = Math.max(0, Math.round(getPName(piece.params, 'heat', getP2(piece.params, 2))));
     const need = Math.max(1, Math.round(getPName(piece.params, 'spikest', 5)));
     const heatFor = Math.max(0, Math.round(getPName(piece.params, 'heat2', 1)));
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
@@ -131,16 +147,22 @@ export const burningSpikesPort = {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
-        ctx.events.push({
-          t: ctx.t,
-          type: 'buff',
-          target: 'player',
-          amount: give,
+          ctx.events.push({
+            t: ctx.t,
+            type: 'buff',
+          actor: eventSideForPiece(piece),
+          target: eventSideForPiece(piece),
+            amount: give,
           label: `${piece.name}: +${give} Heat`,
           meta: { category: 'buff', stack: 'heat', script: true, handler: 'burning_spikes' },
         });
       }
     });
+  },
+  onCombatStart(piece, ctx) {
+    const { player } = ctx;
+    const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 3))));
+    const heat = Math.max(0, Math.round(getPName(piece.params, 'heat', getP2(piece.params, 2))));
     grantStacks(player, 'spikes', spikes, {
       originKey: piece.placementKey,
       originId: piece.itemId,
@@ -154,11 +176,13 @@ export const burningSpikesPort = {
     ctx.events.push({
       t: ctx.t,
       type: 'buff',
-      target: 'player',
+      actor: eventSideForPiece(piece),
+      target: eventSideForPiece(piece),
       amount: spikes,
       label: `${piece.name}: +${spikes} Spikes / +${heat} Heat`,
       meta: { category: 'buff', script: true, handler: 'burning_spikes' },
     });
+    pushActivate(piece, ctx, 'burning_spikes', `Skill: ${piece.name}`);
   },
 };
 
@@ -186,27 +210,43 @@ export const stoneHelmPort = {
 export const firePitPort = {
   handlerId: 'fire_pit',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPreCombatStart(piece, ctx) {
     const { player, graph, itemsById, events, t } = ctx;
     const inside = getItemsInside(graph, piece.placementKey);
     let fire = 0;
     for (const key of inside) {
       const p = (ctx.pieces || []).find((x) => x.placementKey === key);
-      if (p && itemHasType(itemsById.get(p.itemId), 'fire')) fire += 1;
+      const item = p ? itemsById.get(p.itemId) : null;
+      if (p && itemHasType(item, 'fire')) fire += itemTypeMultiplicity(item, 'fire');
     }
-    const per = Math.max(1, Math.round(getPName(piece.params, 'maxhealth', getP1(piece.params, 5))));
+    const per = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'maxhealth', getP1(piece.params, 5)),
+      'maxhealth',
+    );
     const hp = per * fire;
-    if (hp <= 0) return;
     player.maxHp += hp;
-    player.hp = Math.min(player.maxHp, player.hp + hp);
-    events.push({
-      t,
-      type: 'heal',
-      target: 'player',
-      amount: hp,
-      label: `${piece.name}: +${hp} max HP (${fire} fire)`,
-      meta: { category: 'heal', script: true, handler: 'fire_pit' },
-    });
+    player.hp += hp;
+    if (hp !== 0) {
+      events.push({
+        t,
+        type: 'heal',
+        actor: eventSideForPiece(piece),
+        target: eventSideForPiece(piece),
+        amount: hp,
+        label: `${piece.name}: +${hp} max HP (${fire} fire)`,
+        meta: {
+          category: 'heal',
+          kind: 'maxHp',
+          script: true,
+          handler: 'fire_pit',
+          playerHp: player.hp,
+          maxHp: player.maxHp,
+          affected: fire,
+        },
+      });
+    }
+    pushActivate(piece, { ...ctx, t }, 'fire_pit', `${piece.name}`);
   },
 };
 
@@ -300,7 +340,8 @@ export const timeMeltingPort = {
   handlerId: 'time_melting',
   family: 'start_buff',
   onPrepare(piece, ctx) {
-    const bonusDur = getPName(piece.params, 'bonusdur', 10) / 100;
+    const rawBonus = Number(getPName(piece.params, 'bonusdur', getP2(piece.params, 10)));
+    const bonusDur = Number.isFinite(rawBonus) ? rawBonus / 100 : 0;
     const { graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     for (const other of pieces || []) {
@@ -313,19 +354,13 @@ export const timeMeltingPort = {
     }
   },
   onCombatStart(piece, ctx) {
-    const heat = Math.max(1, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 2))));
+    const rawHeat = Number(getPName(piece.params, 'heat', getP1(piece.params, 0)));
+    const heat = Number.isFinite(rawHeat) ? Math.trunc(rawHeat) : 0;
     grantStacks(ctx.player, 'heat', heat, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    ctx.events.push({
-      t: ctx.t,
-      type: 'buff',
-      target: 'player',
-      amount: heat,
-      label: `${piece.name}: +${heat} Heat`,
-      meta: { category: 'buff', stack: 'heat', script: true, handler: 'time_melting' },
-    });
+    pushActivate(piece, ctx, 'time_melting', `Skill: ${piece.name}`);
   },
 };
 
@@ -334,7 +369,14 @@ export const timeMeltingPort = {
 export const capOfBrilliancePort = {
   handlerId: 'cap_of_brilliance',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
+  // CapofBrilliance.gd extends LeatherHelm and calls its onPrepare before
+  // applying the Mana-gain aura. Keep the inherited resistances in the same
+  // preparation phase so linked items see the finished cap before combat.
+  onPrepare(piece, ctx) {
+    const chance =
+      Number(ctx.itemsById.get(piece.itemId)?.chance) || Number(piece.chance) || 15;
+    ctx.player.critResistance = (Number(ctx.player.critResistance) || 0) + chance;
+    ctx.player.stunResistance = (Number(ctx.player.stunResistance) || 0) + chance;
     const { graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     const amp = Math.max(0, Number(piece.chance2) || getPName(piece.params, 'chance2', 15));
@@ -342,6 +384,8 @@ export const capOfBrilliancePort = {
       if (!links.some((l) => l.key === other.placementKey)) continue;
       other.buffAmpChance = (Number(other.buffAmpChance) || 0) + amp;
     }
+  },
+  onCombatStart(piece, ctx) {
     const mana = Math.max(1, Math.round(getPName(piece.params, 'mana', getP1(piece.params, 4))));
     grantStacks(ctx.player, 'mana', mana, {
       originKey: piece.placementKey,
@@ -354,6 +398,8 @@ export const capOfBrilliancePort = {
         originId: piece.itemId,
       });
     }
+    // Source order is giveMana() then LeatherHelm.onCombatStart().
+    leatherHelmPort.onCombatStart(piece, ctx);
     ctx.events.push({
       t: ctx.t,
       type: 'buff',
@@ -430,7 +476,9 @@ export const dragonNestPort = {
 export const amuletOfSteelPort = {
   handlerId: 'amulet_of_steel',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
+  // AmuletofSteel.gd initializes its accumulator and connects affected
+  // gave_block signals in onPrepare, before start-time block grants.
+  onPrepare(piece, ctx) {
     const { player, graph, itemsById, canAffect } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     /** @type {Set<string>} */
@@ -458,6 +506,9 @@ export const amuletOfSteelPort = {
         });
       }
     });
+  },
+  onCombatStart(piece, ctx) {
+    const { player } = ctx;
     const block = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 8)));
     grantStacks(player, 'block', block, {
       originKey: piece.placementKey,
@@ -508,7 +559,8 @@ export const wisdomPuppyPort = {
 export const armoredWisdomPuppyPort = {
   handlerId: 'armored_wisdom_puppy',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  // ArmoredWisdomPuppy.gd calls its Wisdom Puppy parent from onPrepare().
+  onPrepare(piece, ctx) {
     piece._bonusBlock = 0;
     const speed = getP2(piece.params, 5) / 100;
     const n = linkedCount(ctx, piece, (_o, item) => itemHasType(item, 'pet'));
@@ -540,25 +592,26 @@ export const armoredWisdomPuppyPort = {
 export const spellScrollFrostboltPort = {
   handlerId: 'spell_scroll_frostbolt',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const ice = linkedCount(ctx, piece, (_o, item) => itemHasType(item, 'ice'));
     piece._frostUses = 0;
-    piece._frostMax = Math.max(1, Math.round(getP1(piece.params, 3) + ice));
+    piece._frostMax = Math.trunc(getP1(piece.params, 3)) + ice;
   },
   onCooldownEffect(piece, ctx) {
     const { t, dummy, player, events, rng } = ctx;
-    const max = piece._frostMax || 3;
+    const max = Number(piece._frostMax);
     const uses = piece._frostUses || 0;
-    if (uses >= max) {
-      piece.alive = false;
-      return true;
-    }
-    pushActivate(piece, ctx, 'spell_scroll_frostbolt', `Scroll: ${piece.name}`);
+    if (!(uses < max)) return true;
     // SpellScrollFrostbolt.gd: `descriptor.minDam` through dealEffectDamage.
-    const raw = Math.max(1, Math.round(piece.damageMin || 4));
-    dealEffectDamage(piece, ctx, raw);
-    const cold = Math.max(1, Math.round(getP3(piece.params, 2)));
-    const dur = Math.max(0.5, getPName(piece.params, 'dur_cold', getP2(piece.params, 3)));
+    const catalogDamage = Number(ctx.itemsById.get(piece.itemId)?.damageMin);
+    const raw = Number.isFinite(catalogDamage) ? catalogDamage : Number(piece.damageMin) || 0;
+    const damageRes = dealEffectDamage(piece, ctx, raw);
+    const cold = Math.trunc(getPName(piece.params, 'cold', getP3(piece.params, 2)));
+    const dur = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur_cold', getP2(piece.params, 3)),
+      'dur_cold',
+    );
     grantTemporaryStacks(dummy, 'cold', cold, dur, t, {
       rng,
       opponent: player,
@@ -566,15 +619,24 @@ export const spellScrollFrostboltPort = {
       originId: piece.itemId,
     });
     piece._frostUses = uses + 1;
-    if (piece._frostUses >= max) piece.alive = false;
     events.push({
       t: t + 0.008,
       type: 'debuff',
       target: 'dummy',
       amount: cold,
       label: `${piece.name}: +${cold} Cold (${dur}s)`,
-      meta: { category: 'debuff', stack: 'cold', script: true, handler: 'spell_scroll_frostbolt' },
+      meta: {
+        category: 'debuff',
+        script: true,
+        handler: 'spell_scroll_frostbolt',
+        damageId: damageRes?.damageId ?? null,
+      },
     });
+    if (piece._frostUses === max) {
+      afterEffectFinished(piece, ctx, 'spell_scroll_frostbolt', { label: `Scroll: ${piece.name}` });
+    } else {
+      pushActivate(piece, ctx, 'spell_scroll_frostbolt', `Scroll: ${piece.name}`);
+    }
     return true;
   },
 };
@@ -683,8 +745,8 @@ export const bombPort = {
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const { t, player, dummy, events } = ctx;
+    if (tryUseStamina(player, piece.staminaCost || 1) === 'starve') return false;
     pushActivate(piece, ctx, 'bomb', `Accessory: ${piece.name}`);
-    if (tryUseStamina(player, piece.staminaCost || 1) === 'starve') return true;
     let removed = 0;
     for (const k of BUFF_KEYS) {
       const n = getStackAmount(player, /** @type {any} */ (k));

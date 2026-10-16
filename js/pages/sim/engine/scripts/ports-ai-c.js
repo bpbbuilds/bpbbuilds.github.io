@@ -12,9 +12,9 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { healActor, tryUseStamina } from '../actor.js';
-import { applyHealEfficiency } from '../actor-stats.js';
+import { applyHealEfficiency, applyUnhealing } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { rollPercent } from '../rng.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
@@ -95,7 +95,7 @@ export const badgerSpiritPort = {
 export const crowPort = {
   handlerId: 'crow',
   family: 'unique',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._crowActs = 0;
   },
   onCooldownEffect(piece, ctx) {
@@ -107,9 +107,7 @@ export const crowPort = {
     const acts = Number(piece._crowActs) || 0;
     if (acts < maxActs) {
       for (const { other } of linkedWith(ctx, piece)) {
-        if (!(other.cooldown > 0 || other.baseCooldown > 0)) continue;
         addSpeed(other, speedBonus);
-        // debuffAmpChance mirrors buffAmpChance; amp apply path is still shallow engine-side
         other.debuffAmpChance = (Number(other.debuffAmpChance) || 0) + amp;
       }
       piece._crowActs = acts + 1;
@@ -139,22 +137,28 @@ export const crowPort = {
 export const evilHatPort = {
   handlerId: 'evil_hat',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const darkN = linkedWith(
       ctx,
       piece,
       (o, link) =>
         link.color === 'secondary' && itemHasType(ctx.itemsById.get(o.itemId), 'dark'),
     ).length;
-    let unh = getPName(piece.params, 'unhealing', 10) / 100;
-    unh += darkN * (getPName(piece.params, 'unhealing2', 5) / 100);
-    if (unh) ctx.player.unhealing = (Number(ctx.player.unhealing) || 0) + unh;
+    let unh = getPName(piece.params, 'unhealing', getP4(piece.params, 10)) / 100;
+    unh += darkN * (getPName(piece.params, 'unhealing2', getP5(piece.params, 5)) / 100);
+    if (unh) applyUnhealing(ctx.player, unh, ctx, piece);
 
-    const regenPer = Math.max(0, Math.round(getPName(piece.params, 'regen', 1)));
-    const chance = Number(piece.chance) || getPName(piece.params, 'chance', 50);
-    // Gap: no origin-item filter on debuff bus — any poison/blind/cold gain rolls regen
-    onBuffChanged(ctx.dummy, (ch) => {
-      if (!(ch.amount > 0) || !['poison', 'blind', 'cold'].includes(ch.stack)) return;
+    const regenPer = Math.trunc(getPName(piece.params, 'regen', getP3(piece.params, 1)));
+    const chanceRaw = piece.chance ?? ctx.itemsById?.get?.(piece.itemId)?.chance;
+    const chance = chanceRaw == null || !Number.isFinite(Number(chanceRaw))
+      ? 0
+      : Number(chanceRaw);
+    const isOwnerOrigin = (ch) => {
+      const origin = (ctx.pieces || []).find((o) => o.placementKey === ch?.originKey);
+      return Boolean(origin && origin.side === piece.side);
+    };
+    onBuffChanged(ctx.player, (ch) => {
+      if (!isOwnerOrigin(ch) || !(ch.amount > 0) || !['poison', 'blind', 'cold'].includes(ch.stack)) return;
       let give = 0;
       for (let i = 0; i < ch.amount; i += 1) {
         if (rollPercent(chance, ctx.rng)) give += regenPer;
@@ -163,36 +167,42 @@ export const evilHatPort = {
         grantStacks(ctx.player, 'regeneration', give, {
           originKey: piece.placementKey,
           originId: piece.itemId,
+          rng: ctx.rng,
         });
       }
     });
-    const critPer = Math.max(
-      0,
-      Number(piece.chance2) || getPName(piece.params, 'chance2', 5),
-    );
+    const critRaw = piece.chance2 ?? ctx.itemsById?.get?.(piece.itemId)?.chance2;
+    const critPer = critRaw == null || !Number.isFinite(Number(critRaw))
+      ? 0
+      : Number(critRaw);
     onBuffChanged(ctx.dummy, (ch) => {
-      if (!(ch.amount < 0) || !critPer) return;
+      if (!isOwnerOrigin(ch) || !(ch.amount < 0) || !critPer) return;
       for (const { other } of linkedWith(ctx, piece, (_o, link) => link.color === 'primary')) {
-        if (!(other.damageMax > 0 || other.damageMin > 0)) continue;
+        const item = ctx.itemsById.get(other.itemId);
+        const min = Number(other.damageMin ?? item?.damageMin);
+        const lifesteal = (item?.tags || []).some((tag) => /lifesteal/i.test(String(tag)));
+        if (!(min > 0 || lifesteal)) continue;
         other.critChance = (Number(other.critChance) || 0) + critPer * -ch.amount;
       }
     });
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, dummy, events, rng } = ctx;
-    pushActivate(piece, ctx, 'evil_hat', `Accessory: ${piece.name}`);
-    const selfN = Math.max(1, Math.round(getPName(piece.params, 'buffs', getP1(piece.params, 2))));
-    const oppN = Math.max(1, Math.round(getPName(piece.params, 'buffs2', getP2(piece.params, 1))));
+    const selfN = Math.trunc(getPName(piece.params, 'buffs', getP1(piece.params, 2)));
+    const oppN = Math.trunc(getPName(piece.params, 'buffs2', getP2(piece.params, 1)));
     const selfPicked = giveRandomBuffs(player, selfN, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
+      rng,
     });
     pushBuffGrants(events, piece, player, t, 'evil_hat', selfPicked);
     const oppPicked = giveRandomBuffs(dummy, oppN, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
+      rng,
     });
     pushBuffGrants(events, piece, player, t, 'evil_hat', oppPicked, 0.01, 'dummy');
+    pushActivate(piece, ctx, 'evil_hat', `Pet: ${piece.name}`);
     return true;
   },
 };

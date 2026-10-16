@@ -22,7 +22,7 @@ import { isBagLike } from './item-kind.js';
  *   r: number,
  *   gems?: string[],
  *   cells: string[],
- *   affectCells: { cell: string, color: 'primary'|'secondary' }[],
+ *   affectCells: { cell: string, color: 'primary'|'secondary'|'tertiary'|'lightning' }[],
  * }} BoardPiece
  */
 
@@ -106,6 +106,24 @@ export function buildBoardGraph(placements, itemsById) {
         c.y - upBounds.minY,
       );
       affectCells.push({ cell, color: 'secondary' });
+    }
+    for (const c of up.tertiaries || []) {
+      const { cell } = shapeMarkToBoard(
+        item,
+        placement,
+        c.x - upBounds.minX,
+        c.y - upBounds.minY,
+      );
+      affectCells.push({ cell, color: 'tertiary' });
+    }
+    for (const c of up.lightnings || []) {
+      const { cell } = shapeMarkToBoard(
+        item,
+        placement,
+        c.x - upBounds.minX,
+        c.y - upBounds.minY,
+      );
+      affectCells.push({ cell, color: 'lightning' });
     }
     pieces.set(p.key, {
       key: p.key,
@@ -208,7 +226,7 @@ export function affectedTargets(graph, sourceKey, itemsById, canAffect) {
     }
   }
 
-  // Body-adjacent fallback only when the piece has no star/diamond marks (matches
+  // Body-adjacent fallback only when the piece has no affect marks (matches
   // getAffectedItems() — amulets/skills never buff neighbors by body touch alone).
   if (!sourcePiece.affectCells.length) {
     for (const key of neighborKeys(graph, sourceKey)) {

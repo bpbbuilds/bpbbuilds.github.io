@@ -3,8 +3,11 @@
  */
 
 import { grantStacks, onBuffChanged } from '../buff-economy.js';
+import { changeReflectStacks } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
+import { giveBuffPower } from '../buff-power.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import {
   addBonusDamage,
   addBonusDamageFactor,
@@ -13,7 +16,7 @@ import {
   multiplyStaminaCost,
 } from '../piece-stats.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
-import { itemHasType } from './ports-util.js';
+import { itemHasType, pushActivate } from './ports-util.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -42,6 +45,42 @@ function linkedPieces(ctx, piece, pred) {
 /** @param {object} other @param {number} frac */
 function changeStaminaFactor(other, frac) {
   multiplyStaminaCost(other, frac);
+}
+
+/**
+ * SteelDragon.gd delegates both predicates to the affected Item instance.
+ * The catalog exposes ordinary block providers as `block`; the two extracted
+ * custom canBlock overrides are retained here because their base catalog stat
+ * is intentionally empty.
+ * @param {object} other
+ * @param {object|undefined} item
+ */
+function canSteelDragonBlock(other, item) {
+  const id = String(item?.id || other?.itemId || '').toLowerCase();
+  return (
+    Number(item?.block) > 0 ||
+    Number(other?.blockGrant) > 0 ||
+    id === 'halberd' ||
+    id === 'stoned'
+  );
+}
+
+/**
+ * Item.canBeEmpowered() is stricter than the generic aura helper: it requires
+ * an actual Weapon with damage. Keep Steel Dragon's source predicate local so
+ * pets or damage-bearing non-weapons are not accidentally buffed.
+ * @param {object} other
+ * @param {object|undefined} item
+ */
+function canSteelDragonEmpower(other, item) {
+  if (other?.empowerable === false) return false;
+  const weapon = itemHasType(item, 'weapon') || other?.kind === 'weapon';
+  const damage =
+    Number(other?.damageMin) > 0 ||
+    Number(other?.damageMax) > 0 ||
+    Number(item?.damageMin) > 0 ||
+    Number(item?.damageMax) > 0;
+  return weapon && damage;
 }
 
 /** Whetstone.gd */
@@ -94,14 +133,26 @@ export const smithingForDummiesPort = {
   handlerId: 'smithing_for_dummies',
   family: 'synergy_aura',
   onCombatStart(piece, ctx) {
-    const stam = -Math.abs(getPName(piece.params, 'stamina', getP1(piece.params, 20)) / 100);
-    const dam = Math.max(0, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 2))));
+    const stam = -modifiedParamValue(
+      piece,
+      getPName(piece.params, 'stamina', getP1(piece.params, 20)),
+      'stamina',
+    ) / 100;
+    const dam = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dam', getP2(piece.params, 2)),
+      'dam',
+    );
     const targets = linkedPieces(ctx, piece, (o, item) => {
+      const craftedIds = ctx.canAffect?.craftedIds;
       const crafted =
         item?.crafted === true ||
         itemHasType(item, 'crafted') ||
-        String(item?.rarity || '').toLowerCase() === 'crafted';
-      return crafted && (o.kind === 'weapon' || canBeEmpoweredPiece(o));
+        String(item?.rarity || '').toLowerCase() === 'crafted' ||
+        (craftedIds instanceof Set
+          ? craftedIds.has(String(item?.id || o.itemId))
+          : Array.isArray(craftedIds) && craftedIds.includes(String(item?.id || o.itemId)));
+      return crafted && (o.kind === 'weapon' || itemHasType(item, 'weapon'));
     });
     for (const o of targets) {
       changeStaminaFactor(o, stam);
@@ -113,31 +164,48 @@ export const smithingForDummiesPort = {
       label: `${piece.name}: crafted aura ×${targets.length}`,
       meta: { category: 'adjacency', script: true, handler: 'smithing_for_dummies' },
     });
+    pushActivate(piece, ctx, 'smithing_for_dummies', `${piece.name}: activate`);
   },
 };
 
 /** StoneGloves.gd — start slow + dmg factor; linked weapon hit → Block. */
+/**
+ * StoneGloves.gd uses Item.canBeEmpowered(): a damage-dealing Weapon only.
+ * @param {object} other
+ * @param {object|undefined} item
+ */
+function canStoneGlovesEmpower(other, item) {
+  if (other?.empowerable === false) return false;
+  const weapon = itemHasType(item, 'weapon') || other?.kind === 'weapon';
+  const damage =
+    Number(other?.damageMin) > 0 ||
+    Number(other?.damageMax) > 0 ||
+    Number(item?.damageMin) > 0 ||
+    Number(item?.damageMax) > 0;
+  return weapon && damage;
+}
+
 /** @type {ScriptHandler} */
 export const stoneGlovesPort = {
   handlerId: 'stone_gloves',
   family: 'synergy_aura',
-  onCombatStart(piece, ctx) {
-    const { player, events, t } = ctx;
-    const speedRed = getPName(piece.params, 'speedreduction', getP1(piece.params, 10)) / 100;
-    const damF = getPName(piece.params, 'dambonus', getP2(piece.params, 15)) / 100;
-    const targets = linkedPieces(ctx, piece, (o) => canBeEmpoweredPiece(o));
-    /** @type {Set<string>} */
+  onPrepare(piece, ctx) {
+    const targets = linkedPieces(ctx, piece, (o, item) => canStoneGlovesEmpower(o, item));
     const linkedKeys = new Set(targets.map((o) => o.placementKey));
-    for (const o of targets) {
-      if (speedRed) addSpeed(o, -speedRed);
-      if (damF) addBonusDamageFactor(o, damF);
-    }
-    const blockPer = Math.max(1, Math.round(piece.blockGrant || getPName(piece.params, 'block', 1)));
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
+    piece._stoneGlovesLinkedKeys = linkedKeys;
+    const { player, events } = ctx;
+    const blockPer = Math.max(
+      0,
+      Math.round(
+        Number(piece.blockGrant) ||
+          Number(ctx.itemsById?.get?.(piece.itemId)?.block) ||
+          getPName(piece.params, 'block', getP1(piece.params, 0)),
+      ),
+    );
+    ctx.bus?.on?.('item_attacked', (payload) => {
       const atk = payload?.piece;
-      const hit = payload?.hit;
-      if (!atk || !hit?.hit) return;
-      if (!linkedKeys.has(atk.placementKey)) return;
+      if (!atk || !payload?.hit?.hit) return;
+      if (!linkedKeys.has(atk.placementKey) || !(blockPer > 0)) return;
       grantStacks(player, 'block', blockPer, {
         originKey: piece.placementKey,
         originId: piece.itemId,
@@ -150,24 +218,45 @@ export const stoneGlovesPort = {
         label: `${piece.name}: +${blockPer} Block`,
         meta: { category: 'buff', stack: 'block', script: true, handler: 'stone_gloves' },
       });
+      events.push({
+        t: payload?.t ?? ctx.t,
+        type: 'info',
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: mini activate`,
+        meta: { category: 'system', script: true, handler: 'stone_gloves', miniActivate: true },
+      });
     });
+  },
+  onCombatStart(piece, ctx) {
+    const { events, t } = ctx;
+    const speedRed = getPName(piece.params, 'speedreduction', getP1(piece.params, 10)) / 100;
+    const damF = getPName(piece.params, 'dambonus', getP2(piece.params, 15)) / 100;
+    const targets = linkedPieces(ctx, piece, (o, item) => canStoneGlovesEmpower(o, item));
+    for (const o of targets) {
+      if (speedRed) addSpeed(o, -speedRed);
+      if (damF) addBonusDamageFactor(o, damF);
+    }
     events.push({
       t,
       type: 'info',
       label: `${piece.name}: gloves aura ×${targets.length}`,
       meta: { category: 'adjacency', script: true, handler: 'stone_gloves' },
     });
+    pushActivate(piece, ctx, 'stone_gloves', `Accessory: ${piece.name}`);
   },
 };
 
-/** Anvil.gd — crafted count buffs secondary weapons (combat start). */
+/** Anvil.gd — primary crafted count buffs secondary weapons before combat. */
 /** @type {ScriptHandler} */
 export const anvilPort = {
   handlerId: 'anvil',
   family: 'synergy_aura',
-  onCombatStart(piece, ctx) {
+  onPreCombatStart(piece, ctx) {
     const { graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
+    const primary = new Set(links.filter((link) => link.color === 'primary').map((link) => link.key));
+    const secondary = new Set(links.filter((link) => link.color === 'secondary').map((link) => link.key));
     let crafted = 0;
     /** @type {object[]} */
     const weapons = [];
@@ -176,22 +265,24 @@ export const anvilPort = {
       const item = itemsById.get(other.itemId);
       const isCrafted =
         item?.crafted === true || itemHasType(item, 'crafted');
-      if (isCrafted) crafted += 1;
-      if (other.kind === 'weapon' || canBeEmpoweredPiece(other)) weapons.push(other);
+      if (primary.has(other.placementKey) && isCrafted) crafted += 1;
+      if (secondary.has(other.placementKey) && (other.kind === 'weapon' || canBeEmpoweredPiece(other))) weapons.push(other);
     }
-    if (crafted <= 0) return;
-    const dam = Math.max(0, Math.round(getP1(piece.params, 1) * crafted));
-    const stam = -Math.abs((getP2(piece.params, 5) / 100) * crafted);
-    for (const o of weapons) {
-      if (canBeEmpoweredPiece(o) && dam) addBonusDamage(o, dam);
-      changeStaminaFactor(o, stam);
+    if (crafted > 0) {
+      const dam = Math.max(0, Math.round(getP1(piece.params, 1) * crafted));
+      const stam = -Math.abs((getP2(piece.params, 5) / 100) * crafted);
+      for (const o of weapons) {
+        if (canBeEmpoweredPiece(o) && dam) addBonusDamage(o, dam);
+        changeStaminaFactor(o, stam);
+      }
+      ctx.events.push({
+        t: ctx.t,
+        type: 'info',
+        label: `${piece.name}: ${crafted} crafted → weapons`,
+        meta: { category: 'adjacency', script: true, handler: 'anvil' },
+      });
     }
-    ctx.events.push({
-      t: ctx.t,
-      type: 'info',
-      label: `${piece.name}: ${crafted} crafted → weapons`,
-      meta: { category: 'adjacency', script: true, handler: 'anvil' },
-    });
+    pushActivate(piece, ctx, 'anvil', `Accessory: ${piece.name}`);
   },
 };
 
@@ -221,22 +312,32 @@ export const mushroomFarmPort = {
 export const steelDragonPort = {
   handlerId: 'steel_dragon',
   family: 'synergy_aura',
-  onCombatStart(piece, ctx) {
-    const { player } = ctx;
-    const blockFactor = getPName(piece.params, 'blockfactor', 10) / 100;
-    const reflect = Math.max(0, Math.round(getPName(piece.params, 'reflect', getP1(piece.params, 2))));
-    if (reflect) player.debuffReflectStacks = (player.debuffReflectStacks || 0) + reflect;
-    const dam = Math.max(0, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 2))));
-    const targets = linkedPieces(ctx, piece, (o) => canBeEmpoweredPiece(o) || o.blockGrant > 0);
+  onPrepare(piece, ctx) {
+    const blockFactor = getPName(piece.params, 'blockfactor', getP3(piece.params, 10)) / 100;
+    if (!blockFactor) return;
+    const targets = linkedPieces(
+      ctx,
+      piece,
+      (o, item) => canSteelDragonBlock(o, item) || canSteelDragonEmpower(o, item),
+    );
     for (const o of targets) {
-      if (blockFactor && (o.blockGrant > 0 || o.kind === 'armor' || o.kind === 'shield')) {
-        o.blockGrant = Math.max(
-          0,
-          Math.round((Number(o.blockGrant) || 0) * (1 + blockFactor)),
-        );
-      }
-      if (dam && canBeEmpoweredPiece(o)) addBonusDamage(o, dam);
+      const item = ctx.itemsById.get(o.itemId);
+      if (canSteelDragonBlock(o, item)) giveBuffPower(o, 'block', blockFactor);
     }
+  },
+  onPreCombatStart(piece, ctx) {
+    const reflect = Math.max(0, Math.round(getPName(piece.params, 'reflect', getP1(piece.params, 0))));
+    changeReflectStacks(ctx.player, reflect, ctx, piece);
+  },
+  onCombatStart(piece, ctx) {
+    const dam = Math.max(0, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 0))));
+    const targets = linkedPieces(
+      ctx,
+      piece,
+      (o, item) => canSteelDragonEmpower(o, item) || canSteelDragonBlock(o, item),
+    );
+    for (const o of targets) if (dam) addBonusDamage(o, dam);
+    pushActivate(piece, ctx, 'steel_dragon', `Weapon: ${piece.name}`);
     ctx.events.push({
       t: ctx.t,
       type: 'info',
@@ -250,10 +351,10 @@ export const steelDragonPort = {
 /** @type {ScriptHandler} */
 export const villainSwordPort = {
   handlerId: 'villain_sword',
-  family: 'unique',
-  onCombatStart(piece, ctx) {
-    const steal = Math.max(1, Math.round(getP1(piece.params, 1)));
-    const selfGain = Math.max(1, Math.round(getP2(piece.params, 2)));
+  family: 'weapon_base',
+  onPreCombatStart(piece, ctx) {
+    const steal = getP1(piece.params, 0);
+    const selfGain = getP2(piece.params, 0);
     const targets = linkedPieces(ctx, piece, (o, item) => {
       if (!canBeEmpoweredPiece(o)) return false;
       return (
@@ -310,14 +411,6 @@ export const dancingDragonPort = {
     const luck = Math.max(0, Math.round(getP3(piece.params, 1) * n));
     if (heat) grantStacks(player, 'heat', heat, { originKey: piece.placementKey, originId: piece.itemId });
     if (luck) grantStacks(player, 'lucky', luck, { originKey: piece.placementKey, originId: piece.itemId });
-    ctx.events.push({
-      t: ctx.t,
-      type: 'buff',
-      target: 'player',
-      amount: heat + luck,
-      label: `${piece.name}: +${heat} Heat / +${luck} Lucky`,
-      meta: { category: 'buff', script: true, handler: 'dancing_dragon' },
-    });
   },
 };
 

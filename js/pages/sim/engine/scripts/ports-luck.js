@@ -3,6 +3,7 @@
  */
 
 import {
+  BUFF_KEYS,
   cleanseRandomDebuffs,
   giveAllBuffs,
   grantStacks,
@@ -15,16 +16,25 @@ import {
   useRegeneration,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP, getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { rollPercent } from '../rng.js';
-import { gainStacks, loseStacks } from '../stacks.js';
+import { gainStacks, getStackAmount, loseStacks } from '../stacks.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { recordPieceMod, withStatSource } from '../stat-mods.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
  */
+
+function stealFedoraBuffs(piece, ctx, num) {
+  const stolen = stealRandomBuff(ctx.dummy, ctx.player, num, ctx.rng, {
+    availableBuffs: BUFF_KEYS.filter((key) => key !== 'lucky'),
+    originKey: piece.placementKey,
+    originId: piece.itemId,
+  });
+  pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'fedora', stolen, 0.004);
+}
 
 const WAND_BUFFS = ['mana', 'lucky', 'regeneration'];
 
@@ -34,7 +44,6 @@ export const carrotPort = {
   family: 'food',
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    pushActivate(piece, ctx, 'carrot', `Food: ${piece.name}`);
     cleanseRandomDebuffs(player, 1, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
@@ -57,6 +66,8 @@ export const carrotPort = {
         meta: { category: 'buff', stack: 'empower', script: true, handler: 'carrot' },
       });
     }
+    // Carrot.gd activates after cleansing and the optional Empower grant.
+    pushActivate(piece, ctx, 'carrot', `Food: ${piece.name}`);
     return true;
   },
 };
@@ -110,51 +121,49 @@ export const crowPort = {
 export const fedoraPort = {
   handlerId: 'fedora',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    const { t, events, graph, itemsById, canAffect, pieces } = ctx;
+    const bonusChance = getPName(piece.params, 'chance', getPName(piece.params, 'p7'));
+    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
+    let chanceBuffed = 0;
+    withStatSource(piece, () => {
+      for (const other of pieces || []) {
+        if (other.placementKey === piece.placementKey) continue;
+        const link = links.find((l) => l.key === other.placementKey);
+        if (!link || link.color !== 'secondary') continue;
+        const item = itemsById.get(other.itemId);
+        const baseChance = Number(item?.chance) || Number(other.chance) || 0;
+        if (!(baseChance > 0)) continue;
+        other.bonusChanceMult = (Number(other.bonusChanceMult) || 0) + bonusChance;
+        recordPieceMod(other, { stat: 'chance', amount: bonusChance / 100, unit: 'factor' });
+        chanceBuffed += 1;
+      }
+    });
+    if (chanceBuffed > 0) {
+      events.push({
+        t: t + 0.01,
+        type: 'info',
+        label: `${piece.name}: +${bonusChance}% chance x${chanceBuffed}`,
+        meta: { category: 'adjacency', script: true, handler: 'fedora' },
+      });
+    }
+  },
   onCombatStart(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
     // Fedora.gd onPrepare: secondary canModifyChance → addBonusChance
-    const bonusChance = Math.max(
-      0,
-      Number(getPName(piece.params, 'chance', getPName(piece.params, 'p5', 10))) || 0,
-    );
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    let chanceBuffed = 0;
-    if (bonusChance > 0) {
-      withStatSource(piece, () => {
-        for (const other of pieces || []) {
-          if (other.placementKey === piece.placementKey) continue;
-          const link = links.find((l) => l.key === other.placementKey);
-          if (!link) continue;
-          if (link.color !== 'secondary' && link.color !== 'adjacent') continue;
-          const item = itemsById.get(other.itemId);
-          const baseChance = Number(item?.chance) || Number(other.chance) || 0;
-          if (!(baseChance > 0)) continue;
-          other.bonusChanceMult = (Number(other.bonusChanceMult) || 0) + bonusChance;
-          recordPieceMod(other, {
-            stat: 'chance',
-            amount: bonusChance / 100,
-            unit: 'factor',
-          });
-          chanceBuffed += 1;
-        }
-      });
-    }
-    const luckPerNature = Math.max(
-      0,
-      Math.round(getPName(piece.params, 'luck', getP1(piece.params, 1))),
-    );
-    const luckPerTreasure = Math.max(
-      0,
-      Math.round(getPName(piece.params, 'luck2', getP2(piece.params, 1))),
-    );
+    const luckPerNature = Math.trunc(getPName(piece.params, 'luck', getP1(piece.params)));
+    const luckPerTreasure = Math.trunc(getPName(piece.params, 'luck2', getP2(piece.params)));
     let nature = 0;
     let treasure = 0;
     for (const other of pieces || []) {
       const link = links.find((l) => l.key === other.placementKey);
-      if (!link || link.color === 'secondary') continue;
+      if (!link || link.color !== 'primary') continue;
       const item = itemsById.get(other.itemId);
       if (itemHasType(item, 'nature')) nature += 1;
-      if (itemHasType(item, 'treasure') || item?.isTreasure === true) treasure += 1;
+      if (item?.isTreasure === true || String(item?.shop || '').toLowerCase() === 'unique') {
+        treasure += 1;
+      }
     }
     const total = nature * luckPerNature + treasure * luckPerTreasure;
     if (total > 0) {
@@ -173,22 +182,13 @@ export const fedoraPort = {
         meta: { category: 'buff', stack: 'lucky', script: true, handler: 'fedora' },
       });
     }
-    if (chanceBuffed > 0) {
-      events.push({
-        t: t + 0.01,
-        type: 'info',
-        label: `${piece.name}: +${bonusChance}% chance ×${chanceBuffed}`,
-        meta: { category: 'adjacency', script: true, handler: 'fedora' },
-      });
-    }
     pushActivate(piece, ctx, 'fedora', `Accessory: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    const { t, player, dummy, events, rng } = ctx;
-    pushActivate(piece, ctx, 'fedora', `Accessory: ${piece.name}`);
-    const need = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP3(piece.params, 3))));
-    const num = Math.max(1, Math.round(getPName(piece.params, 'buffs', 1)));
-    if ((Number(player.stacks.lucky) || 0) >= need) {
+    const { t, player, events } = ctx;
+    const need = Math.trunc(getPName(piece.params, 'luckt', getP3(piece.params)));
+    const num = Math.trunc(getPName(piece.params, 'buffs', getP6(piece.params)));
+    if (getStackAmount(player, 'lucky') >= need) {
       const spent = useLucky(player, need, {
         originKey: piece.placementKey,
         originId: piece.itemId,
@@ -204,21 +204,12 @@ export const fedoraPort = {
           label: `${piece.name}: −${spent.spent} Lucky`,
           meta: { category: 'buff', stack: 'lucky', script: true, handler: 'fedora' },
         });
-        const stolen = stealRandomBuff(dummy, player, num, rng, {
-          availableBuffs: [
-            'regeneration',
-            'vampirism',
-            'spikes',
-            'mana',
-            'empower',
-            'heat',
-          ],
-          originKey: piece.placementKey,
-          originId: piece.itemId,
-        });
-        pushBuffGrants(events, piece, player, t, 'fedora', stolen, 0.004);
+        stealFedoraBuffs(piece, { ...ctx, t }, num);
       }
+      if (spent.spent <= 0) stealFedoraBuffs(piece, { ...ctx, t }, num);
     }
+    // Fedora.gd steals first and activates last.
+    pushActivate(piece, { ...ctx, t: t + 0.006 }, 'fedora', `Accessory: ${piece.name}`);
     return true;
   },
 };
@@ -227,24 +218,23 @@ export const fedoraPort = {
 export const sealTheDealPort = {
   handlerId: 'seal_the_deal',
   family: 'unique',
+  onCalcTradeChance(piece, ctx) {
+    const catalog = ctx.itemsById?.get(piece.itemId);
+    const sellBox = ctx.sellBox || ctx.sellbox || ctx.shop;
+    if (!sellBox) return;
+    const shopChance = Number(piece.shopChance ?? catalog?.shopChance) || 0;
+    const tradeBonus = Math.trunc(getPName(piece.params, 'gold', getP(piece.params, 0, 0)));
+    sellBox.tradeChance = (Number(sellBox.tradeChance) || 0) + shopChance / 100;
+    sellBox.tradeBonusValue = (Number(sellBox.tradeBonusValue) || 0) + tradeBonus;
+  },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'seal_the_deal', `Accessory: ${piece.name}`);
-    const regenNeed = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'regent', getP1(piece.params, 3))),
-    );
-    const vamp = Math.max(1, Math.round(getPName(piece.params, 'vamp', 1)));
-    const luckNeed = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'luckt', getP2(piece.params, 3))),
-    );
-    const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', 1)));
-    const manaNeed = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'manat', getP3(piece.params, 3))),
-    );
-    const emp = Math.max(1, Math.round(getPName(piece.params, 'empower', 1)));
+    const regenNeed = Math.trunc(getPName(piece.params, 'regent', getP(piece.params, 1, 0)));
+    const vamp = Math.trunc(getPName(piece.params, 'vamp', getP(piece.params, 2, 0)));
+    const luckNeed = Math.trunc(getPName(piece.params, 'luckt', getP(piece.params, 3, 0)));
+    const spikes = Math.trunc(getPName(piece.params, 'spikes', getP(piece.params, 4, 0)));
+    const manaNeed = Math.trunc(getPName(piece.params, 'manat', getP(piece.params, 5, 0)));
+    const emp = Math.trunc(getPName(piece.params, 'empower', getP(piece.params, 6, 0)));
     const opts = { originKey: piece.placementKey, originId: piece.itemId };
     let off = 0.002;
     if ((Number(player.stacks.regeneration) || 0) >= regenNeed) {
@@ -288,6 +278,7 @@ export const sealTheDealPort = {
         });
       }
     }
+    pushActivate(piece, { ...ctx, t: t + off }, 'seal_the_deal', `Skill: ${piece.name}`);
     return true;
   },
 };
@@ -340,19 +331,15 @@ export const prismaticWandPort = {
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    pushActivate(piece, ctx, 'prismatic_wand', `Accessory: ${piece.name}`);
     const all = giveAllBuffs(player, 1, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     pushBuffGrants(events, piece, player, t, 'prismatic_wand', all);
-    const manaNeed = Math.max(1, Math.round(getPName(piece.params, 'manat', getP1(piece.params, 10))));
-    const luckNeed = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP2(piece.params, 10))));
-    const regenNeed = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'regent', getP3(piece.params, 10))),
-    );
-    const useN = Math.max(1, Math.round(getPName(piece.params, 'use', 1)));
+    const manaNeed = Math.max(0, Math.trunc(getPName(piece.params, 'manat', getP1(piece.params, 10))));
+    const luckNeed = Math.max(0, Math.trunc(getPName(piece.params, 'luckt', getP2(piece.params, 10))));
+    const regenNeed = Math.max(0, Math.trunc(getPName(piece.params, 'regent', getP3(piece.params, 10))));
+    const useN = Math.max(0, Math.trunc(getPName(piece.params, 'use', getP5(piece.params, 1))));
     const mana = Number(player.stacks.mana) || 0;
     const luck = Number(player.stacks.lucky) || 0;
     const regen = Number(player.stacks.regeneration) || 0;
@@ -363,7 +350,7 @@ export const prismaticWandPort = {
         originId: piece.itemId,
       });
       if (removed) {
-        const emp = Math.max(1, Math.round(getPName(piece.params, 'empower', 1)));
+        const emp = Math.max(0, Math.trunc(getPName(piece.params, 'empower', getP4(piece.params, 1))));
         grantStacks(player, 'empower', emp, {
           originKey: piece.placementKey,
           originId: piece.itemId,
@@ -378,6 +365,7 @@ export const prismaticWandPort = {
         });
       }
     }
+    pushActivate(piece, ctx, 'prismatic_wand', `Accessory: ${piece.name}`);
     return true;
   },
 };

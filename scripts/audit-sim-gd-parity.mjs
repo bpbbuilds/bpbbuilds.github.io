@@ -55,6 +55,12 @@ const OUT_OF_COMBAT = new Set(['addToInventory', 'onShopEntered', 'combatEnd']);
 
 /** Source-review records exist only for currently missing hooks. */
 const HOOK_TRIAGE = {
+  sapphire_egg: {
+    status: 'intentional',
+    reason:
+      'SapphireEgg.gd declares doCooldownEffect, but onCombatStart invokes it once; the simulator models that start-of-battle call directly and must not schedule a recurring cooldown for the null-cooldown catalog item.',
+    evidence: 'tools/game-extract-full/Items/Exclusive/SapphireEgg.gd',
+  },
   ruby_egg: {
     status: 'intentional',
     reason:

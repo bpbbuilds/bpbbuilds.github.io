@@ -3,7 +3,8 @@
  */
 
 import { grantStacks } from '../buff-economy.js';
-import { getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
+import { giveStamina, healActor } from '../actor.js';
+import { getP, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
 import { getStackAmount, gainStacks } from '../stacks.js';
 import {
   empowerLinkedWeapons,
@@ -11,6 +12,8 @@ import {
   goobertPeerTick,
   goobertPort,
 } from './ports-wave-d-goobert.js';
+import { pushActivate } from './ports-util.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 // `empowerLinkedWeapons` applies the source addBonusDamage mutation to linked weapons.
 
@@ -27,7 +30,7 @@ function variantGoobert(handlerId, effect) {
   return {
     handlerId,
     family: 'pet_like',
-    onCombatStart(piece) {
+    onPrepare(piece) {
       piece._goobertActs = 0;
     },
     onCooldownEffect() {
@@ -40,28 +43,32 @@ function variantGoobert(handlerId, effect) {
 }
 
 function healAmt(piece) {
-  return Math.max(1, Math.round(getPName(piece.params, 'heal', getP2(piece.params, 8))));
+  return getPName(piece.params, 'heal', getP2(piece.params, 0));
 }
 
 function rainbowCore(piece, ctx, handler, extra) {
-  const block = Math.max(1, Math.round(piece.blockGrant || getPName(piece.params, 'block', 8)));
-  gainStacks(ctx.player, 'block', block);
-  goobertHeal(piece, ctx, handler, healAmt(piece));
-  const vamp = Math.max(1, Math.round(getPName(piece.params, 'vampirism', getP3(piece.params, 1))));
-  grantStacks(ctx.player, 'vampirism', vamp, {
-    originKey: piece.placementKey,
-    originId: piece.itemId,
-  });
+  const block = Number(piece.block ?? ctx.itemsById.get(piece.itemId)?.block) || 0;
+  if (block > 0) gainStacks(ctx.player, 'block', block);
+  goobertHeal(piece, ctx, handler, healAmt(piece), { activate: false });
+  const vamp = getPName(piece.params, 'vampirism', getP3(piece.params, 0));
+  if (vamp > 0) {
+    grantStacks(ctx.player, 'vampirism', vamp, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+  }
   extra();
+  pushActivate(piece, ctx, handler, `Pet: ${piece.name}`);
 }
 
 /** PoisonGoobert.gd */
 const poisonGoobertPort = variantGoobert('poison_goobert', (piece, ctx) => {
-  goobertHeal(piece, ctx, 'poison_goobert', healAmt(piece));
+  goobertHeal(piece, ctx, 'poison_goobert', healAmt(piece), { activate: false });
   grantStacks(ctx.dummy, 'poison', Math.max(1, Math.round(getP3(piece.params, 1))), {
     originKey: piece.placementKey,
     originId: piece.itemId,
   });
+  pushActivate(piece, ctx, 'poison_goobert', `Pet: ${piece.name}`);
 });
 
 /** ChiliGoobert.gd */
@@ -91,35 +98,72 @@ const broccoliGoobertPort = variantGoobert('broccoli_goobert', (piece, ctx) => {
 
 /** ToastGoobert.gd */
 const toastGoobertPort = variantGoobert('toast_goobert', (piece, ctx) => {
-  const th = getPName(piece.params, 'staminat', 4);
-  const stam = getPName(piece.params, 'stamina', 2);
+  const th = getPName(piece.params, 'staminat', getP2(piece.params, 4));
+  const stam = getPName(piece.params, 'stamina', getP3(piece.params, 2));
+  const regen = Math.trunc(getPName(piece.params, 'regen', getP4(piece.params, 2)));
   if ((Number(ctx.player.stamina) || 0) < th) {
-    ctx.player.stamina = Math.min(
-      Number(ctx.player.maxStamina) || 20,
-      (Number(ctx.player.stamina) || 0) + stam,
-    );
-  } else {
-    grantStacks(ctx.player, 'regeneration', Math.max(1, Math.round(getPName(piece.params, 'regen', 2))), {
+    giveStamina(ctx.player, stam);
+    if (stam > 0) {
+      ctx.events.push({
+        t: ctx.t,
+        type: 'stamina',
+        actor: eventSideForPiece(piece),
+        target: eventSideForPiece(piece),
+        amount: stam,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: +${stam} stamina`,
+        meta: { category: 'stamina', kind: 'gained', script: true, handler: 'toast_goobert' },
+      });
+    }
+  } else if (regen) {
+    grantStacks(ctx.player, 'regeneration', regen, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
   }
+  pushActivate(piece, ctx, 'toast_goobert', `Pet: ${piece.name}`);
 });
 
 /** RainbowGoobert.gd */
 const rainbowGoobertPort = variantGoobert('rainbow_goobert', (piece, ctx) => {
-  rainbowCore(piece, ctx, 'rainbow_goobert', () => {
-    const n = Math.max(1, Math.round(getP4(piece.params, 1)));
-    grantStacks(ctx.dummy, 'blind', n, {
+  const { player, dummy, events, itemsById, t, rng } = ctx;
+  const block = Number(piece.block ?? itemsById.get(piece.itemId)?.block) || 0;
+  if (block > 0) {
+    gainStacks(player, 'block', block, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    grantStacks(ctx.dummy, 'poison', n, {
+  }
+  const heal = getPName(piece.params, 'heal', getP2(piece.params, 0));
+  const healed = healActor(player, heal);
+  if (healed > 0) {
+    events.push({
+      t: t + 0.003,
+      type: 'heal',
+      actor: 'player',
+      target: 'player',
+      amount: healed,
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `${piece.name}: heal +${healed}`,
+      meta: { category: 'heal', script: true, handler: 'rainbow_goobert' },
+    });
+  }
+  const vampirism = getP3(piece.params, 0);
+  if (vampirism > 0) {
+    grantStacks(player, 'vampirism', vampirism, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    empowerLinkedWeapons(piece, ctx, 'rainbow_goobert', getP5(piece.params, 2));
-  });
+  }
+  const debuff = getP4(piece.params, 0);
+  if (debuff > 0) {
+    gainStacks(dummy, 'blind', debuff, { rng, opponent: player });
+    gainStacks(dummy, 'poison', debuff, { rng, opponent: player });
+  }
+  empowerLinkedWeapons(piece, ctx, 'rainbow_goobert', getP5(piece.params, 0));
+  pushActivate(piece, ctx, 'rainbow_goobert', `Pet: ${piece.name}`);
 });
 
 /** RainbowGoobertPyromancer.gd */
@@ -140,41 +184,60 @@ const rainbowGoobertPyromancerPort = variantGoobert('rainbow_goobert_pyromancer'
 /** RainbowGoobertAdventurer.gd */
 const rainbowGoobertAdventurerPort = variantGoobert('rainbow_goobert_adventurer', (piece, ctx) => {
   rainbowCore(piece, ctx, 'rainbow_goobert_adventurer', () => {
-    grantStacks(ctx.player, 'regeneration', Math.max(1, Math.round(getP4(piece.params, 1))), {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    grantStacks(ctx.dummy, 'blind', Math.max(1, Math.round(getP5(piece.params, 1))), {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    empowerLinkedWeapons(piece, ctx, 'rainbow_goobert_adventurer', getP6(piece.params, 2));
+    const regen = getP4(piece.params, 0);
+    if (regen > 0) {
+      grantStacks(ctx.player, 'regeneration', regen, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+    }
+    const blind = getP5(piece.params, 0);
+    if (blind > 0) {
+      grantStacks(ctx.dummy, 'blind', blind, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+    }
+    empowerLinkedWeapons(piece, ctx, 'rainbow_goobert_adventurer', getP6(piece.params, 0));
   });
 });
 
 /** RainbowGoobertEngineer.gd */
 const rainbowGoobertEngineerPort = variantGoobert('rainbow_goobert_engineer', (piece, ctx) => {
-  rainbowCore(piece, ctx, 'rainbow_goobert_engineer', () => {
-    const stam = getPName(piece.params, 'stamina', 2);
-    ctx.player.stamina = Math.min(
-      Number(ctx.player.maxStamina) || 20,
-      (Number(ctx.player.stamina) || 0) + stam,
-    );
-    grantStacks(ctx.player, 'regeneration', Math.max(1, Math.round(getPName(piece.params, 'regen', 1))), {
+  const { player, dummy, itemsById, rng } = ctx;
+  const block = Number(piece.block ?? itemsById.get(piece.itemId)?.block) || 0;
+  if (block > 0) gainStacks(player, 'block', block);
+  goobertHeal(piece, ctx, 'rainbow_goobert_engineer', healAmt(piece), { activate: false });
+
+  const stamina = getPName(piece.params, 'stamina', getP6(piece.params, 0));
+  if (stamina > 0) giveStamina(player, stamina);
+
+  const vamp = getPName(piece.params, 'vampirism', getP3(piece.params, 0));
+  if (vamp > 0) {
+    grantStacks(player, 'vampirism', vamp, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    grantStacks(ctx.dummy, 'blind', Math.max(1, Math.round(getPName(piece.params, 'blind', 1))), {
+  }
+
+  const regen = getPName(piece.params, 'regen', getP4(piece.params, 0));
+  if (regen > 0) {
+    grantStacks(player, 'regeneration', regen, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    empowerLinkedWeapons(
-      piece,
-      ctx,
-      'rainbow_goobert_engineer',
-      getPName(piece.params, 'dambonus', 2),
-    );
-  });
+  }
+
+  const blind = getPName(piece.params, 'blind', getP5(piece.params, 0));
+  if (blind > 0) gainStacks(dummy, 'blind', blind, { rng, opponent: player });
+
+  empowerLinkedWeapons(
+    piece,
+    ctx,
+    'rainbow_goobert_engineer',
+    getPName(piece.params, 'dambonus', getP(piece.params, 6, 0)),
+  );
+  pushActivate(piece, ctx, 'rainbow_goobert_engineer', `Pet: ${piece.name}`);
 });
 
 export const AM_GOOBERT_PORTS = {

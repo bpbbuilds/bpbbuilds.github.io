@@ -3653,6 +3653,26 @@ button.admin-metric.is-active::before {
       color-mix(in srgb, var(--il-ink, #3c261d) 24%, transparent);
 }
 
+/* â€”â€” Simulator evidence audit â€”â€” */
+
+.admin-sim-audit { display: grid; gap: clamp(0.7rem, 1.1vw, 1rem); color: var(--bp-ui-cream); }
+.admin-sim-audit__intro { display: grid; gap: 0.35rem; }
+.admin-sim-audit__warning, .admin-sim-audit__freshness, .admin-sim-audit__count { margin: 0; line-height: 1.4; }
+.admin-sim-audit__warning { color: var(--il-gold); }
+.admin-sim-audit__totals { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.55rem; }
+.admin-sim-audit__total { display: grid; gap: 0.12rem; min-width: 0; padding: 0.6rem; border: 1px solid color-mix(in srgb, var(--il-ink) 25%, transparent); border-radius: 0.3rem; background: color-mix(in srgb, var(--admin-patch-shade) 80%, transparent); }
+.admin-sim-audit__total strong { font-size: 1.15rem; }.admin-sim-audit__total span { font-size: 0.82rem; }
+.admin-sim-audit__controls { display: grid; grid-template-columns: minmax(13rem, 2fr) repeat(4, minmax(8rem, 1fr)); gap: 0.5rem; align-items: end; }
+.admin-sim-audit__field { display: grid; gap: 0.2rem; font-size: 0.82rem; }.admin-sim-audit__field select, .admin-sim-audit__controls > input { width: 100%; min-height: 2.25rem; box-sizing: border-box; }
+.admin-sim-audit__list { display: grid; gap: 0.45rem; }.admin-sim-audit__row { display: grid; grid-template-columns: auto minmax(9rem, 1fr) minmax(14rem, 2fr) auto; gap: 0.65rem; align-items: start; padding: 0.65rem; border: 1px solid color-mix(in srgb, var(--il-ink) 24%, transparent); border-radius: 0.32rem; background: color-mix(in srgb, var(--admin-patch-shade) 83%, transparent); }
+.admin-sim-audit__verdict { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; font-weight: 800; border-radius: 999px; background: color-mix(in srgb, var(--il-ink) 55%, transparent); }.admin-sim-audit__verdict.is-pass { color: #8fdd78; }.admin-sim-audit__verdict.is-gap { color: #ff9686; }.admin-sim-audit__verdict.is-pending { color: var(--il-gold); }
+.admin-sim-audit__identity h3 { margin: 0; font-size: 1rem; }.admin-sim-audit__identity p, .admin-sim-audit__reason { margin: 0.15rem 0 0; font-size: 0.88rem; line-height: 1.35; }.admin-sim-audit__reason { color: color-mix(in srgb, var(--bp-ui-cream) 85%, transparent); }
+.admin-sim-audit__details { min-width: 9rem; }.admin-sim-audit__details summary { cursor: var(--bpb-cursor-pointer); color: var(--il-gold); }.admin-sim-audit__detail-list { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.3rem 0.6rem; margin: 0.6rem 0 0; font-size: 0.82rem; }.admin-sim-audit__detail-list dt { font-weight: 700; }.admin-sim-audit__detail-list dd { margin: 0; overflow-wrap: anywhere; }
+.admin-sim-audit__pager { display: flex; align-items: center; justify-content: flex-end; gap: 0.55rem; }.admin-sim-audit__pager button:disabled { opacity: 0.5; cursor: default; }
+
+@media (max-width: 1080px) { .admin-sim-audit__controls { grid-template-columns: repeat(3, minmax(0, 1fr)); }.admin-sim-audit__controls > input { grid-column: span 3; }.admin-sim-audit__row { grid-template-columns: auto minmax(9rem, 1fr) minmax(0, 1.4fr); }.admin-sim-audit__details { grid-column: 2 / -1; } }
+@media (max-width: 720px) { .admin-sim-audit__totals { grid-template-columns: repeat(2, minmax(0, 1fr)); }.admin-sim-audit__controls { grid-template-columns: 1fr; }.admin-sim-audit__controls > input { grid-column: auto; }.admin-sim-audit__row { grid-template-columns: auto minmax(0, 1fr); }.admin-sim-audit__reason, .admin-sim-audit__details { grid-column: 2; }.admin-sim-audit__pager { justify-content: space-between; } }
+
 .admin-surface .admin-cosmetics__card {
   position: relative;
 }

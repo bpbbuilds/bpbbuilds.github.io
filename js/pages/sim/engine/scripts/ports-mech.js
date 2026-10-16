@@ -6,7 +6,7 @@ import { healActor, tryUseStamina } from '../actor.js';
 import { cleanseRandomDebuffs, grantStacks, onBuffChanged, useRegeneration } from '../buff-economy.js';
 import { gainStacks, loseStacks } from '../stacks.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
-import { addBonusDamageFromBuffChange } from '../piece-stats.js';
+import { changeVaryingDamageFromBuffChange } from '../piece-stats.js';
 import { affectedTargets } from '../board-graph.js';
 import { randInt, shuffleInPlace } from '../rng.js';
 import {
@@ -14,7 +14,7 @@ import {
   isCooldownActive,
 } from '../cooldown.js';
 import { dealHit } from './handlers.js';
-import { itemHasType, pushActivate } from './ports-util.js';
+import { afterEffectFinished, itemHasType, pushActivate } from './ports-util.js';
 import { emitBatterySpark } from '../charge-delivery.js';
 import { eventSideForPiece } from '../vs-board.js';
 
@@ -44,7 +44,7 @@ export const batteryPort = {
 export const teslaCoilPort = {
   handlerId: 'tesla_coil',
   family: 'custom_cd',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { events, t, graph, itemsById, canAffect, pieces, rng } = ctx;
     const starLinks = affectedTargets(
       graph,
@@ -53,7 +53,7 @@ export const teslaCoilPort = {
       canAffect,
     ).filter((link) => {
       const p = (pieces || []).find((x) => x.placementKey === link.key);
-      return p && isCooldownActive(p) && p.placementKey !== piece.placementKey;
+      return p && Number(p.cooldown) > 0 && p.placementKey !== piece.placementKey;
     });
     /** @type {string[]} */
     const starKeys = starLinks.map((l) => l.key);
@@ -65,7 +65,7 @@ export const teslaCoilPort = {
     seen.add(piece.placementKey);
     for (const p of pieces || []) {
       if (seen.has(p.placementKey)) continue;
-      if (!isCooldownActive(p)) continue;
+      if (!(Number(p.cooldown) > 0)) continue;
       otherKeys.push(p.placementKey);
     }
     shuffleInPlace(otherKeys, rng);
@@ -75,9 +75,17 @@ export const teslaCoilPort = {
       numCollectedCharges: 0,
       advanceItemCounter: 0,
       itemsToAdvance: [...starKeys, ...otherKeys],
+      starCount: starKeys.length,
       consumed: false,
+      queueLogged: false,
     };
+  },
 
+  onCombatStart(piece, ctx) {
+    if (!piece.tesla) this.onPrepare(piece, ctx);
+    if (piece.tesla.queueLogged) return;
+    piece.tesla.queueLogged = true;
+    const { events, t } = ctx;
     events.push({
       t,
       type: 'info',
@@ -91,7 +99,7 @@ export const teslaCoilPort = {
         handler: 'tesla_coil',
         phase: 'tesla_prepare',
         queue: piece.tesla.itemsToAdvance.slice(),
-        starCount: starKeys.length,
+        starCount: piece.tesla.starCount,
       },
     });
   },
@@ -105,7 +113,7 @@ export const teslaCoilPort = {
       st.numCollectedCharges += 1;
       events.push({
         t,
-        type: 'activate',
+        type: 'info',
         actor: 'player',
         itemId: piece.itemId,
         placementKey: piece.placementKey,
@@ -128,15 +136,7 @@ export const teslaCoilPort = {
   onCooldownEffect(piece, ctx) {
     const st = piece.tesla;
     if (!st) {
-      ctx.events.push({
-        t: ctx.t,
-        type: 'activate',
-        actor: 'player',
-        itemId: piece.itemId,
-        placementKey: piece.placementKey,
-        label: `${piece.name} activated.`,
-        meta: { category: 'system', script: true, handler: 'tesla_coil' },
-      });
+      pushActivate(piece, ctx, 'tesla_coil', `${piece.name} activated.`);
       return true;
     }
 
@@ -146,9 +146,10 @@ export const teslaCoilPort = {
       advanceTeslaTarget(piece, ctx);
     }
 
+    const done = st.advanceItemCounter >= st.itemsToAdvance.length;
     ctx.events.push({
       t: ctx.t,
-      type: 'activate',
+      type: 'info',
       actor: 'player',
       itemId: piece.itemId,
       placementKey: piece.placementKey,
@@ -159,14 +160,19 @@ export const teslaCoilPort = {
         handler: 'tesla_coil',
         phase: 'tesla_spend',
         teslaCharges: batch,
-        queueDone: st.advanceItemCounter >= st.itemsToAdvance.length,
+        queueDone: done,
       },
     });
 
-    if (st.advanceItemCounter >= st.itemsToAdvance.length) {
-      st.consumed = true;
+    afterEffectFinished(piece, ctx, 'tesla_coil', { activate: false, consume: done });
+    if (!done) {
+      // The source calls activate() after stopping its cooldown when work remains.
+      pushActivate(piece, ctx, 'tesla_coil', `${piece.name}: resume charge routing`, {
+        phase: 'tesla_resume',
+        teslaCharges: batch,
+        queueDone: false,
+      });
     }
-    // If queue remains, normal CD loop re-activates and spends another batch.
     return true;
   },
 };
@@ -241,11 +247,11 @@ export const robodogPort = {
 export const bloodthornePort = {
   handlerId: 'bloodthorne',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'vampirism' && ch.stack !== 'spikes') return;
       if (!ch.amount) return;
-      addBonusDamageFromBuffChange(piece, ch);
+      changeVaryingDamageFromBuffChange(piece, ch);
     });
   },
   onPreDealDamageEarly(piece, ctx, res) {

@@ -138,20 +138,18 @@ const pumpkinPort = {
       grantStacks(
         ctx.player,
         'heat',
-        Math.max(1, Math.round(getPName(piece.params, 'heat', 10))),
+        Math.max(0, Math.trunc(getPName(piece.params, 'heat', 10))),
         origin(piece),
       );
       pushActivate(piece, ctx, 'pumpkin', `${piece.name}: fatigue`);
     });
   },
   onCooldownEffect(piece, ctx) {
-    return weaponStrike(piece, ctx, 'pumpkin', {
-      afterHit(hit) {
-        if (!hit?.hit) return;
-        if (!rollItemChance(piece, ctx.rng)) return;
-        grantStun(ctx.dummy, effectDuration(piece, 'dur_stun', 0.5), ctx.t, { rng: ctx.rng });
-      },
-    });
+    return weaponStrike(piece, ctx, 'pumpkin');
+  },
+  onDealtDamage(piece, ctx, hit) {
+    if (!hit?.hit || !rollItemChance(piece, ctx.rng)) return;
+    grantStun(ctx.dummy, effectDuration(piece, 'dur_stun', 0.5), ctx.t, { rng: ctx.rng });
   },
 };
 
@@ -209,7 +207,7 @@ const thornBowPort = {
   family: 'weapon_base',
   onPrepare(piece, ctx) {
     piece._thornBonusN = 0;
-    const per = Math.max(1, Math.round(getPName(piece.params, 'bonusdam', getP2(piece.params, 9))));
+    const per = Math.trunc(getPName(piece.params, 'bonusdam', getP2(piece.params, 9)));
     prepareBow(piece, ctx, (payload) => {
       if (!payload?.hit?.hit) return;
       forAttackEffects(piece, ctx.rng, () => {
@@ -221,17 +219,18 @@ const thornBowPort = {
     });
   },
   onCombatStart(piece, ctx) {
+    const spikes = Math.trunc(getPName(piece.params, 'spikes', getP1(piece.params, 4)));
     grantStacks(
       ctx.player,
       'spikes',
-      Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 4)))),
+      spikes,
       origin(piece),
     );
     pushActivate(piece, ctx, 'thorn_bow', `${piece.name}: spikes`);
   },
   onCooldownEffect(piece, ctx) {
     const n = Number(piece._thornBonusN) || 0;
-    const per = Math.max(1, Math.round(getPName(piece.params, 'bonusdam', getP2(piece.params, 9))));
+    const per = Math.trunc(getPName(piece.params, 'bonusdam', getP2(piece.params, 9)));
     return weaponStrike(piece, ctx, 'thorn_bow', {
       afterHit() {
         if (!n) return;

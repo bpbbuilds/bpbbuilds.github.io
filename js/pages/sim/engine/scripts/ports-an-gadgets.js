@@ -53,6 +53,16 @@ function linkedCd(ctx, piece) {
   );
 }
 
+function linkedPrimaryFood(ctx, piece) {
+  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect)
+    .filter((link) => link.color === 'primary');
+  return (ctx.pieces || []).filter(
+    (o) =>
+      links.some((link) => link.key === o.placementKey) &&
+      itemHasType(ctx.itemsById.get(o.itemId), 'food'),
+  );
+}
+
 function firstLinkedCd(ctx, piece) {
   return linkedCd(ctx, piece)[0] || null;
 }
@@ -62,12 +72,13 @@ function firstLinkedCd(ctx, piece) {
  * @param {object} piece
  * @param {import('./handlers.js').ScriptCtx} ctx
  */
-function emitConTrapCharges(piece, ctx) {
+function emitConTrapCharges(piece, ctx, speedFactor = 1) {
   const { t, events, graph, itemsById } = ctx;
   const item = itemsById.get(piece.itemId);
   const boardPiece = graph.pieces.get(piece.placementKey);
   if (!item || !boardPiece) return;
-  const durPerTile = Math.max(0.01, getPName(piece.params, 'dur', 2));
+  const factor = Math.max(0.01, Number(speedFactor) || 1);
+  const durPerTile = Math.max(0.01, getPName(piece.params, 'dur', 2) / factor);
   const flat = Number(piece.chance) || getPName(piece.params, 'chance', 50);
   const perTile = Number(piece.chance2) || getPName(piece.params, 'chance2', 10);
   const placement = {
@@ -170,33 +181,36 @@ function cubeAdvance(target, ctx, piece) {
 const bindChromeCube = (piece, ctx) => {
   if (piece._chromeCubeBound) return;
   piece._chromeCubeBound = true;
-    piece._cube = false;
-    const th = getPName(piece.params, 'healtht', 50) / 100;
-    const onOpponentDamaged = (payload = {}) => {
-      if (payload.actor && payload.actor !== ctx.dummy) return;
-      if (piece._cube || !payload?.hit?.hit) return;
-      if (ctx.dummy.maxHp <= 0 || ctx.dummy.hp / ctx.dummy.maxHp >= th) return;
-      piece._cube = true;
-      cubeAdvance(firstLinkedCd(ctx, piece), ctx, piece);
-      applyHealEfficiency(
-        ctx.dummy,
-        -getPName(piece.params, 'healreduction', 50) / 100,
-        ctx,
-        piece,
-      );
-      piece.alive = false;
-    };
-    // ChromeCube.gd binds opponent.character_damaged during onPrepare.
-    ctx.bus?.on?.('character_damaged', onOpponentDamaged);
-    // Keep the old attack-result signal as a compatibility alias for direct
-    // callers; one-shot state prevents duplicate consumption.
-    ctx.bus?.on?.('piece_dealt_damage', onOpponentDamaged);
+  piece._cube = false;
+  // ChromeCube.gd resolves getFirstAffectedItem() once in onPrepare.
+  piece._chromeCubeTarget = firstLinkedCd(ctx, piece);
+  // ChromeCube.gd computes healthThreshold as getP("healtht") / 100 - 0.0001.
+  const th = getPName(piece.params, 'healtht', 50) / 100 - 0.0001;
+  const onOpponentDamaged = (payload = {}) => {
+    if (payload.actor && payload.actor !== ctx.dummy) return;
+    // damage.js emits Character.character_damaged with `hit: boolean`; keep
+    // compatibility with direct signal fixtures that pass a DamageResult.
+    const hit =
+      typeof payload.hit === 'object' ? Boolean(payload.hit?.hit) : Boolean(payload.hit);
+    if (piece._cube || !hit) return;
+    if (ctx.dummy.maxHp <= 0 || ctx.dummy.hp / ctx.dummy.maxHp >= th) return;
+    piece._cube = true;
+    cubeAdvance(piece._chromeCubeTarget, ctx, piece);
+    applyHealEfficiency(
+      ctx.dummy,
+      -getPName(piece.params, 'healreduction', 50) / 100,
+      ctx,
+      piece,
+    );
+    piece.alive = false;
+  };
+  // ChromeCube.gd binds opponent.character_damaged during onPrepare.
+  ctx.bus?.on?.('character_damaged', onOpponentDamaged);
 };
 const chromeCubePort = {
   handlerId: 'chrome_cube',
   family: 'unique',
   onPrepare: bindChromeCube,
-  onCombatStart: bindChromeCube,
 };
 
 /** @type {import('./handlers.js').ScriptHandler} */
@@ -227,12 +241,12 @@ const goldCubePort = {
 const bismuthCubePort = {
   handlerId: 'bismuth_cube',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._bisAcc = 0;
     piece._bisUses = 0;
     const need = Math.max(1, Math.round(getPName(piece.params, 'buffs', 4)));
     const max = Math.max(1, Math.round(getPName(piece.params, 'max', 3)));
-    const target = firstLinkedCd(ctx, piece);
+    piece._bisTarget = firstLinkedCd(ctx, piece);
     onBuffChanged(ctx.player, (ch) => {
       if (!(ch.amount > 0) || piece._bisUses >= max) return;
       piece._bisAcc += ch.amount;
@@ -243,6 +257,7 @@ const bismuthCubePort = {
       }
       if (!n) return;
       piece._bisUses += n;
+      const target = piece._bisTarget;
       if (target) {
         const base = getPName(piece.params, 'cdadvance', 2);
         const pen = 1 - getPName(piece.params, 'penalty', 50) / 100;
@@ -255,6 +270,15 @@ const bismuthCubePort = {
       giveRandomBuffs(ctx.player, n, ctx.rng, {
         originKey: piece.placementKey,
         originId: piece.itemId,
+      });
+      ctx.events.push({
+        t: ctx.t,
+        type: 'activate',
+        actor: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: mini activate`,
+        meta: { category: 'system', script: true, handler: 'bismuth_cube', miniActivate: true },
       });
     });
   },
@@ -299,11 +323,18 @@ const coilPort = {
 const conTrapTronPort = {
   handlerId: 'con_trap_tron',
   family: 'unique',
+  emitCharge(piece, ctx, speedFactor = 1) {
+    pushActivate(piece, ctx, 'con_trap_tron', `Gadget: ${piece.name}`);
+    emitConTrapCharges(piece, ctx, speedFactor);
+  },
   // ConTrapTron.gd applies its speed malus and connects during onPrepare.
   onPrepare(piece, ctx) {
     piece._trap = false;
     const malus = getPName(piece.params, 'speed', 10) / 100;
     const target = firstLinkedCd(ctx, piece);
+    // ConTrapTron.gd resolves getFirstAffectedItem() during onPrepare and
+    // reuses that same item when the health threshold later fires.
+    piece._trapTarget = target;
     if (target && malus) addSpeed(target, -malus);
     const th = getPName(piece.params, 'healtht', 70) / 100 - 0.0001;
     ctx.bus?.on?.('character_damaged', (payload) => {
@@ -320,7 +351,7 @@ const conTrapTronPort = {
       pushActivate(piece, ctx, 'con_trap_tron', `Gadget: ${piece.name}`);
       emitConTrapCharges(piece, ctx);
       ctx.bus?.emit?.('charge_emitted', { piece, t });
-      const linked = firstLinkedCd(ctx, piece);
+      const linked = piece._trapTarget;
       if (linked) {
         let adv = getPName(piece.params, 'cdadvance_base', 2);
         if (linked.kind !== 'weapon') {
@@ -337,17 +368,39 @@ const conTrapTronPort = {
 const eatOMaticPort = {
   handlerId: 'eat_o_matic',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const foods = (ctx.pieces || []).filter((o) => itemHasType(ctx.itemsById.get(o.itemId), 'food'));
-    const primary = linkedCd(ctx, piece).find((o) => itemHasType(ctx.itemsById.get(o.itemId), 'food')) || foods[0];
+  onPrepare(piece, ctx) {
+    piece._eatArmState = 'off';
+    const primary = linkedPrimaryFood(ctx, piece)[0] || null;
     piece._eatPrimary = primary;
-    if (primary) addSpeed(primary, getPName(piece.params, 'speed', 20) / 100);
-    piece._eatOthers = foods.filter((f) => f !== primary);
+    if (primary) addSpeed(primary, getPName(piece.params, 'speed', 10) / 100);
+    piece._eatOthers = (ctx.pieces || []).filter(
+      (o) => o !== primary && itemHasType(ctx.itemsById.get(o.itemId), 'food'),
+    );
+  },
+  onCombatStart(piece) {
+    if (piece._eatArmState !== 'fast') piece._eatArmState = 'slow';
   },
   onChargeReceived(piece) {
+    if (Number(piece.numCharges) !== 1) return;
     const primary = piece._eatPrimary;
-    if (primary) addSpeed(primary, getPName(piece.params, 'speed2', 15) / 100);
-    for (const f of piece._eatOthers || []) addSpeed(f, getPName(piece.params, 'speed3', 8) / 100);
+    const foodSpeed = getPName(piece.params, 'speed', 10) / 100;
+    const chargedSpeed = getPName(piece.params, 'speed2', 15) / 100;
+    if (primary) addSpeed(primary, chargedSpeed - foodSpeed);
+    for (const f of piece._eatOthers || []) {
+      addSpeed(f, getPName(piece.params, 'speed3', 8) / 100);
+    }
+    piece._eatArmState = 'fast';
+  },
+  onChargeLeft(piece) {
+    if (Number(piece.numCharges) !== 0) return;
+    const primary = piece._eatPrimary;
+    const foodSpeed = getPName(piece.params, 'speed', 10) / 100;
+    const chargedSpeed = getPName(piece.params, 'speed2', 15) / 100;
+    if (primary) addSpeed(primary, foodSpeed - chargedSpeed);
+    for (const f of piece._eatOthers || []) {
+      addSpeed(f, -getPName(piece.params, 'speed3', 8) / 100);
+    }
+    piece._eatArmState = 'slow';
   },
 };
 
@@ -362,7 +415,8 @@ function recombPort(id) {
         originId: piece.itemId,
       });
       cleanseRandomDebuffs(ctx.player, 1, ctx.rng, {});
-      pushActivate(piece, ctx, id, `Gadget: ${piece.name}`);
+      // Recombobulator.gd extends Item and has no gadget-specific projection.
+      pushActivate(piece, ctx, id, `Accessory: ${piece.name}`);
       return true;
     },
   };

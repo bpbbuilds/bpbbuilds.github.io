@@ -4,8 +4,18 @@
  */
 import fs from 'fs';
 import { COMBAT_DELAY, simulateEngine } from '../js/pages/sim/engine/simulate.js';
+import { canEmitCharge } from '../js/pages/sim/engine/charge-delivery.js';
+import { buildBoardGraph } from '../js/pages/sim/engine/board-graph.js';
+import { createActor } from '../js/pages/sim/engine/actor.js';
+import { buildCombatPieces } from '../js/pages/sim/engine/pieces.js';
+import { createCombatBus } from '../js/pages/sim/engine/combat-bus.js';
+import { getScriptHandler } from '../js/pages/sim/engine/scripts/registry.js';
 
 const GAME_ITEMS = JSON.parse(fs.readFileSync('scripts/_cache/game-items.json', 'utf8'));
+const SOURCE = fs.readFileSync(
+  'tools/game-extract-full/Items/Exclusive/EngineerBox.gd',
+  'utf8',
+);
 const byId = new Map();
 for (const it of GAME_ITEMS.items || []) {
   byId.set(it.id, {
@@ -31,6 +41,65 @@ function ok(cond, msg) {
     console.error('FAIL', msg);
     failed += 1;
   } else console.log('OK', msg);
+}
+
+ok(/^extends Bag/m.test(SOURCE), 'source extends Bag');
+ok(/func onCombatEnd\(\):[\s\S]*chargeTimer\.stop\(\)[\s\S]*queuedEmitters\.clear\(\)/.test(SOURCE), 'source clears the queue on combat end');
+ok(/func canApplyEffect\(toItem\):[\s\S]*toItem\.has_method\("emitCharge"\)/.test(SOURCE), 'source targets only items with emitCharge');
+ok(/func onPrepare\(\):[\s\S]*EventBus\.connectEvent\(item, "charge_emitted"/.test(SOURCE), 'source connects charge signals during preparation');
+ok(/queuedEmitters\.push_back\(item\)[\s\S]*chargeTimer\.start\(delay\)/.test(SOURCE), 'source queues and restarts the delay timer');
+ok(/queuedEmitters\.pop_front\(\)[\s\S]*emitter\.emitCharge\(chargeSpeed\)/.test(SOURCE), 'source re-emits the oldest queued charge at chargeSpeed');
+
+const SOURCE_CHARGE_EMITTERS = [
+  'battery',
+  'charge_splitter',
+  'cog_badge',
+  'con_trap_tron',
+  'generator',
+  'lightning_staff',
+  'mana_crystal',
+];
+for (const id of SOURCE_CHARGE_EMITTERS) {
+  ok(
+    typeof getScriptHandler(id)?.emitCharge === 'function',
+    `${id} exposes the source emitCharge interface`,
+  );
+}
+ok(
+  canEmitCharge({ itemId: 'battery' }) === true &&
+    canEmitCharge({ itemId: 'mana_crystal' }) === true,
+  'source charge emitters are accepted as Engineer Box targets',
+);
+ok(
+  canEmitCharge({ itemId: 'wooden_sword' }) === false,
+  'items without source emitCharge are rejected as Engineer Box targets',
+);
+
+for (const id of SOURCE_CHARGE_EMITTERS) {
+  const placements = [{ id, key: 'emitter', x: 0, y: 0, r: 0 }];
+  const pieces = buildCombatPieces(placements, byId);
+  const piece = pieces[0];
+  const events = [];
+  const ctx = {
+    t: 0,
+    player: createActor('player'),
+    dummy: createActor('dummy'),
+    events,
+    graph: buildBoardGraph(placements, byId),
+    pieces,
+    itemsById: byId,
+    chargeJobs: [],
+    bus: createCombatBus(),
+  };
+  getScriptHandler(id).emitCharge(piece, ctx, 1.5);
+  ok(
+    events.some((event) => event.type === 'activate' && event.itemId === id),
+    `${id} re-emission activates the source item`,
+  );
+  ok(
+    events.some((event) => event.type === 'charge' && event.itemId === id),
+    `${id} re-emission sends a charge path`,
+  );
 }
 
 const run = simulateEngine({

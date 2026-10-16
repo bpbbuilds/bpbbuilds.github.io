@@ -3,6 +3,7 @@
  */
 
 import { eventSideForPiece } from '../vs-board.js';
+import { affectedTargets } from '../board-graph.js';
 
 /**
  * @param {object | null | undefined} item
@@ -24,7 +25,43 @@ export function itemHasType(item, needle) {
   if (Array.isArray(tags) && tags.some((x) => String(x).toLowerCase().includes(n))) {
     return true;
   }
+  const dynamic = item._dynamicTypes;
+  if (Array.isArray(dynamic) && dynamic.some((x) => String(x).toLowerCase().includes(n))) {
+    return true;
+  }
   return false;
+}
+
+/**
+ * Potion.triggerPotion() applies the first linked Potion's effect without
+ * consuming it; miniActivate() is visual-only. Ports expose that effect as a
+ * piece-local callback so chained potions do not go through cooldown/charge
+ * consumption a second time.
+ *
+ * @param {object} piece
+ * @param {object} ctx
+ * @param {number} [t]
+ * @returns {boolean}
+ */
+export function triggerFirstAffectedPotion(piece, ctx, t = ctx.t) {
+  if (!ctx?.graph || !ctx.itemsById) return false;
+  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+  const target = (ctx.pieces || []).find((candidate) =>
+    links.some((link) => link.key === candidate.placementKey) &&
+    candidate.placementKey !== piece.placementKey &&
+    typeof candidate._potionTrigger === 'function',
+  );
+  if (!target) return false;
+  target._potionTrigger({ ...ctx, t });
+  ctx.events.push({
+    t: t + 0.001,
+    type: 'info',
+    itemId: target.itemId,
+    placementKey: target.placementKey,
+    label: `${target.name}: mini activate`,
+    meta: { category: 'system', script: true, miniActivate: true, triggeredBy: piece.itemId },
+  });
+  return true;
 }
 
 /**
@@ -114,7 +151,7 @@ export function pieceHasCombatCooldown(piece) {
  * @param {string} [label]
  */
 export function pushActivate(piece, ctx, handler, label, extra) {
-  if (piece?.kind === 'bag' && !pieceHasCombatCooldown(piece)) {
+  if (piece?.kind === 'bag' && !pieceHasCombatCooldown(piece) && !extra?.force) {
     return;
   }
   piece._activationLogged = true;
@@ -131,7 +168,9 @@ export function pushActivate(piece, ctx, handler, label, extra) {
       script: true,
       handler,
       combatStart: ctx.combatStartSeq != null,
-      ...(extra && typeof extra === 'object' ? extra : {}),
+      ...(extra && typeof extra === 'object'
+        ? Object.fromEntries(Object.entries(extra).filter(([key]) => key !== 'force'))
+        : {}),
     },
   });
 }

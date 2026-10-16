@@ -1,5 +1,24 @@
 # Codex handoff
 
+### 2026-10-14 Simulator audit batch: Amulets of Feasting through Light
+- Claimed simulator audit work and advanced the source-backed 1:1 audit through
+  Amulet of Feasting, Fortune, Life, and Light. Each now has a dedicated,
+  two-sided focused regression and a `verified_1to1` Admin-audit dashboard
+  entry. No user live-match verification is required.
+- Corrected source lifecycle timing: Feasting and Fortune now apply their
+  affected-item modifiers in `onPrepare`; Life applies healing efficiency in
+  `onPrepare` while retaining its combat-start health/activation behavior; and
+  Light binds its listeners in `onPrepare` so it sees combat-start activations.
+- Changed paths: `js/pages/sim/engine/scripts/ports-an-accessories.js`,
+  `ports-buff.js`, `ports-ai-d.js`, `ports.js`,
+  `scripts/build-sim-fidelity-ledger.mjs`, generated ledger/dashboard files,
+  and the four focused smoke scripts. Focused smokes, source parity/call audits,
+  ledger/dashboard checks, syntax checks, and `git diff --check` passed.
+- Existing global audit signals remain: triaged `ruby_egg` lifecycle-hook gap,
+  19 duplicate registrations, and unrelated static call-review candidates.
+  Next item: Amulet of Steel. This work is local and uncommitted; unrelated
+  user changes remain in the working tree.
+
 ### 2026-10-14 Home background swap complete
 - Replaced the Home falling-item background with the existing scroll-scrubbed
   time-of-day combat sky and animated windmill. `index.html` now loads
@@ -4284,3 +4303,1323 @@ None.
 
 - Create now mounts the extracted BagBorder texture for every rendered bag, maps shape-specific game border assets/tints, and uses the game brightness states (`1.3` compatible, `2.5` hovered). Compatible placed bags temporarily sit above the shared FilledSlot fabric so the complete border remains visible while still below gear sprites; non-compatible bags remain hidden.
 - Removed the dashed per-cell outline and added asset/source/browser assertions to `scripts/create-bag-synergy-browser-smoke.mjs`. Create synergy, duration-hover, ring-affordance, syntax, and `git diff --check` checks pass. No legal or security surfaces changed.
+
+### 2026-10-14 History rank edit reverted
+
+- The earlier mistaken edit to `runData.rank` was reverted from `history.db.codex-backup-20261014`; the active `history.db` now matches the original byte-for-byte. The mistaken version is preserved as `history.db.codex-mistaken-edit-20261014`.
+
+### 2026-10-14 Hero rank edit complete
+
+- Codex owns the active save files `full\backpack.save` and `full\backpack.ba` for this one-off edit; no product paths changed.
+- Updated only the current-season `rating3` hero dictionary: Ranger 15, Reaper 20, Berserker 25, Pyromancer 30, Mage 35, Adventurer 40, Engineer 45 Platinum progress (raw ratings 132, 136, 140, 144, 148, 152, 156). Match history rows and unrelated save fields were preserved.
+- Created rollback copies `backpack.save.codex-before-hero-edit-20261014` and `backpack.ba.codex-before-hero-edit-20261014`. Both active saves match, their checksums verify, and blockers are none. Next step: relaunch Backpack Battles and confirm the hero ranks.
+
+### 2026-10-14 Hero save fallback sync and history restore complete
+
+- The full save already had valid `rating3` values, but the game was evidently loading a fallback/legacy save and initializing current-season ratings to zero. Synced the same hero-only `rating3` values into the fallback save variants, with separate `codex-hero-sync-20261014` rollback copies; every edited save parses and its checksum verifies.
+- A later check found the active `history.db` had been rewritten empty (0 runs / 0 rounds). Restored it byte-for-byte from `history.db.codex-backup-20261014` (688 runs / 6,310 rounds) and preserved the empty file as `history.db.codex-empty-after-save-20261014`. No product paths changed. Blockers: none. Next step: fully quit Backpack Battles, then relaunch it so it reloads the synchronized save.
+
+### 2026-10-14 Hero-rank/history follow-up
+
+- After the user reported Bronze 0 ranks and no history again, the Steam-ID full profile was inspected with Backpack Battles closed. Its live `history.db` had been recreated empty despite valid schema; the original was restored once more byte-for-byte from `history.db.codex-backup-20261014`, verified as 688 `runData` rows and 6,310 `roundData` rows with `PRAGMA integrity_check = ok`. The just-replaced empty database is preserved as `history.db.codex-empty-after-user-report-20261014`.
+- The active `full\\backpack.save` and `full\\backpack.ba` both parse as version 1.1.9, carry the correct Steam ID, contain the intended `rating3` values (132, 136, 140, 144, 148, 152, 156), and their stored Godot MD5-based checksums exactly recompute. The cause of the game UI still showing Bronze 0 is not yet established; do not overwrite the valid active saves again without tracing the loaded runtime state.
+
+### 2026-10-14 Godot checksum root cause fixed
+
+- Root cause: the earlier non-Godot serializer wrote a checksum that matched raw encoded bytes but did **not** match `Util.hashDictionary()` after Godot deserialized the nested dictionaries. On each launch the game therefore cleared `persistent` in memory, producing Bronze 0 and triggering the history database recreation branch.
+- Rebuilt `full\\backpack.save` and `full\\backpack.ba` from the unmodified pre-edit save using the bundled Backpack Battles Godot 3.6 runtime and its exact `var2bytes`/MD5/checksum flow, then set only `rating3` to Ranger 132, Reaper 136, Berserker 140, Pyromancer 144, Mage 148, Adventurer 152, Engineer 156. Godot itself now verifies both checksums; the invalid copies are preserved as `*.codex-invalid-checksum-20261014`.
+- Restored `full\\history.db` after rebuilding the valid saves. Final checks: 688 `runData`, 6,310 `roundData`, `PRAGMA integrity_check = ok`. No product paths changed. Next step: launch the game normally and confirm; its previous reset branch should no longer execute.
+
+### 2026-10-14 Platinum threshold correction
+
+- Corrected the league mapping after the user confirmed the prior values displayed as Gold: Gold is 120–200, while Platinum is 200–300. Rewrote only `rating3` with Godot’s serializer/checksum flow to Ranger 215 (Platinum 15), Reaper 220 (20), Berserker 225 (25), Pyromancer 230 (30), Mage 235 (35), Adventurer 240 (40), and Engineer 245 (45).
+- Both active files (`full\\backpack.save` and `full\\backpack.ba`) now pass Godot checksum verification. Preserved the prior valid Gold-rank copies as `*.codex-gold-ranks-20261014`; no history data was changed.
+
+### 2026-10-14 Grandma rank update
+
+- Per user request, set all seven active `rating3` hero values to raw 550 (Grandma 0) using Godotâ€™s serializer/checksum flow. Both active save files verify with Godot; prior Platinum copies are preserved as `*.codex-before-grandma-20261014`.
+- Updated only the ten most recent `runData` records by `time DESC, runID DESC` (run IDs 4029 through 4020) to rank 550. The pre-update database is preserved as `history.db.codex-before-grandma-recent10-20261014`; history now has 690 runs / 6,310 rounds and passes `PRAGMA integrity_check`.
+
+### 2026-10-14 Platinum rank reversion
+
+- Reverted active hero `rating3` values to Platinum 15/20/25/30/35/40/45 (raw 215/220/225/230/235/240/245) with Godot checksum verification for both live save files.
+- Reverted the history ranks changed to Grandma to the matching character's Platinum value. During the edit, new run 4030 appeared and became part of the current ten most recent records; it was set to its Pyromancer Platinum 30 value, and displaced prior edited run 4020 was explicitly restored to Ranger Platinum 15. The 11 affected current/prior-recent runs now have class-matched Platinum values. Database backup: `history.db.codex-before-platinum-revert-20261014`; integrity check passes.
+
+### 2026-10-15 Simulator item parity batch
+
+- Codex owns the focused simulator ports/tests for Armored Power Puppy, Armored Wisdom Puppy, Artifact Stone Cold, Artifact Stone Death, the fidelity evidence entries, generated audit artifacts, and this handoff.
+- Verified and checked Armored Power Puppy, Armored Wisdom Puppy, Artifact Stone Cold, and Artifact Stone Death from extracted Godot source using focused two-sided regressions. Repairs include preparation-phase inherited hooks, empowerable/damage-capable target filtering, fatigue-difference crit scaling, Cold/Block/Fatigue effects, and stone ammo behavior.
+- Focused tests, JavaScript syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed.
+
+### 2026-10-15 Simulator item parity continuation
+
+- Codex owns the focused simulator ports/tests for Automanaton, Axe, Badger Rune, Badger Spirit, Bag of Giving, Bag of Stones, Bagtacular, Banana, Battery, and Bazooka, their fidelity evidence entries, generated audit artifacts, and this handoff.
+- Checked all ten items from extracted Godot source. Repairs include owner-scoped Badger Rune stamina, preparation-time Badger Spirit and Bag of Stones behavior, Bag of Giving class-item activation, Banana temporary-cap stamina and owner-side events, Battery owner-side charge events, and Bazooka preparation/parameter/Block/Lucky-resistance parity. Bagtacular was already correct and received retained regression evidence.
+- Focused tests, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed.
+
+### 2026-10-15 Simulator item parity continuation 2
+
+- Codex owns the focused simulator ports/tests for Berserker Bag, Bewitchment, Big Bloodthorne, Bionic Armor, and Bismuth Cube, their fidelity evidence entries, generated audit artifacts, and this handoff. Changed port paths include `js/pages/sim/engine/scripts/ports-ak-bags.js`, `battle-rage.js`, `ports-outliers-board.js`, `ports-threshold.js`, and `ports-an-gadgets.js`.
+- Checked all five items from extracted Godot source. Repairs include owner-scoped Berserker Rage events, Bewitchment retained source regression evidence, Big Bloodthorne inherited Greatsword preparation plus varying-damage and early-hit conversion, Bionic Armor preparation-time stamina/heal/Block listeners and owner events, and Bismuth Cube preparation-time target caching, strict thresholds, capped advances, and mini-activation events.
+- Focused tests (`scripts/sim-berserker-bag-smoke.mjs`, `scripts/sim-axe-bewitchment-blood-broccoli-smoke.mjs`, `scripts/sim-big-bloodthorne-smoke.mjs`, `scripts/sim-bionic-armor-smoke.mjs`, and `scripts/sim-bismuth-cube-smoke.mjs`), syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed.
+
+### 2026-10-15 Simulator item parity continuation 3
+
+- Codex owns the focused simulator-audit verdict rule/test, chess evidence entries, generated dashboard, and this handoff.
+- Checked Black Bishop, Black King, Black Knight, Black Pawn, Black Queen, and Black Rook against the extracted ChessPiece sources. The retained `scripts/sim-chess-call-paths-smoke.mjs` passes all 12 chess handlers and covers each Black capture/elimination mechanic; all six now show `verified_1to1`.
+- Updated the dashboard contract so a no-independent-combat item can earn a green check when it has complete source-backed proof; unproven no-combat items remain neutral and unsupported items remain gaps. Dashboard contract test, chess smoke, dashboard regeneration/`--check`, and `git diff --check` pass. No legal/security surfaces changed.
+
+### 2026-10-15 Simulator item parity continuation 4
+
+- Codex owns the focused simulator ports/tests for Battery, Boomerang, Bow and Arrow, Bowl of Treats, Brass Knuckles, Box of Prosperity, Box of Riches, Book of Basics, Book of Darkness, Book of Ice, Book of Ice New, Book of Light, and Book of Nature; their fidelity evidence entries, generated audit artifacts, and this handoff. Changed port paths include `js/pages/sim/engine/scripts/ports-mech.js`, `ports-wave-c-onhit.js`, `ports-al-weapons.js` test coverage, `ports-ai-a.js`, `ports-ao-spells.js`, and `ports-mana.js`.
+- Checked all listed items against extracted Godot source. Repairs include Battery combat-start charge lifecycle, Boomerang early-hit handling and side attribution, Bowl preparation and activation ordering, Brass Knuckles actual Battle Rage listeners and exact stun duration, Book lifecycle/event ordering and Book of Basics preparation, plus explicit shop-only handling proof for both Box items. Bow and Arrow received source assertions and opponent-side coverage.
+- Focused tests (`scripts/sim-battery-smoke.mjs`, `sim-boomerang-smoke.mjs`, `sim-bow-base-smoke.mjs`, `sim-bowl-of-treats-smoke.mjs`, `sim-brass-knuckles-smoke.mjs`, `sim-box-shop-no-combat-smoke.mjs`, and `sim-books-smoke.mjs`) plus the existing Broccoli/Blood smoke pass. Syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, all listed dashboard verdict checks, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed.
+
+### 2026-10-15 Simulator item parity continuation 5
+
+- Codex owns the focused simulator ports/tests for Broom, Burning Blade, Burning Banner, Burning Coal, Burning Spikes, Burning Sword, and Burning Torch; their fidelity evidence entries, generated audit artifacts, and this handoff. Changed port paths include `js/pages/sim/engine/scripts/ports.js`, `ports-ap-onhit.js`, `ports-heat.js`, and `ports-wave-b.js`.
+- Checked the listed items against extracted Godot source. Repairs include Broom preparation-time miss listeners and side attribution, Burning Blade inherited Burning Sword preparation/Heat-bank behavior and early-hit conversion, and Burning Spikes preparation-time linked threshold listening, combat-start grants, activation, and side attribution. Burning Banner, Burning Coal, Burning Sword, and Burning Torch retained their existing source-backed combined regression.
+- Focused tests (`scripts/sim-broom-smoke.mjs`, `sim-burning-blade-smoke.mjs`, `sim-burning-spikes-smoke.mjs`, and `sim-burning-heat-charge-smoke.mjs`), syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, all listed dashboard verdict checks, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed.
+
+### 2026-10-15 Simulator item parity continuation 6
+
+- Codex owns the focused simulator ports/tests for Busted Blade, Buy the Holy Light, Cap of Brilliance, Carrot, Carrot Goobert, Cat Spirit, Cauldron, Chain Whip, Charge Splitter, Cheese, Cheese Goobert, and Chili Pepper; their fidelity evidence entries, generated audit artifacts, and this handoff. Changed port paths include `ports-al-weapons.js`, `ports-ao-skills.js`, `ports-wave-b.js`, `ports-luck.js`, `ports-am-pets.js`, `ports-buff.js`, and `ports-wave-c-onhit.js`.
+- Checked the listed items against extracted Godot source. Repairs include Busted Blade preparation/rage listener restoration, Buy the Holy Light lamp exception, Cap of Brilliance inherited Leather Helm lifecycle, Carrot/Cat Spirit effect ordering, Chain Whip early-hit and purge ownership, Cheese effect ordering, and corrected Band Z fixtures so Carrot Goobert includes its linked food and Poison Bow includes its linked weapon dependency.
+- Focused tests (`scripts/sim-busted-buy-cap-smoke.mjs`, `sim-carrot-cat-chain-cheese-smoke.mjs`, `sim-band-z-smoke.mjs`, `sim-band-y-smoke.mjs`, `sim-burning-heat-charge-smoke.mjs`, `sim-chipped-gems-lotus-elephant-smoke.mjs`, `sim-wave-c-smoke.mjs`, and `sim-wave-d-smoke.mjs`), syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, all listed dashboard verdict checks, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed.
+
+### 2026-10-15 Simulator item parity continuation 7
+
+- Codex owns the focused simulator ports/tests for Chipped Amethyst, Chipped Emerald, Chipped Ruby, Chipped Sapphire, Chipped Topaz, Chrome Cube, and Claws of Attack; their fidelity evidence entries, generated audit artifacts, and this handoff. Changed port paths include `ports-an-gadgets.js` and `ports-wave-c-scale.js`.
+- Checked all seven items against extracted Godot source. Repairs include Chipped Amethyst inherited source coverage, Chrome Cube `onPrepare` target caching, exact below-threshold health comparison, canonical `character_damaged` boolean handling, linked cooldown advance, and Claws of Attack `onPrepare`/`onPreDealDamage_early` timing with duplicate-callback protection. Added `scripts/sim-chipped-chrome-claws-smoke.mjs`; extended `scripts/sim-chipped-gems-lotus-elephant-smoke.mjs` for Chipped Amethyst.
+- Focused chipped/chrome/claws and Wave C smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, all seven dashboard verdict checks, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed.
+
+### 2026-10-15 Simulator item parity continuation 8
+
+- Codex owns the focused simulator ports/tests for Cog, Cog Badge, Coins, and Con-Trap-Tron; their fidelity evidence entries, generated audit artifacts, and this handoff. Changed port paths include `ports-outliers-board.js` and `ports-an-gadgets.js`.
+- Checked the four items against extracted Godot source. Repairs include Cog Badge's source 14-cell charge geometry, activation-before-charge ordering, `charge_emitted` signal, speed-per-tile scheduling, and non-consuming cooldown shutdown; Con-Trap-Tron now reuses the first linked cooldown target cached during `onPrepare`. Coins received retained currency/no-combat source evidence.
+- Focused tests (`scripts/sim-cog-con-trap-smoke.mjs` and `scripts/sim-no-combat-source-audit.mjs`), syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, all four dashboard verdict checks, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed.
+
+### 2026-10-15 Simulator item parity continuation 9
+
+- Codex owns the focused simulator ports/tests for Corrupted Armor, Corrupted Crystal, Courage Puppy, Critical Poison, and Critwood Staff; their fidelity evidence entries, generated audit artifacts, and this handoff. Changed port paths include `actor.js`, `buff-economy.js`, `gem-sockets.js`, `piece-stats.js`, `simulate.js`, `ports-outliers-board.js`, `ports-aura.js`, `ports-am-pets.js`, `ports-ao-skills.js`, and `ports-wave-c-mana.js`.
+- Checked all five items against extracted Godot source. Repairs include Corrupted Armor dynamic Holy-to-Dark links, linked debuff cleanse protection, cleanse-and-transfer ordering, and source attribution; Corrupted Crystal reversible weapon threshold damage, armor debuff counting/mini-activation, and fatigue-source damage; Courage Puppy preparation-time Pet damage; Critical Poison preparation-time linked weapon accumulation and poison crit chance; and Critwood Staff preparation/early-hit Mana, additive crit window, timed removal, and p2 damage mutation. Added focused smokes `scripts/sim-corrupted-armor-crystal-smoke.mjs`, `scripts/sim-courage-puppy-smoke.mjs`, and `scripts/sim-critical-poison-critwood-smoke.mjs`.
+- Focused smokes, related Band Y/Z/Wave C/Acorn regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, all five dashboard verdict checks, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Crossblades.
+
+### 2026-10-15 Simulator item parity continuation 10
+
+- Codex owns the focused Crossblades source regression, its fidelity evidence entry, generated audit artifacts, and this handoff.
+- Crossblades passed source-backed coverage for primary empowerable-item damage, secondary cooldown-item speed, combat-start activation, and hit-only self damage/speed growth. Added `scripts/sim-crossblades-smoke.mjs`; no product-port change was required because the existing handler already matched the extracted hooks and filters.
+- The focused smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` dashboard assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Crow.
+
+### 2026-10-15 Simulator item parity continuation 11
+
+- Codex owns the focused Crow source regression, its fidelity evidence entry, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/buff-economy.js` and `js/pages/sim/engine/scripts/ports-ai-c.js`.
+- Crow now matches the extracted prepare-time initialization and applies speed plus all-debuff amplification to every affected cooldown or debuff-inflicting item, including cooldown-less Poison Ivy; the shared grant path carries debuff amplification into target resistance resolution. Added `scripts/sim-crow-smoke.mjs`.
+- Crow, Band Y, and Cog/Con-Trap smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, dashboard verdict assertions, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Crown.
+
+### 2026-10-15 Simulator item parity continuation 12
+
+- Codex owns the focused Crown and Cthulhu source regressions, their fidelity evidence entries, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-d-goobert.js`, `js/pages/sim/engine/scripts/ports-skill.js`, `js/pages/sim/engine/simulate.js`, `scripts/sim-crown-smoke.mjs`, `scripts/sim-cthulhu-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Crown now follows source `onPrepare` mana/invulnerability signal wiring, vulnerability gating, once-per-fight expiry state, cleanse protection, and cleanse/heal/activation ordering. Cthulhu now follows source preparation-time Food/Dark targeting, linked Food dynamic Dark add/remove, shared `stealLife` damage/heal semantics, activation ordering, and linked Food cooldown triggering.
+- Focused Crown/Cthulhu/Crow smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, both dashboard `verified_1to1` assertions, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Cubert.
+
+### 2026-10-15 Simulator item parity continuation 13
+
+- Codex owns the focused Cubert source regression, its fidelity evidence entry, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-pets.js`, `scripts/sim-cubert-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Cubert now follows source `onPrepare` timing, separate primary/secondary activated-item listeners, independent chance rolls, Regeneration threshold conversion to Empower, mini-activation projections, and cooldown grant-before-activation ordering.
+- The Cubert/Cthulhu/Crown smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, all three dashboard `verified_1to1` assertions, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Cupcake.
+
+### 2026-10-15 Simulator item parity continuation 14
+
+- Codex owns the focused Cupcake-family source regression, its fidelity evidence entries, generated audit artifacts, and this handoff. Changed paths include `ports-consumable.js`, `ports-wave-c-mana.js`, `ports-wave-d-goobert.js`, `ports-wave-d-weapons.js`, `scripts/sim-cupcake-family-smoke.mjs`, `scripts/sim-ag-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Checked Cupcake, Cupcake Dragon, Cupcake Goobert, and Cupcake Staff against extracted Godot source. Repairs include source-timed preparation hooks, Goobert heal/buff/activation ordering and event attribution, Dragon Food-link speed plus early-hit buff transfer, Staff early-hit mana spending and buff scaling, and retained source-backed evidence for all four.
+- Focused Cupcake/Cubert/Cthulhu/Crown/AG/Wave D/parity smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, all seven dashboard `verified_1to1` assertions, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Cursed Dagger.
+
+### 2026-10-15 Simulator item parity continuation 15
+
+- Codex owns the focused Cursed Dagger source regression, its fidelity evidence entry, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-c-scale.js`, `scripts/sim-cursed-dagger-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Cursed Dagger now matches source `onPrepare` opponent-debuff listener registration, early successful-hit random debuff infliction, linked damage-item crit scaling, and weapon-only accuracy scaling with reversible debuff deltas.
+- The focused Cursed Dagger and Wave C smokes, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` dashboard assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Cursed Hair Comb.
+
+### 2026-10-15 Simulator item parity continuation 16
+
+- Codex owns the focused Cursed Hair Comb source regression, its fidelity evidence entry, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-start.js`, `scripts/sim-cursed-hair-comb-smoke.mjs`, `scripts/sim-crossblades-dragon-wave-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Cursed Hair Comb now maps the source `attacked` listener to `item_attacked`, while preserving empowered-weapon filtering, secondary Vampiric lifesteal scaling, healing-efficiency preparation, miss handling, and combat-start Vampirism/activation.
+- Focused Cursed Hair Comb/Crossblades regressions, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, both Cursed-item `verified_1to1` assertions, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Customer Card.
+
+### 2026-10-15 Simulator item parity continuation 17
+
+- Codex reviewed Customer Card against `tools/game-extract-full/Items/CustomerCard.gd`. Its only hook is shop-only `onCalcTradeChance`, so it is correctly classified as `no_independent_combat`; no combat simulator handler or parity repair is appropriate.
+- The existing 26-row no-combat source audit passes. No product code or fidelity evidence changed for this item. No legal/security surfaces changed. Next step: review Dagger.
+
+### 2026-10-15 Simulator item parity continuation 18
+
+- Codex owns the focused Dagger source regression, its fidelity evidence entry, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-al-weapons.js`, `scripts/sim-dagger-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Dagger now registers its opponent-stun listener during source preparation and performs the inherited extra attack only for opponent stuns, without a second stamina cost or activation event.
+- Focused Dagger/Wave C smokes, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the Dagger/Cursed-item `verified_1to1` assertions, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Daggerang.
+
+### 2026-10-15 Simulator item parity continuation 19
+
+- Codex owns the focused Daggerang source regression, its fidelity evidence entry, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-c-onhit.js`, `scripts/sim-daggerang-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Daggerang now carries inherited Dagger preparation/stun attacks and performs its own source-timed early-hit stamina-factor reduction and chance-gated random buff steal, with miss filtering and side-correct projections.
+- Focused Daggerang/Dagger/Wave C smokes, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the Daggerang `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Dancing Dragon.
+
+### 2026-10-15 Simulator item parity continuation 20
+
+- Codex owns the focused Dancing Dragon source regression, its fidelity evidence entry, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b-aura.js`, `scripts/sim-dancing-dragon-smoke.mjs`, and `scripts/sim-damage-stat-mutation-smoke.mjs`.
+- Dancing Dragon now retains source Magic-only targeting, preparation-time Heat/Lucky listeners, reversible varying-damage and debuff-resistance deltas, and separate Heat/Lucky start projections without a duplicate aggregate buff event. The stale shared Cupcake Staff fixture was updated to call its source `onPrepare` hook.
+- Focused Dancing Dragon/damage-stat/Wave B smokes, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the Dancing Dragon `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Dark Lantern.
+
+### 2026-10-15 Simulator item parity continuation 21
+
+- Codex owns the Dark Lantern fidelity evidence entry, generated audit artifacts, and this handoff. No new product-port change was required; existing lifecycle implementation and regressions were reviewed.
+- Dark Lantern source parity is covered for preparation-time listeners, exact combat-start health loss, High-priority lethal reincarnation, invulnerability and used-state transitions, Fire multiplicity damage, Dark debuff infliction, single-use behavior, and cross-item ordering. Evidence is retained in `scripts/sim-phoenix-lantern-smoke.mjs`.
+- Phoenix/Lantern, threshold, invulnerability-VFX, used-visual, syntax, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Dark Ritual.
+
+### 2026-10-15 Simulator item parity continuation 22
+
+- Codex owns the Dark Ritual fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-skill.js`, `scripts/sim-dark-ritual-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Dark Ritual now reads the source `vampirism` parameter instead of the incorrect `vamp` key/fallback, preserves zero-valued source parameters, and is covered for Dark-only speed targeting, exact debuff/vampirism cooldown effects, activation, consumption, and source shop-hook audit.
+- Dark Ritual smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Darkest Lotus.
+
+### 2026-10-15 Simulator item parity continuation 23
+
+- Codex owns the Darkest Lotus focused source regression, fidelity evidence entry, generated audit artifacts, and this handoff. No product-port change was required.
+- Darkest Lotus source parity is covered for zero-based chain-position Mana scaling, opponent-only random buff removal, next-card arming, reveal/deactivation lifecycle, and post-effect activation order. Evidence is retained in `scripts/sim-darkest-lotus-smoke.mjs`.
+- Darkest Lotus smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Darksaber.
+
+### 2026-10-15 Simulator item parity continuation 24
+
+- Codex owns the Darksaber fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-onhit.js`, `scripts/sim-darksaber-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Darksaber now preserves source zero-valued Mana/Blind parameters, while covering opponent-debuff varying-damage listeners, reversible debuff deltas, pre-damage Mana spending, and Blind infliction on both hit and miss.
+- Darksaber smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Death Lotus.
+
+### 2026-10-15 Simulator item parity continuation 25
+
+- Codex owns the Death Lotus fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-mana.js`, `scripts/sim-death-lotus-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Death Lotus now preserves source zero-valued Mana, buff-removal, and Lucky-threshold parameters, while covering Dark-only preparation speed, Mana grant, opponent buff removal, Lucky threshold/spend, fractional Stamina grant, and activation order.
+- Death Lotus smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Death Scythe.
+
+### 2026-10-15 Simulator item parity continuation 26
+
+- Codex owns the Death Scythe fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-al-weapons.js`, `scripts/sim-death-scythe-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Death Scythe now registers its source listener during preparation, resets state before combat, empowers only linked Poison-producing items, and waits for a post-prepare opponent Poison change before adding the exact crit chance. Existing Poison no longer triggers prematurely.
+- Death Scythe smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Deck of Cards.
+
+### 2026-10-15 Simulator item parity continuation 27
+
+- Codex owns the Deck of Cards fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-cards.js`, `scripts/sim-deck-of-cards-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Deck of Cards now resets the chain gate and card activation counter during preparation, uses the precomputed card chain, arms the first card only once per source combat start, and preserves zero Lucky values.
+- Deck of Cards smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Deer Totem.
+
+### 2026-10-15 Simulator item parity continuation 28
+
+- Codex owns the Deer Totem focused source regression, fidelity evidence entry, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-mana.js`, `scripts/sim-deer-totem-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Deer Totem now preserves source zero-valued heal/Mana parameters while covering Nature-only preparation resistance and Battle Rage duration, pre-combat cooldown deactivation, rage start/end cooldown gating, exact cooldown effect, and source lifecycle ordering.
+- Deer Totem smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Demonic Flask.
+
+### 2026-10-15 Simulator item parity continuation 29
+
+- Codex owns the Demonic Flask fidelity repair, linked-potion trigger support, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-potions.js`, `js/pages/sim/engine/scripts/ports-consumable.js`, `js/pages/sim/engine/scripts/ports-ai-a.js`, `js/pages/sim/engine/scripts/ports-util.js`, `js/pages/sim/engine/simulate.js`, `scripts/sim-demonic-flask-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Demonic Flask now uses source-order fractional debuff scaling with `ceil`, listens only to canonical opponent damage events, triggers the first linked Potion without consuming it, and preserves zero-damage outcomes. Strong Demonic Flask now expires its healing-efficiency reduction at the source duration; the simulator keeps ticking that timer after the Flask is consumed. Existing Potion target ports expose non-consuming trigger callbacks where their effects are already represented.
+- Demonic Flask smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Devouring Sphere.
+
+### 2026-10-15 Simulator item parity continuation 30
+
+- Codex owns the Devouring Sphere fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-heat.js`, `scripts/sim-devouring-sphere-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Devouring Sphere now binds Cold/Blind listeners during preparation and applies every stack delta to item speed, preserves source Vampirism/lifesteal/damage parameters including zero values, routes the effect through the canonical effect-damage and lifesteal pipeline, and logs activation after the effect chain. It no longer invents a combat-start activation or waits until cooldown to notice status changes.
+- Devouring Sphere smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Dig Deeper.
+
+### 2026-10-15 Simulator item parity continuation 31
+
+- Codex owns the Dig Deeper fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-skill.js`, `scripts/sim-dig-deeper-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Dig Deeper now preserves the source Blind parameter, including zero, while covering the combat-start grant and source global Shovel/Robodog targeting audit. The simulator no longer invents a Blind stack when the source parameter is zero.
+- Dig Deeper smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Divine Potion.
+
+### 2026-10-15 Simulator item parity continuation 32
+
+- Codex owns the Divine Potion fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-potions.js`, `scripts/sim-divine-potion-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Divine Potion now preserves zero threshold/cleanse/buff parameters and triggers the first linked Potion without consuming it, while covering preparation-time debuff threshold, random cleanse, Strong random buffs, and source consumption behavior.
+- Divine Potion smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Djinn Lamp.
+
+### 2026-10-15 Simulator item parity continuation 33
+
+- Codex owns the Djinn Lamp fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-mana.js`, `scripts/sim-djinn-lamp-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Djinn Lamp now follows the source’s positive-change-only signals, ignores unrelated buffs and the legacy damage alias, preserves exact P1/P2/P3 values including zero, spends all four resources plus the health cost only at the five-part threshold, and retains source cooldown tie-breaking.
+- Djinn Lamp smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Doom Cap.
+
+### 2026-10-15 Simulator item parity continuation 34
+
+- Codex owns the Doom Cap fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-cold.js`, `scripts/sim-doom-cap-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Doom Cap now preserves inherited Food preparation speed, source integer/truncation behavior for poison, exact healing-efficiency reduction including zero values, and source effect-before-activation ordering.
+- Doom Cap smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Double Axe.
+
+### 2026-10-15 Simulator item parity continuation 35
+
+- Codex owns the Double Axe fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-perm.js`, `scripts/sim-double-axe-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Double Axe now applies P1/P2 to the current hit, ignores misses and opponent Rage events, preserves the source’s pre-Rage extra-attack ordering before setting the Rage flag, and keeps zero bonuses zero.
+- Double Axe smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Double Rainbow.
+
+### 2026-10-15 Simulator item parity continuation 36
+
+- Codex owns the Double Rainbow fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-e.js`, `scripts/sim-double-rainbow-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Double Rainbow now applies source links during preparation, filters primary targets to `gainsBuffs`, preserves Holy secondary speed and zero chance/speed values, and records the random buff before activation.
+- Double Rainbow smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Draconic Orb.
+
+### 2026-10-15 Simulator item parity continuation 37
+
+- Codex owns the Draconic Orb fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-heat.js`, `scripts/sim-draconic-orb-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Draconic Orb now listens to the source owner Heat-change signal, catches direct stack gains, ignores negative/opponent Heat, grants Crit tokens once at the exact threshold, and preserves exact typed Spike-removal/Heat-conversion parameters including zero values.
+- Draconic Orb smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Dragon Claws.
+
+### 2026-10-15 Simulator item parity continuation 38
+
+- Codex owns the Dragon Claws fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-armor.js`, `scripts/sim-dragon-claws-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Dragon Claws now applies Poison resistance during preparation, responds only to the owner’s Battle Rage start/end signals, restores speed on Rage end, uses static `hasCooldown` links even when runtime cooldowns are deactivated, and preserves exact chance/speed values.
+- Dragon Claws smoke, syntax check, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Dragon Knight.
+### 2026-10-15 Simulator item parity continuation 39
+
+- Codex owns the Dragon Knight fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-skill.js`, `scripts/sim-dragon-knight-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Dragon Knight now mirrors `canActivate()` peer wiring for linked no-cooldown items, ignores activation events before source preparation, preserves inherited Ruby Whelp Reflect/Heat lifecycle behavior, heals only on hit, advances the armed cooldown by the exact source percentage, and preserves zero typed parameters.
+- Dragon Knight smoke plus the adjacent Crossblades/Dragon Set regression, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Dragon Set.
+### 2026-10-15 Simulator item parity continuation 40
+
+- Codex owns the Dragon Set fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-heat.js`, `scripts/sim-dragon-set-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Dragon Set now defers cooldown deactivation to source `preCombatStart`, filters Battle Rage start/end to the owning character, honors non-lifesteal damage-source events, preserves exact Heat including zero, keeps complete-set Heat-scaled lifesteal capped by source `max`, and retains Heat-before-activation ordering.
+- Dragon Set smoke plus the adjacent Crossblades/Dragon Knight/Dragon Set regression, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Dragonscale Armor.
+### 2026-10-15 Simulator item parity continuation 41
+
+- Codex owns the Dragonscale Armor fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-armor.js`, `scripts/sim-dragonscale-armor-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Dragonscale Armor now wires its source `onPrepare` hook, responds only to the owner’s Battle Rage, grants the catalog Block before activation, applies direct P1 damage resistance at Rage start, reverses that exact resistance at Rage end, and preserves zero resistance.
+- Dragonscale Armor smoke plus the adjacent Dragon Set/Dragon Knight regression, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Dragonskin Boots.
+### 2026-10-15 Simulator item parity continuation 42
+
+- Codex owns the Dragonskin Boots fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-armor.js`, `scripts/sim-dragonskin-boots-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Dragonskin Boots now mirrors source preparation-time Cold resistance, owner-only Battle Rage cleanse/Empower/Block behavior, exact P1/P2 values, catalog Block grants, and zero chance/typed values.
+- Dragonskin Boots smoke plus adjacent Dragon-family regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Dual Wielding.
+### 2026-10-15 Simulator item parity continuation 43
+
+- Codex owns the Dual Wielding fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-skills.js`, `scripts/sim-dual-wielding-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Dual Wielding now mirrors source preparation-time mutation, exact-two weapon activation, base-stamina eligibility, exclusion of non-weapons and zero-base-stamina weapons, active-state projection, and zero typed values.
+- Dual Wielding smoke plus visual/adjacent regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Eat-o-matic.
+### 2026-10-15 Simulator item parity continuation 44
+
+- Codex owns the Eat-o-matic fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-gadgets.js`, `scripts/sim-eat-o-matic-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Eat-o-matic now mirrors source primary-food preparation speed, all-other-food collection, no arbitrary primary fallback, slow/fast arm state transitions, exact first/final charge gating with reversal, and zero typed values.
+- Eat-o-matic smoke plus charge-path/adjacent regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Echoing Battlecry.
+### 2026-10-15 Simulator item parity continuation 45
+
+- Codex owns the Echoing Battlecry fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-skill.js`, `scripts/sim-echoing-battlecry-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Echoing Battlecry now mirrors source start-of-battle eligibility, preparation-time speed scaling, shuffled replay queue, full `repeatCombatStart` pre/start/post lifecycle, final `onAfterEffectFinished` consumption, and zero typed speed.
+- Echoing Battlecry smoke plus the adjacent Band-Y regression, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Eggscalibur.
++
+### 2026-10-15 Simulator item parity continuation 46
+
+- Codex owns the Eggscalibur fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-mana.js`, `scripts/sim-eggscalibur-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Eggscalibur now preserves the source `getP2()` mana cost, including typed zero, while retaining hit-only activation, Food-only affected-item filtering, randomized linked-food cooldown effects, and insufficient-mana behavior.
+- Eggscalibur smoke plus adjacent visual/Eat-o-matic/Echoing Battlecry regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Electric Torch.
++
+### 2026-10-15 Simulator item parity continuation 47
+
+- Codex owns the Electric Torch fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-heat.js`, `scripts/sim-electric-torch-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Electric Torch now mirrors source preparation-time state reset, static `hasCooldown` targeting, exact charge speed apply/reversal and re-arm behavior, typed Blind duration/amount, and consume-after-effect lifecycle without fabricated minimum values.
+- Electric Torch smoke plus charge/visual regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Elephant Rune.
++
+### 2026-10-15 Simulator item parity continuation 48
+
+- Codex owns the Elephant Rune fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-gems.js`, `js/pages/sim/engine/scripts/ports-ap-start.js`, `scripts/sim-elephant-rune-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Elephant Rune now mirrors source inventory combat-start `giveMaxHealth`, including temporary max-health amplification and typed zero behavior, then consumes with the expected activation and max-health event metadata.
+- Elephant Rune smoke plus loose-gem/socket regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Emerald.
+### 2026-10-15 Simulator item parity continuation 49
+
+- Codex owns the Emerald Egg fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-eggs.js`, `scripts/sim-emerald-egg-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Emerald Egg now mirrors source `doCooldownEffect` ordering, grants the exact typed Lucky amount including zero, repeats the effect on cooldown, and activates after the grant at combat start and cooldown.
+- Emerald Egg smoke plus adjacent egg/whelp/gem regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Emerald Whelp.
+### 2026-10-15 Simulator item parity continuation 50
+
+- Codex owns the Emerald Whelp fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-start.js`, `scripts/sim-emerald-whelp-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Emerald Whelp now mirrors source combat-start Lucky, hit-only early Poison, inherited Weapon strike ordering, and exact typed zero Lucky/Poison values.
+- Emerald Whelp smoke plus adjacent Emerald/Whelp/gem regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Employee Uniform.
+### 2026-10-15 Simulator item parity continuation 51
+
+- Codex reviewed Employee Uniform as the next catalog row. Its source only overrides shop `onCalcTradeChance`; it has no independent combat hook, and the simulator’s intentional shop noop matches that scope. No product code change was needed.
+- The no-combat source audit and noop audit pass for all 26 intentional no-combat rows, including Employee Uniform. No legal/security surfaces changed. Next step: review Enchanted Weapons.
+### 2026-10-15 Simulator item parity continuation 52
+
+- Codex owns the Enchanted Weapons fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports.js`, `scripts/sim-enchanted-weapons-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Enchanted Weapons now runs source logic during preparation, uses the extracted `hasAttackEffect` rule instead of broad target heuristics, preserves exact chance including zero, truncates `buffs` like Godot `int()`, grants least buffs before activation, and still activates when the count is zero.
+- Enchanted Weapons smoke plus spotlight/adjacent regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Energy Conversion.
+### 2026-10-15 Simulator item parity continuation 53
+
+- Codex owns the Energy Conversion fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-heat.js`, `scripts/sim-energy-conversion-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Energy Conversion now preserves source Food-only preparation targeting, exact stamina starvation, integer-truncated Heat/threshold/random-buff parameters, Heat exclusion from random buffs, activation ordering, and typed zero values.
+- Energy Conversion smoke plus adjacent Emerald/Whelp/Enchanted/Electric regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Engineer Bag 2.
+### 2026-10-15 Simulator item parity continuation 54
+
+- Codex reviewed Engineer Bag 2 as a shop-only/no-combat catalog row. Corrected `assets/data/sim-intentional-noops.json` to retain its existing source file and exact shop-hook rationale, and added `scripts/sim-engineer-bag-2-smoke.mjs`.
+- Engineer Bag 2 source/noop smoke plus no-combat/noop audits and ledger/dashboard regeneration/check pass. Dashboard remains `no_independent_combat` by design because the source has no independent combat hook; no legal/security surfaces changed. Next step: review Engineer Box.
+### 2026-10-15 Simulator item parity continuation 55
+
+- Codex owns the Engineer Box fidelity repair, charge-emitter interface repairs, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/charge-delivery.js`, `js/pages/sim/engine/scripts/ports-ak-bags.js`, `js/pages/sim/engine/scripts/ports-ai-d.js`, `js/pages/sim/engine/scripts/ports-an-gadgets.js`, `js/pages/sim/engine/scripts/ports-ap-lucky.js`, `js/pages/sim/engine/scripts/ports-mana.js`, `js/pages/sim/engine/scripts/ports-outliers-board.js`, `js/pages/sim/engine/scripts/ports-wave-d-weapons.js`, `scripts/sim-engineer-box-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Engineer Box now mirrors source preparation-time `has_method("emitCharge")` target filtering, queue/FIFO timer restart, combat-end cleanup, real signal timestamps, exact speed-factor re-emission, and all seven source charge emitters (Battery, Charge Splitter, Cog Badge, Con-Trap-Tron, Generator, Lightning Staff, and Mana Crystal). The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Engineer Box smoke plus AQ/Battery/charge/stat/Cog-Con-Trap/parity regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Everburning.
+### 2026-10-15 Simulator item parity continuation 56
+
+- Codex owns the Everburning fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-heat.js`, `scripts/sim-everburning-smoke.mjs`, and `scripts/build-sim-fidelity-ledger.mjs`.
+- Everburning now scopes Flame counting and Burning Sword/Blade stamina changes to the owning inventory and preserves the source’s exact Heat-per-Flame value, including fractional and zero values, before consume-after-effect.
+- Everburning smoke plus Emerald/Ginger wave, Dragon Set, Burning Blade, and Burning Heat/Charge regressions, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Evil Cap.
+### 2026-10-15 Simulator item parity continuation 57
+
+- Codex owns the Evil Cap fidelity repair, focused source/lifecycle regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-hard.js`, `scripts/sim-evil-cap-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Evil Cap now mirrors source preparation-time opponent healing-efficiency reduction, pre-combat timed damage resistance, one-time opponent buff-nullify chance, exact typed zero values, buff timer state/expiration, and Helmet activation projection. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Evil Cap and Band-Y smoke, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Evil Hat.
+### 2026-10-15 Simulator item parity continuation 58
+
+- Codex owns the Evil Hat fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-c.js`, `scripts/sim-evil-hat-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Evil Hat now mirrors source preparation-time Unhealing and owner-filtered debuff/opponent-buff listeners, exact Dark secondary count, damage-capable primary crit targets, exact random-buff counts and ordering, typed zero values, and Pet activation projection. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Evil Hat plus Evil Cap/Band-Y/buff smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Extra Angy.
+### 2026-10-15 Simulator item parity continuation 59
+
+- Codex owns the Extra Angy fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-hard.js`, `scripts/sim-extra-angy-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Extra Angy now mirrors source preparation-time owner Battle Rage listeners, pre-combat cooldown deactivation, owner-only Rage event filtering, unlock/re-arm after Rage end, exact captured-duration scaling including zero, and consume-after-Rage ordering. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Extra Angy plus Evil Cap/Evil Hat/Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap and 19 pre-existing duplicate registrations; no new untriaged gap was added. No legal/security surfaces changed. Next step: review Extra Bags.
+### 2026-10-15 Simulator item parity continuation 60
+
+- Codex owns the Extra Bags fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-skills.js`, `scripts/sim-extra-bags-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Extra Bags now mirrors source primary cooldown targeting, secondary empty-slot counting inside bag cells, preparation-time speed scaling, non-cooldown exclusion, and engine snapshot behavior. Its source-only shop sales/weight hooks are retained in the automated source audit because the simulator is combat-scoped. The dashboard row is `verified_1to_1` with source/automated evidence; no live verification is required.
+- Extra Bags plus Extra Angy/Evil Cap/Evil Hat/Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Falcon Blade.
+### 2026-10-15 Simulator item parity continuation 61
+
+- Codex owns the Falcon Blade fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports.js`, `scripts/sim-falcon-blade-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Falcon Blade now mirrors source cooldown-link speed targeting, preserves the mandatory combat-start activation when speed is typed zero, spends stamina once per cooldown, performs two damage calls, and emits two post-hit activations with hit labels. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Falcon Blade plus Extra Bags/Band-Y/bow/damage-mutation smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review False Life.
+### 2026-10-15 Simulator item parity continuation 62
+
+- Codex owns the False Life fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b-heal.js`, `scripts/sim-false-life-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- False Life now mirrors source preparation-time max-health gain and overheal listener setup, Dark-only affected-item counting, `getP_m`-style modified heal parameters including typed zero, overheal-to-max-health conversion, and source heal-before-activation ordering. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- False Life plus Extra Bags/Falcon/Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Fancy Fencing Rapier.
+### 2026-10-15 Simulator item parity continuation 63
+
+- Codex owns the Fancy Fencing Rapier fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-c-scale.js`, `scripts/sim-fancy-fencing-rapier-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Fancy Fencing Rapier now mirrors source hit/miss Lucky flow, `int()`-truncated Lucky thresholds, zero-threshold success, exact damage bonus values, weapon strike wiring, and engine hit/miss behavior. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Fancy Fencing Rapier plus False Life/Wave-C/Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to_1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Fanfare.
+### 2026-10-15 Simulator item parity continuation 64
+
+- Codex owns the Fanfare fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-mana.js`, `scripts/sim-fanfare-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Fanfare now mirrors source all-item preparation speed, no-repeat three-choice selection, raw zero-capable Empower/Mana/Stamina parameters, partial opponent Mana removal, and source effect-before-activation ordering. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Fanfare plus Fancy Fencing Rapier/False Life/Wave-C/Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Fanny Pack.
+### 2026-10-15 Simulator item parity continuation 65
+
+- Codex owns the Fanny Pack fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports.js`, `scripts/sim-fanny-pack-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Fanny Pack now mirrors the source descriptor-level `hasCooldown()` filter and bag exclusion, preserves exact speed values including typed zero, scopes Bagtacular to the owning inventory side, and keeps bag activation animation-only rather than fabricating a combat-log activation. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Fanny Pack plus Badger/Bagtacular, spotlight, Band-Y, and Wave-C smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Fedora.
+### 2026-10-15 Simulator item parity continuation 66
+
+- Codex owns the Fedora fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-luck.js`, `scripts/sim-fedora-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Fedora now mirrors source preparation-time secondary chance modification, primary-only Nature/Treasure Lucky counting with exact treasure-source detection, `int()` truncation and typed zero parameters, full non-Lucky buff theft, and steal-before-activation ordering. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Fedora plus Carrot/Cat/Chain/Cheese, spotlight, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Fire Pit.
+### 2026-10-15 Simulator item parity continuation 67
+
+- Codex owns the Fire Pit fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b.js`, `scripts/sim-fire-pit-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Fire Pit now mirrors source `onPreCombatStart`, named modified `maxhealth` values without simulator rounding/clamping, Fire-only affected-item filtering, source `getTypeMultiplicity` behavior for Phoenix/Molten fire values, current/max HP updates, and bag activation projection. Its source-only shop generation hook is retained in the automated source audit because the simulator is combat-scoped. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Fire Pit and Phoenix/Lantern smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Fire Shelly.
+### 2026-10-15 Simulator item parity continuation 68
+
+- Codex owns the Fire Shelly fidelity repair, inherited-lifecycle regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b-heal.js`, `js/pages/sim/engine/scripts/ports-am-pets.js`, `js/pages/sim/engine/buff-economy.js`, `scripts/sim-fire-shelly-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Fire Shelly now mirrors inherited Shelly preparation-time Potion-only speed and debuff-protection behavior, Fire heat before the parent cleanse/heal, exact integer heat/cleanse parameters, modified healing, source negative-protection cleanse clamping, and effect-before-activation ordering. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Fire Shelly, Fire Pit, Phoenix/Lantern, Carrot/Cat/Chain/Cheese, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Flame.
+### 2026-10-15 Simulator item parity continuation 69
+
+- Codex reviewed Flame as an existing dedicated port and added `scripts/sim-flame-smoke.mjs`; the generated evidence entry is in `scripts/build-sim-fidelity-ledger.mjs` with regenerated `assets/data/sim-fidelity-ledger.json` and `assets/data/sim-audit-dashboard.json`.
+- Flame matches source combat-start `giveHeat(1)` followed by `Item.consume()` → activation, one-shot exhaustion, and no cooldown reactivation. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Flame, Everburning, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Flame Badge.
+### 2026-10-15 Simulator item parity continuation 70
+
+- Codex owns the Flame Badge fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-start.js`, `scripts/sim-flame-badge-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Flame Badge now mirrors source `giveHeat(getP1())` amplification-before-rounding, combat-start `consume()` activation, and one-shot exhaustion; its shop/class hooks remain source-retained because the simulator is combat-scoped. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Flame Badge, Emerald/Ginger, AR buff-log, Flame, Everburning, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Flame Whip.
+### 2026-10-15 Simulator item parity continuation 71
+
+- Codex owns the Flame Whip fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-onhit.js`, `scripts/sim-flame-whip-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Flame Whip now mirrors source hit-only Spikes spending, `int()`-truncated Spikes/Heat parameters including zero thresholds, exact float bonus damage, Heat grant, and inherited weapon/stamina integration. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Flame Whip, Emerald/Ginger, Everburning, Bow, damage/stat mutation, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Flawed Amethyst.
+### 2026-10-15 Simulator item parity continuation 72
+
+- Codex owns the Flawed Amethyst/inherited Amethyst socket fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/gem-sockets.js`, `scripts/sim-flawed-amethyst-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Flawed Amethyst now mirrors inherited inventory cleansing, successful weapon-hit buff removal with source `int()` truncation, and `GemPower * healReduction` armor healing reduction while retaining the base GemPower of 1 when no modifier is present. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Flawed Amethyst plus flawed/flawless, Regular Amethyst, Chipped Gems/Lotus/Elephant, Book/Amethyst, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the existing baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 call-review candidates; no legal/security surfaces changed. Next step: review Flawed Emerald.
+### 2026-10-15 Simulator item parity continuation 73
+
+- Codex owns the Flawed Emerald/inherited Emerald inventory and socket fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-gems.js`, `js/pages/sim/engine/gem-sockets.js`, `scripts/sim-flawed-emerald-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Flawed Emerald now mirrors source raw `getP3()` regeneration and raw `getP1()` weapon poison amounts through the shared buff-power/rounding path, plus inherited `GemPower * getP2()` armor poison resistance with the base GemPower default of 1. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Flawed Emerald plus flawed/flawless, Regular Amethyst, Chipped Gems/Lotus/Elephant, Emerald/Ginger, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the established baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 ledger call-review candidates; no legal/security surfaces changed. Next step: review Flawed Ruby.
+### 2026-10-15 Simulator item parity continuation 74
+
+- Codex owns the Flawed Ruby/inherited Ruby inventory and socket fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-gems.js`, `js/pages/sim/engine/gem-sockets.js`, `scripts/sim-flawed-ruby-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Flawed Ruby now mirrors source raw `getP3()` stealLife damage, modified `getP_m("lifesteal_factor")`, modified weapon `getP_m("lifesteal_weapon")` healing with source ceiling, and inherited `GemPower * getP2()` armor healing efficiency. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Flawed Ruby plus flawed/flawless, Regular Emerald/Ruby/Sapphire/Topaz, Chipped Gems/Lotus/Elephant, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the established baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 ledger call-review candidates; no legal/security surfaces changed. Next step: review Flawed Sapphire.
+### 2026-10-15 Simulator item parity continuation 75
+
+- Codex owns the Flawed Sapphire/inherited Sapphire inventory and socket fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-gems.js`, `js/pages/sim/engine/gem-sockets.js`, `scripts/sim-flawed-sapphire-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Flawed Sapphire now mirrors source raw `getP5()` Cold and spectral-hit Mana/Cold amounts, spectral pre-hit gating, `int(getP2())` Mana thresholds, and `getGemPower() * block` before final Block rounding. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Flawed Sapphire plus flawed/flawless, Regular Emerald/Ruby/Sapphire/Topaz, Chipped Gems/Lotus/Elephant, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the established baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 ledger call-review candidates; no legal/security surfaces changed. Next step: review Flawless Amethyst.
+### 2026-10-15 Simulator item parity continuation 76
+
+- Codex owns the Flawless Amethyst explicit tier-alias verification, focused source regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-flawless-amethyst-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Flawless Amethyst is independently verified against inherited `Amethyst.gd`: inventory cleanse/activation, source `int()` weapon buff removal, and `GemPower`-scaled armor healing reduction all pass. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Flawless Amethyst plus Flawed Amethyst, alias, Regular Amethyst, Book/Amethyst, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the established baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 ledger call-review candidates; no legal/security surfaces changed. Next step: review Flawless Emerald.
+### 2026-10-15 Simulator item parity continuation 77
+
+- Codex owns the Flawless Emerald explicit tier-alias verification, focused source regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-flawless-emerald-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Flawless Emerald is independently verified against inherited `Emerald.gd` with actual tier values: inventory regeneration, weapon poison, and `GemPower * getP2()` armor poison resistance all pass. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Flawless Emerald plus Flawed Emerald, alias, Regular Emerald/Ruby/Sapphire/Topaz, Chipped Gems/Lotus/Elephant, Emerald/Ginger, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the established baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 ledger call-review candidates; no legal/security surfaces changed. Next step: review Flawless Ruby.
+### 2026-10-15 Simulator item parity continuation 78
+
+- Codex owns the Flawless Ruby explicit tier-alias verification, focused source regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-flawless-ruby-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Flawless Ruby is independently verified against inherited `Ruby.gd` with actual tier values: inventory stealLife damage/heal ordering and amounts, source-ceiled weapon lifesteal, and `GemPower * getP2()` armor healing efficiency all pass. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Flawless Ruby plus Flawed Ruby, alias, Regular Emerald/Ruby/Sapphire/Topaz, Chipped Gems/Lotus/Elephant, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the established baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 ledger call-review candidates; no legal/security surfaces changed. Next step: review Flawless Sapphire.
+### 2026-10-15 Simulator item parity continuation 79
+
+- Codex owns the Flawless Sapphire explicit tier-alias verification, focused source regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-flawless-sapphire-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Flawless Sapphire is independently verified against inherited `Sapphire.gd` with actual tier values: inventory Cold, spectral weapon Mana/Cold, and armor threshold/p3/GemPower Block conversion all pass. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Flawless Sapphire plus Flawed Sapphire, alias, Regular Emerald/Ruby/Sapphire/Topaz, Chipped Gems/Lotus/Elephant, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the established baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 ledger call-review candidates; no legal/security surfaces changed. Next step: review Perfect Amethyst.
+### 2026-10-15 Simulator item parity continuation 80
+
+- Codex owns the Perfect Amethyst explicit Godly tier-alias verification, focused source regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-perfect-amethyst-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Perfect Amethyst is independently verified against inherited `Amethyst.gd`: inventory cleanse, source p2 two-buff weapon removal, and `GemPower`-scaled armor healing reduction all pass. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Perfect Amethyst plus Flawed/Flawless Amethyst, alias, Regular Amethyst, Book/Amethyst, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the established baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 ledger call-review candidates; no legal/security surfaces changed. Next step: review Perfect Emerald.
+### 2026-10-15 Simulator item parity continuation 81
+
+- Codex owns the Perfect Emerald explicit Godly tier-alias verification, focused source regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-perfect-emerald-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Perfect Emerald is independently verified against inherited `Emerald.gd` with actual tier values: inventory regeneration, weapon poison, and `GemPower * getP2()` armor poison resistance all pass. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- Perfect Emerald plus Flawed/Flawless Emerald, alias, Regular Emerald/Ruby/Sapphire/Topaz, Chipped Gems/Lotus/Elephant, Emerald/Ginger, and Band-Y smokes, syntax checks, source parity/call audits, ledger/dashboard regeneration and `--check`, the `verified_1to1` assertion, and `git diff --check` pass. The global audit remains at the established baseline: one triaged Ruby Egg lifecycle gap, 0 untriaged gaps, 19 pre-existing duplicate registrations, and 13 ledger call-review candidates; no legal/security surfaces changed. Next step: review Perfect Ruby.
+
+### 2026-10-15 Simulator item parity continuation 108
+
+- Codex owns the Pot fidelity verification, focused source regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-pot-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Pot is verified against `Pot.gd`: separate Potion/Food targeting, combined speed scaling, linked-potion healing, Heat/Regeneration cooldown effects, and consume-after-effect ordering pass. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+
+### 2026-10-15 Simulator item parity continuation 109
+
+- Codex owns the Power of the Moon fidelity repair, focused source regressions, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-threshold.js`, `scripts/sim-power-moon-handler-smoke.mjs`, `scripts/sim-power-moon-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Power of the Moon now registers fatigue during prepare, uses the shared temporary max-health/activation path, records Reflect stacks through the simulator stat-event path, and retains linked Moon Armor/Moon Shield filtering. Focused source/handler and fatigue smokes pass; the dashboard row is `verified_1to1` with source/automated evidence and a source audit for shop hooks; no live verification is required.
+- The source parity gate passes with the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Power Puppy.
+
+### 2026-10-15 Simulator item parity continuation 110
+
+- Codex owns the Power Puppy fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-pets.js`, `scripts/sim-power-puppy-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Power Puppy now mirrors source prepare-time Pet-only speed setup, rotating Lucky/Regeneration/Empower choices, exact source amounts including zero, and grant-before-activation ordering. Power Puppy and inherited Armored Power Puppy smokes pass; the dashboard row is `verified_1to1` with source/automated evidence and no live verification required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Present.
+
+### 2026-10-15 Simulator item parity continuation 111
+
+- Codex owns the Present fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-buff.js`, `scripts/sim-present-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Present now mirrors source random-buff count handling, including zero, and logs activation after the buff grant. The focused Present and broader buff smokes pass; the dashboard row is `verified_1to1` with source/automated evidence and a source audit for the shop-entry gift hook. No live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Prismatic Sword.
+
+### 2026-10-15 Simulator item parity continuation 112
+
+- Codex owns the Prismatic Sword fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-d-weapons.js`, `scripts/sim-prismatic-sword-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Prismatic Sword now mirrors source prepare-time type counts, fractional Holy bonus damage, configured chance2 Dark debuff proc, late lifesteal from `damageRes.damage`, and miss/no-Vampiric guards. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Prismatic Wand.
+
+### 2026-10-15 Simulator item parity continuation 113
+
+- Codex owns the Prismatic Wand fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-luck.js`, `scripts/sim-prismatic-wand-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Prismatic Wand now mirrors source all-buff grants, zero-safe integer thresholds, highest Mana/Lucky/Regeneration pool consumption, exact Empower amount, and activation-after-effects ordering. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Protective Purse.
+
+### 2026-10-15 Simulator item parity continuation 114
+
+- Codex owns the Protective Purse fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-consumable.js`, `scripts/sim-protective-purse-smoke.mjs`, `scripts/sim-badger-bagtacular-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Protective Purse now mirrors the source Bag block descriptor, the named Bagtacular block bonus (30 total in the regression), zero-safe handling, and the source activation event. Protective Purse, Bagtacular, and Wave A smokes pass; the dashboard row is `verified_1to1` with source/automated evidence and no live verification required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Pumpkin.
+
+### 2026-10-15 Simulator item parity continuation 115
+
+- Codex owns the Pumpkin fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-basic.js`, `scripts/sim-pumpkin-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Pumpkin now mirrors the source Food throw lifecycle, prepare-time fatigue listener, exact Heat amount including zero, hit-only chance stun through `onDealtDamage`, and fatigue activation ordering. Pumpkin, the lifecycle wave, and AP smoke pass; the dashboard row is `verified_1to1` with source/automated evidence and no live verification required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Puzzle Badge.
+
+### 2026-10-15 Simulator item parity continuation 116
+
+- Codex owns the Puzzle Badge fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-outliers-board.js`, `scripts/sim-puzzle-badge-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Puzzle Badge now mirrors source cooldown-only target filtering, prepare-time speed reduction, exact speed+speed2 pulse, consumption lifecycle, and source puzzle-bag metadata. The dashboard row is `verified_1to1` with source/automated evidence; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Puzzlebag J.
+
+### 2026-10-15 Simulator item parity continuation 117
+
+- Codex owns the Puzzlebag J fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-bags.js`, `scripts/sim-puzzlebag-j-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Puzzlebag J now mirrors the source duration predicate through the shared `hasInventoryDuration` rule, applies the exact named `bonusdur` multiplier during prepare, leaves missing `bonusdur` at zero, and preserves duration scaling/exclusion behavior. Focused source/handler and full duration-effects smokes pass; the dashboard row is `verified_1to1` with source/automated evidence and no live verification required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Puzzlebag L.
+
+### 2026-10-15 Simulator item parity continuation 118
+
+- Codex owns the Puzzlebag L fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-start.js`, `scripts/sim-puzzlebag-l-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Puzzlebag L now mirrors the source heal/lifesteal target predicate, additive `changeHealAmp` stacking, exact named `healamp`/`maxhealth` behavior without fabricated fallback values, max-health-before-activation ordering, and non-healing exclusions. Focused source/handler, Puzzlebag J, duration, and noop smokes pass; the dashboard row is `verified_1to1` with source/automated evidence and no live verification required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Puzzlebag S.
+
+### 2026-10-15 Simulator item parity continuation 119
+
+- Codex owns the Puzzlebag S fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-bags.js`, `scripts/sim-puzzlebag-s-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Puzzlebag S now mirrors source prepare-time lifecycle, exact catalog `getChance()` amplification, `gainsBuffs()`-only cargo filtering, and additive all-buff chance modifiers. Puzzlebag S/L/J, duration, noop, syntax, source parity/call audits, ledger/dashboard checks, and the `verified_1to1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Puzzlebag T.
+
+### 2026-10-15 Simulator item parity continuation 120
+
+- Codex owns the Puzzlebag T fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-bags.js`, `scripts/sim-puzzlebag-t-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Puzzlebag T now mirrors source prepare-time `usesBuffs()` targeting, exact named refund parameter behavior, fractional per-buff accrual with source rounding, affected-origin filtering, and miniActivate-only refund projection. Puzzlebag T/S/L/J, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Puzzlebag Z.
+
+### 2026-10-15 Simulator item parity continuation 121
+
+- Codex owns the Puzzlebag Z fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-bags.js`, `scripts/sim-puzzlebag-z-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Puzzlebag Z now mirrors source prepare-time lifecycle, exact catalog `getChance()` amplification, `inflictsDebuffs()`-only cargo filtering, and additive all-debuff chance modifiers. Puzzlebag Z/T/S/L/J, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Puzzlebox.
+
+### 2026-10-15 Simulator item parity continuation 122
+
+- Codex owns the Puzzlebox fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-outliers-board.js`, `scripts/sim-puzzlebox-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Puzzlebox now mirrors the source prepare-time cooldown-only target filter, exact named `speed`/`speed2` modifiers, zero-safe missing parameters, and consume-after-effect lifecycle. Focused source/handler, Puzzlebag group, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to1` assertion all pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rainbow Badge.
+
+### 2026-10-15 Simulator item parity continuation 123
+
+- Codex owns the Rainbow Badge fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-outliers.js`, `scripts/sim-rainbow-badge-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rainbow Badge now mirrors the source `Game.getBuffs()` loop (Lucky through Heat), one-stack grants, and post-effect consume/activation ordering. The source `onAddToInventory`/`onRemoveFromInventory` hooks only refresh the game shop class pool; they do not change combat behavior or simulator item class data. Focused source/handler, Puzzlebox, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rainbow Goobert.
+
+### 2026-10-15 Simulator item parity continuation 124
+
+- Codex owns the Rainbow Goobert fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-goobert.js`, `scripts/sim-rainbow-goobert-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rainbow Goobert now mirrors the runtime-winning peer-trigger port: Goobert’s 9 affected-item activation threshold, catalog Block/Heal values, exact P3/P4/P5 effects, `canActivate`-filtered weapon empowerment, and post-effect activation order. Focused source/handler, Rainbow Badge, Puzzlebox, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rainbow Goobert Adventurer.
+
+### 2026-10-15 Simulator item parity continuation 125
+
+- Codex owns the Rainbow Goobert Adventurer fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-goobert.js`, `scripts/sim-rainbow-goobert-adventurer-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rainbow Goobert Adventurer now mirrors the shared Goobert peer threshold and post-effect activation, catalog Block/Heal values, exact P3 Vampirism, P4 Regeneration, P5 Blind, P6 weapon empowerment, and zero-safe named/indexed parameters. Focused source/handler, base Rainbow Goobert, Rainbow Badge, Puzzlebox, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rainbow Goobert Berserker.
+
+### 2026-10-15 Simulator item parity continuation 126
+
+- Codex owns the Rainbow Goobert Berserker fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-aura.js`, `scripts/sim-rainbow-goobert-berserker-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rainbow Goobert Berserker now mirrors the source Goobert peer threshold and post-effect activation, catalog Block/max-health values, exact P3 Vampirism, P4 random buffs, named Blind, P5 weapon empowerment, and zero-safe optional parameters. Focused source/handler, Rainbow Goobert family, Rainbow Badge, Puzzlebox, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review the next item alphabetically after Rainbow Goobert Berserker.
+
+### 2026-10-15 Simulator item parity continuation 127
+
+- Codex owns the Rainbow Goobert Engineer fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-goobert.js`, `scripts/sim-rainbow-goobert-engineer-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rainbow Goobert Engineer now mirrors the source Goobert peer threshold and post-effect activation, exact Block/Heal/Stamina/Vampirism/Regeneration/Blind/dambonus values and order, native stamina capping, weapon-only empowerment, and zero-safe named/indexed parameters. Focused source/handler, Berserker, Adventurer, base Rainbow Goobert, Rainbow Badge, Puzzlebox, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rainbow Goobert Mage.
+
+### 2026-10-15 Simulator item parity continuation 128
+
+- Codex owns the Rainbow Goobert Mage fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-d-goobert.js`, `scripts/sim-rainbow-goobert-mage-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rainbow Goobert Mage now mirrors the source Goobert peer threshold and prepare lifecycle, exact Block/Heal/P3 Vampirism/P4 most-held buffs/P5 Blind/P6 weapon empowerment, zero-safe parameters, and post-effect activation order. Focused source/handler, Engineer, Berserker, Adventurer, base Rainbow Goobert, Rainbow Badge, Puzzlebox, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rainbow Goobert Ranger.
+
+### 2026-10-15 Simulator item parity continuation 129
+
+- Codex owns the Rainbow Goobert Ranger fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-d-goobert.js`, `scripts/sim-rainbow-goobert-ranger-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rainbow Goobert Ranger now mirrors the source Goobert peer threshold and prepare lifecycle, exact Block/Heal/P3 Vampirism/P4 Empower/P5 Blind/P6 weapon empowerment, zero-safe parameters, and post-effect activation order. Focused source/handler, Mage, Engineer, Berserker, Adventurer, base Rainbow Goobert, Rainbow Badge, Puzzlebox, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rainbow Orb.
+
+### 2026-10-15 Simulator item parity continuation 130
+
+- Codex owns the Rainbow Orb fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-mana.js`, `scripts/sim-rainbow-orb-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rainbow Orb now mirrors the source Vampiric/Magic/Holy/Dark target predicate, exact Vampirism/Mana/healing-efficiency/random-debuff grants, default one-stack all-buff cooldown effect, zero-safe named/indexed parameters, owner-side activation, and effect-before-activation ordering. Focused source/handler, Rainbow Goobert family, Rainbow Badge, Puzzlebox, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rainbow Potion.
+
+### 2026-10-15 Simulator item parity continuation 131
+
+- Codex owns the Rainbow Potion fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-d-unique.js`, `scripts/sim-rainbow-potion-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rainbow Potion now mirrors source colored descriptor-distinct Book/Staff counts, exact named/indexed Mana/temporary-stamina/random-buff parameters, whole-inventory descriptor-distinct potion triggering, strict `usedBuffs > buffsNeeded` consumption, primary linked potion chaining, potion-empty signaling, and effect-before-activation ordering. Focused source/handler, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to_1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Random Loadout Bag.
+
+### 2026-10-15 Simulator item parity continuation 132
+
+- Codex reviewed Random Loadout Bag source scope and the simulator mapping. No product code changed: `RandomLoadoutBag.gd` contains shop/drop/loadout generation hooks only (`_ready`, `shopOpened`, and placement helpers), with no `onPrepare`, `onCombatStart`, or `doCooldownEffect` combat override. The existing simulator no-op mapping is therefore the correct supported-mode projection, and the dashboard remains `no_independent_combat` rather than falsely claiming a combat port.
+- No legal/security surfaces changed. Next step: review Rat.
+
+### 2026-10-15 Simulator item parity continuation 133
+
+- Codex owns the Rat fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-pets.js`, `scripts/sim-rat-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rat now mirrors inherited Forest Friend Pet/Food speed scaling, descriptor minimum effect damage, source chance/chance2 rolls, exact zero-safe Poison/Blind parameters, damage-parented debuff grants, and post-effect activation ordering. Focused source/handler, noop, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to_1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rat Chef.
+
+### 2026-10-15 Simulator item parity continuation 134
+
+- Codex owns the Rat Chef fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-pet.js`, `scripts/sim-rat-chef-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rat Chef now mirrors the source food-only Regeneration aura, intentional override without Rat’s inherited speed, exact named/indexed stamina and Empower values, native stamina clamping, zero-safe missing parameters, explicit stamina/buff projections, and effect-before-activation ordering. Focused source/handler, Rat, syntax, source parity/call audits, ledger/dashboard checks, and `verified_1to_1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Recombobulator.
+
+### 2026-10-15 Simulator item parity continuation 135
+
+- Codex owns the Stable/Unstable Recombobulator fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-gadgets.js`, `scripts/sim-recombobulator-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Both variants now mirror the shared Recombobulator combat source: one random buff, one random debuff cleanse, and activation after both effects, with the source-facing Accessory activation projection. Focused source/handler regression, syntax, source parity/call audits, ledger/dashboard checks, and both `verified_1to_1` assertions pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Relic Case.
+
+### 2026-10-15 Simulator item parity continuation 136
+
+- Codex owns the Relic Case fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-f.js`, `scripts/sim-relic-case-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Relic Case now mirrors the source `Bag.getAffectedItemsInside()` plus `canApplyEffect()` weapon-only filter, exact named/indexed `bonusdam` and `stamina` parameters with zero-safe omission, signed stamina-factor reduction, canBeEmpowered damage-factor guard, and effect-before-activation ordering. The regression specifically excludes a damage-bearing non-weapon pet. Focused source/handler, syntax, source parity/call audits, ledger/dashboard checks, and the `verified_1to1` assertion pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Repeater.
+
+### 2026-10-15 Simulator item parity continuation 137
+
+- Codex owns the Repeater fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-d-board.js`, `scripts/sim-repeater-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Repeater now mirrors the source `hasStartofBattle` target filtering, complete `repeatCombatStart()` pre/main/post lifecycle (including weapon/card inherited wrappers), non-start target exclusion, and default `onAfterEffectFinished()` consume/deactivation after all repeated effects. Focused source/handler, syntax, source parity/call audits, ledger/dashboard checks, and the `verified_1to1` assertion pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Resistor.
+
+### 2026-10-15 Simulator item parity continuation 138
+
+- Codex owns the Resistor fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-hard.js`, `scripts/sim-resistor-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Resistor now mirrors the source charge threshold and exact named/indexed Heat parameters with zero-safe omission. It records the Heat grant only when positive and projects `miniActivate()` as non-metric info rather than a normal activation event. Threshold suppression, sparse/zero params, focused source/handler, syntax, source parity/call audits, ledger/dashboard checks, and the `verified_1to1` assertion pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Reverse.
+
+### 2026-10-15 Simulator item parity continuation 139
+
+- Codex owns the Reverse fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-cards.js`, `scripts/sim-reverse-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Reverse now mirrors the source card reflect/steal parameters through exact named/indexed lookups with zero-safe omission, the source deck duplicate gating for secondary steal, dummy-to-player buff direction, and reveal-before-activation ordering. Focused source/handler, syntax, source parity/call audits, ledger/dashboard checks, and the `verified_1to1` assertion pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rib Saw Blade.
+
+### 2026-10-15 Simulator item parity continuation 140
+
+- Codex owns the Rib Saw Blade fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-perm.js`, `js/pages/sim/engine/scripts/ports-ai-f.js` (inherited Katana snapshot), `scripts/sim-rib-saw-blade-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rib Saw Blade now mirrors the source prepare-time opponent `canBeEmpowered()` weapon snapshot, including Lifesteal weapons while excluding zero-damage weapons, non-weapons, and allies; hit-only removable damage purging; exact named/indexed `dam` and `bonusdam` parameters with zero-safe omission; and shared `weaponStrike` delegation. Focused source/handler, syntax, source parity/call audits, ledger/dashboard checks, and the `verified_1to_1` assertion pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Robodog.
+
+### 2026-10-15 Simulator item parity continuation 141
+
+- Codex owns the Robodog fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-c2.js`, `scripts/sim-robodog-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Robodog now mirrors source prepare/charge-state projection, reset-on-charge base cooldown, Lucky and Heat grants on every cooldown, uncharged-only cooldown growth, activation ordering, and zero-safe typed `luck`, `heat`, and `cdincrease` parameters. Focused source/handler, syntax, source parity/call audits, ledger/dashboard checks, and the `verified_1to_1` assertion pass; no live verification is required. The pre-existing non-runtime duplicate registration in `ports-mech.js` remains documented by the global audit; `ports.js` resolves the active handler from `ports-ai-c2.js`.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rope.
+
+### 2026-10-15 Simulator item parity continuation 142
+
+- Codex owns the Rope fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-accessories.js`, `scripts/sim-rope-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Rope now mirrors the source primary `canActivate()` trigger filter, last valid secondary `hasCooldown()` target selection, capped speed additions, source timer reset/expiration behavior, speed bookkeeping, `miniActivate()` non-metric projection, and zero-safe `speed`/`max`/`dur` parameters. Focused source/handler, syntax, source parity/call audits, ledger/dashboard checks, and the `verified_1to_1` assertion pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Rotation Spring.
+
+### 2026-10-15 Simulator item parity continuation 143
+
+- Codex reviewed Rotation Spring as the next extracted entry. It is a shared `Sprite` physics helper attached to item scenes, not a catalog item or independent combat actor; its source only updates inertial rotation and has no combat hooks. The existing `docs/sim/sim-base-support-classes.md` decision and `scripts/sim-base-support-classes-audit.mjs` source check therefore correctly classify it as visual-only/out of simulator scope, so no runtime port or dashboard item row is appropriate.
+- No product behavior changed and no legal/security surfaces changed. The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. Next step: review Ruby Egg.
+
+### 2026-10-15 Simulator item parity continuation 144
+
+- Codex owns the Ruby Egg fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-eggs.js`, `scripts/sim-ruby-egg-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Ruby Egg now mirrors the source DragonEgg start-only lifecycle: exact integer-truncated `p1` Reflect and `p3` Heat parameters with zero-safe omission, Reflect during pre-combat, Heat during combat start, activation after Heat, and no recurring cooldown hook. The intentional source `doCooldownEffect` lifecycle gap remains triaged because the game calls it once from `onCombatStart(false)`. Focused regression, syntax, parity/call audits, ledger/dashboard checks, coverage-honesty, and the explicit `verified_1to1` assertion pass; no live verification is required.
+- `npm test` is unavailable because `package.json` defines no test script. The extra `sim-engine-1to1-count` smoke remains at its pre-existing support-class baseline (eight visual/support classes without handlers and generic `dragonegg` mapping); this item’s required gates pass. No legal/security surfaces changed. The global audit remains at 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. Next step: review Ruby Whelp.
+
+### 2026-10-15 Simulator item parity continuation 145
+
+- Codex owns the Ruby Whelp fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-start.js`, `scripts/sim-ruby-whelp-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Ruby Whelp now mirrors the source Weapon start hooks: indexed `p2` Reflect and `p1` Heat lookups take precedence over named fields, missing parameters are zero-safe, Reflect uses the shared stat projection, Heat precedes start activation, and inherited cooldown attacks still delegate through `weaponStrike`. Focused regression, syntax, parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required.
+- The global audit remains at the established baseline: 531 scanned items, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Sandbag.
+
+### 2026-10-15 Simulator item parity continuation 146
+
+- Codex owns the Sapphire Egg fidelity repair, focused source regression, lifecycle triage, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-eggs.js`, `scripts/sim-sapphire-egg-smoke.mjs`, `scripts/audit-sim-gd-parity.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Sapphire Egg now mirrors the source DragonEgg start-only lifecycle: exact `p1` Mana projection through the shared integer stack path, Mana-before-activation ordering, zero-safe omission, and no recurring cooldown hook. The source `doCooldownEffect` helper is intentionally triaged because the game invokes it once from `onCombatStart`; no live verification is required.
+- Focused regression, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass. The global audit now reports 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Sapphire Whelp.
+
+### 2026-10-15 Simulator item parity continuation 147
+
+- Codex owns the Sapphire Whelp fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-start.js`, `scripts/sim-sapphire-whelp-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Sapphire Whelp now mirrors the source Weapon hooks: indexed `p1` start Mana, hit-only indexed `p2` Mana spend, insufficient-Mana gating, the computed/catalog Block amount through the shared grant path, one random non-Mana buff, and inherited cooldown strike delegation. Focused regression, syntax, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required.
+- The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Scholar Bag.
+
+### 2026-10-15 Simulator item parity continuation 148
+
+- Codex owns the Scholar Bag fidelity repair, shared stack-protection support, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/actor.js`, `js/pages/sim/engine/buff-economy.js`, `js/pages/sim/engine/scripts/ports-util.js`, `js/pages/sim/engine/scripts/ports-wave-b.js`, `scripts/sim-scholar-bag-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Scholar Bag now mirrors the source prepare-time Mana-only cargo filter, item-local Mana amplification, Mana-only cleanse protection, named `mana` integer truncation with zero-safe fallback, Mana-before-activation ordering, and the source's explicit activation even though it has no cooldown. Passive bags remain non-activating by default; the explicit source call uses a forced activation projection.
+- Focused regression, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Scissorswords.
+
+### 2026-10-15 Simulator item parity continuation 149
+
+- Codex owns the Scissorswords fidelity repair, focused source regression, shared candidate-smoke update, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-aura.js`, `scripts/sim-scissorswords-smoke.mjs`, `scripts/sim-resource-stack-consumable-candidates-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Scissorswords now mirrors the inherited Lightsaber prepare lifecycle, temporary Blind on both actors through its `inflict` override, Blind-driven varying damage, lucky-gated named bonus/regeneration hit behavior, miss Lucky behavior, source integer/float parameter semantics, source-only activation, and light-expiry retriggering. The live simulation clock is used for prepare-installed callbacks so combat-start effects do not expire at prepare time.
+- Focused source/handler regression, the existing shared candidate smoke, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Work paused here at the user’s request.
+
+### 2026-10-15 Simulator item parity continuation 150
+
+- Codex owns the Seal the Deal fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-luck.js`, `scripts/sim-seal-the-deal-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Seal the Deal now mirrors the source trade chance/bonus projection, independent Regen-to-Vamp, Lucky-to-Spikes, and Mana-to-Empower conversions, named integer parameters with source indexed fallbacks, zero-safe grants, and activation-last ordering.
+- Focused regression, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Serpent Staff.
+
+### 2026-10-15 Simulator item parity continuation 151
+
+- Codex owns the Serpent Staff fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-onhit.js`, `scripts/sim-serpent-staff-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Serpent Staff now mirrors source poison-resistance reduction, per-damage-effect Mana-use events, exact permanent damage, miss-preserved Mana-use queue entries, threshold poison accumulation, and integer-truncated poison threshold parameters. Explicit zero chance and no-Mana/no-event cases remain zero-safe.
+- Focused regression, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Sewing Case.
+
+### 2026-10-15 Simulator item parity continuation 152
+
+- Codex owns the Sewing Case fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-bags.js`, `scripts/sim-sewing-case-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Sewing Case now mirrors the source prepare-time affected-cargo filter: crafted items qualify only when they have a cooldown or generate buffs; qualifying cargo receives the named speed bonus and every buff amplification chance. Explicit per-piece chance precedence, indexed speed fallback, and zero-safe behavior are covered.
+- Focused source/handler regression, the existing bag-synergy smoke, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Shaman Mask.
+
+### 2026-10-15 Simulator item parity continuation 153
+
+- Codex owns the Shaman Mask fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-buff.js`, `scripts/sim-shaman-mask-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Shaman Mask now mirrors the source socketed-gem Lucky count, integer-truncated `getP2()` threshold without a forced minimum, `getP3()` random-buff count including zero-threshold behavior, and activation after the Lucky spend and random grants. The focused fixture also rejects stale display-name-only gem counts.
+- Focused source/handler regression, the shared buff smoke, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Shell Totem.
+
+### 2026-10-15 Simulator item parity continuation 154
+
+- Codex owns the Shell Totem fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b-heal.js`, `scripts/sim-shell-totem-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Shell Totem now mirrors the source prepare-time Holy-target stamina reduction, fractional effective stamina use, named/indexed health and heal parameters, health-based Empower/heal branches, and activation only after successful stamina use. Starved activations now skip the effect and activation.
+- Focused source/handler regression, the neighboring False Life smoke, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Shelly.
+
+### 2026-10-15 Simulator item parity continuation 155
+
+- Codex owns the Shelly source/handler evidence regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-shelly-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`; the existing Shelly handler was validated without additional production changes.
+- Shelly now has direct retained proof for Potion-only affected-item filtering, prepare-time Potion speed and debuff-protection changes, integer cleanse count, named heal behavior, and cleanse/heal-before-activation ordering. The inherited Fire Shelly regression also remains green.
+- Focused direct and inherited regressions, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Shepherd's Crook.
+
+### 2026-10-15 Simulator item parity continuation 156
+
+- Codex owns the Shepherd's Crook fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-aura.js`, `scripts/sim-shepherds-crook-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Shepherd's Crook now mirrors the source Empower-only damage aura, prepare-time buff protection, Blind/Cold resistance, named/indexed damage parameter, and damage-before-activation ordering. The handler now preserves explicit 0% instance chances instead of incorrectly falling back to catalog/default values.
+- Focused source/handler regression, related Shelly regressions, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Shield of Valor.
+
+### 2026-10-15 Simulator item parity continuation 157
+
+- Codex owns the Shield of Valor fidelity repair, shared Shield stamina correction, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-shields.js`, `scripts/sim-shield-of-valor-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Shield of Valor now mirrors the source prepare-time Block buff-power grant to linked blockers, indexed `p3` factor precedence, inherited Shield registration, indexed `p2` partial stamina drain, activation ordering, and explicit zero chance. The shared Shield callback now uses source `drainStamina()` semantics instead of a sufficient-stamina gate; existing Pine Protector and shield candidate regressions remain green.
+- Focused source/handler and neighboring regressions, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Shielded.
+
+### 2026-10-15 Simulator item parity continuation 158
+
+- Codex owns the Shielded fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-skills.js`, `scripts/sim-shielded-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Shielded now mirrors the source prepare-time lifecycle, Shield-only additive chance, cooldown-Armor speed filtering, effective chance projection, and source parameter handling. The source `onBought`/`onItemRoll`/`onItemRolled` shop-state hooks are retained in the focused source audit as outside the fixed combat simulator scope.
+- Focused source/handler regression, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Shiny Mantle.
+
+### 2026-10-15 Simulator item parity continuation 159
+
+- Codex owns the Shiny Mantle fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-hard.js`, `scripts/sim-shiny-mantle-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Shiny Mantle now mirrors the source prepare-time invulnerability listener, named integer Mana/Blind/max parameters, socketed-gem catalog-value duration factor, vulnerability/Mana gating, escalating Mana cost, Blind on invulnerability start, and after-effect finalization. The source shop reset hook remains outside the fixed combat simulator scope.
+- Focused source/handler regression, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Shiny Shell.
+
+### 2026-10-15 Simulator item parity continuation 160
+
+- Codex owns the Shiny Shell fidelity repair, focused source regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b-heal.js`, `scripts/sim-shiny-shell-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Shiny Shell now mirrors the source Holy-only affected-item count, modified named healing parameters, heal-before-activation ordering, and `onAfterEffectFinished()` consumption/deactivation. The stale food-consumption path was removed.
+- Focused source/handler and neighboring Wave B regressions, syntax checks, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Shortbow.
+
+### 2026-10-15 Simulator item parity continuation 161
+
+- Codex owns the Shortbow source/inherited-handler evidence regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-shortbow-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`; the existing `shortbow` port already matched the inherited Weapon behavior.
+- Shortbow now has retained proof that its scene attaches `Weapon.gd`, whose source cooldown uses stamina before attack; the port delegates to `weaponStrike`, preserves the ranged hit and activation path, and skips attack/activation when stamina is insufficient.
+- Focused source/runtime regression, syntax check, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Shovel.
+
+### 2026-10-15 Simulator item parity continuation 162
+
+- Codex owns the Shovel source/combat-handler evidence regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-shovel-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`; the existing `shovel` combat port already matched the source.
+- Shovel now has retained proof for inherited Weapon stamina/attack behavior and its hit-only chance proc that grants 1 Blind. The source `onShopEntered()` dig/spawn path is explicitly retained as outside the fixed combat simulator scope.
+- Focused source/runtime and neighboring on-hit regressions, syntax check, source parity/call audits, ledger/dashboard checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Skull.
+
+### 2026-10-15 Simulator item parity continuation 163
+
+- Codex owns the Skull and Skull Badge fidelity repairs, shared socketed-Gem correction, focused source/runtime regressions, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-gems.js`, `js/pages/sim/engine/gem-sockets.js`, `js/pages/sim/engine/scripts/ports-outliers.js`, `scripts/sim-skull-smoke.mjs`, `scripts/sim-skull-badge-smoke.mjs`, `scripts/sim-shortbow-skull-potions-ring-fool-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Skull now mirrors the source opponent `character_damaged` threshold trigger, modified heal, explicit zero-safe Empower, one-shot heal-before-activation order, socketed weapon buff theft, and GemPower-scaled socketed armor resistances. Skull Badge now applies its random debuff before activation; its Reaper shop relation hooks and three-column layout are retained as outside the fixed combat simulator scope. The older combined Shortbow/Skull regression now emits the canonical `character_damaged` event.
+- Focused source/runtime and neighboring regressions, syntax checks, source parity/call audits, sequential ledger/dashboard builds and checks, and explicit `verified_1to1` assertions pass for both items; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Slice of Bread.
+
+### 2026-10-15 Simulator item parity continuation 164
+
+- Codex owns the Slice of Bread fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-consumable.js`, `scripts/sim-slice-of-bread-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Slice of Bread now mirrors the source fractional stamina threshold and grant, strict current-stamina comparison, placement parameter modifiers, actual clamped stamina event amount, and stamina-before-activation ordering. The source Food inheritance and inventory override are retained in the focused audit.
+- Focused source/runtime and neighboring food regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Slice of Toast.
+
+### 2026-10-15 Simulator item parity continuation 165
+
+- Codex owns the Slice of Toast fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-regen.js`, `scripts/sim-slice-of-toast-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Slice of Toast now mirrors the source’s fractional stamina branch, placement parameter modifiers, actual clamped stamina grant, integer-truncated regeneration branch, and effect-before-activation ordering. The source Food inheritance and inventory override are retained in the focused audit.
+- Focused source/runtime and neighboring food regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Slime Time.
+
+### 2026-10-15 Simulator item parity continuation 166
+
+- Codex owns the Slime Time fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-d-board.js`, `scripts/sim-slime-time-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Slime Time now mirrors the source same-inventory Goobert activation loop, filters out opposite-side pieces, and performs peer effects before its own activation. The source Goobling generation/save hook remains retained as outside the fixed combat simulator scope.
+- Focused source/runtime and neighboring Repeater/Wave D/AG regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Sloth.
+
+### 2026-10-15 Simulator item parity continuation 167
+
+- Codex owns the Sloth fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-threshold.js`, `scripts/sim-sloth-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Sloth now mirrors source placement-modified cooldown-neighbor slow, percentage temporary max-health gain, trigger-driven awaken buffs/stun/consumption, non-awaken amulet buffs/stun, exact integer parameter conversion, duration scaling, and effect-before-activation ordering. Its state/UI shop hooks remain outside the fixed combat simulator scope.
+- Focused source/runtime and neighboring Band Y/Robodog/board-cell regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Smelly Barrier.
+
+### 2026-10-15 Simulator item parity continuation 168
+
+- Codex owns the Smelly Barrier fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-skills.js`, `scripts/sim-smelly-barrier-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Smelly Barrier now mirrors source prepare-time registration, linked blocker filtering, Garlic block bonus, placement-modified integer parameters, exact block threshold remainder, source-equivalent poison rounding, and post-poison activation. Its persistence/shop hooks remain retained as outside the fixed combat simulator scope.
+- Focused source/runtime and neighboring Shielded/Band Y/resource regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Smithing for Dummies.
+
+### 2026-10-15 Simulator item parity continuation 169
+
+- Codex owns the Smithing for Dummies fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b-aura.js`, `scripts/sim-smithing-for-dummies-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Smithing for Dummies now mirrors the source crafted-weapon-only filter, placement-modified stamina reduction and flat damage, effect-before-activation ordering, and uses the extracted crafted-ID set when catalog metadata does not carry the crafted flag. Its Whetstone generation, persistence, and shop-roll hooks remain retained as outside the fixed combat simulator scope.
+- Focused source/runtime and neighboring aura regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Snake.
+
+### 2026-10-15 Simulator item parity continuation 170
+
+- Codex owns the Snake fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-pets.js`, `scripts/sim-snake-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Snake now mirrors source Pet-only affected counting, the `character_lucky_changed` listener that scales opponent Poison cleanse protection, placement-modified temporary max health, source parameter values without forced minimums/rounding, Poison-before-activation cooldown order, and wrong-actor listener filtering.
+- Focused source/runtime and neighboring pet regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Snow Stick.
+
+### 2026-10-15 Simulator item parity continuation 171
+
+- Codex owns the Snow Stick fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-c-onhit.js`, `scripts/sim-snow-stick-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Snow Stick now mirrors its inherited Weapon cooldown, source `onPreDealDamage_early` timing, hit-only opponent/self Cold grants, integer parameter conversion, and no forced minimum values. The existing simulator cold-resistance and inherited Weapon paths remain shared infrastructure.
+- Focused source/runtime and neighboring Wave C/Weapon/on-hit regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Snowcake.
+
+### 2026-10-15 Simulator item parity continuation 172
+
+- Codex owns the Snowcake fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-cold.js`, `scripts/sim-snowcake-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Snowcake now mirrors Food cooldown order, source integer Cold and threshold parameters, threshold-gated effect-damage factor, catalog min-damage effect hit, opponent debuff resistance inputs, and activation after all effects. Its inherited Food lifecycle remains shared infrastructure.
+- Focused source/runtime and neighboring Cold/Food regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Snowman.
+
+### 2026-10-15 Simulator item parity continuation 173
+
+- Codex owns the Snowman no-combat source evidence, generated audit artifacts, and this handoff. Changed paths include `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`; no combat handler was needed.
+- Snowman is now explicitly evidenced as `no_independent_combat`: its source only replaces a dropped item with two Snowballs, and the existing no-combat audit verifies its absence of independent cooldown/combat hooks. Its drop/storage replacement remains outside the fixed combat simulator scope.
+- The no-combat source audit, sequential ledger/dashboard builds and checks, and explicit dashboard assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Snowmaster.
+
+### 2026-10-15 Simulator item parity continuation 174
+
+- Codex owns the Snowmaster fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-pets.js`, `scripts/sim-snowmaster-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Snowmaster now mirrors source `onPrepare` Ice-only speed scaling, integer Cold/threshold/Empower parameters, threshold Empower-versus-Cold branching, player debuff cleanse, and activation after effects. The Cold resistance and shared pet lifecycle remain simulator infrastructure.
+- Focused source/runtime and neighboring pet/Cold regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Solaris.
+
+### 2026-10-15 Simulator item parity continuation 175
+
+- Codex owns the Solaris fidelity repair, its focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-skills.js`, `js/pages/sim/engine/scripts/ports-wave-b-heal.js`, `scripts/sim-solaris-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Solaris now mirrors source `onPrepare` all-item Heat amplification, linked Sun Shield/Sun Armor signal filtering, exact chance/Heat/Block handling, shield-block Heat response, and visual-only `miniActivate` on Sun Armor `used_heat`. Sun Armor now emits `used_heat` after its spend/heal/cleanse effects and activates afterward, matching the source ordering.
+- Focused Solaris, Wave B, Snowmaster, and Snake regressions, syntax checks, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The older effect-damage candidate smoke still has its pre-existing unrelated `amulet_of_darkness` handler assertion failure. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Spell Scroll Dark.
+
+### 2026-10-15 Simulator item parity continuation 176
+
+- Codex owns the Spell Scroll Dark fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-skill.js`, `scripts/sim-spell-scroll-dark-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Spell Scroll Dark now mirrors source secondary-Dark preparation speed, all affected-item speed grants during cooldown, self Blind grants, exact integer activation cap, and `onAfterEffectFinished()` consume-after-effects ordering. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Spell Scroll Dark, Band Y, and Books regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit dashboard assertion pass. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Spell Scroll Frostbolt.
+
+### 2026-10-15 Simulator item parity continuation 177
+
+- Codex owns the Spell Scroll Frostbolt fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b.js`, `scripts/sim-spell-scroll-frostbolt-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Spell Scroll Frostbolt now mirrors source linked-Ice max-use calculation, descriptor min-damage effect hits, integer Cold amount, placement-modified temporary Cold duration, and effect-before-consume/activation ordering. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Frostbolt, Wave B, resource/temporary-stack, and Spell Scroll Dark regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds and checks, and the explicit dashboard assertion pass. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 12 call-review candidates. No legal/security surfaces changed. Next step: review Spell Scroll Ice.
+
+### 2026-10-15 Simulator item parity continuation 178
+
+- Codex owns the Spell Scroll Ice fidelity repair, late damage-phase bridge, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/damage.js`, `js/pages/sim/engine/scripts/ports-ao-spells.js`, `scripts/sim-spell-scroll-ice-smoke.mjs`, `scripts/sim-resource-stack-consumable-candidates-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Spell Scroll Ice now mirrors source linked Shield/activatable Armor filtering, activation Cold behavior, late pre-damage lethal-save timing, all-Cold-to-Block conversion before Block resolution, consume activation, and miniActivate projection. The shared damage pipeline now emits `pre_take_damage_late` at the matching phase.
+- Focused Ice, existing resource-stack, crossblades, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit `verified_1to1` assertion pass; no live verification is required. The unrelated pre-existing damage/stat candidate smoke still assumes an `onCombatStart` hook for another handler. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 11 remaining call-review candidates. No legal/security surfaces changed. Next step: review Spell Scroll Light.
+
+### 2026-10-15 Simulator item parity continuation 179
+
+- Codex owns the Spell Scroll Light fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b-heal.js`, `scripts/sim-spell-scroll-light-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Spell Scroll Light now mirrors source Holy-only preparation speed, cleanse-before-heal gating, modified Heal parameter behavior, no heal while debuffs remain, and activation after all effects. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Spell Scroll Light, Books, Wave B, Ice, and Snowcake regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit dashboard assertion pass. The global audit remains at 531 scanned items, 2 intentional lifecycle helper gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 11 remaining call-review candidates. No legal/security surfaces changed. Next step: review Spell Scroll Nature.
+
+### 2026-10-15 Simulator item parity continuation 180
+
+- Codex owns the Spell Scroll Nature fidelity repair, shared stamina-event attribution, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/actor.js`, `js/pages/sim/engine/scripts/ports-ao-spells.js`, `scripts/sim-spell-scroll-nature-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Spell Scroll Nature now mirrors source linked stamina-user filtering, `onPrepare` listener setup, fractional stamina accumulation, repeated threshold processing, Mana-gated `useMana`, source Stamina grants, and activation after each successful proc. `stamina_used` now carries the active stamina-consuming piece so item listeners can apply the source signal to the correct linked item.
+- Focused Nature, Books, resource/stack, and Band Y regressions, syntax checks, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit `verified_1to1` assertion pass; live verification is not required. The global audit remains at 531 scanned items, 2 intentional lifecycle hook gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 11 remaining call-review candidates. No legal/security surfaces changed. Next step: review the next catalog item after Spell Scroll Nature.
+
+### 2026-10-15 Simulator item parity continuation 181
+
+- Codex owns the Staff of Fire fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-c-mana.js`, `scripts/sim-staff-of-fire-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Staff of Fire now mirrors source `onPrepare` counter reset, early Heat/Mana gating in `onPreDealDamage_early`, integer parameter conversion, permanent damage growth, failed-resource behavior, and resource effects before inherited Weapon activation. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Staff of Fire, Wave C, and Serpent Staff regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit dashboard assertion pass. The global audit remains at 531 scanned items, 2 intentional lifecycle hook gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 11 remaining call-review candidates. No legal/security surfaces changed. Next step: review Staff of Unhealing.
+
+### 2026-10-15 Simulator item parity continuation 182
+
+- Codex owns the Staff of Unhealing fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b-heal.js`, `scripts/sim-staff-of-unhealing-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Staff of Unhealing now mirrors source prepare reset, stamina gating, exact Mana/modified heal and duration parameters, Mana-enabled temporary Unhealing, no-Mana fallback healing, timer expiry, and activation after all effects. Its retained source call review maps `useMana` to the simulator’s equivalent stack spend; dashboard verdict is `verified_1to1`, with live verification not required.
+- Focused Staff of Unhealing, Wave B, Wave C, and Books regressions, syntax check, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit dashboard assertion pass. The global audit remains at 531 scanned items, 2 intentional lifecycle hook gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 10 remaining call-review candidates. No legal/security surfaces changed. Next step: review Stamina Sack.
+
+### 2026-10-15 Simulator item parity continuation 183
+
+- Codex owns the Stamina Sack source/runtime evidence regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-stamina-sack-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`; the existing Bag/max-stamina implementation required no code repair.
+- Stamina Sack now has retained proof for its `Bag` inheritance, source inventory max-stamina hooks, simulator’s +1 maximum stamina per sack, Bagtacular-only preparation stamina regeneration, and no-Bagtacular baseline.
+- Focused Stamina Sack, Badger/Bagtacular, default-bag, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit `verified_1to1` assertion pass; live verification is not required. The global audit remains at 531 scanned items, 2 intentional lifecycle hook gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 10 remaining call-review candidates. No legal/security surfaces changed. Next step: review Star of Courage.
+
+### 2026-10-15 Simulator item parity continuation 184
+
+- Codex owns the Star of Courage fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-accessories.js`, `scripts/sim-star-of-courage-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Star of Courage now mirrors source prepare-time behavior, applies its percentage reduction only to inventory weapons, and excludes pets and other damage-bearing non-weapons. The simulator’s shared stamina-cost projection preserves the source factor while presenting its established two-decimal cost value.
+- Focused Star of Courage, Dual Wielding, Badger Rune, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit `verified_1to1` assertion pass; live verification is not required. The global audit remains at 531 scanned items, 2 intentional lifecycle hook gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 10 remaining call-review candidates. No legal/security surfaces changed. Next step: review Steel Dragon.
+
+### 2026-10-15 Simulator item parity continuation 185
+
+- Codex owns the Steel Dragon fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b-aura.js`, `scripts/sim-steel-dragon-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Steel Dragon now mirrors source `canBeEmpowered() or canBlock()` target filtering, prepare-time Block buff power, pre-combat reflect stacks, affected-item combat-start damage, and `activate(null, false)` activation. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Steel Dragon, Wave B, Wave C, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit dashboard assertion pass. The global audit remains at 531 scanned items, 2 intentional lifecycle hook gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 10 remaining call-review candidates. No legal/security surfaces changed. Next step: review Stone Armor.
+
+### 2026-10-15 Simulator item parity continuation 186
+
+- Codex owns the Stone Armor fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-threshold.js`, `scripts/sim-stone-armor-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Stone Armor now mirrors source indexed parameter fallbacks, prepare-time stamina factor, combat-start Block plus activation, strict one-shot low-health conversion, and cooldown Spikes/Empower removal before activation. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Stone Armor, Wave D, Shell Totem, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit dashboard assertion pass. The global audit remains at 531 scanned items, 2 intentional lifecycle hook gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 10 remaining call-review candidates. No legal/security surfaces changed. Next step: review Stone Badge.
+
+### 2026-10-15 Simulator item parity continuation 187
+
+- Codex owns the Stone Badge fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-d.js`, `scripts/sim-stone-badge-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Stone Badge now mirrors source catalog-Block fallback, `giveBlock()` before `activate()`, and retained class-update/shop/discard hooks outside the fixed combat simulator scope. Its dashboard verdict is `verified_1to1`; live verification is not required. The existing duplicate legacy export remains documented by the global duplicate-registration audit; the AI-D port is the runtime winner.
+- Focused Stone Badge, Wave D, Bag of Stones, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit dashboard assertion pass. The global audit remains at 531 scanned items, 2 intentional lifecycle hook gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 10 remaining call-review candidates. No legal/security surfaces changed. Next step: review Stone Gloves.
+
+### 2026-10-15 Simulator item parity continuation 188
+
+- Codex owns the Stone Gloves fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b-aura.js`, `scripts/sim-stone-gloves-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Stone Gloves now mirrors source prepare-time weapon attack listener registration, weapon-only `canBeEmpowered()` filtering, combat-start speed reduction/damage factor plus activation, hit-gated Block grant, and `miniActivate` projection. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Stone Gloves, Wave B, shared Weapon, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit dashboard assertion pass. The global audit remains at 531 scanned items, 2 intentional lifecycle gaps, 0 untriaged lifecycle gaps, 19 duplicate registrations, and 10 remaining call-review candidates. No legal/security surfaces changed. Next step: review Stone Shoes.
+
+### 2026-10-15 Simulator item parity continuation 189
+
+- Codex owns the Stone Shoes fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-armor.js`, `scripts/sim-stone-shoes-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Stone Shoes now mirrors the source’s strict `healthThreshold = p1 / 100 - 0.0001`, prepare-time damage listener, Lucky/Empower/Block activation, placement-modified `getP_m("dur")`, typed/effect damage reduction, consumption, and timeout restoration. The source `consume` call is explicitly reviewed against the simulator’s consumed-piece projection. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Stone Shoes and syntax checks pass; the source parity audit remains at 531 items with 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. The existing broad resource-candidate smoke still has its unrelated pre-existing Staff of Unhealing `onCombatStart` assumption. No legal/security surfaces changed. Next step: review Stone Skin Potion.
+
+### 2026-10-15 Simulator item parity continuation 190
+
+- Codex owns the Stone Skin Potion and Strong Stone Skin Potion fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-potions.js`, `scripts/sim-stone-skin-potion-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Both potion rows now mirror the source Block-change listener in `onPrepare`, threshold consumption, health-to-Block conversion, first affected-potion trigger, and activation. Strong Stone Skin Potion additionally mirrors temporary Spikes and placement-modified `getP_m("dur")`. Both dashboard rows are `verified_1to1`; live verification is not required.
+- Focused potion, Wave A, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit assertions pass. The broad resource-candidate smoke still has its unrelated pre-existing Staff of Unhealing `onCombatStart` assumption. The global audit remains at 531 scanned items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Stoned.
+
+### 2026-10-15 Simulator item parity continuation 191
+
+- Codex owns the Stoned fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-skills.js`, `scripts/sim-stoned-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Stoned now mirrors source Stone-tag/Stone Golem filtering, prepare-time per-item attacked listeners, full hit-damage percentage-to-Block conversion, owner-side scoping, mini activation, and Block-change/character-damaged resistance transitions. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Stoned, Stone Gloves, Stone Skin Potion, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and the explicit dashboard assertion pass. The global audit remains at 531 scanned items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Storage Coffin.
+
+### 2026-10-15 Simulator item parity continuation 192
+
+- Codex owns the Storage Coffin fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-bags.js`, `scripts/sim-storage-coffin-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Storage Coffin now mirrors the source `onPrepare` activated listener, `canActivate()` plus non-bag inside filtering, catalog chance roll, one Poison grant to the opponent, and the source bag activation/log behavior. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Storage Coffin, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and the focused regression pass. The global audit remains at 531 scanned items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Strong Demonic Flask.
+
+### 2026-10-15 Simulator item parity continuation 193
+
+- Codex owns the Strong Demonic Flask fidelity repair and explicit evidence row, focused regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-potions.js`, `scripts/sim-demonic-flask-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Strong Demonic Flask now applies the source placement-modified `getP_m("dur")` healing-reduction timer while retaining the dual health thresholds, debuff-scaled lifesteal, linked potion trigger, and healing-efficiency restoration. Both Demonic Flask rows are `verified_1to1`; live verification is not required.
+- Focused Demonic Flask, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 scanned items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Strong Divine Potion.
+
+### 2026-10-15 Simulator item parity continuation 194
+
+- Codex owns the Strong Divine Potion explicit evidence row, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `scripts/sim-divine-potion-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Strong Divine Potion’s existing handler matches the extracted inherited debuff-threshold/consumption lifecycle, exact random cleanse and buff counts, zero-safe values, and non-consuming linked Potion trigger. Its dashboard verdict is now `verified_1to1`; live verification is not required.
+- Focused Divine Potion, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 scanned items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Strong Health Potion.
+
+### 2026-10-15 Simulator item parity continuation 195
+
+- Codex owns the Health Potion and Strong Health Potion fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-consumable.js`, `scripts/sim-health-potion-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Both potion rows now mirror the source `character_damaged` preparation listener, strict below-threshold test including blocked hits, source-clamped Poison cleanse, placement-modified Health Potion healing, inherited linked-potion trigger ordering, consumption lifecycle, and Strong Health Potion Regeneration. Both dashboard rows are `verified_1to1`; live verification is not required.
+- Focused Health Potion, Dark Lantern threshold, Divine Potion, Stone Skin Potion, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 scanned items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Strong Heroic Potion.
+
+### 2026-10-15 Simulator item parity continuation 196
+
+- Codex owns the Heroic Potion and Strong Heroic Potion fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-a.js`, `js/pages/sim/engine/scripts/ports-ak-potions.js`, `js/pages/sim/engine/scripts/ports-util.js`, `scripts/sim-heroic-potion-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Both potion rows now bind the source preparation-time stamina-starvation listener, use strict below-cost checks, empty before applying effects, preserve exact p1/p2 values including zero, trigger the first linked Potion without consuming it, and retain activation ordering. Both dashboard rows are `verified_1to1`; live verification is not required. The shared linked-potion helper now safely no-ops for contexts without a board graph.
+- Focused Heroic Potion, the existing combined potion regression, Health Potion, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 scanned items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Strong Mana Potion.
+
+### 2026-10-15 Simulator item parity continuation 197
+
+- Codex owns the Mana Potion and Strong Mana Potion fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-potions.js`, `scripts/sim-mana-potion-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Both potion rows now mirror the source strict `p1 / 100 - 0.0001` health threshold, blocked-hit response, own item-originated mana-spend listener, exact Mana grant, linked-potion trigger ordering, and consumption. `giveMaxHealth()` now increases both max and current HP, and Strong Mana Potion applies placement-modified max health. Both dashboard rows are `verified_1to1`; live verification is not required.
+- Focused Mana Potion, the existing combined potion regression, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 scanned items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Strong Pestilence Flask.
+
+### 2026-10-15 Simulator item parity continuation 198
+
+- Codex owns the Strong Pestilence Flask timer fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-potions.js`, `js/pages/sim/engine/simulate.js`, `scripts/sim-pestilence-flask-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Strong Pestilence Flask now uses raw source `getP3()` delay and `getP4()` delayed Poison values, runs its one-shot timer after the consumed potion leaves the board, and clears the timer on combat end. Its dashboard row is `verified_1to1`; live verification is not required. The existing Pestilence Flask row remains verified by the same regression.
+- Focused Pestilence Flask, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 scanned items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Strong Stone Skin Potion.
+
+### 2026-10-15 Simulator item parity continuation 199
+
+- Codex owns the Vampiric Potion and Strong Vampiric Potion fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ak-potions.js`, `js/pages/sim/engine/simulate.js`, `scripts/sim-vampiric-potion-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Vampiric Potion now uses source `stealLife` effect damage, exact lifesteal/Vampirism parameters, strict dual health thresholds, and linked-potion ordering. Strong Vampiric Potion now grants temporary attack lifesteal instead of immediate normal-potion damage, heals from full qualifying attack damage, applies modified duration, filters misses/owner attacks, and clears at combat end. Both dashboard rows are `verified_1to1`; live verification is not required. The simulator keeps consumed timed-potion state ticking until expiry.
+- Focused Vampiric Potion, Pestilence Flask, Demonic Flask, combined potion, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 scanned items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Sun Armor.
+
+### 2026-10-15 Simulator item parity continuation 200
+
+- Codex owns the Sun Armor fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b-heal.js`, `js/pages/sim/engine/scripts/ports-util.js`, `scripts/sim-solaris-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Sun Armor now mirrors source Fire/Holy targeting, adds dynamic Holy to linked Fire items, counts each linked Fire/Holy item once for combat-start Heat, uses catalog Block and raw source parameters, preserves Heat spend/heal/cleanse and `used_heat` ordering, and activates after its effect. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Solaris/Sun Armor, Wave B, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Sun Shield.
+
+### 2026-10-15 Simulator item parity continuation 201
+
+- Codex owns the Sun Shield fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-shields.js`, `scripts/sim-sun-shield-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Sun Shield now mirrors source `canBlock` targeting, preparation-time linked `gave_block` accumulation, exact threshold remainder and damage/bonus-tick state, visual-only mini activation, and the separate after-block stamina drain/activation path. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Sun Shield, Solaris, Shield of Valor, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Superior Ring.
+
+### 2026-10-15 Simulator item parity continuation 202
+
+- Codex owns the Superior Ring fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ring.js`, `scripts/sim-superior-ring-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Superior Ring now mirrors the source per-effect activation lifecycle: each configured Start/Every/low-health effect applies its scaled stack and produces its own activation, including shared-trigger effects and zero amounts. Persistent effect decoding and one-shot player/opponent low-health triggers remain covered. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Superior Ring, ring configuration/history creation, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Tesla Coil.
+
+### 2026-10-15 Simulator item parity continuation 203
+
+- Codex owns the Tesla Coil fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-mech.js`, `scripts/sim-tesla-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Tesla Coil now mirrors source preparation-time cooldown queue construction, star-target priority, cooldown-capable target retention before activation, charge mini-activation projection, source CD advance amount, queue-finished consumption, and cooldown stop/resume behavior while targets remain. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Tesla Coil, charge delivery/stat, Band Y, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review The Fool.
+
+### 2026-10-15 Simulator item parity continuation 204
+
+- Codex owns The Fool fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-cards.js`, `scripts/sim-the-fool-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- The Fool now mirrors source deck-scoped reveal speed, chain-position-zero secondary Empower, exact zero-safe Empower values, and reveal activation ordering. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused The Fool, Card base, Deck of Cards, combined card/potion/ring, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review The Lovers.
+
+### 2026-10-15 Simulator item parity continuation 205
+
+- Codex owns The Lovers fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ao-cards.js`, `scripts/sim-the-lovers-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- The Lovers now mirrors source even-chain healing efficiency and regeneration gates, effect damage plus placement-modified lifesteal, odd-chain damage-only behavior, zero-safe values, and reveal activation ordering. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused The Lovers, Card base, Deck of Cards, combined card/potion/ring/Fool, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Thorn Bow.
+
+### 2026-10-15 Simulator item parity continuation 206
+
+- Codex owns the Thorn Bow fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ap-basic.js`, `scripts/sim-thorn-bow-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Thorn Bow now mirrors source linked-weapon attack listening, combat-start Spikes, one Spike per attack effect, double-attack handling, temporary P2 bonus damage, post-strike cleanup, and zero-safe P1/P2 values. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Thorn Bow, shared Bow, combined card/potion/ring/Fool, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Thorn Elemental.
+
+### 2026-10-15 Simulator item parity continuation 207
+
+- Codex owns the Thorn Elemental and shared spike-mechanics fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/actor.js`, `js/pages/sim/engine/damage.js`, `js/pages/sim/engine/scripts/ports-ai-c2.js`, `scripts/sim-thorn-elemental-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Thorn Elemental now mirrors source Nature filtering, preparation-time effect/ranged Spike limits, Spike critical chance, exact cooldown Spike grant ordering, and zero-safe values. The shared damage resolver now applies effect/ranged Spike limits and critical Spike reflection. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Thorn Elemental, Burning Spikes, effect-damage candidate baseline, weapon/Bow, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. Two unrelated legacy smoke scripts still fail on their existing handler assumptions (`amulet_of_darkness` runtime-port assertion and an `onCombatStart` call on a prepare-only handler); they were not caused by this change. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Thorn Shortbow.
+
+### 2026-10-15 Simulator item parity continuation 208
+
+- Codex owns the Thorn Shortbow fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-c-onhit.js`, `scripts/sim-thorn-shortbow-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Thorn Shortbow now mirrors source on-hit gating, chance rolls, one-Spike grants, inherited weapon cooldown behavior, and a single combat-log projection without duplicate manual buff lines. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Thorn Shortbow, shared Bow/Weapon, Poison Shortbow, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Thorn Whip.
+
+### 2026-10-15 Simulator item parity continuation 209
+
+- Codex owns the Thorn Whip fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-c-scale.js`, `scripts/sim-thorn-whip-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Thorn Whip now mirrors source preparation-time Spike listener registration, early-hit Spike granting, positive and negative `changeVaryingDamage` updates, non-removable varying damage, inherited weapon cooldown, and single log projection. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Thorn Whip, shared Weapon, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertions pass. One unrelated legacy damage/stat smoke still calls `onCombatStart` on a handler that does not expose that hook; it is not caused by this change. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Thornbloom.
+
+### 2026-10-15 Simulator item parity continuation 210
+
+- Codex owns the Thornbloom fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-c-scale.js`, `scripts/sim-thornbloom-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Thornbloom now mirrors source preparation-time Spike/Empower listeners, early pre-deal hit ordering, chance-gated Empower, placement-modified `getP_m("maxhealth")`, non-removable varying damage, inherited weapon cooldown, and zero-safe parameters. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Thornbloom, Thorn Whip, shared Weapon, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit dashboard assertion pass. `git diff --check` exits cleanly with existing line-ending warnings. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 19 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Thornburst.
+
+### 2026-10-15 Simulator item parity continuation 211
+
+- Codex owns the Thornburst fidelity repair, focused source/runtime regression, duplicate-port cleanup, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-e.js`, `js/pages/sim/engine/scripts/ports-outliers.js`, `scripts/sim-thornburst-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Thornburst now mirrors source preparation-time activation/listener setup, raw zero-safe uses/Spike/speed parameters, placement-modified stun duration, Spike-to-speed gains and losses, effects-before-activation ordering, and final-use `onAfterEffectFinished` consume/lock behavior. Its dashboard verdict is `verified_1to1`; live verification is not required. The stale duplicate outlier registration was removed, reducing duplicate registrations by one.
+- Focused Thornburst, Thornbloom, Thorn Whip, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, explicit dashboard assertions, and `git diff --check` pass; the latter reports only existing line-ending warnings. The global audit is now 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 18 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Thors Hammer.
+
+### 2026-10-15 Simulator item parity continuation 212
+
+- Codex owns the Thors Hammer fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-c-onhit.js`, `scripts/sim-thors-hammer-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Thors Hammer now mirrors the source cached p2/p3/p4/p5 parameter slots, hit → chance stun → Mana gate → effect damage → temporary Blind order, placement-modified `getP_m("dur_stun")`/`getP_m("dur_blind")`, zero-cost Mana behavior, miss/insufficient-Mana gates, inherited weapon cooldown, and no phantom zero-value Blind log. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Thors Hammer, Thorn Shortbow, Thorn Whip, shared Weapon, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, explicit dashboard assertions, and `git diff --check` pass; the latter reports only existing line-ending warnings. The global audit remains 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 18 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Thunder Drake.
+
+### 2026-10-15 Simulator item parity continuation 213
+
+- Codex owns the Thunder Drake fidelity repair, shared Lightning board-mark support, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-d-weapons.js`, `js/pages/sim/engine/board-graph.js`, `scripts/sim-thunder-drake-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, and `assets/data/sim-audit-dashboard.json`.
+- Thunder Drake now mirrors source Lightning filtering (`hasCooldown` or `reactsToCharges`), preparation-time target/multiplicity caching, exact successful-hit threshold, first activation speed/charge behavior, active charge-left/re-delivery refresh, placement-modified timer duration, timer expiry cleanup, and zero-safe values. The board graph now exposes tertiary and Lightning shape marks to the existing canAffect rules. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Thunder Drake and neighboring Thorn/Thor regressions, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, explicit dashboard assertion, and `git diff --check` pass; the latter reports only existing line-ending warnings. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 18 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Tiger Rune.
+
+### 2026-10-15 Simulator item parity continuation 214
+
+- Codex owns the Tiger Rune fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/gem-sockets.js`, `scripts/sim-tiger-rune-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, `assets/data/sim-audit-dashboard.json`, and `docs/CODEX_HANDOFF.md`.
+- Tiger Rune now mirrors source inventory-wide all-buff amplification, weapon `pre_deal_damage_late` Vampirism gating, visual-only `miniActivate`, proportional buff-counter Block grants, Gem Power scaling, source parameter slots, remainder tracking, and zero-safe thresholds. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Tiger Rune, Badger Rune, tiered/chipped gem, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, explicit dashboard assertion, and `git diff --check` pass; the latter reports only existing line-ending warnings. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 18 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Time Dilator.
+
+### 2026-10-15 Simulator item parity continuation 215
+
+- Codex owns the Time Dilator fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-outliers-board.js`, `scripts/sim-time-dilator-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, `assets/data/sim-audit-dashboard.json`, and `docs/CODEX_HANDOFF.md`.
+- Time Dilator now mirrors source `onPrepare` timing before cooldown arming, both-board weapon slow, owner-inventory highest modified cooldown targeting, haste application, activation tick reset/increment, alternating sound-pitch metadata, and zero-safe values. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Time Dilator, Band Y, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, and explicit Tiger Rune/Time Dilator dashboard assertions pass. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 18 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Time Melting.
+
+### 2026-10-15 Simulator item parity continuation 216
+
+- Codex owns the Time Melting fidelity repair, focused source/runtime regression, the neighboring duration-port import repair, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-wave-b.js`, `js/pages/sim/engine/scripts/ports-wave-c-onhit.js`, `scripts/sim-time-melting-parity-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, `assets/data/sim-audit-dashboard.json`, and `docs/CODEX_HANDOFF.md`.
+- Time Melting now mirrors source inventory-duration targeting, p2 duration fallback, prepared duration multiplier composition, high combat-start priority, raw integer Heat grant, activation ordering, and zero-safe values. The adjacent Wave C duration call now imports its required `effectDuration` helper. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Time Melting, duration-effects, predicate, Time Dilator, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, explicit dashboard assertions, and `git diff --check` pass; the latter reports only existing line-ending warnings. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 18 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Time Pendant.
+
+### 2026-10-15 Simulator item parity continuation 217
+
+- Codex owns the Time Pendant fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-accessories.js`, `scripts/sim-time-pendant-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, `assets/data/sim-audit-dashboard.json`, and `docs/CODEX_HANDOFF.md`.
+- Time Pendant now mirrors source cooldown-target filtering, first affected-star selection, inactive-first gate, p1 cooldown advance, opponent-side actor mapping, visual mini activation metadata, and zero-safe values. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Time Pendant, final runtime backlog, Band Y, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, explicit dashboard assertions, and `git diff --check` pass; the latter reports only existing line-ending warnings. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 18 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Toad.
+
+### 2026-10-15 Simulator item parity continuation 218
+
+- Codex owns the Toad fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports.js`, `scripts/sim-toad-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, `assets/data/sim-audit-dashboard.json`, and `docs/CODEX_HANDOFF.md`.
+- Toad now mirrors source prepare-time affected-buff listener registration, integer threshold parameters, placement-modified `getP_m("heal")`, positive/negative threshold remainder handling, Lucky/Mana threshold and cooldown grants, source-order full activation, visual mini activations, and zero-safe values. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Toad, spotlight, Wave D, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, explicit dashboard assertion, and `git diff --check` pass; the latter reports only existing line-ending warnings. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 18 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Toast Goobert.
+
+### 2026-10-15 Simulator item parity continuation 219
+
+- Codex owns the Toast Goobert fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-am-goobert.js`, `scripts/sim-toast-goobert-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, `assets/data/sim-audit-dashboard.json`, and `docs/CODEX_HANDOFF.md`.
+- Toast Goobert now mirrors inherited Goobert peer activation timing, p-slot parameter fallbacks, low-stamina `giveStamina` behavior with effective-max clamping, high-stamina integer Regeneration, source-order activation, stamina projection, and zero-safe values. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Toast Goobert, Wave D, Band Y, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, explicit dashboard assertion, and `git diff --check` pass; the latter reports only existing line-ending warnings. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 18 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Toolbox.
+
+### 2026-10-15 Simulator item parity continuation 220
+
+- Codex owns the Toolbox fidelity repair, focused source/runtime regression, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-ai-hard.js`, `scripts/sim-toolbox-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, `assets/data/sim-audit-dashboard.json`, and `docs/CODEX_HANDOFF.md`.
+- Toolbox now mirrors source p1 speed reduction/p2 damage-factor aura mapping, empowerable-only contents, preparation-time opponent-hit Battle Rage lifesteal, full-damage ceiling with modified lifesteal, modified rage duration, source-order activation, and Bag lock/consume cleanup. Its dashboard verdict is `verified_1to1`; live verification is not required.
+- Focused Toolbox, Berserker Bag, Extra Angy, Toast Goobert, Wave D, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, explicit Toolbox dashboard assertion, and `git diff --check` pass. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, 18 duplicate registrations, and 9 remaining call-review candidates. No legal/security surfaces changed. Next step: review Topaz.
+
+### 2026-10-15 Simulator item parity continuation 221
+
+- Codex owns the Topaz family fidelity repair, focused source/runtime regression, shared gem chance/parameter repair, generated audit artifacts, and this handoff. Changed paths include `js/pages/sim/engine/scripts/ports-an-gems.js`, `js/pages/sim/engine/gem-sockets.js`, `scripts/sim-topaz-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, `assets/data/sim-audit-dashboard.json`, and `docs/CODEX_HANDOFF.md`.
+- Topaz now mirrors source positional p2 inventory stamina and p1 weapon speed values, `getChance/getChance2` modifier/clamp behavior, GemPower-scaled armor stun/crit resistance, and zero-safe values across all five catalog tiers. Chipped, Flawed, Regular, Flawless, and Perfect Topaz all report `verified_1to1`; live verification is not required.
+- Focused Topaz family, Perfect Topaz, chipped-gem family, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, explicit all-tier dashboard assertion, and `git diff --check` pass. The raw call heuristic still reports 15 candidates; the retained ledger filters the two proven shared Topaz `addSpeed` candidates, leaving 7 review candidates. The global audit remains at 531 items, 2 intentional lifecycle gaps, 0 untriaged gaps, and 18 duplicate registrations. No legal/security surfaces changed. Next step: review Turtle.
+
+### 2026-10-15 Simulator item parity continuation 222 — in progress
+
+- Codex owns the Turtle fidelity repair, shared shield damage-block registration, focused runtime regression, generated audit artifacts, and this handoff. Planned paths are `js/pages/sim/engine/scripts/ports-ai-c2.js`, `js/pages/sim/engine/scripts/ports-pet.js`, `js/pages/sim/engine/scripts/ports-ao-shields.js`, `scripts/sim-turtle-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, `assets/data/sim-fidelity-ledger.json`, `assets/data/sim-audit-dashboard.json`, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 222 — complete
+
+- Turtle now mirrors the extracted Leather Helm inheritance: shield-only preparation targeting, p2 `modifyParam("damblock", ...)`, dual-side pre-combat damage resistance, modified p3 duration, inherited combat-start activation, and p4 max-health Block added to `getBlock()`.
+- The shared shield registration now reads live `paramMult.damblock` values through the real shield damage-reduction path. The stale duplicate Turtle handler was removed from `ports-pet.js`, reducing duplicate registrations from 18 to 17.
+- Added `scripts/sim-turtle-smoke.mjs` and source-backed fidelity evidence. Turtle is now `verified_1to1` in the Admin dashboard with `liveRequired: false`.
+- Turtle, Shield of Valor, Pine Protector, Shielded, and Shiny Shell smokes; syntax checks; source parity/call audits; sequential ledger/dashboard builds and checks; explicit Turtle dashboard assertion; and `git diff --check` pass. Global audit: 531 source-scanned, 10 intentional no-handler rows, 2 intentional lifecycle gaps, 0 untriaged gaps, 17 duplicate registrations, and 7 retained call-review candidates. No legal/security surfaces changed. Next step: review Twine.
+
+### 2026-10-15 Simulator item parity continuation 223 — in progress
+
+- Codex owns the Twine fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to the Twine handler/supporting simulator code, `scripts/sim-twine-smoke.mjs`, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 223 — complete
+
+- Twine now mirrors source primary `canActivate` targeting, neutral secondary counting, preparation-time activation listening, descriptor base chance composition, source p1 integer max-health gain, activation ordering, and zero-safe chances.
+- Added `scripts/sim-twine-smoke.mjs` and source-backed fidelity evidence. Twine is now `verified_1to1` in the Admin dashboard with `liveRequired: false`.
+- Twine, lifecycle-closure, Time Pendant, syntax, source parity/call audits, sequential ledger/dashboard builds and checks, explicit Twine dashboard assertion, and `git diff --check` pass. Global audit remains 531 source-scanned, 10 intentional no-handler rows, 2 intentional lifecycle gaps, 0 untriaged gaps, 17 duplicate registrations, and 7 retained call-review candidates. No legal/security surfaces changed. Next step: review Twine Badge.
+
+### 2026-10-15 Simulator item parity continuation 224 — in progress
+
+- Codex owns the Twine Badge fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-twine-badge-smoke.mjs`, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 224 — complete
+
+- Twine Badge now mirrors source preparation timing, crafted cooldown/buff target filtering, source p1 speed, all-buff amplification chance, and excluded-target behavior.
+- Added `scripts/sim-twine-badge-smoke.mjs` and source-backed fidelity evidence. Twine Badge is now `verified_1to1` in the Admin dashboard with `liveRequired: false`.
+- Twine Badge, Twine, lifecycle-closure, syntax, source parity/call audits, sequential ledger/dashboard builds and checks, explicit Turtle/Twine/Twine Badge dashboard assertions, and `git diff --check` pass. Global audit remains 531 source-scanned, 10 intentional no-handler rows, 2 intentional lifecycle gaps, 0 untriaged gaps, 17 duplicate registrations, and 7 retained call-review candidates. No legal/security surfaces changed. Next step: review Ukulele.
+
+### 2026-10-15 Simulator item parity continuation 225 — in progress
+
+- Codex owns the Ukulele fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-ukulele-smoke.mjs`, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 225 — complete
+
+- Ukulele now mirrors source positional p1/p2/p3/p4/p5/p6 parameters, primary affected-item speed count, musical secondary listeners, preparation healing efficiency/all-inventory buff amplification, source percentage cooldown advance with removal/round-robin behavior, effect-before-activation ordering, and zero-safe outputs.
+- Added `scripts/sim-ukulele-smoke.mjs` and source-backed fidelity evidence. Ukulele is now `verified_1to1` in the Admin dashboard with `liveRequired: false`.
+- Ukulele, Snowcake, final runtime backlog, syntax, source parity/call audits, sequential ledger/dashboard builds/checks, explicit Turtle/Twine/Twine Badge/Ukulele dashboard assertions, and `git diff --check` pass. Global audit remains 531 source-scanned, 10 intentional no-handler rows, 2 intentional lifecycle gaps, 0 untriaged gaps, 17 duplicate registrations, and 7 retained call-review candidates. No legal/security surfaces changed. Next step: review Ultima.
+
+### 2026-10-15 Simulator item parity continuation 226 — in progress
+
+- Codex owns the Ultima fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-ultima-smoke.mjs`, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 226 — complete
+
+- Ultima now mirrors source Nature/Ice/Holy/Dark/Spell targeting, positional p1-p5 speed and grant parameters, live `getBlock()` values, effect ordering, random buff theft, consume-after-effects finalization, and zero-safe values.
+- Added `scripts/sim-ultima-smoke.mjs` and source-backed fidelity evidence. Ultima is now `verified_1to1` in the Admin dashboard with `liveRequired: false`.
+- Ultima, final runtime backlog, syntax checks, source parity/call audits, sequential ledger/dashboard builds/checks, explicit Turtle/Twine/Twine Badge/Ukulele/Ultima dashboard assertions, and `git diff --check` pass. Global audit remains 531 source-scanned, 10 intentional no-handler rows, 2 intentional lifecycle gaps, 0 untriaged gaps, 17 duplicate registrations, and 7 retained call-review candidates. No legal/security surfaces changed. Next step: review Unidentified Skill.
+
+### 2026-10-15 Simulator item parity continuation 227 — in progress
+
+- Codex owns the Unidentified Skill fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-unidentified-skill-smoke.mjs`, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 227 — complete
+
+- Unidentified Skill is confirmed as a source shop-only replacement/reveal item with no independent combat override; its intentional no-combat boundary is now source-audited rather than treated as a missing simulator import.
+- Added explicit fidelity evidence using `scripts/sim-no-combat-source-audit.mjs`. Unidentified Skill is now `verified_1to1` in the Admin dashboard with `liveRequired: false` and the known shop-only boundary retained.
+- No-combat source audit and sequential ledger/dashboard builds passed. No legal/security surfaces changed. Next step: review Uniquely Unique.
+
+### 2026-10-15 Simulator item parity continuation 228 — in progress
+
+- Codex owns the Uniquely Unique fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-uniquely-unique-smoke.mjs`, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 228 — complete
+
+- Uniquely Unique now mirrors source preparation timing, first primary cooldown targeting, secondary Unique/customer-card filtering, p1/p2 speed parameters, excluded-target behavior, and zero-safe values. Its shop-roll hooks remain documented outside the combat simulator scope.
+- Added `scripts/sim-uniquely-unique-smoke.mjs` and source-backed fidelity evidence. Uniquely Unique is now `verified_1to1` in the Admin dashboard with `liveRequired: false`.
+- Uniquely Unique, syntax checks, source parity/call audits, sequential ledger/dashboard builds/checks, explicit Unidentified Skill/Uniquely Unique dashboard assertions, and `git diff --check` pass. Global audit remains 531 source-scanned, 10 intentional no-handler rows, 2 intentional lifecycle gaps, 0 untriaged gaps, 17 duplicate registrations, and 7 retained call-review candidates. No legal/security surfaces changed. Next step: review Unstable Recombobulator.
+
+### 2026-10-15 Simulator item parity continuation 229 — in progress
+
+- Codex owns the Unstable Recombobulator fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-unstable-recombobulator-smoke.mjs`, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 229 — complete
+
+- Unstable Recombobulator required no code repair: its inherited Recombobulator source path already matches the simulator’s one random buff, one random debuff cleanse, effect ordering, and activation sequence. Its existing source-backed dashboard evidence remains `verified_1to1` with `liveRequired: false`.
+- Stable/Unstable Recombobulator and combined neighboring source-port smokes pass. No generated artifacts or product code changed. No legal/security surfaces changed. Next step: review Vampiric Armor.
+
+### 2026-10-15 Simulator item parity continuation 230 — in progress
+
+- Codex owns the Vampiric Armor fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-vampiric-armor-smoke.mjs`, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 230 — complete
+
+- Vampiric Armor now mirrors source p1/p2 combat-start health-to-Block and Vampirism, p3/p4 cooldown conversion, zero-value behavior, descriptor Block fallback, activation-after-effects ordering, and opponent-side event projection.
+- Added `scripts/sim-vampiric-armor-smoke.mjs` and source-backed fidelity evidence. Vampiric Armor is now `verified_1to1` in the Admin dashboard with `liveRequired: false`.
+- Vampiric Armor, Band Y, syntax checks, source parity/call audits, sequential ledger/dashboard builds/checks, explicit four-item dashboard assertions, and `git diff --check` pass. Global audit remains 531 source-scanned, 10 intentional no-handler rows, 2 intentional lifecycle gaps, 0 untriaged gaps, 17 duplicate registrations, and 7 retained call-review candidates. No legal/security surfaces changed. Next step: review Vampiric Collar.
+
+### 2026-10-15 Simulator item parity continuation 231 — in progress
+
+- Codex owns the Vampiric Collar fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-vampiric-collar-smoke.mjs`, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 231 — complete
+
+- Vampiric Collar now mirrors source preparation timing, `canDamage`-only affected links, Vampirism-to-crit scaling, pre-Block `DamageResult.damage` lifesteal, Lucky scaling, source rounding, and p1/p2 parameter fallback.
+- Added `scripts/sim-vampiric-collar-smoke.mjs` and source-backed fidelity evidence. Vampiric Collar is now `verified_1to1` in the Admin dashboard with `liveRequired: false`.
+- Vampiric Collar, Band Y, syntax checks, source parity/call audits, sequential ledger/dashboard builds/checks, explicit Vampiric Armor/Vampiric Collar dashboard assertions, and `git diff --check` pass. Global audit remains 531 source-scanned, 10 intentional no-handler rows, 2 intentional lifecycle gaps, 0 untriaged gaps, 17 duplicate registrations, and 7 retained call-review candidates. No legal/security surfaces changed. Next step: review Vampiric Gloves.
+
+### 2026-10-15 Simulator item parity continuation 232 — in progress
+
+- Codex owns the Vampiric Gloves fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-vampiric-gloves-smoke.mjs`, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 232 — complete
+
+- Vampiric Gloves now mirrors source prepare reset, cooldown-only affected-item targeting, active-state transition, exact p1/p2 Vampirism and speed values, zero-safe parameters, and `onAfterEffectFinished` consume activation after all effects.
+- Added `scripts/sim-vampiric-gloves-smoke.mjs` and source-backed fidelity evidence. Vampiric Gloves is now `verified_1to1` in the Admin dashboard with `liveRequired: false`.
+- Vampiric Gloves, lifecycle and visual regressions, Band Y, syntax checks, source parity/call audits, sequential ledger/dashboard builds/checks, explicit Vampiric Collar/Vampiric Gloves dashboard assertions, and `git diff --check` pass. Global audit remains 531 source-scanned, 10 intentional no-handler rows, 2 intentional lifecycle gaps, 0 untriaged gaps, 17 duplicate registrations, and 7 retained call-review candidates. No legal/security surfaces changed. Next step: review Vampiric Scythe.
+
+### 2026-10-15 Simulator item parity continuation 233 — in progress
+
+- Codex owns the Vampiric Scythe fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-vampiric-scythe-smoke.mjs`, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 233 — complete
+
+- Vampiric Scythe now mirrors source prepare timing, Vampirism-gaining affected targets, target buff-power grant, dynamic p1 speed scaling with p2 cap, delta-only speed updates, and excluded-target behavior.
+- Added `scripts/sim-vampiric-scythe-smoke.mjs` and source-backed fidelity evidence. Vampiric Scythe is now `verified_1to1` in the Admin dashboard with `liveRequired: false`.
+- Vampiric Scythe, final runtime backlog smoke, syntax checks, source parity/call audits, sequential ledger/dashboard builds/checks, explicit Vampiric Gloves/Vampiric Scythe dashboard assertions, and `git diff --check` pass. Global audit remains 531 source-scanned, 10 intentional no-handler rows, 2 intentional lifecycle gaps, 0 untriaged gaps, 17 duplicate registrations, and 7 retained call-review candidates. No legal/security surfaces changed. Next step: review Vampiric Potion.
+
+### 2026-10-15 Simulator item parity continuation 234 — in progress
+
+- Codex owns the Vampiric Potion fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-vampiric-potion-smoke.mjs` if a dedicated regression is needed, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 234 — complete
+
+- Vampiric Potion and Strong Vampiric Potion required no new repair: their existing combined source-backed regression covers the dual below-threshold trigger, normal effect damage/lifesteal/Vampirism, strong temporary full-damage lifesteal, strict thresholds, side filtering, duration modification, and combat-end cleanup.
+- Re-ran `scripts/sim-vampiric-potion-smoke.mjs`; both items remain `verified_1to1` in the Admin dashboard with `liveRequired: false`. No product or generated artifact changed in this checkpoint. No legal/security surfaces changed. Next step: review Villain Sword.
+
+### 2026-10-15 Simulator item parity continuation 235 — in progress
+
+- Codex owns the Villain Sword fidelity review/repair, focused runtime regression, generated audit artifacts, and this handoff. Planned paths will be limited to its handler/supporting simulator code, `scripts/sim-villain-sword-smoke.mjs` if needed, the fidelity builder/generated artifacts, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator item parity continuation 235 — complete
+
+- Villain Sword now mirrors source `onPreCombatStart` timing, `canBeEmpowered` plus melee-only target filtering, exact p1 target bonus-damage reduction, p2 self bonus damage, correct `weapon_base` family, and zero-safe values.
+- Added `scripts/sim-villain-sword-smoke.mjs` and source-backed fidelity evidence. Villain Sword is now `verified_1to1` in the Admin dashboard with `liveRequired: false`.
+- Villain Sword, Steel Dragon, final runtime backlog, syntax checks, source parity/call audits, sequential ledger/dashboard builds/checks, explicit dashboard assertions, and `git diff --check` pass. Global audit remains 531 source-scanned, 10 intentional no-handler rows, 2 intentional lifecycle gaps, 0 untriaged gaps, 17 duplicate registrations, and 7 retained call-review candidates. No legal/security surfaces changed. Work paused at the user’s request; next item is not claimed.
+
+### 2026-10-15 Simulator coverage truthfulness 236 — in progress
+
+- Codex owns the user-visible simulator coverage source, its compact generated fidelity summary, focused coverage regression, related simulator documentation, and this handoff. Planned paths are limited to the simulator coverage/registry/page/report code, the audit-dashboard builder and generated summary, the focused coverage smoke, the affected simulator docs, and `docs/CODEX_HANDOFF.md`.
+
+### 2026-10-15 Simulator coverage truthfulness 236 — complete
+
+- The `/sim/` fidelity chip now reports retained `verified_1to1` proof for the items actually placed on the board; a handler or generic engine path no longer appears as 1:1 coverage. Report-issue snapshots and saved run summaries use the same verified percentage.
+- Added deterministic `assets/data/sim-fidelity-summary.json`, generated alongside the admin dashboard. Current source-backed status is 333 of 519 catalog items verified (64% global); the board chip remains board-specific and intentionally shows `—` if the evidence artifact is unavailable.
+- Added `scripts/sim-verified-coverage-smoke.mjs`; updated dashboard-builder coverage tests and simulator documentation. Focused smoke, coverage honesty, syntax checks, parity/call audits, ledger/dashboard/summary stale checks, recent-row verdict assertions, and `git diff --check` pass. The pre-existing engine census still reports its known eight support-class handler gaps plus `dragonegg` generic mapping; no unrelated exceptions were changed. No legal/security surfaces changed and no live verification was required.

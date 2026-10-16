@@ -2,7 +2,7 @@
  * Premium / founding entitlement helpers (profiles.plan).
  */
 
-import { getSupabase } from './supabase.js?v=supabase-client-20261013a';
+import { getSupabase } from './supabase.js';
 
 export const PREMIUM_PRICE_LABEL = '$3/mo';
 export const FOUNDING_TOTAL = 10;
