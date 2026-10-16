@@ -191,25 +191,24 @@ export const recombobulatorPort = {
 export const goldArmorPort = {
   handlerId: 'gold_armor',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    const { itemsById, pieces } = ctx;
+    // GoldArmor.gd reduces every weapon in the inventory during preparation;
+    // it is not limited to the Holy cells used for its Regeneration aura.
+    const speedMalus = getPName(piece.params, 'speed', getPName(piece.params, 'p5', 0)) / 100;
+    if (!speedMalus) return;
+    for (const other of pieces || []) {
+      if (other.placementKey === piece.placementKey) continue;
+      const item = itemsById.get(other.itemId);
+      if (!itemHasType(item, 'weapon')) continue;
+      addSpeed(other, -speedMalus);
+    }
+  },
   onCombatStart(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
-    // GoldArmor.gd onPrepare: reduceSpeed(speed/100) on all weapons (shop gold omitted)
-    const speedMalus = Math.abs(getPName(piece.params, 'speed', 10)) / 100;
-    if (speedMalus) {
-      for (const other of pieces || []) {
-        if (other.placementKey === piece.placementKey) continue;
-        const item = itemsById.get(other.itemId);
-        const isWeapon =
-          other.kind === 'weapon' ||
-          itemHasType(item, 'weapon') ||
-          other.damageMax > 0 ||
-          other.damageMin > 0;
-        if (!isWeapon) continue;
-        addSpeed(other, -speedMalus);
-      }
-    }
-    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    const regenPer = Math.max(1, Math.round(getPName(piece.params, 'regen', getP1(piece.params, 1))));
+    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect)
+      .filter((link) => link.color === 'primary');
+    const regenPer = Math.trunc(getPName(piece.params, 'regen', getP1(piece.params, 0)));
     const regen = links.length * regenPer;
     if (regen > 0) {
       grantStacks(player, 'regeneration', regen, {
@@ -217,7 +216,12 @@ export const goldArmorPort = {
         originId: piece.itemId,
       });
     }
-    const block = Math.max(1, Math.round(piece.blockGrant || getP2(piece.params, 10)));
+    const catalogBlock = Number(itemsById.get(piece.itemId)?.block);
+    const block = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number.isFinite(catalogBlock)
+        ? catalogBlock
+        : 0;
     gainStacks(player, 'block', block);
     events.push({
       t,
@@ -227,11 +231,11 @@ export const goldArmorPort = {
       label: `${piece.name}: +${regen} Regen +${block} Block`,
       meta: { category: 'buff', script: true, handler: 'gold_armor' },
     });
+    pushActivate(piece, ctx, 'gold_armor', `Armor: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    pushActivate(piece, ctx, 'gold_armor', `Armor: ${piece.name}`);
-    const cleanse = Math.max(1, Math.round(getPName(piece.params, 'cleanse', getP3(piece.params, 1))));
+    const cleanse = Math.trunc(getPName(piece.params, 'cleanse', getP3(piece.params, 0)));
     cleanseRandomDebuffs(player, cleanse, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
@@ -241,17 +245,20 @@ export const goldArmorPort = {
       (Number(player.stacks.blind) || 0) +
       (Number(player.stacks.cold) || 0);
     if (debuffs <= 0) {
-      const block = Math.max(1, Math.round(getPName(piece.params, 'block', 4)));
+      const block = Math.trunc(getPName(piece.params, 'block', getP2(piece.params, 0)));
       gainStacks(player, 'block', block);
-      events.push({
-        t: t + 0.004,
-        type: 'buff',
-        target: 'player',
-        amount: block,
-        label: `${piece.name}: +${block} Block`,
-        meta: { category: 'buff', stack: 'block', script: true, handler: 'gold_armor' },
-      });
+      if (block > 0) {
+        events.push({
+          t: t + 0.004,
+          type: 'buff',
+          target: 'player',
+          amount: block,
+          label: `${piece.name}: +${block} Block`,
+          meta: { category: 'buff', stack: 'block', script: true, handler: 'gold_armor' },
+        });
+      }
     }
+    pushActivate(piece, ctx, 'gold_armor', `Armor: ${piece.name}`);
     return true;
   },
 };

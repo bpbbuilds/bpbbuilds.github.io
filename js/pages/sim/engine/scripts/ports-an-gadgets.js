@@ -18,6 +18,7 @@ import {
 import { scheduleStatChargePath } from '../charge-delivery.js';
 import { advanceCooldownSeconds } from '../cooldown.js';
 import { getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { itemHasType, pushActivate } from './ports-util.js';
@@ -48,8 +49,11 @@ function linkedCd(ctx, piece) {
   return (ctx.pieces || []).filter(
     (o) =>
       links.some((l) => l.key === o.placementKey) &&
-      o.cooldown > 0 &&
-      o.cooldown < 500,
+      (() => {
+        const descriptorCd = Number(ctx.itemsById?.get?.(o.itemId)?.cooldown);
+        const cooldown = Number.isFinite(descriptorCd) ? descriptorCd : Number(o.cooldown);
+        return Number.isFinite(cooldown) && cooldown !== 0;
+      })(),
   );
 }
 
@@ -220,19 +224,22 @@ const goldCubePort = {
   // GoldCube.gd connects during onPrepare.
   onPrepare(piece, ctx) {
     piece._cube = false;
-    const th = getPName(piece.params, 'healtht', 50) / 100;
+    piece._goldCubeTarget = firstLinkedCd(ctx, piece);
+    const th = getPName(piece.params, 'healtht', 50) / 100 - 0.0001;
     ctx.bus?.on?.('character_damaged', (payload) => {
       if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._cube) return;
       if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
       piece._cube = true;
-      cubeAdvance(firstLinkedCd(ctx, piece), ctx, piece);
+      cubeAdvance(piece._goldCubeTarget, ctx, piece);
       const regen = getStackAmount(ctx.player, 'regeneration');
-      healActor(
-        ctx.player,
-        Math.max(1, Math.round(getPName(piece.params, 'heal', 8) + getPName(piece.params, 'heal_regen', 2) * regen)),
-      );
+      const heal =
+        modifiedParamValue(piece, getPName(piece.params, 'heal', 0), 'heal') +
+        modifiedParamValue(piece, getPName(piece.params, 'heal_regen', 0), 'heal_regen') * regen;
+      healActor(ctx.player, heal);
+      pushActivate(piece, ctx, 'gold_cube', `Cube: ${piece.name}`, { consume: true });
       piece.alive = false;
+      piece.charges = 0;
     });
   },
 };

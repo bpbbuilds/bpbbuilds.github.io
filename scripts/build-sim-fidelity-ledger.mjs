@@ -1517,6 +1517,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  gold_armor: {
+    focusedRegression: 'scripts/sim-gold-armor-smoke.mjs',
+    fixture: 'Gold Armor source preparation weapon slow, primary Holy targeting, catalog/start and cooldown Block, cleanse gate, activation ordering, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  gold_cube: {
+    focusedRegression: 'scripts/sim-gold-cube-smoke.mjs',
+    fixture: 'Gold Cube source first affected cooldown target, strict health threshold, modified healing, cooldown advance, consume activation, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',
