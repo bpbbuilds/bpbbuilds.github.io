@@ -1628,6 +1628,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  wand: {
+    focusedRegression: 'scripts/sim-wand-smoke.mjs',
+    fixture: 'Wand source least-buff grant, threshold-based highest-buff consumption, Empower amount, activation ordering, and engine cooldown projection.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  wand_of_dissonance: {
+    focusedRegression: 'scripts/sim-wand-of-dissonance-smoke.mjs',
+    fixture: 'Wand of Dissonance source Dark-link preparation factor, health gate, descriptor damage, max-stack buff selection, causal chain, and damage-meter exclusion.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   protective_purse: {
     focusedRegression: 'scripts/sim-protective-purse-smoke.mjs',
     fixture: 'Protective Purse source Bag block descriptor, named Bagtacular block bonus, zero-safe grant, and source activation projection on both inventory sides.',

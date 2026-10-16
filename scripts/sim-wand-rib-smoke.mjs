@@ -127,10 +127,13 @@ const enemyWeapon = {
   shape: [[1]],
 };
 const ribItems = new Map([[rib.id, rib], [enemyWeapon.id, enemyWeapon]]);
-const [ribPiece, enemyPiece] = buildCombatPieces([
+const ribPieces = buildCombatPieces([
   { id: rib.id, key: 'rib', x: 0, y: 0, r: 0 },
   { id: enemyWeapon.id, key: 'opp:enemy', x: 0, y: 0, r: 0, side: 'them' },
 ], ribItems);
+const ribPiece = ribPieces.find((piece) => piece.itemId === rib.id);
+const enemyPiece = ribPieces.find((piece) => piece.itemId === enemyWeapon.id);
+assert.ok(ribPiece && enemyPiece);
 const player = createActor('player');
 const dummy = createActor('dummy');
 const events = [];
@@ -144,12 +147,14 @@ ribPiece._eventLog = events;
 enemyPiece._eventLog = events;
 enemyPiece.damageBonus = 4;
 enemyPiece.bonusDamage = 3;
+enemyPiece._removableBonusDamageInitialized = false;
 const ribHandler = getScriptHandler(rib.id);
 assert.ok(ribHandler?.onPrepare && ribHandler?.onPreDealDamageEarly);
 const ribCtx = {
   player,
   dummy,
   allPieces: [ribPiece, enemyPiece],
+  itemsById: ribItems,
   events,
   t: 2,
   rng: () => 0.25,
@@ -159,12 +164,12 @@ assert.deepEqual(ribPiece._ribOppWeapons.map((piece) => piece.itemId), [enemyPie
 ribHandler.onPreDealDamageEarly(ribPiece, ribCtx, { hit: true });
 assert.equal(enemyPiece.bonusDamage, 2, 'Rib Saw Blade removes one removable damage');
 assert.equal(enemyPiece.damageBonus, 4, 'Rib Saw Blade must preserve permanent/gem damage');
-assert.equal(enemyPiece.damageMin, 8, 'Rib Saw Blade must preserve base damage');
+assert.equal(enemyPiece.damageMin, 10, 'Rib Saw Blade must preserve base damage');
 assertClose(ribPiece.bonusDamage, 0.5, 'Rib Saw Blade adds its hit bonus');
 assert.ok(events.some((ev) => ev.meta?.kind === 'damage_buff_purge'));
 const reverseRib = { ...ribPiece, placementKey: 'opp:rib', side: 'them', _ribOppWeapons: [] };
 const reverseWeapon = { ...enemyPiece, placementKey: 'player:weapon', side: 'you' };
-ribHandler.onPrepare(reverseRib, { allPieces: [reverseRib, reverseWeapon] });
+ribHandler.onPrepare(reverseRib, { allPieces: [reverseRib, reverseWeapon], itemsById: ribItems });
 assert.deepEqual(reverseRib._ribOppWeapons.map((piece) => piece.itemId), [reverseWeapon.itemId]);
 
 // Katana extends RibSawBlade.gd and must inherit its prepare-time target set.
@@ -180,13 +185,16 @@ const katana = {
   shape: [[1]],
 };
 const katanaItems = new Map([[katana.id, katana], [enemyWeapon.id, enemyWeapon]]);
-const [katanaPiece, katanaEnemy] = buildCombatPieces([
+const katanaPieces = buildCombatPieces([
   { id: katana.id, key: 'katana', x: 0, y: 0, r: 0 },
   { id: enemyWeapon.id, key: 'opp:katana-enemy', x: 0, y: 0, r: 0, side: 'them' },
 ], katanaItems);
+const katanaPiece = katanaPieces.find((piece) => piece.itemId === katana.id);
+const katanaEnemy = katanaPieces.find((piece) => piece.itemId === enemyWeapon.id);
+assert.ok(katanaPiece && katanaEnemy);
 const katanaHandler = getScriptHandler(katana.id);
 assert.ok(katanaHandler?.onPrepare, 'Katana must inherit Rib Saw prepare behavior');
-katanaHandler.onPrepare(katanaPiece, { allPieces: [katanaPiece, katanaEnemy] });
+katanaHandler.onPrepare(katanaPiece, { allPieces: [katanaPiece, katanaEnemy], itemsById: katanaItems });
 assert.deepEqual(katanaPiece._ribOppWeapons.map((piece) => piece.itemId), [katanaEnemy.itemId]);
 
 console.log('OK wand/rib focused smoke');

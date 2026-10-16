@@ -20811,9 +20811,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-wand-smoke.mjs",
+        "fixture": "Wand source least-buff grant, threshold-based highest-buff consumption, Empower amount, activation ordering, and engine cooldown projection.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -20848,9 +20854,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-wand-of-dissonance-smoke.mjs",
+        "fixture": "Wand of Dissonance source Dark-link preparation factor, health gate, descriptor damage, max-stack buff selection, causal chain, and damage-meter exclusion.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

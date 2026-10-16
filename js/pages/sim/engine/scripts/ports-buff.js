@@ -181,15 +181,6 @@ export const wandPort = {
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    events.push({
-      t,
-      type: 'activate',
-      actor: 'player',
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `Accessory: ${piece.name}`,
-      meta: { category: 'system', script: true, handler: 'wand' },
-    });
     const granted = giveLeastBuffs(player, 1, rng, {
       availableBuffs: WAND_BUFFS,
       originKey: piece.placementKey,
@@ -253,6 +244,15 @@ export const wandPort = {
         });
       }
     }
+    events.push({
+      t,
+      type: 'activate',
+      actor: 'player',
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `Accessory: ${piece.name}`,
+      meta: { category: 'system', script: true, handler: 'wand' },
+    });
     return true;
   },
 };
