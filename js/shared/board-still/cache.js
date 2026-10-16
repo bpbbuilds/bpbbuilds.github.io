@@ -60,8 +60,8 @@ export function stillCacheKey(placements, mode = 'all') {
       return `${p.id}:${Number(p.x) || 0}:${Number(p.y) || 0}:${Number(p.r) || 0}:${gems}`;
     })
     .join('|');
-  // v2 = fabric above bags + SE silhouette shadows
-  return `v2|${STILL_CELL_PX}|${mode}|${sig}`;
+  // v3 = static PotionConnector strokes + v2 fabric/shadow treatment
+  return `v3|${STILL_CELL_PX}|${mode}|${sig}`;
 }
 
 /**

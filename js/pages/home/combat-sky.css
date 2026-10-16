@@ -17,6 +17,40 @@
   display: none !important;
 }
 
+/* The Home document includes the tiny windmill shell before JavaScript runs.
+   Keep it in the correct responsive stage position, but hold the blades until
+   the module has confirmed both mask assets are available. */
+.combat-sky--preload {
+  /* Keep the 16:9 design canvas covered without waiting for JS to calculate
+     its scale. The live stage switches back to the pixel canvas below. */
+}
+
+.combat-sky--preload .combat-sky__stage {
+  width: max(100vw, 177.7777778vh);
+  height: max(56.25vw, 100vh);
+  transform: translate(-50%, -50%);
+}
+
+.combat-sky--preload .combat-sky__windmill {
+  left: 55.3125%;
+  top: 34.3518519%;
+  width: 4.2708333%;
+  height: 15%;
+}
+
+.combat-sky--preload .combat-sky__blade-pivot {
+  left: calc(50% - 3.6585366%);
+  top: calc(50% - 33.9506173%);
+}
+
+.combat-sky--preload .combat-sky__blades {
+  width: 167.0731707%;
+  height: 80.8641975%;
+  margin-left: -83.5365854%;
+  margin-top: -40.4320988%;
+  animation: none;
+}
+
 .combat-sky__stage {
   position: absolute;
   left: 50%;
@@ -44,6 +78,10 @@
 .combat-sky--fixed-night .combat-sky__sky,
 .combat-sky--fixed-night .combat-sky__celestial {
   will-change: auto;
+}
+
+.combat-sky--fixed-night {
+  background: var(--bpb-bg-home-night) center / cover no-repeat;
 }
 
 /* Admin background-test presets are frozen to a selected time, but keep the

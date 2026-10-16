@@ -1,6 +1,7 @@
 /* Item Library click spotlight — full-page dim (incl. header) + FLIP focus piece */
 
 .il-spotlight {
+  --il-spotlight-desktop-scale: 1;
   position: fixed;
   inset: 0;
   /* Above site nav (z-index 50); below locked tooltip (140) */
@@ -21,7 +22,7 @@
   background: rgba(8, 6, 4, 0.52);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  cursor: var(--bpb-cursor-default);
+  cursor: var(--bpb-cursor-default, default);
   opacity: 0;
   transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -39,7 +40,8 @@
   position: absolute;
   left: 50%;
   top: 46%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(var(--il-spotlight-desktop-scale, 1));
+  transform-origin: center center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -138,6 +140,7 @@
   --bpb-bg-scroll-track: #816230;
   --bpb-bg-scroll-frame: #472a24;
   --recipe-equals-w: 1.35rem;
+  --il-spotlight-desktop-scale: 1;
   position: fixed;
   z-index: 70;
   left: 0;
@@ -147,6 +150,8 @@
   max-height: min(70vh, 36rem);
   pointer-events: none;
   box-sizing: border-box;
+  transform: scale(var(--il-spotlight-desktop-scale, 1));
+  transform-origin: top left;
 }
 
 .il-spotlight-recipes:not([hidden]) {
@@ -280,16 +285,26 @@
   padding: 0;
   border: 0;
   background: transparent;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   border-radius: 0.2rem;
   line-height: 0;
   filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4));
+  outline: 0;
+  position: relative;
+  transform-origin: center center;
+  transition:
+    transform 140ms ease,
+    filter 140ms ease,
+    background-color 140ms ease;
 }
 
 .il-spotlight-recipes__item:hover,
 .il-spotlight-recipes__item:focus-visible {
-  outline: 2px solid #c9a227;
-  outline-offset: 3px;
+  z-index: 2;
+  transform: scale(1.08);
+  filter:
+    brightness(1.08)
+    drop-shadow(0 7px 16px rgba(0, 0, 0, 0.44));
 }
 
 .il-spotlight-recipes__sprite {
@@ -378,6 +393,7 @@
   --bpb-bg-scroll-track: #816230;
   --bpb-bg-scroll-frame: #472a24;
   --il-spotlight-builds-cell: 18px;
+  --il-spotlight-desktop-scale: 1;
   /* Same Patch3 shade tokens as `.items-filters.il-filter` */
   --il-shade: rgba(14, 15, 16, 0.09);
   --il-shade-pad-y: 0.5rem;
@@ -385,8 +401,9 @@
   position: fixed;
   z-index: 70;
   left: 50%;
-  bottom: 1.85rem;
-  transform: translateX(-50%);
+  bottom: calc(1.85rem * var(--il-spotlight-desktop-scale, 1));
+  transform: translateX(-50%) scale(var(--il-spotlight-desktop-scale, 1));
+  transform-origin: center bottom;
   width: min(92vw, 56rem);
   max-width: calc(100vw - 1rem);
   pointer-events: none;
@@ -426,25 +443,40 @@
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior: contain;
-  scrollbar-color: var(--bpb-bg-scroll-thumb) var(--bpb-bg-scroll-track);
+  scrollbar-gutter: stable;
+  scrollbar-width: auto;
+  scrollbar-color: auto;
   padding-bottom: 0.15rem;
 }
 
 .il-spotlight-builds__scroll::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 18px;
+  height: 18px;
+  background: transparent;
 }
 
 .il-spotlight-builds__scroll::-webkit-scrollbar-track {
-  border: 2px solid var(--bpb-bg-scroll-frame);
-  border-radius: 12px;
-  background: var(--bpb-bg-scroll-track);
+  background: url('../../../assets/icons/scrollbar/track-horizontal.png') center / 100% 18px no-repeat;
+  border-radius: 0;
 }
 
 .il-spotlight-builds__scroll::-webkit-scrollbar-thumb {
-  border: 2px solid var(--bpb-bg-scroll-frame);
-  border-radius: 12px;
-  background-color: var(--bpb-bg-scroll-thumb);
+  min-width: 42px;
+  background: url('../../../assets/icons/scrollbar/thumb-horizontal.png') center / 100% 100% no-repeat;
+  border-radius: 0;
+  border: 0;
+}
+
+.il-spotlight-builds__scroll::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .il-spotlight-builds__scroll {
+    scrollbar-color: #eac914 #472a24;
+  }
 }
 
 .il-spotlight-builds__list {
@@ -472,13 +504,21 @@
   border-radius: 0.25rem;
   padding: 0.2rem;
   outline: none;
+  position: relative;
+  transform-origin: center center;
+  transition:
+    transform 140ms ease,
+    filter 140ms ease,
+    background-color 140ms ease;
 }
 
 .il-spotlight-builds__link:hover,
 .il-spotlight-builds__link:focus-visible {
-  background: color-mix(in srgb, #ffecdc 10%, transparent);
-  outline: 2px solid #c9a227;
-  outline-offset: 1px;
+  z-index: 2;
+  transform: translateY(-2px) scale(1.04);
+  filter:
+    brightness(1.06)
+    drop-shadow(0 7px 14px rgba(0, 0, 0, 0.42));
 }
 
 .il-spotlight-builds__board {
@@ -698,5 +738,17 @@
 
   .il-spotlight__piece {
     transition: none !important;
+  }
+
+  .il-spotlight-recipes__item,
+  .il-spotlight-builds__link {
+    transition: none !important;
+  }
+
+  .il-spotlight-recipes__item:hover,
+  .il-spotlight-recipes__item:focus-visible,
+  .il-spotlight-builds__link:hover,
+  .il-spotlight-builds__link:focus-visible {
+    transform: none;
   }
 }

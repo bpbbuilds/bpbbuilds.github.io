@@ -10,6 +10,7 @@ import {
   applySocketOffsets,
 } from '../build/map-item.js';
 import { bindMoreBuildTips, registerMoreBuildTip } from '../build/more-build-tip.js';
+import { bindCardBuildPreviews, registerCardBuildPreview } from './card-preview.js';
 
 /** Card feed preview — large enough to read the layout at a glance. */
 const FEED_CELL_PX = 60;
@@ -42,6 +43,8 @@ export function mountFeedBoardThumbs(listEl, opts) {
     opts.view === 'compact' || listEl.classList.contains('builds-feed__list--compact');
   const grid =
     opts.view === 'grid' || listEl.classList.contains('builds-feed__list--grid');
+  const cardPreviewView =
+    !compact && !grid && document.body?.classList.contains('page-builds');
   const boardAttr = opts.boardAttr || 'data-feed-board';
   const getSpriteUrl = makeSpriteUrl(root, opts.spriteDisplay || null);
   const bySlug = new Map(
@@ -97,6 +100,25 @@ export function mountFeedBoardThumbs(listEl, opts) {
     });
     stills.push(mounted);
 
+    if (cardPreviewView && placements.length) {
+      const card = host.closest('.builds-post:not(.builds-post--compact):not(.builds-post--grid)');
+      const button = card?.querySelector('[data-feed-card-preview]');
+      if (card instanceof HTMLElement && button instanceof HTMLButtonElement) {
+        const liveHost = document.createElement('span');
+        liveHost.className = 'builds-post__card-preview-live';
+        liveHost.hidden = true;
+        liveHost.setAttribute('aria-hidden', 'true');
+        host.append(liveHost);
+        registerCardBuildPreview(card, button, liveHost, {
+          placements,
+          itemsById,
+          getSpriteUrl,
+          root,
+          cellPx,
+        });
+      }
+    }
+
     const tipEl = opts.tipSelector
       ? host.closest(opts.tipSelector)
       : compact
@@ -106,7 +128,12 @@ export function mountFeedBoardThumbs(listEl, opts) {
           : null;
     if (tipEl instanceof HTMLElement) {
       tipEl.setAttribute('data-feed-build-tip', '');
-      registerMoreBuildTip(tipEl, build, mounted.stillUrl);
+      registerMoreBuildTip(tipEl, build, mounted.stillUrl, {
+        placements,
+        itemsById,
+        getSpriteUrl,
+        root,
+      });
     }
   });
 
@@ -118,8 +145,15 @@ export function mountFeedBoardThumbs(listEl, opts) {
           thumbSelector: opts.tipSelector || '[data-feed-build-tip]',
         })
       : () => {};
+  const unbindCardPreview =
+    cardPreviewView ? bindCardBuildPreviews(listEl) : () => {};
 
   return () => {
+    try {
+      unbindCardPreview();
+    } catch {
+      /* ignore */
+    }
     try {
       unbindTip();
     } catch {

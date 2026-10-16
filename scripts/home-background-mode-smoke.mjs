@@ -14,7 +14,7 @@ const adminBackground = await fs.readFile(new URL('js/pages/admin/background-tes
 
 assert.match(indexHtml, /js\/pages\/home\/combat-sky\.css(?:\?[^"']*)?/, 'Home loads the combat sky stylesheet');
 assert.doesNotMatch(indexHtml, /js\/pages\/home\/falling-items-background\.css/, 'Home no longer loads the falling-item stylesheet');
-assert.match(homeIndex, /import\s+\{\s*initCombatSky\s*\}\s+from\s+['"]\.\/combat-sky\.js['"]/, 'Home imports the time-of-day sky');
+assert.match(homeIndex, /import\s+\{\s*initCombatSky\s*\}\s+from\s+['"]\.\/combat-sky\.js(?:\?[^'"]*)?['"]/, 'Home imports the time-of-day sky');
 assert.match(homeIndex, /\binitCombatSky\(\)/, 'Home boots the time-of-day sky');
 assert.match(combatIndex, /T_HOME_NIGHT\s*=\s*25\.8/, 'Home uses the established Night preset time');
 assert.match(combatIndex, /mode\s*===\s*['"]scroll['"]/, 'scroll-scrub mode is explicit for the admin preview');

@@ -96,7 +96,53 @@
 }
 
 .bpb-bg__lines {
-  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.bpb-bg__lines--has-potions {
+  visibility: visible;
+}
+
+.bpb-bg__potion-lines {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.bpb-bg__potion-link {
+  fill: rgba(112, 190, 255, 0.86);
+  stroke: rgba(188, 224, 255, 0.96);
+  stroke-width: 0.035;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 0.08em rgba(93, 170, 255, 0.9));
+  animation: bpb-potion-link-flow 1.25s linear infinite;
+}
+
+@keyframes bpb-potion-link-flow {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpb-bg__potion-link {
+    animation: none;
+  }
 }
 
 /* Rarity footprint tiles — board layer under every sprite (bags included). */
@@ -410,7 +456,7 @@ body.is-bpb-dragging .bpb-bg--placed .bpb-bg__item {
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.55));
   /* Hit target for gem tooltips (parent .bpb-bg__gems stays pointer-events: none) */
   pointer-events: auto;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
 }
 
 .bpb-bg__mark--socket.bpb-bg__mark--gem:hover,
@@ -537,7 +583,7 @@ body.is-bpb-dragging .bpb-bg--placed .bpb-bg__item {
   background: transparent;
   /* Pads re-enable hits on body cells only */
   pointer-events: none;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   /* Prevent UA button font (~13px) from breaking any leftover em sizes */
   font: inherit;
   color: inherit;
@@ -549,6 +595,7 @@ body.is-bpb-dragging .bpb-bg--placed .bpb-bg__item {
   width: 1em;
   height: 1em;
   pointer-events: auto;
+  cursor: var(--bpb-cursor-pointer, pointer);
 }
 
 /*
@@ -558,6 +605,7 @@ body.is-bpb-dragging .bpb-bg--placed .bpb-bg__item {
  */
 .bpb-bg__item--bag .bpb-bg__sprite {
   pointer-events: auto;
+  cursor: var(--bpb-cursor-pointer, pointer);
 }
 
 .bpb-bg__hit:focus-visible {

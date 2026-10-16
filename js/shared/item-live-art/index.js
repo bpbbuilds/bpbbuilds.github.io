@@ -92,7 +92,9 @@ export function loadLiveArt() {
   return specLoad;
 }
 
-void loadLiveArt();
+// The Items catalog opts into static sprites only. Avoid fetching the effect
+// manifest there; placed boards and interactive promos keep the shared loader.
+if (!document.body?.classList.contains('page-items')) void loadLiveArt();
 
 export function liveArtSpec(itemId) {
   return specMap?.[String(itemId || '')] || null;
@@ -507,6 +509,7 @@ function watchDom() {
 }
 
 export function ensureLiveArt() {
+  if (document.body?.classList.contains('page-items')) return;
   void loadLiveArt().then(() => {
     const start = () => watchDom();
     if (document.body) start();

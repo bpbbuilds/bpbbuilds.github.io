@@ -70,11 +70,11 @@ function navHtml(root) {
   const { about, terms, privacy, builds, items } = footerLinks(root);
   return `
     <nav class="site-footer__nav" aria-label="Footer">
-      <a href="${about}">About</a>
-      <a href="${terms}">Terms</a>
-      <a href="${privacy}">Privacy</a>
-      <a href="${builds}">Builds</a>
-      <a href="${items}">Items</a>
+      <a class="home-preset-button site-footer__nav-link site-footer__nav-link--legal" href="${about}">About</a>
+      <a class="home-preset-button site-footer__nav-link site-footer__nav-link--legal" href="${terms}">Terms</a>
+      <a class="home-preset-button site-footer__nav-link site-footer__nav-link--legal" href="${privacy}">Privacy</a>
+      <a class="home-preset-button home-preset-button--blue site-footer__nav-link site-footer__nav-link--catalog" href="${builds}">Builds</a>
+      <a class="home-preset-button home-preset-button--blue site-footer__nav-link site-footer__nav-link--catalog" href="${items}">Items</a>
     </nav>
   `;
 }

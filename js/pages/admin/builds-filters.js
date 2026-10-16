@@ -72,7 +72,7 @@ export function adminBuildsFiltersHtml(root, state, shown) {
   }).join('');
 
   return `
-    <aside class="items-filters il-filter builds-feed-filters admin-builds-filters" aria-label="Filter builds">
+    <aside class="items-filters il-filter bpb-filter-preset builds-feed-filters admin-builds-filters" aria-label="Filter builds">
       <div class="il-filter__head">
         <p class="il-filter__count" data-filter-count>${escapeHtml(countLabel)}</p>
         <button type="button" class="il-filter__reset" data-admin-builds-reset title="Reset filters" aria-label="Reset filters">

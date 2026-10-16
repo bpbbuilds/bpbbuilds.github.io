@@ -184,7 +184,7 @@ export async function mountBuildsTab(stage, ctx) {
         <div class="builds-feed-col">
           <div class="profile-skel__list">${skelBlock()}${skelBlock()}${skelBar({ width: '70%' })}</div>
         </div>
-        <aside class="items-filters il-filter builds-feed-filters builds-feed-filters--skel" aria-hidden="true"></aside>
+        <aside class="items-filters il-filter bpb-filter-preset builds-feed-filters builds-feed-filters--skel" aria-hidden="true"></aside>
       </div>
     </div>`,
     { label: 'Loading builds' },

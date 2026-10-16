@@ -107,6 +107,7 @@
 
   /* Scene backgrounds */
   --bpb-bg-town: url("../assets/theme/backgrounds/bg-town-square.jpg");
+  --bpb-bg-home-night: url("../assets/theme/backgrounds/combat/CombatNightStatic.png");
   --bpb-bg-shop: url("../assets/theme/backgrounds/bg-shop-interior.jpg");
 }
 
@@ -150,6 +151,12 @@ body::after {
   padding-left: var(--bpb-frame-edge-x);
   padding-right: var(--bpb-frame-edge-x);
   isolation: isolate;
+  /* The fixed host can extend below the visual shelf at short desktops. */
+  pointer-events: none;
+}
+
+#site-nav > .site-nav-shell {
+  pointer-events: auto;
 }
 
 /* In-flow stand-in sized to the *expanded* nav — keeps layout stable while nav is fixed */
@@ -197,10 +204,10 @@ body::after {
 
 /* Homepage: combat day→night sky (js/pages/home/combat-sky.js) */
 body.page-home {
-  /* Keep the audited Town Square visible during the module/nav gap. The
-     canvas scene replaces this layer once Home boot starts. */
-  background-color: #2a1a12;
-  background-image: url("../assets/theme/backgrounds/bg-town-square.jpg");
+  /* Paint the same Night frame immediately; Home boot only adds the live
+     windmill layer after this first request completes. */
+  background-color: #000533;
+  background-image: var(--bpb-bg-home-night);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -493,7 +500,8 @@ a {
 }
 
 a:hover {
-  color: var(--bpb-banner-crimson);
+  /* Match the gold used by the navigation's Patches treatment. */
+  color: #eac914;
 }
 
 /* Reusable panel shell — Tailwind handles layout; this sets the material */

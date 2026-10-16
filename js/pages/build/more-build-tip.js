@@ -1,12 +1,14 @@
 /**
  * Build preview tooltip for catalog thumbs (not item tooltips).
- * Board art is the same cached still as the thumb — no live grid on hover.
+ * Board art is a cached still until the user explicitly starts the lightweight
+ * activation preview.
  */
 
 import { classIconPath } from '../../shared/class-icons.js';
 import { faceHtml, hydrateFaces } from '../../shared/blob-face.js';
 import { desktopTooltipScale } from '../../shared/tooltip-scale.js';
 import { hideTooltip, showTooltip } from '../../shared/tooltip-motion.js';
+import { mountBuildTipAnimation } from './build-tip-animation.js';
 
 /** Large preview board inside the class tooltip frame. */
 const PREVIEW_CELL_PX = 48;
@@ -78,6 +80,8 @@ export function bindMoreBuildTips(listEl, opts) {
   /** @type {ReturnType<typeof setTimeout> | 0} */
   let hideTimer = 0;
   let showGen = 0;
+  /** @type {{ stop: () => void } | null} */
+  let previewController = null;
 
   function ensureHost() {
     if (host) return host;
@@ -101,6 +105,8 @@ export function bindMoreBuildTips(listEl, opts) {
     clearHide();
     showGen += 1;
     activeThumb = null;
+    previewController?.stop();
+    previewController = null;
     if (host) {
       hideTooltip(host, () => {
         host.replaceChildren();
@@ -113,9 +119,12 @@ export function bindMoreBuildTips(listEl, opts) {
    * @param {HTMLElement} thumb
    * @param {object} build
    * @param {Promise<string | null> | string | null | undefined} stillUrl
+   * @param {{ placements: object[], itemsById: Map<string, object>, getSpriteUrl: (item: object) => string, root: string } | null} preview
    */
-  async function show(thumb, build, stillUrl) {
+  async function show(thumb, build, stillUrl, preview) {
     clearHide();
+    previewController?.stop();
+    previewController = null;
     const tip = ensureHost();
     const gen = (showGen += 1);
     activeThumb = thumb;
@@ -157,7 +166,25 @@ export function bindMoreBuildTips(listEl, opts) {
               : ''
           }
         </header>
-        <div class="build-more-tip__board" data-preview-board></div>
+        <div class="build-more-tip__board" data-preview-board>
+          <div class="build-more-tip__preview-art" data-preview-art></div>
+          ${
+            preview?.placements?.length
+              ? `<button
+                  type="button"
+                  class="build-more-tip__play"
+                  data-build-tip-play
+                  aria-keyshortcuts="Alt"
+                  aria-label="Play board animation"
+                  aria-pressed="false"
+                  title="Play board animation"
+                >
+                  <span class="build-more-tip__play-key" data-build-tip-key aria-hidden="true">Alt</span>
+                  <img src="${escapeAttr(root)}assets/icons/sim/log/Play_normal.png" alt="" width="34" height="34" draggable="false" />
+                </button>`
+              : ''
+          }
+        </div>
         <footer class="build-more-tip__meta">
           ${
             Number.isFinite(gold)
@@ -189,14 +216,72 @@ export function bindMoreBuildTips(listEl, opts) {
     void hydrateFaces(tip, root);
     placeTip(tip, thumb);
 
+    const artHost = tip.querySelector('[data-preview-art]');
+    const playButton = tip.querySelector('[data-build-tip-play]');
+    if (playButton instanceof HTMLButtonElement && artHost instanceof HTMLElement && preview) {
+      playButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        void togglePreview(playButton, artHost, preview, gen, thumb, stillUrl);
+      });
+    }
+
     const url = await Promise.resolve(stillUrl);
     if (gen !== showGen || activeThumb !== thumb) return;
-    const boardHost = tip.querySelector('[data-preview-board]');
-    if (url && boardHost instanceof HTMLElement) {
-      boardHost.style.setProperty('--bpb-still-cell', `${PREVIEW_CELL_PX}px`);
-      boardHost.innerHTML = `<span class="bpb-board-still"><img class="bpb-board-still__img is-ready" src="${escapeAttr(url)}" alt="" draggable="false" /></span>`;
+    if (url && artHost instanceof HTMLElement) {
+      artHost.style.setProperty('--bpb-still-cell', `${PREVIEW_CELL_PX}px`);
+      artHost.innerHTML = `<span class="bpb-board-still"><img class="bpb-board-still__img is-ready" src="${escapeAttr(url)}" alt="" draggable="false" /></span>`;
     }
     placeTip(tip, thumb);
+  }
+
+  /**
+   * @param {HTMLButtonElement} button
+   * @param {HTMLElement} artHost
+   * @param {{ placements: object[], itemsById: Map<string, object>, getSpriteUrl: (item: object) => string, root: string }} preview
+   * @param {number} gen
+   * @param {HTMLElement} thumb
+   * @param {Promise<string | null> | string | null | undefined} stillUrl
+   */
+  async function togglePreview(button, artHost, preview, gen, thumb, stillUrl) {
+    if (gen !== showGen || activeThumb !== thumb) return;
+    if (previewController) {
+      previewController.stop();
+      previewController = null;
+      button.setAttribute('aria-pressed', 'false');
+      button.title = 'Play board animation';
+      button.setAttribute('aria-label', 'Play board animation');
+      const url = await Promise.resolve(stillUrl);
+      if (gen !== showGen || activeThumb !== thumb) return;
+      if (url) {
+        artHost.style.setProperty('--bpb-still-cell', `${PREVIEW_CELL_PX}px`);
+        artHost.innerHTML = `<span class="bpb-board-still"><img class="bpb-board-still__img is-ready" src="${escapeAttr(url)}" alt="" draggable="false" /></span>`;
+      }
+      placeTip(host, thumb);
+      return;
+    }
+
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+    try {
+      const controller = await mountBuildTipAnimation(artHost, preview);
+      if (gen !== showGen || activeThumb !== thumb) {
+        controller.stop();
+        return;
+      }
+      previewController = controller;
+      button.setAttribute('aria-pressed', 'true');
+      button.title = 'Pause board animation';
+      button.setAttribute('aria-label', 'Pause board animation');
+      placeTip(host, thumb);
+    } catch (err) {
+      console.warn('[build-tooltip] preview unavailable', err);
+      button.title = 'Preview unavailable';
+      button.setAttribute('aria-label', 'Preview unavailable');
+    } finally {
+      button.disabled = false;
+      button.removeAttribute('aria-busy');
+    }
   }
 
   /**
@@ -267,7 +352,7 @@ export function bindMoreBuildTips(listEl, opts) {
     const data = tipStore.get(thumb);
     if (!data) return;
     if (activeThumb === thumb && host && !host.hidden) return;
-    show(thumb, data.build, data.stillUrl);
+    show(thumb, data.build, data.stillUrl, data.preview || null);
   }
 
   /** @param {Event} e */
@@ -291,12 +376,30 @@ export function bindMoreBuildTips(listEl, opts) {
     hideTimer = setTimeout(hide, 80);
   }
 
+  function onResize() {
+    if (host && activeThumb && !host.hidden) placeTip(host, activeThumb);
+  }
+
+  /** Toggle the preview without moving the pointer from the hovered build. */
+  function onKeyDown(e) {
+    if (!(e instanceof KeyboardEvent) || e.key !== 'Alt' || e.repeat) return;
+    if (!(host instanceof HTMLElement) || host.hidden || !(activeThumb instanceof HTMLElement)) return;
+    const button = host.querySelector('[data-build-tip-play]');
+    if (!(button instanceof HTMLButtonElement) || button.disabled) return;
+    e.preventDefault();
+    button.click();
+  }
+
   listEl.addEventListener('pointerover', onOver);
   listEl.addEventListener('pointerout', onOut);
+  window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('keydown', onKeyDown);
 
   return () => {
     listEl.removeEventListener('pointerover', onOver);
     listEl.removeEventListener('pointerout', onOut);
+    window.removeEventListener('resize', onResize);
+    window.removeEventListener('keydown', onKeyDown);
     if (host) {
       host.removeEventListener('pointerover', onTipOver);
       host.removeEventListener('pointerout', onTipOut);
@@ -307,16 +410,17 @@ export function bindMoreBuildTips(listEl, opts) {
   };
 }
 
-/** @type {WeakMap<HTMLElement, { build: object, stillUrl: Promise<string | null> | string | null }>} */
+/** @type {WeakMap<HTMLElement, { build: object, stillUrl: Promise<string | null> | string | null, preview?: object | null }>} */
 export const tipStore = new WeakMap();
 
 /**
  * @param {HTMLElement} thumb
  * @param {object} build
  * @param {Promise<string | null> | string | null | undefined} stillUrl
+ * @param {{ placements: object[], itemsById: Map<string, object>, getSpriteUrl: (item: object) => string, root: string } | null} [preview]
  */
-export function registerMoreBuildTip(thumb, build, stillUrl) {
-  tipStore.set(thumb, { build, stillUrl: stillUrl ?? null });
+export function registerMoreBuildTip(thumb, build, stillUrl, preview = null) {
+  tipStore.set(thumb, { build, stillUrl: stillUrl ?? null, preview });
 }
 
 /**

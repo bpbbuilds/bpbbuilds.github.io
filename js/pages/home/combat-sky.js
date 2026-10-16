@@ -5,4 +5,4 @@
  *   initCombatSky();
  */
 
-export { initCombatSky } from './combat-sky/index.js';
+export { initCombatSky } from './combat-sky/index.js?v=home-windmill-preload-20261016a';

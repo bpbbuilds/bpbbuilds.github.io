@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 const root = new URL('../', import.meta.url);
 const footer = await readFile(new URL('js/shared/footer.js', root), 'utf8');
 const sharedStyles = await readFile(new URL('css/shared.css', root), 'utf8');
+const presetStyles = await readFile(new URL('js/shared/button-preset.css', root), 'utf8');
 const homeIndex = await readFile(new URL('js/pages/home/index.js', root), 'utf8');
 const homeStyles = await readFile(new URL('js/pages/home/home-builds-vault.css', root), 'utf8');
 const pageUrl = new URL('admin/performance/pages/shared/footer/index.html', root);
@@ -41,7 +42,11 @@ assert.match(controller, /aria-pressed/, 'preset controls expose pressed state')
 assert.match(styles, /justify-content:\s*center/, 'preset controls are centered');
 assert.match(styles, /@media\s*\(max-width:\s*700px\)/, 'footer preset controls cover narrow screens');
 assert.match(styles, /@media\s*\(max-width:\s*420px\)/, 'footer preset controls cover mobile screens');
-assert.match(sharedStyles, /\.site-footer__nav\s+a[\s\S]*?background:\s*#eac914/, 'footer navigation uses the scrollbar yellow');
-assert.match(sharedStyles, /\.site-footer__nav\s+a[\s\S]*?border-radius:\s*9999px/, 'footer navigation uses pill buttons');
+assert.match(sharedStyles, /@import\s+url\(["']\.\.\/js\/shared\/button-preset\.css/, 'shared CSS imports the reusable button preset');
+assert.match(footer, /home-preset-button site-footer__nav-link site-footer__nav-link--legal/, 'legal footer links use the preset');
+assert.match(footer, /home-preset-button home-preset-button--blue site-footer__nav-link site-footer__nav-link--catalog/, 'catalog footer links use the blue preset');
+assert.match(presetStyles, /\.home-preset-button::before,\s*\.site-footer__nav\s+a::before[\s\S]*?border:\s*1px\s+solid/, 'preset keeps the inner rim at rest');
+assert.match(presetStyles, /\.home-preset-button:hover\s*,[\s\S]*?inset\s+0\s+0\s+0\s+2px\s+var\(--home-preset-gold\)/, 'preset restores the outer gold ring on hover');
+assert.match(presetStyles, /\.home-preset-button\s*,[\s\S]*?border-radius:\s*999px/, 'preset uses pill buttons');
 
 console.log('Admin footer preset smoke passed.');

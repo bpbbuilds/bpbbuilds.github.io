@@ -26,6 +26,7 @@ const FILTERS_INSET = -28;
  *   mode: PlaceMode,
  *   filtersSelector: string,
  *   filtersScope: ParentNode | null,
+ *   bounds: (() => { top?: number, right?: number, bottom?: number, left?: number } | null) | null,
  * }} PlaceConfig
  */
 
@@ -54,9 +55,19 @@ function fitTooltipScale(tip) {
  * Keep tooltip on-screen; sidecar gets its own full-height scroll column.
  * @param {HTMLElement} host
  */
-function clampTooltipHeight(host) {
+function clampTooltipHeight(host, bounds = null) {
   if (!host.classList.contains('is-visible')) return;
   const vh = window.innerHeight;
+  const topBound = Number.isFinite(Number(bounds?.top))
+    ? Math.max(EDGE, Number(bounds.top))
+    : EDGE;
+  const bottomBound = Math.max(
+    topBound + 1,
+    Math.min(
+      vh - EDGE,
+      Number.isFinite(Number(bounds?.bottom)) ? Number(bounds.bottom) : vh - EDGE,
+    ),
+  );
   const sidecar = host.querySelector('.bpb-tooltip-sidecar');
 
   if (sidecar instanceof HTMLElement) {
@@ -68,10 +79,10 @@ function clampTooltipHeight(host) {
       const clusterRect = host.getBoundingClientRect();
       const clusterH = clusterRect.height;
       let topAdjust = 0;
-      if (clusterRect.top + clusterH > vh - EDGE) {
-        topAdjust = Math.max(EDGE, vh - EDGE - clusterH) - clusterRect.top;
-      } else if (clusterRect.top < EDGE) {
-        topAdjust = EDGE - clusterRect.top;
+      if (clusterRect.top + clusterH > bottomBound) {
+        topAdjust = Math.max(topBound, bottomBound - clusterH) - clusterRect.top;
+      } else if (clusterRect.top < topBound) {
+        topAdjust = topBound - clusterRect.top;
       }
       if (topAdjust) {
         const curTop = Number.parseFloat(host.style.top) || clusterRect.top;
@@ -81,8 +92,8 @@ function clampTooltipHeight(host) {
 
     const sidecarRect = sidecar.getBoundingClientRect();
     const maxSidecarH = Math.max(
-      220,
-      Math.min(vh - EDGE * 2, vh - EDGE - Math.max(EDGE, sidecarRect.top)),
+      bounds ? 1 : 220,
+      Math.min(bottomBound - topBound, bottomBound - Math.max(topBound, sidecarRect.top)),
     );
     host.style.setProperty('--bpb-sidecar-max-h', `${maxSidecarH}px`);
     return;
@@ -95,11 +106,11 @@ function clampTooltipHeight(host) {
   const card = host.querySelector('.bpb-tooltip');
   const box = card instanceof HTMLElement ? card : host;
   const boxRect = box.getBoundingClientRect();
-  const overflow = boxRect.bottom - (vh - EDGE);
+  const overflow = boxRect.bottom - bottomBound;
   if (overflow > 0) {
     const curTop = Number.parseFloat(host.style.top);
     const base = Number.isFinite(curTop) ? curTop : rect.top;
-    const nextTop = Math.max(EDGE, base - overflow);
+    const nextTop = Math.max(topBound, base - overflow);
     host.style.top = `${Math.round(nextTop)}px`;
     const still = overflow - (base - nextTop);
     if (still <= 1) return;
@@ -108,7 +119,10 @@ function clampTooltipHeight(host) {
   }
 
   const fitted = host.getBoundingClientRect();
-  const maxTooltipH = Math.max(160, vh - EDGE - Math.max(0, fitted.top));
+  const maxTooltipH = Math.max(
+    bounds ? 1 : 160,
+    bottomBound - Math.max(topBound, fitted.top),
+  );
   host.style.setProperty('--bpb-tooltip-max-h', `${maxTooltipH}px`);
 
   const modsScroll = host.querySelector('.bpb-tooltip__mods-scroll');
@@ -117,18 +131,18 @@ function clampTooltipHeight(host) {
   const cardH = card.getBoundingClientRect().height;
   const scrollH = modsScroll.getBoundingClientRect().height;
   const nonScrollH = Math.max(0, cardH - scrollH);
-  const maxModsH = Math.max(72, maxTooltipH - nonScrollH);
+  const maxModsH = Math.max(bounds ? 1 : 72, maxTooltipH - nonScrollH);
   host.style.setProperty('--bpb-tooltip-mods-max-h', `${maxModsH}px`);
 }
 
 /**
  * @param {HTMLElement} host
  */
-function initTooltipInteractions(host) {
-  clampTooltipHeight(host);
+function initTooltipInteractions(host, bounds = null) {
+  clampTooltipHeight(host, bounds);
   host.querySelectorAll('.bpb-tooltip__mod-via').forEach((el) => {
     if (!(el instanceof HTMLDetailsElement)) return;
-    el.addEventListener('toggle', () => clampTooltipHeight(host));
+    el.addEventListener('toggle', () => clampTooltipHeight(host, bounds));
   });
 }
 
@@ -238,9 +252,25 @@ function placeItemRight(tip, anchor) {
 }
 
 /** Card sits just left of the chip; sidecar continues further left. */
-function placeItemLeft(tip, anchor) {
+function placeItemLeft(tip, anchor, bounds = null) {
   const rect = anchor.getBoundingClientRect();
   const vh = window.innerHeight;
+  const safeTop = Number.isFinite(Number(bounds?.top))
+    ? Math.max(EDGE, Number(bounds.top))
+    : EDGE;
+  const safeRight = Number.isFinite(Number(bounds?.right))
+    ? Math.min(window.innerWidth - EDGE, Number(bounds.right))
+    : window.innerWidth - EDGE;
+  const safeLeft = Number.isFinite(Number(bounds?.left))
+    ? Math.max(EDGE, Number(bounds.left))
+    : EDGE;
+  const safeBottom = Math.max(
+    safeTop + 1,
+    Math.min(
+      vh - EDGE,
+      Number.isFinite(Number(bounds?.bottom)) ? Number(bounds.bottom) : vh - EDGE,
+    ),
+  );
   const cluster = tip.querySelector('.bpb-tooltip-cluster');
   if (cluster instanceof HTMLElement) {
     cluster.classList.add('bpb-tooltip-cluster--flip');
@@ -250,8 +280,17 @@ function placeItemLeft(tip, anchor) {
     (cluster instanceof HTMLElement ? cluster.offsetWidth : 0) ||
     tip.offsetWidth ||
     584;
-  const space = Math.max(160, rect.left - GAP - EDGE);
-  const scale = Math.min(desktopTooltipScale(window.innerWidth), space / layoutW);
+  const layoutH =
+    (cluster instanceof HTMLElement ? cluster.offsetHeight : 0) ||
+    tip.offsetHeight ||
+    0;
+  const space = Math.max(160, rect.left - GAP - safeLeft);
+  const heightScale = layoutH > 0 ? (safeBottom - safeTop) / layoutH : 1;
+  const scale = Math.min(
+    desktopTooltipScale(window.innerWidth),
+    space / layoutW,
+    heightScale,
+  );
   tip.style.setProperty('--bpb-tooltip-scale', String(scale));
 
   const tipRect = tip.getBoundingClientRect();
@@ -259,11 +298,12 @@ function placeItemLeft(tip, anchor) {
   const th = tipRect.height || tip.offsetHeight;
 
   let left = rect.left - GAP - tw;
-  if (left < EDGE) left = EDGE;
+  if (left < safeLeft) left = safeLeft;
+  if (left + tw > safeRight) left = Math.max(safeLeft, safeRight - tw);
 
   let top = rect.top;
-  if (top + th > vh - EDGE) top = Math.max(EDGE, vh - th - EDGE);
-  if (top < EDGE) top = EDGE;
+  if (top + th > safeBottom) top = Math.max(safeTop, safeBottom - th);
+  if (top < safeTop) top = safeTop;
 
   tip.style.left = `${Math.round(left)}px`;
   tip.style.top = `${Math.round(top)}px`;
@@ -295,9 +335,9 @@ function placeOverFilters(tip, anchor, panel) {
 
 function placeSpotlight(tip, stage) {
   fitTooltipScale(tip);
+  const vh = window.innerHeight;
   const tipRect = tip.getBoundingClientRect();
   const th = tipRect.height || tip.offsetHeight;
-  const vh = window.innerHeight;
 
   const bag = document.querySelector('.items-bag');
   let left = EDGE + 12;
@@ -351,6 +391,7 @@ function defaultPlaceConfig() {
     mode: 'near',
     filtersSelector: '.items-filters',
     filtersScope: null,
+    bounds: null,
   };
 }
 
@@ -448,6 +489,14 @@ export function createTooltipHover(options = {}) {
     }
 
     const mode = activePlace.mode;
+    let bounds = null;
+    if (typeof activePlace.bounds === 'function') {
+      try {
+        bounds = activePlace.bounds();
+      } catch {
+        bounds = null;
+      }
+    }
     if (mode !== 'itemLeft') {
       host.querySelector('.bpb-tooltip-cluster')?.classList.remove('bpb-tooltip-cluster--flip');
     }
@@ -458,7 +507,7 @@ export function createTooltipHover(options = {}) {
     } else if (mode === 'itemRight' && anchor) {
       placeItemRight(host, anchor);
     } else if (mode === 'itemLeft' && anchor) {
-      placeItemLeft(host, anchor);
+      placeItemLeft(host, anchor, bounds);
     } else if (mode === 'overFilters' && anchor) {
       const scope = activePlace.filtersScope || document;
       const panel = scope.querySelector?.(activePlace.filtersSelector);
@@ -470,7 +519,7 @@ export function createTooltipHover(options = {}) {
     } else if (anchor) {
       placeNear(host, anchor);
     }
-    initTooltipInteractions(host);
+    initTooltipInteractions(host, bounds);
   }
 
   /**
@@ -627,6 +676,7 @@ export function createTooltipHover(options = {}) {
    *   place?: PlaceMode,
    *   filtersSelector?: string,
    *   filtersScope?: ParentNode | null,
+   *   bounds?: () => { top?: number, right?: number, bottom?: number, left?: number } | null,
    * }} opts
    */
   function bind(root, opts) {
@@ -645,6 +695,7 @@ export function createTooltipHover(options = {}) {
           : 'near',
       filtersSelector: opts.filtersSelector || '.items-filters',
       filtersScope: opts.filtersScope || root,
+      bounds: typeof opts.bounds === 'function' ? opts.bounds : null,
     };
 
     bindRoots.add(root);

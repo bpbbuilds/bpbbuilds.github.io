@@ -44,17 +44,53 @@ function shouldUseStaticSky() {
   return compactViewport || reducedData || saveData || lowCoreDevice;
 }
 
+/**
+ * The Home HTML paints the windmill masks before this module arrives. Decode
+ * the same assets here so the paused placeholder can hand off to the CSS
+ * animation without the blades appearing halfway through a load.
+ * @param {string} root
+ * @returns {Promise<void>}
+ */
+function waitForWindmillAssets(root) {
+  const base = `${String(root || './').replace(/\/?$/, '/')}assets/theme/backgrounds/combat/`;
+  return Promise.all(
+    ['Windmill.png', 'WindmillBlades.png'].map(
+      (file) =>
+        new Promise((resolve) => {
+          const image = new Image();
+          let settled = false;
+          const finish = () => {
+            if (settled) return;
+            settled = true;
+            resolve();
+          };
+          image.addEventListener('load', finish, { once: true });
+          image.addEventListener('error', finish, { once: true });
+          image.src = `${base}${file}`;
+          if (image.complete) finish();
+        }),
+    ),
+  ).then(() => undefined);
+}
+
 export function initCombatSky({ mode = 'fixed-night' } = {}) {
   if (!document.body.classList.contains('page-home')) return;
-  if (document.querySelector('.combat-sky')) return;
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const scrollMode = mode === 'scroll';
+  const existing = document.querySelector('.combat-sky');
+  if (existing && !existing.hasAttribute('data-combat-sky-preload')) return;
   const staticMode = scrollMode && (reduced || shouldUseStaticSky());
-  const host = buildSkyDom(combatSkyRoot());
+  const preloadHost = !scrollMode && existing instanceof HTMLElement ? existing : null;
+  const host = preloadHost || buildSkyDom(combatSkyRoot(), { windmillOnly: !scrollMode });
   if (staticMode) host.classList.add('combat-sky--static');
   if (!scrollMode) host.classList.add('combat-sky--fixed-night');
-  document.body.insertBefore(host, document.body.firstChild);
+  if (preloadHost) {
+    host.removeAttribute('data-combat-sky-preload');
+    host.classList.add('combat-sky--preload');
+  } else {
+    document.body.insertBefore(host, document.body.firstChild);
+  }
 
   const layers = bindSkyLayers(host);
   fitScale(host);
@@ -67,6 +103,9 @@ export function initCombatSky({ mode = 'fixed-night' } = {}) {
       layers.moon.style.setProperty('--x', '960px');
       layers.moon.style.setProperty('--y', '190px');
     }
+    void waitForWindmillAssets(combatSkyRoot()).then(() => {
+      host.classList.remove('combat-sky--preload');
+    });
     window.addEventListener('resize', () => fitScale(host), { passive: true });
     return {
       host,

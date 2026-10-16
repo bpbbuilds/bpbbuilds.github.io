@@ -31,7 +31,8 @@ assert.match(spotlight, /deferLiveArt: true/);
 assert.match(spotlight, /requestAnimationFrame\(\(\) => \{[\s\S]*opts\.recipes\?\.showFor[\s\S]*opts\.builds\?\.showFor/);
 assert.match(builds, /const BUILD_CACHE_MAX = 24/);
 assert.match(builds, /function cacheBuilds\(itemId, builds\)/);
-assert.match(audit, /- \[x\] Defer live-art layers and keep only focused\/spotlight animation active; pause when hidden\./);
+assert.match(audit, /- \[x\] Keep live-art layers out of the Items catalog and spotlight; placed boards retain focused animation and hidden-tab pausing\./);
+assert.match(audit, /Itemiary catalog art is now static end-to-end/);
 assert.match(audit, /- \[x\] Open spotlight immediately and defer full art\/build queries behind a skeleton\/cache\./);
 
 console.log('items P1 live-art/spotlight smoke passed');

@@ -137,7 +137,13 @@ function sectionHtml(root) {
             Choose your hero to browse its builds, or click a starting bag to see every build that uses it.
           </p>
         </header>
-        <div class="home-mobs__cards" data-home-mobs-rail>
+        <div
+          class="home-mobs__cards"
+          data-home-mobs-rail
+          tabindex="0"
+          role="region"
+          aria-label="Choose your hero"
+        >
           ${cards}
         </div>
       </div>
@@ -155,7 +161,73 @@ function bindRail(host) {
     rail.scrollLeft = (rail.scrollWidth - rail.clientWidth) / 2;
   });
 
+  let activePointerId = null;
+  let startX = 0;
+  let startScrollLeft = 0;
+  let didDrag = false;
+  let suppressClick = false;
+  let suppressClickTimer = 0;
+
+  const finishPointer = (ev) => {
+    if (ev.pointerId !== activePointerId) return;
+    if (rail.hasPointerCapture?.(ev.pointerId)) rail.releasePointerCapture(ev.pointerId);
+    activePointerId = null;
+    rail.classList.remove('is-dragging');
+    if (didDrag) {
+      suppressClick = true;
+      window.clearTimeout(suppressClickTimer);
+      suppressClickTimer = window.setTimeout(() => {
+        suppressClick = false;
+      }, 400);
+    }
+    didDrag = false;
+  };
+
+  rail.addEventListener('pointerdown', (ev) => {
+    if (!ev.isPrimary || activePointerId !== null) return;
+    if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+    suppressClick = false;
+    window.clearTimeout(suppressClickTimer);
+    activePointerId = ev.pointerId;
+    startX = ev.clientX;
+    startScrollLeft = rail.scrollLeft;
+    didDrag = false;
+    rail.classList.add('is-dragging');
+    rail.setPointerCapture?.(ev.pointerId);
+  });
+
+  rail.addEventListener('pointermove', (ev) => {
+    if (ev.pointerId !== activePointerId) return;
+    const delta = ev.clientX - startX;
+    if (Math.abs(delta) <= 6) return;
+    didDrag = true;
+    ev.preventDefault();
+    rail.scrollLeft = startScrollLeft - delta;
+  });
+
+  rail.addEventListener('pointerup', finishPointer);
+  rail.addEventListener('pointercancel', finishPointer);
+
+  rail.addEventListener('keydown', (ev) => {
+    if (ev.key !== 'ArrowLeft' && ev.key !== 'ArrowRight') return;
+    ev.preventDefault();
+    const direction = ev.key === 'ArrowLeft' ? -1 : 1;
+    rail.scrollBy({
+      left: direction * Math.max(180, rail.clientWidth * 0.65),
+      behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+        ? 'auto'
+        : 'smooth',
+    });
+  });
+
   rail.addEventListener('click', (ev) => {
+    if (suppressClick) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      suppressClick = false;
+      window.clearTimeout(suppressClickTimer);
+      return;
+    }
     if (!(ev.target instanceof Element)) return;
     if (ev.target.closest('.home-mobs__bag')) return;
     const card = /** @type {HTMLElement | null} */ (

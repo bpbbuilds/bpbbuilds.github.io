@@ -90,7 +90,7 @@ try {
       const expectedOverlap = viewport.name === 'tablet' ? 25 : 24;
       if (Math.abs(result.overlapPx - expectedOverlap) > 1) throw new Error(`${viewport.name}: footer does not sit ${expectedOverlap}px over the curated loadout background (${JSON.stringify(result)})`);
       if (result.footerHostPosition !== 'relative' || result.footerHostZIndex !== '10') throw new Error(`${viewport.name}: footer host is not the top overlap layer (${JSON.stringify(result)})`);
-      if (!result.footerHostBackgroundImage.includes('bg-hills-night-deep.jpg')) throw new Error(`${viewport.name}: footer underlay does not match the curated loadout background (${JSON.stringify(result)})`);
+      if (result.footerHostBackgroundImage !== 'none' || result.footerHostBackgroundColor !== 'rgba(0, 0, 0, 0)') throw new Error(`${viewport.name}: footer host must stay transparent so the dip reveals the loadout scene (${JSON.stringify(result)})`);
     }
     if (result.overflowX > 1) throw new Error(`${viewport.name}: horizontal overflow ${result.overflowX}px`);
     results.push({ ...viewport, ...result });

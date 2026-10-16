@@ -1,5 +1,5 @@
 /**
- * Build catalog WebP thumbs from assets/item-sprites/*.png.
+ * Build catalog WebP thumbs from every assets/item-sprites/*.png.
  *
  * Source art is authored far larger than the Itemiary ever paints it (p50
  * texture 166x292 for an item that renders ~51px wide). Itemiary decode cost is
@@ -7,7 +7,9 @@
  * while spotlight / board / export keep the full PNG.
  *
  * Target size comes from sprite-display.json `w`/`h` (sprite size in cells, the
- * same numbers spriteSizeStyle renders with) x px-per-cell:
+ * same numbers spriteSizeStyle renders with) x px-per-cell. A source sprite
+ * without display metadata falls back to a proportional square cell so it is
+ * still never served as a full-size PNG by the catalog:
  *
  *   1x = 68 px/cell  - standard DPR (catalog cells run ~34-75px)
  *   2x = 136 px/cell - devicePixelRatio > 1.5
@@ -63,6 +65,21 @@ function thumbSize(img, cells, cellPx) {
   };
 }
 
+/**
+ * Unknown/auxiliary sprites do not have game display geometry. Keep their
+ * aspect ratio while fitting them into one catalog cell instead of stretching
+ * them to a made-up footprint.
+ * @param {{ width: number, height: number }} img
+ * @param {number} cellPx
+ */
+function fallbackThumbSize(img, cellPx) {
+  const scale = Math.min(1, cellPx / img.width, cellPx / img.height);
+  return {
+    w: Math.max(1, Math.round(img.width * scale)),
+    h: Math.max(1, Math.round(img.height * scale)),
+  };
+}
+
 /** Thumb is current when it is newer than the source PNG. */
 function isFresh(outPath, srcMtimeMs) {
   try {
@@ -91,30 +108,27 @@ async function main() {
     fs.mkdirSync(path.join(THUMBS_DIR, set.dir), { recursive: true });
   }
 
+  const sourceImages = fs
+    .readdirSync(SPRITES_DIR)
+    .filter((name) => name.toLowerCase().endsWith('.png'))
+    .sort();
   /** @type {string[]} */
   const images = [];
   let written = 0;
   let skipped = 0;
   let srcBytes = 0;
   let thumbBytes = 0;
-  /** @type {string[]} */
-  const missingSprite = [];
-
-  for (const image of Object.keys(byImage).sort()) {
+  for (const image of sourceImages) {
     const srcPath = path.join(SPRITES_DIR, image);
-    let srcStat;
-    try {
-      srcStat = fs.statSync(srcPath);
-    } catch {
-      missingSprite.push(image);
-      continue;
-    }
+    const srcStat = fs.statSync(srcPath);
 
-    const meta = byImage[image];
-    const cells = {
-      w: Number(meta?.w) > 0 ? Number(meta.w) : 1,
-      h: Number(meta?.h) > 0 ? Number(meta.h) : 1,
-    };
+    const meta = byImage[image] || null;
+    const cells = meta
+      ? {
+          w: Number(meta.w) > 0 ? Number(meta.w) : 1,
+          h: Number(meta.h) > 0 ? Number(meta.h) : 1,
+        }
+      : null;
     const outName = `${image.replace(/\.png$/i, '')}.webp`;
     const outPaths = SETS.map((set) => path.join(THUMBS_DIR, set.dir, outName));
 
@@ -128,7 +142,9 @@ async function main() {
 
     const img = await loadImage(srcPath);
     for (let i = 0; i < SETS.length; i += 1) {
-      const size = thumbSize(img, cells, SETS[i].cellPx);
+      const size = cells
+        ? thumbSize(img, cells, SETS[i].cellPx)
+        : fallbackThumbSize(img, SETS[i].cellPx);
       const canvas = createCanvas(size.w, size.h);
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, size.w, size.h);
@@ -143,7 +159,8 @@ async function main() {
 
   const payload = {
     generatedAt: new Date().toISOString(),
-    source: 'assets/item-sprites + assets/data/sprite-display.json',
+    source:
+      'assets/item-sprites + assets/data/sprite-display.json (proportional fallback for unmeasured sprites)',
     cell1x: SETS[0].cellPx,
     cell2x: SETS[1].cellPx,
     quality,
@@ -160,14 +177,11 @@ async function main() {
     `  ${mb(srcBytes)} MB PNG -> ${mb(thumbBytes)} MB WebP (both sets, q${quality})`,
   );
   console.log(`  manifest -> ${path.relative(ROOT, OUT)}`);
-  if (missingSprite.length) {
-    console.log(
-      `  ${missingSprite.length} display entries have no PNG on disk (kept on PNG at runtime)`,
-    );
-  }
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });

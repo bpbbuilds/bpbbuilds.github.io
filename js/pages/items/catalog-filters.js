@@ -89,7 +89,7 @@ export function filtersHtml(root, state, shown) {
   ).join('');
 
   return `
-    <aside id="items-filters" class="items-filters il-filter bpb-filter-drawer__panel" aria-label="Filter items">
+    <aside id="items-filters" class="items-filters il-filter bpb-filter-preset bpb-filter-drawer__panel" aria-label="Filter items">
       <div class="il-filter__head">
         <button type="button" class="bpb-filter-drawer__close" data-bpb-filter-close aria-label="Close filters">
           <span class="bpb-filter-drawer__close-icon" aria-hidden="true"></span>

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/** Responsive browser smoke for public Builds view content surfaces. */
+/** Responsive browser smoke for public Builds view listing surfaces. */
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -39,11 +39,14 @@ try {
       const listings = [...document.querySelectorAll('.builds-post')];
       const surfaces = wrappers.map((wrapper) => {
         const style = getComputedStyle(wrapper);
+        const shade = getComputedStyle(wrapper, '::before');
         return {
           backgroundImage: style.backgroundImage,
           backgroundColor: style.backgroundColor,
-          borderRadius: style.borderRadius,
           boxShadow: style.boxShadow,
+          shadeBackground: shade.backgroundColor,
+          shadePosition: shade.position,
+          shadeZIndex: shade.zIndex,
           width: wrapper.getBoundingClientRect().width,
         };
       });
@@ -55,14 +58,14 @@ try {
       };
     });
     if (result.surfaces.length !== 3) throw new Error(`${viewport.name}: missing view surfaces`);
-    if (result.surfaces.some((surface) => !surface.backgroundImage.includes('bg-dark-textured.webp'))) {
-      throw new Error(`${viewport.name}: one or more textured surfaces missing`);
+    if (result.surfaces.some((surface) => surface.backgroundColor !== 'rgba(0, 0, 0, 0)')) {
+      throw new Error(`${viewport.name}: one or more listing surfaces still have an opaque fill`);
     }
-    if (new Set(result.surfaces.map((surface) => surface.backgroundImage)).size !== 1) {
-      throw new Error(`${viewport.name}: textured surfaces differ`);
+    if (result.surfaces.some((surface) => surface.backgroundImage !== 'none')) {
+      throw new Error(`${viewport.name}: old textured listing background remains`);
     }
-    if (result.surfaces.some((surface) => surface.borderRadius !== '24px')) {
-      throw new Error(`${viewport.name}: view surfaces do not share the Home promo radius`);
+    if (result.surfaces.some((surface) => surface.shadeBackground !== 'rgba(14, 15, 16, 0.22)' || surface.shadePosition !== 'absolute' || surface.shadeZIndex !== '0')) {
+      throw new Error(`${viewport.name}: one or more Patch3 shade layers are missing or incorrectly stacked`);
     }
     if (result.surfaces.some((surface) => surface.boxShadow !== 'none')) {
       throw new Error(`${viewport.name}: view surfaces still paint a shadow`);

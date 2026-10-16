@@ -8,6 +8,7 @@
 @import url("../js/shared/premium-offer.css");
 @import url("../js/shared/discord-join.css");
 @import url("../js/shared/access-gate.css");
+@import url("../js/shared/button-preset.css?v=slim-footer-20261016a");
 
 /* —— Site footer —— */
 .site-footer {
@@ -64,38 +65,8 @@
 }
 
 .site-footer__nav a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   min-height: 2.2rem;
   padding: 0.38rem 0.85rem;
-  border: 1px solid rgba(60, 38, 29, 0.75);
-  border-radius: 9999px;
-  box-sizing: border-box;
-  color: #3c261d;
-  background: #eac914;
-  box-shadow: 0 2px 0 rgba(60, 38, 29, 0.32), inset 0 1px 0 rgba(255, 246, 166, 0.5);
-  font-weight: 700;
-  line-height: 1;
-  text-decoration: none;
-  transition: background-color 0.15s ease, filter 0.15s ease, transform 0.15s ease;
-}
-
-.site-footer__nav a:hover,
-.site-footer__nav a:focus-visible {
-  color: #3c261d;
-  background: #f2d52a;
-  filter: brightness(1.04);
-  text-decoration: none;
-}
-
-.site-footer__nav a:hover {
-  transform: translateY(-1px);
-}
-
-.site-footer__nav a:focus-visible {
-  outline: 2px solid #fff4a8;
-  outline-offset: 3px;
 }
 
 .site-footer__socials {
@@ -127,7 +98,7 @@
 .site-footer--slim {
   margin-top: 0;
   padding: 0.4rem var(--bpb-frame-edge-x, 1rem)
-    max(3.25rem, var(--bpb-frame-edge-y, 0.4rem));
+    calc(max(0.4rem, var(--bpb-frame-edge-y, 0.4rem)) + 0.4rem);
 }
 
 /* No wood frame on phone/tablet, so the footer sits on the viewport edge
@@ -138,7 +109,7 @@
   }
 
   .site-footer--slim {
-    padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+    padding-bottom: max(0.4rem, env(safe-area-inset-bottom, 0px));
   }
 }
 

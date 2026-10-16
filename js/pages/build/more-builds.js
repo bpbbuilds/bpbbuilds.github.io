@@ -264,7 +264,12 @@ export function mountAuthorMoreBuilds(railEl, opts) {
     stills.push(mounted);
 
     if (thumb instanceof HTMLElement) {
-      registerMoreBuildTip(thumb, withAuthor(build, opts.author), mounted.stillUrl);
+      registerMoreBuildTip(thumb, withAuthor(build, opts.author), mounted.stillUrl, {
+        placements,
+        itemsById,
+        getSpriteUrl,
+        root,
+      });
     }
   }
 

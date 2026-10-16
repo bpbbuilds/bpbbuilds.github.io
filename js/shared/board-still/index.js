@@ -4,6 +4,7 @@
 
 import { BOARD_COLS, BOARD_ROWS, STILL_OVERHANG } from './paint.js';
 import { boardStillUrl } from './cache.js';
+import { potionInteractionPairs } from '../potion-links.js';
 
 export { paintBoardCanvas, BOARD_COLS, BOARD_ROWS, STILL_CELL_PX, STILL_OVERHANG } from './paint.js';
 export { paintBoardForCompare, fullSpriteUrl } from './paint-compare.js';
@@ -47,7 +48,12 @@ export function mountBoardStill(host, opts) {
   still.appendChild(img);
   host.replaceChildren(still);
 
-  const baked = opts.bakedUrl;
+  // A legacy baked PNG cannot contain the new static connector. When the
+  // placement data proves an active potion interaction, use the current painter
+  // so curated/build previews do not silently retain the old image.
+  const baked = potionInteractionPairs(opts.placements, opts.itemsById).length
+    ? null
+    : opts.bakedUrl;
   /** @type {Promise<string | null>} */
   const renderGenerated = () => boardStillUrl({
         placements: opts.placements,

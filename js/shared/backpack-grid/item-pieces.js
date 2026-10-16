@@ -629,6 +629,7 @@ export function filterEntriesNearViewport(
  *   libraryBagScale?: boolean,
  *   deferSprite?: boolean,
  *   deferLiveArt?: boolean,
+ *   liveArt?: boolean,
  *   chrome?: boolean,
  *   shadow?: boolean,
  *   bagSlots?: boolean,
@@ -683,12 +684,15 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
       ? `left:calc(50% + ${ax} * var(--bpb-bg-cell));top:calc(50% + ${ay} * var(--bpb-bg-cell));`
       : '';
   // Deferred: data-src only (no loading=lazy — hidden pending nodes never fetch).
-  const liveImg = liveInnerHtml(item, {
-    src,
-    defer: deferSprite,
-    anchorStyle,
-    sizeStyle,
-  });
+  const liveImg =
+    opts.liveArt === false
+      ? null
+      : liveInnerHtml(item, {
+          src,
+          defer: deferSprite,
+          anchorStyle,
+          sizeStyle,
+        });
   const img = liveImg
     ? liveImg
     : src
@@ -763,7 +767,9 @@ export function createItemEl(item, getSpriteUrl, stackZ, face = 0, gems = [], op
     </div>`;
   const el = elementFromHtml(html);
   // Deferred Itemiary: bind shaders on warm/IO, not while the node is parked.
-  if (el instanceof HTMLElement && !deferSprite && !deferLiveArt) mountLiveArt(el);
+  if (el instanceof HTMLElement && !deferSprite && !deferLiveArt && opts.liveArt !== false) {
+    mountLiveArt(el);
+  }
   return el;
 }
 

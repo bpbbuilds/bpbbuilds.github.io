@@ -24,7 +24,7 @@ assert.match(itemsPage, /catalogPromise\s*\|\|\s*initItemsCatalog/);
 assert.match(nav, /const allowed = await initSiteAccess\(\);[\s\S]*onAccessGranted/);
 assert.match(catalog, /let pendingFiltered = null/);
 assert.match(catalog, /pendingFiltered = filteredItemsForState\(\)/);
-assert.match(catalog, /paintGrid\(host, \{ appear: true, filtered \}\)/);
+assert.match(catalog, /paintGrid\(host, \{ appear: false, filtered \}\)/);
 assert.doesNotMatch(pool, /if \(near\.length\) \{\s*await warmItemSprites/);
 assert.match(pool, /void warmItemSprites\(near\.map\(\(e\) => e\.itemEl\), \{[\s\S]*isCurrent:[\s\S]*\}\)\.catch/);
 assert.match(pieces, /itemWaits\.push\([\s\S]*Promise\.all\(waits\)\.then\([\s\S]*isCurrent[\s\S]*sprite-pending/);

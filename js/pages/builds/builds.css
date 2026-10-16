@@ -56,6 +56,8 @@ body.page-builds #main {
   flex: 1 1 auto;
   min-height: 0;
   padding-bottom: 0.35rem;
+  /* Keep feed cards from touching the scrollbar track on its inline-end side. */
+  padding-inline-end: clamp(0.35rem, 0.55vw, 0.65rem);
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -154,21 +156,6 @@ body.page-builds #main {
   background: var(--builds-filters-scroll-thumb);
 }
 
-/* Same Patch3 panel as .builds-post__body */
-.builds-feed-filters.items-filters::before {
-  content: '';
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  box-sizing: border-box;
-  background: var(--builds-post-body-shade);
-  pointer-events: none;
-  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
-  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
-  mask-border-slice: 8 7 9 8 fill;
-  mask-border-width: 8px 7px 9px 8px;
-}
-
 .builds-feed-filters.items-filters > * {
   position: relative;
   z-index: 1;
@@ -177,16 +164,6 @@ body.page-builds #main {
 /* Sort / view menus must sit above Tags / classes / ranks (same parent stacking) */
 .builds-feed-filters.items-filters > .builds-feed-filters__menus {
   z-index: 20;
-}
-
-/* One outer panel — skip stacked section shades on this rail */
-.builds-feed-filters .il-filter__shade {
-  background: none;
-}
-
-.builds-feed-filters .il-filter__shade::before {
-  content: none;
-  display: none;
 }
 
 .builds-feed-filters .il-filter__sticker {
@@ -231,6 +208,138 @@ body.page-builds #main {
 .builds-feed-filters .il-filter__checks {
   display: grid;
   gap: 0.35rem;
+}
+
+/* Build tags follow the Items filter's compact two-column rhythm. The
+   category plate deliberately matches the clickable hashtag badges below,
+   so selecting a tag feels like the same object users see on a build card. */
+.builds-feed-filters__tag-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.3rem 0.45rem;
+  min-width: 0;
+}
+
+.builds-feed-filters__tag {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 0.18rem 0.25rem;
+  background: transparent;
+  color: var(--bp-ui-cream, #ffecdc);
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.builds-feed-filters__tag::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--builds-tag-fill, rgba(60, 38, 29, 0.72));
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.builds-feed-filters__tag .il-filter__check-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(0.95rem, calc(0.72rem + 0.42vw), 1.35rem);
+}
+
+.builds-feed-filters__tag--op {
+  --builds-tag-fill: rgba(139, 46, 46, 0.72);
+}
+
+.builds-feed-filters__tag--feasible {
+  --builds-tag-fill: rgba(47, 93, 58, 0.72);
+}
+
+.builds-feed-filters__tag--theory {
+  --builds-tag-fill: rgba(58, 74, 122, 0.72);
+}
+
+.builds-feed-filters__tag--real {
+  --builds-tag-fill: rgba(106, 74, 24, 0.72);
+}
+
+.builds-feed-filters__tag--featured {
+  --builds-tag-fill: rgba(138, 106, 24, 0.75);
+}
+
+.builds-feed-filters__tag:hover,
+.builds-feed-filters__tag:focus-visible {
+  filter: brightness(1.12);
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* Events are a small, single-select catalog today. Checkmarks make the
+   active event visible without hiding the option behind a menu; “All events”
+   maps to the existing null event state. */
+.builds-feed-filters__event-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.3rem 0.45rem;
+  min-width: 0;
+}
+
+.builds-feed-filters__event {
+  width: 100%;
+  min-width: 0;
+  padding: 0.18rem 0.25rem;
+}
+
+.builds-feed-filters__event .il-filter__check-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(0.95rem, calc(0.72rem + 0.42vw), 1.35rem);
+}
+
+/* Hero classes mirror the Items page: one continuous row of equal icon
+   slots, including the Neutral/Any class affordance. */
+.builds-feed-filters .builds-feed-filters__class-icons {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0;
+  min-width: 0;
+  overflow: visible;
+}
+
+.builds-feed-filters .builds-feed-filters__class-icons .il-filter__icon-btn {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  height: clamp(2.5rem, 13vw, 3.1rem);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+/* Eight league choices read better as four columns than as tiny one-row
+   icons, while keeping the same icon-only affordance as class filtering. */
+.builds-feed-filters .builds-feed-filters__rank-icons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.2rem 0.15rem;
+  min-width: 0;
+}
+
+.builds-feed-filters .builds-feed-filters__rank-icons .il-filter__icon-btn {
+  width: 100%;
+  min-width: 0;
+  height: clamp(2.5rem, 13vw, 3.1rem);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
 }
 
 .builds-feed-filters .il-filter__check.is-disabled,
@@ -295,21 +404,42 @@ body.page-builds #main {
     0.092em -0.038em 0 var(--bp-ui-ink);
 }
 
-/* Card view owns the complete surface so its avatar, author, title, tags,
-   votes, board, and details all sit inside one textured rounded panel. */
-.builds-post:not(.builds-post--compact):not(.builds-post--grid) {
+/* Every public view uses the Items page's soft, dark Patch3 shade instead of
+   an opaque black/texture slab. Card view owns the full panel so its header
+   and body share one continuous recessed surface. */
+.builds-post:not(.builds-post--compact):not(.builds-post--grid),
+.builds-post__body,
+.builds-post__compact,
+.builds-post__grid {
   position: relative;
+  z-index: 0;
   isolation: isolate;
-  border-radius: 1.5rem;
-  background-color: #111;
-  background-image: url('../../../assets/theme/backgrounds/bg-dark-textured.webp');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  min-width: 0;
+  box-sizing: border-box;
+  --builds-post-body-shade: rgba(14, 15, 16, 0.22);
+  background: transparent;
   box-shadow: none;
 }
 
-/* Title + tags sit above the shared textured surface */
+/* Use the same nine-patch mask as the Items filter bands. The card selector
+   covers its header and body together; compact/grid cover their one wrapper. */
+.builds-post:not(.builds-post--compact):not(.builds-post--grid)::before,
+.builds-post__compact::before,
+.builds-post__grid::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--builds-post-body-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+/* Title + tags sit above the shared shade surface */
 .builds-post__top {
   display: flex;
   align-items: flex-start;
@@ -369,23 +499,6 @@ body.page-builds #main {
   outline-offset: 2px;
 }
 
-.builds-post__body,
-.builds-post__compact,
-.builds-post__grid {
-  position: relative;
-  z-index: 0;
-  isolation: isolate;
-  min-width: 0;
-  box-sizing: border-box;
-  border-radius: 1.5rem;
-  background-color: #111;
-  background-image: url('../../../assets/theme/backgrounds/bg-dark-textured.webp');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  box-shadow: none;
-}
-
 .builds-post__body {
   display: grid;
   gap: 0.45rem;
@@ -394,9 +507,9 @@ body.page-builds #main {
 
 .builds-post:not(.builds-post--compact):not(.builds-post--grid) > .builds-post__body {
   background: transparent;
-  border-radius: 0 0 1.5rem 1.5rem;
 }
 
+.builds-post:not(.builds-post--compact):not(.builds-post--grid) > *,
 .builds-post__body > *,
 .builds-post__compact > *,
 .builds-post__grid > * {
@@ -540,50 +653,80 @@ a.builds-post__author:hover {
 }
 
 .builds-post__flair {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
   font-family: var(--bpb-font-body);
   font-weight: 400;
   font-size: clamp(0.78rem, calc(0.56rem + 0.34vw), 1.05rem);
   letter-spacing: var(--bp-ui-track);
   line-height: 1.15;
   padding: 0.18rem 0.5rem 0.16rem;
-  border-radius: 0.25rem;
   color: var(--bp-ui-cream);
   -webkit-text-stroke: var(--bp-ui-stroke) var(--bp-ui-ink);
   paint-order: stroke fill;
   text-shadow: var(--bp-ui-ring);
-  background: color-mix(in srgb, #3c261d 72%, #8a5a2b);
+  background: transparent;
   text-decoration: none;
+  cursor: var(--bpb-cursor-pointer, pointer);
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+/* Reuse the Items filter's Patch3 scribble as a lightweight CSS-masked tag
+   plate. Only the tint changes per tag category; the asset stays shared. */
+.builds-post__flair::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--builds-tag-fill, rgba(60, 38, 29, 0.72));
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+.builds-post__flair:is(a, button):hover,
+.builds-post__flair:is(a, button):focus-visible {
+  filter: brightness(1.12);
+  transform: translateY(-1px) scale(1.04);
 }
 
 .builds-post__flair--op {
-  background: color-mix(in srgb, #8b2e2e 72%, #3c261d);
+  --builds-tag-fill: rgba(139, 46, 46, 0.72);
 }
 
 .builds-post__flair--feasible {
-  background: color-mix(in srgb, #2f5d3a 70%, #3c261d);
+  --builds-tag-fill: rgba(47, 93, 58, 0.72);
 }
 
 .builds-post__flair--theory,
 .builds-post__flair--theorycraft {
-  background: color-mix(in srgb, #3a4a7a 70%, #3c261d);
+  --builds-tag-fill: rgba(58, 74, 122, 0.72);
 }
 
 .builds-post__flair--real {
-  background: color-mix(in srgb, #6a4a18 72%, #3c261d);
+  --builds-tag-fill: rgba(106, 74, 24, 0.72);
 }
 
 .builds-post__flair--featured {
-  background: color-mix(in srgb, #8a6a18 75%, #3c261d);
+  --builds-tag-fill: rgba(138, 106, 24, 0.75);
+}
+
+/* Neutral/regular tags keep the shared preset available to future labels. */
+.builds-post__flair--regular,
+.builds-post__flair--tag {
+  --builds-tag-fill: rgba(60, 38, 29, 0.72);
 }
 
 /* Event marks share the tag row but retain the event-gold priority treatment. */
 .builds-post__flair--event {
-  background: color-mix(in srgb, #8a6420 70%, #3c261d);
-}
-
-.builds-post__flair--event:hover,
-.builds-post__flair--event:focus-visible {
-  filter: brightness(1.08);
+  --builds-tag-fill: rgba(138, 100, 32, 0.72);
 }
 
 .builds-post__stage {
@@ -627,6 +770,62 @@ a.builds-post__author:hover {
 .builds-post__board[data-feed-build-tip] .bpb-bg,
 .builds-post__board[data-feed-build-tip] .bpb-bg__hit {
   pointer-events: none;
+}
+
+/* Card-only Alt + Play affordance. Compact and grid rows never render this
+   control; card rows reveal it only while their card is hovered/focused. */
+.builds-post__card-preview {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(50%, -50%);
+}
+
+.builds-post:not(.builds-post--compact):not(.builds-post--grid):hover
+  > .builds-post__body
+  > .builds-post__card-preview,
+.builds-post:not(.builds-post--compact):not(.builds-post--grid):focus-within
+  > .builds-post__body
+  > .builds-post__card-preview {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.builds-post__card-preview-live {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.builds-post__card-preview-live[hidden] {
+  display: none;
+}
+
+.builds-post__card-preview-live > .bpb-bg {
+  flex: 0 0 auto;
+  margin: 0;
+  overflow: visible !important;
+  pointer-events: none !important;
+}
+
+.builds-post__card-preview-live .bpb-bg__hit,
+.builds-post__card-preview-live .bpb-bg__hit-pad {
+  pointer-events: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .builds-post__card-preview {
+    transition: none;
+  }
 }
 
 /* Build Info — sized to content and centered in the space beside the board */

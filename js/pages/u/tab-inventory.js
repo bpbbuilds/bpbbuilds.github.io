@@ -119,7 +119,7 @@ function filtersAsideHtml(root, filters) {
   return `
     <aside
       id="profile-inv-filters"
-      class="profile-inv-filters items-filters il-filter bpb-filter-drawer__panel"
+      class="profile-inv-filters items-filters il-filter bpb-filter-preset bpb-filter-drawer__panel"
       aria-label="Filter inventory"
       data-inv-filters
     >

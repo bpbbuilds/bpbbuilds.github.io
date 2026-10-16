@@ -23,7 +23,7 @@ export function filtersSkeletonHtml() {
     skelBlock({ className: 'il-filter-skel__stack', width: '1.85rem', height: '1.85rem', radius: '0.25rem' });
 
   return `
-    <aside class="items-filters il-filter items-filters--skel" aria-hidden="true">
+    <aside class="items-filters il-filter bpb-filter-preset items-filters--skel" aria-hidden="true">
       <div class="il-filter__head il-filter-skel__head">
         ${skelBar({ className: 'il-filter-skel__count', width: '9.5rem', height: '1.15rem', radius: '0.2rem' })}
         ${skelBlock({ className: 'il-filter-skel__reset', width: '2rem', height: '2rem', radius: '50%' })}
@@ -134,7 +134,7 @@ export function paintLayoutPreview(host, layout, shapesData, ctx) {
   const grid = ctx.ensureGrid(stage);
   void grid.showPlaced(preview.placements, preview.itemsById, preview.rows, {
     preview: true,
-    appear: true,
+    appear: false,
     appearLayer: 'under',
   });
 }

@@ -1,7 +1,7 @@
 # Items page performance audit
 
-**Date:** 2026-10-14
-**Scope:** `/items/` initial load, filters, catalog scrolling, responsive layout, tooltips/live art, and item spotlight interactions.
+**Date:** 2026-10-16
+**Scope:** `/items/` initial load, filters, catalog scrolling, responsive layout, tooltips/static art, and item spotlight interactions.
 **Goal:** make the page publish-ready without changing the visible catalog, filter rules, item ordering, or responsive composition.
 
 ## Verdict
@@ -61,7 +61,7 @@ Measurements were taken against the local page at `http://127.0.0.1:5501/items/`
 
 ### Finding 3 — Must: too much data is required before the real catalog is promoted
 
-**What:** initialization awaits the items query, combinations, library layout, sprite display, socket offsets, shapes, origins, class masks, mentioned stacks, sprite thumbs, and `loadLiveArt()` together (`catalog/index.js:637-675`). The local asset group included about 1 MB of data JSON before images.
+**What:** initialization awaits the items query, combinations, library layout, sprite display, socket offsets, shapes, origins, class masks, mentioned stacks, and sprite thumbs together (`catalog/index.js:637-675`). Live-art definitions are no longer requested by the Items page because catalog art is static. The local asset group included about 1 MB of data JSON before images.
 
 **Problem:** only item identity, ordering, shape, and the first viewport are required to show a useful catalog. Recipe/spotlight metadata, live-art definitions, and some overlays are interaction or hover concerns. Waiting for all of them lengthens time-to-first-catalog and makes a slow optional request look like a page failure.
 
@@ -69,7 +69,7 @@ Measurements were taken against the local page at `http://127.0.0.1:5501/items/`
 
 1. Critical: item rows, library order/layout, shapes needed for the first window, and thumb URL metadata.
 2. First interaction: remaining overlay metadata and the next viewport’s sprites.
-3. Idle/spotlight: recipe index, builds-for-item data, live-art definitions and effect layers.
+3. Idle/spotlight: recipe index and builds-for-item data. Live-art definitions/effect layers remain reserved for placed boards and are not loaded by the Items catalog.
 
 Cache immutable JSON with content hashes/long-lived cache headers and share module-level promises so repeated page mounts do not refetch.
 
@@ -187,15 +187,15 @@ Cache immutable JSON with content hashes/long-lived cache headers and share modu
 
 **If skipped:** any slow image can delay a whole visible update and produce the “items are not loaded fast enough” symptom.
 
-### Finding 13 — Should: live art can add animation and layer work to scrolling
+### Finding 13 — Complete: catalog item art is static
 
-**What:** hover/focus delegates activate live art; potions can remain animated while visible, and the global live-art scheduler has a draw cap. Layer assets include large noise/effect files.
+**What:** the shared grid supports live art for placed boards, but the Items catalog previously activated it on hover/focus; potion entries also bypassed the WebP thumbnail path so their full PNGs and liquid layers could enter the page.
 
-**Problem:** moving across many items or scrolling through potion/holo entries can create canvas/WebGL/RAF and texture upload work during interaction. The cap limits damage but does not make activation free.
+**Problem:** moving across many catalog entries could create canvas/RAF and texture upload work during interaction, while full-size PNG fallback increased decode and memory cost.
 
-**Fix:** keep static stills while scrolling; activate live art only for the focused/hovered item or spotlight, pause when the tab is hidden, and hard-cap active canvases per page. Preload only the small static thumb; load effect layers on first activation and release inactive layers after a bounded idle period.
+**Fix:** the Items catalog and clicked-item spotlight now pass `liveArt: false`, render one static sprite, and use complete 1x/2x WebP derivatives with a PNG fallback only for missing derivative data. Create/Sim/Home placed boards retain live art, visibility pausing, and their existing focused interaction behavior.
 
-**If skipped:** fast pointer movement and potion-heavy sections can reintroduce jank after catalog virtualization is fixed.
+**If skipped:** fast pointer movement and potion-heavy catalog sections could reintroduce jank after catalog virtualization is fixed.
 
 ### Finding 14 — Should: tooltip work is correctly delegated but should not invalidate catalog paint
 
@@ -211,13 +211,13 @@ Cache immutable JSON with content hashes/long-lived cache headers and share modu
 
 **Relevant paths:** `js/pages/items/spotlight.js`, `spotlight-recipes.js`, `spotlight-builds.js:244-319`, `js/pages/items/spotlight.css`.
 
-### Finding 15 — Should: spotlight opens a full-size clone and can do network work on the interaction path
+### Finding 15 — Should: spotlight opens a static clone and can do network work on the interaction path
 
-**What:** opening an item creates a full-res item clone/underlay and FLIP transition. Recipe data is indexed locally, while builds-for-item performs `syncEventBuildVisibility()` and Supabase queries before rendering (`spotlight-builds.js:244-319`).
+**What:** opening an item creates a static item clone/underlay and FLIP transition. Recipe data is indexed locally, while builds-for-item performs `syncEventBuildVisibility()` and Supabase queries before rendering (`spotlight-builds.js:244-319`).
 
-**Problem:** the main catalog can be responsive while the click appears stalled waiting on a large sprite decode or two remote build queries. Full-resolution layers also compete with the catalog’s sprite queue.
+**Problem:** the main catalog can be responsive while the click appears stalled waiting on a large sprite decode or two remote build queries. Live effect layers are unnecessary for this page and compete with the catalog’s sprite queue.
 
-**Fix:** open the spotlight shell immediately with the static thumb and skeleton panels. Load full-resolution art and secondary recipe/build panels after the open animation. Cache by item ID, cancel stale requests on close/new item, and bound the build result/card image count. Keep auth/visibility checks server-side.
+**Fix:** open the spotlight shell immediately with the static item art and secondary recipe/build panels after the open animation. Cache by item ID, cancel stale requests on close/new item, and bound the build result/card image count. Keep auth/visibility checks server-side.
 
 **If skipped:** item click feels slower than hover/filter and can trigger a burst of memory/decode work.
 
@@ -262,7 +262,7 @@ Completed in this pass: Itemiary now measures the viewport and adapts its base 6
 
 - [x] Cache packed layouts by filter/group/column signature; preserve the exact default library layout.
 - [x] Cache placement bounds and query visible rows rather than scanning every placement.
-- [x] Defer live-art layers and keep only focused/spotlight animation active; pause when hidden.
+- [x] Keep live-art layers out of the Items catalog and spotlight; placed boards retain focused animation and hidden-tab pausing.
 - [x] Open spotlight immediately and defer full art/build queries behind a skeleton/cache.
 5. Defer/lower-size nav/footer decorative images and cache immutable data assets.
 6. Coalesce responsive column changes and suppress repack while scrolling.
@@ -275,7 +275,7 @@ Completed in this pass: Itemiary now measures the viewport and adapts its base 6
 
 Completed in this pass: packed Itemiary layouts now use a bounded 24-entry LRU keyed by flow, column/row limit, compact mode, grouping values, item order, and normalized item bounds. The persisted/default placed library path is unchanged. Placement width/height bounds are computed once per layout and indexed by row; scroll-window queries inspect only intersecting rows while preserving placement order and the previous horizontal/vertical inclusion rules. No markup, dimensions, styling, animation timing, or responsive behavior changed.
 
-Completed in this pass: Itemiary live art now paints the same first frame but does not keep idle catalog potions/holos on a continuous RAF; hover/focus and spotlight entries opt into animation, and both the JS scheduler and CSS glow timelines pause when the document is hidden. Spotlight geometry and the existing immediate tooltip remain synchronous, while live-art mounting and recipe/build detail work move to the next frame; completed build results use a bounded cache. No visible composition, dimensions, or interaction affordances changed.
+Completed in this pass: Itemiary catalog art is now static end-to-end: live layers are not created, hover/focus does not activate them, and the clicked-item spotlight stays static while its existing FLIP panel transition remains. The catalog now serves complete 1x/2x WebP derivatives for all 649 source sprites, with proportional fallback sizing for unmeasured auxiliary sprites; source PNGs remain available to full-resolution board/export consumers. No visible item composition or interaction affordances changed.
 
 ## Acceptance checks for the fixes
 
@@ -284,7 +284,7 @@ Completed in this pass: Itemiary live art now paints the same first frame but do
 - **Scrolling:** no blank band during wheel/trackpad scroll; no catalog long task >50 ms in a 4× CPU trace; median frame stays near 16.7 ms on a normal desktop; verify fast fling and reverse scroll.
 - **Memory:** after 10 filter/scroll cycles, DOM pool and decoded sprite queue remain under fixed caps; no monotonic growth toward all 518 nodes unless the cap is intentionally configured that way.
 - **Responsive:** verify 1440 desktop, 1080/short desktop, narrow desktop/tablet, and mobile; check filter rail scroll, catalog scroll, resize, zoom, and reduced motion.
-- **Interaction:** tooltip, hover/live art, spotlight, recipes, and builds panel remain correct while a filter or scroll is in progress; stale async work cannot repaint a newer state.
+- **Interaction:** tooltip, static item hover, spotlight, recipes, and builds panel remain correct while a filter or scroll is in progress; stale async work cannot repaint a newer state and the catalog never mounts live art.
 - **Regression:** run syntax checks, focused browser smokes, `git diff --check`, and a production-like build/static-server smoke with cache disabled and enabled.
 
 ## Not checked in this audit
@@ -297,4 +297,4 @@ Completed in this pass: Itemiary live art now paints the same first frame but do
 
 ## Final assessment
 
-All six P0 items and the first four P1 items are implemented and checked above. The page still benefits from the remaining P1 work—decorative-image prioritization and responsive repack coalescing—before calling the entire performance program publish-ready. The completed work keeps catalog bootstrap, filtering, packed layouts, placement queries, live-art scheduling, spotlight detail work, scroll windows, sprite readiness, and memory bounded without changing the rendered composition.
+All six P0 items and the first four P1 items are implemented and checked above. Static catalog art and complete WebP delivery are now also checked; the page still benefits from the remaining P1 work—decorative-image prioritization and responsive repack coalescing—before calling the entire performance program publish-ready. The completed work keeps catalog bootstrap, filtering, packed layouts, placement queries, spotlight detail work, scroll windows, sprite readiness, and memory bounded without changing the rendered composition.

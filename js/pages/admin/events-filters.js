@@ -78,7 +78,7 @@ export function adminEventFiltersHtml(root, state, shown) {
   }).join('');
 
   return `
-    <aside class="items-filters il-filter admin-events-filters" aria-label="Filter events">
+    <aside class="items-filters il-filter bpb-filter-preset admin-events-filters" aria-label="Filter events">
       <div class="il-filter__head">
         <p class="il-filter__count" data-admin-event-count>${escapeHtml(countLabel)}</p>
         <button type="button" class="il-filter__reset" data-admin-event-reset title="Reset filters" aria-label="Reset filters">

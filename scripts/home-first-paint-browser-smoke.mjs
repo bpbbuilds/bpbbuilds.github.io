@@ -89,7 +89,7 @@ try {
     assert.equal(state.footerSurfaces, 0, `${viewport.name}: footer has no page-level skeleton surface`);
     assert.equal(state.footerChildCount, 0, `${viewport.name}: footer host starts empty`);
     assert.equal(state.navRegions, 0, `${viewport.name}: nav host starts empty before shared init`);
-    assert.match(state.bodyBg, /bg-town-square\.jpg/, `${viewport.name}: Home background is present before boot`);
+    assert.match(state.bodyBg, /CombatNightStatic\.png/, `${viewport.name}: static Night background is present before boot`);
     if (viewport.width > 1100) {
       assert.match(state.frame, /ui-screen-frame\.png/, `${viewport.name}: desktop frame is present before boot`);
     }

@@ -157,10 +157,25 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
+  touch-action: pan-y;
+  overscroll-behavior-x: contain;
   box-sizing: border-box;
   padding-inline: 1.25rem;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+
+.home-mobs__cards.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+  user-select: none;
+}
+
+.home-mobs__cards:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--bpb-gold) 85%, transparent);
+  outline-offset: 4px;
 }
 
 .home-mobs__cards::-webkit-scrollbar {

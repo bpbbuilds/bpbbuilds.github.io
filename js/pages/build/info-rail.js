@@ -19,7 +19,7 @@ export function renderInfoRailSkeleton() {
       height: '3.15rem',
       radius: '0.35rem',
     });
-  const divider = `<span class="build-info__divider" aria-hidden="true"></span>`;
+  const divider = `<span class="bpb-divider bpb-divider--gold bpb-divider--vertical build-info__divider" aria-hidden="true"></span>`;
   const tierIcons = (n = 3) =>
     `<div class="build-info__skel-row">${Array.from({ length: n }, icon).join('')}</div>`;
   const tier = (labelW, wide = false, n = 3) => `
@@ -155,7 +155,7 @@ export function renderInfoRail(
                 ? `<img class="build-info__icon" src="${escapeAttr(classIcon)}" alt="${escapeAttr(className)}" title="${escapeAttr(className)}" width="48" height="48" />`
                 : `<span class="build-info__icon build-info__icon--empty" aria-hidden="true"></span>`
             }
-            <span class="build-info__divider" aria-hidden="true"></span>
+            <span class="bpb-divider bpb-divider--gold bpb-divider--vertical build-info__divider" aria-hidden="true"></span>
             ${
               bagSrc
                 ? `<img class="build-info__icon" data-item-id="${escapeAttr(bag.id)}" src="${escapeAttr(bagSrc)}" alt="${escapeAttr(bag.name)}" title="Starting bag: ${escapeAttr(bag.name)}" width="48" height="48" />`
@@ -168,7 +168,7 @@ export function renderInfoRail(
                 ? `<img class="build-info__icon" data-item-id="${escapeAttr(r3.id)}" src="${escapeAttr(r3Src)}" alt="${escapeAttr(r3.name)}" width="48" height="48" />`
                 : `<span class="build-info__icon build-info__icon--empty" title="Round 3" aria-label="Round 3 skill missing"></span>`
             }
-            <span class="build-info__divider" aria-hidden="true"></span>
+            <span class="bpb-divider bpb-divider--gold bpb-divider--vertical build-info__divider" aria-hidden="true"></span>
             ${
               r10Src
                 ? `<img class="build-info__icon" data-item-id="${escapeAttr(r10.id)}" src="${escapeAttr(r10Src)}" alt="${escapeAttr(r10.name)}" width="48" height="48" />`

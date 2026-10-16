@@ -6,7 +6,7 @@
  */
 
 import { escapeAttr, rootPrefix } from './home-build-media.js';
-import { playAssemble } from './home-promo-assemble.js?v=home-no-skeleton-20261014a';
+import { playAssemble } from './home-promo-assemble.js?v=home-no-skeleton-20261015b';
 import { createPromoActivity } from './home-promo-activity.js?v=promo-player-20261013b';
 import { mountPromoCatalog } from './home-promo-catalog.js';
 
@@ -35,6 +35,7 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
   const createHref = `${root}create/`;
   const opHref = `${root}builds/?tags=op`;
   const bagIcon = `${root}assets/icons/misc/Backpack_icon.png`;
+  const remixIcon = `${root}assets/icons/history/RemixBuild.png`;
   const chestLauncher = variant === 'create' && opts.launcher === 'chest';
   const creatorLauncher = variant === 'create' && opts.launcher === 'creator';
   const playerLauncher = variant === 'create' && opts.launcher === 'player';
@@ -79,17 +80,36 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
               </div>
               <div class="home-promo__cta-block home-promo__cta-block--create">
                 <p class="home-promo__cta-lead">Create your build now.</p>
-                <a class="home-promo__cta" href="${escapeAttr(createHref)}">
-                  <img
-                    class="home-promo__cta-icon"
-                    src="${escapeAttr(bagIcon)}"
-                    alt=""
-                    width="32"
-                    height="32"
-                    draggable="false"
-                  />
-                  <span>Create</span>
-                </a>
+                <div class="home-promo__cta-actions">
+                  <a class="home-preset-button home-preset-button--crimson home-promo__cta" href="${escapeAttr(createHref)}">
+                    <img
+                      class="home-promo__cta-icon"
+                      src="${escapeAttr(bagIcon)}"
+                      alt=""
+                      width="32"
+                      height="32"
+                      draggable="false"
+                    />
+                    <span>Create</span>
+                  </a>
+                  <a
+                    class="home-preset-button home-preset-button--blue home-promo__cta home-promo__cta--remix"
+                    data-promo-remix
+                    href="#"
+                    hidden
+                    aria-label="Remix this build"
+                  >
+                    <img
+                      class="home-promo__cta-icon"
+                      src="${escapeAttr(remixIcon)}"
+                      alt=""
+                      width="32"
+                      height="32"
+                      draggable="false"
+                    />
+                    <span>Remix</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -104,6 +124,7 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
     const boardLink = host.querySelector('[data-promo-board-link]');
     const boardTagsEl = host.querySelector('[data-promo-board-tags]');
     const infoEl = host.querySelector('[data-promo-info]');
+    const remixLink = host.querySelector('[data-promo-remix]');
     if (!(boardHost instanceof HTMLElement)) return;
     const activity = createPromoActivity(true);
     if (playerLauncher) {
@@ -144,6 +165,7 @@ export function initHomePromoBand(selector = '#home-promo-band', opts = {}) {
       boardLink: boardLink instanceof HTMLAnchorElement ? boardLink : null,
       boardTagsEl: boardTagsEl instanceof HTMLElement ? boardTagsEl : null,
       infoEl: infoEl instanceof HTMLElement ? infoEl : null,
+      remixLink: remixLink instanceof HTMLAnchorElement ? remixLink : null,
       catalogReady,
       builds: Array.isArray(opts.builds) ? opts.builds : undefined,
       chestEl: chestEl instanceof HTMLElement ? chestEl : null,

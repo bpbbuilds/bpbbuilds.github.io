@@ -158,7 +158,7 @@ function tabChromeHtml(tab, index, root) {
         ${on ? '' : 'hidden'}
       >
         <p class="home-items__blurb home-items__shade">${escapeHtml(tab.blurb)}</p>
-        <a class="home-items__cta" href="${escapeAttr(libraryHref(root, tab.id))}">
+        <a class="home-preset-button home-preset-button--forest home-items__cta" href="${escapeAttr(libraryHref(root, tab.id))}">
           <img class="home-items__cta-icon" src="${escapeAttr(`${root}assets/icons/misc/Backpack_icon.png`)}" alt="" width="20" height="20" draggable="false" />
           <span>View items</span>
         </a>

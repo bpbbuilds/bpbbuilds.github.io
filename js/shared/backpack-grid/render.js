@@ -128,6 +128,7 @@ export function mountPackedGrid(container, options) {
  *   appearStaggerMs?: number,
  *   preserveBagFabric?: boolean,
  *   promo?: boolean,
+ *   promoInteractive?: boolean,
  *   ringConfig?: boolean,
  * }} options
  */
@@ -231,6 +232,7 @@ export function mountPlacedGrid(container, options) {
       appearStaggerMs: options.appearStaggerMs,
       preserveBagFabric:
         preserveBagFabric === true || options.preserveBagFabric === true,
+      promoInteractive: options.promoInteractive === true,
       animateFace: animateFace === true,
       animateFaceKeys:
         animateFaceKeys instanceof Set ? animateFaceKeys : null,

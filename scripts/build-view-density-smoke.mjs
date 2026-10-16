@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/** Ensure Builds view desktop density matches the unscaled 1080 composition. */
+/** Ensure Builds view desktop density scales as one modular composition. */
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -10,12 +10,12 @@ import { chromium } from 'playwright';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const buildCss = fs.readFileSync(path.join(root, 'js/pages/build/build.css'), 'utf8');
 const viewports = [
-  { name: '1440-desktop', width: 1440, height: 900, expectedMinStage: 680 },
-  { name: '1920-short-desktop', width: 1920, height: 1080, expectedMinStage: 680 },
-  { name: '2560-reference', width: 2560, height: 1440, expectedMinStage: 680 },
+  { name: '1440-desktop', width: 1440, height: 900, expectedScale: 0.5625, expectedMinStage: 405 },
+  { name: '1920-short-desktop', width: 1920, height: 1080, expectedScale: 0.75, expectedMinStage: 540 },
+  { name: '2560-reference', width: 2560, height: 1440, expectedScale: 1, expectedMinStage: 680 },
   { name: '1080-stacked', width: 1080, height: 720, expectedMinStage: 680 },
   { name: '768-tablet', width: 768, height: 900, expectedMinStage: 680 },
-  { name: '390-mobile', width: 390, height: 844, expectedMinStage: 0 },
+  { name: '390-mobile', width: 390, height: 844, expectedMinStage: 0, expectedScale: 1 },
 ];
 
 const browser = await chromium.launch({
@@ -39,6 +39,9 @@ try {
   const results = [];
   for (const viewport of viewports) {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.evaluate((scale) => {
+      document.body.style.setProperty('--build-desktop-scale', String(scale ?? 1));
+    }, viewport.expectedScale);
     const result = await page.evaluate(() => {
       const stage = document.querySelector('.build-stage');
       const layout = document.querySelector('.build-layout');

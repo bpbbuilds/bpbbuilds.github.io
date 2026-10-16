@@ -130,7 +130,7 @@ export function mountSettingsTab(stage, ctx) {
       <h2 class="profile-settings__title bpb-label-text">Settings</h2>
       <p class="profile-settings__lede">Account knobs for your profile.</p>
 
-      <div class="profile-settings__panel items-filters il-filter">
+      <div class="profile-settings__panel items-filters il-filter bpb-filter-preset">
         <div class="profile-settings__block il-filter__shade">
           <h3 class="profile-settings__heading">Account</h3>
           <dl class="profile-settings__dl">

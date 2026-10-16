@@ -1166,13 +1166,18 @@
    * Game DESCR keeps `$n_magic` …; RainbowOrb.getDescription → insertCounter
    * (`Rainbow Orb_Counter` = " ($num)") when placed, else strip.
    * Catalog may already be scrubbed to `<Magic> item:` — inject counts there too.
+   * The Items catalog supplies full-catalog section counts, while Create/Sim
+   * supply affected-board counts. Both use the same game-shaped parenthetical.
    */
   function expandPlacementCounters(effect, item) {
     let text = String(effect || "");
     const counts =
       item.placementCounters && typeof item.placementCounters === "object"
         ? item.placementCounters
-        : null;
+        : item.prismaticSectionCounts &&
+            typeof item.prismaticSectionCounts === "object"
+          ? item.prismaticSectionCounts
+          : null;
 
     /** @param {string} key */
     const counterText = (key) => {

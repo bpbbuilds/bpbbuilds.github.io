@@ -135,7 +135,7 @@ export function postRowHtml(build, root, opts = {}) {
       flairs.push({
         kind: 'event',
         label: eventMark,
-        href: `${base}events/?e=${encodeURIComponent(eventSlug)}`,
+        href: `${base}builds/?event=${encodeURIComponent(eventSlug)}`,
         eventSlug,
         eventTitle,
       });
@@ -151,15 +151,22 @@ export function postRowHtml(build, root, opts = {}) {
 
   const flairHtml = flairs.length
     ? `<span class="builds-post__flairs">${flairs
-        .map(
-          (f) => {
-            const className = `builds-post__flair builds-post__flair--${escapeAttr(f.kind)}`;
-            if (f.href) {
-              return `<a class="${className} build-stage__event" href="${escapeAttr(f.href)}" data-event-slug="${escapeAttr(f.eventSlug)}" aria-label="Entered in ${escapeAttr(f.eventTitle)}">${escapeHtml(f.label)}</a>`;
-            }
-            return `<span class="${className}">${escapeHtml(f.label)}</span>`;
-          },
-        )
+      .map(
+        (f) => {
+          const className = `builds-post__flair builds-post__flair--${escapeAttr(f.kind)}`;
+          const href =
+            f.href ||
+            `${base}builds/?tags=${encodeURIComponent(String(f.kind || '').trim())}`;
+          const label = `#${f.label}`;
+          const eventAttrs = f.eventSlug
+            ? ` data-event-slug="${escapeAttr(f.eventSlug)}"`
+            : '';
+          const ariaLabel = f.eventTitle
+            ? `Filter builds by ${escapeAttr(f.eventTitle)}`
+            : `Filter builds tagged ${escapeAttr(f.label)}`;
+          return `<a class="${className}${f.eventSlug ? ' build-stage__event' : ''}" href="${escapeAttr(href)}"${eventAttrs} aria-label="${ariaLabel}">${escapeHtml(label)}</a>`;
+        },
+      )
         .join('')}</span>`
     : '';
 
@@ -284,6 +291,19 @@ export function postRowHtml(build, root, opts = {}) {
         ${postVoteHtml(base)}
       </div>
       <div class="builds-post__body">
+        <button
+          class="build-more-tip__play builds-post__card-preview"
+          type="button"
+          data-feed-card-preview
+          aria-keyshortcuts="Alt"
+          aria-label="Play board animation"
+          aria-pressed="false"
+          title="Play board animation"
+          hidden
+        >
+          <span class="build-more-tip__play-key builds-post__card-preview-key" aria-hidden="true">Alt</span>
+          <img src="${escapeAttr(base)}assets/icons/sim/log/Play_normal.png" alt="" width="28" height="28" draggable="false" />
+        </button>
         <a class="builds-post__link" href="${escapeAttr(href)}" aria-label="${escapeAttr(title)}">
           <span class="builds-post__stage">
             ${boardHtml}

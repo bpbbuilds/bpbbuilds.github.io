@@ -21,22 +21,36 @@
   <link rel="preload" href="./assets/fonts/milonga.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="./assets/fonts/libre-400.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="./assets/brand/logo-backpack-battles.png" as="image" fetchpriority="high" />
+  <link rel="preload" href="./assets/theme/backgrounds/combat/CombatNightStatic.png" as="image" type="image/png" fetchpriority="high" />
+  <link rel="preload" href="./assets/theme/backgrounds/combat/Windmill.png" as="image" type="image/png" />
+  <link rel="preload" href="./assets/theme/backgrounds/combat/WindmillBlades.png" as="image" type="image/png" />
   <link rel="preconnect" href="https://i.ytimg.com" />
   <link rel="preconnect" href="https://esm.sh" crossorigin />
-  <link rel="stylesheet" href="./css/theme.css?v=cursor-abs-20261014a" />
-  <link rel="stylesheet" href="./css/shared.css?v=fa3633b" />
-  <link rel="stylesheet" href="./js/pages/home/combat-sky.css?v=home-combat-sky-20261014" />
-  <link rel="stylesheet" href="./js/pages/home/featured-stage.css?v=featured-gap-20261014b" />
-  <link rel="stylesheet" href="./js/pages/home/home-promo-band.css?v=home-player-card-20261014a" />
-  <link rel="stylesheet" href="./js/pages/home/home-class-showcase.css?v=ranger-hq-20261014c" />
-  <link rel="stylesheet" href="./js/pages/home/home-items-explore.css?v=home-no-skeleton-20261014a" />
-  <link rel="stylesheet" href="./js/pages/home/home-builds-vault.css?v=home-loadout-meta-20261014a" />
-  <link rel="stylesheet" href="./js/shared/backpack-grid/backpack-grid.css?v=fa3633b" />
+  <link rel="stylesheet" href="./css/theme.css?v=items-nav-pointer-20261016a" />
+  <link rel="stylesheet" href="./css/shared.css?v=slim-footer-20261016a" />
+  <link rel="stylesheet" href="./js/pages/home/combat-sky.css?v=home-windmill-preload-20261016a" />
+  <link rel="stylesheet" href="./js/pages/home/featured-stage.css?v=featured-gap-20261016a" />
+  <link rel="stylesheet" href="./js/pages/home/home-promo-band.css?v=home-buttons-20261016a" />
+  <link rel="stylesheet" href="./js/pages/home/home-class-showcase.css?v=ranger-hq-20261016a" />
+  <link rel="stylesheet" href="./js/pages/home/home-items-explore.css?v=home-items-tabs-20261016a" />
+  <link rel="stylesheet" href="./js/pages/home/home-builds-vault.css?v=home-footer-dip-20261016a" />
+  <link rel="stylesheet" href="./js/shared/backpack-grid/backpack-grid.css?v=potionlinks2" />
   <link rel="stylesheet" href="./js/pages/build/more-build-tip.css?v=fa3633b" />
-  <link rel="stylesheet" href="./js/shared/tooltip.css?v=fa3633b" />
+  <link rel="stylesheet" href="./js/shared/tooltip.css?v=cosmetic-tooltip-shadow-20261016a" />
   <script src="./js/shared/tooltip.js?v=fa3633b"></script>
 </head>
 <body class="page-home" data-root="./">
+  <div class="combat-sky combat-sky--preload" data-combat-sky-preload aria-hidden="true">
+    <div class="combat-sky__stage">
+      <div class="combat-sky__windmill" data-layer="windmill"
+        style="--x:1062px;--y:371px;--w:82px;--h:162px;--sy:1.012">
+        <div class="combat-sky__windmill-tower" style="-webkit-mask-image:url('./assets/theme/backgrounds/combat/Windmill.png');mask-image:url('./assets/theme/backgrounds/combat/Windmill.png')"></div>
+        <div class="combat-sky__blade-pivot">
+          <div class="combat-sky__blades" style="-webkit-mask-image:url('./assets/theme/backgrounds/combat/WindmillBlades.png');mask-image:url('./assets/theme/backgrounds/combat/WindmillBlades.png')"></div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="site-nav"></div>
 
   <main id="main">
@@ -49,6 +63,6 @@
 
   <div id="site-footer"></div>
 
-  <script type="module" src="./js/pages/home/index.js?v=home-sections-20261014b"></script>
+  <script type="module" src="./js/pages/home/index.js?v=home-windmill-preload-20261016a"></script>
 </body>
 </html>

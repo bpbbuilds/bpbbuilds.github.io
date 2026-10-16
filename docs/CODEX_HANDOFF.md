@@ -1,5 +1,200 @@
 # Codex handoff
 
+### 2026-10-16 Builds class/rank/event filter groups 270 - complete
+
+- Codex owns `js/pages/builds/feed-filters.js`, the Builds filter CSS in
+  `js/pages/builds/builds.css`, the focused regression, `docs/todo.md`, and
+  this handoff for this task.
+- Scope: present hero classes as one Items-style icon row, league ranks as a
+  compact multi-column icon grid, and the existing event selection as
+  checkmark controls without changing state, URL, or filtering semantics.
+- No legal, authentication, database, or security behavior changes are in
+  scope.
+- Updated `js/pages/builds/feed-filters.js` so Hero class and League rank have
+  labeled Items-style groups. Hero class keeps one equal-width icon row;
+  League rank uses four columns over two rows for readable icons. Replaced the
+  single event dropdown with checkmark controls: “All events” maps to the
+  existing `null` state, and event slugs continue using the existing
+  `?event=` and filtering path.
+- Added `scripts/builds-filter-groups-smoke.mjs`. Verification passed at
+  1440×900, 1080×720, 768×900, and 390×844 using the real desktop rail/stacked
+  filter widths, including row/grid geometry, event pressed-state markup, and
+  overflow. Existing Builds tag, filter-preset, personal-filter, shade,
+  card-info, and surface-padding smokes, generated filter-state markup,
+  changed-module syntax, and `git diff --check` also pass. Work remains local
+  and uncommitted; no push was requested. Next step: none for this task.
+
+### 2026-10-16 Builds tag filter columns 269 - complete
+
+- Codex owns `js/pages/builds/feed-filters.js`, the Builds filter CSS in
+  `js/pages/builds/builds.css`, the focused regression, `docs/todo.md`, and
+  this handoff for this task.
+- Scope: give the Builds Tags group an Items-style two-column layout and
+  category-colored Patch3 tag surfaces while preserving filter state,
+  query behavior, menus, and the responsive filter drawer.
+- No legal, authentication, database, or security behavior changes are in
+  scope.
+- Updated `js/pages/builds/feed-filters.js` so the existing five tag buttons
+  keep their `data-feed-tag` and `aria-pressed` contracts inside a named Tags
+  shade and dedicated two-column grid. Added matching OP, Feasible, Theory,
+  Real, and Featured Patch3 fill tokens and responsive text sizing in
+  `js/pages/builds/builds.css`; the fills match the existing clickable build
+  card hashtags.
+- Added `scripts/builds-filter-tags-smoke.mjs`. Verification passed at
+  1440×900, 1080×720, 768×900, and 390×844 for two columns, five clickable
+  controls, category surfaces, Patch3 masks, and no horizontal overflow.
+  Existing Builds tag/shade/card-info/surface-padding smokes, shared filter
+  preset smoke, changed-module syntax, and `git diff --check` also pass.
+  Work remains local and uncommitted; no push was requested. Next step: none
+  for this task.
+
+### 2026-10-16 Build tooltip Alt preview correction 268 - complete
+
+- Codex owns the build tooltip preview interaction and its focused smoke tests
+  in `js/pages/build/more-build-tip.js`,
+  `js/pages/build/more-build-tip.css`,
+  `scripts/build-tooltip-animation-smoke.mjs`,
+  `scripts/build-tooltip-animation-browser-smoke.mjs`, `docs/todo.md`, and
+  this handoff. Cursor does not own these paths.
+- Added a real `Alt` keydown path to the existing lightweight no-stats preview,
+  with repeat suppression and `aria-keyshortcuts="Alt"`, so the preview starts
+  without moving the pointer from the hovered build. The indicator now shows an
+  `Alt` keycap beside the game play icon and its center is aligned to the
+  board's top-right corner, including responsive scaling.
+- Updated the focused static/browser smoke coverage. Verification passed for
+  Alt activation, play/pause state, live board mounting, indicator alignment,
+  1440×900/1080×720/768×900/390×844 placement, changed-file syntax, and
+  `git diff --check`. Marked the todo clarification complete. No legal or
+  security surfaces changed. Work remains local and uncommitted; no push was
+  requested. Next step: none for this task.
+
+### 2026-10-16 Shared filter preset 267 - complete
+
+- Codex owns the shared filter preset, its focused regression, the filter-page
+  stylesheet imports, the page-specific filter root opt-ins and chrome cleanup,
+  `docs/todo.md`, and this handoff. Cursor does not own these paths.
+- Added `js/shared/filter-preset.css` as the Items-derived visual source of
+  truth: transparent filter hosts, no competing outer slabs, and the same soft
+  Patch3 section bands using the Items `rgba(14, 15, 16, 0.09)` shade token.
+  Opted the real filter rails into the preset across Items, Builds, Create,
+  Events, Admin, Sim's build browser, and profile inventory/settings surfaces.
+  Removed the Builds/Sim section-band suppressors so page-specific layout,
+  menus, scrollbar, and drawer behavior remain intact while their surfaces
+  match Items.
+- Added `scripts/filter-preset-smoke.mjs`; it checks every filter root and page
+  stylesheet import, exercises the shared and page CSS combinations, and
+  verifies the host/band contract at 1440×900, 1080×720, 768×900, and 390×844.
+  Passed the focused smoke, changed-module syntax checks, Builds tag/shade
+  regressions, Builds card/surface smokes, and `git diff --check`.
+  Marked the todo complete. No legal or security surfaces changed. Work remains
+  local and uncommitted; no push was requested. Next step: none for this task.
+
+### 2026-10-16 Builds tag preset 266 - complete
+
+- Codex owns `js/pages/builds/post-row.js`, `js/pages/builds/builds.css`, the
+  focused Builds tag preset regression, `docs/todo.md`, and this handoff for
+  the hashtag tag visual preset and filter navigation on Builds cards. Cursor
+  does not own these paths. No legal or security surfaces are in scope.
+- Build flairs now render as `#TagName` links. Build tags route to the existing
+  Builds `tags=` filter, event tags route to the existing `event=` filter, and
+  all categories use the shared Items Patch3 mask with distinct OP, event,
+  authenticity, featured, and regular tint tokens. Hover/focus raises and
+  brightens clickable tags while preserving responsive wrapping.
+- Added `scripts/builds-tag-preset-smoke.mjs` and marked the todo complete.
+  Verification passed at 1440×900, 1080×720, 768×900, and 390×844 for tag
+  rendering, scribble masks, hover behavior, link contracts, and overflow;
+  existing Builds shade/card-info/surface-padding smokes, changed-module
+  syntax checks, and `git diff --check` also passed. Work remains local and
+  uncommitted; no push was requested. Next step: none for this task.
+
+### 2026-10-16 Builds line-item shade 265 - complete
+
+- Codex owns `js/pages/builds/builds.css`, the focused Builds surface smokes,
+  `docs/todo.md`, and this handoff for replacing the public Builds view's black
+  listing surfaces with the Items page's dark Patch3 shade treatment across
+  card, compact, and grid views. Cursor does not own these paths. No legal or
+  security surfaces are in scope.
+- Removed the opaque `#111`/`bg-dark-textured.webp` fills from the public Builds
+  listing surfaces. Card view now shades its header and body as one panel;
+  compact and grid views shade their complete wrappers with the shared
+  responsive Patch3 mask and transparent backgrounds.
+- Updated the focused source/browser regressions and marked the todo complete.
+  Verification passed at 1440×900, 1080×720, 768×900, and 390×844 for the
+  dark shade, plus Builds card-info/surface-padding smokes, changed-module
+  syntax checks, and `git diff --check`. Work remains local and uncommitted;
+  no push was requested. Next step: none for this task.
+
+### 2026-10-16 Items catalog static art + WebP derivatives 262 - complete
+
+- Codex owns `items/index.html`, `js/pages/items/catalog/index.js`, `js/pages/items/catalog/shell.js`, `js/pages/items/spotlight.js`,
+  `js/shared/backpack-grid/item-pieces.js`, `js/shared/backpack-grid/item-pool.js`,
+  `js/shared/item-live-art/index.js`, the focused Items static-art/P1 smokes,
+  the catalog sprite derivative tooling and generated catalog derivatives,
+  `docs/todo.md`, `docs/performance/items-page-performance-audit.md`, and this handoff for removing
+  live item animation from the Items page and serving optimized static art.
+  Cursor does not own these paths. Scope is limited to the Items catalog and
+  its clicked-item showcase; placed boards, Create, Sim, Home, and other
+  consumers retain their existing live-art behavior.
+
+- Items catalog and clicked-item spotlight now pass `liveArt: false`; static
+  filtering/loading paints also pass `appear: false`, so catalog items never
+  mount live potion/glow layers or replay entrance animation. The `/items/`
+  page skips automatic live-art manifest loading, while Home/Create/Sim/placed
+  boards retain their prior live-art behavior. Home’s existing host-level
+  `data-bpb-live-art="off"` is inherited by nested Itemiary grids.
+- Expanded the thumbnail builder and generated 649 source-sprite derivatives
+  at both `assets/item-thumbs/1x/` and `assets/item-thumbs/2x/`. The catalog
+  selects density-aware WebP with PNG fallback; source PNGs remain for
+  full-resolution board/export consumers. Manifest coverage and runtime static
+  markup are checked by `scripts/items-static-art-smoke.mjs`.
+- Marked the todo/performance-audit entries complete and bumped the Items entry
+  module cache token. Verification passed: thumbnail build freshness, static-art
+  runtime/asset smoke, Items P0/P1 performance, pointer/nav, spotlight
+  composition/layout/hover/scrollbar, Create pointer, changed-file syntax, and
+  `git diff --check`. No legal/security surfaces changed. Work remains local
+  and uncommitted; no push was requested. Next step: none for this task.
+
+### 2026-10-16 Home windmill first-paint handoff 264 - complete
+
+- Codex owns `index.html`, `js/pages/home/index.js`,
+  `js/pages/home/combat-sky.js`, `js/pages/home/combat-sky.css`,
+  `js/pages/home/combat-sky/index.js`, the focused Home background smoke
+  coverage, `docs/todo.md`, and this handoff for keeping the static windmill visible but paused
+  during first paint, then handing it to the animated layer after its assets
+  are ready. Cursor does not own these paths. Scope is limited to the Home
+  background; the admin scroll-preview mode must remain unchanged.
+- Added a first-paint windmill shell to Home HTML, preloaded the tower/blade
+  masks, and made the 16:9 placeholder responsive without waiting for JS scale
+  calculation. The Home initializer adopts that shell, keeps it paused, waits
+  for both mask assets, then removes the pause class so the normal CSS spin
+  starts without the windmill popping into view. Cache tokens were bumped;
+  admin scroll-preview behavior remains unchanged.
+- Added `scripts/home-windmill-first-paint-browser-smoke.mjs` and expanded the
+  first-paint contract smoke. Verification passed at 2560×1440, 1920×1080,
+  1366×768, tablet, and mobile; existing Home background mode smoke, changed
+  module syntax checks, and `git diff --check` also passed. No legal/security
+  surfaces changed. Work remains local and uncommitted; no push was requested.
+  Next step: none for this task.
+
+### 2026-10-16 Items spotlight combinations safe area 263 - complete
+
+- Codex owns `js/pages/items/spotlight.css`, `js/pages/items/spotlight.js`,
+  `js/pages/items/spotlight-recipes.js`, the focused combinations-panel smoke,
+  `docs/todo.md`, and this handoff for verifying and, if needed, correcting the
+  clicked-item combinations panel between the fixed navigation and the Builds
+  using this item strip at 1080p and other supported viewports. Cursor does not
+  own these paths. Mobile remains on the existing stacked spotlight layout.
+- Verified the existing implementation already passes the live navigation and
+  Builds safe bounds into the combinations panel, clamps its height/position,
+  and relayouts after asynchronous Builds data appears. No product layout change
+  was needed; marked the todo entry complete and added
+  `scripts/items-spotlight-combinations-smoke.mjs` to prevent regressions.
+- Verification passed: combinations safe-area smoke at 2560×1440, 1920×1080,
+  1366×768, 1440×900, tablet, and mobile; existing spotlight composition and
+  tooltip layout smokes; changed-module syntax checks; and `git diff --check`.
+  No legal/security surfaces changed. Work remains local and uncommitted; no
+  push was requested. Next step: none for this task.
+
 ### 2026-10-14 Simulator audit batch: Amulets of Feasting through Light
 - Claimed simulator audit work and advanced the source-backed 1:1 audit through
   Amulet of Feasting, Fortune, Life, and Light. Each now has a dedicated,
@@ -5630,3 +5825,296 @@ None.
 - Added source-contract and Playwright responsive coverage to `scripts/create-default-bag-browser-smoke.mjs`; the focused browser smoke passes at 1440, 1080, narrow/tablet, and mobile viewports. The default-bag behavior smoke, JavaScript syntax checks, and `git diff --check` also pass.
 - Updated both related checklist entries in `docs/todo.md`. No legal/security surfaces changed.
 - `npm test` is unavailable because this repository has no `test` script. The earlier simulator audit commit `4989900` remains local because GitHub rejected `git push origin main` with HTTP 403 for the configured account; no remote or credential changes were made.
+
+### 2026-10-15 Home build-animation CTA shadow 238 — complete
+
+- The Home build-animation Create CTA now removes its gold inset shadow and inner rim at rest; both return on hover. The existing dark depth shadow and keyboard focus outline remain intact.
+- Extended `scripts/home-promo-create-cta-smoke.mjs` with red/green coverage for the rest and hover shadow states. The smoke passes at 1440, 1080, tablet, and mobile widths. No legal/security surfaces changed.
+- Marked the related item complete in `docs/todo.md`. No cache-key change was needed because the page already loads the stylesheet normally and the visual change is CSS-only.
+
+### 2026-10-15 Home build-animation item hover 239 — complete
+
+- The Home Player Info build animation now opts into shared backpack hover chrome without changing decorative promos: item hit pads, rarity/affect markers, sparks, and socketed gem targets are interactive.
+- `home-promo-assemble.js` binds `createTooltipHover` to the current board items and updates the lookup map for each rotating build. Existing pointer pause behavior remains unchanged.
+- Bumped the Home promo CSS/module cache tokens so the deployed static page can receive the hover implementation.
+- Added and ran `scripts/home-promo-item-hover-smoke.mjs` with real grid/tooltip runtime coverage plus responsive checks at 1440, 1080, tablet, and mobile widths. The promo activity smoke, Create CTA smoke, JavaScript syntax checks, and `git diff --check` also pass. No legal/security surfaces changed.
+
+### 2026-10-15 Home Remix CTA 240 — complete
+
+- Added a smaller blue Remix CTA beneath the primary Create CTA in the Home build animation. It uses the same pill design language, existing Remix icon, responsive sizing, and dynamic `/create/?remix={active build slug}` routing.
+- Kept the Remix action hidden until a valid active build is painted, so failed/empty animation states do not expose a dead link. Bumped the Home promo cache tokens for the deployed static assets.
+- Extended the Create CTA smoke and Home animation smoke with responsive hierarchy and active-slug coverage. Create, item-hover, activity, skeleton lifecycle, Player Info layout, syntax, and `git diff --check` verification pass. No legal/security surfaces changed.
+
+### 2026-10-16 Home Choose Your Hero drag rail 241 — complete
+
+- Choose Your Hero now supports mouse/touch horizontal dragging with pointer capture, keeps vertical page scrolling available on touch, hides the native scrollbar, and suppresses accidental card navigation only when a real drag occurred.
+- New pointer interactions clear stale drag-click suppression before starting, so an interrupted drag cannot swallow a later normal card click.
+- Added keyboard ArrowLeft/ArrowRight scrolling and a visible focus treatment to the now-focusable rail. Bumped the Home class-showcase CSS/module cache tokens.
+- Added and ran `scripts/home-class-showcase-drag-smoke.mjs`; the drag, no-navigation, hidden-scrollbar, cursor, keyboard, syntax, existing bag-link, and responsive Player Info/hero layout checks pass. No legal/security surfaces changed.
+
+### 2026-10-16 Homepage button preset 242 — complete
+
+- Added the shared `home-button-preset.css` pill treatment and applied crimson/blue variants to Featured Watch/View build, Create/Remix, Explore Items tabs and View items, and Curated Builds actions. Existing sprite-preview controls remain specialized item controls.
+- Removed the older raster button backgrounds from the affected homepage action styles and bumped the homepage CSS/module cache tokens.
+- Added and ran `scripts/home-button-preset-smoke.mjs`; the shared preset, markup contracts, no-raster-background contract, responsive visibility/pill checks at 1440, 1080, tablet, and mobile, Create CTA smoke, syntax checks, and `git diff --check` pass. No legal/security surfaces changed.
+
+### 2026-10-16 Homepage button rim behavior 243 — complete
+
+- The shared homepage preset now keeps its gold inner rim visible at rest and removes the outer depth/glow shadow until hover; hover retains the inner rim and restores the outer shadow.
+- Updated the Create CTA smoke to assert both rest and hover shadow states. The focused preset and Create CTA smokes pass across desktop, tablet, and mobile widths. No legal/security surfaces changed.
+
+### 2026-10-16 Potion interaction lines 244 - complete
+
+- Codex owns the shared potion-link geometry, pooled-board SVG layer, board-still canvas painter/cache version, backpack-grid cache-busted page links, focused smokes, plan, todo entry, and this handoff. The extracted game source confirms the rule: `Potion.gd` selects one rotated primary affected cell directly above the potion, and `PotionConnector.gd` follows that active affected target.
+- Added `js/shared/potion-links.js`. Create/sim/placed live boards now render directed potion connectors with CSS dash motion; itemiary/packed catalog boards stay sprite-only. Flattened board stills render the same connector statically before item sprites, and active potion boards bypass legacy baked PNGs, so curated/home build images include it without animation. Reduced-motion disables live animation and all connector layers remain pointer-transparent.
+- Added `scripts/potion-interaction-lines-smoke.mjs` and `scripts/potion-interaction-lines-browser-smoke.mjs`. Geometry, rotation, duplicate placement keys, false-positive rejection, cache invalidation, live SVG behavior, reduced-motion behavior, static canvas pixels, and responsive 1440/1080/768/390 viewport checks pass. Existing Create pointer, Sim empty-state, Home promo hover, syntax checks, and `git diff --check` also pass. No legal/security surfaces changed.
+- No blockers. This work is local and uncommitted; unrelated user changes remain in the working tree. Next step: wait for the next requested UI task.
+
+### 2026-10-16 Footer preset buttons 245 - in progress
+
+- Codex owns `css/shared.css`, `js/shared/footer.js`, the focused footer preset smoke coverage, and this handoff for this cosmetic footer-navigation update. Cursor does not own these paths. Scope is limited to the shared regular/slim footer link treatment; footer geometry, social links, legal content, and page behavior remain unchanged.
+
+### 2026-10-16 Footer preset buttons 245 - complete
+
+- Extracted the homepage button treatment into shared `js/shared/button-preset.css` and applied it to the shared footer renderer. About/Terms/Privacy use the crimson preset; Builds/Items use the existing blue preset. The footer keeps its regular/slim layouts, responsive wrapping, inner gold rim at rest, and hover-only outer depth shadow. A selector fallback also styles older cached footer markup while the shared stylesheet cache key is refreshed across page templates.
+- Updated `docs/todo.md` and added `scripts/footer-button-preset-smoke.mjs`. Verification passed: footer static smoke, Admin footer static/browser smokes at 1440/1080/768/390, Home button preset, Home Create CTA, Home item hover, Home skeleton lifecycle, Home footer, Home section skeleton, Home first-paint, JS syntax checks, and `git diff --check`. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Home footer dip paint 246 - in progress
+
+- Codex owns `js/pages/home/home-builds-vault.css`, the Home footer browser smoke, `docs/todo.md`, and this handoff for this visual-only footer paint correction. Cursor does not own these paths. Scope is limited to removing the rectangular Home footer shadow/paint artifact while preserving the existing responsive dip mask, footer overlap, layout, and shared footer buttons.
+
+### 2026-10-16 Home footer dip paint 246 - complete
+
+- Removed the Home footer host’s full rectangular `bg-hills-night-deep.jpg` underlay on desktop/tablet. The footer host is now transparent, so the existing masked footer surface reveals the curated loadout scene through its dip instead of painting a mismatched rectangle. The footer pseudo-surface, 24/25px overlap, responsive mask, and opaque mobile fallback remain unchanged. Bumped the Home stylesheet cache key and marked the todo item complete.
+- Updated `scripts/home-footer-browser-smoke.mjs` to require a transparent desktop/tablet host and preserve the textured mobile fallback. Verification passed at 1440/1080/768/390, plus live-rendered screenshots at 1920×1080 and 2560×1440, Home first-paint, Home section skeleton, syntax checks, and `git diff --check`. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+### 2026-10-16 Home background first-paint 247 - in progress
+
+- Codex owns the Home combat-sky fallback/preload surface, its focused smoke coverage, `docs/todo.md`, and this handoff for this visual/performance-only background-loading correction. Cursor does not own these paths. Scope is limited to eliminating the Town Square-to-Night flash while retaining the existing independently animated windmill blades and responsive scene.
+
+### 2026-10-16 Home background first-paint 247 - complete
+
+- Added a 1920×1080 static Night frame generated from the existing rendered combat scene, with the windmill omitted so Home can keep only its tower/blades as live DOM. Home now preloads and paints that same frame before JavaScript, and fixed Home boot mounts only `Windmill.png`/`WindmillBlades.png`; the admin scroll preview retains the full layered scene.
+- Added static and browser smoke coverage for the preload/fallback contract, windmill-only DOM, exact Home combat asset request set, fixed-scene behavior, no horizontal overflow, and 1440/1080/768/390 responsive viewports. Updated the existing first-paint contract and Home cache keys; background, first-paint, section-skeleton, pointer, footer, curated-loadout, syntax, and `git diff --check` verification pass. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Build tooltip lightweight animation 248 - in progress
+
+- Codex owns the build tooltip preview surface in `js/pages/build/more-build-tip.js`, `js/pages/build/more-build-tip.css`, the two build-thumbnail registration call sites, its focused smoke coverage, `docs/todo.md`, and this handoff. Cursor does not own these paths. Scope is the lightweight no-stats preview requested for build tooltips; the future buff/heat/stamina-aware simulation remains deferred to the Build View surface.
+
+### 2026-10-16 Build tooltip lightweight animation 248 - complete
+
+- Added a Play button with the game play icon to build tooltips. It lazy-loads the shared placed-board renderer and the Sim activation animation map/controller, then advances one normal activation at a time on a lightweight deterministic clock. Clicking again stops the live board and restores the cached still.
+- Passed placement/item data from both More Builds and feed board thumbnails, added resize-aware tooltip fitting and responsive button styling, and kept the preview intentionally stat-free: buffs, debuffs, heat, stamina generation/cost, and out-of-stamina behavior remain deferred to the richer Build View preview requested for later.
+- Added `scripts/build-tooltip-animation-smoke.mjs` and `scripts/build-tooltip-animation-browser-smoke.mjs`. Verification passed for the focused static/browser checks, tooltip transition checks, board-thumbnail smoke, changed-file syntax, and `git diff --check` at 1440/1080/768/390. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Shared navigation 249 - in progress
+
+- Codex owns `js/shared/nav.js`, `js/shared/nav.css`, the focused navigation density smoke coverage, `docs/todo.md`, and this handoff for the desktop navigation size correction. Cursor does not own these paths. Scope is limited to the desktop responsive scale; the separate <=1100px mobile header/drawer remains unchanged.
+
+### 2026-10-16 Shared navigation 249 - complete
+
+- Added the exported `navDesktopScale()` density helper. The shared desktop nav still uses the 2560×1440 scale reference, but the short-desktop correction now eases to a 15% boost at 1920×1080 (`0.75` → `0.8625`) and stays capped below 1080p. The <=1100px mobile header/drawer remains unscaled and separate.
+- Added `scripts/nav-density-smoke.mjs` and `scripts/nav-density-browser-smoke.mjs`. Verification passed at 2560×1440, 1920×1080, 1600×900, 1366×768, 1024×768, and 390×844 with no horizontal overflow; the existing navigation-pennant browser smoke, syntax checks, and `git diff --check` also pass. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Explore item categories button rollback 250 - in progress
+
+- Codex owns `js/pages/home/home-items-explore.js`, `js/pages/home/home-items-explore.css`, `js/pages/home/index.js`, `index.html`, the focused homepage button smoke coverage, `docs/todo.md`, and this handoff for this visual-only correction. Cursor does not own these paths. Scope is limited to the Explore 500+ Items category tabs; the View Items CTA remains on the new blue preset.
+
+### 2026-10-16 Explore item categories button rollback 250 - complete
+
+- Restored the Explore 500+ Items category tabs to their original flat, transparent, yellow text treatment. The View Items CTA remains on the shared blue homepage preset.
+- Bumped the Home Explore CSS/module cache token and expanded `scripts/home-button-preset-smoke.mjs` to assert the category-tab exception and the CTA preset across 1440/1080/768/390 widths. Verification passed with Home button preset smoke, changed-file syntax checks, and `git diff --check`. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Shared preset rim behavior 251 - in progress
+
+- Codex owns `js/shared/button-preset.css`, the focused shared preset smoke coverage, `docs/todo.md`, and this handoff for the inner-rim/outer-rim correction. Cursor does not own these paths. Scope is limited to the shared homepage/footer button appearance; no layout, data, security, or legal behavior changes are expected.
+
+### 2026-10-16 Shared preset rim behavior 251 - complete
+
+- Updated the shared homepage/footer preset so its inset `::before` gold rim remains visible at rest, while the outer gold inset ring and depth shadow appear only on hover. Refreshed the shared stylesheet cache key across page templates and the legacy Home preset entry point.
+- Updated the todo description and focused smoke assertions. Verification passed with Home CTA, Home button, footer static, admin footer static/browser, changed-script syntax checks, and `git diff --check` across 1440/1080/768/390 coverage. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Hyperlink hover gold 252 - in progress
+
+- Codex owns `css/theme.css`, the focused hyperlink-hover smoke coverage, `docs/todo.md`, and this handoff for the shared text-link hover color correction. Cursor does not own these paths. Scope is limited to the global anchor hover color; button, navigation-banner, and page-specific link treatments remain unchanged unless they inherit the shared rule.
+
+### 2026-10-16 Hyperlink hover gold 252 - complete
+
+- Changed the shared `a:hover` color from banner crimson to the navigation Patches gold `#eac914`, so inherited text links such as profile names use the same yellow accent. Refreshed the theme stylesheet cache key across page templates and marked the todo item complete.
+- Added `scripts/theme-link-hover-smoke.mjs`; responsive browser verification passed at 1440/1080/768/390px, along with script syntax validation and `git diff --check`. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Items top-row click interception 253 - in progress
+
+- Codex owns `css/theme.css`, `js/shared/nav.css`, the Items pointer regression smoke, `docs/todo.md`, and this handoff for the 1080p click-interception repair. Cursor does not own these paths. Scope is limited to letting the Items page receive clicks beneath the transparent overflow of the fixed navigation host while preserving clickable navigation controls and all mobile drawer behavior.
+
+### 2026-10-16 Items top-row click interception 253 - complete
+
+- Root cause was the fixed `#site-nav` host retaining pointer events below the visually transformed desktop shelf. At 1920×1080 its host ended at ~295px while the layout spacer/main began at ~257px, so the top filter/grouping area resolved to the nav host; the 2560×1440 reference had no gap.
+- Made the transparent host pointer-transparent while keeping the actual `.site-nav-shell` interactive, refreshed the shared theme cache key, and added `scripts/items-nav-pointer-smoke.mjs`. The focused smoke, real `/items/` hit-test at 2560×1440 and 1920×1080, nav density/pennant browser smokes, syntax check, and `git diff --check` pass. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Items native pointer affordance 254 - in progress
+
+- Codex owns `js/pages/items/filters.css`, `js/shared/backpack-grid/backpack-grid.css`, `js/pages/items/spotlight.css`, `js/shared/filter-drawer.css`, the affected page-template stylesheet cache references, `scripts/items-pointer-smoke.mjs`, `docs/todo.md`, and this handoff for the native pointer-affordance correction. Cursor does not own these paths. Scope is limited to interactive Items catalog/filter targets; disabled and non-interactive targets retain their default cursor.
+
+### 2026-10-16 Items native pointer affordance 254 - complete
+
+- Root cause was the Items page using `var(--bpb-cursor-pointer)`/`var(--bpb-cursor-default)` without fallbacks while the custom cursor stylesheet is intentionally not loaded globally, so clickable catalog/filter targets computed to `auto`. Added native pointer/default fallbacks to Items filters, backpack-grid hit targets (including actual `.bpb-bg__hit-pad` cells, gem sockets, and bag sprites), recipe spotlight controls, and responsive filter-drawer controls.
+- Added `scripts/items-pointer-smoke.mjs`; it passes at 1440, 1080, 768, and 390 widths, including disabled-filter default-cursor coverage. Refreshed affected stylesheet cache keys across the page templates, passed the Items navigation pointer smoke, nav density/pennant smokes, syntax validation, and `git diff --check`. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Items spotlight responsive tooltip 255 - complete
+
+- Root cause was the locked spotlight tooltip fitting only against viewport width/height. It did not know the fixed navigation clearance or the asynchronously rendered “Builds using this item” strip, so the full-size 1440-reference card could overlap those surfaces at 1080p. Added a live safe-area callback, width/height fitting, boundary clamping, and a reposition after the Builds panel resolves; mobile retains the existing stacked scroll sheet.
+- Added `scripts/items-spotlight-layout-smoke.mjs`, which reproduced the pre-fix overlap and now passes at 1440p, 1080p, and short-desktop sizes. Items pointer/navigation/P1 smokes, changed-file syntax checks, and `git diff --check` pass. Updated the Items cache keys and todo entry. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Items spotlight responsive tooltip 255 - in progress
+
+- Codex owns `js/shared/tooltip-hover.js`, `js/pages/items/spotlight.js`, `js/pages/items/spotlight.css`, the focused Items spotlight layout smoke, `docs/todo.md`, affected page-template stylesheet/module cache references, and this handoff for the responsive clicked-item showcase correction. Cursor does not own these paths. Scope is limited to the locked Items spotlight tooltip and its desktop/mobile relationship with the fixed navigation and “Builds using this item” panel; shared hover tooltip placement outside the Items spotlight must remain unchanged.
+### 2026-10-16 Items spotlight composition responsive 256 - in progress
+
+- Codex owns `js/pages/items/spotlight.css`, `js/pages/items/spotlight.js`, `js/pages/items/spotlight-recipes.js`, `js/pages/items/spotlight-builds.js`, the focused Items spotlight composition smoke, `docs/todo.md`, affected page-template cache references, and this handoff for making every desktop clicked-item showcase section scale from the 1440p reference. Cursor does not own these paths. Mobile remains on its existing stacked layout; the focused item, recipe panel, and Builds using this item strip are all in scope on desktop.
+
+### 2026-10-16 Items spotlight composition responsive 256 - complete
+
+- The clicked-item showcase now publishes one desktop scale from the shared 2560×1440 navigation density helper to the focused item stage, recipe panel, and Builds using this item strip. Recipe sizing measures reference geometry before applying the scale, preserving its content-fit and scroll behavior; mobile keeps the existing stacked layout.
+- Added `scripts/items-spotlight-composition-smoke.mjs` with live CSS/recipe geometry checks at 2560×1440, 1920×1080, 1366×768, 1440×900, tablet, and mobile viewports. The focused composition, tooltip safe-area, pointer, navigation pointer, P1 live-art, syntax, and `git diff --check` verification pass. Bumped the Items spotlight cache token and marked the todo item complete. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Items spotlight hover treatment 257 - in progress
+
+- Codex owns `js/pages/items/spotlight.css`, the focused Items spotlight hover smoke, `docs/todo.md`, the Items spotlight cache reference, and this handoff for replacing outline-only hover states on recipe combination items and Builds using this item cards. Cursor does not own these paths. Scope is cosmetic interaction feedback only; click targets, keyboard focusability, mobile stacking, and reduced-motion behavior must remain intact.
+
+### 2026-10-16 Items spotlight hover treatment 257 - complete
+
+- Replaced the recipe-combination and Builds using this item outline hover states with non-layout-shifting gold highlight treatments: recipe items scale to 1.08 with a radial glow, while build cards lift/scale slightly with a softer glow. Keyboard focus uses the same visible treatment, and reduced-motion users get no transform transition or scale.
+- Added `scripts/items-spotlight-hover-smoke.mjs`, refreshed the Items spotlight stylesheet cache key, and marked the todo item complete. Verification passes across 2560×1440, 1920×1080, 1366×768, 768×900, and 390×844, plus changed-file syntax and `git diff --check`. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Items spotlight signature scrollbar 258 - in progress
+
+- Codex owns `js/pages/items/spotlight.css`, the focused Items spotlight scrollbar smoke, `docs/todo.md`, the Items spotlight cache reference, and this handoff for applying the site’s signature image-based scrollbar to the Builds using this item strip. Cursor does not own these paths. Scope is limited to scrollbar chrome and responsive overflow behavior; the strip’s content, sizing, and interaction remain unchanged.
+
+### 2026-10-16 Items spotlight signature scrollbar 258 - complete
+
+- Replaced the Builds using this item strip’s palette scrollbar with the site’s image-based signature scrollbar: `track.png` track, bordered `thumb.png`, automatic fallback colors, 18px chrome, and hidden scrollbar buttons. Horizontal scrolling and responsive strip behavior remain unchanged.
+- Added and passed `scripts/items-spotlight-scrollbar-smoke.mjs` at 2560×1440, 1920×1080, 1366×768, 768×900, and 390×844; reran the spotlight hover/composition/layout and pointer smokes, changed-file syntax checks, and `git diff --check`. Refreshed the Items spotlight CSS cache key and marked the todo item complete. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Potion connector visual parity 259 - in progress
+
+- Codex owns `js/shared/potion-links.js`, `js/shared/backpack-grid/backpack-grid.css`, `js/shared/board-still/paint.js`, the shared backpack stylesheet cache references on home/create/sim/builds, the focused potion connector smokes, `docs/todo.md`, and this handoff for correcting the potion interaction visual. Cursor does not own these paths. Scope is limited to the connector’s game-like filled blue triangle, live/static rendering, and cache invalidation; potion activation rules and board state remain unchanged.
+
+### 2026-10-16 Homepage preset color system 260 - complete
+
+- Homepage preset actions now use four banner-mapped colors: crimson for Create, steel blue for build/remix actions, forest for item/catalog discovery, and gold for featured/community actions. The Explore category tabs remain intentionally flat yellow controls.
+- Removed section-specific Featured and Explore hover/active overrides so every homepage preset uses the shared hover contract: the same filter, white hover text, inner rim, outer depth shadow, and responsive pill geometry. Refreshed the Home/shared preset cache tokens and expanded `scripts/home-button-preset-smoke.mjs` to cover all four variants and compare their computed hover states at 1440, 1080, tablet, and mobile widths. No legal/security surfaces changed; work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Slim footer height 261 - complete
+
+- Reduced the slim footer’s desktop bottom padding from the oversized 3.25rem clearance to the frame edge plus the same 0.4rem content gap used at the top. Narrow layouts now use equal 0.4rem top/bottom padding, with safe-area protection retained. The regular footer and Sim-specific slim override remain unchanged.
+- Extended `scripts/admin-footer-presets-browser-smoke.mjs` to verify the content-to-frame gap at 1440, 1080, tablet, and mobile widths; the smoke passes with the footer height reduced while preserving the footer preset and no-overflow checks. Refreshed shared stylesheet cache references, marked the todo complete, and ran `git diff --check`. No legal/security surfaces changed; work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Potion connector visual parity 259 - complete
+
+- Root cause was a visual implementation mismatch: the game’s `PotionConnector.tscn` uses a filled blue `Triangle.png` particle, while the site had rendered only a thin dashed SVG stroke. The shared geometry now produces a closed filled triangle aimed from the affected cell toward the source potion, with a lightweight opacity pulse for live boards and the same static triangle in flattened board stills.
+- Added live placed-board integration coverage so a real `mountPlacedGrid` board must produce one visible filled connector, refreshed the shared backpack CSS cache token to `potionlinks2` on home/create/sim/builds, and updated the todo description. Focused potion geometry/browser smokes, Create pointer, Sim empty-state, Home promo hover/activity/P1 smokes, changed-file syntax checks, and `git diff --check` pass. No legal/security surfaces changed. Work remains local and uncommitted; no push was requested.
+### 2026-10-16 Builds card Alt preview 262 - complete
+
+- Codex owns `js/pages/builds/post-row.js`, `js/pages/builds/board-thumbs.js`, `js/pages/builds/card-preview.js`, `js/pages/builds/builds.css`, the shared build-preview animation option needed by this surface, focused Builds card-preview smoke coverage, `docs/todo.md`, and this handoff. Cursor does not own these paths. Scope is limited to the card-view-only Alt + Play affordance and lightweight no-stats board preview; compact/grid views and existing tooltip preview behavior remain unchanged.
+- Added the card-only Alt + Play control with the existing game icon/keycap treatment. It reveals on card hover/focus, is scoped to `body.page-builds`, keeps compact/grid rows unchanged, and mounts the existing lightweight Sim activation preview into a pointer-transparent overlay above the cached still. Alt starts the preview without pointer movement; leaving the card stops it and restores the static view.
+- Added `scripts/builds-card-preview-smoke.mjs` and `scripts/builds-card-preview-browser-smoke.mjs`. Both focused checks pass at 1440, 1080, tablet, and mobile widths; the existing tooltip static/browser, board-thumbnail, Builds filter-group, changed-file syntax, and `git diff --check` checks also pass. No legal/security surfaces changed.
+- No blockers. Work remains local and uncommitted; no push was requested.
+### 2026-10-16 Shared navigation hitbox verification 263 - complete
+
+- Codex owns this verification note and the existing shared-navigation regression coverage. No product code changed because the prior repair is still correct: `#site-nav` is pointer-transparent, `.site-nav-shell` remains interactive, and `#site-nav-space` follows the transformed shell boundary.
+- Re-ran `scripts/items-nav-pointer-smoke.mjs`, `scripts/nav-density-smoke.mjs`, and `scripts/nav-density-browser-smoke.mjs`. Hit-testing and responsive density pass at 2560×1440, 1920×1080, short desktop, 1024px tablet, and 390px mobile. A static scan found all 18 nav-bearing pages load the shared theme rules. The todo item is marked complete.
+- No blockers. Work remains local and uncommitted; no push was requested. Next step: wait for the next requested UI task.
+### 2026-10-16 Builds feed scrollbar spacing 264 - complete
+
+- Codex owns the Builds feed scroll-container spacing in `js/pages/builds/builds.css`, its focused smoke coverage, `docs/todo.md`, the Builds stylesheet cache reference, and this handoff. Cursor does not own these paths. Scope is limited to a small responsive gap between feed content and the existing vertical scrollbar; scrollbar chrome, filter rail, card layout, and page scroll behavior remain unchanged.
+- Added `padding-inline-end: clamp(0.35rem, 0.55vw, 0.65rem)` to `.builds-feed__list-host`, keeping the existing scrollbar on the inline-end edge while separating cards from its track. Refreshed the Builds stylesheet cache key and marked the todo item complete.
+- Added `scripts/builds-scrollbar-spacing-smoke.mjs` and `scripts/builds-scrollbar-spacing-browser-smoke.mjs`. Focused checks pass at 1440p, 1080p, tablet, and mobile with no horizontal overflow; Home/Builds scrollbar parity, Builds filter groups, surface padding, card preview, changed-file syntax, and `git diff --check` also pass. No legal/security surfaces changed.
+- No blockers. Work remains local and uncommitted; no push was requested.
+### 2026-10-16 Builds view modular desktop composition complete
+
+- Codex owned the dedicated `/builds/view/` responsive composition for this task: `js/pages/build/build.css`, `js/pages/build/index.js`, `builds/view/index.html`, the focused Builds-view responsive smoke tests, `docs/todo.md`, and this handoff.
+- The full desktop content group now scales from the 2560×1440 reference using `--build-desktop-scale`: author rail, board, round controls, and Build Info stay proportional together. Shared navigation, screen frame, background, and slim footer remain unscaled; the existing <=1100px stacked/tablet/mobile layout stays independent and scrollable.
+- Added `scripts/build-view-modular-responsive-smoke.mjs`, which first reproduced the 1080p overflow and now verifies no page scroll or horizontal overflow at 2560×1440, 1920×1080, and 1600×900 while retaining stacked behavior at tablet/mobile sizes. Updated `build-view-density-smoke.mjs` to assert the new modular scale contract and bumped the Builds-view asset cache token.
+- Verification passed: focused modular smoke, density, header-layout, title-spacing, and pointer smokes; changed-file `node --check`; and `git diff --check`. The 2560×1440 reference remains scale 1, and the 1920×1080 fixture ends at the viewport footer without scroll.
+- No legal, authentication, database, storage, or security behavior changed. Work remains local and uncommitted; no push was requested.
+### 2026-10-16 Builds view header tag spacing complete
+
+- Codex owned `js/pages/build/build.css`, the focused Builds-view header geometry verification, `docs/todo.md`, and this handoff for this task.
+- Removed the header identity column's forced `justify-content: space-between`; the build title and tags now remain naturally grouped while the vote control stays aligned beside the header.
+- Updated `scripts/build-view-header-layout-smoke.mjs` to reject `space-between` and verify the vote column still contains the identity content. Desktop, short desktop, tablet, and mobile checks pass, along with title-spacing, modular responsive, pointer, syntax, and diff checks.
+- No legal, authentication, database, storage, or security behavior changed. Work remains local and uncommitted; no push was requested.
+### 2026-10-16 Builds view creator avatar sizing complete
+
+- Codex owned `js/pages/build/build.css`, the focused Builds-view responsive geometry verification, `docs/todo.md`, and this handoff for this task.
+- Increased the creator avatar/blob from 5.5rem to 8.25rem at the desktop reference size and from 3.5rem to 5.25rem in the stacked layout, preserving the circular shape and existing avatar/blob rendering.
+- Added `scripts/build-view-author-avatar-smoke.mjs`, which verifies 132px at 2560×1440, 99px at 1920×1080 after composition scaling, and 84px at tablet/mobile sizes. Avatar, modular responsive, header-layout, title-spacing, pointer, syntax, and diff checks pass.
+- No legal, authentication, database, storage, or security behavior changed. Work remains local and uncommitted; no push was requested.
+### 2026-10-16 Builds view round drag scrubbing complete
+
+- Codex owned `js/pages/build/round-scrubber.js`, `js/pages/build/page.js`, `js/pages/build/build.css`, the Builds-view round-drag regression, `builds/view/index.html`, `docs/todo.md`, and this handoff for this task.
+- Build view round strips now support click-and-hold horizontal pointer scrubbing. Temporary window-level pointer tracking preserves ordinary button clicks while allowing the pointer to leave the strip; video buttons remain excluded from round dragging. The shared scrubber option is gated to `page-build-view`, leaving Create/Sim/history consumers unchanged.
+- Build-view board changes now use `appear: false` during round changes, so items and bags switch immediately without the appear/disappear wave. Added the drag CSS affordance and cache-busted the Build-view module graph.
+- Added `scripts/build-view-round-drag-smoke.mjs`. It verifies normal click selection, drag right/left selection, keyboard navigation, Build-view scoping, and the no-wave update path. Round-drag, avatar, modular responsive, header-layout, title-spacing, pointer, syntax, and diff checks pass.
+- No legal, authentication, database, storage, or security behavior changed. Work remains local and uncommitted; no push was requested.
+### 2026-10-16 Builds view round wrap synchronization complete
+
+- Codex owned `js/pages/build/round-scrubber.js`, the narrowly related Builds-view module cache references, the focused round-wrap regression, `docs/todo.md`, and this handoff for this task. Cursor does not own these paths.
+- The previous-round sentinel branch no longer treats the no-video `videoIndex` value of `-1` as a real step. Round 1 → previous now wraps to the final history frame, updating the round label, selected picker triangle, and Build-view board callback together. The same final-frame behavior is used when stepping back from the published-board state; optional video remains reachable as the forward step after the final round.
+- Added `scripts/build-view-round-wrap-smoke.mjs`, covering normal and video-enabled histories. The focused wrap smoke passes, along with the existing round-drag, modular responsive, header-layout, title-spacing, pointer, changed-file syntax, and `git diff --check` verification. No legal, authentication, database, storage, or security behavior changed. Work remains local and uncommitted; no push was requested.
+### 2026-10-16 Builds view more-by-creator responsive grid complete
+
+- Codex owned the Builds-view author rail grid in `js/pages/build/build.css`, its focused responsive regression, `docs/todo.md`, the Build-view cache reference, and this handoff for this task. Cursor does not own these paths.
+- The “More by creator” rail keeps three columns at the 2560×1440 reference and switches to two columns below 2200px, with larger responsive row/column gaps. This gives the 1920×1080 layout measured 65px of horizontal breathing room between miniature boards while preserving the existing small preview size; tablet and mobile also remain two-column and overflow-free.
+- Added `scripts/build-view-more-creator-responsive-smoke.mjs`, covering 2560×1440, 1920×1080, 1600×900, 1024px tablet, and 390px mobile. The focused smoke, Build-view modular/avatar/header/title/pointer/round checks, changed-file syntax checks, and `git diff --check` pass. `npm test` is unavailable because this repository has no `test` script. No legal, authentication, database, storage, or security behavior changed. Work remains local and uncommitted; no push was requested.
+### 2026-10-16 Builds view info tooltip left placement complete
+
+- Codex owned the Build-view info-rail tooltip binding in `js/pages/build/page.js`, its focused placement regression, `docs/todo.md`, the Build-view module cache reference, and this handoff for this task. Cursor does not own these paths.
+- Build Info item tooltips now use the shared `itemLeft` placement, so the full-size card opens to the left of items in the right-side rail instead of shrinking into the remaining right-edge space. The shared tooltip engine and other pages were unchanged; narrower viewports still receive the existing safe clamp.
+- Added `scripts/build-view-info-tooltip-placement-smoke.mjs`, covering 1440p, 1080p, tablet, and mobile. The focused placement smoke, shared tooltip scale/transition checks, Build-view responsive/header/title/pointer checks, changed-file syntax checks, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed. Work remains local and uncommitted; no push was requested.
+### 2026-10-16 Builds view info tooltip footer-safe sizing complete
+
+- Codex owned the Build-view tooltip safe-area wiring in `js/pages/build/page.js` and the narrowly scoped shared placement support in `js/shared/tooltip-hover.js`, the focused regression, `docs/todo.md`, the Build-view cache references, and this handoff for this task. Cursor does not own these paths.
+- Build Info item tooltips now resolve the responsive frame edges and visible footer top at placement time, then fit oversized cards inside the resulting left/right/top/bottom safe area. The dynamic bounds contract is only passed by the Build Info binding, so other tooltip placements retain their previous behavior.
+- Added `scripts/build-view-info-tooltip-safe-area-smoke.mjs`. Safe-area, left-placement, shared tooltip scale/transition, Build-view modular, and More-by-creator responsive checks pass at 1440p/reference, 1080p/short desktop, 900p, tablet, and mobile fixtures. Changed-file syntax checks and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Build Info divider preset complete
+
+- Codex owned the reusable divider preset in `js/shared/tooltip.css`, Build Info divider markup/styles in `js/pages/build/info-rail.js` and `js/pages/build/build.css`, the focused divider regression, Build-view/History cache references, `docs/todo.md`, and this handoff for this task. Cursor does not own these paths.
+- Added a reusable layered-gradient `.bpb-divider` CSS preset with gold/legendary, common, rare, epic, godly, and unique variants plus a vertical orientation. It echoes the image-backed item-tooltip divider family without making Build Info depend on an image asset. The four live/loading Build Info divider instances now use the gold vertical preset; the existing item-tooltip image dividers remain unchanged.
+- Added `scripts/build-info-divider-smoke.mjs`. The focused divider browser smoke, Build-view tooltip placement/safe-area, modular density, header, title-spacing, changed-file syntax checks, and `git diff --check` pass. `npm test` is unavailable because the repository has no `test` script. No legal, authentication, database, storage, or security behavior changed. Work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Create BagBorder visual audit reverified
+
+- Codex verified the existing source-derived Create bag-synergy implementation in `tools/game-extract-full/Items/Tiles/BagBorder.gd`, `js/pages/create/drag-affect.js`, `js/shared/backpack-grid/can-affect.js`, `js/shared/backpack-grid/item-pieces.js`, and `js/pages/create/create.css`. No product-code change was needed because the implementation already matches the audited game behavior.
+- The game source shows a placed bag’s border on item pickup only when `showBagBorderForItem` accepts the held non-bag item, applies tint 1.3 at rest and 2.5 when an occupied cell is hovered, and hides it on drop except for a compatible hotswap. Create mirrors compatibility, per-bag extracted border textures/tints, hovered emphasis, visible placed-board fabric cells, and drop/cancel cleanup.
+- Re-ran `scripts/create-bag-synergy-smoke.mjs`, `scripts/create-bag-synergy-browser-smoke.mjs`, `scripts/create-duration-hover-smoke.mjs`, and `scripts/create-page-pointer-smoke.mjs`; all pass. Changed-module syntax checks and `git diff --check` pass. Marked the corresponding `docs/todo.md` item complete. No legal/security behavior changed; work remains local and uncommitted.
+
+### 2026-10-16 Build-view simulator planning complete
+
+- Codex audited the existing Build-view round/board seams and simulator seams before implementation. The proposed feature reuses `runSim()` with an inert non-attacking dummy, `mountSimScrubber()`, `createSimFx()`, existing per-placement snapshots, and the shared Premium entitlement/offer helpers; no product code or simulator defaults changed in this planning pass.
+- Created [`docs/superpowers/specs/2026-10-16-build-view-simulator-design.md`](superpowers/specs/2026-10-16-build-view-simulator-design.md) and [`docs/superpowers/plans/2026-10-16-build-view-simulator.md`](superpowers/plans/2026-10-16-build-view-simulator.md). The plan covers the paused 0–20s preview, round/video lifecycle, playhead-derived DPS/HPS/Max HP/s/BPS/score/buff/debuff stats, accessible Build Info/Build Stats tabs, Premium-only exact values, client-side obfuscation limits, responsive verification, and focused regressions.
+- Documented the key limitation explicitly: the preview is simulator-derived and uses a fixed target sink, not live PvP or a full 1:1 claim. No Minecraft font asset was found; the plan uses changing glyph text with local CSS fallback rather than adding an unlicensed font. No legal/security behavior changed; work remains local and uncommitted.
+
+### 2026-10-16 Prismatic Orb tooltip counts complete
+
+- Codex owned the Prismatic Orb tooltip/data path in `js/shared/prismatic-orb.js`, `js/shared/tooltip.js`, `js/pages/items/catalog/index.js`, `js/pages/create/board-live-stats.js`, its focused smoke, `docs/todo.md`, and this handoff. Cursor does not own these paths.
+- Audited `tools/game-extract-full/Items/Exclusive/RainbowOrb.gd` and `ExclusiveItems.csv`: the game uses `countTypes(getAffectedItems())`, inserts `Rainbow Orb_Counter` parentheticals after Magic/Vampiric/Holy/Dark item sections when placed, and strips those counters from unplaced tooltips. The Items catalog now supplies full-catalog section counts for the requested standalone tooltip; Create/Sim preserve affected-board counts. Both use only primary/extra game types, matching `getTypes()` instead of counting custom tags.
+- Added `scripts/prismatic-orb-tooltip-smoke.mjs`, including source-rule assertions, type-count regression coverage, and a Playwright render check for all four displayed counts. Verification passed: focused smoke, tooltip scale/transition smokes, changed-module `node --check`, `audit-tooltip-parity.mjs` (0 issues), and `git diff --check`. `npm test` remains unavailable because this repository has no `test` script. No legal/security behavior changed; work remains local and uncommitted.
+
+### 2026-10-16 Profile inventory cosmetic tooltip shadow complete
+
+- Codex owns the cosmetic tooltip host class in `js/pages/u/blob/cosmetic-tooltip.js`, its shared shadow override in `js/shared/tooltip.css`, the focused browser smoke in `scripts/profile-inventory-tooltip-shadow-browser-smoke.mjs`, the tooltip cache-bust references, `docs/todo.md`, and this handoff. Cursor does not own these paths.
+- Reproduced the reported halo on the profile inventory fixture: the cosmetic card inherited the shared `.bpb-tooltip-float .bpb-tooltip` `drop-shadow(0 2px 4px ...)`. Cosmetic tooltip hosts now carry a dedicated class and disable only that extra card shadow across profile inventory, wardrobe, admin, events, and other cosmetic surfaces; ordinary item tooltips retain their existing shadow.
+- Focused browser verification passes at 1440p, 1080p, tablet, and mobile with no horizontal overflow, and confirms the regular item tooltip shadow is preserved. Tooltip transition browser/static smokes, profile-owner and admin-cosmetics smokes, changed-module syntax checks, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed; work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Items spotlight horizontal scrollbar repair complete
+
+- Codex owns the Items spotlight Builds scrollbar in `js/pages/items/spotlight.css`, its horizontal derived assets under `assets/icons/scrollbar/`, the asset builder and focused browser smoke, the Items spotlight cache reference, `docs/todo.md`, and this handoff. Cursor does not own these paths.
+- The previous rules reused the vertical `track.png` and `thumb.png` directly on a horizontal scroller, so the pseudo-elements resolved but the signature bar painted incorrectly. Added rotated `track-horizontal.png` and `thumb-horizontal.png` derivatives from the existing assets; the Builds using this item strip now paints those horizontally, keeps the scrollbar buttons hidden, and preserves the gold/brown standards fallback.
+- Added `scripts/build-scrollbar-assets.mjs` and `scripts/items-spotlight-builds-scrollbar-browser-smoke.mjs`. The focused Edge browser smoke passes at 1440p, 1080p, tablet, and mobile with real horizontal overflow, horizontal asset URLs, hidden buttons, and no page overflow. No legal, authentication, database, storage, or security behavior changed; work remains local and uncommitted; no push was requested.
+
+### 2026-10-16 Items spotlight hover treatment refined
+
+- Codex continues to own the Items spotlight hover styles and focused hover smoke in `js/pages/items/spotlight.css` and `scripts/items-spotlight-hover-smoke.mjs`; Cursor does not own these paths.
+- Removed the gold radial/background and yellow glow from recipe ingredients and Builds using this item cards. The existing scale/lift behavior remains, with a subtle brightness increase and neutral depth shadow instead.
+- Updated the todo wording and regression assertions to require brightness, preserve the neutral shadow, and reject gold hover treatments. No legal, authentication, database, storage, or security behavior changed; work remains local and uncommitted; no push was requested.

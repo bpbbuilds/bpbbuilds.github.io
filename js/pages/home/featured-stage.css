@@ -487,43 +487,8 @@
   height: var(--fs-btn-h);
   margin: 0;
   padding: 0 0.75em;
-  border: 0;
-  border-radius: 0;
-  background-color: transparent;
-  background-image: none;
-  background-size: 100% 100%;
-  background-position: center center;
-  background-repeat: no-repeat;
-  color: var(--bpb-label-fill, #fffaf0);
-  font-family: var(--bpb-font-display);
   font-size: var(--fs-text-btn);
-  font-weight: 400;
-  letter-spacing: 0.03em;
-  line-height: 1;
-  text-decoration: none;
-  text-shadow: var(--bpb-label-stroke);
-  box-shadow: none;
-  transition: filter 0.15s ease, transform 0.15s ease;
-  box-sizing: border-box;
   overflow: hidden;
-}
-
-.fs-btn--watch {
-  background-image: url("../../../assets/theme/ui/ui-btn-crimson.png");
-}
-
-.fs-btn--build {
-  background-image: url("../../../assets/theme/ui/ui-btn-steel.png");
-}
-
-.fs-btn:hover {
-  filter: brightness(1.1);
-  color: #fff;
-}
-
-.fs-btn:active {
-  transform: translateY(1px);
-  filter: brightness(0.96);
 }
 
 .fs-btn__icon {

@@ -36,6 +36,7 @@ import {
   parkWarmEntry,
   recycleEntry,
 } from './item-virtual.js';
+import { renderPotionLinks } from '../potion-links.js';
 
 function isBagItem(item) {
   return String(item?.type || '') === 'Bag';
@@ -373,8 +374,9 @@ export function cellPxFill(availWidth, cols, fallback = CELL_PX_DEFAULT) {
 /**
  * Ensure board chrome exists; bind hover once.
  * @param {HTMLElement} root
+ * @param {{ interactivePromo?: boolean }} [options]
  */
-function ensureBoard(root) {
+function ensureBoard(root, options = {}) {
   let board = root.querySelector(':scope > .bpb-bg__board');
   if (!(board instanceof HTMLElement)) {
     root.replaceChildren();
@@ -385,18 +387,24 @@ function ensureBoard(root) {
       '<div class="bpb-bg__under" aria-hidden="true"></div>' +
       '<div class="bpb-bg__items"></div>';
     root.appendChild(board);
-    // Homepage create promo: decorative only — hover chrome is the hover jank.
-    if (!root.classList.contains('bpb-bg--promo')) {
+    // Promo boards are decorative by default. The Home Player Info board opts
+    // into the same rarity/spark hover chrome as a normal placed board.
+    if (!root.classList.contains('bpb-bg--promo') || options.interactivePromo === true) {
       bindRarityHover(root);
       bindHoverSparks(root);
     }
   }
   const under = board.querySelector('.bpb-bg__under');
+  const lines = board.querySelector('.bpb-bg__lines');
   const itemsLayer = board.querySelector('.bpb-bg__items');
-  if (!(under instanceof HTMLElement) || !(itemsLayer instanceof HTMLElement)) {
+  if (
+    !(lines instanceof HTMLElement) ||
+    !(under instanceof HTMLElement) ||
+    !(itemsLayer instanceof HTMLElement)
+  ) {
     return null;
   }
-  return { board, under, itemsLayer };
+  return { board, lines, under, itemsLayer };
 }
 
 /**
@@ -471,9 +479,9 @@ export function paintPooled(root, opts) {
   root.style.setProperty('--bpb-bg-cols', String(cols));
   root.style.setProperty('--bpb-bg-rows', String(rows));
 
-  const layers = ensureBoard(root);
+  const layers = ensureBoard(root, { interactivePromo: opts.promoInteractive === true });
   if (!layers) return deferAppear ? { shown: new Set(), appearList: [], warmEntries: [] } : new Set();
-  const { board, under, itemsLayer } = layers;
+  const { board, lines, under, itemsLayer } = layers;
 
   if (board.style.width !== boardWidth) board.style.width = boardWidth;
   const heightEm = `${rows}em`;
@@ -585,7 +593,8 @@ export function paintPooled(root, opts) {
       const itemiaryPromo = promo && root.classList.contains('bpb-bg--itemiary');
       const itemEl = createItemEl(item, getSpriteUrl, stackZ, face, resolvedGems, {
         deferSprite,
-        chrome: !promo,
+        liveArt: opts.liveArt,
+        chrome: !promo || opts.promoInteractive === true,
         // All surfaces use the shared CSS silhouette; promo cards intentionally
         // omit the depth shadow, but no surface requests a duplicate image.
         shadow: !itemiaryPromo,
@@ -721,6 +730,18 @@ export function paintPooled(root, opts) {
     pruneItemiaryPool(pool, shown, Math.max(64, Math.floor(Number(opts.poolCap))));
   }
 
+  renderPotionLinks(lines, {
+    cols,
+    rows,
+    // Itemiary/packed catalog boards intentionally stay sprite-only. Placed
+    // boards (create/sim/build) and the live Home promo use the connector.
+    placements:
+      root.classList.contains('bpb-bg--placed') || root.classList.contains('bpb-bg--promo')
+        ? placements
+        : [],
+    itemsById,
+  });
+
   // Collar extension promotion (Acorn Ace), rarity-hover listeners, etc.
   root.dispatchEvent(new CustomEvent('bpb-bg:painted', { bubbles: false }));
 
@@ -757,11 +778,13 @@ export function ensurePoolEntries(pool, root, items, getSpriteUrl) {
   const { under, itemsLayer } = layers;
   // Itemiary prewarm: DOM + geom only — deferred data-src (no network until warm/IO).
   const deferSprite = root.classList.contains('bpb-bg--itemiary');
+  const liveArt = root.dataset.bpbLiveArt !== 'off';
   const promo = root.classList.contains('bpb-bg--promo');
   for (const item of items) {
     if (!item?.id || pool.has(item.id)) continue;
     const itemEl = createItemEl(item, getSpriteUrl, item.libraryIndex ?? 1, 0, [], {
       deferSprite,
+      liveArt,
       chrome: !promo,
       // Prewarmed board entries use the same CSS silhouette as painted entries.
       shadow: !promo,
@@ -793,6 +816,7 @@ export function ensurePoolEntries(pool, root, items, getSpriteUrl) {
  *   cols?: number,
  *   fillWidth?: boolean,
  *   promo?: boolean,
+ *   liveArt?: boolean,
  *   spriteRoot?: Element | null,
  *   virtualize?: boolean,
  *   virtualPadEm?: number,
@@ -812,6 +836,9 @@ export function mountItemiaryGrid(container, options) {
   }
   el.className =
     'bpb-bg bpb-bg--itemiary' + (options.promo === true ? ' bpb-bg--promo' : '');
+  const liveArt =
+    options.liveArt !== false && host.dataset.bpbLiveArt !== 'off';
+  el.dataset.bpbLiveArt = liveArt ? 'on' : 'off';
 
   const baseCellPx = options.cellPx ?? CELL_PX_DEFAULT;
   let fixedCols = options.cols ?? 20;
@@ -1097,6 +1124,7 @@ export function mountItemiaryGrid(container, options) {
       skipPark: null,
       deferAppear: true,
       deferSprite: true,
+      liveArt,
       poolCap,
     });
     const { shown, appearList, warmEntries } =

@@ -183,7 +183,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
 }
 
 .il-filter__reset img {
@@ -210,7 +210,7 @@
   padding: 0.15rem 0.2rem;
   border: 0;
   background: transparent;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
 }
 
 .il-filter__group-arrow {
@@ -255,7 +255,7 @@
   border: 2px solid transparent;
   background: transparent;
   text-align: left;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   font-family: var(--bpb-font-body);
   font-weight: 400;
   font-size: 1.5rem;
@@ -280,7 +280,7 @@
 .il-filter__group-option:disabled,
 .il-filter__group-option.is-disabled {
   opacity: 0.5;
-  cursor: var(--bpb-cursor-default);
+  cursor: var(--bpb-cursor-default, default);
 }
 
 .il-filter__group-option:disabled:hover,
@@ -307,7 +307,7 @@
   border: 2px solid transparent;
   border-radius: 0.4rem;
   background: transparent;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   line-height: 0;
 }
 
@@ -383,7 +383,7 @@
   padding: 0.15rem 0;
   border: 0;
   background: transparent;
-  cursor: var(--bpb-cursor-pointer);
+  cursor: var(--bpb-cursor-pointer, pointer);
   text-align: left;
 }
 

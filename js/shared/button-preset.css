@@ -1,0 +1,113 @@
+/* Shared game-style action buttons used by homepage and site-wide navigation. */
+.home-preset-button,
+.site-footer__nav a {
+  --home-preset-gold: #eac914;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  border: 2px solid rgba(55, 24, 18, 0.9);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #a33a3a 0%, var(--bpb-banner-crimson, #8b2e2e) 100%);
+  color: #f7f0e4;
+  font-family: var(--bpb-font-display);
+  font-weight: 400;
+  line-height: 1;
+  text-decoration: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  /* The pseudo-element below is the always-visible inner rim. */
+  box-shadow:
+    inset 0 0.18rem 0 rgba(255, 225, 164, 0.2);
+  transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+  cursor: var(--bpb-cursor-pointer, pointer);
+}
+
+.home-preset-button::before,
+.site-footer__nav a::before {
+  content: '';
+  position: absolute;
+  inset: 0.3rem;
+  z-index: 0;
+  border: 1px solid color-mix(in srgb, var(--home-preset-gold) 88%, #fff 12%);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: border-color 0.15s ease;
+}
+
+.home-preset-button > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-preset-button:hover,
+.site-footer__nav a:hover {
+  filter: brightness(1.1) saturate(1.04);
+  color: #fff;
+  box-shadow:
+    inset 0 0 0 2px var(--home-preset-gold),
+    inset 0 0.18rem 0 rgba(255, 236, 187, 0.25),
+    0 0.4rem 0.8rem rgba(20, 10, 5, 0.42);
+}
+
+.home-preset-button:hover::before,
+.site-footer__nav a:hover::before {
+  border-color: color-mix(in srgb, var(--home-preset-gold) 88%, #fff 12%);
+}
+
+.home-preset-button:active,
+.site-footer__nav a:active {
+  transform: translateY(1px);
+  filter: brightness(0.96);
+}
+
+.home-preset-button:focus-visible,
+.site-footer__nav a:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--bpb-gold) 85%, transparent);
+  outline-offset: 4px;
+}
+
+.home-preset-button.home-preset-button--crimson {
+  background: linear-gradient(180deg, #a33a3a 0%, var(--bpb-banner-crimson, #8b2e2e) 100%);
+}
+
+.home-preset-button.home-preset-button--blue {
+  background: linear-gradient(180deg, #4d6f94 0%, var(--bpb-banner-steel, #3d5a7a) 100%);
+}
+
+.home-preset-button.home-preset-button--forest {
+  background: linear-gradient(180deg, #4f855f 0%, var(--bpb-banner-forest, #3f6b4f) 100%);
+}
+
+.home-preset-button.home-preset-button--gold {
+  background: linear-gradient(180deg, #d6a52d 0%, #95621d 100%);
+}
+
+.site-footer__nav a[href*="/builds/"],
+.site-footer__nav a[href*="/items/"] {
+  background: linear-gradient(180deg, #4d6f94 0%, var(--bpb-banner-steel, #3d5a7a) 100%);
+}
+
+/* Compact category controls keep the same preset language without competing
+   with the larger section CTAs. */
+.home-preset-button--tab {
+  min-height: 2.15rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 1rem;
+  opacity: 0.82;
+}
+
+.home-preset-button--tab.is-active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-preset-button,
+  .home-preset-button::before,
+  .site-footer__nav a,
+  .site-footer__nav a::before {
+    transition: none;
+  }
+}

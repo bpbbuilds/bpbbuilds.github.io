@@ -280,7 +280,7 @@ export function libraryHtml(root, filterSlot, query, shown, total, canEdit) {
   const filters = `
     <aside
       id="blob-inv-filters"
-      class="blob-inv-filters items-filters il-filter bpb-filter-drawer__panel"
+      class="blob-inv-filters items-filters il-filter bpb-filter-preset bpb-filter-drawer__panel"
       aria-label="Filter cosmetics"
       data-blob-filters
     >

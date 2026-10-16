@@ -24,6 +24,7 @@
  *   stage?: Element | null,
  *   piece?: Element | null,
  *   tipHost?: HTMLElement | null,
+ *   bounds?: object | (() => object) | null,
  * }} RecipeLayoutCtx
  */
 
@@ -148,6 +149,14 @@ function readCatalogCellPx(fromEl = null) {
   return Number.isFinite(n) && n > 0 ? n : FALLBACK_CELL_PX;
 }
 
+/** @param {HTMLElement} root */
+function readDesktopScale(root) {
+  const n = parseFloat(
+    getComputedStyle(root).getPropertyValue('--il-spotlight-desktop-scale'),
+  );
+  return Number.isFinite(n) && n > 0 ? n : 1;
+}
+
 /**
  * @param {string} s
  */
@@ -246,11 +255,33 @@ export function createSpotlightRecipes(opts) {
       root.style.removeProperty('top');
       root.style.removeProperty('right');
       root.style.removeProperty('transform');
+      root.style.removeProperty('transform-origin');
       return;
     }
     const remeasureWidth = optsLayout.remeasureWidth !== false;
     const stage = layoutCtx.stage;
     const tip = layoutCtx.tipHost;
+    const scale = readDesktopScale(root);
+    const rawBounds =
+      typeof layoutCtx.bounds === 'function'
+        ? layoutCtx.bounds()
+        : layoutCtx.bounds;
+    const safeLeft = Number.isFinite(rawBounds?.left) ? rawBounds.left : EDGE;
+    const safeRight = Number.isFinite(rawBounds?.right)
+      ? rawBounds.right
+      : window.innerWidth - EDGE;
+    const safeTop = Number.isFinite(rawBounds?.top) ? rawBounds.top : EDGE;
+    const safeBottom = Math.max(
+      safeTop + 1,
+      Number.isFinite(rawBounds?.bottom)
+        ? rawBounds.bottom
+        : window.innerHeight - EDGE,
+    );
+
+    // Measure the panel in reference geometry, then scale the entire panel so
+    // its chrome, icons, and scrollbar follow the focused item as one unit.
+    root.style.transform = 'none';
+    root.style.transformOrigin = 'top left';
 
     cellPx = readCatalogCellPx(layoutCtx.piece || null);
     root.style.setProperty(
@@ -285,18 +316,25 @@ export function createSpotlightRecipes(opts) {
       }
     }
 
-    const roomRight = Math.max(PANEL_MIN_WIDTH_PX, vw - stageRight - gap - EDGE);
+    const roomRight = Math.max(
+      PANEL_MIN_WIDTH_PX,
+      (safeRight - stageRight - gap) / scale,
+    );
     let width = lockedWidthPx;
     if (remeasureWidth || !width) {
       // Shrink-wrap to content; only widen when a row actually needs it.
       const needed = Math.max(PANEL_MIN_WIDTH_PX, measureContentWidth());
-      width = Math.min(needed, roomRight, vw - EDGE * 2);
+      width = Math.min(needed, roomRight, (safeRight - safeLeft) / scale);
       lockedWidthPx = Math.round(width);
     }
     root.style.width = `${lockedWidthPx}px`;
 
-    const maxH = Math.min(Math.round(vh * 0.7), 36 * 16, vh - EDGE * 2);
-    root.style.maxHeight = `${Math.max(180, maxH)}px`;
+    const maxH = Math.min(
+      Math.round((vh * 0.7) / scale),
+      36 * 16,
+      (safeBottom - safeTop) / scale,
+    );
+    root.style.maxHeight = `${Math.max(1, maxH)}px`;
 
     if (!(stage instanceof Element)) return;
 
@@ -306,18 +344,20 @@ export function createSpotlightRecipes(opts) {
     const rh = rr.height || root.offsetHeight || maxH;
 
     let left = Math.round(anchorRight + gap);
-    if (left + rw > vw - EDGE) {
-      left = Math.max(EDGE, vw - rw - EDGE);
+    const visualW = rw * scale;
+    const visualH = rh * scale;
+    if (left + visualW > vw - EDGE) {
+      left = Math.max(safeLeft, safeRight - visualW);
     }
 
-    let top = Math.round(sr.top + sr.height / 2 - rh / 2);
-    if (top + rh > vh - EDGE) top = Math.max(EDGE, vh - rh - EDGE);
-    if (top < EDGE) top = EDGE;
+    let top = Math.round(sr.top + sr.height / 2 - visualH / 2);
+    if (top + visualH > safeBottom) top = Math.max(safeTop, safeBottom - visualH);
+    if (top < safeTop) top = safeTop;
 
     root.style.left = `${left}px`;
     root.style.top = `${top}px`;
     root.style.right = 'auto';
-    root.style.transform = 'none';
+    root.style.transform = scale === 1 ? 'none' : `scale(${scale})`;
   }
 
   function applyIconSizes() {
@@ -399,6 +439,7 @@ export function createSpotlightRecipes(opts) {
       stage: ctx.stage ?? null,
       piece: ctx.piece ?? null,
       tipHost: ctx.tipHost ?? null,
+      bounds: ctx.bounds ?? null,
     };
 
     cellPx = readCatalogCellPx(ctx.piece || null);
@@ -442,6 +483,7 @@ export function createSpotlightRecipes(opts) {
     root.style.removeProperty('top');
     root.style.removeProperty('right');
     root.style.removeProperty('transform');
+    root.style.removeProperty('transform-origin');
     root.style.removeProperty('max-height');
     root.style.removeProperty('width');
   }

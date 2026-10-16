@@ -88,12 +88,13 @@ try {
         headDisplay: getComputedStyle(head).display,
         titleAlign: getComputedStyle(title).textAlign,
         identityDirection: getComputedStyle(document.querySelector('.build-stage__identity')).flexDirection,
+        identityJustify: getComputedStyle(document.querySelector('.build-stage__identity')).justifyContent,
         tagsWrap: getComputedStyle(tags).flexWrap,
         tagsBelowTitle: tagsRect.top >= titleRect.bottom - 0.5,
         tagsSingleLine: tagsRect.height <= Math.max(...[...tags.children].map((tag) => tag.getBoundingClientRect().height)) + 1,
         voteRightAligned: Math.abs(voteRect.right - headRect.right) <= 1,
         voteStartsWithHeader: Math.abs(voteRect.top - headRect.top) <= 1,
-        voteEndsWithTags: Math.abs(voteRect.bottom - tagsRect.bottom) <= 1,
+        voteContainsIdentity: voteRect.bottom >= tagsRect.bottom - 1,
         voteDirection: getComputedStyle(vote).flexDirection,
         voteCenteredInColumn: Math.abs(
           (voteControlRect.top + voteControlRect.bottom) / 2
@@ -111,12 +112,13 @@ try {
     if (result.headDisplay !== 'grid') throw new Error(`${viewport.name}: header is not a two-column grid`);
     if (result.titleAlign !== 'left') throw new Error(`${viewport.name}: title is not left aligned`);
     if (result.identityDirection !== 'column') throw new Error(`${viewport.name}: tags are not below the title`);
+    if (result.identityJustify === 'space-between') throw new Error(`${viewport.name}: title and tags are distributed with extra space`);
     if (result.tagsWrap !== 'nowrap') throw new Error(`${viewport.name}: tags are allowed to wrap`);
     if (!result.tagsSingleLine) throw new Error(`${viewport.name}: tags do not occupy one row`);
     if (!result.tagsBelowTitle) throw new Error(`${viewport.name}: tags overlap title`);
     if (!result.voteRightAligned) throw new Error(`${viewport.name}: vote slot is not right aligned`);
     if (!result.voteStartsWithHeader) throw new Error(`${viewport.name}: vote slot does not start at the header top`);
-    if (!result.voteEndsWithTags) throw new Error(`${viewport.name}: vote slot does not extend through the tags`);
+    if (!result.voteContainsIdentity) throw new Error(`${viewport.name}: vote slot does not contain the title/tag identity column`);
     if (result.voteDirection !== 'row') throw new Error(`${viewport.name}: vote controls are not arranged horizontally`);
     if (!result.voteCenteredInColumn) throw new Error(`${viewport.name}: vote control is not centered in the vote column`);
     if (!result.upBeforeScore) throw new Error(`${viewport.name}: upvote is not left of the score`);

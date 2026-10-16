@@ -8,7 +8,7 @@
  */
 
 import { createItemEl, createUnderEl } from '../../shared/backpack-grid/index.js';
-import { mountLiveArt } from '../../shared/item-live-art/index.js';
+import { navDesktopScale } from '../../shared/nav.js';
 
 const OPEN_MS = 300;
 const CLOSE_MS = 400;
@@ -55,7 +55,8 @@ function pieceFlipTransform(dx, dy, scale = 1) {
  * @param {{
  *   host: Element,
  *   getTip: () => {
- *     lock: (item: object, opts?: { stage?: Element | null }) => void,
+ *     lock: (item: object, opts?: { stage?: Element | null, bounds?: object | (() => object) | null }) => void,
+ *     reposition: () => void,
  *     unlock: () => void,
  *     host: HTMLElement,
  *   } | null,
@@ -63,13 +64,15 @@ function pieceFlipTransform(dx, dy, scale = 1) {
  *   getItemById: (id: string) => object | undefined,
  *   getFilteredOrder: () => object[],
  *   recipes?: {
- *     showFor: (id: string, ctx?: {
- *       stage?: Element | null,
- *       piece?: Element | null,
- *       tipHost?: HTMLElement | null,
- *     }) => void,
- *     hide: () => void,
- *     el?: HTMLElement,
+  *     showFor: (id: string, ctx?: {
+  *       stage?: Element | null,
+  *       piece?: Element | null,
+  *       tipHost?: HTMLElement | null,
+  *       bounds?: object | (() => object) | null,
+  *     }) => void,
+  *     hide: () => void,
+  *     layout?: (opts?: { remeasureWidth?: boolean }) => void,
+  *     el?: HTMLElement,
  *   } | null,
  *   builds?: {
  *     showFor: (id: string) => void,
@@ -109,6 +112,21 @@ export function createSpotlight(opts) {
   let mobileLayoutRaf = 0;
   /** @type {MutationObserver | null} */
   let mobilePanelObserver = null;
+
+  function syncDesktopScale() {
+    const scale = mobileMq?.matches
+      ? 1
+      : navDesktopScale(window.innerWidth, window.innerHeight);
+    const value = String(scale);
+    root.style.setProperty('--il-spotlight-desktop-scale', value);
+    for (const panel of [opts.recipes?.el, opts.builds?.el]) {
+      if (panel instanceof HTMLElement) {
+        panel.style.setProperty('--il-spotlight-desktop-scale', value);
+      }
+    }
+  }
+
+  syncDesktopScale();
 
   /** @type {string | null} */
   let activeId = null;
@@ -195,6 +213,23 @@ export function createSpotlight(opts) {
     return Math.ceil(bottom);
   }
 
+  function spotlightBounds() {
+    const edge = 12;
+    const top = Math.min(window.innerHeight - edge, navClearancePx() + edge);
+    let bottom = window.innerHeight - edge;
+    const builds = opts.builds?.el;
+    if (builds instanceof HTMLElement && !builds.hidden) {
+      const rect = builds.getBoundingClientRect();
+      if (rect.height > 0) bottom = Math.min(bottom, rect.top - edge);
+    }
+    return {
+      top,
+      bottom,
+      left: edge,
+      right: window.innerWidth - edge,
+    };
+  }
+
   function layoutMobileStack() {
     if (!mobileMq?.matches || (!open && !closing)) {
       // Recipe/build modules position themselves beside/below the stage on
@@ -254,9 +289,12 @@ export function createSpotlight(opts) {
     });
   }
 
-  const onMobileResize = () => scheduleMobileStack();
-  window.addEventListener('resize', onMobileResize);
-  mobileMq?.addEventListener('change', onMobileResize);
+  const onViewportResize = () => {
+    syncDesktopScale();
+    scheduleMobileStack();
+  };
+  window.addEventListener('resize', onViewportResize);
+  mobileMq?.addEventListener('change', onViewportResize);
 
   const mobilePanels = [opts.recipes?.el, opts.builds?.el].filter(
     (panel) => panel instanceof HTMLElement,
@@ -348,10 +386,11 @@ export function createSpotlight(opts) {
     clearPiece();
     syncCellPxFromCatalog(fromEl);
 
-    // Keep geometry and the static sprite on the opening frame, but defer live
-    // canvas/observer setup until the spotlight is painted.
+    // Keep the clicked item static on the Items page; only the surrounding
+    // spotlight panel is allowed to use its existing FLIP transition.
     const itemEl = createItemEl(item, opts.getSpriteUrl, item.libraryIndex ?? 1, 0, [], {
       deferLiveArt: true,
+      liveArt: false,
     });
     if (!itemEl) return null;
 
@@ -501,19 +540,27 @@ export function createSpotlight(opts) {
     }
 
     const tip = opts.getTip();
-    tip?.lock(item, { stage: stage instanceof Element ? stage : null });
-    // Let the dim/stage/tooltip paint first. Full live-art setup and the
-    // recipe/build lookups run on the next frame, with their existing caches
-    // and generation guards handling rapid item changes.
-    requestAnimationFrame(() => {
+    tip?.lock(item, {
+      stage: stage instanceof Element ? stage : null,
+      bounds: spotlightBounds,
+    });
+    // Let the dim/stage/tooltip paint first. Recipe/build lookups still run on
+    // the next frame, with their existing caches and generation guards
+    // handling rapid item changes.
+    requestAnimationFrame(async () => {
       if (activeId !== item.id || !open || closing) return;
-      if (itemEl instanceof HTMLElement) mountLiveArt(itemEl);
       opts.recipes?.showFor(item.id, {
         stage: stage instanceof Element ? stage : null,
         piece: piece instanceof Element ? piece : null,
         tipHost: tip?.host instanceof HTMLElement ? tip.host : null,
+        bounds: spotlightBounds,
       });
-      void opts.builds?.showFor(item.id);
+      tip?.reposition();
+      await opts.builds?.showFor(item.id);
+      if (activeId === item.id && open && !closing) {
+        opts.recipes?.layout?.({ remeasureWidth: false });
+        tip?.reposition();
+      }
     });
   }
 
@@ -632,8 +679,8 @@ export function createSpotlight(opts) {
       if (closeTimer) clearTimeout(closeTimer);
       if (mobileLayoutRaf) cancelAnimationFrame(mobileLayoutRaf);
       mobilePanelObserver?.disconnect();
-      window.removeEventListener('resize', onMobileResize);
-      mobileMq?.removeEventListener('change', onMobileResize);
+      window.removeEventListener('resize', onViewportResize);
+      mobileMq?.removeEventListener('change', onViewportResize);
       window.removeEventListener('keydown', onKey);
       finishClose();
       root.remove();

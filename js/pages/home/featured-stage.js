@@ -162,14 +162,14 @@ function slideHtml(build, root, realIndex, domIndex, mentionData) {
               <p class="fs-focus__blurb">${blurbHtml}</p>
             </div>
             <div class="fs-focus__actions">
-              <a class="fs-btn fs-btn--watch" href="${escapeAttr(watchHref)}" target="_blank" rel="noopener noreferrer">
+              <a class="home-preset-button home-preset-button--gold fs-btn fs-btn--watch" href="${escapeAttr(watchHref)}" target="_blank" rel="noopener noreferrer">
                 <svg class="fs-btn__icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                   <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
                   <path fill="currentColor" d="M6.2 4.8v6.4L11.4 8z"/>
                 </svg>
                 <span>Watch</span>
               </a>
-              <a class="fs-btn fs-btn--build" href="${escapeAttr(buildHref)}">
+              <a class="home-preset-button home-preset-button--blue fs-btn fs-btn--build" href="${escapeAttr(buildHref)}">
                 <img class="fs-btn__icon fs-btn__icon--img" src="${escapeAttr(root)}assets/icons/misc/Backpack_icon.png" alt="" width="20" height="20" />
                 <span>View build</span>
               </a>

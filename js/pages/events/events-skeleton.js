@@ -76,7 +76,7 @@ export function eventsCatalogSkeletonHtml() {
           </div>
         </article>
       </div>
-      <aside class="items-filters il-filter events-filters" aria-hidden="true">
+      <aside class="items-filters il-filter bpb-filter-preset events-filters" aria-hidden="true">
         <div class="il-filter__head">
           ${bar('8.5rem', '1.15rem')}
           ${skelBlock({ width: '2rem', height: '2rem', radius: '50%' })}

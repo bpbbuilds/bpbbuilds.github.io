@@ -33,7 +33,7 @@ export function wrapFiltersWithTabs(filtersEl, opts = {}) {
       : null;
   }
 
-  filtersEl.classList.add('create-rail');
+  filtersEl.classList.add('create-rail', 'bpb-filter-preset');
   filtersEl.setAttribute('aria-label', 'Filters and build setup');
 
   const children = [...filtersEl.childNodes];

@@ -3,7 +3,7 @@
  */
 
 import { HERO_CLASSES } from '../items/filter-logic.js';
-import { feedEventLabel, feedEventOptionsHtml, isFeedEvent } from './feed-event-filter.js';
+import { FEED_EVENTS, feedEventLabel, isFeedEvent } from './feed-event-filter.js';
 import { buildSearchFieldHtml } from '../../shared/build-search-input.js';
 
 /** @typedef {'best' | 'hot' | 'new' | 'top' | 'rising'} FeedSort */
@@ -116,7 +116,6 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
   const countLabel = shown === 1 ? '1 build found.' : `${shown} builds found.`;
   const sortLabel = FEED_SORT_LABELS[state.sort] || 'Hot';
   const viewLabel = FEED_VIEW_LABELS[state.view] || 'Card';
-  const eventLabel = feedEventLabel(state.event);
   const canMine = opts.canMine === true;
   const canPersonal = opts.canPersonal === true;
   const mineOn = canMine && state.mine;
@@ -133,7 +132,7 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
 
   const tagBtns = FEED_TAGS.map((t) => {
     const on = state.tags.includes(t);
-    return `<button type="button" class="il-filter__check${on ? ' is-on' : ''}" data-feed-tag="${t}" aria-pressed="${on}">
+    return `<button type="button" class="il-filter__check builds-feed-filters__tag builds-feed-filters__tag--${t}${on ? ' is-on' : ''}" data-feed-tag="${t}" aria-pressed="${on}">
       <span class="il-filter__box" aria-hidden="true"></span>
       <span class="il-filter__check-label">${FEED_TAG_LABELS[t]}</span>
     </button>`;
@@ -153,10 +152,22 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
     </button>`;
   }).join('');
 
+  const eventBtns = [
+    { id: '', label: 'All events', on: !state.event },
+    ...FEED_EVENTS.map((event) => ({
+      id: event.slug,
+      label: event.title,
+      on: state.event === event.slug,
+    })),
+  ].map((event) => `<button type="button" class="il-filter__check builds-feed-filters__event${event.on ? ' is-on' : ''}" data-feed-event="${escapeAttr(event.id)}" aria-pressed="${event.on}">
+      <span class="il-filter__box" aria-hidden="true"></span>
+      <span class="il-filter__check-label">${escapeHtml(event.label)}</span>
+    </button>`).join('');
+
   const anyClassOn = !state.heroClass;
 
   return `
-    <aside class="items-filters il-filter builds-feed-filters bpb-filter-drawer__panel" id="builds-feed-filters" aria-label="Filter builds">
+    <aside class="items-filters il-filter bpb-filter-preset builds-feed-filters bpb-filter-drawer__panel" id="builds-feed-filters" aria-label="Filter builds">
       <div class="il-filter__head">
         <button type="button" class="builds-feed-filters__close bpb-filter-drawer__close" data-feed-filters-close data-bpb-filter-close aria-label="Close filters">
           <span class="builds-feed-filters__close-icon bpb-filter-drawer__close-icon" aria-hidden="true"></span>
@@ -188,15 +199,6 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
             ${viewOptions}
           </div>
         </div>
-        <div class="il-filter__grouping" data-feed-event-root>
-          <button type="button" class="il-filter__group-trigger" data-feed-event-trigger aria-haspopup="listbox" aria-expanded="false">
-            <img class="il-filter__group-arrow" src="${escapeAttr(base)}assets/icons/filters/DropdownArrow.png" alt="" draggable="false" />
-            <span class="il-filter__sticker" data-feed-event-label>${escapeHtml(eventLabel)}</span>
-          </button>
-          <div class="il-filter__group-menu" data-feed-event-menu hidden role="listbox" aria-label="Filter by event">
-            ${feedEventOptionsHtml(state.event)}
-          </div>
-        </div>
       </div>
 
       <div class="il-filter__shade" data-feed-personal-filters${canPersonal ? '' : ' hidden'} aria-hidden="${canPersonal ? 'false' : 'true'}">
@@ -225,13 +227,19 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
         </div>
       </div>
 
-      <div class="il-filter__shade">
+      <div class="il-filter__shade builds-feed-filters__tags">
         <p class="il-filter__sticker">Tags</p>
-        <div class="il-filter__checks" role="group" aria-label="Build tags">${tagBtns}</div>
+        <div class="builds-feed-filters__tag-grid" role="group" aria-label="Build tags">${tagBtns}</div>
       </div>
 
-      <div class="il-filter__shade">
-        <div class="il-filter__classes" role="group" aria-label="Hero class">
+      <div class="il-filter__shade builds-feed-filters__events">
+        <p class="il-filter__sticker">Events</p>
+        <div class="builds-feed-filters__event-grid" role="group" aria-label="Build events">${eventBtns}</div>
+      </div>
+
+      <div class="il-filter__shade builds-feed-filters__classes">
+        <p class="il-filter__sticker">Hero class</p>
+        <div class="il-filter__classes builds-feed-filters__class-icons" role="group" aria-label="Hero class">
           <button type="button" class="il-filter__icon-btn${anyClassOn ? ' is-on' : ''}" data-feed-class="" title="Any class" aria-pressed="${anyClassOn}">
             <img src="${escapeAttr(base)}assets/icons/classes/NeutralIcon.png" alt="" draggable="false" />
           </button>
@@ -240,7 +248,8 @@ export function feedFiltersHtml(root, state, shown, opts = {}) {
       </div>
 
       <div class="il-filter__shade builds-feed-filters__ranks">
-        <div class="il-filter__classes" role="group" aria-label="League rank">
+        <p class="il-filter__sticker">League rank</p>
+        <div class="il-filter__classes builds-feed-filters__rank-icons" role="group" aria-label="League rank">
           ${rankBtns}
         </div>
       </div>
@@ -358,11 +367,6 @@ export function bindFeedFilters(rail, opts) {
       trigger: rail.querySelector('[data-feed-view-trigger]'),
       menu: rail.querySelector('[data-feed-view-menu]'),
     },
-    {
-      root: rail.querySelector('[data-feed-event-root]'),
-      trigger: rail.querySelector('[data-feed-event-trigger]'),
-      menu: rail.querySelector('[data-feed-event-menu]'),
-    },
   ];
 
   /** @param {{ menu: Element | null, trigger: Element | null }} m */
@@ -410,14 +414,6 @@ export function bindFeedFilters(rail, opts) {
     const viewTrig = t.closest('[data-feed-view-trigger]');
     if (viewTrig && rail.contains(viewTrig)) {
       const m = menus[1];
-      if (m.menu instanceof HTMLElement && !m.menu.hidden) closeMenu(m);
-      else openMenu(m);
-      return;
-    }
-
-    const eventTrig = t.closest('[data-feed-event-trigger]');
-    if (eventTrig && rail.contains(eventTrig)) {
-      const m = menus[2];
       if (m.menu instanceof HTMLElement && !m.menu.hidden) closeMenu(m);
       else openMenu(m);
       return;

@@ -69,7 +69,7 @@
     line-height: 1.1;
     letter-spacing: 0.02em;
     writing-mode: vertical-rl;
-    cursor: var(--bpb-cursor-pointer);
+    cursor: var(--bpb-cursor-pointer, pointer);
     box-shadow: -2px 2px 0 rgba(60, 38, 29, 0.28);
   }
 
@@ -87,7 +87,7 @@
     padding: 0;
     border: 0;
     background: rgba(28, 16, 10, 0.48);
-    cursor: var(--bpb-cursor-pointer);
+    cursor: var(--bpb-cursor-pointer, pointer);
   }
 
   .bpb-filter-drawer__backdrop[hidden] {
@@ -134,7 +134,7 @@
     border: 2px solid #3c261d;
     border-radius: 0.3rem;
     background: #eac914;
-    cursor: var(--bpb-cursor-pointer);
+    cursor: var(--bpb-cursor-pointer, pointer);
   }
 
   .bpb-filter-drawer .il-filter__head {

@@ -102,7 +102,7 @@ export function eventFiltersHtml(root, state, shown) {
   ].join('');
 
   return `
-    <aside class="items-filters il-filter events-filters" id="events-filters" aria-label="Filter events">
+    <aside class="items-filters il-filter bpb-filter-preset events-filters" id="events-filters" aria-label="Filter events">
       <div class="il-filter__head">
         <button type="button" class="events-filters__close" data-events-filters-close aria-label="Close filters">
           <span class="events-filters__close-icon" aria-hidden="true"></span>

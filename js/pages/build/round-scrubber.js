@@ -90,6 +90,7 @@ export function finalBoardFrames(placements) {
  *   buildKey?: string,
  *   voteScore?: number,
  *   previewMode?: boolean,
+ *   dragScrub?: boolean,
  *   simPicker?: {
  *     activeRound: number | null,
  *     onRoundNavigate: (round: number) => void,
@@ -102,6 +103,7 @@ export function mountRoundScrubber(host, opts) {
     : [{ round: 1, result: /** @type {RoundResult} */ ('loss'), placements: [] }];
   const showHistory = Boolean(opts.showHistory);
   const previewMode = Boolean(opts.previewMode);
+  const dragScrub = Boolean(opts.dragScrub);
   const simPicker = opts.simPicker || null;
   const hasVideo = Boolean(opts.hasVideo);
   const stepCount = frames.length + (hasVideo ? 1 : 0);
@@ -316,7 +318,15 @@ export function mountRoundScrubber(host, opts) {
   const toggles = host.querySelector('.build-round__toggles');
   const shareBtn = host.querySelector('.build-round__share');
   const playLink = host.querySelector('.build-round__play');
+  const roundStrip = host.querySelector('.build-round-strip');
   const stripBtns = [...host.querySelectorAll('.build-round-strip__btn')];
+  const roundStripBtns = stripBtns.filter((btn) => {
+    const i = Number(btn.getAttribute('data-index'));
+    return Number.isInteger(i) && i >= 0 && i < frames.length;
+  });
+  let dragPointerId = null;
+  let dragStartX = 0;
+  let dragMoved = false;
   /** Last board round index before opening video (for toggle off). */
   let lastBoardIndex = index;
   const unbindShare = previewMode
@@ -462,9 +472,14 @@ export function mountRoundScrubber(host, opts) {
   function goTo(nextIndex) {
     if (stepCount <= 1 && nextIndex !== videoIndex) return;
     let wrapped = nextIndex;
-    if (nextIndex >= 0 && nextIndex < frames.length) {
+    // `-1` is the published-board sentinel when there is no video. It must
+    // wrap to the final history frame instead of being mistaken for the
+    // no-video `videoIndex` value.
+    if (nextIndex < 0) {
+      wrapped = frames.length - 1;
+    } else if (nextIndex < frames.length) {
       wrapped = nextIndex;
-    } else if (nextIndex === videoIndex) {
+    } else if (videoIndex >= 0 && nextIndex === videoIndex) {
       wrapped = videoIndex;
     } else if (stepCount > 1) {
       wrapped = ((nextIndex % stepCount) + stepCount) % stepCount;
@@ -493,10 +508,77 @@ export function mountRoundScrubber(host, opts) {
     paint(true);
   }
 
+  /** Return the round button whose center is closest to a pointer x position. */
+  function roundIndexAtX(clientX) {
+    let nearest = null;
+    let distance = Number.POSITIVE_INFINITY;
+    for (const btn of roundStripBtns) {
+      const rect = btn.getBoundingClientRect();
+      const nextDistance = Math.abs(clientX - (rect.left + rect.width / 2));
+      if (nextDistance < distance) {
+        distance = nextDistance;
+        nearest = Number(btn.getAttribute('data-index'));
+      }
+    }
+    return Number.isInteger(nearest) ? nearest : null;
+  }
+
+  function finishRoundDrag() {
+    if (dragPointerId == null) return;
+    dragPointerId = null;
+    dragMoved = false;
+    roundStrip?.classList.remove('is-dragging');
+    window.removeEventListener('pointermove', onRoundPointerMove);
+    window.removeEventListener('pointerup', onRoundPointerEnd);
+    window.removeEventListener('pointercancel', onRoundPointerEnd);
+  }
+
+  /** @param {PointerEvent} e */
+  function onRoundPointerDown(e) {
+    if (!dragScrub || !(roundStrip instanceof HTMLElement) || e.button !== 0) return;
+    const target = e.target instanceof Element
+      ? e.target.closest('.build-round-strip__btn')
+      : null;
+    const targetIndex = target instanceof HTMLElement
+      ? Number(target.getAttribute('data-index'))
+      : NaN;
+    if (!Number.isInteger(targetIndex) || targetIndex < 0 || targetIndex >= frames.length) return;
+
+    dragPointerId = e.pointerId;
+    dragStartX = e.clientX;
+    dragMoved = false;
+    roundStrip.classList.add('is-dragging');
+    // Keep native button clicks intact; temporary window listeners let the
+    // drag continue after the pointer leaves the strip without retargeting
+    // the eventual click away from its round button.
+    window.addEventListener('pointermove', onRoundPointerMove);
+    window.addEventListener('pointerup', onRoundPointerEnd);
+    window.addEventListener('pointercancel', onRoundPointerEnd);
+  }
+
+  /** @param {PointerEvent} e */
+  function onRoundPointerMove(e) {
+    if (!dragScrub || dragPointerId !== e.pointerId) return;
+    if (!dragMoved && Math.abs(e.clientX - dragStartX) < 4) return;
+    dragMoved = true;
+    e.preventDefault();
+    const targetIndex = roundIndexAtX(e.clientX);
+    if (targetIndex != null) goTo(targetIndex);
+  }
+
+  /** @param {PointerEvent} e */
+  function onRoundPointerEnd(e) {
+    if (dragPointerId === e.pointerId) finishRoundDrag();
+  }
+
+  if (dragScrub && roundStrip instanceof HTMLElement) {
+    roundStrip.addEventListener('pointerdown', onRoundPointerDown);
+  }
+
   function step(delta) {
     if (index < 0) {
       if (delta > 0) goTo(0);
-      else goTo(hasVideo ? videoIndex : frames.length - 1);
+      else goTo(frames.length - 1);
       return;
     }
     goTo(index + delta);
@@ -548,6 +630,10 @@ export function mountRoundScrubber(host, opts) {
     setBagsVisible,
     goTo,
     destroy() {
+      finishRoundDrag();
+      if (dragScrub && roundStrip instanceof HTMLElement) {
+        roundStrip.removeEventListener('pointerdown', onRoundPointerDown);
+      }
       window.removeEventListener('keydown', onKey);
       unbindShare();
       unbindVote();

@@ -278,10 +278,10 @@ function sectionHtml(root, builds) {
             ${marqueeRowHtml(bottomRow, root, topRow.length, 'right')}
           </div>
           <div class="home-vault__actions">
-            <a class="home-vault__cta home-vault__cta--op" href="${escapeAttr(opHref)}">
+            <a class="home-preset-button home-preset-button--gold home-vault__cta home-vault__cta--op" href="${escapeAttr(opHref)}">
               <span>Browse OP builds</span>
             </a>
-            <a class="home-vault__cta home-vault__cta--catalog" href="${escapeAttr(catalog)}">
+            <a class="home-preset-button home-preset-button--forest home-vault__cta home-vault__cta--catalog" href="${escapeAttr(catalog)}">
               <img
                 class="home-vault__cta-icon"
                 src="${escapeAttr(`${root}assets/icons/misc/Backpack_icon.png`)}"
@@ -382,7 +382,7 @@ export async function initHomeBuildsVault(selector = '#home-builds-vault') {
               <p class="home-vault__lede home-vault__shade">
                 Featured boards land here as they ship: full backpacks you can open and remix.
               </p>
-              <a class="home-vault__cta home-vault__cta--catalog" href="${escapeAttr(`${root}builds/`)}">
+              <a class="home-preset-button home-preset-button--forest home-vault__cta home-vault__cta--catalog" href="${escapeAttr(`${root}builds/`)}">
                 <img
                   class="home-vault__cta-icon"
                   src="${escapeAttr(`${root}assets/icons/misc/Backpack_icon.png`)}"
@@ -414,7 +414,7 @@ export async function initHomeBuildsVault(selector = '#home-builds-vault') {
           <div class="home-vault__inner">
             <h2 class="home-vault__title home-vault__shade">Curated build loadouts</h2>
             <p class="home-vault__lede home-vault__shade">Could not load builds right now.</p>
-            <a class="home-vault__cta home-vault__cta--catalog" href="${escapeAttr(`${root}builds/`)}">
+            <a class="home-preset-button home-preset-button--forest home-vault__cta home-vault__cta--catalog" href="${escapeAttr(`${root}builds/`)}">
               <img
                 class="home-vault__cta-icon"
                 src="${escapeAttr(`${root}assets/icons/misc/Backpack_icon.png`)}"

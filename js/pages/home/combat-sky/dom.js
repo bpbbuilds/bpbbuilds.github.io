@@ -22,12 +22,29 @@ export function combatSkyRoot() {
   return rootPrefix();
 }
 
-export function buildSkyDom(root) {
+function windmillMarkup(root) {
+  const u = (name) => maskInline(root, name);
+  return `
+    <div class="combat-sky__windmill" data-layer="windmill"
+      style="--x:1062px;--y:371px;--w:82px;--h:162px;--sy:1.012">
+      <div class="combat-sky__windmill-tower" style="${u('Windmill.png')}"></div>
+      <div class="combat-sky__blade-pivot">
+        <div class="combat-sky__blades" style="${u('WindmillBlades.png')}"></div>
+      </div>
+    </div>`;
+}
+
+export function buildSkyDom(root, { windmillOnly = false } = {}) {
   const host = document.createElement('div');
   host.className = 'combat-sky';
   host.setAttribute('aria-hidden', 'true');
 
   const img = (file) => `${root}assets/theme/backgrounds/combat/${file}`;
+  if (windmillOnly) {
+    host.innerHTML = `<div class="combat-sky__stage">${windmillMarkup(root)}</div>`;
+    return host;
+  }
+
   host.innerHTML = `
     <div class="combat-sky__stage">
       <div class="combat-sky__sky"></div>
@@ -48,13 +65,7 @@ export function buildSkyDom(root) {
       </div>
       <div class="combat-sky__spr" data-layer="shrubbery"
         style="--x:1179px;--y:350px;--w:601px;--h:147px;--rot:-14.8deg;${maskInline(root, 'Shrubbery.png')}"></div>
-      <div class="combat-sky__windmill" data-layer="windmill"
-        style="--x:1062px;--y:371px;--w:82px;--h:162px;--sy:1.012">
-        <div class="combat-sky__windmill-tower" style="${maskInline(root, 'Windmill.png')}"></div>
-        <div class="combat-sky__blade-pivot">
-          <div class="combat-sky__blades" style="${maskInline(root, 'WindmillBlades.png')}"></div>
-        </div>
-      </div>
+      ${windmillMarkup(root)}
       <div class="combat-sky__spr" data-layer="mountains"
         style="--x:399px;--y:367px;--w:765px;--h:242px;${maskInline(root, 'Mountains.png')}"></div>
       <div class="combat-sky__spr" data-layer="hill3"

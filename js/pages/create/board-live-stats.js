@@ -18,6 +18,10 @@ import {
   loadTipSpeedAuras,
   warmTipSpeedAuras,
 } from './board-tip-speed.js';
+import {
+  PRISMATIC_ORB_SECTION_KEYS,
+  prismaticOrbTypes,
+} from '../../shared/prismatic-orb.js';
 
 /**
  * Full phase lists (primary first). Used when DB `cooldown` is null/0 but the
@@ -258,7 +262,8 @@ export function computePlacementCounters(
   }
   // Known counter items even if effect was already scrubbed
   const id = String(catalogItem.id || "");
-  if (id === 'rainbow_orb' || id === 'prismatic_sword') {
+  const strictPrismaticTypes = id === 'rainbow_orb' || id === 'prismatic_sword';
+  if (strictPrismaticTypes) {
     for (const k of ['magic', 'vampiric', 'holy', 'dark']) keys.add(k);
   }
   if (!keys.size) return null;
@@ -273,16 +278,14 @@ export function computePlacementCounters(
     const item = itemsById.get(link.id);
     if (!item) continue;
     /** @type {string[]} */
-    const types = [];
-    if (item.type) types.push(String(item.type));
-    if (Array.isArray(item.extraTypes)) {
-      for (const t of item.extraTypes) types.push(String(t));
-    }
-    if (Array.isArray(item.tags)) {
-      for (const t of item.tags) types.push(String(t));
-    }
+    const types = new Set(
+      prismaticOrbTypes(item).map((type) => type.toLowerCase()),
+    );
     for (const k of keys) {
-      if (types.some((t) => t.toLowerCase().includes(k))) counts[k] += 1;
+      const matches = strictPrismaticTypes
+        ? PRISMATIC_ORB_SECTION_KEYS.includes(k) && types.has(k)
+        : [...types].some((type) => type.includes(k));
+      if (matches) counts[k] += 1;
     }
   }
   return counts;

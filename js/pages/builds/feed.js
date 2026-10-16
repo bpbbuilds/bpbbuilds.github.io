@@ -564,7 +564,7 @@ function paintSkeleton(main) {
           <div class="builds-feed__list builds-feed__list--skel">${row()}${row()}</div>
         </div>
       </div>
-      <aside class="items-filters il-filter builds-feed-filters builds-feed-filters--skel" aria-hidden="true">
+      <aside class="items-filters il-filter bpb-filter-preset builds-feed-filters builds-feed-filters--skel" aria-hidden="true">
         ${skelBar({ width: '70%', height: '1.1rem', radius: '0.2rem' })}
         ${skelBlock({ width: '100%', height: '8rem', radius: '0.35rem' })}
         ${skelBlock({ width: '100%', height: '8rem', radius: '0.35rem' })}

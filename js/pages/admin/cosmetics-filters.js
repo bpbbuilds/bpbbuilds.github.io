@@ -128,7 +128,7 @@ export function adminCosmeticFiltersHtml(root, state, shown) {
   ].join('');
 
   return `
-    <aside class="items-filters il-filter admin-cosmetics-filters" aria-label="Filter cosmetics">
+    <aside class="items-filters il-filter bpb-filter-preset admin-cosmetics-filters" aria-label="Filter cosmetics">
       <div class="il-filter__head">
         <p class="il-filter__count" data-admin-cos-filter-count>${escapeHtml(countLabel)}</p>
         <button type="button" class="il-filter__reset" data-admin-cos-filter-reset title="Reset filters" aria-label="Reset filters">

@@ -34,6 +34,7 @@ import {
 } from './home-promo-caption.js';
 import { promoAuthorKey, randomizeBuildSequence } from './home-promo-selection.js';
 import { warmFaceAssets } from '../../shared/blob-face.js';
+import { createTooltipHover } from '../../shared/tooltip-hover.js';
 import {
   createPromoSpriteCache,
   DEFAULT_PROMO_SPRITE_CACHE_BUILDS,
@@ -346,6 +347,7 @@ function remountBoard(boardHost, getSpriteUrl, prevGrid, opts = {}) {
     exactBoard: true,
     reserveScrollGap: false,
     cellPx: BOARD_CELL_PX,
+    promoInteractive: true,
     promo: true,
     appearNewOnly: opts.appearNewOnly === true,
     appearOrder:
@@ -726,12 +728,34 @@ function fadeNewBagChrome(boardHost, opts = {}) {
 }
 
 /**
+ * Keep the secondary action pointed at the build currently shown by the loop.
+ * @param {HTMLAnchorElement | null | undefined} link
+ * @param {object | null | undefined} build
+ * @param {string} base
+ */
+function syncPromoRemixLink(link, build, base) {
+  if (!(link instanceof HTMLAnchorElement)) return;
+  const slug = String(build?.slug || '').trim();
+  if (!slug) {
+    link.hidden = true;
+    link.removeAttribute('href');
+    return;
+  }
+  const title = String(build?.title || slug).trim() || slug;
+  link.href = `${base}create/?remix=${encodeURIComponent(slug)}`;
+  link.hidden = false;
+  link.setAttribute('aria-label', `Remix ${title}`);
+  link.title = `Remix ${title}`;
+}
+
+/**
  * @param {{
  *   grid?: { update: Function, destroy?: Function } | null,
  *   boardHost: HTMLElement,
  *   catalogRoot: HTMLElement | null,
  *   captionEl?: HTMLElement | null,
  *   boardLink?: HTMLAnchorElement | null,
+ *   remixLink?: HTMLAnchorElement | null,
  *   boardTagsEl?: HTMLElement | null,
  *   infoEl?: HTMLElement | null,
  *   root: string,
@@ -751,6 +775,7 @@ export async function playAssemble(opts) {
     catalogRoot,
     captionEl,
     boardLink,
+    remixLink,
     boardTagsEl,
     infoEl,
     playerEl,
@@ -870,6 +895,17 @@ export async function playAssemble(opts) {
   if (!grid) {
     return;
   }
+  let activeItemsById = new Map();
+  const promoTooltip = createTooltipHover();
+  promoTooltip.bind(boardHost, {
+    selector:
+      '.bpb-bg__mark--gem[data-item-id], .bpb-bg__item[data-item-id]:not(.bpb-bg__item--parked)',
+    getItem: (el) => {
+      const id = String(el.dataset.itemId || '');
+      return activeItemsById.get(id) || activeItemsById.get(id.toLowerCase()) || null;
+    },
+    place: 'near',
+  });
   const reduced = prefersReducedMotion();
   const creatorCounts = new Map();
   let countTimer = 0;
@@ -935,6 +971,8 @@ export async function playAssemble(opts) {
       const normalized = normalizedBuildFor(build);
       const { mapped, ordered, bags, mentionItemsById } = normalized;
       if (!ordered.length) continue;
+      activeItemsById = mentionItemsById;
+      syncPromoRemixLink(remixLink, build, base);
       if (playerInfoMode) opts.activity?.setBoardComplete?.(false);
       const buildToken = ++activeBuildToken;
       if (playerInfoMode) playerPreviousAuthorId = promoAuthorKey(build);

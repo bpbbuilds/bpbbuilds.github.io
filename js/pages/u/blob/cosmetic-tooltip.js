@@ -138,7 +138,10 @@ export function cosmeticToTooltipItem(c, opts = {}) {
  */
 export function bindCosmeticTooltips(root, opts) {
   const { catalog, getEquippedId, showOriginalOwner = false } = opts;
-  const tip = createTooltipHover({ pinOnAlt: true });
+  const tip = createTooltipHover({
+    className: 'bpb-tooltip-float bpb-tooltip-float--cosmetic',
+    pinOnAlt: true,
+  });
 
   const getCosmeticForElement = (el) => {
     if (!(el instanceof HTMLElement)) return null;

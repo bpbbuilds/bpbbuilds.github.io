@@ -79,14 +79,11 @@ body.page-home #site-footer {
   width: 100%;
   margin-top: -24px;
   padding: 0;
-  /* The host is the underlay visible through the footer's masked top corners.
-     Keep it on the same curated scene so no body/town-square strip can leak
-     through at the left or right edges. */
-  background-color: #151a25;
-  background-image: url('../../../assets/theme/backgrounds/bg-hills-night-deep.jpg');
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
+  /* Keep the host transparent. The masked footer surface should reveal the
+     loadout scene beneath its curved top edge instead of painting a second
+     rectangular background that reads like a drop shadow at 1080p. */
+  background-color: transparent;
+  background-image: none;
 }
 
 body.page-home #site-footer > .site-footer {
@@ -550,42 +547,13 @@ img.home-vault__cell-avatar {
   margin-top: 1.5rem;
 }
 
-/* Crimson / steel banners — same family as Watch / View build / View items */
+/* Gold / forest banners — featured community and catalog actions. */
 .home-vault__cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  box-sizing: border-box;
   min-width: 12.5rem;
   height: 2.85rem;
   margin: 0;
   padding: 0 1.1rem;
-  border: 0;
-  border-radius: 0;
-  font-family: var(--bpb-font-display);
   font-size: 1.05rem;
-  font-weight: 400;
-  letter-spacing: 0.03em;
-  line-height: 1;
-  text-decoration: none;
-  text-transform: none;
-  color: var(--bpb-label-fill);
-  text-shadow: var(--bpb-label-stroke);
-  background-color: transparent;
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow: none;
-  transition: filter 0.15s ease, transform 0.15s ease;
-}
-
-.home-vault__cta--op {
-  background-image: url('../../../assets/theme/ui/ui-btn-crimson.png');
-}
-
-.home-vault__cta--catalog {
-  background-image: url('../../../assets/theme/ui/ui-btn-steel.png');
 }
 
 .home-vault__cta-icon {
@@ -595,21 +563,6 @@ img.home-vault__cell-avatar {
   flex: 0 0 auto;
   object-fit: contain;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
-}
-
-.home-vault__cta:hover {
-  filter: brightness(1.1);
-  color: #fff;
-}
-
-.home-vault__cta:active {
-  transform: translateY(1px);
-  filter: brightness(0.96);
-}
-
-.home-vault__cta:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--bpb-gold) 85%, transparent);
-  outline-offset: 4px;
 }
 
 @media (max-width: 720px) {

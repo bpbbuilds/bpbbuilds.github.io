@@ -42,21 +42,22 @@ body.page-build {
   color: var(--bpb-ink);
 }
 
-/* Desktop Builds view uses a fluid hybrid composition: side rails adapt while
-   the board stays at readable 1080 density. The shared nav, screen frame,
-   background, and footer remain unscaled; <=1100px stays stacked. */
+/* Desktop Builds view uses the 2560×1440 composition as its reference. The
+   complete content group scales as one unit on shorter/narrower desktops, so
+   the author rail, board, controls, and info rail keep their proportions.
+   Shared navigation, frame, background, and footer remain unscaled; <=1100px
+   stays stacked. */
 @media (min-width: 1101px) {
   body.page-build-view .build-layout {
-    --build-desktop-rail-width: clamp(13rem, 20vw, 28rem);
+    --build-desktop-layout-scale: var(--build-desktop-scale, 1);
+    --build-desktop-rail-width: clamp(
+      13rem,
+      calc(20vw / var(--build-desktop-layout-scale)),
+      28rem
+    );
     --build-author-width: var(--build-desktop-rail-width);
     --build-info-width: var(--build-desktop-rail-width);
-    --build-catalog-width: min(
-      45rem,
-      calc(
-        100vw - 4rem - var(--build-desktop-rail-width) -
-          var(--build-desktop-rail-width)
-      )
-    );
+    zoom: var(--build-desktop-layout-scale);
   }
 
   /* Keep the footer in the normal page flow under the frame edge. */
@@ -131,8 +132,8 @@ body.page-build {
 }
 
 .build-author__avatar-wrap {
-  width: 5.5rem;
-  height: 5.5rem;
+  width: 8.25rem;
+  height: 8.25rem;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid var(--build-ink);
@@ -247,6 +248,16 @@ a.build-author__name:hover {
   gap: 0.65rem 0.4rem;
   align-items: start;
   justify-items: center;
+}
+
+/* Short desktop and narrower rails need breathing room around the miniature
+   boards; keep the three-column reference composition at 1440p. */
+@media (max-width: 2200px) {
+  .build-author__more-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(0.65rem, 0.9vw, 0.95rem);
+    row-gap: clamp(0.85rem, 1.1vw, 1.1rem);
+  }
 }
 
 .build-author__more-item {
@@ -395,7 +406,6 @@ a.build-author__thumb:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
   align-self: stretch;
   gap: 0.42rem;
   max-width: 100%;
@@ -670,8 +680,8 @@ body.page-build .bpb-tooltip-float.is-locked {
   }
 
   .build-author__avatar-wrap {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 5.25rem;
+    height: 5.25rem;
   }
 
   .build-author__byline {
@@ -813,11 +823,7 @@ body.page-build .bpb-tooltip-float.is-locked {
 }
 
 .build-info__divider {
-  width: 2px;
-  height: 2.1rem;
-  flex-shrink: 0;
-  background: color-mix(in srgb, var(--build-ink) 45%, transparent);
-  border-radius: 1px;
+  margin-inline: 0.05rem;
 }
 
 .build-info__row {
@@ -1170,6 +1176,13 @@ body.page-build .bpb-tooltip-float.is-locked {
   padding: 0.15rem 0 0.25rem;
   box-sizing: border-box;
   overflow-x: clip;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.build-round-strip.is-dragging {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .build-round-strip__btn {

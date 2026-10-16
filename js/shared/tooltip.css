@@ -52,6 +52,108 @@
     calc(1em / 12 * 0.9239) calc(1em / 12 * -0.3827) 0 #442f1d;
 }
 
+/* Reusable game-style divider. The layered gradients echo the image-backed
+   tooltip dividers while keeping the preset portable to non-tooltip surfaces. */
+.bpb-divider {
+  --bpb-divider-deep: #68421d;
+  --bpb-divider-mid: #c8972c;
+  --bpb-divider-light: #f4d36b;
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  inline-size: 100%;
+  block-size: 0.55rem;
+  flex: 0 0 auto;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bpb-divider-light) 82%, white) 0%,
+      var(--bpb-divider-mid) 34%,
+      var(--bpb-divider-deep) 100%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 0.35rem,
+      rgb(255 239 151 / 0.28) 0.35rem 0.42rem,
+      transparent 0.42rem 0.8rem
+    );
+  clip-path: polygon(
+    0 22%, 2% 22%, 3.5% 0, 96.5% 0, 98% 22%, 100% 22%,
+    100% 78%, 98% 78%, 96.5% 100%, 3.5% 100%, 2% 78%, 0 78%
+  );
+}
+
+.bpb-divider::after {
+  content: '';
+  position: absolute;
+  inset: 18% 3%;
+  background: repeating-linear-gradient(
+    90deg,
+    rgb(255 247 187 / 0.22) 0 0.08rem,
+    transparent 0.08rem 0.52rem,
+    rgb(82 42 15 / 0.2) 0.52rem 0.62rem,
+    transparent 0.62rem 0.92rem
+  );
+  pointer-events: none;
+}
+
+.bpb-divider--gold,
+.bpb-divider--legendary {
+  --bpb-divider-deep: #68421d;
+  --bpb-divider-mid: #c8972c;
+  --bpb-divider-light: #f4d36b;
+}
+
+.bpb-divider--common {
+  --bpb-divider-deep: #806b4c;
+  --bpb-divider-mid: #c9b58f;
+  --bpb-divider-light: #f1e2c2;
+}
+
+.bpb-divider--rare {
+  --bpb-divider-deep: #355b89;
+  --bpb-divider-mid: #76a8dc;
+  --bpb-divider-light: #c5e2ff;
+}
+
+.bpb-divider--epic {
+  --bpb-divider-deep: #63347f;
+  --bpb-divider-mid: #b476d2;
+  --bpb-divider-light: #edc4ff;
+}
+
+.bpb-divider--godly {
+  --bpb-divider-deep: #8e781d;
+  --bpb-divider-mid: #e5c94c;
+  --bpb-divider-light: #fff4a5;
+}
+
+.bpb-divider--unique {
+  --bpb-divider-deep: #3b7550;
+  --bpb-divider-mid: #86c993;
+  --bpb-divider-light: #d3f4cf;
+}
+
+.bpb-divider--vertical {
+  inline-size: 0.34rem;
+  block-size: 2.1rem;
+  clip-path: polygon(
+    22% 0, 78% 0, 78% 3%, 100% 4%, 100% 96%, 78% 97%,
+    78% 100%, 22% 100%, 22% 97%, 0 96%, 0 4%, 22% 3%
+  );
+}
+
+.bpb-divider--vertical::after {
+  inset: 3% 18%;
+  background: repeating-linear-gradient(
+    180deg,
+    rgb(255 247 187 / 0.22) 0 0.08rem,
+    transparent 0.08rem 0.52rem,
+    rgb(82 42 15 / 0.2) 0.52rem 0.62rem,
+    transparent 0.62rem 0.92rem
+  );
+}
+
 .bpb-tooltip {
   /* Defaults = LegendaryTooltip.tscn */
   --frame: url("../../assets/tooltips/frames/TooltipBase_Legendary.png");
@@ -932,4 +1034,11 @@
   font-size: 25px;
   /* Soft lift only — heavy blur reads as a dark smudge on bright page BGs (profile) */
   filter: drop-shadow(0 2px 4px rgba(20, 10, 5, 0.28));
+}
+
+/* Cosmetic previews use the game frame without an extra floating-card shadow.
+   Their profile/inventory surfaces already provide the surrounding depth, and
+   the shared drop-shadow reads as a dark halo around the cosmetic art. */
+.bpb-tooltip-float--cosmetic .bpb-tooltip {
+  filter: none;
 }

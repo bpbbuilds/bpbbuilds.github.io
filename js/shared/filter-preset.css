@@ -1,0 +1,51 @@
+/* Items-derived shared filter preset.
+ *
+ * The Items page is the visual source of truth for filter surfaces. This
+ * layer is loaded after page CSS so every filter rail keeps its own layout,
+ * controls, menus, and responsive drawer behavior while sharing the same
+ * transparent host and soft Patch3 section bands.
+ */
+
+.items-filters.il-filter.bpb-filter-preset {
+  --il-shade-pad-y: 0.4rem;
+  --il-shade-pad-x: 0.55rem;
+  --il-shade: rgba(14, 15, 16, 0.09);
+  box-sizing: border-box;
+  background: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.items-filters.il-filter.bpb-filter-preset::before {
+  content: none;
+  display: none;
+}
+
+.items-filters.il-filter.bpb-filter-preset .il-filter__shade {
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+  background: transparent;
+  border: 0;
+}
+
+.items-filters.il-filter.bpb-filter-preset .il-filter__shade::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-sizing: border-box;
+  background: var(--il-shade);
+  pointer-events: none;
+  -webkit-mask-box-image: url('../../assets/icons/filters/Patch3.png') 8 7 9 8 fill;
+  mask-border-source: url('../../assets/icons/filters/Patch3.png');
+  mask-border-slice: 8 7 9 8 fill;
+  mask-border-width: 8px 7px 9px 8px;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .items-filters.il-filter.bpb-filter-preset .il-filter__shade::before {
+    background: rgba(14, 15, 16, 0.12);
+  }
+}

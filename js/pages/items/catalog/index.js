@@ -30,7 +30,6 @@ import {
 } from '../spotlight-recipes.js';
 import { createSpotlightBuilds } from '../spotlight-builds.js';
 import { bindFilterDrawer } from '../../../shared/filter-drawer.js';
-import { loadLiveArt, liveArtSpec } from '../../../shared/item-live-art/index.js';
 import {
   LIBRARY_COLS,
   CELL_PX,
@@ -45,6 +44,10 @@ import {
   sortByLibraryOrder,
 } from './data.js';
 import { loadingShellHtml, paintLayoutPreview, promoteLoadingShell } from './shell.js';
+import {
+  PRISMATIC_ORB_ID,
+  countPrismaticOrbSections,
+} from '../../../shared/prismatic-orb.js';
 
 /** Active Itemiary column count (create page may pass a narrower grid). */
 let catalogCols = LIBRARY_COLS;
@@ -152,13 +155,12 @@ function spriteUrl(item) {
 
 /**
  * Itemiary-only sprite URL — footprint-sized WebP so scroll decode stays cheap.
- * Falls back to the source PNG for live-art items (glow/liquid plates measure
- * naturalWidth against Godot-space offsets) and any image without a thumb.
+ * Falls back to the source PNG only when a derivative is unavailable. Items
+ * catalog art is static, so live-art layers never need the source texture.
  * @param {object} item
  */
 function thumbUrl(item) {
   if (!item.image) return '';
-  if (liveArtSpec(item.id)) return spriteUrl(item);
   if (!thumbImages.has(item.image)) return spriteUrl(item);
   return `${assetRoot}assets/item-thumbs/${thumbSet}/${item.image.replace(/\.png$/i, '.webp')}`;
 }
@@ -249,10 +251,15 @@ function wireTooltips(host, items) {
     tipLayer = null;
   }
   itemById = new Map(items.map((item) => [item.id, item]));
+  const prismaticSectionCounts = countPrismaticOrbSections(items);
   tipLayer = createTooltipHover();
   unbindTips = tipLayer.bind(host, {
     selector: '.bpb-bg__item[data-item-id]:not(.bpb-bg__item--parked)',
-    getItem: (el) => itemById.get(el.dataset.itemId),
+    getItem: (el) => {
+      const item = itemById.get(el.dataset.itemId);
+      if (!item || item.id !== PRISMATIC_ORB_ID) return item;
+      return { ...item, prismaticSectionCounts };
+    },
     place: 'overFilters',
     filtersSelector: '.items-filters',
   });
@@ -519,7 +526,9 @@ function schedulePaintGrid(host) {
     paintPending = false;
     const filtered = pendingFiltered;
     pendingFiltered = null;
-    void paintGrid(host, { appear: true, filtered });
+    // The Items page is a static catalog: filtering changes geometry without
+    // replaying per-item entrance animations.
+    void paintGrid(host, { appear: false, filtered });
   });
 }
 
@@ -531,6 +540,7 @@ function ensureItemiary(stage) {
     itemiaryGrid = mountItemiaryGrid(stage, {
       // Grid only — spotlight / create board / export keep full-res spriteUrl.
       getSpriteUrl: thumbUrl,
+      liveArt: false,
       cellPx: CELL_PX,
       cols: catalogCols,
       fillWidth: catalogFillWidth,
@@ -738,7 +748,6 @@ export async function initItemsCatalog(selector = '#items-catalog', opts = {}) {
       fetchJson('assets/data/item-class-masks.json'),
       fetchJson('assets/data/item-mentioned-stacks.json'),
       fetchJson('assets/data/sprite-thumbs.json'),
-      loadLiveArt(),
     ]);
 
     if (gen !== catalogGen) return null;

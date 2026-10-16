@@ -20,7 +20,7 @@ import {
   finalBoardFrames,
   framesFromHistoryRun,
   mountRoundScrubber,
-} from './round-scrubber.js';
+} from './round-scrubber.js?v=build-view-round-wrap-20261016a';
 import { renderInfoRail, renderBuildLoadingShell } from './info-rail.js';
 import { renderAuthorRail, hydrateAuthorFaces } from './author-rail.js';
 import {
@@ -41,6 +41,61 @@ const ITEM_SELECT =
 function rootPrefix() {
   const raw = document.body?.dataset?.root ?? '../../';
   return raw.endsWith('/') ? raw : `${raw}/`;
+}
+
+function numberFromCss(value, fallback) {
+  const number = Number.parseFloat(String(value));
+  return Number.isFinite(number) ? Math.max(0, number) : fallback;
+}
+
+function resolveFrameEdge(variable, property, fallback) {
+  const probe = document.createElement('div');
+  probe.style.position = 'fixed';
+  probe.style.visibility = 'hidden';
+  probe.style.pointerEvents = 'none';
+  probe.style.setProperty(property, `var(${variable})`);
+  document.body.appendChild(probe);
+  const resolved = numberFromCss(getComputedStyle(probe).getPropertyValue(property), fallback);
+  probe.remove();
+  return resolved;
+}
+
+/**
+ * Keep Build Info item tooltips inside the page frame and above the visible
+ * footer. The resolver is evaluated on every placement so short viewports and
+ * responsive footer changes use their current safe area.
+ */
+function getBuildInfoTooltipBounds() {
+  const styles = getComputedStyle(document.documentElement);
+  const frameX = resolveFrameEdge(
+    '--bpb-frame-edge-x',
+    'padding-left',
+    numberFromCss(styles.getPropertyValue('--bpb-frame-edge-x'), 8),
+  );
+  const frameY = resolveFrameEdge(
+    '--bpb-frame-edge-y',
+    'padding-top',
+    numberFromCss(styles.getPropertyValue('--bpb-frame-edge-y'), 8),
+  );
+  const edgeX = Math.max(8, frameX);
+  const edgeY = Math.max(8, frameY);
+  const footer = document.querySelector('#site-footer');
+  const footerTop = footer instanceof HTMLElement
+    ? footer.getBoundingClientRect().top
+    : Number.POSITIVE_INFINITY;
+  const visibleFooterBottom = Number.isFinite(footerTop) && footerTop > edgeY && footerTop < window.innerHeight
+    ? footerTop - 8
+    : Number.POSITIVE_INFINITY;
+
+  return {
+    left: edgeX,
+    right: window.innerWidth - edgeX,
+    top: edgeY,
+    bottom: Math.max(
+      edgeY + 1,
+      Math.min(window.innerHeight - edgeY, visibleFooterBottom),
+    ),
+  };
 }
 
 /** @returns {string | null} */
@@ -189,6 +244,7 @@ async function fetchRouteSkills(build) {
  */
 function renderPage(main, build, root, spriteDisplay, routeSkills, gridMeta = {}) {
   const getSpriteUrl = makeSpriteUrl(root, spriteDisplay);
+  const isBuildView = document.body.classList.contains('page-build-view');
 
   const placements = (build.placements || [])
     .filter((p) => p.item)
@@ -295,7 +351,10 @@ function renderPage(main, build, root, spriteDisplay, routeSkills, gridMeta = {}
     tip.bind(infoRail, {
       selector: '[data-item-id]',
       getItem: getTipItem,
-      place: 'itemRight',
+      // Build Info sits on the right rail; keep item tooltips full-size by
+      // placing them to the left of the hovered icon.
+      place: 'itemLeft',
+      bounds: getBuildInfoTooltipBounds,
     });
   }
 
@@ -341,6 +400,7 @@ function renderPage(main, build, root, spriteDisplay, routeSkills, gridMeta = {}
     bagsVisible: true,
     hasVideo: hasBuildVideo(build),
     buildKey: build.slug || '',
+    dragScrub: isBuildView,
     voteScore: Number(build.vote_score ?? build.like_count ?? 0) || 0,
     onItemsVisibleChange: applyItemsVisible,
     onBagsVisibleChange: applyBagsVisible,
@@ -350,8 +410,9 @@ function renderPage(main, build, root, spriteDisplay, routeSkills, gridMeta = {}
         Boolean(meta?.isVideo),
       );
       if (meta?.isVideo || !frame) return;
-      // Same items-page AppearInLibrary wave when scrubbing history rounds
-      grid.update(frame.placements, itemsById, { appear: true });
+      // Round scrubbing should switch boards immediately; do not replay the
+      // items/bags appear wave for every pointer movement.
+      grid.update(frame.placements, itemsById, { appear: !isBuildView });
     },
   });
 

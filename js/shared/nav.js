@@ -18,6 +18,34 @@ export { navSkeletonHtml };
 
 const NAV_DESKTOP_REFERENCE_WIDTH = 2560;
 const NAV_DESKTOP_REFERENCE_HEIGHT = 1440;
+const NAV_DESKTOP_TARGET_HEIGHT = 1080;
+const NAV_SHORT_DESKTOP_MAX_BOOST = 0.15;
+
+/**
+ * Scale the desktop shelf from the 2560×1440 reference while giving
+ * 1080p-height desktops back 15% of the density lost to the short viewport.
+ * The boost eases in between 1440p and 1080p, then stays capped so smaller
+ * desktop windows do not grow without bound. Mobile uses its own header.
+ * @param {number} viewportWidth
+ * @param {number} viewportHeight
+ * @returns {number}
+ */
+export function navDesktopScale(viewportWidth, viewportHeight) {
+  const width = Number(viewportWidth);
+  const height = Number(viewportHeight);
+  if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 1100) return 1;
+
+  const base = Math.min(1, width / NAV_DESKTOP_REFERENCE_WIDTH, height / NAV_DESKTOP_REFERENCE_HEIGHT);
+  const shortProgress = Math.max(
+    0,
+    Math.min(
+      1,
+      (NAV_DESKTOP_REFERENCE_HEIGHT - height) /
+        (NAV_DESKTOP_REFERENCE_HEIGHT - NAV_DESKTOP_TARGET_HEIGHT),
+    ),
+  );
+  return Math.min(1, base * (1 + NAV_SHORT_DESKTOP_MAX_BOOST * shortProgress));
+}
 
 /**
  * Keep the desktop shelf composition at the 2560x1440 reference density.
@@ -28,14 +56,7 @@ const NAV_DESKTOP_REFERENCE_HEIGHT = 1440;
 function syncNavDesktopScale(host) {
   if (!(host instanceof HTMLElement)) return;
 
-  const isDesktop = window.innerWidth > 1100;
-  const scale = isDesktop
-    ? Math.min(
-        1,
-        window.innerWidth / NAV_DESKTOP_REFERENCE_WIDTH,
-        window.innerHeight / NAV_DESKTOP_REFERENCE_HEIGHT,
-      )
-    : 1;
+  const scale = navDesktopScale(window.innerWidth, window.innerHeight);
 
   host.style.setProperty('--bpb-nav-desktop-scale', String(scale));
 }

@@ -9,6 +9,7 @@ import {
 } from '../backpack-grid/index.js';
 import { placedStackZ } from '../backpack-grid/item-pieces.js';
 import { LIGHT_GLOW } from '../item-live-art/layout-plates.js';
+import { potionInteractionPairs, potionLinkTriangle } from '../potion-links.js';
 
 export const BOARD_COLS = 9;
 export const BOARD_ROWS = 7;
@@ -222,6 +223,37 @@ function drawSpriteFace(ctx, sprite, opts) {
   ctx.translate(opts.cx, opts.cy);
   ctx.rotate((opts.face * Math.PI) / 2);
   ctx.drawImage(sprite, -opts.dw / 2 + opts.ax, -opts.dh / 2 + opts.ay, opts.dw, opts.dh);
+  ctx.restore();
+}
+
+/**
+ * Static counterpart to the game's PotionConnector. It is deliberately drawn
+ * before item sprites so the potion art covers the connector endpoints.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {object[]} pairs
+ * @param {number} cellPx
+ */
+function drawPotionLinks(ctx, pairs, cellPx) {
+  if (!pairs.length) return;
+  ctx.save();
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.shadowColor = 'rgba(93, 170, 255, 0.82)';
+  ctx.shadowBlur = Math.max(2, cellPx * 0.14);
+  ctx.fillStyle = 'rgba(112, 190, 255, 0.86)';
+  ctx.strokeStyle = 'rgba(188, 224, 255, 0.96)';
+  ctx.lineWidth = Math.max(1, cellPx * 0.035);
+
+  for (const pair of pairs) {
+    const [baseA, tip, baseB] = potionLinkTriangle(pair);
+    ctx.beginPath();
+    ctx.moveTo(baseA.x * cellPx, baseA.y * cellPx);
+    ctx.lineTo(tip.x * cellPx, tip.y * cellPx);
+    ctx.lineTo(baseB.x * cellPx, baseB.y * cellPx);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  }
   ctx.restore();
 }
 
@@ -488,6 +520,9 @@ export async function paintBoardCanvas(opts) {
       ctx.drawImage(slotImg, sx * cellPx, sy * cellPx, cellPx, cellPx);
     }
   }
+
+  const potionPairs = mode === 'bags' ? [] : potionInteractionPairs(placements, itemsById);
+  drawPotionLinks(ctx, potionPairs, cellPx);
 
   for (const row of items) {
     await paintPlacement(row, { alpha: 0.5, gems: true });

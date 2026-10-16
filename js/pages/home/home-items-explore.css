@@ -232,35 +232,14 @@
   text-shadow: var(--bpb-label-stroke);
 }
 
-/* Steel banner CTA — same family as Watch / View build */
+/* Forest banner CTA — the item-discovery action. */
 .home-items__cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
   min-width: 11.5rem;
   height: 2.85rem;
   margin: 0;
   margin-left: var(--home-items-copy-pad);
   padding: 0 1.1rem;
-  border: 0;
-  border-radius: 0;
-  box-sizing: border-box;
-  font-family: var(--bpb-font-display);
   font-size: 1.15rem;
-  font-weight: 400;
-  letter-spacing: 0.03em;
-  line-height: 1;
-  text-decoration: none;
-  color: var(--bpb-label-fill);
-  text-shadow: var(--bpb-label-stroke);
-  background-color: transparent;
-  background-image: url('../../../assets/theme/ui/ui-btn-steel.png');
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow: none;
-  transition: filter 0.15s ease, transform 0.15s ease;
 }
 
 .home-items__cta-icon {
@@ -269,21 +248,6 @@
   height: 1.2rem;
   object-fit: contain;
   flex: 0 0 auto;
-}
-
-.home-items__cta:hover {
-  filter: brightness(1.1);
-  color: #fff;
-}
-
-.home-items__cta:active {
-  transform: translateY(1px);
-  filter: brightness(0.96);
-}
-
-.home-items__cta:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--bpb-gold) 85%, transparent);
-  outline-offset: 4px;
 }
 
 /* ——— Right: orbiting item cloud ——— */

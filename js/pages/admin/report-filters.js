@@ -137,7 +137,7 @@ export function reportFiltersHtml(root, state, shown) {
   const anyClassOn = !state.heroClass;
 
   return `
-    <aside class="items-filters il-filter admin-report-filters" aria-label="Filter reports">
+    <aside class="items-filters il-filter bpb-filter-preset admin-report-filters" aria-label="Filter reports">
       <div class="il-filter__head">
         <p class="il-filter__count" data-filter-count>${escapeHtml(countLabel)}</p>
         <button type="button" class="il-filter__reset" data-report-filter-reset title="Reset filters" aria-label="Reset filters">

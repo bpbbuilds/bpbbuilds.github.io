@@ -17,6 +17,7 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(`<!doctype html><html><head>
       <style>*,*::before,*::after{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#211711}#probe{min-height:420px}</style>
+      <script src="/js/shared/tooltip.js"></script>
     </head><body><main id="probe"></main></body></html>`);
     return;
   }
@@ -93,6 +94,8 @@ try {
     cardReady: document.querySelector('[data-promo-create-card]')?.getAttribute('data-promo-ready') || '',
     cardBusy: document.querySelector('[data-promo-create-card]')?.getAttribute('aria-busy') || '',
     boardItems: document.querySelectorAll('.home-promo__board .bpb-bg__item').length,
+    remixHref: document.querySelector('[data-promo-remix]')?.getAttribute('href') || '',
+    remixHidden: document.querySelector('[data-promo-remix]')?.hasAttribute('hidden') === true,
   }));
   assert.equal(animatedResult.boardItems, 2, 'animated build paints its bag and item');
   assert.equal(animatedResult.skeletons, 0, 'animated build has no skeleton mounted');
@@ -100,6 +103,8 @@ try {
   assert.equal(animatedResult.skeletonSurfaces, 0, 'animated build has no skeleton surfaces');
   assert.equal(animatedResult.cardReady, '', 'animated build does not need a skeleton-ready marker');
   assert.equal(animatedResult.cardBusy, '', 'animated build does not expose a skeleton busy state');
+  assert.equal(animatedResult.remixHref, './create/?remix=animated-smoke-build', 'Remix points at the active build');
+  assert.equal(animatedResult.remixHidden, false, 'Remix is visible once the active build is ready');
   await animatedPage.close();
 
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });

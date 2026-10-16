@@ -239,7 +239,6 @@
   text-shadow: var(--bpb-label-stroke);
 }
 .home-promo--create .home-promo__cta {
-  color: var(--bpb-label-fill, #fffaf0);
   font-weight: 400;
   letter-spacing: 0.03em;
   text-shadow: var(--bpb-label-stroke);
@@ -957,11 +956,21 @@ a.home-promo__caption-author:hover {
   transition: transform 420ms ease-in-out;
 }
 
-/* Demo board is a link — don't run Itemiary hover lift / :has() / sparks. */
+/* Decorative promo boards are links — don't run Itemiary hover lift / :has() / sparks. */
 .home-promo__board .bpb-bg__item,
 .home-promo__board .bpb-bg__hit,
 .home-promo__board .bpb-bg__mark {
   pointer-events: none !important;
+}
+
+/* Player Info uses a real placed-board hover: item cells, bag overhangs, and
+   socketed gems can reach the shared tooltip/rarity/spark controllers while
+   empty board space remains the surrounding build link. */
+.home-promo--player-info .home-promo__board .bpb-bg__hit-pad,
+.home-promo--player-info .home-promo__board .bpb-bg__item--bag .bpb-bg__sprite,
+.home-promo--player-info .home-promo__board .bpb-bg__mark--socket.bpb-bg__mark--gem {
+  pointer-events: auto !important;
+  cursor: var(--bpb-cursor-pointer, pointer);
 }
 
 .home-promo__board .bpb-bg__item:hover,
@@ -1339,69 +1348,21 @@ a.home-promo__caption-author:hover {
   text-wrap: balance;
 }
 
-.home-promo__cta {
-  --home-promo-cta-gold: #eac914;
-  position: relative;
-  isolation: isolate;
+.home-promo__cta-actions {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.55em;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.home-promo__cta {
+  --home-promo-cta-gold: var(--home-preset-gold, #eac914);
   width: min(100%, 14rem);
   min-height: clamp(2.7rem, 4.6vw, 3.35rem);
   margin: 0;
   padding: 0.5rem 1.25rem;
-  border: 2px solid rgba(55, 24, 18, 0.9);
-  border-radius: 999px;
-  background: linear-gradient(180deg, #a33a3a 0%, var(--bpb-banner-crimson, #8b2e2e) 100%);
-  color: #f7f0e4;
-  font-family: var(--bpb-font-display);
   font-size: clamp(1.15rem, 2.2vw, 1.6rem);
-  line-height: 1;
-  text-decoration: none;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  box-shadow:
-    inset 0 0 0 2px var(--home-promo-cta-gold),
-    inset 0 0.18rem 0 rgba(255, 225, 164, 0.2),
-    0 0.3rem 0.65rem rgba(20, 10, 5, 0.35);
-  transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-  box-sizing: border-box;
-}
-
-/* Keep the event pennant's gold inner rim as CSS, so the launcher remains
-   crisp at every size instead of scaling a raster button asset. */
-.home-promo__cta::before {
-  content: '';
-  position: absolute;
-  inset: 0.3rem;
-  z-index: 0;
-  border: 1px solid color-mix(in srgb, var(--home-promo-cta-gold) 88%, #fff 12%);
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-.home-promo__cta > * {
-  position: relative;
-  z-index: 1;
-}
-
-.home-promo__cta:hover {
-  filter: brightness(1.1) saturate(1.04);
-  color: #fff;
-  box-shadow:
-    inset 0 0 0 2px var(--home-promo-cta-gold),
-    inset 0 0.18rem 0 rgba(255, 236, 187, 0.25),
-    0 0.4rem 0.8rem rgba(20, 10, 5, 0.42);
-}
-
-.home-promo__cta:active {
-  transform: translateY(1px);
-  filter: brightness(0.96);
-}
-
-.home-promo__cta:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--bpb-gold) 85%, transparent);
-  outline-offset: 4px;
 }
 
 .home-promo__cta-icon {
@@ -1411,6 +1372,20 @@ a.home-promo__caption-author:hover {
   flex: 0 0 auto;
   object-fit: contain;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+}
+
+/* Remix is deliberately secondary to Create: same pill language, smaller
+   scale, and a cool steel-blue surface that reads as a separate action. */
+.home-promo--create .home-promo__cta--remix {
+  width: min(100%, 9.5rem);
+  min-height: clamp(2.25rem, 3.8vw, 2.8rem);
+  padding: 0.4rem 0.85rem;
+  font-size: clamp(0.95rem, 1.55vw, 1.2rem);
+}
+
+.home-promo--create .home-promo__cta--remix .home-promo__cta-icon {
+  width: clamp(1.2rem, 2.4vw, 1.55rem);
+  height: clamp(1.2rem, 2.4vw, 1.55rem);
 }
 
 /* Grid overlay — OP variant only; parchment create skips this */
@@ -1831,6 +1806,10 @@ a.home-promo__caption-author:hover {
     width: min(100%, 14rem);
     max-width: 100%;
     padding: 0.5rem 1.1rem;
+  }
+
+  .home-promo--create .home-promo__cta--remix {
+    width: min(100%, 9.5rem);
   }
 
   .home-promo__side--left,
