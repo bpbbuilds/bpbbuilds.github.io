@@ -221,19 +221,12 @@ export const bustedBladePort = {
 export const forgingHammerPort = {
   handlerId: 'forging_hammer',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
-    piece._fhEmp = 0;
-    const per = getP1(piece.params, 1);
+  onPrepare(piece, ctx) {
+    const per = getP1(piece.params);
+    if (!per) return;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'empower') return;
-      const emp = getStackAmount(ctx.player, 'empower');
-      const delta = (emp - piece._fhEmp) * per;
-      addBonusDamage(piece, delta, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-        originName: piece.name,
-      });
-      piece._fhEmp = emp;
+      changeVaryingDamageFromBuffChange(piece, ch, per);
     });
   },
   onCooldownEffect(piece, ctx) {

@@ -1405,6 +1405,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  forest_dragon: {
+    focusedRegression: 'scripts/sim-forest-dragon-smoke.mjs',
+    fixture: 'Forest Dragon source Nature-only preparation speed, Regeneration delta to non-removable varying damage, early-hit Regeneration/Lucky grants, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  forging_hammer: {
+    focusedRegression: 'scripts/sim-forging-hammer-smoke.mjs',
+    fixture: 'Forging Hammer source preparation Empower listener, exact positive and negative Empower deltas to non-removable varying damage, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',

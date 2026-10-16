@@ -8377,9 +8377,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-forest-dragon-smoke.mjs",
+        "fixture": "Forest Dragon source Nature-only preparation speed, Regeneration delta to non-removable varying damage, early-hit Regeneration/Lucky grants, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -8413,9 +8419,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-forging-hammer-smoke.mjs",
+        "fixture": "Forging Hammer source preparation Empower listener, exact positive and negative Empower deltas to non-removable varying damage, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

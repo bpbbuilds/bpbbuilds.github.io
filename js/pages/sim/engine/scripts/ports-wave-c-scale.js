@@ -152,35 +152,31 @@ function clawsPreDealDamage(piece, ctx, hit) {
 export const forestDragonPort = {
   handlerId: 'forest_dragon',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
-    const speed = getPName(piece.params, 'speed', 5) / 100;
+  onPrepare(piece, ctx) {
+    const speed = getPName(piece.params, 'speed', getP4(piece.params)) / 100;
     const n = countLinkedType(ctx, piece, 'nature');
-    if (n && speed) addSpeed(piece, n * speed);
-    const per = Number(getPName(piece.params, 'dam', getP1(piece.params, 1))) || 0;
-    const regen0 = ctx.player.stacks.regeneration || 0;
-    if (regen0 && per) addBonusDamage(piece, Math.round(regen0 * per));
+    if (n) addSpeed(piece, n * speed);
+    const per = Number(getPName(piece.params, 'dam', getP3(piece.params))) || 0;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'regeneration' || !per) return;
-      addBonusDamageFromBuffChange(piece, ch, per);
+      changeVaryingDamageFromBuffChange(piece, ch, per);
     });
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'forest_dragon');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
-    const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', getP1(piece.params, 1))));
-    const luck = Math.max(0, Math.round(getPName(piece.params, 'luck', getP2(piece.params, 1))));
+    const regen = Math.trunc(getPName(piece.params, 'regen', getP1(piece.params)));
+    const luck = Math.trunc(getPName(piece.params, 'luck', getP2(piece.params)));
     grantStacks(ctx.player, 'regeneration', regen, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    if (luck) {
-      grantStacks(ctx.player, 'lucky', luck, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-    }
+    grantStacks(ctx.player, 'lucky', luck, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
   },
 };
 

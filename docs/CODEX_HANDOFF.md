@@ -6203,3 +6203,17 @@ None.
 - Codex verified Fly Agaric against inherited Food-only preparation speed, exact Poison application, activation ordering, both board sides, and zero-safe parameters; its port now preserves a source zero Poison value.
 - Added `scripts/sim-flute-smoke.mjs` and `scripts/sim-fly-agaric-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 349 / 519 verified item rows. Focused smokes, the existing Emerald-through-Gingerbread regression, lifecycle closure, coverage honesty, verified coverage, Admin audit, ledger/dashboard checks, changed-module syntax, and scoped `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed.
 - The next retained queue begins with Forest Dragon; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 246 - in progress
+
+- Codex owns the Forest Dragon and Forging Hammer fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and this handoff. Planned paths are limited to the relevant simulator port modules, `scripts/sim-forest-dragon-smoke.mjs`, `scripts/sim-forging-hammer-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 246 - complete
+
+- Codex repaired Forest Dragon to use the source preparation hook, Nature-only speed count, exact non-removable Regeneration-driven varying damage, and early successful-hit Regeneration/Lucky grants. Forging Hammer now listens during preparation and applies exact positive/negative Empower signal deltas to the non-removable varying damage pool.
+- Added `scripts/sim-forest-dragon-smoke.mjs` and `scripts/sim-forging-hammer-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 351 / 519 verified item rows. Focused smokes, Emerald-through-Gingerbread regression, lifecycle closure, parity systems, coverage honesty, verified coverage, Admin audit, dashboard tests/checks, changed-module syntax, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed.
+- The next retained queue begins with Fortunas Kiss; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 247 - in progress
+
+- Codex owns the Fortunas Kiss and Friendly Fire fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and this handoff. Planned paths are limited to the relevant simulator port modules, `scripts/sim-fortunas-kiss-smoke.mjs`, `scripts/sim-friendly-fire-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
