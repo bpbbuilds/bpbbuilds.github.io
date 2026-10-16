@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "6c48358c36ded03b5d075c01eb82a93443203a3e739ac71036441d60e99028b2",
+    "dashboardSha256": "9b5c535bc94fd699467d7edbe1715168fa0b86f98aa94916689d1b8b1f610b32",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 343,
+    "verified_1to1": 345,
     "confirmed_gap": 8,
-    "evidence_pending": 153,
+    "evidence_pending": 151,
     "no_independent_combat": 15
   },
   "byId": {
@@ -102,8 +102,8 @@
     "cheese": "verified_1to1",
     "cheese_goobert": "verified_1to1",
     "chess_board": "confirmed_gap",
-    "chess_master": "evidence_pending",
-    "chili_goobert": "evidence_pending",
+    "chess_master": "verified_1to1",
+    "chili_goobert": "verified_1to1",
     "chili_pepper": "verified_1to1",
     "chipped_amethyst": "verified_1to1",
     "chipped_emerald": "verified_1to1",

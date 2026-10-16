@@ -73,11 +73,12 @@ const poisonGoobertPort = variantGoobert('poison_goobert', (piece, ctx) => {
 
 /** ChiliGoobert.gd */
 const chiliGoobertPort = variantGoobert('chili_goobert', (piece, ctx) => {
-  goobertHeal(piece, ctx, 'chili_goobert', healAmt(piece));
+  goobertHeal(piece, ctx, 'chili_goobert', healAmt(piece), { activate: false });
   grantStacks(ctx.player, 'heat', Math.max(1, Math.round(getP3(piece.params, 1))), {
     originKey: piece.placementKey,
     originId: piece.itemId,
   });
+  pushActivate(piece, ctx, 'chili_goobert', `Pet: ${piece.name}`);
 });
 
 /** BroccoliGoobert.gd — no heal; lucky vs regen. */

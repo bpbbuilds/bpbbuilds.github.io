@@ -3972,9 +3972,16 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-chess-master-smoke.mjs",
+        "fixture": "Chess Master source preparation-time first-Chess-Board speed mutation and exact source parameter handling.",
+        "projections": [
+          "hud"
+        ],
+        "requiredProjections": [
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -4006,9 +4013,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-chili-goobert-smoke.mjs",
+        "fixture": "Chili Goobert source six-peer activation threshold, heal-then-Heat effect order, and one post-effect activation.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

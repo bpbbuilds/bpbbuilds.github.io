@@ -145,7 +145,7 @@ const buyTheHolyLightPort = {
 const chessMasterPort = {
   handlerId: 'chess_master',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const spd = getPName(piece.params, 'speed', 20) / 100;
     const board = (ctx.pieces || []).find((p) => p.itemId === 'chess_board');
     if (board) addSpeed(board, spd);

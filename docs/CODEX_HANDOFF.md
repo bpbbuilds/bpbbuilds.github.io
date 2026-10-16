@@ -6176,3 +6176,13 @@ None.
 - Codex repaired Broccotree to grant Lucky and optional Regeneration before its activation, preserving its Food override and regeneration-driven stamina gain. Chainsaw now mirrors the source charge-state transitions while retaining hit-only five-percent buff removal/steal and self slowdown.
 - Added `scripts/sim-broccotree-smoke.mjs` and `scripts/sim-chainsaw-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 343 / 519 verified item rows. Both focused smokes, the combined Broccoli/Broccotree source smoke, ledger/dashboard checks, coverage-honesty, Admin audit, verified-coverage, changed-module syntax, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed.
 - Local commit `a6936cb` was pushed successfully to `origin/main` after GitHub access was corrected.
+
+### 2026-10-16 Simulator item parity continuation 243 - in progress
+
+- Codex owns the Chess Master and Chili Goobert fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and this handoff. Planned paths are limited to the relevant simulator port modules, `scripts/sim-chess-master-smoke.mjs`, `scripts/sim-chili-goobert-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 243 - complete
+
+- Codex repaired Chess Master to apply its source preparation-time speed bonus to the first Chess Board, and repaired Chili Goobert to heal, grant Heat, then activate at the six-peer threshold in source order.
+- Added `scripts/sim-chess-master-smoke.mjs` and `scripts/sim-chili-goobert-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 345 / 519 verified item rows. Focused smokes, chess call-paths, Goobert regression, lifecycle closure, parity systems, coverage honesty, Admin audit, verified coverage, changed-module syntax, and `git diff --check` pass. No legal, authentication, database, storage, or security behavior changed.
+- The next retained queue begins with Coil; this batch is ready to commit and push.

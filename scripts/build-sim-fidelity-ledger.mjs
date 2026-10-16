@@ -654,6 +654,14 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  chess_master: {
+    focusedRegression: 'scripts/sim-chess-master-smoke.mjs',
+    fixture: 'Chess Master source preparation-time first-Chess-Board speed mutation and exact source parameter handling.',
+    projections: ['hud'],
+    requiredProjections: ['hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   cheese: {
     focusedRegression: 'scripts/sim-carrot-cat-chain-cheese-smoke.mjs',
     fixture: 'Cheese source max-health grant, random buff grant, and activation after both effects.',
@@ -678,6 +686,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   charge_splitter: {
     focusedRegression: 'scripts/sim-burning-heat-charge-smoke.mjs',
     fixture: 'Charge Splitter source one-shot lightning charge emission, Heat-gated Lucky/Block effect, and charge amplification path.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  chili_goobert: {
+    focusedRegression: 'scripts/sim-chili-goobert-smoke.mjs',
+    fixture: 'Chili Goobert source six-peer activation threshold, heal-then-Heat effect order, and one post-effect activation.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',
