@@ -16,7 +16,7 @@ import { applyEffectDmgFactor, applyHealEfficiency } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { effectDuration } from '../effect-duration.js';
-import { addAccuracy, addSpeed } from '../piece-stats.js';
+import { addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedSpeed } from '../timed-speed.js';
 import { dealEffectDamage, dealHit, loseHealth } from './handlers.js';
@@ -180,32 +180,66 @@ export const bewitchmentPort = {
 export const frozenFlamePort = {
   handlerId: 'frozen_flame',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
+    piece._heatCounter = 0;
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-    let ice = 0;
-    /** @type {object | null} */
-    let secondary = null;
-    for (const other of ctx.pieces || []) {
-      if (!links.some((l) => l.key === other.placementKey)) continue;
-      if (itemHasType(ctx.itemsById.get(other.itemId), 'ice')) ice += 1;
-      if (!secondary && (other.damageMax > 0 || other.damageMin > 0)) secondary = other;
-    }
-    const per = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 4)));
-    if (ice) gainStacks(ctx.player, 'block', per * ice);
-    onBuffChanged(ctx.player, (ch) => {
-      if (ch.stack === 'heat' && ch.amount > 0) {
-        grantStacks(ctx.dummy, 'cold', ch.amount, {
+    const secondary = links.find((link) => {
+      if (link.color !== 'secondary') return false;
+      const target = (ctx.pieces || []).find((other) => other.placementKey === link.key);
+      const item = target ? ctx.itemsById.get(target.itemId) : null;
+      const minDamage = Number(target?.damageMin ?? item?.damageMin);
+      const lifesteal = (item?.tags || []).some((tag) => /lifesteal/i.test(String(tag)));
+      const canDamageOverride = ['demonic_flask', 'strong_demonic_flask'].includes(String(item?.id || ''));
+      return minDamage > 0 || lifesteal || canDamageOverride;
+    });
+    const secondaryItem = secondary
+      ? (ctx.pieces || []).find((other) => other.placementKey === secondary.key)
+      : null;
+    const heatNeeded = Number(getPName(piece.params, 'heat', getP1(piece.params, 0))) || 0;
+    const coldPerHeat = Number(getPName(piece.params, 'cold', getP2(piece.params, 0))) || 0;
+    const critChance = Number(piece.chance ?? ctx.itemsById.get(piece.itemId)?.chance) || 0;
+    const critSeverityPerCold =
+      (Number(getPName(piece.params, 'critdam', getP3(piece.params, 0))) || 0) / 100;
+
+    onBuffChanged(ctx.player, (change) => {
+      if (change.stack !== 'heat' || !(change.amount > 0) || !(heatNeeded > 0)) return;
+      piece._heatCounter += change.amount;
+      const relHeat = piece._heatCounter / heatNeeded;
+      const cold = Math.trunc(relHeat) * coldPerHeat;
+      piece._heatCounter %= heatNeeded;
+      if (cold > 0) {
+        grantStacks(ctx.dummy, 'cold', cold, {
           originKey: piece.placementKey,
           originId: piece.itemId,
           rng: ctx.rng,
           opponent: ctx.player,
         });
       }
-      if (ch.stack === 'cold' && ch.amount > 0 && secondary) {
-        addAccuracy(secondary, 5 * ch.amount);
-        secondary.critChance = (Number(secondary.critChance) || 0) + 5 * ch.amount;
-      }
     });
+    if (secondaryItem) {
+      onBuffChanged(ctx.dummy, (change) => {
+        if (change.stack !== 'cold' || !change.amount) return;
+        secondaryItem.critChance = (Number(secondaryItem.critChance) || 0) + change.amount * critChance;
+        secondaryItem.critSeverity =
+          (Number(secondaryItem.critSeverity) || 2) + change.amount * critSeverityPerCold;
+      });
+    }
+  },
+  onCombatStart(piece, ctx) {
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    let ice = 0;
+    for (const other of ctx.pieces || []) {
+      const link = links.find((candidate) => candidate.key === other.placementKey);
+      if (link?.color === 'primary' && itemHasType(ctx.itemsById.get(other.itemId), 'ice')) ice += 1;
+    }
+    const block = Number(piece.block ?? piece.blockGrant ?? ctx.itemsById.get(piece.itemId)?.block) || 0;
+    if (ice > 0 && block > 0) {
+      grantStacks(ctx.player, 'block', ice * block, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+    }
+    pushActivate(piece, ctx, 'frozen_flame', `Accessory: ${piece.name}`);
   },
 };
 

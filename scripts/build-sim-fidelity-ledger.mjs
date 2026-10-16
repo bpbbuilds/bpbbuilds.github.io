@@ -1447,6 +1447,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  frozen_buckler: {
+    focusedRegression: 'scripts/sim-frozen-buckler-smoke.mjs',
+    fixture: 'Frozen Buckler source preparation reset, exact P2 stamina drain, P3 Cold per block, P4 block cap, activation order, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  frozen_flame: {
+    focusedRegression: 'scripts/sim-frozen-flame-smoke.mjs',
+    fixture: 'Frozen Flame source primary Ice block, secondary damage-only target, preparation Heat/Cold listeners, exact Heat-to-Cold threshold, crit chance/severity changes, activation, both board sides, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',

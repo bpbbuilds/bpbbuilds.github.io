@@ -49,7 +49,6 @@ function registerShield(piece, ctx, opts) {
     },
     afterBlock(payload) {
       if (!piece.alive) return;
-      opts.afterBlock?.(payload, liveCtx());
       const drain = Math.max(
         0,
         Number(getPName(piece.params, 'stamina', getP2(piece.params, 0.3))) || 0,
@@ -65,6 +64,7 @@ function registerShield(piece, ctx, opts) {
           handler: piece.itemId,
         });
       }
+      opts.afterBlock?.(payload, liveCtx());
       pushActivate(piece, liveCtx(), piece.itemId, `Shield: ${piece.name}`);
     },
   });
@@ -82,10 +82,12 @@ function origin(piece) {
 const frozenBucklerPort = {
   handlerId: 'frozen_buckler',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece) {
     piece._coldN = 0;
-    const maxC = Math.max(1, Math.round(getP4(piece.params, 3)));
-    const cold = Math.max(1, Math.round(getP3(piece.params, 1)));
+  },
+  onCombatStart(piece, ctx) {
+    const maxC = Number(getP4(piece.params, 0)) || 0;
+    const cold = Number(getP3(piece.params, 0)) || 0;
     registerShield(piece, ctx, {
       afterBlock() {
         if (piece._coldN < maxC) {

@@ -3,7 +3,7 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "984e7c47cb4381feafbc9b89344e22b241952353f3d0f81ccc1d48d5181cf2e3",
+    "itemLedgerSha256": "b834f6e56d027a035200ba46f03237c768a6b701e4ab849d71ebd63ead38294a",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
     "systemSurfaceSha256": "79e1178a7ae154e964452b8a7fada954ec8e043c0756f30c20fc35ec6dea6778",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 355,
+    "verified_1to1": 357,
     "confirmed_gap": 9,
-    "evidence_pending": 161,
+    "evidence_pending": 159,
     "no_independent_combat": 15
   },
   "items": [
@@ -9003,8 +9003,8 @@
       "name": "Frozen Buckler",
       "category": "Shield",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -9030,9 +9030,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-frozen-buckler-smoke.mjs",
+        "fixture": "Frozen Buckler source preparation reset, exact P2 stamina drain, P3 Cold per block, P4 block cap, activation order, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
@@ -9042,8 +9048,8 @@
       "name": "Frozen Flame",
       "category": "Accessory",
       "class": "Pyromancer",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -9069,9 +9075,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-frozen-flame-smoke.mjs",
+        "fixture": "Frozen Flame source primary Ice block, secondary damage-only target, preparation Heat/Cold listeners, exact Heat-to-Cold threshold, crit chance/severity changes, activation, both board sides, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
