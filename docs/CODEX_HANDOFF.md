@@ -6292,3 +6292,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 255 - in progress
 
 - Codex owns the next retained Goobert and Goobling fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-goobert-smoke.mjs`, `scripts/sim-goobling-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 255 - complete
+
+- Codex repaired Goobert and inherited Goobling peer activation to mirror the source `canActivate` listener, exact activation thresholds, modified `getP_m("heal")`, full-health heal logging, activation ordering, and each item’s handler identity; explicit zero thresholds remain no-ops as in the game.
+- Added `scripts/sim-goobert-smoke.mjs` and `scripts/sim-goobling-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 369 / 519 verified item rows. Focused pair tests, Wave A/B/D, Emerald-through-Gingerbread, lifecycle closure, changed-module syntax, and scoped verification pass. No legal, authentication, database, storage, or security behavior changed.
+- The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Greatsword and Halberd; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 256 - in progress
+
+- Codex owns the next retained Greatsword and Halberd fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-greatsword-smoke.mjs`, `scripts/sim-halberd-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

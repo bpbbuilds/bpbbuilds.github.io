@@ -1531,6 +1531,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  goobert: {
+    focusedRegression: 'scripts/sim-goobert-smoke.mjs',
+    fixture: 'Goobert source canActivate peer targeting, exact activation threshold, modified heal logging including full-health attempts, peer activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  goobling: {
+    focusedRegression: 'scripts/sim-goobling-smoke.mjs',
+    fixture: 'Goobling scene inheritance of Goobert.gd, exact three-activation threshold, source heal value, and retained Goobling handler identity.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',

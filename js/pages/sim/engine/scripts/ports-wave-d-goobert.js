@@ -16,6 +16,7 @@ import {
   isInvulnerable,
 } from '../actor.js';
 import { getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { gainStacks } from '../stacks.js';
 import { addBonusDamage } from '../piece-stats.js';
 import { affectedTargets } from '../board-graph.js';
@@ -43,19 +44,27 @@ function isVulnerable(actor, nowT) {
  * @param {{ activate?: boolean }} [opts]
  */
 export function goobertHeal(piece, ctx, handler, heal, opts = {}) {
-  const healed = healActor(ctx.player, heal);
-  if (healed > 0) {
+  healActor(ctx.player, heal);
+  const logged = Number(ctx.player?._lastHeal?.loggedAmount) || 0;
+  if (logged > 0) {
     const side = eventSideForPiece(piece);
     ctx.events.push({
       t: ctx.t + 0.003,
       type: 'heal',
       actor: side,
       target: side,
-      amount: healed,
+      amount: logged,
       itemId: piece.itemId,
       placementKey: piece.placementKey,
-      label: `${piece.name}: heal +${healed}`,
-      meta: { category: 'heal', script: true, handler },
+      label: `${piece.name}: heal +${logged}`,
+      meta: {
+        category: 'heal',
+        script: true,
+        handler,
+        loggedAmount: logged,
+        requestedHealAmount: heal,
+        overheal: Math.max(0, Number(ctx.player?._lastHeal?.overheal) || 0),
+      },
     });
   }
   if (opts.activate !== false) pushActivate(piece, ctx, handler, `Pet: ${piece.name}`);
@@ -69,9 +78,9 @@ export function goobertHeal(piece, ctx, handler, heal, opts = {}) {
  * @param {() => void} effect
  */
 export function goobertPeerTick(piece, ctx, effect) {
-  const need = Math.max(1, Math.round(getP1(piece.params, 3)));
+  const need = getP1(piece.params, 0);
   piece._goobertActs = (piece._goobertActs || 0) + 1;
-  if (piece._goobertActs < need) return;
+  if (piece._goobertActs !== need) return;
   piece._goobertActs = 0;
   effect();
 }
@@ -103,8 +112,12 @@ export const goobertPort = {
   },
   onPeerActivated(listener, _activated, ctx) {
     goobertPeerTick(listener, ctx, () => {
-      const heal = Math.max(1, Math.round(getPName(listener.params, 'heal', getP2(listener.params, 8))));
-      goobertHeal(listener, ctx, 'goobert', heal);
+      const heal = modifiedParamValue(
+        listener,
+        getPName(listener.params, 'heal', getP2(listener.params, 0)),
+        'heal',
+      );
+      goobertHeal(listener, ctx, listener.itemId || 'goobert', heal);
     });
   },
 };
