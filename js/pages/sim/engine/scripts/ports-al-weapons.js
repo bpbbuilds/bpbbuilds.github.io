@@ -396,18 +396,19 @@ export const pandamoniumPort = {
 export const obsidianDragonPort = {
   handlerId: 'obsidian_dragon',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._odHeat = 0;
-    const need = Math.max(1, Math.round(getP1(piece.params, 4)));
-    const bonus = Math.max(1, Math.round(getP2(piece.params, 2)));
+    const need = Math.trunc(getPName(piece.params, 'heatt', getP1(piece.params, 0)));
+    const bonus = Math.trunc(getPName(piece.params, 'dambonus', getP2(piece.params, 0)));
     const target = linked(ctx, piece).find((o) => canBeEmpoweredPiece(o)) || null;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'heat' || !(ch.amount > 0)) return;
       piece._odHeat = (Number(piece._odHeat) || 0) + ch.amount;
-      const procs = Math.floor(piece._odHeat / need);
-      if (procs <= 0) return;
+      if (!(need > 0)) return;
+      const procs = piece._odHeat / need;
+      if (!(procs > 0)) return;
       piece._odHeat %= need;
-      addBonusDamage(piece, bonus * procs);
+      if (bonus) addBonusDamage(piece, bonus * procs);
       if (target) target.critChance = (Number(target.critChance) || 0) + procs;
     });
   },

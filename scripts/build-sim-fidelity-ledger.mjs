@@ -1223,6 +1223,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  obsidian_dragon: {
+    focusedRegression: 'scripts/sim-obsidian-dragon-smoke.mjs',
+    fixture: 'Obsidian Dragon source preparation-time Heat listener, exact fractional Heat ratio damage/crit-token conversion, first linked empowerable weapon, and explicit zero parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  oil_lamp: {
+    focusedRegression: 'scripts/sim-oil-lamp-smoke.mjs',
+    fixture: 'Oil Lamp source combat-start Heat, linked empowerable weapon damage/accuracy cooldown effects, post-effect activation order, and explicit zero parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

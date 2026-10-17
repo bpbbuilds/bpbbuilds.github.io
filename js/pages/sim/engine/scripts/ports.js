@@ -867,7 +867,7 @@ export const oilLampPort = {
   family: 'synergy_aura',
   onCombatStart(piece, ctx) {
     const { t, player, events } = ctx;
-    const heat = Math.max(0, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 2))));
+    const heat = Number(getPName(piece.params, 'heat', getP1(piece.params, 0))) || 0;
     if (heat > 0) {
       grantStacks(player, 'heat', heat, {
         originKey: piece.placementKey,
@@ -888,10 +888,9 @@ export const oilLampPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, events, graph, itemsById, canAffect, pieces } = ctx;
-    const dam = Math.max(0, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 1))));
-    const acc = Math.max(0, Math.round(getPName(piece.params, 'accuracy', getP3(piece.params, 5))));
+    const dam = Number(getPName(piece.params, 'dam', getP2(piece.params, 0))) || 0;
+    const acc = Number(getPName(piece.params, 'accuracy', getP3(piece.params, 0))) || 0;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    pushActivate(piece, ctx, 'oil_lamp', `Accessory: ${piece.name}`);
     for (const other of pieces || []) {
       if (other.placementKey === piece.placementKey) continue;
       if (!links.some((l) => l.key === other.placementKey)) continue;
@@ -912,6 +911,7 @@ export const oilLampPort = {
         },
       });
     }
+    pushActivate(piece, ctx, 'oil_lamp', `Accessory: ${piece.name}`);
     return true;
   },
 };

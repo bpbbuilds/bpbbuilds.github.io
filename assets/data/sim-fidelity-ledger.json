@@ -13183,9 +13183,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-obsidian-dragon-smoke.mjs",
+        "fixture": "Obsidian Dragon source preparation-time Heat listener, exact fractional Heat ratio damage/crit-token conversion, first linked empowerable weapon, and explicit zero parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -13220,9 +13226,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-oil-lamp-smoke.mjs",
+        "fixture": "Oil Lamp source combat-start Heat, linked empowerable weapon damage/accuracy cooldown effects, post-effect activation order, and explicit zero parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
