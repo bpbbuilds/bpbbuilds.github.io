@@ -1125,6 +1125,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  mercury_elemental: {
+    focusedRegression: 'scripts/sim-mercury-elemental-smoke.mjs',
+    fixture: 'Mercury Elemental source melee-only distinct preparation scaling, incoming attack Block from raw DamageResult damage, canonical stamina-used poison thresholds with self-poison and mini activation, cooldown stamina, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  miss_fortune: {
+    focusedRegression: 'scripts/sim-miss-fortune-smoke.mjs',
+    fixture: 'Miss Fortune source Lucky threshold/spend, most-held buff selection, activation-after-effects ordering, unconditional cooldown activation, and explicit zero parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

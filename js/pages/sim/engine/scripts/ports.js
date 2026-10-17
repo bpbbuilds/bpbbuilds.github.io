@@ -693,10 +693,8 @@ export const missFortunePort = {
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'luck', getP1(piece.params, 1))));
-    const num = Math.max(1, Math.round(getPName(piece.params, 'buffs', getP2(piece.params, 3))));
-    // Game always activates (MissFortune.gd activate() after the lucky branch).
-    pushActivate(piece, ctx, 'miss_fortune', `Accessory: ${piece.name}`);
+    const need = getPName(piece.params, 'luck', getP1(piece.params, 1));
+    const num = getPName(piece.params, 'buffs', getP2(piece.params, 3));
     if ((Number(player.stacks.lucky) || 0) >= need) {
       const spent = useLucky(player, need, {
         originKey: piece.placementKey,
@@ -723,6 +721,9 @@ export const missFortunePort = {
         originId: piece.itemId,
       });
     }
+    // Game activates after the lucky branch, including when the threshold is
+    // not met or the source parameters explicitly resolve to zero.
+    pushActivate(piece, ctx, 'miss_fortune', `Accessory: ${piece.name}`);
     return true;
   },
 };

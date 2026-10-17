@@ -3,7 +3,7 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "9fc3162e4923da73644327fb7875bf60bd1be2982bce7513de29ffef30046318",
+    "itemLedgerSha256": "e26fd08ac6ddd368a9056d4b934faf08ba56da8bb35fcc0338965fd0d01ffc7b",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
     "systemSurfaceSha256": "79e1178a7ae154e964452b8a7fada954ec8e043c0756f30c20fc35ec6dea6778",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 441,
+    "verified_1to1": 443,
     "confirmed_gap": 8,
-    "evidence_pending": 76,
+    "evidence_pending": 74,
     "no_independent_combat": 15
   },
   "items": [
@@ -13133,8 +13133,8 @@
       "name": "Mercury Elemental",
       "category": "Pet",
       "class": "Adventurer",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -13164,9 +13164,15 @@
         ]
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-mercury-elemental-smoke.mjs",
+        "fixture": "Mercury Elemental source melee-only distinct preparation scaling, incoming attack Block from raw DamageResult damage, canonical stamina-used poison thresholds with self-poison and mini activation, cooldown stamina, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
@@ -13176,8 +13182,8 @@
       "name": "Miss Fortune",
       "category": "Accessory",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -13202,9 +13208,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-miss-fortune-smoke.mjs",
+        "fixture": "Miss Fortune source Lucky threshold/spend, most-held buff selection, activation-after-effects ordering, unconditional cooldown activation, and explicit zero parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },

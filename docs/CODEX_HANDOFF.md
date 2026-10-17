@@ -6674,3 +6674,12 @@ None.
 ### 2026-10-16 Simulator item parity continuation 292 - in progress
 
 - Codex owns the next retained Mercury Elemental and Miss Fortune fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mercury-elemental-smoke.mjs`, `scripts/sim-miss-fortune-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 292 - complete
+
+- Codex repaired Mercury Elemental to mirror source melee-only distinct preparation scaling, incoming attack `DamageResult.damage` Block grants, `stamina_used` accumulation with exact poison/self-poison thresholds and mini-activation projection, cooldown stamina regeneration, and explicit zero values. Miss Fortune now mirrors source Lucky threshold/spend, most-held buff selection, activation-after-effects ordering, unconditional activation, and zero-safe parameters.
+- Added `scripts/sim-mercury-elemental-smoke.mjs` and `scripts/sim-miss-fortune-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 443 / 519 verified item rows. Focused pair tests, prior parity regressions, verified coverage, coverage honesty, changed-module syntax, and ledger/dashboard freshness checks pass. No legal, authentication, database, storage, or security behavior changed. The generated summary reports 443 verified, 54 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Molten Dagger and Molten Greatsword; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 293 - in progress
+
+- Codex owns the next retained Molten Dagger and Molten Greatsword fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-molten-dagger-smoke.mjs`, `scripts/sim-molten-greatsword-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

@@ -11,7 +11,7 @@ import {
   useLucky,
   useMana,
 } from '../buff-economy.js';
-import { healActor, tryUseStamina } from '../actor.js';
+import { giveStamina, healActor, tryUseStamina } from '../actor.js';
 import { applyHealEfficiency, applyUnhealing } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
@@ -306,60 +306,89 @@ export const mechaBatPort = {
 export const mercuryElementalPort = {
   handlerId: 'mercury_elemental',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  // MercuryElemental.gd connects both signals during onPrepare, before the
+  // first incoming attack or stamina use can occur.
+  onPrepare(piece, ctx) {
     const links = linkedWith(ctx, piece);
-    const ids = new Set(links.map(({ other }) => other.itemId));
     piece._mercStam =
-      Math.max(0, Math.round(getPName(piece.params, 'stamina', getP1(piece.params, 1)))) *
-      Math.max(1, ids.size || links.length || 1);
+      getPName(piece.params, 'stamina', getP1(piece.params, 1)) * links.length;
     piece._mercStamUsed = 0;
-    const blockPct = (Number(piece.blockGrant) || getPName(piece.params, 'block', 10)) / 100;
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
-      if (!payload?.hit?.hit) return;
-      const dam = Number(payload.hit.healthDamage) || 0;
+    const catalogBlock = ctx.itemsById?.get?.(piece.itemId)?.block;
+    const blockRaw = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number.isFinite(Number(catalogBlock))
+        ? Number(catalogBlock)
+        : getPName(piece.params, 'block', 0);
+    const blockPct = blockRaw / 100;
+    ctx.bus?.on?.('character_damaged', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      if (payload.attacker && payload.attacker !== ctx.dummy) return;
+      const hit = typeof payload.hit === 'object' ? Boolean(payload.hit.hit) : Boolean(payload.hit);
+      const damage = payload.damage;
+      const source = damage?.damageSource ?? payload.damageSource;
+      if (!hit || source?.isAttack === false || source?.canTriggerItems === false) return;
+      const dam = Number(damage?.damage ?? payload.damageAmount) || 0;
       if (dam > 0 && blockPct > 0) {
-        const b = Math.max(1, Math.round(blockPct * dam));
+        const b = blockPct * dam;
         grantStacks(ctx.player, 'block', b, {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
       }
-      // Gap: no character_used_stamina bus — proxy via attacker staminaCost on hit
-      const cost = Math.max(0, Number(payload.piece?.staminaCost) || 0);
-      if (cost <= 0) return;
-      piece._mercStamUsed = (Number(piece._mercStamUsed) || 0) + cost;
-      const th = Math.max(0.5, getPName(piece.params, 'staminat', 3));
-      const poison = Math.max(0, Math.round(getPName(piece.params, 'poison', 1)));
-      const selfP = Math.max(0, Math.round(getPName(piece.params, 'poison2', 0)));
+    });
+    ctx.bus?.on?.('stamina_used', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      const amount = Number(payload.amount) || 0;
+      if (!(amount > 0)) return;
+      piece._mercStamUsed = (Number(piece._mercStamUsed) || 0) + amount;
+      const th = getPName(piece.params, 'staminat', 0);
+      if (!(th > 0)) return;
+      const poison = getPName(piece.params, 'poison', 0);
+      const selfP = getPName(piece.params, 'poison2', 0);
       const ticks = Math.floor(piece._mercStamUsed / th);
       if (ticks <= 0) return;
       piece._mercStamUsed -= ticks * th;
-      if (poison) {
+      if (poison > 0) {
         grantStacks(ctx.dummy, 'poison', ticks * poison, {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
       }
-      if (selfP) {
+      if (selfP > 0) {
         grantStacks(ctx.player, 'poison', ticks * selfP, {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
       }
+      ctx.events?.push?.({
+        t: payload.t ?? ctx.t,
+        type: 'info',
+        actor: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: mini activate`,
+        meta: { category: 'system', script: true, handler: 'mercury_elemental', miniActivate: true },
+      });
     });
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
+    const stam = Number.isFinite(Number(piece._mercStam))
+      ? Number(piece._mercStam)
+      : getPName(piece.params, 'stamina', getP1(piece.params, 1));
+    const before = Number(player.stamina) || 0;
+    giveStamina(player, stam);
+    const gained = (Number(player.stamina) || 0) - before;
+    if (gained > 0) {
+      events.push({
+        t: t + 0.004,
+        type: 'stamina',
+        amount: gained,
+        label: `${piece.name}: +${gained} stamina`,
+        meta: { category: 'stamina', kind: 'gained', script: true, handler: 'mercury_elemental' },
+      });
+    }
     pushActivate(piece, ctx, 'mercury_elemental', `Pet: ${piece.name}`);
-    const stam = Number(piece._mercStam) || Math.max(1, Math.round(getP1(piece.params, 2)));
-    player.stamina = Math.min(player.maxStamina || 20, (player.stamina || 0) + stam);
-    events.push({
-      t: t + 0.004,
-      type: 'stamina',
-      amount: stam,
-      label: `${piece.name}: +${stam} stamina`,
-      meta: { category: 'stamina', script: true, handler: 'mercury_elemental' },
-    });
     return true;
   },
 };
