@@ -1237,6 +1237,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  onion_cutter: {
+    focusedRegression: 'scripts/sim-onion-cutter-smoke.mjs',
+    fixture: 'Onion Cutter source preparation-time linked Food speed, early hit resistance change with signed values, exact Food filtering, and miss behavior.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  owl_spirit: {
+    focusedRegression: 'scripts/sim-owl-spirit-smoke.mjs',
+    fixture: 'Owl Spirit source preparation-time buff amplification, fatigue-aware Mana conversion, unconditional post-effect activation, integer parameters, and zero-safe values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

@@ -13269,9 +13269,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-onion-cutter-smoke.mjs",
+        "fixture": "Onion Cutter source preparation-time linked Food speed, early hit resistance change with signed values, exact Food filtering, and miss behavior.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -13306,9 +13312,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-owl-spirit-smoke.mjs",
+        "fixture": "Owl Spirit source preparation-time buff amplification, fatigue-aware Mana conversion, unconditional post-effect activation, integer parameters, and zero-safe values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

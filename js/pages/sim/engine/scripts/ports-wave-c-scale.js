@@ -47,22 +47,20 @@ function countLinkedType(ctx, piece, type) {
 export const onionCutterPort = {
   handlerId: 'onion_cutter',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
-    const speed = getPName(piece.params, 'speed', getP1(piece.params, 10)) / 100;
+  onPrepare(piece, ctx) {
+    const speed = getPName(piece.params, 'speed', getP2(piece.params, 10)) / 100;
     const n = countLinkedType(ctx, piece, 'food');
     if (n && speed) addSpeed(piece, n * speed);
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'onion_cutter');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
-    const factor = Math.abs(getPName(piece.params, 'dam', getP2(piece.params, 5)) / 100);
+    const factor = Number(getPName(piece.params, 'dam', getP1(piece.params, 5))) || 0;
     if (factor) {
-      ctx.dummy.damageResistancePct = Math.max(
-        0,
-        (Number(ctx.dummy.damageResistancePct) || 0) - factor * 100,
-      );
+      ctx.dummy.damageResistancePct =
+        (Number(ctx.dummy.damageResistancePct) || 0) - factor;
     }
   },
 };

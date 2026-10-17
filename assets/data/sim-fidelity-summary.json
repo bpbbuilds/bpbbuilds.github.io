@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "c878eccd6116bf7824fb44c55107c1d82967289ecbc58cd1f46272868b6b4bef",
+    "dashboardSha256": "72071271fccb87acde55b913aed950773488fa6c2cf50962a1738d6dcbe289df",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 457,
+    "verified_1to1": 459,
     "confirmed_gap": 7,
-    "evidence_pending": 40,
+    "evidence_pending": 38,
     "no_independent_combat": 15
   },
   "byId": {
@@ -316,8 +316,8 @@
     "null_blade": "verified_1to1",
     "obsidian_dragon": "verified_1to1",
     "oil_lamp": "verified_1to1",
-    "onion_cutter": "evidence_pending",
-    "owl_spirit": "evidence_pending",
+    "onion_cutter": "verified_1to1",
+    "owl_spirit": "verified_1to1",
     "pan": "evidence_pending",
     "pandamonium": "evidence_pending",
     "paradise_birb": "evidence_pending",

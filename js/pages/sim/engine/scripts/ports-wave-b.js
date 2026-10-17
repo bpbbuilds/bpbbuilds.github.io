@@ -694,10 +694,12 @@ export const spellScrollFrostboltPort = {
 export const owlSpiritPort = {
   handlerId: 'owl_spirit',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    const amp = Math.max(0, Number(piece.chance) || getPName(piece.params, 'chance', 10));
+    const amp = Number.isFinite(Number(piece.chance))
+      ? Number(piece.chance)
+      : Number(getPName(piece.params, 'chance', 0)) || 0;
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
       other.buffAmpChance = (Number(other.buffAmpChance) || 0) + amp;
@@ -709,30 +711,30 @@ export const owlSpiritPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'owl_spirit', `Pet: ${piece.name}`);
-    const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP1(piece.params, 5))));
-    if ((player.stacks.mana || 0) < need) return true;
-    useMana(player, need, { originKey: piece.placementKey, originId: piece.itemId });
-    const give = Math.max(
-      1,
-      Math.round(
+    const need = Math.trunc(getPName(piece.params, 'manat', getP1(piece.params, 0)));
+    if (getStackAmount(player, 'mana') >= need) {
+      useMana(player, need, { originKey: piece.placementKey, originId: piece.itemId });
+      const give = Math.trunc(
         piece._owlFatigue
-          ? getPName(piece.params, 'fatiguemana', getPName(piece.params, 'mana', getP2(piece.params, 3)))
-          : getPName(piece.params, 'mana', getP2(piece.params, 3)),
-      ),
-    );
-    grantStacks(player, 'mana', give, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    events.push({
-      t: t + 0.003,
-      type: 'buff',
-      target: 'player',
-      amount: give,
-      label: `${piece.name}: +${give} Mana`,
-      meta: { category: 'buff', stack: 'mana', script: true, handler: 'owl_spirit' },
-    });
+          ? getPName(piece.params, 'fatiguemana', getPName(piece.params, 'mana', getP2(piece.params, 0)))
+          : getPName(piece.params, 'mana', getP2(piece.params, 0)),
+      );
+      if (give > 0) {
+        grantStacks(player, 'mana', give, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        });
+        events.push({
+          t: t + 0.003,
+          type: 'buff',
+          target: 'player',
+          amount: give,
+          label: `${piece.name}: +${give} Mana`,
+          meta: { category: 'buff', stack: 'mana', script: true, handler: 'owl_spirit' },
+        });
+      }
+    }
+    pushActivate(piece, ctx, 'owl_spirit', `Pet: ${piece.name}`);
     return true;
   },
 };
