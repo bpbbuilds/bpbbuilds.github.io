@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "06ccca449300cab63ce4b319abd8b2accca9688cf8a9df5fe4f1cbcf41cc9e84",
+    "dashboardSha256": "82d92e3396e1d49c5a11953c4a5222bc2465c9d19fb0fe269bfa0863e7c70b4c",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 387,
+    "verified_1to1": 389,
     "confirmed_gap": 7,
-    "evidence_pending": 110,
+    "evidence_pending": 108,
     "no_independent_combat": 15
   },
   "byId": {
@@ -246,9 +246,9 @@
     "holy_collar": "verified_1to1",
     "holy_spear": "evidence_pending",
     "hungry_blade": "evidence_pending",
-    "hyper_hedgehog": "evidence_pending",
+    "hyper_hedgehog": "verified_1to1",
     "hypercube": "no_independent_combat",
-    "ice_armor": "evidence_pending",
+    "ice_armor": "verified_1to1",
     "ice_dragon": "evidence_pending",
     "ice_flower": "evidence_pending",
     "inner_power": "evidence_pending",

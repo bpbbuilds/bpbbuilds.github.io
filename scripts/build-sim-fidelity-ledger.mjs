@@ -1636,6 +1636,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  hyper_hedgehog: {
+    focusedRegression: 'scripts/sim-hyper-hedgehog-smoke.mjs',
+    fixture: 'Hyper Hedgehog source inherited low-health trigger, exact Spikes/Block/Empower grants, fixed min-damage effect scaling from current stacks, activation ordering, priority, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  ice_armor: {
+    focusedRegression: 'scripts/sim-ice-armor-smoke.mjs',
+    fixture: 'Ice Armor source start Block/Cold, heat-gated cooldown Heat spend, exact Cold/Block parameters, unconditional activation, and zero-safe values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

@@ -14,12 +14,13 @@ import {
 import { grantStun, healActor, tryUseStamina, gainMaxStaminaTemporary, giveStamina } from '../actor.js';
 import { applyEffectDmgFactor, applyHealEfficiency } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
 import { modifiedParamValue } from '../placement-instance.js';
 import { effectDuration } from '../effect-duration.js';
 import { addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedSpeed } from '../timed-speed.js';
+import { PRIORITY } from '../combat-start-priority.js';
 import { dealEffectDamage, dealHit, loseHealth } from './handlers.js';
 import {
   afterEffectFinished,
@@ -30,6 +31,7 @@ import {
 } from './ports-util.js';
 import { randInt } from '../rng.js';
 import { rollItemChance } from '../chance.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -337,28 +339,98 @@ export const hogusBogusPort = {
 export const hyperHedgehogPort = {
   handlerId: 'hyper_hedgehog',
   family: 'pet_like',
+  onPrepare(piece, ctx) {
+    piece._hyperHedgehogTriggered = false;
+    const healthThreshold = getPName(piece.params, 'healtht', getP3(piece.params, 70)) / 100 - 0.0001;
+    const spikes = Math.trunc(getPName(piece.params, 'spikes', getP4(piece.params, 4)));
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const block = Math.max(0, Math.round(Number(piece.block ?? catalog?.block) || 0));
+    const empower = Math.trunc(getPName(piece.params, 'empower', getP6(piece.params, 3)));
+    ctx.bus?.on?.('character_damaged', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      if (
+        piece._hyperHedgehogTriggered ||
+        payload.hit === false ||
+        payload.hit?.hit === false
+      ) return;
+      const rel = ctx.player.maxHp > 0 ? ctx.player.hp / ctx.player.maxHp : 1;
+      if (rel >= healthThreshold) return;
+      piece._hyperHedgehogTriggered = true;
+      const t = payload.t ?? ctx.t;
+      const actor = eventSideForPiece(piece);
+      if (spikes > 0) {
+        grantStacks(ctx.player, 'spikes', spikes, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        });
+        ctx.events.push({
+          t,
+          type: 'buff',
+          actor,
+          target: actor,
+          amount: spikes,
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          label: `${piece.name}: +${spikes} Spikes`,
+          meta: { category: 'buff', stack: 'spikes', script: true, handler: 'hyper_hedgehog' },
+        });
+      }
+      if (block > 0) {
+        gainStacks(ctx.player, 'block', block);
+        ctx.events.push({
+          t,
+          type: 'buff',
+          actor,
+          target: actor,
+          amount: block,
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          label: `${piece.name}: +${block} Block`,
+          meta: { category: 'buff', stack: 'block', script: true, handler: 'hyper_hedgehog' },
+        });
+      }
+      if (empower > 0) {
+        grantStacks(ctx.player, 'empower', empower, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        });
+        ctx.events.push({
+          t,
+          type: 'buff',
+          actor,
+          target: actor,
+          amount: empower,
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          label: `${piece.name}: +${empower} Empower`,
+          meta: { category: 'buff', stack: 'empower', script: true, handler: 'hyper_hedgehog' },
+        });
+      }
+      ctx.events.push({
+        t,
+        type: 'info',
+        actor,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: mini activate`,
+        meta: { category: 'system', script: true, handler: 'hyper_hedgehog', miniActivate: true },
+      });
+    }, PRIORITY.High + 3);
+  },
   onCooldownEffect(piece, ctx) {
+    const base = Number.isFinite(Number(piece.damageMin))
+      ? Number(piece.damageMin)
+      : Number(ctx.itemsById.get(piece.itemId)?.damageMin) || 0;
+    const perSpikes = getPName(piece.params, 'dam_spikes', getP2(piece.params, 0.5));
+    const perEmpower = getPName(piece.params, 'dam_empower', getP5(piece.params, 1));
+    const raw = Math.max(
+      0,
+      base +
+        (Number(ctx.player.stacks.spikes) || 0) * perSpikes +
+        (Number(ctx.player.stacks.empower) || 0) * perEmpower,
+    );
+    dealEffectDamage(piece, ctx, raw);
     pushActivate(piece, ctx, 'hyper_hedgehog', `Pet: ${piece.name}`);
-    const rel = ctx.player.maxHp > 0 ? ctx.player.hp / ctx.player.maxHp : 1;
-    if (rel < 0.5) {
-      grantStacks(ctx.player, 'spikes', Math.max(1, Math.round(getP3(piece.params, 2))), {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      gainStacks(ctx.player, 'block', Math.max(1, Math.round(getPName(piece.params, 'block', 4))));
-      grantStacks(ctx.player, 'empower', 1, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-    }
-    const spikes = ctx.player.stacks.spikes || 0;
-    const emp = ctx.player.stacks.empower || 0;
-    const perS = Number(getPName(piece.params, 'dam_spikes', getP1(piece.params, 1))) || 1;
-    const perE = Number(getPName(piece.params, 'dam_empower', getP2(piece.params, 1))) || 1;
-    const raw =
-      randInt(piece.damageMin || 3, piece.damageMax || 6, ctx.rng) +
-      Math.round(spikes * perS + emp * perE);
-    dealHit(piece, ctx, raw);
     return true;
   },
 };

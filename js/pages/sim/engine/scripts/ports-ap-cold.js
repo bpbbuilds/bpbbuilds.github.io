@@ -53,16 +53,29 @@ const iceArmorPort = {
   handlerId: 'ice_armor',
   family: 'unique',
   onCombatStart(piece, ctx) {
-    gainStacks(ctx.player, 'block', Number(ctx.itemsById.get(piece.itemId)?.block) || 100);
-    grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getP1(piece.params, 4))), origin(piece));
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const block = Math.max(0, Math.round(Number(piece.block ?? catalog?.block) || 0));
+    const cold = Math.max(0, Math.round(getP1(piece.params, 4)));
+    gainStacks(ctx.player, 'block', block);
+    grantStacks(ctx.dummy, 'cold', cold, {
+      ...origin(piece),
+      rng: ctx.rng,
+      opponent: ctx.player,
+    });
     pushActivate(piece, ctx, 'ice_armor', `Armor: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
-    const need = Math.max(1, Math.round(getP2(piece.params, 1)));
+    const need = Math.max(0, Math.round(getP2(piece.params, 1)));
     if (getStackAmount(ctx.player, 'heat') >= need) {
       spendStacks(ctx.player, 'heat', need, origin(piece));
-      grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getP3(piece.params, 2))), origin(piece));
-      gainStacks(ctx.player, 'block', Math.max(1, Math.round(getP4(piece.params, 10))));
+      const cold = Math.max(0, Math.round(getP3(piece.params, 2)));
+      const block = Math.max(0, Math.round(getP4(piece.params, 10)));
+      grantStacks(ctx.dummy, 'cold', cold, {
+        ...origin(piece),
+        rng: ctx.rng,
+        opponent: ctx.player,
+      });
+      gainStacks(ctx.player, 'block', block);
     }
     pushActivate(piece, ctx, 'ice_armor', `Armor: ${piece.name}`);
     return true;
