@@ -10398,9 +10398,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-ice-dragon-smoke.mjs",
+        "fixture": "Ice Dragon source prepare-time Cold listener, early successful-hit Cold, one-shot threshold Block/effect-damage reduction, exact live Block, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -10434,9 +10440,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-ice-flower-smoke.mjs",
+        "fixture": "Ice Flower source primary weapon/secondary shield-or-activatable-armor filtering, miss-inclusive attack listener, chance/chance2 rolls, exact Mana/Cold/own-Block grants, mini activation, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

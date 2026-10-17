@@ -1650,6 +1650,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  ice_dragon: {
+    focusedRegression: 'scripts/sim-ice-dragon-smoke.mjs',
+    fixture: 'Ice Dragon source prepare-time Cold listener, early successful-hit Cold, one-shot threshold Block/effect-damage reduction, exact live Block, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  ice_flower: {
+    focusedRegression: 'scripts/sim-ice-flower-smoke.mjs',
+    fixture: 'Ice Flower source primary weapon/secondary shield-or-activatable-armor filtering, miss-inclusive attack listener, chance/chance2 rolls, exact Mana/Cold/own-Block grants, mini activation, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

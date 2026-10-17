@@ -184,16 +184,20 @@ export const forestDragonPort = {
 export const iceDragonPort = {
   handlerId: 'ice_dragon',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._iceBlock = false;
-    const th = Math.max(1, Math.round(getPName(piece.params, 'coldt', getP2(piece.params, 8))));
-    const damF = Math.abs(getPName(piece.params, 'damfactor', 10) / 100);
+    const th = Math.trunc(getPName(piece.params, 'coldt', getP2(piece.params, 8)));
+    const damF = getPName(piece.params, 'damfactor', getP3(piece.params, 10)) / 100;
     onBuffChanged(ctx.dummy, (ch) => {
       if (ch.stack !== 'cold' || piece._iceBlock) return;
       if ((ctx.dummy.stacks.cold || 0) < th) return;
       piece._iceBlock = true;
-      const block = Math.max(1, Math.round(piece.blockGrant || getP3(piece.params, 10)));
-      gainStacks(ctx.player, 'block', block);
+      const catalog = ctx.itemsById.get(piece.itemId);
+      const block = Math.max(0, Math.round(Number(piece.blockGrant ?? catalog?.block) || 0));
+      gainStacks(ctx.player, 'block', block, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
       if (damF) {
         applyEffectDmgFactor(ctx.dummy, -damF, ctx, piece);
       }
@@ -202,6 +206,8 @@ export const iceDragonPort = {
         type: 'buff',
         target: 'player',
         amount: block,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
         label: `${piece.name}: +${block} Block`,
         meta: { category: 'buff', stack: 'block', script: true, handler: 'ice_dragon' },
       });
@@ -210,9 +216,9 @@ export const iceDragonPort = {
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'ice_dragon');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
-    const cold = Math.max(1, Math.round(getPName(piece.params, 'cold', getP1(piece.params, 2))));
+    const cold = Math.trunc(getPName(piece.params, 'cold', getP1(piece.params, 2)));
     grantStacks(ctx.dummy, 'cold', cold, {
       originKey: piece.placementKey,
       originId: piece.itemId,

@@ -11,7 +11,7 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { rollItemChance } from '../chance.js';
+import { rollItemChance, rollItemChance2 } from '../chance.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { modifiedParamValue } from '../placement-instance.js';
 import { addAccuracy, addBonusDamageFactor, addSpeed, multiplyStaminaCost } from '../piece-stats.js';
@@ -20,6 +20,7 @@ import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { rollPercent } from '../rng.js';
 import { isBagLike } from '../item-kind.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -492,24 +493,84 @@ const girlPowerPort = {
 const iceFlowerPort = {
   handlerId: 'ice_flower',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const need = Math.max(1, Math.round(getPName(piece.params, 'manat', 3)));
-    const cold = Math.max(1, Math.round(getPName(piece.params, 'cold', 1)));
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
-      if (!payload?.hit?.hit) return;
-      if (!linked(ctx, piece).some((o) => o === payload.piece && o.kind === 'weapon')) return;
+  onPrepare(piece, ctx) {
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    const targetFor = (key) => (ctx.pieces || []).find((candidate) => candidate.placementKey === key);
+    piece._iceFlowerPrimaryKeys = new Set(
+      links
+        .filter((link) => link.color === 'primary')
+        .map((link) => targetFor(link.key))
+        .filter((target) => itemHasType(ctx.itemsById.get(target?.itemId), 'weapon'))
+        .map((target) => target.placementKey),
+    );
+    piece._iceFlowerSecondaryKeys = new Set(
+      links
+        .filter((link) => link.color === 'secondary')
+        .map((link) => targetFor(link.key))
+        .filter((target) => {
+          const item = ctx.itemsById.get(target?.itemId);
+          if (itemHasType(item, 'shield')) return true;
+          if (!itemHasType(item, 'armor')) return false;
+          if (target?.canActivate === false || item?.canActivate === false) return false;
+          return Boolean(
+            target?.canActivate ||
+            (Number(target?.cooldown) > 0 && Number(target.cooldown) < 500) ||
+            item?.canActivate === true,
+          );
+        })
+        .map((target) => target.placementKey),
+    );
+    const need = Math.trunc(getPName(piece.params, 'manat', getP1(piece.params, 3)));
+    const cold = Math.trunc(getPName(piece.params, 'cold', getP2(piece.params, 1)));
+    ctx.bus?.on?.('item_attacked', (payload) => {
+      if (!piece._iceFlowerPrimaryKeys?.has(payload?.piece?.placementKey)) return;
       if (getStackAmount(ctx.player, 'mana') < need) return;
-      if (!rollPercent(chanceOf(piece, ctx), ctx.rng)) return;
+      if (!rollItemChance(piece, ctx.rng)) return;
       useMana(ctx.player, need, { originKey: piece.placementKey, originId: piece.itemId });
-      grantStacks(ctx.dummy, 'cold', cold, { originKey: piece.placementKey, originId: piece.itemId });
+      grantStacks(ctx.dummy, 'cold', cold, {
+        rng: ctx.rng,
+        opponent: ctx.player,
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      ctx.events.push({
+        t: payload?.t ?? ctx.t,
+        type: 'info',
+        actor: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: mini activate`,
+        meta: { category: 'system', script: true, handler: 'ice_flower', miniActivate: true },
+      });
     });
   },
   onPeerActivated(listener, activated, ctx) {
+    if (!listener._iceFlowerSecondaryKeys?.has(activated?.placementKey)) return;
     const item = ctx.itemsById.get(activated.itemId);
     if (!itemHasType(item, 'shield') && !itemHasType(item, 'armor')) return;
-    if (!rollPercent(chanceOf(listener, ctx, 15), ctx.rng)) return;
-    grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getPName(listener.params, 'mana', 1))), {});
-    gainStacks(ctx.player, 'block', Math.max(1, Math.round(activated.blockGrant || 2)));
+    if (!rollItemChance2(listener, ctx.rng)) return;
+    const mana = Math.trunc(getPName(listener.params, 'mana', getP3(listener.params, 1)));
+    const block = Math.max(
+      0,
+      Math.round(Number(listener.blockGrant ?? ctx.itemsById.get(listener.itemId)?.block) || 0),
+    );
+    grantStacks(ctx.player, 'mana', mana, {
+      originKey: listener.placementKey,
+      originId: listener.itemId,
+    });
+    gainStacks(ctx.player, 'block', block, {
+      originKey: listener.placementKey,
+      originId: listener.itemId,
+    });
+    ctx.events.push({
+      t: ctx.t,
+      type: 'info',
+      actor: eventSideForPiece(listener),
+      itemId: listener.itemId,
+      placementKey: listener.placementKey,
+      label: `${listener.name}: mini activate`,
+      meta: { category: 'system', script: true, handler: 'ice_flower', miniActivate: true },
+    });
   },
 };
 
