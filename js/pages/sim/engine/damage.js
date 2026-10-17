@@ -43,6 +43,7 @@ export function makeDamageSpectral(res) {
  *   spikeDamage: number,
  *   vampHeal: number,
  *   attackEffectCount?: number,
+ *   missed?: boolean,
  *   reductionSources?: { itemId?: string, placementKey?: string, amount: number }[],
  * }} DamageResult
  */
@@ -66,6 +67,7 @@ export function makeDamageSpectral(res) {
  *   ignoreBlock?: boolean,
  *   isAttack?: boolean,
  *   canTriggerItems?: boolean,
+ *   onDealtDamage?: (res: DamageResult) => void,
  *   isMelee?: boolean,
  *   isPoison?: boolean,
  *   isSpikes?: boolean,
@@ -108,6 +110,20 @@ export function takeDamage(defender, attacker, src) {
     });
   };
 
+  const emitDealtDamage = () => {
+    if (
+      src.isAttack === false ||
+      !src.originPiece ||
+      src.canTriggerItems === false ||
+      typeof src.onDealtDamage !== 'function'
+    ) {
+      return;
+    }
+    res.missed = !res.hit;
+    const count = res.attackEffectCount || 1;
+    for (let i = 0; i < count; i += 1) src.onDealtDamage(res);
+  };
+
   if (defender.dead) {
     res.hit = false;
     return res;
@@ -145,6 +161,9 @@ export function takeDamage(defender, attacker, src) {
 
   if (!res.hit) {
     emitCharacterDamaged();
+    // Character.takeDamage calls the weapon's onDealtDamage hook after the
+    // character_damaged signal, including misses, but before returning.
+    emitDealtDamage();
     return res;
   }
 
@@ -356,6 +375,10 @@ export function takeDamage(defender, attacker, src) {
 
   if (defender.hp <= 0) {
     emitCharacterDamaged();
+    // The source runs onDealtDamage before death() and before applySpikes().
+    // Keep this callback before either boundary so lethal hits can still
+    // trigger item effects in the same phase as the game.
+    emitDealtDamage();
     // Character listeners may reincarnate during character_damaged before
     // Character.takeDamage() reaches its final death() check.
     if (defender.hp <= 0) {
@@ -363,6 +386,7 @@ export function takeDamage(defender, attacker, src) {
     }
   } else {
     emitCharacterDamaged();
+    emitDealtDamage();
   }
 
   // Spikes reflect (melee limit 1.0 → full spikes stacks, capped by damage * limit)

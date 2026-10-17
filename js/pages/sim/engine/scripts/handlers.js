@@ -131,6 +131,7 @@ export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
   },
   onPreDealDamageLate: (res) => ctx.notifyPreDealDamageLate?.(piece, ctx, res),
   accuracy,
+    canTriggerItems,
     canMiss: opts.canMiss !== false && !opts.ignoreBlock,
     canCrit: isAttack,
     critChance,
@@ -142,6 +143,17 @@ export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
     // Game DamageSource: Effect lacks CanTriggerVampirism; weapons have it.
     canTriggerVampirism:
       opts.canTriggerVampirism != null ? !!opts.canTriggerVampirism : isAttack,
+    onDealtDamage: (damageRes) => {
+      if (!canTriggerItems || typeof ctx.notifyDealtDamage !== 'function') return;
+      ctx.notifyDealtDamage(piece, ctx, {
+        hit: damageRes.hit,
+        healthDamage: damageRes.healthDamage,
+        damage: damageRes.damage,
+        raw: damageRes.raw,
+        critical: damageRes.critical,
+        missed: !damageRes.hit,
+      });
+    },
     nowT: t,
     events,
     bus: ctx.bus,
@@ -162,10 +174,6 @@ export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
       meta: { category: 'damage', script: true, isAttack: true },
     });
     const missResult = { hit: false, healthDamage: 0, raw: 0, critical: false, missed: true };
-    const n = res.attackEffectCount || 1;
-    if (canTriggerItems && typeof ctx.notifyDealtDamage === 'function') {
-      for (let i = 0; i < n; i += 1) ctx.notifyDealtDamage(piece, ctx, missResult);
-    }
     if (canTriggerItems) {
       ctx.bus?.emit?.('piece_dealt_damage', { piece, hit: missResult, t });
       ctx.bus?.emit?.('item_attacked', { piece, hit: missResult, t });
@@ -195,10 +203,6 @@ export function dealHit(piece, ctx, raw, extraLabel, opts = {}) {
     critical: res.critical,
     missed: false,
   };
-  const n = res.attackEffectCount || 1;
-  if (canTriggerItems && typeof ctx.notifyDealtDamage === 'function') {
-    for (let i = 0; i < n; i += 1) ctx.notifyDealtDamage(piece, ctx, hitResult);
-  }
   if (canTriggerItems) {
     ctx.bus?.emit?.('piece_dealt_damage', {
       piece,

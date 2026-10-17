@@ -17,6 +17,7 @@ assert.match(source, /EventBus\.emitSignal\(self, "pre_take_damage"[\s\S]*damage
 assert.match(source, /EventBus\.emitSignal\(self, "pre_take_damage_late"[\s\S]*damageRes\.healthDamage = damageRes\.damage/);
 assert.match(source, /if damageSource\.canBeBlocked\(\):[\s\S]*loseBlock\(curBlock\)[\s\S]*curHealth -= damageRes\.healthDamage/);
 assert.match(source, /EventBus\.emitEvent\(self, "character_attacked"[\s\S]*EventBus\.emitSignal\(self, "character_damaged"[\s\S]*if curHealth <= 0:[\s\S]*death\(\)/);
+assert.match(source, /EventBus\.emitSignal\(self, "character_damaged"[\s\S]*item\.onDealtDamage\(damageRes\)[\s\S]*if curHealth <= 0:[\s\S]*applySpikes\(damageRes\)/);
 assert.match(shieldSource, /onCharacterAttacked[\s\S]*afterBlock\(\)[\s\S]*EventBus\.emitSignal\(self, "blocked"/);
 assert.match(source, /applySpikes\(damageRes\)[\s\S]*return damageRes/);
 
@@ -86,13 +87,16 @@ const missBus = createCombatBus();
 const missAttacker = createActor('player');
 const missDefender = createActor('dummy');
 missDefender._combatBus = missBus;
+const missDealtResults = [];
 missBus.on('character_damaged', (payload) => missedSignals.push(payload));
 const missed = dealDamage(missAttacker, missDefender, {
   amount: 10,
+  originPiece: { itemId: 'miss-test' },
   accuracy: 0,
   canMiss: true,
   canCrit: false,
   isAttack: true,
+  onDealtDamage: (result) => missDealtResults.push(result),
   nowT: 2,
   bus: missBus,
   rng: () => 0,
@@ -100,6 +104,8 @@ const missed = dealDamage(missAttacker, missDefender, {
 assert.equal(missed.hit, false, 'zero accuracy produces a miss');
 assert.equal(missedSignals.length, 1, 'misses still emit the source character_damaged signal');
 assert.equal(missedSignals[0].hit, false, 'miss signal preserves the failed hit result');
+assert.equal(missDealtResults.length, 1, 'weapon onDealtDamage runs once for a miss');
+assert.equal(missDealtResults[0].missed, true, 'miss callback receives the failed-hit marker');
 assert.equal(missDefender.hp, missDefender.maxHp, 'misses do not change health');
 
 const invulnerable = createActor('dummy', { maxHp: 100 });
@@ -207,18 +213,51 @@ const lethalAttacker = createActor('player');
 const lethalDefender = createActor('dummy', { maxHp: 5 });
 lethalDefender._combatBus = lethalBus;
 const lethalOrder = [];
+let lethalTargetDeadAtCallback = null;
+let attackerHpAtCallback = null;
 lethalBus.on('character_damaged', () => lethalOrder.push('damaged'));
 lethalBus.on('character_died', () => lethalOrder.push('died'));
-takeDamage(lethalDefender, lethalAttacker, {
+lethalDefender.stacks.spikes = 5;
+const lethalResult = takeDamage(lethalDefender, lethalAttacker, {
   amount: 5,
   canMiss: false,
   canCrit: false,
   canBlock: false,
-  isAttack: false,
+  isAttack: true,
+  isMelee: true,
+  originPiece: { itemId: 'lethal-test' },
+  canTriggerItems: true,
+  onDealtDamage: () => {
+    lethalOrder.push('dealt');
+    lethalTargetDeadAtCallback = lethalDefender.dead;
+    attackerHpAtCallback = lethalAttacker.hp;
+  },
   nowT: 6,
   bus: lethalBus,
   rng: () => 0,
 });
-assert.deepEqual(lethalOrder, ['damaged', 'died'], 'damage signal precedes source death boundary');
+assert.deepEqual(
+  lethalOrder,
+  ['damaged', 'dealt', 'died'],
+  'onDealtDamage runs after character_damaged but before source death',
+);
+assert.equal(lethalTargetDeadAtCallback, false, 'lethal onDealtDamage sees the target before death()');
+assert.equal(attackerHpAtCallback, lethalAttacker.maxHp, 'lethal onDealtDamage runs before Spikes');
+assert.equal(lethalResult.spikeDamage, 5, 'the same lethal hit still reflects Spikes after onDealtDamage');
+assert.equal(lethalAttacker.hp, lethalAttacker.maxHp - 5, 'Spikes resolves after onDealtDamage');
+
+let suppressedCallbacks = 0;
+takeDamage(createActor('dummy'), createActor('player'), {
+  amount: 1,
+  canMiss: false,
+  canCrit: false,
+  canBlock: false,
+  isAttack: true,
+  originPiece: { itemId: 'suppressed-test' },
+  canTriggerItems: false,
+  onDealtDamage: () => { suppressedCallbacks += 1; },
+  rng: () => 0,
+});
+assert.equal(suppressedCallbacks, 0, 'attacks without CanTriggerItems do not notify item callbacks');
 
 console.log('OK Character damage phases, miss/invulnerability signals, Block, Spikes, and vampirism');

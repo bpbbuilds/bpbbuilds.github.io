@@ -13,6 +13,17 @@ import { pushActivate } from './scripts/ports-util.js';
 import { logWeaponHitEvents } from './log-chain.js';
 import { eventSideForPiece } from './vs-board.js';
 
+function toDealtDamageResult(res) {
+  return {
+    hit: res.hit,
+    healthDamage: res.healthDamage,
+    damage: res.damage,
+    raw: res.raw,
+    critical: res.critical,
+    missed: !res.hit,
+  };
+}
+
 /**
  * @param {import('./pieces.js').CombatPiece} piece
  * @param {{
@@ -234,6 +245,11 @@ function activatePieceBody(piece, ctx) {
       originPiece: piece,
       onPreDealDamageEarly: (res) => ctx.notifyPreDealDamageEarly?.(piece, ctx, res),
       onPreDealDamageLate: (res) => ctx.notifyPreDealDamageLate?.(piece, ctx, res),
+      canTriggerItems: true,
+      onDealtDamage: (damageRes) => {
+        if (typeof ctx.notifyDealtDamage !== 'function') return;
+        ctx.notifyDealtDamage(piece, ctx, toDealtDamageResult(damageRes));
+      },
       accuracy,
       canMiss: true,
       // All attack damage sources carry CanCrit; actor crit tokens can force
@@ -269,12 +285,6 @@ function activatePieceBody(piece, ctx) {
         critical: false,
         missed: true,
       };
-      const n = res.attackEffectCount || 1;
-      if (typeof ctx.notifyDealtDamage === 'function') {
-        for (let i = 0; i < n; i += 1) {
-          ctx.notifyDealtDamage(piece, ctx, missResult);
-        }
-      }
       ctx.bus?.emit?.('item_attacked', { piece, hit: missResult, t });
     } else {
       applyOnHitStacks(piece, dummy, player, events, t + 0.005, rng);
@@ -291,20 +301,6 @@ function activatePieceBody(piece, ctx) {
         formatHitLabel,
       });
 
-      if (typeof ctx.notifyDealtDamage === 'function') {
-        const n = res.attackEffectCount || 1;
-        const hitResult = {
-          hit: true,
-          healthDamage: res.healthDamage,
-          damage: res.damage,
-          raw: res.raw,
-          critical: res.critical,
-          missed: false,
-        };
-        for (let i = 0; i < n; i += 1) {
-          ctx.notifyDealtDamage(piece, ctx, hitResult);
-        }
-      }
       ctx.bus?.emit?.('piece_dealt_damage', {
         piece,
         hit: {
