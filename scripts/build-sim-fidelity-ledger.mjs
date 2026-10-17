@@ -1265,6 +1265,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  paradise_birb: {
+    focusedRegression: 'scripts/sim-paradise-birb-smoke.mjs',
+    fixture: 'Paradise Birb source cooldown pulse, exact affected cooldown/buff/heal target filtering, per-item speed/buff-amplification/heal-lifesteal parameter changes, max-activation retirement, and zero-safe values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  potion_belt: {
+    focusedRegression: 'scripts/sim-potion-belt-smoke.mjs',
+    fixture: 'Potion Belt source inside-bag Potion listeners, first/fourth consumption rules, exact cleanse amount, Bagtacular bonus buffs, source-style activation, and outside-potion exclusion.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

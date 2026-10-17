@@ -69,37 +69,56 @@ export const vineweaveBasketPort = {
   },
 };
 
-/** PotionBelt.gd — 1st emptied potion: random buff; 4th: cleanse. */
+/** PotionBelt.gd — linked potions: first buff, fourth cleanse, Bagtacular bonus. */
 /** @type {ScriptHandler} */
 export const potionBeltPort = {
   handlerId: 'potion_belt',
   family: 'unique',
   onPrepare(piece, ctx) {
     piece._beltN = 0;
-    ctx.bus?.on?.('potion_emptied', () => {
+    const byKey = new Map((ctx.pieces || []).map((other) => [other.placementKey, other]));
+    piece._beltPotionKeys = new Set(
+      getItemsInside(ctx.graph, piece.placementKey).filter((key) => {
+        const other = byKey.get(key);
+        return itemHasType(ctx.itemsById.get(other?.itemId), 'potion');
+      }),
+    );
+    ctx.bus?.on?.('potion_emptied', (payload) => {
+      const emptiedKey = payload?.piece?.placementKey;
+      if (!emptiedKey || !piece._beltPotionKeys?.has(emptiedKey)) return;
       piece._beltN = (Number(piece._beltN) || 0) + 1;
       let buffs = 0;
+      let active = false;
       if (piece._beltN === 1) buffs = 1;
+      if (piece._beltN === 1) active = true;
       if (piece._beltN === 4) {
         cleanseRandomDebuffs(
           ctx.player,
-          Math.max(1, Math.round(getPName(piece.params, 'p1', 1))),
+          Math.trunc(getPName(piece.params, 'cleanse', getPName(piece.params, 'p1', 0))),
           ctx.rng,
         );
+        active = true;
       }
       if (hasBagtacular(ctx)) {
         const bag = ctx.pieces?.find((p) => p.itemId === 'bagtacular' && p.alive !== false);
         const catalog = ctx.itemsById.get('bagtacular');
-        buffs += Math.max(
-          0,
-          Math.round(getPName(bag?.params || catalog?.params, 'buffs', 2)),
-        );
+        buffs += Math.trunc(getPName(bag?.params || catalog?.params, 'buffs', getP3(catalog?.params, 0)));
+        active = true;
       }
       if (buffs) {
         giveRandomBuffs(ctx.player, buffs, ctx.rng, {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
+      }
+      if (active) {
+        pushActivate(
+          piece,
+          { ...ctx, t: Number(payload?.t) || ctx.t },
+          'potion_belt',
+          `Bag: ${piece.name}`,
+          { force: true },
+        );
       }
     });
   },

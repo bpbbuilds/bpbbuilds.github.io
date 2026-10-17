@@ -17,7 +17,7 @@ import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { rollPercent } from '../rng.js';
-import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
+import { afterEffectFinished, itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { linkedWith } from './ports-ai-c-util.js';
 import { eventSideForPiece } from '../vs-board.js';
 
@@ -393,41 +393,63 @@ export const mercuryElementalPort = {
   },
 };
 
-/** ParadiseBirb.gd — speed + buff/heal amp pulses; retire at max. */
+/**
+ * ParadiseBirb.gd's Item.changeHealAmp modifies the affected item's `heal`
+ * and `lifesteal` parameters, rather than changing the character's global
+ * healing efficiency. Keep the multiplier per placement so multiple sources
+ * compose the same way as Item.modifyParam().
+ */
+function changeParadiseHealAmp(item, amount) {
+  if (!item || !amount) return;
+  item.paramMult = { ...(item.paramMult || {}) };
+  for (const key of ['heal', 'lifesteal']) {
+    const current = Number(item.paramMult[key]);
+    item.paramMult[key] = (Number.isFinite(current) && current !== 0 ? current : 1) + amount;
+  }
+}
+
+/** ParadiseBirb.gd — affected cooldown/buff/heal items gain three item stats. */
 /** @type {ScriptHandler} */
 export const paradiseBirbPort = {
   handlerId: 'paradise_birb',
   family: 'pet_like',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._birbActs = 0;
   },
   onCooldownEffect(piece, ctx) {
-    const { t, events } = ctx;
-    pushActivate(piece, ctx, 'paradise_birb', `Pet: ${piece.name}`);
-    const maxActs = Math.max(1, Math.round(getPName(piece.params, 'max', getP2(piece.params, 4))));
-    const speedBonus = getPName(piece.params, 'speed', getP1(piece.params, 10)) / 100;
-    const healAmp = getPName(piece.params, 'healamp', 5) / 100;
-    const amp = Math.max(0, Number(piece.chance) || getPName(piece.params, 'chance', 10));
+    const { t, events, graph, itemsById, canAffect, pieces } = ctx;
+    const maxActs = Math.trunc(getPName(piece.params, 'max', getP2(piece.params, 0)));
     const acts = Number(piece._birbActs) || 0;
-    if (acts < maxActs) {
-      for (const { other } of linkedWith(ctx, piece)) {
-        addSpeed(other, speedBonus);
-        other.buffAmpChance = (Number(other.buffAmpChance) || 0) + amp;
-      }
-      // Gap: per-item healAmp not wired — fold onto player heal amp (actor._healAmp)
-      if (healAmp) applyHealEfficiency(ctx.player, healAmp, ctx, piece);
-      piece._birbActs = acts + 1;
-      if (piece._birbActs >= maxActs) {
-        piece.alive = false;
-        piece.charges = 0;
-      }
+    if (acts >= maxActs || maxActs <= 0) return true;
+
+    const speedBonus = getPName(piece.params, 'speed', getP1(piece.params, 0)) / 100;
+    const healAmp = getPName(piece.params, 'healamp', getP3(piece.params, 0)) / 100;
+    const amp = Number.isFinite(Number(piece.chance))
+      ? Number(piece.chance)
+      : getPName(piece.params, 'chance', 0);
+    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
+    const linked = (pieces || []).filter((other) =>
+      links.some((link) => link.key === other.placementKey),
+    );
+    for (const other of linked) {
+      if (speedBonus) addSpeed(other, speedBonus);
+      if (amp) other.buffAmpChance = (Number(other.buffAmpChance) || 0) + amp;
+      if (healAmp) changeParadiseHealAmp(other, healAmp);
     }
+    piece._birbActs = acts + 1;
     events.push({
       t: t + 0.004,
       type: 'info',
-      label: `${piece.name}: buff/heal amp pulse`,
+      label: `${piece.name}: affected item pulse`,
       meta: { category: 'adjacency', script: true, handler: 'paradise_birb' },
     });
+    if (piece._birbActs >= maxActs) {
+      afterEffectFinished(piece, ctx, 'paradise_birb', {
+        label: `Pet: ${piece.name}`,
+      });
+    } else {
+      pushActivate(piece, ctx, 'paradise_birb', `Pet: ${piece.name}`);
+    }
     return true;
   },
 };

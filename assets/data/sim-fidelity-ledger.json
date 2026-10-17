@@ -13443,9 +13443,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-paradise-birb-smoke.mjs",
+        "fixture": "Paradise Birb source cooldown pulse, exact affected cooldown/buff/heal target filtering, per-item speed/buff-amplification/heal-lifesteal parameter changes, max-activation retirement, and zero-safe values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -14764,9 +14770,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-potion-belt-smoke.mjs",
+        "fixture": "Potion Belt source inside-bag Potion listeners, first/fourth consumption rules, exact cleanse amount, Bagtacular bonus buffs, source-style activation, and outside-potion exclusion.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

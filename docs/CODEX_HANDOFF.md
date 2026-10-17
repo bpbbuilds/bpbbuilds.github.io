@@ -6748,3 +6748,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 302 - in progress
 
 - Codex owns the next retained Paradise Birb and Potion Belt fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-paradise-birb-smoke.mjs`, `scripts/sim-potion-belt-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 302 - complete
+
+- Codex repaired Paradise Birb to mirror source cooldown pulses, exact affected cooldown/buff/heal target filtering, per-item speed and buff-amplification changes, per-item heal/lifesteal parameter multipliers, max-activation retirement through the shared consume path, and explicit zero values. Potion Belt now mirrors source inside-bag Potion listeners, first/fourth consumption rules, exact cleanse amounts, Bagtacular bonus buffs, source-style activation, and outside-Potion exclusion.
+- Added `scripts/sim-paradise-birb-smoke.mjs` and `scripts/sim-potion-belt-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 463 / 519 verified item rows. Focused pair regressions, prior parity regressions, verified coverage, coverage honesty, changed-module syntax, and generated artifact freshness checks pass. No legal, authentication, database, storage, or security behavior changed. The generated summary reports 463 verified, 36 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows.
+
+### 2026-10-17 Simulator item parity continuation 303 - in progress
+
+- Codex owns the next retained Rainbow Goobert Pyromancer and Ranger Bag fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-rainbow-goobert-pyromancer-smoke.mjs`, `scripts/sim-ranger-bag-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

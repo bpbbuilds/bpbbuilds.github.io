@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "8d926aca1c391ddbfceea45732fa251b52de617620a419a890570e6009dd4f0b",
+    "dashboardSha256": "0ab467614d59ce50579448f1747b5a554eb79b97812dffb811a02edf5321e542",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 461,
+    "verified_1to1": 463,
     "confirmed_gap": 7,
-    "evidence_pending": 36,
+    "evidence_pending": 34,
     "no_independent_combat": 15
   },
   "byId": {
@@ -320,7 +320,7 @@
     "owl_spirit": "verified_1to1",
     "pan": "verified_1to1",
     "pandamonium": "verified_1to1",
-    "paradise_birb": "evidence_pending",
+    "paradise_birb": "verified_1to1",
     "perfect_amethyst": "verified_1to1",
     "perfect_emerald": "verified_1to1",
     "perfect_ruby": "verified_1to1",
@@ -350,7 +350,7 @@
     "pop": "verified_1to1",
     "portable_altar": "verified_1to1",
     "pot": "verified_1to1",
-    "potion_belt": "evidence_pending",
+    "potion_belt": "verified_1to1",
     "power_of_the_moon": "verified_1to1",
     "power_puppy": "verified_1to1",
     "present": "verified_1to1",
