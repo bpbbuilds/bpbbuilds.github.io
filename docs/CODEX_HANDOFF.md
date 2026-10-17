@@ -6336,3 +6336,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 259 - in progress
 
 - Codex owns the next retained Heart Container and Heart of Darkness fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-heart-container-smoke.mjs`, `scripts/sim-heart-of-darkness-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 259 - complete
+
+- Codex repaired Heart Container to mirror source preparation-time regeneration listening, exact threshold conversion, regeneration-before-activation ordering, max-health/Empower/healing-efficiency effects, and explicit zero parameters. Heart of Darkness now mirrors source preparation-time Dark speed and regeneration listener, regeneration-priority buff stealing, threshold conversion, opponent healing reduction with stat logging, steal-before-activation ordering, and explicit zero parameters. The obsolete duplicate Heart of Darkness threshold port was removed so the canonical AI-D handler is the only registration.
+- Added `scripts/sim-heart-container-smoke.mjs` and `scripts/sim-heart-of-darkness-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 377 / 519 verified item rows. Focused pair tests pass; generated summary reports 377 verified, 119 evidence-pending, 8 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+- The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Heart of the Cards and Heart Shield; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 260 - in progress
+
+- Codex owns the next retained Heart of the Cards and Heart Shield fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-heart-of-the-cards-smoke.mjs`, `scripts/sim-heart-shield-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

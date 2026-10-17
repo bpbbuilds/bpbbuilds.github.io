@@ -12,7 +12,7 @@ import {
   stealStack,
   useRegeneration,
 } from '../buff-economy.js';
-import { applyHealEfficiency } from '../actor-stats.js';
+import { applyHealEfficiency, applyUnhealing } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
 import { emitPathCharge } from '../charge-delivery.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
@@ -20,6 +20,7 @@ import { addSpeed } from '../piece-stats.js';
 import { rollPercent } from '../rng.js';
 import { getStackAmount } from '../stacks.js';
 import { grantTimedSpeed } from '../timed-speed.js';
+import { giveTempMaxHp } from './ports-ap-start.js';
 import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
 
 /**
@@ -192,13 +193,13 @@ export const amuletOfLifePort = {
 export const heartOfDarknessPort = {
   handlerId: 'heart_of_darkness',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const { graph, itemsById, canAffect, player, events, t } = ctx;
+  onPrepare(piece, ctx) {
+    const { graph, itemsById, canAffect, player } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     const speed = getPName(piece.params, 'darkspeed', getP1(piece.params, 20)) / 100;
     if (links.length && speed) addSpeed(piece, links.length * speed);
     piece._hodActivated = false;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'regent', getP2(piece.params, 7))));
+    const need = Math.trunc(getPName(piece.params, 'regent', getP2(piece.params, 7)));
     onBuffChanged(player, (ch) => {
       if (piece._hodActivated) return;
       if (ch.stack !== 'regeneration' || !(ch.amount > 0)) return;
@@ -213,38 +214,23 @@ export const heartOfDarknessPort = {
         piece._hodActivated = false;
         return;
       }
-      const hp = Math.max(
-        1,
-        Math.round(getPName(piece.params, 'maxhealth', getP3(piece.params, 100))),
-      );
-      player.maxHp += hp;
-      player.hp = Math.min(player.maxHp, player.hp + hp);
-      const emp = Math.max(1, Math.round(getPName(piece.params, 'empower', 4)));
+      const reactionCtx = { ...ctx, t: Number(player._simT) || ctx.t };
+      const hp = Math.trunc(getPName(piece.params, 'maxhealth', getP3(piece.params, 100)));
+      giveTempMaxHp(piece, reactionCtx, 'heart_of_darkness', hp);
+      const emp = Math.trunc(getPName(piece.params, 'empower', 4));
       grantStacks(player, 'empower', emp, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
       const unh = getPName(piece.params, 'healreduction', 40) / 100;
-      if (unh) ctx.dummy.unhealing = (Number(ctx.dummy.unhealing) || 0) + unh;
-      events.push({
-        t: ctx.t || t,
-        type: 'heal',
-        target: 'player',
-        amount: hp,
-        label: `${piece.name}: regen gate +${hp} max HP +${emp} Empower`,
-        meta: { category: 'heal', script: true, handler: 'heart_of_darkness' },
-      });
+      if (unh) applyUnhealing(ctx.dummy, unh, reactionCtx, piece);
       pushActivate(piece, ctx, 'heart_of_darkness', `Accessory: ${piece.name} filled`);
     });
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, dummy, events, rng } = ctx;
-    pushActivate(piece, ctx, 'heart_of_darkness', `Accessory: ${piece.name}`);
-    const num = Math.max(
-      1,
-      Math.round(
-        getPName(piece.params, 'buffsteal', getPName(piece.params, 'steal', getP3(piece.params, 2))),
-      ),
+    const num = Math.trunc(
+      getPName(piece.params, 'buffsteal', getPName(piece.params, 'steal', getP3(piece.params, 2))),
     );
     /** @type {Record<string, number>} */
     const stolen = {};
@@ -269,6 +255,8 @@ export const heartOfDarknessPort = {
       }
     }
     pushBuffGrants(events, piece, player, t, 'heart_of_darkness', stolen);
+    // HeartofDarkness.gd steals its buffs before activating.
+    pushActivate(piece, ctx, 'heart_of_darkness', `Accessory: ${piece.name}`);
     return true;
   },
 };

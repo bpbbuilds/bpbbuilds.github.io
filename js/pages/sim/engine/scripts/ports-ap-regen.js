@@ -180,32 +180,33 @@ const heartContainerPort = {
   family: 'unique',
   onPrepare(piece, ctx) {
     piece._heartOn = false;
-    const need = Math.max(1, Math.round(getP2(piece.params, 7)));
+    const need = Math.trunc(getPName(piece.params, 'regent', getP2(piece.params, 7)));
     onBuffChanged(ctx.player, (ch) => {
       if (piece._heartOn || ch.stack !== 'regeneration' || !(ch.amount > 0)) return;
       if (getStackAmount(ctx.player, 'regeneration') < need) return;
       piece._heartOn = true;
       const reactionCtx = { ...ctx, t: Number(ctx.player._simT) || ctx.t };
       useRegeneration(ctx.player, need, origin(piece));
-      const hp = Math.max(1, Math.round(getPName(piece.params, 'maxhealth', getP3(piece.params, 100))));
+      const hp = Math.trunc(getPName(piece.params, 'maxhealth', getP3(piece.params, 100)));
       giveTempMaxHp(piece, reactionCtx, 'heart_container', hp);
       grantStacks(
         ctx.player,
         'empower',
-        Math.max(1, Math.round(getPName(piece.params, 'empower', getP4(piece.params, 2)))),
+        Math.trunc(getPName(piece.params, 'empower', getP4(piece.params, 2))),
         origin(piece),
       );
       applyHealEfficiency(ctx.player, getPName(piece.params, 'healamp', 15) / 100, reactionCtx, piece);
     });
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'heart_container', `Accessory: ${piece.name}`);
     grantStacks(
       ctx.player,
       'regeneration',
-      Math.max(1, Math.round(getPName(piece.params, 'regen', getP1(piece.params, 1)))),
+      getPName(piece.params, 'regen', getP1(piece.params, 1)),
       origin(piece),
     );
+    // HeartContainer.gd gives Regeneration before it activates.
+    pushActivate(piece, ctx, 'heart_container', `Accessory: ${piece.name}`);
     return true;
   },
 };

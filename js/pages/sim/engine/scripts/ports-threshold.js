@@ -5,11 +5,9 @@
 import { tryUseStamina, gainMaxStaminaTemporary, grantStun } from '../actor.js';
 import { applyStaminaRegeneration, applyUnhealing, changeReflectStacks } from '../actor-stats.js';
 import {
-  advanceBuffThresholds,
   giveAllBuffs,
   grantStacks,
   onBuffChanged,
-  stealRandomBuff,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
@@ -589,43 +587,6 @@ export const vampiricArmorPort = {
   },
 };
 
-/** @type {ScriptHandler} */
-export const heartOfDarknessPort = {
-  handlerId: 'heart_of_darkness',
-  family: 'unique',
-  onCombatStart(piece, ctx) {
-    const { graph, itemsById, canAffect, player } = ctx;
-    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    const speed = getPName(piece.params, 'darkspeed', getP1(piece.params, 5)) / 100;
-    if (links.length && speed) addSpeed(piece, links.length * speed);
-    piece._hodState = { gained: 0, used: 0 };
-    const th = Math.max(1, Math.round(getPName(piece.params, 'regent', getP2(piece.params, 10))));
-    onBuffChanged(player, (ch) => {
-      if (ch.stack !== 'regeneration') return;
-      advanceBuffThresholds(piece._hodState, ch.amount, th, th);
-    });
-  },
-  onCooldownEffect(piece, ctx) {
-    const { t, player, dummy, events, rng } = ctx;
-    pushActivate(piece, ctx, 'heart_of_darkness', `Accessory: ${piece.name}`);
-    const num = Math.max(1, Math.round(getPName(piece.params, 'steal', getP3(piece.params, 1))));
-    const stolen = stealRandomBuff(dummy, player, num, rng, {
-      availableBuffs: [
-        'lucky',
-        'vampirism',
-        'spikes',
-        'mana',
-        'empower',
-        'heat',
-      ],
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    pushBuffGrants(events, piece, player, t, 'heart_of_darkness', stolen);
-    return true;
-  },
-};
-
 /** Piggybank.gd — giveMaxHealth(maxhealth × getNumAffectedItems()); consume. */
 function piggybankStartOfBattleCount(graph, piece, itemsById, canAffect) {
   const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect).filter(
@@ -665,5 +626,4 @@ export const THRESHOLD_PORTS = {
   bionic_armor: bionicArmorPort,
   stone_armor: stoneArmorPort,
   vampiric_armor: vampiricArmorPort,
-  heart_of_darkness: heartOfDarknessPort,
 };

@@ -9577,9 +9577,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-heart-container-smoke.mjs",
+        "fixture": "Heart Container source preparation listener, exact regeneration threshold conversion, effect-before-activation ordering, healing efficiency, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -9600,8 +9606,7 @@
       "sim": {
         "runtimeHandler": "heart_of_darkness",
         "handlerModules": [
-          "js/pages/sim/engine/scripts/ports-ai-d.js",
-          "js/pages/sim/engine/scripts/ports-threshold.js"
+          "js/pages/sim/engine/scripts/ports-ai-d.js"
         ],
         "coverageStatus": "dedicated",
         "depth": "deep"
@@ -9618,9 +9623,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-heart-of-darkness-smoke.mjs",
+        "fixture": "Heart of Darkness source preparation Dark speed, regeneration-priority buff steal, threshold conversion, opponent healing reduction, effect-before-activation ordering, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

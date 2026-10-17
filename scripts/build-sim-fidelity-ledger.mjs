@@ -1573,6 +1573,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  heart_container: {
+    focusedRegression: 'scripts/sim-heart-container-smoke.mjs',
+    fixture: 'Heart Container source preparation listener, exact regeneration threshold conversion, effect-before-activation ordering, healing efficiency, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  heart_of_darkness: {
+    focusedRegression: 'scripts/sim-heart-of-darkness-smoke.mjs',
+    fixture: 'Heart of Darkness source preparation Dark speed, regeneration-priority buff steal, threshold conversion, opponent healing reduction, effect-before-activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hawk_rune: {
     focusedRegression: 'scripts/sim-hawk-rune-smoke.mjs',
     fixture: 'Hawk Rune source loose Blind effect and resistance-aware ordering, socketed weapon crit chance/severity, socketed armor Blind resistance, and zero-safe parameters.',
