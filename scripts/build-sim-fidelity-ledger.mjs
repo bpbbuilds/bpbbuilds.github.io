@@ -1615,6 +1615,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  hogus_bogus: {
+    focusedRegression: 'scripts/sim-hogus-bogus-smoke.mjs',
+    fixture: 'Hogus Bogus source three-phase cycle: fractional stamina-to-random-buff conversion, opponent/self stun durations, opponent-health percentage heal, effect-before-activation ordering, final consumption, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',
@@ -1625,6 +1632,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   hero_shield: {
     focusedRegression: 'scripts/sim-hero-shield-smoke.mjs',
     fixture: 'Hero Shield source combat-start canBeEmpowered damage/factor aura, inherited Wooden Buckler chance block and stamina drain, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  hero_sword: {
+    focusedRegression: 'scripts/sim-hero-sword-smoke.mjs',
+    fixture: 'Hero Sword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',

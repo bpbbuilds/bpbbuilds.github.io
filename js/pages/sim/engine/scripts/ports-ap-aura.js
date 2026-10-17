@@ -8,7 +8,7 @@ import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
-import { applyFoodPrepareSpeed, canBeEmpoweredPiece } from './food-helpers.js';
+import { applyFoodPrepareSpeed } from './food-helpers.js';
 import { itemHasType, pushActivate } from './ports-util.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 
@@ -36,13 +36,26 @@ function auraDamage(ctx, piece, amount, pred) {
   }
 }
 
+/** HeroSword.gd / Item.canBeEmpowered — only damage-capable weapons qualify. */
+function canHeroEmpower(ctx, other) {
+  if (other?.empowerable === false) return false;
+  const item = ctx.itemsById?.get(other?.itemId);
+  const isWeapon = itemHasType(item, 'weapon') || other?.kind === 'weapon';
+  const canDamage =
+    Number(other?.damageMin) > 0 ||
+    Number(other?.damageMax) > 0 ||
+    Number(item?.damageMin) > 0 ||
+    Number(item?.damageMax) > 0;
+  return isWeapon && canDamage;
+}
+
 /** HeroSword.gd — dam aura on empowerable stars; Weapon CD. */
 const heroSwordPort = {
   handlerId: 'hero_sword',
   family: 'synergy_aura',
   onCombatStart(piece, ctx) {
     auraDamage(ctx, piece, getPName(piece.params, 'dam', getP1(piece.params, 1)), (o) =>
-      canBeEmpoweredPiece(o),
+      canHeroEmpower(ctx, o),
     );
     pushActivate(piece, ctx, 'hero_sword', `Weapon: ${piece.name}`);
   },

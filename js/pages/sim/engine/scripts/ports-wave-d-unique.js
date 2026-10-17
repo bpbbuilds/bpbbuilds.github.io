@@ -22,6 +22,7 @@ import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedSpeed } from '../timed-speed.js';
 import { dealEffectDamage, dealHit, loseHealth } from './handlers.js';
 import {
+  afterEffectFinished,
   itemHasType,
   pushActivate,
   pushBuffGrants,
@@ -286,23 +287,45 @@ export const hogusBogusPort = {
     piece._hogusPhase = 0;
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'hogus_bogus', `Accessory: ${piece.name}`);
     const phase = piece._hogusPhase || 0;
     if (phase === 0) {
-      const cost = Math.max(1, Math.round(piece.staminaCost || getPName(piece.params, 'stamina', 2)));
-      if (tryUseStamina(ctx.player, cost) === 'starve') return true;
-      const picked = giveRandomBuffs(ctx.player, Math.max(1, Math.round(getP1(piece.params, 2))), ctx.rng, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'hogus_bogus', picked, 0.003);
+      const maxStaminaUsed = Math.max(0, getPName(piece.params, 'stamina', getP1(piece.params, 6)));
+      const buffsPerStamina = Math.max(0, getPName(piece.params, 'buffs', getP2(piece.params, 3)));
+      const currentStamina = Math.max(0, Number(ctx.player.stamina) || 0);
+      const step = buffsPerStamina > 0 ? 1 / buffsPerStamina : Infinity;
+      if (currentStamina >= step) {
+        const numProccs = Math.floor(currentStamina / step);
+        const staminaToUse = Math.min(
+          currentStamina,
+          Math.min(numProccs * step, maxStaminaUsed),
+        );
+        if (staminaToUse > 0 && tryUseStamina(ctx.player, staminaToUse) === 'ok') {
+          const picked = giveRandomBuffs(
+            ctx.player,
+            Math.round(staminaToUse * buffsPerStamina),
+            ctx.rng,
+            {
+              originKey: piece.placementKey,
+              originId: piece.itemId,
+            },
+          );
+          pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'hogus_bogus', picked, 0.003);
+        }
+      }
+      pushActivate(piece, ctx, 'hogus_bogus', `Accessory: ${piece.name}`);
     } else if (phase === 1) {
-      grantStun(ctx.dummy, Math.max(0.5, effectDuration(piece, 'dur_stun', 1.5)), ctx.t);
-      grantStun(ctx.player, Math.max(0.5, effectDuration(piece, 'dur_stunself', 0.5)), ctx.t);
+      grantStun(ctx.dummy, effectDuration(piece, 'dur_stun', 1.5), ctx.t);
+      grantStun(ctx.player, effectDuration(piece, 'dur_self_stun', 0.5), ctx.t);
+      pushActivate(piece, ctx, 'hogus_bogus', `Accessory: ${piece.name}`);
     } else {
-      const pct = getPName(piece.params, 'heal', getP2(piece.params, 20)) / 100;
-      const heal = Math.max(1, Math.round((ctx.dummy.hp || ctx.dummy.maxHp) * pct));
-      healActor(ctx.player, heal);
+      const opponentHealth = Number.isFinite(Number(ctx.dummy?.hp))
+        ? Number(ctx.dummy.hp)
+        : Number(ctx.dummy?.maxHp) || 0;
+      const pct = getPName(piece.params, 'heal', getPName(piece.params, 'p5', getP3(piece.params, 40))) / 100;
+      healActor(ctx.player, opponentHealth * pct);
+      afterEffectFinished(piece, ctx, 'hogus_bogus', {
+        label: `Accessory: ${piece.name}`,
+      });
     }
     piece._hogusPhase = (phase + 1) % 3;
     return true;

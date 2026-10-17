@@ -6380,3 +6380,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 263 - in progress
 
 - Codex owns the next retained Hero Sword and Hogus Bogus fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-hero-sword-smoke.mjs`, `scripts/sim-hogus-bogus-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 263 - complete
+
+- Codex repaired Hero Sword to mirror `Item.canBeEmpowered()` as a damage-capable weapon-only aura target, preserving the exact p1 flat damage and combat-start activation order. Hogus Bogus now mirrors the source three-phase cycle: fractional stamina conversion capped by its named stamina parameter, `buffsPerStamina` random buffs, exact opponent/self stun durations, opponent-current-health percentage healing, activation after each effect, and final `onAfterEffectFinished()` consumption; explicit zero parameters remain safe.
+- Added `scripts/sim-hero-sword-smoke.mjs` and `scripts/sim-hogus-bogus-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 385 / 519 verified item rows. Focused pair tests, recent parity regressions, lifecycle/gem/board/audit/coverage checks, changed-module syntax, and scoped diff checks pass. The only diff-check warning is pre-existing trailing whitespace in unrelated `docs/todo.md` additions outside the retained count hunk. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 385 verified, 112 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Holdall and Holy Collar; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 264 - in progress
+
+- Codex owns the next retained Holdall and Holy Collar fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-holdall-smoke.mjs`, `scripts/sim-holy-collar-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
