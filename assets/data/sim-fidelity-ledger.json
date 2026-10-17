@@ -18248,9 +18248,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-spectral-dagger-smoke.mjs",
+        "fixture": "Spectral Dagger source early-hit Mana gate, same-strike raw bonus damage, spectral Block bypass, normal miss behavior, activation ordering, exact catalog parameters, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -18497,9 +18503,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-spicy-banana-smoke.mjs",
+        "fixture": "Spicy Banana source prepare-time Banana/Mananana links, stamina listener timing, fractional threshold remainder, modified heal parameter, integer Heat conversion, chance activation, exact catalog parameters, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

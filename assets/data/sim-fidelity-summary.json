@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "823c9332689ef70f0680dd28db5b5a6a036844e187186c205c172220c9aff7c1",
+    "dashboardSha256": "67c06aa49de1627a7f97472fb7bb3013397712eb00a18ff712a5689970393a9c",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 473,
+    "verified_1to1": 475,
     "confirmed_gap": 4,
-    "evidence_pending": 27,
+    "evidence_pending": 25,
     "no_independent_combat": 15
   },
   "byId": {
@@ -430,13 +430,13 @@
     "solaris": "verified_1to1",
     "speak_with_animals": "verified_1to1",
     "spear": "verified_1to1",
-    "spectral_dagger": "evidence_pending",
+    "spectral_dagger": "verified_1to1",
     "spell_scroll_dark": "verified_1to1",
     "spell_scroll_frostbolt": "verified_1to1",
     "spell_scroll_ice": "verified_1to1",
     "spell_scroll_light": "verified_1to1",
     "spell_scroll_nature": "verified_1to1",
-    "spicy_banana": "evidence_pending",
+    "spicy_banana": "verified_1to1",
     "spiked_collar": "evidence_pending",
     "spiked_shield": "evidence_pending",
     "spiked_staff": "evidence_pending",

@@ -354,30 +354,25 @@ const piggyPinataPort = {
 const spicyBananaPort = {
   handlerId: 'spicy_banana',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._stamAcc = 0;
-    const heat = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'heat', getP1(piece.params, 2))),
-    );
-    // Catalog stamina = 1 → heal every 1 stamina spent.
-    const need = Math.max(
-      0.01,
-      Number(getPName(piece.params, 'stamina', getP2(piece.params, 1))) || 1,
-    );
-    const healPer = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'heal', getPName(piece.params, 'p3', 3))),
-    );
+    const rawHeat = Number(getPName(piece.params, 'heat', getP1(piece.params, 0)));
+    const heat = Number.isFinite(rawHeat) ? Math.trunc(rawHeat) : 0;
+    const rawNeed = Number(getPName(piece.params, 'stamina', getP2(piece.params, 0)));
+    const need = Number.isFinite(rawNeed) ? rawNeed : 0;
+    const rawHeal = Number(getPName(piece.params, 'heal', getPName(piece.params, 'p3', 0)));
+    const healPer = Number.isFinite(rawHeal)
+      ? modifiedParamValue(piece, rawHeal, 'heal')
+      : 0;
     piece._spicy = { heat, need, healPer };
 
-    ctx.player._combatBus?.on?.('stamina_used', (payload) => {
+    ctx.bus?.on?.('stamina_used', (payload) => {
       if (!piece.alive) return;
       if (payload?.actor && payload.actor !== ctx.player) return;
       const amt = Number(payload?.amount) || 0;
       if (!(amt > 0)) return;
       piece._stamAcc = (Number(piece._stamAcc) || 0) + amt;
-      const ticks = Math.floor(piece._stamAcc / need);
+      const ticks = need > 0 ? Math.floor(piece._stamAcc / need) : 0;
       if (!(ticks > 0)) return;
       piece._stamAcc -= ticks * need;
       const healAmt = ticks * healPer;
@@ -404,23 +399,23 @@ const spicyBananaPort = {
     if (activated.itemId !== 'banana' && activated.itemId !== 'mananana') return;
     // Game rollChance() — catalog chance 75 (chanceTag heat is tip chrome).
     if (!rollItemChance(listener, ctx.rng)) return;
-    const heat = Math.max(
-      1,
-      Math.round(
-        Number(listener._spicy?.heat) ||
-          getPName(listener.params, 'heat', getP1(listener.params, 2)),
-      ),
+    const rawHeat = Number(
+      listener._spicy?.heat ??
+        getPName(listener.params, 'heat', getP1(listener.params, 0)),
     );
-    grantStacks(ctx.player, 'heat', heat, {
-      piece: listener,
-      originKey: listener.placementKey,
-      originId: listener.itemId,
-      t: ctx.t,
-      silentLog: true,
-    });
-    pushBuffGrants(ctx.events, listener, ctx.player, ctx.t, 'spicy_banana', {
-      heat,
-    });
+    const heat = Number.isFinite(rawHeat) ? Math.trunc(rawHeat) : 0;
+    if (heat > 0) {
+      grantStacks(ctx.player, 'heat', heat, {
+        piece: listener,
+        originKey: listener.placementKey,
+        originId: listener.itemId,
+        t: ctx.t,
+        silentLog: true,
+      });
+      pushBuffGrants(ctx.events, listener, ctx.player, ctx.t, 'spicy_banana', {
+        heat,
+      });
+    }
     pushActivate(listener, ctx, 'spicy_banana', `Skill: ${listener.name}`);
   },
 };

@@ -186,6 +186,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  spectral_dagger: {
+    focusedRegression: 'scripts/sim-spectral-dagger-smoke.mjs',
+    fixture: 'Spectral Dagger source early-hit Mana gate, same-strike raw bonus damage, spectral Block bypass, normal miss behavior, activation ordering, exact catalog parameters, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  spicy_banana: {
+    focusedRegression: 'scripts/sim-spicy-banana-smoke.mjs',
+    fixture: 'Spicy Banana source prepare-time Banana/Mananana links, stamina listener timing, fractional threshold remainder, modified heal parameter, integer Heat conversion, chance activation, exact catalog parameters, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   amethyst_egg: {
     focusedRegression: 'scripts/sim-amethyst-egg-smoke.mjs',
     fixture: 'Amethyst Egg start trigger and recurring cooldown: source p1 random-debuff count, activation, and both board sides.',

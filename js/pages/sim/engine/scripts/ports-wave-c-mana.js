@@ -11,13 +11,14 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
+import { makeDamageSpectral } from '../damage.js';
 import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import {
   addBonusDamage,
   addSpeed,
   changeVaryingDamageFromBuffChange,
 } from '../piece-stats.js';
-import { dealHit, stealLife } from './handlers.js';
+import { stealLife } from './handlers.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 import { getStackAmount } from '../stacks.js';
 
@@ -57,34 +58,30 @@ export const magicStaffPort = {
   },
 };
 
-/** SpectralDagger.gd — on hit mana → bonus spectral (ignore block). */
+/** SpectralDagger.gd — early hit Mana → bonus damage on the same spectral strike. */
 /** @type {ScriptHandler} */
 export const spectralDaggerPort = {
   handlerId: 'spectral_dagger',
   family: 'on_hit',
   onCooldownEffect(piece, ctx) {
-    return weaponStrike(piece, ctx, 'spectral_dagger');
-  },
-  onDealtDamage(piece, ctx, hit) {
-    if (!hit?.hit || piece._spectralSwing) return;
-    const cost = Math.max(1, Math.round(getP1(piece.params, 2)));
-    if (
-      useMana(ctx.player, cost, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      }).spent <= 0
-    ) {
-      return;
-    }
-    const bonus = Math.max(1, Math.round(getP2(piece.params, 4)));
-    piece._spectralSwing = true;
-    dealHit(piece, ctx, bonus, `${piece.name}: spectral`, { ignoreBlock: true });
-    piece._spectralSwing = false;
-    ctx.events.push({
-      t: ctx.t + 0.008,
-      type: 'buff',
-      label: `${piece.name}: spectral +${bonus}`,
-      meta: { category: 'buff', script: true, handler: 'spectral_dagger' },
+    return weaponStrike(piece, ctx, 'spectral_dagger', {
+      onPreDealDamageEarly(res) {
+        if (!res?.hit) return;
+        const rawCost = Number(getPName(piece.params, 'mana', getP1(piece.params, 1)));
+        const cost = Number.isFinite(rawCost) ? Math.trunc(rawCost) : 0;
+        if (
+          useMana(ctx.player, cost, {
+            originKey: piece.placementKey,
+            originId: piece.itemId,
+          }).spent <= 0
+        ) {
+          return;
+        }
+        const rawBonus = Number(getPName(piece.params, 'dam', getP2(piece.params, 0)));
+        const bonus = Number.isFinite(rawBonus) ? rawBonus : 0;
+        res.damage = (Number(res.damage) || 0) + bonus;
+        makeDamageSpectral(res);
+      },
     });
   },
 };

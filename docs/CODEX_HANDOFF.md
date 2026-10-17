@@ -6802,3 +6802,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 308 - in progress
 
 - Codex owns the next retained Spectral Dagger and Spicy Banana fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to `js/pages/sim/engine/scripts/ports-wave-c-mana.js`, `js/pages/sim/engine/scripts/ports-ao-skills.js`, `scripts/sim-spectral-dagger-smoke.mjs`, `scripts/sim-spicy-banana-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 308 - complete
+
+- Codex repaired Spectral Dagger to spend source Mana in `onPreDealDamage_early`, add the raw bonus to the original hit, mark that same DamageSource spectral so it bypasses Block, and preserve normal miss/zero-cost behavior without emitting a second damage hit. Spicy Banana now binds its stamina listener during `onPrepare`, uses the source Banana/Mananana link path, preserves fractional stamina and modified heal values, truncates only the source integer Heat field, and does not fabricate zero-Heat buff events.
+- Added `scripts/sim-spectral-dagger-smoke.mjs` and `scripts/sim-spicy-banana-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 475 / 519 verified item rows. Focused pair tests, neighboring Mana/food/lifecycle regressions, coverage honesty, changed-module syntax, and generated artifact freshness checks pass. The generated summary reports 475 verified, 25 evidence-pending, 4 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 309 - in progress
+
+- Codex owns the next retained Spiked Collar and Spiked Shield fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-spiked-collar-smoke.mjs`, `scripts/sim-spiked-shield-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
