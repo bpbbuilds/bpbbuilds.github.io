@@ -9,7 +9,7 @@ import {
   useRegeneration,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addBonusDamage, addSpeed, purgeBonusDamage } from '../piece-stats.js';
 import { giveBuffPower } from '../buff-power.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
@@ -171,23 +171,26 @@ const nullBladePort = {
   },
   onPreDealDamageEarly(piece, ctx, res) {
     if (res && !res.hit) return;
-    const luckNeed = Math.max(1, Math.round(getPName(piece.params, 'luckt', getP1(piece.params, 1))));
-    const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 2))));
-    if (useLucky(ctx.player, luckNeed, origin(piece)).spent > 0) {
-      if (res) res.damage = (Number(res.damage) || 0) + dam;
-      addBonusDamage(piece, dam);
+    const luckNeed = Math.trunc(getPName(piece.params, 'luckt', getP1(piece.params, 0)));
+    const dam = Math.trunc(getPName(piece.params, 'dam', getP2(piece.params, 0)));
+    if ((getStackAmount(ctx.player, 'lucky') || 0) >= luckNeed) {
+      useLucky(ctx.player, luckNeed, origin(piece));
+      if (dam) {
+        if (res) res.damage = (Number(res.damage) || 0) + dam;
+        addBonusDamage(piece, dam);
+      }
     }
-    const regenNeed = Math.max(1, Math.round(getPName(piece.params, 'regent', getP3(piece.params, 1))));
+    const regenNeed = Math.trunc(getPName(piece.params, 'regent', getP3(piece.params, 0)));
     if ((getStackAmount(ctx.player, 'regeneration') || 0) < regenNeed) return;
     useRegeneration(ctx.player, regenNeed, origin(piece));
     removeRandomBuffs(
       ctx.dummy,
-      Math.max(1, Math.round(getPName(piece.params, 'buffs', 3))),
+      Math.trunc(getPName(piece.params, 'buffs', getP4(piece.params, 0))),
       ctx.rng,
       origin(piece),
     );
     if (buffStacks(ctx.dummy) <= 0) {
-      addSpeed(piece, getPName(piece.params, 'speed', 5) / 100);
+      addSpeed(piece, getPName(piece.params, 'speed', getP5(piece.params, 5)) / 100);
     }
   },
 };

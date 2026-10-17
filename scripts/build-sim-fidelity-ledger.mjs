@@ -1209,6 +1209,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  no_rush_please: {
+    focusedRegression: 'scripts/sim-no-rush-please-smoke.mjs',
+    fixture: 'No Rush Please source explicit Leather Helm onPrepare no-op, inherited self timed resistance plus opponent resistance, combat-start Cold, activation, and zero-safe values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  null_blade: {
+    focusedRegression: 'scripts/sim-null-blade-smoke.mjs',
+    fixture: 'Null Blade source hit-only Lucky current/permanent damage, Regeneration buff stripping, empty-opponent speed, miss behavior, and explicit zero parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

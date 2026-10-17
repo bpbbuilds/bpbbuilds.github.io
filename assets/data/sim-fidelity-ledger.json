@@ -13099,9 +13099,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-no-rush-please-smoke.mjs",
+        "fixture": "No Rush Please source explicit Leather Helm onPrepare no-op, inherited self timed resistance plus opponent resistance, combat-start Cold, activation, and zero-safe values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -13135,9 +13141,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-null-blade-smoke.mjs",
+        "fixture": "Null Blade source hit-only Lucky current/permanent damage, Regeneration buff stripping, empty-opponent speed, miss behavior, and explicit zero parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

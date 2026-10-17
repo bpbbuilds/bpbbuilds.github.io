@@ -18,8 +18,9 @@ import { scaleEffectDuration } from '../effect-duration.js';
 import { modifiedParamValue } from '../placement-instance.js';
 import { addSpeed } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
-import { grantTimedSpeed } from '../timed-speed.js';
+import { grantTimedResistancePct } from '../timed-resistance.js';
 import { afterEffectFinished, itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
+import { leatherHelmPort } from './ports-ai-hard.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -180,40 +181,35 @@ export const fullBodyProtectionPort = {
 export const noRushPleasePort = {
   handlerId: 'no_rush_please',
   family: 'consumable',
+  // NoRushPlease.gd explicitly overrides LeatherHelm.onPrepare() with pass.
+  onPrepare() {},
+  onPreCombatStart(piece, ctx) {
+    leatherHelmPort.onPreCombatStart(piece, ctx);
+    const dr = getP1(piece.params, 0);
+    const dur = getPName(piece.params, 'dur', getP2(piece.params, 0));
+    if (dr && dur > 0) {
+      grantTimedResistancePct(
+        ctx.dummy,
+        dr,
+        (Number(ctx.t) || 0) + dur,
+        `no_rush_please:opponent:${piece.placementKey || piece.itemId}`,
+      );
+    }
+  },
   onCombatStart(piece, ctx) {
     const { t, dummy, player, events, rng } = ctx;
-    const dr = Math.max(0, getPName(piece.params, 'damreduction', getP1(piece.params, 10)));
-    const dur = Math.max(0.5, getPName(piece.params, 'dur', getP2(piece.params, 3)));
-    if (dr > 0) {
-      dummy.damageResistancePct = (Number(dummy.damageResistancePct) || 0) + dr;
-      grantTimedSpeed(piece, 1e-6, t + dur, 'no_rush_dr');
-      const prev = piece._onTimedSpeedEnd;
-      piece._onTimedSpeedEnd = (tag, e) => {
-        prev?.(tag, e);
-        if (tag === 'no_rush_dr') {
-          dummy.damageResistancePct = Math.max(
-            0,
-            (Number(dummy.damageResistancePct) || 0) - dr,
-          );
-        }
-      };
+    const cold = Math.max(0, Math.trunc(getPName(piece.params, 'cold', getP3(piece.params, 0))));
+    if (cold > 0) {
+      gainStacks(dummy, 'cold', cold, { rng, opponent: player });
       events.push({
-        t: t + 0.001,
-        type: 'info',
-        label: `${piece.name}: opp +${dr}% DR (${dur}s)`,
-        meta: { category: 'system', script: true, handler: 'no_rush_please' },
+        t,
+        type: 'debuff',
+        target: 'dummy',
+        amount: cold,
+        label: `${piece.name}: +${cold} Cold`,
+        meta: { category: 'debuff', stack: 'cold', script: true, handler: 'no_rush_please' },
       });
     }
-    const cold = Math.max(1, Math.round(getPName(piece.params, 'cold', 2)));
-    gainStacks(dummy, 'cold', cold, { rng, opponent: player });
-    events.push({
-      t,
-      type: 'debuff',
-      target: 'dummy',
-      amount: cold,
-      label: `${piece.name}: +${cold} Cold`,
-      meta: { category: 'debuff', stack: 'cold', script: true, handler: 'no_rush_please' },
-    });
     pushActivate(piece, ctx, 'no_rush_please', `Skill: ${piece.name}`);
   },
 };
