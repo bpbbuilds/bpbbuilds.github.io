@@ -16,6 +16,7 @@ import { startBattleRage } from '../battle-rage.js';
 import { advanceCooldownSeconds, isCooldownActive } from '../cooldown.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addSpeed, multiplyStaminaCost } from '../piece-stats.js';
+import { rarityPriority } from '../item-kind.js';
 import { getStackAmount } from '../stacks.js';
 import { grantTimedResistancePct } from '../timed-resistance.js';
 import { dealEffectDamage } from './handlers.js';
@@ -385,24 +386,20 @@ const luckyCatPort = {
   family: 'unique',
   onPrepare(piece, ctx) {
     const gold = linked(ctx, piece).reduce(
-      (sum, other) => sum + Math.max(0, Number(ctx.itemsById.get(other.itemId)?.cost) || 0),
+      (sum, other) => sum + (Number(ctx.itemsById.get(other.itemId)?.cost) || 0),
       0,
     );
-    const g1 = getPName(piece.params, 'gold1', 8);
-    const g2 = getPName(piece.params, 'gold2', 16);
+    const g1 = getPName(piece.params, 'gold1', getP2(piece.params, 0));
+    const g2 = getPName(piece.params, 'gold2', getP3(piece.params, 0));
     piece._luckyCatState = gold > g2 ? 'two' : gold > g1 ? 'one' : 'none';
-  },
-  onCombatStart(piece, ctx) {
-    const gold = linked(ctx, piece).length;
-    const g1 = getPName(piece.params, 'gold1', 8);
-    const g2 = getPName(piece.params, 'gold2', 16);
     if (gold > g1) {
       ctx.player.critResistance = (Number(ctx.player.critResistance) || 0) + chanceOf(piece, ctx);
     }
     if (gold > g2) {
-      const spd = getPName(piece.params, 'speed', 10) / 100;
+      const spd = getPName(piece.params, 'speed', getP4(piece.params, 0)) / 100;
       for (const o of ctx.pieces || []) {
-        if (!(o.cooldown > 0 && o.cooldown < 500)) continue;
+        const item = ctx.itemsById.get(o.itemId);
+        if (rarityPriority(item) < 4 || !(Number(item?.cooldown) > 0)) continue;
         addSpeed(o, spd);
       }
     }

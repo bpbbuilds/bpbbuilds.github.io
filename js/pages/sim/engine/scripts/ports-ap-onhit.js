@@ -252,7 +252,7 @@ const luckyBowPort = {
     grantStacks(
       ctx.player,
       'lucky',
-      Math.max(1, Math.round(getPName(piece.params, 'luck', getP1(piece.params, 5)))),
+      Math.trunc(getPName(piece.params, 'luck', getP1(piece.params, 0))),
       origin(piece),
     );
     pushActivate(piece, ctx, 'lucky_bow', `Weapon: ${piece.name}`);
@@ -260,8 +260,10 @@ const luckyBowPort = {
   onCooldownEffect(piece, ctx) {
     if (!weaponStrike(piece, ctx, 'lucky_bow')) return false;
     if (piece._luckyExtra) {
-      piece._luckyExtra = false;
       weaponStrike(piece, ctx, 'lucky_bow', { skipStamina: true, label: `Weapon: ${piece.name} (extra)` });
+      // LuckyBow.gd clears extraAttack after the second activation, not
+      // before it. Preserve the source state through that attack.
+      piece._luckyExtra = false;
     }
     return true;
   },

@@ -11597,9 +11597,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-lucky-bow-smoke.mjs",
+        "fixture": "Lucky Bow source prepare state reset, exact combat-start Lucky grant, critical-triggered extra strike, activation ordering, post-second-strike reset, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -11633,9 +11639,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-lucky-cat-smoke.mjs",
+        "fixture": "Lucky Cat source affected-gold thresholds, exact crit resistance, Godly cooldown speed filter, strict thresholds, and zero-safe named/indexed parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

@@ -1860,6 +1860,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  lucky_bow: {
+    focusedRegression: 'scripts/sim-lucky-bow-smoke.mjs',
+    fixture: 'Lucky Bow source prepare state reset, exact combat-start Lucky grant, critical-triggered extra strike, activation ordering, post-second-strike reset, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  lucky_cat: {
+    focusedRegression: 'scripts/sim-lucky-cat-smoke.mjs',
+    fixture: 'Lucky Cat source affected-gold thresholds, exact crit resistance, Godly cooldown speed filter, strict thresholds, and zero-safe named/indexed parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

@@ -3,7 +3,7 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "567128e1bea42367f200a77edc2fe92fd7e13516a1ed5ae770eccbce5f4a7f68",
+    "itemLedgerSha256": "c650036bdd19f2724f159ac4bbb6767d7db205798a77f344cef00159324f12cd",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
     "systemSurfaceSha256": "79e1178a7ae154e964452b8a7fada954ec8e043c0756f30c20fc35ec6dea6778",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 419,
+    "verified_1to1": 421,
     "confirmed_gap": 8,
-    "evidence_pending": 98,
+    "evidence_pending": 96,
     "no_independent_combat": 15
   },
   "items": [
@@ -12106,8 +12106,8 @@
       "name": "Lucky Bow",
       "category": "Ranged Weapon",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -12134,9 +12134,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-lucky-bow-smoke.mjs",
+        "fixture": "Lucky Bow source prepare state reset, exact combat-start Lucky grant, critical-triggered extra strike, activation ordering, post-second-strike reset, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
@@ -12146,8 +12152,8 @@
       "name": "Lucky Cat",
       "category": "Accessory",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -12172,9 +12178,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-lucky-cat-smoke.mjs",
+        "fixture": "Lucky Cat source affected-gold thresholds, exact crit resistance, Godly cooldown speed filter, strict thresholds, and zero-safe named/indexed parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
