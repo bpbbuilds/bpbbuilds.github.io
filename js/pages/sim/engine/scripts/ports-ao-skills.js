@@ -317,13 +317,13 @@ const kingOfTheBlingPort = {
 const markswomanPort = {
   handlerId: 'markswoman',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const dam = getPName(piece.params, 'dam', 10) / 100;
-    const spd = getPName(piece.params, 'speed', 10) / 100;
-    const acc = getPName(piece.params, 'acc', 5);
+  onPrepare(piece, ctx) {
+    const dam = getPName(piece.params, 'dam', getP1(piece.params, 10)) / 100;
+    const spd = getPName(piece.params, 'speed', getP2(piece.params, 10)) / 100;
+    const acc = getPName(piece.params, 'acc', getP3(piece.params, 5));
     for (const o of linked(ctx, piece)) {
       const item = ctx.itemsById.get(o.itemId);
-      if (!itemHasType(item, 'ranged') && o.kind !== 'weapon') continue;
+      if (!itemHasType(item, 'ranged')) continue;
       addSpeed(o, spd);
       if (canBeEmpoweredPiece(o)) {
         if (dam) addBonusDamageFactor(o, dam);

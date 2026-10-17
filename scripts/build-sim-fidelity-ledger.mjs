@@ -1082,6 +1082,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  mana_orb: {
+    focusedRegression: 'scripts/sim-mana-orb-smoke.mjs',
+    fixture: 'Mana Orb source preparation listener timing, canActivate target gating, one-shot Mana threshold, exact Mana spend/random-buff count, linked activation Mana grant, state ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   mananana: {
     focusedRegression: 'scripts/sim-mananana-smoke.mjs',
     fixture: 'Mananana source Food preparation speed, exact Mana-gated heal and stamina ordering, unconditional activation, and explicit zero Mana/heal/stamina parameters.',
@@ -1093,6 +1100,14 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     focusedRegression: 'scripts/sim-manathirst-smoke.mjs',
     fixture: 'Manathirst source preparation Mana listener, one-threshold leftover progress, exact lifesteal damage/heal, hit-only Mana gain, and explicit zero Mana-on-hit behavior.',
     projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  markswoman: {
+    focusedRegression: 'scripts/sim-markswoman-smoke.mjs',
+    fixture: 'Markswoman source ranged-only preparation targeting, exact speed/damage-factor/accuracy bonuses, empowerable gating, and zero-safe parameters.',
+    projections: ['hud'],
+    requiredProjections: ['hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },

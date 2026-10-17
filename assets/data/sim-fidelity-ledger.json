@@ -12280,9 +12280,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-mana-orb-smoke.mjs",
+        "fixture": "Mana Orb source preparation listener timing, canActivate target gating, one-shot Mana threshold, exact Mana spend/random-buff count, linked activation Mana grant, state ordering, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -12442,9 +12448,16 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-markswoman-smoke.mjs",
+        "fixture": "Markswoman source ranged-only preparation targeting, exact speed/damage-factor/accuracy bonuses, empowerable gating, and zero-safe parameters.",
+        "projections": [
+          "hud"
+        ],
+        "requiredProjections": [
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

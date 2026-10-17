@@ -443,26 +443,25 @@ const manaOrbPort = {
   handlerId: 'mana_orb',
   family: 'unique',
   /** ManaOrb.onPrepare — reset before Mana Mastery combat-start bonus. */
-  onPrepare(piece) {
+  onPrepare(piece, ctx) {
     piece._bonusBuffs = 0;
     piece._orbFired = false;
-  },
-  onCombatStart(piece, ctx) {
-    piece._orbFired = false;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'manat', 35)));
-    const buffs = Math.max(1, Math.round(getPName(piece.params, 'buffs', 20)));
+    piece.state = false;
+    const need = Math.round(getPName(piece.params, 'manat', getP2(piece.params, 35)));
+    const buffs = Math.round(getPName(piece.params, 'buffs', getP3(piece.params, 20)));
     onBuffChanged(ctx.player, (ch) => {
       // Game onManaChanged(amount, …): only on mana gain.
       if (piece._orbFired || ch.stack !== 'mana' || !(ch.amount > 0)) return;
       if (getStackAmount(ctx.player, 'mana') < need) return;
       piece._orbFired = true;
+      piece.state = true;
       const totalBuffs = buffs + (Number(piece._bonusBuffs) || 0);
       const { spent } = useMana(ctx.player, need, {
         originKey: piece.placementKey,
         originId: piece.itemId,
         t: ctx.t,
       });
-      if (!(spent > 0)) return;
+      if (need > 0 && !(spent > 0)) return;
       giveRandomBuffs(ctx.player, totalBuffs, ctx.rng, {
         originKey: piece.placementKey,
         originId: piece.itemId,
@@ -473,7 +472,7 @@ const manaOrbPort = {
   },
   onPeerActivated(listener, _a, ctx) {
     if (!rollPercent(chanceOf(listener, ctx), ctx.rng)) return;
-    grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getP1(listener.params, 1))), {
+    grantStacks(ctx.player, 'mana', Math.round(getP1(listener.params, 1)), {
       originKey: listener.placementKey,
       originId: listener.itemId,
     });

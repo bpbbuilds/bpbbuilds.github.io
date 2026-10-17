@@ -6656,3 +6656,12 @@ None.
 ### 2026-10-16 Simulator item parity continuation 290 - in progress
 
 - Codex owns the next retained Mana Orb and Markswoman fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mana-orb-smoke.mjs`, `scripts/sim-markswoman-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 290 - complete
+
+- Codex repaired Mana Orb to bind its Mana listener during source `onPrepare`, preserve the source one-shot state and threshold/spend/random-buff ordering, honor `canActivate` links and exact linked-activation Mana, and keep explicit zero parameters valid. Markswoman now runs during source `onPrepare`, targets only ranged weapons, applies the exact speed/damage-factor/accuracy values, and respects empowerable and zero-value behavior.
+- Added `scripts/sim-mana-orb-smoke.mjs` and `scripts/sim-markswoman-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 439 / 519 verified item rows. Focused pair tests, prior Mana regressions, coverage honesty, generated artifact freshness, changed-module syntax, and diff checks pass. No legal, authentication, database, storage, or security behavior changed. The next retained queue begins with Mecha Bat and Mega Clover; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 291 - in progress
+
+- Codex owns the next retained Mecha Bat and Mega Clover fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mecha-bat-smoke.mjs`, `scripts/sim-mega-clover-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

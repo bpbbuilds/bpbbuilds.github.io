@@ -3,7 +3,7 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "8d42d992f3cd990634ce0ac1d6037d761fdb0d963919eb84815f1b37885c5eb0",
+    "itemLedgerSha256": "92f9a6714e9817b25ebd7298ab7b579dad701a70951ddcb463074d1486d1c0b1",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
     "systemSurfaceSha256": "79e1178a7ae154e964452b8a7fada954ec8e043c0756f30c20fc35ec6dea6778",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 437,
+    "verified_1to1": 439,
     "confirmed_gap": 8,
-    "evidence_pending": 80,
+    "evidence_pending": 78,
     "no_independent_combat": 15
   },
   "items": [
@@ -12823,8 +12823,8 @@
       "name": "Mana Orb",
       "category": "Accessory",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -12849,9 +12849,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-mana-orb-smoke.mjs",
+        "fixture": "Mana Orb source preparation listener timing, canActivate target gating, one-shot Mana threshold, exact Mana spend/random-buff count, linked activation Mana grant, state ordering, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
@@ -12993,8 +12999,8 @@
       "name": "Markswoman",
       "category": "Skill",
       "class": "Ranger",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -13019,9 +13025,16 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-markswoman-smoke.mjs",
+        "fixture": "Markswoman source ranged-only preparation targeting, exact speed/damage-factor/accuracy bonuses, empowerable gating, and zero-safe parameters.",
+        "projections": [
+          "hud"
+        ],
+        "requiredProjections": [
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
