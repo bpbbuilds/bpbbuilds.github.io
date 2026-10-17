@@ -152,6 +152,28 @@ assert.equal(ctx.events.filter((event) => event.type === 'activate' && event.ite
 assert.equal(peerNotifications, 1,
   'Moon Shield activation notifies linked activation listeners');
 
+ctx.pieces[0].params.stamina = 1;
+const namedStaminaBefore = ctx.player.stamina;
+const namedParamAttack = dealDamage(ctx.dummy, ctx.player, {
+  amount: 20,
+  canMiss: false,
+  canCrit: false,
+  canBlock: true,
+  isAttack: true,
+  isMelee: false,
+  canTriggerItems: true,
+  canTriggerVampirism: false,
+  nowT: ctx.t,
+  events: ctx.events,
+  bus: ctx.bus,
+  rng: ctx.rng,
+});
+assert.equal(namedParamAttack.reduced, 14,
+  'Moon Shield: named stamina data still leaves the source ranged block path intact');
+assert.equal(ctx.player.stamina, namedStaminaBefore - 0.7,
+  'Moon Shield: afterBlock ignores a stale named stamina value and uses source P2');
+delete ctx.pieces[0].params.stamina;
+
 const activationCount = ctx.events.filter((event) => event.type === 'activate' && event.itemId === 'moon_shield').length;
 const effect = dealDamage(ctx.dummy, ctx.player, {
   amount: 20,

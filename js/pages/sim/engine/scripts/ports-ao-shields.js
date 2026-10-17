@@ -54,7 +54,7 @@ function registerShield(piece, ctx, opts) {
       if (!piece.alive) return;
       const drain = Math.max(
         0,
-        Number(getPName(piece.params, 'stamina', getP2(piece.params, 0.3))) || 0,
+        Number(opts.getStaminaDrain ? opts.getStaminaDrain() : getPName(piece.params, 'stamina', getP2(piece.params, 0.3))) || 0,
       );
       if (drain > 0) {
         drainStamina(ctx.player, drain, {
@@ -232,6 +232,7 @@ const moonShieldPort = {
     registerShield(piece, ctx, {
       canBlockDamageRes: (res) =>
         Boolean(res?.hit && res.damageSource?.isAttack !== false && res.damageSource?.canTriggerItems !== false),
+      getStaminaDrain: () => getP2(piece.params, 0.7),
     });
   },
 };
