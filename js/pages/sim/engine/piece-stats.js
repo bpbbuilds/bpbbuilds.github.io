@@ -349,6 +349,8 @@ export function snapshotPieceStats(piece, stacks = null, opts = {}) {
     chanceBase: Number(piece.chance) || 0,
     chanceRolls: Number(piece.chanceRolls) || 0,
     chanceProcs: Number(piece.chanceProcs) || 0,
+    activationCount: Number(piece._goobertActs) || 0,
+    activationNeed: Number(piece._goobertNeed) || 0,
     critChance: Math.max(0, Number(piece.critChance) || 0),
     durationFactor: Number(piece.effectDurationFactor) || 1,
     durationParams: liveDurationParams(piece),

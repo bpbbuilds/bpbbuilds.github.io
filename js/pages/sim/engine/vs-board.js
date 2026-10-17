@@ -48,6 +48,7 @@ export function pieceIsThem(piece) {
  *   notifyDealtDamage: Function,
  *   notifyPreDealDamageEarly: Function,
  *   notifyPreDealDamageLate: Function,
+ *   capturePieceSnapshot?: (piece: object) => void,
  * }} world
  */
 export function ctxForPiece(piece, world) {
@@ -74,6 +75,7 @@ export function ctxForPiece(piece, world) {
     notifyDealtDamage: world.notifyDealtDamage,
     notifyPreDealDamageEarly: world.notifyPreDealDamageEarly,
     notifyPreDealDamageLate: world.notifyPreDealDamageLate,
+    capturePieceSnapshot: world.capturePieceSnapshot,
     logChain: world.logChain,
     chargeJobs: world.chargeJobs,
   };

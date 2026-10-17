@@ -86,6 +86,7 @@ export function goobertHeal(piece, ctx, handler, heal, opts = {}) {
  */
 export function prepareGoobertActivationTargets(piece, ctx) {
   piece._goobertActs = 0;
+  piece._goobertNeed = Math.max(1, Math.trunc(getP1(piece.params, 0)));
   const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
   piece._goobertActivationTargets = new Set(
     links.filter((link) => link.color === 'primary').map((link) => link.key),
@@ -97,11 +98,15 @@ export function goobertPeerTick(piece, activated, ctx, effect) {
     !activated?._forceGoobertActivation &&
     !piece._goobertActivationTargets?.has(activated?.placementKey)
   ) return;
-  const need = getP1(piece.params, 0);
+  const need = Number(piece._goobertNeed) || Math.max(1, Math.trunc(getP1(piece.params, 0)));
   piece._goobertActs = (piece._goobertActs || 0) + 1;
-  if (piece._goobertActs !== need) return;
-  piece._goobertActs = 0;
-  effect();
+  if (piece._goobertActs === need) {
+    piece._goobertActs = 0;
+    effect();
+  }
+  // Goobert.gd calls showCooldownSmooth() after every linked activation.
+  // Capture its counter so the simulator scrubber paints that visual progress.
+  ctx.capturePieceSnapshot?.(piece);
 }
 
 /** @param {object} piece @param {object} ctx @param {string} handler @param {number} [damOverride] */

@@ -430,6 +430,7 @@ export function simulateEngine(opts) {
     notifyPreDealDamageEarly,
     notifyPreDealDamageLate,
     chargeJobs: [],
+    capturePieceSnapshot: () => pushSnap(world.t),
   };
 
   clearChargeTrackers();

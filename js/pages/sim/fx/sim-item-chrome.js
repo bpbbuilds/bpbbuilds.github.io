@@ -161,7 +161,7 @@ export function createSimItemChrome(opts) {
     if (liveWrap instanceof HTMLElement) {
       cd.classList.add('sim-cd-shade--live');
       const above = liveWrap.querySelector(
-        '.bpb-live__overlay, .bpb-live__glow, .bpb-live__holo',
+        '.bpb-live__overlay, .bpb-live__holo',
       );
       if (above) liveWrap.insertBefore(cd, above);
       else liveWrap.appendChild(cd);
@@ -320,6 +320,11 @@ export function createSimItemChrome(opts) {
   function cdFill(live, t, events, key) {
     if (!live) return { on: false, fill: 0 };
     if (t + 1e-6 < COMBAT_DELAY) return { on: false, fill: 0 };
+    const activationNeed = Number(live.activationNeed) || 0;
+    if (activationNeed > 0) {
+      const activationCount = Number(live.activationCount) || 0;
+      return { on: true, fill: Math.max(0, Math.min(1, activationCount / activationNeed)) };
+    }
     const period = Number(live.loopCd) || Number(live.cooldown) || 0;
     const trig = Number(live.triggerTime);
     if (!(period > 0) || period >= 500 || !Number.isFinite(trig) || trig >= 500) {

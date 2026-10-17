@@ -101,6 +101,13 @@ const ctx = {
   canAffect,
   rng: () => 0,
 };
+const progress = [];
+ctx.capturePieceSnapshot = (trackedPiece) => {
+  progress.push({
+    current: trackedPiece._goobertActs,
+    need: trackedPiece._goobertNeed,
+  });
+};
 const handler = getScriptHandler('steel_goobert');
 
 handler.onPrepare(piece, ctx);
@@ -110,6 +117,8 @@ assert.deepEqual(
   ['trigger'],
   'Goobert.gd subscribes only to primary can-activate targets; Steel secondary targets are damage-only',
 );
+assert.equal(piece._goobertNeed, 6, 'source P1 activation threshold is retained for the visual counter');
+assert.equal(piece._goobertActs, 0, 'Goobert visual counter starts empty');
 handler.onPeerActivated(piece, weapon, ctx);
 assert.equal(
   piece._goobertActs,
@@ -119,10 +128,16 @@ assert.equal(
 for (let i = 0; i < 5; i += 1) handler.onPeerActivated(piece, trigger, ctx);
 assert.equal(weapon.bonusDamage, 0, 'Goobert does not proc before the source activation threshold');
 assert.equal(player.block, 0, 'Goobert does not grant Block before the source activation threshold');
+assert.deepEqual(
+  progress.at(-1),
+  { current: 5, need: 6 },
+  'each primary activation snapshots Steel Goobert progress for the simulator cooldown visual',
+);
 
 handler.onPeerActivated(piece, trigger, ctx);
 assert.equal(weapon.bonusDamage, 2, 'source P2 bonus damage applies to the cached weapon');
 assert.equal(player.block, 16, 'source giveBlock uses the item Block value');
 assert.equal(events.at(-1)?.type, 'activate', 'Goobert activates after its effect');
+assert.deepEqual(progress.at(-1), { current: 0, need: 6 }, 'visual counter resets after the sixth activation');
 
 console.log('OK Steel Goobert source/parity smoke');
