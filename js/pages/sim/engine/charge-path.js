@@ -350,6 +350,7 @@ export function buildGeneratorChargePath(opts) {
  *   placement: { x?: number, y?: number, r?: number, key: string },
  *   startT: number,
  *   collisionCells: Cell[],
+ *   refCollision?: Cell,
  *   durPerTile?: number,
  *   cellPx?: number,
  *   startSize?: number,
@@ -362,7 +363,12 @@ export function buildScriptChargePath(opts) {
   const durPerTile = opts.durPerTile ?? BATTERY_DUR_PER_TILE;
   const collision = opts.collisionCells || [];
   if (collision.length < 2) return null;
-  const board = collisionCellsToBoard(collision, opts.placement, cellPx);
+  const board = collisionCellsToBoard(
+    collision,
+    opts.placement,
+    cellPx,
+    opts.refCollision || { x: -1, y: -1 },
+  );
   const duration = durPerTile * (board.length - 1);
   const waypoints = buildChargeWaypoints(board, duration);
   const schedule = chargeEnterSchedule(board.length, durPerTile);

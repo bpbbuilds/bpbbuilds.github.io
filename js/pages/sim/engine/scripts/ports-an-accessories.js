@@ -443,7 +443,7 @@ const manaOrbPort = {
   handlerId: 'mana_orb',
   family: 'unique',
   /** ManaOrb.onPrepare — reset before Mana Mastery combat-start bonus. */
-  onPreCombatStart(piece) {
+  onPrepare(piece) {
     piece._bonusBuffs = 0;
     piece._orbFired = false;
   },

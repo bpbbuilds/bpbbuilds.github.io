@@ -12194,9 +12194,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-mana-crystal-smoke.mjs",
+        "fixture": "Mana Crystal source four directional charge paths, lightning acceptance, exact Magic/non-Magic Mana grants, charge signal and activation ordering, target transition bookkeeping, and zero-safe Mana/duration parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -12232,9 +12238,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-mana-mastery-smoke.mjs",
+        "fixture": "Mana Mastery source Magic-linked preparation speed, global Mana Orb pre-combat buff amplification, Mana Orb preparation reset ordering, exact cooldown Mana, activation ordering, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

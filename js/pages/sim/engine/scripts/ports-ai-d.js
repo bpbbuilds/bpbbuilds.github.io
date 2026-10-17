@@ -14,7 +14,7 @@ import {
 } from '../buff-economy.js';
 import { applyHealEfficiency, applyUnhealing } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
-import { emitPathCharge } from '../charge-delivery.js';
+import { chargeEnterSchedule, buildScriptChargePath } from '../charge-path.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { rollPercent } from '../rng.js';
@@ -22,6 +22,7 @@ import { getStackAmount } from '../stacks.js';
 import { grantTimedSpeed } from '../timed-speed.js';
 import { giveTempMaxHp } from './ports-ap-start.js';
 import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -261,50 +262,134 @@ export const heartOfDarknessPort = {
   },
 };
 
-/**
- * ManaCrystal.gd — emitPathCharge; mana1 / mana2(magic) when charge enters a new peer.
- * @type {ScriptHandler}
- */
+const MANA_CRYSTAL_CHARGE_CELLS = [
+  [{ x: 0, y: 0 }, { x: -1, y: 0 }, { x: -2, y: 0 }, { x: -3, y: 0 }],
+  [{ x: 0, y: 0 }, { x: 0, y: -1 }, { x: 0, y: -2 }],
+  [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 3, y: 0 }],
+  [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }],
+];
+
+/** ManaCrystal.gd sendCharge for one of its four explicit directional paths. */
 function emitManaCrystalCharge(piece, ctx, speedFactor = 1) {
-  const { t, events, player } = ctx;
-  const mana1 = Math.max(1, Math.round(getPName(piece.params, 'mana1', getP1(piece.params, 1))));
-  const mana2 = Math.max(1, Math.round(getPName(piece.params, 'mana2', getP2(piece.params, 2))));
-  const durPerTile = getPName(piece.params, 'dur', getP3(piece.params, 2)) || 2;
-  /** @type {string | null} */
-  let lastKey = null;
-  emitPathCharge(piece, ctx, {
-    speedFactor,
-    durPerTile,
-    label: `${piece.name}: emitCharge`,
-    onCellEnter(target, step) {
-      if (!target) {
-        lastKey = null;
-        return;
+  const { t, events, player, graph, itemsById, pieces } = ctx;
+  const item = itemsById.get(piece.itemId);
+  const boardPiece = graph?.pieces?.get(piece.placementKey);
+  if (!item || !boardPiece) return;
+  const mana1 = Number(getPName(piece.params, 'mana1', getP1(piece.params, 1)));
+  const mana2 = Number(getPName(piece.params, 'mana2', getP2(piece.params, 2)));
+  const rawDur = Number(getPName(piece.params, 'dur', getP3(piece.params, 2)));
+  const durPerTile = Number.isFinite(rawDur) ? rawDur / Math.max(0.01, Number(speedFactor) || 1) : 2;
+  const actor = eventSideForPiece(piece);
+  const placement = { x: boardPiece.x, y: boardPiece.y, r: boardPiece.r, key: piece.placementKey };
+
+  for (let i = 0; i < MANA_CRYSTAL_CHARGE_CELLS.length; i += 1) {
+    const pathId = `mana-crystal:${piece.placementKey}:${t}:${i}`;
+    const path = buildScriptChargePath({
+      pathId,
+      item,
+      placement,
+      startT: t,
+      collisionCells: MANA_CRYSTAL_CHARGE_CELLS[i],
+      refCollision: { x: 0, y: 0 },
+      durPerTile,
+    });
+    if (!path) continue;
+    for (const cell of path.cells) {
+      const targetKey = graph.filled.get(cell.cell) || null;
+      cell.targetKey = targetKey && targetKey !== piece.placementKey ? targetKey : null;
+    }
+    events.push({
+      t,
+      type: 'charge',
+      actor,
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `${piece.name}: emitCharge`,
+      meta: { category: 'charge', phase: 'start', pathId, chargePath: path, handler: 'mana_crystal' },
+    });
+
+    let lastKey = null;
+    for (const step of chargeEnterSchedule(path.cells.length, durPerTile)) {
+      const cell = path.cells[step.cellIndex];
+      const targetKey = cell?.targetKey || null;
+      const target = targetKey ? pieces?.find((candidate) => candidate.placementKey === targetKey) : null;
+      const enterT = t + (step.enterT || 0);
+      if (targetKey !== lastKey) {
+        if (lastKey) {
+          const previous = pieces?.find((candidate) => candidate.placementKey === lastKey);
+          if (previous) {
+            previous.pendingChargeLeaves = previous.pendingChargeLeaves || [];
+            previous.pendingChargeLeaves.push({
+              at: enterT,
+              meta: { pathId, cellIndex: step.cellIndex, emitterKey: piece.placementKey },
+            });
+          }
+        }
+        if (target) {
+          target.pendingCharges = target.pendingCharges || [];
+          target.pendingCharges.push({
+            at: enterT,
+            meta: { pathId, cellIndex: step.cellIndex, emitterKey: piece.placementKey },
+          });
+          const targetItem = itemsById.get(target.itemId);
+          const amount = itemHasType(targetItem, 'magic') ? mana2 : mana1;
+          if (Number.isFinite(amount)) {
+            grantStacks(player, 'mana', amount, {
+              originKey: piece.placementKey,
+              originId: piece.itemId,
+            });
+            if (amount) {
+              events.push({
+                t: enterT,
+                type: 'buff',
+                target: actor,
+                amount,
+                label: `${piece.name}: +${amount} Mana (${target.name})`,
+                meta: { category: 'buff', stack: 'mana', script: true, handler: 'mana_crystal' },
+              });
+            }
+          }
+        }
+        lastKey = targetKey;
       }
-      const key = target.placementKey;
-      if (key === lastKey) return;
-      lastKey = key;
-      const tgtItem = ctx.itemsById.get(target.itemId);
-      const amt = itemHasType(tgtItem, 'magic') ? mana2 : mana1;
-      grantStacks(player, 'mana', amt, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
       events.push({
-        t: t + (step.enterT || 0),
-        type: 'buff',
-        target: 'player',
-        amount: amt,
-        label: `${piece.name}: +${amt} Mana (${target.name})`,
+        t: enterT,
+        type: 'charge',
+        actor,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: target ? `${piece.name}: charge → ${target.name}` : `${piece.name}: charge cell`,
         meta: {
-          category: 'buff',
-          stack: 'mana',
-          script: true,
+          category: 'charge',
+          phase: step.cellIndex >= path.cells.length ? 'end' : 'cell',
+          pathId,
+          cellIndex: step.cellIndex,
+          cell: cell?.cell,
+          targetKey: targetKey || undefined,
           handler: 'mana_crystal',
         },
       });
-    },
-  });
+    }
+    if (lastKey) {
+      const previous = pieces?.find((candidate) => candidate.placementKey === lastKey);
+      if (previous) {
+        previous.pendingChargeLeaves = previous.pendingChargeLeaves || [];
+        previous.pendingChargeLeaves.push({
+          at: t + path.duration,
+          meta: { pathId, cellIndex: path.cells.length, emitterKey: piece.placementKey },
+        });
+      }
+    }
+    events.push({
+      t: t + path.duration,
+      type: 'charge',
+      actor,
+      itemId: piece.itemId,
+      placementKey: piece.placementKey,
+      label: `${piece.name}: charge end`,
+      meta: { category: 'charge', phase: 'end', pathId, handler: 'mana_crystal' },
+    });
+  }
 }
 
 export const manaCrystalPort = {
@@ -315,8 +400,7 @@ export const manaCrystalPort = {
     emitManaCrystalCharge(piece, ctx, speedFactor);
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'mana_crystal', `Accessory: ${piece.name}`);
-    emitManaCrystalCharge(piece, ctx);
+    manaCrystalPort.emitCharge(piece, ctx);
     ctx.bus?.emit?.('charge_emitted', { piece, t: ctx.t });
     return true;
   },

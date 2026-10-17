@@ -6635,4 +6635,14 @@ None.
 
 ### 2026-10-16 Simulator item parity continuation 288 - in progress
 
-- Codex owns the next retained Mana Crystal and Mana Mastery fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mana-crystal-smoke.mjs`, `scripts/sim-mana-mastery-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+- Codex owns the next retained Mana Crystal and Mana Mastery fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, the shared charge-path helper and Mana Orb lifecycle dependency, `scripts/sim-mana-crystal-smoke.mjs`, `scripts/sim-mana-mastery-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 288 - complete
+
+- Codex repaired Mana Crystal to mirror the source four explicit directional charge paths, correct source-relative coordinates, lightning acceptance, exact Magic/non-Magic Mana grants, per-charge target transitions, charge signal and activation ordering, and explicit zero Mana/duration values. Mana Mastery now mirrors source Magic-linked preparation speed, global Mana Orb pre-combat bonus buffs, exact cooldown Mana, activation ordering, and zero-safe parameters. Mana Orb's reset now runs in `onPrepare`, matching the source lifecycle so Mana Mastery bonuses cannot be cleared afterward.
+- Added `scripts/sim-mana-crystal-smoke.mjs` and `scripts/sim-mana-mastery-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 435 / 519 verified item rows. Focused pair tests, changed-module syntax, and generated artifact freshness checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 435 verified, 62 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Mananana and Manathirst; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 289 - in progress
+
+- Codex owns the next retained Mananana and Manathirst fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mananana-smoke.mjs`, `scripts/sim-manathirst-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

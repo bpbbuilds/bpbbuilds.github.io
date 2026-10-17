@@ -1068,6 +1068,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  mana_crystal: {
+    focusedRegression: 'scripts/sim-mana-crystal-smoke.mjs',
+    fixture: 'Mana Crystal source four directional charge paths, lightning acceptance, exact Magic/non-Magic Mana grants, charge signal and activation ordering, target transition bookkeeping, and zero-safe Mana/duration parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  mana_mastery: {
+    focusedRegression: 'scripts/sim-mana-mastery-smoke.mjs',
+    fixture: 'Mana Mastery source Magic-linked preparation speed, global Mana Orb pre-combat buff amplification, Mana Orb preparation reset ordering, exact cooldown Mana, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

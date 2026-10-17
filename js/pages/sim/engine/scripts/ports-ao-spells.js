@@ -216,23 +216,25 @@ const bookOfNaturePort = bookPort('book_of_nature', 'nature', (piece, ctx) => {
 const manaMasteryPort = {
   handlerId: 'mana_mastery',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    // ManaMastery.onPreCombatStart — after ManaOrb.onPrepare reset (sim onPreCombatStart).
-    const bonus = Math.max(0, Math.round(getPName(piece.params, 'buffs', 20)));
-    if (bonus > 0) {
-      for (const o of ctx.pieces || []) {
-        if (o.itemId !== 'mana_orb' || !o.alive) continue;
-        if (o.side !== piece.side) continue;
-        o._bonusBuffs = (Number(o._bonusBuffs) || 0) + bonus;
-      }
-    }
+  onPrepare(piece, ctx) {
     const n = linked(ctx, piece).filter((o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'magic'),
     ).length;
-    if (n) addSpeed(piece, (getPName(piece.params, 'speed', 8) / 100) * n);
+    const speed = Number(getPName(piece.params, 'speed', 8)) / 100;
+    if (n && Number.isFinite(speed)) addSpeed(piece, speed * n);
+  },
+  onPreCombatStart(piece, ctx) {
+    const bonus = Number(getPName(piece.params, 'buffs', 20));
+    if (!Number.isFinite(bonus)) return;
+    for (const o of ctx.pieces || []) {
+      if (o.itemId !== 'mana_orb' || !o.alive) continue;
+      if (o.side !== piece.side) continue;
+      o._bonusBuffs = (Number(o._bonusBuffs) || 0) + bonus;
+    }
   },
   onCooldownEffect(piece, ctx) {
-    grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getPName(piece.params, 'mana', 2))), {});
+    const mana = Number(getPName(piece.params, 'mana', 2));
+    if (Number.isFinite(mana)) grantStacks(ctx.player, 'mana', mana, {});
     pushActivate(piece, ctx, 'mana_mastery', `Skill: ${piece.name}`);
     return true;
   },
