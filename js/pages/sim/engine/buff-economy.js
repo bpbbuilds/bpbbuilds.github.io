@@ -405,7 +405,10 @@ export function cleanseRandomDebuffs(actor, num, rng, opts = {}) {
     const pool = keys.filter((k) => getStackAmount(actor, /** @type {any} */ (k)) > 0);
     if (!pool.length) break;
     const choice = pool[Math.floor(rng() * pool.length)] || pool[0];
-    const { spent } = spendStacks(actor, choice, 1, opts);
+    // Item.cleanseRandomDebuffs calls Character.loseStacks without the
+    // `used` flag, so cleanse protection must remain active. Mark the
+    // operation for logging while preserving Buff.gd's protection branch.
+    const { spent } = spendStacks(actor, choice, 1, { ...opts, rng, cleanse: true });
     if (spent > 0) cleansed[choice] = (cleansed[choice] || 0) + spent;
   }
   return cleansed;

@@ -59,6 +59,8 @@ export const holyArmorPort = {
     const spent = spendStacks(player, 'poison', n, {
       originKey: piece.placementKey,
       originId: piece.itemId,
+      cleanse: true,
+      rng: ctx.rng,
     });
     if (spent.spent > 0) {
       events.push({

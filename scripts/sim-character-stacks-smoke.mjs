@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import { createActor } from '../js/pages/sim/engine/actor.js';
 import { gainStacks } from '../js/pages/sim/engine/stacks.js';
 import {
+  cleanseRandomDebuffs,
   grantTemporaryStacks,
   spendStacks,
   stealStack,
@@ -49,6 +50,12 @@ assert.match(
   buffSource,
   /if permanentStacks >= amount:[\s\S]*?farthestTimeout[\s\S]*?temporaryStacks\.remove\(farthestIndex\)/,
   'Buff.gd removes permanent stacks before farthest-expiry temporary stacks',
+);
+const itemSource = fs.readFileSync('tools/game-extract-full/Items/Item.gd', 'utf8');
+assert.match(
+  itemSource,
+  /func cleanseRandomDebuffs\([\s\S]*?character\(\)\.loseStacks\(debuff, cleansedDebuffs\[debuff\], self, triggerEvent\)/,
+  'Item.gd cleanseRandomDebuffs uses normal protected loss semantics',
 );
 
 // Permanent and timed stacks keep independent accounting, including partial
@@ -118,6 +125,26 @@ assert.match(
   assert.equal(result.resisted, 1, 'per-debuff resist stack absorbs one debuff stack');
   assert.equal(result.gained, 1, 'remaining debuff stack is applied');
   assert.equal(actor.stackResistStacks.poison, 0, 'per-debuff resist stack is consumed');
+}
+
+// Item.cleanseRandomDebuffs uses loseStacks (not useStacks), so cleanse
+// protection must block the removal and preserve the debuff.
+{
+  const actor = createActor('player');
+  gainStacks(actor, 'poison', 1);
+  actor.debuffCleanseProtectChance = 100;
+  const cleansed = cleanseRandomDebuffs(actor, 1, () => 0);
+  assert.deepEqual(cleansed, {}, 'cleanse protection blocks a random debuff cleanse');
+  assert.equal(actor.stacks.poison, 1, 'protected debuff remains intact');
+
+  const unprotected = createActor('player');
+  gainStacks(unprotected, 'poison', 1);
+  assert.deepEqual(
+    cleanseRandomDebuffs(unprotected, 1, () => 0),
+    { poison: 1 },
+    'an unprotected random debuff cleanse still removes one stack',
+  );
+  assert.equal(unprotected.stacks.poison, 0, 'unprotected debuff is removed');
 }
 
 // Character.buffProtectStacks protects non-used buff removals, including

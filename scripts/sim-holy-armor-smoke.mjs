@@ -62,6 +62,7 @@ const ctx = {
   graph,
   itemsById: byId,
   canAffect: { rulesById: rules.byId },
+  rng: () => 0,
 };
 const handler = getScriptHandler('holy_armor');
 handler.onCombatStart(armor, ctx);
@@ -78,6 +79,18 @@ assert.equal(player.stacks.poison, 3, 'Holy Armor cleanses exactly source p2 Poi
 const cleanseIndex = events.findIndex((event) => event.type === 'buff' && event.meta?.stack === 'poison' && event.amount === -2);
 const cooldownActivation = events.findIndex((event, index) => index > startActivation && event.type === 'activate' && event.itemId === armor.itemId);
 assert.ok(cleanseIndex >= 0 && cooldownActivation > cleanseIndex, 'Holy Armor activates after source cleanse');
+
+const protectedPlayer = createActor('player', { maxHp: 200 });
+const protectedCtx = {
+  ...ctx,
+  player: protectedPlayer,
+  events: [],
+  t: 12,
+};
+gainStacks(protectedPlayer, 'poison', 2);
+protectedPlayer.debuffCleanseProtectChance = 100;
+handler.onCooldownEffect(armor, protectedCtx);
+assert.equal(protectedPlayer.stacks.poison, 2, 'Holy Armor cleanse respects debuff cleanse protection');
 
 const zero = piece('holy_armor', 'zero-armor', {
   blockGrant: 0,
