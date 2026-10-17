@@ -34,6 +34,7 @@ import { createBalancedRng } from './balanced-rng.js';
  *   maxStamina: number,
  *   stamina: number,
  *   temporaryMaxStamina?: number,
+ *   allowStaminaOverflow?: boolean,
  *   staminaRegen: number,
  *   block: number,
  *   damageReduction: number,
@@ -115,6 +116,7 @@ export function createActor(id, opts = {}) {
     maxStamina,
     stamina: maxStamina,
     temporaryMaxStamina: 0,
+    allowStaminaOverflow: false,
     baseStaminaRegen: staminaRegen,
     staminaRegen,
     block,
@@ -323,13 +325,24 @@ export function tryUseStamina(actor, amount) {
   const cost = Math.max(0, Number(amount) || 0);
   if (cost <= 0) return 'ok';
   // Character.useStamina → character_pre_use_stamina (Heroic Potion, …)
+  // Character.gainStamina intentionally skips its cap during this callback;
+  // recovery items can therefore rescue a use whose cost exceeds max stamina.
+  actor.allowStaminaOverflow = true;
   actor._combatBus?.emit?.('pre_use_stamina', {
     amount: cost,
     actor,
     t: actor._simT,
   });
-  if (actor.stamina + 1e-9 < cost) return 'starve';
+  actor.allowStaminaOverflow = false;
+  if (actor.stamina + 1e-9 < cost) {
+    actor.stamina = Math.min(
+      effectiveMaxStamina(actor),
+      Math.max(0, Number(actor.stamina) || 0),
+    );
+    return 'starve';
+  }
   actor.stamina = Math.max(0, actor.stamina - cost);
+  actor.stamina = Math.min(effectiveMaxStamina(actor), actor.stamina);
   actor._combatBus?.emit?.('stamina_used', {
     amount: cost,
     actor,
@@ -429,7 +442,10 @@ export function gainMaxStaminaTemporary(actor, amount, opts = {}) {
 export function giveStamina(actor, amount) {
   const a = Number(amount) || 0;
   if (!a) return;
-  actor.stamina = Math.min(effectiveMaxStamina(actor), actor.stamina + a);
+  const next = (Number(actor.stamina) || 0) + a;
+  actor.stamina = actor.allowStaminaOverflow
+    ? next
+    : Math.min(effectiveMaxStamina(actor), next);
 }
 
 /**

@@ -1,13 +1,11 @@
 {
-  "builtAt": "2026-10-16T03:37:43.962Z",
-  "scanned": 534,
+  "builtAt": "2026-10-17T06:38:58.060Z",
+  "scanned": 525,
   "mapSize": 525,
   "mapGenericCount": 0,
-  "silentGenericCount": 1,
-  "missingHandlerCount": 8,
+  "silentGenericCount": 0,
+  "missingHandlerCount": 0,
   "autoNotPort": 0,
   "documentedBasicCd": [],
-  "silentSample": [
-    "dragonegg handlerId=pet_strike"
-  ]
+  "silentSample": []
 }

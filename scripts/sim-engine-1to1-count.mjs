@@ -31,6 +31,21 @@ const SKIP_BASE = new Set([
   'gem',
 ]);
 
+// The extractor also indexes shared scene components and abstract item
+// classes. They are not standalone combat entries and must not be judged as
+// generic simulator handlers.
+const NON_COMBAT_SUPPORT_IDS = new Set([
+  'bagborder',
+  'chesspiece',
+  'dragonegg',
+  'forestfriend',
+  'gemsocket',
+  'goldcounter',
+  'itempushzone',
+  'rotationspring',
+  'socketsnode',
+]);
+
 /** Census `trueWeaponCdTwins` — none kept on bindPattern `basic_cd`. */
 const DOCUMENTED_BASIC_CD = new Set([]);
 
@@ -160,7 +175,7 @@ const missing = [];
 let scanned = 0;
 
 for (const id of [...ids].sort()) {
-  if (SKIP_BASE.has(id)) continue;
+  if (SKIP_BASE.has(id) || NON_COMBAT_SUPPORT_IDS.has(id)) continue;
   scanned += 1;
   const h = getScriptHandler(id);
   if (!h) {

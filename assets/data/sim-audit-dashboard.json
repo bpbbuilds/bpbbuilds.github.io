@@ -6,7 +6,7 @@
     "itemLedgerSha256": "5c8ddac1e269863a1001c879b9a6ca4e918910f9174ac7b73468a7558665185f",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
-    "systemSurfaceSha256": "e2eedae739d51205700fdc55bbeadfab758b7a99d52bbeacabe5fbf6679bf671",
+    "systemSurfaceSha256": "f70cb779e020e7c9a2c1f15967d9e35df48e59374ad898fc5753df05a49dc309",
     "systemExtractFiles": {
       "Core/Buff.gd": "3efabb72eb0b337e30ebc924347aba40bd1039a3c5f718b761b0ee78b48ab8bb",
       "Core/Character.gd": "dc372965eaa048657caa1646d70aba85ff9b4b9677565eaa480bc195de027496",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 524,
+    "verified_1to1": 525,
     "confirmed_gap": 0,
-    "evidence_pending": 1,
+    "evidence_pending": 0,
     "no_independent_combat": 15
   },
   "items": [
@@ -23932,9 +23932,9 @@
       "id": "character-stamina",
       "name": "character stamina",
       "category": "state",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is partial, but the retained 1:1 proof is incomplete.",
-      "sourceStatus": "partial",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
+      "sourceStatus": "implemented",
       "source": "Core/Character.gd",
       "functions": [
         "gainStamina",
@@ -23949,8 +23949,23 @@
           "js/pages/sim/engine/actor-stats.js"
         ]
       },
-      "evidence": null,
-      "knownDelta": "Core stamina exists; cancellation, timer cadence, and all maximum-change paths need invariant tests."
+      "evidence": {
+        "focusedRegression": "scripts/sim-character-stamina-smoke.mjs",
+        "fixture": "Character.gd stamina source checks plus runtime assertions for pre-use overflow rescue, strict insufficient use, actual drain amount, temporary maximum fill/no-fill, elapsed regeneration, and inventory maximum recalculation.",
+        "projections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
+      "knownDelta": "The simulator matches source stamina gain/use/drain boundaries, pre-use overflow rescue, temporary maximum fill behavior, regeneration clamping, and Stamina Sack maximum recalculation."
     },
     {
       "scope": "mechanic",

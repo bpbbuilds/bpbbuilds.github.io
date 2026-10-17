@@ -7128,3 +7128,8 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 345 - in progress
 
 - Codex owns the final partial shared surface, `character-stamina`, for source-backed stamina gain/use/drain, temporary maximum stamina, regeneration, and cancellation/invariant review. Planned paths are limited to simulator actor/stamina modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 345 - complete
+
+- Codex repaired character-stamina parity: pre-use callbacks now get the extracted temporary overflow window, so recovery items can rescue a cost above the normal cap; successful uses clamp after spending, insufficient uses clamp without spending, and ordinary gain remains capped. Temporary maximum fill/no-fill, elapsed regeneration, actual drain amounts, and Stamina Sack recalculation are covered by `scripts/sim-character-stamina-smoke.mjs` alongside the existing stamina-item regressions.
+- Marked `character-stamina` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and repaired the 1:1 guard to exclude extracted non-combat support classes/components from its standalone combat census. Shared totals are now 21 implemented and 0 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. Focused parity, coverage-honesty, engine-count, syntax, and freshness checks pass. No legal, authentication, database, storage, or security behavior changed.

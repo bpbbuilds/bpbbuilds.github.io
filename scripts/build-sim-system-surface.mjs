@@ -150,8 +150,16 @@ const SURFACE = [
     source: 'Core/Character.gd',
     functions: ['gainStamina', 'useStamina', 'drainStamina', 'gainMaxStaminaTemporary', 'recalculateMaxStamina'],
     simOwners: ['js/pages/sim/engine/actor.js', 'js/pages/sim/engine/actor-stats.js'],
-    disposition: 'partial',
-    note: 'Core stamina exists; cancellation, timer cadence, and all maximum-change paths need invariant tests.',
+    disposition: 'implemented',
+    note: 'The simulator matches source stamina gain/use/drain boundaries, pre-use overflow rescue, temporary maximum fill behavior, regeneration clamping, and Stamina Sack maximum recalculation.',
+    evidence: {
+      focusedRegression: 'scripts/sim-character-stamina-smoke.mjs',
+      fixture: 'Character.gd stamina source checks plus runtime assertions for pre-use overflow rescue, strict insufficient use, actual drain amount, temporary maximum fill/no-fill, elapsed regeneration, and inventory maximum recalculation.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'character-status',
