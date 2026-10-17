@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "d6bc668168a64bcf2880479f967bd4c39e44e0cbcd5d0db07798a6978cb60fd1",
+    "dashboardSha256": "facdee0df5a6a818b9269e82b18547165c390a0ed9a0f3b458ec7e718f535e78",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 391,
+    "verified_1to1": 393,
     "confirmed_gap": 7,
-    "evidence_pending": 106,
+    "evidence_pending": 104,
     "no_independent_combat": 15
   },
   "byId": {
@@ -251,8 +251,8 @@
     "ice_armor": "verified_1to1",
     "ice_dragon": "verified_1to1",
     "ice_flower": "verified_1to1",
-    "inner_power": "evidence_pending",
-    "investment_opportunity": "evidence_pending",
+    "inner_power": "verified_1to1",
+    "investment_opportunity": "verified_1to1",
     "joker": "evidence_pending",
     "just_stats": "evidence_pending",
     "jynx_staff": "evidence_pending",

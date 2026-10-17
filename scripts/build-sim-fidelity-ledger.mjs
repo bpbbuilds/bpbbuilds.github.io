@@ -1664,6 +1664,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  inner_power: {
+    focusedRegression: 'scripts/sim-inner-power-smoke.mjs',
+    fixture: 'Inner Power source prepare-before-start listeners, cooldown/heal-or-lifesteal target filtering, exact Lucky/Empower grants, capped per-item heal/speed modifiers, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  investment_opportunity: {
+    focusedRegression: 'scripts/sim-investment-opportunity-smoke.mjs',
+    fixture: 'Investment Opportunity source prepare-time usesBuffs filtering, used-spend origin matching, fractional max-health accumulation, current-health ordering, mini activation, and zero-safe max-health parameter.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

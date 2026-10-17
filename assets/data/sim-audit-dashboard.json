@@ -3,7 +3,7 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "f26a4e2346ad8d14cd5f7c4de8ca43a56d4b19269210c62acd2cb7ad9b025fc0",
+    "itemLedgerSha256": "0a28a6241618e49414d7df75c3227261da3aaa878b16ea4c70485b2bc00afd3e",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
     "systemSurfaceSha256": "79e1178a7ae154e964452b8a7fada954ec8e043c0756f30c20fc35ec6dea6778",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 391,
+    "verified_1to1": 393,
     "confirmed_gap": 8,
-    "evidence_pending": 126,
+    "evidence_pending": 124,
     "no_independent_combat": 15
   },
   "items": [
@@ -10941,8 +10941,8 @@
       "name": "Inner Power",
       "category": "Skill",
       "class": "Ranger",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -10968,9 +10968,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-inner-power-smoke.mjs",
+        "fixture": "Inner Power source prepare-before-start listeners, cooldown/heal-or-lifesteal target filtering, exact Lucky/Empower grants, capped per-item heal/speed modifiers, activation ordering, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
@@ -10980,8 +10986,8 @@
       "name": "Investment Opportunity",
       "category": "Skill",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -11006,9 +11012,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-investment-opportunity-smoke.mjs",
+        "fixture": "Investment Opportunity source prepare-time usesBuffs filtering, used-spend origin matching, fractional max-health accumulation, current-health ordering, mini activation, and zero-safe max-health parameter.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },

@@ -12,7 +12,7 @@ import {
   DEBUFF_KEYS,
 } from '../buff-economy.js';
 import { grantStun, healActor, tryUseStamina, gainMaxStaminaTemporary, giveStamina } from '../actor.js';
-import { applyEffectDmgFactor, applyHealEfficiency } from '../actor-stats.js';
+import { applyEffectDmgFactor } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
 import { modifiedParamValue } from '../placement-instance.js';
@@ -436,43 +436,80 @@ export const hyperHedgehogPort = {
 };
 
 /** InnerPower.gd */
+function innerPowerTargets(ctx, piece) {
+  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+  const hasExtractedRules = Boolean(ctx.canAffect?.rulesById);
+  return (ctx.pieces || []).filter((other) => {
+    if (!links.some((link) => link.key === other.placementKey)) return false;
+    // When extracted rules are loaded, affectedTargets already evaluated the
+    // source's exact `hasCooldown() or canHealOrLifesteal()` predicate.
+    if (hasExtractedRules) return true;
+    const item = ctx.itemsById.get(other.itemId) || other;
+    const cooldown = Number(item.cooldown ?? other.cooldown);
+    const hasCooldown = cooldown > 0 && cooldown < 500;
+    const params = item.params || other.params;
+    const canHealOrLifesteal = Boolean(
+      params && (params.heal != null || params.lifesteal != null),
+    ) || itemHasType(item, 'lifesteal') || /<Heal>|<Lifesteal>|lifesteal/i.test(String(item.effect || ''));
+    return hasCooldown || canHealOrLifesteal;
+  });
+}
+
+function changeInnerPowerHealAmp(piece, amount) {
+  if (!amount) return;
+  piece.paramMult = { ...(piece.paramMult || {}) };
+  for (const key of ['heal', 'lifesteal']) {
+    const current = Number(piece.paramMult[key]);
+    piece.paramMult[key] = (Number.isFinite(current) && current !== 0 ? current : 1) + amount;
+  }
+}
+
 /** @type {ScriptHandler} */
 export const innerPowerPort = {
   handlerId: 'inner_power',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
-    const luck = Math.max(1, Math.round(getPName(piece.params, 'lucky', getP1(piece.params, 2))));
-    const emp = Math.max(1, Math.round(getPName(piece.params, 'empower', getP2(piece.params, 1))));
-    grantStacks(ctx.player, 'lucky', luck, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    grantStacks(ctx.player, 'empower', emp, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
+  onPrepare(piece, ctx) {
     piece._innerHealAmp = 0;
     piece._innerSpeed = 0;
-    const maxSpeed = getPName(piece.params, 'maxspeed', 0.5);
+    const healAmpPerLuck = getPName(piece.params, 'healamp', getP3(piece.params, 2)) / 100;
+    const speedPerEmpower = getPName(piece.params, 'speed', getP5(piece.params, 2)) / 100;
+    const healAmpMax = getPName(piece.params, 'max1', getP4(piece.params, 100)) / 100;
+    const speedMax = getPName(piece.params, 'max2', getP6(piece.params, 100)) / 100;
     onBuffChanged(ctx.player, (ch) => {
-      if (ch.stack === 'lucky' && ch.amount > 0) {
-        piece._innerHealAmp = (piece._innerHealAmp || 0) + ch.amount * 0.05;
-        applyHealEfficiency(ctx.player, ch.amount * 0.05, ctx, piece);
+      if (ch.stack === 'lucky' && ch.amount) {
+        const before = Math.min(piece._innerHealAmp, healAmpMax);
+        piece._innerHealAmp += ch.amount * healAmpPerLuck;
+        const amount = Math.min(piece._innerHealAmp, healAmpMax) - before;
+        if (amount) {
+          for (const other of innerPowerTargets(ctx, piece)) changeInnerPowerHealAmp(other, amount);
+        }
       }
-      if (ch.stack === 'empower' && ch.amount > 0) {
-        const step = 0.05 * ch.amount;
-        const room = Math.max(0, maxSpeed - (piece._innerSpeed || 0));
-        const apply = Math.min(step, room);
-        if (apply > 0) {
-          const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-          for (const other of ctx.pieces || []) {
-            if (!links.some((l) => l.key === other.placementKey)) continue;
-            addSpeed(other, apply);
-          }
-          piece._innerSpeed = (piece._innerSpeed || 0) + apply;
+      if (ch.stack === 'empower' && ch.amount) {
+        const before = Math.min(piece._innerSpeed, speedMax);
+        piece._innerSpeed += ch.amount * speedPerEmpower;
+        const amount = Math.min(piece._innerSpeed, speedMax) - before;
+        if (amount) {
+          for (const other of innerPowerTargets(ctx, piece)) addSpeed(other, amount);
         }
       }
     });
+  },
+  onCombatStart(piece, ctx) {
+    const luck = Math.trunc(getPName(piece.params, 'luck', getP1(piece.params, 2)));
+    const emp = Math.trunc(getPName(piece.params, 'empower', getP2(piece.params, 1)));
+    if (luck) {
+      grantStacks(ctx.player, 'lucky', luck, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+    }
+    if (emp) {
+      grantStacks(ctx.player, 'empower', emp, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+    }
+    pushActivate(piece, ctx, 'inner_power', `Skill: ${piece.name}`);
   },
 };
 

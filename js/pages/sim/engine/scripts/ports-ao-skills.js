@@ -17,6 +17,7 @@ import { modifiedParamValue } from '../placement-instance.js';
 import { addAccuracy, addBonusDamageFactor, addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
+import { giveTempMaxHp } from './ports-ap-start.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { rollPercent } from '../rng.js';
 import { isBagLike } from '../item-kind.js';
@@ -254,13 +255,46 @@ const heartOfTheCardsPort = {
 const investmentOpportunityPort = {
   handlerId: 'investment_opportunity',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const keys = new Set(linked(ctx, piece).map((o) => o.placementKey));
+  onPrepare(piece, ctx) {
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    const hasExtractedRules = Boolean(ctx.canAffect?.rulesById);
+    const keys = new Set((ctx.pieces || []).filter((other) => {
+      const link = links.find((candidate) => candidate.key === other.placementKey);
+      if (!link) return false;
+      // With extracted rules, affectedTargets already evaluated source
+      // `usesBuffs()`. The fallback keeps isolated regressions source-faithful.
+      if (hasExtractedRules) return true;
+      const item = ctx.itemsById.get(other.itemId) || other;
+      return other.usesBuffs === true || item.usesBuffs === true ||
+        Boolean(ctx.canAffect?.usesBuffsIds?.has?.(other.itemId));
+    }).map((other) => other.placementKey));
+    piece._investmentAffectedKeys = keys;
+    piece._investmentHealthAcc = 0;
     onBuffChanged(ctx.player, (ch) => {
-      if (!(ch.amount < 0) || !ch.originKey || !keys.has(ch.originKey)) return;
-      const hp = Math.max(1, Math.round(Math.abs(ch.amount) * getPName(piece.params, 'maxhealth', 2)));
-      ctx.player.maxHp += hp;
-      ctx.player.hp = Math.min(ctx.player.maxHp, ctx.player.hp + hp);
+      if (!(ch.amount < 0) || !ch.used || !ch.originKey || !keys.has(ch.originKey)) return;
+      const maxHealth = modifiedParamValue(
+        piece,
+        getPName(piece.params, 'maxhealth', getP2(piece.params, 2)),
+        'maxhealth',
+      );
+      piece._investmentHealthAcc += Math.abs(ch.amount) * maxHealth;
+      const health = Math.round(piece._investmentHealthAcc);
+      piece._investmentHealthAcc -= health;
+      const currentT = Number(ctx.player._simT);
+      const reactionCtx = {
+        ...ctx,
+        t: Number.isFinite(currentT) ? currentT : ctx.t,
+      };
+      giveTempMaxHp(piece, reactionCtx, 'investment_opportunity', health);
+      ctx.events.push({
+        t: reactionCtx.t,
+        type: 'info',
+        actor: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: mini activate`,
+        meta: { category: 'system', script: true, handler: 'investment_opportunity', miniActivate: true },
+      });
     });
   },
 };
