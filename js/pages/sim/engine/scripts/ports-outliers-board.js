@@ -167,27 +167,26 @@ export const springLoaderPort = {
       if (!links.some((l) => l.key === other.placementKey)) continue;
       if (slow) addSpeed(other, -slow);
     }
-  },
-  onCooldownEffect(piece, ctx) {
-    const { t, events, graph, itemsById, canAffect, pieces } = ctx;
-    pushActivate(piece, ctx, 'spring_loader', `Accessory: ${piece.name}`);
-    const speed1 = getPName(piece.params, 'speed1', getP1(piece.params, 10)) / 100;
-    const speed2 = getPName(piece.params, 'speed2', getP2(piece.params, 15)) / 100;
-    const adv = Math.max(0, getPName(piece.params, 'cd', getP3(piece.params, 1)));
-    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
+    },
+    onCooldownEffect(piece, ctx) {
+      const { t, events, graph, itemsById, canAffect, pieces } = ctx;
+      const speed1 = getPName(piece.params, 'speed1', getP1(piece.params, 10)) / 100;
+      const speed2 = getPName(piece.params, 'speed2', getP3(piece.params, 35)) / 100;
+      const adv = Math.max(0, getPName(piece.params, 'cdadvance', getP2(piece.params, 2)));
+      const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
       addSpeed(other, speed1 + speed2);
       if (adv > 0) advanceCooldownSeconds(other, adv, ctx);
     }
     events.push({
-      t: t + 0.004,
-      type: 'info',
-      label: `${piece.name}: spring pulse`,
-      meta: { category: 'adjacency', script: true, handler: 'spring_loader' },
-    });
-    afterEffectFinished(piece, ctx, 'spring_loader', { activate: false });
-    return true;
+        t: t + 0.004,
+        type: 'info',
+        label: `${piece.name}: spring pulse`,
+        meta: { category: 'adjacency', script: true, handler: 'spring_loader' },
+      });
+      afterEffectFinished(piece, ctx, 'spring_loader', { label: `Accessory: ${piece.name}` });
+      return true;
   },
 };
 

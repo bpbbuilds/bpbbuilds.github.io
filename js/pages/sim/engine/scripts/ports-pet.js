@@ -26,14 +26,25 @@ import { stealLife } from './handlers.js';
 export const squirrelPort = {
   handlerId: 'squirrel',
   family: 'pet_like',
+  onCombatStart(piece, ctx) {
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    let affected = 0;
+    for (const link of links) {
+      const item = ctx.pieces?.find((other) => other.placementKey === link.key);
+      const catalog = ctx.itemsById.get(item?.itemId);
+      if (itemHasType(catalog, 'pet') || itemHasType(catalog, 'food')) affected += 1;
+    }
+    const speed = getPName(piece.params, 'petspeed', getP1(piece.params, 0)) / 100;
+    if (affected && speed) addSpeed(piece, affected * speed);
+  },
   onCooldownEffect(piece, ctx) {
     const { t, player, dummy, events, rng } = ctx;
-    pushActivate(piece, ctx, 'squirrel', `Pet: ${piece.name}`);
     const stolen = stealRandomBuff(dummy, player, 1, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     pushBuffGrants(events, piece, player, t, 'squirrel', stolen);
+    pushActivate(piece, ctx, 'squirrel', `Pet: ${piece.name}`);
     return true;
   },
 };

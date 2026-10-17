@@ -18810,9 +18810,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-spring-loader-smoke.mjs",
+        "fixture": "Spring Loader source linked cooldown-target speed reduction, exact speed pulse, named cdadvance cooldown advancement, activation ordering, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -18846,9 +18852,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-squirrel-smoke.mjs",
+        "fixture": "Squirrel inherited Forest Friend Pet/Food speed, source one-stack buff steal, activation ordering, linked target filtering, and exact parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

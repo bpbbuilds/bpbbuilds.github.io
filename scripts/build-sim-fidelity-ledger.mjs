@@ -214,6 +214,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  spring_loader: {
+    focusedRegression: 'scripts/sim-spring-loader-smoke.mjs',
+    fixture: 'Spring Loader source linked cooldown-target speed reduction, exact speed pulse, named cdadvance cooldown advancement, activation ordering, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  squirrel: {
+    focusedRegression: 'scripts/sim-squirrel-smoke.mjs',
+    fixture: 'Squirrel inherited Forest Friend Pet/Food speed, source one-stack buff steal, activation ordering, linked target filtering, and exact parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   spiked_collar: {
     focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
     fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',

@@ -6837,3 +6837,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 312 - in progress
 
 - Codex owns the next retained Spring Loader and Squirrel fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-spring-loader-smoke.mjs`, `scripts/sim-squirrel-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 312 - complete
+
+- Codex repaired Spring Loader to mirror source linked cooldown-target speed reduction, exact named `speed`/`speed2`/`cdadvance` parameters, cooldown advancement, source activation after linked effects, consumption, and explicit zero values. Squirrel now mirrors inherited Forest Friend Pet/Food speed scaling, source one-stack buff stealing, linked target filtering, activation ordering, and exact parameters.
+- Added `scripts/sim-spring-loader-smoke.mjs` and `scripts/sim-squirrel-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 481 / 519 verified item rows. Focused pair tests, Band Y/Z regressions, changed-module syntax, source parity audit, and generated artifact freshness checks pass. The generated summary reports 481 verified, 17 evidence-pending, 6 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 313 - in progress
+
+- Codex owns the next retained Squirrel Archer and Steel Goobert fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-squirrel-archer-smoke.mjs`, `scripts/sim-steel-goobert-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
