@@ -71,6 +71,7 @@ export function makeDamageSpectral(res) {
  *   isMelee?: boolean,
  *   isPoison?: boolean,
  *   isSpikes?: boolean,
+ *   canTriggerSpikes?: boolean,
  *   skipSpikes?: boolean,
  *   vampiricItem?: boolean,
  *   nowT?: number,
@@ -391,9 +392,14 @@ export function takeDamage(defender, attacker, src) {
 
   // Spikes reflect (melee limit 1.0 → full spikes stacks, capped by damage * limit)
   const canTriggerSpikes =
+    src.canTriggerSpikes !== false &&
     !src.skipSpikes &&
     !src.isSpikes &&
     !src.isPoison &&
+    // DamageSource.effectFlags do not include CanTriggerSpikes. Keep an
+    // explicit override available for a future source with that flag, but
+    // make ordinary effect damage non-reflecting by default.
+    (src.canTriggerSpikes === true || src.isEffectDamage !== true) &&
     (src.isAttack !== false || src.isEffectDamage === true);
   if (
     canTriggerSpikes &&

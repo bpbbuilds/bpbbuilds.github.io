@@ -12,10 +12,12 @@ import { createCombatBus } from '../js/pages/sim/engine/combat-bus.js';
 import { dealDamage, takeDamage } from '../js/pages/sim/engine/damage.js';
 
 const source = fs.readFileSync('tools/game-extract-full/Core/Character.gd', 'utf8');
+const damageSource = fs.readFileSync('tools/game-extract-full/Utility/DamageSource.gd', 'utf8');
 const shieldSource = fs.readFileSync('tools/game-extract-full/Items/Shield.gd', 'utf8');
 assert.match(source, /EventBus\.emitSignal\(self, "pre_take_damage"[\s\S]*damageRes\.damage -= damageRes\.damageReduction/);
 assert.match(source, /EventBus\.emitSignal\(self, "pre_take_damage_late"[\s\S]*damageRes\.healthDamage = damageRes\.damage/);
 assert.match(source, /if damageSource\.canBeBlocked\(\):[\s\S]*loseBlock\(curBlock\)[\s\S]*curHealth -= damageRes\.healthDamage/);
+assert.match(damageSource, /const effectFlags = Flags\.CanBeBlocked \+ Flags\.CanTriggerItems \+ Flags\.CanCrit/);
 assert.match(source, /EventBus\.emitEvent\(self, "character_attacked"[\s\S]*EventBus\.emitSignal\(self, "character_damaged"[\s\S]*if curHealth <= 0:[\s\S]*death\(\)/);
 assert.match(source, /EventBus\.emitSignal\(self, "character_damaged"[\s\S]*item\.onDealtDamage\(damageRes\)[\s\S]*if curHealth <= 0:[\s\S]*applySpikes\(damageRes\)/);
 assert.match(shieldSource, /onCharacterAttacked[\s\S]*afterBlock\(\)[\s\S]*EventBus\.emitSignal\(self, "blocked"/);
@@ -245,6 +247,21 @@ assert.equal(lethalTargetDeadAtCallback, false, 'lethal onDealtDamage sees the t
 assert.equal(attackerHpAtCallback, lethalAttacker.maxHp, 'lethal onDealtDamage runs before Spikes');
 assert.equal(lethalResult.spikeDamage, 5, 'the same lethal hit still reflects Spikes after onDealtDamage');
 assert.equal(lethalAttacker.hp, lethalAttacker.maxHp - 5, 'Spikes resolves after onDealtDamage');
+
+const effectSpikeOwner = createActor('dummy', { maxHp: 100 });
+const effectAttacker = createActor('player', { maxHp: 100 });
+effectSpikeOwner.stacks.spikes = 5;
+const effectResult = takeDamage(effectSpikeOwner, effectAttacker, {
+  amount: 5,
+  canMiss: false,
+  canCrit: false,
+  canBlock: false,
+  isAttack: false,
+  isEffectDamage: true,
+  rng: () => 0,
+});
+assert.equal(effectResult.spikeDamage, 0, 'ordinary effect damage cannot trigger Spikes');
+assert.equal(effectAttacker.hp, effectAttacker.maxHp, 'effect damage leaves the attacker untouched by Spikes');
 
 let suppressedCallbacks = 0;
 takeDamage(createActor('dummy'), createActor('player'), {
