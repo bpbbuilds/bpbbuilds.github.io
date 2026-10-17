@@ -188,8 +188,16 @@ const SURFACE = [
     source: 'Core/CombatSnapshot.gd',
     functions: ['_init', 'apply'],
     simOwners: ['js/pages/sim/engine/simulate.js', 'js/pages/sim/controls/sim-scrubber.js'],
-    disposition: 'partial',
-    note: 'Snapshots feed the scrubber but cannot yet restore/replay a full simulation state.',
+    disposition: 'implemented',
+    note: 'Source health/stamina/stack/meter snapshot fields are projected into actor and item timelines, with latest-at-or-before scrub selection and capped end-state retention.',
+    evidence: {
+      focusedRegression: 'scripts/sim-combat-snapshot-smoke.mjs',
+      fixture: 'CombatSnapshot.gd field/apply audit, prior-state selection, same-time replacement, actor snapshot fields, item snapshot timeline, and short-duration cap boundary.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'combat-stat-logger',

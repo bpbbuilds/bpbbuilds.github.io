@@ -7002,3 +7002,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 331 - in progress
 
 - Codex owns the next partial shared surface, `combat-snapshot`, for source-backed snapshot initialization, application, and scrub/replay state review. Planned paths are limited to simulator snapshots/HUD/scrubber modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 331 - complete
+
+- Codex verified the CombatSnapshot contract: source health, stamina, stack, and damage-meter state are retained by simulator actor/item timelines; scrub selection uses the latest state at or before the playhead, same-time updates replace earlier state, and capped fights retain their final snapshot even when the duration is shorter than the combat delay.
+- Added `scripts/sim-combat-snapshot-smoke.mjs`, marked `combat-snapshot` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and reran snapshot, CombatLog, CombatEvent, stack, parity, syntax, and freshness checks. Shared mechanic totals remain 7 implemented and 14 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 332 - in progress
+
+- Codex owns the next partial shared surface, `combat-stat-logger`, for source-backed character/stack/item metric histories and current simulator meter/report projections. Planned paths are limited to simulator metric/report modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
