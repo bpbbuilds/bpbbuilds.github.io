@@ -18,8 +18,7 @@ export function getHealthGain(inRound) {
   if (r >= 15) return 30;
   if (r >= 10) return 20;
   if (r >= 5) return 15;
-  if (r >= 2) return 10;
-  return 0;
+  return 10;
 }
 
 /**

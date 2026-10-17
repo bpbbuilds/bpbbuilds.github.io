@@ -7083,3 +7083,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 340 - in progress
 
 - Codex owns the next partial shared surface, `game-round-health`, for source-backed round health formulas, class/mode branches, and validation review. Planned paths are limited to simulator round-health modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 340 - complete
+
+- Codex repaired round-health parity: `getHealthGain()` now keeps the extracted default/round-1 10-health gain instead of returning 0 below round 2. The simulator still accumulates from round 2, covers all seven extracted class resources at 25 base health, and preserves separate versus-board opponent-round plus default training-dummy branches.
+- Added `scripts/sim-round-health-smoke.mjs`, marked `game-round-health` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and ran round-health, transition, end, lifecycle, card, parity, syntax, and freshness checks. Shared totals are now 16 implemented and 5 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 341 - in progress
+
+- Codex owns the next partial shared surface, `character-lifecycle`, for source-backed character prepare/start/end, death, win/lose, and same-time result behavior review. Planned paths are limited to simulator actor/lifecycle modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

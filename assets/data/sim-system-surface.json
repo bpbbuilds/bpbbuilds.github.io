@@ -7282,8 +7282,8 @@
   },
   "totals": {
     "surfaces": 21,
-    "implemented": 15,
-    "partial": 6,
+    "implemented": 16,
+    "partial": 5,
     "unmapped": 0,
     "unsupported": 0,
     "sourceFunctions": 1439,
@@ -7410,8 +7410,22 @@
       "simOwners": [
         "js/pages/sim/engine/round-health.js"
       ],
-      "disposition": "partial",
-      "note": "Round health is modeled; class/mode and live-round validation remain open.",
+      "disposition": "implemented",
+      "note": "The simulator matches the extracted tiered health gains, round accumulation from round 2, all shipped class base-health resources, versus-board opponent-round selection, and the intentional training-dummy/default fallback branches.",
+      "evidence": {
+        "focusedRegression": "scripts/sim-round-health-smoke.mjs",
+        "fixture": "Game.gd formulas, all seven extracted class resources, tier boundaries including round 1/default, accumulated round totals, and single-board versus-board branches.",
+        "projections": [
+          "hud",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
       "sourceFunctions": [
         {
           "name": "getMaxHealthInRound",
