@@ -164,18 +164,47 @@ const holyCollarPort = {
 const magicCollarPort = {
   handlerId: 'magic_collar',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
+  onPrepare(piece, ctx) {
+    if (piece._magicCollarPrepared) return;
+    piece._magicCollarPrepared = true;
+    piece._magicCollarTargets = new Set(linked(ctx, piece).map((other) => other.placementKey));
+    // MagicCollar.gd connects each empowered weapon's `attacked` signal.
+    // The simulator exposes that item-scoped signal as `item_attacked`; the
+    // broader piece_dealt_damage signal also fires for effect damage and would
+    // over-trigger the collar compared with the game.
+    ctx.bus?.on?.('item_attacked', (payload) => {
       if (!payload?.hit?.hit) return;
       const host = payload.piece;
-      if (!linked(ctx, piece).some((o) => o === host)) return;
-      const luck = Math.max(1, getStackAmount(ctx.player, 'lucky'));
+      if (!host || !piece._magicCollarTargets?.has(host.placementKey)) return;
+      const luck = Math.max(0, getStackAmount(ctx.player, 'lucky'));
       if (!rollPercent(chanceOf(piece, ctx) * luck, ctx.rng)) return;
-      grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getPName(piece.params, 'mana', 1))), {
+      const mana = Math.trunc(getPName(piece.params, 'mana', getP1(piece.params, 0)));
+      const granted = grantStacks(ctx.player, 'mana', mana, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
+      ctx.events.push({
+        t: ctx.t,
+        type: 'buff',
+        actor: eventSideForPiece(piece),
+        target: eventSideForPiece(piece),
+        amount: granted.gained ?? mana,
+        label: `${piece.name}: +${granted.gained ?? mana} Mana`,
+        meta: { category: 'buff', stack: 'mana', script: true, handler: 'magic_collar' },
+      });
+      ctx.events.push({
+        t: ctx.t,
+        type: 'info',
+        actor: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: mini activate`,
+        meta: { category: 'system', script: true, handler: 'magic_collar', miniActivate: true },
+      });
     });
+  },
+  onCombatStart(piece, ctx) {
+    if (!piece._magicCollarPrepared) this.onPrepare(piece, ctx);
   },
 };
 

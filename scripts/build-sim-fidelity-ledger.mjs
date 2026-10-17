@@ -1916,6 +1916,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  magic_collar: {
+    focusedRegression: 'scripts/sim-magic-collar-smoke.mjs',
+    fixture: 'Magic Collar source empowered-weapon target filtering, attacked-signal listener, Lucky-scaled chance, exact Mana, mini activation, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  magic_mirror: {
+    focusedRegression: 'scripts/sim-magic-mirror-smoke.mjs',
+    fixture: 'Magic Mirror source Holy target count, chance/chance2 reflect scaling, proportional buff limit, completion ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

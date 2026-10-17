@@ -41,15 +41,24 @@ export const chessBoardPort = {
 function applyMagicMirrorReflect(piece, ctx) {
   if (piece._magicMirrorReflectApplied) return;
   piece._magicMirrorReflectApplied = true;
-  const base = getPName(piece.params, 'reflect', getP1(piece.params, 25));
+  const catalog = ctx.itemsById.get(piece.itemId);
+  const baseChance = Number.isFinite(Number(piece.chance))
+    ? Number(piece.chance)
+    : Number.isFinite(Number(catalog?.chance))
+      ? Number(catalog.chance)
+      : getPName(piece.params, 'reflect', getP1(piece.params, 0));
   const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
   let holy = 0;
   for (const other of ctx.pieces || []) {
     if (!links.some((l) => l.key === other.placementKey)) continue;
     if (itemHasType(ctx.itemsById.get(other.itemId), 'holy')) holy += 1;
   }
-  const perHoly = Math.max(0, Number(piece.chance2) || 2);
-  const chance = base + holy * perHoly;
+  const perHoly = Number.isFinite(Number(piece.chance2))
+    ? Number(piece.chance2)
+    : Number.isFinite(Number(catalog?.chance2))
+      ? Number(catalog.chance2)
+      : getPName(piece.params, 'chance2', getP2(piece.params, 0));
+  const chance = baseChance + holy * perHoly;
   ctx.player.debuffReflectChance = (ctx.player.debuffReflectChance || 0) + chance;
   ctx.events.push({
     t: ctx.t,
@@ -70,13 +79,14 @@ export const magicMirrorPort = {
     applyMagicMirrorReflect(piece, ctx);
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'magic_mirror', `Accessory: ${piece.name}`);
-    const fraction = Math.max(0, getPName(piece.params, 'buffs', getP1(piece.params, 20)) / 100);
-    const cap = Math.max(1, Math.round(getPName(piece.params, 'max', getP2(piece.params, 20))));
-    multiplyBuffsLimit(ctx.player, fraction, cap, {
+    const fraction = getPName(piece.params, 'buffs', getP1(piece.params, 0)) / 100;
+    const cap = Math.trunc(getPName(piece.params, 'max', getP2(piece.params, 0)));
+    const granted = multiplyBuffsLimit(ctx.player, fraction, cap, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
+    pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'magic_mirror', granted);
+    afterEffectFinished(piece, ctx, 'magic_mirror', { label: `Spell: ${piece.name}` });
     return true;
   },
 };

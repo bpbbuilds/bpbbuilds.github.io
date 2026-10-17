@@ -11935,9 +11935,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-magic-collar-smoke.mjs",
+        "fixture": "Magic Collar source empowered-weapon target filtering, attacked-signal listener, Lucky-scaled chance, exact Mana, mini activation, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -11972,9 +11978,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-magic-mirror-smoke.mjs",
+        "fixture": "Magic Mirror source Holy target count, chance/chance2 reflect scaling, proportional buff limit, completion ordering, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
