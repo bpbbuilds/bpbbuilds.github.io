@@ -228,6 +228,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  squirrel_archer: {
+    focusedRegression: 'scripts/sim-squirrel-archer-smoke.mjs',
+    fixture: 'Squirrel Archer inherited Pet/Food speed, source early-hit one-stack buff steal, stamina-gated ranged strike, activation ordering, and exact parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  steel_goobert: {
+    focusedRegression: 'scripts/sim-steel-goobert-smoke.mjs',
+    fixture: 'Steel Goobert inherited Goobert peer-activation threshold, secondary canBeEmpowered weapon cache, exact bonus damage and Block values, effect ordering, and lifecycle reset.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   spiked_collar: {
     focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
     fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',

@@ -12,7 +12,7 @@ import { PRIORITY } from '../combat-start-priority.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
 import { dealHit } from './handlers.js';
-import { itemHasType, pushActivate } from './ports-util.js';
+import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { forAttackEffects, prepareBow } from '../attack-effects.js';
 import { rollItemChance, weaponStrike } from './ports-wave-c-util.js';
 import { randInt } from '../rng.js';
@@ -202,9 +202,10 @@ const squirrelArcherPort = {
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'squirrel_archer', {
-      afterHit(hit) {
-        if (!hit?.hit) return;
-        stealRandomBuff(ctx.dummy, ctx.player, 1, ctx.rng, origin(piece));
+      onPreDealDamageEarly(res) {
+        if (!res?.hit) return;
+        const stolen = stealRandomBuff(ctx.dummy, ctx.player, 1, ctx.rng, origin(piece));
+        pushBuffGrants(ctx.events, piece, ctx.player, ctx.t, 'squirrel_archer', stolen);
       },
     });
   },

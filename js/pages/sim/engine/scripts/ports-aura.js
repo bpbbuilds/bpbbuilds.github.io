@@ -138,31 +138,40 @@ export const steelGoobertPort = {
   handlerId: 'steel_goobert',
   family: 'pet_like',
   onPrepare(piece, ctx) {
+    piece._goobertActs = 0;
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
     piece._steelGoobertWeapons = new Set(
       links.filter((link) => link.color === 'secondary').map((link) => link.key),
     );
   },
-  onCooldownEffect(piece, ctx) {
-    const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
-    pushActivate(piece, ctx, 'steel_goobert', `Pet: ${piece.name}`);
-    const dam = Math.max(1, Math.round(getP2(piece.params, 2)));
-    for (const other of pieces || []) {
-      if (!piece._steelGoobertWeapons?.has(other.placementKey)) continue;
-      if (!(other.damageMax > 0 || other.kind === 'weapon')) continue;
-      addBonusDamage(other, dam);
-    }
-    const block = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 6)));
-    gainStacks(player, 'block', block);
-    events.push({
-      t: t + 0.004,
-      type: 'buff',
-      target: 'player',
-      amount: block,
-      label: `${piece.name}: +${block} Block`,
-      meta: { category: 'buff', stack: 'block', script: true, handler: 'steel_goobert' },
+  // Goobert.gd is peer-activation driven; it must not run as a timed CD.
+  onCooldownEffect() {
+    return false;
+  },
+  onPeerActivated(piece, _activated, ctx) {
+    goobertPeerTick(piece, ctx, () => {
+      const { t, player, events, pieces, itemsById } = ctx;
+      const dam = getPName(piece.params, 'dam', getP2(piece.params, 2));
+      for (const other of pieces || []) {
+        if (!piece._steelGoobertWeapons?.has(other.placementKey)) continue;
+        addBonusDamage(other, dam);
+      }
+      const block = Number(piece.blockGrant ?? itemsById.get(piece.itemId)?.block ?? 0);
+      const gained = block > 0 ? gainStacks(player, 'block', block).gained : 0;
+      if (gained > 0) events.push({
+        t: t + 0.004,
+        type: 'buff',
+        target: 'player',
+        amount: gained,
+        label: `${piece.name}: +${gained} Block`,
+        meta: { category: 'buff', stack: 'block', script: true, handler: 'steel_goobert' },
+      });
+      pushActivate(piece, ctx, 'steel_goobert', `Pet: ${piece.name}`);
     });
-    return true;
+  },
+  onCombatEnd(piece) {
+    piece._goobertActs = 0;
+    piece._steelGoobertWeapons = new Set();
   },
 };
 

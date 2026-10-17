@@ -18895,9 +18895,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-squirrel-archer-smoke.mjs",
+        "fixture": "Squirrel Archer inherited Pet/Food speed, source early-hit one-stack buff steal, stamina-gated ranged strike, activation ordering, and exact parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -19199,9 +19205,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-steel-goobert-smoke.mjs",
+        "fixture": "Steel Goobert inherited Goobert peer-activation threshold, secondary canBeEmpowered weapon cache, exact bonus damage and Block values, effect ordering, and lifecycle reset.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

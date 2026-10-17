@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "ccc8c41242b5d4a940f90453b79bbef84fbfa9d85a533c132bec4db3dfc0dada",
+    "dashboardSha256": "55cc02b48933b061766657fd1039797ecae6172929578b2c04767ebc3315df0d",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 481,
+    "verified_1to1": 483,
     "confirmed_gap": 6,
-    "evidence_pending": 17,
+    "evidence_pending": 15,
     "no_independent_combat": 15
   },
   "byId": {
@@ -445,14 +445,14 @@
     "spirit_bells": "verified_1to1",
     "spring_loader": "verified_1to1",
     "squirrel": "verified_1to1",
-    "squirrel_archer": "evidence_pending",
+    "squirrel_archer": "verified_1to1",
     "stable_recombobulator": "verified_1to1",
     "staff_of_fire": "verified_1to1",
     "staff_of_unhealing": "verified_1to1",
     "stamina_sack": "verified_1to1",
     "star_of_courage": "verified_1to1",
     "steel_dragon": "verified_1to1",
-    "steel_goobert": "evidence_pending",
+    "steel_goobert": "verified_1to1",
     "stone": "confirmed_gap",
     "stone_armor": "verified_1to1",
     "stone_badge": "verified_1to1",

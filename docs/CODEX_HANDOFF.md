@@ -6846,3 +6846,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 313 - in progress
 
 - Codex owns the next retained Squirrel Archer and Steel Goobert fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-squirrel-archer-smoke.mjs`, `scripts/sim-steel-goobert-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 313 - complete
+
+- Codex repaired Squirrel Archer to mirror inherited Forest Friend Pet/Food speed, the source early-hit one-stack buff steal, stamina-gated ranged strike, grant logging, and activation ordering. Steel Goobert now mirrors inherited Goobert peer-activation timing, secondary `canBeEmpowered` weapon caching, exact `dam` and Block values without forced minimums, effect-before-activation ordering, no timed cooldown, and combat-end state reset.
+- Added `scripts/sim-squirrel-archer-smoke.mjs` and `scripts/sim-steel-goobert-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 483 / 519 verified item rows. Focused pair tests, Spring/Squirrel regressions, Band Y/Z regressions, changed-module syntax, source parity audit, and generated artifact freshness checks pass. The generated summary reports 483 verified, 15 evidence-pending, 6 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 314 - in progress
+
+- Codex owns the next retained Stone Helm and Torch fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-stone-helm-smoke.mjs`, `scripts/sim-torch-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
