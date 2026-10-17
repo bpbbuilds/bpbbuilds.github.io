@@ -18,6 +18,8 @@ export const FATIGUE_TICK_INTERVAL = 1;
  *   nextTickAt: number,
  *   startAt: number,
  *   advancedBy: number,
+ *   now: number,
+ *   delayFirstTick: boolean,
  *   advanceTime: (amount: number) => number,
  * }} FatigueState
  */
@@ -36,6 +38,8 @@ export function createFatigueState() {
     // shifting unrelated item cooldowns.
     startAt: FATIGUE_TIME,
     advancedBy: 0,
+    now: 0,
+    delayFirstTick: false,
     advanceTime: (amount) => advanceFatigueTime(state, amount),
   };
   return state;
@@ -55,8 +59,13 @@ export function advanceFatigueTime(state, amount) {
   const seconds = Math.max(0, Number(amount) || 0);
   if (!(seconds > 0) || state.started) return 0;
   const applied = Math.min(seconds, Math.max(0, Number(state.startAt) || 0));
-  state.startAt = Math.max(0, (Number(state.startAt) || 0) - applied);
+  const nextStart = Math.max(0, (Number(state.startAt) || 0) - applied);
+  state.startAt = nextStart;
   state.advancedBy = (Number(state.advancedBy) || 0) + applied;
+  // CombatTimer.advanceTime can expire the warning timer while the current
+  // combat clock is already past the new threshold. The source calls
+  // startFatigue() in that case, then waits for fatigueTickTimer's 3 seconds.
+  if (nextStart <= (Number(state.now) || 0) + 1e-9) state.delayFirstTick = true;
   return applied;
 }
 

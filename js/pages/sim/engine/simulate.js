@@ -40,6 +40,7 @@ import { bindBuffCombatLog, unbindBuffCombatLog, collapseDuplicateBuffLogs } fro
 import { bindBuffPowerPieces, unbindBuffPowerPieces } from './buff-power.js';
 import {
   FATIGUE_TICK_INTERVAL,
+  FATIGUE_FIRST_TICK,
   advanceFatigueCounter,
   applyFatigueDamage,
   createFatigueState,
@@ -555,16 +556,11 @@ export function simulateEngine(opts) {
         if (piece.alive) tickGemSocketEffects(piece, { ...actCtx(piece), t }, step);
       }
       const combatTime = t - COMBAT_DELAY;
+      fatigue.now = combatTime;
       if (!fatigue.started && combatTime + 1e-9 >= fatigue.startAt) {
         fatigue.started = true;
-        fatigue.nextTickAt = t;
-        bus.emit('fatigue_start', { t, combatTime });
-        events.push({
-          t,
-          type: 'info',
-          label: 'Fatigue starts',
-          meta: { category: 'system', fatigue: true, phase: 'start' },
-        });
+        fatigue.nextTickAt = t + (fatigue.delayFirstTick ? FATIGUE_FIRST_TICK : 0);
+        fatigue.delayFirstTick = false;
       }
       while (
         fatigue.started &&
@@ -573,6 +569,15 @@ export function simulateEngine(opts) {
         !player.dead &&
         !dummy.dead
       ) {
+        if (fatigue.counter === 0) {
+          bus.emit('fatigue_start', { t, combatTime });
+          events.push({
+            t,
+            type: 'info',
+            label: 'Fatigue starts',
+            meta: { category: 'system', fatigue: true, phase: 'start' },
+          });
+        }
         const dmg = advanceFatigueCounter(fatigue, combatTime);
         const pLost = applyFatigueDamage(
           player,

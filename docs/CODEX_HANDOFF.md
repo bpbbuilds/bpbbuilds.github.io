@@ -7020,3 +7020,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 333 - in progress
 
 - Codex owns the next partial shared surface, `combat-timer`, for source-backed combat clock, fatigue start/tick, and time-advance semantics. Planned paths are limited to simulator combat-time/fatigue/timing modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 333 - complete
+
+- Codex completed the CombatTimer parity pass: the simulator now matches the extracted 14-second fatigue warning, 17-second first damage, one-second subsequent ticks, counter escalation, Power of the Moon threshold advance, and the three-second first-tick delay when `advanceTime` crosses a live threshold. `fatigue_start` is projected at the first damage tick, matching `dealFatigueDamage`.
+- Added `scripts/sim-combat-timer-smoke.mjs`, marked `combat-timer` implemented in the source-surface audit, regenerated the scheduler/audit/dashboard/public artifacts, and ran focused timer, scheduler, Power of the Moon, syntax, and freshness checks. Shared mechanic totals are now 9 implemented and 12 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 334 - in progress
+
+- Codex owns the next partial shared surface, `item-lifecycle`, for source-backed prepare/pre-combat/combat-start/trigger/cooldown/cleanup ordering review. Planned paths are limited to simulator lifecycle/cooldown modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

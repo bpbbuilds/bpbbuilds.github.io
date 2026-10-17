@@ -7282,8 +7282,8 @@
   },
   "totals": {
     "surfaces": 21,
-    "implemented": 8,
-    "partial": 13,
+    "implemented": 9,
+    "partial": 12,
     "unmapped": 0,
     "unsupported": 0,
     "sourceFunctions": 1439,
@@ -8237,11 +8237,28 @@
         "advanceTime"
       ],
       "simOwners": [
+        "js/pages/sim/sim-combat-time.js",
         "js/pages/sim/engine/fatigue.js",
         "js/pages/sim/engine/simulate.js"
       ],
-      "disposition": "partial",
-      "note": "Fatigue is modeled, but timer semantics and time advance are an explicit open issue.",
+      "disposition": "implemented",
+      "note": "Combat delay, 14-second warning/17-second first-damage cadence, one-second fatigue ticks, counter escalation, and advanceTime threshold shifts including live-timer first-tick delay match the extracted engine contract; pause/speed presentation remains UI-only.",
+      "evidence": {
+        "focusedRegression": "scripts/sim-combat-timer-smoke.mjs",
+        "fixture": "CombatTimer.gd source constants/timer audit, normal fatigue cadence, Power of the Moon threshold shift, live advanceTime crossing, and post-start inertness; generated scheduler audit remains fresh.",
+        "projections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
       "sourceFunctions": [
         {
           "name": "start",

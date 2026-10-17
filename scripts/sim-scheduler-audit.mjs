@@ -17,6 +17,8 @@ import {
   FATIGUE_TIME,
   FATIGUE_FIRST_TICK,
   FATIGUE_TICK_INTERVAL,
+  advanceFatigueTime,
+  createFatigueState,
 } from '../js/pages/sim/engine/fatigue.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -68,6 +70,12 @@ for (let index = 0; index < expectedTicks.length; index += 1) {
   close(fatigueTicks[index], expectedTicks[index], `fatigue tick ${index + 1}`);
 }
 
+const advanced = createFatigueState();
+advanced.now = 12;
+if (advanceFatigueTime(advanced, 6) !== 6 || advanced.startAt !== 11 || advanced.delayFirstTick !== true) {
+  throw new Error('CombatTimer.advanceTime live-threshold first-tick delay drifted');
+}
+
 const output = {
   schema: 1,
   source: 'tools/game-extract-full/Interface/CombatTimer/CombatTimer.gd',
@@ -77,11 +85,11 @@ const output = {
     firstFatigueDamageAfterCombatSeconds: FATIGUE_TIME,
     fatigueTickIntervalSeconds: FATIGUE_TICK_INTERVAL,
     observedPlayerFatigueTicks: fatigueTicks.slice(0, expectedTicks.length).map((time) => Number(time.toFixed(6))),
+    advanceTimeLiveThresholdFirstTickDelay: true,
   },
   unresolved: [
     'Same-timestamp tie order among Godot Timer callbacks, physics callbacks, and item triggers.',
     'Timer cancellation/restart and re-entrancy outside the fatigue path.',
-    'CombatTimer.advanceTime has no simulator counterpart; source advances the fatigue warning timer, not generic item cooldowns.',
     'Visual fatigue-warning presentation at combat time 14 seconds is not represented as a distinct simulator event.',
   ],
   note: 'Passing this audit proves the listed source-settled fatigue cadence only; it is not scheduler parity certification.',
