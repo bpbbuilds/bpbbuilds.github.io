@@ -67,15 +67,6 @@ export function runCharacterTick(actor, t, tickCounter, events, rng) {
         bus: actor._combatBus,
         rng,
       });
-      actor._combatBus?.emit?.('character_damaged', {
-        actor,
-        attacker: actor,
-        t,
-        hit: res.hit,
-        healthDamage: res.healthDamage,
-        blocked: res.blocked,
-        damage: res,
-      });
       events.push({
         t,
         type: 'debuff',

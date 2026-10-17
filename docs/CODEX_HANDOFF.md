@@ -7110,3 +7110,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 343 - in progress
 
 - Codex owns the next partial shared surface, `character-damage`, for source-backed damage phases, reductions, block, spikes, vampirism, and combined hit-result review. Planned paths are limited to simulator damage/activation modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 343 - complete
+
+- Codex repaired character damage parity: the shared damage path now emits `character_damaged` for hits, misses, blocked hits, and invulnerability in source order before the death boundary; poison no longer bypasses invulnerability or Block; and direct fatigue/tick/training-dummy callers use the same signal path without duplicates. Block, reduction, Spikes reflection, Vampirism, and lethal event ordering are covered by `scripts/sim-character-damage-smoke.mjs`.
+- Marked `character-damage` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and ran damage, tick, lifecycle, transition/end, versus-board, broad parity, syntax, and freshness checks. Shared totals are now 19 implemented and 2 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 344 - in progress
+
+- Codex owns the next partial shared surface, `character-health`, for source-backed healing, self-health costs, temporary maximum health, Unhealing, and reincarnation review. Planned paths are limited to simulator actor/unhealing/health handlers, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

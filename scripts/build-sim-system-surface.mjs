@@ -116,8 +116,16 @@ const SURFACE = [
     source: 'Core/Character.gd',
     functions: ['dealDamage', 'takeDamage', 'applySpikes', 'applyVampirism'],
     simOwners: ['js/pages/sim/engine/damage.js', 'js/pages/sim/engine/combat-activate.js'],
-    disposition: 'partial',
-    note: 'Shared damage paths are implemented in part; late hooks, tokens, and all combined phases remain open.',
+    disposition: 'implemented',
+    note: 'The simulator matches the extracted damage phase order for miss/invulnerability, crit and reductions, late hooks, Block, Spikes, Vampirism, and the character-damaged-before-death boundary across attacks, effects, poison, and fatigue.',
+    evidence: {
+      focusedRegression: 'scripts/sim-character-damage-smoke.mjs',
+      fixture: 'Character.gd takeDamage/dealDamage source ordering plus runtime assertions for reductions, Block, miss/invulnerability signals, Spikes reflection, Vampirism, and lethal event ordering.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'character-health',

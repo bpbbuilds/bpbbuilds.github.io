@@ -621,15 +621,6 @@ export function simulateEngine(opts) {
         );
         bus.emit('fatigue_tick', { t, counter: fatigue.counter, damage: dmg });
         if (pLost > 0) {
-          const playerFatigue = {
-            actor: player,
-            attacker: null,
-            t,
-            hit: true,
-            healthDamage: pLost,
-            blocked: Number(player._lastFatigueDamage?.blocked) || 0,
-          };
-          bus.emit('character_damaged', playerFatigue);
           bus.emit('player_damaged', {
             actor: player,
             t,
@@ -655,15 +646,6 @@ export function simulateEngine(opts) {
           });
         }
         if (dLost > 0) {
-          const dummyFatigue = {
-            actor: dummy,
-            attacker: null,
-            t,
-            hit: true,
-            healthDamage: dLost,
-            blocked: Number(dummy._lastFatigueDamage?.blocked) || 0,
-          };
-          bus.emit('character_damaged', dummyFatigue);
           events.push({
             t,
             type: 'damage',
@@ -867,15 +849,6 @@ export function simulateEngine(opts) {
           nowT: t,
           bus,
           rng,
-        });
-        bus.emit('character_damaged', {
-          actor: player,
-          attacker: dummy,
-          t,
-          hit: res.hit,
-          healthDamage: res.healthDamage,
-          blocked: res.blocked,
-          damage: res,
         });
         bus.emit('player_damaged', {
           actor: player,

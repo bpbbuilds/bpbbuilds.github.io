@@ -656,15 +656,6 @@ export const mrStrugglesPort = {
       bus,
       rng: ctx.rng,
     });
-    bus?.emit?.('character_damaged', {
-      actor: dummy,
-      attacker: ctx.player,
-      t,
-      hit: result.hit,
-      healthDamage: result.healthDamage,
-      blocked: result.blocked,
-      damage: result,
-    });
     events.push({
       t: t + 0.004,
       type: 'damage',

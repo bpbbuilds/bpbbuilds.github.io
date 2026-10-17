@@ -96,15 +96,28 @@ export function takeDamage(defender, attacker, src) {
     damageSource: src,
   };
 
+  const emitCharacterDamaged = () => {
+    src.bus?.emit?.('character_damaged', {
+      actor: defender,
+      attacker,
+      t: src.nowT ?? 0,
+      hit: res.hit,
+      healthDamage: res.healthDamage,
+      blocked: res.blocked,
+      damage: res,
+    });
+  };
+
   if (defender.dead) {
     res.hit = false;
     return res;
   }
 
-  if (isInvulnerable(defender, src.nowT ?? 0) && !src.isPoison) {
+  if (isInvulnerable(defender, src.nowT ?? 0)) {
     res.hit = true;
     res.raw = resolveDamageAmount(src);
     consumeInvulnHit(defender, src.nowT ?? 0);
+    emitCharacterDamaged();
     return res;
   }
 
@@ -138,7 +151,10 @@ export function takeDamage(defender, attacker, src) {
     src.onPreDealDamageEarly?.(res);
   }
 
-  if (!res.hit) return res;
+  if (!res.hit) {
+    emitCharacterDamaged();
+    return res;
+  }
 
   let dmg = Math.max(0, Number(res.damage) || 0);
 
@@ -310,7 +326,10 @@ export function takeDamage(defender, attacker, src) {
 
   defender.hp = Math.max(0, defender.hp - res.healthDamage);
   if (defender.hp <= 0) {
+    emitCharacterDamaged();
     markActorDead(defender, src.deathReason || 'damage', src.nowT ?? defender._simT);
+  } else {
+    emitCharacterDamaged();
   }
 
   if (shieldHit) {
@@ -382,21 +401,6 @@ export function takeDamage(defender, attacker, src) {
  */
 export function dealDamage(attacker, defender, src) {
   const res = takeDamage(defender, attacker, src);
-  // Character.connect("character_damaged", ...) is a source-level signal,
-  // distinct from the simulator's player_damaged convenience event. Emit it
-  // for every Character.dealDamage path so reactive items (Dark Lantern,
-  // Phoenix-family, etc.) also see item/effect damage and self-health costs.
-  if (res.hit) {
-    src.bus?.emit?.('character_damaged', {
-      actor: defender,
-      attacker,
-      t: src.nowT ?? 0,
-      hit: res.hit,
-      healthDamage: res.healthDamage,
-      blocked: res.blocked,
-      damage: res,
-    });
-  }
   if (!res.hit || res.damage <= 0) return res;
 
   // Character.applyVampirism — only if DamageSource.CanTriggerVampirism.
