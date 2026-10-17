@@ -130,15 +130,20 @@ function portBlocks(src) {
   let cur = null;
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    if (!cur && /^(?:const|export const)\s+[A-Za-z0-9_]+\s*[:=]/.test(line)) {
-      cur = { start: i, text: [line] };
-      if (/^};?\s*$/.test(line)) cur = null;
+    if (!cur) {
+      const declaration = /^(?:const|export const)\s+([A-Za-z0-9_]+)\s*[:=]/.exec(line);
+      if (!declaration) continue;
+      cur = { start: i, name: declaration[1], text: [line] };
+      if (/\}\s*;?\s*$/.test(line)) {
+        blocks.push({ start: cur.start, name: cur.name, text: cur.text.join('\n') });
+        cur = null;
+      }
       continue;
     }
     if (cur) {
       cur.text.push(line);
       if (/^\};?\s*$/.test(line)) {
-        blocks.push({ start: cur.start, text: cur.text.join('\n') });
+        blocks.push({ start: cur.start, name: cur.name, text: cur.text.join('\n') });
         cur = null;
       }
     }
@@ -149,6 +154,8 @@ function portBlocks(src) {
 const portFiles = walk(PORT_DIR).filter((f) => f.endsWith('.js'));
 /** id → { file, text }[] (later files win at runtime, both kept for review) */
 const portsById = new Map();
+/** object name → { file, text } for resolving handler aliases such as `{ ...whetstonePort }` */
+const portBlocksByName = new Map();
 /** shared helper source, so a port that calls a helper still counts */
 const helperSrc = new Map();
 for (const file of portFiles) {
@@ -156,10 +163,29 @@ for (const file of portFiles) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
   helperSrc.set(rel, src);
   for (const b of portBlocks(src)) {
+    portBlocksByName.set(b.name, { file: rel, text: b.text });
+  }
+}
+
+function expandPortBlock(block, seen = new Set()) {
+  if (!block || seen.has(block.name)) return '';
+  const nextSeen = new Set(seen).add(block.name);
+  let expanded = block.text;
+  for (const spread of block.text.matchAll(/\.\.\.([A-Za-z0-9_]+)/g)) {
+    const inherited = portBlocksByName.get(spread[1]);
+    if (inherited) expanded += `\n${expandPortBlock(inherited, nextSeen)}`;
+  }
+  return expanded;
+}
+
+for (const file of portFiles) {
+  const src = fs.readFileSync(file, 'utf8');
+  const rel = path.relative(ROOT, file).replace(/\\/g, '/');
+  for (const b of portBlocks(src)) {
     const m = /handlerId:\s*'([a-z0-9_]+)'/.exec(b.text);
     if (!m) continue;
     const list = portsById.get(m[1]) || [];
-    list.push({ file: rel, text: b.text });
+    list.push({ file: rel, text: expandPortBlock({ ...b, file: rel }) });
     portsById.set(m[1], list);
   }
 }

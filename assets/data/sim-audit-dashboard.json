@@ -3,7 +3,7 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "5c8ddac1e269863a1001c879b9a6ca4e918910f9174ac7b73468a7558665185f",
+    "itemLedgerSha256": "a1b08580baebd9cf0b5d869a05a3e1b3a4ab82d6b724c2b8ef54b7192025b5c5",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
     "systemSurfaceSha256": "f70cb779e020e7c9a2c1f15967d9e35df48e59374ad898fc5753df05a49dc309",
@@ -13482,7 +13482,7 @@
       },
       "evidence": {
         "focusedRegression": "scripts/sim-moon-shield-smoke.mjs",
-        "fixture": "Moon Shield source affected-item Block buff power, origin-scoped Block-to-Mana accumulation, afterBlock stamina/activation, any-attack shielding override, and zero-safe values.",
+        "fixture": "Moon Shield source affected-item Block buff power, origin-scoped Block-to-Mana accumulation, afterBlock stamina/activation and linked activation-listener notification, any-attack shielding override, and zero-safe values.",
         "projections": [
           "log",
           "meter",
@@ -18610,7 +18610,7 @@
       },
       "evidence": {
         "focusedRegression": "scripts/sim-smelly-barrier-smoke.mjs",
-        "fixture": "Smelly Barrier source Garlic bonus, linked-blocker gave_block accumulation, exact threshold remainder, source poison rounding, prepare-time registration, persistence hooks, and activation ordering.",
+        "fixture": "Smelly Barrier source Garlic bonus, linked-blocker gave_block accumulation, exact threshold remainder, source poison rounding, prepare-time registration, persistence hooks, activation ordering, and linked activation-listener notification.",
         "projections": [
           "log",
           "meter",

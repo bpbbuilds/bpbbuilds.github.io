@@ -363,7 +363,7 @@ function activatePieceBody(piece, ctx) {
  * @param {import('./pieces.js').CombatPiece} activated
  * @param {Parameters<typeof activatePiece>[1]} ctx
  */
-function notifyPeerActivations(activated, ctx) {
+export function notifyPeerActivations(activated, ctx) {
   ctx.bus?.emit?.('piece_activated', { piece: activated, t: ctx.t });
   const pieces = ctx.pieces || [];
   for (const listener of pieces) {

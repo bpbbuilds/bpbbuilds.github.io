@@ -101,6 +101,10 @@ const handler = getScriptHandler('moon_shield');
 assert.equal(handler?.handlerId, 'moon_shield');
 
 const ctx = makeContext();
+let peerNotifications = 0;
+ctx.notifyPeerActivations = () => {
+  peerNotifications += 1;
+};
 bindBuffPowerPieces(ctx.pieces);
 bindBuffCombatLog({ events: ctx.events, getT: () => ctx.t, dummy: ctx.dummy });
 handler.onPrepare(ctx.pieces[0], ctx);
@@ -145,6 +149,8 @@ assert.equal(ctx.player.stamina, staminaBefore - 0.7,
   'Moon Shield: afterBlock drains the exact P2 stamina amount');
 assert.equal(ctx.events.filter((event) => event.type === 'activate' && event.itemId === 'moon_shield').length, 1,
   'Moon Shield: blocked attack activates once');
+assert.equal(peerNotifications, 1,
+  'Moon Shield activation notifies linked activation listeners');
 
 const activationCount = ctx.events.filter((event) => event.type === 'activate' && event.itemId === 'moon_shield').length;
 const effect = dealDamage(ctx.dummy, ctx.player, {

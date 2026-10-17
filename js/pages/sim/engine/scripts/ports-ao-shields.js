@@ -68,7 +68,9 @@ function registerShield(piece, ctx, opts) {
         });
       }
       opts.afterBlock?.(payload, liveCtx());
-      pushActivate(piece, liveCtx(), piece.itemId, `Shield: ${piece.name}`);
+      const activatedCtx = liveCtx();
+      pushActivate(piece, activatedCtx, piece.itemId, `Shield: ${piece.name}`);
+      activatedCtx.notifyPeerActivations?.(piece, activatedCtx);
     },
   });
 }

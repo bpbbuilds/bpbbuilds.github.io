@@ -20,7 +20,7 @@ import { makeRng } from './rng.js';
 import { computeCoverage } from './coverage.js';
 import { buildBoardGraph } from './board-graph.js';
 import { buildCombatPieces, activeLoopPieces } from './pieces.js';
-import { activatePiece } from './combat-activate.js';
+import { activatePiece, notifyPeerActivations } from './combat-activate.js';
 import { runCharacterTick } from './ticks.js';
 import { getScriptHandler } from './scripts/registry.js';
 import {
@@ -417,6 +417,7 @@ export function simulateEngine(opts) {
     itemsById: opts.itemsById,
     canAffect,
     activatePiece,
+    notifyPeerActivations,
     bus,
     fatigue,
     logChain,

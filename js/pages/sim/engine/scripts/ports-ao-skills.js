@@ -703,6 +703,7 @@ const smellyBarrierPort = {
         originId: piece.itemId,
       });
       pushActivate(piece, ctx, 'smelly_barrier', `Skill: ${piece.name}`);
+      ctx.notifyPeerActivations?.(piece, ctx);
     };
     if (ctx.bus?.on) ctx.bus.on('item_gave_block', onBlockGiven);
     else onBuffChanged(ctx.player, onBlockGiven);

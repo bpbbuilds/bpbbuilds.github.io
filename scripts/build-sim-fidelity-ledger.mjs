@@ -1435,7 +1435,7 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   },
   moon_shield: {
     focusedRegression: 'scripts/sim-moon-shield-smoke.mjs',
-    fixture: 'Moon Shield source affected-item Block buff power, origin-scoped Block-to-Mana accumulation, afterBlock stamina/activation, any-attack shielding override, and zero-safe values.',
+    fixture: 'Moon Shield source affected-item Block buff power, origin-scoped Block-to-Mana accumulation, afterBlock stamina/activation and linked activation-listener notification, any-attack shielding override, and zero-safe values.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',
@@ -3193,7 +3193,7 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   },
   smelly_barrier: {
     focusedRegression: 'scripts/sim-smelly-barrier-smoke.mjs',
-    fixture: 'Smelly Barrier source Garlic bonus, linked-blocker gave_block accumulation, exact threshold remainder, source poison rounding, prepare-time registration, persistence hooks, and activation ordering.',
+    fixture: 'Smelly Barrier source Garlic bonus, linked-blocker gave_block accumulation, exact threshold remainder, source poison rounding, prepare-time registration, persistence hooks, activation ordering, and linked activation-listener notification.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',
