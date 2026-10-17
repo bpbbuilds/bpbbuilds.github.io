@@ -1615,6 +1615,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  hero_longsword: {
+    focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
+    fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  hero_shield: {
+    focusedRegression: 'scripts/sim-hero-shield-smoke.mjs',
+    fixture: 'Hero Shield source combat-start canBeEmpowered damage/factor aura, inherited Wooden Buckler chance block and stamina drain, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hawk_rune: {
     focusedRegression: 'scripts/sim-hawk-rune-smoke.mjs',
     fixture: 'Hawk Rune source loose Blind effect and resistance-aware ordering, socketed weapon crit chance/severity, socketed armor Blind resistance, and zero-safe parameters.',

@@ -3,10 +3,11 @@
  */
 
 import { grantStacks, onBuffChanged } from '../buff-economy.js';
+import { tryUseStamina } from '../actor.js';
 import { changeReflectStacks } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
 import { giveBuffPower } from '../buff-power.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { modifiedParamValue } from '../placement-instance.js';
 import {
   addBonusDamage,
@@ -17,6 +18,7 @@ import {
 } from '../piece-stats.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { itemHasType, pushActivate } from './ports-util.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -45,6 +47,18 @@ function linkedPieces(ctx, piece, pred) {
 /** @param {object} other @param {number} frac */
 function changeStaminaFactor(other, frac) {
   multiplyStaminaCost(other, frac);
+}
+
+/** HeroShield.gd delegates to Item.canBeEmpowered(): weapon with damage. */
+function canHeroShieldEmpower(other, item) {
+  if (other?.empowerable === false) return false;
+  const isWeapon = itemHasType(item, 'weapon') || other?.kind === 'weapon';
+  const canDamage =
+    Number(other?.damageMin) > 0 ||
+    Number(other?.damageMax) > 0 ||
+    Number(item?.damageMin) > 0 ||
+    Number(item?.damageMax) > 0;
+  return isWeapon && canDamage;
 }
 
 /**
@@ -90,7 +104,7 @@ export const whetstonePort = {
   family: 'synergy_aura',
   onCombatStart(piece, ctx) {
     const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', getP1(piece.params, 2))));
-    const targets = linkedPieces(ctx, piece, (o) => canBeEmpoweredPiece(o));
+    const targets = linkedPieces(ctx, piece, canHeroShieldEmpower);
     for (const o of targets) addBonusDamage(o, dam);
     ctx.events.push({
       t: ctx.t,
@@ -103,14 +117,55 @@ export const whetstonePort = {
   },
 };
 
-/** HeroShield.gd — start dmg aura (buckler afterBlock deferred). */
+/**
+ * HeroShield inherits WoodenBuckler.afterBlock. Keep that inherited shield
+ * registration beside the Hero Shield aura so chance blocking, stamina drain,
+ * and activation all use the same live actor path.
+ */
+function registerHeroShield(piece, ctx) {
+  const catalog = ctx.itemsById?.get(piece.itemId);
+  const chanceRaw = catalog?.chance ?? piece.chance ?? 30;
+  const chance = Number.isFinite(Number(chanceRaw)) ? Number(chanceRaw) : 30;
+  const damblockRaw = getPName(piece.params, 'damblock', getP1(piece.params, 7));
+  const damblock = Number.isFinite(Number(damblockRaw)) ? Math.round(Number(damblockRaw)) : 0;
+  const stamRaw = getPName(piece.params, 'stamina', getP2(piece.params, 0.3));
+  const stamDrain = Number.isFinite(Number(stamRaw)) ? Number(stamRaw) : 0;
+  if (!ctx.player._shields) ctx.player._shields = [];
+  ctx.player._shields.push({
+    piece,
+    chance,
+    damblock,
+    afterBlock(payload) {
+      if (!piece.alive) return;
+      const drain = Math.max(0, stamDrain);
+      if (drain > 0) {
+        tryUseStamina(ctx.player, drain);
+        ctx.events.push({
+          t: payload?.t ?? ctx.t,
+          type: 'stamina',
+          actor: eventSideForPiece(piece),
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          amount: drain,
+          label: `${piece.name}: drain ${drain} stamina (afterBlock)`,
+          meta: { category: 'stamina', script: true, handler: 'hero_shield' },
+        });
+      }
+      pushActivate(piece, ctx, 'hero_shield', `Shield: ${piece.name}`);
+    },
+  });
+}
+
+/** HeroShield.gd — start damage aura plus inherited WoodenBuckler blocking. */
 /** @type {ScriptHandler} */
 export const heroShieldPort = {
   handlerId: 'hero_shield',
   family: 'synergy_aura',
   onCombatStart(piece, ctx) {
-    const flat = Math.max(0, Math.round(getPName(piece.params, 'dam', getP1(piece.params, 1))));
-    const factor = getPName(piece.params, 'damfactor', getP2(piece.params, 10)) / 100;
+    const flatRaw = getPName(piece.params, 'dam', getP3(piece.params, 2));
+    const flat = Number.isFinite(Number(flatRaw)) ? Number(flatRaw) : 0;
+    const factorRaw = getPName(piece.params, 'damfactor', getP4(piece.params, 15));
+    const factor = (Number.isFinite(Number(factorRaw)) ? Number(factorRaw) : 0) / 100;
     const targets = linkedPieces(ctx, piece, (o) => canBeEmpoweredPiece(o));
     for (const o of targets) {
       if (flat) addBonusDamage(o, flat);
@@ -124,6 +179,8 @@ export const heroShieldPort = {
       label: `${piece.name}: weapon aura ×${targets.length}`,
       meta: { category: 'adjacency', script: true, handler: 'hero_shield' },
     });
+    registerHeroShield(piece, ctx);
+    pushActivate(piece, ctx, 'hero_shield', `Shield: ${piece.name}`);
   },
 };
 

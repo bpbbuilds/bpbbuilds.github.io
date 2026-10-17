@@ -9,7 +9,7 @@ import { affectedTargets, getItemsInside } from '../board-graph.js';
 import { randInt, rollPercent } from '../rng.js';
 import { applyBonusChance, rollItemChance } from '../chance.js';
 import { basicCd, dealHit } from './handlers.js';
-import { pushActivate } from './ports-util.js';
+import { itemHasType, pushActivate } from './ports-util.js';
 import { weaponBasePort } from './ports-wave-c-util.js';
 import { eventFoeSide, eventSideForPiece } from '../vs-board.js';
 import { MECH_PORTS } from './ports-mech.js';
@@ -209,41 +209,60 @@ export const bananaPort = {
 };
 
 /** @type {ScriptHandler} */
+function canHeroEmpower(other, item) {
+  if (other?.empowerable === false) return false;
+  const isWeapon = itemHasType(item, 'weapon') || other?.kind === 'weapon';
+  const canDamage =
+    Number(other?.damageMin) > 0 ||
+    Number(other?.damageMax) > 0 ||
+    Number(item?.damageMin) > 0 ||
+    Number(item?.damageMax) > 0;
+  return isWeapon && canDamage;
+}
+
+/** @type {ScriptHandler} */
 export const heroLongswordPort = {
   handlerId: 'hero_longsword',
   family: 'synergy_aura',
   onCombatStart(piece, ctx) {
     const { t, events, graph, itemsById, canAffect } = ctx;
-    const bonus = Math.max(1, Math.round(getP1(piece.params, 4)));
+    const rawBonus = getPName(piece.params, 'dam', getP1(piece.params, 3));
+    const bonus = Number.isFinite(Number(rawBonus)) ? Number(rawBonus) : 0;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     let buffed = 0;
     for (const other of ctx.pieces || []) {
       if (other.placementKey === piece.placementKey) continue;
       if (!links.some((l) => l.key === other.placementKey)) continue;
-      other.damageBonus = (other.damageBonus || 0) + bonus;
+      const item = itemsById.get(other.itemId);
+      if (!canHeroEmpower(other, item)) continue;
+      if (bonus) addBonusDamage(other, bonus);
       buffed += 1;
       events.push({
         t: t + 0.01,
+        actor: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
         type: 'info',
         label: `${piece.name}: +${bonus} dmg → ${other.name}`,
-        meta: { category: 'adjacency', script: true, handler: 'hero_longsword' },
+        meta: {
+          category: 'adjacency',
+          script: true,
+          handler: 'hero_longsword',
+          targetKey: other.placementKey,
+        },
       });
     }
     events.push({
-      t,
-      type: 'buff',
-      actor: 'player',
+      t: t + 0.02,
+      type: 'info',
+      actor: eventSideForPiece(piece),
       itemId: piece.itemId,
-      amount: bonus,
+      placementKey: piece.placementKey,
       label: `${piece.name}: +${bonus} dmg aura (${buffed}/${links.length} linked)`,
-      meta: {
-        category: 'adjacency',
-        script: true,
-        handler: 'hero_longsword',
-        links: links.length,
-        buffed,
-      },
+      meta: { category: 'adjacency', script: true, handler: 'hero_longsword', links: links.length, buffed },
     });
+    // HeroLongsword.gd calls activate(null, false) after the aura grants.
+    pushActivate(piece, ctx, 'hero_longsword', `Weapon: ${piece.name}`);
   },
   onCooldownEffect: (piece, ctx) => basicCd.onCooldownEffect(piece, ctx),
 };
