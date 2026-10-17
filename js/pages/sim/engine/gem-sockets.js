@@ -54,6 +54,20 @@ function gemChance(gem, key = 'chance', fb = 20) {
   return Number.isFinite(n) && n > 0 ? n : fb;
 }
 
+/**
+ * Game Gem.getGemPower() is scoped to the socketed gem instance. A host such
+ * as King Crown or King Goobert can raise that instance's power without
+ * mutating the catalog gem for other boards.
+ * @param {object} gem
+ * @param {object} piece
+ */
+function gemPowerForHost(gem, piece) {
+  const rawPower = Number(gem?.gemPower);
+  const base = Number.isFinite(rawPower) ? rawPower : 1;
+  const bonus = Number(piece?._socketGemPowerBonus);
+  return Math.max(0, base + (Number.isFinite(bonus) ? bonus : 0));
+}
+
 /** Item.getChance/getChance2 for a socketed gem, including chance modifiers. */
 function effectiveGemChance(gem, key, fallback, index) {
   const raw = Number(gem?.[key]);
@@ -253,28 +267,24 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
  */
 function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
   if (fam === 'hawk') {
-    const rawPower = Number(gem?.gemPower);
-    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const gemPower = gemPowerForHost(gem, piece);
     const chance = gemChance(gem, 'chance', 20);
     ctx.player.stackResist = ctx.player.stackResist || {};
     ctx.player.stackResist.blind =
       (Number(ctx.player.stackResist.blind) || 0) + gemPower * chance;
   } else if (fam === 'amethyst') {
-    const rawPower = Number(gem?.gemPower);
-    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const gemPower = gemPowerForHost(gem, piece);
     const red = (gemPower * getP1(params, 8)) / 100;
     if (red) applyHealEfficiency(ctx.dummy, -red, ctx, piece);
   } else if (fam === 'ruby') {
     // Ruby.gd applies getGemPower() * getP2() to the owning character.
-    const rawPower = Number(gem?.gemPower);
-    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const gemPower = gemPowerForHost(gem, piece);
     const amp = (gemPower * getP2(params, 8)) / 100;
     if (amp) applyHealEfficiency(ctx.player, amp, ctx, piece);
   } else if (fam === 'emerald') {
     // Gem.prepareArmor uses getGemPower() * getP2(); Gem.gd clamps the
     // multiplier at zero and starts new gems at 1.0.
-    const rawPower = Number(gem?.gemPower);
-    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const gemPower = gemPowerForHost(gem, piece);
     const ch = gemPower * getP2(params, gemChance(gem));
     ctx.player.stackResist = ctx.player.stackResist || {};
     ctx.player.stackResist.poison = (Number(ctx.player.stackResist.poison) || 0) + ch;
@@ -283,8 +293,7 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
     // amount by GemPower before giveBlock performs the final rounding.
     const rawNeed = Number(getP2(params, 4));
     const need = Number.isFinite(rawNeed) ? Math.trunc(rawNeed) : 0;
-    const rawPower = Number(gem?.gemPower);
-    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const gemPower = gemPowerForHost(gem, piece);
     let bank = 0;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'mana' || !(ch.amount > 0)) return;
@@ -297,8 +306,7 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
   } else if (fam === 'topaz') {
     // Topaz.gd applies GemPower to both armor resistances. Gem.gd starts at
     // 1.0 and clamps negative powers to zero before prepareArmor runs.
-    const rawPower = Number(gem?.gemPower);
-    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const gemPower = gemPowerForHost(gem, piece);
     const stunChance = effectiveGemChance(gem, 'chance', 20, 1);
     const critChance = effectiveGemChance(gem, 'chance2', 5, 2);
     ctx.player.stunResistance =
@@ -319,8 +327,7 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
   } else if (fam === 'skull') {
     // Skull.gd prepareArmor applies its gem-power chance to every debuff,
     // then separately applies the same amount to crit resistance.
-    const rawPower = Number(gem?.gemPower);
-    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const gemPower = gemPowerForHost(gem, piece);
     const rawChance = Number(gem?.chance);
     const chance = Number.isFinite(rawChance) ? rawChance : 20;
     const ch = gemPower * chance;
@@ -358,8 +365,7 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
     const need = Number.isFinite(rawNeed) ? Math.trunc(rawNeed) : 0;
     const rawPer = Number(getPName(params, 'block', getP3(params, 5)));
     const per = Number.isFinite(rawPer) ? Math.trunc(rawPer) : 0;
-    const rawPower = Number(gem?.gemPower);
-    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const gemPower = gemPowerForHost(gem, piece);
     let bank = 0;
     piece._tigerBuffCounter = 0;
     onBuffChanged(ctx.player, (ch) => {

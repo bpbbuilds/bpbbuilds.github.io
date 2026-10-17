@@ -6456,4 +6456,15 @@ None.
 
 ### 2026-10-16 Simulator item parity continuation 270 - in progress
 
-- Codex owns the next retained King Crown and King Goobert fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-king-crown-smoke.mjs`, `scripts/sim-king-goobert-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+- Codex owns the next retained King Crown and King Goobert fidelity review/repair, their focused source-backed regressions, the host-scoped socketed GemPower path they require, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to `js/pages/sim/engine/scripts/ports-wave-d-goobert.js`, `js/pages/sim/engine/gem-sockets.js`, `scripts/sim-king-crown-smoke.mjs`, `scripts/sim-king-goobert-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 270 - complete
+
+- Codex repaired King Crown to mirror its source prepare override, inherited Mana-triggered invulnerability, exact p2 heal, Buff Protect, source effect order, and zero-safe parameters. King Goobert now mirrors source prepare reset, p1 peer activation threshold, p2 heal, p3 Buff Protect, p4 Mana, p5 duration, p6 charges, condition-safe charge spending, base Goobert activation order, and zero-safe parameters. Both now apply the source 50% host-scoped GemPower increase to socketed gems without mutating shared catalog gems.
+- Added `scripts/sim-king-crown-smoke.mjs` and `scripts/sim-king-goobert-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 399 / 519 verified item rows. Focused pair tests, Crown/Goobert regressions, gem-system regression, changed-module syntax, dashboard generation, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 399 verified, 98 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with King of the Bling; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 271 - in progress
+
+- Codex owns the next retained King of the Bling fidelity review/repair, its focused source-backed regression, simulator fidelity evidence entry and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port module, `scripts/sim-king-of-the-bling-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

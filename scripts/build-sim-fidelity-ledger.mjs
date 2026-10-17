@@ -1706,6 +1706,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  king_crown: {
+    focusedRegression: 'scripts/sim-king-crown-smoke.mjs',
+    fixture: 'King Crown source prepare GemPower modifier, inherited Mana-triggered invulnerability, p2 heal, Buff Protect, activation ordering, socketed GemPower scaling, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  king_goobert: {
+    focusedRegression: 'scripts/sim-king-goobert-smoke.mjs',
+    fixture: 'King Goobert source prepare GemPower modifier, p1 peer threshold, p2/p3/p4/p5/p6 effects, condition-safe invulnerability charges, socketed GemPower scaling, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

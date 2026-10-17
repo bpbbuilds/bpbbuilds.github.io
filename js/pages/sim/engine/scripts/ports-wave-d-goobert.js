@@ -36,6 +36,13 @@ function isVulnerable(actor, nowT) {
   return !isInvulnerable(actor, nowT);
 }
 
+/** Game `changeGemPower(getP("gempower") / 100.0)` scoped to this host. */
+function socketGemPowerBonus(params) {
+  const fallback = Number(params?.p7);
+  const percent = getPName(params, 'gempower', Number.isFinite(fallback) ? fallback : 0);
+  return percent / 100;
+}
+
 /**
  * @param {object} piece
  * @param {object} ctx
@@ -177,9 +184,10 @@ export const lightGoobertPort = {
 export const kingGoobertPort = {
   handlerId: 'king_goobert',
   family: 'pet_like',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._goobertActs = 0;
-    setPieceInvulnBudget(piece, getPName(piece.params, 'charges', 2));
+    piece._socketGemPowerBonus = socketGemPowerBonus(piece.params);
+    setPieceInvulnBudget(piece, getPName(piece.params, 'charges', getP6(piece.params, 0)));
     piece._crownState = 'Inactive';
   },
   onCooldownEffect() {
@@ -187,36 +195,52 @@ export const kingGoobertPort = {
   },
   onPeerActivated(listener, _activated, ctx) {
     goobertPeerTick(listener, ctx, () => {
-      const prot = Math.max(1, Math.round(getPName(listener.params, 'buffs', 1)));
+      const prot = getPName(listener.params, 'buffs', getP3(listener.params, 0));
       grantBuffProtect(ctx.player, prot);
-      const heal = Math.max(1, Math.round(getPName(listener.params, 'heal', getP2(listener.params, 10))));
-      goobertHeal(listener, ctx, 'king_goobert', heal);
-      const manaCost = Math.max(1, Math.round(getPName(listener.params, 'mana', getP3(listener.params, 2))));
+      if (prot > 0) {
+        ctx.events.push({
+          t: ctx.t + 0.001,
+          type: 'buff',
+          target: 'player',
+          amount: prot,
+          label: `${listener.name}: +${prot} Buff Protect`,
+          meta: { category: 'buff', stack: 'buff_protect', script: true, handler: 'king_goobert' },
+        });
+      }
+      const heal = getPName(listener.params, 'heal', getP2(listener.params, 0));
+      goobertHeal(listener, ctx, 'king_goobert', heal, { activate: false });
+      const manaCost = getPName(listener.params, 'mana', getP4(listener.params, 0));
       if (
-        spendPieceInvulnBudget(listener) &&
         isVulnerable(ctx.player, ctx.t) &&
         (ctx.player.stacks.mana || 0) >= manaCost
       ) {
-        useMana(ctx.player, manaCost, {
-          originKey: listener.placementKey,
-          originId: listener.itemId,
-        });
-        const dur = Math.max(0.5, getPName(listener.params, 'dur_invu', getPName(listener.params, 'dur_invuln', 1.5)));
-        grantInvuln(ctx.player, dur, ctx.t, {
-          sourceId: listener.itemId,
-          sourceKey: listener.placementKey,
-          bus: ctx.bus,
-        });
-        listener._crownState = 'Active';
-        ctx.events.push({
-          t: ctx.t + 0.005,
-          type: 'buff',
-          target: 'player',
-          amount: 1,
-          label: `${listener.name}: Invuln ${dur}s`,
-          meta: { category: 'buff', stack: 'invuln', script: true, handler: 'king_goobert' },
-        });
+        if (spendPieceInvulnBudget(listener)) {
+          const dur = getPName(
+            listener.params,
+            'dur_invu',
+            getPName(listener.params, 'dur_invuln', getP5(listener.params, 0)),
+          );
+          grantInvuln(ctx.player, dur, ctx.t, {
+            sourceId: listener.itemId,
+            sourceKey: listener.placementKey,
+            bus: ctx.bus,
+          });
+          useMana(ctx.player, manaCost, {
+            originKey: listener.placementKey,
+            originId: listener.itemId,
+          });
+          listener._crownState = 'Active';
+          ctx.events.push({
+            t: ctx.t + 0.005,
+            type: 'buff',
+            target: 'player',
+            amount: 1,
+            label: `${listener.name}: Invuln ${dur}s`,
+            meta: { category: 'buff', stack: 'invuln', script: true, handler: 'king_goobert' },
+          });
+        }
       }
+      pushActivate(listener, ctx, 'king_goobert', `Pet: ${listener.name}`);
     });
   },
 };
@@ -332,7 +356,11 @@ export const rainbowGoobertRangerPort = {
  */
 function bindCrownManaTrigger(piece, ctx, handler) {
   piece._crownState = 'Inactive';
-  const manaCost = Math.max(1, Math.round(getPName(piece.params, 'mana', getPName(piece.params, 'manat', 4))));
+  const manaCost = getPName(
+    piece.params,
+    'mana',
+    getPName(piece.params, 'manat', getP1(piece.params, 0)),
+  );
   const crownTime = (payload = {}) => {
     if (Number.isFinite(Number(payload.t))) return Number(payload.t);
     if (Number.isFinite(Number(piece._lastSimT))) return Number(piece._lastSimT);
@@ -355,9 +383,10 @@ function bindCrownManaTrigger(piece, ctx, handler) {
     if (!isVulnerable(ctx.player, at)) return;
     if ((ctx.player.stacks.mana || 0) < manaCost) return;
     piece._crownState = 'Active';
-    const dur = Math.max(
-      0.5,
-      getPName(piece.params, 'dur_invu', getPName(piece.params, 'dur_invuln', getP2(piece.params, 2))),
+    const dur = getPName(
+      piece.params,
+      'dur_invu',
+      getPName(piece.params, 'dur_invuln', getP2(piece.params, 0)),
     );
     grantInvuln(ctx.player, dur, at, {
       sourceId: piece.itemId,
@@ -441,7 +470,8 @@ export const crownPort = {
 export const kingCrownPort = {
   handlerId: 'king_crown',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
+    piece._socketGemPowerBonus = socketGemPowerBonus(piece.params);
     bindCrownManaTrigger(piece, ctx, 'king_crown');
   },
   onTick(piece, ctx) {
@@ -452,9 +482,16 @@ export const kingCrownPort = {
     if (piece._crownState === 'Active' && piece._crownUsedAt != null && ctx.t >= piece._crownUsedAt) {
       piece._crownState = 'Used';
     }
-    pushActivate(piece, ctx, 'king_crown', `Accessory: ${piece.name}`);
     grantBuffProtect(ctx.player, 1);
-    const heal = Math.max(1, Math.round(getPName(piece.params, 'heal', getP3(piece.params, 10))));
+    ctx.events.push({
+      t: ctx.t + 0.003,
+      type: 'buff',
+      target: 'player',
+      amount: 1,
+      label: `${piece.name}: buff protect`,
+      meta: { category: 'buff', stack: 'buff_protect', script: true, handler: 'king_crown' },
+    });
+    const heal = getPName(piece.params, 'heal', getP2(piece.params, 0));
     const healed = healActor(ctx.player, heal);
     if (healed > 0) {
       ctx.events.push({
@@ -466,14 +503,7 @@ export const kingCrownPort = {
         meta: { category: 'heal', script: true, handler: 'king_crown' },
       });
     }
-    ctx.events.push({
-      t: ctx.t + 0.006,
-      type: 'buff',
-      target: 'player',
-      amount: 1,
-      label: `${piece.name}: buff protect`,
-      meta: { category: 'buff', script: true, handler: 'king_crown' },
-    });
+    pushActivate(piece, ctx, 'king_crown', `Accessory: ${piece.name}`);
     return true;
   },
 };
