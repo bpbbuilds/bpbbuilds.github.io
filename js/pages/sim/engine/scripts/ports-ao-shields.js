@@ -13,6 +13,7 @@ import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { rollPercent } from '../rng.js';
 import { giveTempMaxHp } from './ports-ap-start.js';
 import { applyStaminaRegeneration } from '../actor-stats.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -60,7 +61,7 @@ function registerShield(piece, ctx, opts) {
         drainStamina(ctx.player, drain, {
           events: liveCtx().events,
           t: liveCtx().t,
-          actorSide: 'player',
+          actorSide: eventSideForPiece(piece),
           itemId: piece.itemId,
           placementKey: piece.placementKey,
           label: `${piece.name}: Removed ${drain} stamina`,
@@ -186,7 +187,7 @@ const heartShieldPort = {
         drainStamina(ctx.player, Math.max(0, Number(getP2(piece.params, 0.7)) || 0), {
           events: ctx.events,
           t: ctx.t,
-          actorSide: 'player',
+          actorSide: eventSideForPiece(piece),
           itemId: piece.itemId,
           placementKey: piece.placementKey,
           label: `${piece.name}: Removed stamina`,
@@ -313,8 +314,8 @@ const pineProtectorPort = {
       ctx.events.push({
         t: ctx.t + 0.002,
         type: 'heal',
-        actor: 'player',
-        target: 'player',
+        actor: eventSideForPiece(listener),
+        target: eventSideForPiece(listener),
         amount: logged,
         itemId: listener.itemId,
         placementKey: listener.placementKey,

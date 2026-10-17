@@ -7164,3 +7164,13 @@ None.
 - Source comparison found and repaired three concrete parity gaps: Hedgehog now inherits Forest Friend’s combat-start Pet/Food speed bonus; Rat filters its inherited links to Pet/Food even when an audit context lacks generated `canAffect` rules; and Burning Coal armor Block now scales with socket Gem Power like `BurningCoal.gd`.
 - Socketed Lump/Burning Coal catalog Block is no longer flattened into the host’s static Block or armor reduction and then granted again by `combatStartArmor`; focused Moon Armor regressions now prove totals of 58 for Lump of Coal and 62 for Burning Coal. The Armored Courage Puppy smoke was also corrected to check its inherited `onPreCombatStart` hook.
 - Added source-backed Hedgehog and Burning Coal regressions, repaired the socket fixture to retain catalog Block, and ran the focused mechanics suite, continuous audit, source parity audit, syntax checks, and diff checks. Continuous audit is 15/16 with only the pre-existing source/patch-drift baseline failures; hook triage remains clean with 0 untriaged gaps. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Cross-mechanic side-symmetry audit - in progress
+
+- Codex owns the source-backed review of opponent-owned shield reactions and combat-log side attribution, plus the shared shield helper and focused regression. Planned paths are limited to `ports-ao-shields.js`, the new shield-side smoke, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Cross-mechanic side-symmetry audit - complete
+
+- Source/runtime comparison found that shared shield `afterBlock` stamina drains and Pine Protector’s linked-food heal were applied to the correct owner but logged as `player` even when the shield belonged to the opponent board. Both now use the piece-relative event side, preserving the game’s owner attribution for opponent combats.
+- Added `scripts/sim-shield-side-smoke.mjs`, which verifies extracted Shield/Moon Shield/Pine Protector behavior and reproduces opponent Moon Shield blocking plus Pine Protector healing. All focused shield subclasses passed, along with the simulator systems, lifecycle, two-board, source-hook, syntax, and diff checks.
+- The continuous audit remains 15/16 solely because of the pre-existing source/patch-drift baseline checks; hook triage reports 0 untriaged gaps. No legal, authentication, database, storage, or security behavior changed.
