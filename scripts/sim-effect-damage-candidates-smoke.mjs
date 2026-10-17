@@ -18,7 +18,14 @@ const files = {
 };
 for (const [id, file] of Object.entries(files)) {
   assert.ok(fs.existsSync(`tools/game-extract-full/${file}`), `${id} source exists`);
-  assert.equal(typeof getScriptHandler(id)?.onCooldownEffect === 'function' || typeof getScriptHandler(id)?.onCombatStart === 'function', true, `${id} has a runtime port`);
+  const handler = getScriptHandler(id);
+  assert.equal(
+    typeof handler?.onPrepare === 'function' ||
+      typeof handler?.onCooldownEffect === 'function' ||
+      typeof handler?.onCombatStart === 'function',
+    true,
+    `${id} has a runtime port`,
+  );
 }
 assert.match(fs.readFileSync('tools/game-extract-full/Items/Exclusive/AmuletofDarkness.gd', 'utf8'), /damageSource\.isEffectDamage/);
 assert.match(fs.readFileSync('tools/game-extract-full/Items/Exclusive/SunShield.gd', 'utf8'), /dealEffectDamage/);
@@ -58,7 +65,7 @@ function context() {
   const ctx = context();
   const amulet = { itemId: 'amulet_of_darkness', placementKey: 'amulet', name: 'Amulet', params: { damt: 5 } };
   ctx.itemsById.set(amulet.itemId, { id: amulet.itemId, chance: 100 });
-  getScriptHandler(amulet.itemId).onCombatStart(amulet, ctx);
+  getScriptHandler(amulet.itemId).onPrepare(amulet, ctx);
   dealEffectDamage({ itemId: 'source', placementKey: 'source', name: 'Source' }, ctx, 5);
   assert.ok(ctx.dummy.stacks.poison + ctx.dummy.stacks.blind + ctx.dummy.stacks.cold > 0, 'Amulet reacts to effect damage');
 }
@@ -69,8 +76,8 @@ function context() {
   ctx.dummy.hp = 40;
   grantStacks(ctx.dummy, 'poison', 2);
   const flask = { itemId: 'demonic_flask', placementKey: 'flask', name: 'Flask', params: { p1: 50, p2: 2 }, alive: true, charges: 1 };
-  getScriptHandler(flask.itemId).onCombatStart(flask, ctx);
-  ctx.bus.emit('piece_dealt_damage', { piece: { itemId: 'weapon' }, hit: { hit: true }, t: ctx.t });
+  getScriptHandler(flask.itemId).onPrepare(flask, ctx);
+  ctx.bus.emit('character_damaged', { actor: ctx.dummy, hit: true, t: ctx.t });
   assert.ok(ctx.events.some((e) => e.itemId === 'demonic_flask' && e.meta?.effect), 'Demonic Flask logs effect damage');
 }
 {
@@ -84,7 +91,7 @@ function context() {
 {
   const ctx = context();
   const dragon = { itemId: 'ice_dragon', placementKey: 'dragon', name: 'Ice Dragon', params: { coldt: 2, damfactor: 10 }, blockGrant: 3 };
-  getScriptHandler(dragon.itemId).onCombatStart(dragon, ctx);
+  getScriptHandler(dragon.itemId).onPrepare(dragon, ctx);
   grantStacks(ctx.dummy, 'cold', 2);
   assert.equal(ctx.dummy.effectDmgFactor, -0.1);
   assert.equal(ctx.dummy.damageResistancePct, 0);
@@ -94,15 +101,28 @@ function context() {
 {
   const ctx = context();
   const cake = { itemId: 'snowcake', placementKey: 'cake', name: 'Snowcake', params: { cold: 1, coldt: 1, damfactor: 10 }, damageMin: 5 };
+  ctx.itemsById.set(cake.itemId, { id: cake.itemId, damageMin: cake.damageMin });
   getScriptHandler(cake.itemId).onCooldownEffect(cake, ctx);
   assert.ok(ctx.events.some((e) => e.itemId === cake.itemId && e.meta?.effect), 'Snowcake logs effect damage');
 }
 {
   const ctx = context();
   const shield = { itemId: 'sun_shield', placementKey: 'shield', name: 'Sun Shield', params: { p3: 1, p4: 5 }, chance: 100 };
+  const blocker = { itemId: 'blocker', placementKey: 'blocker', name: 'Blocker' };
+  shield.affectCells = [{ cell: 'block-cell', color: 'primary' }];
+  blocker.cells = ['block-cell'];
+  ctx.pieces = [shield, blocker];
+  ctx.graph = {
+    pieces: new Map([
+      [shield.placementKey, { id: shield.itemId, affectCells: shield.affectCells }],
+      [blocker.placementKey, { id: blocker.itemId, cells: blocker.cells, affectCells: [] }],
+    ]),
+    filled: new Map([['block-cell', blocker.placementKey]]),
+  };
   ctx.itemsById.set(shield.itemId, shield);
-  getScriptHandler(shield.itemId).onCombatStart(shield, ctx);
-  ctx.bus.emit('afterBlock', {});
+  ctx.itemsById.set(blocker.itemId, blocker);
+  getScriptHandler(shield.itemId).onPrepare(shield, ctx);
+  ctx.bus.emit('item_gave_block', { stack: 'block', amount: 1, originKey: blocker.placementKey });
   assert.ok(ctx.events.some((e) => e.itemId === shield.itemId && e.meta?.effect), 'Sun Shield logs effect damage');
 }
 {

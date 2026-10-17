@@ -113,14 +113,6 @@ export function takeDamage(defender, attacker, src) {
     return res;
   }
 
-  if (isInvulnerable(defender, src.nowT ?? 0)) {
-    res.hit = true;
-    res.raw = resolveDamageAmount(src);
-    consumeInvulnHit(defender, src.nowT ?? 0);
-    emitCharacterDamaged();
-    return res;
-  }
-
   const canMiss = src.canMiss !== false && !src.isPoison && !src.isSpikes;
   if (canMiss) {
     let accuracy = Number(src.accuracy);
@@ -261,6 +253,16 @@ export function takeDamage(defender, attacker, src) {
 
   dmg = Math.max(0, dmg);
   res.damage = dmg;
+
+  // Character.gd applies invulnerability after the hit has passed accuracy,
+  // crit, and damage modifiers, then still emits both pre-take-damage hooks.
+  // Keep that ordering so invulnerable attacks can miss and reactive items can
+  // observe the zero-damage hit before Block and character_damaged.
+  if (isInvulnerable(defender, src.nowT ?? 0)) {
+    res.damage = 0;
+    dmg = 0;
+    consumeInvulnHit(defender, src.nowT ?? 0);
+  }
 
   // Character.takeDamage emits pre_take_damage after percentage/flat
   // resistance but before DamageResult.damageReduction is applied. Socketed

@@ -86,6 +86,55 @@ const poisonWhileInvulnerable = takeDamage(invulnerable, missAttacker, {
 assert.equal(poisonWhileInvulnerable.healthDamage, 0, 'poison respects active invulnerability');
 assert.equal(invulnerable.hp, 100, 'invulnerability prevents poison damage');
 
+const invulnerabilityPhases = [];
+const invulnerabilityBus = createCombatBus();
+invulnerabilityBus.on('pre_take_damage', () => invulnerabilityPhases.push('pre'));
+invulnerabilityBus.on('pre_take_damage_late', () => invulnerabilityPhases.push('late'));
+invulnerabilityBus.on('character_damaged', (payload) => invulnerabilityPhases.push(`damaged:${payload.hit}`));
+const invulnerableHit = createActor('dummy', { maxHp: 100, block: 4 });
+invulnerableHit.invulnUntil = 10;
+const zeroedHit = takeDamage(invulnerableHit, missAttacker, {
+  amount: 7,
+  canMiss: false,
+  canCrit: false,
+  canBlock: true,
+  isAttack: true,
+  isMelee: true,
+  nowT: 3,
+  bus: invulnerabilityBus,
+  rng: () => 0,
+});
+assert.equal(zeroedHit.hit, true, 'an invulnerable attack can still register as a hit');
+assert.equal(zeroedHit.damage, 0, 'invulnerability zeros damage before take-damage hooks');
+assert.equal(zeroedHit.healthDamage, 0, 'invulnerability prevents health loss without skipping the phase');
+assert.equal(invulnerableHit.block, 4, 'zero invulnerable damage does not consume Block');
+assert.deepEqual(
+  invulnerabilityPhases,
+  ['pre', 'late', 'damaged:true'],
+  'invulnerable hits preserve source pre/late/damaged ordering',
+);
+
+const invulnerableMissPhases = [];
+const invulnerableMissBus = createCombatBus();
+invulnerableMissBus.on('pre_take_damage', () => invulnerableMissPhases.push('pre'));
+invulnerableMissBus.on('pre_take_damage_late', () => invulnerableMissPhases.push('late'));
+invulnerableMissBus.on('character_damaged', (payload) => invulnerableMissPhases.push(`damaged:${payload.hit}`));
+const invulnerableMissTarget = createActor('dummy', { maxHp: 100 });
+invulnerableMissTarget.invulnUntil = 10;
+const missedInvulnerableHit = takeDamage(invulnerableMissTarget, missAttacker, {
+  amount: 7,
+  accuracy: 0,
+  canMiss: true,
+  canCrit: false,
+  isAttack: true,
+  isMelee: true,
+  nowT: 3,
+  bus: invulnerableMissBus,
+  rng: () => 0,
+});
+assert.equal(missedInvulnerableHit.hit, false, 'invulnerability does not bypass accuracy');
+assert.deepEqual(invulnerableMissPhases, ['damaged:false'], 'missed invulnerable attacks skip hit-only hooks');
+
 const spikeOwner = createActor('dummy', { maxHp: 100 });
 const spikeAttacker = createActor('player', { maxHp: 100 });
 spikeOwner.stacks.spikes = 4;
