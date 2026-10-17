@@ -11135,9 +11135,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-leather-boots-smoke.mjs",
+        "fixture": "Leather Boots source strict low-health damage trigger, High+2 priority, exact Lucky/Empower/Block grants, one-shot consumption, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -11172,9 +11178,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-leather-helm-smoke.mjs",
+        "fixture": "Leather Helm source prepare Crit/Stun resistance, pre-combat timed damage resistance, combat-start activation, timer cleanup/state, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

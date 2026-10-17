@@ -20,6 +20,7 @@ import { gainStacks, getStackAmount } from '../stacks.js';
 import { grantTimedResistancePct } from '../timed-resistance.js';
 import { grantTimedSpeed } from '../timed-speed.js';
 import { armPieceCooldown, deactivateCooldown } from '../cooldown.js';
+import { PRIORITY } from '../combat-start-priority.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { afterEffectFinished, itemHasType, pushActivate } from './ports-util.js';
 import { eventSideForPiece } from '../vs-board.js';
@@ -92,7 +93,7 @@ export const leatherBootsPort = {
   onPrepare(piece, ctx) {
     piece._bootsFired = false;
     const thresh =
-      getPName(piece.params, 'healtht', getP1(piece.params, 70)) / 100 - 0.0001;
+      getP1(piece.params, 70) / 100 - 0.0001;
     ctx.bus?.on?.('character_damaged', (payload) => {
       if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._bootsFired || !piece.alive) return;
@@ -100,12 +101,12 @@ export const leatherBootsPort = {
       if (player.maxHp <= 0) return;
       if (player.hp / player.maxHp >= thresh) return;
       piece._bootsFired = true;
-      const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP2(piece.params, 1))));
-      const emp = Math.max(
-        1,
-        Math.round(getPName(piece.params, 'empower', getP3(piece.params, 1))),
-      );
-      const block = Math.max(1, Math.round(Number(piece.blockGrant) || getPName(piece.params, 'block', 15)));
+      const luck = getP2(piece.params, 0);
+      const emp = getP3(piece.params, 0);
+      const catalogBlock = Number(ctx.itemsById.get(piece.itemId)?.block);
+      const block = Number.isFinite(Number(piece.blockGrant))
+        ? Number(piece.blockGrant)
+        : (Number.isFinite(catalogBlock) ? catalogBlock : 0);
       grantStacks(player, 'lucky', luck, {
         originKey: piece.placementKey,
         originId: piece.itemId,
@@ -128,7 +129,7 @@ export const leatherBootsPort = {
       });
       piece.alive = false;
       piece.charges = 0;
-    });
+    }, PRIORITY.High + 2);
   },
 };
 
@@ -137,14 +138,33 @@ export const leatherBootsPort = {
 export const leatherHelmPort = {
   handlerId: 'leather_helm',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const chance =
-      Number(ctx.itemsById.get(piece.itemId)?.chance) || Number(piece.chance) || 15;
+  onPrepare(piece, ctx) {
+    piece._helmBuffsActive = 0;
+    const catalogChance = Number(ctx.itemsById.get(piece.itemId)?.chance);
+    const chance = Number.isFinite(catalogChance)
+      ? catalogChance
+      : (Number.isFinite(Number(piece.chance)) ? Number(piece.chance) : 0);
     ctx.player.critResistance = (Number(ctx.player.critResistance) || 0) + chance;
     ctx.player.stunResistance = (Number(ctx.player.stunResistance) || 0) + chance;
-    const dr = Math.max(0, getPName(piece.params, 'damagereduction', getP1(piece.params, 25)));
-    const dur = Math.max(0.5, getPName(piece.params, 'dur', getP2(piece.params, 3)));
-    if (dr) grantTimedResistancePct(ctx.player, dr, ctx.t + dur, 'leather_helm');
+  },
+  onPreCombatStart(piece, ctx) {
+    const dr = getP1(piece.params, 0);
+    const dur = getPName(piece.params, 'dur', getP2(piece.params, 0));
+    piece._helmBuffsActive = (Number(piece._helmBuffsActive) || 0) + 1;
+    piece.state = piece._helmBuffsActive;
+    const tag = `leather_helm:${piece.placementKey || piece.itemId}`;
+    if (dr && dur > 0) {
+      grantTimedResistancePct(ctx.player, dr, (Number(ctx.t) || 0) + dur, tag);
+      const previous = ctx.player._onTimedResistEnd;
+      ctx.player._onTimedResistEnd = (endedTag, entry) => {
+        previous?.(endedTag, entry);
+        if (endedTag !== tag) return;
+        piece._helmBuffsActive = Math.max(0, (Number(piece._helmBuffsActive) || 1) - 1);
+        piece.state = piece._helmBuffsActive;
+      };
+    }
+  },
+  onCombatStart(piece, ctx) {
     pushActivate(piece, ctx, 'leather_helm', `Armor: ${piece.name}`);
   },
 };

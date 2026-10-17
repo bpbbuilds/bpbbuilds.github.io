@@ -1790,6 +1790,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  leather_boots: {
+    focusedRegression: 'scripts/sim-leather-boots-smoke.mjs',
+    fixture: 'Leather Boots source strict low-health damage trigger, High+2 priority, exact Lucky/Empower/Block grants, one-shot consumption, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  leather_helm: {
+    focusedRegression: 'scripts/sim-leather-helm-smoke.mjs',
+    fixture: 'Leather Helm source prepare Crit/Stun resistance, pre-combat timed damage resistance, combat-start activation, timer cleanup/state, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

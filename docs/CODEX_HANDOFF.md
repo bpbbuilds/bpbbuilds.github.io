@@ -6520,3 +6520,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 276 - in progress
 
 - Codex owns the next retained Leather Boots and Leather Helm fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-leather-boots-smoke.mjs`, `scripts/sim-leather-helm-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 276 - complete
+
+- Codex repaired Leather Boots to mirror the source strict below-threshold health trigger, `High + 2` damage-listener priority, exact p2/p3 Lucky and Empower grants, catalog Block, one-shot consumption, and explicit zero values. Leather Helm now mirrors source prepare-time Crit/Stun resistance, pre-combat p1 timed damage resistance, active-state/timer cleanup, combat-start activation, and zero-safe parameters.
+- Added `scripts/sim-leather-boots-smoke.mjs` and `scripts/sim-leather-helm-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 411 / 519 verified item rows. Focused pair tests, Wave C/D, parity systems, verified-coverage, coverage-honesty, changed-module syntax, ledger/dashboard freshness checks, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 411 verified, 86 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Level Up and Light Flower; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 277 - in progress
+
+- Codex owns the next retained Level Up and Light Flower fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-level-up-smoke.mjs`, `scripts/sim-light-flower-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
