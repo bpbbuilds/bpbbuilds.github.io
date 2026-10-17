@@ -82,6 +82,18 @@ function onHostHit(ctx, piece, fn) {
   });
 }
 
+/** Gem.miniActivate() is visual-only and must not count as a cooldown activation. */
+function pushGemMiniActivate(ctx, piece, gem, gid) {
+  ctx.events?.push?.({
+    t: (Number(ctx.t) || 0) + 0.001,
+    type: 'info',
+    itemId: gid,
+    placementKey: piece.placementKey,
+    label: `${gem.name || gid}: mini activate`,
+    meta: { category: 'system', script: true, handler: gid, miniActivate: true },
+  });
+}
+
 /** Per-socket origin so two Wisps on one weapon stay distinct in attribution. */
 function gemOriginKey(piece, slotIndex) {
   return `${piece.placementKey}:gem:${slotIndex}`;
@@ -241,6 +253,7 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
       const pct = modifiedParamValue(gem, basePct, 'lifesteal_weapon') / 100;
       const dmg = Number(hit.damage) || Number(hit.healthDamage) || 0;
       if (pct && dmg) healActor(ctx.player, Math.ceil(dmg * pct));
+      pushGemMiniActivate(ctx, piece, gem, gid);
     } else if (fam === 'emerald' && rollPercent(gemChance(gem), ctx.rng)) {
       // Emerald.gd passes getP1() directly to inflictPoison(); Item.gd's
       // giveStacks performs buff-power scaling and rounding at the target.
@@ -250,6 +263,7 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
         originKey,
         originId: gid,
       });
+      pushGemMiniActivate(ctx, piece, gem, gid);
     } else if (fam === 'skull' && rollPercent(gemChance(gem, 'chance2', 15), ctx.rng)) {
       stealRandomBuff(ctx.dummy, ctx.player, 1, ctx.rng, {
         originKey,

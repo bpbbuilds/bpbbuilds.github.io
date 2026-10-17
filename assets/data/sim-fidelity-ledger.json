@@ -18,7 +18,7 @@
     "unsupportedMode": 1,
     "lifecycleHookGap": 2,
     "untriagedLifecycleHookGap": 0,
-    "callReviewCandidate": 6,
+    "callReviewCandidate": 4,
     "duplicateRegistration": 17
   },
   "rows": [
@@ -16042,29 +16042,22 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "giveRegeneration",
-            "why": "no port block found"
-          },
-          {
-            "call": "inflictPoison",
-            "why": "no port block found"
-          },
-          {
-            "call": "changeResistChance",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: giveRegeneration, inflictPoison, changeResistChance.",
+      "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-regular-emerald-smoke.mjs",
+        "fixture": "Regular Emerald source inventory Regeneration, successful weapon-hit Poison plus miniActivate, GemPower-scaled armor Poison resistance, exact catalog parameters, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -16102,25 +16095,22 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "stealLife",
-            "why": "no port block found"
-          },
-          {
-            "call": "heal",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: stealLife, heal.",
+      "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-regular-ruby-smoke.mjs",
+        "fixture": "Regular Ruby source inventory stealLife, source weapon-hit ceil lifesteal plus miniActivate, GemPower-scaled armor healing efficiency, exact catalog parameters, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

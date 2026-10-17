@@ -137,6 +137,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  regular_emerald: {
+    focusedRegression: 'scripts/sim-regular-emerald-smoke.mjs',
+    fixture: 'Regular Emerald source inventory Regeneration, successful weapon-hit Poison plus miniActivate, GemPower-scaled armor Poison resistance, exact catalog parameters, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  regular_ruby: {
+    focusedRegression: 'scripts/sim-regular-ruby-smoke.mjs',
+    fixture: 'Regular Ruby source inventory stealLife, source weapon-hit ceil lifesteal plus miniActivate, GemPower-scaled armor healing efficiency, exact catalog parameters, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   amethyst_egg: {
     focusedRegression: 'scripts/sim-amethyst-egg-smoke.mjs',
     fixture: 'Amethyst Egg start trigger and recurring cooldown: source p1 random-debuff count, activation, and both board sides.',
@@ -3383,6 +3397,8 @@ const REVIEWED_CALL_CANDIDATES = Object.freeze({
   stone_shoes: new Set(['consume']),
   flawed_topaz: new Set(['addSpeed']),
   regular_topaz: new Set(['addSpeed']),
+  regular_emerald: new Set(['giveRegeneration', 'inflictPoison', 'changeResistChance']),
+  regular_ruby: new Set(['stealLife', 'heal']),
   heart_shield: new Set(['useRegeneration']),
 });
 
