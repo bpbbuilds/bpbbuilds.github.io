@@ -12357,9 +12357,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-mananana-smoke.mjs",
+        "fixture": "Mananana source Food preparation speed, exact Mana-gated heal and stamina ordering, unconditional activation, and explicit zero Mana/heal/stamina parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -12394,9 +12400,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-manathirst-smoke.mjs",
+        "fixture": "Manathirst source preparation Mana listener, one-threshold leftover progress, exact lifesteal damage/heal, hit-only Mana gain, and explicit zero Mana-on-hit behavior.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

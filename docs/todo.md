@@ -344,7 +344,7 @@ Predictive fight sim — dedicated page (not bolted onto `/create/`). Aim as clo
 
 Numbered AP–AS is closed. Do **not** title `/sim/` **Engine 1:1** or flip `engine11Achieved` until these are done (and Phase 38 for public copy). Detail: [`sim-phases.md`](sim/sim-phases.md) · flags: [`sim-validation.md`](sim/sim-validation.md) · claim JSON: `assets/data/sim-engine-claim.json`.
 
-- [x] **Source-backed item parity audit** — generated Admin item/mechanic dashboard, strict `verified_1to1` evidence rules, and focused regressions are shipped; the current retained item verdict is 435 / 519, with the remaining queue intentionally still listed below.
+- [x] **Source-backed item parity audit** — generated Admin item/mechanic dashboard, strict `verified_1to1` evidence rules, and focused regressions are shipped; the current retained item verdict is 437 / 519, with the remaining queue intentionally still listed below.
 - [x] **Truthful sim coverage chip** — `/sim/` now reports verified source-backed item proof for the current board instead of treating any registered handler as 1:1 coverage.
 - [ ] **Bag vs bag, then live compare** — first slice shipped: `/sim/?slug=A&oppSlug=B` (optional `oppRound`). Dummy auto-attack is off; both bags run. Smoke: `npm run sim-vs-board-smoke`. Next: fight the same two boards in-game and compare end HP / log (do **not** paste ranked HP onto dummy `live.*`). Cross-bag steal/charge still thin.
 - [x] **Reaper Unhealing paramCheck** — `heal()` at full HP still unheals and now logs the Heal tab amount (`flushUnloggedHeal`); Unhealing uses `takeDamage`. `reaper-harvest` staple `paramChecks` empty. Smoke: `npm run sim-ar-milestone`.

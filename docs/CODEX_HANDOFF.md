@@ -6646,3 +6646,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 289 - in progress
 
 - Codex owns the next retained Mananana and Manathirst fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mananana-smoke.mjs`, `scripts/sim-manathirst-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 289 - complete
+
+- Codex repaired Mananana to mirror Food preparation speed, exact named Mana gating, source heal/stamina ordering, unconditional activation, and explicit zero Mana/heal/stamina values. Manathirst now mirrors the source `onPrepare` Mana listener, one-threshold leftover progress, exact lifesteal damage/heal response, hit-only Mana gain, and explicit zero Mana-on-hit behavior.
+- Added `scripts/sim-mananana-smoke.mjs` and `scripts/sim-manathirst-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 437 / 519 verified item rows. Focused pair tests and changed-module syntax pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 437 verified, 60 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Mana Orb and Markswoman; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 290 - in progress
+
+- Codex owns the next retained Mana Orb and Markswoman fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mana-orb-smoke.mjs`, `scripts/sim-markswoman-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

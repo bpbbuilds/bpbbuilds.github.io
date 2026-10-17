@@ -1082,6 +1082,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  mananana: {
+    focusedRegression: 'scripts/sim-mananana-smoke.mjs',
+    fixture: 'Mananana source Food preparation speed, exact Mana-gated heal and stamina ordering, unconditional activation, and explicit zero Mana/heal/stamina parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  manathirst: {
+    focusedRegression: 'scripts/sim-manathirst-smoke.mjs',
+    fixture: 'Manathirst source preparation Mana listener, one-threshold leftover progress, exact lifesteal damage/heal, hit-only Mana gain, and explicit zero Mana-on-hit behavior.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

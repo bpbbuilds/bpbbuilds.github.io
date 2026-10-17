@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "28d8929d6950e5f2d787d017aa58579f585f3f34ca928c9a52127435073909fc",
+    "dashboardSha256": "4e5abce4fd8ae77fac4d6cb2846b78010492d9063393c2c9306fb908ef615bc6",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 435,
+    "verified_1to1": 437,
     "confirmed_gap": 7,
-    "evidence_pending": 62,
+    "evidence_pending": 60,
     "no_independent_combat": 15
   },
   "byId": {
@@ -295,8 +295,8 @@
     "mana_mastery": "verified_1to1",
     "mana_orb": "evidence_pending",
     "mana_potion": "verified_1to1",
-    "mananana": "evidence_pending",
-    "manathirst": "evidence_pending",
+    "mananana": "verified_1to1",
+    "manathirst": "verified_1to1",
     "markswoman": "evidence_pending",
     "mecha_bat": "evidence_pending",
     "mega_clover": "evidence_pending",

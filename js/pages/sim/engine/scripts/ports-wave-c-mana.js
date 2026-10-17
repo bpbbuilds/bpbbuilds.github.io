@@ -322,15 +322,13 @@ export const jynxStaffPort = {
 export const manathirstPort = {
   handlerId: 'manathirst',
   family: 'on_hit',
-  onPreCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._manaGained = 0;
     if (piece._manathirstBound) return;
     piece._manathirstBound = true;
     // getP1() is `manat` (30). One crossing per mana event; leftover stays.
-    const need = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'manat', getP1(piece.params, 30))),
-    );
+    const need = Number(getPName(piece.params, 'manat', getP1(piece.params, 30)));
+    if (!Number.isFinite(need)) return;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'mana' || !(ch.amount > 0)) return;
       piece._manaGained = (piece._manaGained || 0) + ch.amount;

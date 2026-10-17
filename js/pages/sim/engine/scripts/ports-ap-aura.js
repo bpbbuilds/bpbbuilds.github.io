@@ -126,14 +126,11 @@ const manananaPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP1(piece.params, 2))));
-    if (getStackAmount(player, 'mana') >= need) {
+    const need = Number(getPName(piece.params, 'manat', getP1(piece.params, 2)));
+    if (Number.isFinite(need) && getStackAmount(player, 'mana') >= need) {
       useMana(player, need, origin(piece));
       // Game heal(getP_m("heal"), event2) — requested amount (heal amp) goes to the Heal tab.
-      const healAmt = Math.max(
-        1,
-        Math.round(getPName(piece.params, 'heal', getP2(piece.params, 10))),
-      );
+      const healAmt = Number(getPName(piece.params, 'heal', getP2(piece.params, 10)));
       const healed = healActor(player, healAmt);
       if (healed > 0 || (player._lastHeal && !player._lastHeal.meterAttached)) {
         const logged = Number(player._lastHeal?.loggedAmount) || healed;
@@ -151,10 +148,7 @@ const manananaPort = {
         });
       }
       // Game giveStamina(stamina, event2) — catalog stamina = 2.
-      const stamAmt = Math.max(
-        1,
-        Math.round(getPName(piece.params, 'stamina', getP3(piece.params, 2))),
-      );
+      const stamAmt = Number(getPName(piece.params, 'stamina', getP3(piece.params, 2)));
       giveStamina(player, stamAmt);
       events.push({
         t: t + 0.003,
