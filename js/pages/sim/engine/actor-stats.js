@@ -302,6 +302,10 @@ export function applyEffectDmgFactor(actor, deltaFrac, ctx, origin = null) {
   const d = Number(deltaFrac) || 0;
   if (!d) return;
   actor.effectDmgFactor = (Number(actor.effectDmgFactor) || 0) + d;
+  // Character.changeEffectDamageFactor updates both the Effect and
+  // Unhealing typed damage factors. The latter is consumed when a heal is
+  // converted into Unhealing damage, not when the heal itself is logged.
+  actor.unhealingDmgFactor = (Number(actor.unhealingDmgFactor) || 0) + d;
   pushStatEvent(actor, ctx, origin, 'effect_dmg_factor', stepify(d * 100));
 }
 

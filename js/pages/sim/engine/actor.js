@@ -158,6 +158,9 @@ export function createActor(id, opts = {}) {
     stunnedUntil: 0,
     _healAmp: 0,
     unhealing: 0,
+    // Character.changeEffectDamageFactor also changes the typed Unhealing
+    // damage factor. Keep that separate from the base Unhealing rate.
+    unhealingDmgFactor: 0,
   };
 }
 
@@ -540,7 +543,8 @@ export function unhealingFromLoggedHeal(actor, loggedHeal) {
   const rate = Number(actor.unhealing) || 0;
   const amt = Number(loggedHeal) || 0;
   if (rate <= 0 || amt <= 0) return 0;
-  return Math.ceil(amt * rate);
+  const factor = Number(actor.unhealingDmgFactor) || 0;
+  return Math.max(0, Math.ceil(amt * rate * (1 + factor)));
 }
 
 /**
@@ -627,6 +631,7 @@ export function snapshotActor(actor) {
     invulnUntil: Number(actor.invulnUntil) || 0,
     healAmp: Number(actor._healAmp) || 0,
     unhealing: Number(actor.unhealing) || 0,
+    unhealingDmgFactor: Number(actor.unhealingDmgFactor) || 0,
     combatStats: collectActorHudStats(actor),
     ...(Object.keys(temp).length ? { temp } : {}),
   };
