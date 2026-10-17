@@ -10761,9 +10761,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-katana-smoke.mjs",
+        "fixture": "Katana source inherited Rib Saw early-hit purge/bonus ordering, opponent empowerable-weapon snapshot, buff-threshold strip, miss handling, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -10969,9 +10975,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-laboratory-smoke.mjs",
+        "fixture": "Laboratory source typed target snapshot, five-phase Lucky/Heat/Spikes/Regeneration/Vampirism spend-and-convert order, phase cooldown transition, final consumption, and failed-gate behavior.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

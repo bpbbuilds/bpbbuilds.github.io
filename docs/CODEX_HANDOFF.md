@@ -6500,3 +6500,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 274 - in progress
 
 - Codex owns the next retained Katana and Laboratory fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-katana-smoke.mjs`, `scripts/sim-laboratory-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 274 - complete
+
+- Codex repaired Katana to mirror inherited Rib Saw preparation and `onPreDealDamage_early` ordering, the source `canBeEmpowered` opponent-weapon snapshot, exact damage/buff parameters, thresholded opponent buff stripping, and explicit zero values. Laboratory now mirrors its source Fire/Nature/Holy/Vampiric/Engineer target predicate and snapshot, five-phase Lucky → Heat → Spikes → Regeneration → Vampirism conversions, source spend gates, phase cooldown transition, final consume/activation, and failed-gate behavior.
+- Added `scripts/sim-katana-smoke.mjs` and `scripts/sim-laboratory-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 407 / 519 verified item rows. Both focused tests, changed-module syntax, ledger/dashboard freshness checks, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 407 verified, 90 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Leaf Badge and Leather Armor; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 275 - in progress
+
+- Codex owns the next retained Leaf Badge and Leather Armor fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-leaf-badge-smoke.mjs`, `scripts/sim-leather-armor-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

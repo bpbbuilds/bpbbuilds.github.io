@@ -7,7 +7,7 @@ import {
   removeMostBuffs,
 } from '../buff-economy.js';
 import { getItemsInside } from '../board-graph.js';
-import { getP1, getP2, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import {
   addBonusDamage,
   addBonusDamageFactor,
@@ -55,24 +55,18 @@ export const katanaPort = {
     piece._ribOppWeapons = (ctx.allPieces || []).filter((other) => {
       if (!other || other === piece || other.side === piece.side) return false;
       const item = ctx.itemsById?.get?.(other.itemId);
-      if (!itemHasType(item, 'weapon')) return false;
-      return Number(item.damageMin) > 0 || itemHasType(item, 'lifesteal');
+      if (other.kind !== 'weapon' || other.empowerable === false) return false;
+      return Number(item?.damageMin) > 0 || itemHasType(item, 'lifesteal');
     });
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'katana');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
     const { t, dummy, events, rng } = ctx;
-    const removeDam = Math.max(
-      0,
-      Math.round(getPName(piece.params, 'dam', getP1(piece.params, 1))),
-    );
-    const bonusDam = Math.max(
-      0,
-      Math.round(getPName(piece.params, 'bonusdam', getP2(piece.params, 1))),
-    );
+    const removeDam = Math.trunc(getPName(piece.params, 'dam', getP1(piece.params, 0)));
+    const bonusDam = Math.trunc(getPName(piece.params, 'bonusdam', getP2(piece.params, 0)));
     let purged = 0;
     for (const w of piece._ribOppWeapons || []) {
       purged += purgeBonusDamage(w, removeDam);
@@ -87,8 +81,8 @@ export const katanaPort = {
       });
     }
 
-    const need = Math.max(1, Math.round(getPName(piece.params, 'buffst', getP1(piece.params, 5))));
-    const strip = Math.max(1, Math.round(getPName(piece.params, 'buffs', getP2(piece.params, 2))));
+    const need = Math.trunc(getPName(piece.params, 'buffst', getP3(piece.params, 0)));
+    const strip = Math.trunc(getPName(piece.params, 'buffs', getP4(piece.params, 0)));
     if (getBuffStacks(dummy) < need) return;
     const removed = removeMostBuffs(dummy, strip, rng, {
       originKey: piece.placementKey,

@@ -1713,6 +1713,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  katana: {
+    focusedRegression: 'scripts/sim-katana-smoke.mjs',
+    fixture: 'Katana source inherited Rib Saw early-hit purge/bonus ordering, opponent empowerable-weapon snapshot, buff-threshold strip, miss handling, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   just_stats: {
     focusedRegression: 'scripts/sim-just-stats-smoke.mjs',
     fixture: 'Just Stats source low-priority modified max-health gain, stamina regeneration, activation ordering, and zero-safe parameters.',
@@ -1758,6 +1765,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   knife_to_meet_you: {
     focusedRegression: 'scripts/sim-knife-to-meet-you-smoke.mjs',
     fixture: 'Knife to Meet You source prepare Dagger speed, linked Dagger count, same-side global empower filter, exact p2 damage factor, consume ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  laboratory: {
+    focusedRegression: 'scripts/sim-laboratory-smoke.mjs',
+    fixture: 'Laboratory source typed target snapshot, five-phase Lucky/Heat/Spikes/Regeneration/Vampirism spend-and-convert order, phase cooldown transition, final consumption, and failed-gate behavior.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',

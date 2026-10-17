@@ -67,7 +67,7 @@ function labTypes(ctx, piece) {
     if (itemHasType(item, 'fire')) counts.fire += 1;
     if (itemHasType(item, 'nature')) counts.nature += 1;
     if (itemHasType(item, 'holy')) counts.holy += 1;
-    if (itemHasType(item, 'vampiric') || o.vampiric) counts.vampiric += 1;
+    if (itemHasType(item, 'vampiric')) counts.vampiric += 1;
     if (String(item?.class || '') === 'Engineer') counts.engineer += 1;
   }
   return counts;
