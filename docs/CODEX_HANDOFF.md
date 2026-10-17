@@ -6864,3 +6864,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 315 - in progress
 
 - Codex owns the next retained Whetstone and Whetstone2 fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-whetstone-smoke.mjs`, `scripts/sim-whetstone2-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 315 - complete
+
+- Codex repaired Whetstone to mirror source `canBeEmpowered` targeting, exact named `dam` mutation without forced rounding/minimums, target-before-activation ordering, and activation. Whetstone2 now uses the extracted Whetstone.gd scene binding with its own handler identity and the same source behavior.
+- Added `scripts/sim-whetstone-smoke.mjs` and `scripts/sim-whetstone2-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 487 / 519 verified item rows. Focused pair tests, prior aura/weapon regressions, changed-module syntax, source parity audit, and generated artifact freshness checks pass. The generated summary reports 487 verified, 11 evidence-pending, 6 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 316 - in progress
+
+- Codex owns the next retained Whetstone3 and White Eyes Blue Dragon fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-whetstone3-smoke.mjs`, `scripts/sim-white-eyes-blue-dragon-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

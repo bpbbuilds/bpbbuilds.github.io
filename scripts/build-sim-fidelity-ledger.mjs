@@ -256,6 +256,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  whetstone: {
+    focusedRegression: 'scripts/sim-whetstone-smoke.mjs',
+    fixture: 'Whetstone source canBeEmpowered targeting, exact named damage bonus, target mutation before activation, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  whetstone2: {
+    focusedRegression: 'scripts/sim-whetstone2-smoke.mjs',
+    fixture: 'Whetstone2 inherited Whetstone.gd scene binding, exact damage bonus, handler identity, target mutation, and activation ordering.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   spiked_collar: {
     focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
     fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',

@@ -103,7 +103,7 @@ export const whetstonePort = {
   handlerId: 'whetstone',
   family: 'synergy_aura',
   onCombatStart(piece, ctx) {
-    const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', getP1(piece.params, 2))));
+    const dam = getPName(piece.params, 'dam', getP1(piece.params, 0));
     const targets = linkedPieces(ctx, piece, canHeroShieldEmpower);
     for (const o of targets) addBonusDamage(o, dam);
     ctx.events.push({
@@ -114,6 +114,7 @@ export const whetstonePort = {
       label: `${piece.name}: +${dam} dmg ×${targets.length}`,
       meta: { category: 'adjacency', script: true, handler: 'whetstone' },
     });
+    pushActivate(piece, ctx, 'whetstone', `Accessory: ${piece.name}`);
   },
 };
 
