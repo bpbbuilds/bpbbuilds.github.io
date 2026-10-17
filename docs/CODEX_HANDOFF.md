@@ -6719,3 +6719,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 297 - in progress
 
 - Codex owns the next retained Mrs Struggles and Mushroom Farm fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mrs-struggles-smoke.mjs`, `scripts/sim-mushroom-farm-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 297 - complete
+
+- Codex repaired Mrs Struggles to mirror source preparation-time self speed per affected Dark item, exact all-buff opponent stripping, source activation ordering, and explicit zero speed. Mushroom Farm now mirrors exact Fly Agaric/Doom Cap target identity, combat-start speed, activation projection, and explicit zero speed.
+- Added `scripts/sim-mrs-struggles-smoke.mjs` and `scripts/sim-mushroom-farm-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 453 / 519 verified item rows. Focused pair tests and changed-module syntax pass. The generated item summary reports 453 verified, 44 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 298 - in progress
+
+- Codex owns the next retained No Rush Please and Null Blade fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-no-rush-please-smoke.mjs`, `scripts/sim-null-blade-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

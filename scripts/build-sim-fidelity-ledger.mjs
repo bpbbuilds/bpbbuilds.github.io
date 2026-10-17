@@ -1195,6 +1195,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  mrs_struggles: {
+    focusedRegression: 'scripts/sim-mrs-struggles-smoke.mjs',
+    fixture: 'Mrs Struggles source preparation-time self speed per affected Dark item, exact all-buff opponent stripping after effects, source activation ordering, and explicit zero speed.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  mushroom_farm: {
+    focusedRegression: 'scripts/sim-mushroom-farm-smoke.mjs',
+    fixture: 'Mushroom Farm source exact Fly Agaric/Doom Cap combat-start speed targets, activation projection, and explicit zero speed.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

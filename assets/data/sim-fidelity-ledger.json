@@ -13009,9 +13009,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-mrs-struggles-smoke.mjs",
+        "fixture": "Mrs Struggles source preparation-time self speed per affected Dark item, exact all-buff opponent stripping after effects, source activation ordering, and explicit zero speed.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -13045,9 +13051,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-mushroom-farm-smoke.mjs",
+        "fixture": "Mushroom Farm source exact Fly Agaric/Doom Cap combat-start speed targets, activation projection, and explicit zero speed.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

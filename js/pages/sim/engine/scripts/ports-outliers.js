@@ -295,15 +295,18 @@ export const fullBodyProtectionPort = {
 export const mrsStrugglesPort = {
   handlerId: 'mrs_struggles',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { graph, itemsById, canAffect } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    const speed = getP1(piece.params, 5) / 100;
-    if (links.length && speed) addSpeed(piece, links.length * speed);
+    const darkCount = links.filter((link) => {
+      const item = itemsById.get(link.id);
+      return itemHasType(item, 'dark');
+    }).length;
+    const speed = getPName(piece.params, 'bonusspeed', getP1(piece.params, 10)) / 100;
+    if (darkCount && speed) addSpeed(piece, darkCount * speed);
   },
   onCooldownEffect(piece, ctx) {
     const { t, dummy, events } = ctx;
-    pushActivate(piece, ctx, 'mrs_struggles', `Pet: ${piece.name}`);
     for (const k of BUFF_KEYS) {
       if (getStackAmount(dummy, /** @type {any} */ (k)) > 0) {
         spendStacks(dummy, k, 1, {
@@ -312,6 +315,7 @@ export const mrsStrugglesPort = {
         });
       }
     }
+    pushActivate(piece, ctx, 'mrs_struggles', `Pet: ${piece.name}`);
     events.push({
       t: t + 0.004,
       type: 'info',

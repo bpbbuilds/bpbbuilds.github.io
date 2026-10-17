@@ -352,15 +352,10 @@ export const mushroomFarmPort = {
     const speed = getPName(piece.params, 'speed', getP1(piece.params, 20)) / 100;
     const targets = linkedPieces(ctx, piece, (_o, item) => {
       const id = String(item?.id || '');
-      return id === 'fly_agaric' || id === 'doom_cap' || itemHasType(item, 'mushroom');
+      return id === 'fly_agaric' || id === 'doom_cap';
     });
     for (const o of targets) if (speed) addSpeed(o, speed);
-    ctx.events.push({
-      t: ctx.t,
-      type: 'info',
-      label: `${piece.name}: mushroom haste ×${targets.length}`,
-      meta: { category: 'adjacency', script: true, handler: 'mushroom_farm' },
-    });
+    pushActivate(piece, ctx, 'mushroom_farm', `Skill: ${piece.name}`);
   },
 };
 
