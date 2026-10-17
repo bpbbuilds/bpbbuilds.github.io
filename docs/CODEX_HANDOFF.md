@@ -7047,3 +7047,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 336 - in progress
 
 - Codex owns the next partial shared surface, `gem-lifecycle`, for source-backed gem prepare, host-mode, combat-start, and socketed effect ordering review. Planned paths are limited to simulator gem/socket modules, a focused regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 336 - complete
+
+- Codex repaired the socketed-gem lifecycle ordering: the simulator now runs each host's socket preparation during the host `prepare` pass, before the next item and before the host cooldown arm, matching `Item.prepare()` and `Gem.onPrepare()` instead of deferring it to pre-combat start. Gem mode dispatch, loose-gem cooldown eligibility, socket combat-start ordering, and isolated combat-end semantics are source-covered.
+- Added `scripts/sim-gem-lifecycle-smoke.mjs`, extended `scripts/sim-lifecycle-smoke.mjs` with host-owned socket ordering assertions, marked `gem-lifecycle` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and ran gem candidate/tier/Wisp, lifecycle, item-effects, parity, syntax, and freshness checks. Shared mechanic totals are now 12 implemented and 9 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 337 - in progress
+
+- Codex owns the next partial shared surface, `card-lifecycle`, for source-backed card prepare, pre-combat, reveal/chain, trigger, and combat-end ordering review. Planned paths are limited to simulator card-chain/piece modules, a focused regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

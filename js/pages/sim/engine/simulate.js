@@ -421,6 +421,11 @@ export function simulateEngine(opts) {
     traceLifecycle('prepare', piece, 0);
     const script = getScriptHandler(piece.itemId);
     const prepareCtx = { ...ctxForPiece(piece, world), t: 0 };
+    // Item.prepare() invokes each socketed Gem.prepare() before the host's
+    // own onPrepare hook. Keep this per-item rather than deferring all socket
+    // preparation to the later pre-combat pass.
+    traceLifecycle('socket_prepare', piece, 0);
+    prepareGemSockets(piece, prepareCtx);
     if (piece.kind === 'weapon') {
       runWeaponInheritedHook(piece, prepareCtx, 'prepare', script?.onPrepare);
     } else if (piece.kind === 'card') {
@@ -440,8 +445,6 @@ export function simulateEngine(opts) {
   for (const piece of startOrder) {
     const sc = ctxForPiece(piece, world);
     sc.combatStartSeq = combatStartOrderMap.get(piece.placementKey);
-    traceLifecycle('socket_prepare', piece, COMBAT_DELAY);
-    prepareGemSockets(piece, sc);
     traceLifecycle('cooldown_arm', piece, COMBAT_DELAY);
     armPieceCooldown(piece, ownerStacks(piece, world), rng, {
       opponent: piece.side === 'them',

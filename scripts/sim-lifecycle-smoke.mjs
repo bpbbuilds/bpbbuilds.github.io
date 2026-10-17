@@ -139,23 +139,40 @@ const socketPrepare = firstIndex(trace, (entry) => entry.placementKey === player
 const cooldownArm = firstIndex(trace, (entry) => entry.placementKey === playerSword.key && entry.phase === 'cooldown_arm');
 ok(socketPrepare >= 0 && socketPrepare < cooldownArm, 'socket preparation precedes host cooldown arm');
 
-// Game Item.preCombatStart runs each item's socket preparation, cooldown arm,
-// and own pre-start hook as one contiguous item pass. It does not run all
-// socket preparations globally before arming every item.
-const startPasses = ['socket_prepare', 'cooldown_arm', 'pre_combat_start'];
+// Game Item.preCombatStart runs each item's cooldown arm and own pre-start
+// hook as one contiguous item pass. Socket preparation already happened in
+// the host-owned prepare pass above.
+const startPasses = ['cooldown_arm', 'pre_combat_start'];
 const startTrace = trace.filter((entry) => startPasses.includes(entry.phase));
-const startKeys = [...new Set(startTrace.filter((entry) => entry.phase === 'socket_prepare').map((entry) => entry.placementKey))];
+const startKeys = [...new Set(startTrace.filter((entry) => entry.phase === 'cooldown_arm').map((entry) => entry.placementKey))];
 for (let i = 0; i < startKeys.length; i += 1) {
   const key = startKeys[i];
   const at = (phase) => startTrace.findIndex((entry) => entry.placementKey === key && entry.phase === phase);
-  const nextSocket = i + 1 < startKeys.length
-    ? startTrace.findIndex((entry) => entry.placementKey === startKeys[i + 1] && entry.phase === 'socket_prepare')
+  const nextArm = i + 1 < startKeys.length
+    ? startTrace.findIndex((entry) => entry.placementKey === startKeys[i + 1] && entry.phase === 'cooldown_arm')
     : startTrace.length;
   ok(
-    at('socket_prepare') < at('cooldown_arm') &&
-      at('cooldown_arm') < at('pre_combat_start') &&
-      at('pre_combat_start') < nextSocket,
+    at('cooldown_arm') < at('pre_combat_start') &&
+      at('pre_combat_start') < nextArm,
     `${key}: pre-combat-start item work is contiguous before the next item`,
+  );
+}
+
+// Item.prepare() owns the socketed Gem.prepare() call. The socket hook must
+// therefore sit directly after that item's prepare trace and before the next
+// item begins its own prepare pass; it is not a later global pre-start pass.
+const prepareTrace = trace.filter((entry) => entry.phase === 'prepare' || entry.phase === 'socket_prepare');
+const prepareKeys = [...new Set(prepareTrace.filter((entry) => entry.phase === 'prepare').map((entry) => entry.placementKey))];
+for (let i = 0; i < prepareKeys.length; i += 1) {
+  const key = prepareKeys[i];
+  const prepareAt = prepareTrace.findIndex((entry) => entry.placementKey === key && entry.phase === 'prepare');
+  const socketAt = prepareTrace.findIndex((entry) => entry.placementKey === key && entry.phase === 'socket_prepare');
+  const nextPrepareAt = i + 1 < prepareKeys.length
+    ? prepareTrace.findIndex((entry) => entry.placementKey === prepareKeys[i + 1] && entry.phase === 'prepare')
+    : prepareTrace.length;
+  ok(
+    prepareAt >= 0 && socketAt === prepareAt + 1 && socketAt < nextPrepareAt,
+    `${key}: socket prepare is owned by the host prepare pass before the next item`,
   );
 }
 

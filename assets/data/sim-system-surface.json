@@ -7282,8 +7282,8 @@
   },
   "totals": {
     "surfaces": 21,
-    "implemented": 11,
-    "partial": 10,
+    "implemented": 12,
+    "partial": 9,
     "unmapped": 0,
     "unsupported": 0,
     "sourceFunctions": 1439,
@@ -8488,11 +8488,29 @@
         "combatEnd"
       ],
       "simOwners": [
+        "js/pages/sim/engine/simulate.js",
         "js/pages/sim/engine/gems.js",
-        "js/pages/sim/engine/gem-sockets.js"
+        "js/pages/sim/engine/gem-sockets.js",
+        "js/pages/sim/engine/scripts/ports-an-gems.js"
       ],
-      "disposition": "partial",
-      "note": "Socket preparation/start ordering is fixed; inventory modes, gem cooldowns, and combat end still need full coverage.",
+      "disposition": "implemented",
+      "note": "Gem mode dispatch, inventory/weapon/armor preparation, loose-gem cooldown eligibility, socket combat-start ordering, and isolated combat-end cleanup semantics match the extracted Gem/Item lifecycle; visual socket teardown remains UI-only.",
+      "evidence": {
+        "focusedRegression": "scripts/sim-gem-lifecycle-smoke.mjs",
+        "fixture": "Gem.gd mode dispatch and cooldown audit, Item.gd nested gem lifecycle order, socketed host trace, and first cooldown arm after Gem.prepare; candidate and tier regressions cover inventory/weapon/armor effects and timed socket behavior.",
+        "projections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
       "sourceFunctions": [
         {
           "name": "prepareInventory",
