@@ -3,14 +3,15 @@
  */
 
 import { drainStamina, healActor } from '../actor.js';
-import { grantStacks, onBuffChanged, spendStacks } from '../buff-economy.js';
+import { grantStacks, onBuffChanged, useRegeneration } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { giveBuffPower } from '../buff-power.js';
-import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { dealEffectDamage } from './handlers.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
-import { applyHealEfficiency } from '../actor-stats.js';
 import { rollPercent } from '../rng.js';
+import { giveTempMaxHp } from './ports-ap-start.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -21,10 +22,10 @@ function registerShield(piece, ctx, opts) {
   const chanceRaw = piece.chance != null ? piece.chance : catalog?.chance;
   const chanceValue = Number(chanceRaw);
   const chance = Number.isFinite(chanceValue) ? chanceValue : 30;
-  const damblock = Math.max(
-    1,
-    Math.round(opts.damblock ?? getPName(piece.params, 'damblock', getP1(piece.params, 7))),
-  );
+  const damblockRaw = Number(opts.damblock ?? getPName(piece.params, 'damblock', getP1(piece.params, 7)));
+  const damblock = opts.allowZeroDamblock
+    ? Math.max(0, Math.round(damblockRaw))
+    : Math.max(1, Math.round(damblockRaw));
   const baseGetter = opts.getDamblock;
   const readDamblock = () => {
     const base = Number(baseGetter ? baseGetter() : damblock) || 0;
@@ -102,18 +103,35 @@ const frozenBucklerPort = {
 const heartShieldPort = {
   handlerId: 'heart_shield',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const fac = getPName(piece.params, 'block', 20) / 100;
+    const healamp = getPName(piece.params, 'healamp', 30) / 100;
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const chance2Raw = piece.chance2 != null ? piece.chance2 : catalog?.chance2;
+    const regenAmp = Number.isFinite(Number(chance2Raw)) ? Number(chance2Raw) : 0;
     for (const o of linked(ctx, piece)) {
-      if (Number(o.blockGrant) > 0) o.blockGrant = Math.round(o.blockGrant * (1 + fac));
+      if (fac) giveBuffPower(o, 'block', fac);
+      if (healamp) {
+        o.paramMult = { ...(o.paramMult || {}) };
+        for (const key of ['heal', 'lifesteal']) {
+          const current = Number(o.paramMult[key]);
+          o.paramMult[key] = (Number.isFinite(current) ? current : 1) + healamp;
+        }
+      }
+      if (regenAmp) {
+        o.buffAmplificationChances = o.buffAmplificationChances || {};
+        o.buffAmplificationChances.regeneration =
+          (Number(o.buffAmplificationChances.regeneration) || 0) + regenAmp;
+      }
     }
-    applyHealEfficiency(ctx.player, getPName(piece.params, 'healamp', 30) / 100, ctx, piece);
     piece._heartActive = false;
     piece._regenGiven = 0;
-    const maxR = Math.max(1, Math.round(getPName(piece.params, 'max_regen', 4)));
-    const onBlk = Math.max(1, Math.round(getPName(piece.params, 'regen', 1)));
-    const need = Math.max(1, Math.round(getPName(piece.params, 'regent', 7)));
+    const maxR = Math.trunc(getPName(piece.params, 'max_regen', getP6(piece.params, 4)));
+    const onBlk = Math.trunc(getPName(piece.params, 'regen', getP5(piece.params, 1)));
+    const need = Math.trunc(getPName(piece.params, 'regent', 7));
     registerShield(piece, ctx, {
+      damblock: modifiedParamValue(piece, getPName(piece.params, 'damblock', getP1(piece.params, 20)), 'damblock'),
+      allowZeroDamblock: true,
       afterBlock() {
         if (piece._regenGiven < maxR) {
           grantStacks(ctx.player, 'regeneration', onBlk, origin(piece));
@@ -125,23 +143,17 @@ const heartShieldPort = {
       if (piece._heartActive || change.stack !== 'regeneration' || change.amount <= 0) return;
       if ((Number(ctx.player.stacks.regeneration) || 0) < need) return;
       piece._heartActive = true;
-      spendStacks(ctx.player, 'regeneration', need, {
+      useRegeneration(ctx.player, need, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
-      const hp = Math.max(0, Math.round(getPName(piece.params, 'maxhealth', 150)));
-      ctx.player.maxHp += hp;
-      ctx.player.hp = Math.min(ctx.player.maxHp, ctx.player.hp + hp);
-      ctx.events.push({
-        t: ctx.t,
-        type: 'buff',
-        target: 'player',
-        amount: hp,
-        itemId: piece.itemId,
-        placementKey: piece.placementKey,
-        label: `${piece.name}: +${hp} Max Health`,
-        meta: { category: 'buff', stack: 'maxhealth', script: true, handler: 'heart_shield' },
-      });
+      const reactionCtx = { ...ctx, t: Number(ctx.player._simT) || ctx.t };
+      const hp = modifiedParamValue(
+        piece,
+        getPName(piece.params, 'maxhealth', 150),
+        'maxhealth',
+      );
+      giveTempMaxHp(piece, reactionCtx, 'heart_shield', hp);
     });
     // The activated override also blocks ranged/effect damage; the normal
     // Shield registration covers melee attacks through damage.js.
@@ -152,7 +164,19 @@ const heartShieldPort = {
       if (!source.isEffectDamage && source.isAttack === false) return;
       if (!rollPercent(Number(piece.chance) || 30, ctx.rng)) return;
       const damage = payload.damage;
-      const cut = Math.min(Math.max(0, Number(damage?.damage) || 0), Math.max(1, Math.round(getPName(piece.params, 'damblock', 20))));
+      const cut = Math.min(
+        Math.max(0, Number(damage?.damage) || 0),
+        Math.max(
+          0,
+          Math.round(
+            modifiedParamValue(
+              piece,
+              getPName(piece.params, 'damblock', getP1(piece.params, 20)),
+              'damblock',
+            ),
+          ),
+        ),
+      );
       if (cut > 0) {
         damage.damage -= cut;
         damage.reduced = (damage.reduced || 0) + cut;

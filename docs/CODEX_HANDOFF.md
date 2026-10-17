@@ -6347,3 +6347,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 260 - in progress
 
 - Codex owns the next retained Heart of the Cards and Heart Shield fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-heart-of-the-cards-smoke.mjs`, `scripts/sim-heart-shield-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 260 - complete
+
+- Codex repaired Heart of the Cards to mirror the source preparation-time inventory-wide card activation listener, same-side filtering, exact chain-position Mana gate, Regeneration/Mana grants, activation ordering, and explicit zero values. Heart Shield now mirrors source preparation-time affected-item Block buff power, heal/lifesteal parameter modifiers, Regeneration amplification, shield registration, block-side Regeneration, threshold use/health conversion, active ranged/effect blocking, and explicit zero values; the source `useRegeneration` review candidate is now covered by the focused regression and recorded as reviewed.
+- Added `scripts/sim-heart-of-the-cards-smoke.mjs` and `scripts/sim-heart-shield-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 379 / 519 verified item rows. Focused pair tests pass; generated summary reports 379 verified, 118 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+- The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Heavy Drinking and Hedgehog; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 261 - in progress
+
+- Codex owns the next retained Heavy Drinking and Hedgehog fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-heavy-drinking-smoke.mjs`, `scripts/sim-hedgehog-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

@@ -18,7 +18,7 @@
     "unsupportedMode": 1,
     "lifecycleHookGap": 2,
     "untriagedLifecycleHookGap": 0,
-    "callReviewCandidate": 7,
+    "callReviewCandidate": 6,
     "duplicateRegistration": 17
   },
   "rows": [
@@ -9665,9 +9665,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-heart-of-the-cards-smoke.mjs",
+        "fixture": "Heart of the Cards source preparation-time inventory-wide card activation listener, chain-position Mana gate, Regeneration, side isolation, activation ordering, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -9695,21 +9701,22 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "useRegeneration",
-            "why": "no token of useRegeneration"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: useRegeneration.",
+      "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-heart-shield-smoke.mjs",
+        "fixture": "Heart Shield source affected-item Block power, heal/lifesteal parameter modifiers, Regeneration amplification, block regeneration, threshold max-health conversion, active damage block, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

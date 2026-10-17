@@ -1587,6 +1587,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  heart_of_the_cards: {
+    focusedRegression: 'scripts/sim-heart-of-the-cards-smoke.mjs',
+    fixture: 'Heart of the Cards source preparation-time inventory-wide card activation listener, chain-position Mana gate, Regeneration, side isolation, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  heart_shield: {
+    focusedRegression: 'scripts/sim-heart-shield-smoke.mjs',
+    fixture: 'Heart Shield source affected-item Block power, heal/lifesteal parameter modifiers, Regeneration amplification, block regeneration, threshold max-health conversion, active damage block, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hawk_rune: {
     focusedRegression: 'scripts/sim-hawk-rune-smoke.mjs',
     fixture: 'Hawk Rune source loose Blind effect and resistance-aware ordering, socketed weapon crit chance/severity, socketed armor Blind resistance, and zero-safe parameters.',
@@ -2766,6 +2780,7 @@ const REVIEWED_CALL_CANDIDATES = Object.freeze({
   stone_shoes: new Set(['consume']),
   flawed_topaz: new Set(['addSpeed']),
   regular_topaz: new Set(['addSpeed']),
+  heart_shield: new Set(['useRegeneration']),
 });
 
 const registry = await import(

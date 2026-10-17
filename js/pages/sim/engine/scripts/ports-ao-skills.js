@@ -225,41 +225,28 @@ const extraBagsPort = {
 const heartOfTheCardsPort = {
   handlerId: 'heart_of_the_cards',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', 1)));
-    const mana = Math.max(1, Math.round(getPName(piece.params, 'mana', 1)));
-    const need = Math.max(1, Math.round(getPName(piece.params, 'pos', 3)));
-    ctx.bus?.on?.('piece_dealt_damage', () => {});
-    for (const o of ctx.pieces || []) {
-      const script = o;
-      void script;
-    }
-    const orig = piece;
-    ctx.pieces
-      ?.filter((o) => itemHasType(ctx.itemsById.get(o.itemId), 'card'))
-      .forEach((card) => {
-        const prev = card.onCooldownEffect;
-        void prev;
+  onPrepare(piece, ctx) {
+    const regen = Math.trunc(getPName(piece.params, 'regen', getP1(piece.params, 1)));
+    const mana = Math.trunc(getPName(piece.params, 'mana', getP2(piece.params, 1)));
+    const need = Math.trunc(getPName(piece.params, 'pos', getP3(piece.params, 3)));
+    ctx.bus?.on?.('piece_activated', (payload) => {
+      const activated = payload?.piece;
+      if (!activated || !itemHasType(ctx.itemsById.get(activated.itemId), 'card')) return;
+      if (activated.side != null && piece.side != null && activated.side !== piece.side) return;
+      const eventCtx = { ...ctx, t: Number(payload?.t) || ctx.t };
+      grantStacks(ctx.player, 'regeneration', regen, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
       });
-    onBuffChanged(ctx.player, () => {});
-    orig._hotc = { regen, mana, need };
-  },
-  onPeerActivated(listener, activated, ctx) {
-    if (!itemHasType(ctx.itemsById.get(activated.itemId), 'card')) return;
-    const regen = Math.max(1, Math.round(getPName(listener.params, 'regen', 1)));
-    grantStacks(ctx.player, 'regeneration', regen, {
-      originKey: listener.placementKey,
-      originId: listener.itemId,
+      const pos = Number(activated._chainPos);
+      if (Number.isFinite(pos) && pos + 1 >= need) {
+        grantStacks(ctx.player, 'mana', mana, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        });
+      }
+      pushActivate(piece, eventCtx, 'heart_of_the_cards', `Skill: ${piece.name}`);
     });
-    const pos = Number(activated._chainPos) || 0;
-    const need = Math.max(1, Math.round(getPName(listener.params, 'pos', 3)));
-    if (pos + 1 >= need) {
-      grantStacks(ctx.player, 'mana', Math.max(1, Math.round(getPName(listener.params, 'mana', 1))), {
-        originKey: listener.placementKey,
-        originId: listener.itemId,
-      });
-    }
-    pushActivate(listener, ctx, 'heart_of_the_cards', `Skill: ${listener.name}`);
   },
 };
 

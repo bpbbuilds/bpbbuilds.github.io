@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "3930fa20a8b72a939eacad081c50f38ce1f6d2041b59bbf2995c898ad55c8f6a",
+    "dashboardSha256": "f12c3ee167cfbbf7772dbd8bf27c2f95ff3c3214d4008c9a2d331073ee89436d",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 377,
-    "confirmed_gap": 8,
-    "evidence_pending": 119,
+    "verified_1to1": 379,
+    "confirmed_gap": 7,
+    "evidence_pending": 118,
     "no_independent_combat": 15
   },
   "byId": {
@@ -231,8 +231,8 @@
     "health_potion": "verified_1to1",
     "heart_container": "verified_1to1",
     "heart_of_darkness": "verified_1to1",
-    "heart_of_the_cards": "evidence_pending",
-    "heart_shield": "confirmed_gap",
+    "heart_of_the_cards": "verified_1to1",
+    "heart_shield": "verified_1to1",
     "heavy_drinking": "evidence_pending",
     "hedgehog": "evidence_pending",
     "hero_longsword": "evidence_pending",
