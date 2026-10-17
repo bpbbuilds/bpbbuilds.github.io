@@ -22596,9 +22596,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-yggdrasil-leaf-smoke.mjs",
+        "fixture": "Yggdrasil Leaf source Nature-only targeting, start Mana and Regeneration grants with buff power, truncated Mana threshold accumulation, modified getP_m heal, random debuff cleansing, effect-before-activation ordering, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     }
   ]

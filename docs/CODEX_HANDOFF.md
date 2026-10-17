@@ -6918,3 +6918,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 321 - in progress
 
 - Codex owns the final retained Yggdrasil Leaf fidelity review/repair, its focused source-backed regression and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port module, `scripts/sim-yggdrasil-leaf-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 321 - complete
+
+- Codex repaired Yggdrasil Leaf to mirror source Nature-only targeting, start Mana and Regeneration grants through the buff-power-aware path, truncated integer Mana threshold accumulation, modified `getP_m("heal")`, random debuff cleansing, owner-correct triggered heal projection, effect-before-activation ordering, and explicit zero values.
+- Added `scripts/sim-yggdrasil-leaf-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 500 / 519 verified item rows. Focused Yggdrasil and related Nature/aura regressions, changed-module syntax, source parity audit, and generated artifact freshness checks pass. The generated summary reports 500 verified, 0 evidence-pending, 4 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 322 - in progress
+
+- Codex owns the next remaining confirmed-gap review, starting with Chess Board and Stone, their source-backed regressions and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, focused smoke scripts for the two items, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

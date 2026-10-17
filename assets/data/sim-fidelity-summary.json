@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "40d9c5db4a8acbf0599258f398e378cbd2e5ee5458499bf7279aab0f4ed20677",
+    "dashboardSha256": "583ce703f0956f7b45ef3f036c16f06664aed4f6f30c8b2e116e23c10e9e1cb2",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 499,
+    "verified_1to1": 500,
     "confirmed_gap": 4,
-    "evidence_pending": 1,
+    "evidence_pending": 0,
     "no_independent_combat": 15
   },
   "byId": {
@@ -532,6 +532,6 @@
     "wooden_buckler": "verified_1to1",
     "wooden_sword": "verified_1to1",
     "wrench": "verified_1to1",
-    "yggdrasil_leaf": "evidence_pending"
+    "yggdrasil_leaf": "verified_1to1"
   }
 }

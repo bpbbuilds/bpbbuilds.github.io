@@ -340,6 +340,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  yggdrasil_leaf: {
+    focusedRegression: 'scripts/sim-yggdrasil-leaf-smoke.mjs',
+    fixture: 'Yggdrasil Leaf source Nature-only targeting, start Mana and Regeneration grants with buff power, truncated Mana threshold accumulation, modified getP_m heal, random debuff cleansing, effect-before-activation ordering, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   spiked_collar: {
     focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
     fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',

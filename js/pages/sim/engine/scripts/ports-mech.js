@@ -7,6 +7,7 @@ import { cleanseRandomDebuffs, grantStacks, onBuffChanged, useRegeneration } fro
 import { gainStacks, loseStacks } from '../stacks.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
 import { changeVaryingDamageFromBuffChange } from '../piece-stats.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { affectedTargets } from '../board-graph.js';
 import { randInt, shuffleInPlace } from '../rng.js';
 import {
@@ -298,19 +299,43 @@ export const yggdrasilLeafPort = {
   family: 'synergy_aura',
   onPrepare(piece, ctx) {
     piece._manaUsed = 0;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP3(piece.params, 5))));
+    const need = Math.max(1, Math.trunc(getPName(piece.params, 'manat', getP3(piece.params, 5))));
     onBuffChanged(ctx.player, (change) => {
       if (change.stack !== 'mana' || change.amount >= 0 || !change.used) return;
       piece._manaUsed += -change.amount;
       const activations = Math.floor(piece._manaUsed / need);
       if (activations <= 0) return;
       piece._manaUsed %= need;
-      healActor(ctx.player, Math.max(1, Math.round(getPName(piece.params, 'heal', 20))) * activations);
+      const healBase = getPName(piece.params, 'heal', 20);
+      const healAmount = modifiedParamValue(piece, healBase, 'heal') * activations;
+      const healed = healActor(ctx.player, healAmount);
+      const loggedHeal = Number(ctx.player._lastHeal?.loggedAmount) || 0;
+      if (loggedHeal > 0) {
+        if (ctx.player._lastHeal) ctx.player._lastHeal.meterAttached = true;
+        const side = eventSideForPiece(piece);
+        ctx.events.push({
+          t: ctx.t + 0.002,
+          type: 'heal',
+          actor: side,
+          target: side,
+          amount: loggedHeal,
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          label: `${piece.name}: heal +${loggedHeal}`,
+          meta: {
+            category: 'heal',
+            script: true,
+            handler: 'yggdrasil_leaf',
+            applied: healed,
+            requestedHealAmount: loggedHeal,
+          },
+        });
+      }
       cleanseRandomDebuffs(
         ctx.player,
-        Math.max(1, Math.round(getPName(piece.params, 'cleanse', 2))) * activations,
+        getPName(piece.params, 'cleanse', 2) * activations,
         ctx.rng,
-        { originKey: piece.placementKey, originId: piece.itemId },
+        { originKey: piece.placementKey, originId: piece.itemId, piece },
       );
       pushActivate(piece, ctx, 'yggdrasil_leaf', `Accessory: ${piece.name}`);
     });
@@ -323,20 +348,12 @@ export const yggdrasilLeafPort = {
       ctx.canAffect,
     );
     const n = Math.max(0, links.filter((link) => itemHasType(ctx.itemsById.get(link.id), 'nature')).length);
-    const mana = Math.max(0, Math.round(getP1(piece.params, 1) * n));
-    const regen = Math.max(0, Math.round(getP2(piece.params, 1) * n));
-    if (mana > 0) gainStacks(ctx.player, 'mana', mana);
-    if (regen > 0) gainStacks(ctx.player, 'regeneration', regen);
+    const mana = Math.max(0, getP1(piece.params, 1) * n);
+    const regen = Math.max(0, getP2(piece.params, 1) * n);
+    const origin = { originKey: piece.placementKey, originId: piece.itemId, piece };
+    if (mana > 0) grantStacks(ctx.player, 'mana', mana, origin);
+    if (regen > 0) grantStacks(ctx.player, 'regeneration', regen, origin);
     pushActivate(piece, ctx, 'yggdrasil_leaf', `Accessory: ${piece.name}`);
-    ctx.events.push({
-      t: ctx.t,
-      type: 'buff',
-      target: 'player',
-      amount: regen || mana,
-      itemId: piece.itemId,
-      label: `${piece.name}: +${mana} Mana +${regen} Regen (${n} Nature)`,
-      meta: { category: 'buff', script: true, handler: 'yggdrasil_leaf' },
-    });
   },
 };
 
