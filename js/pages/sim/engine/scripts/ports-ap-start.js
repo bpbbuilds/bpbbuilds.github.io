@@ -419,7 +419,8 @@ const luckyCloverPort = {
   handlerId: 'lucky_clover',
   family: 'start_buff',
   onCombatStart(piece, ctx) {
-    grantStacks(ctx.player, 'lucky', Math.max(1, Math.round(getP1(piece.params, 1))), origin(piece));
+    // LuckyClover.gd passes getP1() directly to giveLucky().
+    grantStacks(ctx.player, 'lucky', getP1(piece.params, 0), origin(piece));
     consumeStart(piece, ctx, 'lucky_clover');
   },
 };

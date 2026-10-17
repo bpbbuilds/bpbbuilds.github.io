@@ -25,6 +25,7 @@ import { applyFoodPrepareSpeed } from './food-helpers.js';
 import { changeReflectStacks } from '../actor-stats.js';
 import { modifiedParamValue } from '../placement-instance.js';
 import { eventSideForPiece } from '../vs-board.js';
+import { recordPieceMod } from '../stat-mods.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -379,39 +380,43 @@ export const flamePort = {
   },
 };
 
-/** LuckyPiggy.gd — start Lucky; bump chance on affectable neighbors. */
+/** LuckyPiggy.gd — prepare multiplicative chance; start Lucky + activate. */
 /** @type {ScriptHandler} */
 export const luckyPiggyPort = {
   handlerId: 'lucky_piggy',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    const bonus = getP3(piece.params, 0);
+    if (!bonus) return;
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    for (const other of ctx.pieces || []) {
+      if (!links.some((link) => link.key === other.placementKey)) continue;
+      const item = ctx.itemsById.get(other.itemId);
+      if (!(Number(other.chance ?? item?.chance) > 0)) continue;
+      other.bonusChanceMult = (Number(other.bonusChanceMult) || 0) + bonus;
+      recordPieceMod(other, { stat: 'chance', amount: bonus / 100, unit: 'factor' });
+    }
+  },
   onCombatStart(piece, ctx) {
-    const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
-    const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP2(piece.params, 1))));
+    const { t, player, events } = ctx;
+    const luck = getP2(piece.params, 0);
     grantStacks(player, 'lucky', luck, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
-    const bonus = Math.max(
-      0,
-      Number(getPName(piece.params, 'chance', getP3(piece.params, 0))) || 0,
-    );
-    const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    for (const other of pieces || []) {
-      if (!links.some((l) => l.key === other.placementKey)) continue;
-      if (bonus && other.chance != null) {
-        other.chance = Math.min(100, (Number(other.chance) || 0) + bonus);
-      }
+    if (luck > 0) {
+      events.push({
+        t,
+        type: 'buff',
+        target: 'player',
+        amount: luck,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: +${luck} Lucky`,
+        meta: { category: 'buff', stack: 'lucky', script: true, handler: 'lucky_piggy' },
+      });
     }
-    events.push({
-      t,
-      type: 'buff',
-      target: 'player',
-      amount: luck,
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `${piece.name}: +${luck} Lucky`,
-      meta: { category: 'buff', stack: 'lucky', script: true, handler: 'lucky_piggy' },
-    });
+    pushActivate(piece, ctx, 'lucky_piggy', `Accessory: ${piece.name}`);
   },
 };
 

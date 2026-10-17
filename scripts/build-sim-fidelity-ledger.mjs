@@ -1874,6 +1874,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  lucky_clover: {
+    focusedRegression: 'scripts/sim-lucky-clover-smoke.mjs',
+    fixture: 'Lucky Clover source direct getP1 Lucky grant, consume/activation ordering, and zero-safe parameter.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  lucky_piggy: {
+    focusedRegression: 'scripts/sim-lucky-piggy-smoke.mjs',
+    fixture: 'Lucky Piggy source canModifyChance prepare multiplier, exact Lucky start grant, activation ordering, High+5 priority, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',
