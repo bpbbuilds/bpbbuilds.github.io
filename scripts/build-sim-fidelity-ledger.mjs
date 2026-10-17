@@ -1944,6 +1944,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  magic_torch: {
+    focusedRegression: 'scripts/sim-magic-torch-smoke.mjs',
+    fixture: 'Magic Torch source empowerable target filter, hit-only zero-safe Mana gate, future-only permanent damage growth on self and linked items, and miss/insufficient-Mana behavior.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  magitecc_armor: {
+    focusedRegression: 'scripts/sim-magitecc-armor-smoke.mjs',
+    fixture: 'Magitecc Armor source Holy/Magic target links, preparation speed, catalog base combat-start Block, activation ordering, zero-safe Mana/cleanse/Block parameters, and cooldown effects.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

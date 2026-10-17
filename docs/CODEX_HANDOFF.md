@@ -6626,3 +6626,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 287 - in progress
 
 - Codex owns the next retained Magic Torch and Magitecc Armor fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-magic-torch-smoke.mjs`, `scripts/sim-magitecc-armor-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 287 - complete
+
+- Codex repaired Magic Torch to mirror the source hit-only `tryUseMana` gate, zero-safe indexed parameters, future-only permanent damage growth, and empowerable linked-item filtering; the current damage result is no longer incorrectly boosted. Magitecc Armor now mirrors Holy/Magic link speed, catalog base Block at combat start, activation ordering, exact named Mana/cleanse/Block values, and zero-cost cooldown behavior.
+- Added `scripts/sim-magic-torch-smoke.mjs` and `scripts/sim-magitecc-armor-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 433 / 519 verified item rows. Focused pair tests and changed-module syntax pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 433 verified, 64 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Mana Crystal and Mana Mastery; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 288 - in progress
+
+- Codex owns the next retained Mana Crystal and Mana Mastery fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mana-crystal-smoke.mjs`, `scripts/sim-mana-mastery-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

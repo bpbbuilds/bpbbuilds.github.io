@@ -131,10 +131,11 @@ const magicTorchPort = {
   },
   onPreDealDamageEarly(piece, ctx, res) {
     if (res && !res.hit) return;
-    const need = Math.max(1, Math.round(getP1(piece.params, 1)));
-    if (!(useMana(ctx.player, need, origin(piece)).spent > 0)) return;
-    const dam = Math.max(1, Math.round(getP2(piece.params, 1)));
-    if (res) res.damage = (Number(res.damage) || 0) + dam;
+    const need = Number(getP1(piece.params, 1));
+    if (!Number.isFinite(need)) return;
+    if (need > 0 && !(useMana(ctx.player, need, origin(piece)).spent > 0)) return;
+    const dam = Number(getP2(piece.params, 1));
+    if (!Number.isFinite(dam)) return;
     addBonusDamage(piece, dam);
     for (const o of linked(ctx, piece)) {
       if (canBeEmpoweredPiece(o)) addBonusDamage(o, dam);

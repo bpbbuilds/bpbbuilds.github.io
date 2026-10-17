@@ -294,35 +294,38 @@ export const magiteccArmorPort = {
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     const speedPer = getPName(piece.params, 'speed', getP1(piece.params, 5)) / 100;
     if (links.length > 0 && speedPer) addSpeed(piece, links.length * speedPer);
-    const block = Math.max(1, Math.round(piece.blockGrant || getP2(piece.params, 8)));
-    gainStacks(player, 'block', block);
-    events.push({
-      t,
-      type: 'buff',
-      target: 'player',
-      amount: block,
-      label: `${piece.name}: +${block} Block`,
-      meta: { category: 'buff', stack: 'block', script: true, handler: 'magitecc_armor' },
-    });
+    const catalogBlock = Number(itemsById?.get?.(piece.itemId)?.block);
+    const block = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : (Number.isFinite(catalogBlock) ? catalogBlock : 0);
+    if (block) {
+      gainStacks(player, 'block', block);
+      events.push({
+        t,
+        type: 'buff',
+        target: 'player',
+        amount: block,
+        label: `${piece.name}: +${block} Block`,
+        meta: { category: 'buff', stack: 'block', script: true, handler: 'magitecc_armor' },
+      });
+    }
+    pushActivate(piece, ctx, 'magitecc_armor', `Armor: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'magitecc_armor', `Armor: ${piece.name}`);
-    const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP1(piece.params, 5))));
+    const need = Number(getPName(piece.params, 'manat', getP1(piece.params, 5)));
     if ((Number(player.stacks.mana) || 0) >= need) {
-      if (useMana(player, need, {
+      useMana(player, need, {
         originKey: piece.placementKey,
         originId: piece.itemId,
-      }).spent > 0) {
-        const cleanse = Math.max(
-          1,
-          Math.round(getPName(piece.params, 'cleanse', getP2(piece.params, 1))),
-        );
-        cleanseRandomDebuffs(player, cleanse, ctx.rng, {
-          originKey: piece.placementKey,
-          originId: piece.itemId,
-        });
-        const block2 = Math.max(1, Math.round(getPName(piece.params, 'block', getP3(piece.params, 4))));
+      });
+      const cleanse = Number(getPName(piece.params, 'cleanse', getP2(piece.params, 1)));
+      cleanseRandomDebuffs(player, cleanse, ctx.rng, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      const block2 = Number(getPName(piece.params, 'block', getP3(piece.params, 4)));
+      if (block2) {
         gainStacks(player, 'block', block2);
         events.push({
           t: t + 0.004,
@@ -334,6 +337,7 @@ export const magiteccArmorPort = {
         });
       }
     }
+    pushActivate(piece, ctx, 'magitecc_armor', `Armor: ${piece.name}`);
     return true;
   },
 };
