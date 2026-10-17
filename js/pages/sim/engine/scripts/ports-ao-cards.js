@@ -338,12 +338,24 @@ const whiteEyesPort = {
   family: 'unique',
   onRevealEffect(piece, ctx) {
     const pos = chainPos(piece);
-    gainStacks(
+    const catalogBlock = Number(ctx.itemsById?.get?.(piece.itemId)?.block);
+    const baseBlock = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number.isFinite(catalogBlock)
+        ? catalogBlock
+        : 0;
+    const block = baseBlock + getPName(piece.params, 'blockpercard', getP1(piece.params, 0)) * pos;
+    grantStacks(
       ctx.player,
       'block',
-      Math.max(1, Math.round((Number(piece.blockGrant) || 2) + getP1(piece.params, 1) * pos)),
+      block,
+      { piece, originKey: piece.placementKey, originId: piece.itemId },
     );
-    grantStacks(ctx.dummy, 'cold', Math.max(1, Math.round(getP2(piece.params, 1))), {});
+    grantStacks(ctx.dummy, 'cold', getPName(piece.params, 'cold', getP2(piece.params, 0)), {
+      piece,
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
     applyEffectDmgFactor(
       ctx.dummy,
       -getPName(piece.params, 'damfactor', 10) / 100,

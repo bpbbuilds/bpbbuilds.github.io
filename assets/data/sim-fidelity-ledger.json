@@ -21933,9 +21933,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-whetstone3-smoke.mjs",
+        "fixture": "Whetstone3 inherited Whetstone damage targeting, source canBlock overrides, prepare-time Block buff power, exact factor, and activation ordering.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -22003,9 +22009,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-white-eyes-blue-dragon-smoke.mjs",
+        "fixture": "White-Eyes Blue Dragon exact zero-based chain Block, named Cold and effect-damage factor, card buff power, activation ordering, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

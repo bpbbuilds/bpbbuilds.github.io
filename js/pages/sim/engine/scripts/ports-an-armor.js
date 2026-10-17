@@ -9,11 +9,11 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
+import { giveBuffPower } from '../buff-power.js';
 import { getP1, getP2, getP3, getP5, getPName } from '../params.js';
 import { modifiedParamValue } from '../placement-instance.js';
-import { addBonusDamage, addSpeed } from '../piece-stats.js';
+import { addSpeed } from '../piece-stats.js';
 import { grantTimedSpeed } from '../timed-speed.js';
-import { canBeEmpoweredPiece } from './food-helpers.js';
 import { whetstonePort } from './ports-wave-b-aura.js';
 import { applyEffectDmgFactor } from '../actor-stats.js';
 import { pushActivate } from './ports-util.js';
@@ -25,6 +25,23 @@ import { pushActivate } from './ports-util.js';
 function linked(ctx, piece) {
   const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
   return (ctx.pieces || []).filter((o) => links.some((l) => l.key === o.placementKey));
+}
+
+/** Whetstone3.gd inherits Whetstone.canAffect and adds Item.canBlock(). */
+function canWhetstone3Target(other, item) {
+  const id = String(item?.id || other?.itemId || '').toLowerCase();
+  const canBlock =
+    id === 'halberd' ||
+    id === 'stoned' ||
+    (id !== 'burning_coal' && id !== 'lump_of_coal' &&
+      (Number(other?.blockGrant) > 0 || Number(item?.block) > 0));
+  const isWeapon = /weapon/i.test(String(item?.type || '')) || other?.kind === 'weapon';
+  const canDamage =
+    Number(other?.damageMin) > 0 ||
+    Number(other?.damageMax) > 0 ||
+    Number(item?.damageMin) > 0 ||
+    Number(item?.damageMax) > 0;
+  return canBlock || (other?.empowerable !== false && isWeapon && canDamage);
 }
 
 /** @type {ScriptHandler} */
@@ -257,16 +274,14 @@ const whetstone2Port = { ...whetstonePort, handlerId: 'whetstone2' };
 const whetstone3Port = {
   handlerId: 'whetstone3',
   family: 'synergy_aura',
-  onCombatStart(piece, ctx) {
-    whetstonePort.onCombatStart(piece, ctx);
-    const fac = getPName(piece.params, 'blockfactor', 20) / 100;
-    for (const o of linked(ctx, piece)) {
-      if (!(Number(o.blockGrant) > 0) && !canBeEmpoweredPiece(o)) continue;
-      if (Number(o.blockGrant) > 0) {
-        o.blockGrant = Math.round(o.blockGrant * (1 + fac));
-      }
-      if (canBeEmpoweredPiece(o) && fac) addBonusDamage(o, 0);
+  onPrepare(piece, ctx) {
+    const factor = getPName(piece.params, 'blockfactor', getP2(piece.params, 0)) / 100;
+    for (const other of linked(ctx, piece)) {
+      giveBuffPower(other, 'block', factor);
     }
+  },
+  onCombatStart(piece, ctx) {
+    whetstonePort.onCombatStart(piece, ctx, canWhetstone3Target);
   },
 };
 

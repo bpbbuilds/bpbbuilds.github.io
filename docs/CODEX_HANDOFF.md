@@ -6873,3 +6873,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 316 - in progress
 
 - Codex owns the next retained Whetstone3 and White Eyes Blue Dragon fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-whetstone3-smoke.mjs`, `scripts/sim-white-eyes-blue-dragon-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 316 - complete
+
+- Codex repaired Whetstone3 to mirror the extracted Whetstone inheritance: `canBlock` or inherited `canBeEmpowered` targeting, prepare-time Block buff power, exact `blockfactor`, source-backed custom `canBlock` overrides, inherited damage mutation, and activation ordering. White-Eyes Blue Dragon now uses the extracted base Block plus zero-based chain position, named Cold and effect-damage parameters, card buff power, exact zero handling, and activation after reveal effects.
+- Added `scripts/sim-whetstone3-smoke.mjs` and `scripts/sim-white-eyes-blue-dragon-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 489 / 519 verified item rows. Focused pair tests, prior Whetstone/card/aura regressions, source parity audit, changed-module syntax, and generated artifact freshness checks pass. The generated summary reports 489 verified, 9 evidence-pending, 6 confirmed gaps, and 15 no-independent-combat rows. A pre-existing unrelated Halberd smoke failure still calls the old `lucky_bow.onDealtDamage` API; the focused pair and all touched paths pass. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 317 - in progress
+
+- Codex owns the next retained Wisdom Puppy and Wisp fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-wisdom-puppy-smoke.mjs`, `scripts/sim-wisp-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

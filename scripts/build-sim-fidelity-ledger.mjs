@@ -270,6 +270,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  whetstone3: {
+    focusedRegression: 'scripts/sim-whetstone3-smoke.mjs',
+    fixture: 'Whetstone3 inherited Whetstone damage targeting, source canBlock overrides, prepare-time Block buff power, exact factor, and activation ordering.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  white_eyes_blue_dragon: {
+    focusedRegression: 'scripts/sim-white-eyes-blue-dragon-smoke.mjs',
+    fixture: 'White-Eyes Blue Dragon exact zero-based chain Block, named Cold and effect-damage factor, card buff power, activation ordering, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   spiked_collar: {
     focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
     fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',

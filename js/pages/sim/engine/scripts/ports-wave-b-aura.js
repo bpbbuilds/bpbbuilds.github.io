@@ -102,9 +102,9 @@ function canSteelDragonEmpower(other, item) {
 export const whetstonePort = {
   handlerId: 'whetstone',
   family: 'synergy_aura',
-  onCombatStart(piece, ctx) {
+  onCombatStart(piece, ctx, targetPredicate = canHeroShieldEmpower) {
     const dam = getPName(piece.params, 'dam', getP1(piece.params, 0));
-    const targets = linkedPieces(ctx, piece, canHeroShieldEmpower);
+    const targets = linkedPieces(ctx, piece, targetPredicate);
     for (const o of targets) addBonusDamage(o, dam);
     ctx.events.push({
       t: ctx.t,

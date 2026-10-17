@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "5b395dc77b2f9bec46c0e520f0e3b1b1ab184b4395ea846da844005a176c6431",
+    "dashboardSha256": "0ada7589f74519be6a2ad18f5a440a6203d92b177f4561bc52ce32f303f07cba",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 487,
+    "verified_1to1": 489,
     "confirmed_gap": 6,
-    "evidence_pending": 11,
+    "evidence_pending": 9,
     "no_independent_combat": 15
   },
   "byId": {
@@ -515,9 +515,9 @@
     "water_elemental": "verified_1to1",
     "whetstone": "verified_1to1",
     "whetstone2": "verified_1to1",
-    "whetstone3": "evidence_pending",
+    "whetstone3": "verified_1to1",
     "white_bishop": "no_independent_combat",
-    "white_eyes_blue_dragon": "evidence_pending",
+    "white_eyes_blue_dragon": "verified_1to1",
     "white_king": "no_independent_combat",
     "white_knight": "no_independent_combat",
     "white_pawn": "no_independent_combat",

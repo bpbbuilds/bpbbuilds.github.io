@@ -84,6 +84,16 @@ const CHARGE_EMITTER_IDS = new Set([
   'generator', 'lightning_staff', 'mana_crystal',
 ]);
 
+// Item.canBlock() has a few extracted script overrides that cannot be inferred
+// from the catalog's block stat alone. Keep these source-backed exceptions in
+// the shared rule evaluator so graph links match the game for every consumer.
+const CAN_BLOCK_OVERRIDES = Object.freeze({
+  burning_coal: false,
+  lump_of_coal: false,
+  halberd: true,
+  stoned: true,
+});
+
 /**
  * @typedef {{
  *   rulesById: Record<string, object> | null,
@@ -302,6 +312,9 @@ export function evalRule(rule, target, ctx = {}) {
     case 'canBeEmpowered':
       return isWeapon(target) && canDamage(target);
     case 'canBlock':
+      if (Object.prototype.hasOwnProperty.call(CAN_BLOCK_OVERRIDES, target?.id)) {
+        return CAN_BLOCK_OVERRIDES[target.id];
+      }
       return Number(target?.block) > 0;
     case 'canActivate':
       return target?.canActivate !== false;
