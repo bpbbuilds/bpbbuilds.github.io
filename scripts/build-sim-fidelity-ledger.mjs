@@ -1930,6 +1930,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  magic_ring: {
+    focusedRegression: 'scripts/sim-magic-ring-smoke.mjs',
+    fixture: 'Magic Ring source persistent/random effect slots, runtime stack-to-type mapping, indexed stack/scale parameters, Start/Every/low-health triggers, strict thresholds, scaled grants, activation, and zero-safe effect count.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  magic_staff: {
+    focusedRegression: 'scripts/sim-magic-staff-smoke.mjs',
+    fixture: 'Magic Staff source indexed Mana/temp/permanent parameters, zero-cost tryUseMana behavior, early damage mutation ordering, permanent bonus persistence, activation, and insufficient-Mana guard.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

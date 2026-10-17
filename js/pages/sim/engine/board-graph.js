@@ -198,9 +198,16 @@ export function affectedTargets(graph, sourceKey, itemsById, canAffect) {
       if (checked.has(targetKey)) continue;
       checked.add(targetKey);
       const targetPiece = graph.pieces.get(targetKey);
-      const targetItem = targetPiece
+      const targetCatalogItem = targetPiece
         ? itemsById.get(targetPiece.id)
         : null;
+      // Runtime item types (Magic Ring, Cthulhu, Sun Armor, etc.) belong to
+      // the placed piece, not the shared catalog row. Use a shallow target
+      // view so canAffect sees that instance's dynamic types without leaking
+      // one copy's state into every copy of the item.
+      const targetItem = targetCatalogItem && Array.isArray(targetPiece?._dynamicTypes)
+        ? { ...targetCatalogItem, _dynamicTypes: targetPiece._dynamicTypes }
+        : targetCatalogItem;
       if (!targetItem) continue;
       if (rulesById) {
         const distinct = isAffectingDistinct(rulesById, sourceItem, color);

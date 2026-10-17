@@ -206,6 +206,10 @@ function typesOf(item) {
   if (Array.isArray(extra)) {
     for (const x of extra) if (x) out.push(String(x));
   }
+  const dynamic = item?._dynamicTypes;
+  if (Array.isArray(dynamic)) {
+    for (const x of dynamic) if (x) out.push(String(x));
+  }
   if (/weapon/i.test(t) && !out.includes('Weapon')) out.push('Weapon');
   if (/chess/i.test(t) && !out.includes('ChessPiece')) out.push('ChessPiece');
   return out;

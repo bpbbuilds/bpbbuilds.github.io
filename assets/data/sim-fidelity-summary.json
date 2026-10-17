@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "c00e7eca4ff51bd5ff9a40453d664f72b9d9e0704cf6ebe81fd4e229bac122de",
+    "dashboardSha256": "b355cc990620d180f6559d8d20552d2cf92e956497d20cec8a06318818de93a1",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 429,
+    "verified_1to1": 431,
     "confirmed_gap": 7,
-    "evidence_pending": 68,
+    "evidence_pending": 66,
     "no_independent_combat": 15
   },
   "byId": {
@@ -287,8 +287,8 @@
     "magic_badge": "verified_1to1",
     "magic_collar": "verified_1to1",
     "magic_mirror": "verified_1to1",
-    "magic_ring": "evidence_pending",
-    "magic_staff": "evidence_pending",
+    "magic_ring": "verified_1to1",
+    "magic_staff": "verified_1to1",
     "magic_torch": "evidence_pending",
     "magitecc_armor": "evidence_pending",
     "mana_crystal": "evidence_pending",

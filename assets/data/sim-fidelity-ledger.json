@@ -12020,9 +12020,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-magic-ring-smoke.mjs",
+        "fixture": "Magic Ring source persistent/random effect slots, runtime stack-to-type mapping, indexed stack/scale parameters, Start/Every/low-health triggers, strict thresholds, scaled grants, activation, and zero-safe effect count.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -12056,9 +12062,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-magic-staff-smoke.mjs",
+        "fixture": "Magic Staff source indexed Mana/temp/permanent parameters, zero-cost tryUseMana behavior, early damage mutation ordering, permanent bonus persistence, activation, and insufficient-Mana guard.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

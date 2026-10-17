@@ -32,28 +32,18 @@ export const magicStaffPort = {
   family: 'on_hit',
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'magic_staff', {
-      beforeDeal(raw) {
-        const cost = Math.max(
-          1,
-          Math.round(getPName(piece.params, 'manat', getP1(piece.params, 2))),
-        );
-        if ((ctx.player.stacks.mana || 0) < cost) return raw;
-        if (
-          useMana(ctx.player, cost, {
-            originKey: piece.placementKey,
-            originId: piece.itemId,
-          }).spent <= 0
-        ) {
-          return raw;
+      onPreDealDamageEarly(res) {
+        const cost = Number(getP1(piece.params, 2));
+        if (!Number.isFinite(cost)) return;
+        if (cost > 0 && (ctx.player.stacks.mana || 0) < cost) return;
+        if (cost > 0 && useMana(ctx.player, cost, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        }).spent <= 0) {
+          return;
         }
-        const temp = Math.max(
-          0,
-          Math.round(getPName(piece.params, 'dam_temp', getP2(piece.params, 4))),
-        );
-        const perm = Math.max(
-          0,
-          Math.round(getPName(piece.params, 'dam_perm', getP3(piece.params, 1))),
-        );
+        const temp = Number(getP2(piece.params, 4));
+        const perm = Number(getP3(piece.params, 1));
         if (perm) addBonusDamage(piece, perm);
         ctx.events.push({
           t: ctx.t + 0.008,
@@ -61,7 +51,7 @@ export const magicStaffPort = {
           label: `${piece.name}: mana → +${temp}/${perm} dmg`,
           meta: { category: 'buff', script: true, handler: 'magic_staff' },
         });
-        return raw + temp;
+        res.damage = (Number(res.damage) || 0) + (Number.isFinite(temp) ? temp : 0);
       },
     });
   },

@@ -19,6 +19,31 @@ const BUFFS = new Set([
   'empower',
 ]);
 
+const RING_STACK_TYPES = {
+  lucky: 'nature',
+  spikes: 'nature',
+  regeneration: 'holy',
+  heat: 'fire',
+  vampirism: 'vampiric',
+  empower: 'holy',
+  mana: 'magic',
+  blind: 'dark',
+  cold: 'ice',
+  poison: 'nature',
+};
+
+/** MagicRing.gd getTypes() adds one runtime type per distinct rolled stack type. */
+function exposeRingTypes(piece, effects) {
+  const ringTypes = [];
+  for (const effect of effects || []) {
+    const type = RING_STACK_TYPES[effect.stack];
+    if (type && !ringTypes.includes(type)) ringTypes.push(type);
+  }
+  piece._ringDynamicTypes = ringTypes;
+  const existing = Array.isArray(piece._dynamicTypes) ? piece._dynamicTypes : [];
+  piece._dynamicTypes = [...new Set([...existing, ...ringTypes])];
+}
+
 /** @param {Record<string, number>} params @param {string} stack @param {number} triggerType */
 function scaledAmount(params, stack, triggerType) {
   const scale = getPName(params, `scale${triggerType + 1}`, 1);
@@ -30,20 +55,28 @@ function scaledAmount(params, stack, triggerType) {
  * @param {{ rng: () => number }} ctx
  */
 function rollEffects(piece, ctx) {
-  if (Array.isArray(piece._ringEffects)) return piece._ringEffects;
+  if (Array.isArray(piece._ringEffects)) {
+    exposeRingTypes(piece, piece._ringEffects);
+    return piece._ringEffects;
+  }
   const configured = piece.persistent;
   const hasPersistent =
     configured &&
     typeof configured === 'object' &&
-    (Array.isArray(configured.effects) || Number(configured.magicRing) > 0);
+    (Array.isArray(configured.effects) ||
+      (Object.prototype.hasOwnProperty.call(configured, 'magicRing') &&
+        Number.isFinite(Number(configured.magicRing)) &&
+        Number(configured.magicRing) >= 0));
   if (hasPersistent) {
     const effects = ringEffectsFromPersistent(configured, piece.itemId);
     if (effects.length === ringEffectCount(piece.itemId)) {
       piece._ringEffects = effects;
+      exposeRingTypes(piece, effects);
       return effects;
     }
   }
-  const n = Math.max(1, Math.round(getPName(piece.params, 'effects', 2)));
+  const configuredCount = Number(getPName(piece.params, 'effects', 2));
+  const n = Number.isFinite(configuredCount) ? Math.max(0, Math.trunc(configuredCount)) : 0;
   const effects = [];
   for (let i = 0; i < n; i++) {
     effects.push({
@@ -52,6 +85,7 @@ function rollEffects(piece, ctx) {
     });
   }
   piece._ringEffects = effects;
+  exposeRingTypes(piece, effects);
   return effects;
 }
 
@@ -88,7 +122,11 @@ export function makeRingPort(id) {
     // The production simulator uses character_damaged. Keep the legacy
     // convenience signals wired as aliases for direct handler callers and old
     // smoke fixtures; one-shot flags make the aliases idempotent.
-    if (piece._ringBoundBus === ctx.bus) return;
+    if (ctx.bus && piece._ringBoundBus === ctx.bus) {
+      piece._ringPlayerLow = false;
+      piece._ringOppoLow = false;
+      return;
+    }
     piece._ringBoundBus = ctx.bus;
     rollEffects(piece, ctx);
     piece._ringPlayerLow = false;
