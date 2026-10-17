@@ -19,7 +19,6 @@ import { modifiedParamValue } from '../placement-instance.js';
 import { addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { rarityPriority } from '../item-kind.js';
 import { getStackAmount } from '../stacks.js';
-import { grantTimedResistancePct } from '../timed-resistance.js';
 import { dealEffectDamage } from './handlers.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { superiorRingPort } from './ports-ring.js';
@@ -613,26 +612,47 @@ const wolfBadgePort = {
   // WolfBadge.gd connects its damage and rage listeners during onPrepare.
   onPrepare(piece, ctx) {
     piece._wolf = false;
-    const th = getP1(piece.params, 50) / 100;
-    const rageSpd = getP3(piece.params, 15) / 100;
-    const dr = getP4(piece.params, 15);
+    const th = getPName(piece.params, 'healtht', getP1(piece.params, 50)) / 100 - 0.0001;
+    const rageSpd = getPName(piece.params, 'ragespeed', getP3(piece.params, 0)) / 100;
+    const dr = getPName(piece.params, 'ragedamreduction', getP4(piece.params, 0));
+    const duration = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur', getP2(piece.params, 0)),
+      'dur',
+    );
+    const hasCooldown = (other) => {
+      const catalogItem = ctx.itemsById?.get?.(other.itemId);
+      const cd = catalogItem?.cooldown ?? other.baseCooldown ?? other.cooldown;
+      return cd > 0 && cd < 500;
+    };
+    const ownRage = (payload = {}, resistanceDelta, speedDelta) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      if (resistanceDelta) {
+        ctx.player.damageResistancePct =
+          (Number(ctx.player.damageResistancePct) || 0) + resistanceDelta;
+      }
+      for (const o of linked(ctx, piece)) {
+        if (hasCooldown(o)) addSpeed(o, speedDelta);
+      }
+    };
     ctx.bus?.on?.('character_damaged', (payload) => {
       if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._wolf) return;
       if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
       piece._wolf = true;
-      startBattleRage(ctx.player, getPName(piece.params, 'dur', 4), ctx.t, {
+      startBattleRage(ctx.player, duration, payload?.t ?? ctx.t, {
         bus: ctx.bus,
         sourceId: piece.itemId,
       });
-      pushActivate(piece, ctx, 'wolf_badge', `Accessory: ${piece.name}`);
+      pushActivate(
+        piece,
+        { ...ctx, t: Number.isFinite(Number(payload?.t)) ? Number(payload.t) : ctx.t },
+        'wolf_badge',
+        `Accessory: ${piece.name}`,
+      );
     });
-    ctx.bus?.on?.('battle_rage_started', () => {
-      grantTimedResistancePct(ctx.player, dr, ctx.player.battleRageUntil || ctx.t + 4, 'wolf_badge');
-      for (const o of linked(ctx, piece)) {
-        if (o.cooldown > 0 && o.cooldown < 500) addSpeed(o, rageSpd);
-      }
-    });
+    ctx.bus?.on?.('battle_rage_started', (payload = {}) => ownRage(payload, dr, rageSpd));
+    ctx.bus?.on?.('battle_rage_ended', (payload = {}) => ownRage(payload, -dr, -rageSpd));
   },
 };
 

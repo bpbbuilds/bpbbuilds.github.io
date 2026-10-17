@@ -21,6 +21,7 @@ import { weaponStrike } from './ports-wave-c-util.js';
 import { giveTempMaxHp } from './ports-ap-start.js';
 import { empowerLinkedWeapons, goobertPeerTick } from './ports-wave-d-goobert.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -281,13 +282,13 @@ export const speakWithAnimalsPort = {
 export const wolfEmblemPort = {
   handlerId: 'wolf_emblem',
   family: 'unique',
-  onPreCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const item = ctx.itemsById.get(piece.itemId);
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
     const pets = links.filter((l) => l.color === 'secondary').length;
-    const bonus =
-      (Number(item?.chance ?? piece.chance) || 0) +
-      pets * (Number(item?.chance2) || 0);
+    const chance = Number.isFinite(Number(item?.chance)) ? Number(item.chance) : Number(piece.chance) || 0;
+    const chance2 = Number.isFinite(Number(item?.chance2)) ? Number(item.chance2) : Number(piece.chance2) || 0;
+    const bonus = chance + pets * chance2;
     if (!bonus) return;
     for (const other of ctx.pieces || []) {
       if (!links.some((l) => l.key === other.placementKey && l.color === 'primary')) continue;
@@ -296,34 +297,36 @@ export const wolfEmblemPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'wolf_emblem', `Accessory: ${piece.name}`);
-    const th = Math.max(1, Math.round(getPName(piece.params, 'blockt', getP1(piece.params, 10))));
-    const emp = Math.max(1, Math.round(getPName(piece.params, 'empower', getP2(piece.params, 1))));
-    if ((Number(player.stacks.block) || 0) >= th) {
-      grantStacks(player, 'empower', emp, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
+    const side = eventSideForPiece(piece);
+    const th = getPName(piece.params, 'blockt', getP2(piece.params, 0));
+    const emp = getPName(piece.params, 'empower', getP1(piece.params, 0));
+    if ((Number(player.block) || 0) >= th) {
+      const result = grantStacks(player, 'empower', emp, { piece, originKey: piece.placementKey, originId: piece.itemId });
       events.push({
         t: t + 0.004,
         type: 'buff',
-        target: 'player',
-        amount: emp,
-        label: `${piece.name}: +${emp} Empower`,
+        actor: side,
+        target: side,
+        amount: result.gained,
+        label: `${piece.name}: +${result.gained} Empower`,
         meta: { category: 'buff', stack: 'empower', script: true, handler: 'wolf_emblem' },
       });
     } else {
-      const block = Math.max(1, Math.round(piece.blockGrant || getP3(piece.params, 6)));
-      gainStacks(player, 'block', block);
+      const block = Number.isFinite(Number(piece.blockGrant))
+        ? Number(piece.blockGrant)
+        : getPName(piece.params, 'block', getP3(piece.params, 0));
+      const result = grantStacks(player, 'block', block, { piece, originKey: piece.placementKey, originId: piece.itemId });
       events.push({
         t: t + 0.004,
         type: 'buff',
-        target: 'player',
-        amount: block,
-        label: `${piece.name}: +${block} Block`,
+        actor: side,
+        target: side,
+        amount: result.gained,
+        label: `${piece.name}: +${result.gained} Block`,
         meta: { category: 'buff', stack: 'block', script: true, handler: 'wolf_emblem' },
       });
     }
+    pushActivate(piece, ctx, 'wolf_emblem', `Accessory: ${piece.name}`);
     return true;
   },
 };

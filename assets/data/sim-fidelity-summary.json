@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "c17fe9c691cbb29b16fe4f00a26e232a2d40448e57ce3854981a425dbb3cc1be",
+    "dashboardSha256": "4f5e790df8cadc2e6fd288e3ee9650fac02f9cb556d1abbb59a1c748266057a4",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 491,
+    "verified_1to1": 493,
     "confirmed_gap": 6,
-    "evidence_pending": 7,
+    "evidence_pending": 5,
     "no_independent_combat": 15
   },
   "byId": {
@@ -526,8 +526,8 @@
     "winged_boots": "confirmed_gap",
     "wisdom_puppy": "verified_1to1",
     "wisp": "verified_1to1",
-    "wolf_badge": "evidence_pending",
-    "wolf_emblem": "evidence_pending",
+    "wolf_badge": "verified_1to1",
+    "wolf_emblem": "verified_1to1",
     "wolpertinger": "evidence_pending",
     "wooden_buckler": "evidence_pending",
     "wooden_sword": "evidence_pending",

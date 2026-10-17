@@ -298,6 +298,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  wolf_badge: {
+    focusedRegression: 'scripts/sim-wolf-badge-smoke.mjs',
+    fixture: 'Wolf Badge source strict low-health trigger, modified Battle Rage duration, owner-scoped damage resistance, cooldown-item speed during Rage, Rage expiry, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  wolf_emblem: {
+    focusedRegression: 'scripts/sim-wolf-emblem-smoke.mjs',
+    fixture: 'Wolf Emblem source primary canBeEmpowered crit aura, secondary Pet crit scaling, exact Block threshold and Empower values, Block buff power, effect-before-activation ordering, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   spiked_collar: {
     focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
     fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',

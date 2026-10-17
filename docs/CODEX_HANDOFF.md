@@ -6891,3 +6891,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 318 - in progress
 
 - Codex owns the next retained Wolf Badge and Wolf Emblem fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-wolf-badge-smoke.mjs`, `scripts/sim-wolf-emblem-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 318 - complete
+
+- Codex repaired Wolf Badge to mirror the extracted strict low-health threshold, named and placement-modified Battle Rage duration, owner-scoped Rage resistance/speed start and end signals, catalog cooldown targeting, event-time activation, and explicit zero-duration behavior. Wolf Emblem now mirrors source `onPrepare` primary `canBeEmpowered` crit aura plus secondary Pet scaling, reads the actor’s actual Block field, preserves exact threshold/Empower/Block values, applies item buff power through the shared grant path, uses owner-correct effect events, and activates after the source effect.
+- Added `scripts/sim-wolf-badge-smoke.mjs` and `scripts/sim-wolf-emblem-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 493 / 519 verified item rows. Focused Wolf Badge/Emblem tests, Band Y and Berserker Rage regressions, changed-module syntax, source parity audit, and generated artifact freshness checks pass. The generated summary reports 493 verified, 5 evidence-pending, 6 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 319 - in progress
+
+- Codex owns the next retained Wolpertinger and Wooden Buckler fidelity review/repair, their focused source-backed regressions and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-wolpertinger-smoke.mjs`, `scripts/sim-wooden-buckler-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
