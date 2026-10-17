@@ -6950,3 +6950,11 @@ None.
 ### 2026-10-17 Simulator item parity continuation 325 - in progress
 
 - Codex has no remaining retained independent-combat item gaps; the next review is the 15 no-independent-combat rows or another user-directed item/mechanic. Codex owns the simulator parity files, focused smoke tests, generated audit artifacts, `docs/todo.md`, and this handoff for that review. Cursor does not own these paths.
+### 2026-10-17 Simulator item parity continuation 325 - complete
+
+- Reviewed the remaining 15 public `no_independent_combat` rows against the extracted sources. They are correctly classified as shop-only/currency/generic-bag entries or ChessPiece records whose movement and combat effects are owned by Chess Board; no standalone simulator item implementation is missing.
+- Fresh no-combat source audit, Chess Board regression, Winged Boots regression, fidelity-ledger freshness, and dashboard/summary freshness checks all pass. No product files changed in this review; no legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 326 - in progress
+
+- All retained source-backed independent-combat item rows are verified or correctly classified; the next step is another user-directed item/mechanic or a new source extract. Codex owns the simulator audit paths and this handoff for that review. Cursor does not own these paths.
