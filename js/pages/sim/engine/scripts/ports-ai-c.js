@@ -212,18 +212,29 @@ export const evilHatPort = {
 export const mechaBatPort = {
   handlerId: 'mecha_bat',
   family: 'custom_cd',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._mechaLifesteal = false;
-    const lsPct = getPName(piece.params, 'lifesteal', 20) / 100;
+    piece.state = false;
+    const lsPct = getPName(piece.params, 'lifesteal', getP5(piece.params, 20)) / 100;
     const keys = new Set(linkedWith(ctx, piece).map(({ other }) => other.placementKey));
-    ctx.bus?.on?.('piece_dealt_damage', (payload) => {
-      if (!piece._mechaLifesteal || !payload?.hit?.hit) return;
-      const src = payload.piece;
-      if (!src || !keys.has(src.placementKey)) return;
+    ctx.bus?.on?.('character_damaged', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      if (payload.attacker && payload.attacker !== ctx.dummy) return;
+      if (!piece._mechaLifesteal) return;
+      const hit = typeof payload.hit === 'object' ? payload.hit : { hit: payload.hit === true };
+      if (!hit.hit) return;
+      const damage = payload.damage;
+      const source = damage?.damageSource ?? payload.damageSource;
+      if (source?.canApplyLifesteal === false) return;
+      if (typeof source?.canApplyLifesteal === 'function' && !source.canApplyLifesteal()) return;
+      const origin = source?.originPiece ?? source?.origin;
+      const originKey = typeof origin === 'string' ? origin : origin?.placementKey;
+      if (!originKey || !keys.has(originKey)) return;
       // Game: ceil(damageRes.damage × lifesteal%) — full damage, not healthDamage.
-      const dmg = Number(payload.hit.damage ?? payload.hit.healthDamage) || 0;
+      const dmg = Number(damage?.damage ?? payload.damage?.healthDamage ?? payload.healthDamage) || 0;
       if (dmg <= 0) return;
-      const amt = Math.max(1, Math.ceil(dmg * lsPct));
+      const amt = Math.ceil(dmg * lsPct);
+      if (amt <= 0) return;
       const healed = healActor(ctx.player, amt);
       if (healed > 0) {
         const side = eventSideForPiece(piece);
@@ -248,17 +259,23 @@ export const mechaBatPort = {
     });
   },
   onChargeReceived(piece) {
-    piece._mechaLifesteal = (piece.numCharges || 0) >= 1;
+    if (Number(piece.numCharges) === 1) {
+      piece._mechaLifesteal = true;
+      piece.state = true;
+    }
   },
   onChargeLeft(piece) {
-    piece._mechaLifesteal = (piece.numCharges || 0) >= 1;
+    if (Number(piece.numCharges) === 0) {
+      piece._mechaLifesteal = false;
+      piece.state = false;
+    }
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
     let numVamp = 0;
-    const luckNeed = Math.max(1, Math.round(getPName(piece.params, 'luckt', 3)));
-    const luckUse = Math.max(1, Math.round(getPName(piece.params, 'luck', 1)));
-    const vamp2 = Math.max(0, Math.round(getPName(piece.params, 'vampirism2', 1)));
+    const luckNeed = Math.round(getPName(piece.params, 'luckt', getP2(piece.params, 3)));
+    const luckUse = Math.round(getPName(piece.params, 'luck', getP3(piece.params, 1)));
+    const vamp2 = Math.round(getPName(piece.params, 'vampirism2', getP4(piece.params, 1)));
     // Game: if lucky ≥ luckt, always useLucky then always add vampirism2
     // (not gated on spend success — MechaBat.gd lines 16–18).
     if ((Number(player.stacks.lucky) || 0) >= luckNeed) {
@@ -268,25 +285,17 @@ export const mechaBatPort = {
       });
       numVamp += vamp2;
     }
-    const vamp1 = Math.max(0, Math.round(getPName(piece.params, 'vampirism', getP1(piece.params, 1))));
-    if (tryUseStamina(player, piece.staminaCost || 1) === 'ok') {
+    const vamp1 = Math.round(getPName(piece.params, 'vampirism', getP1(piece.params, 1)));
+    if (tryUseStamina(player, Math.max(0, Number(piece.staminaCost) || 0)) === 'ok') {
       numVamp += vamp1;
-    } else if (numVamp === 0) {
-      // Only surface starve when the tick grants nothing (GD still ticks the bar).
-      events.push({
-        t,
-        type: 'stamina',
-        label: `${piece.name}: out of stamina`,
-        meta: { category: 'stamina', script: true, starved: true, handler: 'mecha_bat' },
-      });
     }
     // Game: giveVampirism + activate() only when numVamp > 0.
     if (numVamp > 0) {
-      pushActivate(piece, ctx, 'mecha_bat', `Pet: ${piece.name}`);
       grantStacks(player, 'vampirism', numVamp, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
+      pushActivate(piece, ctx, 'mecha_bat', `Pet: ${piece.name}`);
     }
     return true;
   },

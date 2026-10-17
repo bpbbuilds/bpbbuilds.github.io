@@ -6665,3 +6665,12 @@ None.
 ### 2026-10-16 Simulator item parity continuation 291 - in progress
 
 - Codex owns the next retained Mecha Bat and Mega Clover fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mecha-bat-smoke.mjs`, `scripts/sim-mega-clover-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 291 - complete
+
+- Codex repaired Mecha Bat to mirror source preparation-time opponent damage listening, charged linked-item lifesteal eligibility, exact full-damage ceiling heal, charge state transitions, Lucky/stamina Vampirism branches, source grant-before-activation ordering, and explicit zero values. Mega Clover now mirrors source preparation timing, one-shot Lucky threshold, Lucky-excluded random-buff pool, exact values, activation ordering, and zero-safe parameters.
+- Added `scripts/sim-mecha-bat-smoke.mjs` and `scripts/sim-mega-clover-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 441 / 519 verified item rows. Focused pair tests, prior Mana regressions, coverage honesty, generated artifact freshness, changed-module syntax, and diff checks pass. No legal, authentication, database, storage, or security behavior changed. The next retained queue begins with Mercury Elemental and Miss Fortune; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 292 - in progress
+
+- Codex owns the next retained Mercury Elemental and Miss Fortune fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mercury-elemental-smoke.mjs`, `scripts/sim-miss-fortune-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

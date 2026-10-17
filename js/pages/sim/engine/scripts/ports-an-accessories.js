@@ -437,6 +437,8 @@ const luckyCatPort = {
 
 /** ManaOrb.gd — Game.getBuffs() with Mana erased. */
 const MANA_ORB_BUFFS = BUFF_KEYS.filter((k) => k !== 'mana');
+/** MegaClover.gd — Game.getBuffs() with Lucky erased. */
+const MEGA_CLOVER_BUFFS = BUFF_KEYS.filter((k) => k !== 'lucky');
 
 /** @type {ScriptHandler} */
 const manaOrbPort = {
@@ -483,10 +485,10 @@ const manaOrbPort = {
 const megaCloverPort = {
   handlerId: 'mega_clover',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._megaFired = false;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'luckneeded', 8)));
-    const n = Math.max(1, Math.round(getPName(piece.params, 'buffs', 3)));
+    const need = Math.round(getPName(piece.params, 'luckneeded', getP1(piece.params, 8)));
+    const n = Math.round(getPName(piece.params, 'buffs', getP2(piece.params, 3)));
     onBuffChanged(ctx.player, (ch) => {
       if (piece._megaFired || ch.stack !== 'lucky') return;
       if (getStackAmount(ctx.player, 'lucky') < need) return;
@@ -494,6 +496,7 @@ const megaCloverPort = {
       giveRandomBuffs(ctx.player, n, ctx.rng, {
         originKey: piece.placementKey,
         originId: piece.itemId,
+        availableBuffs: MEGA_CLOVER_BUFFS,
       });
       pushActivate(piece, ctx, 'mega_clover', `Accessory: ${piece.name}`);
     });

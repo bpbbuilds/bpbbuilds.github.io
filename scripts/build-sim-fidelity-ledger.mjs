@@ -1111,6 +1111,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  mecha_bat: {
+    focusedRegression: 'scripts/sim-mecha-bat-smoke.mjs',
+    fixture: 'Mecha Bat source preparation opponent-hit listener, charged linked-item lifesteal gating, exact full-damage ceil heal, Lucky/stamina Vampirism branches, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  mega_clover: {
+    focusedRegression: 'scripts/sim-mega-clover-smoke.mjs',
+    fixture: 'Mega Clover source preparation Lucky listener, one-shot threshold, Lucky-excluded random-buff pool, exact buff count, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',
