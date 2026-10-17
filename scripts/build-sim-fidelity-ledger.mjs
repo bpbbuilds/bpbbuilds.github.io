@@ -1629,6 +1629,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  holo_fire_lizard: {
+    focusedRegression: 'scripts/sim-holo-fire-lizard-smoke.mjs',
+    fixture: 'Holo Fire Lizard source card-chain damage, effect-damage factor, zero-based chain scaling, Heat grant, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  holy_armor: {
+    focusedRegression: 'scripts/sim-holy-armor-smoke.mjs',
+    fixture: 'Holy Armor source Holy target filtering, exact Block/Regeneration grants, exact Poison cleanse, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   holy_collar: {
     focusedRegression: 'scripts/sim-holy-collar-smoke.mjs',
     fixture: 'Holy Collar source prepare-time canActivate listeners, Lucky/Regeneration-driven crit changes, chance-based source grants, mini activation, and zero-safe grant parameters.',

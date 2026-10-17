@@ -176,16 +176,17 @@ const holoFireLizardPort = {
       // Effect flags: no vamp / no spikes (Item.dealEffectDamage → takeDamage only).
       applyEffectDmgFactor(
         ctx.player,
-        getPName(piece.params, 'damfactor', 10) / 100,
+        getPName(piece.params, 'damfactor', 0) / 100,
         ctx,
         piece,
       );
-      const perCard = getPName(piece.params, 'dampercard', getP1(piece.params, 2));
-      const dam = Math.max(1, Math.round((Number(piece.damageMin) || 4) + perCard * pos));
+      const perCard = getPName(piece.params, 'dampercard', getP1(piece.params, 0));
+      const baseDamage = Number(piece.damageMin);
+      const dam = (Number.isFinite(baseDamage) ? baseDamage : 0) + perCard * pos;
       dealEffectDamage(piece, ctx, dam);
       // Named `heat` — not 2nd JS key (that is damfactor).
-      const heat = Math.max(0, Math.round(getPName(piece.params, 'heat', getP2(piece.params, 0))));
-      if (heat > 0) {
+      const heat = Math.trunc(getPName(piece.params, 'heat', getP2(piece.params, 0)));
+      if (heat) {
         grantStacks(ctx.player, 'heat', heat, {
           originKey: piece.placementKey,
           originId: piece.itemId,

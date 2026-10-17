@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "647e7420610223cbc28babf49bd89e077c54d5001017c3ab348a964b723f8e07",
+    "dashboardSha256": "3bd9a777a145adf7bc4e15f151fe709db77e1f80ff6f481904c2a2323cf6bde2",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 401,
+    "verified_1to1": 403,
     "confirmed_gap": 7,
-    "evidence_pending": 96,
+    "evidence_pending": 94,
     "no_independent_combat": 15
   },
   "byId": {
@@ -241,8 +241,8 @@
     "heroic_potion": "verified_1to1",
     "hogus_bogus": "verified_1to1",
     "holdall": "verified_1to1",
-    "holo_fire_lizard": "evidence_pending",
-    "holy_armor": "evidence_pending",
+    "holo_fire_lizard": "verified_1to1",
+    "holy_armor": "verified_1to1",
     "holy_collar": "verified_1to1",
     "holy_spear": "evidence_pending",
     "hungry_blade": "evidence_pending",

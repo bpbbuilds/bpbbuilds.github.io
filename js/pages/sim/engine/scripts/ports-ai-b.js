@@ -9,7 +9,7 @@ import {
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getPName } from '../params.js';
 import { gainStacks } from '../stacks.js';
-import { pushActivate } from './ports-util.js';
+import { itemHasType, pushActivate } from './ports-util.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -24,14 +24,18 @@ export const holyArmorPort = {
   family: 'start_buff',
   onCombatStart(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect } = ctx;
-    const block = Math.max(1, Math.round(piece.blockGrant || getPName(piece.params, 'block', 10)));
+    const blockRaw = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number(itemsById.get(piece.itemId)?.block) || getPName(piece.params, 'block', 0);
+    const block = Number.isFinite(blockRaw) ? blockRaw : 0;
     grantStacks(player, 'block', block, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    const per = Math.max(0, Math.round(getP1(piece.params, 1)));
-    const regen = links.length * per;
+    const holyLinks = links.filter((link) => itemHasType(itemsById.get(link.id), 'holy'));
+    const per = getPName(piece.params, 'regen', getP1(piece.params, 0));
+    const regen = holyLinks.length * (Number.isFinite(Number(per)) ? Number(per) : 0);
     if (regen > 0) {
       grantStacks(player, 'regeneration', regen, {
         originKey: piece.placementKey,
@@ -50,8 +54,8 @@ export const holyArmorPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'holy_armor', `Armor: ${piece.name}`);
-    const n = Math.max(1, Math.round(getP2(piece.params, 1)));
+    const raw = getPName(piece.params, 'cleanse', getP2(piece.params, 0));
+    const n = Number.isFinite(Number(raw)) ? Number(raw) : 0;
     const spent = spendStacks(player, 'poison', n, {
       originKey: piece.placementKey,
       originId: piece.itemId,
@@ -66,6 +70,7 @@ export const holyArmorPort = {
         meta: { category: 'buff', stack: 'poison', script: true, handler: 'holy_armor' },
       });
     }
+    pushActivate(piece, ctx, 'holy_armor', `Armor: ${piece.name}`);
     return true;
   },
 };

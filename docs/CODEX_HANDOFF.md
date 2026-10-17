@@ -6479,3 +6479,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 272 - in progress
 
 - Codex owns the next retained Holo Fire Lizard and Holy Armor fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-holo-fire-lizard-smoke.mjs`, `scripts/sim-holy-armor-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 272 - complete
+
+- Codex repaired Holo Fire Lizard to mirror source card-chain zero-based damage scaling, effect-damage factor, Heat grant, raw damage ordering, and activation after effects. Holy Armor now mirrors the source `Type.Holy` target predicate, exact catalog Block, exact Regeneration-per-Holy amount, exact p2 Poison cleanse including zero, and activation after cleansing.
+- Added `scripts/sim-holo-fire-lizard-smoke.mjs` and `scripts/sim-holy-armor-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 403 / 519 verified item rows. Both focused tests, shared Card and Holy Collar regressions, changed-module syntax, coverage, dashboard generation, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 403 verified, 94 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Holy Spear and Hungry Blade; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 273 - in progress
+
+- Codex owns the next retained Holy Spear and Hungry Blade fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-holy-spear-smoke.mjs`, `scripts/sim-hungry-blade-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
