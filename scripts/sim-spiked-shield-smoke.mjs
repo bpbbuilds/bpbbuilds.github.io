@@ -40,7 +40,7 @@ assert.match(source, /func beforeBlock\(\):[\s\S]*\.beforeBlock\(\)[\s\S]*min\(s
 assert.match(source, /func afterBlock\(\):[\s\S]*drainStamina\(getP2\(\), blockedDamageRes\.event\)[\s\S]*activate\(\)/);
 assert.match(shieldSource, /func getDamageBlock\(\):[\s\S]*getP_m\("damblock"\)/);
 assert.match(portBlock, /onPrepare\(piece\)/);
-assert.match(portBlock, /onCombatStart\(piece, ctx\)/);
+assert.match(portBlock, /onCombatStart\(piece, ctx(?:,|\))/);
 assert.match(portBlock, /Math\.trunc/);
 assert.match(portBlock, /allowZeroDamblock: true/);
 assert.doesNotMatch(portBlock, /Math\.max\(spikes, /);

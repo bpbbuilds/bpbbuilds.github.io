@@ -111,6 +111,7 @@ export function createActor(id, opts = {}) {
     maxStamina,
     stamina: maxStamina,
     temporaryMaxStamina: 0,
+    baseStaminaRegen: staminaRegen,
     staminaRegen,
     block,
     damageReduction: 0,

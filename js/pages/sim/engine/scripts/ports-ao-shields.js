@@ -12,6 +12,7 @@ import { dealEffectDamage } from './handlers.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { rollPercent } from '../rng.js';
 import { giveTempMaxHp } from './ports-ap-start.js';
+import { applyStaminaRegeneration } from '../actor-stats.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -341,10 +342,11 @@ const spikedShieldPort = {
   onPrepare(piece) {
     piece._spikesGiven = 0;
   },
-  onCombatStart(piece, ctx) {
+  onCombatStart(piece, ctx, shieldOpts = {}) {
     const spikes = Math.trunc(getPName(piece.params, 'spikes', getP3(piece.params, 0)));
     const maxS = Math.trunc(getPName(piece.params, 'maxspikes', getP4(piece.params, 0)));
     registerShield(piece, ctx, {
+      ...shieldOpts,
       damblock: getPName(piece.params, 'damblock', getP1(piece.params, 0)),
       allowZeroDamblock: true,
       beforeBlock() {
@@ -361,12 +363,35 @@ const spikedShieldPort = {
 const spikedWallPort = {
   handlerId: 'spiked_wall',
   family: 'unique',
+  onPrepare(piece, ctx) {
+    spikedShieldPort.onPrepare(piece, ctx);
+    const dur = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur_rage', getP6(piece.params, 0)),
+      'dur_rage',
+    );
+    const spikeLimit = getPName(piece.params, 'spikedam', getPName(piece.params, 'p7', 0)) / 100;
+    const malus = getPName(piece.params, 'staminaregen', getP5(piece.params, 0)) / 100;
+    ctx.player.battleRageBonusDur =
+      (Number(ctx.player.battleRageBonusDur) || 0) + dur;
+    ctx.player.rangedSpikesLimit = (Number(ctx.player.rangedSpikesLimit) || 0) + spikeLimit;
+    ctx.player.meleeSpikesLimit = (Number(ctx.player.meleeSpikesLimit) || 0) + spikeLimit;
+    const baseStaminaRegen = Number(ctx.player.baseStaminaRegen ?? ctx.player.staminaRegen) || 0;
+    applyStaminaRegeneration(
+      ctx.player,
+      -malus * baseStaminaRegen,
+      ctx,
+      origin(piece),
+    );
+  },
   onCombatStart(piece, ctx) {
-    spikedShieldPort.onCombatStart(piece, ctx);
-    const malus = getPName(piece.params, 'staminaregen', 20) / 100;
-    ctx.player.staminaRegen = Math.max(0, (Number(ctx.player.staminaRegen) || 1) * (1 - malus));
-    ctx.player._battleRageDur =
-      (Number(ctx.player._battleRageDur) || 0) + getPName(piece.params, 'dur_rage', 2);
+    spikedShieldPort.onCombatStart(piece, ctx, {
+      canBlockDamageRes: (res) => Boolean(
+        res?.hit &&
+        res.damageSource?.isAttack !== false &&
+        res.damageSource?.canTriggerItems !== false,
+      ),
+    });
   },
 };
 

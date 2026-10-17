@@ -86,7 +86,7 @@ const ctx = {
 
 handler.onPrepare(piece, ctx);
 assert.equal(player.damageResistancePct, data.params.p1, 'source preparation applies the exact damage resistance');
-assert.equal(player._battleRageDur, data.params.dur_rage, 'one linked Nature item adds the source rage duration');
+assert.equal(player.battleRageBonusDur, data.params.dur_rage, 'one linked Nature item adds the source rage duration');
 handler.onPreCombatStart(piece, ctx);
 assert.equal(piece.cooldown, 999, 'source pre-combat preparation deactivates the cooldown');
 assert.equal(piece.triggerTime, 999);
@@ -106,7 +106,7 @@ assert.equal(player.stacks.mana, manaBefore + data.params.mana, 'rage cooldown g
 assert.equal(player.stamina, staminaBefore, 'the source effect does not change Stamina');
 assert.ok(events.some((event) => event.type === 'activate' && event.itemId === 'deer_totem'));
 
-tickBattleRage(player, 5.1, { bus });
+tickBattleRage(player, 7.1, { bus });
 assert.equal(piece._deerRageActive, false);
 assert.equal(piece.cooldown, 999, 'rage end deactivates the source cooldown');
 

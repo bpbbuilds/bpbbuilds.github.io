@@ -86,6 +86,18 @@ assert.equal(typeof handler?.onPreCombatStart, 'function', 'source preCombatStar
 }
 
 {
+  const { piece, player, ctx } = makeCase();
+  player.battleRageBonusDur = 2;
+  handler.onPrepare(piece, ctx);
+  handler.onPreCombatStart(piece, ctx);
+  ctx.bus.emit('battle_rage_started', { actor: player, duration: 4 });
+  ctx.bus.emit('battle_rage_ended', { actor: player, duration: 4 });
+  handler.onCooldownEffect(piece, ctx);
+  assert.equal(player.battleRageUntil, 4.5,
+    'Extra Angy source applyBonus=false ignores character Rage duration bonuses');
+}
+
+{
   const { piece, player, ctx } = makeCase(0);
   handler.onPrepare(piece, ctx);
   handler.onPreCombatStart(piece, ctx);

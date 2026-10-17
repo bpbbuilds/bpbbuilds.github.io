@@ -17,10 +17,14 @@ export function isBattleRaging(actor, nowT = 0) {
  * @param {import('./actor.js').SimActor} actor
  * @param {number} durationSec
  * @param {number} nowT
- * @param {{ bus?: { emit?: (type: string, payload?: object) => void }, sourceId?: string }} [opts]
+ * @param {{ bus?: { emit?: (type: string, payload?: object) => void }, sourceId?: string, applyBonus?: boolean }} [opts]
  */
 export function startBattleRage(actor, durationSec, nowT, opts = {}) {
-  const dur = Math.max(0, Number(durationSec) || 0);
+  const baseDur = Math.max(0, Number(durationSec) || 0);
+  const bonusDur = opts.applyBonus === false
+    ? 0
+    : Math.max(0, Number(actor.battleRageBonusDur) || 0);
+  const dur = baseDur + bonusDur;
   if (dur <= 0) return;
   const until = (Number(nowT) || 0) + dur;
   const was = isBattleRaging(actor, nowT);

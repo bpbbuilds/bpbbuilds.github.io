@@ -409,7 +409,11 @@ export const extraAngyPort = {
     const { t, player, events, bus } = ctx;
     const pct = getPName(piece.params, 'dur', getP1(piece.params, 100)) / 100;
     const dur = (Number(piece._angyRageDur) || 0) * pct;
-    startBattleRage(player, dur, t, { bus, sourceId: piece.itemId });
+    startBattleRage(player, dur, t, {
+      bus,
+      sourceId: piece.itemId,
+      applyBonus: false,
+    });
     events.push({
       t: t + 0.004,
       type: 'buff',

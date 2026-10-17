@@ -92,37 +92,38 @@ export const spikedStaffPort = {
   handlerId: 'spiked_staff',
   family: 'on_hit',
   onCooldownEffect(piece, ctx) {
-    return weaponStrike(piece, ctx, 'spiked_staff');
-  },
-  onDealtDamage(piece, ctx) {
-    const cost = Math.max(1, Math.round(getPName(piece.params, 'mana', getP1(piece.params, 2))));
-    if (
-      useMana(ctx.player, cost, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      }).spent <= 0
-    ) {
-      return;
-    }
-    const emp = Math.max(1, Math.round(getPName(piece.params, 'empower', getP2(piece.params, 1))));
-    grantStacks(ctx.player, 'empower', emp, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    if (ctx.player.battleRage) {
-      const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', getP3(piece.params, 1))));
-      grantStacks(ctx.player, 'spikes', spikes, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-    }
-    ctx.events.push({
-      t: ctx.t + 0.008,
-      type: 'buff',
-      target: 'player',
-      amount: emp,
-      label: `${piece.name}: +${emp} Empower`,
-      meta: { category: 'buff', stack: 'empower', script: true, handler: 'spiked_staff' },
+    return weaponStrike(piece, ctx, 'spiked_staff', {
+      onPreDealDamageEarly() {
+        const cost = getPName(piece.params, 'mana', getP1(piece.params, 0));
+        if (
+          useMana(ctx.player, cost, {
+            originKey: piece.placementKey,
+            originId: piece.itemId,
+          }).spent <= 0
+        ) {
+          return;
+        }
+        const emp = getPName(piece.params, 'empower', getP2(piece.params, 0));
+        grantStacks(ctx.player, 'empower', emp, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        });
+        if (ctx.player.battleRage) {
+          const spikes = getPName(piece.params, 'spikes', getP3(piece.params, 0));
+          grantStacks(ctx.player, 'spikes', spikes, {
+            originKey: piece.placementKey,
+            originId: piece.itemId,
+          });
+        }
+        ctx.events.push({
+          t: ctx.t + 0.008,
+          type: 'buff',
+          target: 'player',
+          amount: emp,
+          label: `${piece.name}: +${emp} Empower`,
+          meta: { category: 'buff', stack: 'empower', script: true, handler: 'spiked_staff' },
+        });
+      },
     });
   },
 };

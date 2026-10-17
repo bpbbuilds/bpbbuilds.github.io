@@ -214,6 +214,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  spiked_staff: {
+    focusedRegression: 'scripts/sim-spiked-staff-smoke.mjs',
+    fixture: 'Spiked Staff source early-hit Mana gate, same-strike Empower and Battle Rage Spikes grants, miss behavior, exact integer parameters, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  spiked_wall: {
+    focusedRegression: 'scripts/sim-spiked-wall-smoke.mjs',
+    fixture: 'Spiked Wall source inherited Shield preparation, all-attack block eligibility, modified Rage bonus duration, additive melee/ranged Spikes limits, base-stamina penalty, inherited Spikes cap, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   amethyst_egg: {
     focusedRegression: 'scripts/sim-amethyst-egg-smoke.mjs',
     fixture: 'Amethyst Egg start trigger and recurring cooldown: source p1 random-debuff count, activation, and both board sides.',

@@ -18630,9 +18630,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-spiked-staff-smoke.mjs",
+        "fixture": "Spiked Staff source early-hit Mana gate, same-strike Empower and Battle Rage Spikes grants, miss behavior, exact integer parameters, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -18666,9 +18672,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-spiked-wall-smoke.mjs",
+        "fixture": "Spiked Wall source inherited Shield preparation, all-attack block eligibility, modified Rage bonus duration, additive melee/ranged Spikes limits, base-stamina penalty, inherited Spikes cap, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

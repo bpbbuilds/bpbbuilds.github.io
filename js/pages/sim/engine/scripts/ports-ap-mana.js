@@ -172,7 +172,8 @@ const deerTotemPort = {
       itemHasType(ctx.itemsById.get(o.itemId), 'nature'),
     ).length;
     const extra = getPName(piece.params, 'dur_rage', getP2(piece.params, 0.8)) * n;
-    ctx.player._battleRageDur = (Number(ctx.player._battleRageDur) || 0) + extra;
+    ctx.player.battleRageBonusDur =
+      (Number(ctx.player.battleRageBonusDur) || 0) + extra;
     ctx.bus?.on?.('battle_rage_started', () => {
       piece._deerRageActive = true;
       piece._cdLocked = false;

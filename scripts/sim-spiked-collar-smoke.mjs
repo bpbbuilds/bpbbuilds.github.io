@@ -69,7 +69,7 @@ const combat = makeContext();
 combat.piece.paramAdd = { dur_rage: 1 };
 combat.piece.paramMult = { dur_rage: 1.5 };
 handler.onPrepare(combat.piece, combat);
-assert.equal(combat.player._battleRageDur, 4.5,
+assert.equal(combat.player.battleRageBonusDur, 4.5,
   'Spiked Collar: prepare adds modified Battle Rage duration');
 combat.bus.emit('battle_rage_started', { actor: combat.player, t: 7 });
 assert.equal(combat.player.stacks.spikes, 1,
@@ -86,7 +86,7 @@ assert.equal(combat.events.filter((event) => event.type === 'activate').length, 
 
 const zero = makeContext({ params: { dur_rage: 0.5, p1: 0.5, spikes: 0, p2: 0 } });
 handler.onPrepare(zero.piece, zero);
-assert.equal(zero.player._battleRageDur, 0.5,
+assert.equal(zero.player.battleRageBonusDur, 0.5,
   'Spiked Collar: fractional duration is not rounded');
 zero.bus.emit('battle_rage_started', { actor: zero.player, t: 3 });
 assert.equal(zero.player.stacks.spikes, 0,

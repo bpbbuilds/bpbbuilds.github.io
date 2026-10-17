@@ -219,7 +219,8 @@ const spikedCollarPort = {
       getPName(piece.params, 'dur_rage', getP1(piece.params, 0)),
       'dur_rage',
     );
-    ctx.player._battleRageDur = (Number(ctx.player._battleRageDur) || 0) + extra;
+    ctx.player.battleRageBonusDur =
+      (Number(ctx.player.battleRageBonusDur) || 0) + extra;
     ctx.bus?.on?.('battle_rage_started', (event = {}) => {
       if (event.actor && event.actor !== ctx.player) return;
       const eventCtx = {
