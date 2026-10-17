@@ -100,16 +100,23 @@ export const hawkRunePort = {
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const { t, dummy, player, events, rng } = ctx;
-    pushActivate(piece, ctx, 'hawk_rune', `Rune: ${piece.name}`);
-    gainStacks(dummy, 'blind', 1, { rng, opponent: player });
-    events.push({
-      t: t + 0.004,
-      type: 'debuff',
-      target: 'dummy',
-      amount: 1,
-      label: `${piece.name}: +1 Blind`,
-      meta: { category: 'debuff', stack: 'blind', script: true, handler: 'hawk_rune' },
+    const inflicted = grantStacks(dummy, 'blind', 1, {
+      rng,
+      opponent: player,
+      originKey: piece.placementKey,
+      originId: piece.itemId,
     });
+    if (inflicted.gained > 0) {
+      events.push({
+        t: t + 0.004,
+        type: 'debuff',
+        target: 'dummy',
+        amount: inflicted.gained,
+        label: `${piece.name}: +${inflicted.gained} Blind`,
+        meta: { category: 'debuff', stack: 'blind', script: true, handler: 'hawk_rune' },
+      });
+    }
+    pushActivate(piece, ctx, 'hawk_rune', `Rune: ${piece.name}`);
     return true;
   },
 };

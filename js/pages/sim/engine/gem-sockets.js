@@ -33,6 +33,7 @@ function familyOf(gid) {
   if (id === 'badger_rune') return 'badger';
   if (id === 'tiger_rune') return 'tiger';
   if (id === 'elephant_rune') return 'elephant';
+  if (id === 'hawk_rune') return 'hawk';
   if (id === 'lump_of_coal') return 'coal';
   if (id === 'burning_coal') return 'burning_coal';
   if (id === 'corrupted_crystal') return 'corrupted_crystal';
@@ -76,6 +77,14 @@ function gemOriginKey(piece, slotIndex) {
  * Gem.prepareWeapon — once. On-hit listeners only where .gd connects "attacked".
  */
 function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
+  if (fam === 'hawk') {
+    piece.critChance =
+      (Number(piece.critChance) || 0) + getPName(params, 'critchance', getP1(params, 0));
+    piece.critSeverity =
+      (Number(piece.critSeverity) || 2) +
+      getPName(params, 'critdam', getP2(params, 0)) / 100;
+    return;
+  }
   if (fam === 'corrupted_crystal') {
     let applied = false;
     const threshold = getP1(params, 30) / 100 - 0.0001;
@@ -243,7 +252,14 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
  * Gem.prepareArmor — once. No inventory stam / max-HP consume here.
  */
 function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
-  if (fam === 'amethyst') {
+  if (fam === 'hawk') {
+    const rawPower = Number(gem?.gemPower);
+    const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
+    const chance = gemChance(gem, 'chance', 20);
+    ctx.player.stackResist = ctx.player.stackResist || {};
+    ctx.player.stackResist.blind =
+      (Number(ctx.player.stackResist.blind) || 0) + gemPower * chance;
+  } else if (fam === 'amethyst') {
     const rawPower = Number(gem?.gemPower);
     const gemPower = Number.isFinite(rawPower) ? Math.max(0, rawPower) : 1;
     const red = (gemPower * getP1(params, 8)) / 100;

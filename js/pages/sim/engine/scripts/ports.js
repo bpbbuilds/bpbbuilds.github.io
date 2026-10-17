@@ -384,32 +384,34 @@ export const healingHerbsPort = {
   family: 'start_buff',
   onCombatStart(piece, ctx) {
     const { t, player, events } = ctx;
-    const amount = Math.max(1, Math.round(getP1(piece.params, 4)));
+    const amount = getP1(piece.params, 0);
     // Use the shared stack bus: listeners such as Stone Golem must receive
     // this combat-start Regeneration gain immediately.
-    grantStacks(player, 'regeneration', amount, {
+    const gained = grantStacks(player, 'regeneration', amount, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
+    if (gained.gained > 0) {
+      events.push({
+        t,
+        type: 'buff',
+        actor: player.id,
+        target: player.id,
+        amount: gained.gained,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: +${gained.gained} Regeneration`,
+        meta: {
+          category: 'hot',
+          script: true,
+          handler: 'healing_herbs',
+          stack: 'regeneration',
+        },
+      });
+    }
+    pushActivate(piece, ctx, 'healing_herbs', `Food: ${piece.name}`);
     piece.alive = false;
     piece.charges = 0;
-    pushActivate(piece, ctx, 'healing_herbs', `Food: ${piece.name}`);
-    events.push({
-      t,
-      type: 'buff',
-      actor: player.id,
-      target: player.id,
-      amount,
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `${piece.name}: +${amount} Regeneration`,
-      meta: {
-        category: 'hot',
-        script: true,
-        handler: 'healing_herbs',
-        stack: 'regeneration',
-      },
-    });
   },
 };
 

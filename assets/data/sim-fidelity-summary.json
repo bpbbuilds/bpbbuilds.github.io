@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "f531bf19c07e19f5480301174655b12e92336ac24e9798e635bed3e324e180c2",
+    "dashboardSha256": "45b9028d29d8a84ba9cfea090c6ee6d782769fee450228fa7968354e40a3d5b8",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 373,
+    "verified_1to1": 375,
     "confirmed_gap": 8,
-    "evidence_pending": 123,
+    "evidence_pending": 121,
     "no_independent_combat": 15
   },
   "byId": {
@@ -226,8 +226,8 @@
     "halberd": "verified_1to1",
     "hammer": "verified_1to1",
     "hardwood": "verified_1to1",
-    "hawk_rune": "evidence_pending",
-    "healing_herbs": "evidence_pending",
+    "hawk_rune": "verified_1to1",
+    "healing_herbs": "verified_1to1",
     "health_potion": "verified_1to1",
     "heart_container": "evidence_pending",
     "heart_of_darkness": "evidence_pending",

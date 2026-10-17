@@ -6325,3 +6325,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 258 - in progress
 
 - Codex owns the next retained Hawk Rune and Healing Herbs fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-hawk-rune-smoke.mjs`, `scripts/sim-healing-herbs-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 258 - complete
+
+- Codex repaired Hawk Rune to mirror source loose-rune Blind infliction and resistance-aware effect-before-activation ordering, plus socketed weapon crit chance/severity and armor Blind resistance. Healing Herbs now mirrors exact source Regeneration, consumption/activation ordering, and explicit zero values.
+- Added `scripts/sim-hawk-rune-smoke.mjs` and `scripts/sim-healing-herbs-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 375 / 519 verified item rows. Focused pair tests, lifecycle, gem-socket, loose-gem, affected shared, changed-module syntax, and scoped audit checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Heart Container and Heart of Darkness; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 259 - in progress
+
+- Codex owns the next retained Heart Container and Heart of Darkness fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-heart-container-smoke.mjs`, `scripts/sim-heart-of-darkness-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

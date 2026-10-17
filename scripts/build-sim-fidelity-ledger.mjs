@@ -1573,6 +1573,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  hawk_rune: {
+    focusedRegression: 'scripts/sim-hawk-rune-smoke.mjs',
+    fixture: 'Hawk Rune source loose Blind effect and resistance-aware ordering, socketed weapon crit chance/severity, socketed armor Blind resistance, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  healing_herbs: {
+    focusedRegression: 'scripts/sim-healing-herbs-smoke.mjs',
+    fixture: 'Healing Herbs source combat-start Regeneration, consumption/activation ordering, exact P1 value, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   perfect_amethyst: {
     focusedRegression: 'scripts/sim-perfect-amethyst-smoke.mjs',
     fixture: 'Perfect Amethyst explicit Godly tier alias over Amethyst.gd: inventory cleanse, source p2 buff removal, and GemPower-scaled armor healing reduction.',
