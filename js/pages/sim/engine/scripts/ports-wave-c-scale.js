@@ -24,7 +24,7 @@ import { modifiedParamValue } from '../placement-instance.js';
 import { eventSideForPiece } from '../vs-board.js';
 import { itemHasType, pushActivate } from './ports-util.js';
 import { applyEffectDmgFactor } from '../actor-stats.js';
-import { effectiveChance } from '../chance.js';
+import { applyBonusChance, effectiveChance } from '../chance.js';
 import { rollItemChance, weaponStrike } from './ports-wave-c-util.js';
 
 /**
@@ -500,22 +500,32 @@ export const wrenchPort = {
   onDealtDamage(piece, ctx, hit) {
     if (!hit?.hit) return;
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-    const others = (ctx.pieces || []).filter((o) =>
-      links.some((l) => l.key === o.placementKey),
-    );
-    if (others[0]) {
-      others[0].buffAmpChance = (Number(others[0].buffAmpChance) || 0) + (piece.chance || 10);
+    const firstAffected = (color) => {
+      const link = links.find((candidate) => candidate.color === color);
+      return link
+        ? (ctx.pieces || []).find((other) => other.placementKey === link.key) || null
+        : null;
+    };
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const readChance = (key, fallback) => {
+      const raw = piece[key] != null ? piece[key] : catalog?.[key];
+      const base = Number(raw);
+      const value = applyBonusChance(
+        Number.isFinite(base) ? base : fallback,
+        piece,
+        key === 'chance2' ? 2 : 1,
+      );
+      return Math.round(Math.max(0, Math.min(100, value)) * 100) / 100;
+    };
+    const primary = firstAffected('primary');
+    if (primary) {
+      primary.buffAmpChance = (Number(primary.buffAmpChance) || 0) + readChance('chance', 10);
     }
-    if (others[1]) {
-      others[1].critChance =
-        (Number(others[1].critChance) || 0) + (piece.chance2 || piece.chance || 5);
+    const secondary = firstAffected('secondary');
+    if (secondary) {
+      secondary.critChance =
+        (Number(secondary.critChance) || 0) + readChance('chance2', 5);
     }
-    ctx.events.push({
-      t: ctx.t + 0.008,
-      type: 'info',
-      label: `${piece.name}: amp/crit neighbors`,
-      meta: { category: 'adjacency', script: true, handler: 'wrench' },
-    });
   },
 };
 

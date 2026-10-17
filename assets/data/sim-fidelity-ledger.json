@@ -22511,9 +22511,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-wooden-sword-smoke.mjs",
+        "fixture": "Wooden Sword source stamina-gated Weapon sequence: spend stamina, deal damage, activate on success, no damage or activation when starved, and explicit zero cost.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -22547,9 +22553,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-wrench-smoke.mjs",
+        "fixture": "Wrench source hit-only first valid Primary buff-gaining and Secondary damage targets, source Chance and Chance2 modifiers, explicit zero values, and no simulator-only event.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

@@ -326,6 +326,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  wooden_sword: {
+    focusedRegression: 'scripts/sim-wooden-sword-smoke.mjs',
+    fixture: 'Wooden Sword source stamina-gated Weapon sequence: spend stamina, deal damage, activate on success, no damage or activation when starved, and explicit zero cost.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  wrench: {
+    focusedRegression: 'scripts/sim-wrench-smoke.mjs',
+    fixture: 'Wrench source hit-only first valid Primary buff-gaining and Secondary damage targets, source Chance and Chance2 modifiers, explicit zero values, and no simulator-only event.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   spiked_collar: {
     focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
     fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',
