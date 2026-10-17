@@ -9751,9 +9751,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-heavy-drinking-smoke.mjs",
+        "fixture": "Heavy Drinking source preparation-time affected-potion speed, same-inventory random trigger without potion consumption, mini activation/activation ordering, and zero-safe speed; shop-roll weighting is intentionally out of combat scope.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -9788,9 +9794,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-hedgehog-smoke.mjs",
+        "fixture": "Hedgehog source preparation-time damaged-health threshold listener, one-shot Spikes/Block grants, mini activation, effect damage scaling, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

@@ -1601,6 +1601,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  heavy_drinking: {
+    focusedRegression: 'scripts/sim-heavy-drinking-smoke.mjs',
+    fixture: 'Heavy Drinking source preparation-time affected-potion speed, same-inventory random trigger without potion consumption, mini activation/activation ordering, and zero-safe speed; shop-roll weighting is intentionally out of combat scope.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  hedgehog: {
+    focusedRegression: 'scripts/sim-hedgehog-smoke.mjs',
+    fixture: 'Hedgehog source preparation-time damaged-health threshold listener, one-shot Spikes/Block grants, mini activation, effect damage scaling, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hawk_rune: {
     focusedRegression: 'scripts/sim-hawk-rune-smoke.mjs',
     fixture: 'Hawk Rune source loose Blind effect and resistance-aware ordering, socketed weapon crit chance/severity, socketed armor Blind resistance, and zero-safe parameters.',

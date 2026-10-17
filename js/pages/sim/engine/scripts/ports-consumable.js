@@ -21,10 +21,10 @@ import {
   pushBuffGrants,
   triggerFirstAffectedPotion,
 } from './ports-util.js';
-import { getScriptHandler } from './registry.js';
 import { applyFoodPrepareSpeed } from './food-helpers.js';
 import { changeReflectStacks } from '../actor-stats.js';
 import { modifiedParamValue } from '../placement-instance.js';
+import { eventSideForPiece } from '../vs-board.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -75,35 +75,54 @@ export const sliceOfBreadPort = {
 export const heavyDrinkingPort = {
   handlerId: 'heavy_drinking',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { pieces, itemsById } = ctx;
     const potions = (pieces || []).filter(
       (p) =>
         p.placementKey !== piece.placementKey &&
+        eventSideForPiece(p) === eventSideForPiece(piece) &&
         itemHasType(itemsById.get(p.itemId), 'potion'),
     );
     piece._drinkPotions = potions.map((p) => p.placementKey);
     const speed = getPName(piece.params, 'speed', getP1(piece.params, 10)) / 100;
-    if (potions.length && speed) addSpeed(piece, potions.length * speed);
+    const links = affectedTargets(ctx.graph, piece.placementKey, itemsById, ctx.canAffect);
+    const affectedPotionCount = links.filter((link) =>
+      itemHasType(itemsById.get(link.id), 'potion'),
+    ).length;
+    if (affectedPotionCount && speed) addSpeed(piece, affectedPotionCount * speed);
   },
   onCooldownEffect(piece, ctx) {
     const { t, events, pieces, rng } = ctx;
-    pushActivate(piece, ctx, 'heavy_drinking', `Skill: ${piece.name}`);
     const keys = piece._drinkPotions || [];
     if (keys.length) {
       const key = keys[Math.floor(rng() * keys.length)];
       const potion = (pieces || []).find((p) => p.placementKey === key);
       if (potion) {
-        const h = getScriptHandler(potion.itemId);
-        if (h?.onCooldownEffect) h.onCooldownEffect(potion, ctx);
-        events.push({
-          t: t + 0.004,
-          type: 'info',
-          label: `${piece.name}: trigger ${potion.name}`,
-          meta: { category: 'system', script: true, handler: 'heavy_drinking' },
-        });
+        // Potion.triggerPotion() applies the effect without consuming the
+        // potion or advancing its cooldown. The per-potion callback is the
+        // simulator's source-shaped equivalent of that API.
+        if (typeof potion._potionTrigger === 'function') {
+          potion._potionTrigger({ ...ctx, t });
+          events.push({
+            t: t + 0.004,
+            type: 'info',
+            actor: eventSideForPiece(potion),
+            itemId: potion.itemId,
+            placementKey: potion.placementKey,
+            label: `${potion.name}: mini activate`,
+            meta: {
+              category: 'system',
+              script: true,
+              handler: 'heavy_drinking',
+              miniActivate: true,
+              triggeredBy: piece.itemId,
+            },
+          });
+        }
       }
     }
+    // HeavyDrinking.gd calls activate() after triggerPotion()/miniActivate().
+    pushActivate(piece, ctx, 'heavy_drinking', `Skill: ${piece.name}`);
     return true;
   },
 };

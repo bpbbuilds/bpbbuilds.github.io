@@ -6358,3 +6358,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 261 - in progress
 
 - Codex owns the next retained Heavy Drinking and Hedgehog fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-heavy-drinking-smoke.mjs`, `scripts/sim-hedgehog-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 261 - complete
+
+- Codex repaired Heavy Drinking to mirror source preparation-time affected-potion speed, same-inventory potion selection, non-consuming `triggerPotion` behavior, mini activation/activation ordering, and explicit zero speed; the source shop-roll weighting remains documented as out-of-combat scope. Hedgehog now mirrors source preparation-time damaged-health threshold listening, exact Spikes/Block values, one-shot behavior, VFX-only mini activation, effect damage scaling, activation ordering, and explicit zero parameters.
+- Added `scripts/sim-heavy-drinking-smoke.mjs` and `scripts/sim-hedgehog-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 381 / 519 verified item rows. Focused pair tests, changed-module syntax, and generated audit checks pass; the generated summary reports 381 verified, 116 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+- The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Hero Longsword and Hero Shield; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 262 - in progress
+
+- Codex owns the next retained Hero Longsword and Hero Shield fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-hero-longsword-smoke.mjs`, `scripts/sim-hero-shield-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

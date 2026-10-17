@@ -719,43 +719,73 @@ export const hedgehogPort = {
   // Hedgehog.gd connects during onPrepare.
   onPrepare(piece, ctx) {
     piece._hedgeTriggered = false;
-    const th = getPName(piece.params, 'healtht', 50) / 100 - 0.0001;
-    const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', 3)));
-    const block = Math.max(0, Math.round(piece.blockGrant || getP2(piece.params, 4)));
+    const th = getPName(piece.params, 'healtht', getP3(piece.params, 50)) / 100 - 0.0001;
+    const spikes = Math.trunc(getPName(piece.params, 'spikes', getP4(piece.params, 3)));
+    const block = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number(ctx.itemsById?.get(piece.itemId)?.block) || 0;
     ctx.bus?.on?.('character_damaged', (payload) => {
       if (payload?.actor && payload.actor !== ctx.player) return;
-      if (piece._hedgeTriggered || !payload?.hit) return;
+      if (piece._hedgeTriggered || payload?.hit === false || payload?.hit?.hit === false) return;
       const player = ctx.player;
       const rel = player.maxHp > 0 ? player.hp / player.maxHp : 1;
       if (rel >= th) return;
       piece._hedgeTriggered = true;
-      grantStacks(player, 'spikes', spikes, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
+      if (spikes) {
+        grantStacks(player, 'spikes', spikes, {
+          originKey: piece.placementKey,
+          originId: piece.itemId,
+        });
+        ctx.events.push({
+          t: payload?.t ?? ctx.t,
+          type: 'buff',
+          actor: eventSideForPiece(piece),
+          target: eventSideForPiece(piece),
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          amount: spikes,
+          label: `${piece.name}: +${spikes} Spikes`,
+          meta: { category: 'buff', stack: 'spikes', script: true, handler: 'hedgehog' },
+        });
+      }
       if (block) {
         grantStacks(player, 'block', block, {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
+        ctx.events.push({
+          t: payload?.t ?? ctx.t,
+          type: 'buff',
+          actor: eventSideForPiece(piece),
+          target: eventSideForPiece(piece),
+          itemId: piece.itemId,
+          placementKey: piece.placementKey,
+          amount: block,
+          label: `${piece.name}: +${block} Block`,
+          meta: { category: 'buff', stack: 'block', script: true, handler: 'hedgehog' },
+        });
       }
       ctx.events.push({
         t: payload?.t ?? ctx.t,
-        type: 'buff',
-        target: 'player',
-        amount: spikes + block,
-        label: `${piece.name}: low HP → spikes/block`,
-        meta: { category: 'buff', script: true, handler: 'hedgehog' },
+        actor: eventSideForPiece(piece),
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        type: 'info',
+        label: `${piece.name}: mini activate`,
+        meta: { category: 'system', script: true, handler: 'hedgehog', miniActivate: true },
       });
     });
   },
   onCooldownEffect(piece, ctx) {
     const { player } = ctx;
-    pushActivate(piece, ctx, 'hedgehog', `Pet: ${piece.name}`);
-    const per = Number(getPName(piece.params, 'dam_spikes', getP1(piece.params, 1))) || 1;
-    const spikes = player.stacks.spikes || 0;
-    const raw = Math.max(0, Math.round((piece.damageMin || 3) + spikes * per));
+    const perValue = getPName(piece.params, 'dam_spikes', getP2(piece.params, 0.5));
+    const per = Number.isFinite(Number(perValue)) ? Number(perValue) : 0;
+    const spikes = Number(player.stacks.spikes) || 0;
+    const base = Number.isFinite(Number(piece.damageMin)) ? Number(piece.damageMin) : 0;
+    const raw = Math.max(0, Math.round(base + spikes * per));
     dealEffectDamage(piece, ctx, raw);
+    // Hedgehog.gd activates only after dealEffectDamage returns its result.
+    pushActivate(piece, ctx, 'hedgehog', `Pet: ${piece.name}`);
     return true;
   },
 };
