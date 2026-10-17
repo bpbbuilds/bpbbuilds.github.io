@@ -23,6 +23,7 @@ import { dealEffectDamage } from './handlers.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { superiorRingPort } from './ports-ring.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
+import { rollItemChance } from '../chance.js';
 import { rollPercent } from '../rng.js';
 import { removeBlock } from './ports-wave-c-util.js';
 import { eventSideForPiece } from '../vs-board.js';
@@ -527,8 +528,11 @@ const twinePort = {
   onPeerActivated(listener, activated, ctx) {
     if (!listener._twineTriggers?.has(activated?.placementKey)) return;
     const n2 = Number(listener._twineSecondaryCount) || 0;
-    const ch = baseChanceOf(listener, ctx, 'chance') + n2 * baseChanceOf(listener, ctx, 'chance2');
-    if (!rollPercent(ch, ctx.rng)) return;
+    // Twine.gd totals its base chance plus every neutral diamond target, then
+    // passes that total to Item.rollChance().  The latter applies Fedora's
+    // bonusChance multiplier to the entire sum and uses the item's BalancedRng.
+    const totalChance = baseChanceOf(listener, ctx, 'chance') + n2 * baseChanceOf(listener, ctx, 'chance2');
+    if (!rollItemChance(listener, ctx.rng, totalChance)) return;
     const hp = Number(listener._twineMaxHealth) || 0;
     if (hp > 0) {
       ctx.player.maxHp += hp;
