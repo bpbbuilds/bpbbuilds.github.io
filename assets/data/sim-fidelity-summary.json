@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "62f9a6234ee681fea59e65960f8f15f886f2cb76b31636e883e3b936977b721a",
+    "dashboardSha256": "e3fbee2a6b082b9ae08d3577c4e9dd8e6b385158e44292946ea9894e755e91d8",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
     "verified_1to1": 479,
-    "confirmed_gap": 4,
-    "evidence_pending": 21,
+    "confirmed_gap": 6,
+    "evidence_pending": 19,
     "no_independent_combat": 15
   },
   "byId": {
@@ -232,7 +232,7 @@
     "heart_container": "verified_1to1",
     "heart_of_darkness": "verified_1to1",
     "heart_of_the_cards": "verified_1to1",
-    "heart_shield": "verified_1to1",
+    "heart_shield": "confirmed_gap",
     "heavy_drinking": "verified_1to1",
     "hedgehog": "verified_1to1",
     "hero_longsword": "verified_1to1",
@@ -307,7 +307,7 @@
     "molten_spear": "verified_1to1",
     "molten_spear2": "verified_1to1",
     "moon_armor": "verified_1to1",
-    "moon_shield": "verified_1to1",
+    "moon_shield": "confirmed_gap",
     "more_stats": "verified_1to1",
     "mr_struggles": "verified_1to1",
     "mrs_struggles": "verified_1to1",
@@ -441,8 +441,8 @@
     "spiked_shield": "verified_1to1",
     "spiked_staff": "verified_1to1",
     "spiked_wall": "verified_1to1",
-    "spin_to_win": "evidence_pending",
-    "spirit_bells": "evidence_pending",
+    "spin_to_win": "verified_1to1",
+    "spirit_bells": "verified_1to1",
     "spring_loader": "evidence_pending",
     "squirrel": "evidence_pending",
     "squirrel_archer": "evidence_pending",

@@ -3,7 +3,7 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "c59349692d921478a010c99388396740cf420e7a0437cfbc86e400fa516c0cd3",
+    "itemLedgerSha256": "962022f1ef13ddbe8695ff9e855c9c2ac70d460ced9cd41486fb4a13879ac4e8",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
     "systemSurfaceSha256": "79e1178a7ae154e964452b8a7fada954ec8e043c0756f30c20fc35ec6dea6778",
@@ -27,8 +27,8 @@
     "mechanics": 21,
     "rows": 540,
     "verified_1to1": 479,
-    "confirmed_gap": 5,
-    "evidence_pending": 41,
+    "confirmed_gap": 7,
+    "evidence_pending": 39,
     "no_independent_combat": 15
   },
   "items": [
@@ -10060,10 +10060,7 @@
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
-        "duplicateRegistration": [
-          "js/pages/sim/engine/scripts/ports-ai-d.js",
-          "js/pages/sim/engine/scripts/ports-threshold.js"
-        ]
+        "duplicateRegistration": null
       },
       "evidence": {
         "focusedRegression": "scripts/sim-heart-of-darkness-smoke.mjs",
@@ -10128,10 +10125,10 @@
       "name": "Heart Shield",
       "category": "Shield",
       "class": "Neutral",
-      "verdict": "verified_1to1",
-      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
-      "sourceStatus": "source_ported",
-      "fidelity": "source_ported",
+      "verdict": "confirmed_gap",
+      "reason": "Lifecycle hook audit: afterBlock.",
+      "sourceStatus": "port_present",
+      "fidelity": "incomplete",
       "source": {
         "script": "Exclusive/HeartShield.gd",
         "extends": "Shield",
@@ -10150,7 +10147,12 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [],
+        "lifecycleHookGaps": [
+          {
+            "hook": "afterBlock",
+            "why": "no JS hook among onCombatStart/onPreCombatStart/onDealtDamage"
+          }
+        ],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -10165,7 +10167,7 @@
         "liveRequired": false,
         "basis": "source_and_automated_regression"
       },
-      "knownDelta": null
+      "knownDelta": "Lifecycle hook audit: afterBlock."
     },
     {
       "scope": "item",
@@ -13451,10 +13453,10 @@
       "name": "Moon Shield",
       "category": "Shield",
       "class": "Neutral",
-      "verdict": "verified_1to1",
-      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
-      "sourceStatus": "source_ported",
-      "fidelity": "source_ported",
+      "verdict": "confirmed_gap",
+      "reason": "Lifecycle hook audit: afterBlock.",
+      "sourceStatus": "port_present",
+      "fidelity": "incomplete",
       "source": {
         "script": "MoonShield.gd",
         "extends": "Shield",
@@ -13473,7 +13475,12 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [],
+        "lifecycleHookGaps": [
+          {
+            "hook": "afterBlock",
+            "why": "no JS hook among onCombatStart/onPreCombatStart/onDealtDamage"
+          }
+        ],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
@@ -13488,7 +13495,7 @@
         "liveRequired": false,
         "basis": "source_and_automated_regression"
       },
-      "knownDelta": null
+      "knownDelta": "Lifecycle hook audit: afterBlock."
     },
     {
       "scope": "item",
@@ -19553,8 +19560,8 @@
       "name": "Spin to Win",
       "category": "Skill",
       "class": "Adventurer",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -19579,9 +19586,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-spin-to-win-smoke.mjs",
+        "fixture": "Spin to Win source face-direction stack mapping, exact integer parameters, zero-value handling, orientation fallback, and activation after the selected stack grant.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
@@ -19591,8 +19604,8 @@
       "name": "Spirit Bells",
       "category": "Accessory",
       "class": "Mage",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -19621,9 +19634,15 @@
         ]
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-spirit-bells-smoke.mjs",
+        "fixture": "Spirit Bells inherited Leather Helm preparation and timed resistance, distinct linked-Pet duration, source proportional buff-limit rounding, activation ordering, and consumption.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },

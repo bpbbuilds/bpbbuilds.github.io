@@ -10,16 +10,16 @@
   },
   "totals": {
     "catalogItems": 519,
-    "sourcePorted": 492,
-    "portPresentIncomplete": 0,
+    "sourcePorted": 490,
+    "portPresentIncomplete": 2,
     "sourceUnresolved": 0,
     "noCombat": 26,
     "deferred": 0,
     "unsupportedMode": 1,
-    "lifecycleHookGap": 2,
-    "untriagedLifecycleHookGap": 0,
+    "lifecycleHookGap": 4,
+    "untriagedLifecycleHookGap": 2,
     "callReviewCandidate": 3,
-    "duplicateRegistration": 17
+    "duplicateRegistration": 16
   },
   "rows": [
     {
@@ -9614,10 +9614,7 @@
       "audit": {
         "lifecycleHookGaps": [],
         "callReviewCandidates": [],
-        "duplicateRegistration": [
-          "js/pages/sim/engine/scripts/ports-ai-d.js",
-          "js/pages/sim/engine/scripts/ports-threshold.js"
-        ]
+        "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
@@ -9700,13 +9697,18 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [],
+        "lifecycleHookGaps": [
+          {
+            "hook": "afterBlock",
+            "why": "no JS hook among onCombatStart/onPreCombatStart/onDealtDamage"
+          }
+        ],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_ported",
-      "fidelity": "source_ported",
-      "knownDelta": null,
+      "status": "port_present",
+      "fidelity": "incomplete",
+      "knownDelta": "Lifecycle hook audit: afterBlock.",
       "evidence": {
         "focusedRegression": "scripts/sim-heart-shield-smoke.mjs",
         "fixture": "Heart Shield source affected-item Block power, heal/lifesteal parameter modifiers, Regeneration amplification, block regeneration, threshold max-health conversion, active damage block, and zero-safe parameters.",
@@ -12873,13 +12875,18 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [],
+        "lifecycleHookGaps": [
+          {
+            "hook": "afterBlock",
+            "why": "no JS hook among onCombatStart/onPreCombatStart/onDealtDamage"
+          }
+        ],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "source_ported",
-      "fidelity": "source_ported",
-      "knownDelta": null,
+      "status": "port_present",
+      "fidelity": "incomplete",
+      "knownDelta": "Lifecycle hook audit: afterBlock.",
       "evidence": {
         "focusedRegression": "scripts/sim-moon-shield-smoke.mjs",
         "fixture": "Moon Shield source affected-item Block buff power, origin-scoped Block-to-Mana accumulation, afterBlock stamina/activation, any-attack shielding override, and zero-safe values.",
@@ -18714,9 +18721,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-spin-to-win-smoke.mjs",
+        "fixture": "Spin to Win source face-direction stack mapping, exact integer parameters, zero-value handling, orientation fallback, and activation after the selected stack grant.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -18754,9 +18767,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-spirit-bells-smoke.mjs",
+        "fixture": "Spirit Bells inherited Leather Helm preparation and timed resistance, distinct linked-Pet duration, source proportional buff-limit rounding, activation ordering, and consumption.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

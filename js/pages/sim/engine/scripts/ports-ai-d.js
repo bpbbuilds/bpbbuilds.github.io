@@ -16,10 +16,11 @@ import { applyHealEfficiency, applyUnhealing } from '../actor-stats.js';
 import { affectedTargets } from '../board-graph.js';
 import { chargeEnterSchedule, buildScriptChargePath } from '../charge-path.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addSpeed } from '../piece-stats.js';
 import { rollPercent } from '../rng.js';
 import { getStackAmount } from '../stacks.js';
-import { grantTimedSpeed } from '../timed-speed.js';
+import { grantTimedResistancePct } from '../timed-resistance.js';
 import { giveTempMaxHp } from './ports-ap-start.js';
 import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
 import { eventSideForPiece } from '../vs-board.js';
@@ -414,7 +415,14 @@ export const manaCrystalPort = {
 export const spiritBellsPort = {
   handlerId: 'spirit_bells',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
+    const rawChance = piece.chance ?? ctx.itemsById?.get?.(piece.itemId)?.chance;
+    const chance = Number.isFinite(Number(rawChance)) ? Number(rawChance) : 0;
+    ctx.player.critResistance = (Number(ctx.player.critResistance) || 0) + chance;
+    ctx.player.stunResistance = (Number(ctx.player.stunResistance) || 0) + chance;
+    piece._spiritBellsPrepared = true;
+  },
+  onPreCombatStart(piece, ctx) {
     const { t, player, events, graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     /** @type {Set<string>} */
@@ -425,26 +433,34 @@ export const spiritBellsPort = {
       if (!(other.kind === 'pet' || itemHasType(item, 'pet'))) continue;
       distinct.add(String(other.itemId));
     }
-    const durBase = Math.max(0.1, getPName(piece.params, 'dur_base', getP2(piece.params, 2)));
-    const durBonus = Math.max(0, getPName(piece.params, 'dur_bonus', getP3(piece.params, 1)));
-    const dur = durBase + durBonus * distinct.size;
-    const dr = Math.max(
-      0,
-      getPName(piece.params, 'damreduction', getP1(piece.params, 30)),
+    const durBase = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur_base', getP2(piece.params, 2)),
+      'dur_base',
     );
-    if (dr) {
-      player.damageResistancePct = (Number(player.damageResistancePct) || 0) + dr;
-      grantTimedSpeed(piece, 1e-6, t + dur, 'spirit_bells_dr');
-      const prev = piece._onTimedSpeedEnd;
-      piece._onTimedSpeedEnd = (tag, e) => {
-        prev?.(tag, e);
-        if (tag === 'spirit_bells_dr') {
-          player.damageResistancePct = Math.max(
-            0,
-            (Number(player.damageResistancePct) || 0) - dr,
-          );
-        }
+    const durBonus = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur_bonus', getP3(piece.params, 1)),
+      'dur_bonus',
+    );
+    const dur = durBase + durBonus * distinct.size;
+    piece._spiritBellsDuration = dur;
+    const dr = getPName(piece.params, 'damreduction', getP1(piece.params, 30));
+    if (dr && dur > 0) {
+      const tag = `spirit_bells:${piece.placementKey || piece.itemId}`;
+      piece._spiritBellsBuffsActive = (Number(piece._spiritBellsBuffsActive) || 0) + 1;
+      piece.state = piece._spiritBellsBuffsActive;
+      const previous = player._onTimedResistEnd;
+      player._onTimedResistEnd = (endedTag, entry) => {
+        previous?.(endedTag, entry);
+        if (endedTag !== tag) return;
+        piece._spiritBellsBuffsActive = Math.max(
+          0,
+          (Number(piece._spiritBellsBuffsActive) || 1) - 1,
+        );
+        piece.state = piece._spiritBellsBuffsActive;
       };
+      grantTimedResistancePct(player, dr, (Number(t) || 0) + dur, tag);
       events.push({
         t: t + 0.002,
         type: 'info',
@@ -452,18 +468,21 @@ export const spiritBellsPort = {
         meta: { category: 'system', script: true, handler: 'spirit_bells' },
       });
     }
+  },
+  onCombatStart(piece, ctx) {
     pushActivate(piece, ctx, 'spirit_bells', `Accessory: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'spirit_bells', `Accessory: ${piece.name}`);
     const frac = getPName(piece.params, 'buffs', getP1(piece.params, 30)) / 100;
     const granted = multiplyBuffsLimit(player, frac, 1000, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     pushBuffGrants(events, piece, player, t, 'spirit_bells', granted);
-    afterEffectFinished(piece, ctx, 'spirit_bells', { activate: false });
+    afterEffectFinished(piece, ctx, 'spirit_bells', {
+      label: `Accessory: ${piece.name}`,
+    });
     return true;
   },
 };

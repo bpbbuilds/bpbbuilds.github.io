@@ -396,8 +396,8 @@ const spinToWinPort = {
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const board = ctx.graph?.pieces?.get?.(piece.placementKey);
-    const face = (((Number(board?.r) || Number(piece.r) || 0) % 4) + 4) % 4;
-    pushActivate(piece, ctx, 'spin_to_win', `Skill: ${piece.name}`);
+    const rawFace = board?.r ?? piece.r ?? 0;
+    const face = ((Math.trunc(Number(rawFace) || 0) % 4) + 4) % 4;
     const stacks = ['heat', 'lucky', 'regeneration', 'mana'];
     const amounts = [
       getPName(piece.params, 'heat', getP1(piece.params, 2)),
@@ -405,7 +405,8 @@ const spinToWinPort = {
       getPName(piece.params, 'regen', getP3(piece.params, 3)),
       getPName(piece.params, 'mana', getP4(piece.params, 4)),
     ];
-    grantStacks(ctx.player, stacks[face], Math.max(1, Math.round(amounts[face])), origin(piece));
+    grantStacks(ctx.player, stacks[face], Math.trunc(amounts[face]), origin(piece));
+    pushActivate(piece, ctx, 'spin_to_win', `Skill: ${piece.name}`);
     return true;
   },
 };

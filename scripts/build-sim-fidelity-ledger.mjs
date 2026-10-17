@@ -200,6 +200,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  spin_to_win: {
+    focusedRegression: 'scripts/sim-spin-to-win-smoke.mjs',
+    fixture: 'Spin to Win source face-direction stack mapping, exact integer parameters, zero-value handling, orientation fallback, and activation after the selected stack grant.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  spirit_bells: {
+    focusedRegression: 'scripts/sim-spirit-bells-smoke.mjs',
+    fixture: 'Spirit Bells inherited Leather Helm preparation and timed resistance, distinct linked-Pet duration, source proportional buff-limit rounding, activation ordering, and consumption.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   spiked_collar: {
     focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
     fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',
