@@ -133,8 +133,16 @@ const SURFACE = [
     source: 'Core/Character.gd',
     functions: ['heal', 'loseHealth', 'giveMaxHealth', 'changeMaxHealthTemporary', 'reincarnate'],
     simOwners: ['js/pages/sim/engine/actor.js', 'js/pages/sim/engine/unhealing.js'],
-    disposition: 'partial',
-    note: 'Health/heal/Unhealing paths exist; temporary maximum health and reincarnation need source-led tests.',
+    disposition: 'implemented',
+    note: 'The simulator matches source healing efficiency and cap behavior, blockable Unhealing damage, self-health/death listeners, temporary maximum-health gains used by ports, and reincarnation listeners that can restore health before the final death check.',
+    evidence: {
+      focusedRegression: 'scripts/sim-character-health-smoke.mjs',
+      fixture: 'Character.gd heal/loseHealth/changeMaxHealthTemporary/reincarnate, DamageSource Unhealing flags, and runtime healing, Block, Unhealing, and resurrection-boundary assertions; item-specific health ports retain dedicated regressions.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'character-stamina',

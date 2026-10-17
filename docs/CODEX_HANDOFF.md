@@ -7119,3 +7119,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 344 - in progress
 
 - Codex owns the next partial shared surface, `character-health`, for source-backed healing, self-health costs, temporary maximum health, Unhealing, and reincarnation review. Planned paths are limited to simulator actor/unhealing/health handlers, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 344 - complete
+
+- Codex repaired character-health boundary parity: Unhealing now reports post-Block health damage and uses the shared damage signal path, while lethal damage re-checks health after `character_damaged` so Phoenix/Dark Lantern-style reincarnation can restore the actor before the final death check. Healing efficiency/cap, temporary max-health behavior, self-health/death, and reincarnation are source-backed and regression-covered.
+- Added `scripts/sim-character-health-smoke.mjs`, marked `character-health` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and ran health, healing, Unhealing, resurrection, damage, tick, lifecycle, versus-board, syntax, and freshness checks. Shared totals are now 20 implemented and 1 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 345 - in progress
+
+- Codex owns the final partial shared surface, `character-stamina`, for source-backed stamina gain/use/drain, temporary maximum stamina, regeneration, and cancellation/invariant review. Planned paths are limited to simulator actor/stamina modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

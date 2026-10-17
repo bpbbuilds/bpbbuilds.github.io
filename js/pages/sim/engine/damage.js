@@ -327,7 +327,11 @@ export function takeDamage(defender, attacker, src) {
   defender.hp = Math.max(0, defender.hp - res.healthDamage);
   if (defender.hp <= 0) {
     emitCharacterDamaged();
-    markActorDead(defender, src.deathReason || 'damage', src.nowT ?? defender._simT);
+    // Character listeners may reincarnate during character_damaged before
+    // Character.takeDamage() reaches its final death() check.
+    if (defender.hp <= 0) {
+      markActorDead(defender, src.deathReason || 'damage', src.nowT ?? defender._simT);
+    }
   } else {
     emitCharacterDamaged();
   }

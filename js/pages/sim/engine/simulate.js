@@ -298,6 +298,7 @@ export function simulateEngine(opts) {
       t: at,
       events,
       rng,
+      bus,
       deferLog: Boolean(healer._deferUnhealLog),
     });
   });

@@ -50,6 +50,7 @@ export function flushUnloggedHeal(actor, events, t) {
  *   t: number,
  *   events: import('../sim-events.js').SimEvent[],
  *   rng: () => number,
+ *   bus?: { emit?: (type: string, payload?: object) => void },
  * }} opts
  */
 export function applyUnhealingHit(opts) {
@@ -65,8 +66,9 @@ export function applyUnhealingHit(opts) {
     skipSpikes: true,
     rng,
     nowT: t,
+    bus: opts.bus || healer._combatBus,
   });
-  const dealt = Number(res.damage) || 0;
+  const dealt = Number(res.healthDamage) || 0;
   if (dealt <= 0) return;
   const row = {
     t,
