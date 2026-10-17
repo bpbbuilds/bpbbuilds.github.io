@@ -200,6 +200,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  spiked_collar: {
+    focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
+    fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  spiked_shield: {
+    focusedRegression: 'scripts/sim-spiked-shield-smoke.mjs',
+    fixture: 'Spiked Shield source prepare reset, inherited Shield before/after-block ordering, exact integer Spikes cap, raw damblock and stamina values, activation, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   amethyst_egg: {
     focusedRegression: 'scripts/sim-amethyst-egg-smoke.mjs',
     fixture: 'Amethyst Egg start trigger and recurring cooldown: source p1 random-debuff count, activation, and both board sides.',

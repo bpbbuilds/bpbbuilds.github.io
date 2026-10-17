@@ -338,11 +338,15 @@ const shieldOfValorPort = {
 const spikedShieldPort = {
   handlerId: 'spiked_shield',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece) {
     piece._spikesGiven = 0;
-    const spikes = Math.max(1, Math.round(getPName(piece.params, 'spikes', 2)));
-    const maxS = Math.max(spikes, Math.round(getPName(piece.params, 'maxspikes', 8)));
+  },
+  onCombatStart(piece, ctx) {
+    const spikes = Math.trunc(getPName(piece.params, 'spikes', getP3(piece.params, 0)));
+    const maxS = Math.trunc(getPName(piece.params, 'maxspikes', getP4(piece.params, 0)));
     registerShield(piece, ctx, {
+      damblock: getPName(piece.params, 'damblock', getP1(piece.params, 0)),
+      allowZeroDamblock: true,
       beforeBlock() {
         const left = maxS - (Number(piece._spikesGiven) || 0);
         if (!(left > 0)) return;

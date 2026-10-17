@@ -15,6 +15,7 @@ import { affectedTargets } from '../board-graph.js';
 import { startBattleRage } from '../battle-rage.js';
 import { advanceCooldownSeconds, isCooldownActive } from '../cooldown.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addSpeed, multiplyStaminaCost } from '../piece-stats.js';
 import { rarityPriority } from '../item-kind.js';
 import { getStackAmount } from '../stacks.js';
@@ -212,15 +213,25 @@ const magicCollarPort = {
 const spikedCollarPort = {
   handlerId: 'spiked_collar',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const extra = getPName(piece.params, 'dur_rage', 2);
+  onPrepare(piece, ctx) {
+    const extra = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur_rage', getP1(piece.params, 0)),
+      'dur_rage',
+    );
     ctx.player._battleRageDur = (Number(ctx.player._battleRageDur) || 0) + extra;
-    ctx.bus?.on?.('battle_rage_started', () => {
-      grantStacks(ctx.player, 'spikes', Math.max(1, Math.round(getPName(piece.params, 'spikes', getP1(piece.params, 2)))), {
+    ctx.bus?.on?.('battle_rage_started', (event = {}) => {
+      if (event.actor && event.actor !== ctx.player) return;
+      const eventCtx = {
+        ...ctx,
+        t: Number.isFinite(Number(event.t)) ? Number(event.t) : ctx.t,
+      };
+      const spikes = Math.trunc(getPName(piece.params, 'spikes', getP1(piece.params, 0)));
+      grantStacks(ctx.player, 'spikes', spikes, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
-      pushActivate(piece, ctx, 'spiked_collar', `Accessory: ${piece.name}`);
+      pushActivate(piece, eventCtx, 'spiked_collar', `Accessory: ${piece.name}`);
     });
   },
 };

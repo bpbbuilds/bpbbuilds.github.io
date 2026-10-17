@@ -6811,3 +6811,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 309 - in progress
 
 - Codex owns the next retained Spiked Collar and Spiked Shield fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-spiked-collar-smoke.mjs`, `scripts/sim-spiked-shield-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 309 - complete
+
+- Codex repaired Spiked Collar to run from source `onPrepare`, add modified Battle Rage duration, listen only to the owning actor's rage signal, preserve source integer Spikes and explicit zero values, and project activation at the rage event timestamp. Spiked Shield now resets its source counter during preparation, preserves exact integer Spikes/maxSpikes semantics, uses the inherited Shield before/after-block ordering, keeps zero damblock/stamina/Spikes values, and activates after the source stamina drain.
+- Added `scripts/sim-spiked-collar-smoke.mjs` and `scripts/sim-spiked-shield-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 477 / 519 verified item rows. Focused pair tests, neighboring rage/collar/shield regressions, changed-module syntax, and generated artifact freshness checks pass. The generated summary reports 477 verified, 23 evidence-pending, 4 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 310 - in progress
+
+- Codex owns the next retained Spiked Staff and Spiked Wall fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-spiked-staff-smoke.mjs`, `scripts/sim-spiked-wall-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
