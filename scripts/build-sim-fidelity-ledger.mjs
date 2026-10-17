@@ -1804,6 +1804,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  level_up: {
+    focusedRegression: 'scripts/sim-level-up-smoke.mjs',
+    fixture: 'Level Up source round-based speed, modified max-health gain, stamina/Mana/Lucky order, activation, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  light_flower: {
+    focusedRegression: 'scripts/sim-light-flower-smoke.mjs',
+    fixture: 'Light Flower source Holy-secondary protection chance, exact Mana spend, debuff cleanse gate, Regeneration/Lucky order, activation, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

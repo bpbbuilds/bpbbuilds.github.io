@@ -393,8 +393,8 @@ const lightFlowerPort = {
   family: 'unique',
   onPrepare(piece, ctx) {
     const item = ctx.itemsById.get(piece.itemId);
-    const ch = Number(item?.chance) || 20;
-    const ch2 = Number(item?.chance2) || 5;
+    const ch = Number.isFinite(Number(item?.chance)) ? Number(item.chance) : 0;
+    const ch2 = Number.isFinite(Number(item?.chance2)) ? Number(item.chance2) : 0;
     const holy = linkedByColor(ctx, piece, 'secondary').filter((o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'holy'),
     ).length;
@@ -402,10 +402,10 @@ const lightFlowerPort = {
       (Number(ctx.player.buffCleanseProtectChance) || 0) + ch + ch2 * holy;
   },
   onCooldownEffect(piece, ctx) {
-    const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP1(piece.params, 1))));
-    const debuffs = Math.max(1, Math.round(getPName(piece.params, 'debuffs', getP2(piece.params, 3))));
-    const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP3(piece.params, 1))));
-    const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', getPName(piece.params, 'p4', 1))));
+    const need = Math.trunc(getPName(piece.params, 'manat', getP1(piece.params, 0)));
+    const debuffs = Math.trunc(getPName(piece.params, 'debuffs', getP2(piece.params, 0)));
+    const luck = Math.trunc(getPName(piece.params, 'luck', getP3(piece.params, 0)));
+    const regen = Math.trunc(getPName(piece.params, 'regen', getP4(piece.params, 0)));
     if (getStackAmount(ctx.player, 'mana') >= need) {
       useMana(ctx.player, need, origin(piece));
       cleanseRandomDebuffs(ctx.player, debuffs, ctx.rng, origin(piece));

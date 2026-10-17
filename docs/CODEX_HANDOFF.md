@@ -6530,3 +6530,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 277 - in progress
 
 - Codex owns the next retained Level Up and Light Flower fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-level-up-smoke.mjs`, `scripts/sim-light-flower-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 277 - complete
+
+- Codex repaired Level Up to mirror source round-based speed, modified `getP_m("maxhealth")` gain, exact Stamina/Mana/Lucky order, activation, and zero-safe parameters. Light Flower now mirrors source Holy-secondary target counting, exact protection chance, Mana spend and debuff cleanse gate, Regeneration/Lucky order, activation, and zero-safe integer parameters.
+- Added `scripts/sim-level-up-smoke.mjs` and `scripts/sim-light-flower-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 413 / 519 verified item rows. Focused pair tests, AP milestone, Wave C/D, parity systems, verified-coverage, coverage-honesty, changed-module syntax, ledger/dashboard freshness checks, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 413 verified, 84 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Light Goobert and Lightning Potion; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 278 - in progress
+
+- Codex owns the next retained Light Goobert and Lightning Potion fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-light-goobert-smoke.mjs`, `scripts/sim-lightning-potion-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

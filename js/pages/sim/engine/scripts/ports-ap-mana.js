@@ -11,7 +11,7 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { gainStacks, getStackAmount } from '../stacks.js';
 import { loseHealth } from './handlers.js';
@@ -19,6 +19,7 @@ import { deactivateCooldown } from '../cooldown.js';
 import { eventSideForPiece } from '../vs-board.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { giveTempMaxHp } from './ports-ap-start.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { itemHasType, pushActivate } from './ports-util.js';
 import { removeRandomBuffs } from './ports-wave-c-util.js';
 
@@ -294,31 +295,25 @@ const levelUpPort = {
   handlerId: 'level_up',
   family: 'unique',
   onPrepare(piece, ctx) {
-    const per = getPName(piece.params, 'speed', 10) / 100;
-    const bought = Math.max(0, Math.round(getPName(piece.params, 'skillround', 3)));
+    const per = getPName(piece.params, 'speed', getP5(piece.params, 0)) / 100;
+    const bought = Math.trunc(getPName(piece.params, 'skillround', getP6(piece.params, 0)));
     const round = Number(ctx.round) || bought;
     const passed = round - bought;
     if (passed && per) addSpeed(piece, passed * per);
   },
   onCooldownEffect(piece, ctx) {
-    const hp = Math.max(1, Math.round(getPName(piece.params, 'maxhealth', getP1(piece.params, 10))));
+    const hp = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'maxhealth', getP1(piece.params, 0)),
+      'maxhealth',
+    );
     giveTempMaxHp(piece, ctx, 'level_up', hp);
     const stam = getPName(piece.params, 'stamina', getP2(piece.params, 1));
-    const next = (Number(ctx.player.stamina) || 0) + stam;
-    const cap = Number(ctx.player.maxStamina);
-    ctx.player.stamina = cap > 0 ? Math.min(cap, next) : next;
-    grantStacks(
-      ctx.player,
-      'mana',
-      Math.max(1, Math.round(getPName(piece.params, 'mana', getP3(piece.params, 1)))),
-      origin(piece),
-    );
-    grantStacks(
-      ctx.player,
-      'lucky',
-      Math.max(1, Math.round(getPName(piece.params, 'luck', getP4(piece.params, 1)))),
-      origin(piece),
-    );
+    giveStamina(ctx.player, stam);
+    const mana = Math.trunc(getPName(piece.params, 'mana', getP3(piece.params, 0)));
+    const luck = Math.trunc(getPName(piece.params, 'luck', getP4(piece.params, 0)));
+    grantStacks(ctx.player, 'mana', mana, origin(piece));
+    grantStacks(ctx.player, 'lucky', luck, origin(piece));
     pushActivate(piece, ctx, 'level_up', `Skill: ${piece.name}`);
     return true;
   },
