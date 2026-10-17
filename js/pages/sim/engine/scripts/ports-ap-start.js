@@ -15,6 +15,7 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets, getItemsInside } from '../board-graph.js';
 import { getP1, getP2, getP3, getP5, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { PRIORITY } from '../combat-start-priority.js';
 import { addBonusDamage, addBonusDamageFactor } from '../piece-stats.js';
 import { itemHasType, itemTypeMultiplicity, pushActivate } from './ports-util.js';
@@ -290,7 +291,11 @@ const justStatsPort = {
   handlerId: 'just_stats',
   family: 'start_buff',
   onCombatStart(piece, ctx) {
-    const pct = getPName(piece.params, 'maxhealth', getP1(piece.params, 12)) / 100;
+    const pct = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'maxhealth', getP1(piece.params, 12)),
+      'maxhealth',
+    ) / 100;
     giveTempMaxHp(piece, ctx, 'just_stats', pct * ctx.player.maxHp);
     const stam = getPName(piece.params, 'stamina', getP2(piece.params, 10)) / 100;
     ctx.player.staminaRegen = (Number(ctx.player.staminaRegen) || 1) + stam;

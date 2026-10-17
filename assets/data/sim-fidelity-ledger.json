@@ -10567,9 +10567,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-joker-smoke.mjs",
+        "fixture": "Joker source descriptor-based pair/triplet/quad counting, exact random-buff/stamina/reveal parameters, player-only stamina reduction, descriptor-based reveal filtering, and activation ordering.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -10603,9 +10609,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-just-stats-smoke.mjs",
+        "fixture": "Just Stats source low-priority modified max-health gain, stamina regeneration, activation ordering, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

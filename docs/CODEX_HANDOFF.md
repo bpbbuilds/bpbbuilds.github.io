@@ -6435,3 +6435,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 268 - in progress
 
 - Codex owns the next retained Joker and Just Stats fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-joker-smoke.mjs`, `scripts/sim-just-stats-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 268 - complete
+
+- Codex repaired Joker to mirror source card-descriptor pair/triplet/quad counting, exact named/indexed random-buff/stamina/reveal parameters, player-inventory-only stamina reduction, descriptor-based exclusion of the Joker card, repeated reveal selection, and activation ordering. Just Stats now applies modified `maxhealth` parameters before the source temporary max-health gain, preserves low combat-start priority, applies exact stamina regeneration, and remains zero-safe.
+- Added `scripts/sim-joker-smoke.mjs` and `scripts/sim-just-stats-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 395 / 519 verified item rows. Focused pair tests, recent parity regressions, changed-module syntax, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 395 verified, 102 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Jynx Staff and Jynx Torquilla; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 269 - in progress
+
+- Codex owns the next retained Jynx Staff and Jynx Torquilla fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-jynx-staff-smoke.mjs`, `scripts/sim-jynx-torquilla-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

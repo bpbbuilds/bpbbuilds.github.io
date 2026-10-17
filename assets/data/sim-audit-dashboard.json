@@ -3,7 +3,7 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "0a28a6241618e49414d7df75c3227261da3aaa878b16ea4c70485b2bc00afd3e",
+    "itemLedgerSha256": "b88c43bf6014ae18a6deaaf33f7f54bb5dcf41fd498e93800bb66364e96a23d6",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
     "systemSurfaceSha256": "79e1178a7ae154e964452b8a7fada954ec8e043c0756f30c20fc35ec6dea6778",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 393,
+    "verified_1to1": 395,
     "confirmed_gap": 8,
-    "evidence_pending": 124,
+    "evidence_pending": 122,
     "no_independent_combat": 15
   },
   "items": [
@@ -11030,8 +11030,8 @@
       "name": "Joker",
       "category": "Card",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -11056,9 +11056,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-joker-smoke.mjs",
+        "fixture": "Joker source descriptor-based pair/triplet/quad counting, exact random-buff/stamina/reveal parameters, player-only stamina reduction, descriptor-based reveal filtering, and activation ordering.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
@@ -11068,8 +11074,8 @@
       "name": "Just Stats",
       "category": "Skill",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -11094,9 +11100,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-just-stats-smoke.mjs",
+        "fixture": "Just Stats source low-priority modified max-health gain, stamina regeneration, activation ordering, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },

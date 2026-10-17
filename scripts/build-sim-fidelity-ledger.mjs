@@ -1678,6 +1678,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  joker: {
+    focusedRegression: 'scripts/sim-joker-smoke.mjs',
+    fixture: 'Joker source descriptor-based pair/triplet/quad counting, exact random-buff/stamina/reveal parameters, player-only stamina reduction, descriptor-based reveal filtering, and activation ordering.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  just_stats: {
+    focusedRegression: 'scripts/sim-just-stats-smoke.mjs',
+    fixture: 'Just Stats source low-priority modified max-health gain, stamina regeneration, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

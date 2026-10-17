@@ -41,6 +41,14 @@ function secondaryOn(piece, ctx) {
   return cardSecondaryEffectActive(piece, chainCards(ctx, piece));
 }
 
+function cardDescriptor(card) {
+  const descriptor = card?.descriptor;
+  if (descriptor && typeof descriptor === 'object') {
+    return String(descriptor.id ?? descriptor.internalName ?? descriptor.name ?? card?.itemId ?? '');
+  }
+  return String(descriptor ?? card?.itemId ?? card?.id ?? '');
+}
+
 /** Game chainPosition is 0-based; -1 means not in a deck. Do not floor to 1. */
 function chainIndex(piece) {
   const pos = chainPos(piece);
@@ -195,7 +203,7 @@ function jokerChainCounts(piece, ctx) {
   const before = chainCards(ctx, piece).slice(0, Math.max(0, chainIndex(piece)));
   const counts = new Map();
   for (const card of before) {
-    const id = String(card?.itemId || '');
+    const id = cardDescriptor(card);
     if (id) counts.set(id, (counts.get(id) || 0) + 1);
   }
   let pairs = 0;
@@ -233,17 +241,22 @@ const jokerPort = {
   handlerId: 'joker',
   family: 'unique',
   onRevealEffect(piece, ctx) {
-    giveRandomBuffs(ctx.player, Math.max(1, Math.round(getPName(piece.params, 'buffs', 2))), ctx.rng, {});
+    giveRandomBuffs(ctx.player, getPName(piece.params, 'buffs', getP1(piece.params, 2)), ctx.rng, {});
     const { pairs, triplets, quads } = jokerChainCounts(piece, ctx);
     if (pairs > 0) changeCritResistStacks(ctx.player, pairs, ctx, piece);
     if (triplets > 0) {
-      const reduction = -getPName(piece.params, 'stamina', 0) * triplets / 100;
-      for (const other of ctx.pieces || []) multiplyStaminaCost(other, reduction);
+      const reduction = -getPName(piece.params, 'stamina', getP2(piece.params, 25)) * triplets / 100;
+      for (const other of ctx.pieces || []) {
+        if (piece.side != null && other.side !== piece.side) continue;
+        multiplyStaminaCost(other, reduction);
+      }
     }
+    const jokerDescriptor = cardDescriptor(piece);
     const eligible = chainCards(ctx, piece)
       .slice(0, Math.max(0, chainIndex(piece)))
-      .filter((card) => card?.itemId !== piece.itemId);
-    const reveals = Math.max(0, quads * Math.round(getPName(piece.params, 'cards', 1)));
+      .filter((card) => cardDescriptor(card) !== jokerDescriptor);
+    const revealsPerQuad = Math.trunc(getPName(piece.params, 'cards', getP3(piece.params, 2)));
+    const reveals = Math.max(0, quads * revealsPerQuad);
     for (let i = 0; i < reveals && eligible.length; i += 1) {
       const card = pickCard(eligible, ctx.rng);
       if (!card) break;
