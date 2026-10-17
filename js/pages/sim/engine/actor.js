@@ -354,10 +354,16 @@ export function tryUseStamina(actor, amount) {
       effectiveMaxStamina(actor),
       Math.max(0, Number(actor.stamina) || 0),
     );
+    if (actor._staminaItem) {
+      actor._lastStaminaAttempt = { piece: actor._staminaItem, result: 'starve' };
+    }
     return 'starve';
   }
   actor.stamina = Math.max(0, actor.stamina - cost);
   actor.stamina = Math.min(effectiveMaxStamina(actor), actor.stamina);
+  if (actor._staminaItem) {
+    actor._lastStaminaAttempt = { piece: actor._staminaItem, result: 'ok' };
+  }
   actor._combatBus?.emit?.('stamina_used', {
     amount: cost,
     actor,

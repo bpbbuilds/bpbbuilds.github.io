@@ -88,13 +88,24 @@ function activatePieceBody(piece, ctx) {
     return false;
   }
   if (script?.onCooldownEffect) {
+    const previousStaminaAttempt = player._lastStaminaAttempt;
+    player._lastStaminaAttempt = null;
     const previousDepth = Number(ctx._scriptCooldownDepth) || 0;
     ctx._scriptCooldownDepth = previousDepth + 1;
     let handled;
+    let staminaAttempt;
     try {
       handled = script.onCooldownEffect(piece, ctx);
     } finally {
+      staminaAttempt = player._lastStaminaAttempt;
+      player._lastStaminaAttempt = previousStaminaAttempt;
       ctx._scriptCooldownDepth = previousDepth;
+    }
+    if (staminaAttempt?.piece === piece && staminaAttempt.result === 'starve') {
+      // Weapon.gd stops after its single useStamina() check. Do not let a
+      // starved scripted cooldown fall through to the generic activation path
+      // and perform a second source-inaccurate stamina attempt.
+      return false;
     }
     if (handled) {
       if (!piece._activationLogged && script.handlerId) {

@@ -7232,3 +7232,68 @@ None.
 - Moved the simulator's shield `afterBlock` callback and bus notification ahead of `character_damaged` while preserving the existing lethal/reincarnation boundary and Spikes-after-damaged phase (`js/pages/sim/engine/damage.js:327-367`). Added an independent ordering regression covering beforeBlock, afterBlock, and character_damaged (`scripts/sim-character-damage-smoke.mjs:53-81`).
 - Fresh checks passed: character damage, Amulet of Darkness, Hedgehog, Rat, Character status, Character stacks, Stone Golem, effect-damage candidates, opponent-owned shields, parity systems, source/call audits, syntax, and scoped diff checks. The continuous audit remains the established 15/16 baseline because of documented source/patch drift; hook triage remains 0 untriaged gaps. No live-game capture was used; this is extracted-source comparison plus independent simulator regression. No legal, authentication, database, storage, or security behavior changed.
 - Next step: continue with a different documented event-order ticket, prioritizing the source `onDealtDamage` placement relative to Spikes when a focused reproduction can prove a user-visible difference; leave the known Forest Friend support-only candidate unchanged unless a derived behavior fails.
+
+### 2026-10-17 onDealtDamage phase audit - in progress
+- Codex owns the source-backed weapon `onDealtDamage` phase review and focused regression. Planned product paths are `js/pages/sim/engine/damage.js`, `js/pages/sim/engine/scripts/handlers.js`, `js/pages/sim/engine/combat-activate.js`, `scripts/sim-character-damage-smoke.mjs`, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 effect-damage / Unhealing audit - in progress
+- Codex also owns the source-backed effect-damage multiplier and Unhealing review. Planned product paths are `js/pages/sim/engine/actor.js`, `js/pages/sim/engine/actor-stats.js`, `js/pages/sim/engine/unhealing.js`, `scripts/sim-heal-parity-smoke.mjs`, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 onDealtDamage phase audit - complete
+- Source comparison confirmed `Character.gd` emits `character_damaged`, then runs attack-item `onDealtDamage` once per attack-effect count, then resolves death and Spikes (`tools/game-extract-full/Core/Character.gd:629-651`). The simulator had notified handlers after `takeDamage` returned, after death/Spikes and after `dealDamage` vampirism.
+- Moved the callback into `takeDamage` for hit and miss paths, before death and Spikes, passed `CanTriggerItems` through both attack callers, and removed the old post-damage duplicate loops (`js/pages/sim/engine/damage.js`, `js/pages/sim/engine/scripts/handlers.js`, `js/pages/sim/engine/combat-activate.js`). Added lethal, miss, Spikes-order, and suppressed-callback regressions (`scripts/sim-character-damage-smoke.mjs`).
+- Focused character-damage, effect-damage-candidate, shield-side, and parity-system smokes passed. Pushed as `f9348a6` (`Align onDealtDamage lifecycle ordering`).
+
+### 2026-10-17 effect-damage / Unhealing audit - complete
+- Source comparison confirmed `Character.changeEffectDamageFactor()` increments both Effect and Unhealing typed damage factors, and `Character.heal()` converts Unhealing with `ceil(amount * getUnhealing() * (1 + typedFactor))` (`tools/game-extract-full/Core/Character.gd:1509-1512`, `:769-772`). The simulator updated only `effectDmgFactor`.
+- Added a separate `unhealingDmgFactor`, updated it from the shared effect-damage stat helper, and applied it to the Unhealing conversion without changing the base Unhealing rate (`js/pages/sim/engine/actor.js`, `js/pages/sim/engine/actor-stats.js`). Added `scripts/sim-heal-parity-smoke.mjs` covering positive, restored, and negative factors.
+- Effect-damage candidates, parity systems, character damage, and character stacks smokes passed. Pushed as `7ae7ce2` (`Align effect damage with Unhealing scaling`).
+
+### 2026-10-17 effect damage / Spikes flag audit - complete
+- Source `DamageSource.effectFlags` excludes `CanTriggerSpikes` (`tools/game-extract-full/Utility/DamageSource.gd:35`), while the shared simulator condition could reflect effect damage unless every caller supplied `skipSpikes`.
+- Hardened the shared damage pipeline so ordinary effect damage does not trigger Spikes unless an explicit `canTriggerSpikes` override is supplied, and added a direct effect-vs-Spikes regression (`js/pages/sim/engine/damage.js`, `scripts/sim-character-damage-smoke.mjs`).
+- Character-damage, effect-damage-candidate, parity-system, syntax, and scoped diff checks passed. Pushed as `fcd609e` (`Prevent effect damage from reflecting Spikes`). No legal, authentication, database, storage, or security behavior changed.
+- Next step: continue source-backed review of remaining status/activation mechanics; these three repairs are complete and no live-game capture was used.
+
+### 2026-10-17 Debuff-reflection routing audit - in progress
+- Codex owns the source-backed debuff reflection routing/order review and focused regression. Planned product paths are `js/pages/sim/engine/stacks.js`, `js/pages/sim/engine/simulate.js`, `scripts/sim-character-stacks-smoke.mjs`, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Critical-roll parity audit - in progress
+- Codex also owns the extracted `DamageSource`/`Character.takeDamage` critical-roll review and poison-tick regression. Planned product paths are `js/pages/sim/engine/actor.js`, `js/pages/sim/engine/damage.js`, `js/pages/sim/engine/ticks.js`, `scripts/sim-crit-parity-smoke.mjs`, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Debuff-reflection routing audit - complete
+- Source comparison confirmed `Character.gd` always carries an `opponent` reference and `Buff.gd` performs resistance, reflection, local stack mutation/event emission, then transfers the combined reflected amount to the opponent (`tools/game-extract-full/Core/Character.gd:54`, `:176-177`; `tools/game-extract-full/Core/Buff.gd:81-194`). The simulator required many ports to pass `opponent` explicitly and transferred reflection before the local change event.
+- Added actor opponent links in the simulator, made the shared stack helper fall back to that source reference, and delayed/combined reflected transfers until after local resistance and stack-change notification (`js/pages/sim/engine/simulate.js`, `js/pages/sim/engine/stacks.js`). Added regressions for implicit routing, reflection after percentage resistance, and local-before-opponent event order (`scripts/sim-character-stacks-smoke.mjs`).
+- Focused stack/status, cleanse, Stone Golem, effect-damage, parity-system, vs-board, log, Pan-through-Pot, source-hook, syntax, and diff checks passed. Pushed as `1eb78ec` (`Align reflection and critical resistance mechanics`).
+
+### 2026-10-17 Critical-roll parity audit - complete
+- Source comparison confirmed poison uses `DamageSource.chipDamageFlags + CanCrit`, natural crits use the defender's balanced `critRng`, and `critResisted()` rolls percentage resistance before consuming a guaranteed resist stack (`tools/game-extract-full/Utility/DamageSource.gd:35`, `:69`; `tools/game-extract-full/Core/Character.gd:542-559`, `:1390-1397`). The simulator had subtracted crit resistance from crit chance, consumed guaranteed stacks first, and implemented poison crits with a separate raw-RNG branch.
+- Added per-actor accuracy/crit/crit-resistance balanced RNG streams, aligned the shared damage pipeline and poison ticks with the source ordering, and added `scripts/sim-crit-parity-smoke.mjs` for percentage resistance, guaranteed-stack fallback, and poison crit behavior (`js/pages/sim/engine/actor.js`, `damage.js`, `ticks.js`).
+- Fresh critical, character damage, character stacks, Pandamonium, vs-board, log, Pan-through-Pot, parity-system, source-hook, syntax, and diff checks passed. The continuous audit remains the documented 15/16 baseline solely because the repository's pre-existing source/patch-drift check is open; hook triage remains 0 untriaged gaps. No live-game capture was used. No legal, authentication, database, storage, or security behavior changed.
+- Next step: continue source-backed review of timed resistance/temporary-effect expiration and other remaining state-machine boundaries.
+
+### 2026-10-17 Timed-effect expiration audit - in progress
+- Codex owns the source-backed review of timed damage/debuff resistance and temporary-stack expiration ordering. Planned product paths are `js/pages/sim/engine/timed-resistance.js`, `js/pages/sim/engine/temp-stacks.js`, `js/pages/sim/engine/buff-economy.js`, `js/pages/sim/engine/simulate.js`, focused timed-effect regression scripts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Timed-effect expiration audit - complete
+- Source review confirmed `Character.changeDamageResistance()` is an un-clamped additive mutation, while Poison Ivy can create negative resistance through `changeDamageResistance(-getP2())` (`tools/game-extract-full/Core/Character.gd:1369-1377`; `tools/game-extract-full/Items/PoisonIvy.gd:28-33`). The simulator incorrectly clamped timed-resistance expiry to zero, losing an underlying negative resistance when a temporary positive effect overlapped it.
+- Removed that expiry clamp in `js/pages/sim/engine/timed-resistance.js`; expiry now subtracts only the timed amount and preserves the underlying signed stat. Added `scripts/sim-timed-effect-boundaries-smoke.mjs`, which also verifies the extracted `Buff.gd` permanent/temporary ownership and exact timeout signal path against runtime behavior.
+- Focused timed-boundary, Automanaton, stamina, stack/reflection, parity-system, syntax, source-hook, diff, and continuous-audit checks ran. The continuous audit remains 15/16 with its established source/patch-drift baseline; hook triage reports 0 untriaged gaps. No live-game capture was used; this is extracted-source comparison plus independent regressions. No legal, authentication, database, storage, or security behavior changed.
+- Product repair was pushed as `4d09a18` (`Preserve signed resistance on timed expiry`); continue with another source-backed state-machine boundary afterward.
+
+### 2026-10-17 Stun/cooldown freeze audit - in progress
+- Codex owns the source-backed audit of Item cooldown progress while the owner is stunned and its focused regression. Planned product paths are `js/pages/sim/engine/simulate.js`, `scripts/sim-stun-cooldown-smoke.mjs`, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Starvation-order audit - in progress
+- Codex owns the source-backed audit of scripted cooldown starvation and its focused regression. Planned product paths are `js/pages/sim/engine/combat-activate.js`, `js/pages/sim/engine/actor.js`, `scripts/sim-starvation-order-smoke.mjs`, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Stun/cooldown freeze audit - complete
+- Source comparison confirmed `Item.gd` only decrements `triggerTime` inside the non-stunned branch (`tools/game-extract-full/Items/Item.gd:4437-4439`); a due item waits with its existing trigger time instead of receiving a new iteration cooldown.
+- Fixed `js/pages/sim/engine/simulate.js:740-750,783-786` to freeze cooldown progress for the stunned slice of each physics step and to skip a stunned item without re-arming it. Added `scripts/sim-stun-cooldown-smoke.mjs` with a two-sided Hammer/ Wooden Sword regression; the sword now resumes at `7.4817s` after a `6.4008s` one-second stun instead of the pre-fix `8.6246s` fresh-cooldown delay.
+- Focused stun/cooldown, Wave C, Character status, Thor's Hammer, timed-effect, parity-system, AP milestone, syntax, and source-hook checks passed. No live-game capture was used; this is extracted-source comparison plus an independent engine regression. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Starvation-order audit - complete
+- Source comparison confirmed `Weapon.gd` calls `useStamina()` once and only calls `attack()` on `Sufficient` (`tools/game-extract-full/Items/Weapon.gd:11-13`). The simulator allowed a starved scripted cooldown to fall through into a second generic stamina attempt.
+- Added a scoped stamina-attempt marker in `js/pages/sim/engine/actor.js:358-365` and consumed it in `js/pages/sim/engine/combat-activate.js:91-108`, so a starved script returns without a duplicate pre-use hook or duplicate out-of-stamina result. Added `scripts/sim-starvation-order-smoke.mjs` covering both observations.
+- Focused starvation, Character stamina, Molten Greatsword, Wave C, Thor's Hammer, parity-system, timed-effect, AP milestone, syntax, and source-hook checks passed. The adjacent opponent-stamina hypothesis was rejected after tracing `ctxForPiece()`; opponent activations already use their owner actor, so no change was made there.
+- Product changes are ready to commit/push with the two focused regressions. Next step: continue the source-backed audit on another high-risk state-machine boundary.

@@ -729,10 +729,20 @@ export function simulateEngine(opts) {
       for (const piece of ready) {
         const stacks = ownerStacks(piece, world);
         const cdOpts = { opponent: piece.side === 'them' };
+        const owner = piece.side === 'them' ? dummy : player;
         // Item._physics_process: triggerTime -= delta * getSpeed()
         const spd = pieceSpeed(piece, stacks);
         const trigBefore = piece.triggerTime;
-        piece.triggerTime -= step * spd;
+        // Item.gd freezes triggerTime for the portion of a physics step where
+        // its owner is stunned.  The stun can expire between DT boundaries,
+        // so preserve only the active (non-stunned) slice instead of dropping
+        // the whole step or consuming time that the game would freeze.
+        const stunUntil = Number(owner.stunnedUntil);
+        const stepStart = t - step;
+        const frozenStep = Number.isFinite(stunUntil)
+          ? Math.max(0, Math.min(step, stunUntil - stepStart))
+          : 0;
+        piece.triggerTime -= (step - frozenStep) * spd;
         stepEntries.push({
           piece,
           spd,
@@ -770,7 +780,9 @@ export function simulateEngine(opts) {
           }
           const owner = piece.side === 'them' ? dummy : player;
           if (isStunned(owner, t)) {
-            piece.triggerTime += rollIterationCooldown(piece, rng, cdOpts);
+            // A stunned Item waits with its current triggerTime.  Item.gd
+            // does not call trigger() or re-arm a fresh iteration cooldown
+            // until the owner is active again.
             continue;
           }
           const fireT = fireTFor(entry);
