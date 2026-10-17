@@ -1818,6 +1818,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  light_goobert: {
+    focusedRegression: 'scripts/sim-light-goobert-smoke.mjs',
+    fixture: 'Light Goobert source prepare reset, inherited activation threshold, modified heal, exact Blind amount/duration, activation, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  lightning_potion: {
+    focusedRegression: 'scripts/sim-lightning-potion-smoke.mjs',
+    fixture: 'Lightning Potion source cooldown range, descriptor damage, Blind p1/duration, Holy-secondary heal, primary potion chaining, consumption, activation, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

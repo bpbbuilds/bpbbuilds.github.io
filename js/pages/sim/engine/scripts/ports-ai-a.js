@@ -11,6 +11,7 @@ import { affectedTargets } from '../board-graph.js';
 import { healActor } from '../actor.js';
 import { dealEffectDamage } from './handlers.js';
 import { getP1, getP2, getP3, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { addSpeed } from '../piece-stats.js';
 import {
   itemHasType,
@@ -183,12 +184,23 @@ export const lightningPotionPort = {
   handlerId: 'lightning_potion',
   family: 'custom_cd',
   onPrepare(piece, ctx) {
+    const item = ctx.itemsById?.get(piece.itemId);
+    const start = Number(item?.cooldown ?? piece.baseCooldown ?? piece.cooldown) || 0;
+    const extra = Array.isArray(item?.extraCooldowns) ? Number(item.extraCooldowns[0]) : NaN;
+    const end = Number.isFinite(extra) ? extra : start;
+    const u = typeof ctx.rng === 'function' ? Math.max(0, Math.min(1, Number(ctx.rng()) || 0)) : 0;
+    const sampled = start + (end - start) * u;
+    piece.baseCooldown = sampled;
+    piece.cooldown = sampled;
+    piece.triggerTime = sampled;
     piece._potionTrigger = ({ t = ctx.t } = {}) => applyLightningPotionEffect(piece, { ...ctx, t });
   },
   onCooldownEffect(piece, ctx) {
     const { t } = ctx;
     pushActivate(piece, ctx, 'lightning_potion', `Potion: ${piece.name}`);
     applyLightningPotionEffect(piece, ctx);
+    triggerFirstAffectedPotion(piece, ctx, t);
+    ctx.bus?.emit?.('potion_emptied', { piece, t });
     afterEffectFinished(piece, ctx, 'lightning_potion', { activate: false });
     return true;
   },
@@ -196,14 +208,15 @@ export const lightningPotionPort = {
 
 function applyLightningPotionEffect(piece, ctx) {
     const { t, player, dummy, events, rng, graph, itemsById, canAffect } = ctx;
-    const dam = Math.max(
-      1,
-      Math.round(piece.damageMin || getPName(piece.params, 'dam', getP1(piece.params, 5))),
-    );
+    const dam = Number(piece.damageMin ?? getPName(piece.params, 'dam', getP1(piece.params, 0))) || 0;
     dealEffectDamage(piece, ctx, dam);
 
-    const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', getP2(piece.params, 2))));
-    const dur = Math.max(0.5, getPName(piece.params, 'dur_blind', getP3(piece.params, 3)));
+    const blind = Math.trunc(getPName(piece.params, 'blind', getP1(piece.params, 0)));
+    const dur = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur_blind', getP2(piece.params, 0)),
+      'dur_blind',
+    );
     grantTemporaryStacks(dummy, 'blind', blind, dur, t, {
       rng,
       opponent: player,
@@ -232,7 +245,11 @@ function applyLightningPotionEffect(piece, ctx) {
       if (link.color !== 'secondary') continue;
       if (itemHasType(itemsById.get(link.id), 'holy')) holy += 1;
     }
-    const healPer = Math.max(0, Math.round(getPName(piece.params, 'heal', 4)));
+    const healPer = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'heal', getP3(piece.params, 0)),
+      'heal',
+    );
     if (holy > 0 && healPer > 0) {
       const healed = healActor(player, healPer * holy);
       if (healed > 0) {

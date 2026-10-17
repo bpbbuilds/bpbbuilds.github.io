@@ -158,7 +158,7 @@ export const cupcakeGoobertPort = {
 export const lightGoobertPort = {
   handlerId: 'light_goobert',
   family: 'pet_like',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._goobertActs = 0;
   },
   onCooldownEffect() {
@@ -166,10 +166,18 @@ export const lightGoobertPort = {
   },
   onPeerActivated(listener, _activated, ctx) {
     goobertPeerTick(listener, ctx, () => {
-      const heal = Math.max(1, Math.round(getPName(listener.params, 'heal', getP2(listener.params, 8))));
+      const heal = modifiedParamValue(
+        listener,
+        getPName(listener.params, 'heal', getP2(listener.params, 0)),
+        'heal',
+      );
       goobertHeal(listener, ctx, 'light_goobert', heal);
-      const blind = Math.max(1, Math.round(getP3(listener.params, 1)));
-      const dur = Math.max(0.5, getPName(listener.params, 'dur_blind', 3));
+      const blind = Math.trunc(getPName(listener.params, 'blind', getP1(listener.params, 0)));
+      const dur = modifiedParamValue(
+        listener,
+        getPName(listener.params, 'dur_blind', getP2(listener.params, 0)),
+        'dur_blind',
+      );
       grantTemporaryStacks(ctx.dummy, 'blind', blind, dur, ctx.t, {
         originKey: listener.placementKey,
         originId: listener.itemId,
