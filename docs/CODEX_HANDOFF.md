@@ -6993,3 +6993,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 330 - in progress
 
 - Codex owns the next partial shared surface, `combat-log`, for source-backed event creation/logging, snapshot projection, and presentation-order review. Planned paths are limited to simulator log/export/meter modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 330 - complete
+
+- Codex completed the CombatLog parity pass: raw engine events now receive unique source-like identities and monotonic event numbers at creation, the simulator retains character and item snapshot samples through the capped fight end, and the short-duration-before-combat-delay edge case now keeps its final snapshot instead of trimming it away.
+- Added `scripts/sim-combat-log-smoke.mjs`, marked `combat-log` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and reran the CombatLog/CombatEvent contract, stack, lifecycle, parity, syntax, and freshness checks. Shared mechanic totals are now 6 implemented and 15 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 331 - in progress
+
+- Codex owns the next partial shared surface, `combat-snapshot`, for source-backed snapshot initialization, application, and scrub/replay state review. Planned paths are limited to simulator snapshots/HUD/scrubber modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

@@ -307,8 +307,16 @@ export function simulateEngine(opts) {
   };
 
   // Snapshot on every buff/debuff emit so HUD can step per grant (not once per DT)
+  let combatEventSeq = 0;
   const rawPush = events.push.bind(events);
   events.push = (...args) => {
+    for (const ev of args) {
+      if (!ev || typeof ev !== 'object') continue;
+      combatEventSeq += 1;
+      ev.meta = { ...(ev.meta || {}) };
+      if (ev.meta.eventId == null) ev.meta.eventId = `combat-${combatEventSeq}`;
+      if (ev.meta.combatEventNum == null) ev.meta.combatEventNum = combatEventSeq;
+    }
     const n = rawPush(...args);
     for (const ev of args) {
       if (ev?.type === 'heal') {
@@ -929,7 +937,7 @@ export function simulateEngine(opts) {
   }
 
   const endT = Math.min(durationSec, t);
-  pushSnap();
+  pushSnap(endT);
 
   // Charge paths pre-queue cell log lines at future t; drop any that never fired.
   const trimAfter = endT + 1e-6;
