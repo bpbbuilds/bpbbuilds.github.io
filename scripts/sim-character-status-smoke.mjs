@@ -52,6 +52,12 @@ grantStun(zeroStun, 0, 2, { rng: () => 0.5 });
 assert.equal(zeroStunEvents.filter((event) => event.type === 'actor_stunned').length, 1, 'zero stun still emits the source stun event');
 assert.equal(isStunned(zeroStun, 2), false, 'zero stun does not leave the target stunned');
 
+const activeZeroStun = createActor('dummy');
+activeZeroStun.stunnedUntil = 6;
+grantStun(activeZeroStun, 0, 2, { rng: () => 0.5 });
+assert.equal(activeZeroStun.stunnedUntil, 6, 'zero stun does not extend an active stun');
+assert.equal(isStunned(activeZeroStun, 5.99), true, 'zero stun preserves the active source stun');
+
 const resisted = createActor('dummy');
 resisted.stunResistance = 100;
 const resistedEvents = [];

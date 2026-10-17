@@ -286,8 +286,14 @@ export function grantStun(actor, durationSec, nowT, opts = {}) {
       return;
     }
   }
-  const until = (Number(nowT) || 0) + dur;
-  actor.stunnedUntil = Math.max(Number(actor.stunnedUntil) || 0, until);
+  // Character.gd always emits the stun event, but `stunnedDuration = max(
+  // stunnedDuration, duration)` makes an explicit zero-duration stun a no-op
+  // for the active status. Do not turn a zero at combat time `t` into a stun
+  // lasting until `t`, and do not extend an already-active stun with it.
+  if (dur > 0) {
+    const until = (Number(nowT) || 0) + dur;
+    actor.stunnedUntil = Math.max(Number(actor.stunnedUntil) || 0, until);
+  }
   actor._combatBus?.emit?.('actor_stunned', { actor, t: nowT, duration: dur });
   pushStunLabel(actor, nowT, dur, opts, 'stunned');
 }
