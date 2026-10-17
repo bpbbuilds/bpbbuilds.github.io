@@ -163,6 +163,10 @@ export function gainStacks(actor, stack, amount, opts = {}) {
   }
 
   const rng = opts.rng ?? actor._combatRng;
+  // Character.gd always has an opponent reference. Most simulator item ports
+  // call the shared stack helper through an actor rather than passing that
+  // reference on every grant, so preserve the source lookup here.
+  const opponent = opts.opponent ?? actor.opponent ?? null;
   // Buff.gd: totalResistChance = resist − item.getAmplificationChancePercent(type)
   let totalResist = Number(actor.stackResist?.[stack]) || 0;
   if (!opts.reflect) {
@@ -182,46 +186,22 @@ export function gainStacks(actor, stack, amount, opts = {}) {
     left += bonus;
   }
 
-  if (DEBUFFS.has(stack) && !opts.reflect && left > 0) {
+  if (DEBUFFS.has(stack) && !opts.reflect) {
     const reflectPct =
       Number(actor.stackReflectChance?.[stack] ?? actor.debuffReflectChance) || 0;
-    if (reflectPct > 0 && typeof rng === 'function' && opts.opponent) {
+    if (reflectPct > 0 && typeof rng === 'function' && opponent) {
       for (let i = 0; i < left + resisted; i++) {
         if (rollPercent(reflectPct, rng)) reflected += 1;
       }
-      left -= reflected;
-      if (reflected > 0) {
-        const reflectOpts = {
-          rng,
-          reflect: true,
-          originKey: opts.originKey ?? null,
-          originId: opts.originId ?? null,
-        };
-        if (typeof opts.onReflect === 'function') {
-          opts.onReflect(opts.opponent, stack, reflected, reflectOpts);
-        } else {
-          gainStacks(opts.opponent, stack, reflected, reflectOpts);
-        }
-      }
+      left = Math.max(0, left - reflected);
     }
-    const byStacks = Math.min(left, Math.max(0, actor.debuffReflectStacks || 0));
+    const byStacks = left > 0
+      ? Math.min(left, Math.max(0, actor.debuffReflectStacks || 0))
+      : 0;
     if (byStacks > 0) {
       actor.debuffReflectStacks -= byStacks;
       reflected += byStacks;
       left -= byStacks;
-      if (opts.opponent) {
-        const reflectOpts = {
-          rng,
-          reflect: true,
-          originKey: opts.originKey ?? null,
-          originId: opts.originId ?? null,
-        };
-        if (typeof opts.onReflect === 'function') {
-          opts.onReflect(opts.opponent, stack, byStacks, reflectOpts);
-        } else {
-          gainStacks(opts.opponent, stack, byStacks, reflectOpts);
-        }
-      }
     }
   }
 
@@ -257,6 +237,22 @@ export function gainStacks(actor, stack, amount, opts = {}) {
       originKey: opts.originKey ?? opts.piece?.placementKey ?? opts.origin?.placementKey ?? null,
       originId: opts.originId ?? opts.piece?.itemId ?? opts.origin?.itemId ?? null,
     });
+  }
+  // Buff.gd forwards the complete reflected amount only after the source
+  // Buff has finished resistance, local stack mutation, and its change event.
+  // Delaying this transfer also preserves reactive listener ordering.
+  if (reflected > 0 && opponent) {
+    const reflectOpts = {
+      rng,
+      reflect: true,
+      originKey: opts.originKey ?? null,
+      originId: opts.originId ?? null,
+    };
+    if (typeof opts.onReflect === 'function') {
+      opts.onReflect(opponent, stack, reflected, reflectOpts);
+    } else {
+      gainStacks(opponent, stack, reflected, reflectOpts);
+    }
   }
   return { gained, resisted, reflected };
 }

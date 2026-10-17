@@ -134,7 +134,9 @@ export function takeDamage(defender, attacker, src) {
   if (canMiss) {
     let accuracy = Number(src.accuracy);
     if (!Number.isFinite(accuracy)) accuracy = 90;
-    res.hit = rollPercent(accuracy, src.rng);
+    res.hit = defender.accuracyRng?.rollPercent
+      ? defender.accuracyRng.rollPercent(accuracy, src.rng)
+      : rollPercent(accuracy, src.rng);
     if (res.hit && (defender.dodgeStacks || 0) > 0) {
       defender.dodgeStacks -= 1;
       res.hit = false;
@@ -171,14 +173,15 @@ export function takeDamage(defender, attacker, src) {
   let dmg = Math.max(0, Number(res.damage) || 0);
 
   let critChance = Number(src.critChance) || 0;
-  const critRes = Number(defender.critResistance) || 0;
-  if (critRes > 0) critChance = Math.max(0, critChance - critRes);
   if (src.canCrit) {
     // Character.gd checks a natural crit first, then consumes one crit token
     // granted to the attacking character (Ace of Spades, Draconic Orb, ...).
     // Tokens are guaranteed crits and must not be converted into a chance
     // increase on every weapon.
-    if (critChance > 0 && rollPercent(critChance, src.rng)) {
+    const critRolled = defender.critRng?.rollPercent
+      ? defender.critRng.rollPercent(critChance, src.rng)
+      : rollPercent(critChance, src.rng);
+    if (critChance > 0 && critRolled) {
       res.critical = true;
       res.criticalSource = 'chance';
     } else if ((Number(attacker.critStacks) || 0) > 0) {
@@ -187,11 +190,16 @@ export function takeDamage(defender, attacker, src) {
       res.criticalSource = 'token';
     }
     if (res.critical) {
-      // Character.critResisted consumes a guaranteed resist stack only after
-      // an actual critical roll/token succeeds. This is separate from flat
-      // critical resistance and is used by Joker's pair branch.
-      if ((Number(defender.critResistStacks) || 0) > 0) {
-        changeCritResistStacks(defender, -1, { t: src.nowT ?? 0, events: src.events });
+      // Character.critResisted first rolls the defender's balanced percentage
+      // resistance, then consumes one guaranteed resist stack only when that
+      // percentage roll fails.
+      const resistedByChance = defender.critResistanceRng?.rollPercent
+        ? defender.critResistanceRng.rollPercent(Number(defender.critResistance) || 0, src.rng)
+        : rollPercent(Number(defender.critResistance) || 0, src.rng);
+      if (resistedByChance || (Number(defender.critResistStacks) || 0) > 0) {
+        if (!resistedByChance) {
+          changeCritResistStacks(defender, -1, { t: src.nowT ?? 0, events: src.events });
+        }
         res.critical = false;
         delete res.criticalSource;
       } else {

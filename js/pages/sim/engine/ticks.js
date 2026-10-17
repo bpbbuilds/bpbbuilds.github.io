@@ -46,20 +46,11 @@ export function runCharacterTick(actor, t, tickCounter, events, rng) {
     if (poison > 0) {
       // Character.onTick routes poison through the chip-damage source, which
       // explicitly allows Block and can crit.
-      let critical = false;
-      let critChance = Math.max(0, Math.min(100, Number(actor.poisonCritChance) || 0));
-      critChance = Math.max(0, critChance - (Number(actor.critResistance) || 0));
-      if (critChance > 0 && typeof rng === 'function' && rng() * 100 < critChance) {
-        if ((Number(actor.critResistStacks) || 0) > 0) {
-          actor.critResistStacks -= 1;
-        } else {
-          critical = true;
-        }
-      }
       const res = takeDamage(actor, actor, {
-        amount: critical ? Math.round(poison * 2) : poison,
+        amount: poison,
         canMiss: false,
-        canCrit: false,
+        canCrit: true,
+        critChance: Number(actor.poisonCritChance) || 0,
         canBlock: true,
         isAttack: false,
         isPoison: true,
@@ -74,11 +65,11 @@ export function runCharacterTick(actor, t, tickCounter, events, rng) {
         target: actor.id,
         amount: res.healthDamage,
         label: `Poison: ${res.healthDamage} damage`,
-        meta: {
-          stack: 'poison',
-          category: 'dot',
-          systemOrigin: 'Poison',
-          critical,
+          meta: {
+            stack: 'poison',
+            category: 'dot',
+            systemOrigin: 'Poison',
+            critical: res.critical,
           blocked: res.blocked,
           raw: res.raw,
           playerHp: actor.id === 'player' ? actor.hp : undefined,

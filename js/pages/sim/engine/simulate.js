@@ -178,6 +178,11 @@ export function simulateEngine(opts) {
   if (dummyBlock > 0) dummyOpts.block = dummyBlock;
   const dummy = createActor('dummy', dummyOpts);
   dummy._combatRng = rng;
+  // Character.gd resolves reflected debuffs through each character's
+  // opponent reference. Keep that relationship available to every item port,
+  // including ports that do not need to pass an explicit opponent argument.
+  player.opponent = dummy;
+  dummy.opponent = player;
   const youGraph = buildBoardGraph(opts.placements, opts.itemsById);
   const themGraph = vsBoard
     ? buildBoardGraph(themPl, opts.itemsById)

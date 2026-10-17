@@ -92,14 +92,50 @@ assert.match(
 {
   const target = createActor('dummy');
   const opponent = createActor('player');
+  target.opponent = opponent;
   target.debuffReflectStacks = 1;
   target.debuffResistStacks = 1;
-  const result = gainStacks(target, 'poison', 1, { rng: () => 0, opponent });
+  const result = gainStacks(target, 'poison', 1, { rng: () => 0 });
   assert.equal(result.reflected, 1, 'one incoming debuff is reflected before resist stacks');
   assert.equal(target.stacks.poison, 0, 'reflected debuff does not remain on target');
   assert.equal(opponent.stacks.poison, 1, 'reflected debuff lands on the opponent');
   assert.equal(target.debuffReflectStacks, 0, 'reflect stack is consumed');
   assert.equal(target.debuffResistStacks, 1, 'debuff resist stack remains after the reflection');
+}
+
+// Buff.gd evaluates percentage resistance before percentage reflection, but
+// still reflects the original attempted stack even when resistance consumed
+// the local copy. This is unusual enough to keep as an explicit contract.
+{
+  const target = createActor('dummy');
+  const opponent = createActor('player');
+  target.opponent = opponent;
+  target.stackResist.poison = 100;
+  target.debuffReflectChance = 100;
+  const result = gainStacks(target, 'poison', 1, { rng: () => 0 });
+  assert.equal(result.reflected, 1, 'reflection still runs after percentage resistance');
+  assert.equal(target.stacks.poison, 0, 'resistance prevents the local debuff');
+  assert.equal(opponent.stacks.poison, 1, 'the resisted debuff is reflected to the opponent');
+}
+
+// Source Buff.gd sends the combined reflection after the local stack-change
+// event. The order matters for reactive items listening to either actor.
+{
+  const target = createActor('dummy');
+  const opponent = createActor('player');
+  target.opponent = opponent;
+  target.debuffReflectChance = 50;
+  const order = [];
+  target._combatBus = { emit: (name) => order.push(`target:${name}`) };
+  opponent._combatBus = { emit: (name) => order.push(`opponent:${name}`) };
+  const rolls = [0, 0.99];
+  const result = gainStacks(target, 'poison', 2, { rng: () => rolls.shift() ?? 0.99 });
+  assert.equal(result.gained, 1, 'the non-reflected stack remains on the source target');
+  assert.equal(result.reflected, 1, 'one stack is reflected');
+  assert.deepEqual(order, [
+    'target:character_poison_changed',
+    'opponent:character_poison_changed',
+  ], 'reflection transfer follows the source local change event');
 }
 
 // Temporary reflections retain the source duration and can still be resisted
