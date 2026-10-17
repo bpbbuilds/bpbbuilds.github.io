@@ -1,12 +1,17 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 
 import { createActor } from '../js/pages/sim/engine/actor.js';
 import { grantStacks } from '../js/pages/sim/engine/buff-economy.js';
 import { getScriptHandler } from '../js/pages/sim/engine/scripts/registry.js';
 
+const source = fs.readFileSync('tools/game-extract-full/Items/Exclusive/AmuletofSteel.gd', 'utf8');
+const port = fs.readFileSync('js/pages/sim/engine/scripts/ports-wave-b.js', 'utf8');
 const handler = getScriptHandler('amulet_of_steel');
 assert.equal(typeof handler?.onPrepare, 'function', 'Amulet of Steel binds block listeners during source preparation');
 assert.equal(typeof handler?.onCombatStart, 'function', 'Amulet of Steel performs its source combat-start block grant');
+assert.match(source, /func onItemGaveBlock\(amount, event\):[\s\S]*blockAcc \+= amount[\s\S]*var empower = blockAcc \/ blockForEmpower[\s\S]*giveEmpower\(empower \* empowerForBlock, event\)/);
+assert.match(port, /handlerId: 'amulet_of_steel'[\s\S]*piece\._steelState\.gained \+= ch\.amount[\s\S]*const emp = \(piece\._steelState\.gained \/ need\) \* empPer/);
 
 for (const side of ['you', 'them']) {
   const player = createActor(side === 'you' ? 'player' : 'dummy');
@@ -28,8 +33,11 @@ for (const side of ['you', 'them']) {
   assert.equal(player.stacks.empower, 2, `linked block threshold grants source Empower on ${side}`);
   grantStacks(player, 'block', 20, { originKey: unrelated.placementKey, originId: unrelated.itemId });
   assert.equal(player.stacks.empower, 2, `unlinked block does not feed source threshold on ${side}`);
+  grantStacks(player, 'block', 15, { originKey: blocker.placementKey, originId: blocker.itemId });
+  assert.equal(player.stacks.empower, 5, `fractional linked Block ratio grants rounded source Empower on ${side}`);
+  const blockBeforeCombatStart = player.block;
   handler.onCombatStart(steel, ctx);
-  assert.equal(player.block, 38, `combat-start source Block grant is retained on ${side}`);
+  assert.equal(player.block, blockBeforeCombatStart + 8, `combat-start source Block grant is retained on ${side}`);
   assert.ok(ctx.events.some((event) => event.type === 'buff' && event.meta?.stack === 'empower'), `Empower is projected on ${side}`);
   assert.ok(ctx.events.some((event) => event.type === 'buff' && event.meta?.stack === 'block'), `Block is projected on ${side}`);
 }

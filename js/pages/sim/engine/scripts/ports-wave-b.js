@@ -555,19 +555,24 @@ export const amuletOfSteelPort = {
     const onBlockGiven = (ch = {}) => {
       if (ch.stack !== 'block' || !(ch.amount > 0)) return;
       if (!ch.originKey || !blockers.has(ch.originKey)) return;
-      const ticks = advanceBuffThresholds(piece._steelState, ch.amount, need, need);
-      if (ticks.gainTicks > 0) {
-        const emp = ticks.gainTicks * empPer;
-        grantStacks(player, 'empower', emp, {
+      // AmuletofSteel.gd converts the full Block accumulator ratio into
+      // Empower before retaining the remainder. The stack grant performs the
+      // source rounding, so whole threshold ticks must not be required here.
+      piece._steelState.gained += ch.amount;
+      const emp = (piece._steelState.gained / need) * empPer;
+      piece._steelState.gained %= need;
+      if (emp > 0) {
+        const result = grantStacks(player, 'empower', emp, {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
+        const gained = Number(result?.gained) || 0;
         ctx.events.push({
           t: ctx.t,
           type: 'buff',
           target: 'player',
-          amount: emp,
-          label: `${piece.name}: +${emp} Empower`,
+          amount: gained,
+          label: `${piece.name}: +${gained} Empower`,
           meta: { category: 'buff', stack: 'empower', script: true, handler: 'amulet_of_steel' },
         });
         pushActivate(piece, ctx, 'amulet_of_steel', `Accessory: ${piece.name}`);

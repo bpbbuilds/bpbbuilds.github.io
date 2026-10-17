@@ -13,6 +13,8 @@ const raw = JSON.parse(fs.readFileSync('scripts/_cache/game-items.json', 'utf8')
 const catalog = Array.isArray(raw) ? raw : raw.items;
 const byId = new Map(catalog.map((item) => [item.id, { ...item, shape: item.shape || [[1]] }]));
 const burningCoalSource = fs.readFileSync('tools/game-extract-full/Items/BurningCoal.gd', 'utf8');
+const burningSwordSource = fs.readFileSync('tools/game-extract-full/Items/Exclusive/BurningSword.gd', 'utf8');
+const onHitPorts = fs.readFileSync('js/pages/sim/engine/scripts/ports-ap-onhit.js', 'utf8');
 
 const CASES = [
   ['burning_banner', 'Exclusive/BurningBanner.tscn', 'Exclusive/BurningBanner.gd'],
@@ -74,6 +76,8 @@ assert.match(
   burningCoalSource,
   /func combatStartArmor\(\):[\s\S]*giveBlock\(getBlock\(\) \* getGemPower\(\)\)/,
 );
+assert.match(burningSwordSource, /var bonus = heatCounter \/ heatNeeded[\s\S]*var bonusDamage = getP3\(\) \* bonus/);
+assert.match(onHitPorts, /handlerId: 'burning_sword'[\s\S]*const procs = \(Number\(piece\._heatBank\) \|\| 0\) \/ need/);
 
 // Run each lifecycle from both board owners. These checks deliberately use
 // the same handlers and actor orientation for `you` and `them`.
@@ -106,8 +110,10 @@ for (const side of ['you', 'them']) {
   const sword = piece('burning_sword', `${side}:sword`, side, { kind: 'weapon', damageMin: 2, damageMax: 2 });
   const swordCtx = context(side, owner, foe, [sword], graph);
   getScriptHandler('burning_sword').onPrepare(sword, swordCtx);
-  grantStacks(owner, 'heat', 7, { rng: () => 0 });
-  assert.equal(sword.bonusDamage, 1, `Burning Sword banks source Heat on ${side}`);
+  grantStacks(owner, 'heat', 4, { rng: () => 0 });
+  assert.equal(sword.bonusDamage, 4 / 7, `Burning Sword applies fractional source Heat damage on ${side}`);
+  grantStacks(owner, 'heat', 3, { rng: () => 0 });
+  assert.equal(sword.bonusDamage, 11 / 7, `Burning Sword adds the next fractional source Heat ratio on ${side}`);
 
   const chili = piece('chili_pepper', `${side}:chili`, side);
   owner.hp = 50;

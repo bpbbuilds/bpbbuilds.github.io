@@ -333,7 +333,10 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
       if (ch.stack !== 'mana' || !(ch.amount > 0)) return;
       bank += ch.amount;
       if (!(need > 0)) return;
-      const block = Math.floor(bank / need) * getP3(params, 1);
+      // Sapphire.gd converts the full relative mana ratio into Block before
+      // resetting the counter. It is not a whole-threshold proc: Item.gd's
+      // giveStacks performs the final rounding after GemPower is applied.
+      const block = (bank / need) * getP3(params, 1);
       bank %= need;
       if (block > 0) {
         gainStacks(ctx.player, 'block', gemPower * block);

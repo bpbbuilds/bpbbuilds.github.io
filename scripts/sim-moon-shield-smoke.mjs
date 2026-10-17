@@ -25,7 +25,7 @@ assert.ok(blockItem, 'Moon Shield: Block target fixture');
 assert.match(source, /onready var blockForMana: int = getP4\(\)/);
 assert.match(source, /func onPrepare\(\):[\s\S]*giveBuffPower\(Game\.EventType\.Block, getP3\(\) \/ 100\.0\)[\s\S]*connectForCombat\(item, "gave_block", "onItemGaveBlock"\)/);
 assert.match(source, /func afterBlock\(\):[\s\S]*drainStamina\(getP2\(\), blockedDamageRes\.event\)[\s\S]*activate\(\)/);
-assert.match(source, /func onItemGaveBlock\(amount, event\):[\s\S]*blockAcc \+= amount[\s\S]*giveMana\(mana, event\)[\s\S]*miniActivate\(\)/);
+assert.match(source, /func onItemGaveBlock\(amount, event\):[\s\S]*blockAcc \+= amount[\s\S]*var mana = blockAcc \/ blockForMana[\s\S]*giveMana\(mana, event\)[\s\S]*miniActivate\(\)/);
 assert.match(source, /func canBlockDamageRes\(damageRes: DamageResult\) -> bool:[\s\S]*damageRes\.triggerOnAttacked\(\)/);
 assert.match(shieldSource, /func canBlockDamageRes\(damageRes: DamageResult\) -> bool:[\s\S]*damageRes\.triggerOnMeleeAttacked\(\)/);
 assert.match(moonPort, /handlerId: 'moon_shield'/);
@@ -119,10 +119,12 @@ grantStacks(ctx.player, 'block', 45, {
   piece: ctx.pieces[1],
 });
 assert.equal(ctx.player.block, 59, 'Moon Shield: affected Block uses the source 1.3x buff power');
-assert.equal(ctx.player.stacks.mana, 4,
-  'Moon Shield: affected Block accumulates into floor(Block / P4) Mana');
+assert.equal(ctx.player.stacks.mana, 5,
+  'Moon Shield: affected Block converts the full Block / P4 ratio into rounded Mana');
+assert.equal(ctx.pieces[0]._blk, 11,
+  'Moon Shield: fractional Block progress is retained after the ratio conversion');
 grantStacks(ctx.player, 'block', 12, { originKey: 'unlinked', originId: 'other' });
-assert.equal(ctx.player.stacks.mana, 4,
+assert.equal(ctx.player.stacks.mana, 5,
   'Moon Shield: unrelated Block does not feed the affected-item accumulator');
 
 const staminaBefore = ctx.player.stamina;

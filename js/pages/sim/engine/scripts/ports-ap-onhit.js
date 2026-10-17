@@ -91,8 +91,10 @@ export const burningSwordPort = {
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'heat' || !(ch.amount > 0)) return;
       piece._heatBank = (Number(piece._heatBank) || 0) + ch.amount;
-      const procs = Math.floor((Number(piece._heatBank) || 0) / need);
-      if (procs <= 0) return;
+      // BurningSword.gd applies the full heat ratio to bonus damage before
+      // retaining only the accumulator remainder.
+      const procs = (Number(piece._heatBank) || 0) / need;
+      if (!(procs > 0)) return;
       piece._heatBank %= need;
       const amt = bonus * procs;
       // Attribute heat→damage to this sword, not the Heat grantor (Mana Orb).

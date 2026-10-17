@@ -218,7 +218,10 @@ const moonShieldPort = {
     const countBlock = (amount, originKey) => {
       if (!(amount > 0) || !piece._moonLinkedKeys?.has(originKey) || !(need > 0)) return;
       piece._blk += amount;
-      const mana = Math.floor(piece._blk / need);
+      // MoonShield.gd converts the full accumulated Block ratio into Mana,
+      // then keeps only the remainder. Item.giveStacks performs the source
+      // rounding when the fractional Mana is granted.
+      const mana = piece._blk / need;
       if (mana <= 0) return;
       piece._blk %= need;
       grantStacks(ctx.player, 'mana', mana, origin(piece));
@@ -414,7 +417,9 @@ const sunShieldPort = {
       if (change.stack !== 'block' || !(change.amount > 0)) return;
       if (!linkedKeys.has(change.originKey)) return;
       piece._blk += change.amount;
-      const ticks = Math.floor(piece._blk / blockPerTick);
+      // SunShield.gd deals the full fractional tick ratio before its damage
+      // path rounds the resulting damage, rather than flooring tick count.
+      const ticks = piece._blk / blockPerTick;
       if (ticks <= 0) return;
       piece._blk %= blockPerTick;
       const liveCtx = {

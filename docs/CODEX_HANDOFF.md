@@ -7174,3 +7174,23 @@ None.
 - Source/runtime comparison found that shared shield `afterBlock` stamina drains and Pine Protector’s linked-food heal were applied to the correct owner but logged as `player` even when the shield belonged to the opponent board. Both now use the piece-relative event side, preserving the game’s owner attribution for opponent combats.
 - Added `scripts/sim-shield-side-smoke.mjs`, which verifies extracted Shield/Moon Shield/Pine Protector behavior and reproduces opponent Moon Shield blocking plus Pine Protector healing. All focused shield subclasses passed, along with the simulator systems, lifecycle, two-board, source-hook, syntax, and diff checks.
 - The continuous audit remains 15/16 solely because of the pre-existing source/patch-drift baseline checks; hook triage reports 0 untriaged gaps. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Socketed-gem fractional-threshold audit - in progress
+
+- Codex owns the source-backed review of Sapphire armor's mana-to-Block conversion and its focused regression. Planned paths are limited to `js/pages/sim/engine/gem-sockets.js`, the Sapphire smoke, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Fractional accumulator parity follow-up - in progress
+
+- Codex also owns the source-backed fractional accumulator review for Moon Shield, Sun Shield, and Amulet of Steel, plus their focused regressions. Planned paths include `js/pages/sim/engine/scripts/ports-ao-shields.js`, `js/pages/sim/engine/scripts/ports-wave-b.js`, `scripts/sim-moon-shield-smoke.mjs`, `scripts/sim-sun-shield-smoke.mjs`, `scripts/sim-amulet-steel-smoke.mjs`, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Heat-ratio parity follow-up - in progress
+
+- Codex also owns the source-backed Burning Sword heat-to-damage review and focused regression. Planned paths include `js/pages/sim/engine/scripts/ports-ap-onhit.js`, `scripts/sim-burning-heat-charge-smoke.mjs`, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Cross-mechanic fractional accumulator audit - completed
+
+- Source/runtime comparison found four confirmed simulator mismatches: Sapphire armor, Moon Shield, Sun Shield, and Amulet of Steel were flooring fractional accumulator ratios before the game’s stack/damage rounding. Burning Sword had the same issue for Heat-to-damage; Obsidian Dragon already preserved the source ratio.
+- Updated the five handlers to preserve the full source ratio and remainder behavior. Added focused fractional regressions: 9 Mana → 7 Sapphire Block, 59 Moon Shield Block → 5 Mana with 11 remainder, fractional Sun Shield damage, 15 Amulet of Steel Block → 3 Empower, and 4/7 Burning Sword Heat damage.
+- Focused source/runtime smokes passed for all five fixes, plus gem/socket, chipped-gem, and Obsidian Dragon coverage. Syntax and parity systems checks passed. `sim-continuous-audit.mjs` remains 15/16 only because of the pre-existing source/patch-drift baseline; hook triage still reports 0 untriaged gaps.
+- No live-game capture was used; this audit is based on the extracted game scripts, simulator runtime, catalog parameters, and independent fractional regressions. No legal, authentication, database, storage, or security behavior changed.
+- Next step: continue the same source-backed review on the remaining heuristic call candidates, starting with Amulet of Darkness and the no-port Forest Friend path.

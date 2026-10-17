@@ -22,7 +22,7 @@ assert.equal(inventory.byId.sun_shield?.file, 'Exclusive/SunShield.gd');
 assert.deepEqual(inventory.byId.sun_shield?.overrides, ['onPrepare', 'afterBlock']);
 assert.match(source, /func canAffect\(item\):[\s\S]*return item\.canBlock\(\)/);
 assert.match(source, /func onPrepare\(\):[\s\S]*connectForCombat\(item, "gave_block", "onItemGaveBlock"\)/);
-assert.match(source, /func onItemGaveBlock\(amount, event\):[\s\S]*blockAcc \+= amount[\s\S]*blockAcc %= blockPerTick/);
+assert.match(source, /func onItemGaveBlock\(amount, event\):[\s\S]*blockAcc \+= amount[\s\S]*var ticks = blockAcc \/ blockPerTick[\s\S]*blockAcc %= blockPerTick/);
 assert.match(source, /dealEffectDamage\(dam, event\)[\s\S]*miniActivate\(\)/);
 assert.match(source, /func afterBlock\(\):[\s\S]*drainStamina\(getP2\(\), blockedDamageRes\.event\)[\s\S]*activate\(\)/);
 assert.match(source, /func addBonusDamageOnTick\(dam\):[\s\S]*bonusDamagePerTick \+= dam/);
@@ -98,21 +98,22 @@ assert.equal(player._shields[0].damblock, 20, 'Sun Shield preserves p1 flat bloc
 const hpBefore = dummy.hp;
 grantStacks(player, 'block', 11, { originKey: linkedShield.placementKey, originId: linkedShield.itemId });
 assert.equal(sunShield._blk, 11, 'linked blocker progress is retained below the threshold');
-assert.equal(dummy.hp, hpBefore, 'Sun Shield does not damage before one full threshold');
+assert.equal(dummy.hp, hpBefore - 4, 'Sun Shield rounds fractional damage after any positive linked Block amount');
 
 grantStacks(player, 'block', 100, { originKey: unrelatedShield.placementKey, originId: unrelatedShield.itemId });
 assert.equal(sunShield._blk, 11, 'unlinked block grants are ignored');
-assert.equal(dummy.hp, hpBefore, 'unlinked block grants do not deal Sun Shield damage');
+assert.equal(dummy.hp, hpBefore - 4, 'unlinked block grants do not deal additional Sun Shield damage');
 
-grantStacks(player, 'block', 1, { originKey: linkedShield.placementKey, originId: linkedShield.itemId });
-assert.equal(sunShield._blk, 0, 'Sun Shield clears its threshold remainder');
-assert.equal(dummy.hp, hpBefore - 4, 'Sun Shield deals source damage for one threshold');
+grantStacks(player, 'block', 12, { originKey: linkedShield.placementKey, originId: linkedShield.itemId });
+assert.equal(sunShield._blk, 11, 'Sun Shield retains the fractional threshold remainder');
+assert.equal(dummy.hp, hpBefore - 12, 'Sun Shield converts the full accumulated fractional tick ratio');
 assert.equal(events.at(-1)?.meta?.miniActivate, true, 'Sun Shield records miniActivate without a normal activation');
 assert.equal(events.filter((event) => event.type === 'activate').length, 0, 'block accumulation does not inflate activations');
 
 runtime.addBonusDamageOnTick(sunShield, ctx, 3);
-grantStacks(player, 'block', 12, { originKey: linkedShield.placementKey, originId: linkedShield.itemId });
-assert.equal(dummy.hp, hpBefore - 11, 'Sun Shield applies bonus damage to the next threshold tick');
+grantStacks(player, 'block', 1, { originKey: linkedShield.placementKey, originId: linkedShield.itemId });
+assert.equal(sunShield._blk, 0, 'Sun Shield clears its threshold remainder');
+assert.equal(dummy.hp, hpBefore - 19, 'Sun Shield applies bonus damage after the retained remainder reaches one full tick');
 
 player.stamina = 2;
 player._shields[0].afterBlock({});

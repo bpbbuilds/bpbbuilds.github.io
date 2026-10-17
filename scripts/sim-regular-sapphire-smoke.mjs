@@ -24,6 +24,7 @@ assert.match(sapphireSource, /connectForCombat\(socket\.getItem\(\), "pre_deal_d
 assert.match(sapphireSource, /connectForCombat\(socket\.getItem\(\), "attacked", "onAttack"\)/);
 assert.match(sapphireSource, /if spectral and damageRes\.hasHit\(\):[\s\S]*?giveMana\(getP1\(\), damageRes\.event\)[\s\S]*?inflictCold\(getP4\(\), damageRes\.event\)[\s\S]*?miniActivate\(\)/);
 assert.match(sapphireSource, /var manaNeeded = int\(getP2\(\)/);
+assert.match(sapphireSource, /var relMana = manaCounter \/ manaNeeded[\s\S]*?var block = relMana \* getP3\(\)/);
 assert.match(sapphireSource, /giveBlock\(getGemPower\(\) \* block, event\)[\s\S]*?miniActivate\(\)/);
 assert.match(gemSource, /func miniActivate\(\):[\s\S]*?\.miniActivate\(\)/);
 assert.match(port, /fam === 'sapphire'/);
@@ -104,6 +105,29 @@ const byId = new Map([
   assert.ok(
     events.some((event) => event.itemId === 'regular_sapphire' && event.meta?.miniActivate),
     'armor block conversion emits source miniActivate projection',
+  );
+}
+
+{
+  const [armor] = buildCombatPieces(
+    [{ id: 'leather_armor', key: 'sapphire-fractional', x: 0, y: 0, r: 0, gems: ['regular_sapphire'] }],
+    byId,
+  );
+  const owner = createActor('player');
+  prepareGemSockets(armor, {
+    player: owner,
+    dummy: createActor('dummy'),
+    events: [],
+    bus: createCombatBus(),
+    itemsById: byId,
+    rng: () => 0,
+    t: 0,
+  });
+  grantStacks(owner, 'mana', 9, { originKey: 'mana', originId: 'mana' });
+  assert.equal(
+    owner.block,
+    7,
+    'armor keeps the source fractional mana ratio before final Block rounding',
   );
 }
 
