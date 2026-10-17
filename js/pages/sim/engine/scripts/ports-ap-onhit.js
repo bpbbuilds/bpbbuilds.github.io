@@ -14,7 +14,7 @@ import { healActor } from '../actor.js';
 import { getP, getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addBonusDamage } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
-import { itemHasType, pushActivate } from './ports-util.js';
+import { itemHasType, itemTypeMultiplicity, pushActivate } from './ports-util.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { dealHit } from './handlers.js';
 import { prepareBow } from '../attack-effects.js';
@@ -185,11 +185,12 @@ const moltenSpear2Port = {
   handlerId: 'molten_spear2',
   family: 'weapon_base',
   onPrepare(piece, ctx) {
-    const per = Math.max(0, Math.round(getPName(piece.params, 'blockremoval', getP5(piece.params, 5))));
-    const fires = linked(ctx, piece).filter((o) =>
-      itemHasType(ctx.itemsById.get(o.itemId), 'fire'),
-    ).length;
-    piece._blockStrip = per * (fires + countEmptyAffectCells(ctx, piece));
+    const per = Number(getPName(piece.params, 'blockremoval', getP5(piece.params, 0))) || 0;
+    const fires = linked(ctx, piece).reduce(
+      (sum, o) => sum + itemTypeMultiplicity(ctx.itemsById.get(o.itemId), 'fire'),
+      0,
+    );
+    piece._blockStrip = Math.trunc(per * (fires + countEmptyAffectCells(ctx, piece)));
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'molten_spear2');
@@ -197,9 +198,9 @@ const moltenSpear2Port = {
   onPreDealDamageEarly(piece, ctx, res) {
     if (!res) return;
     if (!res.hit) {
-      const need = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP1(piece.params, 2))));
+      const need = Math.trunc(getPName(piece.params, 'heatt', getP1(piece.params, 0)));
       if ((getStackAmount(ctx.player, 'heat') || 0) < need) return;
-      const dam = Math.max(1, Math.round(getPName(piece.params, 'missdam', getP2(piece.params, 3))));
+      const dam = Math.trunc(getPName(piece.params, 'missdam', getP2(piece.params, 0)));
       res.damage = (Number(res.damage) || 0) + dam;
       addBonusDamage(piece, dam);
       spendStacks(ctx.player, 'heat', need, origin(piece));
@@ -209,13 +210,13 @@ const moltenSpear2Port = {
     grantStacks(
       ctx.dummy,
       'blind',
-      Math.max(1, Math.round(getPName(piece.params, 'blind', getP3(piece.params, 1)))),
+      Math.trunc(getPName(piece.params, 'blind', getP3(piece.params, 0))),
       origin(piece),
     );
     grantStacks(
       ctx.player,
       'blind',
-      Math.max(1, Math.round(getPName(piece.params, 'blind_self', getP4(piece.params, 1)))),
+      Math.trunc(getPName(piece.params, 'blind_self', getP4(piece.params, 0))),
       origin(piece),
     );
   },

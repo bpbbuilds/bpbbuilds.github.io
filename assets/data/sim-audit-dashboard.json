@@ -3,7 +3,7 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "2477bb790eee3aaf066788044187ffd8dc230af66df3bc819e4e7a4404d16f5b",
+    "itemLedgerSha256": "8d3173d079ef43b07587916a5d4f5d2ef14cec2b7d9f40c4da10d875d9339247",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
     "systemSurfaceSha256": "79e1178a7ae154e964452b8a7fada954ec8e043c0756f30c20fc35ec6dea6778",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 445,
+    "verified_1to1": 447,
     "confirmed_gap": 8,
-    "evidence_pending": 72,
+    "evidence_pending": 70,
     "no_independent_combat": 15
   },
   "items": [
@@ -13314,8 +13314,8 @@
       "name": "Molten Spear",
       "category": "Melee Weapon",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -13342,9 +13342,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-molten-spear-smoke.mjs",
+        "fixture": "Molten Spear source Fire/empty preparation block-removal scaling, same-strike Heat miss conversion, exact typed parameters, late block removal, and zero-safe values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
@@ -13354,8 +13360,8 @@
       "name": "Molten Spear2",
       "category": "Melee Weapon",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -13382,9 +13388,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-molten-spear2-smoke.mjs",
+        "fixture": "Molten Spear2 source Fire multiplicity/empty preparation scaling, Heat miss conversion with permanent bonus, hit-only Blind/self-Blind, late block removal, and zero-safe values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },

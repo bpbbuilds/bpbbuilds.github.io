@@ -1153,6 +1153,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  molten_spear: {
+    focusedRegression: 'scripts/sim-molten-spear-smoke.mjs',
+    fixture: 'Molten Spear source Fire/empty preparation block-removal scaling, same-strike Heat miss conversion, exact typed parameters, late block removal, and zero-safe values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  molten_spear2: {
+    focusedRegression: 'scripts/sim-molten-spear2-smoke.mjs',
+    fixture: 'Molten Spear2 source Fire multiplicity/empty preparation scaling, Heat miss conversion with permanent bonus, hit-only Blind/self-Blind, late block removal, and zero-safe values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

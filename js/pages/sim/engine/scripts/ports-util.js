@@ -80,7 +80,9 @@ export function itemTypeMultiplicity(item, needle) {
       (id === 'phoenix2' || id === 'molten_greatsword' || id === 'molten_spear2')) {
     const params = item?.params || {};
     const value = Number(params.fire ?? params.p3);
-    if (Number.isFinite(value) && value > 0) return Math.max(1, Math.round(value));
+    // The extracted getTypeMultiplicity returns int(getP("fire")); preserve
+    // explicit zero (and truncation) instead of silently turning it into one.
+    if (Number.isFinite(value)) return Math.trunc(value);
   }
   return 1;
 }

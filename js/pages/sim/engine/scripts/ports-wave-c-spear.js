@@ -5,8 +5,7 @@
 import { grantStacks, spendStacks } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getPName } from '../params.js';
-import { dealHit } from './handlers.js';
-import { itemHasType } from './ports-util.js';
+import { itemTypeMultiplicity } from './ports-util.js';
 import {
   countEmptyAffectCells,
   removeBlock,
@@ -23,7 +22,7 @@ function countLinkedType(ctx, piece, type) {
   let n = 0;
   for (const other of ctx.pieces || []) {
     if (!links.some((l) => l.key === other.placementKey)) continue;
-    if (itemHasType(ctx.itemsById.get(other.itemId), type)) n += 1;
+    n += itemTypeMultiplicity(ctx.itemsById.get(other.itemId), type);
   }
   return n;
 }
@@ -127,38 +126,32 @@ export const poisonSpearPort = {
 export const moltenSpearPort = {
   handlerId: 'molten_spear',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const empty = countEmptyAffectCells(ctx, piece);
     const fire = countLinkedType(ctx, piece, 'fire');
-    const per = Math.max(1, Math.round(getPName(piece.params, 'blockremoval', getP1(piece.params, 2))));
-    piece._blockStrip = per * (empty + fire);
+    const per = Number(getPName(piece.params, 'blockremoval', getP1(piece.params, 0))) || 0;
+    piece._blockStrip = Math.trunc(per * (empty + fire));
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'molten_spear');
   },
-  onDealtDamage(piece, ctx, hit) {
-    if (!hit?.hit && !piece._moltenConvert) {
-      const need = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP2(piece.params, 3))));
-      if ((ctx.player.stacks.heat || 0) >= need) {
-        spendStacks(ctx.player, 'heat', need, {
-          originKey: piece.placementKey,
-          originId: piece.itemId,
-        });
-        const bonus = Math.max(1, Math.round(getPName(piece.params, 'missdam', getP1(piece.params, 4))));
-        piece._moltenConvert = true;
-        dealHit(piece, ctx, (hit.raw || 0) + bonus);
-        piece._moltenConvert = false;
-        return;
-      }
-    }
+  onPreDealDamageEarly(piece, ctx, res) {
+    if (res?.hit) return;
+    const need = Math.trunc(getPName(piece.params, 'heatt', getP1(piece.params, 0)));
+    if ((ctx.player.stacks.heat || 0) < need) return;
+    const bonus = Math.trunc(getPName(piece.params, 'missdam', getP2(piece.params, 0)));
+    res.damage = (Number(res.damage) || 0) + bonus;
+    res.hit = true;
+    // MoltenSpear.gd mutates the same DamageResult; this is one attack, not a
+    // second dealHit after the miss has already been logged.
+    spendStacks(ctx.player, 'heat', need, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+  },
+  onPreDealDamageLate(piece, ctx) {
     const strip = piece._blockStrip || 0;
     if (strip) removeBlock(ctx.dummy, strip, ctx, piece);
-    ctx.events.push({
-      t: ctx.t + 0.008,
-      type: 'info',
-      label: `${piece.name}: molten strip`,
-      meta: { category: 'system', script: true, handler: 'molten_spear' },
-    });
   },
 };
 

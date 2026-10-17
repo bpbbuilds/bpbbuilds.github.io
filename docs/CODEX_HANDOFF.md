@@ -6691,4 +6691,13 @@ None.
 
 ### 2026-10-17 Simulator item parity continuation 294 - in progress
 
-- Codex owns the next retained Molten Spear and Molten Spear2 fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-molten-spear-smoke.mjs`, `scripts/sim-molten-spear2-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+- Codex owns the next retained Molten Spear and Molten Spear2 fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to `js/pages/sim/engine/scripts/ports-wave-c-spear.js`, `js/pages/sim/engine/scripts/ports-ap-onhit.js`, `js/pages/sim/engine/scripts/ports-util.js`, `scripts/sim-molten-spear-smoke.mjs`, `scripts/sim-molten-spear2-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 294 - complete
+
+- Codex repaired Molten Spear to mirror source `onPrepare` Fire/empty block-removal scaling, same-strike Heat miss conversion, typed integer parameters, and late block removal. Molten Spear2 now mirrors source Fire multiplicity, same-strike Heat conversion plus permanent future damage, hit-only Blind/self-Blind, late block removal, and explicit zero values. Both ports preserve the source lifecycle instead of creating a second post-miss attack.
+- Added `scripts/sim-molten-spear-smoke.mjs` and `scripts/sim-molten-spear2-smoke.mjs`, corrected shared Fire multiplicity to preserve extracted zero/truncation semantics, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 447 / 519 verified item rows. Focused spear tests pass; generated item summary reports 447 verified, 50 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 295 - in progress
+
+- Codex owns the next retained Moon Armor and Moon Shield fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-moon-armor-smoke.mjs`, `scripts/sim-moon-shield-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
