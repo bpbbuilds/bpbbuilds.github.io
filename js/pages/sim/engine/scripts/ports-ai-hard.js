@@ -2,7 +2,7 @@
  * Band AJ — HARD gap ports (engine hooks: timed DR, battle rage, shield afterBlock).
  */
 
-import { grantInvuln, healActor, isInvulnerable, tryUseStamina } from '../actor.js';
+import { drainStamina, grantInvuln, healActor, isInvulnerable } from '../actor.js';
 import { applyHealEfficiency } from '../actor-stats.js';
 import { takeDamage } from '../damage.js';
 import {
@@ -339,32 +339,53 @@ export const shinyMantlePort = {
 export const woodenBucklerPort = {
   handlerId: 'wooden_buckler',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const chance =
-      Number(ctx.itemsById.get(piece.itemId)?.chance) || Number(piece.chance) || 30;
-    const damblock = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'damblock', getP1(piece.params, 7))),
-    );
+  onPrepare(piece, ctx) {
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const chanceValue = piece.chance != null ? piece.chance : catalog?.chance;
+    const baseChance = Number(chanceValue);
+    const fallbackChance = Number.isFinite(baseChance) ? baseChance : 30;
     const stamDrain = getP2(piece.params, 0.3);
     if (!ctx.player._shields) ctx.player._shields = [];
     ctx.player._shields.push({
       piece,
-      chance,
-      damblock,
+      chance: fallbackChance,
+      getChance() {
+        const base = Number.isFinite(Number(piece.chance))
+          ? Number(piece.chance)
+          : Number.isFinite(Number(catalog?.chance))
+            ? Number(catalog.chance)
+            : 30;
+        const add = Number(piece.bonusChanceAdd1) || 0;
+        const mult = Number(piece.bonusChanceMult) || 0;
+        return Math.max(0, Math.min(100, (base + add) * ((100 + mult) / 100)));
+      },
+      getDamblock() {
+        return modifiedParamValue(
+          piece,
+          getPName(piece.params, 'damblock', getP1(piece.params, 7)),
+          'damblock',
+        );
+      },
       afterBlock(payload) {
         if (!piece.alive) return;
         const drain = Math.max(0, Number(stamDrain) || 0);
         if (drain > 0) {
-          tryUseStamina(ctx.player, drain);
-          ctx.events.push({
-            t: payload.t ?? ctx.t,
-            type: 'stamina',
-            label: `${piece.name}: drain ${drain} stamina (afterBlock)`,
-            meta: { category: 'stamina', script: true, handler: 'wooden_buckler' },
+          drainStamina(ctx.player, drain, {
+            events: ctx.events,
+            t: payload?.t ?? ctx.t,
+            actorSide: eventSideForPiece(piece),
+            itemId: piece.itemId,
+            placementKey: piece.placementKey,
+            label: `${piece.name}: drain stamina (afterBlock)`,
+            handler: 'wooden_buckler',
           });
         }
-        pushActivate(piece, ctx, 'wooden_buckler', `Shield: ${piece.name}`);
+        pushActivate(
+          piece,
+          { ...ctx, t: payload?.t ?? ctx.t },
+          'wooden_buckler',
+          `Shield: ${piece.name}`,
+        );
       },
     });
   },

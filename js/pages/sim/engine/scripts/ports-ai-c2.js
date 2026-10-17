@@ -163,11 +163,13 @@ export const turtlePort = {
 export const wolpertingerPort = {
   handlerId: 'wolpertinger',
   family: 'pet_like',
-  onPreCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { player } = ctx;
     // Game onPrepare: getP1() * character().baseStaminaRegen / 100 — not live regen after malus.
-    const perBuff = (getP1(piece.params, 0.7) / 100) * PLAYER_STAMINA_REGEN;
-    if (!(perBuff > 0)) return;
+    const baseStaminaRegen = Number.isFinite(Number(player.baseStaminaRegen))
+      ? Number(player.baseStaminaRegen)
+      : PLAYER_STAMINA_REGEN;
+    const perBuff = (getP1(piece.params, 0.7) / 100) * baseStaminaRegen;
     const origin = {
       itemId: piece.itemId,
       placementKey: piece.placementKey,
@@ -178,33 +180,22 @@ export const wolpertingerPort = {
       if (!ch.amount || !BUFF_KEYS.includes(String(ch.stack))) return;
       applyStaminaRegeneration(player, ch.amount * perBuff, ctx, origin);
     });
-  },
-  onCombatStart(piece, ctx) {
-    const { t, events } = ctx;
     const pets = linkedWith(ctx, piece, (o) => {
       const item = ctx.itemsById.get(o.itemId);
       return o.kind === 'pet' || itemHasType(item, 'pet');
     });
     const speedPct = getP3(piece.params, 15) / 100;
-    if (pets.length && speedPct) {
-      addSpeed(piece, pets.length * speedPct);
-      events.push({
-        t: t + 0.01,
-        type: 'info',
-        label: `${piece.name}: +${Math.round(pets.length * speedPct * 100)}% speed (${pets.length} pets)`,
-        meta: { category: 'adjacency', script: true, handler: 'wolpertinger' },
-      });
-    }
+    if (pets.length && speedPct) addSpeed(piece, pets.length * speedPct);
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    pushActivate(piece, ctx, 'wolpertinger', `Pet: ${piece.name}`);
-    const num = Math.max(1, Math.round(getP2(piece.params, 3)));
+    const num = Math.trunc(getP2(piece.params, 3));
     const picked = giveLeastBuffs(player, num, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     pushBuffGrants(events, piece, player, t, 'wolpertinger', picked);
+    pushActivate(piece, ctx, 'wolpertinger', `Pet: ${piece.name}`);
     return true;
   },
 };

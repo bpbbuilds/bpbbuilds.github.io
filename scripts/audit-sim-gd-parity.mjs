@@ -40,7 +40,10 @@ const HOOK_MAP = {
   // prepare pass, so an inline listener in onPrepare is a valid carrier for
   // the source onDamaged hook (Dark Lantern / threshold items rely on this).
   onDamaged: ['onPrepare', 'onCombatStart', 'onPreCombatStart', 'onDealtDamage'],
-  afterBlock: ['onCombatStart', 'onPreCombatStart', 'onDealtDamage'],
+  // Shield.prepare installs the source pre-take-damage listener during the
+  // simulator prepare pass; its afterBlock callback is therefore carried by
+  // an onPrepare port rather than a combat-start hook.
+  afterBlock: ['onPrepare', 'onCombatStart', 'onPreCombatStart', 'onDealtDamage'],
   // Potion ports bind their source trigger listener during onPrepare and run
   // the trigger inline when the signal arrives.
   onTriggerPotion: ['onPrepare', 'onCombatStart', 'onCooldownEffect', 'onDrink'],

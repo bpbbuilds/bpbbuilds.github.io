@@ -8,7 +8,7 @@ import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
-import { applyFoodPrepareSpeed } from './food-helpers.js';
+import { applyFoodPrepareSpeed, canBeEmpoweredPiece } from './food-helpers.js';
 import { itemHasType, pushActivate } from './ports-util.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 

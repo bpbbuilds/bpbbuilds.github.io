@@ -312,6 +312,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  wolpertinger: {
+    focusedRegression: 'scripts/sim-wolpertinger-smoke.mjs',
+    fixture: 'Wolpertinger source Pet-only preparation speed, base-stamina regeneration per buff change including spends, exact integer least-buff count, and effect-before-activation ordering.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  wooden_buckler: {
+    focusedRegression: 'scripts/sim-wooden-buckler-smoke.mjs',
+    fixture: 'Wooden Buckler inherited Shield preparation, source chance and modified damage-block parameters, melee blocking, actual stamina drain afterBlock, owner-correct event timing, and activation ordering.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   spiked_collar: {
     focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
     fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',

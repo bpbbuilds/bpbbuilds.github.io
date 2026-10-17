@@ -177,6 +177,7 @@ export function takeDamage(defender, attacker, src) {
   /** @type {null | {
    *   piece?: object,
    *   damblock: number,
+   *   getChance?: () => number,
    *   getDamblock?: () => number,
    *   canBlockDamageRes?: (res: DamageResult) => boolean,
    *   beforeBlock?: Function,
@@ -192,7 +193,9 @@ export function takeDamage(defender, attacker, src) {
         ? sh.canBlockDamageRes(res)
         : melee;
       if (!eligible) continue;
-      const chance = Number(sh.chance) || 0;
+      const chance = typeof sh.getChance === 'function'
+        ? Number(sh.getChance()) || 0
+        : Number(sh.chance) || 0;
       if (chance > 0 && rollPercent(chance, src.rng)) {
         shieldHit = sh;
         break;

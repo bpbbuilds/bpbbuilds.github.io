@@ -10,14 +10,14 @@
   },
   "totals": {
     "catalogItems": 519,
-    "sourcePorted": 490,
-    "portPresentIncomplete": 2,
+    "sourcePorted": 492,
+    "portPresentIncomplete": 0,
     "sourceUnresolved": 0,
     "noCombat": 26,
     "deferred": 0,
     "unsupportedMode": 1,
-    "lifecycleHookGap": 4,
-    "untriagedLifecycleHookGap": 2,
+    "lifecycleHookGap": 2,
+    "untriagedLifecycleHookGap": 0,
     "callReviewCandidate": 3,
     "duplicateRegistration": 16
   },
@@ -9697,18 +9697,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "afterBlock",
-            "why": "no JS hook among onCombatStart/onPreCombatStart/onDealtDamage"
-          }
-        ],
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: afterBlock.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": "scripts/sim-heart-shield-smoke.mjs",
         "fixture": "Heart Shield source affected-item Block power, heal/lifesteal parameter modifiers, Regeneration amplification, block regeneration, threshold max-health conversion, active damage block, and zero-safe parameters.",
@@ -12875,18 +12870,13 @@
         "depth": "deep"
       },
       "audit": {
-        "lifecycleHookGaps": [
-          {
-            "hook": "afterBlock",
-            "why": "no JS hook among onCombatStart/onPreCombatStart/onDealtDamage"
-          }
-        ],
+        "lifecycleHookGaps": [],
         "callReviewCandidates": [],
         "duplicateRegistration": null
       },
-      "status": "port_present",
-      "fidelity": "incomplete",
-      "knownDelta": "Lifecycle hook audit: afterBlock.",
+      "status": "source_ported",
+      "fidelity": "source_ported",
+      "knownDelta": null,
       "evidence": {
         "focusedRegression": "scripts/sim-moon-shield-smoke.mjs",
         "fixture": "Moon Shield source affected-item Block buff power, origin-scoped Block-to-Mana accumulation, afterBlock stamina/activation, any-attack shielding override, and zero-safe values.",
@@ -22437,9 +22427,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-wolpertinger-smoke.mjs",
+        "fixture": "Wolpertinger source Pet-only preparation speed, base-stamina regeneration per buff change including spends, exact integer least-buff count, and effect-before-activation ordering.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -22473,9 +22469,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-wooden-buckler-smoke.mjs",
+        "fixture": "Wooden Buckler inherited Shield preparation, source chance and modified damage-block parameters, melee blocking, actual stamina drain afterBlock, owner-correct event timing, and activation ordering.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

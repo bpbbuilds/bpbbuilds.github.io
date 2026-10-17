@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "4f5e790df8cadc2e6fd288e3ee9650fac02f9cb556d1abbb59a1c748266057a4",
+    "dashboardSha256": "edacf2a44d36427a61fa96fa9fea1ec01ded0219dcbe472f23684f5c4f4a33d0",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 493,
-    "confirmed_gap": 6,
-    "evidence_pending": 5,
+    "verified_1to1": 497,
+    "confirmed_gap": 4,
+    "evidence_pending": 3,
     "no_independent_combat": 15
   },
   "byId": {
@@ -232,7 +232,7 @@
     "heart_container": "verified_1to1",
     "heart_of_darkness": "verified_1to1",
     "heart_of_the_cards": "verified_1to1",
-    "heart_shield": "confirmed_gap",
+    "heart_shield": "verified_1to1",
     "heavy_drinking": "verified_1to1",
     "hedgehog": "verified_1to1",
     "hero_longsword": "verified_1to1",
@@ -307,7 +307,7 @@
     "molten_spear": "verified_1to1",
     "molten_spear2": "verified_1to1",
     "moon_armor": "verified_1to1",
-    "moon_shield": "confirmed_gap",
+    "moon_shield": "verified_1to1",
     "more_stats": "verified_1to1",
     "mr_struggles": "verified_1to1",
     "mrs_struggles": "verified_1to1",
@@ -528,8 +528,8 @@
     "wisp": "verified_1to1",
     "wolf_badge": "verified_1to1",
     "wolf_emblem": "verified_1to1",
-    "wolpertinger": "evidence_pending",
-    "wooden_buckler": "evidence_pending",
+    "wolpertinger": "verified_1to1",
+    "wooden_buckler": "verified_1to1",
     "wooden_sword": "evidence_pending",
     "wrench": "evidence_pending",
     "yggdrasil_leaf": "evidence_pending"
