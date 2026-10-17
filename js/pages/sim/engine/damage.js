@@ -178,15 +178,20 @@ export function takeDamage(defender, attacker, src) {
    *   piece?: object,
    *   damblock: number,
    *   getDamblock?: () => number,
+   *   canBlockDamageRes?: (res: DamageResult) => boolean,
    *   beforeBlock?: Function,
    *   afterBlock?: Function,
    * }} */
   let shieldHit = null;
   const melee =
     src.isMelee !== false && src.isAttack !== false && !src.isPoison && !src.isSpikes;
-  if (melee && Array.isArray(defender._shields) && defender._shields.length && dmg > 0) {
+  if (Array.isArray(defender._shields) && defender._shields.length && dmg > 0) {
     for (const sh of defender._shields) {
       if (!sh || sh.disabled) continue;
+      const eligible = typeof sh.canBlockDamageRes === 'function'
+        ? sh.canBlockDamageRes(res)
+        : melee;
+      if (!eligible) continue;
       const chance = Number(sh.chance) || 0;
       if (chance > 0 && rollPercent(chance, src.rng)) {
         shieldHit = sh;

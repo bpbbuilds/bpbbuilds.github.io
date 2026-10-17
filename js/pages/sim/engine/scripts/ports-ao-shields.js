@@ -44,6 +44,7 @@ function registerShield(piece, ctx, opts) {
     chance,
     damblock,
     getDamblock: readDamblock,
+    canBlockDamageRes: opts.canBlockDamageRes,
     beforeBlock(payload) {
       if (!piece.alive) return;
       opts.beforeBlock?.(payload, liveCtx());
@@ -202,21 +203,30 @@ const heartShieldPort = {
 const moonShieldPort = {
   handlerId: 'moon_shield',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     piece._blk = 0;
-    const need = Math.max(1, Math.round(getP4(piece.params, 4)));
-    const fac = getP3(piece.params, 20) / 100;
-    for (const o of linked(ctx, piece)) {
-      if (Number(o.blockGrant) > 0) o.blockGrant = Math.round(o.blockGrant * (1 + fac));
+    const need = Math.trunc(getP4(piece.params, 0));
+    const fac = Number(getP3(piece.params, 0)) / 100;
+    const linkedPieces = linked(ctx, piece);
+    piece._moonLinkedKeys = new Set(linkedPieces.map((o) => o.placementKey));
+    for (const o of linkedPieces) {
+      if (fac) giveBuffPower(o, 'block', fac);
     }
-    registerShield(piece, ctx, {});
-    onBuffChanged(ctx.player, (ch) => {
-      if (ch.stack !== 'block' || !(ch.amount > 0)) return;
-      piece._blk += ch.amount;
+    const countBlock = (amount, originKey) => {
+      if (!(amount > 0) || !piece._moonLinkedKeys?.has(originKey) || !(need > 0)) return;
+      piece._blk += amount;
       const mana = Math.floor(piece._blk / need);
       if (mana <= 0) return;
       piece._blk %= need;
       grantStacks(ctx.player, 'mana', mana, origin(piece));
+    };
+    ctx.bus?.on?.('character_block_changed', (change = {}) => {
+      if (change.actor !== ctx.player) return;
+      countBlock(Number(change.amount) || 0, change.originKey);
+    });
+    registerShield(piece, ctx, {
+      canBlockDamageRes: (res) =>
+        Boolean(res?.hit && res.damageSource?.isAttack !== false && res.damageSource?.canTriggerItems !== false),
     });
   },
 };

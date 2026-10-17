@@ -129,6 +129,8 @@ export function gainStacks(actor, stack, amount, opts = {}) {
       actor,
       stack,
       amount: gained,
+      originKey: opts.originKey ?? opts.piece?.placementKey ?? opts.origin?.placementKey ?? null,
+      originId: opts.originId ?? opts.piece?.itemId ?? opts.origin?.itemId ?? null,
     });
   }
   return { gained, resisted, reflected };

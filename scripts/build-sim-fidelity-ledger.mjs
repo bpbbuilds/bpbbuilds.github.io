@@ -1167,6 +1167,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  moon_armor: {
+    focusedRegression: 'scripts/sim-moon-armor-smoke.mjs',
+    fixture: 'Moon Armor source Magic-link Block scaling, combat-start activation, cooldown Mana/Reflect ordering, and explicit zero Mana/Reflect/P1 values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  moon_shield: {
+    focusedRegression: 'scripts/sim-moon-shield-smoke.mjs',
+    fixture: 'Moon Shield source affected-item Block buff power, origin-scoped Block-to-Mana accumulation, afterBlock stamina/activation, any-attack shielding override, and zero-safe values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

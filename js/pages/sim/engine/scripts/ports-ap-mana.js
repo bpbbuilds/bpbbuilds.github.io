@@ -13,7 +13,7 @@ import {
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
-import { gainStacks, getStackAmount } from '../stacks.js';
+import { getStackAmount } from '../stacks.js';
 import { loseHealth } from './handlers.js';
 import { deactivateCooldown } from '../cooldown.js';
 import { eventSideForPiece } from '../vs-board.js';
@@ -327,21 +327,27 @@ const moonArmorPort = {
     const n = linked(ctx, piece).filter((o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'magic'),
     ).length;
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const baseBlock = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number(catalog?.block) || 0;
     const block =
-      (Number(ctx.itemsById.get(piece.itemId)?.block) || 50) + getP1(piece.params, 20) * n;
-    gainStacks(ctx.player, 'block', block);
+      baseBlock + Number(getP1(piece.params, 0) || 0) * n;
+    grantStacks(ctx.player, 'block', block, origin(piece));
     pushActivate(piece, ctx, 'moon_armor', `Armor: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
+    const mana = Math.trunc(getPName(piece.params, 'mana', getP2(piece.params, 0)));
+    const reflect = Math.trunc(getPName(piece.params, 'reflect', getP3(piece.params, 0)));
     grantStacks(
       ctx.player,
       'mana',
-      Math.max(1, Math.round(getPName(piece.params, 'mana', getP2(piece.params, 3)))),
+      mana,
       origin(piece),
     );
     ctx.player.debuffReflectStacks =
       (Number(ctx.player.debuffReflectStacks) || 0) +
-      Math.max(1, Math.round(getPName(piece.params, 'reflect', getP3(piece.params, 2))));
+      reflect;
     pushActivate(piece, ctx, 'moon_armor', `Armor: ${piece.name}`);
     return true;
   },
