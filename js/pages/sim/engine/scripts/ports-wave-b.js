@@ -594,26 +594,40 @@ export const amuletOfSteelPort = {
 export const wisdomPuppyPort = {
   handlerId: 'wisdom_puppy',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
-    const speed = getP2(piece.params, 5) / 100;
+  onPrepare(piece, ctx) {
+    const speed = getP2(piece.params, 0) / 100;
     const n = linkedCount(ctx, piece, (_o, item) => itemHasType(item, 'pet'));
     if (n && speed) addSpeed(piece, n * speed);
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events } = ctx;
-    pushActivate(piece, ctx, 'wisdom_puppy', `Pet: ${piece.name}`);
-    const block = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 4)));
-    gainStacks(player, 'block', block);
-    const cold = Math.max(0, Math.round(getP1(piece.params, 1)));
-    if (cold) loseStacks(player, 'cold', cold);
-    events.push({
-      t: t + 0.003,
-      type: 'buff',
-      target: 'player',
-      amount: block,
-      label: `${piece.name}: +${block} Block`,
-      meta: { category: 'buff', stack: 'block', script: true, handler: 'wisdom_puppy' },
+    const catalogBlock = Number(ctx.itemsById?.get?.(piece.itemId)?.block);
+    const block = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number.isFinite(catalogBlock)
+        ? catalogBlock
+        : 0;
+    const grant = grantStacks(player, 'block', block, {
+      piece,
+      originKey: piece.placementKey,
+      originId: piece.itemId,
     });
+    const cold = getP1(piece.params, 0);
+    if (cold) loseStacks(player, 'cold', cold);
+    if (grant?.gained > 0) {
+      events.push({
+        t,
+        type: 'buff',
+        actor: eventSideForPiece(piece),
+        target: eventSideForPiece(piece),
+        amount: grant.gained,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: +${grant.gained} Block`,
+        meta: { category: 'buff', stack: 'block', script: true, handler: 'wisdom_puppy' },
+      });
+    }
+    pushActivate(piece, ctx, 'wisdom_puppy', `Pet: ${piece.name}`);
     return true;
   },
 };

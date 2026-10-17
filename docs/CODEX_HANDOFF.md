@@ -6882,3 +6882,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 317 - in progress
 
 - Codex owns the next retained Wisdom Puppy and Wisp fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-wisdom-puppy-smoke.mjs`, `scripts/sim-wisp-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 317 - complete
+
+- Codex repaired Wisdom Puppy to mirror source `onPrepare` Pet-only speed, exact catalog Block fallback with explicit zero support, Block buff-power scaling, Cold cleanse, and effect-before-activation ordering. Wisp now mirrors exact inventory parameters and consumption, Nature preparation speed, fractional weapon damage-to-Spikes accumulation with mini activation, and armor socket GemPower-scaled max health with its mini activation.
+- Added `scripts/sim-wisdom-puppy-smoke.mjs` and `scripts/sim-wisp-smoke.mjs`, updated the Wisp socket regression, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 491 / 519 verified item rows. Focused pair tests, Wisdom/Armored Wisdom and gem/socket regressions, changed-module syntax, source parity audit, and generated artifact freshness checks pass. The generated summary reports 491 verified, 7 evidence-pending, 6 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 318 - in progress
+
+- Codex owns the next retained Wolf Badge and Wolf Emblem fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-wolf-badge-smoke.mjs`, `scripts/sim-wolf-emblem-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

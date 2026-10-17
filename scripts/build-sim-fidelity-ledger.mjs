@@ -284,6 +284,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  wisdom_puppy: {
+    focusedRegression: 'scripts/sim-wisdom-puppy-smoke.mjs',
+    fixture: 'Wisdom Puppy source Pet-only preparation speed, exact Block and Cold parameters, item buff-power scaling, explicit zero values, and effect-before-activation ordering on both board sides.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  wisp: {
+    focusedRegression: 'scripts/sim-wisp-smoke.mjs',
+    fixture: 'Wisp source Nature preparation speed, inventory Lucky/Regeneration consumption, fractional weapon damage-to-Spikes procs with mini activation, GemPower-scaled armor max health, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   spiked_collar: {
     focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
     fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',

@@ -487,25 +487,28 @@ const wispPort = {
     const n = linked(ctx, piece).filter((o) =>
       itemHasType(ctx.itemsById.get(o.itemId), 'nature'),
     ).length;
-    const spd = getPName(piece.params, 'speed', getP3(piece.params, 10)) / 100;
+    const spd = getPName(piece.params, 'speed', getP2(piece.params, 0)) / 100;
     if (n && spd) addSpeed(piece, spd * n);
   },
   onCooldownEffect(piece, ctx) {
-    const luck = Math.max(1, Math.round(getPName(piece.params, 'luck', getP1(piece.params, 10))));
-    const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', getP2(piece.params, 10))));
-    grantStacks(ctx.player, 'lucky', luck, origin(piece));
-    grantStacks(ctx.player, 'regeneration', regen, origin(piece));
+    const luck = Math.trunc(getPName(piece.params, 'luck', getP1(piece.params, 0)));
+    const regen = Math.trunc(getPName(piece.params, 'regen', getP2(piece.params, 0)));
+    const source = { ...origin(piece), piece };
+    const lucky = grantStacks(ctx.player, 'lucky', luck, source);
+    const regeneration = grantStacks(ctx.player, 'regeneration', regen, source);
+    if (lucky?.gained > 0 || regeneration?.gained > 0) {
       ctx.events.push({
-        t: ctx.t + 0.002,
+        t: ctx.t,
         type: 'buff',
         actor: eventSideForPiece(piece),
         target: eventSideForPiece(piece),
-      amount: luck,
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `${piece.name}: +${luck} lucky, +${regen} regeneration`,
-      meta: { category: 'buff', script: true, handler: 'wisp', stack: 'lucky' },
-    });
+        amount: lucky?.gained || 0,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        label: `${piece.name}: +${lucky?.gained || 0} lucky, +${regeneration?.gained || 0} regeneration`,
+        meta: { category: 'buff', script: true, handler: 'wisp', stack: 'lucky' },
+      });
+    }
     afterEffectFinished(piece, ctx, 'wisp');
     return true;
   },

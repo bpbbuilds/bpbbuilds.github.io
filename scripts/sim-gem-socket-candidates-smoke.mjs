@@ -144,7 +144,7 @@ for (const [id, sceneFile, source] of [
   prepareGemSockets(weapon, ctx);
   dealHit(weapon, ctx, 20);
   dealHit(weapon, ctx, 20);
-  assert.equal(ctx.player.stacks.spikes, 1, 'Wisp weapon damage threshold grants spikes');
+  assert.equal(ctx.player.stacks.spikes, 2, 'Wisp weapon fractional damage procs grant source-rounded spikes');
 }
 {
   const ctx = context();

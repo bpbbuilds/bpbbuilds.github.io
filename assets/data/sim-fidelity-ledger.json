@@ -22263,9 +22263,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-wisdom-puppy-smoke.mjs",
+        "fixture": "Wisdom Puppy source Pet-only preparation speed, exact Block and Cold parameters, item buff-power scaling, explicit zero values, and effect-before-activation ordering on both board sides.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -22299,9 +22305,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-wisp-smoke.mjs",
+        "fixture": "Wisp source Nature preparation speed, inventory Lucky/Regeneration consumption, fractional weapon damage-to-Spikes procs with mini activation, GemPower-scaled armor max health, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

@@ -7,7 +7,16 @@
 import { healActor, grantStun } from './actor.js';
 import { applyHealEfficiency } from './actor-stats.js';
 import { grantStacks, onBuffChanged, stealRandomBuff } from './buff-economy.js';
-import { getP1, getP2, getP3, getP4, getPName, paramsFromItem } from './params.js';
+import {
+  getP1,
+  getP2,
+  getP3,
+  getP4,
+  getP5,
+  getP6,
+  getPName,
+  paramsFromItem,
+} from './params.js';
 import { scaleEffectDuration } from './effect-duration.js';
 import { modifiedParamValue } from './placement-instance.js';
 import { addSpeed, changeBonusDamageFactor } from './piece-stats.js';
@@ -172,17 +181,19 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
   }
   if (fam === 'wisp') {
     let acc = 0;
-    const need = Math.max(1, Math.round(getPName(params, 'dam', 30)));
-    const spikes = Math.max(1, Math.round(getPName(params, 'spikes', 1)));
+    const need = Math.trunc(getPName(params, 'dam', getP5(params, 0)));
+    const spikes = Math.trunc(getPName(params, 'spikes', getP6(params, 0)));
     onHostHit(ctx, piece, (hit) => {
       acc += Number(hit.damage) || Number(hit.healthDamage) || 0;
-      const n = Math.floor(acc / need);
-      if (n > 0) {
+      if (!(need > 0)) return;
+      const procs = acc / need;
+      if (procs > 0) {
         acc %= need;
-        grantStacks(ctx.player, 'spikes', spikes * n, {
+        grantStacks(ctx.player, 'spikes', spikes * procs, {
           originKey,
           originId: gid,
         });
+        pushGemMiniActivate(ctx, piece, gem, gid);
       }
     });
     return;
@@ -494,6 +505,7 @@ export function prepareGemSockets(piece, ctx) {
           id: gid,
           kind: 'wisp_armor',
           params,
+          gemPower: gemPowerForHost(gem, piece),
           remaining: Math.max(0.05, Number(gem.cooldown) || 12),
         });
       }
@@ -509,7 +521,13 @@ export function tickGemSocketEffects(piece, ctx, delta) {
     if (timer.remaining > 1e-9) continue;
     timer.done = true;
     const pct = Math.max(0, getPName(timer.params, 'maxhealth', 35)) / 100;
-    giveTempMaxHp(piece, ctx, 'wisp', pct * (Number(ctx.player.hp) || 0));
+    giveTempMaxHp(
+      piece,
+      ctx,
+      'wisp',
+      pct * (Number(ctx.player.hp) || 0) * Math.max(0, Number(timer.gemPower) || 0),
+    );
+    pushGemMiniActivate(ctx, piece, ctx.itemsById?.get?.(timer.id) || { name: timer.id }, timer.id);
   }
 }
 
