@@ -16829,9 +16829,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-scale-smoke.mjs",
+        "fixture": "Scale source primary/secondary gold-balance speed, equilibrium target speed, source integer threshold and grant parameters, lower-resource/tied Mana-versus-Regeneration cooldown branching, activation ordering, visual state, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -17950,9 +17956,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-snowball-smoke.mjs",
+        "fixture": "Snowball source preparation-time opponent max-health-gain reduction, combat-start integer Cold, source-sign handling, consume activation ordering, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

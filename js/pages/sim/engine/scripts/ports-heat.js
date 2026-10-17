@@ -58,17 +58,19 @@ export const devouringSpherePort = {
 export const snowballPort = {
   handlerId: 'snowball',
   family: 'consumable',
+  onPrepare(piece, ctx) {
+    const redPct = getPName(piece.params, 'healthreduction', getP2(piece.params, 10));
+    const malus = -redPct / 100;
+    if (malus) {
+      ctx.dummy._maxHealthGain = (Number(ctx.dummy._maxHealthGain) || 0) + malus;
+    }
+  },
   onCombatStart(piece, ctx) {
     const { t, dummy, events, player, rng } = ctx;
     const redPct = getPName(piece.params, 'healthreduction', getP2(piece.params, 10));
-    const malus = -Math.abs(redPct) / 100;
-    if (malus) {
-      dummy._maxHealthGain = (Number(dummy._maxHealthGain) || 0) + malus;
-    }
-    const cold = Math.max(1, Math.round(getPName(piece.params, 'cold', getP1(piece.params, 2))));
+    const malus = -redPct / 100;
+    const cold = Math.trunc(getPName(piece.params, 'cold', getP1(piece.params, 2)));
     gainStacks(dummy, 'cold', cold, { rng, opponent: player });
-    piece.alive = false;
-    piece.charges = 0;
     events.push({
       t,
       type: 'debuff',
@@ -89,6 +91,9 @@ export const snowballPort = {
         meta: { category: 'system', script: true, handler: 'snowball' },
       });
     }
+    pushActivate(piece, ctx, 'snowball', `${piece.name}`, { consume: true });
+    piece.alive = false;
+    piece.charges = 0;
   },
 };
 

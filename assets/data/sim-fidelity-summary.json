@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "672bb283e21af79569fc85237e63312db53318672c593062e7c213ff9103d217",
+    "dashboardSha256": "1c70f254e11f67999697cf772294138a8d14c0f049c7ee858345af4be3c07aae",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 469,
+    "verified_1to1": 471,
     "confirmed_gap": 4,
-    "evidence_pending": 31,
+    "evidence_pending": 29,
     "no_independent_combat": 15
   },
   "byId": {
@@ -397,7 +397,7 @@
     "sandbag": "verified_1to1",
     "sapphire_egg": "verified_1to1",
     "sapphire_whelp": "verified_1to1",
-    "scale": "evidence_pending",
+    "scale": "verified_1to1",
     "scholar_bag": "verified_1to1",
     "scissorswords": "verified_1to1",
     "seal_the_deal": "verified_1to1",
@@ -423,7 +423,7 @@
     "smithing_for_dummies": "verified_1to1",
     "snake": "verified_1to1",
     "snow_stick": "verified_1to1",
-    "snowball": "evidence_pending",
+    "snowball": "verified_1to1",
     "snowcake": "verified_1to1",
     "snowman": "verified_1to1",
     "snowmaster": "verified_1to1",

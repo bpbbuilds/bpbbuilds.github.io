@@ -362,7 +362,7 @@ const scalePort = {
     const c2 = linkedByColor(ctx, piece, 'secondary').reduce((s, o) => s + goldOf(ctx, o), 0);
     const per = getPName(piece.params, 'speed', getP3(piece.params, 2)) / 100;
     addSpeed(piece, per * Math.min(c1, c2));
-    const maxDif = Math.max(0, Math.round(getPName(piece.params, 'gold', getP4(piece.params, 5))));
+    const maxDif = Math.trunc(getPName(piece.params, 'gold', getP4(piece.params, 5)));
     piece._scaleState =
       Math.abs(c1 - c2) <= maxDif ? 'base' : c1 > c2 ? 'left' : 'right';
     if (piece._scaleState === 'base') {
@@ -376,15 +376,15 @@ const scalePort = {
     }
   },
   onCooldownEffect(piece, ctx) {
-    const mana = Math.max(1, Math.round(getPName(piece.params, 'mana', getP1(piece.params, 4))));
-    const regen = Math.max(1, Math.round(getPName(piece.params, 'regen', getP2(piece.params, 3))));
+    const mana = Math.trunc(getPName(piece.params, 'mana', getP1(piece.params, 4)));
+    const regen = Math.trunc(getPName(piece.params, 'regen', getP2(piece.params, 3)));
     const curM = getStackAmount(ctx.player, 'mana');
     const curR = getStackAmount(ctx.player, 'regeneration');
-    pushActivate(piece, ctx, 'scale', `Accessory: ${piece.name}`);
     let giveM = curM < curR;
     if (curR < curM) giveM = false;
     if (curM === curR) giveM = ctx.rng() < 0.5;
     grantStacks(ctx.player, giveM ? 'mana' : 'regeneration', giveM ? mana : regen, origin(piece));
+    pushActivate(piece, ctx, 'scale', `Accessory: ${piece.name}`);
     return true;
   },
 };

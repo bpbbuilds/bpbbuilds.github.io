@@ -158,6 +158,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  scale: {
+    focusedRegression: 'scripts/sim-scale-smoke.mjs',
+    fixture: 'Scale source primary/secondary gold-balance speed, equilibrium target speed, source integer threshold and grant parameters, lower-resource/tied Mana-versus-Regeneration cooldown branching, activation ordering, visual state, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  snowball: {
+    focusedRegression: 'scripts/sim-snowball-smoke.mjs',
+    fixture: 'Snowball source preparation-time opponent max-health-gain reduction, combat-start integer Cold, source-sign handling, consume activation ordering, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   amethyst_egg: {
     focusedRegression: 'scripts/sim-amethyst-egg-smoke.mjs',
     fixture: 'Amethyst Egg start trigger and recurring cooldown: source p1 random-debuff count, activation, and both board sides.',
