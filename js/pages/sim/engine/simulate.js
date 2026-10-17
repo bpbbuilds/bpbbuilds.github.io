@@ -773,6 +773,10 @@ export function simulateEngine(opts) {
         const { piece, stacks, cdOpts } = best;
         const fireT = bestFireT;
         best.firedThisStep = true;
+        // Item.trigger() arms the next iteration before invoking its
+        // doCooldownEffect(). Preserve that observable order for handlers
+        // that inspect or advance cooldown during their own effect.
+        rearmAfterTrigger(piece, stacks, rng, cdOpts);
         // grantStacks auto-log uses getT() — pin to fireT so it matches port pushes
         // (same-tick duplicates were leaf_badge / banana / lovers style doubles).
         logClockOverride = fireT;
@@ -791,9 +795,9 @@ export function simulateEngine(opts) {
           piece.triggerTime = 999;
           continue;
         }
-        rearmAfterTrigger(piece, stacks, rng, cdOpts);
         // Match prior per-piece loop: starved non-charge items still rearm, but
-        // do not spin another activation in this DT (rearm leaves triggerTime > 0).
+        // do not spin another activation in this DT (the pre-effect rearm
+        // leaves triggerTime > 0).
         if (!ok && piece.charges == null) continue;
       }
 

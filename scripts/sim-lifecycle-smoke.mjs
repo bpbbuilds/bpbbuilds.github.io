@@ -7,10 +7,12 @@
 
 import fs from 'node:fs';
 import { simulateEngine } from '../js/pages/sim/engine/simulate.js';
+import { advanceCooldownSeconds } from '../js/pages/sim/engine/cooldown.js';
 
 const catalogRaw = JSON.parse(fs.readFileSync('scripts/_cache/game-items.json', 'utf8'));
 const catalog = Array.isArray(catalogRaw) ? catalogRaw : catalogRaw.items || [];
 const catalogById = new Map(catalog.map((item) => [item.id, item]));
+const itemSource = fs.readFileSync('tools/game-extract-full/Items/Item.gd', 'utf8');
 
 const ids = [
   'wooden_sword',
@@ -43,6 +45,39 @@ function firstIndex(list, predicate) {
 }
 
 for (const id of ids) ok(itemsById.get(id), `catalog contains ${id}`);
+
+ok(
+  itemSource.indexOf('iterationCooldown = adjustCooldown()') <
+    itemSource.indexOf('doCooldownEffect()'),
+  'source Item.trigger arms the next iteration before its cooldown effect',
+);
+ok(
+  itemSource.indexOf('deactivateCooldown()') < itemSource.indexOf('consume()'),
+  'source Item.onAfterEffectFinished disables cooldown before consuming',
+);
+
+const advanceOrderPiece = {
+  alive: true,
+  cooldown: 2,
+  baseCooldown: 2,
+  triggerTime: 0,
+  speedScale: 0,
+  side: 'you',
+};
+let observedTriggerTime = null;
+advanceCooldownSeconds(advanceOrderPiece, 0.1, {
+  player: { dead: false, stacks: {} },
+  dummy: { dead: false },
+  rng: () => 0.5,
+  activatePiece(piece) {
+    observedTriggerTime = piece.triggerTime;
+    return true;
+  },
+});
+ok(
+  observedTriggerTime != null && observedTriggerTime > 0,
+  'cooldown advance observes a rearmed trigger before running the effect',
+);
 
 const you = [
   position('you', 'stone_golem', 0, 0),

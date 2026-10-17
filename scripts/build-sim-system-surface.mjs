@@ -239,8 +239,16 @@ const SURFACE = [
     source: 'Items/Item.gd',
     functions: ['prepare', 'preCombatStart', 'combatStart', 'postCombatStart', 'trigger', 'doCooldownEffect', 'onAfterEffectFinished'],
     simOwners: ['js/pages/sim/engine/simulate.js', 'js/pages/sim/engine/combat-activate.js', 'js/pages/sim/engine/cooldown.js'],
-    disposition: 'partial',
-    note: 'Opening passes are traced; prepare, signal, consumption, and cleanup coverage remains incomplete.',
+    disposition: 'implemented',
+    note: 'Prepare/socket/pre-start/start/post-start ordering, initial cooldown arming, trigger rearm-before-effect semantics, cooldown advancement, consumable one-shots, and onAfterEffectFinished lock/cleanup match the extracted Item contract; visual activation presentation remains UI-only.',
+    evidence: {
+      focusedRegression: 'scripts/sim-lifecycle-smoke.mjs',
+      fixture: 'Item.gd source-order audit, player/opponent lifecycle trace, socket and cooldown-arm ordering, rearmed trigger observation, consumable start activation, and post-start cleanup coverage.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'item-effects',

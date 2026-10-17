@@ -140,10 +140,12 @@ export function advanceCooldownSeconds(piece, amount, ctx) {
       guard < 32
     ) {
       guard += 1;
-      const ok = activate(piece, ctx);
+      // Item.trigger arms the next iteration before doCooldownEffect runs.
+      // This matters when the effect inspects or advances its own cooldown.
       rearmAfterTrigger(piece, stacks, ctx.rng, {
         opponent: piece.side === 'them',
       });
+      const ok = activate(piece, ctx);
       if (!ok && piece.charges == null) break;
     }
   } finally {
@@ -200,10 +202,11 @@ export function advanceCooldownPercent(piece, amount, ctx) {
     ) {
       guard += 1;
       if (typeof activate !== 'function') break;
-      const ok = activate(piece, ctx);
+      // Keep the source Item.trigger order: arm first, effect second.
       rearmAfterTrigger(piece, stacks, ctx.rng, {
         opponent: piece.side === 'them',
       });
+      const ok = activate(piece, ctx);
       if (!ok && piece.charges == null) break;
     }
   } finally {
