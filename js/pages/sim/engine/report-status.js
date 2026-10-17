@@ -301,9 +301,12 @@ export function summarizeStatusReport(run, itemsById) {
       const who = buffOwner(e, 'player');
       const n = Number.isFinite(amount) ? amount : 0;
       const kind =
-        e.meta?.stack === 'regeneration' || /regeneration/i.test(String(e.label))
+        e.meta?.stack === 'regeneration' ||
+        String(e.meta?.systemOrigin || '') === 'Regeneration' ||
+        /regeneration/i.test(String(e.label))
           ? 'regeneration'
-          : /vampirism/i.test(String(e.label))
+          : String(e.meta?.systemOrigin || '') === 'Vampirism' ||
+              /vampirism/i.test(String(e.label))
             ? 'vampirism'
             : /max\s*hp/i.test(String(e.label))
               ? 'maxHp'
@@ -355,10 +358,15 @@ export function summarizeStatusReport(run, itemsById) {
     if (e.type === 'damage') {
       const who = eventTarget(e, e.actor === 'dummy' ? 'player' : 'dummy');
       const n = Number.isFinite(amount) ? amount : 0;
+      const systemOrigin = String(e.meta?.systemOrigin || '');
       const kind = e.meta?.fatigue
         ? 'fatigue'
         : e.meta?.spikes
           ? 'spikes'
+          : systemOrigin === 'Poison' || e.meta?.stack === 'poison'
+            ? 'poison'
+          : systemOrigin === 'Spikes'
+            ? 'spikes'
           : e.meta?.kind === 'unhealing' ||
               e.meta?.systemOrigin === 'Unhealing' ||
               /^Unhealing\b/i.test(String(e.label || ''))

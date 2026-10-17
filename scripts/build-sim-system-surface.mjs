@@ -205,8 +205,16 @@ const SURFACE = [
     source: 'Core/CombatStatLogger.gd',
     functions: ['logCharacterStat', 'logStack', 'logItemMetric', 'getMetricAt'],
     simOwners: ['js/pages/sim/engine/report-status.js', 'js/pages/sim/log/sim-damage-meter.js'],
-    disposition: 'partial',
-    note: 'The simulator summarizes selected metrics; game-equivalent historic metric state is not fully modeled.',
+    disposition: 'implemented',
+    note: 'Character/stack/item/system metric histories are projected as event-time cumulative meter sources, status reports, and end-state snapshots; system-origin Poison/Vampirism attribution matches the source metric families.',
+    evidence: {
+      focusedRegression: 'scripts/sim-combat-stat-logger-smoke.mjs',
+      fixture: 'CombatStatLogger.gd history-map audit, placement damage, hostile Poison, Block stack, Vampirism heal, cumulative time lookup, and status-report end-state assertions.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'combat-timer',

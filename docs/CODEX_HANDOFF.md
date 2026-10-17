@@ -7011,3 +7011,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 332 - in progress
 
 - Codex owns the next partial shared surface, `combat-stat-logger`, for source-backed character/stack/item metric histories and current simulator meter/report projections. Planned paths are limited to simulator metric/report modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 332 - complete
+
+- Codex completed the CombatStatLogger parity pass: character, stack, item, and system histories are represented by cumulative event-time meter sources and status reports, and system-origin Poison/Vampirism now receives the correct source kind instead of falling through to generic dummy damage or generic healing.
+- Added `scripts/sim-combat-stat-logger-smoke.mjs`, marked `combat-stat-logger` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and reran the stat/logger, legacy log, snapshot, CombatLog, CombatEvent, stack, parity, syntax, and freshness checks. Shared mechanic totals are now 8 implemented and 13 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 333 - in progress
+
+- Codex owns the next partial shared surface, `combat-timer`, for source-backed combat clock, fatigue start/tick, and time-advance semantics. Planned paths are limited to simulator combat-time/fatigue/timing modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
