@@ -1643,6 +1643,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  holy_spear: {
+    focusedRegression: 'scripts/sim-holy-spear-smoke.mjs',
+    fixture: 'Holy Spear source prepare-time empty/Holy slot accounting, late-hit Block strip/cleansing, Mana-triggered invulnerability, timed speed/state transition, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   holy_collar: {
     focusedRegression: 'scripts/sim-holy-collar-smoke.mjs',
     fixture: 'Holy Collar source prepare-time canActivate listeners, Lucky/Regeneration-driven crit changes, chance-based source grants, mini activation, and zero-safe grant parameters.',
@@ -1653,6 +1660,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   hyper_hedgehog: {
     focusedRegression: 'scripts/sim-hyper-hedgehog-smoke.mjs',
     fixture: 'Hyper Hedgehog source inherited low-health trigger, exact Spikes/Block/Empower grants, fixed min-damage effect scaling from current stacks, activation ordering, priority, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  hungry_blade: {
+    focusedRegression: 'scripts/sim-hungry-blade-smoke.mjs',
+    fixture: 'Hungry Blade source prepare-time Vampirism listener, combat-start Vampirism/activation, exact max-damage reaction, successful-hit Regeneration conversion, miss handling, and zero-safe parameters.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',

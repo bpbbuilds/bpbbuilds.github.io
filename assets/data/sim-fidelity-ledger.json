@@ -10218,9 +10218,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-holy-spear-smoke.mjs",
+        "fixture": "Holy Spear source prepare-time empty/Holy slot accounting, late-hit Block strip/cleansing, Mana-triggered invulnerability, timed speed/state transition, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -10256,9 +10262,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-hungry-blade-smoke.mjs",
+        "fixture": "Hungry Blade source prepare-time Vampirism listener, combat-start Vampirism/activation, exact max-damage reaction, successful-hit Regeneration conversion, miss handling, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

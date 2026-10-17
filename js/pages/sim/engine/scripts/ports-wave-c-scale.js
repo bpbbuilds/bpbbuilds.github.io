@@ -22,7 +22,7 @@ import {
 import { gainStacks, loseStacks } from '../stacks.js';
 import { modifiedParamValue } from '../placement-instance.js';
 import { eventSideForPiece } from '../vs-board.js';
-import { itemHasType } from './ports-util.js';
+import { itemHasType, pushActivate } from './ports-util.js';
 import { applyEffectDmgFactor } from '../actor-stats.js';
 import { effectiveChance } from '../chance.js';
 import { rollItemChance, weaponStrike } from './ports-wave-c-util.js';
@@ -305,70 +305,77 @@ export const fancyFencingRapierPort = {
 export const hungryBladePort = {
   handlerId: 'hungry_blade',
   family: 'on_hit',
-  onCombatStart(piece, ctx) {
-    const vamp = Math.max(1, Math.round(getP1(piece.params, 2)));
+  onPrepare(piece, ctx) {
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'vampirism' || !ch.amount) return;
       piece.damageMax = (Number(piece.damageMax) || 0) + ch.amount;
     });
+  },
+  onCombatStart(piece, ctx) {
+    const vamp = Math.trunc(getP1(piece.params, 0));
     grantStacks(ctx.player, 'vampirism', vamp, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
+    pushActivate(piece, ctx, 'hungry_blade', `Weapon: ${piece.name}`);
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'hungry_blade');
   },
   // HungryBlade.gd onPreDealDamage_early: regen→vamp after hit, before damage/vamp heal.
   onPreDealDamageEarly(piece, ctx, res) {
-    if (res && !res.hit) return;
-    const need = Math.max(1, Math.round(getP2(piece.params, 2)));
+    if (!res?.hit) return;
+    const need = Math.trunc(getP2(piece.params, 0));
     if ((ctx.player.stacks.regeneration || 0) < need) return;
     useRegeneration(ctx.player, need, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     const side = eventSideForPiece(piece);
-    const useId = ctx.logChain?.nextId?.() ?? null;
-    ctx.events.push({
-      t: ctx.t,
-      type: 'buff',
-      target: side,
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      amount: -need,
-      label: `${piece.name}: spent ${need} Regeneration`,
-      meta: {
-        category: 'buff',
-        stack: 'regeneration',
-        used: true,
-        script: true,
-        handler: 'hungry_blade',
-        ...(useId != null ? { eventId: useId } : {}),
-      },
-    });
-    const vamp = Math.max(1, Math.round(getP3(piece.params, 1)));
+    const useId = need ? ctx.logChain?.nextId?.() ?? null : null;
+    if (need) {
+      ctx.events.push({
+        t: ctx.t,
+        type: 'buff',
+        target: side,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        amount: -need,
+        label: `${piece.name}: spent ${need} Regeneration`,
+        meta: {
+          category: 'buff',
+          stack: 'regeneration',
+          used: true,
+          script: true,
+          handler: 'hungry_blade',
+          ...(useId != null ? { eventId: useId } : {}),
+        },
+      });
+    }
+    const vamp = Math.trunc(getP3(piece.params, 0));
     grantStacks(ctx.player, 'vampirism', vamp, {
       originKey: piece.placementKey,
       originId: piece.itemId,
       silentLog: true,
     });
-    ctx.events.push({
-      t: ctx.t,
-      type: 'buff',
-      target: side,
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      amount: vamp,
-      label: `${piece.name}: +${vamp} Vampirism (spent Regeneration)`,
-      meta: {
-        category: 'buff',
-        stack: 'vampirism',
-        script: true,
-        handler: 'hungry_blade',
-        ...(useId != null ? { parentId: useId } : {}),
-      },
-    });
+    if (vamp) {
+      ctx.events.push({
+        t: ctx.t,
+        type: 'buff',
+        target: side,
+        itemId: piece.itemId,
+        placementKey: piece.placementKey,
+        amount: vamp,
+        label: `${piece.name}: +${vamp} Vampirism (spent Regeneration)`,
+        meta: {
+          category: 'buff',
+          stack: 'vampirism',
+          script: true,
+          handler: 'hungry_blade',
+          ...(useId != null ? { parentId: useId } : {}),
+        },
+      });
+    }
   },
 };
 

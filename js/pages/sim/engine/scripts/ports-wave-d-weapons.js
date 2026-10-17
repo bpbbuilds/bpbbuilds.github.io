@@ -75,22 +75,88 @@ function countPred(ctx, piece, pred) {
 export const holySpearPort = {
   handlerId: 'holy_spear',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const empty = countEmptyAffectCells(ctx, piece);
     const holy = countType(ctx, piece, 'holy');
     const slots = empty + holy;
-    const per = Math.max(1, Math.round(getPName(piece.params, 'blockremoval', getP1(piece.params, 2))));
+    const per = Math.trunc(getPName(piece.params, 'blockremoval', getP1(piece.params, 0)));
     piece._blockStrip = per * slots;
     piece._cleanses = slots;
     piece._spearState = 'Inactive';
+    piece._spearUsedAt = null;
+
+    const manaCost = Math.trunc(getPName(piece.params, 'manat', getP2(piece.params, 0)));
+    const eventTime = (payload = null) => {
+      if (Number.isFinite(Number(payload?.t))) return Number(payload.t);
+      if (Number.isFinite(Number(piece._lastSimT))) return Number(piece._lastSimT);
+      return Number(ctx.t) || 0;
+    };
+    const tryTrigger = (nowT = eventTime(), triggerEvent = null) => {
+      const at = Number(nowT) || 0;
+      if (piece._spearState !== 'Inactive') return;
+      if (isInvulnerable(ctx.player, at)) return;
+      if ((ctx.player.stacks.mana || 0) < manaCost) return;
+
+      // HolySpear.gd sets Active and creates invulnerability before spending
+      // Mana. The source timer then owns the Active -> Used transition.
+      piece._spearState = 'Active';
+      const baseDuration = getPName(
+        piece.params,
+        'dur_invu',
+        getPName(piece.params, 'dur_invuln', getP4(piece.params, 0)),
+      );
+      const duration = modifiedParamValue(piece, baseDuration, 'dur_invu');
+      grantInvuln(ctx.player, duration, at, {
+        sourceId: piece.itemId,
+        sourceKey: piece.placementKey,
+        bus: ctx.bus,
+      });
+      piece._spearWasInvulnerable = isInvulnerable(ctx.player, at);
+      piece._spearUsedAt = at + Math.max(0, duration);
+      useMana(ctx.player, manaCost, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+        triggerEvent,
+      });
+      const speed = getPName(piece.params, 'speed', getP3(piece.params, 0)) / 100;
+      grantTimedSpeed(piece, speed, piece._spearUsedAt, 'holy_spear');
+    };
+    piece._tryHolySpear = tryTrigger;
+    piece._spearWasInvulnerable = isInvulnerable(ctx.player, Number(ctx.t) || 0);
+    piece._holySpearTick = (nowT) => {
+      const at = Number(nowT) || 0;
+      piece._lastSimT = at;
+      if (piece._spearState === 'Active' && piece._spearUsedAt != null && at >= piece._spearUsedAt) {
+        piece._spearState = 'Used';
+      }
+      const was = piece._spearWasInvulnerable;
+      const current = isInvulnerable(ctx.player, at);
+      piece._spearWasInvulnerable = current;
+      if (was && !current) tryTrigger(at, { actor: ctx.player, t: at, reason: 'invulnerable_end' });
+    };
+    onBuffChanged(ctx.player, (change) => {
+      if (change.stack !== 'mana') return;
+      tryTrigger(eventTime(), change);
+    });
+    ctx.bus?.on?.('character_mana_changed', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      tryTrigger(eventTime(payload), payload);
+    });
+    ctx.bus?.on?.('character_invulnerable_end', (payload = {}) => {
+      if (payload.actor && payload.actor !== ctx.player) return;
+      tryTrigger(eventTime(payload), payload);
+    });
+  },
+  onTick(piece, ctx) {
+    piece._holySpearTick?.(ctx.t);
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'holy_spear');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageLate(piece, ctx, hit) {
     if (hit?.hit) {
       if (piece._blockStrip) removeBlock(ctx.dummy, piece._blockStrip, ctx, piece);
-      const n = Math.max(0, piece._cleanses || 0);
+      const n = Math.trunc(piece._cleanses || 0);
       if (n) {
         cleanseRandomDebuffs(ctx.player, n, ctx.rng, {
           originKey: piece.placementKey,
@@ -98,23 +164,6 @@ export const holySpearPort = {
         });
       }
     }
-    if (piece._spearState !== 'Inactive') return;
-    if (isInvulnerable(ctx.player, ctx.t)) return;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'manat', getP2(piece.params, 4))));
-    if ((ctx.player.stacks.mana || 0) < need) return;
-    useMana(ctx.player, need, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    const dur = Math.max(0.5, getPName(piece.params, 'dur_invu', getPName(piece.params, 'dur_invuln', 1)));
-    grantInvuln(ctx.player, dur, ctx.t, {
-      sourceId: piece.itemId,
-      sourceKey: piece.placementKey,
-      bus: ctx.bus,
-    });
-    const speed = getPName(piece.params, 'speed', getP3(piece.params, 10)) / 100;
-    grantTimedSpeed(piece, speed, ctx.t + dur, 'holy_spear');
-    piece._spearState = 'Used';
   },
 };
 

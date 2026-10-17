@@ -6490,3 +6490,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 273 - in progress
 
 - Codex owns the next retained Holy Spear and Hungry Blade fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-holy-spear-smoke.mjs`, `scripts/sim-hungry-blade-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 273 - complete
+
+- Codex repaired Holy Spear to mirror source prepare-time empty/Holy slot accounting, late successful-hit Block stripping and random debuff cleansing, Mana and invulnerability-end trigger listeners, exact source invulnerability duration modification, temporary speed/state timing, and explicit zero parameters. Hungry Blade now mirrors source prepare-time Vampirism listening, combat-start Vampirism and non-consuming activation, exact Vampirism-to-max-damage reaction, successful-hit-only Regeneration conversion, and explicit zero parameters.
+- Added `scripts/sim-holy-spear-smoke.mjs` and `scripts/sim-hungry-blade-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 405 / 519 verified item rows. Both focused tests, parity systems, verified-coverage, coverage-honesty, changed-module syntax, ledger/dashboard freshness checks, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 405 verified, 92 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Katana and Laboratory; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 274 - in progress
+
+- Codex owns the next retained Katana and Laboratory fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-katana-smoke.mjs`, `scripts/sim-laboratory-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
