@@ -327,17 +327,12 @@ export function takeDamage(defender, attacker, src) {
   }
 
   defender.hp = Math.max(0, defender.hp - res.healthDamage);
-  if (defender.hp <= 0) {
-    emitCharacterDamaged();
-    // Character listeners may reincarnate during character_damaged before
-    // Character.takeDamage() reaches its final death() check.
-    if (defender.hp <= 0) {
-      markActorDead(defender, src.deathReason || 'damage', src.nowT ?? defender._simT);
-    }
-  } else {
-    emitCharacterDamaged();
-  }
 
+  // Character.gd emits `character_attacked` before `character_damaged`.
+  // Shield.gd listens to that first signal and runs afterBlock (plus its
+  // blocked notification) before any character-damaged listener can react.
+  // Keep the shared bus in the same phase order; threshold items can observe
+  // the post-block state only after the shield reaction has completed.
   if (shieldHit) {
     const damblockRaw =
       typeof shieldHit.getDamblock === 'function'
@@ -357,6 +352,17 @@ export function takeDamage(defender, attacker, src) {
       console.error('[sim] shield afterBlock', err);
     }
     src.bus?.emit?.('afterBlock', payload);
+  }
+
+  if (defender.hp <= 0) {
+    emitCharacterDamaged();
+    // Character listeners may reincarnate during character_damaged before
+    // Character.takeDamage() reaches its final death() check.
+    if (defender.hp <= 0) {
+      markActorDead(defender, src.deathReason || 'damage', src.nowT ?? defender._simT);
+    }
+  } else {
+    emitCharacterDamaged();
   }
 
   // Spikes reflect (melee limit 1.0 → full spikes stacks, capped by damage * limit)

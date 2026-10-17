@@ -12,10 +12,12 @@ import { createCombatBus } from '../js/pages/sim/engine/combat-bus.js';
 import { dealDamage, takeDamage } from '../js/pages/sim/engine/damage.js';
 
 const source = fs.readFileSync('tools/game-extract-full/Core/Character.gd', 'utf8');
+const shieldSource = fs.readFileSync('tools/game-extract-full/Items/Shield.gd', 'utf8');
 assert.match(source, /EventBus\.emitSignal\(self, "pre_take_damage"[\s\S]*damageRes\.damage -= damageRes\.damageReduction/);
 assert.match(source, /EventBus\.emitSignal\(self, "pre_take_damage_late"[\s\S]*damageRes\.healthDamage = damageRes\.damage/);
 assert.match(source, /if damageSource\.canBeBlocked\(\):[\s\S]*loseBlock\(curBlock\)[\s\S]*curHealth -= damageRes\.healthDamage/);
-assert.match(source, /EventBus\.emitSignal\(self, "character_damaged"[\s\S]*if curHealth <= 0:[\s\S]*death\(\)/);
+assert.match(source, /EventBus\.emitEvent\(self, "character_attacked"[\s\S]*EventBus\.emitSignal\(self, "character_damaged"[\s\S]*if curHealth <= 0:[\s\S]*death\(\)/);
+assert.match(shieldSource, /onCharacterAttacked[\s\S]*afterBlock\(\)[\s\S]*EventBus\.emitSignal\(self, "blocked"/);
 assert.match(source, /applySpikes\(damageRes\)[\s\S]*return damageRes/);
 
 const attacker = createActor('player', { maxHp: 100 });
@@ -47,6 +49,37 @@ assert.equal(reduced.blocked, 3, 'Block consumes the post-reduction amount');
 assert.equal(reduced.healthDamage, 3, 'health damage is separated from blocked damage');
 assert.equal(defender.hp, 97, 'damage applies only remaining health damage');
 assert.deepEqual(order.at(-1), ['damaged', true, 3], 'character_damaged carries the final hit result');
+
+const shieldOrder = [];
+const shieldBus = createCombatBus();
+const shieldAttacker = createActor('player', { maxHp: 100 });
+const shieldDefender = createActor('dummy', { maxHp: 100 });
+shieldDefender._combatBus = shieldBus;
+shieldDefender._shields = [{
+  piece: { itemId: 'test_shield', placementKey: 'test_shield:0' },
+  chance: 100,
+  canBlockDamageRes: () => true,
+  getDamblock: () => 0,
+  beforeBlock: () => shieldOrder.push('beforeBlock'),
+  afterBlock: () => shieldOrder.push('afterBlock'),
+}];
+shieldBus.on('character_damaged', () => shieldOrder.push('character_damaged'));
+takeDamage(shieldDefender, shieldAttacker, {
+  amount: 5,
+  canMiss: false,
+  canCrit: false,
+  canBlock: true,
+  isAttack: true,
+  isMelee: true,
+  nowT: 1,
+  bus: shieldBus,
+  rng: () => 0,
+});
+assert.deepEqual(
+  shieldOrder,
+  ['beforeBlock', 'afterBlock', 'character_damaged'],
+  'shield afterBlock runs from character_attacked before character_damaged listeners',
+);
 
 const missedSignals = [];
 const missBus = createCombatBus();
