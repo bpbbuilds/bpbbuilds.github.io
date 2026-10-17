@@ -157,12 +157,12 @@ export const burningSpikesPort = {
           originKey: piece.placementKey,
           originId: piece.itemId,
         });
-          ctx.events.push({
-            t: ctx.t,
-            type: 'buff',
+        ctx.events.push({
+          t: ctx.t,
+          type: 'buff',
           actor: eventSideForPiece(piece),
           target: eventSideForPiece(piece),
-            amount: give,
+          amount: give,
           label: `${piece.name}: +${give} Heat`,
           meta: { category: 'buff', stack: 'heat', script: true, handler: 'burning_spikes' },
         });
@@ -550,7 +550,7 @@ export const amuletOfSteelPort = {
     const need = Math.max(1, Math.round(getPName(piece.params, 'blockt', 10)));
     const empPer = Math.max(1, Math.round(getPName(piece.params, 'empower', 1)));
     piece._steelState = { gained: 0, used: 0 };
-    onBuffChanged(player, (ch) => {
+    const onBlockGiven = (ch = {}) => {
       if (ch.stack !== 'block' || !(ch.amount > 0)) return;
       if (!ch.originKey || !blockers.has(ch.originKey)) return;
       const ticks = advanceBuffThresholds(piece._steelState, ch.amount, need, need);
@@ -569,7 +569,9 @@ export const amuletOfSteelPort = {
           meta: { category: 'buff', stack: 'empower', script: true, handler: 'amulet_of_steel' },
         });
       }
-    });
+    };
+    if (ctx.bus?.on) ctx.bus.on('item_gave_block', onBlockGiven);
+    else onBuffChanged(player, onBlockGiven);
   },
   onCombatStart(piece, ctx) {
     const { player } = ctx;

@@ -221,10 +221,12 @@ const moonShieldPort = {
       piece._blk %= need;
       grantStacks(ctx.player, 'mana', mana, origin(piece));
     };
-    ctx.bus?.on?.('character_block_changed', (change = {}) => {
-      if (change.actor !== ctx.player) return;
+    const onBlockGiven = (change = {}) => {
+      if (change.actor && change.actor !== ctx.player) return;
       countBlock(Number(change.amount) || 0, change.originKey);
-    });
+    };
+    if (ctx.bus?.on) ctx.bus.on('item_gave_block', onBlockGiven);
+    else onBuffChanged(ctx.player, onBlockGiven);
     registerShield(piece, ctx, {
       canBlockDamageRes: (res) =>
         Boolean(res?.hit && res.damageSource?.isAttack !== false && res.damageSource?.canTriggerItems !== false),
@@ -405,7 +407,7 @@ const sunShieldPort = {
     const linkedKeys = new Set(linked(ctx, piece).map((target) => target.placementKey));
     const blockPerTick = Math.max(1, Math.trunc(getP3(piece.params, 1)));
     const damagePerTick = Math.trunc(getP4(piece.params, 0));
-    onBuffChanged(ctx.player, (change) => {
+    const onBlockGiven = (change = {}) => {
       if (change.stack !== 'block' || !(change.amount > 0)) return;
       if (!linkedKeys.has(change.originKey)) return;
       piece._blk += change.amount;
@@ -429,7 +431,9 @@ const sunShieldPort = {
         label: `${piece.name}: mini activate`,
         meta: { category: 'system', script: true, handler: 'sun_shield', miniActivate: true },
       });
-    });
+    };
+    if (ctx.bus?.on) ctx.bus.on('item_gave_block', onBlockGiven);
+    else onBuffChanged(ctx.player, onBlockGiven);
   },
   onCombatStart(piece, ctx) {
     if (!piece._sunShieldPrepared) this.onPrepare(piece, ctx);

@@ -7038,3 +7038,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 335 - in progress
 
 - Codex owns the next partial shared surface, `item-effects`, for source-backed block/stack/random-buff/debuff/charge helper coverage and event-order review. Planned paths are limited to simulator effect/stack/charge modules, a focused regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 335 - complete
+
+- Codex completed the Item helper parity pass: block grants now expose a distinct item-level `item_gave_block` signal after the stack grant, and Moon Shield, Amulet of Steel, Sun Shield, and Smelly Barrier consume that signal instead of generic block changes; direct handler fixtures retain a no-bus fallback. Buff-power rounding, protection-aware stack theft, deterministic random buff/debuff selection, and charge receive/leave sequencing match the extracted helpers.
+- Added `scripts/sim-item-effects-smoke.mjs`, updated the Moon Shield regression, marked `item-effects` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and ran the helper, block-reactive item, lifecycle, parity, timer, syntax, and freshness checks. Shared mechanic totals are now 11 implemented and 10 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 336 - in progress
+
+- Codex owns the next partial shared surface, `gem-lifecycle`, for source-backed gem prepare, host-mode, combat-start, and socketed effect ordering review. Planned paths are limited to simulator gem/socket modules, a focused regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

@@ -7282,8 +7282,8 @@
   },
   "totals": {
     "surfaces": 21,
-    "implemented": 10,
-    "partial": 11,
+    "implemented": 11,
+    "partial": 10,
     "unmapped": 0,
     "unsupported": 0,
     "sourceFunctions": 1439,
@@ -8400,11 +8400,28 @@
       ],
       "simOwners": [
         "js/pages/sim/engine/buff-economy.js",
+        "js/pages/sim/engine/stacks.js",
         "js/pages/sim/engine/charge-delivery.js",
         "js/pages/sim/engine/scripts"
       ],
-      "disposition": "partial",
-      "note": "The helpers are distributed across ports; a helper-to-event completeness audit is still required.",
+      "disposition": "implemented",
+      "note": "Block power rounding, item-level block signals, stack gain/steal protection, random buff/debuff selection, and charge receive/leave sequencing match the extracted helper contract; visual charge travel remains UI-only.",
+      "evidence": {
+        "focusedRegression": "scripts/sim-item-effects-smoke.mjs",
+        "fixture": "Item.gd helper source audit, buff-power block rounding, item_gave_block signal, protected stack theft, deterministic random pools, charge delivery, and charge leave assertions.",
+        "projections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
       "sourceFunctions": [
         {
           "name": "giveBlock",

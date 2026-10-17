@@ -136,6 +136,18 @@ export function grantStacks(actor, stack, amount, opts = {}) {
     logBlockedStacks(actor, stack, g.reflected, 'reflected', opts);
   }
   if (g.gained > 0) {
+    // Item.giveBlock emits an item-level `gave_block` signal after the stack
+    // grant. Keep that boundary distinct from Character's generic block-change
+    // signal so block-reactive items do not consume unrelated block changes.
+    if (stack === 'block') {
+      actor._combatBus?.emit?.('item_gave_block', {
+        actor,
+        stack: 'block',
+        amount: g.gained,
+        originKey: opts.originKey ?? opts.piece?.placementKey ?? opts.origin?.placementKey ?? null,
+        originId: opts.originId ?? opts.piece?.itemId ?? opts.origin?.itemId ?? null,
+      });
+    }
     const originId = opts.originId ?? opts.originKey ?? null;
     if (originId) {
       if (!actor.stackGrantByOrigin) actor.stackGrantByOrigin = {};

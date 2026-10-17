@@ -31,7 +31,7 @@ assert.match(shieldSource, /func canBlockDamageRes\(damageRes: DamageResult\) ->
 assert.match(moonPort, /handlerId: 'moon_shield'/);
 assert.match(moonPort, /onPrepare\(piece, ctx\)/);
 assert.match(moonPort, /giveBuffPower\(o, 'block', fac\)/);
-assert.match(moonPort, /character_block_changed/);
+assert.match(moonPort, /item_gave_block/);
 assert.match(moonPort, /canBlockDamageRes:/);
 assert.match(damage, /canBlockDamageRes\?: \(res: DamageResult\) => boolean/);
 assert.match(damage, /typeof sh\.canBlockDamageRes === 'function'/);

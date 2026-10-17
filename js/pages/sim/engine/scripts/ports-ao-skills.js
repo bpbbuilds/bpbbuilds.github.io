@@ -691,7 +691,7 @@ const smellyBarrierPort = {
     piece._smellyBlockers = new Set(
       links.filter((o) => o.itemId !== 'garlic').map((o) => o.placementKey),
     );
-    onBuffChanged(ctx.player, (ch) => {
+    const onBlockGiven = (ch = {}) => {
       if (ch.stack !== 'block' || !(ch.amount > 0)) return;
       if (!piece._smellyBlockers?.has(ch.originKey)) return;
       piece._blk += ch.amount;
@@ -703,7 +703,9 @@ const smellyBarrierPort = {
         originId: piece.itemId,
       });
       pushActivate(piece, ctx, 'smelly_barrier', `Skill: ${piece.name}`);
-    });
+    };
+    if (ctx.bus?.on) ctx.bus.on('item_gave_block', onBlockGiven);
+    else onBuffChanged(ctx.player, onBlockGiven);
     for (const o of links) {
       if (o.itemId === 'garlic' && bonus) {
         o.blockGrant = (Number(o.blockGrant) || 0) + bonus;

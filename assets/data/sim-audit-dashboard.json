@@ -6,7 +6,7 @@
     "itemLedgerSha256": "5c8ddac1e269863a1001c879b9a6ca4e918910f9174ac7b73468a7558665185f",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
-    "systemSurfaceSha256": "4591c82aa53fc1301271fa5617cd64e066b9d07dea811ecfd3e021ae77c6ad04",
+    "systemSurfaceSha256": "1ea125e075669155b0d261b871ba86de3a3eff57c5bca363b08cde013e6f4966",
     "systemExtractFiles": {
       "Core/Buff.gd": "3efabb72eb0b337e30ebc924347aba40bd1039a3c5f718b761b0ee78b48ab8bb",
       "Core/Character.gd": "dc372965eaa048657caa1646d70aba85ff9b4b9677565eaa480bc195de027496",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 514,
+    "verified_1to1": 515,
     "confirmed_gap": 0,
-    "evidence_pending": 11,
+    "evidence_pending": 10,
     "no_independent_combat": 15
   },
   "items": [
@@ -24225,9 +24225,9 @@
       "id": "item-effects",
       "name": "item effects",
       "category": "item-base",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is partial, but the retained 1:1 proof is incomplete.",
-      "sourceStatus": "partial",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
+      "sourceStatus": "implemented",
       "source": "Items/Item.gd",
       "functions": [
         "giveBlock",
@@ -24241,12 +24241,28 @@
       "simulator": {
         "owners": [
           "js/pages/sim/engine/buff-economy.js",
+          "js/pages/sim/engine/stacks.js",
           "js/pages/sim/engine/charge-delivery.js",
           "js/pages/sim/engine/scripts"
         ]
       },
-      "evidence": null,
-      "knownDelta": "The helpers are distributed across ports; a helper-to-event completeness audit is still required."
+      "evidence": {
+        "focusedRegression": "scripts/sim-item-effects-smoke.mjs",
+        "fixture": "Item.gd helper source audit, buff-power block rounding, item_gave_block signal, protected stack theft, deterministic random pools, charge delivery, and charge leave assertions.",
+        "projections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
+      "knownDelta": "Block power rounding, item-level block signals, stack gain/steal protection, random buff/debuff selection, and charge receive/leave sequencing match the extracted helper contract; visual charge travel remains UI-only."
     },
     {
       "scope": "mechanic",
