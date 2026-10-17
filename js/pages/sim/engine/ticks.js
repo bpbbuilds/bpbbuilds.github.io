@@ -10,7 +10,7 @@ import { applyDamageToActor, healActor, requestedHealAmount } from './actor.js';
  * @param {number} tickCounter
  * @param {import('../sim-events.js').SimEvent[]} events
  */
-export function runCharacterTick(actor, t, tickCounter, events) {
+export function runCharacterTick(actor, t, tickCounter, events, rng) {
   if (actor.dead) return;
 
   if (tickCounter % 2 === 0) {
@@ -44,7 +44,17 @@ export function runCharacterTick(actor, t, tickCounter, events) {
     const poison = actor.stacks.poison;
     if (poison > 0) {
       // Poison ignores block (Character.onTick → poison DamageSource)
-      const res = applyDamageToActor(actor, poison, { ignoreBlock: true });
+      let critical = false;
+      let critChance = Math.max(0, Math.min(100, Number(actor.poisonCritChance) || 0));
+      critChance = Math.max(0, critChance - (Number(actor.critResistance) || 0));
+      if (critChance > 0 && typeof rng === 'function' && rng() * 100 < critChance) {
+        if ((Number(actor.critResistStacks) || 0) > 0) {
+          actor.critResistStacks -= 1;
+        } else {
+          critical = true;
+        }
+      }
+      const res = applyDamageToActor(actor, critical ? Math.round(poison * 2) : poison, { ignoreBlock: true });
       events.push({
         t,
         type: 'debuff',
@@ -56,6 +66,7 @@ export function runCharacterTick(actor, t, tickCounter, events) {
           stack: 'poison',
           category: 'dot',
           systemOrigin: 'Poison',
+          critical,
           playerHp: actor.id === 'player' ? actor.hp : undefined,
           dummyHp: actor.id === 'dummy' ? actor.hp : undefined,
         },

@@ -131,6 +131,7 @@ export function createActor(id, opts = {}) {
     rangedSpikesLimit: 0,
     effectSpikesLimit: 0,
     _spikesCritChance: 0,
+    poisonCritChance: 0,
     meleeVampirismLimit: 1,
     rangedVampirismLimit: 0,
     stackResist: {},

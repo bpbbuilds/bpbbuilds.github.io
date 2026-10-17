@@ -366,25 +366,34 @@ export const lightsaberPort = {
 export const pandamoniumPort = {
   handlerId: 'pandamonium',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
-    const pois = Math.max(1, Math.round(getP1(piece.params, 1)));
-    // Gap: opponent poisonCritChance not on dummy — food poison only
-    ctx.bus?.on?.('piece_activated', (payload) => {
-      const src = payload?.piece;
-      if (!src || src === piece) return;
-      if (!itemHasType(ctx.itemsById.get(src.itemId), 'food')) return;
-      grantStacks(ctx.dummy, 'poison', pois, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-    });
+  onPrepare(piece, ctx) {
+    const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+    const foodKeys = new Set(
+      (ctx.pieces || [])
+        .filter((other) => links.some((link) => link.key === other.placementKey))
+        .filter((other) => itemHasType(ctx.itemsById.get(other.itemId), 'food'))
+        .map((other) => other.placementKey),
+    );
+    piece._pandamoniumFoodKeys = foodKeys;
+    const sourceChance = ctx.itemsById.get(piece.itemId)?.chance;
+    const chance = Number.isFinite(Number(sourceChance))
+      ? Number(sourceChance)
+      : Number.isFinite(Number(piece.chance))
+        ? Number(piece.chance)
+        : 0;
+    if (foodKeys.size && chance) {
+      ctx.dummy.poisonCritChance =
+        (Number(ctx.dummy.poisonCritChance) || 0) + foodKeys.size * chance;
+    }
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'pandamonium');
   },
   onPeerActivated(listener, activated, ctx) {
-    if (!itemHasType(ctx.itemsById.get(activated.itemId), 'food')) return;
-    grantStacks(ctx.dummy, 'poison', Math.max(1, Math.round(getP1(listener.params, 1))), {
+    if (!listener._pandamoniumFoodKeys?.has(activated?.placementKey)) return;
+    const pois = Math.trunc(getP1(listener.params, 0));
+    if (!(pois > 0)) return;
+    grantStacks(ctx.dummy, 'poison', pois, {
       originKey: listener.placementKey,
       originId: listener.itemId,
     });

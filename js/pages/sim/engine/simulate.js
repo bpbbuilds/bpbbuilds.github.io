@@ -891,8 +891,8 @@ export function simulateEngine(opts) {
       tickAccum -= TICK_INTERVAL;
       const tickT = t;
       const beforeLen = events.length;
-      runCharacterTick(player, tickT, tickCounter, events);
-      runCharacterTick(dummy, tickT, tickCounter, events);
+      runCharacterTick(player, tickT, tickCounter, events, rng);
+      runCharacterTick(dummy, tickT, tickCounter, events, rng);
       flushUnloggedHeal(player, events, tickT);
       flushUnloggedHeal(dummy, events, tickT);
       if (events.length > beforeLen) {

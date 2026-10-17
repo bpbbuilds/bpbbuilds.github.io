@@ -1251,6 +1251,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  pan: {
+    focusedRegression: 'scripts/sim-pan-smoke.mjs',
+    fixture: 'Pan source pre-combat linked Food count, exact per-Food bonus damage, weapon cooldown inheritance, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  pandamonium: {
+    focusedRegression: 'scripts/sim-pandamonium-smoke.mjs',
+    fixture: 'Pandamonium source preparation-time linked Food activation listeners, poison amount, opponent poison-crit chance, one-trigger ordering, and poison critical ticks.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

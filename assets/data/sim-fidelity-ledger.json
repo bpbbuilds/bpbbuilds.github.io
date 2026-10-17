@@ -13354,9 +13354,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-pan-smoke.mjs",
+        "fixture": "Pan source pre-combat linked Food count, exact per-Food bonus damage, weapon cooldown inheritance, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -13390,9 +13396,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-pandamonium-smoke.mjs",
+        "fixture": "Pandamonium source preparation-time linked Food activation listeners, poison amount, opponent poison-crit chance, one-trigger ordering, and poison critical ticks.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
