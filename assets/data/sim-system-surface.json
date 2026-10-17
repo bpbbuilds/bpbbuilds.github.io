@@ -1207,37 +1207,37 @@
         {
           "name": "getParam",
           "bodyHash": "d41db0bc031669941b69f7db3a6fee6fdbdc9b9c51cb26977102dbf99457d349",
-          "reviewed": false
+          "reviewed": true
         },
         {
           "name": "getAmount",
           "bodyHash": "5619a8d3cf0cae8ecb03f54d94bad19cc83341e9217f15348cc9cf89bf9957eb",
-          "reviewed": false
+          "reviewed": true
         },
         {
           "name": "getAmountWithDefault",
           "bodyHash": "48976255b805f97c61d739c80365757edb0af56880a2e9c26f8f3f6e82529fbd",
-          "reviewed": false
+          "reviewed": true
         },
         {
           "name": "hasParam",
           "bodyHash": "b953dfe7386863bcc2966cf411b90bbfce5e57f311ba52bcfda8d8c3f3a2a772",
-          "reviewed": false
+          "reviewed": true
         },
         {
           "name": "getMainActor",
           "bodyHash": "a1e16099907b246b8ae7f745f2d22ca0551c593c3ca50ab17d528743d9b7a2a4",
-          "reviewed": false
+          "reviewed": true
         },
         {
           "name": "getOrigin",
           "bodyHash": "fea2671fc3f85fe75259bc2a7728479cf1751ae00bf1995a1613facfba78aa89",
-          "reviewed": false
+          "reviewed": true
         },
         {
           "name": "fromCharacter",
           "bodyHash": "0bf7a8fbf3feedf29d23489caa5767aed3fa00ef5d0406f1ce454f0e3e620ccf",
-          "reviewed": false
+          "reviewed": true
         },
         {
           "name": "getDepth",
@@ -7282,13 +7282,13 @@
   },
   "totals": {
     "surfaces": 21,
-    "implemented": 4,
-    "partial": 17,
+    "implemented": 5,
+    "partial": 16,
     "unmapped": 0,
     "unsupported": 0,
     "sourceFunctions": 1439,
-    "reviewedFunctions": 90,
-    "unreviewedFunctions": 1349
+    "reviewedFunctions": 97,
+    "unreviewedFunctions": 1342
   },
   "rows": [
     {
@@ -7898,6 +7898,13 @@
         "_init",
         "setTarget",
         "setParam",
+        "getParam",
+        "getAmount",
+        "getAmountWithDefault",
+        "hasParam",
+        "getMainActor",
+        "getOrigin",
+        "fromCharacter",
         "getDepth",
         "asText"
       ],
@@ -7905,8 +7912,24 @@
         "js/pages/sim/sim-events.js",
         "js/pages/sim/engine/log-chain.js"
       ],
-      "disposition": "partial",
-      "note": "Causal ids exist for some paths, but the complete origin/parameter/phase contract is not required by all events.",
+      "disposition": "implemented",
+      "note": "Canonical event projection now preserves source-like ids, parent depth, origin kind, main actor, target formatting, phase, and combat parameters for every event consumed by log, meter, HUD, and export paths.",
+      "evidence": {
+        "focusedRegression": "scripts/sim-event-contract-smoke.mjs",
+        "fixture": "CombatEvent.gd method audit plus causal stack chain, item/system origin, target formatting, damage flags, log, meter, HUD, scrub, and export corpus.",
+        "projections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
       "sourceFunctions": [
         {
           "name": "_init",
@@ -7928,6 +7951,55 @@
         {
           "name": "setParam",
           "bodyHash": "a266a28cd99a5bfd24b1bee62272b9174633878ca6c8dd124df5424f1d2fa68f",
+          "emittedSignals": [],
+          "eventTypes": [],
+          "logConstants": []
+        },
+        {
+          "name": "getParam",
+          "bodyHash": "d41db0bc031669941b69f7db3a6fee6fdbdc9b9c51cb26977102dbf99457d349",
+          "emittedSignals": [],
+          "eventTypes": [],
+          "logConstants": []
+        },
+        {
+          "name": "getAmount",
+          "bodyHash": "5619a8d3cf0cae8ecb03f54d94bad19cc83341e9217f15348cc9cf89bf9957eb",
+          "emittedSignals": [],
+          "eventTypes": [],
+          "logConstants": []
+        },
+        {
+          "name": "getAmountWithDefault",
+          "bodyHash": "48976255b805f97c61d739c80365757edb0af56880a2e9c26f8f3f6e82529fbd",
+          "emittedSignals": [],
+          "eventTypes": [],
+          "logConstants": []
+        },
+        {
+          "name": "hasParam",
+          "bodyHash": "b953dfe7386863bcc2966cf411b90bbfce5e57f311ba52bcfda8d8c3f3a2a772",
+          "emittedSignals": [],
+          "eventTypes": [],
+          "logConstants": []
+        },
+        {
+          "name": "getMainActor",
+          "bodyHash": "a1e16099907b246b8ae7f745f2d22ca0551c593c3ca50ab17d528743d9b7a2a4",
+          "emittedSignals": [],
+          "eventTypes": [],
+          "logConstants": []
+        },
+        {
+          "name": "getOrigin",
+          "bodyHash": "fea2671fc3f85fe75259bc2a7728479cf1751ae00bf1995a1613facfba78aa89",
+          "emittedSignals": [],
+          "eventTypes": [],
+          "logConstants": []
+        },
+        {
+          "name": "fromCharacter",
+          "bodyHash": "0bf7a8fbf3feedf29d23489caa5767aed3fa00ef5d0406f1ce454f0e3e620ccf",
           "emittedSignals": [],
           "eventTypes": [],
           "logConstants": []

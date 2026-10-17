@@ -22,6 +22,8 @@
  *   placementKey?: string,
  *   amount?: number,
  *   label?: string,
+ *   params?: Record<string, unknown>,
+ *   formatParams?: Record<string, unknown>,
  *   meta?: Record<string, unknown> & {
  *     category?: string,
  *     stack?: string,
@@ -47,13 +49,17 @@
  *   rootId: string | number,
  *   depth: number,
  *   timestamp: number,
+ *   type: string,
  *   phase: string,
  *   side: SimActor,
+ *   mainActor: SimActor,
  *   target: SimActor | null,
  *   itemId: string | null,
  *   placementKey: string | null,
  *   origin: string,
  *   originKind: 'item' | 'system',
+ *   params: Record<string, unknown>,
+ *   formatParams: Record<string, unknown>,
  * }} SimEventContract
  */
 
@@ -133,6 +139,60 @@ function contractIdKey(id) {
   return `${typeof id}:${String(id)}`;
 }
 
+/** @param {unknown} value */
+function recordCopy(value) {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? { .../** @type {Record<string, unknown>} */ (value) }
+    : {};
+}
+
+const COMBAT_PARAM_KEYS = [
+  'amount',
+  'damage',
+  'duration',
+  'timeout',
+  'type',
+  'isPercent',
+  'used',
+  'resisted',
+  'reflected',
+  'protected',
+  'critical',
+  'blocked',
+  'reduced',
+  'raw',
+  'healthDamage',
+  'starved',
+  'consumed',
+];
+
+/** @param {SimEvent} event */
+function eventOwner(event) {
+  const placement = event.placementKey == null ? '' : String(event.placementKey);
+  if (event.itemId != null && placement.startsWith('opp:')) return 'dummy';
+  if (event.itemId != null && placement.startsWith('you:')) return 'player';
+  if (event.actor === 'dummy') return 'dummy';
+  if (event.actor === 'player') return 'player';
+  if (placement.startsWith('opp:')) return 'dummy';
+  if (placement.startsWith('you:')) return 'player';
+  if (event.target === 'dummy' || event.target === 'player') return event.target;
+  return 'player';
+}
+
+/** @param {SimEvent} event */
+function eventMainActor(event) {
+  const systemOrigin = typeof event.meta?.systemOrigin === 'string'
+    ? event.meta.systemOrigin.trim()
+    : '';
+  // CombatEvent.getMainActor() uses the target for non-Item origins.
+  if (systemOrigin) {
+    return event.target === 'dummy' || event.target === 'player' ? event.target : 'player';
+  }
+  if (event.itemId != null) return eventOwner(event);
+  if (event.target === 'dummy' || event.target === 'player') return event.target;
+  return 'player';
+}
+
 /**
  * Give every event a stable CombatEvent-like envelope without mutating the
  * engine's event list. Consumers (log, meter, export) therefore agree about
@@ -202,7 +262,25 @@ export function conformSimEvents(events) {
     const stack = typeof meta.stack === 'string' ? meta.stack : '';
     const systemOrigin = typeof meta.systemOrigin === 'string' ? meta.systemOrigin : '';
     const origin = systemOrigin || itemId || stack || String(event.type || 'system');
-    const side = event.actor === 'dummy' ? 'dummy' : 'player';
+    const target = event.target === 'dummy' || event.target === 'player' ? event.target : null;
+    const side = eventOwner(event);
+    const mainActor = eventMainActor(event);
+    const params = {
+      ...recordCopy(meta.params),
+      ...recordCopy(event.params),
+    };
+    if (event.amount !== undefined && params.amount === undefined) {
+      params.amount = event.amount;
+    }
+    for (const key of COMBAT_PARAM_KEYS) {
+      if (params[key] === undefined && meta[key] !== undefined) params[key] = meta[key];
+    }
+    const formatParams = {
+      ...params,
+      ...recordCopy(meta.formatParams),
+      ...recordCopy(event.formatParams),
+    };
+    if (target && formatParams.target === undefined) formatParams.target = target;
     const phase =
       typeof meta.phase === 'string' && meta.phase
         ? meta.phase
@@ -221,13 +299,17 @@ export function conformSimEvents(events) {
           rootId,
           depth,
           timestamp: Number(event.t) || 0,
+          type: String(event.type || 'system'),
           phase,
           side,
-          target: event.target === 'dummy' || event.target === 'player' ? event.target : null,
+          mainActor,
+          target,
           itemId,
           placementKey: event.placementKey == null ? null : String(event.placementKey),
           origin,
-          originKind: itemId ? 'item' : 'system',
+          originKind: systemOrigin ? 'system' : itemId ? 'item' : 'system',
+          params,
+          formatParams,
         },
       },
     };

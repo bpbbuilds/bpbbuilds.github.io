@@ -6984,3 +6984,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 329 - in progress
 
 - Codex owns the next partial shared surface, `combat-event`, for source-backed event initialization, targeting, parameter, depth, and text-contract review. Planned paths are limited to the simulator event/log modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 329 - complete
+
+- Codex completed the CombatEvent contract pass: canonical projections now expose source-like parameters and format parameters, preserve combat effect flags, resolve item ownership before actor fallback, distinguish system origins from triggering items, expose the source main actor, and retain causal id/root/depth/target/phase data for every projection boundary.
+- Extended `scripts/sim-event-contract-smoke.mjs` with a direct `CombatEvent.gd` method audit plus parameter, origin, actor, log, meter, HUD, scrubber, and export assertions. Marked `combat-event` implemented in the source-surface audit and regenerated the system-surface/dashboard/public summary. Shared mechanic totals are now 5 implemented and 16 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 330 - in progress
+
+- Codex owns the next partial shared surface, `combat-log`, for source-backed event creation/logging, snapshot projection, and presentation-order review. Planned paths are limited to simulator log/export/meter modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

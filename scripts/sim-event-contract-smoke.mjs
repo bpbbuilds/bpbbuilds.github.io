@@ -5,6 +5,7 @@
  *   node scripts/sim-event-contract-smoke.mjs
  */
 
+import fs from 'node:fs';
 import { conformSimEvents } from '../js/pages/sim/sim-events.js';
 import { buildSimDebugReport } from '../js/pages/sim/engine/log-export.js';
 import { snapAt } from '../js/pages/sim/hud/sim-hud.js';
@@ -18,6 +19,40 @@ const itemsById = new Map([
   ['pocket_sand', { id: 'pocket_sand', name: 'Pocket Sand' }],
   ['battery', { id: 'battery', name: 'Battery' }],
 ]);
+
+const combatEventSource = fs.readFileSync(
+  new URL('../tools/game-extract-full/Core/CombatEvent.gd', import.meta.url),
+  'utf8',
+);
+
+let failed = 0;
+function ok(condition, message) {
+  if (condition) console.log(`OK ${message}`);
+  else {
+    console.error(`FAIL ${message}`);
+    failed += 1;
+  }
+}
+
+for (const method of [
+  '_init',
+  'setTarget',
+  'setParam',
+  'getParam',
+  'getAmount',
+  'getAmountWithDefault',
+  'hasParam',
+  'getMainActor',
+  'getOrigin',
+  'fromCharacter',
+  'getDepth',
+  'asText',
+]) {
+  ok(
+    new RegExp(`func\\s+${method}\\s*\\(`).test(combatEventSource),
+    `source CombatEvent exposes ${method}`,
+  );
+}
 
 const events = [
   { t: 0, type: 'fight_start', actor: 'player', label: 'Fight started' },
@@ -171,15 +206,6 @@ const snapshots = [
   },
 ];
 
-let failed = 0;
-function ok(condition, message) {
-  if (condition) console.log(`OK ${message}`);
-  else {
-    console.error(`FAIL ${message}`);
-    failed += 1;
-  }
-}
-
 const canonical = conformSimEvents(events);
 ok(canonical.length === events.length, 'canonical projection retains every corpus event');
 for (const event of canonical) {
@@ -189,12 +215,44 @@ for (const event of canonical) {
       contract.id != null &&
       contract.rootId != null &&
       Number.isFinite(contract.timestamp) &&
+      contract.params &&
+      contract.formatParams &&
+      typeof contract.type === 'string' &&
       ['player', 'dummy'].includes(contract.side) &&
+      ['player', 'dummy'].includes(contract.mainActor) &&
       typeof contract.phase === 'string' &&
       typeof contract.origin === 'string',
     `contract fields present for ${event.meta?.eventId}`,
   );
 }
+
+const spendContract = canonical.find((event) => event.meta?.eventId === 'spend')?.meta?.contract;
+ok(
+  spendContract?.params?.amount === -7 &&
+    spendContract?.formatParams?.amount === -7 &&
+    spendContract?.formatParams?.target === 'player',
+  'CombatEvent params and formatParams retain amount and target formatting data',
+);
+
+const vampContract = canonical.find((event) => event.meta?.eventId === 'vamp')?.meta?.contract;
+ok(
+  vampContract?.origin === 'Vampirism' && vampContract?.originKind === 'system',
+  'system CombatEvent origins remain system-owned even when a triggering item is attached',
+);
+
+const criticalContract = canonical.find((event) => event.meta?.eventId === 'critical-hit')?.meta?.contract;
+ok(
+  criticalContract?.params?.amount === 12 &&
+    criticalContract?.params?.critical === true &&
+    criticalContract?.params?.blocked === 4,
+  'CombatEvent params retain damage amount and source effect flags',
+);
+
+const opponentContract = canonical.find((event) => event.meta?.eventId === 'consume')?.meta?.contract;
+ok(
+  opponentContract?.side === 'dummy' && opponentContract?.mainActor === 'dummy',
+  'item-backed CombatEvent main actor follows the owning opponent placement',
+);
 
 const grant = canonical.find((event) => event.meta?.eventId === 'grant');
 const spend = canonical.find((event) => event.meta?.eventId === 'spend');
