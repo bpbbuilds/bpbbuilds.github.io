@@ -6510,3 +6510,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 275 - in progress
 
 - Codex owns the next retained Leaf Badge and Leather Armor fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-leaf-badge-smoke.mjs`, `scripts/sim-leather-armor-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 275 - complete
+
+- Codex repaired Leaf Badge to mirror source `canDamage()` target filtering, prepare-time Lucky listening, exact crit-chance percentage accumulation, Lucky grant, activation ordering, and zero-safe chance handling. Leather Armor now mirrors source pre-combat Debuff Resist timing, exact catalog Block at combat start, activation after Block, and zero-safe resistance.
+- Added `scripts/sim-leaf-badge-smoke.mjs` and `scripts/sim-leather-armor-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 409 / 519 verified item rows. Focused pair tests, Wave C/D/AP regressions, parity systems, verified-coverage, coverage-honesty, changed-module syntax, ledger/dashboard freshness checks, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 409 verified, 88 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Leather Boots and Leather Helm; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 276 - in progress
+
+- Codex owns the next retained Leather Boots and Leather Helm fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-leather-boots-smoke.mjs`, `scripts/sim-leather-helm-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

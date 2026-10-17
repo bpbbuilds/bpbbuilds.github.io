@@ -82,9 +82,9 @@ export const holyArmorPort = {
 export const leatherArmorPort = {
   handlerId: 'leather_armor',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
+  onPreCombatStart(piece, ctx) {
     const { t, player, events } = ctx;
-    const resist = Math.max(0, Math.round(getP1(piece.params, 3)));
+    const resist = getPName(piece.params, 'resist', getP1(piece.params, 0));
     if (resist > 0) {
       player.debuffResistStacks = (Number(player.debuffResistStacks) || 0) + resist;
       events.push({
@@ -94,7 +94,13 @@ export const leatherArmorPort = {
         meta: { category: 'system', script: true, handler: 'leather_armor' },
       });
     }
-    const block = Math.max(1, Math.round(piece.blockGrant || getPName(piece.params, 'block', 12)));
+  },
+  onCombatStart(piece, ctx) {
+    const { t, player, events } = ctx;
+    const catalogBlock = Number(ctx.itemsById.get(piece.itemId)?.block);
+    const block = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : (Number.isFinite(catalogBlock) ? catalogBlock : getPName(piece.params, 'block', 0));
     gainStacks(player, 'block', block);
     events.push({
       t,
@@ -104,6 +110,7 @@ export const leatherArmorPort = {
       label: `${piece.name}: +${block} Block`,
       meta: { category: 'buff', stack: 'block', script: true, handler: 'leather_armor' },
     });
+    pushActivate(piece, ctx, 'leather_armor', `Armor: ${piece.name}`);
   },
 };
 

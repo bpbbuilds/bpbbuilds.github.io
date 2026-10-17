@@ -69,7 +69,7 @@ function expireRopeSpeed(listener, ctx) {
 function chanceOf(piece, ctx, key = 'chance', fb = 20) {
   const item = ctx.itemsById.get(piece.itemId);
   const n = Number(item?.[key] ?? piece.chance);
-  return Number.isFinite(n) && n > 0 ? n : fb;
+  return Number.isFinite(n) && n >= 0 ? n : fb;
 }
 
 function canHolyCollarAffect(other, item) {
@@ -82,11 +82,13 @@ function baseChanceOf(piece, ctx, key) {
   return Number.isFinite(n) ? n : 0;
 }
 
+function canDamageTarget(ctx, other) {
+  const item = ctx.itemsById.get(other.itemId);
+  return (Number(item?.damageMin) || 0) > 0 || itemHasType(item, 'lifesteal');
+}
+
 function acornCollarTargets(ctx, piece) {
-  return linked(ctx, piece).filter((other) => {
-    const item = ctx.itemsById.get(other.itemId);
-    return (Number(item?.damageMin) || 0) > 0 || itemHasType(item, 'lifesteal');
-  });
+  return linked(ctx, piece).filter((other) => canDamageTarget(ctx, other));
 }
 
 /** @type {ScriptHandler} */
@@ -227,12 +229,12 @@ const leafBadgePort = {
   handlerId: 'leaf_badge',
   family: 'unique',
   onPrepare(piece, ctx) {
-    if (!linked(ctx, piece).length) return;
+    const targets = () => linked(ctx, piece).filter((other) => canDamageTarget(ctx, other));
+    if (!targets().length) return;
     const per = chanceOf(piece, ctx, 'chance', 2) / 100;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'lucky' || !ch.amount) return;
-      for (const o of linked(ctx, piece)) {
-        if ((Number(o.damageMax) || 0) <= 0 && o.kind !== 'weapon') continue;
+      for (const o of targets()) {
         o.critChance = (Number(o.critChance) || 0) + ch.amount * per * 100;
       }
     });

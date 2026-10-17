@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "a5c463300416b0c8da0f0526f00defe038eb6e0a63fe0e6509e8793c088da23a",
+    "dashboardSha256": "f07ad09c1cfd98792c36cd403dfbd84e2e98e4cb51b1cb4b50a65587074243bc",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 407,
+    "verified_1to1": 409,
     "confirmed_gap": 7,
-    "evidence_pending": 90,
+    "evidence_pending": 88,
     "no_independent_combat": 15
   },
   "byId": {
@@ -263,8 +263,8 @@
     "king_of_the_bling": "verified_1to1",
     "knife_to_meet_you": "verified_1to1",
     "laboratory": "verified_1to1",
-    "leaf_badge": "evidence_pending",
-    "leather_armor": "evidence_pending",
+    "leaf_badge": "verified_1to1",
+    "leather_armor": "verified_1to1",
     "leather_bag": "no_independent_combat",
     "leather_boots": "evidence_pending",
     "leather_helm": "evidence_pending",

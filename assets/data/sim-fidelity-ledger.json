@@ -11018,9 +11018,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-leaf-badge-smoke.mjs",
+        "fixture": "Leaf Badge source canDamage target filtering, prepare-time Lucky listener, exact crit chance accumulation, Lucky grant, activation ordering, and zero-safe chance.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -11055,9 +11061,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-leather-armor-smoke.mjs",
+        "fixture": "Leather Armor source pre-combat Debuff Resist stat change, combat-start catalog Block, activation ordering, and zero-safe resistance.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

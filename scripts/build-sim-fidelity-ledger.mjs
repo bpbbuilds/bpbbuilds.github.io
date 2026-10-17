@@ -1776,6 +1776,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  leaf_badge: {
+    focusedRegression: 'scripts/sim-leaf-badge-smoke.mjs',
+    fixture: 'Leaf Badge source canDamage target filtering, prepare-time Lucky listener, exact crit chance accumulation, Lucky grant, activation ordering, and zero-safe chance.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  leather_armor: {
+    focusedRegression: 'scripts/sim-leather-armor-smoke.mjs',
+    fixture: 'Leather Armor source pre-combat Debuff Resist stat change, combat-start catalog Block, activation ordering, and zero-safe resistance.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',
