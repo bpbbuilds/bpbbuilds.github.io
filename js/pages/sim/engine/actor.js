@@ -55,6 +55,8 @@ import { createBalancedRng } from './balanced-rng.js';
  *   invulnUntil?: number,
  *   invulnCharges?: number,
  *   buffProtect?: number,
+ *   buffProtectStacks?: number,
+ *   stackResistStacks: Record<string, number>,
  *   buffCleanseProtectChanceByStack: Record<string, number>,
  *   stunnedUntil?: number,
  * }} SimActor
@@ -137,12 +139,14 @@ export function createActor(id, opts = {}) {
     meleeVampirismLimit: 1,
     rangedVampirismLimit: 0,
     stackResist: {},
+    stackResistStacks: {},
     stacks: emptyStacks(),
     dead: false,
     stunResistanceRng: createBalancedRng(),
     invulnUntil: 0,
     invulnCharges: 0,
     buffProtect: 0,
+    buffProtectStacks: 0,
     buffCleanseProtectChance: 0,
     debuffCleanseProtectChance: 0,
     buffCleanseProtectChanceByStack: {},
@@ -282,7 +286,12 @@ export function isStunned(actor, nowT = 0) {
 export function grantBuffProtect(actor, amount = 1) {
   const n = Math.max(0, Math.round(Number(amount) || 0));
   if (n <= 0) return;
-  actor.buffProtect = (Number(actor.buffProtect) || 0) + n;
+  const next = Math.max(
+    Number(actor.buffProtectStacks) || 0,
+    Number(actor.buffProtect) || 0,
+  ) + n;
+  actor.buffProtectStacks = next;
+  actor.buffProtect = next;
 }
 
 /**
@@ -570,6 +579,7 @@ export function snapshotActor(actor) {
     mana: actor.stacks.mana,
     dead: actor.dead,
     buffProtect: Number(actor.buffProtect) || 0,
+    buffProtectStacks: Number(actor.buffProtectStacks) || 0,
     invulnCharges: Number(actor.invulnCharges) || 0,
     stunnedUntil: Number(actor.stunnedUntil) || 0,
     invulnUntil: Number(actor.invulnUntil) || 0,

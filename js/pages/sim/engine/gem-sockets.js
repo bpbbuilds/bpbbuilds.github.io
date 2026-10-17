@@ -423,9 +423,9 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
       }
     });
   } else if (fam === 'burning_coal') {
-    ctx.player.stackResist = ctx.player.stackResist || {};
-    ctx.player.stackResist.cold =
-      (Number(ctx.player.stackResist.cold) || 0) +
+    ctx.player.stackResistStacks = ctx.player.stackResistStacks || {};
+    ctx.player.stackResistStacks.cold =
+      (Number(ctx.player.stackResistStacks.cold) || 0) +
       Math.round(getPName(params, 'coldresist', getP3(params, 7)));
   } else if (fam === 'corrupted_crystal') {
     const need = Math.max(1, Math.round(getP3(params, 7)));

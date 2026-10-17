@@ -6,7 +6,6 @@ import { gainStacks, loseStacks, getStackAmount } from './stacks.js';
 import { expireTemporaryStacks, grantTemporary } from './temp-stacks.js';
 import { logGrantedStacks, logSpentStacks, logBlockedStacks } from './buff-log.js';
 import { scaleByBuffPower, originPieceFromOpts } from './buff-power.js';
-import { rollPercent } from './rng.js';
 import { runWithoutStatSource } from './stat-mods.js';
 
 /** @type {{ eventId?: string | number | null, causalRootId?: string | number | null, causalDepth?: number } | null} */
@@ -177,57 +176,22 @@ export function grantStacks(actor, stack, amount, opts = {}) {
  */
 export function spendStacks(actor, stack, amount, opts = {}) {
   opts = withReactiveCause(opts);
-  let need = Math.max(0, Math.round(amount));
+  const need = Math.max(0, Math.round(amount));
   if (need <= 0) return { spent: 0 };
-  const have = getStackAmount(actor, /** @type {any} */ (stack));
-  // Hostile strip (steal / purge): buff-protect consumes instead of removing
-  if (
-    opts.hostileStrip &&
-    BUFF_KEYS.includes(String(stack)) &&
-    (Number(actor.buffProtect) || 0) > 0
-  ) {
-    actor.buffProtect -= 1;
-    logBlockedStacks(actor, stack, need, 'protected', opts);
-    return { spent: 0, protected: true };
+  const used = !opts.hostileStrip && !opts.cleanse;
+  const spent = loseStacks(actor, /** @type {any} */ (stack), need, {
+    ...opts,
+    used,
+  });
+  const loss = actor._lastStackLoss;
+  if (loss?.protected > 0 && spent === 0) {
+    logBlockedStacks(actor, stack, loss.protected, 'protected', opts);
   }
-  // Buff.gd loseStacks cleanseProtection — steal / strip / cleanse, not item useStacks
-  if (
-    (opts.hostileStrip || opts.cleanse) &&
-    (BUFF_KEYS.includes(String(stack)) || DEBUFF_KEYS.includes(String(stack))) &&
-    typeof opts.rng === 'function'
-  ) {
-    const stackSpecific = actor.buffCleanseProtectChanceByStack?.[String(stack)];
-    const pct = DEBUFF_KEYS.includes(String(stack))
-      ? Number(actor.debuffCleanseProtectChance) || 0
-      : Number.isFinite(Number(stackSpecific))
-        ? Number(stackSpecific)
-        : Number(actor.buffCleanseProtectChance) || 0;
-    if (pct > 0) {
-      let kept = 0;
-      for (let i = 0; i < need; i++) {
-        if (rollPercent(pct, opts.rng)) kept += 1;
-      }
-      need -= kept;
-    } else if (pct < 0) {
-      let extra = 0;
-      for (let i = 0; i < need; i++) {
-        if (rollPercent(-pct, opts.rng)) extra += 1;
-      }
-      need += extra;
-    }
-    need = Math.max(0, need);
-  }
-  // Buff.gd loseStacks clamps a cleanse to the current stack count after
-  // cleanse-protection adjustment. Item uses still require the full amount.
-  if (opts.cleanse) need = Math.min(need, have);
-  if (have < need) return { spent: 0 };
-  const spent = loseStacks(actor, /** @type {any} */ (stack), need);
   if (spent > 0) {
     const originKey =
       opts.originKey ?? opts.piece?.placementKey ?? opts.origin?.placementKey ?? null;
     const originId =
       opts.originId ?? opts.piece?.itemId ?? opts.origin?.itemId ?? null;
-    const used = !opts.hostileStrip && !opts.cleanse;
     emitBuffChanged(actor, {
       amount: -spent,
       stack,
@@ -247,7 +211,10 @@ export function spendStacks(actor, stack, amount, opts = {}) {
       });
     }
   }
-  return { spent };
+  return {
+    spent,
+    ...(loss?.protected > 0 && spent === 0 ? { protected: true } : {}),
+  };
 }
 
 /**

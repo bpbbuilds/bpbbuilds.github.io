@@ -137,7 +137,7 @@ for (const side of ['you', 'them']) {
   const coalArmorCtx = context(side, owner, foe, [coalArmor], graph);
   prepareGemSockets(coalArmor, coalArmorCtx);
   combatStartGemSockets(coalArmor, coalArmorCtx);
-  assert.equal(owner.stackResist.cold, 7, `Burning Coal armor socket adds source Cold resistance on ${side}`);
+  assert.equal(owner.stackResistStacks.cold, 7, `Burning Coal armor socket adds source one-use Cold resistance on ${side}`);
   assert.ok(owner.block >= 12, `Burning Coal armor socket grants source Block on ${side}`);
 
   const cauldron = piece('cauldron', `${side}:cauldron`, side);

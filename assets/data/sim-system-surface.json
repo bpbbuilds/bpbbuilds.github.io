@@ -7282,8 +7282,8 @@
   },
   "totals": {
     "surfaces": 21,
-    "implemented": 2,
-    "partial": 19,
+    "implemented": 3,
+    "partial": 18,
     "unmapped": 0,
     "unsupported": 0,
     "sourceFunctions": 1439,
@@ -7767,8 +7767,24 @@
         "js/pages/sim/engine/buff-economy.js",
         "js/pages/sim/engine/temp-stacks.js"
       ],
-      "disposition": "partial",
-      "note": "Shared stack paths are present; every stack event and cleanup permutation needs the invariant suite.",
+      "disposition": "implemented",
+      "note": "Character stack entry points now match Buff.gd delegation, source clamping, protection/reflection order, one-use resistance, and permanent/farthest-expiry temporary cleanup.",
+      "evidence": {
+        "focusedRegression": "scripts/sim-character-stacks-smoke.mjs",
+        "fixture": "Character.gd/Buff.gd delegation, temporary reflection duration, source loss clamping, protection pools, one-use debuff resistance, and farthest-expiry cleanup.",
+        "projections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
       "sourceFunctions": [
         {
           "name": "gainStacks",

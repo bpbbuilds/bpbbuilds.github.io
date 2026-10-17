@@ -2,7 +2,7 @@
  * Temporary stack timers — Buff.gd gainTemporary / temporaryStacks (Band Z 147).
  */
 
-import { gainStacks, loseStacks } from './stacks.js';
+import { gainStacks, removeTemporaryStackAmount } from './stacks.js';
 
 /**
  * @typedef {{
@@ -38,8 +38,12 @@ function ensureTemp(actor) {
 export function grantTemporary(actor, stack, amount, durationSec, nowT, opts = {}) {
   const n = Math.max(0, Math.round(amount));
   const dur = Number(durationSec);
-  if (n <= 0 || !(dur > 0)) return { gained: 0 };
-  const g = gainStacks(actor, /** @type {any} */ (stack), n, opts);
+  if (n <= 0 || !(dur >= 0)) return { gained: 0 };
+  const g = gainStacks(actor, /** @type {any} */ (stack), n, {
+    ...opts,
+    onReflect: (target, reflectedStack, reflectedAmount, reflectOpts) =>
+      grantTemporary(target, reflectedStack, reflectedAmount, dur, nowT, reflectOpts),
+  });
   if (g.gained <= 0) return g;
   ensureTemp(actor).push({
     stack,
@@ -69,7 +73,7 @@ export function expireTemporaryStacks(actor, t) {
       keep.push(entry);
       continue;
     }
-    const lost = loseStacks(actor, /** @type {any} */ (entry.stack), entry.amount);
+    const lost = removeTemporaryStackAmount(actor, entry);
     if (lost > 0) {
       expired.push({ ...entry, amount: lost });
     }

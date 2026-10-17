@@ -6966,3 +6966,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 327 - in progress
 
 - Codex owns the next shared mechanic review from the 19 remaining partial system-surface rows, beginning with the next source-backed state/timing boundary. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 327 - complete
+
+- Codex repaired the Character/Buff stack contract against the extracted source: permanent and timed stacks now retain independent accounting, losses clamp to available stacks, use-losses remove permanent then farthest-expiry temporary stacks, temporary reflections retain duration, debuff reflection precedes Character debuff-resist pools, per-stack one-use resistance is modeled, and non-used buff losses consume source Buff Protect stacks while keeping the legacy simulator alias synchronized.
+- Corrected socketed Burning Coal to grant source one-use Cold resistance stacks instead of percentage Cold resistance. Added `scripts/sim-character-stacks-smoke.mjs`, marked `character-stacks` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and ran focused stack, temporary-stack, protection, buff, item, syntax, and freshness checks. Current item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat; shared mechanic totals are 3 implemented and 18 partial. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 328 - in progress
+
+- Codex owns the next partial shared surface, `buff-object`, for source-backed timeout, reset, protection, and cleanup review. Planned paths are limited to the shared stack engine, focused stack/buff regressions, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

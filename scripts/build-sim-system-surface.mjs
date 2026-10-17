@@ -120,8 +120,16 @@ const SURFACE = [
     source: 'Core/Character.gd',
     functions: ['gainStacks', 'gainStacksTemporary', 'loseStacks', 'useStacks'],
     simOwners: ['js/pages/sim/engine/stacks.js', 'js/pages/sim/engine/buff-economy.js', 'js/pages/sim/engine/temp-stacks.js'],
-    disposition: 'partial',
-    note: 'Shared stack paths are present; every stack event and cleanup permutation needs the invariant suite.',
+    disposition: 'implemented',
+    note: 'Character stack entry points now match Buff.gd delegation, source clamping, protection/reflection order, one-use resistance, and permanent/farthest-expiry temporary cleanup.',
+    evidence: {
+      focusedRegression: 'scripts/sim-character-stacks-smoke.mjs',
+      fixture: 'Character.gd/Buff.gd delegation, temporary reflection duration, source loss clamping, protection pools, one-use debuff resistance, and farthest-expiry cleanup.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'buff-object',
