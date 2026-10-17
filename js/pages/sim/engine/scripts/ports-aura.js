@@ -248,18 +248,20 @@ export const speakWithAnimalsPort = {
   family: 'synergy_aura',
   onCooldownEffect(piece, ctx) {
     const { t, events, graph, itemsById, canAffect, pieces } = ctx;
-    pushActivate(piece, ctx, 'speak_with_animals', `Skill: ${piece.name}`);
-    const chance = Number(itemsById.get(piece.itemId)?.chance) || 25;
+    const chanceRaw = itemsById.get(piece.itemId)?.chance ?? piece.chance ?? 0;
+    const chance = Number(chanceRaw);
+    const chancePercent = Number.isFinite(chance) ? chance : 0;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
-      other.doubleAttackEffectChance =
-        (Number(other.doubleAttackEffectChance) || 0) + chance / 100;
+      other.doubleActivationChance =
+        (Number(other.doubleActivationChance) || 0) + chancePercent / 100;
     }
+    pushActivate(piece, ctx, 'speak_with_animals', `Skill: ${piece.name}`);
     events.push({
       t: t + 0.004,
       type: 'info',
-      label: `${piece.name}: +${chance}% double activate`,
+      label: `${piece.name}: +${chancePercent}% double activate`,
       meta: { category: 'adjacency', script: true, handler: 'speak_with_animals' },
     });
     return true;

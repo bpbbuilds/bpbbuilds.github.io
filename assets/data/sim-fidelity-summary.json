@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "1c70f254e11f67999697cf772294138a8d14c0f049c7ee858345af4be3c07aae",
+    "dashboardSha256": "823c9332689ef70f0680dd28db5b5a6a036844e187186c205c172220c9aff7c1",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 471,
+    "verified_1to1": 473,
     "confirmed_gap": 4,
-    "evidence_pending": 29,
+    "evidence_pending": 27,
     "no_independent_combat": 15
   },
   "byId": {
@@ -428,8 +428,8 @@
     "snowman": "verified_1to1",
     "snowmaster": "verified_1to1",
     "solaris": "verified_1to1",
-    "speak_with_animals": "evidence_pending",
-    "spear": "evidence_pending",
+    "speak_with_animals": "verified_1to1",
+    "spear": "verified_1to1",
     "spectral_dagger": "evidence_pending",
     "spell_scroll_dark": "verified_1to1",
     "spell_scroll_frostbolt": "verified_1to1",

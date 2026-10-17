@@ -18163,9 +18163,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-speak-with-animals-smoke.mjs",
+        "fixture": "Speak with Animals source Pet-only targeting, exact trigger chance, double-activation projection, activation ordering, catalog parameters, and explicit zero chance.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -18200,9 +18206,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-spear-smoke.mjs",
+        "fixture": "Spear source affects-empty preparation cache, unconditional late pre-deal Block strip, exact raw block-removal parameters, hit ordering, miss behavior, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

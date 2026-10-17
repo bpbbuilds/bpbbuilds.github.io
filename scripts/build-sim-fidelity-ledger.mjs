@@ -172,6 +172,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  speak_with_animals: {
+    focusedRegression: 'scripts/sim-speak-with-animals-smoke.mjs',
+    fixture: 'Speak with Animals source Pet-only targeting, exact trigger chance, double-activation projection, activation ordering, catalog parameters, and explicit zero chance.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  spear: {
+    focusedRegression: 'scripts/sim-spear-smoke.mjs',
+    fixture: 'Spear source affects-empty preparation cache, unconditional late pre-deal Block strip, exact raw block-removal parameters, hit ordering, miss behavior, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   amethyst_egg: {
     focusedRegression: 'scripts/sim-amethyst-egg-smoke.mjs',
     fixture: 'Amethyst Egg start trigger and recurring cooldown: source p1 random-debuff count, activation, and both board sides.',

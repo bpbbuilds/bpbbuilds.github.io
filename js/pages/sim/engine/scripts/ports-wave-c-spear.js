@@ -32,14 +32,14 @@ function countLinkedType(ctx, piece, type) {
 export const spearPort = {
   handlerId: 'spear',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
-    const per = Math.max(1, Math.round(getPName(piece.params, 'blockremoval', getP1(piece.params, 2))));
+  onPrepare(piece, ctx) {
+    const per = getPName(piece.params, 'blockremoval', getP1(piece.params, 2));
     piece._blockStrip = per * countEmptyAffectCells(ctx, piece);
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'spear');
   },
-  onDealtDamage(piece, ctx) {
+  onPreDealDamageLate(piece, ctx) {
     const strip = piece._blockStrip || 0;
     if (strip <= 0) return;
     removeBlock(ctx.dummy, strip, ctx, piece);

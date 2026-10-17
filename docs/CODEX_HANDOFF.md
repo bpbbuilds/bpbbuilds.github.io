@@ -6793,3 +6793,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 307 - in progress
 
 - Codex owns the next retained Speak with Animals and Spear fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to `js/pages/sim/engine/scripts/ports-aura.js`, `js/pages/sim/engine/scripts/ports-wave-c-spear.js`, `scripts/sim-speak-with-animals-smoke.mjs`, `scripts/sim-spear-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 307 - complete
+
+- Codex repaired Speak with Animals to use the source Pet-only link rule, write the linked Pet's `doubleActivationChance` rather than attack-effect chance, preserve explicit zero trigger chance, and project activation after the aura mutation. Spear now caches its raw Block-removal amount during `onPrepare` and strips Block from the late pre-deal hook, preserving source ordering, empty-cell counts, miss behavior, and zero/fractional parameters.
+- Added `scripts/sim-speak-with-animals-smoke.mjs` and `scripts/sim-spear-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 473 / 519 verified item rows. Focused pair tests, all existing spear-family regressions, coverage honesty, changed-module syntax, and generated artifact freshness checks pass. The generated summary reports 473 verified, 27 evidence-pending, 4 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 308 - in progress
+
+- Codex owns the next retained Spectral Dagger and Spicy Banana fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to `js/pages/sim/engine/scripts/ports-wave-c-mana.js`, `js/pages/sim/engine/scripts/ports-ao-skills.js`, `scripts/sim-spectral-dagger-smoke.mjs`, `scripts/sim-spicy-banana-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
