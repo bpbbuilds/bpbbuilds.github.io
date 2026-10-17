@@ -7101,3 +7101,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 342 - in progress
 
 - Codex owns the next partial shared surface, `character-tick`, for source-backed tick cadence, fatigue warning/damage timing, and tick-driven status review. Planned paths are limited to simulator tick/fatigue modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 342 - complete
+
+- Codex repaired character tick damage semantics: poison now uses the extracted blockable chip-damage path, fatigue now uses the shared non-attack damage pipeline with Block, invulnerability, resistance, hooks, and one-shot death handling, and fatigue applies opponent-first like `CombatTimer.dealFatigueDamage()`. Regeneration/poison alternation and the one-second character timer boundaries are source-regression covered.
+- Added `scripts/sim-character-tick-smoke.mjs`, marked `character-tick` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and ran character-tick, combat-timer, scheduler, poison/fatigue, lifecycle, combat-end, broad parity, syntax, and freshness checks. Shared totals are now 18 implemented and 3 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 343 - in progress
+
+- Codex owns the next partial shared surface, `character-damage`, for source-backed damage phases, reductions, block, spikes, vampirism, and combined hit-result review. Planned paths are limited to simulator damage/activation modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

@@ -1,4 +1,4 @@
-import { markActorDead } from './actor.js';
+import { takeDamage } from './damage.js';
 
 /**
  * Combat fatigue clock — CombatTimer.gd FATIGUE_TIME (Band Z 148).
@@ -86,20 +86,30 @@ export function advanceFatigueCounter(state, combatTime) {
 }
 
 /**
- * Apply fatigue HP damage (ignores block).
+ * Apply fatigue through Character.takeDamage semantics. Fatigue is a
+ * non-attack damage source, but the extracted source explicitly allows
+ * Block, invulnerability, resistance, and pre-damage hooks.
  * @param {import('./actor.js').SimActor} actor
  * @param {number} amount
+ * @param {{ attacker?: import('./actor.js').SimActor | null, t?: number, events?: object[], bus?: object, rng?: Function }} [opts]
  */
 export function applyFatigueDamage(actor, amount, opts = {}) {
   const dmg = Math.max(0, Math.round(amount));
   if (dmg <= 0 || actor.dead) return 0;
-  actor.hp = Math.max(0, actor.hp - dmg);
-  if (actor.hp <= 0) {
-    markActorDead(
-      actor,
-      'fatigue',
-      Number.isFinite(Number(opts.t)) ? Number(opts.t) : Number(actor._simT) || 0,
-    );
-  }
-  return dmg;
+  const nowT = Number.isFinite(Number(opts.t)) ? Number(opts.t) : Number(actor._simT) || 0;
+  const result = takeDamage(actor, opts.attacker || actor, {
+    amount: dmg,
+    canMiss: false,
+    canCrit: false,
+    canBlock: true,
+    isAttack: false,
+    isFatigue: true,
+    deathReason: 'fatigue',
+    nowT,
+    events: opts.events,
+    bus: opts.bus || actor._combatBus,
+    rng: opts.rng || (() => 0),
+  });
+  actor._lastFatigueDamage = result;
+  return result.healthDamage;
 }

@@ -609,15 +609,15 @@ export function simulateEngine(opts) {
           });
         }
         const dmg = advanceFatigueCounter(fatigue, combatTime);
-        const pLost = applyFatigueDamage(
-          player,
-          dmg + (Number(player.bonusFatigueDamage) || 0),
-          { t },
-        );
         const dLost = applyFatigueDamage(
           dummy,
           dmg + (Number(dummy.bonusFatigueDamage) || 0),
-          { t },
+          { attacker: player, t, events, bus, rng },
+        );
+        const pLost = applyFatigueDamage(
+          player,
+          dmg + (Number(player.bonusFatigueDamage) || 0),
+          { attacker: dummy, t, events, bus, rng },
         );
         bus.emit('fatigue_tick', { t, counter: fatigue.counter, damage: dmg });
         if (pLost > 0) {
@@ -627,7 +627,7 @@ export function simulateEngine(opts) {
             t,
             hit: true,
             healthDamage: pLost,
-            blocked: 0,
+            blocked: Number(player._lastFatigueDamage?.blocked) || 0,
           };
           bus.emit('character_damaged', playerFatigue);
           bus.emit('player_damaged', {
@@ -635,7 +635,7 @@ export function simulateEngine(opts) {
             t,
             hit: true,
             healthDamage: pLost,
-            blocked: 0,
+            blocked: Number(player._lastFatigueDamage?.blocked) || 0,
           });
           events.push({
             t,
@@ -650,6 +650,7 @@ export function simulateEngine(opts) {
               counter: fatigue.counter,
               systemOrigin: 'Fatigue',
               playerHp: player.hp,
+              blocked: Number(player._lastFatigueDamage?.blocked) || 0,
             },
           });
         }
@@ -660,7 +661,7 @@ export function simulateEngine(opts) {
             t,
             hit: true,
             healthDamage: dLost,
-            blocked: 0,
+            blocked: Number(dummy._lastFatigueDamage?.blocked) || 0,
           };
           bus.emit('character_damaged', dummyFatigue);
           events.push({
@@ -676,6 +677,7 @@ export function simulateEngine(opts) {
               counter: fatigue.counter,
               systemOrigin: 'Fatigue',
               dummyHp: dummy.hp,
+              blocked: Number(dummy._lastFatigueDamage?.blocked) || 0,
             },
           });
         }

@@ -295,7 +295,7 @@ export function takeDamage(defender, attacker, src) {
     source: src,
   });
 
-  const canBlock = src.canBlock !== false && !src.ignoreBlock && !src.isPoison;
+  const canBlock = src.canBlock !== false && !src.ignoreBlock;
   if (canBlock && defender.block > 0 && dmg > 0) {
     if (dmg > defender.block) {
       res.blocked = defender.block;
@@ -309,7 +309,9 @@ export function takeDamage(defender, attacker, src) {
   }
 
   defender.hp = Math.max(0, defender.hp - res.healthDamage);
-  if (defender.hp <= 0) markActorDead(defender, 'damage', src.nowT ?? defender._simT);
+  if (defender.hp <= 0) {
+    markActorDead(defender, src.deathReason || 'damage', src.nowT ?? defender._simT);
+  }
 
   if (shieldHit) {
     const damblockRaw =

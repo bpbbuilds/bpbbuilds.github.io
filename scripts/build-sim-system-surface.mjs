@@ -99,8 +99,16 @@ const SURFACE = [
     source: 'Core/Character.gd',
     functions: ['onTick', 'takeFatigueDamage'],
     simOwners: ['js/pages/sim/engine/ticks.js', 'js/pages/sim/engine/fatigue.js'],
-    disposition: 'partial',
-    note: 'Tick/fatigue logic exists but has no source-complete cadence boundary suite.',
+    disposition: 'implemented',
+    note: 'The simulator matches Character.onTick alternating regeneration/poison cadence, starts/stops the one-second character timer at combat boundaries, and routes poison and fatigue through source blockable damage semantics; the fatigue warning animation remains UI-only.',
+    evidence: {
+      focusedRegression: 'scripts/sim-character-tick-smoke.mjs',
+      fixture: 'Character.gd onTick/combatStart/combatEnd, Character.tscn TickTimer connection, Game.gd fatigue source flags, DamageSource chip-damage flags, and runtime regeneration/poison/fatigue assertions.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'character-damage',

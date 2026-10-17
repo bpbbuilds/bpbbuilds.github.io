@@ -2,7 +2,8 @@
  * Character tick — Regen / Poison / Heat DoT-HoT (Character.onTick family).
  */
 
-import { applyDamageToActor, healActor, requestedHealAmount } from './actor.js';
+import { healActor, requestedHealAmount } from './actor.js';
+import { takeDamage } from './damage.js';
 
 /**
  * @param {import('./actor.js').SimActor} actor
@@ -43,7 +44,8 @@ export function runCharacterTick(actor, t, tickCounter, events, rng) {
   } else {
     const poison = actor.stacks.poison;
     if (poison > 0) {
-      // Poison ignores block (Character.onTick → poison DamageSource)
+      // Character.onTick routes poison through the chip-damage source, which
+      // explicitly allows Block and can crit.
       let critical = false;
       let critChance = Math.max(0, Math.min(100, Number(actor.poisonCritChance) || 0));
       critChance = Math.max(0, critChance - (Number(actor.critResistance) || 0));
@@ -54,7 +56,26 @@ export function runCharacterTick(actor, t, tickCounter, events, rng) {
           critical = true;
         }
       }
-      const res = applyDamageToActor(actor, critical ? Math.round(poison * 2) : poison, { ignoreBlock: true });
+      const res = takeDamage(actor, actor, {
+        amount: critical ? Math.round(poison * 2) : poison,
+        canMiss: false,
+        canCrit: false,
+        canBlock: true,
+        isAttack: false,
+        isPoison: true,
+        nowT: t,
+        bus: actor._combatBus,
+        rng,
+      });
+      actor._combatBus?.emit?.('character_damaged', {
+        actor,
+        attacker: actor,
+        t,
+        hit: res.hit,
+        healthDamage: res.healthDamage,
+        blocked: res.blocked,
+        damage: res,
+      });
       events.push({
         t,
         type: 'debuff',
@@ -67,6 +88,8 @@ export function runCharacterTick(actor, t, tickCounter, events, rng) {
           category: 'dot',
           systemOrigin: 'Poison',
           critical,
+          blocked: res.blocked,
+          raw: res.raw,
           playerHp: actor.id === 'player' ? actor.hp : undefined,
           dummyHp: actor.id === 'dummy' ? actor.hp : undefined,
         },
