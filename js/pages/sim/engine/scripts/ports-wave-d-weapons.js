@@ -575,16 +575,37 @@ export const waterElementalPort = {
 
 /** LightningStaff.gd — path sendCharge + cell dam */
 function emitLightningStaffCharge(piece, ctx, speedFactor = 1) {
-  const flat = Math.max(0, Math.round(getPName(piece.params, 'dam_flat', 1)));
-  const perTile = Math.max(0, Math.round(getPName(piece.params, 'dam_tile', 1)));
+  const flat = getPName(piece.params, 'dam_flat', getP5(piece.params, 0));
+  const perTile = getPName(piece.params, 'dam_tile', getP6(piece.params, 0));
+  let chargedTarget = null;
   emitPathCharge(piece, ctx, {
     speedFactor,
-    durPerTile: getPName(piece.params, 'dur', 2) || 2,
+    durPerTile: modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur', getP4(piece.params, 0)),
+      'dur',
+    ),
     label: `${piece.name}: sendCharge`,
     onCellEnter(target, step) {
-      if (!target) return;
-      const bonus = flat + perTile * (step.cellIndex || 0);
-      if (bonus) addBonusDamage(target, bonus);
+      const previousValue = flat + (step.cellIndex - 2) * perTile;
+      const nextValue = previousValue + perTile;
+      if (chargedTarget) {
+        if (chargedTarget === target) {
+          addBonusDamage(chargedTarget, perTile, { removable: false });
+        } else {
+          addBonusDamage(chargedTarget, -previousValue, { removable: false });
+        }
+      }
+      if (target && target !== chargedTarget) {
+        addBonusDamage(target, nextValue, { removable: false });
+      }
+      chargedTarget = target || null;
+    },
+    onPathEnd(step) {
+      if (!chargedTarget) return;
+      const previousValue = flat + (step.cellIndex - 2) * perTile;
+      addBonusDamage(chargedTarget, -previousValue, { removable: false });
+      chargedTarget = null;
     },
   });
 }
@@ -597,25 +618,25 @@ export const lightningStaffPort = {
     pushActivate(piece, ctx, 'lightning_staff', `Weapon: ${piece.name}`);
     emitLightningStaffCharge(piece, ctx, speedFactor);
   },
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._litHits = 0;
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'lightning_staff');
   },
-  onDealtDamage(piece, ctx, hit) {
-    if (!hit?.hit) return;
-    const cost = Math.max(1, Math.round(getPName(piece.params, 'manat', getPName(piece.params, 'mana', 2))));
-    if ((ctx.player.stacks.mana || 0) >= cost) {
-      useMana(ctx.player, cost, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      addBonusDamage(piece, Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 1)))));
+  onPreDealDamageEarly(piece, ctx, res) {
+    void res;
+    const cost = Math.trunc(getPName(piece.params, 'manat', getP1(piece.params, 0)));
+    const spent = useMana(ctx.player, cost, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+    if (spent?.spent === cost) {
+      addBonusDamage(piece, getPName(piece.params, 'dam', getP2(piece.params, 0)));
     }
     piece._litHits = (piece._litHits || 0) + 1;
-    const every = Math.max(1, Math.round(getPName(piece.params, 'num', getP3(piece.params, 3))));
-    if (piece._litHits < every) return;
+    const every = getPName(piece.params, 'num', getP3(piece.params, 0));
+    if (piece._litHits !== every) return;
     piece._litHits = 0;
     pushActivate(piece, ctx, 'lightning_staff', `Weapon: ${piece.name}`);
     emitLightningStaffCharge(piece, ctx);

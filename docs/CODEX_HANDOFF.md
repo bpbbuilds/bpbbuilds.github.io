@@ -6550,3 +6550,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 279 - in progress
 
 - Codex owns the next retained Lightning Staff and Lightsaber fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-lightning-staff-smoke.mjs`, `scripts/sim-lightsaber-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 279 - complete
+
+- Codex repaired Lightning Staff to mirror source prepare reset, early miss-inclusive Mana spend and permanent damage, exact attack threshold, Lightning can-affect mapping, modified charge duration, and the extracted charge stat transition including non-removable damage and final charge cleanup. Lightsaber now mirrors source prepare listeners, exact regeneration/Blind thresholds, non-removable varying damage, modified Blind duration, timed light-end reactivation, and activation ordering.
+- Added `scripts/sim-lightning-staff-smoke.mjs` and `scripts/sim-lightsaber-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 417 / 519 verified item rows. Focused pair tests, AP milestone, Wave C/D, parity systems, Scissorswords/Holy Spear regressions, verified-coverage, coverage-honesty, changed-module syntax, ledger/dashboard freshness checks, and generated-count checks pass. `git diff --check` still reports pre-existing unrelated trailing whitespace in user-owned `docs/todo.md` lines; no parity files have whitespace errors. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 417 verified, 80 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Little Mimic and Long Spear; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 280 - in progress
+
+- Codex owns the next retained Little Mimic and Long Spear fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-little-mimic-smoke.mjs`, `scripts/sim-long-spear-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

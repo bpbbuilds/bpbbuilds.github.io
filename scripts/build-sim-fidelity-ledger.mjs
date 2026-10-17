@@ -1832,6 +1832,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  lightning_staff: {
+    focusedRegression: 'scripts/sim-lightning-staff-smoke.mjs',
+    fixture: 'Lightning Staff source prepare reset, early miss-inclusive Mana spend and permanent damage, exact attack threshold, source charge signal/path, Lightning can-affect rule, and modified charge duration.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  lightsaber: {
+    focusedRegression: 'scripts/sim-lightsaber-smoke.mjs',
+    fixture: 'Lightsaber source prepare listeners, exact regeneration/Blind thresholds, non-removable varying damage, modified Blind timer, timed reactivation, activation ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

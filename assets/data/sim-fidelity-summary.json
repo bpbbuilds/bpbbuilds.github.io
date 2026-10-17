@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "4105d581a861fca889ea86bcc6450442e1570bc0c8679a0a61f1ba4810efde28",
+    "dashboardSha256": "4781265c191f9dc0d0ba34226a03d2b0bfb8154b41415f5dd7fb7c7f141c49d6",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 415,
+    "verified_1to1": 417,
     "confirmed_gap": 7,
-    "evidence_pending": 82,
+    "evidence_pending": 80,
     "no_independent_combat": 15
   },
   "byId": {
@@ -272,8 +272,8 @@
     "light_flower": "verified_1to1",
     "light_goobert": "verified_1to1",
     "lightning_potion": "verified_1to1",
-    "lightning_staff": "evidence_pending",
-    "lightsaber": "evidence_pending",
+    "lightning_staff": "verified_1to1",
+    "lightsaber": "verified_1to1",
     "little_mimic": "evidence_pending",
     "long_spear": "evidence_pending",
     "lootbox": "no_independent_combat",

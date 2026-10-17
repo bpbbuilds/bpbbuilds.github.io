@@ -6,7 +6,7 @@ import { grantStacks, grantTemporaryStacks, onBuffChanged, spendStacks, useMana,
 import { giveBuffPower } from '../buff-power.js';
 import { dealDamage } from '../damage.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
 import {
   addBonusDamage,
   addBonusDamageFromBuffChange,
@@ -15,9 +15,10 @@ import {
   setStaminaCost,
 } from '../piece-stats.js';
 import { getStackAmount, gainStacks } from '../stacks.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { dealHit } from './handlers.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
-import { itemHasType, itemTypeMultiplicity } from './ports-util.js';
+import { itemHasType, itemTypeMultiplicity, pushActivate } from './ports-util.js';
 import { preparePhoenix } from './ports-ap-basic.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 import { forAttackEffects, prepareBow } from '../attack-effects.js';
@@ -310,38 +311,53 @@ export const deathScythePort = {
 export const lightsaberPort = {
   handlerId: 'lightsaber',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
-    piece._lsBlindDmg = 0;
-    const need = Math.max(1, Math.round(getPName(piece.params, 'regent', 8)));
-    const blind = Math.max(1, Math.round(getPName(piece.params, 'blind', 2)));
-    const dur = Math.max(1, getPName(piece.params, 'dur_blind', 4));
-    const per = getPName(piece.params, 'dam_blind', 1);
-    const applyBlindDmg = () => {
-      const b = getStackAmount(ctx.dummy, 'blind') || 0;
-      const want = b * per;
-      addBonusDamage(piece, want - piece._lsBlindDmg);
-      piece._lsBlindDmg = want;
+  onPrepare(piece, ctx) {
+    piece._lsLit = false;
+    piece._lsBlindUntil = 0;
+    piece._lsRegenNeeded = Math.trunc(getPName(piece.params, 'regent', getP1(piece.params, 0)));
+    piece._lsBlind = Math.trunc(getPName(piece.params, 'blind', getP3(piece.params, 0)));
+    piece._lsBlindDuration = modifiedParamValue(
+      piece,
+      getPName(piece.params, 'dur_blind', getP4(piece.params, 0)),
+      'dur_blind',
+    );
+    piece._lsDamagePerBlind = getPName(piece.params, 'dam_blind', getP2(piece.params, 0));
+
+    const startBlindingLight = (nowT = ctx.t) => {
+      if (piece._lsLit) return;
+      if ((getStackAmount(ctx.player, 'regeneration') || 0) < piece._lsRegenNeeded) return;
+      piece._lsLit = true;
+      piece._lsBlindUntil = nowT + piece._lsBlindDuration;
+      useRegeneration(ctx.player, piece._lsRegenNeeded, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      grantTemporaryStacks(ctx.dummy, 'blind', piece._lsBlind, piece._lsBlindDuration, nowT, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      pushActivate(piece, { ...ctx, t: nowT }, 'lightsaber', `Weapon: ${piece.name}`, {
+        playCombatAni: false,
+        source: 'blinding_light',
+      });
     };
     onBuffChanged(ctx.player, (ch) => {
-      if (ch.stack !== 'regeneration' || piece._lsLit) return;
-      if ((getStackAmount(ctx.player, 'regeneration') || 0) < need) return;
-      piece._lsLit = true;
-      useRegeneration(ctx.player, need, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
-      // Gap: no blindingLight actor API — temp blind + regen spend
-      grantTemporaryStacks(ctx.dummy, 'blind', blind, dur, ctx.t, {
-        originKey: piece.placementKey,
-        originId: piece.itemId,
-      });
+      if (ch.stack !== 'regeneration' || ch.amount < 0) return;
+      startBlindingLight(ctx.t);
     });
     onBuffChanged(ctx.dummy, (ch) => {
-      if (ch.stack === 'blind') applyBlindDmg();
+      if (ch.stack !== 'blind') return;
+      changeVaryingDamageFromBuffChange(piece, ch, piece._lsDamagePerBlind);
     });
+    piece._lsStartBlindingLight = startBlindingLight;
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'lightsaber');
+  },
+  onTick(piece, ctx) {
+    if (!piece._lsLit || ctx.t + 1e-9 < piece._lsBlindUntil) return;
+    piece._lsLit = false;
+    piece._lsStartBlindingLight?.(ctx.t);
   },
 };
 

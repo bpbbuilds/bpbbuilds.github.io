@@ -200,6 +200,7 @@ export function emitChargePulse(piece, ctx, opts = {}) {
  *   durPerTile?: number,
  *   speedFactor?: number,
  *   onCellEnter?: (target: object | null, step: object, cell: object) => void,
+ *   onPathEnd?: (step: object) => void,
  *   label?: string,
  * }} [opts]
  */
@@ -253,6 +254,16 @@ export function emitPathCharge(piece, ctx, opts = {}) {
     const enterAbs = t + step.enterT;
 
     if (targetKey !== lastChargeKey) {
+      const previousPiece = lastChargeKey
+        ? (pieces || []).find((p) => p.placementKey === lastChargeKey)
+        : null;
+      if (previousPiece) {
+        if (!previousPiece.pendingChargeLeaves) previousPiece.pendingChargeLeaves = [];
+        previousPiece.pendingChargeLeaves.push({
+          at: enterAbs,
+          meta: { pathId, cellIndex: step.cellIndex, emitterKey: piece.placementKey },
+        });
+      }
       if (targetPiece) {
         if (!targetPiece.pendingCharges) targetPiece.pendingCharges = [];
         targetPiece.pendingCharges.push({
@@ -285,6 +296,18 @@ export function emitPathCharge(piece, ctx, opts = {}) {
       },
     });
   }
+
+  if (lastChargeKey) {
+    const previousPiece = (pieces || []).find((p) => p.placementKey === lastChargeKey);
+    if (previousPiece) {
+      if (!previousPiece.pendingChargeLeaves) previousPiece.pendingChargeLeaves = [];
+      previousPiece.pendingChargeLeaves.push({
+        at: t + path.duration,
+        meta: { pathId, cellIndex: path.cells.length, emitterKey: piece.placementKey },
+      });
+    }
+  }
+  opts.onPathEnd?.({ cellIndex: path.cells.length, enterT: path.duration });
 
   events.push({
     t: t + path.duration,
