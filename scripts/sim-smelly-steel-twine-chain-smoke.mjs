@@ -77,7 +77,9 @@ const player = createActor('player');
 const dummy = createActor('dummy');
 const events = [];
 const ctx = {
-  t: 4,
+  // onPrepare binds the listener at t=0; the live activation must instead
+  // use the actor's current sim clock when a blocker gives Block later.
+  t: 0,
   player,
   dummy,
   pieces,
@@ -96,11 +98,22 @@ assert.deepEqual([...steel._goobertActivationTargets].sort(), ['smelly', 'twine'
 assert.deepEqual([...steel._steelGoobertWeapons], ['weapon']);
 assert.deepEqual([...twine._twineTriggers], ['smelly']);
 
+player._simT = 4;
 grantStacks(player, 'block', 13, { originKey: steel.placementKey, originId: steel.itemId });
 assert.equal(dummy.stacks.poison, 1, 'Smelly Wall inflicts Poison after its 13 Block threshold');
 assert.equal(steel._goobertActs, 2, 'Smelly Wall activation and the successful Twine activation each count once');
 assert.equal(events.filter((event) => event.itemId === 'smelly_barrier' && event.type === 'activate').length, 1);
 assert.equal(events.filter((event) => event.itemId === 'twine' && event.type === 'activate').length, 1);
+assert.equal(
+  events.find((event) => event.itemId === 'smelly_barrier' && event.type === 'activate')?.t,
+  4,
+  'Smelly Wall emits its activation at the live block event time, not stale onPrepare time',
+);
+assert.equal(
+  events.find((event) => event.itemId === 'twine' && event.type === 'activate')?.t,
+  4,
+  'the successful Twine reaction shares Smelly Wall’s live activation time for playback',
+);
 
 pushActivate(weapon, ctx, 'test_weapon', 'test weapon');
 assert.equal(steel._goobertActs, 2, 'a secondary Steel Goobert weapon activation does not count toward six');

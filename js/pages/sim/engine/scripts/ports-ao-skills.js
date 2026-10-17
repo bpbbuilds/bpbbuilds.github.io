@@ -698,11 +698,17 @@ const smellyBarrierPort = {
       if (!(need > 0) || piece._blk < need) return;
       const poison = (piece._blk / need) * poi;
       piece._blk %= need;
-      grantStacks(ctx.dummy, 'poison', poison, {
+      // This listener is registered in onPrepare, so `ctx.t` is that setup
+      // time. Item.giveBlock can trigger it much later; use the owner's live
+      // combat clock so Smelly Wall and each successful Twine response land
+      // on the playback timeline where their activation animations can run.
+      const liveT = Number(ctx.player?._simT);
+      const liveCtx = Number.isFinite(liveT) ? { ...ctx, t: liveT } : ctx;
+      grantStacks(liveCtx.dummy, 'poison', poison, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
-      pushActivate(piece, ctx, 'smelly_barrier', `Skill: ${piece.name}`);
+      pushActivate(piece, liveCtx, 'smelly_barrier', `Skill: ${piece.name}`);
     };
     if (ctx.bus?.on) ctx.bus.on('item_gave_block', onBlockGiven);
     else onBuffChanged(ctx.player, onBlockGiven);

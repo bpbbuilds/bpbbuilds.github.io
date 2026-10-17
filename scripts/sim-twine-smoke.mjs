@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 import { createActor } from '../js/pages/sim/engine/actor.js';
+import { makeRng } from '../js/pages/sim/engine/rng.js';
 import { getScriptHandler } from '../js/pages/sim/engine/scripts/registry.js';
 
 const source = fs.readFileSync('tools/game-extract-full/Items/Exclusive/Twine.gd', 'utf8');
@@ -222,4 +223,18 @@ assert.equal(
 assert.equal(fedoraScenario.twine.chanceRolls, 1, 'Twine uses its per-item balanced chance roll');
 assert.equal(fedoraScenario.twine.chanceProcs, 1, 'the 72% Fedora-modified Twine roll succeeds at the deterministic test roll');
 
-console.log('OK Twine source can-affect rules, primary activation listener, neutral secondary chance, Fedora total-chance multiplier, balanced RNG, p1 health, ordering, and zero-safe regression');
+const sixtySmellyTriggers = makeFedoraScenario(true);
+fedoraHandler.onPrepare(sixtySmellyTriggers.fedora, sixtySmellyTriggers.ctx);
+handler.onPrepare(sixtySmellyTriggers.twine, sixtySmellyTriggers.ctx);
+sixtySmellyTriggers.ctx.rng = makeRng(2965184550);
+for (let i = 0; i < 60; i += 1) {
+  handler.onPeerActivated(sixtySmellyTriggers.twine, sixtySmellyTriggers.trigger, sixtySmellyTriggers.ctx);
+}
+assert.equal(sixtySmellyTriggers.twine.chanceRolls, 60, 'every Smelly Wall activation reaches a star-linked Twine chance roll');
+assert.equal(
+  sixtySmellyTriggers.twine.chanceProcs,
+  43,
+  '60 deterministic 72% Twine rolls produce 43 activations through the source-equivalent BalancedRng',
+);
+
+console.log('OK Twine source can-affect rules, primary activation listener, neutral secondary chance, Fedora total-chance multiplier, balanced RNG, 60-trigger rate, p1 health, ordering, and zero-safe regression');
