@@ -3,13 +3,13 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "8e630fd2c36a26479e42608e7fc2bd5854193e9de126304d05c51f51cc80abee",
+    "dashboardSha256": "abd45e27c3d4a932661b8c10a81204cf81ea129519eebdb6f43a28a2a9061e53",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 502,
-    "confirmed_gap": 2,
+    "verified_1to1": 504,
+    "confirmed_gap": 0,
     "evidence_pending": 0,
     "no_independent_combat": 15
   },
@@ -101,7 +101,7 @@
     "charge_splitter": "verified_1to1",
     "cheese": "verified_1to1",
     "cheese_goobert": "verified_1to1",
-    "chess_board": "confirmed_gap",
+    "chess_board": "verified_1to1",
     "chess_master": "verified_1to1",
     "chili_goobert": "verified_1to1",
     "chili_pepper": "verified_1to1",
@@ -523,7 +523,7 @@
     "white_pawn": "no_independent_combat",
     "white_queen": "no_independent_combat",
     "white_rook": "no_independent_combat",
-    "winged_boots": "confirmed_gap",
+    "winged_boots": "verified_1to1",
     "wisdom_puppy": "verified_1to1",
     "wisp": "verified_1to1",
     "wolf_badge": "verified_1to1",

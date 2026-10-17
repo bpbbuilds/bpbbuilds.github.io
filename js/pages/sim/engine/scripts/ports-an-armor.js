@@ -14,6 +14,7 @@ import { getP1, getP2, getP3, getP5, getPName } from '../params.js';
 import { modifiedParamValue } from '../placement-instance.js';
 import { addSpeed } from '../piece-stats.js';
 import { grantTimedSpeed } from '../timed-speed.js';
+import { PRIORITY } from '../combat-start-priority.js';
 import { whetstonePort } from './ports-wave-b-aura.js';
 import { applyEffectDmgFactor } from '../actor-stats.js';
 import { pushActivate } from './ports-util.js';
@@ -237,34 +238,33 @@ const bindWingedBoots = (piece, ctx) => {
   if (piece._wingBound) return;
   piece._wingBound = true;
     piece._wing = false;
-    const th = getPName(piece.params, 'healtht', 50) / 100;
+    // WingedBoots.gd initializes `healthThreshold` once with the source's
+    // strict-below epsilon and connects through the item's High+2 trigger
+    // priority.
+    const th = getPName(piece.params, 'healtht', 50) / 100 - 0.0001;
+    const empower = Math.trunc(getPName(piece.params, 'empower', 1));
+    const debuffs = Math.trunc(getPName(piece.params, 'cleanse', 1));
+    const dodges = Math.trunc(getPName(piece.params, 'dodge', 1));
     ctx.bus?.on?.('character_damaged', (payload) => {
       if (payload?.actor && payload.actor !== ctx.player) return;
       if (piece._wing) return;
       if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
       piece._wing = true;
-      grantStacks(ctx.player, 'empower', Math.max(1, Math.round(getPName(piece.params, 'empower', 1))), {
+      grantStacks(ctx.player, 'empower', empower, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
-      cleanseRandomDebuffs(ctx.player, Math.max(1, Math.round(getPName(piece.params, 'cleanse', 1))), ctx.rng, {});
-      ctx.player.dodgeStacks =
-        (Number(ctx.player.dodgeStacks) || 0) + Math.max(1, Math.round(getPName(piece.params, 'dodge', 1)));
-      pushActivate(piece, ctx, 'winged_boots', `Shoes: ${piece.name}`);
+      cleanseRandomDebuffs(ctx.player, debuffs, ctx.rng, {});
+      ctx.player.dodgeStacks = Math.max(0, (Number(ctx.player.dodgeStacks) || 0) + dodges);
+      pushActivate(piece, ctx, 'winged_boots', `Shoes: ${piece.name}`, { consume: true });
       piece.alive = false;
-    });
-    ctx.bus?.on?.('player_damaged', (payload) => {
-      if (piece._wing) return;
-      if (ctx.player.maxHp <= 0 || ctx.player.hp / ctx.player.maxHp >= th) return;
-      ctx.bus?.emit?.('character_damaged', { ...payload, actor: ctx.player });
-    });
+    }, PRIORITY.High + 2);
 };
 const wingedBootsPort = {
   handlerId: 'winged_boots',
   family: 'unique',
   // WingedBoots.gd connects during onPrepare.
   onPrepare: bindWingedBoots,
-  onCombatStart: bindWingedBoots,
 };
 
 /** Whetstone2.tscn uses Whetstone.gd */

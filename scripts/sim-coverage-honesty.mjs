@@ -73,9 +73,9 @@ function ok(cond, msg) {
   ];
   const cov = computeCoverage(placements, byId);
   ok(cov.handlerExists === 3, `noop board handlerExists 3 (${cov.handlerExists})`);
-  ok(cov.scripted === 0 && cov.engineMatch === 0, `noop board scripted 0 (${cov.scripted})`);
+  ok(cov.scripted === 1 && cov.engineMatch === 1, `board engine match 1 (${cov.engineMatch})`);
   ok(cov.catalogCd === 0, `noop board catalogCd 0 (${cov.catalogCd})`);
-  ok(cov.pct === 0, `noop board pct 0 (${cov.pct}%)`);
+  ok(cov.pct === 33, `board coverage pct 33 (${cov.pct}%)`);
 }
 
 {

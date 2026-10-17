@@ -1,24 +1,24 @@
 {
-  "builtAt": "2026-09-24T16:59:34.963Z",
-  "inventoryExtractedAt": "2026-09-24T16:53:39.392Z",
+  "builtAt": "2026-10-17T05:48:01.331Z",
+  "inventoryExtractedAt": "2026-10-06T23:14:44.247Z",
   "portRegistryGeneratedAt": "2026-09-24T16:59:34.330Z",
   "totals": {
-    "entries": 529,
-    "dedicated": 526,
-    "dedicatedReviewed": 526,
+    "entries": 539,
+    "dedicated": 457,
+    "dedicatedReviewed": 457,
     "dedicatedApprox": 0,
-    "dedicatedSolid": 526,
+    "dedicatedSolid": 457,
     "dedicatedParity": 0,
     "dedicatedStub": 0,
-    "family": 0,
+    "family": 78,
     "catalogFallback": 0,
-    "scripted": 526,
-    "depthDeep": 414,
-    "depthShallow": 83,
-    "depthNoop": 27
+    "scripted": 535,
+    "depthDeep": 496,
+    "depthShallow": 3,
+    "depthNoop": 26
   },
   "goal": {
-    "dedicatedPct": 100,
+    "dedicatedPct": 85,
     "reviewedPct": 100,
     "solidPct": 100,
     "parityPct": 0,
@@ -36,6 +36,16 @@
     "unique": "basic_cd"
   },
   "byId": {
+    "ace_of_spades": {
+      "id": "ace_of_spades",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doRevealEffect"
+      ]
+    },
     "acorn_collar": {
       "id": "acorn_collar",
       "family": "unique",
@@ -108,11 +118,11 @@
     },
     "blood_amulet": {
       "id": "blood_amulet",
-      "family": "start_buff",
+      "family": "synergy_aura",
       "handlerId": "blood_amulet",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "N",
       "template": "start_regen",
       "notes": "ports.js / ports-*.js",
@@ -156,7 +166,7 @@
       "handlerId": "bloody_dagger",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "poison_weapon",
       "notes": "ports.js / ports-*.js",
@@ -224,7 +234,7 @@
       "handlerId": "burning_coal",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "K",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -238,7 +248,7 @@
       "handlerId": "burning_torch",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "M",
       "template": "empower_aura",
       "notes": "ports.js / ports-*.js",
@@ -254,6 +264,7 @@
       "status": "skipped_base",
       "fidelity": "n/a",
       "overrides": [
+        "doRevealEffect",
         "trigger"
       ]
     },
@@ -337,7 +348,7 @@
       "handlerId": "crossblades",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "M",
       "template": "empower_aura",
       "notes": "ports.js / ports-*.js",
@@ -381,7 +392,7 @@
       "handlerId": "cursed_hair_comb",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "M",
       "template": "empower_aura",
       "notes": "ports.js / ports-*.js",
@@ -419,13 +430,23 @@
         "onPrepare"
       ]
     },
+    "darkest_lotus": {
+      "id": "darkest_lotus",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doRevealEffect"
+      ]
+    },
     "darksaber": {
       "id": "darksaber",
       "family": "on_hit",
       "handlerId": "darksaber",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -484,7 +505,7 @@
       "handlerId": "djinn_lamp",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -492,6 +513,14 @@
         "doCooldownEffect",
         "onPrepare"
       ]
+    },
+    "dragonegg": {
+      "id": "dragonegg",
+      "family": "pet_like",
+      "handlerId": "pet_strike",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
     },
     "eggscalibur": {
       "id": "eggscalibur",
@@ -698,6 +727,14 @@
         "onPrepare"
       ]
     },
+    "amulet_unidentified": {
+      "id": "amulet_unidentified",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
     "angel_crystal": {
       "id": "angel_crystal",
       "family": "synergy_aura",
@@ -754,6 +791,17 @@
       "notes": "ports.js / ports-*.js",
       "overrides": [
         "onPrepare"
+      ]
+    },
+    "armored_courage_puppy": {
+      "id": "armored_courage_puppy",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect",
+        "onPreCombatStart"
       ]
     },
     "armored_power_puppy": {
@@ -820,13 +868,21 @@
       "handlerId": "axe",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
       "overrides": [
         "onPreDealDamage_early"
       ]
+    },
+    "badger_rune": {
+      "id": "badger_rune",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
     },
     "badger_spirit": {
       "id": "badger_spirit",
@@ -856,6 +912,14 @@
       "overrides": [
         "onPrepare"
       ]
+    },
+    "bagtacular": {
+      "id": "bagtacular",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
     },
     "battery": {
       "id": "battery",
@@ -1113,7 +1177,7 @@
       "handlerId": "broccoli",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "K",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1137,16 +1201,17 @@
     },
     "broccotree": {
       "id": "broccotree",
-      "family": "custom_cd",
+      "family": "unique",
       "handlerId": "broccotree",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "K",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
       "overrides": [
-        "doCooldownEffect"
+        "doCooldownEffect",
+        "onPrepare"
       ]
     },
     "burning_banner": {
@@ -1155,7 +1220,7 @@
       "handlerId": "burning_banner",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1199,7 +1264,7 @@
       "handlerId": "burning_sword",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1271,7 +1336,7 @@
       "handlerId": "cauldron",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1316,7 +1381,7 @@
       "handlerId": "charge_splitter",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1353,13 +1418,117 @@
         "doCooldownEffect"
       ]
     },
+    "black_bishop": {
+      "id": "black_bishop",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "black_king": {
+      "id": "black_king",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "black_knight": {
+      "id": "black_knight",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "black_pawn": {
+      "id": "black_pawn",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "black_queen": {
+      "id": "black_queen",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "black_rook": {
+      "id": "black_rook",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "chesspiece": {
+      "id": "chesspiece",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "white_bishop": {
+      "id": "white_bishop",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "white_king": {
+      "id": "white_king",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "white_knight": {
+      "id": "white_knight",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "white_pawn": {
+      "id": "white_pawn",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "white_queen": {
+      "id": "white_queen",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "white_rook": {
+      "id": "white_rook",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
     "chess_board": {
       "id": "chess_board",
       "family": "unique",
       "handlerId": "chess_board",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "noop",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1402,7 +1571,7 @@
       "handlerId": "chili_pepper",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "K",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1632,7 +1801,7 @@
       "handlerId": "dark_lantern",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "N",
       "template": "start_regen",
       "notes": "ports.js / ports-*.js",
@@ -1662,7 +1831,7 @@
       "handlerId": "death_lotus",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1677,7 +1846,7 @@
       "handlerId": "deer_totem",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1735,7 +1904,7 @@
       "handlerId": "doom_cap",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "K",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1749,7 +1918,7 @@
       "handlerId": "double_axe",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1779,7 +1948,7 @@
       "handlerId": "draconic_orb",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -1852,7 +2021,7 @@
       "handlerId": "dragon_set",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "N",
       "template": "pet_strike",
       "notes": "ports.js / ports-*.js",
@@ -1933,6 +2102,16 @@
         "onPrepare"
       ]
     },
+    "elephant_rune": {
+      "id": "elephant_rune",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "combatStartInventory"
+      ]
+    },
     "emerald_egg": {
       "id": "emerald_egg",
       "family": "unique",
@@ -1954,7 +2133,7 @@
       "handlerId": "emerald_whelp",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "start_regen",
       "notes": "ports.js / ports-*.js",
@@ -1984,7 +2163,7 @@
       "handlerId": "energy_conversion",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -2013,7 +2192,7 @@
       "handlerId": "everburning",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -2144,7 +2323,7 @@
       "handlerId": "flame_badge",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "start_regen",
       "notes": "ports.js / ports-*.js",
@@ -2158,7 +2337,7 @@
       "handlerId": "flame_whip",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -2181,6 +2360,14 @@
         "onPrepare"
       ]
     },
+    "forestfriend": {
+      "id": "forestfriend",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
     "forging_hammer": {
       "id": "forging_hammer",
       "family": "weapon_base",
@@ -2201,7 +2388,7 @@
       "handlerId": "fortunas_kiss",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -2299,6 +2486,14 @@
         "onPrepare"
       ]
     },
+    "furcifer_prime": {
+      "id": "furcifer_prime",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
     "generator": {
       "id": "generator",
       "family": "unique",
@@ -2375,6 +2570,14 @@
         "onPrepare"
       ]
     },
+    "goldcounter": {
+      "id": "goldcounter",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
     "gold_cube": {
       "id": "gold_cube",
       "family": "unique",
@@ -2395,7 +2598,7 @@
       "handlerId": "halberd",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -2551,6 +2754,14 @@
         "onPrepare"
       ]
     },
+    "hypercube": {
+      "id": "hypercube",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
     "hyper_hedgehog": {
       "id": "hyper_hedgehog",
       "family": "custom_cd",
@@ -2571,7 +2782,7 @@
       "handlerId": "ice_armor",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -2638,13 +2849,23 @@
         "onPrepare"
       ]
     },
+    "joker": {
+      "id": "joker",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doRevealEffect"
+      ]
+    },
     "just_stats": {
       "id": "just_stats",
       "family": "start_buff",
       "handlerId": "just_stats",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "N",
       "template": "start_regen",
       "notes": "ports.js / ports-*.js",
@@ -2745,7 +2966,7 @@
       "handlerId": "laboratory",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -2761,7 +2982,7 @@
       "handlerId": "leaf_badge",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -2776,7 +2997,7 @@
       "handlerId": "level_up",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -2791,7 +3012,7 @@
       "handlerId": "light_flower",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -2859,6 +3080,14 @@
         "onPreDealDamage_early",
         "onPrepare"
       ]
+    },
+    "lootbox": {
+      "id": "lootbox",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
     },
     "lucky_cat": {
       "id": "lucky_cat",
@@ -3014,7 +3243,7 @@
       "handlerId": "mananana",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "K",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -3100,7 +3329,7 @@
       "handlerId": "molten_dagger",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "poison_weapon",
       "notes": "ports.js / ports-*.js",
@@ -3144,7 +3373,7 @@
       "handlerId": "molten_spear2",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -3160,7 +3389,7 @@
       "handlerId": "moon_armor",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -3175,7 +3404,7 @@
       "handlerId": "more_stats",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "M",
       "template": "empower_aura",
       "notes": "ports.js / ports-*.js",
@@ -3234,7 +3463,7 @@
       "handlerId": "null_blade",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -3338,7 +3567,7 @@
       "handlerId": "phoenix",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "I",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -3367,7 +3596,7 @@
       "handlerId": "piggy_of_riches",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "N",
       "template": "start_regen",
       "notes": "ports.js / ports-*.js",
@@ -3438,7 +3667,7 @@
       "handlerId": "poison_grenade",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -3453,7 +3682,7 @@
       "handlerId": "poison_shortbow",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "poison_weapon",
       "notes": "ports.js / ports-*.js",
@@ -3510,7 +3739,7 @@
       "handlerId": "pot",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -3614,7 +3843,7 @@
       "handlerId": "puzzlebag_l",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "M",
       "template": "empower_aura",
       "notes": "ports.js / ports-*.js",
@@ -3794,6 +4023,14 @@
         "onTriggerPotion"
       ]
     },
+    "random_loadout_bag": {
+      "id": "random_loadout_bag",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
     "rat": {
       "id": "rat",
       "family": "custom_cd",
@@ -3865,6 +4102,26 @@
         "doCooldownEffect"
       ]
     },
+    "resistor": {
+      "id": "resistor",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "onChargeReceived"
+      ]
+    },
+    "reverse": {
+      "id": "reverse",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doRevealEffect"
+      ]
+    },
     "robodog": {
       "id": "robodog",
       "family": "unique",
@@ -3893,6 +4150,14 @@
       "overrides": [
         "onPrepare"
       ]
+    },
+    "rotationspring": {
+      "id": "rotationspring",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
     },
     "sandbag": {
       "id": "sandbag",
@@ -3931,7 +4196,7 @@
       "handlerId": "sapphire_whelp",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "start_regen",
       "notes": "ports.js / ports-*.js",
@@ -3946,7 +4211,7 @@
       "handlerId": "scale",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -4004,7 +4269,7 @@
       "handlerId": "serpent_staff",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -4079,7 +4344,7 @@
       "handlerId": "shepherds_crook",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "M",
       "template": "empower_aura",
       "notes": "ports.js / ports-*.js",
@@ -4165,7 +4430,7 @@
       "handlerId": "slice_of_toast",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "L",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -4269,13 +4534,21 @@
       "handlerId": "snowcake",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "L",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
       "overrides": [
         "doCooldownEffect"
       ]
+    },
+    "snowman": {
+      "id": "snowman",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
     },
     "snowmaster": {
       "id": "snowmaster",
@@ -4469,7 +4742,7 @@
       "handlerId": "spin_to_win",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "L",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -4526,7 +4799,7 @@
       "handlerId": "squirrel_archer",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -4831,6 +5104,14 @@
         "onPrepare"
       ]
     },
+    "tiger_rune": {
+      "id": "tiger_rune",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
     "time_dilator": {
       "id": "time_dilator",
       "family": "unique",
@@ -4867,7 +5148,7 @@
       "handlerId": "time_pendant",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": null,
+      "depth": "deep",
       "band": "L",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -4970,7 +5251,7 @@
       "handlerId": "ukulele",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -4985,7 +5266,7 @@
       "handlerId": "ultima",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -4993,6 +5274,14 @@
         "doCooldownEffect",
         "onPrepare"
       ]
+    },
+    "unidentified_skill": {
+      "id": "unidentified_skill",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
     },
     "uniquely_unique": {
       "id": "uniquely_unique",
@@ -5158,7 +5447,7 @@
       "handlerId": "wisp",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "L",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -5244,7 +5533,7 @@
       "handlerId": "fanfare",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -5273,7 +5562,7 @@
       "handlerId": "flute",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -5288,13 +5577,21 @@
       "handlerId": "fly_agaric",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "K",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
       "overrides": [
         "doCooldownEffect"
       ]
+    },
+    "food": {
+      "id": "food",
+      "family": "food",
+      "handlerId": null,
+      "status": "skipped_base",
+      "fidelity": "n/a",
+      "overrides": []
     },
     "garlic": {
       "id": "garlic",
@@ -5394,13 +5691,37 @@
         "doCooldownEffect"
       ]
     },
+    "skull": {
+      "id": "skull",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "topaz": {
+      "id": "topaz",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "gemsocket": {
+      "id": "gemsocket",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
     "gingerbread_man": {
       "id": "gingerbread_man",
       "family": "synergy_aura",
       "handlerId": "gingerbread_man",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "M",
       "template": "empower_aura",
       "notes": "ports.js / ports-*.js",
@@ -5501,7 +5822,7 @@
       "handlerId": "heart_container",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -5559,12 +5880,22 @@
       "handlerId": "hero_sword",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "M",
       "template": "empower_aura",
       "notes": "ports.js / ports-*.js",
       "overrides": [
         "onCombatStart"
+      ]
+    },
+    "holo_fire_lizard": {
+      "id": "holo_fire_lizard",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doRevealEffect"
       ]
     },
     "holy_armor": {
@@ -5612,6 +5943,14 @@
         "onPreDealDamage_early",
         "onPrepare"
       ]
+    },
+    "itempushzone": {
+      "id": "itempushzone",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
     },
     "jynx_torquilla": {
       "id": "jynx_torquilla",
@@ -5707,7 +6046,7 @@
       "handlerId": "lucky_bow",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -5723,7 +6062,7 @@
       "handlerId": "lucky_clover",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "start_regen",
       "notes": "ports.js / ports-*.js",
@@ -5766,7 +6105,7 @@
       "handlerId": "magic_torch",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -5854,7 +6193,7 @@
       "handlerId": "pan",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "I",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -5910,7 +6249,7 @@
       "handlerId": "piggybank",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "N",
       "template": "start_regen",
       "notes": "ports.js / ports-*.js",
@@ -5982,7 +6321,7 @@
       "handlerId": "poison_dagger",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "poison_weapon",
       "notes": "ports.js / ports-*.js",
@@ -6066,7 +6405,7 @@
       "handlerId": "pumpkin",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -6124,7 +6463,7 @@
       "handlerId": "rib_saw_blade",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -6139,7 +6478,7 @@
       "handlerId": "ruby_chonk",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -6157,7 +6496,7 @@
       "fidelity": "reviewed",
       "depth": "deep",
       "band": "O",
-      "template": "basic_cd",
+      "template": "start_regen",
       "notes": "ports.js / ports-*.js",
       "overrides": [
         "doCooldownEffect",
@@ -6171,7 +6510,7 @@
       "handlerId": "ruby_whelp",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "I",
       "template": "start_regen",
       "notes": "ports.js / ports-*.js",
@@ -6201,13 +6540,21 @@
       "handlerId": "shovel",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
       "overrides": [
         "onDealtDamage"
       ]
+    },
+    "socketsnode": {
+      "id": "socketsnode",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
     },
     "spear": {
       "id": "spear",
@@ -6304,7 +6651,7 @@
       "handlerId": "stone",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -6412,13 +6759,33 @@
         "onTriggerPotion"
       ]
     },
+    "the_fool": {
+      "id": "the_fool",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doRevealEffect"
+      ]
+    },
+    "the_lovers": {
+      "id": "the_lovers",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doRevealEffect"
+      ]
+    },
     "thorn_bow": {
       "id": "thorn_bow",
       "family": "synergy_aura",
       "handlerId": "thorn_bow",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "M",
       "template": "empower_aura",
       "notes": "ports.js / ports-*.js",
@@ -6443,13 +6810,21 @@
         "onPrepare"
       ]
     },
+    "bagborder": {
+      "id": "bagborder",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
     "torch": {
       "id": "torch",
       "family": "on_hit",
       "handlerId": "torch",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "J",
       "template": "basic_cd",
       "notes": "ports.js / ports-*.js",
@@ -6521,7 +6896,7 @@
       "handlerId": "walrus_tusk",
       "status": "dedicated",
       "fidelity": "reviewed",
-      "depth": "shallow",
+      "depth": "deep",
       "band": "O",
       "template": "start_regen",
       "notes": "ports.js / ports-*.js",
@@ -6551,6 +6926,16 @@
       "notes": "ports.js / ports-*.js",
       "overrides": [
         "onCombatStart"
+      ]
+    },
+    "white_eyes_blue_dragon": {
+      "id": "white_eyes_blue_dragon",
+      "family": "pet_like",
+      "handlerId": "pet_strike",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doRevealEffect"
       ]
     },
     "wolpertinger": {
@@ -6611,6 +6996,339 @@
         "onPrepare"
       ]
     },
+    "book_of_ice_new": {
+      "id": "book_of_ice_new",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect",
+        "onPrepare"
+      ]
+    },
+    "chipped_amethyst": {
+      "id": "chipped_amethyst",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "chipped_emerald": {
+      "id": "chipped_emerald",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "chipped_ruby": {
+      "id": "chipped_ruby",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "chipped_sapphire": {
+      "id": "chipped_sapphire",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "chipped_topaz": {
+      "id": "chipped_topaz",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "flawed_amethyst": {
+      "id": "flawed_amethyst",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "flawed_emerald": {
+      "id": "flawed_emerald",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "flawed_ruby": {
+      "id": "flawed_ruby",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "flawed_sapphire": {
+      "id": "flawed_sapphire",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "flawless_amethyst": {
+      "id": "flawless_amethyst",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "flawless_emerald": {
+      "id": "flawless_emerald",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "flawless_ruby": {
+      "id": "flawless_ruby",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "flawless_sapphire": {
+      "id": "flawless_sapphire",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "flawless_topaz": {
+      "id": "flawless_topaz",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "flawed_topaz": {
+      "id": "flawed_topaz",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "perfect_amethyst": {
+      "id": "perfect_amethyst",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "perfect_emerald": {
+      "id": "perfect_emerald",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "perfect_ruby": {
+      "id": "perfect_ruby",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "perfect_sapphire": {
+      "id": "perfect_sapphire",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "perfect_topaz": {
+      "id": "perfect_topaz",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "regular_amethyst": {
+      "id": "regular_amethyst",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "regular_emerald": {
+      "id": "regular_emerald",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "regular_ruby": {
+      "id": "regular_ruby",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "regular_sapphire": {
+      "id": "regular_sapphire",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "regular_topaz": {
+      "id": "regular_topaz",
+      "family": "unique",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": []
+    },
+    "shortbow": {
+      "id": "shortbow",
+      "family": "basic_weapon",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "stable_recombobulator": {
+      "id": "stable_recombobulator",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "strong_heroic_potion": {
+      "id": "strong_heroic_potion",
+      "family": "food",
+      "handlerId": "start_regen",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "strong_mana_potion": {
+      "id": "strong_mana_potion",
+      "family": "food",
+      "handlerId": "start_regen",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "onPrepare"
+      ]
+    },
+    "superior_ring": {
+      "id": "superior_ring",
+      "family": "synergy_aura",
+      "handlerId": "empower_aura",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect",
+        "onCombatStart",
+        "onPrepare"
+      ]
+    },
+    "unstable_recombobulator": {
+      "id": "unstable_recombobulator",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
+    "whetstone2": {
+      "id": "whetstone2",
+      "family": "synergy_aura",
+      "handlerId": "empower_aura",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "onCombatStart"
+      ]
+    },
+    "goobling": {
+      "id": "goobling",
+      "family": "custom_cd",
+      "handlerId": "basic_cd",
+      "status": "family",
+      "fidelity": "family",
+      "overrides": [
+        "doCooldownEffect"
+      ]
+    },
     "boots_of_speed": {
       "id": "boots_of_speed",
       "family": "catalog",
@@ -6619,150 +7337,6 @@
       "fidelity": "reviewed",
       "band": "P",
       "template": "catalog_staple",
-      "overrides": []
-    },
-    "ace_of_spades": {
-      "id": "ace_of_spades",
-      "family": "catalog",
-      "handlerId": "ace_of_spades",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "amulet_unidentified": {
-      "id": "amulet_unidentified",
-      "family": "catalog",
-      "handlerId": "amulet_unidentified",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "armored_courage_puppy": {
-      "id": "armored_courage_puppy",
-      "family": "catalog",
-      "handlerId": "armored_courage_puppy",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "badger_rune": {
-      "id": "badger_rune",
-      "family": "catalog",
-      "handlerId": "badger_rune",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "bagtacular": {
-      "id": "bagtacular",
-      "family": "catalog",
-      "handlerId": "bagtacular",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "black_bishop": {
-      "id": "black_bishop",
-      "family": "catalog",
-      "handlerId": "black_bishop",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "black_king": {
-      "id": "black_king",
-      "family": "catalog",
-      "handlerId": "black_king",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "black_knight": {
-      "id": "black_knight",
-      "family": "catalog",
-      "handlerId": "black_knight",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "black_pawn": {
-      "id": "black_pawn",
-      "family": "catalog",
-      "handlerId": "black_pawn",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "black_queen": {
-      "id": "black_queen",
-      "family": "catalog",
-      "handlerId": "black_queen",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "black_rook": {
-      "id": "black_rook",
-      "family": "catalog",
-      "handlerId": "black_rook",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "book_of_ice_new": {
-      "id": "book_of_ice_new",
-      "family": "catalog",
-      "handlerId": "book_of_ice_new",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
       "overrides": []
     },
     "box_of_prosperity": {
@@ -6784,66 +7358,6 @@
       "status": "dedicated",
       "fidelity": "reviewed",
       "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "chipped_amethyst": {
-      "id": "chipped_amethyst",
-      "family": "catalog",
-      "handlerId": "chipped_amethyst",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "chipped_emerald": {
-      "id": "chipped_emerald",
-      "family": "catalog",
-      "handlerId": "chipped_emerald",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "chipped_ruby": {
-      "id": "chipped_ruby",
-      "family": "catalog",
-      "handlerId": "chipped_ruby",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "chipped_sapphire": {
-      "id": "chipped_sapphire",
-      "family": "catalog",
-      "handlerId": "chipped_sapphire",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "chipped_topaz": {
-      "id": "chipped_topaz",
-      "family": "catalog",
-      "handlerId": "chipped_topaz",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
       "band": "AK",
       "template": "hand_port",
       "notes": "ports.js / ports-*.js",
@@ -6873,30 +7387,6 @@
       "notes": "ports.js / ports-*.js",
       "overrides": []
     },
-    "darkest_lotus": {
-      "id": "darkest_lotus",
-      "family": "catalog",
-      "handlerId": "darkest_lotus",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "elephant_rune": {
-      "id": "elephant_rune",
-      "family": "catalog",
-      "handlerId": "elephant_rune",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
     "employee_uniform": {
       "id": "employee_uniform",
       "family": "catalog",
@@ -6921,610 +7411,10 @@
       "notes": "ports.js / ports-*.js",
       "overrides": []
     },
-    "flawed_amethyst": {
-      "id": "flawed_amethyst",
-      "family": "catalog",
-      "handlerId": "flawed_amethyst",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "flawed_emerald": {
-      "id": "flawed_emerald",
-      "family": "catalog",
-      "handlerId": "flawed_emerald",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "flawed_ruby": {
-      "id": "flawed_ruby",
-      "family": "catalog",
-      "handlerId": "flawed_ruby",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "flawed_sapphire": {
-      "id": "flawed_sapphire",
-      "family": "catalog",
-      "handlerId": "flawed_sapphire",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "flawed_topaz": {
-      "id": "flawed_topaz",
-      "family": "catalog",
-      "handlerId": "flawed_topaz",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "flawless_amethyst": {
-      "id": "flawless_amethyst",
-      "family": "catalog",
-      "handlerId": "flawless_amethyst",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "flawless_emerald": {
-      "id": "flawless_emerald",
-      "family": "catalog",
-      "handlerId": "flawless_emerald",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "flawless_ruby": {
-      "id": "flawless_ruby",
-      "family": "catalog",
-      "handlerId": "flawless_ruby",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "flawless_sapphire": {
-      "id": "flawless_sapphire",
-      "family": "catalog",
-      "handlerId": "flawless_sapphire",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "flawless_topaz": {
-      "id": "flawless_topaz",
-      "family": "catalog",
-      "handlerId": "flawless_topaz",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "furcifer_prime": {
-      "id": "furcifer_prime",
-      "family": "catalog",
-      "handlerId": "furcifer_prime",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "goobling": {
-      "id": "goobling",
-      "family": "catalog",
-      "handlerId": "goobling",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "holo_fire_lizard": {
-      "id": "holo_fire_lizard",
-      "family": "catalog",
-      "handlerId": "holo_fire_lizard",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "hypercube": {
-      "id": "hypercube",
-      "family": "catalog",
-      "handlerId": "hypercube",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "joker": {
-      "id": "joker",
-      "family": "catalog",
-      "handlerId": "joker",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
     "leather_bag": {
       "id": "leather_bag",
       "family": "catalog",
       "handlerId": "leather_bag",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "lootbox": {
-      "id": "lootbox",
-      "family": "catalog",
-      "handlerId": "lootbox",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "perfect_amethyst": {
-      "id": "perfect_amethyst",
-      "family": "catalog",
-      "handlerId": "perfect_amethyst",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "perfect_emerald": {
-      "id": "perfect_emerald",
-      "family": "catalog",
-      "handlerId": "perfect_emerald",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "perfect_ruby": {
-      "id": "perfect_ruby",
-      "family": "catalog",
-      "handlerId": "perfect_ruby",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "perfect_sapphire": {
-      "id": "perfect_sapphire",
-      "family": "catalog",
-      "handlerId": "perfect_sapphire",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "perfect_topaz": {
-      "id": "perfect_topaz",
-      "family": "catalog",
-      "handlerId": "perfect_topaz",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "random_loadout_bag": {
-      "id": "random_loadout_bag",
-      "family": "catalog",
-      "handlerId": "random_loadout_bag",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "regular_amethyst": {
-      "id": "regular_amethyst",
-      "family": "catalog",
-      "handlerId": "regular_amethyst",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "regular_emerald": {
-      "id": "regular_emerald",
-      "family": "catalog",
-      "handlerId": "regular_emerald",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "regular_ruby": {
-      "id": "regular_ruby",
-      "family": "catalog",
-      "handlerId": "regular_ruby",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "regular_sapphire": {
-      "id": "regular_sapphire",
-      "family": "catalog",
-      "handlerId": "regular_sapphire",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "regular_topaz": {
-      "id": "regular_topaz",
-      "family": "catalog",
-      "handlerId": "regular_topaz",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "resistor": {
-      "id": "resistor",
-      "family": "catalog",
-      "handlerId": "resistor",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "reverse": {
-      "id": "reverse",
-      "family": "catalog",
-      "handlerId": "reverse",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "shortbow": {
-      "id": "shortbow",
-      "family": "catalog",
-      "handlerId": "shortbow",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "skull": {
-      "id": "skull",
-      "family": "catalog",
-      "handlerId": "skull",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "snowman": {
-      "id": "snowman",
-      "family": "catalog",
-      "handlerId": "snowman",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "stable_recombobulator": {
-      "id": "stable_recombobulator",
-      "family": "catalog",
-      "handlerId": "stable_recombobulator",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "strong_heroic_potion": {
-      "id": "strong_heroic_potion",
-      "family": "catalog",
-      "handlerId": "strong_heroic_potion",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "strong_mana_potion": {
-      "id": "strong_mana_potion",
-      "family": "catalog",
-      "handlerId": "strong_mana_potion",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "superior_ring": {
-      "id": "superior_ring",
-      "family": "catalog",
-      "handlerId": "superior_ring",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "the_fool": {
-      "id": "the_fool",
-      "family": "catalog",
-      "handlerId": "the_fool",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "the_lovers": {
-      "id": "the_lovers",
-      "family": "catalog",
-      "handlerId": "the_lovers",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "tiger_rune": {
-      "id": "tiger_rune",
-      "family": "catalog",
-      "handlerId": "tiger_rune",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "topaz": {
-      "id": "topaz",
-      "family": "catalog",
-      "handlerId": "topaz",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "shallow",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "unidentified_skill": {
-      "id": "unidentified_skill",
-      "family": "catalog",
-      "handlerId": "unidentified_skill",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "unstable_recombobulator": {
-      "id": "unstable_recombobulator",
-      "family": "catalog",
-      "handlerId": "unstable_recombobulator",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "whetstone2": {
-      "id": "whetstone2",
-      "family": "catalog",
-      "handlerId": "whetstone2",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "white_bishop": {
-      "id": "white_bishop",
-      "family": "catalog",
-      "handlerId": "white_bishop",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "white_eyes_blue_dragon": {
-      "id": "white_eyes_blue_dragon",
-      "family": "catalog",
-      "handlerId": "white_eyes_blue_dragon",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "deep",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "white_king": {
-      "id": "white_king",
-      "family": "catalog",
-      "handlerId": "white_king",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "white_knight": {
-      "id": "white_knight",
-      "family": "catalog",
-      "handlerId": "white_knight",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "white_pawn": {
-      "id": "white_pawn",
-      "family": "catalog",
-      "handlerId": "white_pawn",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "white_queen": {
-      "id": "white_queen",
-      "family": "catalog",
-      "handlerId": "white_queen",
-      "status": "dedicated",
-      "fidelity": "reviewed",
-      "depth": "noop",
-      "band": "AK",
-      "template": "hand_port",
-      "notes": "ports.js / ports-*.js",
-      "overrides": []
-    },
-    "white_rook": {
-      "id": "white_rook",
-      "family": "catalog",
-      "handlerId": "white_rook",
       "status": "dedicated",
       "fidelity": "reviewed",
       "depth": "noop",

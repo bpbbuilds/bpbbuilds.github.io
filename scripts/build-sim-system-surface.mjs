@@ -207,12 +207,20 @@ const SURFACE = [
   },
   {
     id: 'chess-board-ai',
-    category: 'unsupported-mode',
+    category: 'item-mechanic',
     source: 'Items/Exclusive/ChessBoard.gd',
     functions: ['doCooldownEffect'],
-    simOwners: ['assets/data/sim-intentional-noops.json'],
-    disposition: 'unsupported',
-    note: 'The simulator intentionally defers Chess Board AI; this must remain visible in coverage and user-facing mode truth.',
+    simOwners: ['js/pages/sim/engine/scripts/ports-wave-d-board.js', 'js/pages/sim/engine/board-graph.js', 'js/pages/sim/engine/chess.js'],
+    disposition: 'implemented',
+    note: 'Chess Board turn selection, movement, capture occupancy, and source ChessPiece effect dispatch are covered by the focused regression.',
+    evidence: {
+      focusedRegression: 'scripts/sim-chess-board-smoke.mjs',
+      fixture: 'Source White/Black turns, legal movement, capture, Chess Master price selection, occupancy mutation, capture/elimination effects, and explicit no-op activation suppression.',
+      projections: ['log', 'meter', 'hud'],
+      requiredProjections: ['log', 'meter', 'hud'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
 ];
 

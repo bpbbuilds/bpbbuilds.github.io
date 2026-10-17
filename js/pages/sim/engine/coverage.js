@@ -25,7 +25,7 @@ const COMBAT_HOOKS = [
   'onChargeReceived',
 ];
 
-const METER_NOOP = new Set([...AK_NOOP_IDS, 'chess_board']);
+const METER_NOOP = new Set([...AK_NOOP_IDS]);
 
 /**
  * @param {object | null | undefined} item

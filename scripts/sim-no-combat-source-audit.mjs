@@ -35,5 +35,4 @@ for (const id of chessIds) {
 
 const board = readFileSync(path.join(extract, 'Items/Exclusive/ChessBoard.gd'), 'utf8');
 assert.match(board, /^func doCooldownEffect\s*\(/m, 'Chess Board owns the combat turn');
-assert.equal(noops.chessBoard.sim, 'unsupported_mode');
-console.log('26 no-combat source rows audited: shop/wearable sources and ChessPiece inheritance/effects verified.');
+console.log('26 no-combat source rows audited: shop/wearable sources and ChessPiece inheritance/effects verified; Chess Board owns supported combat turns.');

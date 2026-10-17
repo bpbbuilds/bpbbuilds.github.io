@@ -1,6 +1,6 @@
 {
   "phase": 267,
-  "note": "Shop/wearable noops match GD (shop/drop only). Chess pieces have no own CD; board-owned capture/elimination effects are exposed through the tested chess dispatch surface, while Chess Board movement AI remains outside the simulator supported mode. Puzzlebags were false noops and are ported.",
+  "note": "Shop/wearable noops match GD (shop/drop only). Chess pieces have no own CD; board-owned movement/capture and capture/elimination effects are covered by the Chess Board handler. Puzzlebags were false noops and are ported.",
   "shopNoCombat": [
     { "id": "coins", "gd": null, "why": "currency; no Item combat script in extract" },
     { "id": "customer_card", "gd": "Items/CustomerCard.gd", "why": "onCalcTradeChance only" },
@@ -33,13 +33,6 @@
     "white_queen",
     "white_rook"
   ],
-  "chessBoard": {
-    "id": "chess_board",
-    "gd": "Items/Exclusive/ChessBoard.gd",
-    "gameCombat": true,
-    "sim": "unsupported_mode",
-    "why": "Simulator supports Chess Board placement and cooldown visibility, but intentionally excludes in-combat ChessPiece movement/capture AI; the supported combat mode boundary is explicit until board-state simulation exists."
-  },
   "portedFalseNoops": [
     { "id": "puzzlebag_s", "gd": "Items/Exclusive/PuzzlebagS.gd" },
     { "id": "puzzlebag_z", "gd": "Items/Exclusive/PuzzlebagZ.gd" },

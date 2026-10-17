@@ -23,15 +23,15 @@ console.log(
   `HAND depth: hand=${hand} deep=${deep} shallow=${shallow} noop=${noop}`,
 );
 
-if (byId.chess_board?.depth !== 'noop') {
-  console.error('FAIL: chess_board must remain depth=noop');
+if (byId.chess_board?.depth !== 'deep') {
+  console.error('FAIL: chess_board must be deep after movement/capture parity');
   process.exitCode = 1;
 } else {
-  console.log('OK: chess_board noop');
+  console.log('OK: chess_board deep');
 }
 
 if (noop < 1) {
-  console.error(`FAIL: expected noop>=1 (chess_board), got ${noop}`);
+    console.error(`FAIL: expected noop>=1 (shop/wearable/chess pieces), got ${noop}`);
   process.exitCode = 1;
 }
 

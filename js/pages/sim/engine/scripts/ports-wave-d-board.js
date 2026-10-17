@@ -3,7 +3,8 @@
  */
 
 import { giveRandomBuffs, grantStacks } from '../buff-economy.js';
-import { affectedTargets, neighborKeys } from '../board-graph.js';
+import { affectedTargets, moveBoardPiece, neighborKeys } from '../board-graph.js';
+import { dispatchChessCaptureSequence } from '../chess.js';
 import { getP1, getP2, getPName } from '../params.js';
 import { advanceCooldownPercent, deactivateCooldown, isCooldownActive } from '../cooldown.js';
 import { runCardInheritedHook } from './card-chain.js';
@@ -12,27 +13,201 @@ import { runWeaponInheritedHook } from './ports-wave-c-util.js';
 import { getScriptHandler } from './registry.js';
 import { magicRingPort } from './ports-ring.js';
 import { multiplyBuffsLimit } from './ports-ai-d.js';
+import { shuffleInPlace } from '../rng.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
  */
 
 /** ChessBoard.gd — doCooldownEffect runs capture/move AI. Sim defers that AI (Phase 267). */
+function isChessPiece(piece, ctx) {
+  const item = ctx.itemsById.get(piece?.itemId);
+  return String(item?.type || '').toLowerCase().includes('chess piece');
+}
+
+function chessColor(piece) {
+  return String(piece?.itemId || '').startsWith('black_') ? 0 : 1;
+}
+
+function chessBoardWorld(piece, ctx) {
+  const ownerIsThem = piece?.side === 'them';
+  const ownerPieces = ctx.pieces || [];
+  const emptyGraph = { pieces: new Map(), filled: new Map() };
+  return {
+    you: ownerIsThem ? ctx.dummy : ctx.player,
+    them: ownerIsThem ? ctx.player : ctx.dummy,
+    youGraph: ownerIsThem ? emptyGraph : ctx.graph,
+    themGraph: ownerIsThem ? ctx.graph : emptyGraph,
+    youPieces: ownerIsThem ? [] : ownerPieces,
+    themPieces: ownerIsThem ? ownerPieces : [],
+    youDeck: { i: 0 },
+    themDeck: { i: 0 },
+    youCardKeys: [],
+    themCardKeys: [],
+    t: ctx.t,
+    rng: ctx.rng,
+    events: ctx.events,
+    itemsById: ctx.itemsById,
+    canAffect: ctx.canAffect,
+    activatePiece: ctx.activatePiece,
+    bus: ctx.bus,
+    fatigue: ctx.fatigue,
+    board: ctx.board,
+    notifyDealtDamage: ctx.notifyDealtDamage,
+    notifyPreDealDamageEarly: ctx.notifyPreDealDamageEarly,
+    notifyPreDealDamageLate: ctx.notifyPreDealDamageLate,
+    logChain: ctx.logChain,
+    chargeJobs: [],
+  };
+}
+
+function chessPiecesForColor(ctx, color) {
+  return (ctx.pieces || []).filter(
+    (piece) => piece.alive !== false && isChessPiece(piece, ctx) && chessColor(piece) === color,
+  );
+}
+
+function chessTargetAt(ctx, cell) {
+  const key = ctx.graph?.filled?.get(cell);
+  if (!key) return null;
+  const target = (ctx.pieces || []).find(
+    (candidate) => candidate.placementKey === key && candidate.alive !== false,
+  );
+  return target && isChessPiece(target, ctx) ? target : null;
+}
+
+function chessMoveCells(piece, ctx) {
+  return [...(ctx.graph?.pieces?.get(piece.placementKey)?.affectCells || [])]
+    .map((mark) => mark.cell)
+    .filter(Boolean);
+}
+
+function chessPieceCanBeBlocked(piece) {
+  return !String(piece?.itemId || '').endsWith('_knight');
+}
+
+function chessPathBlocked(piece, targetCell, ctx) {
+  if (!chessPieceCanBeBlocked(piece)) return false;
+  const boardPiece = ctx.graph?.pieces?.get(piece.placementKey);
+  if (!boardPiece?.cells?.length) return false;
+  const [fromX, fromY] = boardPiece.cells[0].split(',').map(Number);
+  const [toX, toY] = targetCell.split(',').map(Number);
+  const dx = toX - fromX;
+  const dy = toY - fromY;
+  const length = Math.max(Math.abs(dx), Math.abs(dy));
+  if (length <= 1) return false;
+  const stepX = dx / length;
+  const stepY = dy / length;
+  for (let i = 1; i < length; i += 1) {
+    const cell = `${fromX + i * stepX},${fromY + i * stepY}`;
+    const blocker = chessTargetAt(ctx, cell);
+    if (blocker) return true;
+  }
+  return false;
+}
+
+function findChessCapture(activePieces, ctx, bestCapture) {
+  let best = null;
+  let bestScore = -10000;
+  for (const piece of activePieces) {
+    const cells = shuffleInPlace(chessMoveCells(piece, ctx), ctx.rng || Math.random);
+    for (const targetCell of cells) {
+      const target = chessTargetAt(ctx, targetCell);
+      if (!target || chessColor(target) === chessColor(piece)) continue;
+      if (!bestCapture) return { capturing: piece, eliminated: target, targetCell };
+      const targetItem = ctx.itemsById.get(target.itemId);
+      let score = Number(targetItem?.cost);
+      if (!Number.isFinite(score)) score = 0;
+      if (chessPathBlocked(piece, targetCell, ctx)) score -= 100;
+      if (score > bestScore) {
+        bestScore = score;
+        best = { capturing: piece, eliminated: target, targetCell };
+      }
+    }
+  }
+  return best;
+}
+
+function moveChessPiece(piece, targetCell, ctx) {
+  const graphPiece = ctx.graph?.pieces?.get(piece.placementKey);
+  const fromCell = graphPiece?.cells?.[0] || null;
+  if (!fromCell || !moveBoardPiece(ctx.graph, piece.placementKey, targetCell)) return false;
+  piece._chessCell = targetCell;
+  ctx.events.push({
+    t: ctx.t,
+    type: 'info',
+    itemId: piece.itemId,
+    placementKey: piece.placementKey,
+    label: `${piece.name}: moved ${fromCell} -> ${targetCell}`,
+    meta: {
+      category: 'chess',
+      script: true,
+      handler: 'chess_board',
+      event: 'piece_moved',
+      fromCell,
+      toCell: targetCell,
+    },
+  });
+  return true;
+}
+
+function captureChessPiece(board, capture, ctx) {
+  const { capturing, eliminated, targetCell } = capture;
+  const eliminatedGraphPiece = ctx.graph?.pieces?.get(eliminated.placementKey);
+  for (const cell of eliminatedGraphPiece?.cells || []) {
+    if (ctx.graph.filled.get(cell) === eliminated.placementKey) ctx.graph.filled.delete(cell);
+  }
+  eliminated.captured = true;
+  if (!moveBoardPiece(ctx.graph, capturing.placementKey, targetCell)) return false;
+  capturing._chessCell = targetCell;
+
+  // ChessBoard.gd calls activate() before ChessPiece.onPieceCaptured().
+  pushActivate(board, ctx, 'chess_board', `Board: ${board.name}`);
+  dispatchChessCaptureSequence(capturing, eliminated, chessBoardWorld(board, ctx));
+  ctx.events.push({
+    t: ctx.t,
+    type: 'info',
+    itemId: board.itemId,
+    placementKey: board.placementKey,
+    label: `${board.name}: ${capturing.name} captured ${eliminated.name}`,
+    meta: {
+      category: 'chess',
+      script: true,
+      handler: 'chess_board',
+      event: 'piece_captured',
+      capturingKey: capturing.placementKey,
+      eliminatedKey: eliminated.placementKey,
+    },
+  });
+  return true;
+}
+
 /** @type {ScriptHandler} */
 export const chessBoardPort = {
   handlerId: 'chess_board',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    pushActivate(piece, ctx, 'chess_board', `Board: ${piece.name}`);
-    ctx.events.push({
-      t: ctx.t + 0.002,
-      type: 'info',
-      label: `${piece.name}: chess AI deferred (game has combat CD; sim does not move pieces)`,
-      meta: { category: 'system', script: true, handler: 'chess_board', noop: true },
-    });
+  onPrepare(piece) {
+    piece._chessTurnColor = 1;
   },
   onCooldownEffect(piece, ctx) {
-    pushActivate(piece, ctx, 'chess_board', `Board: ${piece.name}`);
+    const color = piece._chessTurnColor === 0 ? 0 : 1;
+    const activePieces = shuffleInPlace(
+      chessPiecesForColor(ctx, color),
+      ctx.rng || Math.random,
+    );
+    const hasChessMaster = (ctx.pieces || []).some((candidate) => candidate.itemId === 'chess_master');
+    const capture = findChessCapture(activePieces, ctx, hasChessMaster);
+    if (!(capture && captureChessPiece(piece, capture, ctx))) {
+      for (const chessPiece of activePieces) {
+        const cells = shuffleInPlace(chessMoveCells(chessPiece, ctx), ctx.rng || Math.random);
+        const targetCell = cells.find((cell) => !ctx.graph.filled.has(cell));
+        if (targetCell && moveChessPiece(chessPiece, targetCell, ctx)) break;
+      }
+      // ChessBoard.gd does not call activate() for a move or a no-op turn.
+      // Keep the scheduler alive without fabricating an activation event.
+      piece._activationLogged = true;
+    }
+    piece._chessTurnColor = color === 1 ? 0 : 1;
     return true;
   },
 };

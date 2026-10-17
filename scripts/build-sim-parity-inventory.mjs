@@ -604,7 +604,7 @@ const DEEP = new Set([
   'enchanted_weapons',
   ...WAVE_B,
   ...WAVE_C,
-  ...[...WAVE_D].filter((id) => id !== 'chess_board'),
+  ...WAVE_D,
   ...WAVE_AI_A,
   ...WAVE_AI_B,
   ...WAVE_AI_C,
@@ -632,11 +632,9 @@ const byId = {};
 for (const id of ids) {
   let depth = 'shallow';
   let notes = 'HAND port; remaining shallow after AG — AH fixtures next';
-  if (id === 'chess_board' || WAVE_AK_NOOP.has(id) || WAVE_AN_NOOP.has(id)) {
+  if (WAVE_AK_NOOP.has(id) || WAVE_AN_NOOP.has(id)) {
     depth = 'noop';
-    notes = id === 'chess_board'
-      ? 'game ChessBoard.gd has combat CD AI; simulator explicitly excludes piece movement/capture from supported mode'
-      : WAVE_AN_NOOP.has(id)
+    notes = WAVE_AN_NOOP.has(id)
         ? 'AN shop-only combat noop'
         : 'AK noop — shop/chess (not fake deep)';
   } else if (DEEP.has(id)) {

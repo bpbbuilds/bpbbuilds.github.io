@@ -69,11 +69,12 @@ for (const row of list.portedFalseNoops) {
   ok(classifyCoverageItem(row.id).reason !== 'noop', `${row.id} coverage not noop`);
 }
 
-ok(parity.byId.chess_board?.depth === 'noop', 'chess_board inventory depth noop (unsupported combat mode)');
-ok(list.chessBoard.gameCombat === true, 'list records chess_board game combat');
-ok(list.chessBoard.sim === 'unsupported_mode', 'list records supported-mode boundary');
-
-const boardGd = fs.readFileSync(path.join(EXTRACT, list.chessBoard.gd), 'utf8');
+ok(parity.byId.chess_board?.depth === 'deep', 'chess_board inventory depth deep');
+ok(
+  typeof getScriptHandler('chess_board')?.onCooldownEffect === 'function',
+  'chess_board has supported movement/capture handler',
+);
+const boardGd = fs.readFileSync(path.join(EXTRACT, 'Items/Exclusive/ChessBoard.gd'), 'utf8');
 ok(/func doCooldownEffect/.test(boardGd), 'ChessBoard.gd has doCooldownEffect');
 
 for (const row of [...list.shopNoCombat, ...list.wearablesShopOnly]) {

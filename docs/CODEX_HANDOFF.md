@@ -6936,3 +6936,17 @@ None.
 ### 2026-10-17 Simulator item parity continuation 323 - in progress
 
 - Codex owns the next remaining confirmed-gap review, Chess Board’s supported-mode boundary and its source-backed audit evidence, focused regression, generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the Chess Board simulator handler/tests, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 323 - complete
+
+- Codex repaired Chess Board's supported simulator mode to mirror source turn order, legal movement, occupancy updates, opposite-color captures, Chess Master price selection, blocked-line behavior, and capture/elimination effect ordering. The legacy chess dispatch API remains unchanged for existing callers.
+- Added `scripts/sim-chess-board-smoke.mjs`, attached source-backed evidence, updated parity/no-op/system-surface audits, regenerated the simulator artifacts, and updated `docs/todo.md` to 503 / 519 verified item rows at this checkpoint. Focused Chess Board, chess call-path, Chess Master, AG/Wave D/no-op/coverage checks, changed-module syntax, and generated artifact freshness checks pass. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 324 - complete
+
+- Codex repaired Winged Boots to mirror the extracted strict health threshold, High+2 listener priority, `character_damaged` registration, exact integer Empower/Cleanse/Dodge values including explicit zeros, one-shot consumption metadata, and source-compatible Dodge clamping.
+- Added `scripts/sim-winged-boots-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 504 / 519 verified item rows. The generated summary reports 504 verified, 0 confirmed gaps, 0 evidence-pending, and 15 no-independent-combat rows. Focused Winged Boots, Chess Board/chess call-path, related audit checks, changed-module syntax, and generated artifact freshness checks pass. The full legacy harness still has pre-existing unrelated fixture/socket/claim failures. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 325 - in progress
+
+- Codex has no remaining retained independent-combat item gaps; the next review is the 15 no-independent-combat rows or another user-directed item/mechanic. Codex owns the simulator parity files, focused smoke tests, generated audit artifacts, `docs/todo.md`, and this handoff for that review. Cursor does not own these paths.

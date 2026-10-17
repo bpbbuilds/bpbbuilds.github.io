@@ -153,7 +153,7 @@ const itemsById = new Map(
   });
   ok(
     result.events.some((e) => e.meta?.handler === 'chess_board'),
-    'chess_board noop activate',
+    'chess_board turn handler',
   );
 }
 

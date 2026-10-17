@@ -279,3 +279,46 @@ export function getItemsInside(graph, bagKey) {
   }
   return [...found];
 }
+
+/**
+ * Move a placed board piece while preserving its star/diamond offsets and
+ * occupancy map. Chess Board uses this for the same one-cell repositioning
+ * that ChessPiece.onPieceMoved() performs in the game.
+ *
+ * @param {BoardGraph} graph
+ * @param {string} placementKey
+ * @param {string} toCell
+ * @returns {boolean}
+ */
+export function moveBoardPiece(graph, placementKey, toCell) {
+  const boardPiece = graph?.pieces?.get(placementKey);
+  if (!boardPiece || !Array.isArray(boardPiece.cells) || !boardPiece.cells.length) {
+    return false;
+  }
+  const [fromX, fromY] = String(boardPiece.cells[0]).split(',').map(Number);
+  const [nextX, nextY] = String(toCell).split(',').map(Number);
+  if (![fromX, fromY, nextX, nextY].every(Number.isFinite)) return false;
+  const dx = nextX - fromX;
+  const dy = nextY - fromY;
+  const nextCells = boardPiece.cells.map((cell) => {
+    const [x, y] = String(cell).split(',').map(Number);
+    return `${x + dx},${y + dy}`;
+  });
+  const oldCells = new Set(boardPiece.cells);
+  if (nextCells.some((cell) => graph.filled.has(cell) && !oldCells.has(cell))) {
+    return false;
+  }
+
+  for (const cell of boardPiece.cells) {
+    if (graph.filled.get(cell) === placementKey) graph.filled.delete(cell);
+  }
+  boardPiece.cells = nextCells;
+  boardPiece.affectCells = (boardPiece.affectCells || []).map((mark) => {
+    const [x, y] = String(mark.cell).split(',').map(Number);
+    return { ...mark, cell: `${x + dx},${y + dy}` };
+  });
+  boardPiece.x = (Number(boardPiece.x) || 0) + dx;
+  boardPiece.y = (Number(boardPiece.y) || 0) + dy;
+  for (const cell of nextCells) graph.filled.set(cell, placementKey);
+  return true;
+}

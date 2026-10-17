@@ -3,10 +3,10 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "eb184f6cd6297f24f30e16ebd51da6e71e28b03d17680a2c604809c349b9138c",
+    "itemLedgerSha256": "5c8ddac1e269863a1001c879b9a6ca4e918910f9174ac7b73468a7558665185f",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
-    "systemSurfaceSha256": "79e1178a7ae154e964452b8a7fada954ec8e043c0756f30c20fc35ec6dea6778",
+    "systemSurfaceSha256": "0c6a4ebca4982aa198c2efe0c0a9e333742ebcc06a86a17c3fb3b4409195ddd1",
     "systemExtractFiles": {
       "Core/Buff.gd": "3efabb72eb0b337e30ebc924347aba40bd1039a3c5f718b761b0ee78b48ab8bb",
       "Core/Character.gd": "dc372965eaa048657caa1646d70aba85ff9b4b9677565eaa480bc195de027496",
@@ -26,8 +26,8 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 502,
-    "confirmed_gap": 3,
+    "verified_1to1": 505,
+    "confirmed_gap": 0,
     "evidence_pending": 20,
     "no_independent_combat": 15
   },
@@ -66,7 +66,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ao-cards.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -698,7 +698,7 @@
       "simulator": {
         "runtimeHandler": "amulet_unidentified",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -933,7 +933,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-al-weapons.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -1307,7 +1307,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -1494,7 +1494,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ao-skills.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -1904,7 +1904,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -1946,7 +1946,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -1988,7 +1988,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -2030,7 +2030,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -2072,7 +2072,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -2114,7 +2114,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -2634,7 +2634,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ao-spells.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -4094,10 +4094,10 @@
       "name": "Chess Board",
       "category": "Accessory",
       "class": "Mage",
-      "verdict": "confirmed_gap",
-      "reason": "Simulator supports Chess Board placement and cooldown visibility, but intentionally excludes in-combat ChessPiece movement/capture AI; the supported combat mode boundary is explicit until board-state simulation exists.",
-      "sourceStatus": "unsupported_mode",
-      "fidelity": "unsupported_mode",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
+      "sourceStatus": "source_ported",
+      "fidelity": "source_ported",
       "source": {
         "script": "Exclusive/ChessBoard.gd",
         "extends": "Item",
@@ -4113,7 +4113,7 @@
           "js/pages/sim/engine/scripts/ports-wave-d-board.js"
         ],
         "coverageStatus": "dedicated",
-        "depth": "noop"
+        "depth": "deep"
       },
       "audit": {
         "lifecycleHookGaps": [],
@@ -4121,11 +4121,17 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-chess-board-smoke.mjs",
+        "fixture": "Chess Board source White/Black turn order, legal movement, opposite-color capture, Chess Master price selection, blocked-line scoring, occupancy mutation, source ChessPiece effects, and no fabricated activation on movement.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
-      "knownDelta": "Simulator supports Chess Board placement and cooldown visibility, but intentionally excludes in-combat ChessPiece movement/capture AI; the supported combat mode boundary is explicit until board-state simulation exists."
+      "knownDelta": null
     },
     {
       "scope": "item",
@@ -4306,7 +4312,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -4363,7 +4369,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -4420,7 +4426,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -4477,7 +4483,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -4531,7 +4537,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -5871,7 +5877,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ao-cards.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -7048,7 +7054,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -8114,7 +8120,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -8171,7 +8177,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -8228,7 +8234,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -8285,7 +8291,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -8337,7 +8343,7 @@
       "simulator": {
         "runtimeHandler": "flawed_topaz",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -8394,7 +8400,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -8451,7 +8457,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -8508,7 +8514,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -8565,7 +8571,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -8619,7 +8625,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -9155,7 +9161,7 @@
       "simulator": {
         "runtimeHandler": "furcifer_prime",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -9652,7 +9658,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-am-goobert.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -10543,7 +10549,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ao-cards.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -10807,7 +10813,7 @@
       "simulator": {
         "runtimeHandler": "hypercube",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -11068,7 +11074,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ao-cards.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -12082,7 +12088,7 @@
       "simulator": {
         "runtimeHandler": "lootbox",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -14111,7 +14117,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -14168,7 +14174,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -14225,7 +14231,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -14282,7 +14288,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -14336,7 +14342,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -16540,7 +16546,7 @@
       "simulator": {
         "runtimeHandler": "random_loadout_bag",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -16724,7 +16730,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -16780,7 +16786,7 @@
       "simulator": {
         "runtimeHandler": "regular_emerald",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -16835,7 +16841,7 @@
       "simulator": {
         "runtimeHandler": "regular_ruby",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -16890,7 +16896,7 @@
       "simulator": {
         "runtimeHandler": "regular_sapphire",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -16942,7 +16948,7 @@
       "simulator": {
         "runtimeHandler": "regular_topaz",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -17074,7 +17080,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ai-hard.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -17118,7 +17124,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ao-cards.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -18230,7 +18236,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-al-weapons.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -18327,7 +18333,7 @@
       "simulator": {
         "runtimeHandler": "skull",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -18857,7 +18863,7 @@
       "simulator": {
         "runtimeHandler": "snowman",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -19803,7 +19809,7 @@
       "simulator": {
         "runtimeHandler": "stable_recombobulator",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -20702,7 +20708,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ak-potions.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -20751,7 +20757,7 @@
       "simulator": {
         "runtimeHandler": "strong_mana_potion",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -21024,7 +21030,7 @@
       "simulator": {
         "runtimeHandler": "superior_ring",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -21125,7 +21131,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ao-cards.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -21169,7 +21175,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ao-cards.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -21574,7 +21580,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-gems.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -22153,7 +22159,7 @@
       "simulator": {
         "runtimeHandler": "unidentified_skill",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -22251,7 +22257,7 @@
       "simulator": {
         "runtimeHandler": "unstable_recombobulator",
         "handlerModules": [],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -22881,7 +22887,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-an-armor.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -22967,7 +22973,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -23005,7 +23011,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-ao-cards.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "deep"
       },
       "audit": {
@@ -23047,7 +23053,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -23083,7 +23089,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -23119,7 +23125,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -23155,7 +23161,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -23191,7 +23197,7 @@
         "handlerModules": [
           "js/pages/sim/engine/scripts/ports-chess.js"
         ],
-        "coverageStatus": "dedicated",
+        "coverageStatus": "family",
         "depth": "noop"
       },
       "audit": {
@@ -23212,8 +23218,8 @@
       "name": "Winged Boots",
       "category": "Shoes",
       "class": "Neutral",
-      "verdict": "confirmed_gap",
-      "reason": "Source-call review candidate: consume.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -23234,20 +23240,21 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "consume",
-            "why": "no token of consume"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-winged-boots-smoke.mjs",
+        "fixture": "Winged Boots source strict-below health threshold, High+2 damage listener priority, one-shot Empower/cleanse/Dodge sequence, consume activation, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
-      "knownDelta": "Source-call review candidate: consume."
+      "knownDelta": null
     },
     {
       "scope": "item",
@@ -24151,21 +24158,38 @@
       "scope": "mechanic",
       "id": "chess-board-ai",
       "name": "chess board ai",
-      "category": "unsupported-mode",
-      "verdict": "confirmed_gap",
-      "reason": "The simulator intentionally defers Chess Board AI; this must remain visible in coverage and user-facing mode truth.",
-      "sourceStatus": "unsupported",
+      "category": "item-mechanic",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
+      "sourceStatus": "implemented",
       "source": "Items/Exclusive/ChessBoard.gd",
       "functions": [
         "doCooldownEffect"
       ],
       "simulator": {
         "owners": [
-          "assets/data/sim-intentional-noops.json"
+          "js/pages/sim/engine/scripts/ports-wave-d-board.js",
+          "js/pages/sim/engine/board-graph.js",
+          "js/pages/sim/engine/chess.js"
         ]
       },
-      "evidence": null,
-      "knownDelta": "The simulator intentionally defers Chess Board AI; this must remain visible in coverage and user-facing mode truth."
+      "evidence": {
+        "focusedRegression": "scripts/sim-chess-board-smoke.mjs",
+        "fixture": "Source White/Black turns, legal movement, capture, Chess Master price selection, occupancy mutation, capture/elimination effects, and explicit no-op activation suppression.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "requiredProjections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
+      "knownDelta": "Chess Board turn selection, movement, capture occupancy, and source ChessPiece effect dispatch are covered by the focused regression."
     }
   ]
 }

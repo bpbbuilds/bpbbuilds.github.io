@@ -1,12 +1,12 @@
 {
-  "builtAt": "2026-10-06T23:14:44.306Z",
+  "builtAt": "2026-10-17T05:48:01.282Z",
   "note": "Band AO — skills / spells / books / leftover catalog",
   "parityIds": [],
   "totals": {
     "hand": 554,
-    "deep": 495,
+    "deep": 496,
     "shallow": 3,
-    "noop": 27
+    "noop": 26
   },
   "byId": {
     "broom": {
@@ -826,8 +826,8 @@
       "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
     },
     "chess_board": {
-      "depth": "noop",
-      "notes": "game ChessBoard.gd has combat CD AI; simulator explicitly excludes piece movement/capture from supported mode"
+      "depth": "deep",
+      "notes": "AG deepen — combat hooks match .gd intent (fidelity parity = AH fixtures)"
     },
     "magic_ring": {
       "depth": "deep",

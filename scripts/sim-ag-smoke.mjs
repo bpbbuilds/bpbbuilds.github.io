@@ -32,7 +32,10 @@ for (const id of [
   ok(!!getScriptHandler(id)?.handlerId, `handler ${id}`);
 }
 
-ok(getScriptHandler('chess_board')?.onCombatStart != null, 'chess_board noop exists');
+ok(
+  typeof getScriptHandler('chess_board')?.onCooldownEffect === 'function',
+  'chess_board movement handler exists',
+);
 
 // Peer goobert
 {

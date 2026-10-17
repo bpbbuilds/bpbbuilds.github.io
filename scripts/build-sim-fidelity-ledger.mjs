@@ -60,13 +60,6 @@ function noCombatIndex(noops) {
       source: 'Items/Exclusive/ChessBoard.gd',
     });
   }
-  if (noops.chessBoard?.id) {
-    byId.set(noops.chessBoard.id, {
-      kind: 'unsupported_mode',
-      reason: noops.chessBoard.why,
-      source: noops.chessBoard.gd || null,
-    });
-  }
   return byId;
 }
 
@@ -343,6 +336,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   stone_golem: {
     focusedRegression: 'scripts/sim-stone-golem-smoke.mjs',
     fixture: 'Stone Golem source Bag of Stones targeting, pre-combat bonus damage, prepare-time Regeneration threshold listener, exact Block/cooldown updates, early Empower, hit-only stun, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  chess_board: {
+    focusedRegression: 'scripts/sim-chess-board-smoke.mjs',
+    fixture: 'Chess Board source White/Black turn order, legal movement, opposite-color capture, Chess Master price selection, blocked-line scoring, occupancy mutation, source ChessPiece effects, and no fabricated activation on movement.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  winged_boots: {
+    focusedRegression: 'scripts/sim-winged-boots-smoke.mjs',
+    fixture: 'Winged Boots source strict-below health threshold, High+2 damage listener priority, one-shot Empower/cleanse/Dodge sequence, consume activation, and explicit zero values.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',
@@ -3648,6 +3655,7 @@ const REVIEWED_CALL_CANDIDATES = Object.freeze({
   heart_shield: new Set(['useRegeneration']),
   stone: new Set(['consume', 'useStamina']),
   stone_golem: new Set(['useRegeneration']),
+  winged_boots: new Set(['consume']),
 });
 
 const registry = await import(
