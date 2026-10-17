@@ -3,13 +3,13 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "583ce703f0956f7b45ef3f036c16f06664aed4f6f30c8b2e116e23c10e9e1cb2",
+    "dashboardSha256": "8e630fd2c36a26479e42608e7fc2bd5854193e9de126304d05c51f51cc80abee",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 500,
-    "confirmed_gap": 4,
+    "verified_1to1": 502,
+    "confirmed_gap": 2,
     "evidence_pending": 0,
     "no_independent_combat": 15
   },
@@ -453,11 +453,11 @@
     "star_of_courage": "verified_1to1",
     "steel_dragon": "verified_1to1",
     "steel_goobert": "verified_1to1",
-    "stone": "confirmed_gap",
+    "stone": "verified_1to1",
     "stone_armor": "verified_1to1",
     "stone_badge": "verified_1to1",
     "stone_gloves": "verified_1to1",
-    "stone_golem": "confirmed_gap",
+    "stone_golem": "verified_1to1",
     "stone_helm": "verified_1to1",
     "stone_shoes": "verified_1to1",
     "stone_skin_potion": "verified_1to1",

@@ -442,9 +442,10 @@ export const prismaticSwordPort = {
 /** StoneGolem.gd */
 function activateStoneGolem(piece, ctx) {
   if (piece._stoneRegenDone) return;
-  const need = Math.max(
-    1,
-    Math.round(getPName(piece.params, 'regen', getPName(piece.params, 'regent', getP2(piece.params, 3)))),
+  const need = getPName(
+    piece.params,
+    'regen',
+    getPName(piece.params, 'regent', getP2(piece.params, 3)),
   );
   if (getStackAmount(ctx.player, 'regeneration') < need) return;
   const used = spendStacks(ctx.player, 'regeneration', need, {
@@ -454,16 +455,14 @@ function activateStoneGolem(piece, ctx) {
   if (used.spent < need) return;
 
   // StoneGolem.gd uses getBlock() (the item's tooltip Block value), not p3.
-  const block = Math.max(1, Math.round(Number(piece.blockGrant) || 0));
+  const block = Number(piece.blockGrant) || 0;
   grantStacks(ctx.player, 'block', block, {
     originKey: piece.placementKey,
     originId: piece.itemId,
   });
   const cd = getP4(piece.params, 0);
-  if (cd > 0) {
-    piece.baseCooldown = cd;
-    piece.cooldown = cd;
-  }
+  piece.baseCooldown = cd;
+  piece.cooldown = cd;
   piece._stoneRegenDone = true;
 }
 
@@ -481,23 +480,26 @@ export const stoneGolemPort = {
       }
     });
   },
-  onCombatStart(piece, ctx) {
+  onPreCombatStart(piece, ctx) {
     const n = countPred(ctx, piece, (id) => /bag_of_stones|stone_bag/i.test(id));
-    const per = Math.max(1, Math.round(getPName(piece.params, 'bonusdam', getP1(piece.params, 1))));
+    const per = getPName(piece.params, 'bonusdam', getP1(piece.params, 1));
     if (n) addBonusDamage(piece, n * per);
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'stone_golem');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit) return;
-    const emp = Math.max(1, Math.round(getPName(piece.params, 'empower', 1)));
+    const emp = getPName(piece.params, 'empower', 1);
     grantStacks(ctx.player, 'empower', emp, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
+  },
+  onDealtDamage(piece, ctx, hit) {
+    if (!hit?.hit) return;
     if (rollItemChance(piece, ctx.rng)) {
-      grantStun(ctx.dummy, Math.max(0.5, effectDuration(piece, 'dur_stun', 1)), ctx.t);
+      grantStun(ctx.dummy, effectDuration(piece, 'dur_stun', 1), ctx.t, { rng: ctx.rng });
     }
   },
 };

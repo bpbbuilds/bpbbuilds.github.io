@@ -333,6 +333,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  stone: {
+    focusedRegression: 'scripts/sim-stone-smoke.mjs',
+    fixture: 'Stone source stamina-gated ammunition throw, late P1 Block removal, final-ammo consume lifecycle, starvation preservation, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  stone_golem: {
+    focusedRegression: 'scripts/sim-stone-golem-smoke.mjs',
+    fixture: 'Stone Golem source Bag of Stones targeting, pre-combat bonus damage, prepare-time Regeneration threshold listener, exact Block/cooldown updates, early Empower, hit-only stun, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   wrench: {
     focusedRegression: 'scripts/sim-wrench-smoke.mjs',
     fixture: 'Wrench source hit-only first valid Primary buff-gaining and Secondary damage targets, source Chance and Chance2 modifiers, explicit zero values, and no simulator-only event.',
@@ -3632,6 +3646,8 @@ const REVIEWED_CALL_CANDIDATES = Object.freeze({
   regular_ruby: new Set(['stealLife', 'heal']),
   regular_sapphire: new Set(['inflictCold', 'giveMana', 'giveBlock']),
   heart_shield: new Set(['useRegeneration']),
+  stone: new Set(['consume', 'useStamina']),
+  stone_golem: new Set(['useRegeneration']),
 });
 
 const registry = await import(

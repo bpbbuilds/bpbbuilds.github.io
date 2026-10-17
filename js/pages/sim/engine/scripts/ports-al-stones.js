@@ -38,6 +38,19 @@ function afterStoneThrow(piece, ctx) {
   spendStoneAmmo(piece);
 }
 
+function markStoneConsumed(piece, ctx) {
+  const activation = [...(ctx.events || [])]
+    .reverse()
+    .find((event) =>
+      event.type === 'activate' &&
+      event.itemId === piece.itemId &&
+      event.placementKey === piece.placementKey,
+    );
+  if (activation) {
+    activation.meta = { ...activation.meta, consume: true };
+  }
+}
+
 function chanceOf(piece, ctx, fallback = 1) {
   const item = ctx.itemsById.get(piece.itemId);
   return Number(item?.chance) || Number(piece.chance) || fallback;
@@ -55,11 +68,7 @@ export const stonePort = {
     if ((piece.ammunition ?? 1) < 1) return true;
     const fired = weaponStrike(piece, ctx, 'stone');
     if (!fired) return false;
-    spendStoneAmmo(piece);
-    if ((piece.ammunition ?? 0) < 1) {
-      piece.alive = false;
-      piece.charges = 0;
-    }
+    if (spendStoneAmmo(piece)) markStoneConsumed(piece, ctx);
     return true;
   },
   onPreDealDamageLate(piece, ctx) {

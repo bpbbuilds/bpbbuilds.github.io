@@ -185,6 +185,7 @@ function unitChecks() {
       itemsById: new Map([['stone_golem', { id: 'stone_golem', type: 'Ranged Weapon' }]]),
       canAffect: null,
     };
+    stoneGolemPort.onPrepare(piece, ctx);
     stoneGolemPort.onPreCombatStart(piece, ctx);
     grantStacks(player, 'regeneration', 7, { originKey: 'test-regen' });
     if (

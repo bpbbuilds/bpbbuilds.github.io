@@ -6927,3 +6927,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 322 - in progress
 
 - Codex owns the next remaining confirmed-gap review, starting with Chess Board and Stone, their source-backed regressions and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, focused smoke scripts for the two items, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 322 - complete
+
+- Codex repaired Stone’s final-ammo consume projection and verified its source stamina gate, late P1 Block removal, starvation preservation, and explicit zero values. Stone Golem now runs its source bonus-damage work in `onPreCombatStart`, grants Empower from the early damage hook, preserves exact zero Block/cooldown/Empower/stun values, and passes RNG to the source stun path. The existing harness regression now invokes the required prepare lifecycle before the pre-combat hook.
+- Added `scripts/sim-stone-smoke.mjs` and `scripts/sim-stone-golem-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 502 / 519 verified item rows. Focused Stone, Stone Golem, Bag of Stones, and Stoned regressions, changed-module syntax, source parity audit, and generated artifact freshness checks pass. The generated summary reports 502 verified, 0 evidence-pending, 2 confirmed gaps, and 15 no-independent-combat rows. The full legacy harness still reports its pre-existing unrelated fixture/socket/claim failures after the Stone Golem unit check. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 323 - in progress
+
+- Codex owns the next remaining confirmed-gap review, Chess Board’s supported-mode boundary and its source-backed audit evidence, focused regression, generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the Chess Board simulator handler/tests, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

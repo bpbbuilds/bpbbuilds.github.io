@@ -18,7 +18,7 @@
     "unsupportedMode": 1,
     "lifecycleHookGap": 2,
     "untriagedLifecycleHookGap": 0,
-    "callReviewCandidate": 3,
+    "callReviewCandidate": 1,
     "duplicateRegistration": 16
   },
   "rows": [
@@ -19232,25 +19232,22 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "useStamina",
-            "why": "no token of stamina"
-          },
-          {
-            "call": "consume",
-            "why": "no token of consume"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: useStamina, consume.",
+      "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-stone-smoke.mjs",
+        "fixture": "Stone source stamina-gated ammunition throw, late P1 Block removal, final-ammo consume lifecycle, starvation preservation, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -19413,21 +19410,22 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "useRegeneration",
-            "why": "no token of useRegeneration"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: useRegeneration.",
+      "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-stone-golem-smoke.mjs",
+        "fixture": "Stone Golem source Bag of Stones targeting, pre-combat bonus damage, prepare-time Regeneration threshold listener, exact Block/cooldown updates, early Empower, hit-only stun, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
