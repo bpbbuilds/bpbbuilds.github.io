@@ -6391,3 +6391,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 264 - in progress
 
 - Codex owns the next retained Holdall and Holy Collar fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-holdall-smoke.mjs`, `scripts/sim-holy-collar-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 264 - complete
+
+- Codex repaired Holdall to mirror `canApplyEffect` neutral-only cargo filtering, live Block multiplied by affected neutral contents, zero-safe Block, and source start activation. Holy Collar now binds during prepare, tracks only `canActivate` targets, applies Lucky/Regeneration-driven `chance2` crit changes before combat-start grants, uses source chance/luck/regen values without minimum clamping, and records the source mini activation.
+- Added `scripts/sim-holdall-smoke.mjs` and `scripts/sim-holy-collar-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 387 / 519 verified item rows. Focused pair and previous-pair tests, lifecycle/gem/board/audit/coverage checks, changed-module syntax, and scoped verification pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 387 verified, 110 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Hyper Hedgehog and Ice Armor; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 265 - in progress
+
+- Codex owns the next retained Hyper Hedgehog and Ice Armor fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-hyper-hedgehog-smoke.mjs`, `scripts/sim-ice-armor-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

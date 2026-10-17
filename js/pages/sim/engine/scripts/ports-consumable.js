@@ -468,10 +468,14 @@ export const holdallPort = {
   handlerId: 'holdall',
   family: 'unique',
   onCombatStart(piece, ctx) {
-    const { t, player, events, graph } = ctx;
-    const inside = getItemsInside(graph, piece.placementKey);
-    const per = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 4)));
-    const block = per * inside.length;
+    const { t, player, events, graph, itemsById } = ctx;
+    const inside = getItemsInside(graph, piece.placementKey).filter((key) => {
+      const target = graph.pieces.get(key);
+      return String(itemsById.get(target?.id)?.class || 'Neutral') === 'Neutral';
+    });
+    const catalog = itemsById.get(piece.itemId);
+    const rawBlock = piece.block != null ? piece.block : catalog?.block;
+    const block = Math.max(0, Math.round(Number(rawBlock) || 0)) * inside.length;
     if (block <= 0) return;
     gainStacks(player, 'block', block);
     events.push({
@@ -484,6 +488,7 @@ export const holdallPort = {
       label: `${piece.name}: +${block} Block (${inside.length} inside)`,
       meta: { category: 'buff', stack: 'block', script: true, handler: 'holdall' },
     });
+    pushActivate(piece, ctx, 'holdall', `Bag: ${piece.name}`, { force: true });
   },
 };
 

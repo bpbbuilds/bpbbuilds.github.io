@@ -72,6 +72,11 @@ function chanceOf(piece, ctx, key = 'chance', fb = 20) {
   return Number.isFinite(n) && n > 0 ? n : fb;
 }
 
+function canHolyCollarAffect(other, item) {
+  if (other?.canActivate === false) return false;
+  return Boolean(other?.canActivate || (Number(other?.cooldown) > 0 && Number(other.cooldown) < 500) || item?.canActivate === true);
+}
+
 function baseChanceOf(piece, ctx, key) {
   const n = Number(ctx.itemsById.get(piece.itemId)?.[key]);
   return Number.isFinite(n) ? n : 0;
@@ -113,25 +118,41 @@ const acornCollarPort = {
 const holyCollarPort = {
   handlerId: 'holy_collar',
   family: 'unique',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
+    const targets = linked(ctx, piece).filter((other) =>
+      canHolyCollarAffect(other, ctx.itemsById.get(other.itemId)),
+    );
+    piece._holyCollarTargets = new Set(targets.map((other) => other.placementKey));
+    if (!targets.length) return;
     onBuffChanged(ctx.player, (ch) => {
       if ((ch.stack !== 'lucky' && ch.stack !== 'regeneration') || !ch.amount) return;
-      const per = chanceOf(piece, ctx, 'chance2', 5) / 100;
-      for (const o of linked(ctx, piece)) {
-        if (!(o.cooldown > 0 && o.cooldown < 500)) continue;
-        o.critChance = (Number(o.critChance) || 0) + ch.amount * per * 100;
+      const per = baseChanceOf(piece, ctx, 'chance2');
+      for (const o of targets) {
+        o.critChance = (Number(o.critChance) || 0) + ch.amount * per;
       }
     });
   },
   onPeerActivated(listener, activated, ctx) {
+    if (!listener._holyCollarTargets?.has(activated?.placementKey)) return;
     if (!rollPercent(chanceOf(listener, ctx), ctx.rng)) return;
-    grantStacks(ctx.player, 'lucky', Math.max(1, Math.round(getPName(listener.params, 'luck', 1))), {
+    const luck = Math.max(0, Math.round(getPName(listener.params, 'luck', getP1(listener.params, 1))));
+    const regen = Math.max(0, Math.round(getPName(listener.params, 'regen', getP2(listener.params, 1))));
+    if (luck > 0) grantStacks(ctx.player, 'lucky', luck, {
       originKey: listener.placementKey,
       originId: listener.itemId,
     });
-    grantStacks(ctx.player, 'regeneration', Math.max(1, Math.round(getPName(listener.params, 'regen', 1))), {
+    if (regen > 0) grantStacks(ctx.player, 'regeneration', regen, {
       originKey: listener.placementKey,
       originId: listener.itemId,
+    });
+    ctx.events.push({
+      t: ctx.t,
+      type: 'info',
+      actor: eventSideForPiece(listener),
+      itemId: listener.itemId,
+      placementKey: listener.placementKey,
+      label: `${listener.name}: mini activate`,
+      meta: { category: 'system', script: true, handler: 'holy_collar', miniActivate: true },
     });
   },
 };

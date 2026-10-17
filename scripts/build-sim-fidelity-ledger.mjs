@@ -1622,6 +1622,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  holdall: {
+    focusedRegression: 'scripts/sim-holdall-smoke.mjs',
+    fixture: 'Holdall source neutral-only cargo filtering, live Block multiplied by affected contents, start activation ordering, and zero-safe Block.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  holy_collar: {
+    focusedRegression: 'scripts/sim-holy-collar-smoke.mjs',
+    fixture: 'Holy Collar source prepare-time canActivate listeners, Lucky/Regeneration-driven crit changes, chance-based source grants, mini activation, and zero-safe grant parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',
