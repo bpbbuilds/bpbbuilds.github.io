@@ -151,6 +151,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  regular_sapphire: {
+    focusedRegression: 'scripts/sim-regular-sapphire-smoke.mjs',
+    fixture: 'Regular Sapphire source inventory Cold, spectral weapon Mana/Cold plus miniActivate, GemPower-scaled armor Mana-to-Block conversion plus miniActivate, exact catalog parameters, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   amethyst_egg: {
     focusedRegression: 'scripts/sim-amethyst-egg-smoke.mjs',
     fixture: 'Amethyst Egg start trigger and recurring cooldown: source p1 random-debuff count, activation, and both board sides.',
@@ -2764,6 +2771,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  ruby_chonk: {
+    focusedRegression: 'scripts/sim-ruby-chonk-smoke.mjs',
+    fixture: 'Ruby Chonk source prepare-time inactive heat state, int-truncated threshold, hit-only Heat and threshold stun, modified source stun duration, miss behavior, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   ruby_whelp: {
     focusedRegression: 'scripts/sim-ruby-whelp-smoke.mjs',
     fixture: 'Ruby Whelp source Weapon start hooks, indexed p2 Reflect and p1 Heat parameters, indexed-over-named precedence, zero-safe omission, activation ordering, and inherited weapon strike delegation.',
@@ -3399,6 +3413,7 @@ const REVIEWED_CALL_CANDIDATES = Object.freeze({
   regular_topaz: new Set(['addSpeed']),
   regular_emerald: new Set(['giveRegeneration', 'inflictPoison', 'changeResistChance']),
   regular_ruby: new Set(['stealLife', 'heal']),
+  regular_sapphire: new Set(['inflictCold', 'giveMana', 'giveBlock']),
   heart_shield: new Set(['useRegeneration']),
 });
 

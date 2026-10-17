@@ -7,7 +7,7 @@ import { grantStacks, onBuffChanged, spendStacks, stealRandomBuff } from '../buf
 import { dealDamage } from '../damage.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getPName } from '../params.js';
-import { effectDuration } from '../effect-duration.js';
+import { effectDuration, scaleEffectDuration } from '../effect-duration.js';
 import { PRIORITY } from '../combat-start-priority.js';
 import { addBonusDamage, addSpeed } from '../piece-stats.js';
 import { getStackAmount } from '../stacks.js';
@@ -16,6 +16,7 @@ import { itemHasType, pushActivate } from './ports-util.js';
 import { forAttackEffects, prepareBow } from '../attack-effects.js';
 import { rollItemChance, weaponStrike } from './ports-wave-c-util.js';
 import { randInt } from '../rng.js';
+import { modifiedParamValue } from '../placement-instance.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -159,22 +160,31 @@ const rubyChonkPort = {
   handlerId: 'ruby_chonk',
   family: 'weapon_base',
   onPrepare(piece, ctx) {
-    const threshold = Math.max(1, Math.round(getPName(piece.params, 'heatt', getP1(piece.params, 12))));
-    piece._rubyChonkHeatReady = getStackAmount(ctx.player, 'heat') >= threshold;
+    const rawThreshold = Number(getPName(piece.params, 'heatt', getP1(piece.params, 12)));
+    const threshold = Number.isFinite(rawThreshold) ? Math.trunc(rawThreshold) : 12;
+    piece._rubyChonkHeatThreshold = threshold;
+    // RubyChonk.gd calls setState(false) before it connects the heat listener;
+    // a preloaded Heat stack does not activate the state until a heat change.
+    piece._rubyChonkHeatReady = false;
     onBuffChanged(ctx.player, (change) => {
       if (change.stack === 'heat') piece._rubyChonkHeatReady = getStackAmount(ctx.player, 'heat') >= threshold;
     });
   },
   onCooldownEffect(piece, ctx) {
-    return weaponStrike(piece, ctx, 'ruby_chonk', {
-      afterHit(hit) {
-        if (!hit?.hit) return;
-        grantStacks(ctx.player, 'heat', 1, origin(piece));
-        if (!piece._rubyChonkHeatReady) return;
-        if (!rollItemChance(piece, ctx.rng)) return;
-        grantStun(ctx.dummy, effectDuration(piece, 'dur_stun', 0.4), ctx.t, { rng: ctx.rng });
-      },
-    });
+    return weaponStrike(piece, ctx, 'ruby_chonk');
+  },
+  onDealtDamage(piece, ctx, hit) {
+    if (!hit?.hit) return;
+    grantStacks(ctx.player, 'heat', 1, origin(piece));
+    if (!piece._rubyChonkHeatReady) return;
+    if (!rollItemChance(piece, ctx.rng)) return;
+    const baseDuration = getPName(piece.params, 'dur_stun', 0.4);
+    const duration = scaleEffectDuration(
+      piece,
+      modifiedParamValue(piece, baseDuration, 'dur_stun'),
+    );
+    piece._rubyChonkHasStunned = true;
+    grantStun(ctx.dummy, duration, ctx.t, { rng: ctx.rng });
   },
 };
 

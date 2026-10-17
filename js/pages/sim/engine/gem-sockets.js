@@ -212,6 +212,7 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
         originKey,
         originId: gid,
       });
+      pushGemMiniActivate(ctx, piece, gem, gid);
     });
     return;
   }
@@ -323,7 +324,10 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
       if (!(need > 0)) return;
       const block = Math.floor(bank / need) * getP3(params, 1);
       bank %= need;
-      if (block > 0) gainStacks(ctx.player, 'block', gemPower * block);
+      if (block > 0) {
+        gainStacks(ctx.player, 'block', gemPower * block);
+        pushGemMiniActivate(ctx, piece, gem, gid);
+      }
     });
   } else if (fam === 'topaz') {
     // Topaz.gd applies GemPower to both armor resistances. Gem.gd starts at

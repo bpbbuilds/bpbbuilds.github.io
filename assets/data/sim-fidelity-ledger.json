@@ -18,7 +18,7 @@
     "unsupportedMode": 1,
     "lifecycleHookGap": 2,
     "untriagedLifecycleHookGap": 0,
-    "callReviewCandidate": 4,
+    "callReviewCandidate": 3,
     "duplicateRegistration": 17
   },
   "rows": [
@@ -16148,29 +16148,22 @@
       },
       "audit": {
         "lifecycleHookGaps": [],
-        "callReviewCandidates": [
-          {
-            "call": "inflictCold",
-            "why": "no port block found"
-          },
-          {
-            "call": "giveMana",
-            "why": "no port block found"
-          },
-          {
-            "call": "giveBlock",
-            "why": "no port block found"
-          }
-        ],
+        "callReviewCandidates": [],
         "duplicateRegistration": null
       },
       "status": "source_ported",
       "fidelity": "source_ported",
-      "knownDelta": "Source-call review candidate: inflictCold, giveMana, giveBlock.",
+      "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-regular-sapphire-smoke.mjs",
+        "fixture": "Regular Sapphire source inventory Cold, spectral weapon Mana/Cold plus miniActivate, GemPower-scaled armor Mana-to-Block conversion plus miniActivate, exact catalog parameters, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -16556,9 +16549,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-ruby-chonk-smoke.mjs",
+        "fixture": "Ruby Chonk source prepare-time inactive heat state, int-truncated threshold, hit-only Heat and threshold stun, modified source stun duration, miss behavior, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

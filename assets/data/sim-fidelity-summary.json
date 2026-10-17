@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "73c828d12faf9151a20b3cf76fd644e4d1662c9caec290947fe71e5a26755831",
+    "dashboardSha256": "672bb283e21af79569fc85237e63312db53318672c593062e7c213ff9103d217",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 467,
-    "confirmed_gap": 5,
-    "evidence_pending": 32,
+    "verified_1to1": 469,
+    "confirmed_gap": 4,
+    "evidence_pending": 31,
     "no_independent_combat": 15
   },
   "byId": {
@@ -382,7 +382,7 @@
     "regular_amethyst": "verified_1to1",
     "regular_emerald": "verified_1to1",
     "regular_ruby": "verified_1to1",
-    "regular_sapphire": "confirmed_gap",
+    "regular_sapphire": "verified_1to1",
     "regular_topaz": "verified_1to1",
     "relic_case": "verified_1to1",
     "repeater": "verified_1to1",
@@ -391,7 +391,7 @@
     "rib_saw_blade": "verified_1to1",
     "robodog": "verified_1to1",
     "rope": "verified_1to1",
-    "ruby_chonk": "evidence_pending",
+    "ruby_chonk": "verified_1to1",
     "ruby_egg": "verified_1to1",
     "ruby_whelp": "verified_1to1",
     "sandbag": "verified_1to1",

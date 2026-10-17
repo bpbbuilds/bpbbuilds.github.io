@@ -6774,4 +6774,13 @@ None.
 
 ### 2026-10-17 Simulator item parity continuation 305 - in progress
 
-- Codex owns the next retained Regular Sapphire and Ruby Chonk fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-regular-sapphire-smoke.mjs`, `scripts/sim-ruby-chonk-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+- Codex owns the next retained Regular Sapphire and Ruby Chonk fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to `js/pages/sim/engine/gem-sockets.js`, `js/pages/sim/engine/scripts/ports-ap-basic.js`, `scripts/sim-regular-sapphire-smoke.mjs`, `scripts/sim-ruby-chonk-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 305 - complete
+
+- Codex repaired Regular Sapphire socket projections so source spectral weapon hits and armor Mana-to-Block conversions emit `miniActivate()` visual events, and repaired Ruby Chonk to run Heat/stun in the source `onDealtDamage` lifecycle with inactive prepare state, integer threshold semantics, modified stun duration, miss handling, and explicit zero values.
+- Added `scripts/sim-regular-sapphire-smoke.mjs` and `scripts/sim-ruby-chonk-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 469 / 519 verified item rows. Focused pair tests, the existing regular gem regression, the Pumpkin-to-Scale lifecycle regression, changed-module syntax, and generated artifact checks pass. The generated summary reports 469 verified, 31 evidence-pending, 4 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 306 - in progress
+
+- Codex owns the next retained Scale and Snowball fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-scale-smoke.mjs`, `scripts/sim-snowball-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
