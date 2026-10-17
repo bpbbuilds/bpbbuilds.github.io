@@ -242,6 +242,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  stone_helm: {
+    focusedRegression: 'scripts/sim-stone-helm-smoke.mjs',
+    fixture: 'Stone Helm inherited Leather Helm crit/damage-resistance lifecycle, source Chance2 stun resistance override, combat-start Block, activation ordering, and explicit zero values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  torch: {
+    focusedRegression: 'scripts/sim-torch-smoke.mjs',
+    fixture: 'Torch source early-hit chance roll, persistent P1 damage growth, exact zero-safe parameters, current-hit lifecycle placement, and activation ordering.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   spiked_collar: {
     focusedRegression: 'scripts/sim-spiked-collar-smoke.mjs',
     fixture: 'Spiked Collar source prepare-time modified Battle Rage duration bonus, player-only rage listener, exact integer Spikes, event-time activation, exact catalog parameters, and explicit zero values.',

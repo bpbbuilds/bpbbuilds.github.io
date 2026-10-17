@@ -201,17 +201,33 @@ export const burningSpikesPort = {
 export const stoneHelmPort = {
   handlerId: 'stone_helm',
   family: 'start_buff',
+  onPrepare(piece, ctx) {
+    piece._helmBuffsActive = 0;
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const crit = Number.isFinite(Number(catalog?.chance))
+      ? Number(catalog.chance)
+      : Number(piece.chance) || 0;
+    const stun = Number.isFinite(Number(catalog?.chance2))
+      ? Number(catalog.chance2)
+      : Number(piece.chance2) || 0;
+    ctx.player.critResistance = (Number(ctx.player.critResistance) || 0) + crit;
+    ctx.player.stunResistance = (Number(ctx.player.stunResistance) || 0) + stun;
+  },
+  onPreCombatStart(piece, ctx) {
+    leatherHelmPort.onPreCombatStart(piece, ctx);
+  },
   onCombatStart(piece, ctx) {
-    const block = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 10)));
-    gainStacks(ctx.player, 'block', block);
-    ctx.events.push({
+    const block = Number(piece.blockGrant ?? ctx.itemsById.get(piece.itemId)?.block ?? 0);
+    const gained = block > 0 ? gainStacks(ctx.player, 'block', block).gained : 0;
+    if (gained > 0) ctx.events.push({
       t: ctx.t,
       type: 'buff',
       target: 'player',
-      amount: block,
-      label: `${piece.name}: +${block} Block`,
+      amount: gained,
+      label: `${piece.name}: +${gained} Block`,
       meta: { category: 'buff', stack: 'block', script: true, handler: 'stone_helm' },
     });
+    pushActivate(piece, ctx, 'stone_helm', `Armor: ${piece.name}`);
   },
 };
 

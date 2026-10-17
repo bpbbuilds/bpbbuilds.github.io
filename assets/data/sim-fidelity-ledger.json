@@ -19471,9 +19471,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-stone-helm-smoke.mjs",
+        "fixture": "Stone Helm inherited Leather Helm crit/damage-resistance lifecycle, source Chance2 stun resistance override, combat-start Block, activation ordering, and explicit zero values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -20937,9 +20943,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-torch-smoke.mjs",
+        "fixture": "Torch source early-hit chance roll, persistent P1 damage growth, exact zero-safe parameters, current-hit lifecycle placement, and activation ordering.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "55cc02b48933b061766657fd1039797ecae6172929578b2c04767ebc3315df0d",
+    "dashboardSha256": "105a63f0069b595572e3ae05ed9c6a7d8cd76fdbd242c7faf92942f208e92b7c",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 483,
+    "verified_1to1": 485,
     "confirmed_gap": 6,
-    "evidence_pending": 15,
+    "evidence_pending": 13,
     "no_independent_combat": 15
   },
   "byId": {
@@ -458,7 +458,7 @@
     "stone_badge": "verified_1to1",
     "stone_gloves": "verified_1to1",
     "stone_golem": "confirmed_gap",
-    "stone_helm": "evidence_pending",
+    "stone_helm": "verified_1to1",
     "stone_shoes": "verified_1to1",
     "stone_skin_potion": "verified_1to1",
     "stoned": "verified_1to1",
@@ -492,7 +492,7 @@
     "toad": "verified_1to1",
     "toast_goobert": "verified_1to1",
     "toolbox": "verified_1to1",
-    "torch": "evidence_pending",
+    "torch": "verified_1to1",
     "turtle": "verified_1to1",
     "twine": "verified_1to1",
     "twine_badge": "verified_1to1",

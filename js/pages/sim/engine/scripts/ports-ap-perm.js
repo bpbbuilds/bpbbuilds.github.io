@@ -233,9 +233,10 @@ const torchPort = {
     return weaponStrike(piece, ctx, 'torch');
   },
   onPreDealDamageEarly(piece, ctx, res) {
-    if (res && !res.hit) return;
+    if (!res?.hit) return;
     if (!rollItemChance(piece, ctx.rng)) return;
-    const grow = Math.max(1, Math.round(getP1(piece.params, 1)));
+    const grow = getPName(piece.params, 'p1', getP1(piece.params, 1));
+    if (!grow) return;
     addBonusDamage(piece, grow);
     ctx.events.push({
       t: ctx.t + 0.008,
