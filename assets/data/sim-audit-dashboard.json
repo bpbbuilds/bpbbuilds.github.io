@@ -6,7 +6,7 @@
     "itemLedgerSha256": "5c8ddac1e269863a1001c879b9a6ca4e918910f9174ac7b73468a7558665185f",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
-    "systemSurfaceSha256": "907d85e1b05beefe3c3008a1d1b9f7ca7981751762e3ee2f3671548345247957",
+    "systemSurfaceSha256": "5d4fc144d00241646fb09567324e427e64c9989b16d67a2a4e290bfb61bef7b0",
     "systemExtractFiles": {
       "Core/Buff.gd": "3efabb72eb0b337e30ebc924347aba40bd1039a3c5f718b761b0ee78b48ab8bb",
       "Core/Character.gd": "dc372965eaa048657caa1646d70aba85ff9b4b9677565eaa480bc195de027496",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 516,
+    "verified_1to1": 517,
     "confirmed_gap": 0,
-    "evidence_pending": 9,
+    "evidence_pending": 8,
     "no_independent_combat": 15
   },
   "items": [
@@ -24311,9 +24311,9 @@
       "id": "card-lifecycle",
       "name": "card lifecycle",
       "category": "item-base",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is partial, but the retained 1:1 proof is incomplete.",
-      "sourceStatus": "partial",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
+      "sourceStatus": "implemented",
       "source": "Items/Card.gd",
       "functions": [
         "prepare",
@@ -24326,11 +24326,28 @@
       "simulator": {
         "owners": [
           "js/pages/sim/engine/scripts/card-chain.js",
-          "js/pages/sim/engine/pieces.js"
+          "js/pages/sim/engine/scripts/ports-ao-cards.js",
+          "js/pages/sim/engine/pieces.js",
+          "js/pages/sim/engine/simulate.js"
         ]
       },
-      "evidence": null,
-      "knownDelta": "Card chain handling exists; reveal/state transitions and full deck semantics need source tests."
+      "evidence": {
+        "focusedRegression": "scripts/sim-card-base-smoke.mjs",
+        "fixture": "Card.gd prepare/pre-start/trigger/end source audit, chain order, duplicate-aware Reverse secondary state, inactive-before-deck behavior, next-card activation before reveal effects, and deactivation assertions; derived card regressions cover Deck, Lotus, Fool, Lovers, Joker, and Reverse.",
+        "projections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
+      "knownDelta": "Card prepare/reset, pre-combat deactivation, star-chain next-card selection, activation/reveal ordering, derived reveal effects, and isolated combat-end state match the extracted Card contract; visual card animations remain UI-only."
     },
     {
       "scope": "mechanic",

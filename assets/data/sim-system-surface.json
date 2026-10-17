@@ -7282,8 +7282,8 @@
   },
   "totals": {
     "surfaces": 21,
-    "implemented": 12,
-    "partial": 9,
+    "implemented": 13,
+    "partial": 8,
     "unmapped": 0,
     "unsupported": 0,
     "sourceFunctions": 1439,
@@ -8563,10 +8563,28 @@
       ],
       "simOwners": [
         "js/pages/sim/engine/scripts/card-chain.js",
-        "js/pages/sim/engine/pieces.js"
+        "js/pages/sim/engine/scripts/ports-ao-cards.js",
+        "js/pages/sim/engine/pieces.js",
+        "js/pages/sim/engine/simulate.js"
       ],
-      "disposition": "partial",
-      "note": "Card chain handling exists; reveal/state transitions and full deck semantics need source tests.",
+      "disposition": "implemented",
+      "note": "Card prepare/reset, pre-combat deactivation, star-chain next-card selection, activation/reveal ordering, derived reveal effects, and isolated combat-end state match the extracted Card contract; visual card animations remain UI-only.",
+      "evidence": {
+        "focusedRegression": "scripts/sim-card-base-smoke.mjs",
+        "fixture": "Card.gd prepare/pre-start/trigger/end source audit, chain order, duplicate-aware Reverse secondary state, inactive-before-deck behavior, next-card activation before reveal effects, and deactivation assertions; derived card regressions cover Deck, Lotus, Fool, Lovers, Joker, and Reverse.",
+        "projections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
       "sourceFunctions": [
         {
           "name": "prepare",

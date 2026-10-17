@@ -7056,3 +7056,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 337 - in progress
 
 - Codex owns the next partial shared surface, `card-lifecycle`, for source-backed card prepare, pre-combat, reveal/chain, trigger, and combat-end ordering review. Planned paths are limited to simulator card-chain/piece modules, a focused regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 337 - complete
+
+- Codex repaired card prepare parity: `prepareCard()` now rebuilds secondary-effect state from the assigned deck chain, so `Reverse` correctly disables its secondary effect when an earlier duplicate descriptor exists. Card prepare/reset, pre-combat deactivation, chain advance, reveal ordering, and isolated end-state behavior remain source-backed.
+- Extended `scripts/sim-card-base-smoke.mjs` with Card prepare/end source checks and a duplicate-aware Reverse regression, marked `card-lifecycle` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and ran the base, Deck, Lotus, Fool, Lovers, Joker, Reverse, lifecycle, and parity checks. Shared mechanic totals are now 13 implemented and 8 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 338 - in progress
+
+- Codex owns the next partial shared surface, `game-combat-transition`, for source-backed combat switch, item preparation, and activation scheduling review. Planned paths are limited to simulator lifecycle/scheduler modules, a focused regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

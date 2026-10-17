@@ -11,8 +11,10 @@ import {
 import { getScriptHandler } from '../js/pages/sim/engine/scripts/registry.js';
 
 const source = fs.readFileSync('tools/game-extract-full/Items/Card.gd', 'utf8');
+assert.match(source, /func prepare\(\):[\s\S]*\.prepare\(\)[\s\S]*setState\(false\)/);
 assert.match(source, /func preCombatStart\(\):[\s\S]*deactivateCooldown\(\)/);
 assert.match(source, /nextCard\.startActivation\(\)[\s\S]*setState\(true, true\)[\s\S]*deactivateCooldown\(\)[\s\S]*doRevealEffect\(\)/);
+assert.match(source, /func combatEnd\(\):[\s\S]*\.combatEnd\(\)[\s\S]*activating = false/);
 assert.equal(typeof getScriptHandler('card')?.onCooldownEffect, 'function', 'Card has an explicit base handler');
 
 function card(id, key) {
@@ -48,6 +50,18 @@ for (const piece of chain) {
   deactivateCard(piece);
   assert.equal(piece._cdLocked, true, 'cards are inactive before Deck starts the chain');
 }
+
+// Card.prepare() must preserve the assigned deck chain when rebuilding the
+// secondary-effect flag. Reverse is inactive after a duplicate descriptor.
+const duplicate = card('ace_of_spades', 'duplicate');
+duplicate._chainPos = 1;
+duplicate._deckKey = 'deck';
+third._chainPos = 2;
+third._deckKey = 'deck';
+deck._cards = [first, duplicate, third];
+prepareCard(third, { pieces: [deck] });
+assert.equal(third._secondaryActive, false, 'Reverse secondary effect sees duplicate cards during prepare');
+deck._cards = chain;
 
 startCardActivation(first);
 assert.equal(first._revealing, true);

@@ -136,7 +136,9 @@ export function assignAllDeckChains(ctx) {
 export function prepareCard(piece, ctx) {
   piece._revealing = false;
   piece._revealed = false;
-  piece._secondaryActive = cardSecondaryEffectActive(piece, []);
+  const deck = (ctx?.pieces || []).find((p) => p.placementKey === piece._deckKey);
+  const chain = Array.isArray(deck?._cards) ? deck._cards : [];
+  piece._secondaryActive = cardSecondaryEffectActive(piece, chain);
 }
 
 /** Card.preCombatStart() keeps every card idle until its chain predecessor fires. */
