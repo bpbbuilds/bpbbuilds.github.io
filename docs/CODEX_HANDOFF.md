@@ -6975,3 +6975,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 328 - in progress
 
 - Codex owns the next partial shared surface, `buff-object`, for source-backed timeout, reset, protection, and cleanup review. Planned paths are limited to the shared stack engine, focused stack/buff regressions, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 328 - complete
+
+- Codex completed the Buff-object parity pass: timed entries now expire in source earliest-time order even when granted out of order, exact-boundary timers expire once, combat-end cleanup clears temporary metadata without fabricating a second stack loss, and reflection chance is per stack type with the legacy actor-wide fallback preserved.
+- Added `scripts/sim-buff-object-smoke.mjs`, marked `buff-object` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and reran the Character stack, temporary-stack, protection, Magic Mirror, lifecycle, syntax, and freshness checks. Shared mechanic totals are now 4 implemented and 17 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 329 - in progress
+
+- Codex owns the next partial shared surface, `combat-event`, for source-backed event initialization, targeting, parameter, depth, and text-contract review. Planned paths are limited to the simulator event/log modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

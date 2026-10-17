@@ -183,7 +183,8 @@ export function gainStacks(actor, stack, amount, opts = {}) {
   }
 
   if (DEBUFFS.has(stack) && !opts.reflect && left > 0) {
-    const reflectPct = Number(actor.debuffReflectChance) || 0;
+    const reflectPct =
+      Number(actor.stackReflectChance?.[stack] ?? actor.debuffReflectChance) || 0;
     if (reflectPct > 0 && typeof rng === 'function' && opts.opponent) {
       for (let i = 0; i < left + resisted; i++) {
         if (rollPercent(reflectPct, rng)) reflected += 1;

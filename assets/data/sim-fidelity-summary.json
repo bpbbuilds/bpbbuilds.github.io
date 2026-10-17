@@ -3,7 +3,7 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "71df7e1409bba0273dd5ee654ae1467d45e656d2af03e5f482f331b35009ea8a",
+    "dashboardSha256": "008193e3581ba0b8131951b47cba667b6654644193bde97420c84e8061882c87",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {

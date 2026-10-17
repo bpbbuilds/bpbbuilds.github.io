@@ -6,7 +6,7 @@
     "itemLedgerSha256": "5c8ddac1e269863a1001c879b9a6ca4e918910f9174ac7b73468a7558665185f",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
-    "systemSurfaceSha256": "6b37b299c830ffd76e8d609f172c7c6eee47537932f0b36dbebe0d50dc7e2766",
+    "systemSurfaceSha256": "5b87aa0a688777f97ef5f0be6082952da62d27d03f1beb74ddca6b33ea6a7862",
     "systemExtractFiles": {
       "Core/Buff.gd": "3efabb72eb0b337e30ebc924347aba40bd1039a3c5f718b761b0ee78b48ab8bb",
       "Core/Character.gd": "dc372965eaa048657caa1646d70aba85ff9b4b9677565eaa480bc195de027496",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 507,
+    "verified_1to1": 508,
     "confirmed_gap": 0,
-    "evidence_pending": 18,
+    "evidence_pending": 17,
     "no_independent_combat": 15
   },
   "items": [
@@ -23933,9 +23933,9 @@
       "id": "buff-object",
       "name": "buff object",
       "category": "state",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is partial, but the retained 1:1 proof is incomplete.",
-      "sourceStatus": "partial",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
+      "sourceStatus": "implemented",
       "source": "Core/Buff.gd",
       "functions": [
         "gainStacks",
@@ -23951,8 +23951,23 @@
           "js/pages/sim/engine/buff-economy.js"
         ]
       },
-      "evidence": null,
-      "knownDelta": "Caps/resist/reflect are partial; timeout/protection/nullification combinations require source-linked tests."
+      "evidence": {
+        "focusedRegression": "scripts/sim-buff-object-smoke.mjs",
+        "fixture": "Buff.gd gain/loss source checks, out-of-order timer entries, exact-boundary timeout, per-stack reflection, and combatEnd metadata cleanup.",
+        "projections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
+      "knownDelta": "Per-stack caps/resistance/reflection, protection, clamped loss, earliest-timeout expiry, and combat-end temporary cleanup match the extracted Buff contract."
     },
     {
       "scope": "mechanic",

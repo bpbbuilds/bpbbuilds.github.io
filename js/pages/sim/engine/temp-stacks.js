@@ -64,22 +64,32 @@ export function grantTemporary(actor, stack, amount, durationSec, nowT, opts = {
 export function expireTemporaryStacks(actor, t) {
   const list = actor._tempStacks;
   if (!list?.length) return [];
+  const due = list
+    .map((entry, index) => ({ entry, index }))
+    .filter(({ entry }) => !(t + 1e-9 < entry.expiresAt))
+    .sort((a, b) => Number(a.entry.expiresAt) - Number(b.entry.expiresAt) || a.index - b.index)
+    .map(({ entry }) => entry);
+  if (!due.length) return [];
+  const dueSet = new Set(due);
   /** @type {TempStackEntry[]} */
   const expired = [];
-  /** @type {TempStackEntry[]} */
-  const keep = [];
-  for (const entry of list) {
-    if (t + 1e-9 < entry.expiresAt) {
-      keep.push(entry);
-      continue;
-    }
+  for (const entry of due) {
     const lost = removeTemporaryStackAmount(actor, entry);
     if (lost > 0) {
       expired.push({ ...entry, amount: lost });
     }
   }
-  actor._tempStacks = keep;
+  actor._tempStacks = list.filter((entry) => !dueSet.has(entry));
   return expired;
+}
+
+/**
+ * Buff.gd combatEnd — stop timeout work and clear temporary-entry metadata.
+ * The source Buff object leaves `current` to the character lifecycle reset.
+ * @param {import('./actor.js').SimActor} actor
+ */
+export function clearTemporaryStacks(actor) {
+  actor._tempStacks = [];
 }
 
 /**

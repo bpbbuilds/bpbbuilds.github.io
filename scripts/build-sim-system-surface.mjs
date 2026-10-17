@@ -137,8 +137,16 @@ const SURFACE = [
     source: 'Core/Buff.gd',
     functions: ['gainStacks', 'gainTemporary', 'loseStacks', 'onTimeout', 'combatEnd'],
     simOwners: ['js/pages/sim/engine/stacks.js', 'js/pages/sim/engine/temp-stacks.js', 'js/pages/sim/engine/buff-economy.js'],
-    disposition: 'partial',
-    note: 'Caps/resist/reflect are partial; timeout/protection/nullification combinations require source-linked tests.',
+    disposition: 'implemented',
+    note: 'Per-stack caps/resistance/reflection, protection, clamped loss, earliest-timeout expiry, and combat-end temporary cleanup match the extracted Buff contract.',
+    evidence: {
+      focusedRegression: 'scripts/sim-buff-object-smoke.mjs',
+      fixture: 'Buff.gd gain/loss source checks, out-of-order timer entries, exact-boundary timeout, per-stack reflection, and combatEnd metadata cleanup.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'combat-event',
