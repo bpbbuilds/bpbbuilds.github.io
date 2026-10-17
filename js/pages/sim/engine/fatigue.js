@@ -1,3 +1,5 @@
+import { markActorDead } from './actor.js';
+
 /**
  * Combat fatigue clock — CombatTimer.gd FATIGUE_TIME (Band Z 148).
  */
@@ -88,10 +90,16 @@ export function advanceFatigueCounter(state, combatTime) {
  * @param {import('./actor.js').SimActor} actor
  * @param {number} amount
  */
-export function applyFatigueDamage(actor, amount) {
+export function applyFatigueDamage(actor, amount, opts = {}) {
   const dmg = Math.max(0, Math.round(amount));
   if (dmg <= 0 || actor.dead) return 0;
   actor.hp = Math.max(0, actor.hp - dmg);
-  if (actor.hp <= 0) actor.dead = true;
+  if (actor.hp <= 0) {
+    markActorDead(
+      actor,
+      'fatigue',
+      Number.isFinite(Number(opts.t)) ? Number(opts.t) : Number(actor._simT) || 0,
+    );
+  }
   return dmg;
 }

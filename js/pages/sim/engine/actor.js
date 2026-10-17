@@ -160,6 +160,24 @@ export function createActor(id, opts = {}) {
 }
 
 /**
+ * Character.death() — transition once and emit the source death boundary.
+ * @param {SimActor} actor
+ * @param {string} [reason]
+ * @param {number} [t]
+ * @returns {boolean}
+ */
+export function markActorDead(actor, reason = 'damage', t = actor?._simT) {
+  if (!actor || actor.dead) return false;
+  actor.dead = true;
+  actor._combatBus?.emit?.('character_died', {
+    actor,
+    reason,
+    t: Number.isFinite(Number(t)) ? Number(t) : 0,
+  });
+  return true;
+}
+
+/**
  * Character.changeProtectionChance(Game.EventType.*) — stack-specific cleanse
  * protection, kept separate from the legacy global protection percentage.
  * @param {SimActor} actor
@@ -474,7 +492,7 @@ export function applyDamageToActor(actor, rawDamage, opts = {}) {
     }
   }
   actor.hp = Math.max(0, actor.hp - dmg);
-  if (actor.hp <= 0) actor.dead = true;
+  if (actor.hp <= 0) markActorDead(actor, 'damage', actor._simT);
   return { blocked, reduced, healthDamage: dmg, hpAfter: actor.hp };
 }
 

@@ -82,8 +82,16 @@ const SURFACE = [
     source: 'Core/Character.gd',
     functions: ['prepare', 'combatStart', 'combatEnd', 'death', 'win', 'lose'],
     simOwners: ['js/pages/sim/engine/actor.js', 'js/pages/sim/engine/simulate.js'],
-    disposition: 'partial',
-    note: 'Opening and basic death paths exist; complete cleanup and same-time death behavior are unproven.',
+    disposition: 'implemented',
+    note: 'The simulator covers source character preparation/start/end boundaries, one-shot death signaling from damage, fatigue, and self-health costs, and the source opponent-zero result precedence; win/lose scene animations remain UI-only.',
+    evidence: {
+      focusedRegression: 'scripts/sim-character-lifecycle-smoke.mjs',
+      fixture: 'Character.gd prepare/combatStart/combatEnd/death, Game.gd death connections and opponent-zero result precedence, plus simulator death trace and defeated-opponent result assertions.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'character-tick',

@@ -7092,3 +7092,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 341 - in progress
 
 - Codex owns the next partial shared surface, `character-lifecycle`, for source-backed character prepare/start/end, death, win/lose, and same-time result behavior review. Planned paths are limited to simulator actor/lifecycle modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 341 - complete
+
+- Codex repaired character lifecycle parity: damage, fatigue, and self-health deaths now pass through one-shot `character_died` signaling with an engine timestamp, and the simulator’s result resolution preserves the extracted opponent-zero precedence. Source preparation/start/end and death boundaries, plus the intentionally UI-only win/lose animations, are covered by `scripts/sim-character-lifecycle-smoke.mjs`.
+- Marked `character-lifecycle` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and ran lifecycle, combat-end, transition, gem, card, item-effects, broad parity, syntax, and freshness checks. Shared totals are now 17 implemented and 4 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 342 - in progress
+
+- Codex owns the next partial shared surface, `character-tick`, for source-backed tick cadence, fatigue warning/damage timing, and tick-driven status review. Planned paths are limited to simulator tick/fatigue modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

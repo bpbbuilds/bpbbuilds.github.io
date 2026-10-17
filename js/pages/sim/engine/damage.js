@@ -3,7 +3,7 @@
  * (Band G Phase 44). Simplified: no full EventBus hooks / Fatigue.
  */
 
-import { healActor, isInvulnerable, consumeInvulnHit, requestedHealAmount } from './actor.js';
+import { healActor, isInvulnerable, consumeInvulnHit, requestedHealAmount, markActorDead } from './actor.js';
 import { changeCritResistStacks, changeCritStacks } from './actor-stats.js';
 import { attackEffectCount } from './attack-effects.js';
 import { loseStacks } from './stacks.js';
@@ -309,7 +309,7 @@ export function takeDamage(defender, attacker, src) {
   }
 
   defender.hp = Math.max(0, defender.hp - res.healthDamage);
-  if (defender.hp <= 0) defender.dead = true;
+  if (defender.hp <= 0) markActorDead(defender, 'damage', src.nowT ?? defender._simT);
 
   if (shieldHit) {
     const damblockRaw =

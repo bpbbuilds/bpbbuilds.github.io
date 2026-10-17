@@ -3,7 +3,7 @@
  * Dedicated item ports live in ports.js — registry merges both.
  */
 
-import { healActor, requestedHealAmount, tryUseStamina } from '../actor.js';
+import { healActor, requestedHealAmount, tryUseStamina, markActorDead } from '../actor.js';
 import { gainStacks } from '../stacks.js';
 import { flushDeferredUnhealLog, logWeaponHitEvents } from '../log-chain.js';
 import { dealDamage } from '../damage.js';
@@ -373,7 +373,7 @@ export function loseHealth(piece, ctx, amount, opts = {}) {
     damage: { damage: n, healthDamage: n, raw: n },
     selfHealthCost: true,
   });
-  if (ctx.player.hp <= 0 && !ctx.player.dead) ctx.player.dead = true;
+  if (ctx.player.hp <= 0) markActorDead(ctx.player, 'self_health_cost', ctx.t);
   return { eventId, amount: n };
 }
 

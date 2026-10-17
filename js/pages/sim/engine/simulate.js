@@ -265,6 +265,14 @@ export function simulateEngine(opts) {
   const logChain = createLogChainAllocator();
   const bus = createCombatBus();
   const fatigue = createFatigueState();
+  bus.on('character_died', (payload = {}) => {
+    const actor = payload.actor;
+    traceTransition(
+      'character_died',
+      actor?.id === 'dummy' ? 'dummy' : 'player',
+      Number.isFinite(Number(payload.t)) ? Number(payload.t) : t,
+    );
+  });
   player._combatBus = bus;
   dummy._combatBus = bus;
   player._eventLog = events;
@@ -604,10 +612,12 @@ export function simulateEngine(opts) {
         const pLost = applyFatigueDamage(
           player,
           dmg + (Number(player.bonusFatigueDamage) || 0),
+          { t },
         );
         const dLost = applyFatigueDamage(
           dummy,
           dmg + (Number(dummy.bonusFatigueDamage) || 0),
+          { t },
         );
         bus.emit('fatigue_tick', { t, counter: fatigue.counter, damage: dmg });
         if (pLost > 0) {
