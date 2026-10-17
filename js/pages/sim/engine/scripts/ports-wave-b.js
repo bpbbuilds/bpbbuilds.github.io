@@ -532,6 +532,8 @@ export const dragonNestPort = {
       label: `${piece.name}: start buffs`,
       meta: { category: 'buff', script: true, handler: 'dragon_nest' },
     });
+    // DragonNest.gd grants all four stacks before its source activate().
+    pushActivate(piece, ctx, 'dragon_nest', `Accessory: ${piece.name}`);
   },
 };
 
@@ -568,6 +570,7 @@ export const amuletOfSteelPort = {
           label: `${piece.name}: +${emp} Empower`,
           meta: { category: 'buff', stack: 'empower', script: true, handler: 'amulet_of_steel' },
         });
+        pushActivate(piece, ctx, 'amulet_of_steel', `Accessory: ${piece.name}`);
       }
     };
     if (ctx.bus?.on) ctx.bus.on('item_gave_block', onBlockGiven);
@@ -588,6 +591,7 @@ export const amuletOfSteelPort = {
       label: `${piece.name}: +${block} Block`,
       meta: { category: 'buff', stack: 'block', script: true, handler: 'amulet_of_steel' },
     });
+    pushActivate(piece, ctx, 'amulet_of_steel', `Accessory: ${piece.name}`);
   },
 };
 

@@ -70,7 +70,6 @@ function registerShield(piece, ctx, opts) {
       opts.afterBlock?.(payload, liveCtx());
       const activatedCtx = liveCtx();
       pushActivate(piece, activatedCtx, piece.itemId, `Shield: ${piece.name}`);
-      activatedCtx.notifyPeerActivations?.(piece, activatedCtx);
     },
   });
 }

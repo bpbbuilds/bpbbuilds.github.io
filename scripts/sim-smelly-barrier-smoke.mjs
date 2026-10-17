@@ -80,7 +80,7 @@ graph.filled.set('smelly-cell', 'smelly');
 const player = createActor('player');
 const dummy = createActor('dummy');
 const events = [];
-let peerNotifications = 0;
+const peerNotificationItems = [];
 const runtime = getScriptHandler('smelly_barrier');
 assert.equal(runtime?.handlerId, 'smelly_barrier', 'Smelly Barrier runtime handler');
 const ctx = {
@@ -92,7 +92,7 @@ const ctx = {
   events,
   t: 3,
   notifyPeerActivations(piece, activationCtx) {
-    peerNotifications += 1;
+    peerNotificationItems.push(piece.itemId);
     notifyPeerActivations(piece, activationCtx);
   },
 };
@@ -103,7 +103,8 @@ grantStacks(player, 'block', 20, { originKey: 'blocker', originId: 'wooden_buckl
 assert.equal(dummy.stacks.poison, 2, 'Smelly Barrier rounds fractional threshold poison at the target');
 assert.equal(smelly._blk, 7, 'Smelly Barrier preserves threshold remainder');
 assert.equal(events.at(-1)?.type, 'activate', 'Smelly Barrier activates after poison');
-assert.equal(peerNotifications, 1, 'Smelly Barrier activation notifies linked activation listeners');
+assert.equal(peerNotificationItems.filter((id) => id === 'smelly_barrier').length, 1,
+  'Smelly Barrier activation notifies linked activation listeners');
 assert.ok(events.some((event) => event.type === 'activate' && event.itemId === 'goobert'),
   'Smelly Barrier activation procs linked Goobert');
 
@@ -114,7 +115,8 @@ assert.equal(dummy.stacks.poison, 3, 'linked blocker carry-over reaches the next
 assert.equal(smelly._blk, 0, 'threshold remainder resets exactly');
 assert.equal(events.filter((event) => event.type === 'activate' && event.itemId === 'smelly_barrier').length, 2,
   'Smelly Barrier activates once per crossed threshold');
-assert.equal(peerNotifications, 2, 'each Smelly Barrier activation notifies listeners once');
+assert.equal(peerNotificationItems.filter((id) => id === 'smelly_barrier').length, 2,
+  'each Smelly Barrier activation notifies listeners once');
 assert.equal(events.filter((event) => event.type === 'activate' && event.itemId === 'goobert').length, 2,
   'each Smelly Barrier activation procs Goobert once');
 

@@ -77,10 +77,26 @@ function activatePieceBody(piece, ctx) {
     return false;
   }
   if (script?.onCooldownEffect) {
-    const handled = script.onCooldownEffect(piece, ctx);
+    const previousDepth = Number(ctx._scriptCooldownDepth) || 0;
+    ctx._scriptCooldownDepth = previousDepth + 1;
+    let handled;
+    try {
+      handled = script.onCooldownEffect(piece, ctx);
+    } finally {
+      ctx._scriptCooldownDepth = previousDepth;
+    }
     if (handled) {
       if (!piece._activationLogged && script.handlerId) {
-        pushActivate(piece, ctx, script.handlerId);
+        // Keep the fallback projection inside the same guarded script scope
+        // as a handler-owned pushActivate() so the final normal activation
+        // notification below remains the only peer dispatch.
+        const fallbackDepth = Number(ctx._scriptCooldownDepth) || 0;
+        ctx._scriptCooldownDepth = fallbackDepth + 1;
+        try {
+          pushActivate(piece, ctx, script.handlerId);
+        } finally {
+          ctx._scriptCooldownDepth = fallbackDepth;
+        }
       }
       // Item.trigger — optional second doCooldownEffect via doubleActivationChance
       if (

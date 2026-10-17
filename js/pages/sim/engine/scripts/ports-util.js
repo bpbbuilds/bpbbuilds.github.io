@@ -175,6 +175,16 @@ export function pushActivate(piece, ctx, handler, label, extra) {
         : {}),
     },
   });
+
+  // Item.activate() emits the linked `activated` signal immediately for
+  // non-bags, even when the source item has no cooldown. Normal cooldown
+  // activations notify after their script returns in combat-activate.js; the
+  // lifecycle hooks and reactive listeners that call pushActivate directly
+  // need the same peer notification here. The depth guard prevents a normal
+  // cooldown activation from notifying twice.
+  if (piece?.kind !== 'bag' && !(Number(ctx._scriptCooldownDepth) > 0)) {
+    ctx.notifyPeerActivations?.(piece, ctx);
+  }
 }
 
 /** Item.onAfterEffectFinished() — deactivate CD; consume() → activate unless opted out. */

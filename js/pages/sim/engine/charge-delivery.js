@@ -350,6 +350,9 @@ export function emitBatterySpark(piece, ctx, speedFactor = 1) {
       speedFactor: factor,
     },
   });
+  // Battery.gd calls activate() before sendCharge(); preserve that activation
+  // signal so linked listeners (Goobert, Spicy Banana, etc.) can react.
+  if (piece?.kind !== 'bag') ctx.notifyPeerActivations?.(piece, ctx);
   if (!item || !boardPiece) return null;
 
   const flat = getPName(piece.params, 'speed', getP1(piece.params, 10)) / 100;

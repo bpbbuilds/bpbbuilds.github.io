@@ -7144,3 +7144,13 @@ None.
 
 - Codex confirmed the game source drains Moon Shield stamina with indexed `getP2()` (`0.7` in the extracted catalog), while the shared simulator shield helper could incorrectly prefer a stale named `params.stamina` value such as `1`. Moon Shield now supplies a source-specific indexed-P2 drain getter without changing other shield parameter behavior.
 - Added a regression to `scripts/sim-moon-shield-smoke.mjs` proving that an injected named `stamina: 1` still drains exactly `0.7`. Moon Shield, neighboring shield, parity-system, engine-count, syntax, and diff checks pass. No generated fidelity totals, legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 No-cooldown activator audit - in progress
+
+- Codex owns the extracted-game audit of combat items that call `activate()` when a condition is met without a normal cooldown, plus the simulator parity fixes and focused regressions for any confirmed gaps. Planned paths are limited to the affected simulator script/charge modules, the activator audit regression, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 No-cooldown activator audit - complete
+
+- The extracted game source confirms the distinction: `activate()` emits the linked `activated` event for non-bag items, while `miniActivate()` is visual-only and bags do not emit the combat activation event. The source/catalog audit found 86 direct `activate()` candidates with no normal cooldown, including 76 non-bag combat emitters; Spicy Banana, Amulet of Darkness, Smelly Wall, Amulet of Steel, Dragon Nest, and Battery are confirmed examples.
+- Simulator direct scripted activations now use the same peer-listener route as ordinary cooldown activations, with a depth guard preventing duplicate normal-cooldown notifications. Battery, Amulet of Steel, and Dragon Nest now project their source activations; redundant Smelly Wall and shield notifications were removed.
+- Added `scripts/sim-no-cooldown-activators-smoke.mjs` and expanded the Smelly Wall regression to cover nested Goobert activation. Focused activator, Smelly Wall, Moon Shield, Dragon Nest, Generator, Goobert, charge, wave, AP, parity, syntax, and diff checks pass. No legal, authentication, database, storage, or security behavior changed. Next step: use the audit smoke when adding or reviewing future conditional activators.
