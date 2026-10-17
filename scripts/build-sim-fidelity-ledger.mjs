@@ -1139,6 +1139,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  molten_dagger: {
+    focusedRegression: 'scripts/sim-molten-dagger-smoke.mjs',
+    fixture: 'Molten Dagger source hit-only Heat threshold, permanent future damage growth, exact Heat spend, inherited weapon activation, miss behavior, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  molten_greatsword: {
+    focusedRegression: 'scripts/sim-molten-greatsword-smoke.mjs',
+    fixture: 'Molten Greatsword source early-hit Heat consumption, Empower grant ordering, inherited stamina/attack activation, Fire multiplicity, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',

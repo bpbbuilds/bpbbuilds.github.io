@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "650b9b0126cf57eedbe2cc678161d5f726ca0d873d4905e741fa5a7ac822bc6b",
+    "dashboardSha256": "eab4d5ab65a3dc6e0106a5b18fcede6adcd1ca6a73bde5122f77804daf73623b",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 443,
+    "verified_1to1": 445,
     "confirmed_gap": 7,
-    "evidence_pending": 54,
+    "evidence_pending": 52,
     "no_independent_combat": 15
   },
   "byId": {
@@ -302,8 +302,8 @@
     "mega_clover": "verified_1to1",
     "mercury_elemental": "verified_1to1",
     "miss_fortune": "verified_1to1",
-    "molten_dagger": "evidence_pending",
-    "molten_greatsword": "evidence_pending",
+    "molten_dagger": "verified_1to1",
+    "molten_greatsword": "verified_1to1",
     "molten_spear": "evidence_pending",
     "molten_spear2": "evidence_pending",
     "moon_armor": "evidence_pending",

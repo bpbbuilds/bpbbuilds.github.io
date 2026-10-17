@@ -6683,3 +6683,12 @@ None.
 ### 2026-10-16 Simulator item parity continuation 293 - in progress
 
 - Codex owns the next retained Molten Dagger and Molten Greatsword fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-molten-dagger-smoke.mjs`, `scripts/sim-molten-greatsword-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 293 - complete
+
+- Codex repaired Molten Dagger to mirror the source hit-only Heat gate, permanent future-hit damage growth, exact integer parameters, Heat spending, inherited weapon activation, miss behavior, and explicit zero values. Molten Greatsword now uses the inherited Greatsword attack path so stamina, early-hit Heat consumption, Empower grant, damage, and activation ordering match the source; its Fire multiplicity and zero values remain source-backed.
+- Added `scripts/sim-molten-dagger-smoke.mjs` and `scripts/sim-molten-greatsword-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 445 / 519 verified item rows. Focused pair tests, prior Mercury/Miss Fortune regressions, verified coverage, coverage honesty, changed-module syntax, and ledger/dashboard freshness checks pass. No legal, authentication, database, storage, or security behavior changed. The generated summary reports 445 verified, 52 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Molten Spear and Molten Spear2; this batch is ready to commit and push.
+
+### 2026-10-17 Simulator item parity continuation 294 - in progress
+
+- Codex owns the next retained Molten Spear and Molten Spear2 fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-molten-spear-smoke.mjs`, `scripts/sim-molten-spear2-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

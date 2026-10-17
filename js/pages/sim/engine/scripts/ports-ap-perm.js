@@ -152,10 +152,11 @@ const moltenDaggerPort = {
   },
   onPreDealDamageEarly(piece, ctx, res) {
     if (res && !res.hit) return;
-    const need = Math.max(1, Math.round(getP1(piece.params, 1)));
+    // MoltenDagger.gd caches int(getP1()) / int(getP2()); zero remains a
+    // valid source value and addBonusDamage only affects future attacks.
+    const need = Math.trunc(getP1(piece.params, 0));
     if ((getStackAmount(ctx.player, 'heat') || 0) < need) return;
-    const dam = Math.max(1, Math.round(getP2(piece.params, 2)));
-    if (res) res.damage = (Number(res.damage) || 0) + dam;
+    const dam = Math.trunc(getP2(piece.params, 0));
     addBonusDamage(piece, dam);
     spendStacks(ctx.player, 'heat', need, origin(piece));
   },

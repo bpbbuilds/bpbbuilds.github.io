@@ -12665,9 +12665,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-molten-dagger-smoke.mjs",
+        "fixture": "Molten Dagger source hit-only Heat threshold, permanent future damage growth, exact Heat spend, inherited weapon activation, miss behavior, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -12701,9 +12707,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-molten-greatsword-smoke.mjs",
+        "fixture": "Molten Greatsword source early-hit Heat consumption, Empower grant ordering, inherited stamina/attack activation, Fire multiplicity, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

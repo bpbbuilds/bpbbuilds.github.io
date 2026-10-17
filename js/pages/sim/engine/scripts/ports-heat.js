@@ -2,7 +2,6 @@
  * Band Y Phase 137 — heat / cold.
  */
 
-import { tryUseStamina } from '../actor.js';
 import {
   giveRandomBuffs,
   grantStacks,
@@ -15,9 +14,8 @@ import {
 import { affectedTargets } from '../board-graph.js';
 import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
-import { randInt } from '../rng.js';
 import { gainStacks } from '../stacks.js';
-import { dealHit, stealLife } from './handlers.js';
+import { stealLife } from './handlers.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 import { afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
 import { eventFoeSide } from '../vs-board.js';
@@ -188,49 +186,26 @@ export const moltenGreatswordPort = {
   handlerId: 'molten_greatsword',
   family: 'on_hit',
   onCooldownEffect(piece, ctx) {
-    const { t, player, events, rng } = ctx;
-    if (tryUseStamina(player, piece.staminaCost) === 'starve') {
-      events.push({
-        t,
-        type: 'stamina',
-        label: `${piece.name}: out of stamina`,
-        meta: { category: 'stamina', script: true, starved: true },
-      });
-      return true;
-    }
-    pushActivate(piece, ctx, 'molten_greatsword', `Weapon: ${piece.name}`);
-    const raw = randInt(piece.damageMin, piece.damageMax, rng);
-    const hit = dealHit(piece, ctx, raw);
-    if (hit.hit) {
-      const need = Math.max(1, Math.round(getPName(piece.params, 'heat', getP1(piece.params, 3))));
-      if ((Number(player.stacks.heat) || 0) >= need) {
-        const spent = spendStacks(player, 'heat', need, {
-          originKey: piece.placementKey,
-          originId: piece.itemId,
-        });
-        if (spent.spent > 0) {
-          const emp = Math.max(1, Math.round(getPName(piece.params, 'empower', getP2(piece.params, 1))));
-          grantStacks(player, 'empower', emp, {
-            originKey: piece.placementKey,
-            originId: piece.itemId,
-          });
-          events.push({
-            t: t + 0.01,
-            type: 'buff',
-            target: 'player',
-            amount: emp,
-            label: `${piece.name}: Heat→Empower +${emp}`,
-            meta: {
-              category: 'buff',
-              stack: 'empower',
-              script: true,
-              handler: 'molten_greatsword',
-            },
-          });
-        }
-      }
-    }
-    return true;
+    // Greatsword.gd uses Weapon.attack(): stamina → rolled damage and early
+    // hook → damage resolution → activate. weaponStrike owns that ordering.
+    return weaponStrike(piece, ctx, 'molten_greatsword');
+  },
+  onPreDealDamageEarly(piece, ctx, res) {
+    if (!res?.hit) return;
+    const need = Math.trunc(getPName(piece.params, 'heat', getP1(piece.params, 0)));
+    if ((Number(ctx.player.stacks.heat) || 0) < need) return;
+    const spent = spendStacks(ctx.player, 'heat', need, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+    // Source giveEmpower() follows useHeat(), including the explicit zero
+    // case; it does not alter the already-rolled current DamageResult.
+    if (need > 0 && spent.spent <= 0) return;
+    const empower = Math.trunc(getPName(piece.params, 'empower', getP2(piece.params, 0)));
+    grantStacks(ctx.player, 'empower', empower, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
   },
 };
 
