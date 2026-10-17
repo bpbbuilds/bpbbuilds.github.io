@@ -780,6 +780,18 @@ export const owlSpiritPort = {
 export const hedgehogPort = {
   handlerId: 'hedgehog',
   family: 'pet_like',
+  // Hedgehog.gd inherits ForestFriend.combatStart(): each linked Pet/Food
+  // adds the source's petspeed percentage before its own combat behavior.
+  onCombatStart(piece, ctx) {
+    const affected = linkedCount(
+      ctx,
+      piece,
+      (other, item) => itemHasType(item, 'pet') || itemHasType(item, 'food') ||
+        other?.kind === 'pet' || other?.kind === 'food',
+    );
+    const speed = getPName(piece.params, 'petspeed', getP1(piece.params, 15)) / 100;
+    if (affected && speed) addSpeed(piece, affected * speed);
+  },
   // Hedgehog.gd connects during onPrepare.
   onPrepare(piece, ctx) {
     piece._hedgeTriggered = false;

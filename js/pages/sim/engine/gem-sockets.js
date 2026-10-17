@@ -563,7 +563,11 @@ export function combatStartGemSockets(piece, ctx) {
             gemPowerForHost(gem, piece) *
               (Number(gem.block) || getPName(params, 'block', 8)),
           )
-        : Math.max(1, Math.round(Number(gem.block) || getPName(params, 'block', 12)));
+        : Math.max(
+            0,
+            gemPowerForHost(gem, piece) *
+              (Number(gem.block) || getPName(params, 'block', 12)),
+          );
     gainStacks(ctx.player, 'block', block, { originKey, originId: gid });
   });
 }

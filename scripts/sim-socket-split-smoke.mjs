@@ -16,6 +16,7 @@ for (const it of GAME_ITEMS.items || []) {
     cooldown: it.cooldown,
     damageMin: it.damageMin,
     damageMax: it.damageMax,
+    block: it.block,
     accuracy: it.accuracy,
     staminaCost: it.staminaCost,
     params: it.params,
@@ -116,6 +117,19 @@ function speedAfterActivates(run, key) {
   ok(
     Number(start?.player?.block) === 58,
     `coal socket combat-start block combines with host start effect (${start?.player?.block})`,
+  );
+
+  const burningRun = simulateEngine({
+    placements: [{ id: 'moon_armor', key: 'moon', x: 0, y: 0, r: 0, gems: ['burning_coal'] }],
+    itemsById: byId,
+    durationSec: 2.51,
+    seed: 2545,
+    dummyAttacks: false,
+  });
+  const burningStart = burningRun.snapshots.find((s) => Number(s.t) === 2.5);
+  ok(
+    Number(burningStart?.player?.block) === 62,
+    `burning coal socket scales and separates combat-start block (${burningStart?.player?.block})`,
   );
 }
 

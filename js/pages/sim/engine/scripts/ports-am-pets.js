@@ -354,7 +354,11 @@ export const ratPort = {
   onCombatStart(piece, ctx) {
     // Rat inherits ForestFriend.combatStart(): each affected Pet/Food adds the
     // source's petspeed percentage to Rat itself.
-    const affected = linked(ctx, piece).length;
+    const affected = linked(ctx, piece).filter((other) => {
+      const item = ctx.itemsById.get(other.itemId);
+      return itemHasType(item, 'pet') || itemHasType(item, 'food') ||
+        other?.kind === 'pet' || other?.kind === 'food';
+    }).length;
     const speed = getPName(piece.params, 'petspeed', getP1(piece.params, 0)) / 100;
     if (affected && speed) addSpeed(piece, affected * speed);
   },

@@ -12,6 +12,7 @@ import { combatStartGemSockets, prepareGemSockets } from '../js/pages/sim/engine
 const raw = JSON.parse(fs.readFileSync('scripts/_cache/game-items.json', 'utf8'));
 const catalog = Array.isArray(raw) ? raw : raw.items;
 const byId = new Map(catalog.map((item) => [item.id, { ...item, shape: item.shape || [[1]] }]));
+const burningCoalSource = fs.readFileSync('tools/game-extract-full/Items/BurningCoal.gd', 'utf8');
 
 const CASES = [
   ['burning_banner', 'Exclusive/BurningBanner.tscn', 'Exclusive/BurningBanner.gd'],
@@ -69,6 +70,10 @@ for (const [id, sceneFile, sourceFile] of CASES) {
   assert.equal(row?.file, sourceFile, `${id} source script`);
   assert.equal(getScriptHandler(id)?.handlerId, id, `${id} runtime handler`);
 }
+assert.match(
+  burningCoalSource,
+  /func combatStartArmor\(\):[\s\S]*giveBlock\(getBlock\(\) \* getGemPower\(\)\)/,
+);
 
 // Run each lifecycle from both board owners. These checks deliberately use
 // the same handlers and actor orientation for `you` and `them`.
@@ -133,12 +138,16 @@ for (const side of ['you', 'them']) {
   const socketBonus = coalWeapon._preDeal?.[0]?.();
   assert.equal(socketBonus, 6, `Burning Coal weapon socket adds source damage on ${side}`);
   assert.ok(owner.stacks.heat >= 3, `Burning Coal weapon socket grants source Heat on ${side}`);
-  const coalArmor = piece('cauldron', `${side}:coal-armor`, side, { gemIds: ['burning_coal'] });
+  const coalArmor = piece('cauldron', `${side}:coal-armor`, side, {
+    gemIds: ['burning_coal'],
+    _socketGemPowerBonus: 1,
+  });
   const coalArmorCtx = context(side, owner, foe, [coalArmor], graph);
   prepareGemSockets(coalArmor, coalArmorCtx);
+  const coalBlockBefore = owner.block || 0;
   combatStartGemSockets(coalArmor, coalArmorCtx);
   assert.equal(owner.stackResistStacks.cold, 7, `Burning Coal armor socket adds source one-use Cold resistance on ${side}`);
-  assert.ok(owner.block >= 12, `Burning Coal armor socket grants source Block on ${side}`);
+  assert.equal(owner.block - coalBlockBefore, 24, `Burning Coal armor socket scales Block with Gem Power on ${side}`);
 
   const cauldron = piece('cauldron', `${side}:cauldron`, side);
   const food = piece('banana', `${side}:food`, side);

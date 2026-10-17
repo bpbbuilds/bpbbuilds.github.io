@@ -156,7 +156,8 @@ export function buildCombatPieces(placements, itemsById) {
       continue;
     }
 
-    const gems = gemModsFor(p.gems, itemsById, { hostKind: gemHostKind(kind) });
+    const hostKind = gemHostKind(kind);
+    const gems = gemModsFor(p.gems, itemsById, { hostKind });
     const cd = Number(item.cooldown);
     const hasCd = Number.isFinite(cd) && cd > 0;
     const dMin = Number(item.damageMin);
@@ -178,8 +179,17 @@ export function buildCombatPieces(placements, itemsById) {
     let staminaCost = Math.max(0, Number(item.staminaCost) || 0);
     staminaCost = Math.max(0, staminaCost + gems.staminaDelta);
 
-    const blockGrant =
-      Math.max(0, Math.round(Number(item.block) || 0)) + gems.blockBonus;
+    // LumpofCoal/BurningCoal expose catalog Block, but Gem.combatStartArmor()
+    // grants that Block separately. Do not flatten it into the host's static
+    // Block or handlers such as Moon Armor will count the same grant twice.
+    const combatStartArmorGemBlock = (p.gems || []).reduce((sum, gid) => {
+      if (hostKind === 'weapon' || !['lump_of_coal', 'burning_coal'].includes(gid)) return sum;
+      return sum + Math.max(0, Math.round(Number(itemsById.get(gid)?.block) || 0));
+    }, 0);
+    const blockGrant = Math.max(
+      0,
+      Math.round(Number(item.block) || 0) + gems.blockBonus - combatStartArmorGemBlock,
+    );
 
     // Armor DR: non-weapon block items grant flat reduction
     const damageReduction =

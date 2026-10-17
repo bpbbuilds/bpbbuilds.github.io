@@ -7,6 +7,7 @@ import { createCombatBus } from '../js/pages/sim/engine/combat-bus.js';
 import { getScriptHandler } from '../js/pages/sim/engine/scripts/registry.js';
 
 const source = fs.readFileSync('tools/game-extract-full/Items/Exclusive/Hedgehog.gd', 'utf8');
+const forestFriendSource = fs.readFileSync('tools/game-extract-full/Items/Exclusive/ForestFriend.gd', 'utf8');
 const raw = JSON.parse(fs.readFileSync('scripts/_cache/game-items.json', 'utf8'));
 const catalog = Array.isArray(raw) ? raw : raw.items;
 const byId = new Map(catalog.map((item) => [item.id, { ...item, shape: item.shape || [[1]] }]));
@@ -16,6 +17,8 @@ assert.match(source, /func onDamaged\(_damage, event\):[\s\S]*relHealth = charac
 assert.match(source, /func onHPLow\(event\):[\s\S]*giveSpikes\(spikes, event\)[\s\S]*giveBlock\(getBlock\(\), true, event\)[\s\S]*spawnSpikeParticles\(\)/);
 assert.match(source, /func doCooldownEffect\(\):[\s\S]*character\(\)\.getSpikes\(\) \* damagePerSpike[\s\S]*activate\(res\)/);
 assert.match(source, /func getTriggerPriority\(\) -> int:[\s\S]*Priority\.High \+ 3/);
+assert.match(source, /extends "res:\/\/Items\/Exclusive\/ForestFriend\.gd"/);
+assert.match(forestFriendSource, /func combatStart\(\):[\s\S]*getNumAffectedItems\(\)[\s\S]*addSpeed\(numAffected \* getP1\(\) \/ 100\.0\)/);
 
 assert.equal(inventory.byId.hedgehog?.file, 'Exclusive/Hedgehog.gd');
 assert.equal(getScriptHandler('hedgehog')?.handlerId, 'hedgehog');
@@ -47,6 +50,42 @@ function context(player, hedgehog) {
 }
 
 const handler = getScriptHandler('hedgehog');
+const speedHedgehog = piece({ speedScale: 0 });
+const speedPet = { itemId: 'speed-pet', placementKey: 'you:pet', kind: 'pet', cells: ['pet-cell'] };
+const speedFood = { itemId: 'speed-food', placementKey: 'you:food', kind: 'consumable', cells: ['food-cell'] };
+const speedUnrelated = { itemId: 'speed-accessory', placementKey: 'you:accessory', kind: 'accessory', cells: ['accessory-cell'] };
+const speedGraph = {
+  pieces: new Map([
+    ['you:hedgehog', { key: 'you:hedgehog', id: 'hedgehog', cells: ['hedge-cell'], affectCells: [
+      { cell: 'pet-cell', color: 'primary' },
+      { cell: 'food-cell', color: 'primary' },
+      { cell: 'accessory-cell', color: 'primary' },
+    ] }],
+    ...[speedPet, speedFood, speedUnrelated].map((item) => [item.placementKey, {
+      key: item.placementKey,
+      id: item.itemId,
+      cells: item.cells,
+      affectCells: [],
+    }]),
+  ]),
+  filled: new Map([
+    ['pet-cell', 'you:pet'],
+    ['food-cell', 'you:food'],
+    ['accessory-cell', 'you:accessory'],
+  ]),
+};
+handler.onCombatStart(speedHedgehog, {
+  graph: speedGraph,
+  pieces: [speedHedgehog, speedPet, speedFood, speedUnrelated],
+  itemsById: new Map([
+    ['hedgehog', byId.get('hedgehog')],
+    ['speed-pet', { id: 'speed-pet', type: 'Pet' }],
+    ['speed-food', { id: 'speed-food', type: 'Food' }],
+    ['speed-accessory', { id: 'speed-accessory', type: 'Accessory' }],
+  ]),
+});
+assert.equal(speedHedgehog.speedScale, 0.3, 'Hedgehog inherits Forest Friend speed for linked Pet/Food only');
+
 const player = createActor('player', { maxHp: 100 });
 const hedgehog = piece();
 const ctx = context(player, hedgehog);

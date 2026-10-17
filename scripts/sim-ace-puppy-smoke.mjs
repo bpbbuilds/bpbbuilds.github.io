@@ -153,7 +153,7 @@ let itemTriggerCount = 0;
 armoredPiece._owner = armoredPlayer;
 armoredPiece._eventLog = armoredEvents;
 const armoredHandler = getScriptHandler(armored.id);
-assert.ok(armoredHandler?.onCombatStart && armoredHandler?.onCooldownEffect);
+assert.ok(armoredHandler?.onPreCombatStart && armoredHandler?.onCooldownEffect);
 armoredHandler.onCooldownEffect(armoredPiece, {
   player: armoredPlayer,
   dummy: armoredDummy,
