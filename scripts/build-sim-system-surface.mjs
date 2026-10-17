@@ -48,8 +48,16 @@ const SURFACE = [
     source: 'Core/Game.gd',
     functions: ['endCombat', 'combatEndDeferred'],
     simOwners: ['js/pages/sim/engine/simulate.js'],
-    disposition: 'partial',
-    note: 'Simulation ends fights, but source-level cleanup, delayed work, and result ordering need conformance coverage.',
+    disposition: 'implemented',
+    note: 'The simulator matches the source combat-end boundary: combat-end signal, listener disconnect, character and temporary-stack cleanup, fatigue reset, socket/item cleanup, and final fight projection; scene/round UI progression remains UI-only.',
+    evidence: {
+      focusedRegression: 'scripts/sim-combat-end-smoke.mjs',
+      fixture: 'Game.gd combatEndDeferred, Character/Buff cleanup, CombatTimer reset, Item/Gem cleanup order, card deactivation, and runtime transition/lifecycle assertions.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'game-round-health',

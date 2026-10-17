@@ -116,6 +116,8 @@ const orderedPhases = [
   'socket_combat_start',
   'combat_start',
   'post_combat_start',
+  'socket_combat_end',
+  'combat_end',
 ];
 
 ok(trace.length === (you.length + them.length) * orderedPhases.length, 'trace has every shared lifecycle phase');
@@ -123,7 +125,7 @@ for (const placement of [...you, ...them]) {
   const key = placement.key.startsWith('them:') ? `opp:${placement.key}` : placement.key;
   ok(
     JSON.stringify(phasesFor(trace, key)) === JSON.stringify(orderedPhases),
-    `${key} completes prepare → socket → arm → pre/start/post lifecycle in order`,
+    `${key} completes prepare → socket → arm → pre/start/post/end lifecycle in order`,
   );
 }
 

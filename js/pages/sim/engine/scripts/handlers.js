@@ -43,6 +43,7 @@ import { applyBonusDamageFactor } from '../piece-stats.js';
  *   onPreCombatStart?: (piece: CombatPiece, ctx: ScriptCtx) => void,
  *   onCombatStart?: (piece: CombatPiece, ctx: ScriptCtx) => void,
  *   onPostCombatStart?: (piece: CombatPiece, ctx: ScriptCtx) => void,
+ *   onCombatEnd?: (piece: CombatPiece) => void,
  *   onTick?: (piece: CombatPiece, ctx: ScriptCtx) => void,
  *   emitCharge?: (piece: CombatPiece, ctx: ScriptCtx, speedFactor?: number) => void,
  *   onQueuedChargeTimeout?: (piece: CombatPiece, ctx: ScriptCtx) => void,

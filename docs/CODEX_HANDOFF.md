@@ -7074,3 +7074,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 339 - in progress
 
 - Codex owns the next partial shared surface, `game-combat-end`, for source-backed end-combat cleanup and result ordering review. Planned paths are limited to simulator end-of-combat/handler modules, a focused regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 339 - complete
+
+- Codex completed the Game combat-end parity pass: the simulator now emits a test-only end boundary, disconnects the run-scoped combat bus before character cleanup, clears temporary stack metadata, resets fatigue/charge trackers, clears socket timer state, deactivates cards, and invokes item-specific `onCombatEnd` handlers in source inventory order.
+- Added `scripts/sim-combat-end-smoke.mjs`, extended lifecycle regressions for end phases, marked `game-combat-end` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and ran end, transition, lifecycle, gem, card, item-effects, parity, syntax, and freshness checks. Shared totals are now 15 implemented and 6 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 340 - in progress
+
+- Codex owns the next partial shared surface, `game-round-health`, for source-backed round health formulas, class/mode branches, and validation review. Planned paths are limited to simulator round-health modules, a focused source regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

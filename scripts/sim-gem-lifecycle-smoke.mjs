@@ -51,7 +51,17 @@ const run = simulateEngine({
   dummyAttacks: false,
   captureLifecycle: true,
 });
-const phases = ['prepare', 'socket_prepare', 'cooldown_arm', 'pre_combat_start', 'socket_combat_start', 'combat_start', 'post_combat_start'];
+const phases = [
+  'prepare',
+  'socket_prepare',
+  'cooldown_arm',
+  'pre_combat_start',
+  'socket_combat_start',
+  'combat_start',
+  'post_combat_start',
+  'socket_combat_end',
+  'combat_end',
+];
 for (const placement of placements) {
   const key = placement.key;
   const actual = run.lifecycle.filter((entry) => entry.placementKey === key).map((entry) => entry.phase);

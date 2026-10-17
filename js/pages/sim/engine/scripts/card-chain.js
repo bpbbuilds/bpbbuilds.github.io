@@ -176,5 +176,9 @@ export function triggerCard(piece, ctx, revealEffect) {
 export function runCardInheritedHook(piece, ctx, hook, derived) {
   if (hook === 'prepare') prepareCard(piece, ctx);
   if (hook === 'pre_combat_start') deactivateCard(piece);
+  if (hook === 'combat_end') {
+    piece._revealing = false;
+    deactivateCard(piece);
+  }
   derived?.(piece, ctx);
 }

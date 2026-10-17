@@ -23,7 +23,12 @@ import { buildCombatPieces, activeLoopPieces } from './pieces.js';
 import { activatePiece } from './combat-activate.js';
 import { runCharacterTick } from './ticks.js';
 import { getScriptHandler } from './scripts/registry.js';
-import { combatStartGemSockets, prepareGemSockets, tickGemSocketEffects } from './gem-sockets.js';
+import {
+  combatEndGemSockets,
+  combatStartGemSockets,
+  prepareGemSockets,
+  tickGemSocketEffects,
+} from './gem-sockets.js';
 import { buildCombatStartOrder } from './combat-start-priority.js';
 import { deliverCharge, leaveCharge, processChargeJob, clearChargeTrackers } from './charge-delivery.js';
 import { tickTimedSpeeds } from './timed-speed.js';
@@ -36,6 +41,7 @@ import { armPieceCooldown, rearmAfterTrigger, rollIterationCooldown } from './co
 import { runWeaponInheritedHook } from './scripts/ports-wave-c-util.js';
 import { pieceSpeed } from './piece-stats.js';
 import { tickTemporaryStacks } from './buff-economy.js';
+import { clearTemporaryStacks } from './temp-stacks.js';
 import { bindBuffCombatLog, unbindBuffCombatLog, collapseDuplicateBuffLogs } from './buff-log.js';
 import { bindBuffPowerPieces, unbindBuffPowerPieces } from './buff-power.js';
 import {
@@ -963,6 +969,36 @@ export function simulateEngine(opts) {
 
   const endT = Math.min(durationSec, t);
   pushSnap(endT);
+
+  // Game.combatEndDeferred emits combat_end, disconnects the shared bus,
+  // stops both character loops and the fatigue timer, then lets every item
+  // clean up its sockets and item-specific runtime state. Keep this after the
+  // final combat snapshot so the snapshot remains the last in-combat view.
+  const endResult = dummy.dead ? 'win' : player.dead ? 'loss' : 'timeout';
+  traceTransition('combat_end_signal', 'both', endT);
+  bus.emit('combat_end', { result: endResult, t: endT });
+  bus.reset();
+  traceTransition('bus_disconnect', 'system', endT);
+  traceTransition('character_combat_end', 'player', endT);
+  clearTemporaryStacks(player);
+  traceTransition('character_combat_end', 'dummy', endT);
+  clearTemporaryStacks(dummy);
+  traceTransition('combat_timer_end', 'system', endT);
+  fatigue.started = false;
+  fatigue.counter = 0;
+  fatigue.nextTickAt = Infinity;
+  clearChargeTrackers();
+  for (const piece of [...youPieces, ...themPieces]) {
+    traceLifecycle('socket_combat_end', piece, endT);
+    combatEndGemSockets(piece);
+    traceLifecycle('combat_end', piece, endT);
+    const script = getScriptHandler(piece.itemId);
+    if (piece.kind === 'card') {
+      runCardInheritedHook(piece, { pieces }, 'combat_end', script?.onCombatEnd);
+    } else {
+      script?.onCombatEnd?.(piece);
+    }
+  }
 
   // Charge paths pre-queue cell log lines at future t; drop any that never fired.
   const trimAfter = endT + 1e-6;

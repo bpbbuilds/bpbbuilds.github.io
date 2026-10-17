@@ -567,3 +567,15 @@ export function combatStartGemSockets(piece, ctx) {
     gainStacks(ctx.player, 'block', block, { originKey, originId: gid });
   });
 }
+
+/**
+ * Game `Item.combatEnd()` delegates cleanup to every socketed Gem before the
+ * host item's own end hook. The simulation has no live timers after a run,
+ * so clearing the socket timer state is the equivalent boundary.
+ *
+ * @param {object} piece
+ */
+export function combatEndGemSockets(piece) {
+  for (const timer of piece?._socketGemTimers || []) timer.done = true;
+  piece._socketGemTimers = [];
+}
