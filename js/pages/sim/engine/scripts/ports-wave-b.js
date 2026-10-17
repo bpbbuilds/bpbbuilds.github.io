@@ -35,13 +35,14 @@ import { canBagAffectItem } from '../../../../shared/backpack-grid/can-affect.js
  * @param {object} ctx
  * @param {object} piece
  * @param {(other: object, item: object|undefined) => boolean} [pred]
+ * @param {'primary'|'secondary'|'tertiary'|'lightning'} [color]
  */
-function linkedCount(ctx, piece, pred) {
+function linkedCount(ctx, piece, pred, color = null) {
   const { graph, itemsById, canAffect, pieces } = ctx;
   const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
   let n = 0;
   for (const other of pieces || []) {
-    if (!links.some((l) => l.key === other.placementKey)) continue;
+    if (!links.some((l) => l.key === other.placementKey && (!color || l.color === color))) continue;
     const item = itemsById.get(other.itemId);
     if (pred && !pred(other, item)) continue;
     n += 1;
@@ -54,15 +55,23 @@ function linkedCount(ctx, piece, pred) {
 export const magicBadgePort = {
   handlerId: 'magic_badge',
   family: 'start_buff',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    const amp = Math.max(0, Number(piece.chance) || getPName(piece.params, 'chance', 15));
+    const rawAmp = Number.isFinite(Number(piece.chance))
+      ? Number(piece.chance)
+      : getPName(piece.params, 'chance', 0);
+    const amp = Number.isFinite(rawAmp) ? rawAmp : 0;
+    if (!amp) return;
     for (const other of pieces || []) {
       if (!links.some((l) => l.key === other.placementKey)) continue;
-      other.buffAmpChance = (Number(other.buffAmpChance) || 0) + amp;
+      other.buffAmplificationChances = other.buffAmplificationChances || {};
+      other.buffAmplificationChances.mana =
+        (Number(other.buffAmplificationChances.mana) || 0) + amp;
     }
-    const mana = Math.max(1, Math.round(getPName(piece.params, 'mana', getP1(piece.params, 3))));
+  },
+  onCombatStart(piece, ctx) {
+    const mana = Math.trunc(getPName(piece.params, 'mana', getP1(piece.params, 0)));
     grantStacks(ctx.player, 'mana', mana, {
       originKey: piece.placementKey,
       originId: piece.itemId,
@@ -75,6 +84,7 @@ export const magicBadgePort = {
       label: `${piece.name}: +${mana} Mana`,
       meta: { category: 'buff', stack: 'mana', script: true, handler: 'magic_badge' },
     });
+    pushActivate(piece, ctx, 'magic_badge', `Accessory: ${piece.name}`);
   },
 };
 
@@ -311,18 +321,33 @@ export const mageHatPort = {
   handlerId: 'mage_hat',
   family: 'unique',
   onCombatStart(piece, ctx) {
-    const commons = linkedCount(ctx, piece, (_o, item) =>
-      String(item?.rarity || '').toLowerCase() === 'common',
+    const commons = linkedCount(
+      ctx,
+      piece,
+      (_o, item) => String(item?.rarity || '').toLowerCase() === 'common',
+      'primary',
     );
-    const rares = linkedCount(ctx, piece, (_o, item) =>
-      String(item?.rarity || '').toLowerCase() === 'rare',
+    const rares = linkedCount(
+      ctx,
+      piece,
+      (_o, item) => String(item?.rarity || '').toLowerCase() === 'rare',
+      'secondary',
     );
-    const epics = linkedCount(ctx, piece, (_o, item) =>
-      String(item?.rarity || '').toLowerCase() === 'epic',
+    const epics = linkedCount(
+      ctx,
+      piece,
+      (_o, item) => String(item?.rarity || '').toLowerCase() === 'epic',
+      'tertiary',
     );
-    const blockPer = Math.max(1, Math.round(piece.blockGrant || getP1(piece.params, 3)));
-    const manaPer = Math.max(1, Math.round(getPName(piece.params, 'mana', getP2(piece.params, 2))));
-    const damRed = getPName(piece.params, 'damreduction', 5) / 100;
+    const catalogBlock = Number(ctx.itemsById?.get(piece.itemId)?.block);
+    const rawBlock = Number.isFinite(Number(piece.blockGrant))
+      ? Number(piece.blockGrant)
+      : Number.isFinite(catalogBlock)
+        ? catalogBlock
+        : getP1(piece.params, 0);
+    const blockPer = Number.isFinite(rawBlock) ? rawBlock : 0;
+    const manaPer = Math.trunc(getPName(piece.params, 'mana', getP1(piece.params, 0)));
+    const damRed = getPName(piece.params, 'damreduction', getP2(piece.params, 0)) / 100;
     if (commons > 0) {
       grantStacks(ctx.player, 'block', blockPer * commons, {
         originKey: piece.placementKey,
@@ -344,6 +369,7 @@ export const mageHatPort = {
       label: `${piece.name}: commons ${commons} / rares ${rares} / epics ${epics}`,
       meta: { category: 'system', script: true, handler: 'mage_hat' },
     });
+    pushActivate(piece, ctx, 'mage_hat', `Helmet: ${piece.name}`);
   },
 };
 

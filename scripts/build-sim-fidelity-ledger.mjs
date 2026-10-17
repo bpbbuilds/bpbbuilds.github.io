@@ -1902,6 +1902,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  mage_hat: {
+    focusedRegression: 'scripts/sim-mage-hat-smoke.mjs',
+    fixture: 'Mage Hat source primary/secondary/tertiary rarity lanes, block/mana/effect-damage reduction, activation, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  magic_badge: {
+    focusedRegression: 'scripts/sim-magic-badge-smoke.mjs',
+    fixture: 'Magic Badge source Mana-stack target filter, prepare-time Mana amplification, combat-start Mana, activation, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

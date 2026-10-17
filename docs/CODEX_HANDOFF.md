@@ -6600,3 +6600,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 284 - in progress
 
 - Codex owns the next retained Mage Hat and Magic Badge fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mage-hat-smoke.mjs`, `scripts/sim-magic-badge-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 284 - complete
+
+- Codex repaired Mage Hat to mirror the source primary/secondary/tertiary rarity lanes, exact block/mana/effect-damage parameters, source activation, and explicit zero values. Magic Badge now mirrors source Mana-only target filtering, preparation-time Mana amplification, combat-start Mana, activation, and zero-safe parameters; it no longer writes the all-buff amplification field at combat start.
+- Added `scripts/sim-mage-hat-smoke.mjs` and `scripts/sim-magic-badge-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 427 / 519 verified item rows. Focused pair tests, Wave B/C/D, AP milestone, parity systems, verified-coverage, coverage-honesty, changed-module syntax, and ledger/dashboard freshness checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 427 verified, 70 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Magic Collar and Magic Mirror; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 285 - in progress
+
+- Codex owns the next retained Magic Collar and Magic Mirror fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-magic-collar-smoke.mjs`, `scripts/sim-magic-mirror-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
