@@ -62,10 +62,12 @@ export function tickTimedResistances(actors, t) {
       const keep = [];
       for (const e of list) {
         if (t + 1e-9 >= e.untilT) {
-          actor.damageResistancePct = Math.max(
-            0,
-            (Number(actor.damageResistancePct) || 0) - e.pct,
-          );
+          // Character.changeDamageResistance is additive and deliberately
+          // does not clamp. Negative resistance from items such as Poison
+          // Ivy/Onion Cutter must survive the removal of an overlapping
+          // temporary positive resistance effect.
+          actor.damageResistancePct =
+            (Number(actor.damageResistancePct) || 0) - e.pct;
           actor._onTimedResistEnd?.(e.tag, e);
         } else keep.push(e);
       }
