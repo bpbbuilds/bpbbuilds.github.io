@@ -6446,3 +6446,14 @@ None.
 ### 2026-10-16 Simulator item parity continuation 269 - in progress
 
 - Codex owns the next retained Jynx Staff and Jynx Torquilla fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-jynx-staff-smoke.mjs`, `scripts/sim-jynx-torquilla-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 269 - complete
+
+- Codex repaired Jynx Staff to mirror source prepare reset, early pre-damage Mana gating, current-hit/permanent damage, exact p1-p5 fallback parameters, hasCooldown target filtering, capped speed activations, and opponent Lucky removal. Jynx torquilla now mirrors source prepare reset, hasCooldown target filtering, exact p1-p3 parameters, capped speed activations, actual Lucky spend logging, and effect-before-activation ordering.
+- Added `scripts/sim-jynx-staff-smoke.mjs` and `scripts/sim-jynx-torquilla-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 397 / 519 verified item rows. Focused pair tests, recent parity regressions, changed-module syntax, dashboard tests/checks, coverage checks, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 397 verified, 100 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with King Crown and King Goobert; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 270 - in progress
+
+- Codex owns the next retained King Crown and King Goobert fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-king-crown-smoke.mjs`, `scripts/sim-king-goobert-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

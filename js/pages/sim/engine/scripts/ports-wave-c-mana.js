@@ -11,13 +11,12 @@ import {
   useMana,
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
-import { getP1, getP2, getP3, getP4, getPName } from '../params.js';
+import { getP1, getP2, getP3, getP4, getP5, getPName } from '../params.js';
 import {
   addBonusDamage,
   addSpeed,
   changeVaryingDamageFromBuffChange,
 } from '../piece-stats.js';
-import { hasCombatCooldown } from './food-helpers.js';
 import { dealHit, stealLife } from './handlers.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 import { getStackAmount } from '../stacks.js';
@@ -270,18 +269,31 @@ export const cupcakeStaffPort = {
 };
 
 /** JynxStaff.gd */
+function jynxStaffTargets(ctx, piece) {
+  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+  const hasExtractedRules = Boolean(ctx.canAffect?.rulesById);
+  return (ctx.pieces || []).filter((other) => {
+    if (piece.side != null && other.side !== piece.side) return false;
+    if (!links.some((link) => link.key === other.placementKey)) return false;
+    if (hasExtractedRules) return true;
+    const item = ctx.itemsById.get(other.itemId) || other;
+    const cooldown = Number(item.cooldown ?? other.cooldown);
+    return cooldown > 0 && cooldown < 500;
+  });
+}
+
 /** @type {ScriptHandler} */
 export const jynxStaffPort = {
   handlerId: 'jynx_staff',
   family: 'on_hit',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._jynxActs = 0;
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'jynx_staff');
   },
-  onDealtDamage(piece, ctx) {
-    const cost = Math.max(1, Math.round(getPName(piece.params, 'manat', getP1(piece.params, 2))));
+  onPreDealDamageEarly(piece, ctx, damageRes) {
+    const cost = Math.trunc(getPName(piece.params, 'manat', getP1(piece.params, 0)));
     if (
       useMana(ctx.player, cost, {
         originKey: piece.placementKey,
@@ -290,20 +302,17 @@ export const jynxStaffPort = {
     ) {
       return;
     }
-    const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 1))));
+    const dam = getPName(piece.params, 'dam', getP2(piece.params, 0));
     addBonusDamage(piece, dam);
-    const maxActs = Math.max(1, Math.round(getPName(piece.params, 'max', getP3(piece.params, 3))));
-    const speed = getPName(piece.params, 'speed', 5) / 100;
-    if ((piece._jynxActs || 0) < maxActs && speed) {
-      const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
-      for (const other of ctx.pieces || []) {
-        if (!links.some((l) => l.key === other.placementKey)) continue;
-        if (hasCombatCooldown(other)) addSpeed(other, speed);
-      }
+    if (damageRes) damageRes.damage = (Number(damageRes.damage) || 0) + dam;
+    const maxActs = Math.trunc(getPName(piece.params, 'max', getP4(piece.params, 0)));
+    const speed = getPName(piece.params, 'speed', getP3(piece.params, 0)) / 100;
+    if ((piece._jynxActs || 0) < maxActs) {
+      for (const other of jynxStaffTargets(ctx, piece)) addSpeed(other, speed);
       piece._jynxActs = (piece._jynxActs || 0) + 1;
     }
-    const luckRm = Math.max(0, Math.round(getPName(piece.params, 'luck', 1)));
-    if (luckRm && (ctx.dummy.stacks.lucky || 0) > 0) {
+    const luckRm = Math.trunc(getPName(piece.params, 'luck', getP5(piece.params, 0)));
+    if ((ctx.dummy.stacks.lucky || 0) > 0) {
       spendStacks(ctx.dummy, 'lucky', luckRm, {
         originKey: piece.placementKey,
         originId: piece.itemId,

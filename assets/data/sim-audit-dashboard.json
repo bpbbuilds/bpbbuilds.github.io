@@ -3,7 +3,7 @@
   "note": "Generated audit evidence. A green check is reserved for retained source-verified proof; source ports and partial ownership remain pending.",
   "source": {
     "itemLedger": "assets/data/sim-fidelity-ledger.json",
-    "itemLedgerSha256": "b88c43bf6014ae18a6deaaf33f7f54bb5dcf41fd498e93800bb66364e96a23d6",
+    "itemLedgerSha256": "1c058b30743d62c9e148da64ca6f6438d676e7f889c9716cb942d23ea56ed12f",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
     "systemSurfaceSha256": "79e1178a7ae154e964452b8a7fada954ec8e043c0756f30c20fc35ec6dea6778",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 395,
+    "verified_1to1": 397,
     "confirmed_gap": 8,
-    "evidence_pending": 122,
+    "evidence_pending": 120,
     "no_independent_combat": 15
   },
   "items": [
@@ -11118,8 +11118,8 @@
       "name": "Jynx Staff",
       "category": "Ranged Weapon",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -11145,9 +11145,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-jynx-staff-smoke.mjs",
+        "fixture": "Jynx Staff source early Mana spend, current-hit permanent damage, hasCooldown target filtering, capped speed activations, opponent Lucky removal, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },
@@ -11157,8 +11163,8 @@
       "name": "Jynx torquilla",
       "category": "Pet",
       "class": "Neutral",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is source_ported, but the retained 1:1 proof is incomplete.",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
       "sourceStatus": "source_ported",
       "fidelity": "source_ported",
       "source": {
@@ -11184,9 +11190,15 @@
         "duplicateRegistration": null
       },
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-jynx-torquilla-smoke.mjs",
+        "fixture": "Jynx torquilla source prepare reset, hasCooldown target filtering, capped speed activation count, exact p3 Lucky removal, effect-before-activation order, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       },
       "knownDelta": null
     },

@@ -285,43 +285,53 @@ export const sealTheDealPort = {
 };
 
 /** @type {ScriptHandler} */
+function jynxTorquillaTargets(ctx, piece) {
+  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+  const hasExtractedRules = Boolean(ctx.canAffect?.rulesById);
+  return (ctx.pieces || []).filter((other) => {
+    if (piece.side != null && other.side !== piece.side) return false;
+    if (other.placementKey === piece.placementKey) return false;
+    if (!links.some((link) => link.key === other.placementKey)) return false;
+    if (hasExtractedRules) return true;
+    const item = ctx.itemsById.get(other.itemId) || other;
+    const cooldown = Number(item.cooldown ?? other.cooldown);
+    return cooldown > 0 && cooldown < 500;
+  });
+}
+
 export const jynxTorquillaPort = {
   handlerId: 'jynx_torquilla',
   family: 'unique',
-  onCombatStart(piece) {
+  onPrepare(piece) {
     piece._jynxActs = 0;
   },
   onCooldownEffect(piece, ctx) {
-    const { t, dummy, events, graph, itemsById, canAffect, pieces } = ctx;
-    pushActivate(piece, ctx, 'jynx_torquilla', `Pet: ${piece.name}`);
-    const maxActs = Math.max(1, Math.round(getPName(piece.params, 'max', getP2(piece.params, 5))));
-    const speedBonus = getPName(piece.params, 'speed', getP1(piece.params, 10)) / 100;
+    const { t, dummy, events } = ctx;
+    const maxActs = Math.trunc(getPName(piece.params, 'max', getP2(piece.params, 0)));
+    const speedBonus = getPName(piece.params, 'speed', getP1(piece.params, 0)) / 100;
     const acts = Number(piece._jynxActs) || 0;
     if (acts < maxActs) {
-      const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-      for (const other of pieces || []) {
-        if (other.placementKey === piece.placementKey) continue;
-        if (!links.some((l) => l.key === other.placementKey)) continue;
-        if (!(other.cooldown > 0)) continue;
-        addSpeed(other, speedBonus);
-      }
+      for (const other of jynxTorquillaTargets(ctx, piece)) addSpeed(other, speedBonus);
       piece._jynxActs = acts + 1;
     }
-    const rem = Math.max(1, Math.round(getP3(piece.params, 1)));
+    const rem = Math.trunc(getP3(piece.params, 0));
     if ((Number(dummy.stacks.lucky) || 0) > 0) {
-      removeLucky(dummy, rem, {
+      const removed = removeLucky(dummy, rem, {
         originKey: piece.placementKey,
         originId: piece.itemId,
       });
-      events.push({
-        t: t + 0.004,
-        type: 'buff',
-        target: 'dummy',
-        amount: -rem,
-        label: `${piece.name}: −${rem} Lucky (opponent)`,
-        meta: { category: 'buff', stack: 'lucky', script: true, handler: 'jynx_torquilla' },
-      });
+      if (removed.spent > 0) {
+        events.push({
+          t: t + 0.004,
+          type: 'buff',
+          target: 'dummy',
+          amount: -removed.spent,
+          label: `${piece.name}: −${removed.spent} Lucky (opponent)`,
+          meta: { category: 'buff', stack: 'lucky', script: true, handler: 'jynx_torquilla' },
+        });
+      }
     }
+    pushActivate(piece, ctx, 'jynx_torquilla', `Pet: ${piece.name}`);
     return true;
   },
 };

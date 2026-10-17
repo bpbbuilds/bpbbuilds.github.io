@@ -1692,6 +1692,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  jynx_staff: {
+    focusedRegression: 'scripts/sim-jynx-staff-smoke.mjs',
+    fixture: 'Jynx Staff source early Mana spend, current-hit permanent damage, hasCooldown target filtering, capped speed activations, opponent Lucky removal, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  jynx_torquilla: {
+    focusedRegression: 'scripts/sim-jynx-torquilla-smoke.mjs',
+    fixture: 'Jynx torquilla source prepare reset, hasCooldown target filtering, capped speed activation count, exact p3 Lucky removal, effect-before-activation order, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',
