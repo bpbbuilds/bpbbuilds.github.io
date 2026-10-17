@@ -84,7 +84,19 @@ export function goobertHeal(piece, ctx, handler, heal, opts = {}) {
  * @param {object} ctx
  * @param {() => void} effect
  */
-export function goobertPeerTick(piece, ctx, effect) {
+export function prepareGoobertActivationTargets(piece, ctx) {
+  piece._goobertActs = 0;
+  const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
+  piece._goobertActivationTargets = new Set(
+    links.filter((link) => link.color === 'primary').map((link) => link.key),
+  );
+}
+
+export function goobertPeerTick(piece, activated, ctx, effect) {
+  if (
+    !activated?._forceGoobertActivation &&
+    !piece._goobertActivationTargets?.has(activated?.placementKey)
+  ) return;
   const need = getP1(piece.params, 0);
   piece._goobertActs = (piece._goobertActs || 0) + 1;
   if (piece._goobertActs !== need) return;
@@ -110,15 +122,15 @@ export function empowerLinkedWeapons(piece, ctx, handler, damOverride) {
 export const goobertPort = {
   handlerId: 'goobert',
   family: 'pet_like',
-  onPrepare(piece) {
-    piece._goobertActs = 0;
+  onPrepare(piece, ctx) {
+    prepareGoobertActivationTargets(piece, ctx);
   },
   // Peer-only — no timed CD heal (would double-fire)
   onCooldownEffect() {
     return false;
   },
-  onPeerActivated(listener, _activated, ctx) {
-    goobertPeerTick(listener, ctx, () => {
+  onPeerActivated(listener, activated, ctx) {
+    goobertPeerTick(listener, activated, ctx, () => {
       const heal = modifiedParamValue(
         listener,
         getPName(listener.params, 'heal', getP2(listener.params, 0)),
@@ -133,14 +145,14 @@ export const goobertPort = {
 export const cupcakeGoobertPort = {
   handlerId: 'cupcake_goobert',
   family: 'pet_like',
-  onPrepare(piece) {
-    piece._goobertActs = 0;
+  onPrepare(piece, ctx) {
+    prepareGoobertActivationTargets(piece, ctx);
   },
   onCooldownEffect() {
     return false;
   },
-  onPeerActivated(listener, _activated, ctx) {
-    goobertPeerTick(listener, ctx, () => {
+  onPeerActivated(listener, activated, ctx) {
+    goobertPeerTick(listener, activated, ctx, () => {
       const heal = Math.max(1, Math.round(getPName(listener.params, 'heal', getP2(listener.params, 8))));
       goobertHeal(listener, ctx, 'cupcake_goobert', heal, { activate: false });
       const n = Math.max(1, Math.round(getPName(listener.params, 'buffs', getP3(listener.params, 1))));
@@ -158,14 +170,14 @@ export const cupcakeGoobertPort = {
 export const lightGoobertPort = {
   handlerId: 'light_goobert',
   family: 'pet_like',
-  onPrepare(piece) {
-    piece._goobertActs = 0;
+  onPrepare(piece, ctx) {
+    prepareGoobertActivationTargets(piece, ctx);
   },
   onCooldownEffect() {
     return false;
   },
-  onPeerActivated(listener, _activated, ctx) {
-    goobertPeerTick(listener, ctx, () => {
+  onPeerActivated(listener, activated, ctx) {
+    goobertPeerTick(listener, activated, ctx, () => {
       const heal = modifiedParamValue(
         listener,
         getPName(listener.params, 'heal', getP2(listener.params, 0)),
@@ -192,8 +204,8 @@ export const lightGoobertPort = {
 export const kingGoobertPort = {
   handlerId: 'king_goobert',
   family: 'pet_like',
-  onPrepare(piece) {
-    piece._goobertActs = 0;
+  onPrepare(piece, ctx) {
+    prepareGoobertActivationTargets(piece, ctx);
     piece._socketGemPowerBonus = socketGemPowerBonus(piece.params);
     setPieceInvulnBudget(piece, getPName(piece.params, 'charges', getP6(piece.params, 0)));
     piece._crownState = 'Inactive';
@@ -201,8 +213,8 @@ export const kingGoobertPort = {
   onCooldownEffect() {
     return false;
   },
-  onPeerActivated(listener, _activated, ctx) {
-    goobertPeerTick(listener, ctx, () => {
+  onPeerActivated(listener, activated, ctx) {
+    goobertPeerTick(listener, activated, ctx, () => {
       const prot = getPName(listener.params, 'buffs', getP3(listener.params, 0));
       grantBuffProtect(ctx.player, prot);
       if (prot > 0) {
@@ -326,14 +338,14 @@ function rainbowRangerEffect(piece, ctx) {
 export const rainbowGoobertMagePort = {
   handlerId: 'rainbow_goobert_mage',
   family: 'pet_like',
-  onPrepare(piece) {
-    piece._goobertActs = 0;
+  onPrepare(piece, ctx) {
+    prepareGoobertActivationTargets(piece, ctx);
   },
   onCooldownEffect() {
     return false;
   },
-  onPeerActivated(listener, _activated, ctx) {
-    goobertPeerTick(listener, ctx, () => {
+  onPeerActivated(listener, activated, ctx) {
+    goobertPeerTick(listener, activated, ctx, () => {
       rainbowMageEffect(listener, ctx);
     });
   },
@@ -343,14 +355,14 @@ export const rainbowGoobertMagePort = {
 export const rainbowGoobertRangerPort = {
   handlerId: 'rainbow_goobert_ranger',
   family: 'pet_like',
-  onPrepare(piece) {
-    piece._goobertActs = 0;
+  onPrepare(piece, ctx) {
+    prepareGoobertActivationTargets(piece, ctx);
   },
   onCooldownEffect() {
     return false;
   },
-  onPeerActivated(listener, _activated, ctx) {
-    goobertPeerTick(listener, ctx, () => {
+  onPeerActivated(listener, activated, ctx) {
+    goobertPeerTick(listener, activated, ctx, () => {
       rainbowRangerEffect(listener, ctx);
     });
   },

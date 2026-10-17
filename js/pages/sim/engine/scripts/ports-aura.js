@@ -19,7 +19,11 @@ import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from '
 import { getScriptHandler } from './registry.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 import { giveTempMaxHp } from './ports-ap-start.js';
-import { empowerLinkedWeapons, goobertPeerTick } from './ports-wave-d-goobert.js';
+import {
+  empowerLinkedWeapons,
+  goobertPeerTick,
+  prepareGoobertActivationTargets,
+} from './ports-wave-d-goobert.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
 import { eventSideForPiece } from '../vs-board.js';
 
@@ -139,7 +143,7 @@ export const steelGoobertPort = {
   handlerId: 'steel_goobert',
   family: 'pet_like',
   onPrepare(piece, ctx) {
-    piece._goobertActs = 0;
+    prepareGoobertActivationTargets(piece, ctx);
     const links = affectedTargets(ctx.graph, piece.placementKey, ctx.itemsById, ctx.canAffect);
     piece._steelGoobertWeapons = new Set(
       links.filter((link) => link.color === 'secondary').map((link) => link.key),
@@ -149,8 +153,8 @@ export const steelGoobertPort = {
   onCooldownEffect() {
     return false;
   },
-  onPeerActivated(piece, _activated, ctx) {
-    goobertPeerTick(piece, ctx, () => {
+  onPeerActivated(piece, activated, ctx) {
+    goobertPeerTick(piece, activated, ctx, () => {
       const { t, player, events, pieces, itemsById } = ctx;
       const dam = getPName(piece.params, 'dam', getP2(piece.params, 2));
       for (const other of pieces || []) {
@@ -204,14 +208,14 @@ export const corruptedCrystalPort = {
 export const rainbowGoobertBerserkerPort = {
   handlerId: 'rainbow_goobert_berserker',
   family: 'pet_like',
-  onPrepare(piece) {
-    piece._goobertActs = 0;
+  onPrepare(piece, ctx) {
+    prepareGoobertActivationTargets(piece, ctx);
   },
   onCooldownEffect() {
     return false;
   },
-  onPeerActivated(listener, _activated, ctx) {
-    goobertPeerTick(listener, ctx, () => {
+  onPeerActivated(listener, activated, ctx) {
+    goobertPeerTick(listener, activated, ctx, () => {
       const { player, dummy, events, rng, t, itemsById } = ctx;
       const block = Number(listener.block ?? itemsById.get(listener.itemId)?.block) || 0;
       if (block > 0) gainStacks(player, 'block', block);

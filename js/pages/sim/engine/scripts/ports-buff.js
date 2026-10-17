@@ -19,6 +19,7 @@ import { getP1, getP2, getP3, getPName } from '../params.js';
 import { addSpeed } from '../piece-stats.js';
 import { afterEffectFinished, pushActivate } from './ports-util.js';
 import { recordPieceMod, withStatSource } from '../stat-mods.js';
+import { goobertPeerTick, prepareGoobertActivationTargets } from './ports-wave-d-goobert.js';
 
 /**
  * @param {import('../sim-events.js').SimEvent[] | object[]} events
@@ -365,26 +366,25 @@ export const cheesePort = {
 export const cheeseGoobertPort = {
   handlerId: 'cheese_goobert',
   family: 'pet_like',
-  onCooldownEffect(piece, ctx) {
-    const { t, player, events, rng } = ctx;
-    grantMaxHealth(piece, player, events, t, 'cheese_goobert');
-    const num = Math.max(1, Math.round(getP3(piece.params, 2)));
-    const picked = giveRandomBuffs(player, num, rng, {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
+  onPrepare(piece, ctx) {
+    prepareGoobertActivationTargets(piece, ctx);
+  },
+  onCooldownEffect() {
+    return false;
+  },
+  onPeerActivated(piece, activated, ctx) {
+    goobertPeerTick(piece, activated, ctx, () => {
+      const { t, player, events, rng } = ctx;
+      grantMaxHealth(piece, player, events, t, 'cheese_goobert');
+      const num = Math.max(1, Math.round(getP3(piece.params, 2)));
+      const picked = giveRandomBuffs(player, num, rng, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+      pushBuffGrants(events, piece, player, t, 'cheese_goobert', picked, 0.004);
+      // Goobert's source callback activates after its doCooldownEffect body.
+      pushActivate(piece, ctx, 'cheese_goobert', `Pet: ${piece.name}`);
     });
-    pushBuffGrants(events, piece, player, t, 'cheese_goobert', picked, 0.004);
-    // Goobert's source callback activates after its doCooldownEffect body.
-    events.push({
-      t,
-      type: 'activate',
-      actor: 'player',
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `Pet: ${piece.name}`,
-      meta: { category: 'pet', script: true, handler: 'cheese_goobert' },
-    });
-    return true;
   },
 };
 

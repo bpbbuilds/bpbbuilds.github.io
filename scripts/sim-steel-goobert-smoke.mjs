@@ -25,8 +25,9 @@ assert.match(parentSource, /func onItemActivated\(event\):[\s\S]*activationsToTr
 const port = portSource.match(/export const steelGoobertPort = \{[\s\S]*?\n\};/u)?.[0] || '';
 assert.match(port, /onPrepare\(piece, ctx\)/);
 assert.match(port, /onCooldownEffect\(\)\s*\{\s*return false;/);
-assert.match(port, /onPeerActivated\(piece, _activated, ctx\)/);
-assert.match(port, /goobertPeerTick\(/);
+assert.match(port, /prepareGoobertActivationTargets\(piece, ctx\)/);
+assert.match(port, /onPeerActivated\(piece, activated, ctx\)/);
+assert.match(port, /goobertPeerTick\(piece, activated, ctx/);
 assert.match(port, /addBonusDamage\(/);
 assert.match(port, /gainStacks\(player, 'block'/);
 assert.ok(getScriptHandler('steel_goobert'), 'Steel Goobert handler is registered');
@@ -104,6 +105,17 @@ const handler = getScriptHandler('steel_goobert');
 
 handler.onPrepare(piece, ctx);
 assert.deepEqual([...piece._steelGoobertWeapons], ['weapon'], 'only secondary empowerable weapons are cached');
+assert.deepEqual(
+  [...piece._goobertActivationTargets],
+  ['trigger'],
+  'Goobert.gd subscribes only to primary can-activate targets; Steel secondary targets are damage-only',
+);
+handler.onPeerActivated(piece, weapon, ctx);
+assert.equal(
+  piece._goobertActs,
+  0,
+  'a secondary Steel Goobert target activating must not advance the six-activation counter',
+);
 for (let i = 0; i < 5; i += 1) handler.onPeerActivated(piece, trigger, ctx);
 assert.equal(weapon.bonusDamage, 0, 'Goobert does not proc before the source activation threshold');
 assert.equal(player.block, 0, 'Goobert does not grant Block before the source activation threshold');

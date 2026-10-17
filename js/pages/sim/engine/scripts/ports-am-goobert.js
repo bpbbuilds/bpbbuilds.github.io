@@ -12,6 +12,7 @@ import {
   goobertHeal,
   goobertPeerTick,
   goobertPort,
+  prepareGoobertActivationTargets,
 } from './ports-wave-d-goobert.js';
 import { pushActivate } from './ports-util.js';
 import { eventSideForPiece } from '../vs-board.js';
@@ -31,14 +32,14 @@ function variantGoobert(handlerId, effect) {
   return {
     handlerId,
     family: 'pet_like',
-    onPrepare(piece) {
-      piece._goobertActs = 0;
+    onPrepare(piece, ctx) {
+      prepareGoobertActivationTargets(piece, ctx);
     },
     onCooldownEffect() {
       return false;
     },
-    onPeerActivated(listener, _activated, ctx) {
-      goobertPeerTick(listener, ctx, () => effect(listener, ctx));
+    onPeerActivated(listener, activated, ctx) {
+      goobertPeerTick(listener, activated, ctx, () => effect(listener, ctx));
     },
   };
 }

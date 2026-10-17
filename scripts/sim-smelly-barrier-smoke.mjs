@@ -82,7 +82,9 @@ const dummy = createActor('dummy');
 const events = [];
 const peerNotificationItems = [];
 const runtime = getScriptHandler('smelly_barrier');
+const goobertRuntime = getScriptHandler('goobert');
 assert.equal(runtime?.handlerId, 'smelly_barrier', 'Smelly Barrier runtime handler');
+assert.equal(goobertRuntime?.handlerId, 'goobert', 'Goobert runtime handler');
 const ctx = {
   player,
   dummy,
@@ -97,6 +99,7 @@ const ctx = {
   },
 };
 runtime.onPrepare(smelly, ctx);
+goobertRuntime.onPrepare(goobert, ctx);
 assert.equal(garlic.blockGrant, 5, 'Smelly Barrier adds source Garlic block bonus');
 
 grantStacks(player, 'block', 20, { originKey: 'blocker', originId: 'wooden_buckler' });

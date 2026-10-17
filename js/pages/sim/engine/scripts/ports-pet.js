@@ -15,7 +15,7 @@ import { addSpeed } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
 import { itemHasType, pushActivate, pushBuffGrants } from './ports-util.js';
 import { eventSideForPiece } from '../vs-board.js';
-import { goobertPeerTick } from './ports-wave-d-goobert.js';
+import { goobertPeerTick, prepareGoobertActivationTargets } from './ports-wave-d-goobert.js';
 import { stealLife } from './handlers.js';
 
 /**
@@ -111,6 +111,9 @@ export const ratChefPort = {
 export const bloodGoobertPort = {
   handlerId: 'blood_goobert',
   family: 'pet_like',
+  onPrepare(piece, ctx) {
+    prepareGoobertActivationTargets(piece, ctx);
+  },
   onCombatStart(piece, ctx) {
     const vamp = Math.max(
       1,
@@ -122,15 +125,19 @@ export const bloodGoobertPort = {
     });
     pushActivate(piece, ctx, 'blood_goobert', `Pet: ${piece.name}`);
   },
-  onCooldownEffect(piece, ctx) {
-    const { player } = ctx;
-    pushActivate(piece, ctx, 'blood_goobert', `Pet: ${piece.name}`);
-    const dam =
-      Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 4)))) +
-      (Number(player.stacks.vampirism) || 0);
-    const ls = getPName(piece.params, 'lifesteal', 50) / 100;
-    stealLife(piece, ctx, dam, ls);
-    return true;
+  onCooldownEffect() {
+    return false;
+  },
+  onPeerActivated(piece, activated, ctx) {
+    goobertPeerTick(piece, activated, ctx, () => {
+      const { player } = ctx;
+      const dam =
+        Math.max(1, Math.round(getPName(piece.params, 'dam', getP2(piece.params, 4)))) +
+        (Number(player.stacks.vampirism) || 0);
+      const ls = getPName(piece.params, 'lifesteal', 50) / 100;
+      stealLife(piece, ctx, dam, ls);
+      pushActivate(piece, ctx, 'blood_goobert', `Pet: ${piece.name}`);
+    });
   },
 };
 
@@ -138,16 +145,16 @@ export const bloodGoobertPort = {
 export const carrotGoobertPort = {
   handlerId: 'carrot_goobert',
   family: 'pet_like',
-  onPrepare(piece) {
-    piece._goobertActs = 0;
+  onPrepare(piece, ctx) {
+    prepareGoobertActivationTargets(piece, ctx);
     piece._carrotActive = false;
   },
   // Goobert.gd is peer-activation driven; it must not run as a timed CD.
   onCooldownEffect() {
     return false;
   },
-  onPeerActivated(piece, _activated, ctx) {
-    goobertPeerTick(piece, ctx, () => {
+  onPeerActivated(piece, activated, ctx) {
+    goobertPeerTick(piece, activated, ctx, () => {
       const { t, player, events, rng } = ctx;
       piece._carrotActive = true;
       const originData = {

@@ -363,7 +363,7 @@ export const slimeTimePort = {
       const h = getScriptHandler(other.itemId);
       // Prefer peer tick (Goobert activation bus); else full activatePiece
       if (h?.onPeerActivated) {
-        h.onPeerActivated(other, piece, ctx);
+        h.onPeerActivated(other, { _forceGoobertActivation: true }, ctx);
         n += 1;
       } else if (typeof ctx.activatePiece === 'function') {
         ctx.activatePiece(other, ctx);
