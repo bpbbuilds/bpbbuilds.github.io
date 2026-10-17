@@ -12923,9 +12923,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-more-stats-smoke.mjs",
+        "fixture": "More Stats source weapon-only canBeEmpowered damage factor, rounded temporary max-health gain, combat-start activation, and explicit zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -12960,9 +12966,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-mr-struggles-smoke.mjs",
+        "fixture": "Mr Struggles source low-health linked cooldown haste, ten-per-timestamp debuff echo with source duration, fatigue-counter damage with Block, and explicit zero-safe fatigue.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

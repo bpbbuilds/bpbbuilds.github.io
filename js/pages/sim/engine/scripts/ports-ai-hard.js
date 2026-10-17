@@ -4,6 +4,7 @@
 
 import { grantInvuln, healActor, isInvulnerable, tryUseStamina } from '../actor.js';
 import { applyHealEfficiency } from '../actor-stats.js';
+import { takeDamage } from '../damage.js';
 import {
   grantStacks,
   grantTemporaryStacks,
@@ -22,7 +23,12 @@ import { grantTimedSpeed } from '../timed-speed.js';
 import { armPieceCooldown, deactivateCooldown } from '../cooldown.js';
 import { PRIORITY } from '../combat-start-priority.js';
 import { canBeEmpoweredPiece } from './food-helpers.js';
-import { afterEffectFinished, itemHasType, pushActivate } from './ports-util.js';
+import {
+  afterEffectFinished,
+  itemHasType,
+  pieceHasCombatCooldown,
+  pushActivate,
+} from './ports-util.js';
 import { eventSideForPiece } from '../vs-board.js';
 
 /**
@@ -527,7 +533,7 @@ export const mrStrugglesPort = {
     const speedBonus =
       getPName(piece.params, 'speedbonus', getP3(piece.params, 100)) / 100;
     const durSpeed = Math.max(
-      0.5,
+      0,
       getPName(piece.params, 'dur_speed', getPName(piece.params, 'p4', 8)),
     );
     ctx.bus?.on?.('character_damaged', (payload) => {
@@ -544,7 +550,7 @@ export const mrStrugglesPort = {
       );
       for (const link of links) {
         const other = (ctx.pieces || []).find((p) => p.placementKey === link.key);
-        if (!other || !(Number(other.cooldown) > 0)) continue;
+        if (!other || !pieceHasCombatCooldown(other)) continue;
         grantTimedSpeed(other, speedBonus, ctx.t + durSpeed, 'mr_struggles');
       }
       ctx.events.push({
@@ -560,15 +566,34 @@ export const mrStrugglesPort = {
     onBuffChanged(ctx.player, (ch) => {
       if (!DEBUFF_KEYS.includes(/** @type {any} */ (ch.stack))) return;
       if (ch.amount <= 0) return;
+      const triggerT = Number(ctx.t) || 0;
+      if (piece._struggleDebuffT !== triggerT) {
+        piece._struggleDebuffT = triggerT;
+        piece._struggleDebuffN = 0;
+      }
       piece._struggleDebuffN = (Number(piece._struggleDebuffN) || 0) + 1;
-      if (piece._struggleDebuffN % 10 !== 0) return;
-      const chance =
-        Number(ctx.itemsById.get(piece.itemId)?.chance) || Number(piece.chance) || 25;
+      if (piece._struggleDebuffN > 10) return;
+      const catalogChance = Number(ctx.itemsById.get(piece.itemId)?.chance);
+      const chanceValue = Number(piece.chance);
+      const chance = Number.isFinite(catalogChance)
+        ? catalogChance
+        : Number.isFinite(chanceValue)
+        ? chanceValue
+        : 25;
       if (ctx.rng() * 100 >= chance) return;
-      grantTemporaryStacks(ctx.dummy, ch.stack, ch.amount, 3, ctx.t, {
+      const duration = Number.isFinite(Number(ch.duration)) ? Number(ch.duration) : -1;
+      const grantOpts = {
+        rng: ctx.rng,
+        opponent: ctx.player,
+        piece,
         originKey: piece.placementKey,
         originId: piece.itemId,
-      });
+      };
+      if (duration > 0) {
+        grantTemporaryStacks(ctx.dummy, ch.stack, ch.amount, duration, ctx.t, grantOpts);
+      } else {
+        grantStacks(ctx.dummy, ch.stack, ch.amount, grantOpts);
+      }
       ctx.events.push({
         t: ctx.t,
         type: 'debuff',
@@ -580,26 +605,57 @@ export const mrStrugglesPort = {
           stack: ch.stack,
           script: true,
           handler: 'mr_struggles',
+          ...(duration > 0 ? { temp: true, duration } : {}),
         },
       });
     });
   },
   onCooldownEffect(piece, ctx) {
-    const { t, dummy, events } = ctx;
-    pushActivate(piece, ctx, 'mr_struggles', `Pet: ${piece.name}`);
-    const dam = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'fatigue', getP1(piece.params, 1))),
+    const { t, dummy, events, bus } = ctx;
+    const fatigueIncrease = Math.trunc(
+      getPName(piece.params, 'fatigue', getP1(piece.params, 1)),
     );
-    dummy.hp = Math.max(0, dummy.hp - dam);
+    dummy.bonusFatigueDamage =
+      (Number(dummy.bonusFatigueDamage) || 0) + fatigueIncrease;
+    const fatigueBase = Math.max(0, Math.round(Number(ctx.fatigue?.counter) || 0));
+    const dam = Math.max(0, fatigueBase + (Number(dummy.bonusFatigueDamage) || 0));
+    const result = takeDamage(dummy, ctx.player, {
+      amount: dam,
+      canMiss: false,
+      canCrit: false,
+      canBlock: true,
+      isAttack: false,
+      isFatigue: true,
+      nowT: t,
+      events,
+      bus,
+      rng: ctx.rng,
+    });
+    bus?.emit?.('character_damaged', {
+      actor: dummy,
+      attacker: ctx.player,
+      t,
+      hit: result.hit,
+      healthDamage: result.healthDamage,
+      blocked: result.blocked,
+      damage: result,
+    });
     events.push({
       t: t + 0.004,
       type: 'damage',
       target: 'dummy',
-      amount: dam,
+      amount: result.healthDamage,
       label: `${piece.name}: ${dam} fatigue`,
-      meta: { category: 'damage', script: true, handler: 'mr_struggles' },
+      meta: {
+        category: 'damage',
+        script: true,
+        handler: 'mr_struggles',
+        fatigue: true,
+        raw: result.raw,
+        blocked: result.blocked,
+      },
     });
+    pushActivate(piece, ctx, 'mr_struggles', `Pet: ${piece.name}`);
     return true;
   },
 };

@@ -6710,3 +6710,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 296 - in progress
 
 - Codex owns the next retained More Stats and Mr Struggles fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-more-stats-smoke.mjs`, `scripts/sim-mr-struggles-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 296 - complete
+
+- Codex repaired More Stats to mirror source `Item.canBeEmpowered()` weapon-only filtering, exact damage-factor accumulation, rounded temporary max-health gain, combat-start activation, and explicit zero parameters. Mr Struggles now mirrors source low-health linked cooldown haste, source-duration debuff echo with the ten-per-timestamp trigger cap, fatigue-counter accumulation through the damage pipeline with Block, source activation ordering, and explicit zero fatigue.
+- Added `scripts/sim-more-stats-smoke.mjs` and `scripts/sim-mr-struggles-smoke.mjs`, retained temporary-debuff duration on the buff-change bus, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 451 / 519 verified item rows. Focused More Stats/Mr Struggles tests, prior Moon/Molten regressions, changed-module syntax, and generated artifact checks pass. The generated item summary reports 451 verified, 46 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator item parity continuation 297 - in progress
+
+- Codex owns the next retained Mrs Struggles and Mushroom Farm fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mrs-struggles-smoke.mjs`, `scripts/sim-mushroom-farm-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

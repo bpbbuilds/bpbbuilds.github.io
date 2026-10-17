@@ -45,6 +45,18 @@ function consumeStart(piece, ctx, handler) {
   piece.charges = 0;
 }
 
+/** MoreStats.gd -> Item.canBeEmpowered(): weapon with a real damage range. */
+function canMoreStatsEmpower(piece, item) {
+  if (!item || piece?.empowerable === false) return false;
+  const weapon = itemHasType(item, 'weapon') || piece?.kind === 'weapon';
+  const damage =
+    Number(piece?.damageMin) > 0 ||
+    Number(piece?.damageMax) > 0 ||
+    Number(item?.damageMin) > 0 ||
+    Number(item?.damageMax) > 0;
+  return weapon && damage;
+}
+
 export function giveTempMaxHp(piece, ctx, handler, amount) {
   // Character.applyTemporaryMaxHealthGain applies the owner's accumulated
   // MaxHealthGain factor before changing temporary max health.
@@ -310,7 +322,10 @@ const moreStatsPort = {
   onCombatStart(piece, ctx) {
     const factor = getPName(piece.params, 'dam', getP2(piece.params, 5)) / 100;
     for (const o of ctx.pieces || []) {
-      if (o.alive && canBeEmpoweredPiece(o) && factor) addBonusDamageFactor(o, factor);
+      const item = ctx.itemsById?.get(o.itemId);
+      if (o.alive && canMoreStatsEmpower(o, item) && factor) {
+        addBonusDamageFactor(o, factor);
+      }
     }
     const pct = getPName(piece.params, 'maxhealth', getP1(piece.params, 12)) / 100;
     giveTempMaxHp(piece, ctx, 'more_stats', pct * ctx.player.maxHp);

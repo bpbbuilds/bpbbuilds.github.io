@@ -32,6 +32,7 @@ export const DEBUFF_KEYS = ['poison', 'blind', 'cold'];
  *   originId?: string | null,
  *   amount: number,
  *   stack: string,
+ *   duration?: number,
  *   used?: boolean,
  * }} BuffChange
  */
@@ -292,6 +293,7 @@ export function grantTemporaryStacks(actor, stack, amount, durationSec, nowT, op
     emitBuffChanged(actor, {
       amount: g.gained,
       stack,
+      duration: durationSec,
       originKey: opts.originKey ?? null,
       originId: opts.originId ?? null,
     });

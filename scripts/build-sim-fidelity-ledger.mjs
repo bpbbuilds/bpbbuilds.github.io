@@ -1181,6 +1181,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  more_stats: {
+    focusedRegression: 'scripts/sim-more-stats-smoke.mjs',
+    fixture: 'More Stats source weapon-only canBeEmpowered damage factor, rounded temporary max-health gain, combat-start activation, and explicit zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  mr_struggles: {
+    focusedRegression: 'scripts/sim-mr-struggles-smoke.mjs',
+    fixture: 'Mr Struggles source low-health linked cooldown haste, ten-per-timestamp debuff echo with source duration, fatigue-counter damage with Block, and explicit zero-safe fatigue.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   strong_mana_potion: {
     focusedRegression: 'scripts/sim-mana-potion-smoke.mjs',
     fixture: 'Strong Mana Potion inherited ManaPotion.gd listeners, placement-modified max-health gain, exact Mana grant, current-health increase, zero-safe values, and non-consuming linked Potion trigger.',
