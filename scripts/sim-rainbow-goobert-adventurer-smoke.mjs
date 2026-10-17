@@ -27,7 +27,7 @@ assert.match(adventurerPort, /variantGoobert\('rainbow_goobert_adventurer'/);
 assert.match(adventurerPort, /getP4\(piece\.params, 0\)/);
 assert.match(adventurerPort, /getP5\(piece\.params, 0\)/);
 assert.match(adventurerPort, /getP6\(piece\.params, 0\)/);
-assert.match(port, /goobertHeal\(piece, ctx, handler, healAmt\(piece\), \{ activate: false \}\)/);
+assert.match(port, /goobertHeal\([\s\S]*modifiedParamValue\(piece, healAmt\(piece\), 'heal'\)/);
 assert.match(port, /pushActivate\(piece, ctx, handler, `Pet: \$\{piece\.name\}`\)/);
 
 function item(id, overrides = {}) {

@@ -129,18 +129,30 @@ export const potionBeltPort = {
 export const rangerBagPort = {
   handlerId: 'ranger_bag',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const crit = Number(ctx.itemsById.get(piece.itemId)?.chance) || Number(piece.chance) || 5;
+  onPrepare(piece, ctx) {
+    const catalog = ctx.itemsById.get(piece.itemId);
+    const crit =
+      catalog?.chance != null && Number.isFinite(Number(catalog.chance))
+        ? Number(catalog.chance)
+        : piece.chance != null && Number.isFinite(Number(piece.chance))
+          ? Number(piece.chance)
+          : 0;
     const perLuck =
-      Number(ctx.itemsById.get(piece.itemId)?.chance2) || Number(piece.chance2) || 1;
-    for (const o of insides(ctx, piece)) {
-      if ((o.damageMax || 0) > 0 || o.kind === 'weapon') {
-        o.critChance = (Number(o.critChance) || 0) + crit;
-      }
+      catalog?.chance2 != null && Number.isFinite(Number(catalog.chance2))
+        ? Number(catalog.chance2)
+        : piece.chance2 != null && Number.isFinite(Number(piece.chance2))
+          ? Number(piece.chance2)
+          : 0;
+    piece._rangerInsideKeys = getItemsInside(ctx.graph, piece.placementKey);
+    const cachedInsides = () =>
+      (ctx.pieces || []).filter((other) => piece._rangerInsideKeys.includes(other.placementKey));
+    for (const o of cachedInsides()) {
+      o.critChance = (Number(o.critChance) || 0) + crit;
     }
+    if (!piece._rangerInsideKeys.length) return;
     onBuffChanged(ctx.player, (ch) => {
       if (ch.stack !== 'lucky' || !ch.amount) return;
-      for (const o of insides(ctx, piece)) {
+      for (const o of cachedInsides()) {
         o.critChance = (Number(o.critChance) || 0) + ch.amount * perLuck;
       }
     });

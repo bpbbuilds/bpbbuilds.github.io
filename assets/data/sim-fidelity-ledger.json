@@ -15653,9 +15653,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-rainbow-goobert-pyromancer-smoke.mjs",
+        "fixture": "Rainbow Goobert Pyromancer source peer threshold, exact Block/Heal/Vampirism/Heat/Blind/weapon-empowerment effects, per-item modified healing, no-poison behavior, and explicit zero parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -15849,9 +15855,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-ranger-bag-smoke.mjs",
+        "fixture": "Ranger Bag source prepare-time inside-item crit mutation, cached inside-item Lucky listener, exact chance/chance2 values, and explicit zero parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

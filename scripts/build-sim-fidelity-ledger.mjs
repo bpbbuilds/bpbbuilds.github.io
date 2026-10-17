@@ -2610,6 +2610,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  rainbow_goobert_pyromancer: {
+    focusedRegression: 'scripts/sim-rainbow-goobert-pyromancer-smoke.mjs',
+    fixture: 'Rainbow Goobert Pyromancer source peer threshold, exact Block/Heal/Vampirism/Heat/Blind/weapon-empowerment effects, per-item modified healing, no-poison behavior, and explicit zero parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   rainbow_goobert_berserker: {
     focusedRegression: 'scripts/sim-rainbow-goobert-berserker-smoke.mjs',
     fixture: 'Rainbow Goobert Berserker source peer threshold, catalog Block/max-health values, exact P3 vampirism, P4 random buffs, named Blind, P5 weapon empowerment, zero-safe parameters, and post-effect activation order.',
@@ -2648,6 +2655,13 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
   rainbow_potion: {
     focusedRegression: 'scripts/sim-rainbow-potion-smoke.mjs',
     fixture: 'Rainbow Potion source colored distinct Book/Staff counts, exact Mana/temporary-stamina/random-buff grants, descriptor-distinct global potion triggering, strict buff-use threshold, and trigger-chain consumption ordering.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  ranger_bag: {
+    focusedRegression: 'scripts/sim-ranger-bag-smoke.mjs',
+    fixture: 'Ranger Bag source prepare-time inside-item crit mutation, cached inside-item Lucky listener, exact chance/chance2 values, and explicit zero parameters.',
     projections: ['log', 'meter', 'hud'],
     liveRequired: false,
     basis: 'source_and_automated_regression',

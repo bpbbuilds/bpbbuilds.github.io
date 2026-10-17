@@ -6757,3 +6757,12 @@ None.
 ### 2026-10-17 Simulator item parity continuation 303 - in progress
 
 - Codex owns the next retained Rainbow Goobert Pyromancer and Ranger Bag fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-rainbow-goobert-pyromancer-smoke.mjs`, `scripts/sim-ranger-bag-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-17 Simulator item parity continuation 303 - complete
+
+- Codex repaired Rainbow Goobert Pyromancer to mirror the source peer threshold, exact Block/Heal/Vampirism/Heat/Blind/weapon-empowerment effects, per-item modified healing, no-Poison behavior, and explicit zero parameters. Ranger Bag now mirrors source prepare-time cached inside-item crit mutation, Lucky listener timing and signed updates, exact chance/chance2 values, and explicit zero parameters.
+- Added `scripts/sim-rainbow-goobert-pyromancer-smoke.mjs` and `scripts/sim-ranger-bag-smoke.mjs`, updated the shared Goobert healing path to honor per-item heal multipliers, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 465 / 519 verified item rows. Focused pair regressions, all existing Goobert regressions, verified coverage, coverage honesty, changed-module syntax, and generated artifact freshness checks pass. No legal, authentication, database, storage, or security behavior changed. The generated summary reports 465 verified, 32 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows.
+
+### 2026-10-17 Simulator item parity continuation 304 - in progress
+
+- Codex owns the next retained Regular Emerald and Regular Ruby fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-regular-emerald-smoke.mjs`, `scripts/sim-regular-ruby-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

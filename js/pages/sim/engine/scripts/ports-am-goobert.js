@@ -5,6 +5,7 @@
 import { grantStacks } from '../buff-economy.js';
 import { giveStamina, healActor } from '../actor.js';
 import { getP, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
+import { modifiedParamValue } from '../placement-instance.js';
 import { getStackAmount, gainStacks } from '../stacks.js';
 import {
   empowerLinkedWeapons,
@@ -48,8 +49,19 @@ function healAmt(piece) {
 
 function rainbowCore(piece, ctx, handler, extra) {
   const block = Number(piece.block ?? ctx.itemsById.get(piece.itemId)?.block) || 0;
-  if (block > 0) gainStacks(ctx.player, 'block', block);
-  goobertHeal(piece, ctx, handler, healAmt(piece), { activate: false });
+  if (block > 0) {
+    gainStacks(ctx.player, 'block', block, {
+      originKey: piece.placementKey,
+      originId: piece.itemId,
+    });
+  }
+  goobertHeal(
+    piece,
+    ctx,
+    handler,
+    modifiedParamValue(piece, healAmt(piece), 'heal'),
+    { activate: false },
+  );
   const vamp = getPName(piece.params, 'vampirism', getP3(piece.params, 0));
   if (vamp > 0) {
     grantStacks(ctx.player, 'vampirism', vamp, {
@@ -171,14 +183,20 @@ const rainbowGoobertPort = variantGoobert('rainbow_goobert', (piece, ctx) => {
 /** RainbowGoobertPyromancer.gd */
 const rainbowGoobertPyromancerPort = variantGoobert('rainbow_goobert_pyromancer', (piece, ctx) => {
   rainbowCore(piece, ctx, 'rainbow_goobert_pyromancer', () => {
-    grantStacks(ctx.player, 'heat', Math.max(1, Math.round(getP4(piece.params, 1))), {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
-    grantStacks(ctx.dummy, 'blind', Math.max(1, Math.round(getPName(piece.params, 'blind', 1))), {
-      originKey: piece.placementKey,
-      originId: piece.itemId,
-    });
+    const heat = getP4(piece.params, 0);
+    const blind = getPName(piece.params, 'blind', getP6(piece.params, 0));
+    if (heat > 0) {
+      grantStacks(ctx.player, 'heat', heat, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+    }
+    if (blind > 0) {
+      grantStacks(ctx.dummy, 'blind', blind, {
+        originKey: piece.placementKey,
+        originId: piece.itemId,
+      });
+    }
     empowerLinkedWeapons(piece, ctx, 'rainbow_goobert_pyromancer', getP5(piece.params, 2));
   });
 });

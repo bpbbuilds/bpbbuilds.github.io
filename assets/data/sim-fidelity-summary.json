@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "0ab467614d59ce50579448f1747b5a554eb79b97812dffb811a02edf5321e542",
+    "dashboardSha256": "618ae5e24a4000f32763fbb087c98da2ae9f5b1b323a8ff7cd9b9974062486ad",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 463,
+    "verified_1to1": 465,
     "confirmed_gap": 7,
-    "evidence_pending": 34,
+    "evidence_pending": 32,
     "no_independent_combat": 15
   },
   "byId": {
@@ -371,12 +371,12 @@
     "rainbow_goobert_berserker": "verified_1to1",
     "rainbow_goobert_engineer": "verified_1to1",
     "rainbow_goobert_mage": "verified_1to1",
-    "rainbow_goobert_pyromancer": "evidence_pending",
+    "rainbow_goobert_pyromancer": "verified_1to1",
     "rainbow_goobert_ranger": "verified_1to1",
     "rainbow_orb": "verified_1to1",
     "rainbow_potion": "verified_1to1",
     "random_loadout_bag": "no_independent_combat",
-    "ranger_bag": "evidence_pending",
+    "ranger_bag": "verified_1to1",
     "rat": "verified_1to1",
     "rat_chef": "verified_1to1",
     "regular_amethyst": "verified_1to1",
