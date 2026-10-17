@@ -1846,6 +1846,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  little_mimic: {
+    focusedRegression: 'scripts/sim-little-mimic-smoke.mjs',
+    fixture: 'Little Mimic source Item.getPrice speed total during prepare, exact integer buff count, giveMostBuffs-before-activate ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  long_spear: {
+    focusedRegression: 'scripts/sim-long-spear-smoke.mjs',
+    fixture: 'Long Spear source empty affected-cell block removal during prepare, signed early-hit damage-resistance reduction, miss guard, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

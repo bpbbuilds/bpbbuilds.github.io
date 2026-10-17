@@ -6560,3 +6560,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 280 - in progress
 
 - Codex owns the next retained Little Mimic and Long Spear fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-little-mimic-smoke.mjs`, `scripts/sim-long-spear-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 280 - complete
+
+- Codex repaired Little Mimic to mirror source `onPrepare` price-based speed, signed total handling, exact integer buff count, `giveMostBuffs` before `activate`, and zero-safe parameters. Long Spear now mirrors source empty-cell preparation, early-hit block removal, signed damage-resistance reduction, miss behavior, and zero-safe parameters.
+- Added `scripts/sim-little-mimic-smoke.mjs` and `scripts/sim-long-spear-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 419 / 519 verified item rows. Focused pair tests, AP milestone, Wave C/D, parity systems, verified-coverage, coverage-honesty, changed-module syntax, ledger/dashboard freshness checks, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 419 verified, 78 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Lucky Bow and Lucky Cat; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 281 - in progress
+
+- Codex owns the next retained Lucky Bow and Lucky Cat fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-lucky-bow-smoke.mjs`, `scripts/sim-lucky-cat-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

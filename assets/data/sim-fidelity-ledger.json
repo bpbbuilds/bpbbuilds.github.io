@@ -11478,9 +11478,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-little-mimic-smoke.mjs",
+        "fixture": "Little Mimic source Item.getPrice speed total during prepare, exact integer buff count, giveMostBuffs-before-activate ordering, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -11515,9 +11521,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-long-spear-smoke.mjs",
+        "fixture": "Long Spear source empty affected-cell block removal during prepare, signed early-hit damage-resistance reduction, miss guard, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

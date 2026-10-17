@@ -52,24 +52,24 @@ export const spearPort = {
 export const longSpearPort = {
   handlerId: 'long_spear',
   family: 'weapon_base',
-  onCombatStart(piece, ctx) {
-    const per = Math.max(1, Math.round(getPName(piece.params, 'block', getP1(piece.params, 2))));
+  onPrepare(piece, ctx) {
+    const per = getPName(piece.params, 'block', getP1(piece.params, 0));
     piece._blockStrip = per * countEmptyAffectCells(ctx, piece);
-    piece._damResist = Math.abs(getPName(piece.params, 'dam', getP2(piece.params, 5)) / 100);
+    piece._damResist = getPName(piece.params, 'dam', getP2(piece.params, 0));
   },
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'long_spear');
   },
-  onDealtDamage(piece, ctx, hit) {
-    if (!hit?.hit) return;
+  onPreDealDamageEarly(piece, ctx, hit) {
+    if (hit && !hit.hit) return;
     const strip = piece._blockStrip || 0;
     if (strip) removeBlock(ctx.dummy, strip, ctx, piece);
     const resist = piece._damResist || 0;
     if (resist) {
-      ctx.dummy.damageResistancePct = Math.max(
-        0,
-        (Number(ctx.dummy.damageResistancePct) || 0) - resist * 100,
-      );
+      // Character.changeDamageResistance(-damResistance) is signed; the
+      // damage resolver applies the game's -1000% lower bound later.
+      ctx.dummy.damageResistancePct =
+        (Number(ctx.dummy.damageResistancePct) || 0) - resist;
     }
     ctx.events.push({
       t: ctx.t + 0.008,

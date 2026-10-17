@@ -261,7 +261,7 @@ export const wandPort = {
 export const littleMimicPort = {
   handlerId: 'little_mimic',
   family: 'pet_like',
-  onCombatStart(piece, ctx) {
+  onPrepare(piece, ctx) {
     const { t, events, graph, itemsById, canAffect, pieces } = ctx;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
     let gold = 0;
@@ -269,11 +269,14 @@ export const littleMimicPort = {
       const other = (pieces || []).find((p) => p.placementKey === link.key);
       if (!other) continue;
       const item = itemsById.get(other.itemId);
-      gold += Math.max(0, Number(item?.cost) || 0);
+      // LittleMimic.gd sums Item.getPrice() for every affected item. The
+      // catalog cost is the simulator's ItemDescriptor.getPrice equivalent;
+      // do not clamp it here because the source applies the signed total.
+      gold += Number(item?.cost) || 0;
     }
     const speedPer = getPName(piece.params, 'speed', getP2(piece.params, 1)) / 100;
     const bonus = gold * speedPer;
-    if (bonus > 0) {
+    if (bonus !== 0) {
       addSpeed(piece, bonus);
       events.push({
         t: t + 0.01,
@@ -287,24 +290,14 @@ export const littleMimicPort = {
   },
   onCooldownEffect(piece, ctx) {
     const { t, player, events, rng } = ctx;
-    const num = Math.max(
-      1,
-      Math.round(getPName(piece.params, 'buffs', getP1(piece.params, 3))),
-    );
-    events.push({
-      t,
-      type: 'activate',
-      actor: 'player',
-      itemId: piece.itemId,
-      placementKey: piece.placementKey,
-      label: `Pet: ${piece.name}`,
-      meta: { category: 'pet', script: true, handler: 'little_mimic' },
-    });
+    const num = Math.trunc(getPName(piece.params, 'buffs', getP1(piece.params, 3)));
     const picked = giveMostBuffs(player, num, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
     });
     pushBuffGrants(events, piece, player, t, 'little_mimic', picked);
+    // LittleMimic.gd calls giveMostBuffs before activate().
+    pushActivate(piece, ctx, 'little_mimic', `Pet: ${piece.name}`);
     return true;
   },
 };
