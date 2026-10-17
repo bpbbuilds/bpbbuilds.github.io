@@ -10858,9 +10858,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-king-of-the-bling-smoke.mjs",
+        "fixture": "King of the Bling source prepare Ring/Superior Ring filter, same-side all-buff/all-debuff amplification, exact chance, and zero-safe values.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -10895,9 +10901,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-knife-to-meet-you-smoke.mjs",
+        "fixture": "Knife to Meet You source prepare Dagger speed, linked Dagger count, same-side global empower filter, exact p2 damage factor, consume ordering, and zero-safe parameters.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

@@ -6467,4 +6467,15 @@ None.
 
 ### 2026-10-16 Simulator item parity continuation 271 - in progress
 
-- Codex owns the next retained King of the Bling fidelity review/repair, its focused source-backed regression, simulator fidelity evidence entry and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port module, `scripts/sim-king-of-the-bling-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+- Codex owns the next retained King of the Bling and Knife to Meet You fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to `js/pages/sim/engine/scripts/ports-ao-skills.js`, `js/pages/sim/engine/scripts/ports-aura.js`, `scripts/sim-king-of-the-bling-smoke.mjs`, `scripts/sim-knife-to-meet-you-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 271 - complete
+
+- Codex repaired King of the Bling to mirror source prepare timing, Magic Ring/Superior Ring filtering, same-side targeting, and exact all-buff/all-debuff amplification from the item chance. Knife to Meet You now mirrors source prepare-time Dagger subclass speed, linked-Dagger speed scaling, same-side `canBeEmpowered` damage-factor application, exact p2 damage factor, and `onAfterEffectFinished()` consumption ordering; explicit zero parameters remain safe.
+- Added `scripts/sim-king-of-the-bling-smoke.mjs` and `scripts/sim-knife-to-meet-you-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 401 / 519 verified item rows. Both focused tests, parity systems, King Crown/Goobert regressions, changed-module syntax, coverage, dashboard generation, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 401 verified, 96 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The repository-wide continuous audit remains limited by the same unrelated patch-drift baseline and existing Ace/Armored Puppy handler assertion; neither touches this batch.
+- The next retained queue begins with Holo Fire Lizard and Holy Armor; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 272 - in progress
+
+- Codex owns the next retained Holo Fire Lizard and Holy Armor fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-holo-fire-lizard-smoke.mjs`, `scripts/sim-holy-armor-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.

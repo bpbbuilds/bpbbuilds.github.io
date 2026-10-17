@@ -302,11 +302,14 @@ const investmentOpportunityPort = {
 const kingOfTheBlingPort = {
   handlerId: 'king_of_the_bling',
   family: 'unique',
-  onCombatStart(piece, ctx) {
-    const ch = chanceOf(piece, ctx);
+  onPrepare(piece, ctx) {
+    const rawChance = ctx.itemsById.get(piece.itemId)?.chance ?? piece.chance;
+    const ch = Number.isFinite(Number(rawChance)) ? Number(rawChance) : 0;
     for (const o of linked(ctx, piece)) {
+      if (piece.side != null && o.side !== piece.side) continue;
       if (o.itemId !== 'magic_ring' && o.itemId !== 'superior_ring') continue;
       o.buffAmpChance = (Number(o.buffAmpChance) || 0) + ch;
+      o.debuffAmpChance = (Number(o.debuffAmpChance) || 0) + ch;
     }
   },
 };

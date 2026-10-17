@@ -1720,6 +1720,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  king_of_the_bling: {
+    focusedRegression: 'scripts/sim-king-of-the-bling-smoke.mjs',
+    fixture: 'King of the Bling source prepare Ring/Superior Ring filter, same-side all-buff/all-debuff amplification, exact chance, and zero-safe values.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  knife_to_meet_you: {
+    focusedRegression: 'scripts/sim-knife-to-meet-you-smoke.mjs',
+    fixture: 'Knife to Meet You source prepare Dagger speed, linked Dagger count, same-side global empower filter, exact p2 damage factor, consume ordering, and zero-safe parameters.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

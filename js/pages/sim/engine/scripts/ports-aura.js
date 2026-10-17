@@ -12,7 +12,7 @@ import {
 } from '../buff-economy.js';
 import { affectedTargets } from '../board-graph.js';
 import { getP, getP1, getP2, getP3, getP4, getP5, getP6, getPName } from '../params.js';
-import { addBonusDamage, addSpeed } from '../piece-stats.js';
+import { addBonusDamage, addBonusDamageFactor, addSpeed } from '../piece-stats.js';
 import { gainStacks } from '../stacks.js';
 import { applyFatigueDamage } from '../fatigue.js';
 import { itemHasType, afterEffectFinished, pushActivate, pushBuffGrants } from './ports-util.js';
@@ -20,6 +20,7 @@ import { getScriptHandler } from './registry.js';
 import { weaponStrike } from './ports-wave-c-util.js';
 import { giveTempMaxHp } from './ports-ap-start.js';
 import { empowerLinkedWeapons, goobertPeerTick } from './ports-wave-d-goobert.js';
+import { canBeEmpoweredPiece } from './food-helpers.js';
 
 /**
  * @typedef {import('./handlers.js').ScriptHandler} ScriptHandler
@@ -29,48 +30,30 @@ import { empowerLinkedWeapons, goobertPeerTick } from './ports-wave-d-goobert.js
 export const knifeToMeetYouPort = {
   handlerId: 'knife_to_meet_you',
   family: 'synergy_aura',
-  onCombatStart(piece, ctx) {
-    const { t, events, pieces, graph, itemsById, canAffect } = ctx;
-    const daggerSpeed = getPName(piece.params, 'speed', getP1(piece.params, 10)) / 100;
-    const per = getPName(piece.params, 'speed2', getP2(piece.params, 5)) / 100;
+  onPrepare(piece, ctx) {
+    const { pieces, graph, itemsById, canAffect } = ctx;
+    const daggerSpeed = getPName(piece.params, 'speed', getP1(piece.params, 0)) / 100;
+    const per = getPName(piece.params, 'speed2', getP2(piece.params, 0)) / 100;
     const links = affectedTargets(graph, piece.placementKey, itemsById, canAffect);
-    let n = 0;
-    for (const other of pieces || []) {
-      if (other.placementKey === piece.placementKey) continue;
-      const item = itemsById.get(other.itemId);
-      const isDagger =
-        itemHasType(item, 'dagger') ||
-        String(other.name || '')
-          .toLowerCase()
-          .includes('dagger');
-      if (isDagger && daggerSpeed) {
-        addSpeed(other, daggerSpeed);
-        n += 1;
-      }
-    }
-    if (links.length && per) addSpeed(piece, links.length * per);
-    events.push({
-      t,
-      type: 'info',
-      label: `${piece.name}: dagger haste (${n})`,
-      meta: { category: 'adjacency', script: true, handler: 'knife_to_meet_you' },
-    });
+    const sameSide = (other) => piece.side == null || other.side === piece.side;
+    const isDagger = (other) => String(other.name || itemsById.get(other.itemId)?.name || '')
+      .toLowerCase()
+      .includes('dagger');
+    const daggers = (pieces || []).filter(
+      (other) => other.placementKey !== piece.placementKey && sameSide(other) && isDagger(other),
+    );
+    for (const other of daggers) addSpeed(other, daggerSpeed);
+    const linkedDaggers = daggers.filter((other) => links.some((link) => link.key === other.placementKey));
+    if (per) addSpeed(piece, linkedDaggers.length * per);
   },
   onCooldownEffect(piece, ctx) {
-    const { t, events, pieces } = ctx;
-    pushActivate(piece, ctx, 'knife_to_meet_you', `Weapon: ${piece.name}`);
-    const dam = Math.max(1, Math.round(getPName(piece.params, 'dam', getP3(piece.params, 1))));
+    const { pieces } = ctx;
+    const damFactor = getPName(piece.params, 'dam', getP2(piece.params, 0)) / 100;
     for (const other of pieces || []) {
-      if (other.empowerable === false) continue;
-      if (!(other.damageMax > 0 || other.damageMin > 0 || other.kind === 'weapon')) continue;
-      addBonusDamage(other, dam);
+      if (piece.side != null && other.side !== piece.side) continue;
+      if (!canBeEmpoweredPiece(other)) continue;
+      addBonusDamageFactor(other, damFactor);
     }
-    events.push({
-      t: t + 0.004,
-      type: 'info',
-      label: `${piece.name}: +${dam} dmg board`,
-      meta: { category: 'adjacency', script: true, handler: 'knife_to_meet_you' },
-    });
     afterEffectFinished(piece, ctx, 'knife_to_meet_you', { activate: false });
     return true;
   },
