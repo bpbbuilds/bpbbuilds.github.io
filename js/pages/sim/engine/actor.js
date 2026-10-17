@@ -7,6 +7,7 @@ import { gainStacks as gainStacksImpl } from './stacks.js';
 import { summarizeTemporaryStacks } from './temp-stacks.js';
 import { pushStunLabel } from './item-fx-log.js';
 import { invulnerabilityVfxFor } from '../fx/sim-invulnerability-fx.js';
+import { createBalancedRng } from './balanced-rng.js';
 
 /** @typedef {'player' | 'dummy'} SimActorId */
 
@@ -138,6 +139,7 @@ export function createActor(id, opts = {}) {
     stackResist: {},
     stacks: emptyStacks(),
     dead: false,
+    stunResistanceRng: createBalancedRng(),
     invulnUntil: 0,
     invulnCharges: 0,
     buffProtect: 0,
@@ -175,12 +177,12 @@ export function changeBuffCleanseProtectChance(actor, stack, amount) {
  * @param {{ charges?: number, bus?: { emit?: Function }, sourceId?: string | null, sourceKey?: string | null }} [opts]
  */
 export function grantInvuln(actor, durationSec, nowT, opts = {}) {
+  const now = Number(nowT) || 0;
   const dur = Math.max(0, Number(durationSec) || 0);
-  const was = isInvulnerable(actor, nowT);
-  if (dur > 0) {
-    const until = (Number(nowT) || 0) + dur;
-    actor.invulnUntil = Math.max(Number(actor.invulnUntil) || 0, until);
-  }
+  const was = isInvulnerable(actor, now);
+  const remaining = Math.max(0, (Number(actor.invulnUntil) || 0) - now);
+  const until = now + remaining + dur;
+  actor.invulnUntil = until > now ? until : 0;
   const charges = Math.max(0, Math.round(Number(opts.charges) || 0));
   if (charges > 0) {
     actor.invulnCharges = (Number(actor.invulnCharges) || 0) + charges;
@@ -188,7 +190,7 @@ export function grantInvuln(actor, durationSec, nowT, opts = {}) {
   const vfx = invulnerabilityVfxFor(opts.sourceId);
   if (Array.isArray(actor._eventLog)) {
     actor._eventLog.push({
-      t: Number(nowT) || 0,
+      t: now,
       type: 'info',
       actor: actor.id,
       target: actor.id,
@@ -207,9 +209,9 @@ export function grantInvuln(actor, durationSec, nowT, opts = {}) {
       },
     });
   }
-  if (!was && isInvulnerable(actor, nowT)) {
+  if (isInvulnerable(actor, now)) {
     opts.bus?.emit?.('character_invulnerable_start', {
-      t: nowT,
+      t: now,
       untilT: actor.invulnUntil,
       sourceId: opts.sourceId ?? null,
     });
@@ -246,12 +248,14 @@ export function consumeInvulnHit(actor, nowT = 0) {
  */
 export function grantStun(actor, durationSec, nowT, opts = {}) {
   const dur = Math.max(0, Number(durationSec) || 0);
-  if (dur <= 0) return;
   const resist = Number(actor.stunResistance) || 0;
-  const rng = opts.rng;
-  if (resist > 0 && typeof rng === 'function') {
-    // LeatherHelm: chance to ignore stun entirely
-    if (rng() * 100 < resist) {
+  const rng = opts.rng || actor._combatRng || Math.random;
+  if (resist > 0) {
+    // Character.gd uses a per-character BalancedRng for stun resistance.
+    const resisted = actor.stunResistanceRng?.rollPercent
+      ? actor.stunResistanceRng.rollPercent(resist, rng)
+      : rng() * 100 < resist;
+    if (resisted) {
       pushStunLabel(actor, nowT, dur, opts, 'stun_resisted');
       return;
     }

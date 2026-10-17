@@ -103,8 +103,16 @@ const SURFACE = [
     source: 'Core/Character.gd',
     functions: ['makeInvulnerable', 'stun', 'startBattleRage', 'endBattleRage'],
     simOwners: ['js/pages/sim/engine/actor.js', 'js/pages/sim/engine/battle-rage.js'],
-    disposition: 'partial',
-    note: 'Status helpers exist; stacking/resistance/cleanse interactions are not fully source-audited.',
+    disposition: 'implemented',
+    note: 'Invulnerability refresh, per-character balanced stun resistance, zero-duration stun events, and Battle Rage restart/end events match the extracted Character helpers.',
+    evidence: {
+      focusedRegression: 'scripts/sim-character-status-smoke.mjs',
+      fixture: 'Character.gd timer refresh, repeated status notifications, per-character stun resistance, zero-duration stun, Battle Rage bonus/restart, expiry, and explicit end behavior.',
+      projections: ['log', 'meter', 'hud'],
+      requiredProjections: ['log', 'meter', 'hud'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'character-stacks',

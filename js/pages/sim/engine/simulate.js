@@ -165,10 +165,12 @@ export function simulateEngine(opts) {
   /** @type {{ maxHp: number, block?: number }} */
   const playerOpts = { maxHp: playerHp };
   const player = createActor('player', playerOpts);
+  player._combatRng = rng;
   /** @type {{ maxHp: number, block?: number }} */
   const dummyOpts = { maxHp: dummyHp };
   if (dummyBlock > 0) dummyOpts.block = dummyBlock;
   const dummy = createActor('dummy', dummyOpts);
+  dummy._combatRng = rng;
   const youGraph = buildBoardGraph(opts.placements, opts.itemsById);
   const themGraph = vsBoard
     ? buildBoardGraph(themPl, opts.itemsById)

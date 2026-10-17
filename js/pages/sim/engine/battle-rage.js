@@ -25,21 +25,32 @@ export function startBattleRage(actor, durationSec, nowT, opts = {}) {
     ? 0
     : Math.max(0, Number(actor.battleRageBonusDur) || 0);
   const dur = baseDur + bonusDur;
-  if (dur <= 0) return;
-  const until = (Number(nowT) || 0) + dur;
-  const was = isBattleRaging(actor, nowT);
-  actor.battleRageUntil = Math.max(Number(actor.battleRageUntil) || 0, until);
-  actor.battleRage = true;
+  const now = Number(nowT) || 0;
+  const until = dur > 0 ? now + dur : 0;
+  actor.battleRageUntil = until;
+  actor.battleRage = dur > 0;
   actor._battleRageDur = dur;
-  if (!was) {
-    opts.bus?.emit?.('battle_rage_started', {
-      actor,
-      t: nowT,
-      duration: dur,
-      untilT: actor.battleRageUntil,
-      sourceId: opts.sourceId ?? null,
-    });
-  }
+  opts.bus?.emit?.('battle_rage_started', {
+    actor,
+    t: now,
+    duration: dur,
+    untilT: actor.battleRageUntil,
+    sourceId: opts.sourceId ?? null,
+  });
+}
+
+/**
+ * Character.endBattleRage — stop the timer and emit the source end event.
+ * @param {import('./actor.js').SimActor} actor
+ * @param {number} t
+ * @param {{ bus?: { emit?: (type: string, payload?: object) => void } }} [opts]
+ */
+export function endBattleRage(actor, t, opts = {}) {
+  const duration = Number(actor._battleRageDur) || 0;
+  actor.battleRageUntil = 0;
+  actor.battleRage = false;
+  actor._battleRageDur = 0;
+  opts.bus?.emit?.('battle_rage_ended', { actor, t, duration });
 }
 
 /**
@@ -52,9 +63,5 @@ export function tickBattleRage(actor, t, opts = {}) {
   const until = Number(actor.battleRageUntil) || 0;
   if (until <= 0) return;
   if (t + 1e-9 < until) return;
-  const dur = Number(actor._battleRageDur) || 0;
-  actor.battleRageUntil = 0;
-  actor.battleRage = false;
-  actor._battleRageDur = 0;
-  opts.bus?.emit?.('battle_rage_ended', { actor, t, duration: dur });
+  endBattleRage(actor, t, opts);
 }

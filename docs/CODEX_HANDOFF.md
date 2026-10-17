@@ -6958,3 +6958,11 @@ None.
 ### 2026-10-17 Simulator item parity continuation 326 - in progress
 
 - All retained source-backed independent-combat item rows are verified or correctly classified; the next step is another user-directed item/mechanic or a new source extract. Codex owns the simulator audit paths and this handoff for that review. Cursor does not own these paths.
+### 2026-10-17 Simulator mechanic parity continuation 326 - complete
+
+- Codex repaired the shared Character status helpers to match the extracted game behavior: active invulnerability adds the new duration to remaining time and emits each start event, stun uses a per-character BalancedRng and preserves zero-duration stun events, and Battle Rage applies bonus duration, resets on restart, emits every start, and exposes explicit end handling.
+- Added `scripts/sim-character-status-smoke.mjs`, marked `character-status` implemented in the source-surface audit, regenerated the system-surface/dashboard artifacts, and ran the focused status, lifecycle, stun, invulnerability, Rage-neighbor, syntax, and freshness checks. Current item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 327 - in progress
+
+- Codex owns the next shared mechanic review from the 19 remaining partial system-surface rows, beginning with the next source-backed state/timing boundary. Cursor does not own these paths.

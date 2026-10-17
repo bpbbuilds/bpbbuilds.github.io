@@ -6,7 +6,7 @@
     "itemLedgerSha256": "5c8ddac1e269863a1001c879b9a6ca4e918910f9174ac7b73468a7558665185f",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
-    "systemSurfaceSha256": "0c6a4ebca4982aa198c2efe0c0a9e333742ebcc06a86a17c3fb3b4409195ddd1",
+    "systemSurfaceSha256": "3840d162d69ab47541876a5c8b35fe59f8f58dff5e2649aeb87635738011be18",
     "systemExtractFiles": {
       "Core/Buff.gd": "3efabb72eb0b337e30ebc924347aba40bd1039a3c5f718b761b0ee78b48ab8bb",
       "Core/Character.gd": "dc372965eaa048657caa1646d70aba85ff9b4b9677565eaa480bc195de027496",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 505,
+    "verified_1to1": 506,
     "confirmed_gap": 0,
-    "evidence_pending": 20,
+    "evidence_pending": 19,
     "no_independent_combat": 15
   },
   "items": [
@@ -23854,9 +23854,9 @@
       "id": "character-status",
       "name": "character status",
       "category": "state",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is partial, but the retained 1:1 proof is incomplete.",
-      "sourceStatus": "partial",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
+      "sourceStatus": "implemented",
       "source": "Core/Character.gd",
       "functions": [
         "makeInvulnerable",
@@ -23870,8 +23870,23 @@
           "js/pages/sim/engine/battle-rage.js"
         ]
       },
-      "evidence": null,
-      "knownDelta": "Status helpers exist; stacking/resistance/cleanse interactions are not fully source-audited."
+      "evidence": {
+        "focusedRegression": "scripts/sim-character-status-smoke.mjs",
+        "fixture": "Character.gd timer refresh, repeated status notifications, per-character stun resistance, zero-duration stun, Battle Rage bonus/restart, expiry, and explicit end behavior.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "requiredProjections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
+      "knownDelta": "Invulnerability refresh, per-character balanced stun resistance, zero-duration stun events, and Battle Rage restart/end events match the extracted Character helpers."
     },
     {
       "scope": "mechanic",
