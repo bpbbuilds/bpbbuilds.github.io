@@ -64,7 +64,7 @@ export const luckyShortbowPort = {
   onCooldownEffect(piece, ctx) {
     return weaponStrike(piece, ctx, 'lucky_shortbow');
   },
-  onDealtDamage(piece, ctx, hit) {
+  onPreDealDamageEarly(piece, ctx, hit) {
     if (!hit?.hit || !rollItemChance(piece, ctx.rng)) return;
     grantStacks(ctx.player, 'lucky', 1, {
       originKey: piece.placementKey,

@@ -277,7 +277,6 @@ export const lumpOfCoalPort = {
   family: 'unique',
   onCooldownEffect(piece, ctx) {
     const { t, player, dummy, events, rng } = ctx;
-    pushActivate(piece, ctx, 'lump_of_coal', `Gem: ${piece.name}`);
     const buffs = giveRandomBuffs(player, 1, rng, {
       originKey: piece.placementKey,
       originId: piece.itemId,
@@ -294,7 +293,7 @@ export const lumpOfCoalPort = {
       label: `${piece.name}: random debuff (consumed)`,
       meta: { category: 'system', script: true, handler: 'lump_of_coal', consumed: true },
     });
-    afterEffectFinished(piece, ctx, 'lump_of_coal', { activate: false });
+    afterEffectFinished(piece, ctx, 'lump_of_coal', { label: `Gem: ${piece.name}` });
     return true;
   },
 };

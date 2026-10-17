@@ -1888,6 +1888,20 @@ const SOURCE_VERIFIED_EVIDENCE = Object.freeze({
     liveRequired: false,
     basis: 'source_and_automated_regression',
   },
+  lucky_shortbow: {
+    focusedRegression: 'scripts/sim-lucky-shortbow-smoke.mjs',
+    fixture: 'Lucky Shortbow source pre-damage hit/chance hook, exact Lucky grant, and miss/failure behavior.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
+  lump_of_coal: {
+    focusedRegression: 'scripts/sim-lump-of-coal-smoke.mjs',
+    fixture: 'Lump of Coal source inventory effect ordering and consume callback, socketed weapon p1/mini activation, armor debuff resistance, and Gem Power block.',
+    projections: ['log', 'meter', 'hud'],
+    liveRequired: false,
+    basis: 'source_and_automated_regression',
+  },
   hero_longsword: {
     focusedRegression: 'scripts/sim-hero-longsword-smoke.mjs',
     fixture: 'Hero Longsword source combat-start canBeEmpowered weapon filter, exact flat damage aura, activation ordering, and zero-safe parameter.',

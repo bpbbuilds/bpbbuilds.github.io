@@ -131,11 +131,19 @@ function prepareWeapon(piece, gem, params, fam, ctx, gid, originKey) {
   }
   if (fam === 'coal') {
     piece._preDeal = piece._preDeal || [];
-    piece._preDeal.push(() =>
-      rollPercent(gemChance(gem, 'chance', 70), ctx.rng)
-        ? Math.max(1, Math.round(getP1(params, 1)))
-        : 0,
-    );
+    piece._preDeal.push(() => {
+      if (!rollPercent(gemChance(gem, 'chance', 70), ctx.rng)) return 0;
+      const extra = getP1(params, 0);
+      ctx.events.push({
+        t: (Number(ctx.t) || 0) + 0.001,
+        type: 'info',
+        itemId: gid,
+        placementKey: piece.placementKey,
+        label: `${gem.name || gid}: mini activate`,
+        meta: { category: 'system', script: true, handler: gid, miniActivate: true },
+      });
+      return extra;
+    });
     return;
   }
   if (fam === 'burning_coal') {
@@ -313,6 +321,10 @@ function prepareArmor(piece, gem, params, fam, ctx, gid, originKey) {
       (Number(ctx.player.stunResistance) || 0) + gemPower * stunChance;
     ctx.player.critResistance =
       (Number(ctx.player.critResistance) || 0) + gemPower * critChance;
+  } else if (fam === 'coal') {
+    const gemPower = gemPowerForHost(gem, piece);
+    ctx.player.debuffResistStacks =
+      (Number(ctx.player.debuffResistStacks) || 0) + Math.round(gemPower);
   } else if (fam === 'elephant') {
     // ElephantRune.gd changes debuff resistance during prepareArmor. The
     // combat-start timer only controls when that prepared resistance is
@@ -511,7 +523,10 @@ export function combatStartGemSockets(piece, ctx) {
     if (weapon || (fam !== 'coal' && fam !== 'burning_coal')) return;
     const block =
       fam === 'coal'
-        ? Math.max(1, Math.round(Number(gem.block) || getPName(params, 'block', 8)))
+        ? Math.round(
+            gemPowerForHost(gem, piece) *
+              (Number(gem.block) || getPName(params, 'block', 8)),
+          )
         : Math.max(1, Math.round(Number(gem.block) || getPName(params, 'block', 12)));
     gainStacks(ctx.player, 'block', block, { originKey, originId: gid });
   });

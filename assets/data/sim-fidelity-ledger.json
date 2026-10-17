@@ -11766,9 +11766,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-lucky-shortbow-smoke.mjs",
+        "fixture": "Lucky Shortbow source pre-damage hit/chance hook, exact Lucky grant, and miss/failure behavior.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {
@@ -11802,9 +11808,15 @@
       "fidelity": "source_ported",
       "knownDelta": null,
       "evidence": {
-        "focusedRegression": null,
-        "fixture": null,
-        "liveCapture": null
+        "focusedRegression": "scripts/sim-lump-of-coal-smoke.mjs",
+        "fixture": "Lump of Coal source inventory effect ordering and consume callback, socketed weapon p1/mini activation, armor debuff resistance, and Gem Power block.",
+        "projections": [
+          "log",
+          "meter",
+          "hud"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
       }
     },
     {

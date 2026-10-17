@@ -3,14 +3,14 @@
   "note": "Generated public fidelity summary. Only retained source-and-automated 1:1 evidence earns verified_1to1.",
   "source": {
     "dashboard": "assets/data/sim-audit-dashboard.json",
-    "dashboardSha256": "4bcd816d9993d7fd05bc7c51b81e80cd7e465d1fa8047f11f941b754c12ef12b",
+    "dashboardSha256": "1d355c269bdeced461cad56290073ebca07764ea88ea52cd06a98cf5bb97a770",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a"
   },
   "totals": {
     "items": 519,
-    "verified_1to1": 423,
+    "verified_1to1": 425,
     "confirmed_gap": 7,
-    "evidence_pending": 74,
+    "evidence_pending": 72,
     "no_independent_combat": 15
   },
   "byId": {
@@ -281,8 +281,8 @@
     "lucky_cat": "verified_1to1",
     "lucky_clover": "verified_1to1",
     "lucky_piggy": "verified_1to1",
-    "lucky_shortbow": "evidence_pending",
-    "lump_of_coal": "evidence_pending",
+    "lucky_shortbow": "verified_1to1",
+    "lump_of_coal": "verified_1to1",
     "mage_hat": "evidence_pending",
     "magic_badge": "evidence_pending",
     "magic_collar": "evidence_pending",

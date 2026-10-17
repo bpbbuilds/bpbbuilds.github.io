@@ -6590,3 +6590,13 @@ None.
 ### 2026-10-16 Simulator item parity continuation 283 - in progress
 
 - Codex owns the next retained Lucky Shortbow and Lump of Coal fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-lucky-shortbow-smoke.mjs`, `scripts/sim-lump-of-coal-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
+
+### 2026-10-16 Simulator item parity continuation 283 - complete
+
+- Codex repaired Lucky Shortbow to mirror the source `onPreDealDamage_early` hit/chance hook and exact Lucky grant. Lump of Coal now mirrors source inventory effect-before-completion ordering, consume activation, socketed weapon direct p1 damage plus mini activation, socketed armor debuff-resist stacks, and Gem Power-scaled armor Block.
+- Added `scripts/sim-lucky-shortbow-smoke.mjs` and `scripts/sim-lump-of-coal-smoke.mjs`, attached source-backed evidence, regenerated the ledger/dashboard/public summary, and updated `docs/todo.md` to 425 / 519 verified item rows. Focused pair tests, socketed/loose gem regressions, Band Y, Wave C/D, AP milestone, parity systems, verified-coverage, coverage-honesty, changed-module syntax, ledger/dashboard freshness checks, and generated-count checks pass. No legal, authentication, database, storage, or security behavior changed.
+- The generated summary reports 425 verified, 72 evidence-pending, 7 confirmed gaps, and 15 no-independent-combat rows. The next retained queue begins with Mage Hat and Magic Badge; this batch is ready to commit and push.
+
+### 2026-10-16 Simulator item parity continuation 284 - in progress
+
+- Codex owns the next retained Mage Hat and Magic Badge fidelity review/repair, their focused source-backed regressions, simulator fidelity evidence entries and generated audit artifacts, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Planned paths are limited to the relevant simulator port modules, `scripts/sim-mage-hat-smoke.mjs`, `scripts/sim-magic-badge-smoke.mjs`, `scripts/build-sim-fidelity-ledger.mjs`, the generated simulator audit JSON files, `docs/todo.md`, and `docs/CODEX_HANDOFF.md`. Cursor does not own these paths.
