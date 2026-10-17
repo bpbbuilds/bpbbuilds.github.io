@@ -31,8 +31,16 @@ const SURFACE = [
     source: 'Core/Game.gd',
     functions: ['switchToCombat', 'prepareItems', 'activateItems'],
     simOwners: ['js/pages/sim/engine/simulate.js', 'js/pages/sim/engine/combat-start-priority.js'],
-    disposition: 'partial',
-    note: 'Opening order is source-traced; the complete preparation and end-of-combat graph still needs the scheduler audit.',
+    disposition: 'implemented',
+    note: 'The simulator matches source character preparation, per-side shuffled/priority item ordering, combat-delay start, character combat-start boundaries, item pre/start/post passes, and first activation timing; the visual scene transition remains UI-only.',
+    evidence: {
+      focusedRegression: 'scripts/sim-combat-transition-smoke.mjs',
+      fixture: 'Game.gd switch/prepare/activate source ordering, player/opponent preparation, character boundary trace, combat delay, item-live boundary, and no activation before COMBAT_DELAY.',
+      projections: ['hud', 'log', 'meter'],
+      requiredProjections: ['hud', 'log', 'meter'],
+      liveRequired: false,
+      basis: 'source_and_automated_regression',
+    },
   },
   {
     id: 'game-combat-end',

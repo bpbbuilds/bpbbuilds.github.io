@@ -6,7 +6,7 @@
     "itemLedgerSha256": "5c8ddac1e269863a1001c879b9a6ca4e918910f9174ac7b73468a7558665185f",
     "itemExtractSha256": "1680e9de3a23b897a9e4245e7aae34f455b646cd0743ec1c1e1cb36e0ae6fe2a",
     "systemSurface": "assets/data/sim-system-surface.json",
-    "systemSurfaceSha256": "5d4fc144d00241646fb09567324e427e64c9989b16d67a2a4e290bfb61bef7b0",
+    "systemSurfaceSha256": "da7fc2c01af70224921f0422bec84eeab8e2d9e13f05751952473bbf67bd5ab0",
     "systemExtractFiles": {
       "Core/Buff.gd": "3efabb72eb0b337e30ebc924347aba40bd1039a3c5f718b761b0ee78b48ab8bb",
       "Core/Character.gd": "dc372965eaa048657caa1646d70aba85ff9b4b9677565eaa480bc195de027496",
@@ -26,9 +26,9 @@
     "items": 519,
     "mechanics": 21,
     "rows": 540,
-    "verified_1to1": 517,
+    "verified_1to1": 518,
     "confirmed_gap": 0,
-    "evidence_pending": 8,
+    "evidence_pending": 7,
     "no_independent_combat": 15
   },
   "items": [
@@ -23667,9 +23667,9 @@
       "id": "game-combat-transition",
       "name": "game combat transition",
       "category": "lifecycle",
-      "verdict": "evidence_pending",
-      "reason": "Current source evidence is partial, but the retained 1:1 proof is incomplete.",
-      "sourceStatus": "partial",
+      "verdict": "verified_1to1",
+      "reason": "Current source mapping, automated regression, and applicable UI projections are retained.",
+      "sourceStatus": "implemented",
       "source": "Core/Game.gd",
       "functions": [
         "switchToCombat",
@@ -23682,8 +23682,23 @@
           "js/pages/sim/engine/combat-start-priority.js"
         ]
       },
-      "evidence": null,
-      "knownDelta": "Opening order is source-traced; the complete preparation and end-of-combat graph still needs the scheduler audit."
+      "evidence": {
+        "focusedRegression": "scripts/sim-combat-transition-smoke.mjs",
+        "fixture": "Game.gd switch/prepare/activate source ordering, player/opponent preparation, character boundary trace, combat delay, item-live boundary, and no activation before COMBAT_DELAY.",
+        "projections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "requiredProjections": [
+          "hud",
+          "log",
+          "meter"
+        ],
+        "liveRequired": false,
+        "basis": "source_and_automated_regression"
+      },
+      "knownDelta": "The simulator matches source character preparation, per-side shuffled/priority item ordering, combat-delay start, character combat-start boundaries, item pre/start/post passes, and first activation timing; the visual scene transition remains UI-only."
     },
     {
       "scope": "mechanic",

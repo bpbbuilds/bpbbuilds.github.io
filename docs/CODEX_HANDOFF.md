@@ -7065,3 +7065,12 @@ None.
 ### 2026-10-17 Simulator mechanic parity continuation 338 - in progress
 
 - Codex owns the next partial shared surface, `game-combat-transition`, for source-backed combat switch, item preparation, and activation scheduling review. Planned paths are limited to simulator lifecycle/scheduler modules, a focused regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.
+
+### 2026-10-17 Simulator mechanic parity continuation 338 - complete
+
+- Codex completed the Game transition parity pass: the simulator now exposes a test-only transition trace for source character preparation and character combat-start boundaries, preserving the source order before item prepare and item pre/start/post passes; combat delay and first activation are regression-checked against the source scheduler.
+- Added `scripts/sim-combat-transition-smoke.mjs`, marked `game-combat-transition` implemented in the source-surface audit, regenerated the system-surface/dashboard/public summary, and ran transition, lifecycle, card, parity, syntax, and freshness checks. Shared totals are now 14 implemented and 7 partial; item totals remain 504 verified 1:1, 0 gaps, 0 evidence pending, and 15 no-independent-combat. Visual switch animation/UI remains intentionally outside engine mechanics. No legal, authentication, database, storage, or security behavior changed.
+
+### 2026-10-17 Simulator mechanic parity continuation 339 - in progress
+
+- Codex owns the next partial shared surface, `game-combat-end`, for source-backed end-combat cleanup and result ordering review. Planned paths are limited to simulator end-of-combat/handler modules, a focused regression, generated simulator audit artifacts, and this handoff. Cursor does not own these paths.

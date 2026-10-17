@@ -196,6 +196,11 @@ export function simulateEngine(opts) {
   const events = [];
   /** Test-only source lifecycle trace; never used as user-facing combat data. */
   const lifecycle = opts.captureLifecycle ? [] : null;
+  /** Test-only Game.prepareItems/activateItems boundary trace. */
+  const transition = opts.captureLifecycle ? [] : null;
+  const traceTransition = (phase, side, at) => {
+    transition?.push({ phase, side, t: at });
+  };
   const traceLifecycle = (phase, piece, at = t) => {
     lifecycle?.push({
       phase,
@@ -350,6 +355,9 @@ export function simulateEngine(opts) {
     meta: { seed, mode: 'engine', category: 'system' },
   });
 
+  // Game.prepareItems() prepares both characters before any inventory item.
+  traceTransition('character_prepare', 'player', 0);
+  traceTransition('character_prepare', 'dummy', 0);
   logClockOverride = COMBAT_DELAY;
   applyPreCombat(
     opts.placements,
@@ -438,6 +446,11 @@ export function simulateEngine(opts) {
   // Capture prepared item stats at the zero-time tooltip position. This keeps
   // duration factors (Time Melting / Endurance) visible before the first tick.
   pushSnap(0);
+  // Game.activateItems() starts both character loops before item
+  // preCombatStart/cooldown work. The engine has no visual character timer,
+  // but retain the source boundary for parity tests and future state hooks.
+  traceTransition('character_combat_start', 'player', COMBAT_DELAY);
+  traceTransition('character_combat_start', 'dummy', COMBAT_DELAY);
   // Item.gd preCombatStart is one per-item operation: socket pre-start work,
   // then adjustCooldown / activateCooldown, then onPreCombatStart. Keeping
   // these contiguous is important because start effects can observe the
@@ -1056,6 +1069,7 @@ export function simulateEngine(opts) {
     pieceSnapshots,
     activationAudits: collectPieceActivationAudits(pieces),
     lifecycle,
+    transition,
     summary,
     coverage,
     dummyStartBlock: dummyBlock,
